@@ -89,7 +89,12 @@ class ScheduleDayFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = activityViewModelProvider(viewModelFactory)
-        adapter = ScheduleDayAdapter(viewModel, tagViewPool)
+        adapter = ScheduleDayAdapter(
+                viewModel,
+                tagViewPool,
+                viewModel.observeLoggedInUser(),
+                viewModel.observeRegisteredUser(),
+                this)
         recyclerView = view.findViewById<RecyclerView>(R.id.recyclerview)
         recyclerView?.apply {
             adapter = this@ScheduleDayFragment.adapter

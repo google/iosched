@@ -19,12 +19,20 @@ package com.google.samples.apps.iosched.shared.data.login
 import android.net.Uri
 import com.google.firebase.auth.UserInfo
 
+
 /**
  * Interface to decouple the user info from Firebase.
  *
- * @see [FirebaseUserInfo]
+ * @see [FirebaseRegisteredUserInfo]
  */
-interface AuthenticatedUserInfo {
+interface AuthenticatedUserInfo: AuthenticatedUserInfoBasic, AuthenticatedUserInfoRegistered
+
+/**
+ * Basic user info.
+ */
+interface AuthenticatedUserInfoBasic {
+
+    fun isLoggedIn(): Boolean
 
     fun getEmail(): String?
 
@@ -49,6 +57,12 @@ interface AuthenticatedUserInfo {
     fun getProviders(): MutableList<String>?
 
     fun getProviderId(): String?
+}
 
-    fun isLoggedIn(): Boolean
+/**
+ * Extra information about the auth and registration state of the user.
+ */
+interface AuthenticatedUserInfoRegistered {
+
+    fun isRegistered(): Boolean
 }

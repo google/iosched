@@ -108,6 +108,7 @@ class FirestoreUserEventDataSource @Inject constructor(
         val options = QueryListenOptions().includeDocumentMetadataChanges()
         firestore.collection(USERS_COLLECTION)
                 .document(userId)
+                // TODO: Add a way to clear this listener
                 .collection(EVENTS_COLLECTION).addSnapshotListener(options, { snapshot, _ ->
                     snapshot ?: return@addSnapshotListener
 

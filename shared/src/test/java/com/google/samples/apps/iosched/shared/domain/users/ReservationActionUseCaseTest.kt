@@ -88,8 +88,9 @@ class ReservationActionUseCaseTest {
 }
 
 object TestUserEventRepository : SessionAndUserEventRepository {
-    override fun getObservableUserEvents(userId: String
-    ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
+
+    override fun getObservableUserEvents(userId: String?
+    ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>>  {
         TODO("not implemented")
     }
 
@@ -113,7 +114,7 @@ object TestUserEventRepository : SessionAndUserEventRepository {
 }
 
 object FailingUserEventRepository : SessionAndUserEventRepository {
-    override fun getObservableUserEvents(userId: String
+    override fun getObservableUserEvents(userId: String?
     ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
         TODO("not implemented")
     }

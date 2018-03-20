@@ -16,8 +16,12 @@
 
 package com.google.samples.apps.iosched.shared.data.login
 
+import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import com.google.samples.apps.iosched.shared.data.login.datasources.StagingAuthenticatedUserInfo
+import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.util.login.LoginHandler
 import com.google.samples.apps.iosched.util.login.LoginResult
 import com.google.samples.apps.iosched.util.login.LoginSuccess
@@ -46,3 +50,43 @@ class StagingLoginHandler(val user: StagingAuthenticatedUser): LoginHandler {
         user.logOut()
     }
 }
+
+/**
+ * A data source for used for [StagingLoginHandler]
+ */
+class StagingAuthenticatedUser(val context: Context) {
+
+    private val stagingLoggedInFirebaseUser = StagingAuthenticatedUserInfo(context)
+    private val stagingLoggedOutFirebaseUser = StagingLoggedOutFirebaseUserInfo(context)
+
+    val currentUserResult = MutableLiveData<Result<AuthenticatedUserInfo>?>()
+
+    init {
+        currentUserResult.value = Result.Success(stagingLoggedInFirebaseUser)
+    }
+
+    private var loggedIn: Boolean = false
+
+    fun logIn() {
+        loggedIn = true
+        currentUserResult.postValue(Result.Success(stagingLoggedInFirebaseUser))
+    }
+
+    fun logOut() {
+        loggedIn = false
+        currentUserResult.postValue(Result.Success(stagingLoggedOutFirebaseUser))
+    }
+
+}
+
+class StagingLoggedOutFirebaseUserInfo(
+        _context: Context
+) : StagingAuthenticatedUserInfo(_context) {
+
+    override fun isLoggedIn(): Boolean = false
+
+    override fun isRegistered(): Boolean = false
+
+    override fun getPhotoUrl(): Uri? = null
+}
+
