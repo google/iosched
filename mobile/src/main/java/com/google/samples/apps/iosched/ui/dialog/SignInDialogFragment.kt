@@ -73,4 +73,8 @@ class SignInDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInject
     private fun requestLogin() {
         loginHandler.makeLoginIntent()?.let { startActivity(it) }
     }
+
+    companion object {
+        const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
+    }
 }

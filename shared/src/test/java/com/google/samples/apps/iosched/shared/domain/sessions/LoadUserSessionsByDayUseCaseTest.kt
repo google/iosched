@@ -129,11 +129,11 @@ object FakeUserSessionMatcher : UserSessionMatcher {
 }
 
 object FailingSessionRepository : SessionRepository{
-    override fun getSession(eventId: String): Session {
-        TODO("not implemented")
+    override fun getSessions() : List<Session> {
+        throw Exception("test")
     }
 
-    override fun getSessions() : List<Session> {
+    override fun getSession(eventId: String): Session {
         throw Exception("test")
     }
 }
