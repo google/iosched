@@ -53,11 +53,11 @@ fun clipToCircle(view: View, clip: Boolean) {
     view.outlineProvider = if (clip) CircularOutlineProvider else null
 }
 
-@BindingAdapter(value = ["imageUrl", "placeholder"], requireAll = false)
-fun imageUrl(imageView: ImageView, imageUrl: Uri?, placeholder: Drawable?) {
+@BindingAdapter(value = ["imageUri", "placeholder"], requireAll = false)
+fun imageUri(imageView: ImageView, imageUri: Uri?, placeholder: Drawable?) {
     val placeholderDrawable = placeholder ?: AppCompatResources.getDrawable(
         imageView.context, R.drawable.generic_placeholder)
-    when (imageUrl) {
+    when (imageUri) {
         null -> {
             Timber.d("Unsetting image url")
             Glide.with(imageView)
@@ -66,7 +66,7 @@ fun imageUrl(imageView: ImageView, imageUrl: Uri?, placeholder: Drawable?) {
         }
         else -> {
             Glide.with(imageView)
-                .load(imageUrl)
+                .load(imageUri)
                 .apply(RequestOptions().placeholder(placeholderDrawable))
                 .into(imageView)
         }
@@ -75,5 +75,5 @@ fun imageUrl(imageView: ImageView, imageUrl: Uri?, placeholder: Drawable?) {
 
 @BindingAdapter(value = ["imageUrl", "placeholder"], requireAll = false)
 fun imageUrl(imageView: ImageView, imageUrl: String?, placeholder: Drawable?) {
-    imageUrl(imageView, imageUrl?.toUri(), placeholder)
+    imageUri(imageView, imageUrl?.toUri(), placeholder)
 }
