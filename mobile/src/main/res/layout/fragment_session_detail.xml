@@ -67,7 +67,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintDimensionRatio="@string/session_detail_header_aspect"
                     android:contentDescription="@string/a11y_session_detail_video_description"
-                    app:headerImage="@{viewModel.session.photoUrl}" />
+                    app:imageUrl="@{viewModel.session.photoUrl}" />
 
                 <!-- TODO add animated image -->
 
