@@ -37,6 +37,7 @@
             android:paddingHorizontal="@dimen/margin_normal"
             app:layout_scrollFlags="scroll|snap">
 
+            <!-- TODO Replace the placeholder with the actual asset -->
             <ImageView
                 android:id="@+id/profile_button"
                 android:layout_width="@dimen/min_touch_target"
@@ -47,7 +48,8 @@
                 android:onClick="@{() -> viewModel.onProfileClicked()}"
                 android:padding="@dimen/spacing_normal"
                 app:clipToCircle="@{true}"
-                app:imageUri="@{viewModel.currentUserImageUri}" />
+                app:imageUri="@{viewModel.currentUserImageUri}"
+                app:placeholder="@{@drawable/ic_account_circle}" />
 
             <TextView
                 android:id="@+id/title"
