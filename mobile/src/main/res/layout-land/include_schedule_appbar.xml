@@ -36,6 +36,7 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/margin_normal">
 
+            <!-- TODO Replace the placeholder with the actual asset -->
             <ImageView
                 android:id="@+id/profile_button"
                 android:layout_width="@dimen/min_touch_target"
@@ -46,7 +47,8 @@
                 android:onClick="@{() -> viewModel.onProfileClicked()}"
                 android:padding="@dimen/spacing_normal"
                 app:clipToCircle="@{true}"
-                app:imageUri="@{viewModel.currentUserImageUri}" />
+                app:imageUri="@{viewModel.currentUserImageUri}"
+                app:placeholder="@{@drawable/ic_account_circle}" />
 
             <com.google.android.material.widget.TabLayout
                 android:id="@+id/tabs"
