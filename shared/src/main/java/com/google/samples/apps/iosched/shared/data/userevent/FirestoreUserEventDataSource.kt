@@ -24,6 +24,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
+import com.google.samples.apps.iosched.shared.domain.sessions.UserEventMessage
 import com.google.samples.apps.iosched.shared.domain.sessions.UserEventsMessage
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CANCEL
@@ -113,6 +114,38 @@ class FirestoreUserEventDataSource @Inject constructor(
         return result
     }
 
+    override fun getObservableUserEvent(
+            userId: String,
+            eventId: String
+    ): LiveData<UserEventResult> {
+        val result = MutableLiveData<UserEventResult>()
+
+        firestore.collection(USERS_COLLECTION)
+                .document(userId)
+                .collection(EVENTS_COLLECTION)
+                .document(eventId)
+                .addSnapshotListener({ snapshot, _ ->
+                    snapshot ?: return@addSnapshotListener
+
+                    // Generate message if the reservation changed
+                    val userMessage = generateReservationChangeMsgFromDocument(snapshot,
+                            result.value)
+
+                    val userEvent = if (snapshot.exists()) {
+                        parseUserEvent(snapshot)
+                    } else {
+                        null
+                    }
+
+                    val userEventResult = UserEventResult(
+                            userEvent = userEvent,
+                            userEventMessage = userMessage
+                    )
+                    result.postValue(userEventResult)
+                })
+        return result
+    }
+
     /**
      * Go through all the changes and generate user messages in case there are reservation changes.
      */
@@ -131,7 +164,7 @@ class FirestoreUserEventDataSource @Inject constructor(
             // Reservation changes have priority
             if (newMessage == UserEventsMessage.CHANGES_IN_RESERVATIONS) {
                 userMessage = newMessage
-                return@forEach
+                return@forEach //TODO should this be a @loop, to emulate a break instead of a continue?
             }
             // Waitlist message has less priority
             if (newMessage == UserEventsMessage.CHANGES_IN_WAITLIST) {
@@ -141,6 +174,43 @@ class FirestoreUserEventDataSource @Inject constructor(
             }
         }
         return userMessage
+    }
+
+
+    /**
+     * Look at changes in a [UserEvent] and generate a user messages in case there are reservation or
+     * waitlist changes.
+     */
+    private fun generateReservationChangeMsgFromDocument(
+            snapshot: DocumentSnapshot,
+            oldEventResult: UserEventResult?
+    ): UserEventMessage? {
+
+        if (oldEventResult == null) return null
+
+        val oldEvent = oldEventResult.userEvent
+        val changedId: String = snapshot.data[ID] as String
+
+        // If this is new data, ignore
+        val newReservationState = generateReservationRequestResult(snapshot)
+        val newReservationRequested = parseReservationRequest(snapshot)
+        if (oldEvent?.isReservationPending() == true
+                && newReservationRequested == null
+                && newReservationState != null
+                && newReservationState.requestResult == ReservationRequestStatus.RESERVE_SUCCEEDED) {
+            Timber.d("Reservation change detected: $changedId")
+            return UserEventMessage.CHANGE_IN_RESERVATION
+        }
+
+        // The session is waiting for a change
+        if (oldEvent?.isReservationPending() == true
+                && newReservationRequested == null
+                && newReservationState != null
+                && newReservationState.requestResult == ReservationRequestStatus.RESERVE_WAITLISTED) {
+            Timber.d("Waitlist change detected: $changedId")
+            return UserEventMessage.CHANGE_IN_WAITLIST
+        }
+        return null
     }
 
     /**
@@ -395,7 +465,6 @@ class FirestoreUserEventDataSource @Inject constructor(
                 REQUEST -> RESERVE_REQ_ACTION
                 CANCEL -> RESERVE_CANCEL_ACTION
             }
-
 
     private fun getReservationRequestedQueueAction(action: ReservationRequestAction) =
             when (action) {

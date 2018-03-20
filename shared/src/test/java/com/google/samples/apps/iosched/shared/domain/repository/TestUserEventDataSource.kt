@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.shared.domain.repository
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventResult
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CANCEL
@@ -32,12 +33,21 @@ import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.result.Result
 
 class TestUserEventDataSource(
-        private val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
+        private val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData(),
+        private val userEventResult: MutableLiveData<UserEventResult> = MutableLiveData()
 ) : UserEventDataSource {
 
     override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {
         userEventsResult.postValue(UserEventsResult(TestData.userEvents))
         return userEventsResult
+    }
+
+    override fun getObservableUserEvent(
+            userId: String,
+            eventId: String
+    ): LiveData<UserEventResult> {
+        userEventResult.postValue(UserEventResult(TestData.userEvents[0]))
+        return userEventResult
     }
 
     override fun starEvent(userId: String, userEvent: UserEvent):

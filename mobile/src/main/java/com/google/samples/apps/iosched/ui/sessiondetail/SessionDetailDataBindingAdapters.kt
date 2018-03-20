@@ -28,6 +28,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
+import com.google.android.material.widget.FloatingActionButton
 import com.bumptech.glide.request.RequestOptions
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemSpeakerDetailBinding
@@ -106,8 +107,18 @@ fun sessionStartCountdown(view: TextView, timeUntilStart: Duration?) {
         view.visibility = VISIBLE
         val minutes = timeUntilStart.toMinutes()
         view.text = view.context.resources.getQuantityString(
-            R.plurals.session_starting_in, minutes.toInt(), minutes.toString()
+                R.plurals.session_starting_in, minutes.toInt(), minutes.toString()
         )
+    }
+}
+
+@Suppress("unused")
+@BindingAdapter("isDetailStarred")
+fun isDetailStarred(fab: FloatingActionButton, isStarred: Boolean) {
+    if (isStarred) {
+        fab.setImageResource(R.drawable.ic_star)
+    } else {
+        fab.setImageResource(R.drawable.ic_star_border)
     }
 }
 

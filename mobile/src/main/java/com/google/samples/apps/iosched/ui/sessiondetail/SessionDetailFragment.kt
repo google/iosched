@@ -21,14 +21,21 @@ import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v4.app.FragmentActivity
 import android.support.v4.app.ShareCompat
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.net.toUri
+import com.google.android.material.widget.Snackbar
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSessionDetailBinding
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.ui.SnackbarMessage
+import com.google.samples.apps.iosched.ui.dialog.SignInDialogFragment
+import com.google.samples.apps.iosched.ui.dialog.SignInDialogFragment.Companion.DIALOG_NEED_TO_SIGN_IN
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -46,7 +53,7 @@ class SessionDetailFragment : DaggerFragment() {
         setHasOptionsMenu(true)
 
         val sessionDetailViewModel: SessionDetailViewModel = viewModelProvider(viewModelFactory)
-        sessionDetailViewModel.loadSessionById(checkNotNull(arguments).getString(EXTRA_SESSION_ID))
+        sessionDetailViewModel.setSessionId(checkNotNull(arguments).getString(EXTRA_SESSION_ID))
 
         val binding: FragmentSessionDetailBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_session_detail, container, false
@@ -85,11 +92,47 @@ class SessionDetailFragment : DaggerFragment() {
             }
         })
 
+        // TODO style Snackbar so it doesn't overlap the bottom app bar (b/76112328)
+        sessionDetailViewModel.snackBarMessage.observe(this, Observer {
+            it?.getContentIfNotHandled()?.let { message: SnackbarMessage ->
+                val coordinatorLayout =
+                        requireActivity().findViewById<View>(R.id.coordinator_layout_session_detail)
+                val duration = if (message.longDuration) {
+                    Snackbar.LENGTH_LONG
+                } else {
+                    Snackbar.LENGTH_SHORT
+                }
+                Snackbar.make(coordinatorLayout, message.messageId, duration).apply {
+                    message.actionId?.let { action -> setAction(action, { this.dismiss() }) }
+                    setActionTextColor(ContextCompat.getColor(context, R.color.teal))
+                    show()
+                }
+            }
+        })
+
+        sessionDetailViewModel.errorMessage.observe(this, Observer { message ->
+            //TODO: Change once there's a way to show errors to the user
+            message?.getContentIfNotHandled()?.let { errorMsg ->
+                Toast.makeText(this.context, errorMsg, Toast.LENGTH_LONG).show()
+            }
+        })
+
+        sessionDetailViewModel.navigateToSignInDialogAction.observe(this, Observer {
+            it?.getContentIfNotHandled()?.let {
+                openSignInDialog(requireActivity())
+            }
+        })
+
         return binding.root
     }
 
     private fun openYoutubeUrl(youtubeUrl: String) {
         startActivity(Intent(Intent.ACTION_VIEW, youtubeUrl.toUri()))
+    }
+
+    private fun openSignInDialog(activity: FragmentActivity) {
+        val dialog = SignInDialogFragment()
+        dialog.show(activity.supportFragmentManager, DIALOG_NEED_TO_SIGN_IN)
     }
 
     companion object {

@@ -22,12 +22,19 @@ import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.model.TestData
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
+import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
+import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.model.Session
-import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.test.util.fakes.FakeLoginViewModelPlugin
+import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
 import com.google.samples.apps.iosched.test.util.time.FixedTimeExecutorRule
+import com.google.samples.apps.iosched.ui.login.LoginViewModelPlugin
+import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import com.google.samples.apps.iosched.util.SetIntervalLiveData
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -55,9 +62,8 @@ class SessionDetailViewModelTest {
     private lateinit var viewModel: SessionDetailViewModel
     private val testSession = TestData.session0
 
-    @Before
-    fun setup() {
-        viewModel = SessionDetailViewModel(createUseCase(testSession))
+    @Before fun setup() {
+        viewModel = createSessionDetailViewModel()
         viewModel.loadSessionById(testSession.id)
     }
 
@@ -84,17 +90,13 @@ class SessionDetailViewModelTest {
 
     @Test
     fun testOnPlayVideo_createsEventForVideo() {
-        val sessionWithUrl = createSessionWithUrl("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
-        val vm = SessionDetailViewModel(createUseCase(sessionWithUrl))
+        viewModel.loadSessionById(TestData.sessionWithYoutubeUrl.id)
+        LiveDataTestUtil.getValue(viewModel.session)
 
-        // This loads the session and forces vm.session to be set before calling onPlayVideo
-        vm.loadSessionById(sessionWithUrl.id)
-        LiveDataTestUtil.getValue(vm.session)
-
-        vm.onPlayVideo()
+        viewModel.onPlayVideo()
         assertEquals(
-            sessionWithUrl.youTubeUrl,
-            LiveDataTestUtil.getValue(vm.navigateToYouTubeAction)?.peekContent()
+                TestData.sessionWithYoutubeUrl.youTubeUrl,
+            LiveDataTestUtil.getValue(viewModel.navigateToYouTubeAction)?.peekContent()
         )
     }
 
@@ -133,26 +135,25 @@ class SessionDetailViewModelTest {
         assertEquals(null, LiveDataTestUtil.getValue(viewModel.timeUntilStart))
     }
 
-    @Test
-    fun testOnPlayVideo_doesNotCreateEventForVideo() {
-        val sessionWithUrl = createSessionWithUrl("")
-        val vm = SessionDetailViewModel(createUseCase(sessionWithUrl))
+    @Test fun testOnPlayVideo_doesNotCreateEventForVideo() {
+        val sessionWithoutYoutubeUrl = testSession
+        val vm = createSessionDetailViewModel()
 
         // This loads the session and forces vm.session to be set before calling onPlayVideo
-        vm.loadSessionById(sessionWithUrl.id)
+        vm.loadSessionById(sessionWithoutYoutubeUrl.id)
         LiveDataTestUtil.getValue(vm.session)
 
         vm.onPlayVideo()
         assertNull(LiveDataTestUtil.getValue(vm.navigateToYouTubeAction))
     }
 
-    /**
-     * Creates a use case that will return the provided session.
-     */
-    private fun createUseCase(session: Session): LoadSessionUseCase {
-        return object : LoadSessionUseCase(DefaultSessionRepository(TestDataRepository)) {
-            override fun execute(parameters: String) = session
-        }
+    private fun createSessionDetailViewModel(
+            loginViewModelPlugin: LoginViewModelPlugin = FakeLoginViewModelPlugin(),
+            loadUserSessionUseCase: LoadUserSessionUseCase = createTestLoadUserSessionUseCase(),
+            starEventUseCase: StarEventUseCase = FakeStarEventUseCase()
+    ): SessionDetailViewModel {
+        return SessionDetailViewModel(loginViewModelPlugin, loadUserSessionUseCase,
+                starEventUseCase)
     }
 
     private fun forceTimeUntilStartIntervalUpdate() {
@@ -162,11 +163,20 @@ class SessionDetailViewModelTest {
     private fun createSessionWithUrl(youtubeUrl: String) =
         Session(
             id = "0", title = "Session 0", abstract = "",
-            startTime = TimeUtils.ConferenceDay.DAY_1.start,
-            endTime = TimeUtils.ConferenceDay.DAY_1.end, room = TestData.room,
+            startTime = DAY_1.start,
+            endTime = DAY_1.end, room = TestData.room,
             sessionUrl = "", liveStreamUrl = "", youTubeUrl = youtubeUrl, photoUrl = "",
             tags = listOf(TestData.androidTag, TestData.webTag),
             displayTags = listOf(TestData.androidTag, TestData.webTag),
             speakers = setOf(TestData.speaker), relatedSessions = emptySet()
+
         )
+    private fun createTestLoadUserSessionUseCase(
+            userEventDataSource: UserEventDataSource = TestUserEventDataSource()
+    ): LoadUserSessionUseCase {
+        val sessionRepository = DefaultSessionRepository(TestDataRepository)
+        val userEventRepository = DefaultSessionAndUserEventRepository(
+                userEventDataSource, sessionRepository)
+        return LoadUserSessionUseCase(userEventRepository)
+    }
 }

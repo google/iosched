@@ -20,6 +20,7 @@ import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CANCEL
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.REQUEST
@@ -93,9 +94,15 @@ class ReservationActionUseCaseTest {
 }
 
 object TestUserEventRepository : SessionAndUserEventRepository {
-
     override fun getObservableUserEvents(userId: String?
     ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
+        TODO("not implemented")
+    }
+
+    override fun getObservableUserEvent(
+            userId: String?,
+            eventId: String
+    ): LiveData<Result<LoadUserSessionUseCaseResult>> {
         TODO("not implemented")
     }
 
@@ -121,6 +128,13 @@ object TestUserEventRepository : SessionAndUserEventRepository {
 object FailingUserEventRepository : SessionAndUserEventRepository {
     override fun getObservableUserEvents(userId: String?
     ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
+        TODO("not implemented")
+    }
+
+    override fun getObservableUserEvent(
+            userId: String?,
+            eventId: String
+    ): LiveData<Result<LoadUserSessionUseCaseResult>> {
         TODO("not implemented")
     }
 

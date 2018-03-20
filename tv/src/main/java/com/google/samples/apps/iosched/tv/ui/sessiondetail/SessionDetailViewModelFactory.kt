@@ -19,19 +19,21 @@ package com.google.samples.apps.iosched.tv.ui.sessiondetail
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
+import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 
 /**
  * Creates [SessionDetailViewModel]s, used with the [android.arch.lifecycle.ViewModelProviders].
  */
 class SessionDetailViewModelFactory(
-        private val sessionRepository: SessionRepository
+        private val sessionRepository: DefaultSessionAndUserEventRepository
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SessionDetailViewModel::class.java)) {
-            return SessionDetailViewModel(LoadSessionUseCase(sessionRepository)) as T
+            // TODO-76284 fix it
+            return SessionDetailViewModel(LoadUserSessionUseCase(sessionRepository)) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

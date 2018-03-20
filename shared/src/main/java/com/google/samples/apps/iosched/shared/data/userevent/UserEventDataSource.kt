@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.shared.data.userevent
 
 import android.arch.lifecycle.LiveData
+import com.google.samples.apps.iosched.shared.domain.sessions.UserEventMessage
 import com.google.samples.apps.iosched.shared.domain.sessions.UserEventsMessage
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
@@ -27,6 +28,8 @@ import com.google.samples.apps.iosched.shared.result.Result
 interface UserEventDataSource {
 
     fun getObservableUserEvents(userId: String): LiveData<UserEventsResult>
+
+    fun getObservableUserEvent(userId: String, eventId: String): LiveData<UserEventResult>
 
     /**
      * Toggle the isStarred status for an event.
@@ -46,3 +49,7 @@ data class UserEventsResult(
         /** If this is true, all [UserEvent] in the userEvents field are synced to the backend */
         val userEvents: List<UserEvent>,
         val userEventsMessage: UserEventsMessage? = null)
+
+data class UserEventResult(
+        val userEvent: UserEvent?,
+        val userEventMessage: UserEventMessage? = null)

@@ -102,13 +102,9 @@ internal class FirebaseLoginViewModelPlugin @Inject constructor(
             (result as? Result.Success)?.data?.getPhotoUrl()
         }
 
-        _isLoggedIn = currentFirebaseUser.map {
-            isLoggedIn()
-        }
+        _isLoggedIn = currentFirebaseUser.map { isLoggedIn() }
 
-        _isRegistered = currentFirebaseUser.map {
-            isRegistered()
-        }
+        _isRegistered = currentFirebaseUser.map { isRegistered() }
 
         observeUserAuthStateUseCase.execute(Any())
     }
