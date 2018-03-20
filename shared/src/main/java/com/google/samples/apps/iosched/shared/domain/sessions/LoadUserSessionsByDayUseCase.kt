@@ -30,7 +30,7 @@ import javax.inject.Inject
  */
 open class LoadUserSessionsByDayUseCase @Inject constructor(
         private val userEventRepository: DefaultSessionAndUserEventRepository
-): MediatorUseCase<Pair<UserSessionMatcher, String>, Map<ConferenceDay, List<UserSession>>>() {
+): MediatorUseCase<Pair<UserSessionMatcher, String>, LoadUserSessionsByDayUseCaseResult>() {
 
     override fun execute(parameters: Pair<UserSessionMatcher, String>) {
         val (sessionMatcher, userId) = parameters
@@ -42,10 +42,14 @@ open class LoadUserSessionsByDayUseCase @Inject constructor(
             DefaultScheduler.execute {
                 when (it) {
                     is Result.Success -> {
-                        val res = it.data.mapValues { (_, sessions) ->
+                        val userSessions = it.data.userSessionsPerDay.mapValues { (_, sessions) ->
                             sessions.filter { sessionMatcher.matches(it) }
                         }
-                        result.postValue(Result.Success(res))
+                        val usecaseResult = LoadUserSessionsByDayUseCaseResult(
+                                userSessionsPerDay = userSessions,
+                                userMessage = it.data.userMessage
+                        )
+                        result.postValue(Result.Success(usecaseResult))
                     }
                     is Result.Error -> {
                         result.postValue(it)
@@ -54,4 +58,15 @@ open class LoadUserSessionsByDayUseCase @Inject constructor(
             }
         }
     }
+}
+
+data class LoadUserSessionsByDayUseCaseResult(
+    val userSessionsPerDay: Map<ConferenceDay, List<UserSession>>,
+    val userMessage: UserEventsMessage?
+)
+
+enum class UserEventsMessage {
+    CHANGES_IN_RESERVATIONS,
+    CHANGES_IN_WAITLIST,
+    DATA_NOT_SYNCED
 }

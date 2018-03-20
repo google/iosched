@@ -17,9 +17,14 @@
 package com.google.samples.apps.iosched.shared.domain.sessions
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import android.arch.lifecycle.MediatorLiveData
+import android.arch.lifecycle.MutableLiveData
+import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
+import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.model.UserSession
@@ -27,7 +32,10 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
-import org.junit.Assert.assertEquals
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.instanceOf
+import org.junit.Assert.assertThat
 import org.junit.Rule
 import org.junit.Test
 
@@ -45,19 +53,98 @@ class LoadUserSessionsByDayUseCaseTest {
 
     @Test
     fun returnsMapOfSessions() {
+
+        val userEventsResult: MutableLiveData<UserEventsResult>
+                = MutableLiveData<UserEventsResult>()
+
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
-                TestUserEventDataSource, SessionRepository(TestDataRepository))
+                TestUserEventDataSource(userEventsResult),
+                DefaultSessionRepository(TestDataRepository))
         val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
 
-        val resultLiveData = useCase.observe()
+        val resultLiveData: MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>
+                = useCase.observe()
 
         useCase.execute(Pair(FakeUserSessionMatcher, "user1"))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
-        assertEquals(TestData.userSessionMap, (result as Result.Success<*>).data)
+                as Result.Success<LoadUserSessionsByDayUseCaseResult>
+
+        assertThat(
+                TestData.userSessionMap,
+                `is`(equalTo(result.data.userSessionsPerDay)))
+    }
+
+    @Test
+    fun userEventsMessage() {
+
+        val userEventsResult: MutableLiveData<UserEventsResult>
+                = MutableLiveData<UserEventsResult>()
+
+        val testUserEventRepository = DefaultSessionAndUserEventRepository(
+                TestUserEventDataSource(userEventsResult),
+                DefaultSessionRepository(TestDataRepository))
+        val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
+
+        val resultLiveData: MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>
+                = useCase.observe()
+
+        useCase.execute(Pair(FakeUserSessionMatcher, "user1"))
+
+        userEventsResult.postValue(UserEventsResult(
+                allDataSynced = true,
+                userEventsMessage = UserEventsMessage.CHANGES_IN_RESERVATIONS,
+                userEvents = TestData.userEvents))
+
+        val result = LiveDataTestUtil.getValue(resultLiveData)
+                as Result.Success<LoadUserSessionsByDayUseCaseResult>
+
+        assertThat(
+                TestData.userSessionMap,
+                `is`(equalTo(result.data.userSessionsPerDay)))
+
+        assertThat(
+                UserEventsMessage.CHANGES_IN_RESERVATIONS,
+                `is`(equalTo(result.data.userMessage)))
+    }
+
+    @Test
+    fun errorCase() {
+
+        val userEventsResult: MutableLiveData<UserEventsResult>
+                = MutableLiveData<UserEventsResult>()
+
+        val testUserEventRepository = DefaultSessionAndUserEventRepository(
+                TestUserEventDataSource(userEventsResult),
+                FailingSessionRepository
+        )
+
+        val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
+
+        val resultLiveData: MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>
+                = useCase.observe()
+
+        useCase.execute(Pair(FakeUserSessionMatcher, "user1"))
+
+        val result = LiveDataTestUtil.getValue(resultLiveData)
+
+        assertThat(
+                result,
+                `is`(instanceOf(Result.Error::class.java)))
+
     }
 }
 
 object FakeUserSessionMatcher : UserSessionMatcher {
     override fun matches(userSession: UserSession): Boolean = true
+}
+
+object FailingSessionRepository : SessionRepository{
+    override fun getSessionsOffline(): List<Session> {
+        TODO("not implemented")
+    }
+
+    override fun getSessions() : List<Session> {
+        throw Exception("test")
+    }
 }

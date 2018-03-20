@@ -19,7 +19,7 @@
 package com.google.samples.apps.iosched.tv.ui.schedule
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.result.Result
@@ -85,14 +85,14 @@ class ScheduleViewModelTest {
     private fun createUseCase(): LoadUserSessionsByDayUseCase {
         return LoadUserSessionsByDayUseCase(
             DefaultSessionAndUserEventRepository(
-                TestUserEventDataSource, SessionRepository(TestDataRepository)))
+                TestUserEventDataSource, DefaultSessionRepository(TestDataRepository)))
     }
 
     /**
      * Creates a use case that throws an exception.
      */
     private fun createSessionsExceptionUseCase(): LoadUserSessionsByDayUseCase {
-        val sessionRepository = SessionRepository(TestDataRepository)
+        val sessionRepository = DefaultSessionRepository(TestDataRepository)
         val userEventRepository = DefaultSessionAndUserEventRepository(
             TestUserEventDataSource, sessionRepository)
 

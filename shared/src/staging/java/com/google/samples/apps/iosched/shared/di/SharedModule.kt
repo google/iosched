@@ -27,6 +27,7 @@ import com.google.samples.apps.iosched.shared.data.login.LoginRemoteDataSource
 import com.google.samples.apps.iosched.shared.data.login.StagingAuthenticatedUser
 import com.google.samples.apps.iosched.shared.data.map.FakeMapMetadataDataSource
 import com.google.samples.apps.iosched.shared.data.map.MapMetadataDataSource
+import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.FakeUserEventDataSource
@@ -66,6 +67,14 @@ class SharedModule {
         @Named("bootstrapConfDataSource") boostrapDataSource: ConferenceDataSource
     ): ConferenceDataRepository {
         return ConferenceDataRepository(remoteDataSource, boostrapDataSource)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSessionRepository(
+            conferenceDataRepository: ConferenceDataRepository
+    ): SessionRepository {
+        return DefaultSessionRepository(conferenceDataRepository)
     }
 
     @Singleton

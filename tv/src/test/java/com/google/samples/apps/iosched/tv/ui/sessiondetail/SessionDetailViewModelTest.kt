@@ -19,7 +19,7 @@
 package com.google.samples.apps.iosched.tv.ui.sessiondetail
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
@@ -58,7 +58,7 @@ class SessionDetailViewModelTest {
      * Creates a use case that will return the provided session.
      */
     private fun createUseCase(session: Session): LoadSessionUseCase {
-        return object : LoadSessionUseCase(SessionRepository(TestDataRepository)) {
+        return object : LoadSessionUseCase(DefaultSessionRepository(TestDataRepository)) {
             override fun execute(parameters: String) = session
         }
     }

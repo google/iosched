@@ -21,6 +21,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.RecycledViewPool
 import android.view.LayoutInflater
 import android.view.View
@@ -28,17 +29,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.material.widget.Snackbar
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.domain.users.UpdatedStatus.STARRED
-import com.google.samples.apps.iosched.shared.domain.users.UpdatedStatus.UNSTARRED
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.getEnum
 import com.google.samples.apps.iosched.shared.util.lazyFast
 import com.google.samples.apps.iosched.shared.util.putEnum
+import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.util.clearDecorations
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_schedule_day.*
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -79,6 +78,8 @@ class ScheduleDayFragment : DaggerFragment() {
 
     private lateinit var adapter: ScheduleDayAdapter
 
+    private var recyclerView: RecyclerView? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -89,9 +90,10 @@ class ScheduleDayFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = activityViewModelProvider(viewModelFactory)
         adapter = ScheduleDayAdapter(viewModel, tagViewPool)
-        recyclerview.apply {
+        recyclerView = view.findViewById<RecyclerView>(R.id.recyclerview)
+        recyclerView?.apply {
             adapter = this@ScheduleDayFragment.adapter
-            recyclerview.recycledViewPool = sessionViewPool
+            recyclerView?.recycledViewPool = sessionViewPool
             (layoutManager as LinearLayoutManager).recycleChildrenOnDetach = true
         }
     }
@@ -102,35 +104,33 @@ class ScheduleDayFragment : DaggerFragment() {
         viewModel.getSessionsForDay(conferenceDay).observe(activity, Observer { list ->
             adapter.submitList(list ?: emptyList())
 
-            // Recreate the decoration used for the sticky time headers
-            recyclerview.clearDecorations()
-            if (list != null && list.isNotEmpty()) {
-                recyclerview.addItemDecoration(
-                    ScheduleTimeHeadersDecoration(recyclerview.context, list.map { it.session })
-                )
-            }
-        })
-
-        viewModel.starEvent.observe(activity, Observer {
-            it?.getContentIfNotHandled()?.let { starred ->
-                val coordinatorLayout
-                        = activity.findViewById<View>(R.id.coordinator_layout)
-                when (starred) {
-                    STARRED -> {
-                        Snackbar.make(coordinatorLayout,
-                                R.string.event_starred, Snackbar.LENGTH_SHORT).apply {
-                            setAction(R.string.got_it, { this.dismiss() })
-                            setActionTextColor(ContextCompat.getColor(context, R.color.teal))
-                            show()
-                        }
-                    }
-                    UNSTARRED -> {
-                        Snackbar.make(coordinatorLayout,
-                                R.string.event_removed, Snackbar.LENGTH_SHORT).show()
-                    }
+            recyclerView?.let {
+                // Recreate the decoration used for the sticky time headers
+                it.clearDecorations()
+                if (list != null && list.isNotEmpty()) {
+                    it.addItemDecoration(
+                            ScheduleTimeHeadersDecoration(it.context, list.map { it.session })
+                    )
                 }
             }
         })
+
+        viewModel.snackBarMessage.observe(activity, Observer {
+            it?.getContentIfNotHandled()?.let { message: SnackbarMessage ->
+                val coordinatorLayout = activity.findViewById<View>(R.id.coordinator_layout)
+                val duration =
+                        if (message.longDuration) Snackbar.LENGTH_LONG else Snackbar.LENGTH_SHORT
+                Snackbar.make(coordinatorLayout,
+                        message.messageId, duration).apply {
+                    message.actionId?.let { action ->
+                        setAction(action, { this.dismiss() })
+                    }
+                    setActionTextColor(ContextCompat.getColor(context, R.color.teal))
+                    show()
+                }
+            }
+        })
+
         // Show an error message
         viewModel.errorMessage.observe(this, Observer { message ->
             //TODO: Change once there's a way to show errors to the user

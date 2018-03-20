@@ -56,4 +56,6 @@ class UserEventTest {
             assertFalse(userEvent.isPinned())
         }
     }
+
+    //TODO: Add tests for isReserved, isWaitlisted, etc.
 }

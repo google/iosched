@@ -67,8 +67,21 @@
             android:contentDescription="@string/a11y_star_session_actions"
             android:onClick="@{() -> eventListener.onStarClicked(session, userEvent)}"
             android:src="@drawable/star_session_checkbox"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/reserve_session"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- TODO: Position and style properly  -->
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/reserve_session"
+            android:layout_width="@dimen/min_touch_target"
+            android:layout_height="@dimen/min_touch_target"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/a11y_reserve_session_actions"
+            android:onClick="@{() -> eventListener.onReservationClicked(session, userEvent)}"
+            reservation_status="@{userEvent}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/length_location"
