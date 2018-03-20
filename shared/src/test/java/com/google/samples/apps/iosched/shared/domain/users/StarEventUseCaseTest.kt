@@ -88,12 +88,16 @@ val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepositor
         return result
     }
 
-    override fun getObservableUserEvents(userId: String):
+    override fun getObservableUserEvents(userId: String?):
             LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
         throw NotImplementedError()
     }
 
-    override fun changeReservation(userId: String, session: Session, action: ReservationRequestAction): LiveData<Result<LastReservationRequested>> {
+    override fun changeReservation(
+            userId: String,
+            session: Session,
+            action: ReservationRequestAction
+    ): LiveData<Result<LastReservationRequested>> {
         throw NotImplementedError()
     }
 }

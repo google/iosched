@@ -19,8 +19,8 @@ package com.google.samples.apps.iosched.ui.login
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
-import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUser
 import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUserInfo
+import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.login.LoginEvent.RequestLogin
@@ -62,7 +62,6 @@ interface LoginViewModelPlugin {
      */
     val performLoginEvent: MutableLiveData<Event<LoginEvent>>
 
-    fun isLoggedIn(): Boolean
 
     /**
      * Emit an Event on performLoginEvent to request login
@@ -73,29 +72,63 @@ interface LoginViewModelPlugin {
      * Emit an Event on performLoginEvent to request logout
      */
     fun emitLogoutRequest() = performLoginEvent.postValue(Event(RequestLogout))
+
+    fun observeLoggedInUser(): LiveData<Boolean>
+
+    fun observeRegisteredUser(): LiveData<Boolean>
+
+    fun isLoggedIn(): Boolean
+
+    fun isRegistered(): Boolean
 }
 
 /**
- * Implementation of LoginViewModel that can be used as an interface delegate.
+ * Implementation of LoginViewModel that uses Firebase's auth mechanisms.
  */
-internal class DefaultLoginViewModelPlugin @Inject constructor(
-        dataSource: AuthenticatedUser
+internal class FirebaseLoginViewModelPlugin @Inject constructor(
+        observeUserAuthStateUseCase: ObserveUserAuthStateUseCase
 ) : LoginViewModelPlugin {
+
     override val performLoginEvent = MutableLiveData<Event<LoginEvent>>()
-    override val currentFirebaseUser: LiveData<Result<AuthenticatedUserInfo>?> =
-            dataSource.getCurrentUser()
+    override val currentFirebaseUser: LiveData<Result<AuthenticatedUserInfo>?>
     override val currentUserImageUri: LiveData<Uri?>
 
+    private val _isRegistered: LiveData<Boolean>
+    private val _isLoggedIn: LiveData<Boolean>
+
     init {
+        currentFirebaseUser = observeUserAuthStateUseCase.observe()
+
         currentUserImageUri = currentFirebaseUser.map { result: Result<AuthenticatedUserInfo?>? ->
             (result as? Result.Success)?.data?.getPhotoUrl()
         }
+
+        _isLoggedIn = currentFirebaseUser.map { value ->
+            isLoggedIn()
+        }
+
+        _isRegistered = currentFirebaseUser.map { value ->
+            isRegistered()
+        }
+
+        observeUserAuthStateUseCase.execute(Any())
     }
 
     override fun isLoggedIn(): Boolean {
         return (currentFirebaseUser.value as? Result.Success)?.data?.isLoggedIn() == true
     }
 
+    override fun isRegistered(): Boolean {
+        return (currentFirebaseUser.value as? Result.Success)?.data?.isRegistered() == true
+    }
+
+    override fun observeLoggedInUser(): LiveData<Boolean> {
+        return _isLoggedIn
+    }
+
+    override fun observeRegisteredUser(): LiveData<Boolean> {
+        return _isRegistered
+    }
     /**
      * Emit an Event on performLoginEvent to request login
      */

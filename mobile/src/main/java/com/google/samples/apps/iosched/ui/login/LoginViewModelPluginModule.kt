@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.login
 
-import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUser
+import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import dagger.Module
 import dagger.Provides
 
@@ -24,8 +24,8 @@ import dagger.Provides
 class LoginViewModelPluginModule {
 
     @Provides
-    fun provideLoginViewModelPlugin(dataSource: AuthenticatedUser):
+    fun provideLoginViewModelPlugin(dataSource: ObserveUserAuthStateUseCase):
             LoginViewModelPlugin {
-        return DefaultLoginViewModelPlugin(dataSource)
+        return FirebaseLoginViewModelPlugin(dataSource)
     }
 }

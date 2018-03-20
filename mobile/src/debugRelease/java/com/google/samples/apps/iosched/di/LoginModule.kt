@@ -16,13 +16,38 @@
 
 package com.google.samples.apps.iosched.di
 
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.samples.apps.iosched.shared.data.login.datasources.AuthStateUserDataSource
+import com.google.samples.apps.iosched.shared.data.login.datasources.FirebaseAuthStateUserDataSource
+import com.google.samples.apps.iosched.shared.data.login.datasources.FirestoreRegisteredUserDataSource
+import com.google.samples.apps.iosched.shared.data.login.datasources.RegisteredUserDataSource
 import com.google.samples.apps.iosched.util.login.DefaultLoginHandler
 import com.google.samples.apps.iosched.util.login.LoginHandler
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module
 internal class LoginModule {
     @Provides
     fun provideLoginHandler(): LoginHandler = DefaultLoginHandler()
+
+    @Singleton
+    @Provides
+    fun provideRegisteredUserDataSource(firestore: FirebaseFirestore) : RegisteredUserDataSource {
+        return FirestoreRegisteredUserDataSource(firestore)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAuthStateUserDataSource(firebase: FirebaseAuth) : AuthStateUserDataSource {
+        return FirebaseAuthStateUserDataSource(firebase)
+    }
+
+    @Singleton
+    @Provides
+    fun provideFirebaseAuth(): FirebaseAuth {
+        return FirebaseAuth.getInstance()
+    }
 }
