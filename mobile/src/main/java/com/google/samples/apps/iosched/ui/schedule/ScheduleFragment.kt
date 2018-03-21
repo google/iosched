@@ -23,9 +23,11 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.material.widget.TabLayout
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
@@ -38,7 +40,6 @@ import com.google.samples.apps.iosched.ui.schedule.day.ScheduleDayFragment
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.util.login.LoginHandler
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_schedule.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -90,8 +91,11 @@ class ScheduleFragment : DaggerFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val viewpager: ViewPager = view.findViewById(R.id.viewpager)
         viewpager.offscreenPageLimit = COUNT - 1
         viewpager.adapter = ScheduleAdapter(childFragmentManager)
+
+        val tabs: TabLayout = view.findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewpager)
     }
 
