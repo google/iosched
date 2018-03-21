@@ -17,26 +17,28 @@
 package com.google.samples.apps.iosched.tv.di
 
 import com.google.samples.apps.iosched.shared.di.SharedModule
-import com.google.samples.apps.iosched.tv.TvApplication
 import com.google.samples.apps.iosched.tv.ui.schedule.di.TvScheduleComponent
 import com.google.samples.apps.iosched.tv.ui.schedule.di.TvScheduleModule
 import com.google.samples.apps.iosched.tv.ui.search.di.TvSearchableComponent
 import com.google.samples.apps.iosched.tv.ui.search.di.TvSearchableModule
+import com.google.samples.apps.iosched.tv.ui.sessiondetail.di.TvSessionDetailComponent
+import com.google.samples.apps.iosched.tv.ui.sessiondetail.di.TvSessionDetailModule
 import dagger.Component
 import dagger.Subcomponent
 import javax.inject.Singleton
 
 /**
- * Main component of the tv app, created and persisted in the [TvApplication].
+ * Main component of the tv app, created and persisted in the [Injector] singleton.
  *
  * Whenever a new module is created, it should be added to the list of modules.
  *
  * Whenever a [Subcomponent] is created, a new method should be added to the interface.
  */
 @Singleton
-@Component(modules = [(SharedModule::class), (TvAppModule::class)])
+@Component(modules = [SharedModule::class, TvAppModule::class])
 interface TvAppComponent {
 
     fun plus(scheduleModule: TvScheduleModule): TvScheduleComponent
+    fun plus(sessionDetailModule: TvSessionDetailModule): TvSessionDetailComponent
     fun plus(searchModule: TvSearchableModule): TvSearchableComponent
 }

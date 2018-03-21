@@ -28,7 +28,11 @@ operator fun <T> ArrayObjectAdapter.plusAssign(element: T) {
     this.add(element)
 }
 
-inline fun <reified T> Collection<T>.toArrayObjectAdapter(
+fun <T> Collection<T>.toArrayObjectAdapter(): ArrayObjectAdapter {
+    return copyIntoArrayObjectAdapter(ArrayObjectAdapter())
+}
+
+fun <T> Collection<T>.toArrayObjectAdapter(
         presenter: Presenter
 ): ArrayObjectAdapter {
     val adapter = ArrayObjectAdapter(presenter)

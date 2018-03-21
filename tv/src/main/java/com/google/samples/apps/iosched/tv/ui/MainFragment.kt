@@ -40,7 +40,7 @@ class MainFragment : BrowseSupportFragment() {
         badgeDrawable = ContextCompat.getDrawable(context, R.drawable.ic_banner)
         headersState = BrowseSupportFragment.HEADERS_ENABLED
         isHeadersTransitionOnBackEnabled = true
-        brandColor = context.getThemeColor(R.attr.colorPrimary, R.color.colorPrimary)
+        brandColor = context.getThemeColor(R.attr.colorPrimary, R.color.indigo)
 
         adapter = rowsAdapter
 

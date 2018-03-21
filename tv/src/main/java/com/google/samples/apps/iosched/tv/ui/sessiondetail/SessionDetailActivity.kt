@@ -34,7 +34,7 @@ class SessionDetailActivity : FragmentActivity() {
     }
 
     companion object {
-        private const val EXTRA_SESSION_ID = "com.google.samples.apps.iosched.tv.EXTRA_SESSION_ID"
+        const val EXTRA_SESSION_ID = "com.google.samples.apps.iosched.tv.EXTRA_SESSION_ID"
 
         fun createIntent(context: Context, sessionId: String): Intent {
             return Intent(context, SessionDetailActivity::class.java).apply {

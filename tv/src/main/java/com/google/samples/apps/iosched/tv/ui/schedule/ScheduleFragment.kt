@@ -30,6 +30,7 @@ import android.support.v17.leanback.widget.ImageCardView
 import android.support.v17.leanback.widget.ListRow
 import android.support.v17.leanback.widget.ListRowPresenter
 import android.support.v17.leanback.widget.Presenter
+import android.support.v4.app.ActivityOptionsCompat
 import android.view.ViewGroup
 import android.widget.Toast
 import com.google.samples.apps.iosched.shared.model.Session
@@ -42,7 +43,7 @@ import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.shared.util.lazyFast
 import com.google.samples.apps.iosched.shared.util.putEnum
 import com.google.samples.apps.iosched.tv.R
-import com.google.samples.apps.iosched.tv.TvApplication
+import com.google.samples.apps.iosched.tv.app
 import com.google.samples.apps.iosched.tv.ui.SpinnerFragment
 import com.google.samples.apps.iosched.tv.ui.presenter.SessionPresenter
 import com.google.samples.apps.iosched.tv.ui.sessiondetail.SessionDetailActivity
@@ -60,7 +61,7 @@ class ScheduleFragment : RowsSupportFragment() {
     private lateinit var viewModel: ScheduleViewModel
 
     private val conferenceDay: ConferenceDay by lazyFast {
-        val args = arguments ?: throw IllegalStateException("Missing arguments!")
+        val args = requireNotNull(arguments, { "Missing arguments!" })
         args.getEnum<ConferenceDay>(ARG_CONFERENCE_DAY)
     }
 
@@ -75,8 +76,7 @@ class ScheduleFragment : RowsSupportFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (context?.applicationContext as TvApplication).scheduleComponent
-            .inject(scheduleFragment = this)
+        app().scheduleComponent.inject(scheduleFragment = this)
 
         adapter = rowsAdapter
 
@@ -90,10 +90,20 @@ class ScheduleFragment : RowsSupportFragment() {
 
         setOnItemViewClickedListener { itemViewHolder, item, _, _ ->
             if (item is Session) {
-                val context = itemViewHolder.view.context
-                // TODO: Add fragment transition from session card to detail's logo presenter
-                startActivity(
-                    SessionDetailActivity.createIntent(context = context, sessionId = item.id))
+
+                val cardView = itemViewHolder.view as ImageCardView
+
+                val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    requireActivity(),
+                    cardView.mainImageView,
+                    getString(R.string.shared_element_logo_name)
+                ).toBundle()
+
+                val context = cardView.context
+                val intent =
+                    SessionDetailActivity.createIntent(context = context, sessionId = item.id)
+
+                startActivity(intent, bundle)
             }
         }
     }
@@ -101,9 +111,9 @@ class ScheduleFragment : RowsSupportFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel.getSessionsGroupedByTimeForDay(conferenceDay)
-                .observe(requireActivity(), Observer { map ->
-                    loadAdapter(sessionsByTimeSlot = map ?: emptyMap())
-                })
+            .observe(requireActivity(), Observer { map ->
+                loadAdapter(sessionsByTimeSlot = map ?: emptyMap())
+            })
 
         viewModel.isLoading.observe(this, Observer { isLoading ->
 
@@ -129,15 +139,19 @@ class ScheduleFragment : RowsSupportFragment() {
         prepareBackgroundManager(requireActivity())
     }
 
+    override fun onResume() {
+        super.onResume()
+        backgroundManager.drawable = defaultBackground
+    }
+
     private fun prepareBackgroundManager(activity: Activity) {
         backgroundManager = BackgroundManager.getInstance(activity)
         if (!backgroundManager.isAttached) {
             backgroundManager.attach(activity.window)
         }
         // Use the darker primary color for the background to contrast with the headers.
-        val color = activity.getThemeColor(R.attr.colorPrimaryDark, R.color.colorPrimaryDark)
+        val color = activity.getThemeColor(R.attr.colorPrimaryDark, R.color.indigo_dark)
         defaultBackground = ColorDrawable(color)
-
         backgroundManager.drawable = defaultBackground
     }
 
@@ -160,10 +174,13 @@ class ScheduleFragment : RowsSupportFragment() {
                 val cardWidth = resources.getDimensionPixelSize(R.dimen.card_width)
                 val cardHeight = resources.getDimensionPixelSize(R.dimen.card_height)
                 cardView.setMainImageDimensions(cardWidth, cardHeight)
+
+                cardView.mainImage = defaultBackground
             }
 
             override fun onUnbindViewHolder(viewHolder: ViewHolder?) {}
         }).apply { add(Any()) }
+
         return ListRow(noSessionHeader, noSessionAdapter)
     }
 

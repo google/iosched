@@ -17,11 +17,29 @@
 package com.google.samples.apps.iosched.tv.ui.presenter
 
 import android.support.v17.leanback.widget.Presenter
+import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.TextView
+import com.google.samples.apps.iosched.tv.R
 
 /**
  * [DetailsDescriptionPresenter] creates and binds this session details view holder.
  */
 class SessionDetailViewHolder(view: View?) : Presenter.ViewHolder(view) {
-    // TODO: hold onto views
+
+    val titleView: TextView
+    val timeView: TextView
+    val roomView: TextView
+    val descriptionView: TextView
+    val tagRecyclerView: RecyclerView
+
+    init {
+        val v = requireNotNull(view)
+
+        titleView = v.findViewById(R.id.session_detail_title)
+        timeView = v.findViewById(R.id.session_detail_time)
+        roomView = v.findViewById(R.id.session_detail_room)
+        descriptionView = v.findViewById(R.id.session_detail_description)
+        tagRecyclerView = v.findViewById(R.id.tags)
+    }
 }

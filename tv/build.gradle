@@ -78,6 +78,8 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
     implementation "com.android.support:leanback-v17:$rootProject.supportLibraryVersion"
     implementation "com.android.support:support-tv-provider:$rootProject.supportLibraryVersion"
+    implementation "com.google.android.material:material:$rootProject.mdcVersion"
+    implementation "com.google.android:flexbox:$rootProject.flexboxVersion"
 
     // Architecture Components
     implementation "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
@@ -89,6 +91,10 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:$rootProject.dagger"
     kapt "com.google.dagger:dagger-compiler:$rootProject.dagger"
     kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
 
     // Utils
     // Date and time API for Java.

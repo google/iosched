@@ -50,7 +50,8 @@
         </activity>
         <activity
             android:name=".ui.sessiondetail.SessionDetailActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.SessionDetails"/>
 
         <activity
             android:name=".ui.search.SearchableActivity"

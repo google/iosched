@@ -17,12 +17,15 @@
 package com.google.samples.apps.iosched.tv
 
 import android.app.Application
+import android.support.v4.app.Fragment
 import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.tv.di.DaggerTvAppComponent
 import com.google.samples.apps.iosched.tv.di.TvAppComponent
 import com.google.samples.apps.iosched.tv.di.TvAppModule
 import com.google.samples.apps.iosched.tv.ui.schedule.di.TvScheduleComponent
 import com.google.samples.apps.iosched.tv.ui.schedule.di.TvScheduleModule
+import com.google.samples.apps.iosched.tv.ui.sessiondetail.di.TvSessionDetailComponent
+import com.google.samples.apps.iosched.tv.ui.sessiondetail.di.TvSessionDetailModule
 import com.google.samples.apps.iosched.tv.ui.search.di.TvSearchableComponent
 import com.google.samples.apps.iosched.tv.ui.search.di.TvSearchableModule
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -68,7 +71,13 @@ class TvApplication : Application() {
         appComponent.plus(TvScheduleModule())
     }
 
+    val sessionDetailComponent: TvSessionDetailComponent by lazy {
+        appComponent.plus(TvSessionDetailModule())
+    }
+
     val searchableComponent: TvSearchableComponent by lazy {
         appComponent.plus(TvSearchableModule())
     }
 }
+
+fun Fragment.app() : TvApplication = context?.applicationContext as TvApplication

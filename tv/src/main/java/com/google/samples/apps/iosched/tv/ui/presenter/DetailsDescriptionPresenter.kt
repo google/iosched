@@ -20,9 +20,10 @@ import android.support.v17.leanback.widget.AbstractDetailsDescriptionPresenter
 import android.support.v17.leanback.widget.Presenter
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.tv.R
+import com.google.samples.apps.iosched.tv.ui.adapter.TagAdapter
 
 /**
  * Custom presenter for displaying the details of a [Session].
@@ -41,11 +42,17 @@ class DetailsDescriptionPresenter : Presenter() {
 
     override fun onBindViewHolder(viewHolder: Presenter.ViewHolder, item: Any) {
         val session = item as Session
+        val holder = viewHolder as SessionDetailViewHolder
 
-        val titleView = viewHolder.view.findViewById<TextView>(R.id.title)
-        titleView.text = session.title
+        // TODO: move to data binding.
+        holder.titleView.text = session.title
+        holder.timeView.text = TimeUtils.timeString(session.startTime, session.endTime)
+        holder.roomView.text = session.room.name
+        holder.descriptionView.text = session.abstract
 
-        // TODO: bind the rest of the view
+        holder.tagRecyclerView.adapter = TagAdapter().apply {
+            tags = session.displayTags
+        }
     }
 
     override fun onUnbindViewHolder(viewHolder: Presenter.ViewHolder) {
