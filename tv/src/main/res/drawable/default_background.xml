@@ -15,15 +15,10 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <dimen name="margin_normal">16dp</dimen>
-    <dimen name="spacing_normal">8dp</dimen>
-    <dimen name="spacing_micro">4dp</dimen>
-    <dimen name="spinner_size">50dp</dimen>
-    <dimen name="card_width">156dp</dimen>
-    <dimen name="card_height">88dp</dimen>
-    <dimen name="speaker_card_width">128dp</dimen>
-    <dimen name="speaker_card_height">128dp</dimen>
-    <dimen name="detail_thumb_width">274dp</dimen>
-    <dimen name="detail_thumb_height">274dp</dimen>
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:startColor="@color/background_gradient_start"
+        android:endColor="@color/background_gradient_end"
+        android:angle="-270" />
+</shape>

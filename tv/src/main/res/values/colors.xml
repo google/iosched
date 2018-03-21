@@ -24,18 +24,10 @@
     ~    https://designguidelines.withgoogle.com/android-tv/style/color.html#color-testing-colors
     -->
 
-    <!-- theme colors -->
-    <color name="colorPrimary">@color/indigo</color>
-    <color name="colorPrimaryDark">@color/indigo_dark</color>
-    <color name="colorAccent">@color/teal</color>
+    <!-- Overriding primary palette with darker hues. -->
+    <color name="indigo">#3c54fe</color>
+    <color name="indigo_dark">#303F9F</color>
 
-    <!-- primary palette -->
-    <color name="indigo">#3c54fe</color> <!-- Note: this is darker than mobile --> <!-- TODO: confirm this color -->
-    <color name="indigo_dark">#303F9F</color> <!-- Note: this is darker than mobile --> <!-- TODO: confirm this color -->
-    <color name="teal">#31e7b6</color>
-    <color name="light_blue">#27e5fd</color>
-    <color name="yellow">#fcd230</color>
-    <color name="orange">#ff6c00</color>
     <!--
     ~    White on TV should not be pure white. For more information, check out the material
     ~    guidelines for TV white.
@@ -46,4 +38,9 @@
     <color name="text_color_tertiary">#dadce0</color>
     <color name="light_grey">#e6e6e6</color>
     <color name="default_tag_color">#999</color>
+    <color name="scrim">#33ffffff</color> <!-- 20% white -->
+
+    <color name="background_gradient_start">@color/indigo</color>
+    <color name="background_gradient_end">@color/indigo_dark</color>
+
 </resources>

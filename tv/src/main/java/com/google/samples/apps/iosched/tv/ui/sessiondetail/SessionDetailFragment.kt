@@ -17,30 +17,42 @@
 package com.google.samples.apps.iosched.tv.ui.sessiondetail
 
 import android.arch.lifecycle.Observer
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v17.leanback.app.DetailsSupportFragment
+import android.support.v17.leanback.widget.Action
 import android.support.v17.leanback.widget.ArrayObjectAdapter
 import android.support.v17.leanback.widget.ClassPresenterSelector
 import android.support.v17.leanback.widget.DetailsOverviewRow
+import android.support.v17.leanback.widget.DiffCallback
 import android.support.v17.leanback.widget.FullWidthDetailsOverviewRowPresenter
+import android.support.v17.leanback.widget.FullWidthDetailsOverviewSharedElementHelper
+import android.support.v17.leanback.widget.HeaderItem
 import android.support.v17.leanback.widget.ListRow
 import android.support.v17.leanback.widget.ListRowPresenter
 import android.support.v17.leanback.widget.OnActionClickedListener
 import android.support.v4.content.ContextCompat
 import android.widget.Toast
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
-import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
-import com.google.samples.apps.iosched.shared.data.NetworkConferenceDataSource
-import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
-import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource
-import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.Speaker
+import com.google.samples.apps.iosched.shared.util.SpeakerUtils
+import com.google.samples.apps.iosched.shared.util.getThemeColor
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.tv.R
+import com.google.samples.apps.iosched.tv.app
 import com.google.samples.apps.iosched.tv.ui.presenter.DetailsDescriptionPresenter
 import com.google.samples.apps.iosched.tv.ui.presenter.SessionDetailsLogoPresenter
+import com.google.samples.apps.iosched.tv.ui.presenter.SessionPresenter
+import com.google.samples.apps.iosched.tv.ui.presenter.SpeakerPresenter
+import com.google.samples.apps.iosched.tv.util.toArrayObjectAdapter
+import javax.inject.Inject
+
+private const val ACTION_WATCH = 1L
+private const val ACTION_BOOKMARK = 2L
 
 /**
  * Displays the details for a [Session].
@@ -48,44 +60,99 @@ import com.google.samples.apps.iosched.tv.ui.presenter.SessionDetailsLogoPresent
 class SessionDetailFragment : DetailsSupportFragment() {
 
     private lateinit var viewModel: SessionDetailViewModel
-    // TODO: inject factory
-    lateinit var viewModelFactory: SessionDetailViewModelFactory
+    @Inject lateinit var viewModelFactory: SessionDetailViewModelFactory
 
+    // Backing adapter for DetailsSupportFragment
     private lateinit var _adapter: ArrayObjectAdapter
     private lateinit var presenterSelector: ClassPresenterSelector
-    private lateinit var detailsOverviewRow: DetailsOverviewRow
+    private var detailsOverviewRow: DetailsOverviewRow? = null
+    private lateinit var speakerListRow: ListRow
+    private val speakerAdapter = ArrayObjectAdapter(SpeakerPresenter())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        app().sessionDetailComponent.inject(sessionDetailFragment = this)
+
         setupAdapter()
+        val speakerHeader = HeaderItem(getString(R.string.session_detail_speakers_header))
+        speakerListRow = ListRow(speakerHeader, speakerAdapter)
 
-        val dummySessionId = "61d80842-c8f6-e511-a517-00155d5066d7"
+        val sessionId = requireActivity().intent.extras
+            .getString(SessionDetailActivity.EXTRA_SESSION_ID)
 
-        val userEventDataSource = FirestoreUserEventDataSource(FirebaseFirestore.getInstance())
-
-        // TODO: inject in view model factory
-        val sessionRepository =
-            DefaultSessionRepository(
-                ConferenceDataRepository(
-                    NetworkConferenceDataSource(
-                        requireContext()
-                    ), BootstrapConferenceDataSource
-                )
-            )
-
-        val sessionAndUserEventRepository = DefaultSessionAndUserEventRepository(
-                userEventDataSource, sessionRepository)
-
-        viewModelFactory = SessionDetailViewModelFactory(sessionAndUserEventRepository)
         viewModel = viewModelProvider(viewModelFactory)
-        viewModel.loadSessionById(dummySessionId)
+        viewModel.loadSessionById(sessionId)
 
         viewModel.session.observe(this, Observer { session ->
-            // TODO: update presenters and not create a new instance and add it each time
             session?.let {
-                detailsOverviewRow = DetailsOverviewRow(it)
-                _adapter.add(detailsOverviewRow)
+                if (detailsOverviewRow == null) {
+                    detailsOverviewRow = DetailsOverviewRow(it).apply {
+
+                        actionsAdapter = createSessionActions()
+
+                        _adapter.add(this)
+                        updateSpeakers(it)
+                        _adapter.add(speakerListRow)
+                    }
+                } else {
+                    detailsOverviewRow?.item = it
+                    updateSpeakers(it)
+                }
+                updateLogoImage(it)
+            }
+        })
+    }
+
+    private fun createSessionActions(): ArrayObjectAdapter {
+        //TODO: handle when actions are selected.
+        val actionWatch = Action(
+            ACTION_WATCH,
+            resources.getString(R.string.session_detail_watch),
+            null,
+            ContextCompat.getDrawable(requireContext(), R.drawable.ic_livestreamed)
+        )
+
+        val actionBookmark = Action(
+            ACTION_BOOKMARK,
+            resources.getString(R.string.session_detail_star),
+            null,
+            //TODO: change icon based on user state.
+            ContextCompat.getDrawable(requireContext(), R.drawable.ic_star_border)
+        )
+        return listOf(actionWatch, actionBookmark).toArrayObjectAdapter()
+    }
+
+    private fun updateLogoImage(session: Session) {
+        val options = RequestOptions()
+            .error(R.drawable.default_background)
+            .dontAnimate()
+
+        Glide.with(requireContext())
+            .asBitmap()
+            .load(session.photoUrl)
+            .apply(options)
+            .into(object : SimpleTarget<Bitmap>() {
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: Transition<in Bitmap>?
+                ) {
+                    detailsOverviewRow?.setImageBitmap(requireContext(), resource)
+                    startEntranceTransition()
+                }
+            })
+    }
+
+    private fun updateSpeakers(session: Session) {
+
+        val speakers = SpeakerUtils.alphabeticallyOrderedSpeakerList(session.speakers)
+        speakerAdapter.setItems(speakers, object : DiffCallback<Speaker>() {
+            override fun areItemsTheSame(oldItem: Speaker, newItem: Speaker): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: Speaker, newItem: Speaker): Boolean {
+                return oldItem == newItem
             }
         })
     }
@@ -93,13 +160,24 @@ class SessionDetailFragment : DetailsSupportFragment() {
     private fun setupAdapter() {
         val context = requireContext()
 
+        // Use helper to handle transitions of the logo image.
+        val transitionHelper = FullWidthDetailsOverviewSharedElementHelper()
+        transitionHelper.setSharedElementEnterTransition(
+            activity,
+            getString(R.string.shared_element_logo_name)
+        )
+
         // Set detail background and style.
         val detailsPresenter = FullWidthDetailsOverviewRowPresenter(
             DetailsDescriptionPresenter(),
             SessionDetailsLogoPresenter()
         ).apply {
-            backgroundColor = ContextCompat.getColor(context, R.color.colorPrimaryDark)
+            backgroundColor = context.getThemeColor(R.attr.colorPrimaryDark, R.color.indigo_dark)
             initialState = FullWidthDetailsOverviewRowPresenter.STATE_SMALL
+            // Prepare transition from the grid view.
+            setListener(transitionHelper)
+            isParticipatingEntranceTransition = false
+            prepareEntranceTransition()
 
             onActionClickedListener = OnActionClickedListener { action ->
                 Toast.makeText(context, action.toString(), Toast.LENGTH_SHORT).show()

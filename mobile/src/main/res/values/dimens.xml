@@ -27,11 +27,6 @@
 
     <dimen name="speaker_headshot_size">40dp</dimen>
     <dimen name="session_keyline">64dp</dimen>
-    <dimen name="tag_height">32sp</dimen>
-    <dimen name="tag_dot_size">12dp</dimen>
-    <dimen name="tag_hz_padding">12dp</dimen>
-    <dimen name="tag_vert_padding">6dp</dimen>
-    <dimen name="tag_corner_radius">100dp</dimen> <!-- Large value ensures the 'pill' shape -->
     <dimen name="time_header_hour_text_size">24sp</dimen>
     <dimen name="time_header_meridiem_text_size">12sp</dimen>
     <dimen name="time_header_padding_top">12dp</dimen>

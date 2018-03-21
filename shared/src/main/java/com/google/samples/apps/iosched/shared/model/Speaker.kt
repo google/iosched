@@ -56,9 +56,8 @@ data class Speaker(
     val twitterUrl: String
 ) {
     val hasCompany
-        get() = !company.isEmpty()
+        get() = company.isNotEmpty()
 
     val hasAbstract
-        get() = !abstract.isEmpty()
+        get() = abstract.isNotEmpty()
 }
-

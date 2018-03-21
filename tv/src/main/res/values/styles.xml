@@ -15,10 +15,66 @@
   -->
 
 <resources>
+
     <style name="AppTheme" parent="@style/Theme.Leanback">
         <item name="colorPrimary">@color/indigo</item>
         <item name="colorPrimaryDark">@color/indigo_dark</item>
         <item name="colorAccent">@color/indigo</item>
         <item name="android:textColorTertiary">@color/text_color_tertiary</item>
+
+        <item name="imageCardViewStyle">@style/IOImageCardViewStyle</item>
+        <item name="imageCardViewInfoAreaStyle">@style/IOImageCardViewColoredInfoArea</item>
+        <item name="imageCardViewTitleStyle">@style/IOImageCardViewColoredTitle</item>
     </style>
+
+    <style name="AppTheme.SessionDetails">
+        <item name="imageCardViewStyle">@style/IOImageCardViewStyleWithContent</item>
+    </style>
+
+    <style name="IOImageCardViewStyle" parent="Widget.Leanback.ImageCardViewStyle">
+        <item name="cardBackground">?colorPrimary</item>
+        <item name="lbImageCardViewType">Title|IconOnRight</item>
+    </style>
+
+    <style name="IOImageCardViewStyleWithContent" parent="Widget.Leanback.ImageCardViewStyle">
+        <item name="cardBackground">?colorPrimary</item>
+        <item name="lbImageCardViewType">Title|Content|IconOnRight</item>
+    </style>
+
+    <style name="IOImageCardViewColoredInfoArea" parent="Widget.Leanback.ImageCardView.InfoAreaStyle">
+        <item name="android:background">?colorPrimary</item>
+    </style>
+
+    <style name="IOImageCardViewColoredTitle" parent="Widget.Leanback.ImageCardView.TitleStyle">
+    </style>
+
+    <style name="IODetailsTitleStyle" parent="Widget.Leanback.DetailsDescriptionTitleStyle">
+        <item name="android:fontFamily">@font/google_sans</item>
+    </style>
+
+    <style name="IODetailsSubtitleStyle" parent="Widget.Leanback.DetailsDescriptionSubtitleStyle">
+        <item name="android:fontFamily">@font/google_sans</item>
+    </style>
+
+    <style name="IODetailsBodyStyle" parent="Widget.Leanback.DetailsDescriptionBodyStyle">
+        <item name="android:fontFamily">@font/google_sans</item>
+    </style>
+
+    <style name="IOSchedTag">
+        <item name="android:drawablePadding">@dimen/spacing_micro</item>
+        <item name="android:drawableStart">@drawable/tag_dot</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearance">@style/IOSchedTagTextAppearance</item>
+    </style>
+
+    <style name="IOSchedListSecondary" parent="@style/Widget.Leanback.DetailsDescriptionBodyStyle">
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="IOSchedTagTextAppearance" parent="@style/IOSchedListSecondary">
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textSize">12sp</item>
+
+    </style>
+
 </resources>

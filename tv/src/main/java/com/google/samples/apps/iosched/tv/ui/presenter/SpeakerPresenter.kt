@@ -22,40 +22,59 @@ import android.support.v17.leanback.widget.Presenter
 import android.support.v4.content.ContextCompat
 import android.support.v7.view.ContextThemeWrapper
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.Speaker
 import com.google.samples.apps.iosched.tv.R
 
 /**
- * Leanback presenter for displaying session information in a card view. Displays an individual
- * session from a list of sessions.
+ * Leanback presenter for displaying speakers in a card view. Displays an individual speaker from a
+ * list of speakers.
  */
-class SessionPresenter : Presenter() {
+class SpeakerPresenter : Presenter() {
 
     override fun onCreateViewHolder(parent: ViewGroup?): ViewHolder {
-        val themedContext = ContextThemeWrapper(parent?.context, R.style.IOImageCardViewStyle)
+        val themedContext =
+            ContextThemeWrapper(parent?.context, R.style.IOImageCardViewStyleWithContent)
         return ViewHolder(ImageCardView(themedContext))
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder?, item: Any?) {
 
-        val session = item as Session
+        val speaker = item as Speaker
 
         val cardView = viewHolder?.view as ImageCardView
         val context = cardView.context
 
-        cardView.titleText = session.title
+        cardView.titleText = speaker.name
+        if (speaker.hasCompany) {
+            cardView.contentText = speaker.company
+        }
 
         // Set the image card's height and width.
         val resources = context.resources
-        val cardWidth = resources.getDimensionPixelSize(R.dimen.card_width)
-        val cardHeight = resources.getDimensionPixelSize(R.dimen.card_height)
+        val cardWidth = resources.getDimensionPixelSize(R.dimen.speaker_card_width)
+        val cardHeight = resources.getDimensionPixelSize(R.dimen.speaker_card_height)
         cardView.setMainImageDimensions(cardWidth, cardHeight)
+        cardView.mainImageView.scaleType = ImageView.ScaleType.FIT_CENTER
+
+        val options = RequestOptions()
+            .placeholder(R.drawable.ic_default_avatar)
+
+        @Suppress("IMPLICIT_CAST_TO_ANY")
+        val image = if (speaker.imageUrl.isNotBlank()) {
+            speaker.imageUrl
+        } else {
+            R.drawable.ic_default_avatar
+        }
 
         Glide.with(context)
-            .load(session.photoUrl)
+            .load(image)
+            .apply(options)
             .into(object : SimpleTarget<Drawable>() {
                 override fun onResourceReady(
                     resource: Drawable,
@@ -64,10 +83,6 @@ class SessionPresenter : Presenter() {
                     cardView.mainImage = resource
                 }
             })
-
-        if( session.isLive() ) {
-            cardView.badgeImage = ContextCompat.getDrawable(context, R.drawable.ic_livestreamed)
-        }
     }
 
     override fun onUnbindViewHolder(viewHolder: ViewHolder?) {}
