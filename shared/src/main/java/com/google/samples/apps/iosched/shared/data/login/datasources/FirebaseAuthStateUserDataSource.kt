@@ -26,6 +26,7 @@ import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUserInfoBa
 import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUserRegistration
 import com.google.samples.apps.iosched.shared.data.login.FirebaseUserInfo
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.fcm.FcmTokenUpdater
 import com.google.samples.apps.iosched.shared.result.Result
 import timber.log.Timber
 import javax.inject.Inject
@@ -37,6 +38,7 @@ import javax.inject.Inject
  *  * Posts it to the user observable
  *  * Fetches the ID token
  *  * Uses the ID token to trigger the registration point
+ *  * Stores the FCM ID Token in Firestore
  *  * Posts the user ID to the observable
  *
  * This data source doesn't find if a user is registered or not (is an attendee). Once the
@@ -45,7 +47,8 @@ import javax.inject.Inject
  * [FirestoreRegisteredUserDataSource].
  */
 class FirebaseAuthStateUserDataSource @Inject constructor(
-        val firebase: FirebaseAuth
+        val firebase: FirebaseAuth,
+        private val tokenUpdater: FcmTokenUpdater
 ) : AuthStateUserDataSource {
 
     private val userId = MutableLiveData<String?>()
@@ -81,6 +84,8 @@ class FirebaseAuthStateUserDataSource @Inject constructor(
                     Timber.e(e)
                     tokenChangedObservable.postValue(Result.Error(e))
                 }
+                // Save the FCM ID token in firestore
+                tokenUpdater.updateTokenForUser(currentUser.uid)
 
                 // Update user ID to kick off the registered flag listener
                 userId.postValue(currentUser.uid)

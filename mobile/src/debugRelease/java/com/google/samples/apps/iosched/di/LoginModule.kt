@@ -22,6 +22,7 @@ import com.google.samples.apps.iosched.shared.data.login.datasources.AuthStateUs
 import com.google.samples.apps.iosched.shared.data.login.datasources.FirebaseAuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.login.datasources.FirestoreRegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.data.login.datasources.RegisteredUserDataSource
+import com.google.samples.apps.iosched.shared.fcm.FcmTokenUpdater
 import com.google.samples.apps.iosched.util.login.DefaultLoginHandler
 import com.google.samples.apps.iosched.util.login.LoginHandler
 import dagger.Module
@@ -41,8 +42,13 @@ internal class LoginModule {
 
     @Singleton
     @Provides
-    fun provideAuthStateUserDataSource(firebase: FirebaseAuth) : AuthStateUserDataSource {
-        return FirebaseAuthStateUserDataSource(firebase)
+    fun provideAuthStateUserDataSource(
+            firebase: FirebaseAuth,
+            firestore: FirebaseFirestore
+    ) : AuthStateUserDataSource {
+        return FirebaseAuthStateUserDataSource(
+                firebase,
+                FcmTokenUpdater(firestore))
     }
 
     @Singleton
