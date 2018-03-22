@@ -25,8 +25,8 @@ android {
         applicationId "com.google.samples.apps.iosched.wear"
         minSdkVersion rootProject.minWearSdkVersion
         targetSdkVersion rootProject.targetWearSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode rootProject.versionCodeWear
+        versionName rootProject.versionName
     }
     buildTypes {
         release {
