@@ -28,5 +28,7 @@ cp $DIR/tv/build/outputs/apk/staging/tv-staging.apk $DIST_DIR/staging/
 cp $DIR/mobile/build/outputs/apk/release/mobile-release-unsigned.apk $DIST_DIR/release/mobile-release.apk
 cp $DIR/tv/build/outputs/apk/release/tv-release-unsigned.apk $DIST_DIR/release/tv-release.apk
 cp $DIR/wear/build/outputs/apk/release/wear-release-unsigned.apk $DIST_DIR/release/wear-release.apk
+cp $DIR/mobile/build/outputs/mapping/release/mapping.txt $DIST_DIR/release/mobile-mapping.txt
+cp $DIR/tv/build/outputs/mapping/release/mapping.txt $DIST_DIR/release/tv-mapping.txt
 
 exit $BUILD_RESULT
