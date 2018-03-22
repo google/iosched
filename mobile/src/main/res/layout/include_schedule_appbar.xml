@@ -37,7 +37,7 @@
             android:paddingHorizontal="@dimen/margin_normal"
             app:layout_scrollFlags="scroll|snap">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/profile_button"
                 android:layout_width="@dimen/min_touch_target"
                 android:layout_height="@dimen/min_touch_target"
