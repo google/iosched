@@ -41,7 +41,8 @@ import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
+import com.google.samples.apps.iosched.shared.result.Result.Success
+import com.google.samples.apps.iosched.shared.schedule.TagFilterMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
@@ -83,9 +84,10 @@ class ScheduleViewModelTest {
                         TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository))
         )
         val loadTagsUseCase = LoadTagsByCategoryUseCase(TagRepository(TestDataRepository))
+        val loginViewModelPlugin = createDefaultLoginViewModelPlugin()
         // Create ViewModel with the use cases
         val viewModel = createScheduleViewModel(loadSessionsUseCase = loadSessionsUseCase,
-                loadTagsUseCase = loadTagsUseCase)
+                loadTagsUseCase = loadTagsUseCase, loginViewModelDelegate = loginViewModelPlugin)
 
         // Check that data were loaded correctly
         // Sessions
@@ -132,16 +134,12 @@ class ScheduleViewModelTest {
     @Test
     fun loggedInUser_setsProfileContentDescription() {
         // Given a mock firebase user
-        val mockFirebaseUser = FakeAuthenticatedUserInfo
-
-        // Create ViewModel
-        val observableFirebaseUserUseCase =
-                createFirebaseUserDataSource(Result.Success(mockFirebaseUser))
-        val loginViewModelComponent = DefaultLoginViewModelPlugin(observableFirebaseUserUseCase)
+        val loginViewModelComponent = createDefaultLoginViewModelPlugin()
         val viewModel = createScheduleViewModel(loginViewModelDelegate = loginViewModelComponent)
 
         // Check that the expected content description is set
-        assertEquals(R.string.a11y_logout, LiveDataTestUtil.getValue(viewModel.profileContentDesc))
+        assertEquals(R.string.a11y_logout,
+                LiveDataTestUtil.getValue(viewModel.profileContentDesc))
     }
 
     @Test
@@ -155,7 +153,8 @@ class ScheduleViewModelTest {
         val viewModel = createScheduleViewModel(loginViewModelDelegate = loginViewModelComponent)
 
         // Check that the expected content description is set
-        assertEquals(R.string.a11y_login, LiveDataTestUtil.getValue(viewModel.profileContentDesc))
+        assertEquals(R.string.a11y_login,
+                LiveDataTestUtil.getValue(viewModel.profileContentDesc))
     }
 
     @Test
@@ -169,7 +168,8 @@ class ScheduleViewModelTest {
         val viewModel = createScheduleViewModel(loginViewModelDelegate = loginViewModelComponent)
 
         // Check that the expected content description is set
-        assertEquals(R.string.a11y_login, LiveDataTestUtil.getValue(viewModel.profileContentDesc))
+        assertEquals(R.string.a11y_login,
+                LiveDataTestUtil.getValue(viewModel.profileContentDesc))
     }
 
     @Test
@@ -194,12 +194,11 @@ class ScheduleViewModelTest {
     }
 
     /** Starring **/
-
     @Test
     fun testStarEvent() {
         // Create test use cases with test data
-        val viewModel = createScheduleViewModel()
-
+        val loginViewModelComponent = createDefaultLoginViewModelPlugin()
+        val viewModel = createScheduleViewModel(loginViewModelDelegate = loginViewModelComponent)
         viewModel.onStarClicked(TestData.session0, TestData.userEvents[0])
 
         val starEvent: Event<SnackbarMessage>? =
@@ -218,9 +217,8 @@ class ScheduleViewModelTest {
 
     @Test
     fun testUnstarEvent() {
-        // Create test use cases with test data
-
-        val viewModel = createScheduleViewModel()
+        val loginViewModelComponent = createDefaultLoginViewModelPlugin()
+        val viewModel = createScheduleViewModel(loginViewModelDelegate = loginViewModelComponent)
 
         viewModel.onStarClicked(TestData.session1, TestData.userEvents[1])
 
@@ -235,10 +233,17 @@ class ScheduleViewModelTest {
                 `is`(equalTo(false)))
     }
 
+    private fun createDefaultLoginViewModelPlugin(): DefaultLoginViewModelPlugin {
+        val fakeUser = FakeAuthenticatedUserInfo
+        val observableFirebaseUserUseCase = createFirebaseUserDataSource(Success(fakeUser))
+        return DefaultLoginViewModelPlugin(observableFirebaseUserUseCase)
+    }
+
     @Test
     fun testStarNullUserEvent() {
         // Create test use cases with test data
-        val viewModel = createScheduleViewModel()
+        val loginViewModelComponent = createDefaultLoginViewModelPlugin()
+        val viewModel = createScheduleViewModel(loginViewModelDelegate = loginViewModelComponent)
 
         viewModel.onStarClicked(TestData.session0, null)
 
@@ -270,7 +275,8 @@ class ScheduleViewModelTest {
     @Test
     fun testReserveEvent() {
         // Create test use cases with test data
-        val viewModel = createScheduleViewModel()
+        val loginViewModelComponent = createDefaultLoginViewModelPlugin()
+        val viewModel = createScheduleViewModel(loginViewModelDelegate = loginViewModelComponent)
 
         viewModel.onReservationClicked(TestData.session0, TestData.userEvents[4])
 
@@ -297,7 +303,8 @@ class ScheduleViewModelTest {
 
     @Test
     fun testCancelEvent() {
-        val viewModel = createScheduleViewModel()
+        val loginViewModelComponent = createDefaultLoginViewModelPlugin()
+        val viewModel = createScheduleViewModel(loginViewModelDelegate = loginViewModelComponent)
 
         viewModel.onReservationClicked(TestData.session1, TestData.userEvents[0])
 
@@ -317,27 +324,7 @@ class ScheduleViewModelTest {
         val source = TestUserEventDataSource(userEventsResult)
         val loadSessionsUseCase = createTestLoadUserSessionsByDayUseCase(source)
         val viewModel = createScheduleViewModel(loadSessionsUseCase = loadSessionsUseCase)
-
-        // A session goes from not-reserved to reserved
-        val oldValue = LiveDataTestUtil.getValue(userEventsResult)
-        val newValue = oldValue!!.copy(userEventsMessage = UserEventsMessage.CHANGES_IN_WAITLIST)
-
-        userEventsResult.postValue(newValue)
-
-        val starEvent: Event<SnackbarMessage>? =
-                LiveDataTestUtil.getValue(viewModel.snackBarMessage)
-        assertThat(starEvent?.getContentIfNotHandled()?.messageId,
-                `is`(equalTo(R.string.waitlist_new)))
-    }
-
-    @Test
-    fun waitlistReceived() {
-        // Create test use cases with test data
-        val userEventsResult: MutableLiveData<UserEventsResult>
-                = MutableLiveData<UserEventsResult>()
-        val source = TestUserEventDataSource(userEventsResult)
-        val loadSessionsUseCase = createTestLoadUserSessionsByDayUseCase(source)
-        val viewModel = createScheduleViewModel(loadSessionsUseCase = loadSessionsUseCase)
+        loadSessionsUseCase.execute(TagFilterMatcher() to "")
 
         // A session goes from not-reserved to reserved
         val oldValue = LiveDataTestUtil.getValue(userEventsResult)
@@ -349,6 +336,27 @@ class ScheduleViewModelTest {
                 LiveDataTestUtil.getValue(viewModel.snackBarMessage)
         assertThat(starEvent?.getContentIfNotHandled()?.messageId,
                 `is`(equalTo(R.string.reservation_new)))
+    }
+
+    @Test
+    fun waitlistReceived() {
+        val userEventsResult = MutableLiveData<UserEventsResult>()
+        val source = TestUserEventDataSource(userEventsResult)
+        val loadSessionsUseCase = createTestLoadUserSessionsByDayUseCase(source)
+        val viewModel = createScheduleViewModel(loadSessionsUseCase = loadSessionsUseCase)
+        loadSessionsUseCase.execute(TagFilterMatcher() to "")
+
+        // A session goes from not-reserved to reserved
+        val oldValue = LiveDataTestUtil.getValue(userEventsResult)
+        val newValue = oldValue!!.copy(allDataSynced = true,
+                userEventsMessage = UserEventsMessage.CHANGES_IN_WAITLIST)
+
+        userEventsResult.postValue(newValue)
+
+        val starEvent: Event<SnackbarMessage>? =
+                LiveDataTestUtil.getValue(viewModel.snackBarMessage)
+        assertThat(starEvent?.getContentIfNotHandled()?.messageId,
+                `is`(equalTo(R.string.waitlist_new)))
     }
 
     /**
@@ -363,23 +371,6 @@ class ScheduleViewModelTest {
                 userEventDataSource, sessionRepository)
 
         return LoadUserSessionsByDayUseCase(userEventRepository)
-    }
-
-
-    /**
-     * Creates a use case that throws an exception.
-     */
-    private fun createSessionsExceptionUseCase(): LoadUserSessionsByDayUseCase {
-        val sessionRepository = DefaultSessionRepository(TestDataRepository)
-        val userEventRepository = DefaultSessionAndUserEventRepository(
-                TestUserEventDataSource(), sessionRepository)
-
-
-        return object : LoadUserSessionsByDayUseCase(userEventRepository) {
-            override fun execute(parameters: Pair<UserSessionMatcher, String>) {
-                result.postValue(Result.Error(Exception("Testing exception")))
-            }
-        }
     }
 
     /**

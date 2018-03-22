@@ -96,7 +96,8 @@ class DefaultLoginViewModelPluginTest {
 
 object FakeAuthenticatedUserInfo : AuthenticatedUserInfo {
 
-    val photo = mock<Uri>()
+    private val photo = mock<Uri>()
+    private const val testUid = "testuid"
 
     override fun isLoggedIn(): Boolean = true
 
@@ -108,7 +109,7 @@ object FakeAuthenticatedUserInfo : AuthenticatedUserInfo {
 
     override fun getPhoneNumber(): String? = TODO("not implemented")
 
-    override fun getUid(): String? = TODO("not implemented")
+    override fun getUid(): String? = testUid
 
     override fun isEmailVerified(): Boolean? = TODO("not implemented")
 

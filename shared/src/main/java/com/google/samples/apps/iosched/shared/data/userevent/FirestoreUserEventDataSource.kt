@@ -98,6 +98,10 @@ class FirestoreUserEventDataSource @Inject constructor(
     //TODO: Add also RESERVE_DENIED_* and CANCEL_DENIED_* messages
     override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {
         val result = MutableLiveData<UserEventsResult>()
+        if (userId.isEmpty()) {
+            result.postValue(UserEventsResult(true, emptyList()))
+            return result
+        }
 
         // Need to include this option to let the Metadata#hasPendingWrite() is called
         // When there is locally modified data, which isn't synced to the server

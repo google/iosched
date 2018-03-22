@@ -82,11 +82,11 @@ internal class DefaultLoginViewModelPlugin @Inject constructor(
         dataSource: AuthenticatedUser
 ) : LoginViewModelPlugin {
     override val performLoginEvent = MutableLiveData<Event<LoginEvent>>()
-    override val currentFirebaseUser: LiveData<Result<AuthenticatedUserInfo>?>
+    override val currentFirebaseUser: LiveData<Result<AuthenticatedUserInfo>?> =
+            dataSource.getCurrentUser()
     override val currentUserImageUri: LiveData<Uri?>
 
     init {
-        currentFirebaseUser = dataSource.getCurrentUser()
         currentUserImageUri = currentFirebaseUser.map { result: Result<AuthenticatedUserInfo?>? ->
             (result as? Result.Success)?.data?.getPhotoUrl()
         }
