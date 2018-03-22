@@ -263,7 +263,14 @@
             android:background="?selectableItemBackgroundBorderless"
             app:srcCompat="@drawable/ic_arrow_back" />
 
-        <!-- TODO work around BAB not casting a shadow b/72034805 -->
+        <!-- Workaround for b/72034805 — BAB shadow can't extend beyond bounds nor concave shape -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bab_fake_shadow" />
+
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
