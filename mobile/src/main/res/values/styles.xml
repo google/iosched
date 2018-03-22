@@ -100,6 +100,7 @@
 
     <style name="TextAppearance.IOSched.BottomNavigationView.Active">
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="TextAppearance.IOSched.H1" parent="@style/TextAppearance.AppCompat.Headline">
@@ -130,6 +131,7 @@
         <item name="itemIconTint">@color/bottom_nav_item</item>
         <item name="itemTextAppearanceActive">@style/TextAppearance.IOSched.BottomNavigationView.Active</item>
         <item name="itemTextAppearanceInactive">@style/TextAppearance.IOSched.BottomNavigationView</item>
+        <item name="labelVisibilityMode">selected</item>
         <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Dark</item>
     </style>
 
