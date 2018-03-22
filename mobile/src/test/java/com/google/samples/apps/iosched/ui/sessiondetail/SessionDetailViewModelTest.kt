@@ -111,5 +111,6 @@ class SessionDetailViewModelTest {
                     endTime = TimeUtils.ConferenceDay.DAY_1.end, room = TestData.room,
                     sessionUrl = "", liveStreamUrl = "", youTubeUrl = youtubeUrl, photoUrl = "",
                     tags = listOf(TestData.androidTag, TestData.webTag),
+                    displayTags = listOf(TestData.androidTag, TestData.webTag),
                     speakers = setOf(TestData.speaker), relatedSessions = emptySet())
 }
