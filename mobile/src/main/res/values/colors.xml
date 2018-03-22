@@ -32,4 +32,5 @@
     <color name="default_tag_color">#999</color>
     <color name="highlight_light">#33ffffff</color> <!-- 20% white -->
     <color name="scrim">#33000000</color> <!-- 20% black -->
+    <color name="indigo_transparent">#dd3c54fe</color> <!-- 20% black -->
 </resources>

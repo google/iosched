@@ -21,6 +21,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
@@ -33,6 +34,7 @@ import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.checkAllMatched
+import com.google.samples.apps.iosched.ui.dialog.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.login.LoginEvent.RequestLogin
 import com.google.samples.apps.iosched.ui.login.LoginEvent.RequestLogout
 import com.google.samples.apps.iosched.ui.schedule.agenda.ScheduleAgendaFragment
@@ -49,9 +51,9 @@ import javax.inject.Inject
 class ScheduleFragment : DaggerFragment() {
 
     companion object {
-        val TAG: String = ScheduleFragment::class.java.simpleName
-        val COUNT = ConferenceDay.values().size + 1 // Agenda
-        val AGENDA_POSITION = COUNT - 1
+        private val COUNT = ConferenceDay.values().size + 1 // Agenda
+        private val AGENDA_POSITION = COUNT - 1
+        private const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
     }
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -87,6 +89,12 @@ class ScheduleFragment : DaggerFragment() {
                 }.checkAllMatched
             }
         })
+
+        viewModel.navigateToSignInDialogAction.observe(this, Observer {
+            it?.getContentIfNotHandled()?.let {
+                openSignInDialog(requireActivity())
+            }
+        })
         return binding.root
     }
 
@@ -101,6 +109,11 @@ class ScheduleFragment : DaggerFragment() {
 
     private fun openSessionDetail(id: String) {
         startActivity(SessionDetailActivity.starterIntent(requireContext(), id))
+    }
+
+    private fun openSignInDialog(activity: FragmentActivity) {
+        val dialog = SignInDialogFragment()
+        dialog.show(activity.supportFragmentManager, DIALOG_NEED_TO_SIGN_IN)
     }
 
     private fun doLogout() {

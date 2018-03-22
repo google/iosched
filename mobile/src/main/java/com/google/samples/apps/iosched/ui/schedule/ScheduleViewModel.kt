@@ -116,6 +116,14 @@ class ScheduleViewModel @Inject constructor(
     /** Resource id of the profile button's content description; changes based on login state**/
     val profileContentDesc: LiveData<Int>
 
+    /**
+     * Event to navigate to the sign in Dialog. We only want to consume the event, so the
+     * Boolean value isn't used actually.
+     */
+    private val _navigateToSignInDialogAction = MutableLiveData<Event<Boolean>>()
+    val navigateToSignInDialogAction: LiveData<Event<Boolean>>
+        get() = _navigateToSignInDialogAction
+
     init {
         userSessionMatcher = tagFilterMatcher
 
@@ -274,10 +282,8 @@ class ScheduleViewModel @Inject constructor(
 
     override fun onStarClicked(session: Session, userEvent: UserEvent?) {
         if (!isLoggedIn()) {
-            // TODO: Show a dialog saying "Sign in to customize your schedule"
-            // https://docs.google.com/presentation/d/1VtsO3f-FfaigP1dErhIYJaqRXMCIYMXvHBa3y5cUTb0/edit?ts=5aa15da0#slide=id.g34bc00dc0a_0_7
-            Timber.d("You need to sign in to star an event")
-            _errorMessage.value = Event("Sign in to star events")
+            Timber.d("Showing Sign-in dialog after star click")
+            _navigateToSignInDialogAction.value = Event(true)
             return
         }
         val newIsStarredState = !(userEvent?.isStarred ?: false)
