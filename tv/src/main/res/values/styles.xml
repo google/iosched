@@ -16,9 +16,9 @@
 
 <resources>
     <style name="AppTheme" parent="@style/Theme.Leanback">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/indigo</item>
+        <item name="colorPrimaryDark">@color/indigo_dark</item>
+        <item name="colorAccent">@color/indigo</item>
         <item name="android:textColorTertiary">@color/text_color_tertiary</item>
     </style>
 </resources>
