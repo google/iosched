@@ -67,10 +67,9 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintDimensionRatio="@string/session_detail_header_aspect"
                     android:contentDescription="@string/a11y_session_detail_video_description"
-                    app:imageUrl="@{viewModel.session.photoUrl}" />
+                    app:headerImage="@{viewModel.session.photoUrl}" />
 
-                <!-- TODO add animated image -->
-
+                <!-- Play button, shown if there is a recording available -->
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -93,6 +92,23 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.65" />
 
+                <!-- Header animation, shown only if there isn't a photo -->
+                <com.airbnb.lottie.LottieAnimationView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="24dp"
+                    app:layout_constraintStart_toEndOf="@id/guideline_title_end"
+                    app:layout_constraintTop_toTopOf="@id/detail_image"
+                    app:layout_constraintEnd_toEndOf="@id/detail_image"
+                    app:layout_constraintBottom_toBottomOf="@id/detail_image"
+                    app:layout_constraintVertical_bias="0"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:eventHeaderAnim="@{viewModel.session}"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:goneUnless="@{!viewModel.hasPhoto}" />
+
                 <!-- Title on header: only shown if there isn't a photo header. -->
                 <TextView
                     android:id="@+id/session_detail_title"
@@ -107,7 +123,7 @@
                     android:paddingBottom="@dimen/margin_normal"
                     android:text="@{viewModel.session.title}"
                     tools:text="Session Title"
-                    app:goneUnless="@{!viewModel.isPlayable}"
+                    app:goneUnless="@{!viewModel.hasPhoto}"
                     style="@style/Widget.IOSched.SessionDetailTitle" />
 
                 <Space
@@ -126,7 +142,7 @@
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     android:paddingBottom="@dimen/margin_normal"
                     android:text="@{viewModel.session.title}"
-                    app:goneUnless="@{viewModel.isPlayable}"
+                    app:goneUnless="@{viewModel.hasPhoto}"
                     tools:text="Session Title"
                     style="@style/Widget.IOSched.SessionDetailTitle" />
 

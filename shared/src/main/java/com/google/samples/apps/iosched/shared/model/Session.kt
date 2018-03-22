@@ -16,7 +16,9 @@
 
 package com.google.samples.apps.iosched.shared.model
 
+import android.support.annotation.WorkerThread
 import org.threeten.bp.ZonedDateTime
+import kotlin.LazyThreadSafetyMode.NONE
 
 /**
  * Describes a conference session. Sessions have specific start and end times, and they represent a
@@ -116,4 +118,44 @@ data class Session(
      */
     //TODO: Get duration from the YouTube video. Not every talk fills the full session time.
     val duration = endTime.toInstant().toEpochMilli() - startTime.toInstant().toEpochMilli()
+
+    /**
+     * The type of the event e.g. Session, Codelab etc.
+     */
+    val type: SessionType by lazy(NONE) {
+        SessionType.fromTags(tags)
+    }
+}
+
+/**
+ * Represents the type of the event e.g. Session, Codelab etc.
+ */
+enum class SessionType {
+    SESSION,
+    APP_REVIEW,
+    OFFICE_HOURS,
+    CODELAB,
+    SANDBOX,
+    AFTER_HOURS;
+
+    companion object {
+
+        /**
+         * Examine the given [tags] to determine the [SessionType]. Defaults to [SESSION] if no
+         * category tag is found.
+         */
+        @WorkerThread
+        fun fromTags(tags: List<Tag>): SessionType {
+            val typeTag = tags.firstOrNull { it.category == Tag.CATEGORY_TYPE }
+
+            return when (typeTag?.id) {
+                "TYPE_APP_REVIEW" -> APP_REVIEW
+                "TYPE_OFFICE_HOURS" -> OFFICE_HOURS
+                "TYPE_CODELAB" -> CODELAB
+                "TYPE_SANDBOX" -> SANDBOX
+                "TYPE_AFTER_HOURS" -> AFTER_HOURS
+                else -> SESSION
+            }
+        }
+    }
 }
