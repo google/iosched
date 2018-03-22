@@ -24,8 +24,15 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.airbnb.lottie.LottieAnimationView
+import com.bumptech.glide.Glide
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemSpeakerDetailBinding
+import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.SessionType.AFTER_HOURS
+import com.google.samples.apps.iosched.shared.model.SessionType.CODELAB
+import com.google.samples.apps.iosched.shared.model.SessionType.OFFICE_HOURS
+import com.google.samples.apps.iosched.shared.model.SessionType.SANDBOX
 import com.google.samples.apps.iosched.shared.model.Speaker
 import com.google.samples.apps.iosched.shared.util.SpeakerUtils
 import com.google.samples.apps.iosched.shared.util.TimeUtils
@@ -36,10 +43,26 @@ import org.threeten.bp.ZonedDateTime
 @BindingAdapter("headerImage")
 fun headerImage(imageView: ImageView, photoUrl: String?) {
     if (!photoUrl.isNullOrEmpty()) {
-        // TODO get thumbnail
+        Glide.with(imageView)
+            .load(photoUrl)
+            .into(imageView)
     } else {
         imageView.setImageDrawable(HeaderGridDrawable(imageView.context))
     }
+}
+
+@Suppress("unused")
+@BindingAdapter("eventHeaderAnim")
+fun eventHeaderAnim(lottieView: LottieAnimationView, session: Session?) {
+    val anim = when (session?.type) {
+        AFTER_HOURS -> "anim/event_details_after_hours.json"
+        CODELAB -> "anim/event_details_codelabs.json"
+        OFFICE_HOURS -> "anim/event_details_office_hours.json"
+        SANDBOX -> "anim/event_details_sandbox.json"
+        /* default to session anim */
+        else -> "anim/event_details_session.json"
+    }
+    lottieView.setAnimation(anim)
 }
 
 @Suppress("unused")
@@ -59,9 +82,9 @@ fun sessionSpeakers(layout: LinearLayout, speakers: Set<Speaker>?) {
 @Suppress("unused")
 @BindingAdapter(value = ["sessionDetailStartTime", "sessionDetailEndTime"], requireAll = true)
 fun timeString(
-        view: TextView,
-        sessionDetailStartTime: ZonedDateTime?,
-        sessionDetailEndTime: ZonedDateTime?
+    view: TextView,
+    sessionDetailStartTime: ZonedDateTime?,
+    sessionDetailEndTime: ZonedDateTime?
 ) {
     if (sessionDetailStartTime == null || sessionDetailEndTime == null) {
         view.text = ""
@@ -78,7 +101,8 @@ private fun createSessionSpeakerView(
         LayoutInflater.from(container.context),
         R.layout.item_speaker_detail,
         container,
-        false)
+        false
+    )
 
     binding.speaker = speaker
     return binding.root
