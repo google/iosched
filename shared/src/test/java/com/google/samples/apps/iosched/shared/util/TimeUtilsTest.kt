@@ -16,15 +16,14 @@
 
 package com.google.samples.apps.iosched.shared.util
 
-import com.google.samples.apps.iosched.shared.model.Room
-import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.TestData
+import com.google.samples.apps.iosched.shared.model.TestData.session0
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Test
 import org.threeten.bp.ZonedDateTime
 import java.util.regex.Pattern
@@ -42,22 +41,24 @@ class TimeUtilsTest {
     }
 
     @Test fun conferenceDay_contains() {
-        val room1 = Room(id = "1", name = "Tent 1", capacity = 40)
-
-        val inDay1 = Session("1", ConferenceDay.DAY_1.start, ConferenceDay.DAY_1.end,
-                "", "", room1, "", "", "", emptyList(), emptySet(), "", emptySet())
+        val inDay1 = session0.copy(
+            startTime = ConferenceDay.DAY_1.start,
+            endTime = ConferenceDay.DAY_1.end
+        )
         assertTrue(DAY_1.contains(inDay1))
 
         // Starts before DAY_1
-        val day1MinusMinute = ConferenceDay.DAY_1.start.minusMinutes(1)
-        val notInDay1 = Session("2", day1MinusMinute, ConferenceDay.DAY_1.end,
-                "", "", room1, "", "", "", emptyList(), emptySet(), "", emptySet())
+        val notInDay1 = session0.copy(
+            startTime = ConferenceDay.DAY_1.start.minusMinutes(1),
+            endTime = ConferenceDay.DAY_1.end
+        )
         assertFalse(DAY_1.contains(notInDay1))
 
         // Ends after DAY_1
-        val day1PlusMinute = ConferenceDay.DAY_1.end.plusMinutes(1)
-        val alsoNotInDay1 = Session("3", ConferenceDay.DAY_1.start, day1PlusMinute,
-                "", "", room1, "", "", "", emptyList(), emptySet(), "", emptySet())
+        val alsoNotInDay1 = session0.copy(
+            startTime = ConferenceDay.DAY_1.start,
+            endTime = ConferenceDay.DAY_1.end.plusMinutes(1)
+        )
         assertFalse(DAY_1.contains(alsoNotInDay1))
     }
 

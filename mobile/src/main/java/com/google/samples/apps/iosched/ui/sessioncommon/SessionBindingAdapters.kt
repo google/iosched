@@ -33,10 +33,10 @@ import com.google.samples.apps.iosched.shared.model.Tag
 
 @BindingAdapter("sessionTags")
 fun sessionTags(recyclerView: RecyclerView, sessionTags: List<Tag>?) {
-    recyclerView.adapter = (recyclerView.adapter as? TagAdapter
-        ?: TagAdapter()).apply {
-        tags = sessionTags ?: emptyList()
-    }
+    recyclerView.adapter = (recyclerView.adapter as? TagAdapter ?: TagAdapter())
+        .apply {
+            tags = sessionTags ?: emptyList()
+        }
 }
 
 @BindingAdapter("tagTint")

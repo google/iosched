@@ -56,4 +56,9 @@ data class Tag (
     override fun hashCode(): Int = id.hashCode()
 
     fun isUiContentEqual(other: Tag) = color == other.color && name == other.name
+
+    companion object {
+        /** Category value for topic tags */
+        const val CATEGORY_TRACK = "TRACK"
+    }
 }
