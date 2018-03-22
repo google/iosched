@@ -43,6 +43,7 @@ class SessionDetailViewModel @Inject constructor(
 
     val session: LiveData<Session?>
     val showRateButton: LiveData<Boolean>
+    val hasPhoto: LiveData<Boolean>
     val isPlayable: LiveData<Boolean>
     val hasSpeakers: LiveData<Boolean>
     val hasRelated: LiveData<Boolean>
@@ -54,6 +55,10 @@ class SessionDetailViewModel @Inject constructor(
         // TODO this should also be called when session state is stale (b/74242921)
         sessionState = Transformations.map(session, { currentSession ->
             TimeUtils.getSessionState(currentSession, ZonedDateTime.now())
+        })
+
+        hasPhoto = Transformations.map(session, { currentSession ->
+            !currentSession?.photoUrl.isNullOrEmpty()
         })
 
         isPlayable = Transformations.map(session, { currentSession ->
