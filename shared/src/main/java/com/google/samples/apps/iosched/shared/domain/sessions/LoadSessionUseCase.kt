@@ -25,8 +25,10 @@ open class LoadSessionUseCase @Inject constructor(private val repository: Sessio
     : UseCase<String, Session>() {
 
     override fun execute(parameters: String): Session {
-        return repository.getSessions().firstOrNull { it -> it.id == parameters }
+        val session = repository.getSessions().firstOrNull { it -> it.id == parameters }
                 ?: throw SessionNotFoundException()
+        session.type // Compute type from tags now so it's done in the background
+        return session
     }
 }
 
