@@ -44,6 +44,12 @@ android {
             matchingFallbacks = ['debug']
         }
     }
+
+    // debug and release variants share the same source dir
+    sourceSets {
+        debug.java.srcDir 'src/debugRelease/java'
+        release.java.srcDir 'src/debugRelease/java'
+    }
 }
 
 repositories {
