@@ -201,6 +201,16 @@
                     tools:text="Intermediate" />
 
                 <TextView
+                    android:id="@+id/session_detail_countdown_timer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/session_detail_recorded"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:sessionStartCountdown="@{viewModel.timeUntilStart}"
+                    tools:text="5 minutes" />
+
+                <TextView
                     android:id="@+id/session_detail_description"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

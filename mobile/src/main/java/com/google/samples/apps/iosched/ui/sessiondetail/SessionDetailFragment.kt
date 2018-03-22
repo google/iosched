@@ -39,9 +39,9 @@ class SessionDetailFragment : DaggerFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
 
@@ -49,7 +49,8 @@ class SessionDetailFragment : DaggerFragment() {
         sessionDetailViewModel.loadSessionById(checkNotNull(arguments).getString(EXTRA_SESSION_ID))
 
         val binding: FragmentSessionDetailBinding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_session_detail, container, false)
+                inflater, R.layout.fragment_session_detail, container, false
+        )
         binding.run {
             viewModel = sessionDetailViewModel
             setLifecycleOwner(this@SessionDetailFragment)
@@ -58,10 +59,10 @@ class SessionDetailFragment : DaggerFragment() {
             toolbar.setOnMenuItemClickListener { item ->
                 if (item.itemId == R.id.menu_item_share) {
                     ShareCompat.IntentBuilder.from(activity)
-                            .setType("text/plain")
-                            .setText(shareString)
-                            .setChooserTitle(R.string.intent_chooser_session_detail)
-                            .startChooser()
+                        .setType("text/plain")
+                        .setText(shareString)
+                        .setChooserTitle(R.string.intent_chooser_session_detail)
+                        .startChooser()
                 }
                 true
             }

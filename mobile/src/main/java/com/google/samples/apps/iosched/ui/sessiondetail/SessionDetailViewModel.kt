@@ -22,12 +22,17 @@ import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
-import com.google.samples.apps.iosched.shared.result.Event
+import com.google.samples.apps.iosched.util.SetIntervalLiveData
+import com.google.samples.apps.iosched.util.time.DefaultTime
+import org.threeten.bp.Duration
 import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
+
+private const val TEN_SECONDS = 10_000L
 
 /**
  * Loads [Session] data and exposes it to the session detail view.
@@ -47,6 +52,7 @@ class SessionDetailViewModel @Inject constructor(
     val isPlayable: LiveData<Boolean>
     val hasSpeakers: LiveData<Boolean>
     val hasRelated: LiveData<Boolean>
+    val timeUntilStart: LiveData<Duration?>
 
     init {
         //TODO: Deal with error SessionNotFoundException
@@ -76,6 +82,17 @@ class SessionDetailViewModel @Inject constructor(
         hasRelated = Transformations.map(session, { currentSession ->
             currentSession?.relatedSessions?.isNotEmpty() ?: false
         })
+
+        timeUntilStart = SetIntervalLiveData.mapAtInterval(session, TEN_SECONDS) { currentSession ->
+            currentSession?.startTime?.let { startTime ->
+                val duration = Duration.between(DefaultTime.now(), startTime)
+                val minutes = duration.toMinutes()
+                when (minutes) {
+                    in 1..5 -> duration
+                    else -> null
+                }
+            }
+        }
     }
 
     // TODO: write tests b/74611561

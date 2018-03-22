@@ -28,6 +28,8 @@ interface Scheduler {
     fun execute(task: () -> Unit)
 
     fun postToMainThread(task: () -> Unit)
+
+    fun postDelayedToMainThread(delay: Long, task: () -> Unit)
 }
 
 /**
@@ -40,7 +42,7 @@ object DefaultScheduler : Scheduler {
     /**
      * Sets the new delegate scheduler, null to revert to the default async one.
      */
-    fun setDelegate(newDelegate: Scheduler?){
+    fun setDelegate(newDelegate: Scheduler?) {
         delegate = newDelegate ?: AsyncScheduler
     }
 
@@ -50,6 +52,10 @@ object DefaultScheduler : Scheduler {
 
     override fun postToMainThread(task: () -> Unit) {
         delegate.postToMainThread(task)
+    }
+
+    override fun postDelayedToMainThread(delay: Long, task: () -> Unit) {
+        delegate.postDelayedToMainThread(delay, task)
     }
 }
 
@@ -76,17 +82,40 @@ internal object AsyncScheduler : Scheduler {
     private fun isMainThread(): Boolean {
         return Looper.getMainLooper().thread === Thread.currentThread()
     }
+
+    override fun postDelayedToMainThread(delay: Long, task: () -> Unit) {
+        val mainThreadHandler = Handler(Looper.getMainLooper())
+        mainThreadHandler.postDelayed(task, delay)
+    }
 }
 
 /**
  * Runs tasks synchronously.
  */
 object SyncScheduler : Scheduler {
+    private val postDelayedTasks = mutableListOf<() -> Unit>()
+
     override fun execute(task: () -> Unit) {
         task()
     }
 
     override fun postToMainThread(task: () -> Unit) {
         task()
+    }
+
+    override fun postDelayedToMainThread(delay: Long, task: () -> Unit) {
+        postDelayedTasks.add(task)
+    }
+
+    fun runAllScheduledPostDelayedTasks() {
+        val tasks = postDelayedTasks.toList()
+        clearScheduledPostdelayedTasks()
+        for (task in tasks) {
+            task()
+        }
+    }
+
+    fun clearScheduledPostdelayedTasks() {
+        postDelayedTasks.clear()
     }
 }
