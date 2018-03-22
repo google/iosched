@@ -16,16 +16,6 @@
   -->
 
 <resources>
-
-    <!-- primary palette -->
-    <color name="indigo">#4768fd</color>
-    <color name="indigo_dark">#3c54fe</color> <!-- todo confirm this color -->
-    <color name="teal">#31e7b6</color>
-    <color name="light_blue">#27e5fd</color>
-    <color name="yellow">#fcd230</color>
-    <color name="orange">#ff6c00</color>
-    <color name="white">#fff</color>
-
     <color name="status_bar">#202124</color>
     <color name="text_color_tertiary">#dadce0</color>
     <color name="light_grey">#e6e6e6</color>

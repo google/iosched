@@ -16,7 +16,12 @@
   -->
 
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <!-- primary palette -->
+    <color name="indigo">#4768fd</color>
+    <color name="indigo_dark">#3c54fe</color>
+    <color name="teal">#31e7b6</color>
+    <color name="light_blue">#27e5fd</color>
+    <color name="yellow">#fcd230</color>
+    <color name="orange">#ff6c00</color>
+    <color name="white">#fff</color>
 </resources>
