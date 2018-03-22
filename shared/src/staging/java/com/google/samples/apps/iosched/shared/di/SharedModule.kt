@@ -16,15 +16,10 @@
 
 package com.google.samples.apps.iosched.shared.di
 
-import android.content.Context
 import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.OfflineConferenceDataSource
-import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUser
-import com.google.samples.apps.iosched.shared.data.login.LoginDataSource
-import com.google.samples.apps.iosched.shared.data.login.LoginRemoteDataSource
-import com.google.samples.apps.iosched.shared.data.login.StagingAuthenticatedUser
 import com.google.samples.apps.iosched.shared.data.map.FakeMapMetadataDataSource
 import com.google.samples.apps.iosched.shared.data.map.MapMetadataDataSource
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
@@ -96,17 +91,5 @@ class SharedModule {
             sessionRepository: SessionRepository
     ): SessionAndUserEventRepository {
         return DefaultSessionAndUserEventRepository(userEventDataSource, sessionRepository)
-    }
-
-    @Singleton
-    @Provides
-    fun provideLoginDataSource(): LoginDataSource {
-        return LoginRemoteDataSource()
-    }
-
-    @Singleton
-    @Provides
-    fun provideAuthenticatedUser(context: Context): AuthenticatedUser {
-        return StagingAuthenticatedUser(context)
     }
 }

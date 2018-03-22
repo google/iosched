@@ -16,6 +16,8 @@
 
 package com.google.samples.apps.iosched.ui.schedule.day
 
+import android.arch.lifecycle.LifecycleOwner
+import android.arch.lifecycle.LiveData
 import android.support.v7.recyclerview.extensions.ListAdapter
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
@@ -28,8 +30,11 @@ import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.ui.schedule.ScheduleEventListener
 
 class ScheduleDayAdapter(
-    private val eventListener: ScheduleEventListener,
-    private val tagViewPool: RecyclerView.RecycledViewPool
+        private val eventListener: ScheduleEventListener,
+        private val tagViewPool: RecyclerView.RecycledViewPool,
+        private val isLoggedIn: LiveData<Boolean>,
+        private val isRegistered: LiveData<Boolean>,
+        private val lifecycleOwner: LifecycleOwner
 ) : ListAdapter<UserSession, SessionViewHolder>(SessionDiff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SessionViewHolder {
@@ -40,7 +45,7 @@ class ScheduleDayAdapter(
                     it.recycleChildrenOnDetach = true
                 }
             }
-        return SessionViewHolder(binding, eventListener)
+        return SessionViewHolder(binding, eventListener, isLoggedIn, isRegistered, lifecycleOwner)
     }
 
     override fun onBindViewHolder(holder: SessionViewHolder, position: Int) {
@@ -49,14 +54,20 @@ class ScheduleDayAdapter(
 }
 
 class SessionViewHolder(
-    private val binding: ItemSessionBinding,
-    private val eventListener: ScheduleEventListener
+        private val binding: ItemSessionBinding,
+        private val eventListener: ScheduleEventListener,
+        private val isLoggedIn: LiveData<Boolean>,
+        private val isRegistered: LiveData<Boolean>,
+        private val lifecycleOwner: LifecycleOwner
 ) : ViewHolder(binding.root) {
 
     fun bind(userSession: UserSession) {
         binding.session = userSession.session
         binding.userEvent = userSession.userEvent
         binding.eventListener = eventListener
+        binding.isLoggedIn = isLoggedIn
+        binding.isRegistered = isRegistered
+        binding.setLifecycleOwner(lifecycleOwner)
         binding.executePendingBindings()
     }
 }

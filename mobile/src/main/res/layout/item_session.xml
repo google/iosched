@@ -19,6 +19,8 @@
 
     <data>
 
+        <import type="android.arch.lifecycle.LiveData" />
+
         <variable
             name="session"
             type="com.google.samples.apps.iosched.shared.model.Session" />
@@ -30,6 +32,15 @@
         <variable
             name="eventListener"
             type="com.google.samples.apps.iosched.ui.schedule.ScheduleEventListener" />
+
+        <variable
+            name="isRegistered"
+            type="LiveData&lt;Boolean&gt;" />
+
+        <!-- TODO: Remove if not used. -->
+        <variable
+            name="isLoggedIn"
+            type="LiveData&lt;Boolean&gt;" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -80,6 +91,7 @@
             android:contentDescription="@string/a11y_reserve_session_actions"
             android:onClick="@{() -> eventListener.onReservationClicked(session, userEvent)}"
             reservation_status="@{userEvent}"
+            goneUnless="@{isRegistered}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
