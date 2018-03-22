@@ -22,7 +22,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="?colorPrimary"
     tools:context=".ui.MainActivity"
     tools:deviceIds="wear">
 
@@ -36,6 +36,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:navigationStyle="singlePage"
-        android:background="@color/colorPrimaryDark"/>
+        android:background="?colorPrimaryDark"/>
 
 </android.support.wear.widget.drawer.WearableDrawerLayout>

@@ -33,6 +33,6 @@
     <!-- Star -->
     <path
         android:name="star"
-        android:fillColor="@color/colorPrimary"
+        android:fillColor="?colorPrimary"
         android:pathData="M15.58,16.8L12,14.5l-3.58,2.3 1.08,-4.12 -3.29,-2.69 4.24,-0.25L12,5.8l1.54,3.95 4.24,0.25 -3.29,2.69 1.09,4.11z"/>
 </vector>
