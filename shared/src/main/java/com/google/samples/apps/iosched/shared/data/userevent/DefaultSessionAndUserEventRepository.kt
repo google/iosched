@@ -44,11 +44,22 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
     val result = MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>()
 
-    override fun getObservableUserEvents(userId: String):
+    override fun getObservableUserEvents(userId: String?):
             LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
 
+        // If there is no logged-in user, return the map with null UserEvents
+        if (userId == null) {
+            val userSessionsPerDay = mapUserDataAndSessions(null, sessionRepository.getSessions())
+            result.postValue(Result.Success(
+                    LoadUserSessionsByDayUseCaseResult(
+                            userSessionsPerDay = userSessionsPerDay,
+                            userMessage = null)
+            ))
+            return result
+        }
         // Observes the user events and merges them with session data.
         val observableUserEvents = userEventDataSource.getObservableUserEvents(userId)
+
         result.removeSource(observableUserEvents)
         result.addSource(observableUserEvents) { userEvents ->
             userEvents ?: return@addSource
@@ -90,11 +101,22 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
      */
     @WorkerThread
     private fun mapUserDataAndSessions(
-            userData: UserEventsResult,
+            userData: UserEventsResult?,
             allSessions: List<Session>
     ): Map<ConferenceDay, List<UserSession>> {
 
-        val (allDataSynced, userEvents, userEventsMessage) = userData
+        // If there is no logged-in user, return the map with null UserEvents
+        if (userData == null) {
+
+            return ConferenceDay.values().map { day ->
+                day to allSessions
+                        .filter { day.contains(it) }
+                        .map { session -> UserSession(session, null) }
+
+            }.toMap()
+        }
+
+        val (allDataSynced, userEvents, _) = userData
 
         val eventIdToUserEvent: Map<String, UserEvent?> = userEvents.map { it.id to it }.toMap()
         val allUserSessions = allSessions.map { UserSession(it, eventIdToUserEvent[it.id]) }
@@ -135,7 +157,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
 interface SessionAndUserEventRepository {
 
-    fun getObservableUserEvents(userId: String):
+    fun getObservableUserEvents(userId: String?):
             LiveData<Result<LoadUserSessionsByDayUseCaseResult>>
 
     fun updateIsStarred(userId: String, session: Session, isStarred: Boolean):

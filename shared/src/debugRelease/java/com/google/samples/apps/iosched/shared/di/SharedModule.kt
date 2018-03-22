@@ -17,17 +17,12 @@
 package com.google.samples.apps.iosched.shared.di
 
 import android.content.Context
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.NetworkConferenceDataSource
-import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUser
-import com.google.samples.apps.iosched.shared.data.login.FirebaseAuthenticatedUser
-import com.google.samples.apps.iosched.shared.data.login.LoginDataSource
-import com.google.samples.apps.iosched.shared.data.login.LoginRemoteDataSource
 import com.google.samples.apps.iosched.shared.data.map.MapMetadataDataSource
 import com.google.samples.apps.iosched.shared.data.map.RemoteMapMetadataDataSource
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
@@ -99,18 +94,6 @@ class SharedModule {
             sessionRepository: SessionRepository
     ): SessionAndUserEventRepository {
         return DefaultSessionAndUserEventRepository(userEventDataSource, sessionRepository)
-    }
-
-    @Singleton
-    @Provides
-    fun provideLoginDataSource(): LoginDataSource {
-        return LoginRemoteDataSource()
-    }
-
-    @Singleton
-    @Provides
-    fun provideAuthenticatedUser(): AuthenticatedUser {
-        return FirebaseAuthenticatedUser(FirebaseAuth.getInstance())
     }
 
     @Singleton

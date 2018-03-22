@@ -109,9 +109,11 @@ class ScheduleViewModel @Inject constructor(
     val snackBarMessage : LiveData<Event<SnackbarMessage>>
         get() = _snackBarMessage
 
+    /** Resource id of the profile button's content description; changes based on login state**/
+    private val _profileContentDesc = MediatorLiveData<Int>().apply { value = R.string.a11y_login }
 
-    /** Resource id of the profile button's content description; changes based on login state */
     val profileContentDesc: LiveData<Int>
+        get() = _profileContentDesc
 
     /**
      * Event to navigate to the sign in Dialog. We only want to consume the event, so the
@@ -126,9 +128,6 @@ class ScheduleViewModel @Inject constructor(
 
         // Load sessions and tags and store the result in `LiveData`s
         loadSessionsResult = loadUserSessionsByDayUseCase.observe()
-        loadSessionsResult.addSource(currentFirebaseUser) {
-            refreshUserSessions()
-        }
 
         loadAgendaUseCase(loadAgendaResult)
         loadTagsByCategoryUseCase(loadTagsResult)
@@ -170,7 +169,9 @@ class ScheduleViewModel @Inject constructor(
             cachedTagFilters
         }
 
-        profileContentDesc = currentFirebaseUser.map(::getProfileContentDescription)
+        _profileContentDesc.addSource(currentFirebaseUser) {
+            _profileContentDesc.value = getProfileContentDescription(it)
+        }
 
         // Show an error message if a reservation request fails
         _snackBarMessage.addSource(reservationActionUseCase.observe()) {
@@ -204,6 +205,13 @@ class ScheduleViewModel @Inject constructor(
                 _snackBarMessage.postValue(Event(
                         SnackbarMessage(message, actionId = R.string.got_it, longDuration = true)))
             }
+        }
+
+        // Refresh the list of user sessions if the user is updated.
+        loadSessionsResult.addSource(currentFirebaseUser) {
+            Timber.d("Loading user session with user ${(it as? Result.Success)?.data?.getUid() }")
+            refreshUserSessions()
+
         }
     }
 
@@ -275,8 +283,8 @@ class ScheduleViewModel @Inject constructor(
     }
 
     private fun refreshUserSessions() {
-        val uid = (currentFirebaseUser.value as? Success)?.data?.getUid()
-        loadUserSessionsByDayUseCase.execute(userSessionMatcher to (uid ?: ""))
+        Timber.d("ViewModel refreshing user sessions")
+        loadUserSessionsByDayUseCase.execute(userSessionMatcher to (getUserId() ?: "tempUser"))
     }
 
     override fun onStarClicked(session: Session, userEvent: UserEvent?) {
@@ -295,17 +303,23 @@ class ScheduleViewModel @Inject constructor(
         }
         _snackBarMessage.postValue(Event(snackbarMessage))
 
-        // uid should not be null at this moment because the user is logged in
-        val uid = (currentFirebaseUser.value as Success).data.getUid()!!
-        starEventUseCase.execute(StarEventParameter(uid, session, newIsStarredState))
+        getUserId()?.let {
+            starEventUseCase.execute(StarEventParameter(it, session, newIsStarredState))
+        }
     }
 
     override fun onReservationClicked(session: Session, userEvent: UserEvent?) {
         if (!isLoggedIn()) {
             // TODO: Show a dialog saying "Sign in to customize your schedule"
             // https://docs.google.com/presentation/d/1VtsO3f-FfaigP1dErhIYJaqRXMCIYMXvHBa3y5cUTb0/edit?ts=5aa15da0#slide=id.g34bc00dc0a_0_7
-            Timber.d("You need to sign in to star an event")
-            _errorMessage.value = Event("Sign in to star events")
+            Timber.d("You need to sign in to reserve an event")
+            _errorMessage.value = Event("Sign in to reserve events")
+            return
+        }
+        if (!isRegistered()) {
+            // TODO: This should never happen :)
+            Timber.d("You need to be an attendee to reserve an event")
+            _errorMessage.value = Event("You're not an attendee")
             return
         }
 
@@ -320,16 +334,23 @@ class ScheduleViewModel @Inject constructor(
 
         // Update the snackbar message optimistically.
         val snackbarMessage = when(action) {
-            ReservationRequestAction.REQUEST ->
-                SnackbarMessage(R.string.reservation_request_succeeded, R.string.got_it)
-            ReservationRequestAction.CANCEL ->
-                SnackbarMessage(R.string.reservation_cancel_succeeded, R.string.got_it)
+            ReservationRequestAction.REQUEST -> SnackbarMessage(R.string.reservation_request_succeeded, R.string.got_it)
+            ReservationRequestAction.CANCEL -> SnackbarMessage(R.string.reservation_cancel_succeeded, R.string.got_it)
         }
         _snackBarMessage.postValue(Event(snackbarMessage))
 
-        // uid should not be null at this moment because the user is logged in
-        val uid = (currentFirebaseUser.value as Success).data.getUid()!!
-        reservationActionUseCase.execute(ReservationRequestParameters(uid, session, action))
+        getUserId()?.let {
+            reservationActionUseCase.execute(ReservationRequestParameters(it, session, action))
+        }
+
+    }
+
+    /**
+     * Returns the current user ID or null if not available.
+     */
+    private fun getUserId() : String? {
+        val user = currentFirebaseUser.value
+        return (user as? Result.Success)?.data?.getUid()
     }
 }
 

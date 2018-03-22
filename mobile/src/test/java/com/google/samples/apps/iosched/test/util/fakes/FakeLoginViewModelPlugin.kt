@@ -23,6 +23,8 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.ui.login.LoginEvent
 import com.google.samples.apps.iosched.ui.login.LoginViewModelPlugin
 import com.google.samples.apps.iosched.ui.schedule.Event
+import com.nhaarman.mockito_kotlin.doReturn
+import com.nhaarman.mockito_kotlin.mock
 
 class FakeLoginViewModelPlugin : LoginViewModelPlugin {
     override val currentFirebaseUser = MutableLiveData<Result<AuthenticatedUserInfo>?>()
@@ -33,7 +35,14 @@ class FakeLoginViewModelPlugin : LoginViewModelPlugin {
     var loginRequestsEmitted = 0
     var logoutRequestsEmitted = 0
 
-    override fun isLoggedIn() = injectIsLoggedIn
+    override fun isLoggedIn(): Boolean = injectIsLoggedIn
+
+    override fun observeLoggedInUser() = TODO("Not implemented")
+
+    override fun observeRegisteredUser() = TODO("Not implemented")
+
+    override fun isRegistered(): Boolean = injectIsLoggedIn
+
 
     override fun emitLoginRequest() {
         loginRequestsEmitted++
@@ -41,5 +50,14 @@ class FakeLoginViewModelPlugin : LoginViewModelPlugin {
 
     override fun emitLogoutRequest() {
         logoutRequestsEmitted++
+    }
+
+    fun loadUser(id: String) {
+        val mockUser = mock<AuthenticatedUserInfo> {
+            on { getUid() }.doReturn(id)
+            on { getPhotoUrl() }.doReturn(mock<Uri> {})
+            on { isLoggedIn() }.doReturn(true)
+        }
+        currentFirebaseUser.postValue(Result.Success(mockUser))
     }
 }

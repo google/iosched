@@ -98,7 +98,7 @@ class ScheduleViewModelTest {
 
 
         return object : LoadUserSessionsByDayUseCase(userEventRepository) {
-            override fun execute(parameters: Pair<UserSessionMatcher, String>) {
+            override fun execute(parameters: Pair<UserSessionMatcher, String?>) {
                 result.postValue(Result.Error(Exception("Testing exception")))
             }
         }

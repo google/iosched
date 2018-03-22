@@ -30,15 +30,16 @@ import javax.inject.Inject
  */
 open class LoadUserSessionsByDayUseCase @Inject constructor(
         private val userEventRepository: DefaultSessionAndUserEventRepository
-): MediatorUseCase<Pair<UserSessionMatcher, String>, LoadUserSessionsByDayUseCaseResult>() {
+): MediatorUseCase<Pair<UserSessionMatcher, String?>, LoadUserSessionsByDayUseCaseResult>() {
 
-    override fun execute(parameters: Pair<UserSessionMatcher, String>) {
+    override fun execute(parameters: Pair<UserSessionMatcher, String?>) {
         val (sessionMatcher, userId) = parameters
-        val userSessions = userEventRepository.getObservableUserEvents(userId)
+
+        val userSessionsObservable = userEventRepository.getObservableUserEvents(userId)
 
         // Avoid duplicating sources and trigger an update on the LiveData from the base class.
-        result.removeSource(userSessions)
-        result.addSource(userSessions) {
+        result.removeSource(userSessionsObservable)
+        result.addSource(userSessionsObservable) {
             DefaultScheduler.execute {
                 when (it) {
                     is Result.Success -> {
