@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright 2018 Google LLC
   ~
@@ -15,7 +16,7 @@
   -->
 
 <resources>
-    <string name="schedule">Schedule</string>
-    <string name="sign_in_or_out">Sign in / out</string>
-    <string name="settings">Settings</string>
+    <string name="schedule" translation_description="The title of user's schedule in Google I/O.">Schedule</string>
+    <string name="sign_in_or_out" translation_description="The label for the button to sign in or out.">Sign in / out</string>
+    <string name="settings" translation_description="The title of the app settings screen.">Settings</string>
 </resources>
