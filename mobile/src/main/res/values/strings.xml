@@ -30,22 +30,22 @@
     <string name="session_duration_location" translatable="false">%1s / %2s</string>
     <string name="agenda" translation_description="The title for the agenda screen where user can see all the sessions they plan to attend.">Agenda</string>
     <string name="agenda_duration" translatable="false">%1$s – %2$s</string>
-    <string name="event_starred">Event added to your starred items</string>
-    <string name="event_unstarred">Event removed from starred items</string>
-    <string name="event_star_error">Error adding event to starred items</string>
-    <string name="reservation_error">Error requesting reservation.</string>
-    <string name="reservation_request_succeeded">Reservation requested</string>
-    <string name="reservation_cancel_succeeded">Reservation canceled</string>
-    <string name="reservation_new">Reservation confirmed!</string>
-    <string name="waitlist_new">You have been waitlisted</string>
-    <string name="got_it">Got it</string>
+    <string name="event_starred" translation_description="The message shown when user adds an event to their schedule.">Event added to your starred items</string>
+    <string name="event_unstarred" translation_description="The message shown when user removes an event from their schedule.">Event removed from starred items</string>
+    <string name="event_star_error" translation_description="The message shown for an error when user tries to add an event.">Error adding event to starred items</string>
+    <string name="reservation_error" translation_description="The message shown for an error when user is trying to reserve a session attendance.">Error requesting reservation.</string>
+    <string name="reservation_request_succeeded" translation_description="The message shown when user tries to reserve a seat for a session.">Reservation requested</string>
+    <string name="reservation_cancel_succeeded" translation_description="The message shown when user has canceled their reservation for a session.">Reservation canceled</string>
+    <string name="reservation_new" translation_description="The message shown when user's reservation is confirmed by the system.">Reservation confirmed!</string>
+    <string name="waitlist_new" translation_description="The message shown when user is added to the waitlist of a session reservation.">You have been waitlisted</string>
+    <string name="got_it" translation_description="The label for dismissing a information messages.">Got it</string>
 
     <!-- Session Detail -->
     <string name="rate_session" translation_description="The label for the button to rate the session by 5 stars">Rate Session</string>
-    <string name="menu_item_session_location">Session location</string>
+    <string name="menu_item_session_location" translation_description="The label for the location of the session.">Session location</string>
     <string name="session_detail_header_aspect" translatable="false">H,16:9</string>
-    <string name="session_detail_speakers_header">Speakers</string>
-    <string name="session_detail_related_header">Related Events</string>
+    <string name="session_detail_speakers_header" translation_descriptions="The label for the session speakers.">Speakers</string>
+    <string name="session_detail_related_header" translation_description="The label for the events related to this session.">Related Events</string>
 
     <!-- Info -->
     <string name="info_title" translation_description="The title for the info screen where user can see various information, such as FAQ and travel info.">Info</string>
@@ -87,13 +87,13 @@
     <string name="intent_chooser_session_detail" translation_description="The label for share screen where user can tell people about an I/O session on SNS, etc.">Share</string>
 
     <!-- Onboarding -->
-    <string name="onboarding_get_started" translation_description="The label for the button to start using the app">Get started</string>
-    <string name="onboarding_welcome_to_google_i_o">Welcome to Google I/O</string>
-    <string name="onboarding_date_location">May 8–10,\n2018 Mountain View, CA</string>
-    <string name="onboarding_build_schedule">Build your own schedule</string>
-    <string name="onboarding_build_sched_benefits">Build your custom I/O experience and reserve seats if you\'re an attendee</string>
-    <string name="onboarding_watch_live">Watch I/O Live</string>
-    <string name="onboarding_join_online">Join us online. We\'ll be streaming the keynotes and most sessions live.</string>
+    <string name="onboarding_get_started" translation_description="The label for the button to start using the app.">Get started</string>
+    <string name="onboarding_welcome_to_google_i_o" translation_description="The welcome message shown at the onboarding screen of the app.">Welcome to Google I/O</string>
+    <string name="onboarding_date_location" translation_description="The date and the place of Google I/O 2018.">May 8–10,\n2018 Mountain View, CA</string>
+    <string name="onboarding_build_schedule" translation_description="The explanation title of the feature where user can choose which sessions to attend.">Build your own schedule</string>
+    <string name="onboarding_build_sched_benefits" translation_description="The explanation of the feature where user can choose which sessions to attend.">Build your custom I/O experience and reserve seats if you\'re an attendee</string>
+    <string name="onboarding_watch_live" translation_description="The explanation title of the feature where user can watch I/O sessions by live stream.">Watch I/O Live</string>
+    <string name="onboarding_join_online" translation_description="The explanation of the feature where user can watch I/O sessions by live stream.">Join us online. We\'ll be streaming the keynotes and most sessions live.</string>
     <string name="onboarding_label_days" translation_description="The label for the display of the number of days until the conference starts">D</string>
     <string name="onboarding_label_hours" translation_description="The label for the display of the number of hours until the conference starts">H</string>
     <string name="onboarding_label_mins" translation_description="The label for the display of the number of minutes until the conference starts">M</string>
