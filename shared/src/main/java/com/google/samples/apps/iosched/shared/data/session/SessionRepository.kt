@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.shared.data.session
 
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
+import com.google.samples.apps.iosched.shared.domain.sessions.SessionNotFoundException
 import com.google.samples.apps.iosched.shared.model.Session
 import javax.inject.Inject
 
@@ -26,14 +27,22 @@ import javax.inject.Inject
  * The session data is loaded from the bootstrap file.
  */
 interface SessionRepository {
-    fun getSessions() : List<Session>
+    fun getSessions(): List<Session>
+    fun getSession(eventId: String): Session
 }
 
 class DefaultSessionRepository @Inject constructor(
         private val conferenceDataRepository: ConferenceDataRepository
 ) : SessionRepository {
 
-    override fun getSessions() : List<Session> {
+    override fun getSessions(): List<Session> {
         return conferenceDataRepository.getOfflineConferenceData().sessions
     }
+
+    override fun getSession(eventId: String): Session {
+        return conferenceDataRepository.getOfflineConferenceData().sessions.firstOrNull { session ->
+            session.id == eventId } ?: throw SessionNotFoundException()
+    }
 }
+
+class SessionNotFoundException : Throwable()

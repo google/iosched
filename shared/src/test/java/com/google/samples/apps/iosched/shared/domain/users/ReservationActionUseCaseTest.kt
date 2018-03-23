@@ -21,8 +21,9 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CANCEL
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.REQUEST
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
-import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
@@ -53,7 +54,9 @@ class ReservationActionUseCaseTest {
         val resultLiveData = useCase.observe()
 
         useCase.execute(ReservationRequestParameters(
-                "userTest", TestData.session0, ReservationRequestAction.REQUEST))
+                "userTest",
+                TestData.session0.id,
+                REQUEST))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
         Assert.assertEquals(result, Result.Success(ReservationRequestAction.REQUEST))
@@ -66,7 +69,8 @@ class ReservationActionUseCaseTest {
         val resultLiveData = useCase.observe()
 
         useCase.execute(ReservationRequestParameters(
-                "userTest", TestData.session0, ReservationRequestAction.CANCEL))
+                "userTest", TestData.session0.id,
+                CANCEL))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
         Assert.assertEquals(result, Result.Success(ReservationRequestAction.CANCEL))
@@ -80,7 +84,8 @@ class ReservationActionUseCaseTest {
         val resultLiveData = useCase.observe()
 
         useCase.execute(ReservationRequestParameters(
-                "userTest", TestData.session0, ReservationRequestAction.CANCEL))
+                "userTest", TestData.session0.id,
+                CANCEL))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
         assertTrue(result is Result.Error)
@@ -100,7 +105,7 @@ object TestUserEventRepository : SessionAndUserEventRepository {
     }
 
     override fun changeReservation(
-            userId: String, session: Session, action: ReservationRequestAction
+            userId: String, sessionId: String, action: ReservationRequestAction
     ): LiveData<Result<ReservationRequestAction>> {
 
         val result = MutableLiveData<Result<ReservationRequestAction>>()
@@ -125,7 +130,7 @@ object FailingUserEventRepository : SessionAndUserEventRepository {
     }
 
     override fun changeReservation(userId: String,
-                                   session: Session,
+                                   sessionId: String,
                                    action: ReservationRequestAction):
             LiveData<Result<ReservationRequestAction>> {
         throw Exception("Test")

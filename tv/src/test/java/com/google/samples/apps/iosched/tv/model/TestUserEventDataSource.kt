@@ -48,6 +48,4 @@ object TestUserEventDataSource : UserEventDataSource {
     ): LiveData<Result<ReservationRequestAction>> {
         TODO("not implemented")
     }
-
-
 }

@@ -20,6 +20,7 @@ package com.google.samples.apps.iosched.ui.schedule
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
 import com.google.samples.apps.iosched.R
@@ -39,6 +40,9 @@ import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUs
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.UserEventsMessage
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CANCEL
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.REQUEST
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.result.Event
@@ -58,6 +62,7 @@ import com.google.samples.apps.iosched.ui.schedule.filters.LoadTagFiltersUseCase
 import com.google.samples.apps.iosched.ui.schedule.filters.TagFilter
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.verify
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.core.Is.`is`
@@ -296,14 +301,21 @@ class ScheduleViewModelTest {
 
     @Test
     fun testReserveEvent() {
-        // Create test use cases with test data
-        val viewModel = createScheduleViewModel()
+        val reservationActionUseCaseMock = mock<ReservationActionUseCase> {
+            on { observe() }.doReturn(MediatorLiveData())
+        }
+        val loginDelegate = FakeLoginViewModelPlugin()
+        val viewModel = createScheduleViewModel(
+                reservationActionUseCase = reservationActionUseCaseMock,
+                loginViewModelDelegate = loginDelegate)
+        val testUid = "testUid"
+        // Kick off the viewmodel by loading a user.
+        loginDelegate.loadUser(testUid)
 
         viewModel.onReservationClicked(TestData.session0, TestData.userEvents[4])
 
-        val event: Event<SnackbarMessage>? = LiveDataTestUtil.getValue(viewModel.snackBarMessage)
-        assertThat(event?.getContentIfNotHandled()?.messageId,
-                `is`(equalTo(R.string.reservation_request_succeeded)))
+        verify(reservationActionUseCaseMock).execute(ReservationRequestParameters(testUid,
+                TestData.session0.id, REQUEST))
     }
 
     @Test
@@ -324,14 +336,21 @@ class ScheduleViewModelTest {
 
     @Test
     fun testCancelEvent() {
-        val viewModel = createScheduleViewModel()
+        val loginDelegate = FakeLoginViewModelPlugin()
+        val viewModel = createScheduleViewModel(
+                loginViewModelDelegate = loginDelegate)
+        val testUid = "testUid"
+        // Kick off the viewmodel by loading a user.
+        loginDelegate.loadUser(testUid)
 
         viewModel.onReservationClicked(TestData.session1, TestData.userEvents[0])
 
-        val event: Event<SnackbarMessage>? = LiveDataTestUtil.getValue(viewModel.snackBarMessage)
-        assertThat(event?.getContentIfNotHandled()?.messageId,
-                `is`(equalTo(R.string.reservation_cancel_succeeded)))
-
+        val parameters = LiveDataTestUtil.getValue(
+                viewModel.navigateToRemoveReservationDialogAction)
+                ?.getContentIfNotHandled()
+        assertThat(parameters, `is`(ReservationRequestParameters(testUid,
+                TestData.session1.id,
+                CANCEL)))
     }
 
     /** New reservation / waitlist **/
@@ -356,14 +375,15 @@ class ScheduleViewModelTest {
 
         // A session goes from not-reserved to reserved
         val oldValue = LiveDataTestUtil.getValue(userEventsResult)
-        val newValue = oldValue!!.copy(userEventsMessage = UserEventsMessage.CHANGES_IN_WAITLIST)
+        val newValue = oldValue!!.copy(
+                userEventsMessage = UserEventsMessage.CHANGES_IN_RESERVATIONS)
 
         userEventsResult.postValue(newValue)
 
         val starEvent: Event<SnackbarMessage>? =
                 LiveDataTestUtil.getValue(viewModel.snackBarMessage)
         assertThat(starEvent?.getContentIfNotHandled()?.messageId,
-                `is`(equalTo(R.string.waitlist_new)))
+                `is`(equalTo(R.string.reservation_new)))
     }
 
     @Test
@@ -386,14 +406,15 @@ class ScheduleViewModelTest {
 
         // A session goes from not-reserved to reserved
         val oldValue = LiveDataTestUtil.getValue(userEventsResult)
-        val newValue = oldValue!!.copy(userEventsMessage = UserEventsMessage.CHANGES_IN_RESERVATIONS)
+        val newValue = oldValue!!.copy(
+                userEventsMessage = UserEventsMessage.CHANGES_IN_WAITLIST)
 
         userEventsResult.postValue(newValue)
 
         val starEvent: Event<SnackbarMessage>? =
                 LiveDataTestUtil.getValue(viewModel.snackBarMessage)
         assertThat(starEvent?.getContentIfNotHandled()?.messageId,
-                `is`(equalTo(R.string.reservation_new)))
+                `is`(equalTo(R.string.waitlist_new)))
     }
 
     /**

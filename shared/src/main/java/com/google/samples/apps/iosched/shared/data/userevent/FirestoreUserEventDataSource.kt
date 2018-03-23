@@ -26,6 +26,8 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.samples.apps.iosched.shared.domain.sessions.UserEventsMessage
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CANCEL
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.REQUEST
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequest
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult
@@ -35,7 +37,7 @@ import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import timber.log.Timber
-import java.util.*
+import java.util.UUID
 import javax.inject.Inject
 
 /**
@@ -333,7 +335,7 @@ class FirestoreUserEventDataSource @Inject constructor(
         val result = MutableLiveData<Result<ReservationRequestAction>>()
 
         val logCancelOrReservation =
-                if (action == ReservationRequestAction.CANCEL) "Cancel" else "Reservation"
+                if (action == CANCEL) "Cancel" else "Reservation"
 
         Timber.d("Requesting $logCancelOrReservation for session ${session.id}")
 
@@ -379,7 +381,6 @@ class FirestoreUserEventDataSource @Inject constructor(
 
         batch.commit().addOnSuccessListener {
             Timber.d("$logCancelOrReservation request for session ${session.id} succeeded")
-
             result.postValue(Result.Success(action))
         }.addOnFailureListener {
             Timber.e(it, "$logCancelOrReservation request for session ${session.id} failed")
@@ -391,14 +392,14 @@ class FirestoreUserEventDataSource @Inject constructor(
 
     private fun getReservationRequestedEventAction(action: ReservationRequestAction): String =
             when (action) {
-                ReservationRequestAction.REQUEST -> RESERVE_REQ_ACTION
-                ReservationRequestAction.CANCEL -> RESERVE_CANCEL_ACTION
+                REQUEST -> RESERVE_REQ_ACTION
+                CANCEL -> RESERVE_CANCEL_ACTION
             }
 
 
     private fun getReservationRequestedQueueAction(action: ReservationRequestAction) =
             when (action) {
-                ReservationRequestAction.REQUEST -> REQUEST_QUEUE_ACTION_RESERVE
-                ReservationRequestAction.CANCEL -> REQUEST_QUEUE_ACTION_CANCEL
+                REQUEST -> REQUEST_QUEUE_ACTION_RESERVE
+                CANCEL -> REQUEST_QUEUE_ACTION_CANCEL
             }
 }

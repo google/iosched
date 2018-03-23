@@ -78,6 +78,12 @@
     <string name="not_now" translation_description="The description of a button that the user doesn't want to sign in.">Not now</string>
     <string name="sign_in" translation_description="The description of a button to sign in.">Sign in</string>
 
+    <!-- Cancel reservation dialog -->
+    <string name="remove_reservation_title" translation_description="The title of the sheet when the user is about to remove their reservation.">Remove reservation?</string>
+    <string name="remove_reservation_content" translation_description="The content of the sheet when the user is about to cancel their reservation.">You\'re about to give up your seat for this session. If you decide not to reserve a seat but still want to attend, all sessions will have a portion of seats available first come, first serve onsite.</string>
+    <string name="cancel" translation_description="The label of the button to keep the seat.">Cancel</string>
+    <string name="remove" translation_description="The label of the button to release the seat.">Remove</string>
+
     <plurals name="duration_hours">
         <item quantity="one" translation_description="Unit for duration of time by hours. Singular.">%s hour</item>
         <item quantity="other" translation_description="Unit for duration of time by hours. Plural.">%s hours</item>

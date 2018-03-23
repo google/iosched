@@ -32,8 +32,7 @@ import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.result.Result
 
 class TestUserEventDataSource(
-        private val userEventsResult: MutableLiveData<UserEventsResult>
-            = MutableLiveData()
+        private val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
 ) : UserEventDataSource {
 
     override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {

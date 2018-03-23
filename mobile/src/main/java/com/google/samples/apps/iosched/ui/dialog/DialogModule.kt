@@ -16,10 +16,14 @@
 
 package com.google.samples.apps.iosched.ui.dialog
 
+import android.arch.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.di.ChildFragmentScoped
+import com.google.samples.apps.iosched.shared.di.ViewModelKey
+import dagger.Binds
 import dagger.Module
 import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
+import dagger.multibindings.IntoMap
 
 /**
  * Module that defines the child fragments of the DialogFragments.
@@ -33,4 +37,21 @@ internal abstract class DialogModule {
     @ChildFragmentScoped
     @ContributesAndroidInjector
     internal abstract fun contributeDialogSignInFragment(): SignInDialogFragment
+
+    /**
+     * Generates an [AndroidInjector] for the [RemoveReservationDialogFragment].
+     */
+    @ChildFragmentScoped
+    @ContributesAndroidInjector
+    internal abstract fun contributeRemoveReservationDialogFragment():
+            RemoveReservationDialogFragment
+
+    /**
+     * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
+     * want to get a [RemoveReservationViewModel] class.
+     */
+    @Binds
+    @IntoMap
+    @ViewModelKey(RemoveReservationViewModel::class)
+    abstract fun bindRemoveReservationViewModel(viewModel: RemoveReservationViewModel): ViewModel
 }
