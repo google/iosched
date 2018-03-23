@@ -28,10 +28,10 @@
     </data>
 
     <LinearLayout
-        android:layout_width="@dimen/drawer_width"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:background="@color/white"
+        android:background="@drawable/filters_sheet_background"
+        android:elevation="8dp"
         android:orientation="vertical"
         tools:ignore="Overdraw">
 
@@ -39,10 +39,9 @@
             android:id="@+id/filters_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:baselineAligned="false"
             android:gravity="center_vertical"
-            android:minHeight="?actionBarSize"
+            android:minHeight="@dimen/a11y_min_touch_target"
             android:orientation="horizontal"
             android:paddingEnd="@dimen/spacing_normal"
             android:paddingStart="@dimen/margin_normal"
@@ -53,8 +52,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/filters"
-                android:textColor="?android:textColorPrimary"
-                android:textAppearance="?android:textAppearanceMedium" />
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="?android:textColorPrimary" />
 
             <Button
                 android:id="@+id/clear_filters"
@@ -62,12 +61,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
+                android:drawableEnd="@drawable/ic_clear_all"
                 android:drawablePadding="@dimen/spacing_normal"
+                android:onClick="@{(v) -> viewModel.clearFilters()}"
                 android:text="@string/clear_all"
                 android:textColor="?colorPrimary"
-                android:onClick="@{(v) -> viewModel.clearFilters()}"
                 app:invisibleUnless="@{viewModel.hasAnyFilters}"
-                android:drawableEnd="@drawable/ic_clear_all"
                 tools:visibility="visible" />
 
         </LinearLayout>
@@ -78,7 +77,9 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"
             android:orientation="vertical"
+            android:paddingHorizontal="@dimen/margin_normal"
             android:paddingVertical="@dimen/spacing_normal"
             android:scrollbars="vertical"
             app:layoutManager="GridLayoutManager"

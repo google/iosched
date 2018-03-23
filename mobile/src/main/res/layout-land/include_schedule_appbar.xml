@@ -39,8 +39,8 @@
             <!-- TODO Replace the placeholder with the actual asset -->
             <ImageView
                 android:id="@+id/profile_button"
-                android:layout_width="@dimen/min_touch_target"
-                android:layout_height="@dimen/min_touch_target"
+                android:layout_width="@dimen/a11y_min_touch_target"
+                android:layout_height="@dimen/a11y_min_touch_target"
                 android:layout_gravity="center_vertical|start"
                 android:contentDescription="@{context.getString(viewModel.profileContentDesc)}"
                 android:foreground="?selectableItemBackground"

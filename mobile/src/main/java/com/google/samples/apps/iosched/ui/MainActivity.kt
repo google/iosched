@@ -17,8 +17,6 @@ package com.google.samples.apps.iosched.ui
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.widget.DrawerLayout
-import android.view.Gravity
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.consume
 import com.google.samples.apps.iosched.shared.util.inTransaction
@@ -41,7 +39,6 @@ class MainActivity : DaggerAppCompatActivity() {
             supportFragmentManager.inTransaction {
                 add(R.id.fragment_container, fragment)
             }
-            drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         }
 
         navigation.setOnNavigationItemSelectedListener {
@@ -59,17 +56,5 @@ class MainActivity : DaggerAppCompatActivity() {
         supportFragmentManager.inTransaction {
             replace(R.id.fragment_container, fragment)
         }
-        drawer_layout.setDrawerLockMode(when (fragment) {
-            is ScheduleFragment -> DrawerLayout.LOCK_MODE_UNLOCKED
-            else -> DrawerLayout.LOCK_MODE_LOCKED_CLOSED
-        })
-    }
-
-    override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(Gravity.END)) {
-            drawer_layout.closeDrawer(Gravity.END)
-            return
-        }
-        super.onBackPressed()
     }
 }

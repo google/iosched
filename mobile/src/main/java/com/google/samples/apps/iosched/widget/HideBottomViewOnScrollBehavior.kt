@@ -32,17 +32,25 @@ import android.view.ViewPropertyAnimator
 import android.view.animation.Interpolator
 
 /**
- * Improved version of material lib's HideBottomViewOnScrollBehavior, because the current one has
- * awkward scrolling (b/74947918) and doesn't respond to flings (b/75314734).
+ * Alternate version of material lib's HideBottomViewOnScrollBehavior. This one has various bugfixes
+ * and additional features.
  */
-// TODO remove when a fixed version in material lib is released.
+// TODO remove if/when version in material lib that meets our needs.
 @Keep
 class HideBottomViewOnScrollBehavior<V : View> : Behavior<V> {
+
+    /** Callback interface for scroll events */
+    interface ScrollListener {
+        /** Called when the [view]'s position is changed by a scroll event. */
+        fun onBottomViewScrolled(view: View)
+    }
 
     private var height = 0
     private var scrollState = SCROLLED_UP
     private var currentAnimation: ViewPropertyAnimator? = null
     private var minScaledFlingVelocity = 0
+
+    private var listeners = mutableSetOf<ScrollListener>()
 
     constructor() : super()
 
@@ -127,7 +135,18 @@ class HideBottomViewOnScrollBehavior<V : View> : Behavior<V> {
                     currentAnimation = null
                 }
             })
+            setUpdateListener {
+                listeners.forEach { it.onBottomViewScrolled(child) }
+            }
         }
+    }
+
+    fun addScrollListener(listener: ScrollListener) {
+        listeners.add(listener)
+    }
+
+    fun removeScrollListener(listener: ScrollListener) {
+        listeners.remove(listener)
     }
 
     companion object {
@@ -137,5 +156,14 @@ class HideBottomViewOnScrollBehavior<V : View> : Behavior<V> {
 
         private val LINEAR_OUT_SLOW_IN_INTERPOLATOR = LinearOutSlowInInterpolator()
         private val FAST_OUT_LINEAR_IN_INTERPOLATOR = FastOutLinearInInterpolator()
+
+        /** Utility for getting a HideBottomViewOnScrollBehavior from a [view]. */
+        @JvmStatic
+        fun from(view: View): HideBottomViewOnScrollBehavior<*> {
+            val lp = view.layoutParams as? CoordinatorLayout.LayoutParams
+                    ?: throw IllegalArgumentException("view is not a child of CoordinatorLayout")
+            return lp.behavior as? HideBottomViewOnScrollBehavior
+                    ?: throw IllegalArgumentException("view is not associated with this behavior")
+        }
     }
 }

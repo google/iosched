@@ -16,7 +16,8 @@
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -59,6 +60,23 @@
             android:layout_gravity="bottom"
             app:layout_behavior="com.google.samples.apps.iosched.widget.HideBottomViewOnScrollBehavior"
             app:layout_insetEdge="bottom" />
+
+        <!--
+          ~ We use a margin to prevent the status bar from drawing over the shadow when the sheet
+          ~ expands. However, marginTop pushes the sheet down from it's peekHeight when collapsed.
+          ~ Using marginBottom achieves the desired effect.
+          -->
+        <fragment
+            android:id="@+id/filter_sheet"
+            android:name="com.google.samples.apps.iosched.ui.schedule.filters.ScheduleFilterFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="4dp"
+            app:layout_behavior="com.google.samples.apps.iosched.widget.BottomSheetBehavior"
+            app:behavior_hideable="false"
+            app:behavior_peekHeight="@dimen/bottom_sheet_peek_height"
+            tools:layout="@layout/fragment_schedule_filter" />
 
     </com.google.samples.apps.iosched.widget.NestedScrollingCoordinatorLayout>
 
