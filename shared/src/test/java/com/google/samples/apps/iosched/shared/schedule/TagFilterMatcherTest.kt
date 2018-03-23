@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.shared.schedule
 
 import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.model.TestData.androidTag
 import com.google.samples.apps.iosched.shared.model.TestData.codelabsTag
 import com.google.samples.apps.iosched.shared.model.TestData.session0
@@ -36,7 +37,7 @@ class TagFilterMatcherTest {
     private var sessionMatcher = TagFilterMatcher()
 
     private fun createTestUserSession(vararg tags: Tag): UserSession {
-        return UserSession(session0.copy(tags = tags.asList()), null)
+        return UserSession(session0.copy(tags = tags.asList()), TestData.userEvents[0])
     }
 
     @Before

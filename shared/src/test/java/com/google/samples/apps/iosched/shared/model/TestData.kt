@@ -133,15 +133,20 @@ object TestData : ConferenceDataSource {
             startTime = session3.startTime.toInstant().toEpochMilli(),
             endTime = session3.endTime.toInstant().toEpochMilli(),
             reservation = ReservationRequestResult(RESERVE_DENIED_UNKNOWN, System.currentTimeMillis()))
+    private val userEvent4 = UserEvent(sessionIDs[4], isStarred = true,
+            isReviewed = true,
+            startTime = session4.startTime.toInstant().toEpochMilli(),
+            endTime = session4.endTime.toInstant().toEpochMilli(),
+            reservation = ReservationRequestResult(RESERVE_DENIED_UNKNOWN, System.currentTimeMillis()))
     private val userSession0 = UserSession(session0, userEvent0)
     private val userSession1 = UserSession(session1, userEvent1)
     private val userSession2 = UserSession(session2, userEvent2)
     private val userSession3 = UserSession(session3, userEvent3)
-    private val userSession4 = UserSession(session4, null)
+    private val userSession4 = UserSession(session4, userEvent4)
     val userSessionMap = mapOf(ConferenceDay.DAY_1 to listOf(userSession0, userSession1),
             ConferenceDay.DAY_2 to listOf(userSession2),
             ConferenceDay.DAY_3 to listOf(userSession3, userSession4))
-    val userEvents = listOf(userEvent0, userEvent1, userEvent2, userEvent3)
+    val userEvents = listOf(userEvent0, userEvent1, userEvent2, userEvent3, userEvent4)
 
     // endregion Declarations
 

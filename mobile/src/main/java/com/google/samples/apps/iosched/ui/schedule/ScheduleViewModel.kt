@@ -280,13 +280,13 @@ class ScheduleViewModel @Inject constructor(
         loadUserSessionsByDayUseCase.execute(userSessionMatcher to (getUserId() ?: "tempUser"))
     }
 
-    override fun onStarClicked(session: Session, userEvent: UserEvent?) {
+    override fun onStarClicked(userEvent: UserEvent) {
         if (!isLoggedIn()) {
             Timber.d("Showing Sign-in dialog after star click")
             _navigateToSignInDialogAction.value = Event(true)
             return
         }
-        val newIsStarredState = !(userEvent?.isStarred ?: false)
+        val newIsStarredState = !userEvent.isStarred
 
         // Update the snackbar message optimistically.
         val snackbarMessage = if(newIsStarredState) {
@@ -297,11 +297,12 @@ class ScheduleViewModel @Inject constructor(
         _snackBarMessage.postValue(Event(snackbarMessage))
 
         getUserId()?.let {
-            starEventUseCase.execute(StarEventParameter(it, session, newIsStarredState))
+            starEventUseCase.execute(StarEventParameter(it,
+                    userEvent.copy(isStarred = newIsStarredState)))
         }
     }
 
-    override fun onReservationClicked(session: Session, userEvent: UserEvent?) {
+    override fun onReservationClicked(session: Session, userEvent: UserEvent) {
         if (!isLoggedIn()) {
             // TODO: Show a dialog saying "Sign in to customize your schedule"
             // https://docs.google.com/presentation/d/1VtsO3f-FfaigP1dErhIYJaqRXMCIYMXvHBa3y5cUTb0/edit?ts=5aa15da0#slide=id.g34bc00dc0a_0_7
@@ -316,9 +317,9 @@ class ScheduleViewModel @Inject constructor(
             return
         }
 
-        val action = if (userEvent?.isReserved() == true
-                || userEvent?.isWaitlisted() == true
-                || userEvent?.reservationRequested == LastReservationRequested.RESERVATION) {
+        val action = if (userEvent.isReserved()
+                || userEvent.isWaitlisted()
+                || userEvent.reservationRequested == LastReservationRequested.RESERVATION) {
             // Cancel the reservation if it's reserved, waitlisted or pending
             ReservationRequestAction.CANCEL
         } else {
@@ -360,10 +361,9 @@ interface ScheduleEventListener {
     /** Called from the UI to toggle showing starred or reserved events only. */
     fun togglePinnedEvents(pinned: Boolean)
 
-    // TODO: replace session with sessionId once userEvent in [UserSession] isn't nullable
-    fun onStarClicked(session: Session, userEvent: UserEvent?)
+    fun onReservationClicked(session: Session, userEvent: UserEvent)
 
-    fun onReservationClicked(session: Session, userEvent: UserEvent?)
+    fun onStarClicked(userEvent: UserEvent)
 }
 
 //TODO(jalc) move somewhere else (b/74113562)

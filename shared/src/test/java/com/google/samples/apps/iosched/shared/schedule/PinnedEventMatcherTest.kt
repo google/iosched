@@ -19,7 +19,6 @@ package com.google.samples.apps.iosched.shared.schedule
 import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.model.UserSession
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Test
 
 class PinnedEventMatcherTest {
@@ -30,11 +29,5 @@ class PinnedEventMatcherTest {
             val userSession = UserSession(TestData.session0, it)
             assertEquals(it.isPinned(), PinnedEventMatcher.matches(userSession))
         }
-    }
-
-    @Test
-    fun userEventIsNull_doesNotMatch() {
-        val userSession = UserSession(TestData.session0, null)
-        assertFalse(PinnedEventMatcher.matches(userSession))
     }
 }

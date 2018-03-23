@@ -23,25 +23,26 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.firestore.entity.LastReservationRequested
+import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
 
 object TestUserEventDataSource : UserEventDataSource {
+
     override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {
         val result = MutableLiveData<UserEventsResult>()
         result.postValue(UserEventsResult(true, TestData.userEvents))
         return result
     }
 
-    override fun updateStarred(userId: String, session: Session, isStarred: Boolean):
+    override fun starEvent(userId: String, userEvent: UserEvent):
             LiveData<Result<StarUpdatedStatus>> {
         val result = MutableLiveData<Result<StarUpdatedStatus>>()
         result.postValue(Result.Success(
-                if (isStarred) StarUpdatedStatus.STARRED else StarUpdatedStatus.UNSTARRED))
+                if (userEvent.isStarred) StarUpdatedStatus.STARRED
+                else StarUpdatedStatus.UNSTARRED))
         return result
     }
-
-    override fun getUserEvents(userId: String) = TestData.userEvents
 
     override fun requestReservation(
             userId: String, session: Session, action: ReservationRequestAction
