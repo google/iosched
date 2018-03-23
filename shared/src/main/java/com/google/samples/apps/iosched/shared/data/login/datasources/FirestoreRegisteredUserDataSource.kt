@@ -59,7 +59,13 @@ class FirestoreRegisteredUserDataSource @Inject constructor(
         val registeredChangedListener = {
             snapshot: DocumentSnapshot?, _: FirebaseFirestoreException? ->
             DefaultScheduler.execute {
-                val isRegistered: Boolean? = snapshot?.get(REGISTERED_KEY) as? Boolean
+                if (snapshot == null || !snapshot.exists()) {
+                    // When the account signs in for the first time, the document doesn't exist
+                    Timber.d("Document for snapshot $userId doesn't exist")
+                    result.postValue(Result.Success(false))
+                    return@execute
+                }
+                val isRegistered: Boolean? = snapshot.get(REGISTERED_KEY) as? Boolean
                 Timber.d("Received registered flag: $isRegistered")
                 result.postValue(Result.Success(isRegistered))
             }
