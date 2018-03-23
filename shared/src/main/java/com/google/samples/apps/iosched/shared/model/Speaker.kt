@@ -57,4 +57,8 @@ data class Speaker(
 ) {
     val hasCompany
         get() = !company.isEmpty()
+
+    val hasAbstract
+        get() = !abstract.isEmpty()
 }
+
