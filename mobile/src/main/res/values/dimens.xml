@@ -47,4 +47,5 @@
     <dimen name="a11y_min_touch_target_dimen">48dp</dimen>
 
     <dimen name="app_bar_height">200dp</dimen>
+    <dimen name="bottom_navigation_height">56dp</dimen>
 </resources>
