@@ -25,6 +25,7 @@ import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEvent
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.firestore.entity.LastReservationRequested
+import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
@@ -57,7 +58,7 @@ class StarEventUseCaseTest {
 
         val resultLiveData = useCase.observe()
 
-        useCase.execute(StarEventParameter("userIdTest", TestData.session0, true))
+        useCase.execute(StarEventParameter("userIdTest", TestData.userEvents[0]))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
         Assert.assertEquals(result, Result.Success(StarUpdatedStatus.STARRED))
@@ -71,7 +72,7 @@ class StarEventUseCaseTest {
 
         val resultLiveData = useCase.observe()
 
-        useCase.execute(StarEventParameter("userIdTest", TestData.session0, true))
+        useCase.execute(StarEventParameter("userIdTest", TestData.userEvents[0]))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
         assertTrue(result is Result.Error)
@@ -81,9 +82,9 @@ class StarEventUseCaseTest {
 val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepository {
 
     val result = MutableLiveData<Result<StarUpdatedStatus>>()
-    override fun updateIsStarred(userId: String, session: Session, isStarred: Boolean):
-            LiveData<Result<StarUpdatedStatus>> {
 
+    override fun starEvent(userId: String, userEvent: UserEvent):
+            LiveData<Result<StarUpdatedStatus>> {
         result.postValue(Result.Error(Exception("Test")))
         return result
     }

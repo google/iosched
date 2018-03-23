@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.shared.data.userevent
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -36,7 +35,6 @@ import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -51,7 +49,6 @@ class FirestoreUserEventDataSource @Inject constructor(
         private const val USERS_COLLECTION = "users"
         private const val EVENTS_COLLECTION = "events"
         private const val QUEUE_COLLECTION = "queue"
-        private const val REQUESTS_COLLECTION = "requests"
         private const val ID = "id"
         private const val START_TIME = "startTime"
         private const val END_TIME = "endTime"
@@ -67,26 +64,6 @@ class FirestoreUserEventDataSource @Inject constructor(
         private const val REQUEST_QUEUE_ACTION_CANCEL = "return"
         private const val REQUEST_SESSION_KEY = "session_id"
 
-    }
-
-    /**
-     * Synchronous method to get the user events.
-     */
-    //TODO: Not used
-    override fun getUserEvents(userId: String): List<UserEvent> {
-        if (userId.isEmpty()) {
-            return emptyList()
-        }
-        val task = firestore.collection(USERS_COLLECTION)
-                .document(userId)
-                .collection(EVENTS_COLLECTION).get()
-        val snapshot = Tasks.await(task, 20, TimeUnit.SECONDS) // TODO refactor if ever used
-        return snapshot.documents.map {
-            UserEvent(id = it.id,
-                    startTime = it[START_TIME] as Long,
-                    endTime = it[END_TIME] as Long,
-                    isStarred = it[IS_STARRED] as Boolean)
-        }
     }
 
     /**
@@ -189,9 +166,8 @@ class FirestoreUserEventDataSource @Inject constructor(
 
         val changedId: String = change.document.data[ID] as String
         // Get the old value
-        val oldData = result.userEvents.firstOrNull { it.id == changedId }
+        val oldData = result.userEvents.firstOrNull { it.id == changedId } ?: return null
         // If this is new data, ignore
-        if (oldData == null) return null
         val newReservationState = generateReservationRequestResult(change.document)
         val newReservationRequested = parseReservationRequested(change.document)
         if (oldData.isReservationPending()
@@ -250,22 +226,22 @@ class FirestoreUserEventDataSource @Inject constructor(
      *
      * @returns a result via a LiveData.
      */
-    override fun updateStarred(userId: String, session: Session, isStarred: Boolean):
+    override fun starEvent(userId: String, userEvent: UserEvent):
             LiveData<Result<StarUpdatedStatus>> {
 
         val result = MutableLiveData<Result<StarUpdatedStatus>>()
 
-        val data = mapOf(ID to session.id,
-                START_TIME to session.startTime.toEpochMilli(),
-                END_TIME to session.endTime.toEpochMilli(),
-                IS_STARRED to isStarred)
+        val data = mapOf(ID to userEvent.id,
+                START_TIME to userEvent.startTime,
+                END_TIME to userEvent.endTime,
+                IS_STARRED to userEvent.isStarred)
         firestore.collection(USERS_COLLECTION)
                 .document(userId)
                 .collection(EVENTS_COLLECTION)
-                .document(session.id).set(data, SetOptions.merge()).addOnCompleteListener({
+                .document(userEvent.id).set(data, SetOptions.merge()).addOnCompleteListener({
                     if (it.isSuccessful) {
                         result.postValue(Result.Success(
-                                if (isStarred) StarUpdatedStatus.STARRED
+                                if (userEvent.isStarred) StarUpdatedStatus.STARRED
                                 else StarUpdatedStatus.UNSTARRED))
                     } else {
                         result.postValue(Result.Error(

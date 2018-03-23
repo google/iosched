@@ -22,5 +22,5 @@ import com.google.samples.apps.iosched.shared.model.UserSession
 object PinnedEventMatcher : UserSessionMatcher {
 
     /** Returns true if the UserSession is starred or has an appropriate reservation status. */
-    override fun matches(userSession: UserSession) = userSession.userEvent?.isPinned() ?: false
+    override fun matches(userSession: UserSession) = userSession.userEvent.isPinned()
 }
