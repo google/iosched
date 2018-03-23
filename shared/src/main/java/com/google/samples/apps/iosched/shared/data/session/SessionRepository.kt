@@ -27,8 +27,6 @@ import javax.inject.Inject
  */
 interface SessionRepository {
     fun getSessions() : List<Session>
-
-    fun getSessionsOffline(): List<Session>
 }
 
 class DefaultSessionRepository @Inject constructor(
@@ -36,9 +34,6 @@ class DefaultSessionRepository @Inject constructor(
 ) : SessionRepository {
 
     override fun getSessions() : List<Session> {
-        return conferenceDataRepository.getConferenceData().sessions
+        return conferenceDataRepository.getOfflineConferenceData().sessions
     }
-
-    override fun getSessionsOffline(): List<Session> =
-            conferenceDataRepository.getOfflineConferenceData().sessions
 }

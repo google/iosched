@@ -178,7 +178,7 @@ object TestData : ConferenceDataSource {
         version = 42
     )
 
-    override fun getConferenceData() = conferenceData
+    override fun getRemoteConferenceData() = conferenceData
 
     override fun getOfflineConferenceData() = conferenceData
 }

@@ -19,7 +19,7 @@ package com.google.samples.apps.iosched.shared.data
 import com.google.samples.apps.iosched.shared.model.ConferenceData
 
 interface ConferenceDataSource {
-    fun getConferenceData(): ConferenceData?
+    fun getRemoteConferenceData(): ConferenceData?
     fun getOfflineConferenceData(): ConferenceData?
 }
 

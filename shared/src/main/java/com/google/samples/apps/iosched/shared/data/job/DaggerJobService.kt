@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.tag
+package com.google.samples.apps.iosched.shared.data.job
 
-import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
-import com.google.samples.apps.iosched.shared.model.Tag
-import javax.inject.Inject
-import javax.inject.Singleton
+import android.app.job.JobService
+import dagger.android.AndroidInjection
 
 /**
- * Single point of access to tag data for the presentation layer.
+ * A [JobService] that injects into [AndroidInjection].
  */
-@Singleton
-open class TagRepository @Inject constructor(
-    private val conferenceDataRepository: ConferenceDataRepository)
-{
-    fun getTags(): List<Tag> = conferenceDataRepository.getOfflineConferenceData().tags
+abstract class DaggerJobService : JobService() {
+    override fun onCreate() {
+        super.onCreate()
+        AndroidInjection.inject(this)
+    }
 }

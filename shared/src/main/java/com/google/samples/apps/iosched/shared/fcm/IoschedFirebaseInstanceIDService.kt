@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.tag
+package com.google.samples.apps.iosched.shared.fcm
 
-import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
-import com.google.samples.apps.iosched.shared.model.Tag
-import javax.inject.Inject
-import javax.inject.Singleton
+import com.google.firebase.iid.FirebaseInstanceId
+
+import timber.log.Timber
 
 /**
- * Single point of access to tag data for the presentation layer.
+ * Service that receives new FCM ID Tokens.
  */
-@Singleton
-open class TagRepository @Inject constructor(
-    private val conferenceDataRepository: ConferenceDataRepository)
-{
-    fun getTags(): List<Tag> = conferenceDataRepository.getOfflineConferenceData().tags
+class IoschedFirebaseInstanceIDService : DaggerFirebaseInstanceIdService() {
+    override fun onTokenRefresh() {
+        super.onTokenRefresh()
+        val token = FirebaseInstanceId.getInstance().token
+
+        Timber.d("Token refresh! $token") // STOPSHIP: Remove this
+
+        //TODO: Update token in Firestore
+    }
 }

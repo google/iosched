@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.shared.data
 
 import android.content.Context
 import android.support.annotation.WorkerThread
+import com.google.samples.apps.iosched.shared.BuildConfig
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.HttpUrl
@@ -29,10 +30,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
 import java.io.IOException
 
-
-//TODO(jalc): Move
-const val URL = "https://firebasestorage.googleapis.com/v0/b/io2018-festivus/o/" +
-        "conference_data_2016.json?alt=media&token=12c2ffb4-5149-4a1d-a379-456a8dbea369"
 
 /**
  * Downloads session data.
@@ -64,9 +61,11 @@ class ConferenceDataDownloader(
     @WorkerThread
     fun fetch(): Response {
 
-        Timber.d("Download started from: $URL")
+        val url = BuildConfig.CONFERENCE_DATA_URL
 
-        val httpBuilder = HttpUrl.parse(URL)?.newBuilder()
+        Timber.d("Download started from: $url")
+
+        val httpBuilder = HttpUrl.parse(url)?.newBuilder()
                 ?: throw IllegalArgumentException("Malformed Session data URL")
         httpBuilder.addQueryParameter("bootstrapVersion", bootstrapVersion)
 
@@ -86,9 +85,12 @@ class ConferenceDataDownloader(
     }
 
     fun fetchCached(): Response? {
-        Timber.d("Fetching cached file")
 
-        val httpBuilder = HttpUrl.parse(URL)?.newBuilder()
+        val url = BuildConfig.CONFERENCE_DATA_URL
+
+        Timber.d("Fetching cached file for url: $url")
+
+        val httpBuilder = HttpUrl.parse(url)?.newBuilder()
                 ?: throw IllegalArgumentException("Malformed Session data URL")
         httpBuilder.addQueryParameter("bootstrapVersion", bootstrapVersion)
 

@@ -36,6 +36,7 @@ android {
         buildConfigField("String", "CONFERENCE_DAY3_START", "\"${conference_day3_start}\"")
         buildConfigField("String", "CONFERENCE_DAY3_END", "\"${conference_day3_end}\"")
         buildConfigField("String", "REGISTRATION_ENDPOINT_URL", "\"${registration_url}\"")
+        buildConfigField "String", "CONFERENCE_DATA_URL", "\"${conference_data_url}\""
     }
 
     buildTypes {
@@ -53,6 +54,18 @@ android {
             // Used with :test-shared, which doesn't have a staging variant.
             matchingFallbacks = ['debug']
         }
+    }
+    // Workaround for bug in timber:
+    // https://github.com/JakeWharton/timber/issues/292
+    lintOptions {
+        disable "BinaryOperationInTimber",
+                "LogNotTimber",
+                "StringFormatInTimber",
+                "ThrowableNotAtBeginning",
+                "TimberArgCount",
+                "TimberArgTypes",
+                "TimberExceptionLogging",
+                "TimberTagLength"
     }
 
     // debug and release variants share the same source dir
@@ -94,9 +107,10 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
 
     // Firebase
-    api("com.google.firebase:firebase-core:$rootProject.googlePlayServicesClientVersion")
-    api("com.google.firebase:firebase-firestore:$rootProject.googlePlayServicesClientVersion")
-    api("com.google.firebase:firebase-auth:$rootProject.googlePlayServicesClientVersion")
+    api "com.google.firebase:firebase-core:$rootProject.googlePlayServicesClientVersion"
+    api "com.google.firebase:firebase-firestore:$rootProject.googlePlayServicesClientVersion"
+    api "com.google.firebase:firebase-auth:$rootProject.googlePlayServicesClientVersion"
+    api "com.google.firebase:firebase-messaging:$rootProject.googlePlayServicesClientVersion"
 
     // ThreeTenBP for the shared module only. Date and time API for Java.
     testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"

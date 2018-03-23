@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.di
 
 import com.google.samples.apps.iosched.MainApplication
+import com.google.samples.apps.iosched.shared.di.ServiceBindingModule
 import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.ui.login.LoginViewModelPluginModule
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailModule
@@ -38,6 +39,7 @@ import javax.inject.Singleton
     AppModule::class,
     ActivityBindingModule::class,
     ViewModelModule::class,
+    ServiceBindingModule::class,
     SharedModule::class,
     SessionDetailModule::class,
     LoginModule::class,

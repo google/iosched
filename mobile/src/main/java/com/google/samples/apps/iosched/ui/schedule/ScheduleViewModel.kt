@@ -40,6 +40,7 @@ import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.UserSession
+import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.schedule.PinnedEventMatcher
@@ -364,27 +365,4 @@ interface ScheduleEventListener {
     fun onReservationClicked(session: Session, userEvent: UserEvent)
 
     fun onStarClicked(userEvent: UserEvent)
-}
-
-//TODO(jalc) move somewhere else (b/74113562)
-/**
- * Used as a wrapper for data that is exposed via a LiveData that represents an event.
- */
-open class Event<out T>(private val content: T, private var hasBeenHandled: Boolean = false) {
-    /**
-     * Returns the content and prevents its use again.
-     */
-    fun getContentIfNotHandled(): T? {
-        return if (hasBeenHandled) {
-            null
-        } else {
-            hasBeenHandled = true
-            content
-        }
-    }
-
-    /**
-     * Returns the content, even if it's already been handled.
-     */
-    fun peekContent(): T = content
 }

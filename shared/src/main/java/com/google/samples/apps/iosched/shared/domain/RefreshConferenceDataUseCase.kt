@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.shared.domain
 
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -26,8 +27,14 @@ open class RefreshConferenceDataUseCase @Inject constructor(
         private val repository: ConferenceDataRepository
 ) : UseCase<Any, Boolean>() {
 
-    override fun execute(parameters: Any): Boolean{
-        repository.getConferenceData(forceUpdate = true)
+    override fun execute(parameters: Any): Boolean {
+        try {
+            repository.refreshCacheWithRemoteConferenceData()
+        } catch (e: Exception) {
+            Timber.e(e, "Conference data refresh failed")
+            throw e
+
+        }
         return true
     }
 }
