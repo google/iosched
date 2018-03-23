@@ -16,10 +16,12 @@
 
 package com.google.samples.apps.iosched.shared.domain.users
 
+import android.os.Parcel
+import android.os.Parcelable
+import android.os.Parcelable.Creator
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
-import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
 import timber.log.Timber
 import javax.inject.Inject
@@ -36,7 +38,7 @@ open class ReservationActionUseCase @Inject constructor(
         DefaultScheduler.execute {
             try {
                 val updateResult = repository.changeReservation(
-                        parameters.userId, parameters.session, parameters.action)
+                        parameters.userId, parameters.sessionId, parameters.action)
 
                 result.removeSource(updateResult)
                 result.addSource(updateResult, {
@@ -53,9 +55,8 @@ open class ReservationActionUseCase @Inject constructor(
 
 data class ReservationRequestParameters(
         val userId: String,
-        val session: Session,
+        val sessionId: String,
         val action: ReservationRequestAction)
-
 
 enum class ReservationRequestAction {
     REQUEST,

@@ -27,7 +27,8 @@ import com.google.samples.apps.iosched.shared.result.Result
 abstract class MediatorUseCase<in P, R> {
     protected val result = MediatorLiveData<Result<R>>()
 
-    fun observe(): MediatorLiveData<Result<R>> {
+    // Make this as open so that mock instances can mock this method
+    open fun observe(): MediatorLiveData<Result<R>> {
         return result
     }
 

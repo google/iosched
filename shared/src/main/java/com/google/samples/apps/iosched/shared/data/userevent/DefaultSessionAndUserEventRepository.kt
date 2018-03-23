@@ -91,10 +91,12 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
     override fun changeReservation(
             userId: String,
-            session: Session,
+            sessionId: String,
             action: ReservationRequestAction
     ): LiveData<Result<ReservationRequestAction>> {
-        return userEventDataSource.requestReservation(userId, session, action)
+        return userEventDataSource.requestReservation(userId,
+                sessionRepository.getSession(sessionId),
+                action)
     }
     /**
      * Merges user data with sessions.
@@ -147,7 +149,7 @@ interface SessionAndUserEventRepository {
             LiveData<Result<LoadUserSessionsByDayUseCaseResult>>
 
     fun changeReservation(
-            userId: String, session: Session, action: ReservationRequestAction
+            userId: String, sessionId: String, action: ReservationRequestAction
     ): LiveData<Result<ReservationRequestAction>>
 
     fun starEvent(userId: String, userEvent: UserEvent): LiveData<Result<StarUpdatedStatus>>

@@ -38,10 +38,13 @@ import com.google.android.material.widget.Snackbar.LENGTH_SHORT
 import com.google.android.material.widget.TabLayout
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.checkAllMatched
 import com.google.samples.apps.iosched.ui.SnackbarMessage
+import com.google.samples.apps.iosched.ui.dialog.RemoveReservationDialogFragment
+import com.google.samples.apps.iosched.ui.dialog.RemoveReservationDialogFragment.Companion.DIALOG_REMOVE_RESERVATION
 import com.google.samples.apps.iosched.ui.dialog.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.login.LoginEvent.RequestLogin
 import com.google.samples.apps.iosched.ui.login.LoginEvent.RequestLogout
@@ -107,6 +110,11 @@ class ScheduleFragment : DaggerFragment() {
         viewModel.navigateToSignInDialogAction.observe(this, Observer {
             it?.getContentIfNotHandled()?.let {
                 openSignInDialog(requireActivity())
+            }
+        })
+        viewModel.navigateToRemoveReservationDialogAction.observe(this, Observer {
+            it?.getContentIfNotHandled()?.let {
+                openRemoveReservationDialog(requireActivity(), it)
             }
         })
         return binding.root
@@ -181,6 +189,12 @@ class ScheduleFragment : DaggerFragment() {
     private fun openSignInDialog(activity: FragmentActivity) {
         val dialog = SignInDialogFragment()
         dialog.show(activity.supportFragmentManager, DIALOG_NEED_TO_SIGN_IN)
+    }
+
+    private fun openRemoveReservationDialog(activity: FragmentActivity,
+                                            parameters: ReservationRequestParameters) {
+        val dialog = RemoveReservationDialogFragment.newInstance(parameters)
+        dialog.show(activity.supportFragmentManager, DIALOG_REMOVE_RESERVATION)
     }
 
     private fun doLogout() {

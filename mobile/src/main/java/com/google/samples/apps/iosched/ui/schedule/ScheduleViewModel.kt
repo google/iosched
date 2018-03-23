@@ -30,7 +30,8 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsBy
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.sessions.UserEventsMessage
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CANCEL
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.REQUEST
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
@@ -121,6 +122,11 @@ class ScheduleViewModel @Inject constructor(
     private val _navigateToSignInDialogAction = MutableLiveData<Event<Boolean>>()
     val navigateToSignInDialogAction: LiveData<Event<Boolean>>
         get() = _navigateToSignInDialogAction
+
+    private val _navigateToRemoveReservationDialogAction =
+            MutableLiveData<Event<ReservationRequestParameters>>()
+    val navigateToRemoveReservationDialogAction: LiveData<Event<ReservationRequestParameters>>
+        get() = _navigateToRemoveReservationDialogAction
 
     init {
         userSessionMatcher = tagFilterMatcher
@@ -330,27 +336,20 @@ class ScheduleViewModel @Inject constructor(
             return
         }
 
-        val action = if (userEvent.isReserved()
+        val userId = getUserId() ?: return
+        if (userEvent.isReserved()
                 || userEvent.isWaitlisted()
                 || userEvent.isCancelPending() // Just in case
                 || userEvent.isReservationPending()) {
-            // Cancel the reservation if it's reserved, waitlisted or pending
-            ReservationRequestAction.CANCEL
-        } else {
-            ReservationRequestAction.REQUEST
+            // Open the dialog to confirm if the user really wants to remove their reservation
+            _navigateToRemoveReservationDialogAction.value = Event(ReservationRequestParameters(
+                    userId,
+                    session.id,
+                    CANCEL))
+            return
         }
 
-        // Update the snackbar message optimistically.
-        val snackbarMessage = when(action) {
-            ReservationRequestAction.REQUEST -> SnackbarMessage(R.string.reservation_request_succeeded, R.string.got_it)
-            ReservationRequestAction.CANCEL -> SnackbarMessage(R.string.reservation_cancel_succeeded, R.string.got_it)
-        }
-        _snackBarMessage.postValue(Event(snackbarMessage))
-
-        getUserId()?.let {
-            reservationActionUseCase.execute(ReservationRequestParameters(it, session, action))
-        }
-
+        reservationActionUseCase.execute(ReservationRequestParameters(userId, session.id, REQUEST))
     }
 
     /**
