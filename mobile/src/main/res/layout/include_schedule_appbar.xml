@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/margin_normal"
-            app:layout_scrollFlags="scroll|snap">
+            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
 
             <ImageView
                 android:id="@+id/profile_button"
@@ -70,13 +70,6 @@
                 android:thumb="@drawable/btn_pinned_events_thumb" />
 
         </FrameLayout>
-
-        <!-- AppBarLayout requires a collapsing view for the header pinning behavior we want -->
-        <android.support.v4.widget.Space
-            android:layout_width="0dp"
-            android:layout_height="1px"
-            android:minHeight="0px"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed" />
 
         <com.google.android.material.widget.TabLayout
             android:id="@+id/tabs"

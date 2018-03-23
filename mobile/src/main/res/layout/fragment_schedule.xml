@@ -26,7 +26,7 @@
 
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <com.google.samples.apps.iosched.widget.NestedScrollingCoordinatorLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -52,6 +52,6 @@
             android:layout_gravity="center"
             app:goneUnless="@{viewModel.isLoading}" />
 
-    </android.support.design.widget.CoordinatorLayout>
+    </com.google.samples.apps.iosched.widget.NestedScrollingCoordinatorLayout>
 
 </layout>
