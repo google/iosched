@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.ui.schedule
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
-import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
@@ -67,9 +66,7 @@ class ScheduleFragment : DaggerFragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = activityViewModelProvider(viewModelFactory)
-        val binding: FragmentScheduleBinding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_schedule, container, false
-        )
+        val binding = FragmentScheduleBinding.inflate(inflater, container, false)
 
         // Set the layout variables
         binding.viewModel = viewModel

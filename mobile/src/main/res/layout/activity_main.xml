@@ -23,32 +23,22 @@
     android:layout_height="match_parent"
     tools:context="com.google.samples.apps.iosched.ui.MainActivity">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/container"
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/navigation"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <com.google.android.material.widget.BottomNavigationView
             android:id="@+id/navigation"
-            android:layout_width="0dp"
+            style="@style/Widget.IOSched.BottomNav"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            android:layout_gravity="bottom"
             app:labelVisibilityMode="labeled"
-            app:menu="@menu/navigation"
-            style="@style/Widget.IOSched.BottomNav" />
+            app:layout_behavior="com.google.samples.apps.iosched.widget.HideBottomViewOnScrollBehavior"
+            app:menu="@menu/navigation" />
 
-    </android.support.constraint.ConstraintLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
     <!-- Filters drawer. This needs to slide over the BottomNavigationView, so can't be contained
          within the ScheduleFragment.
