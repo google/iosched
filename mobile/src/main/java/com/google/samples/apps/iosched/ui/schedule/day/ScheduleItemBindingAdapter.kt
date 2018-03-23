@@ -21,7 +21,6 @@ import android.databinding.BindingAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.firestore.entity.LastReservationRequested
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import org.threeten.bp.Duration
 import org.threeten.bp.ZonedDateTime
@@ -62,10 +61,10 @@ fun reservationStatus(
 fun getReservationDrawable(userEvent: UserEvent?) : Int {
 
     return when {
+        userEvent?.isCancelPending() == true -> R.drawable.ic_cancel_pending
         userEvent?.isReserved() == true -> R.drawable.ic_reservation_reserved
         userEvent?.isWaitlisted() == true -> R.drawable.ic_reservation_waitlisted
-        userEvent?.reservationRequested == LastReservationRequested.RESERVATION ->
-            R.drawable.ic_reservation_pending
+        userEvent?.isReservationPending() == true -> R.drawable.ic_reservation_pending
         else -> return R.drawable.ic_reservation_default
     }
 }

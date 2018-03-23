@@ -20,14 +20,14 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QueryListenOptions
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.samples.apps.iosched.shared.domain.sessions.UserEventsMessage
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
-import com.google.samples.apps.iosched.shared.firestore.entity.LastReservationRequested
+import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequest
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
@@ -35,6 +35,7 @@ import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -53,16 +54,27 @@ class FirestoreUserEventDataSource @Inject constructor(
         private const val START_TIME = "startTime"
         private const val END_TIME = "endTime"
         private const val IS_STARRED = "isStarred"
-        private const val RESERVATION = "reservation"
-        private const val RESERVATION_STATUS = "status"
-        private const val RESERVATION_TIME = "timestamp"
-        private const val RESERVATION_REQUESTED_KEY = "reservationRequested"
+        private const val RESERVATION_RESULT_KEY = "reservationResult"
+        private const val RESERVATION_RESULT_TIME_KEY = "timestamp"
+        private const val RESERVATION_RESULT_RESULT_KEY = "requestResult"
+        private const val RESERVATION_RESULT_REQ_ID_KEY = "requestId"
+
+        private const val RESERVATION_REQUEST_KEY = "reservationRequest"
+
         private const val RESERVE_REQ_ACTION = "RESERVE_REQUESTED"
         private const val RESERVE_CANCEL_ACTION = "CANCEL_REQUESTED"
-        private const val REQUEST_ACTION_KEY = "action"
-        private const val REQUEST_QUEUE_ACTION_RESERVE = "reserve"
-        private const val REQUEST_QUEUE_ACTION_CANCEL = "return"
-        private const val REQUEST_SESSION_KEY = "session_id"
+
+        private const val RESERVATION_REQUEST_ACTION_KEY = "action"
+        private const val RESERVATION_REQUEST_REQUEST_ID_KEY = "requestId"
+        private const val RESERVATION_REQUEST_TIMESTAMP_KEY = "timestamp"
+
+        private const val RESERVATION_STATUS_KEY = "reservationStatus"
+
+        private const val REQUEST_QUEUE_ACTION_KEY = "action"
+        private const val REQUEST_QUEUE_SESSION_KEY = "sessionId"
+        private const val REQUEST_QUEUE_REQUEST_ID_KEY = "requestId"
+        private const val REQUEST_QUEUE_ACTION_RESERVE = "RESERVE"
+        private const val REQUEST_QUEUE_ACTION_CANCEL = "CANCEL"
 
     }
 
@@ -76,53 +88,26 @@ class FirestoreUserEventDataSource @Inject constructor(
     override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {
         val result = MutableLiveData<UserEventsResult>()
         if (userId.isEmpty()) {
-            result.postValue(UserEventsResult(true, emptyList()))
+            result.postValue(UserEventsResult(emptyList()))
             return result
         }
 
-        // Need to include this option to let the Metadata#hasPendingWrite() is called
-        // When there is locally modified data, which isn't synced to the server
-        val options = QueryListenOptions().includeDocumentMetadataChanges()
         firestore.collection(USERS_COLLECTION)
                 .document(userId)
                 // TODO: Add a way to clear this listener
-                .collection(EVENTS_COLLECTION).addSnapshotListener(options, { snapshot, _ ->
+                .collection(EVENTS_COLLECTION).addSnapshotListener { snapshot, _ ->
                     snapshot ?: return@addSnapshotListener
+
+                    Timber.d("Events changes detected")
 
                     // Generate important user messages, like new reservations, if any.
                     val userMessage = generateReservationChangeMsg(snapshot, result.value)
 
-                    // Add a dirty flag to the user event if it's not synced with the server.
-                    if (snapshot.metadata.hasPendingWrites()) {
-                        // This means locally modified data isn't synced with the server
-                        val changedIds =
-                                snapshot.documentChanges.map { it.document.data[ID] }.toSet()
-
-                        val userEventsResult = UserEventsResult(
-                                allDataSynced = false,
-                                userEvents = snapshot.documents.map {
-                                        parseUserEvent(it).apply {
-                                            hasPendingWrite = it[ID] in changedIds
-                                        }
-
-                                    },
-                                userEventsMessage = UserEventsMessage.DATA_NOT_SYNCED
-                        )
-
-                        result.postValue(userEventsResult)
-
-                    } else { // Has no pending writes
-                        val userEventsResult = UserEventsResult(
-                                allDataSynced = true,
-                                userEvents = snapshot.documents.map {
-                                    parseUserEvent(it).apply {
-                                        hasPendingWrite = false
-                                    }
-                                },
-                                userEventsMessage = userMessage)
-                        result.postValue(userEventsResult)
-                    }
-                })
+                    val userEventsResult = UserEventsResult(
+                            userEvents = snapshot.documents.map { parseUserEvent(it) },
+                            userEventsMessage = userMessage)
+                    result.postValue(userEventsResult)
+                }
         return result
     }
 
@@ -165,59 +150,139 @@ class FirestoreUserEventDataSource @Inject constructor(
     ): UserEventsMessage? {
 
         val changedId: String = change.document.data[ID] as String
-        // Get the old value
-        val oldData = result.userEvents.firstOrNull { it.id == changedId } ?: return null
-        // If this is new data, ignore
-        val newReservationState = generateReservationRequestResult(change.document)
-        val newReservationRequested = parseReservationRequested(change.document)
-        if (oldData.isReservationPending()
-                && newReservationRequested == null
-                && newReservationState?.status == ReservationRequestStatus.RESERVE_SUCCEEDED) {
-            Timber.d("Reservation change detected: ${changedId}")
+        // Get the old state. If there's none, ignore.
+        val oldState = result.userEvents.firstOrNull { it.id == changedId } ?: return null
+
+        // Get the new state
+        val newState = parseUserEvent(change.document)
+
+        // If the old data wasn't reserved and it's reserved now, there's a change.
+        if (!oldState.isReserved() && newState.isReserved()) {
+            Timber.d("Reservation change detected: $changedId")
             return UserEventsMessage.CHANGES_IN_RESERVATIONS
         }
-        // The session is waiting for a change
-        if (oldData.isReservationPending()
-                && newReservationRequested == null
-                && newReservationState?.status == ReservationRequestStatus.RESERVE_WAITLISTED) {
-            Timber.d("Waitlist change detected: ${changedId}")
+        // If the user was waiting for a reservation and they're waitlisted, there's a change.
+        if (oldState.isReservationPending() && newState.isWaitlisted()) {
+            Timber.d("Waitlist change detected: $changedId")
             return UserEventsMessage.CHANGES_IN_WAITLIST
+        }
+
+        // User canceled reservation
+        if (oldState.isReserved() && !newState.isReserved()) {
+            Timber.d("Reservation cancellation detected: $changedId")
+            return UserEventsMessage.RESERVATION_CANCELED
+        }
+
+        // User canceled waitlist
+        if (oldState.isWaitlisted() && !newState.isReserved() && !newState.isWaitlisted()) {
+            Timber.d("Reservation cancellation detected: $changedId")
+            return UserEventsMessage.WAITLIST_CANCELED
+        }
+
+        // Errors: only show if it's a new one.
+        if (newState.hasRequestResultError()
+                && newState.isDifferentRequestResult(oldState.getReservationRequestResultId())) {
+
+            // Reserve cut-off
+            if (newState.isRequestResultErrorReserveDeniedCutoff()) {
+                Timber.d("Reservation error cut-off: $changedId")
+                return UserEventsMessage.RESERVATION_DENIED_CUTOFF
+            }
+            // Reserve clash
+            if (newState.isRequestResultErrorReserveDeniedClash()) {
+                Timber.d("Reservation error clash: $changedId")
+                return UserEventsMessage.RESERVATION_DENIED_CLASH
+            }
+            // Reserve unknown
+            if (newState.isRequestResultErrorReserveDeniedUnknown()) {
+                Timber.d("Reservation unknown error: $changedId")
+                return UserEventsMessage.RESERVATION_DENIED_UNKNOWN
+            }
+            // Cancel cut-off
+            if (newState.isRequestResultErrorCancelDeniedCutoff()) {
+                Timber.d("Cancellation error cut-off: $changedId")
+                return UserEventsMessage.CANCELLATION_DENIED_CUTOFF
+            }
+            // Cancel unknown
+            if (newState.isRequestResultErrorCancelDeniedUnknown()) {
+                Timber.d("Cancellation unknown error: $changedId")
+                return UserEventsMessage.CANCELLATION_DENIED_UNKNOWN
+            }
+
         }
         return null
     }
 
-    private fun parseUserEvent(it: DocumentSnapshot): UserEvent {
+    private fun parseUserEvent(snapshot: DocumentSnapshot): UserEvent {
 
         val reservationRequestResult: ReservationRequestResult? =
-                generateReservationRequestResult(it)
+                generateReservationRequestResult(snapshot)
 
-        return UserEvent(id = it.id,
-                startTime = it[START_TIME] as Long,
-                endTime = it[END_TIME] as Long,
-                reservation = reservationRequestResult,
-                isStarred = it[IS_STARRED] as? Boolean ?: false,
-                reservationRequested = parseReservationRequested(it)
+        val reservationRequest = parseReservationRequest(snapshot)
+
+        val reservationStatus = (snapshot[RESERVATION_STATUS_KEY] as? String)?.let {
+            UserEvent.ReservationStatus.getIfPresent(it)
+        }
+
+        return UserEvent(id = snapshot.id,
+                startTime = snapshot[START_TIME] as Long,
+                endTime = snapshot[END_TIME] as Long,
+                reservationRequestResult = reservationRequestResult,
+                reservationStatus = reservationStatus,
+                isStarred = snapshot[IS_STARRED] as? Boolean ?: false,
+                reservationRequest = reservationRequest
         )
     }
 
-    private fun generateReservationRequestResult(it: DocumentSnapshot): ReservationRequestResult? {
-        return (it[RESERVATION] as? Map<String?, Any?>) // TODO: unsafe
-                ?.let { reservation: Map<String?, Any?> ->
-                    ReservationRequestResult(
-                            status = (reservation[RESERVATION_STATUS] as? String)
-                                    ?.let { ReservationRequestStatus.getIfPresent(it) },
-                            timestamp = reservation[RESERVATION_TIME] as? Long
-                                    ?: -1
-                    )
-                }
+    private fun generateReservationRequestResult(
+            snapshot: DocumentSnapshot
+    ): ReservationRequestResult? {
+
+        (snapshot[RESERVATION_RESULT_KEY] as? Map<*, *>)?.let { reservation ->
+            val requestResult = (reservation[RESERVATION_RESULT_RESULT_KEY] as? String)
+                    ?.let { ReservationRequestStatus.getIfPresent(it) }
+
+            val requestId = (reservation[RESERVATION_RESULT_REQ_ID_KEY] as? String)
+
+            val timestamp = reservation[RESERVATION_RESULT_TIME_KEY] as? Long ?: -1
+
+            // Mandatory fields or fail:
+            if (requestResult == null || requestId == null) {
+                Timber.e("Error parsing reservation request result: some fields null")
+                return null
+            }
+
+            return ReservationRequestResult(
+                    requestResult = requestResult,
+                    requestId = requestId,
+                    timestamp = timestamp
+            )
+        }
+        // If there's no reservation:
+        return null
     }
 
-    private fun parseReservationRequested(it: DocumentSnapshot) =
-            when(it[RESERVATION_REQUESTED_KEY] as? String) {
-                RESERVE_REQ_ACTION -> LastReservationRequested.RESERVATION
-                RESERVE_CANCEL_ACTION -> LastReservationRequested.CANCEL
-                else -> null
+    private fun parseReservationRequest(
+            snapshot: DocumentSnapshot
+    ): ReservationRequest? {
+
+        (snapshot[RESERVATION_REQUEST_KEY] as? Map<*, *>)?.let { request ->
+            val action = (request[RESERVATION_REQUEST_ACTION_KEY] as? String)?.let {
+                ReservationRequest.ReservationRequestEntityAction.getIfPresent(it)
             }
+            val requestId = (request[RESERVATION_REQUEST_REQUEST_ID_KEY] as? String)
+
+            // Mandatory fields or fail:
+            if (action == null || requestId == null) {
+                Timber.e("Error parsing reservation request from Firestore")
+                return null
+            }
+
+            return ReservationRequest(action, requestId)
+        }
+        // If there's no reservation request:
+        return null
+    }
 
     /** Firestore writes **/
 
@@ -263,9 +328,9 @@ class FirestoreUserEventDataSource @Inject constructor(
             userId: String,
             session: Session,
             action: ReservationRequestAction
-    ): LiveData<Result<LastReservationRequested>> {
+    ): LiveData<Result<ReservationRequestAction>> {
 
-        val result = MutableLiveData<Result<LastReservationRequested>>()
+        val result = MutableLiveData<Result<ReservationRequestAction>>()
 
         val logCancelOrReservation =
                 if (action == ReservationRequestAction.CANCEL) "Cancel" else "Reservation"
@@ -275,16 +340,24 @@ class FirestoreUserEventDataSource @Inject constructor(
         // Get a new write batch. This is a lightweight transaction.
         val batch = firestore.batch()
 
+        val newRandomRequestId = UUID.randomUUID().toString()
+
         // Write #1: Mark this session as reserved. This is for clients to track.
         val userSession = firestore.collection(USERS_COLLECTION)
                 .document(userId)
                 .collection(EVENTS_COLLECTION)
                 .document(session.id)
 
+        val reservationRequest = mapOf(
+                RESERVATION_REQUEST_ACTION_KEY to getReservationRequestedEventAction(action),
+                RESERVATION_REQUEST_REQUEST_ID_KEY to newRandomRequestId,
+                RESERVATION_REQUEST_TIMESTAMP_KEY to FieldValue.serverTimestamp()
+        )
+
         val userSessionData = mapOf(ID to session.id,
                 START_TIME to session.startTime.toEpochMilli(),
                 END_TIME to session.endTime.toEpochMilli(),
-                RESERVATION_REQUESTED_KEY to getReservationRequestedEventAction(action))
+                RESERVATION_REQUEST_KEY to reservationRequest)
 
         batch.set(userSession, userSessionData, SetOptions.merge())
 
@@ -295,20 +368,19 @@ class FirestoreUserEventDataSource @Inject constructor(
                 .collection(QUEUE_COLLECTION)
                 .document(userId)
 
-        val reservationRequest = HashMap<String, Any>()
-        reservationRequest[REQUEST_ACTION_KEY] = getReservationRequestedQueueAction(action)
-        reservationRequest[REQUEST_SESSION_KEY] = session.id
+        val queueReservationRequest = mapOf(
+                REQUEST_QUEUE_ACTION_KEY to getReservationRequestedQueueAction(action),
+                REQUEST_QUEUE_SESSION_KEY to session.id,
+                REQUEST_QUEUE_REQUEST_ID_KEY to newRandomRequestId)
 
-        batch.set(newRequest, reservationRequest)
+        batch.set(newRequest, queueReservationRequest)
 
         // Commit write batch
 
         batch.commit().addOnSuccessListener {
             Timber.d("$logCancelOrReservation request for session ${session.id} succeeded")
-            val resultMessage = if (action == ReservationRequestAction.REQUEST)
-                LastReservationRequested.RESERVATION else LastReservationRequested.CANCEL
 
-            result.postValue(Result.Success(resultMessage))
+            result.postValue(Result.Success(action))
         }.addOnFailureListener {
             Timber.e(it, "$logCancelOrReservation request for session ${session.id} failed")
             result.postValue(Result.Error(it))
@@ -317,11 +389,12 @@ class FirestoreUserEventDataSource @Inject constructor(
         return result
     }
 
-    private fun getReservationRequestedEventAction(action: ReservationRequestAction) =
+    private fun getReservationRequestedEventAction(action: ReservationRequestAction): String =
             when (action) {
                 ReservationRequestAction.REQUEST -> RESERVE_REQ_ACTION
                 ReservationRequestAction.CANCEL -> RESERVE_CANCEL_ACTION
             }
+
 
     private fun getReservationRequestedQueueAction(action: ReservationRequestAction) =
             when (action) {

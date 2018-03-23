@@ -1,5 +1,13 @@
 package com.google.samples.apps.iosched.shared.firestore.entity
 
+import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequest.ReservationRequestEntityAction.CANCEL_REQUESTED
+import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequest.ReservationRequestEntityAction.RESERVE_REQUESTED
+import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.CANCEL_DENIED_CUTOFF
+import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.CANCEL_DENIED_UNKNOWN
+import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.CANCEL_SUCCEEDED
+import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.RESERVE_DENIED_CLASH
+import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.RESERVE_DENIED_CUTOFF
+import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.RESERVE_DENIED_UNKNOWN
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.RESERVE_SUCCEEDED
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.RESERVE_WAITLISTED
 
@@ -28,48 +36,132 @@ data class UserEvent(
         /** Tracks whether the user has provided feedback for the event. */
         val isReviewed: Boolean = false,
 
+        /** Source of truth of the state of a reservation */
+        private val reservationStatus: ReservationStatus? = null,
+
         /** Stores the result of a reservation request for the event. */
-        val reservation: ReservationRequestResult? = null,
+        private val reservationRequestResult: ReservationRequestResult? = null,
 
         /** Stores the user's latest reservation action  */
-        val reservationRequested: LastReservationRequested? = null,
-
-        /**
-         * Whether this entity has a pending write to the server.
-         * This flag is set to true when there is a locally modified data, but not synced to the
-         * server.
-         * See [https://firebase.google.com/docs/firestore/query-data/listen] for more details.
-         */
-        var hasPendingWrite: Boolean = false
+        private val reservationRequest: ReservationRequest? = null
 ) {
     fun isPinned(): Boolean {
         return isStarred
-                || reservation?.status == RESERVE_SUCCEEDED
-                || reservation?.status == RESERVE_WAITLISTED
+                || reservationRequestResult?.requestResult == RESERVE_SUCCEEDED
+                || reservationRequestResult?.requestResult == RESERVE_WAITLISTED
+    }
+
+    /**
+     * An request is pending if the result has a saved request with a different ID than the
+     * latest request made by the user.
+     */
+    private fun isPending(): Boolean {
+        // Request but no result = pending
+        if (reservationRequest != null && reservationRequestResult == null) return true
+
+        // If request and result exist they need to have different IDs to be pending.
+        return reservationRequest != null
+                && reservationRequest.requestId != reservationRequestResult?.requestId
     }
 
     fun isReserved(): Boolean {
-        // If the server is not yet updated, show the session as not reserved.
-        return reservation?.status == RESERVE_SUCCEEDED
-                && !isPending()
+        return reservationStatus == ReservationStatus.RESERVED
     }
 
     fun isWaitlisted(): Boolean {
-        // If the server is not yet updated, show the session as not waitlisted.
-        return reservation?.status == RESERVE_WAITLISTED
-                && !isPending()
+        return reservationStatus == ReservationStatus.WAITLISTED
     }
 
-    fun isPending(): Boolean {
-        return reservationRequested != null
+    fun getReservationRequestResultId(): String? {
+        return reservationRequestResult?.requestId
     }
+
+    fun isDifferentRequestResult(otherId: String?): Boolean {
+        return reservationRequestResult?.requestId != otherId
+    }
+
+    fun isReservedAndPendingCancel(): Boolean {
+        return isReserved() && isCancelPending()
+    }
+
+    fun isWaitlistedAndPendingCancel(): Boolean {
+        return isWaitlisted() && isCancelPending()
+    }
+
+    fun hasRequestResultError(): Boolean {
+        return requestResultError() != null
+    }
+
+    fun requestResultError(): ReservationRequestResult.ReservationRequestStatus? {
+        // The request result is garbage if there's a pending request
+        if (!isPending()) return null
+
+        return when (reservationRequestResult?.requestResult) {
+            null -> null // If there's no request result, there's no error
+            RESERVE_SUCCEEDED -> null
+            RESERVE_WAITLISTED -> null
+            CANCEL_SUCCEEDED -> null
+            else -> reservationRequestResult.requestResult
+
+        }
+    }
+
+    fun isRequestResultErrorReserveDeniedCutoff(): Boolean {
+        return requestResultError() == RESERVE_DENIED_CUTOFF
+    }
+
+    fun isRequestResultErrorReserveDeniedClash(): Boolean {
+        return requestResultError() == RESERVE_DENIED_CLASH
+    }
+
+    fun isRequestResultErrorReserveDeniedUnknown(): Boolean {
+        return requestResultError() == RESERVE_DENIED_UNKNOWN
+    }
+
+    fun isRequestResultErrorCancelDeniedCutoff(): Boolean {
+        return requestResultError() == CANCEL_DENIED_CUTOFF
+    }
+
+    fun isRequestResultErrorCancelDeniedUnknown(): Boolean {
+        return requestResultError() == CANCEL_DENIED_UNKNOWN
+    }
+
 
     fun isReservationPending(): Boolean {
-        return reservationRequested == LastReservationRequested.RESERVATION
+        return (reservationStatus == ReservationStatus.NONE || reservationStatus == null)
+                && isPending()
+                && reservationRequest?.action == RESERVE_REQUESTED
     }
-}
 
-enum class LastReservationRequested {
-    RESERVATION,
-    CANCEL
+    fun isCancelPending(): Boolean {
+        return reservationStatus != ReservationStatus.NONE
+                && isPending()
+                && reservationRequest?.action == CANCEL_REQUESTED
+    }
+
+    /**
+     * The source of truth for a reservation status.
+     */
+    enum class ReservationStatus {
+        /** The reservation was granted */
+        RESERVED,
+
+        /** The reservation was granted but the user was placed on a waitlist. */
+        WAITLISTED,
+
+        /** The reservation request was denied because it was too close to the start of the
+         * event. */
+        NONE;
+
+        companion object {
+
+            fun getIfPresent(string: String): ReservationStatus? {
+                return try {
+                    valueOf(string)
+                } catch(e: IllegalArgumentException) {
+                    null
+                }
+            }
+        }
+    }
 }

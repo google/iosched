@@ -24,7 +24,6 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
-import com.google.samples.apps.iosched.shared.firestore.entity.LastReservationRequested
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.TestData
@@ -98,7 +97,7 @@ val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepositor
             userId: String,
             session: Session,
             action: ReservationRequestAction
-    ): LiveData<Result<LastReservationRequested>> {
+    ): LiveData<Result<ReservationRequestAction>> {
         throw NotImplementedError()
     }
 }

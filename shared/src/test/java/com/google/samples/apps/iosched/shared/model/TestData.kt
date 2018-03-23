@@ -114,30 +114,35 @@ object TestData : ConferenceDataSource {
             isReviewed = false,
             startTime = session0.startTime.toInstant().toEpochMilli(),
             endTime = session0.endTime.toInstant().toEpochMilli(),
-            reservation = ReservationRequestResult(RESERVE_SUCCEEDED, System.currentTimeMillis()))
+            reservationRequestResult = ReservationRequestResult(
+                    RESERVE_SUCCEEDED, "123", System.currentTimeMillis()))
     // Waitlisted event
     private val userEvent1 = UserEvent(sessionIDs[1], isStarred = false,
             isReviewed = true,
             startTime = session1.startTime.toInstant().toEpochMilli(),
             endTime = session1.endTime.toInstant().toEpochMilli(),
-            reservation = ReservationRequestResult(RESERVE_WAITLISTED, System.currentTimeMillis()))
+            reservationRequestResult = ReservationRequestResult(
+                    RESERVE_WAITLISTED, "123", System.currentTimeMillis()))
     // Starred event
     private val userEvent2 = UserEvent(sessionIDs[2], isStarred = true,
             isReviewed = false,
             startTime = session2.startTime.toInstant().toEpochMilli(),
             endTime = session2.endTime.toInstant().toEpochMilli(),
-            reservation = ReservationRequestResult(RESERVE_DENIED_CUTOFF, System.currentTimeMillis()))
+            reservationRequestResult = ReservationRequestResult(
+                    RESERVE_DENIED_CUTOFF, "123", System.currentTimeMillis()))
     // Not starred, reserved, or waitlisted
     private val userEvent3 = UserEvent(sessionIDs[3], isStarred = false,
             isReviewed = true,
             startTime = session3.startTime.toInstant().toEpochMilli(),
             endTime = session3.endTime.toInstant().toEpochMilli(),
-            reservation = ReservationRequestResult(RESERVE_DENIED_UNKNOWN, System.currentTimeMillis()))
+            reservationRequestResult = ReservationRequestResult(
+                    RESERVE_DENIED_UNKNOWN, "123", System.currentTimeMillis()))
     private val userEvent4 = UserEvent(sessionIDs[4], isStarred = true,
             isReviewed = true,
             startTime = session4.startTime.toInstant().toEpochMilli(),
             endTime = session4.endTime.toInstant().toEpochMilli(),
-            reservation = ReservationRequestResult(RESERVE_DENIED_UNKNOWN, System.currentTimeMillis()))
+            reservationRequestResult = ReservationRequestResult(
+                    RESERVE_DENIED_UNKNOWN, "123", System.currentTimeMillis()))
     private val userSession0 = UserSession(session0, userEvent0)
     private val userSession1 = UserSession(session1, userEvent1)
     private val userSession2 = UserSession(session2, userEvent2)

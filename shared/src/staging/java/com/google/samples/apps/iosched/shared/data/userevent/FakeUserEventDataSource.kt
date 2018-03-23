@@ -21,7 +21,6 @@ import android.arch.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
-import com.google.samples.apps.iosched.shared.firestore.entity.LastReservationRequested
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.RESERVE_SUCCEEDED
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
@@ -38,7 +37,7 @@ object FakeUserEventDataSource : UserEventDataSource {
 
     init {
         conferenceData.sessions.forEachIndexed {i, session ->
-            val reservation = ReservationRequestResult(RESERVE_SUCCEEDED,
+            val reservation = ReservationRequestResult(RESERVE_SUCCEEDED, "123",
                     System.currentTimeMillis())
             if (i in 1..50) {
                 userEvents.add(UserEvent(session.id,
@@ -46,14 +45,14 @@ object FakeUserEventDataSource : UserEventDataSource {
                         startTime = session.startTime.toInstant().toEpochMilli(),
                         endTime = session.endTime.toInstant().toEpochMilli(),
                         isReviewed = i % 3 == 0,
-                        reservation = reservation))
+                        reservationRequestResult = reservation))
             }
         }
     }
 
     override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {
         val result = MutableLiveData<UserEventsResult>()
-        result.postValue(UserEventsResult(true, userEvents))
+        result.postValue(UserEventsResult(userEvents))
         return result
     }
 
@@ -69,12 +68,12 @@ object FakeUserEventDataSource : UserEventDataSource {
 
     override fun requestReservation(
             userId: String, session: Session, action: ReservationRequestAction
-    ): LiveData<Result<LastReservationRequested>> {
+    ): LiveData<Result<ReservationRequestAction>> {
 
-        val result = MutableLiveData<Result<LastReservationRequested>>()
+        val result = MutableLiveData<Result<ReservationRequestAction>>()
         result.postValue(Result.Success(
-                if (action == ReservationRequestAction.REQUEST) LastReservationRequested.RESERVATION
-                else LastReservationRequested.CANCEL))
+                if (action == ReservationRequestAction.REQUEST) ReservationRequestAction.REQUEST
+                else ReservationRequestAction.CANCEL))
         return result
     }
 }
