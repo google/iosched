@@ -35,7 +35,6 @@ import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestPar
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
-import com.google.samples.apps.iosched.shared.firestore.entity.LastReservationRequested
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.Session
@@ -176,7 +175,10 @@ class ScheduleViewModel @Inject constructor(
         // Show an error message if a reservation request fails
         _snackBarMessage.addSource(reservationActionUseCase.observe()) {
             if (it is Result.Error) {
-                _snackBarMessage.postValue(Event(SnackbarMessage(R.string.reservation_error)))
+                _snackBarMessage.postValue(Event(SnackbarMessage(
+                        messageId = R.string.reservation_error,
+                        longDuration = true,
+                        actionId = R.string.got_it)))
             }
         }
 
@@ -184,18 +186,29 @@ class ScheduleViewModel @Inject constructor(
         _snackBarMessage.addSource(starEventUseCase.observe()) { it: Result<StarUpdatedStatus>? ->
             // Show a snackbar message on error.
             if (it is Result.Error)  {
-                _snackBarMessage.postValue(Event(SnackbarMessage(R.string.event_star_error)))
+                _snackBarMessage.postValue(Event(SnackbarMessage(
+                        messageId = R.string.event_star_error,
+                        longDuration = true,
+                        actionId = R.string.got_it)))
             }
         }
 
         // Show a message with the result of a reservation
         _snackBarMessage.addSource(loadUserSessionsByDayUseCase.observe()) {
-            val message = when (it) {
+            val message: Int? = when (it) {
                 is Result.Success ->
                     when (it.data.userMessage) {
                         UserEventsMessage.CHANGES_IN_WAITLIST -> R.string.waitlist_new
                         UserEventsMessage.CHANGES_IN_RESERVATIONS -> R.string.reservation_new
-                        else -> null
+                        UserEventsMessage.RESERVATION_CANCELED -> null //No-op
+                        UserEventsMessage.WAITLIST_CANCELED -> null //No-op
+                        UserEventsMessage.RESERVATION_DENIED_CUTOFF -> R.string.reservation_denied_cutoff
+                        UserEventsMessage.RESERVATION_DENIED_CLASH -> R.string.reservation_denied_clash
+                        UserEventsMessage.RESERVATION_DENIED_UNKNOWN -> R.string.reservation_denied_unknown
+                        UserEventsMessage.CANCELLATION_DENIED_CUTOFF -> R.string.cancellation_denied_cutoff
+                        UserEventsMessage.CANCELLATION_DENIED_UNKNOWN -> R.string.cancellation_denied_unknown
+                        UserEventsMessage.DATA_NOT_SYNCED -> null
+                        null -> null
                     }
                 else -> null
             }
@@ -203,7 +216,7 @@ class ScheduleViewModel @Inject constructor(
             message?.let {
                 // Snackbar messages about changes in reservations last longer and have an action.
                 _snackBarMessage.postValue(Event(
-                        SnackbarMessage(message, actionId = R.string.got_it, longDuration = true)))
+                        SnackbarMessage(it, actionId = R.string.got_it, longDuration = true)))
             }
         }
 
@@ -305,8 +318,7 @@ class ScheduleViewModel @Inject constructor(
 
     override fun onReservationClicked(session: Session, userEvent: UserEvent) {
         if (!isLoggedIn()) {
-            // TODO: Show a dialog saying "Sign in to customize your schedule"
-            // https://docs.google.com/presentation/d/1VtsO3f-FfaigP1dErhIYJaqRXMCIYMXvHBa3y5cUTb0/edit?ts=5aa15da0#slide=id.g34bc00dc0a_0_7
+            // TODO: This should never happen :)
             Timber.d("You need to sign in to reserve an event")
             _errorMessage.value = Event("Sign in to reserve events")
             return
@@ -320,7 +332,8 @@ class ScheduleViewModel @Inject constructor(
 
         val action = if (userEvent.isReserved()
                 || userEvent.isWaitlisted()
-                || userEvent.reservationRequested == LastReservationRequested.RESERVATION) {
+                || userEvent.isCancelPending() // Just in case
+                || userEvent.isReservationPending()) {
             // Cancel the reservation if it's reserved, waitlisted or pending
             ReservationRequestAction.CANCEL
         } else {

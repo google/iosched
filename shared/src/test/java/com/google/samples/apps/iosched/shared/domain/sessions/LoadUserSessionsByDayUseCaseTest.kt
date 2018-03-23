@@ -87,7 +87,6 @@ class LoadUserSessionsByDayUseCaseTest {
         useCase.execute(Pair(FakeUserSessionMatcher, "user1"))
 
         userEventsResult.postValue(UserEventsResult(
-                allDataSynced = true,
                 userEventsMessage = UserEventsMessage.CHANGES_IN_RESERVATIONS,
                 userEvents = TestData.userEvents))
 

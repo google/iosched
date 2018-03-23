@@ -601,9 +601,9 @@
     ],
     "sessions": [
         {
-            "id": "keynote",
+            "id": "03d28d6f-c417-4c1a-a0ab-e4aa5c72ad90",
             "url": "https://events.google.com/io2016/",
-            "title": "Keynote",
+            "title": "Keynote Bootstrap",
             "description": "Join us to learn about product and platform innovation at Google, starting with a live kickoff from Google CEO Sundar Pichai.",
             "startTimestamp": "2018-05-08T17:00:00Z",
             "endTimestamp": "2018-05-08T19:00:00Z",
@@ -619,7 +619,7 @@
             "speakers": []
         },
         {
-            "id": "8f9c1403-0cef-e511-a517-00155d5066d7",
+            "id": "040f4750-2bf0-459b-9db2-e36b418ad7f5",
             "url": "https://events.google.com/io2016/schedule?sid=8f9c1403-0cef-e511-a517-00155d5066d7",
             "title": "Search and the mobile content ecosystem",
             "description": "People use Google millions of times per day on their mobile phones. As a primary gateway to discover and engage, you'll learn how Search is evolving well beyond ten blue links to bring your content to people in much richer and faster ways. We'll discuss how you can surface fresher and more real-time content, introduce new treatments for engaging and content-forward discovery experiences, and we'll let you know how the open source Accelerated Mobile Pages project (AMP) can provide blazing fast reading experiences for all the amazing content that you build.",
@@ -642,7 +642,7 @@
             "room": "34b13834-0afd-e511-a517-00155d5066d7"
         },
         {
-            "id": "5fd50c09-0cef-e511-a517-00155d5066d7",
+            "id": "086cd75d-8f7a-45d7-99bb-69dd3709535a",
             "url": "https://events.google.com/io2016/schedule?sid=5fd50c09-0cef-e511-a517-00155d5066d7",
             "title": "VR & Cinema",
             "description": "Filmmakers breaking into virtual reality face an entirely new set of challenges; creating for a new medium requires a new perspective. Join Google's Principal Filmmaker for VR, Jessica Brillhart, as she explores the emerging landscape and language of cinematic VR â€“ providing some of her own insights from being a creator in this field while highlighting experiences produced by the world's most prolific VR content creators.",
@@ -664,7 +664,7 @@
             "room": "19b9264a-35c9-e511-ab0e-00155d5066d7"
         },
         {
-            "id": "15631cfd-0bef-e511-a517-00155d5066d7",
+            "id": "040f4750-2bf0-459b-9db2-e36b418ad7f5",
             "url": "https://events.google.com/io2016/schedule?sid=15631cfd-0bef-e511-a517-00155d5066d7",
             "title": "Building the Google I/O Web App: Launching a Progressive Web App on Google.com",
             "description": "Learn how 20% engineers at Google used the same open source tools & technologies you use to launch a Progressive Web App on Google.com. We'll cover how we built a real, scalable, offline-first web app powered by Polymer, web components, service workers, notifications, Google Signin, Firebase, new browser APIs, and more. If Google has an API for it, we used it! Come for the workarounds. Stay for the tips and tricks.",
@@ -686,7 +686,7 @@
             "room": "c675afbb-4702-e611-a517-00155d5066d7"
         },
         {
-            "id": "61d80842-c8f6-e511-a517-00155d5066d7",
+            "id": "1260d1dc-16f1-459f-b15f-ebf765545627",
             "url": "https://events.google.com/io2016/schedule?sid=61d80842-c8f6-e511-a517-00155d5066d7",
             "title": "Advanced Data Binding",
             "description": "Android Data Binding preview was introduced at Google I/O in 2015, and released later that Fall. Come and learn about new Data Binding features, including two-way data binding and lambda expressions. We will also talk about the design decisions behind Data Binding's architecture, how it works with animations, RecyclerView, dependency injection and the best practices you can apply while you are integrating it with your application.",
@@ -709,7 +709,7 @@
             "room": "a4eedfa7-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "aad50c09-0cef-e511-a517-00155d5066d7",
+            "id": "1771b8e3-2d32-4f98-bf99-0497e4528fb0",
             "url": "https://events.google.com/io2016/schedule?sid=aad50c09-0cef-e511-a517-00155d5066d7",
             "title": "Google Cloud Spin: Stopping time with the power of the Cloud",
             "description": "Google Cloud Spin was born with the idea of replicating the special effects we've seen and love in movies. Could we implement this ... without a Hollywood budget? Our solution involves 20 Android phones, Firebase, and Google Cloud Platform - including Cloud Storage, Cloud Pub/Sub Compute Engine, Container Engine, App Engine, and some others. Whether you're an Android developer or a cloud enthusiast, come learn how all of these things come together to generate amazing animations in seconds!",
@@ -731,7 +731,7 @@
             "room": "d81361d2-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "592d2aeb-0bef-e511-a517-00155d5066d7",
+            "id": "18b053b4-580e-45ff-85fa-e34a9e4ad6bb",
             "url": "https://events.google.com/io2016/schedule?sid=592d2aeb-0bef-e511-a517-00155d5066d7",
             "title": "What the Fragment?",
             "description": "Android Fragments are polarizing and sometimes confusing. When should you use a fragment? How? Why? In this session we'll cover effective use of fragments along with new features. We'll also go over improvements that enable new use cases and improve existing ones.",
@@ -753,7 +753,7 @@
             "room": "1a17939d-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "1a631cfd-0bef-e511-a517-00155d5066d7",
+            "id": "22e454af-0e30-4436-86eb-04f6b71b43cc",
             "url": "https://events.google.com/io2016/schedule?sid=1a631cfd-0bef-e511-a517-00155d5066d7",
             "title": "Mythbusting HTTPS: Squashing security's urban legends",
             "description": "HTTPS is a must-have for progressive web apps. â€œBut,â€ you say, â€œit'll make my site slow! And it's going to cost a ton! And does it really give me any security benefits?â€ In this talk, we'll debunk some common myths and fears about HTTPS, show you why it's an essential feature for progressive web apps, and dispense some tips and tricks for getting a shiny green lock on your site.",
@@ -775,7 +775,7 @@
             "room": "c675afbb-4702-e611-a517-00155d5066d7"
         },
         {
-            "id": "642d2aeb-0bef-e511-a517-00155d5066d7",
+            "id": "297041cc-3f52-46c1-9507-3584a4b59d88",
             "url": "https://events.google.com/io2016/schedule?sid=642d2aeb-0bef-e511-a517-00155d5066d7",
             "title": "Android in motion",
             "description": "Motion helps guide your users through your app by providing hierarchy and spacial relationships. Transitions are the best way to implement this kind of scene change and to choreograph the journey through your app. This session provides a deep dive on Android's transition APIs focussing on content and shared element transitions. Learn how to use the provided transitions and to write your own.",
@@ -799,7 +799,7 @@
             "room": "1a17939d-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "42631cfd-0bef-e511-a517-00155d5066d7",
+            "id": "2e8fff62-11eb-4d73-92d3-895f28fd0403",
             "url": "https://events.google.com/io2016/schedule?sid=42631cfd-0bef-e511-a517-00155d5066d7",
             "title": "V8, modern JavaScript, and beyond",
             "description": "JavaScript powers the modern web and countless servers running Node.js. Chrome's V8 engine is faster than ever at running JavaScript code and now includes powerful new ES2015 features to give developers more control over how they write their apps. Listen to Seth Thompson talk about the latest speed advances V8 has made in compiling and running real-world code and how those performance improvements scale to large JavaScript frameworks running on a wide variety of devices. Finally, hear about the future of fast code in the browser with WebAssembly: a new cross-browser, plugin-free, low-level runtime for executing C/C++ code on the web.",
@@ -821,7 +821,7 @@
             "room": "c675afbb-4702-e611-a517-00155d5066d7"
         },
         {
-            "id": "c8641ff7-0bef-e511-a517-00155d5066d7",
+            "id": "2ec86f10-f447-4458-8fcb-8bbd8ecfe381",
             "url": "https://events.google.com/io2016/schedule?sid=c8641ff7-0bef-e511-a517-00155d5066d7",
             "title": "Zero to App: Develop with Firebase",
             "description": "Firebase helps mobile and web developers create extraordinary apps. It abstracts complex infrastructure and simplifies the development process. By using Firebase, developers can build the best user experience in the shortest amount of time, all without having to spin up servers or manage infrastructure. We'll explore how Firebase authenticates users and synchronizes data by creating an app on stage. You'll experience first hand how easy it is to build with Firebase!",
@@ -847,7 +847,7 @@
             "room": "34b13834-0afd-e511-a517-00155d5066d7"
         },
         {
-            "id": "a0d50c09-0cef-e511-a517-00155d5066d7",
+            "id": "32ffe81a-d156-479e-919a-946ef57f16a8",
             "url": "https://events.google.com/io2016/schedule?sid=a0d50c09-0cef-e511-a517-00155d5066d7",
             "title": "One lap around the Google Cloud Platform",
             "description": "Come find out what is NEXT with the Google Cloud Platform. In this session you will learn how the latest advances from Google can make your services more powerful, reliable and performant.  You will learn from the experts in a hands-on live coding demonstration of planning, developing, deploying, scaling, monitoring and diagnosing issues in a production application. We will walk through the process of building a highly scalable nodejs backend for an iOS and Android based game.  We will touch on the latest technologies Google Cloud Platform has to offering include: Machine learning via the Vision API, App Engine Flexible Environment, StackDriver monitoring and diagnosis. You will walk away ready to build what's NEXT with Google Cloud Platform.  ",
@@ -870,7 +870,7 @@
             "room": "d81361d2-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "0bc924f1-0bef-e511-a517-00155d5066d7",
+            "id": "3343e2d7-bed2-425a-8c12-61d7f636012f",
             "url": "https://events.google.com/io2016/schedule?sid=0bc924f1-0bef-e511-a517-00155d5066d7",
             "title": "Make shinier, faster mobile games with Vulkan",
             "description": "Vulkan is designed from the ground up for high-efficiency and unprecedented cross platform usage, introducing a paradigm shift in computer graphics. But what's really involved in adding Vulkan support to an existing code base? This talk covers both logistics and technical details of porting an OpenGL ES framework to Vulkan. In addition to that, it will also address some common post port topics on how to maximize the benefits of Vulkan. ",
@@ -892,7 +892,7 @@
             "room": "84a30586-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "dec824f1-0bef-e511-a517-00155d5066d7",
+            "id": "33706278-6a96-41ff-9bb6-02ba0826ff3e",
             "url": "https://events.google.com/io2016/schedule?sid=dec824f1-0bef-e511-a517-00155d5066d7",
             "title": "Inclusive design and testing: Making your app accessible",
             "description": "Nearly 20% of the U.S. population will have a disability during their lifetime. Developers can increase their user base and create a better experience for everyone by making their app accessible. APPlicable, a Campus Tel Aviv program, helps startups make their app accessible to people with disabilities by inviting startups to witness how blind and motor impaired users use their apps. In this session, we will present lessons learned and provide guidelines for creating an inclusive design. We will also present automated testing tools that provide suggestions to enhance accessibility.",
@@ -917,7 +917,7 @@
             "room": "84a30586-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "d2641ff7-0bef-e511-a517-00155d5066d7",
+            "id": "3a13596f-fee0-4bed-a01e-d7cfe7364acc",
             "url": "https://events.google.com/io2016/schedule?sid=d2641ff7-0bef-e511-a517-00155d5066d7",
             "title": "Mobile app user acquisition and retention",
             "description": "Learn when and how to acquire new users and retain them.",
@@ -941,7 +941,7 @@
             "room": "a8f18b8f-7dcb-e511-ab0e-00155d5066d7"
         },
         {
-            "id": "10631cfd-0bef-e511-a517-00155d5066d7",
+            "id": "3f5f4993-a875-46be-bbc5-0bdc656bbe58",
             "url": "https://events.google.com/io2016/schedule?sid=10631cfd-0bef-e511-a517-00155d5066d7",
             "title": "Chrome's Developer Tools: Superpowers for web developers",
             "description": "What's the ideal web developer's workflow? The Chrome DevTools team has asked this question over and over, only to realize that there isn't just one! So rather than bringing you to the DevTools, we're bringing the DevTools to you, wherever you are.\n\nLearn how far our upcoming integration with your favorite editors goes, our new supercharged console with ES6, the new command palette and much much more.",
@@ -963,7 +963,7 @@
             "room": "c675afbb-4702-e611-a517-00155d5066d7"
         },
         {
-            "id": "822d2aeb-0bef-e511-a517-00155d5066d7",
+            "id": "42653472-e875-48a3-9d55-1d31f0284267",
             "url": "https://events.google.com/io2016/schedule?sid=822d2aeb-0bef-e511-a517-00155d5066d7",
             "title": "Android Platform Fireside Chat",
             "description": "This is your chance to chat directly with the Android platform team and get your questions answered. We'll have engineers from the framework, runtime, media, graphics, and other teams onstage, eager to hear your innermost quandaries.",
@@ -986,7 +986,7 @@
             "room": "a8f18b8f-7dcb-e511-ab0e-00155d5066d7"
         },
         {
-            "id": "98621cfd-0bef-e511-a517-00155d5066d7",
+            "id": "49734f51-eb79-42e3-a148-e508db973bf0",
             "url": "https://events.google.com/io2016/schedule?sid=98621cfd-0bef-e511-a517-00155d5066d7",
             "title": "Streamlining developer experiences with the Google Maps APIs",
             "description": "The Google Maps APIs provide a seamless experience for developers of all levels. Some want to offer a map or navigation but don't want to build these things themselves; this can be achieved with just a few lines of code. Other developers prefer to integrate natively with off-the-shelf widgets. Finally, some developers want complete control over every aspect of the presentation.  \n\nThis session will highlight the Maps APIs representing the full gamut of the developer experiences, enabling you to get going immediately and scale as necessary. You'll see how widgets and services can be added over time with a suite of Maps APIs, services and libraries.",
@@ -1009,7 +1009,7 @@
             "room": "d81361d2-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "782d2aeb-0bef-e511-a517-00155d5066d7",
+            "id": "49ccebfb-2250-4f0a-86df-dbb5c3f0a594",
             "url": "https://events.google.com/io2016/schedule?sid=782d2aeb-0bef-e511-a517-00155d5066d7",
             "title": "What's new in Android",
             "description": "Come to this session to find out about new developer features in the platform. APIs, functionality, performance - it's all here.",
@@ -1034,7 +1034,7 @@
             "room": "34b13834-0afd-e511-a517-00155d5066d7"
         },
         {
-            "id": "4bd50c09-0cef-e511-a517-00155d5066d7",
+            "id": "4c374e8a-3eca-4970-bf97-2cf7741d74ec",
             "url": "https://events.google.com/io2016/schedule?sid=4bd50c09-0cef-e511-a517-00155d5066d7",
             "title": "What's New with Project Tango ",
             "description": "Project Tango unleashes a new way for you to explore the world. With a few sensors and some computer vision software, your phone gets even smarter, and can start to see the world the way you do. Follow guided arrows to know which exit to take when you get off the subway, see how a sofa looks in your living room before you buy it, or watch zombies battle on your dining table. In this session, we will explore the vision of Project Tango and how it will come to life with the launch of our first consumer phone, announced earlier this year. \n",
@@ -1056,7 +1056,7 @@
             "room": "a8f18b8f-7dcb-e511-ab0e-00155d5066d7"
         },
         {
-            "id": "be2d2aeb-0bef-e511-a517-00155d5066d7",
+            "id": "4f8d322d-49a8-4341-8552-0baf57e749d8",
             "url": "https://events.google.com/io2016/schedule?sid=be2d2aeb-0bef-e511-a517-00155d5066d7",
             "title": "Best practices in media playback",
             "description": "Best practices are key to building a great experience for your users, and media playback is no different. Whether it is building a strong app architecture for media playback, playing audio locally, controlling remote playback, being a good citizen for both the system and other apps, or working across form factors to Android Wear and Android Auto, we'll explore the best practices you should be using and how it all comes together.",
@@ -1078,7 +1078,7 @@
             "room": "84a30586-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "e1641ff7-0bef-e511-a517-00155d5066d7",
+            "id": "519d2ea2-90a6-40b1-abcc-6184f09c37d8",
             "url": "https://events.google.com/io2016/schedule?sid=e1641ff7-0bef-e511-a517-00155d5066d7",
             "title": "Cross-Platform coding without a net",
             "description": "Live-coding one app in front of several hundred attendees is dangerous. Live-coding two apps? Crazy. Trying to get them to talk to each other on the same shared backend and get it all working in half an hour? Well, that's moving into \"keeping a pet wolverine\" level of crazy. There will be thrills! There will be chills! There won't be any actual wolverines, though. ",
@@ -1100,7 +1100,7 @@
             "room": "1a17939d-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "912d2aeb-0bef-e511-a517-00155d5066d7",
+            "id": "532cc42d-df69-4ded-9766-2987ea46d2d7",
             "url": "https://events.google.com/io2016/schedule?sid=912d2aeb-0bef-e511-a517-00155d5066d7",
             "title": "What's new in Android development tools",
             "description": "In this session we will provide an in depth tour of the Android development tools and take a closer look at everything new - along with tips and tricks for getting the most out of them!",
@@ -1125,7 +1125,7 @@
             "room": "34b13834-0afd-e511-a517-00155d5066d7"
         },
         {
-            "id": "872d2aeb-0bef-e511-a517-00155d5066d7",
+            "id": "59f86c0c-a0be-4ca3-9b8c-e97e79b6610b",
             "url": "https://events.google.com/io2016/schedule?sid=872d2aeb-0bef-e511-a517-00155d5066d7",
             "title": "Android themes & styles demystified",
             "description": "Themes and styles are the bedrock of styling your Android UI, but do you know how they work? This talk will dive deeper into everything you have ever wanted to know about how styles and themes work together, what attributes really are, and how you can use them to make your styles more manageable.",
@@ -1148,7 +1148,7 @@
             "room": "1a17939d-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "2e631cfd-0bef-e511-a517-00155d5066d7",
+            "id": "5a11cf15-018f-4f16-96de-bdae50524cd4",
             "url": "https://events.google.com/io2016/schedule?sid=2e631cfd-0bef-e511-a517-00155d5066d7",
             "title": "Fast and resilient web apps: Tools and techniques for delivering great user experiences",
             "description": "Our applications run on a variety of hardware and under continuously changing network, CPU, memory, and energy constraints. To deliver a greatâ€”fast, responsive, and consistentâ€”user experience, we must build resilient applications that adapt to these changes. In this talk we'll cover the architecture best practices and the critical tools and API's available in the browser that will enable you to deliver a great (fast and resilient) user experience.",
@@ -1170,7 +1170,7 @@
             "room": "c675afbb-4702-e611-a517-00155d5066d7"
         },
         {
-            "id": "1f631cfd-0bef-e511-a517-00155d5066d7",
+            "id": "5b089699-0940-4e9d-98d2-0ca9938b8680",
             "url": "https://events.google.com/io2016/schedule?sid=1f631cfd-0bef-e511-a517-00155d5066d7",
             "title": "Deep user engagement with web push notifications",
             "description": "Push notifications are an incredibly effective way to build deeper user engagement with your application, and are now available on the web. In this session, we'll take a look at how they work and deep-dive into how to implement push notifications in web applications, from beginning to end.",
@@ -1192,7 +1192,7 @@
             "room": "c675afbb-4702-e611-a517-00155d5066d7"
         },
         {
-            "id": "ff641ff7-0bef-e511-a517-00155d5066d7",
+            "id": "5c30ea1a-ad70-4561-a86c-d461d875575b",
             "url": "https://events.google.com/io2016/schedule?sid=ff641ff7-0bef-e511-a517-00155d5066d7",
             "title": "Progressive Web Apps on Firebase",
             "description": "Progressive Web Apps offer a first-class mobile experience for users, but can be daunting to approach the first time you build them. Luckily, Firebase offers a first-class development experience for building Progressive Web Apps! In this session, we'll take a Firebase-powered web application and turn it into an offline-ready, service-working, app-manifesting, production-ready Progressive Web App using Firebase Hosting, Auth, and Database. We'll walk through how to add Progressive Web App capabilities to an existing app, how to cache app shell and Firebase Database data offline, and how to deploy your PWA to Firebase Hosting.",
@@ -1214,7 +1214,7 @@
             "room": "07f1b8dd-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "f7621cfd-0bef-e511-a517-00155d5066d7",
+            "id": "5c6d0c44-cf086cd75d-8f7a-45d7-99bb-69dd3709535a-40c9-bab4-86b27b4c6a67",
             "url": "https://events.google.com/io2016/schedule?sid=f7621cfd-0bef-e511-a517-00155d5066d7",
             "title": "Progressive Web Apps across all frameworks ",
             "description": "Progressive Web Apps can be built using any JavaScript library or framework, whether it's React, Angular 2.0, Ember or Polymer. In this talk, we'll dive into how to craft offline, lightning fast web apps using each of these solutions. Learn how to take advantage of Service Workers, Server-side Rendering and an application \"shell\" architecture to optimise for first meaningful paint, fast-first load and repeat visits. We'll also cover techniques for progressive-enhancement using these libraries so your users still get the best user experience supported by their browser.",
@@ -1236,7 +1236,7 @@
             "room": "a8f18b8f-7dcb-e511-ab0e-00155d5066d7"
         },
         {
-            "id": "a1c924f1-0bef-e511-a517-00155d5066d7",
+            "id": "5ca0e495-8409-4279-a4d9-8b5306e75e62",
             "url": "https://events.google.com/io2016/schedule?sid=a1c924f1-0bef-e511-a517-00155d5066d7",
             "title": "\"I'm Just Trying to Survive\": Ethnographic research on notifications and attention management",
             "description": "The Android notifications product, engineering, and user experience teams recently conducted an immersive ethnographic study in New York City to better understand how people manage their attention in their daily lives, and how smartphone notifications play a role in that process. Does your app send notifications to users? Come to our talk to learn: WHAT people want to know? WHEN they want to know it? HOW should information be presented to be most actionable and effective?  ",
@@ -1260,7 +1260,7 @@
             "room": "e2b5f2e7-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "962d2aeb-0bef-e511-a517-00155d5066d7",
+            "id": "5ebb60e8-e703-4b4a-bac9-17173930e153",
             "url": "https://events.google.com/io2016/schedule?sid=962d2aeb-0bef-e511-a517-00155d5066d7",
             "title": "The experts' guide to Android development tools",
             "description": "Android Studio has a wide range of features designed for experienced developers. This session will take an in-depth look into some of the advanced features of Android Studio and you can take away new productivity tips to help in app development.",
@@ -1285,7 +1285,7 @@
             "room": "a8f18b8f-7dcb-e511-ab0e-00155d5066d7"
         },
         {
-            "id": "e8621cfd-0bef-e511-a517-00155d5066d7",
+            "id": "641a4ab2-9ebc-4f2a-9dcc-4424e7d9cef5",
             "url": "https://events.google.com/io2016/schedule?sid=e8621cfd-0bef-e511-a517-00155d5066d7",
             "title": "Polymer and Progressive Web Apps: Building on the modern web",
             "description": "The Polymer library, re-written from the ground up with its 1.0 release last year, helps you build composable, interoperable components to use in your web applications. We'll go over the latest features of the library, show how to use some powerful newly-released components, show how Polymer is used in practice, dive into the cutting-edge tools for shipping component-based applications, reveal a brand-new way to get started building Progressive Web Applications with Polymer, and a take sneak peek into the future of the project.",
@@ -1308,7 +1308,7 @@
             "room": "34b13834-0afd-e511-a517-00155d5066d7"
         },
         {
-            "id": "542d2aeb-0bef-e511-a517-00155d5066d7",
+            "id": "64322fb3-3d69-4fff-a482-87957ed3b5a6",
             "url": "https://events.google.com/io2016/schedule?sid=542d2aeb-0bef-e511-a517-00155d5066d7",
             "title": "Android Auto for every screen",
             "description": "Android Auto brings Android into the car and offers new opportunities for developers to reach users during the valuable hours they spend each week driving.  In this talk, you'll learn about APIs that allow developers to enable existing applications for the Android Auto platform and reach more users in the car.",
@@ -1332,7 +1332,7 @@
             "room": "a8f18b8f-7dcb-e511-ab0e-00155d5066d7"
         },
         {
-            "id": "04651ff7-0bef-e511-a517-00155d5066d7",
+            "id": "64e212d0-3370-4acb-8323-1730fb84a6e1",
             "url": "https://events.google.com/io2016/schedule?sid=04651ff7-0bef-e511-a517-00155d5066d7",
             "title": "Google SDKs for Android: A tech deep dive",
             "description": "The best engineers know to seek confidence that the SDKs they put into their apps are fast, small, and reliable.  In this session, we'll deep dive into Google SDKs for Android and take a look at how various parts of them are implemented.\nWarning! You will leave this session prepared to design and execute your own Android code-fu. Use this knowledge with extreme caution!",
@@ -1354,7 +1354,7 @@
             "room": "07f1b8dd-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "b4641ff7-0bef-e511-a517-00155d5066d7",
+            "id": "654c324f-a998-4802-ab19-160b67212478",
             "url": "https://events.google.com/io2016/schedule?sid=b4641ff7-0bef-e511-a517-00155d5066d7",
             "title": "Migrate to Firebase",
             "description": "Firebase is easy to use, but it might not be your first Backend as a Service (BaaS). Learn how familiar concepts work in Firebase and how Firebase features can solve your existing problems in novel ways. For those considering using Firebase in a new project, we will explore an app written for both Firebase and Parse. For those considering using Firebase in an existing project, we will cover ways that Firebase can compliment or replace an existing backend.",
@@ -1376,7 +1376,7 @@
             "room": "07f1b8dd-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "d4c824f1-0bef-e511-a517-00155d5066d7",
+            "id": "610f0eaac-a040-45b2-b37c-b7c96d17059285353-b14b-4c17-99b4-e06e1260d1dc-16f1-459f-b15f-ebf765545627eec803",
             "url": "https://events.google.com/io2016/schedule?sid=d4c824f1-0bef-e511-a517-00155d5066d7",
             "title": "Lean and fast: Putting your app on a diet",
             "description": "Your APK's size is the one of the first deterrents to users installing and updating your app. Has your APK let itself go over time? There's never a better time to get your APK into shape. This session presents a collection of techniques to reduce the size of your APK, reach more users and scale to devices big or small!",
@@ -1398,7 +1398,7 @@
             "room": "1a17939d-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "a5d50c09-0cef-e511-a517-00155d5066d7",
+            "id": "6d3a3553-e0e3-4d7d-a306-0e85a64b9414",
             "url": "https://events.google.com/io2016/schedule?sid=a5d50c09-0cef-e511-a517-00155d5066d7",
             "title": "Best practices for orchestrating the Cloud with Kubernetes",
             "description": "In the last decade, user demand for always-on applications have grown, exponentially. Many developers choose application patterns to meet this need, but what about the infrastructure needed to support these ever growing demands? In this talk, we will introduce you to the next level of automation using hands-on examples of industry standard tooling like Docker, a container format, and Kubernetes, a distributed automation platform. We'll cover the basics of modern day applications and how design patterns like microservices drive the need for more robust infrastructure. Then we'll cover packaging and distributing apps using Docker. Finally, we'll up our game to running applications on Kubernetes. By the end of this talk you'll have the knowledge needed to excel at scale.",
@@ -1421,7 +1421,7 @@
             "room": "d81361d2-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "d09c1403-0cef-e511-a517-00155d5066d7",
+            "id": "6ea4fba3-a9c0-40c8-b0d1-5e5bdb07ff39",
             "url": "https://events.google.com/io2016/schedule?sid=d09c1403-0cef-e511-a517-00155d5066d7",
             "title": "Google Play Awards",
             "description": "Google Play has seen tremendous growth over the past year, reaching more than 1 billion Android users across 190 countries. As a way to recognize our incredible developer community and highlight some of the best apps and games around the world, we're kicking off our first-ever Google Play Awards ceremony. \n\nIn this session, we'll bring on stage the winning apps and games across ten award categories, such as Standout Indie, Best Families App, Best Material Design, Best Overall App/Game and more! The winners will be selected by a panel of experts on the Google Play team based on a criteria set that emphasizes app quality, content cleanliness, great user experience, and high star rating.\n\nCome join us and learn from the top app and game developers in the world on how to build the best Android experience and drive user engagement. ",
@@ -1441,7 +1441,7 @@
             "room": "07f1b8dd-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "d4621cfd-0bef-e511-a517-00155d5066d7",
+            "id": "6f8b8fdf-155c-4bbf-9fbe-50d8340b6c2d",
             "url": "https://events.google.com/io2016/schedule?sid=d4621cfd-0bef-e511-a517-00155d5066d7",
             "title": "Streaming media with ExoPlayer",
             "description": "Watching video and listening to audio files are among the most popular activities on Android mobile devices and smart TVs. This session explains how you can use the ExoPlayer streaming media library to help provide your users with a great media experience. The talk provides an overview of the ExoPlayer's design, and highlights the advantages of ExoPlayer over other libraries such as MediaPlayer.\n\nThe ExoPlayer provides many sophisticated features such as Dynamic adaptive streaming over HTTP (DASH), SmoothStreaming and Common Encryption. It's designed to be easy to customize and extend, and many components can be replaced with custom implementations. Because ExoPlayer is a library that you include in your application, it can be easily updated along with your app.\n\nAfter attending this talk you'll understand how to integrate ExoPlayer into your application. If you are using it to replace MediaPlayer, this can be a quick and simple integration. However, you'll also come away with an understanding of the design and inner workings of ExoPlayer, including how to wire up ExoPlayer instances using custom components to satisfy the most demanding performance and UX requirements, as well as take full advantage of the sophisticated features provided by the player.",
@@ -1463,7 +1463,7 @@
             "room": "d1df0515-0afd-e511-a517-00155d5066d7"
         },
         {
-            "id": "079d1403-0cef-e511-a517-00155d5066d7",
+            "id": "72ca341f-29a3-4285-8bae-f88e3ad6ec02",
             "url": "https://events.google.com/io2016/schedule?sid=079d1403-0cef-e511-a517-00155d5066d7",
             "title": "How startups are succeeding on Google Play",
             "description": "Learn how Google Play helps startups succeed in building innovative, beloved, and prosperous apps and games. Startup founders must balance realizing their big vision with the practical realities of building a new product with limited resources. Starting with a minimum viable product, Google Play offers developers special tools to iterate quickly, experiment on their apps and reach out to users. When the app has reached good product-market fit, it's time to grow and Play helps you reach a large, global audience and reap the rewards.",
@@ -1486,7 +1486,7 @@
             "room": "d81361d2-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "e3c824f1-0bef-e511-a517-00155d5066d7",
+            "id": "72e67d84-07ba-4535-9a71-95adc3417436",
             "url": "https://events.google.com/io2016/schedule?sid=e3c824f1-0bef-e511-a517-00155d5066d7",
             "title": "Android battery and memory optimizations",
             "description": "No one likes battery-draining apps or sluggish experience on their device. We will go over new platform features aimed at optimizing battery and memory consumption such as Doze and the new background optimizations in the N-release. We will review best practices and tools for measuring power consumption, as well as APIs that make it easy for you to write battery and memory efficient applications. Join us in helping improve battery life and performance for users.",
@@ -1509,7 +1509,7 @@
             "room": "a8f18b8f-7dcb-e511-ab0e-00155d5066d7"
         },
         {
-            "id": "46d50c09-0cef-e511-a517-00155d5066d7",
+            "id": "7387180b-b1dd-49c3-bddf-de3f87ae1990",
             "url": "https://events.google.com/io2016/schedule?sid=46d50c09-0cef-e511-a517-00155d5066d7",
             "title": "Google's Vision for VR",
             "description": "Google's vision for VR: what we have built, what we have learned, and where we are headed.",
@@ -1532,7 +1532,7 @@
             "room": "34b13834-0afd-e511-a517-00155d5066d7"
         },
         {
-            "id": "c3641ff7-0bef-e511-a517-00155d5066d7",
+            "id": "73ae7d40-d81a-43e6-a1b9-6013bc6d3397",
             "url": "https://events.google.com/io2016/schedule?sid=c3641ff7-0bef-e511-a517-00155d5066d7",
             "title": "Recipes for app development with Google's mobile development tools",
             "description": "Calling all mobile developers! Google's developer platform provide so many great tools for building your app. In this session, learn about how to use many of these components together to bring an app from idea to market to profit. We'll take a look at some potential app concepts and see how Google platforms can provide the infrastructure to make them successful. We can't wait to see what you build!\n\n",
@@ -1554,7 +1554,7 @@
             "room": "a8f18b8f-7dcb-e511-ab0e-00155d5066d7"
         },
         {
-            "id": "f39c1403-0cef-e511-a517-00155d5066d7",
+            "id": "74b6f068-02c9-4d6d-8ce0-0164f844a0db",
             "url": "https://events.google.com/io2016/schedule?sid=f39c1403-0cef-e511-a517-00155d5066d7",
             "title": "The rules of the games: What app developers can learn from games",
             "description": "Learn the key drivers of engagement and monetization for games, and how to turn these insights into best practices for apps. Get inspired by several case studies from apps who have successfully refined their onboarding and conversion tactics, applying concepts used by games developers.",
@@ -1576,7 +1576,7 @@
             "room": "e2b5f2e7-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "5b631cfd-0bef-e511-a517-00155d5066d7",
+            "id": "75d317b8-5c23-4bd2-b02d-fc1ec944ec74",
             "url": "https://events.google.com/io2016/schedule?sid=5b631cfd-0bef-e511-a517-00155d5066d7",
             "title": "Houdini: Demystifying the Future of CSS",
             "description": "The engine that drives CSS is mostly working in the background, consuming the stylesheets we write. Houdini is a collaboration between browser vendors to specify and implement new JavaScript APIs that expose these internals of the engine to developers.",
@@ -1598,7 +1598,7 @@
             "room": "c675afbb-4702-e611-a517-00155d5066d7"
         },
         {
-            "id": "0b631cfd-0bef-e511-a517-00155d5066d7",
+            "id": "78baea60-38c0-40c6-8069-f3cbf803881e",
             "url": "https://events.google.com/io2016/schedule?sid=0b631cfd-0bef-e511-a517-00155d5066d7",
             "title": "DevTools on RAILs",
             "description": "Let Paul Irish show you new tips, tricks and features in DevTools (and beyond!) that help you debug the performance of your site. Measuring your key user interactions and diagnosing your bottlenecks is key, and Paul will illuminate the best practices by showing performance opportunities in real world sites.",
@@ -1620,7 +1620,7 @@
             "room": "c675afbb-4702-e611-a517-00155d5066d7"
         },
         {
-            "id": "7d641ff7-0bef-e511-a517-00155d5066d7",
+            "id": "79ecea2c-55cc-44f1-a6c1-bb048e355f9d",
             "url": "https://events.google.com/io2016/schedule?sid=7d641ff7-0bef-e511-a517-00155d5066d7",
             "title": "Discover the expanded material design motion guidelines",
             "description": "Motion plays a key role in bringing material design to life. Material uses motion to educate the user about hierarchy, guide focus through the experience, and even add delight in sometimes unexpected places. The material design team has revamped the Motion guidelines to include detailed guidance on all things motion, from basic duration and easing curves suggestions to natural surface transformations and intricate choreography of moving elements. Join John Schlemmer, Material Motion Lead, as he gives the scoop on this new design guidance and shares his approach to motion on apps like Google Calendar and Inbox by Gmail.",
@@ -1642,7 +1642,7 @@
             "room": "d81361d2-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "50d50c09-0cef-e511-a517-00155d5066d7",
+            "id": "7dce119d-d037-4bf5-b1a2-f198b7a846f2",
             "url": "https://events.google.com/io2016/schedule?sid=50d50c09-0cef-e511-a517-00155d5066d7",
             "title": "6 Degree of Freedom Gaming in Android with Project Tango",
             "description": "Project Tango transforms the way we play games by understanding your phone's precise 3D motion. Chase a virtual pet around your home, tag ghosts with your phone and fling rocks at castles in 3D. Gaming is the most popular app category for Project Tango - over 2/3 of all the Project Tango apps on Google Play are games. Learn how to build a simple Project Tango game along with some tips and tricks for development. ",
@@ -1664,7 +1664,7 @@
             "room": "1a17939d-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "afd50c09-0cef-e511-a517-00155d5066d7",
+            "id": "7e70de6e-5a29-4d67-ace1-630d949351b5",
             "url": "https://events.google.com/io2016/schedule?sid=afd50c09-0cef-e511-a517-00155d5066d7",
             "title": "Scaling your data from concept to petabytes",
             "description": "Different applications and workloads require different storage solutions. Google Cloud Platform offers a full suite of solutions to meet your needs, from a hobbyist in a garage to a Fortune 500 company. This session will help you understand which solutions fit your scenarios, be they mobile applications, hosting commercial software, data pipelines, or storing backups.",
@@ -1686,7 +1686,7 @@
             "room": "e2b5f2e7-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "d59c1403-0cef-e511-a517-00155d5066d7",
+            "id": "832f04cc-f4da-48bd-bd8f-8d6532fe4af7",
             "url": "https://events.google.com/io2016/schedule?sid=d59c1403-0cef-e511-a517-00155d5066d7",
             "title": "Launch better and iterate faster on Google Play",
             "description": "Set up your app for success using experiments, rapid iteration, and release control tools on the Google Play Developer Console. Learn how we've made it easier than ever to run and manage beta testing programs. Hear tips and tricks about precisely timing app updates, rewarding loyal users with promo codes, maximizing user feedback, and running store listing experiments to get more users.",
@@ -1709,7 +1709,7 @@
             "room": "d81361d2-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "51631cfd-0bef-e511-a517-00155d5066d7",
+            "id": "8735be7c-d42d-4fab-abfe-69e48a624261",
             "url": "https://events.google.com/io2016/schedule?sid=51631cfd-0bef-e511-a517-00155d5066d7",
             "title": "Practical lessons from a year of building web components",
             "description": "Web components are the new shiny thing on the web, but what makes a good web component? How do you design a useful API that works for all of your users and all of their browsers? How do you make it render quickly and how do you teach people how to use it? After a year of working on the Polymer Elements, I've made sure to make all the possible mistakes so that you don't have to. This talk is about the things I've learned from that.",
@@ -1731,7 +1731,7 @@
             "room": "c675afbb-4702-e611-a517-00155d5066d7"
         },
         {
-            "id": "d9621cfd-0bef-e511-a517-00155d5066d7",
+            "id": "90159532-d4bd-4a46-97c5-77ecac04b246",
             "url": "https://events.google.com/io2016/schedule?sid=d9621cfd-0bef-e511-a517-00155d5066d7",
             "title": "Bring your Android app to Android TV in minutes",
             "description": "Bringing your app to the living room can be done in less time than you may think. Join us in this talk, where we'll show you how to port your existing Android app over to millions of Android TV devices in minutes. We've also got some great tips on how to make your app shine on the big screen. Lean back and watch how easy Android TV development can really be, using Android Studio, libraries such as Leanback, and the provided Android TV emulator.",
@@ -1754,7 +1754,7 @@
             "room": "19b9264a-35c9-e511-ab0e-00155d5066d7"
         },
         {
-            "id": "029d1403-0cef-e511-a517-00155d5066d7",
+            "id": "9072a96e-414e-43df-9b97-5405391b194c",
             "url": "https://events.google.com/io2016/schedule?sid=029d1403-0cef-e511-a517-00155d5066d7",
             "title": "Grow your app or game business in Japan, Korea, and Southeast Asia",
             "description": "Unlock new opportunities beyond your current market with Google Play. Japan, Korea, and Southeast Asia are big markets with revenue and install opportunities that will help your app or game business grow. Come and discover what you need to do to succeed in the markets from content localization to local operations. Jihyun Chung will share success cases on Play and explain the differences and habits of Asian users that you can start implementing right away. ",
@@ -1776,7 +1776,7 @@
             "room": "d81361d2-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "16651ff7-0bef-e511-a517-00155d5066d7",
+            "id": "94f05260-0dfd-4867-8d04-399e96595035",
             "url": "https://events.google.com/io2016/schedule?sid=16651ff7-0bef-e511-a517-00155d5066d7",
             "title": "Creating interactive multiplayer experiences with Firebase",
             "description": "Building realtime features that work on all your different devices is the holy grail of app development. Firebase is a realtime API that lets you store and sync data instantly, and allows you to build a web, mobile or Unity application in minutes without worrying about wiring up a backend. The real time aspect and a number of lesser known, powerful features (such as transactions) make it possible to create a multiplayer gaming experience as well. In this session, you'll learn how to use Firebase to keep track of your online player, synchronize game state across multiple connections, create chat rooms, and match players together for game play.",
@@ -1798,7 +1798,7 @@
             "room": "a4eedfa7-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "fa641ff7-0bef-e511-a517-00155d5066d7",
+            "id": "97caffb9-e469-4ab2-9915-799ae1e6c2d6",
             "url": "https://events.google.com/io2016/schedule?sid=fa641ff7-0bef-e511-a517-00155d5066d7",
             "title": "Fireside chat: Google in the real world",
             "description": "Developers face many challenges to establish a successful business. Luckily, Google has many tools to help! Join us for a discussion with developers across different sectors and regions to hear how they are using Google to develop, grow, and monetize their business.",
@@ -1820,7 +1820,7 @@
             "room": "07f1b8dd-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "c32d2aeb-0bef-e511-a517-00155d5066d7",
+            "id": "98212056-c3b5-4214-a717-5e0bc14734d8",
             "url": "https://events.google.com/io2016/schedule?sid=c32d2aeb-0bef-e511-a517-00155d5066d7",
             "title": "Accelerating your development career",
             "description": "Learn about Google Developer Relations team's efforts to boost developer careers everywhere: training two million developers in India, 100k in Indonesia, and continuing to reach more countries with a complete learning path towards mastery of Android. Hear JP Souchak and Peter Lubbers discuss how developer education is a path to professional success. This talk is for anyone interested in formal learning for developers, as well as helping developers get jobs in emerging markets.",
@@ -1843,7 +1843,7 @@
             "room": "84a30586-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "89621cfd-0bef-e511-a517-00155d5066d7",
+            "id": "9b1950b1-654c-4394-b621-5f55bff1a454",
             "url": "https://events.google.com/io2016/schedule?sid=89621cfd-0bef-e511-a517-00155d5066d7",
             "title": "Understand your Place in this world",
             "description": "Humans navigate a world made up of places with names, addresses and phone numbersâ€”not lat/long coordinates. We use these place attributes to communicate and connect with one another. The Google Places API enables an app or website to present location data to users in a human-centered fashion.\n\nIn this session we'll do a deep dive into how you can use this API to snap to a particular place, or even use reverse phone number search to discover your location. We'll give detailed insights into how to use these on web and mobile, show off some newly-released web widgets, and a look at how you can optimize for mobile device battery life. You'll learn how the Places API can make all your map-centric apps smarter.",
@@ -1866,7 +1866,7 @@
             "room": "d81361d2-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "8c641ff7-0bef-e511-a517-00155d5066d7",
+            "id": "af2dcc16-591d-48f5-b6a3-a7073056da5b",
             "url": "https://events.google.com/io2016/schedule?sid=8c641ff7-0bef-e511-a517-00155d5066d7",
             "title": "Responsive design across platforms",
             "description": "If you've developed or designed software in the last decade, you know about responsive design.  Now, it's critical to design our applications to adapt to the device display, and even to the user's context. But what about users with both Android and iOS devices? Or users switching from one platform to another? With material design, Mike Denny shows how it's possible to design once and build everywhereâ€”all while respecting platform conventions and user expectations.",
@@ -1888,7 +1888,7 @@
             "room": "d81361d2-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "da9c1403-0cef-e511-a517-00155d5066d7",
+            "id": "af46615a-6bb3-4f20-be14-b715bec5809c",
             "url": "https://events.google.com/io2016/schedule?sid=da9c1403-0cef-e511-a517-00155d5066d7",
             "title": "Building for billions on Android",
             "description": "Android apps experience varying levels of connectivity, device capability, data costs and commerce. While challenges in these categories are observed worldwide, certain regions have a concentration of these challenges. Today, as the next billion users to come online, they will do so from these regions and on their smartphones - this presents developers with an immense opportunity. This session presents the â€œBuilding for Billionsâ€ framework, to help you build apps that provide a great experience to billions of future and current Android users, globally.",
@@ -1912,7 +1912,7 @@
             "room": "d81361d2-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "2c2d2aeb-0bef-e511-a517-00155d5066d7",
+            "id": "b1331771b8e3-2d32-4f98-bf99-0497e4528fb0fb-c75e-4418b053b4-580e-45ff-85fa-e34a9e4ad6bb-9ee3-ddc3859e3e8c",
             "url": "https://events.google.com/io2016/schedule?sid=2c2d2aeb-0bef-e511-a517-00155d5066d7",
             "title": "Improve user acquisition campaigns with analytics",
             "description": "Got a great app and want more users? Having a user acquisition strategy is crucial to global app domination, but it doesn't have to be a leap in the dark! This talk shines a light on how you can run both organic and paid app install campaigns to deliver real results in a cost-effective way -- and how analytics ties it all together. You'll learn how to track user acquisition performance, understand the right metrics to compare ad networks and see why lifetime value really matters.",
@@ -1934,7 +1934,7 @@
             "room": "a8f18b8f-7dcb-e511-ab0e-00155d5066d7"
         },
         {
-            "id": "252d2aeb-0bef-e511-a517-00155d5066d7",
+            "id": "b13bf08b-abc3-43cd-9ae9-fb1bea253551",
             "url": "https://events.google.com/io2016/schedule?sid=252d2aeb-0bef-e511-a517-00155d5066d7",
             "title": "Create a great user experience with native ads",
             "description": "With faster devices and more bandwidth come richer, more immersive ads. AdMob has cutting-edge formats which are high quality in appearance and load fast. In this advanced session, the AdMob team provides a deep dive into how the right ad technology helps you earn money and enhance user experience. Learn how AdMob's native ads can help you design user experiences that engage as well as they earn, plus how game publishers build audiences by integrating rewarded video formats into their game mechanics.",
@@ -1958,7 +1958,7 @@
             "room": "a4eedfa7-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "33631cfd-0bef-e511-a517-00155d5066d7",
+            "id": "b2d47d10-b21d-4430-9e78-2df46cb74fed",
             "url": "https://events.google.com/io2016/schedule?sid=33631cfd-0bef-e511-a517-00155d5066d7",
             "title": "Building a Progressive Web App with Polymer",
             "description": "The web is brimming with new standards that completely change the face of mobile web development. In this session, we will deep-dive into building a modern Progressive Web App with Polymer. From offline-first with Service Workers to seamless interop with Web Components, Polymer enables you to easily tie together the new standards of the modern mobile web. We'll show you how to put it all together into a modern Progressive Web App, and make it easy with Polymer.",
@@ -1980,7 +1980,7 @@
             "room": "c675afbb-4702-e611-a517-00155d5066d7"
         },
         {
-            "id": "91641ff7-0bef-e511-a517-00155d5066d7",
+            "id": "b5d5da0c-d9b6-4cbe-99cf-9fe67a4820f8",
             "url": "https://events.google.com/io2016/schedule?sid=91641ff7-0bef-e511-a517-00155d5066d7",
             "title": "Material improvements",
             "description": "A deep dive into the material design principles by looking at how they made my app Plaid better. In this session we will look at material's fundamental principles of tangibility, bold graphic design and meaningful motion. We'll examine how each improve the overall experience through concrete examples and show how to implement them.",
@@ -2002,7 +2002,7 @@
             "room": "07f1b8dd-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "29631cfd-0bef-e511-a517-00155d5066d7",
+            "id": "b8e1c97f-8133-426d-87ee-7a0a61d33de4",
             "url": "https://events.google.com/io2016/schedule?sid=29631cfd-0bef-e511-a517-00155d5066d7",
             "title": "Building for billions on the web",
             "description": "With the growth of smartphones, we are seeing millions of people from around the word using the internet for the first time on a mobile device. In this session, you'll learn about the unique constraints and challenges these new users face and how you can build progressive web apps that address these challenges to deliver a great experience for all of your users.",
@@ -2024,7 +2024,7 @@
             "room": "c675afbb-4702-e611-a517-00155d5066d7"
         },
         {
-            "id": "8c2d2aeb-0bef-e511-a517-00155d5066d7",
+            "id": "bd2dc321-1a8b-477e-824f-65c08309e44e",
             "url": "https://events.google.com/io2016/schedule?sid=8c2d2aeb-0bef-e511-a517-00155d5066d7",
             "title": "Image compression for Android developers",
             "description": "Bloated images are slow to fetch and costly to download; which is troubling, since images comprise the largest bulk of content your app will send around. In order to keep your users happy and their bandwidth healthy, image optimization & size reduction should be on the top of your list. In this talk, we'll get into the nitty-gritty on how image compression works for your favorite file types, and show you how to use that knowledge to create smaller files for your users. This talk is applicable for any Android developer who has loaded a bitmap off a network connection.\n\n",
@@ -2046,7 +2046,7 @@
             "room": "1a17939d-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "1fc924f1-0bef-e511-a517-00155d5066d7",
+            "id": "bd4b4a26-a377-4d68-b8d9-a1cb60c937d2",
             "url": "https://events.google.com/io2016/schedule?sid=1fc924f1-0bef-e511-a517-00155d5066d7",
             "title": "RecyclerView ins and outs",
             "description": "Since its debut at IO'14, RecyclerView has come a long way and has become the de-facto list component on Android. Come and learn about the history of ListView, what we've learned from it and how we've designed RecyclerView based on these learnings. We will discuss the internal architecture of the RecyclerView, how it handles different layouts, animations and UX flows. We will also go through some of the best practices so that you make the best of RecyclerView in your applications.",
@@ -2068,7 +2068,7 @@
             "room": "a8f18b8f-7dcb-e511-ab0e-00155d5066d7"
         },
         {
-            "id": "5f2d2aeb-0bef-e511-a517-00155d5066d7",
+            "id": "be95a00c-c485-4be7-9e77-c63e4007ef1b",
             "url": "https://events.google.com/io2016/schedule?sid=5f2d2aeb-0bef-e511-a517-00155d5066d7",
             "title": "Introducing Nearby: Physical proximity within and without apps",
             "description": "Nearby brings awareness of close-by smartphones, devices, and beacons to your app, using a combination of Bluetooth, Wi-Fi, and ultrasound. Deep dive into Nearby's cross-platform, peer-to-peer API, as well as upcoming functionality for associating BLE beacons with on-device actions. We'll discuss Android and iOS features for relevant, proximity-powered triggers, sharing, group formation, and more.",
@@ -2091,7 +2091,7 @@
             "room": "1a17939d-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "949c1403-0cef-e511-a517-00155d5066d7",
+            "id": "c069ec12-822e454af-0e30-4436-86eb-04f6b71b43cc2-4911-83db-2bca4e3355bb",
             "url": "https://events.google.com/io2016/schedule?sid=949c1403-0cef-e511-a517-00155d5066d7",
             "title": "App Indexing: Rules of engagement",
             "description": "To-date Google has indexed over 100B deep links from Android and iOS apps. 40% of searches on Android return results for indexed apps as well. Learn the simple steps to get your mobile app indexed by Google to drive installs and traffic to your app. This talk will show you how your app content can appear in Google Search results, autocompletions when people search, and Now on Tap â€” as well as how you can test and measure your performance on Search.",
@@ -2116,7 +2116,7 @@
             "room": "07f1b8dd-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "72651ff7-0bef-e511-a517-00155d5066d7",
+            "id": "c0a88a3f-f2f9-4b3f-97bd-969bc0883d2f",
             "url": "https://events.google.com/io2016/schedule?sid=72651ff7-0bef-e511-a517-00155d5066d7",
             "title": "Games: The Google advantage",
             "description": "Game development is challenging, but Google's diverse tools and services can confer great advantages when used effectively together. Noah Falstein, Chief Game Designer, gives an overview of these techniques, including those utilizing newly announced Google technologies. Ben Frenkel, PM from Play Games Services, will talk about what's new, and delve into ways developers are using Google Play Games Services to improve their games and profitability. Ina Fuchs of YouTube Gaming will conclude by talking about the ways YouTube helps grow audiences and highlight games with their latest advances. ",
@@ -2140,7 +2140,7 @@
             "room": "d81361d2-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "fc621cfd-0bef-e511-a517-00155d5066d7",
+            "id": "c6cc6d76-cf11-4f73-95cc-ad5d11982d8f",
             "url": "https://events.google.com/io2016/schedule?sid=fc621cfd-0bef-e511-a517-00155d5066d7",
             "title": "How AMP achieves its speed",
             "description": "The Accelerated Mobile Pages (AMP) project's primary goal is to make mobile web pages ridiculously fast, to the point where they appear to load instantly. Watch AMP engineering lead Malte Ubl dissect the anatomy of AMP and all of its performance insights and optimizations, to ultimately give you the power to control your own performance destiny.",
@@ -2162,7 +2162,7 @@
             "room": "a8f18b8f-7dcb-e511-ab0e-00155d5066d7"
         },
         {
-            "id": "a6c924f1-0bef-e511-a517-00155d5066d7",
+            "id": "c9fd8786-b3f5-48a6-90e2-3665e697acf6",
             "url": "https://events.google.com/io2016/schedule?sid=a6c924f1-0bef-e511-a517-00155d5066d7",
             "title": "Designer & developer communication",
             "description": "Let's be honest â€“ communication between designers and developers isn't always perfect. The knowledge that comes with each discipline stems from entirely different skill sets. Designers and developers often have different priorities, even though everyone is working toward one common goal: a fantastic, delightful, functional product. At Google, we're always working on ways to bridge this gap through unified spec formats and tools, so that intricate details are never lost in translation and things get done the way they're intended the first time. Join a conversation with Google designers and engineers as they share tricks they've discovered over the years to successfully communicate and implement visual and motion design for dozens of Google products.",
@@ -2187,7 +2187,7 @@
             "room": "1a17939d-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "97c924f1-0bef-e511-a517-00155d5066d7",
+            "id": "cf302209-4151-4c6b-8590-7243d2c6c3c3",
             "url": "https://events.google.com/io2016/schedule?sid=97c924f1-0bef-e511-a517-00155d5066d7",
             "title": "Maximizing app conversions through great UX: Principles of mobile app design",
             "description": "The barriers to users finding and engaging with a specific app are significant. While efforts are always being put into mechanisms to increase app discovery, it's critical for app developers to make sure app experiences are engaging. How can you best connect with the consumer of your app? What makes for a great app experience? What are best practices to help reduce friction so that users convert? This talk will help answer these questions by covering app design best practices based on research. ",
@@ -2209,7 +2209,7 @@
             "room": "1a17939d-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "1ac924f1-0bef-e511-a517-00155d5066d7",
+            "id": "d461d46f-e433-400c-bbb4-6fead3866d93",
             "url": "https://events.google.com/io2016/schedule?sid=1ac924f1-0bef-e511-a517-00155d5066d7",
             "title": "Advanced Espresso",
             "description": "Automated UI testing is not an easy matter. With Espresso, a UI testing framework for Android, we are helping developers raise the bar for app quality. Come to this talk to learn how we're improving Espresso to make handling complex testing scenarios easier. We will discuss best practices and examples of advanced Espresso APIs usage for making the most out of your functional tests. This session is appropriate for developers already familiar with Espresso as well as those looking to add UI tests to their apps for the first time.",
@@ -2231,7 +2231,7 @@
             "room": "84a30586-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "5ad50c09-0cef-e511-a517-00155d5066d7",
+            "id": "d4f3ecf4-6cbb-4ed3-b848-33caeebe46f7",
             "url": "https://events.google.com/io2016/schedule?sid=5ad50c09-0cef-e511-a517-00155d5066d7",
             "title": "Introducing Project Tango Area Learning",
             "description": "Motion tracking on a mobile device has already enabled a whole new range of experiences, but what would be possible if your Project Tango device could have a memory? With Area Learning, Project Tango can not only see the space around you, but it can also remember the space around you. This opens up a new range of possibilities for Project Tango developers - attach virtual objects to the world that remain in place even when you restart an app, design multiplayer experiences and know the exact location of each player, pause/resume AR/VR experiences, and eliminate motion tracking drift. We'll go over basic concepts of area learning and best practices for Project Tango developers.",
@@ -2253,7 +2253,7 @@
             "room": "19b9264a-35c9-e511-ab0e-00155d5066d7"
         },
         {
-            "id": "c3d50c09-0cef-e511-a517-00155d5066d7",
+            "id": "dab2bf45-6e44-4605-a997-9d446f95ef38",
             "url": "https://events.google.com/io2016/schedule?sid=c3d50c09-0cef-e511-a517-00155d5066d7",
             "title": "Election 2016: The big data showdown",
             "description": "The US election is still months away, but a massive amount of data has already been generated on the topic. From social media to campaign finance disclosures to newspaper articles to poll results, we are awash in data about the candidates. How can we separate the signal from the noise, and figure out what it all means?\n\nThis talk takes a number of disparate sources of data; reddit comments, federal election disclosures, and a global event database as the raw materials to use Dataflow, Datalab, Cloud ML, and BigQuery, to extract meaning from it all. We'll find out what people are saying, in real-time, about the candidates. We'll show how to build a dashboard that can display front-runners in the campaign donation race, the reddit popularity contest, and more. \n\nYou'll see how you, too, can gain insight from disparate data sources by harnessing the suite of tools in Google's cloud.",
@@ -2276,7 +2276,7 @@
             "room": "d81361d2-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "7d2d2aeb-0bef-e511-a517-00155d5066d7",
+            "id": "dc297041cc-3f52-46c1-9507-3584a4b59d885525-f829-4bfd-8f85-f441e94b7095",
             "url": "https://events.google.com/io2016/schedule?sid=7d2d2aeb-0bef-e511-a517-00155d5066d7",
             "title": "Timing is everything: Neat animation tricks",
             "description": "This session will cover various tips and tricks for using the Android animation APIs effectively to enable custom animations, more natural timing and motion, and anything else that we thought would be neat.",
@@ -2300,7 +2300,7 @@
             "room": "34b13834-0afd-e511-a517-00155d5066d7"
         },
         {
-            "id": "38c924f1-0bef-e511-a517-00155d5066d7",
+            "id": "de575d94-cffb-45cd-892d-9246f3a7ce9b",
             "url": "https://events.google.com/io2016/schedule?sid=38c924f1-0bef-e511-a517-00155d5066d7",
             "title": "Android NDK performance in an ART world",
             "description": "A look at how ART has altered the rules for NDK performance across several releases, along with a practical look at what developers need to do to maximize the potential of C/C++ code on Android.",
@@ -2322,7 +2322,7 @@
             "room": "84a30586-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "3c2d2aeb-0bef-e511-a517-00155d5066d7",
+            "id": "e5529c03-f6d4-41a0-b6f6-03775c0f4b28",
             "url": "https://events.google.com/io2016/schedule?sid=3c2d2aeb-0bef-e511-a517-00155d5066d7",
             "title": "Earn more revenue from the AdMob platform",
             "description": "The AdMob platform provides effective ways to make more money from your app. AdMob is Google's leading app advertising solution, used by more than 650,000 Android and iOS apps. In this session aimed at beginners, you'll learn how to integrate AdMob ads, which come in a variety of formats to match your app's user experience perfectly. You'll discover how to request your first ad, and hear optimization tips to help you earn more.",
@@ -2346,7 +2346,7 @@
             "room": "a4eedfa7-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "edc824f1-0bef-e511-a517-00155d5066d7",
+            "id": "e8a0d2f7-1eb2-4dc9-a69c-3f28d460b61f",
             "url": "https://events.google.com/io2016/schedule?sid=edc824f1-0bef-e511-a517-00155d5066d7",
             "title": "The Evolution of ART",
             "description": "ART is the runtime which powers the entire Android platform. Come discover how we've improved the Android runtime to better serve a rapidly evolving ecosystem. From monthly system updates to incredibly rich and powerful apps, mobile development is growing more and more complex. In this session we will present the strategies we adopted to improve Android performance and minimize update times and disk usage. We will be talking about the new exciting Hybrid JIT-AOT approach, profile guided compilation, the new compiler and application images.",
@@ -2371,7 +2371,7 @@
             "room": "84a30586-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "96641ff7-0bef-e511-a517-00155d5066d7",
+            "id": "ef92f750-8d1e-40a2-8190-41e9254c5bc0",
             "url": "https://events.google.com/io2016/schedule?sid=96641ff7-0bef-e511-a517-00155d5066d7",
             "title": "How design sprints are flexing for success",
             "description": "Design Sprints are a proven process to help answer critical business questions and ensure that you are building the right thing. With the launch of the SPRINT book, which outlines how you can run a Sprint for your team to increase speed and innovation, the design sprint methodology is easily accessible to a wider audience. Here at Google we use sprints in various ways. Learn about how three teams across Google are flexing the Design Sprint methodology to improve collaboration between UX, developers and product. We'll deep dive into specific sprint structures and ways to incorporate sprints into an overall product development process.\n",
@@ -2393,7 +2393,7 @@
             "room": "a4eedfa7-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "a4651ff7-0bef-e511-a517-00155d5066d7",
+            "id": "f01ba5cd-7dc7-4028-a1c5-55140ea62bb1",
             "url": "https://events.google.com/io2016/schedule?sid=a4651ff7-0bef-e511-a517-00155d5066d7",
             "title": "Lightweight real world interactions with the Physical Web",
             "description": "Connected devices are becoming ubiquitous. To enable users to quickly and easily communicate with them, we've designed the Physical Web, an open-source system that uses beacons to enable lightweight interactions with nearby devices and locations. Come listen to Ani Mohan talk about how the Physical Web uses the latest beacon and web technologies to offer a range of ways to bring interactivity to everyday scenarios. We'll also describe how developers can get started today to build Physical Web experiences.\n",
@@ -2415,7 +2415,7 @@
             "room": "19b9264a-35c9-e511-ab0e-00155d5066d7"
         },
         {
-            "id": "2dd50c09-0cef-e511-a517-00155d5066d7",
+            "id": "f1c83cea-bf82-4c96-8e22-99f12b409b1e",
             "url": "https://events.google.com/io2016/schedule?sid=2dd50c09-0cef-e511-a517-00155d5066d7",
             "title": "Google.org: Accelerating innovation for people with disabilities",
             "description": "How can engineering and developer skills be used to tackle some of the world's biggest challenges? One in seven people in the world has a disability -- a billion people that can benefit tremendously from tools and products that increase their independence. Last year, Google.org launched the Google Impact Challenge: Disabilities with $20M in funding to back innovative solutions that use technology like beacons, 3D scanning and printing, machine learning, and gamification. Hear from technologists working for forward-thinking organizations about how they're building products that have the potential to transform lives and how you can develop products that make the world more accessible for all. \n",
@@ -2437,7 +2437,7 @@
             "room": "19b9264a-35c9-e511-ab0e-00155d5066d7"
         },
         {
-            "id": "8e621cfd-0bef-e511-a517-00155d5066d7",
+            "id": "fac1fbb5-85e4-448e-ad4a-4f1d34a41a25",
             "url": "https://events.google.com/io2016/schedule?sid=8e621cfd-0bef-e511-a517-00155d5066d7",
             "title": "Building geo services that scale",
             "description": "Not all map and geo applications run entirely on your mobile device. Perhaps you want to protect your keys or other API access data from reverse engineering by putting them in the cloud, or you have custom business logic that you run on your server that you don't want to distribute via mobile. To protect your keys and API access data you'll need to operate some kind of service. In this session you'll learn how to build that service on the Google Cloud Platform and consume it in a mobile application that uses the Google Maps APIs.",
@@ -2460,7 +2460,7 @@
             "room": "a4eedfa7-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "b9d50c09-0cef-e511-a517-00155d5066d7",
+            "id": "fbb4f82c-c7cb-44cd-b24e-847a028a8cfa",
             "url": "https://events.google.com/io2016/schedule?sid=b9d50c09-0cef-e511-a517-00155d5066d7",
             "title": "Just enough StackDriver to sleep well at night",
             "description": "StackDriver Monitoring is a multi-cloud tool that helps you monitor applications and systems. In this talk, you'll learn how to setup basic monitoring on application uptime, errors, and latency. You'll also learn how to monitor for potential issues in system memory or disk usage. Finally, we'll discuss how to setup and monitor custom metrics that are important to your application. All of these techniques will help you rest soundly knowing that your application is running well. ",
@@ -2482,7 +2482,7 @@
             "room": "e2b5f2e7-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "6e2d2aeb-0bef-e511-a517-00155d5066d7",
+            "id": "fe21204a-8956-48b9-9a60-e42eb4607756",
             "url": "https://events.google.com/io2016/schedule?sid=6e2d2aeb-0bef-e511-a517-00155d5066d7",
             "title": "Making Android sensors and location work for you",
             "description": "Location and sensors on phones enable a range of use cases - from turning your on-screen car in a video game, capturing steps in a fitness app, to advanced indoor and outdoor location. We'll start from the bottom up, explaining how sensors work on Android, how hardware changes can lead to better battery and performance, and how you can use this information to drive better sensor experiences. We'll also dive deep into Google's powerful location engine - walking you through how it works and how you can use it to your advantage. ",
@@ -2506,7 +2506,7 @@
             "room": "84a30586-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "bed50c09-0cef-e511-a517-00155d5066d7",
+            "id": "TEST_ID",
             "url": "https://events.google.com/io2016/schedule?sid=bed50c09-0cef-e511-a517-00155d5066d7",
             "title": "How to build a smart RasPi Bot with Cloud Vision and Speech API",
             "description": "Cloud Vision API and Speech API let you take advantage of fully-trained machine learning models from Google. These technologies enable the powerful search behind Google Photos, and voice search in the mobile Google App. In this session we will learn how to build a smart RaspberryPi robot that can detect faces, objects, and follow voice commands using these APIs.",
@@ -2528,7 +2528,7 @@
             "room": "d81361d2-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "96d50c09-0cef-e511-a517-00155d5066d7",
+            "id": "TEST_ID",
             "url": "https://events.google.com/io2016/schedule?sid=96d50c09-0cef-e511-a517-00155d5066d7",
             "title": "Live coding: Make a virtual reality game",
             "description": "Let's make a virtual reality game! Join Shanee Nishry for a live coding session using the Unity Cardboard SDK to create a virtual reality game. By the end of the session we will have a small yet fun \"defend the castle\" game with a terrifyingly cute enemy army and a player controlled cannon to fend off the attack. We'll explore stereoscopic rendering, user controls using input and the Cardboard Reticle and even add 3D real-time binaural audio!",
@@ -2550,7 +2550,7 @@
             "room": "1a17939d-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "10c924f1-0bef-e511-a517-00155d5066d7",
+            "id": "TEST_ID",
             "url": "https://events.google.com/io2016/schedule?sid=10c924f1-0bef-e511-a517-00155d5066d7",
             "title": "Mobile Vision API: Providing on-device vision for applications",
             "description": "On-device image and video analysis is simple with the Mobile Vision API. On-device analysis provides low latency for real-time applications, data stays private on the device, and requires no network connection. In this talk, developers will learn how to adopt visual sensing capabilities into their apps. We will focus on real-world coding examples and demonstrations of the Mobile Vision technology for detecting and tracking barcodes and faces.",
@@ -2573,7 +2573,7 @@
             "room": "d1df0515-0afd-e511-a517-00155d5066d7"
         },
         {
-            "id": "3b651ff7-0bef-e511-a517-00155d5066d7",
+            "id": "TEST_ID",
             "url": "https://events.google.com/io2016/schedule?sid=3b651ff7-0bef-e511-a517-00155d5066d7",
             "title": "Supercharging Firebase with Google Cloud Platform",
             "description": "Firebase allows you to build awesome real time apps quickly and easily. Google Cloud Platform lets you build powerful services that scale. Combining these two platforms gives you the power to build amazing experiences without worrying about infrastructure and operations. In this talk, we will take a look at how you can use Firebase to build a real time application and Google Container Engine to run a containerized backend that interacts with Firebase in real time.",
@@ -2596,7 +2596,7 @@
             "room": "07f1b8dd-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "fcc824f1-0bef-e511-a517-00155d5066d7",
+            "id": "TEST_ID",
             "url": "https://events.google.com/io2016/schedule?sid=fcc824f1-0bef-e511-a517-00155d5066d7",
             "title": "Android high-performance audio",
             "description": "High-performance audio means low latency ... and so much more. In this session we review hard performance problems that real Android developers face everyday, and how to solve them. We also discuss remaining challenges in the platform and ecosystem, and what the Android audio team is doing about these.",
@@ -2618,7 +2618,7 @@
             "room": "84a30586-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "af641ff7-0bef-e511-a517-00155d5066d7",
+            "id": "TEST_ID",
             "url": "https://events.google.com/io2016/schedule?sid=af641ff7-0bef-e511-a517-00155d5066d7",
             "title": "The key to Firebase security",
             "description": "Data stored in Firebase is public by default, meaning anyone and everyone has full read and write access. While this is great for getting started, productions apps require stronger security. Thankfully, Firebase has your back with Security Rules. They provide a declarative way to specify who can access certain data and what schema that data should have. Take a deep dive into Firebase security to learn the best practices when securing your production Firebase apps.",
@@ -2640,7 +2640,7 @@
             "room": "07f1b8dd-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "30651ff7-0bef-e511-a517-00155d5066d7",
+            "id": "TEST_ID",
             "url": "https://events.google.com/io2016/schedule?sid=30651ff7-0bef-e511-a517-00155d5066d7",
             "title": "Google Cloud Messaging performance factors",
             "description": "Explore factors affecting GCM performance while examining our real world performance statistics. We'll use these statistics to learn about real world user behavior.",
@@ -2662,7 +2662,7 @@
             "room": "07f1b8dd-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "f2621cfd-0bef-e511-a517-00155d5066d7",
+            "id": "TEST_ID",
             "url": "https://events.google.com/io2016/schedule?sid=f2621cfd-0bef-e511-a517-00155d5066d7",
             "title": "Instant Loading: Building offline-first Progressive Web Apps",
             "description": "For most of the web, poor network connectivity destroys the user experience. We can do better. In this session we'll take an online-only site and turn it into a fully network-resilient, offline-first installable progressive web app, and this won't involve rebuilding from scratch; it'll be done in small iterations, with each step improving the user experience whether they're offline, online, or anything in between. This session will cover ServiceWorker, web manifests, add-to-homescreen banners, IndexedDB and BackgroundSync APIs.",
@@ -2684,7 +2684,7 @@
             "room": "a8f18b8f-7dcb-e511-ab0e-00155d5066d7"
         },
         {
-            "id": "3d631cfd-0bef-e511-a517-00155d5066d7",
+            "id": "TEST_ID",
             "url": "https://events.google.com/io2016/schedule?sid=3d631cfd-0bef-e511-a517-00155d5066d7",
             "title": "Great libraries and tools for great Progressive Web Apps",
             "description": "Progressive Web Apps should load fast, work great offline, and progressively enhance to a better experience in modern browsers. In this talk we'll walk through the tools and libraries that Google is creating to help developers create awesome experiences.",
@@ -2706,7 +2706,7 @@
             "room": "c675afbb-4702-e611-a517-00155d5066d7"
         },
         {
-            "id": "55d50c09-0cef-e511-a517-00155d5066d7",
+            "id": "TEST_ID",
             "url": "https://events.google.com/io2016/schedule?sid=55d50c09-0cef-e511-a517-00155d5066d7",
             "title": "Tango 3rd Party Developer Panel",
             "description": "Ever dreamed your app could let users play dominos without having to pick up the pieces, or redesign a kitchen without heavy lifting? Project Tango is a set of spatial sensors that allows your device to see the world like you do, giving you a new, interactive way to play games, reimagine spaces, and more. Developers from Lowe's, Autodesk, Schell Games and Funomena will talk about their experiences building on Project Tango, from tips on how to get started to thoughts on how Project Tango will change the way we play, work and live.",
@@ -2728,7 +2728,7 @@
             "room": "19b9264a-35c9-e511-ab0e-00155d5066d7"
         },
         {
-            "id": "56631cfd-0bef-e511-a517-00155d5066d7",
+            "id": "TEST_ID",
             "url": "https://events.google.com/io2016/schedule?sid=56631cfd-0bef-e511-a517-00155d5066d7",
             "title": "The 2016 Web Development Workflow",
             "description": "In this session, we will take a retrospective look at old workflow tools, future web tooling paths, the web's unifications efforts, and arguments for why tools are dead, and why the only hope we have is to embrace the platform.",
@@ -2751,7 +2751,7 @@
             "room": "c675afbb-4702-e611-a517-00155d5066d7"
         },
         {
-            "id": "cd641ff7-0bef-e511-a517-00155d5066d7",
+            "id": "TEST_ID",
             "url": "https://events.google.com/io2016/schedule?sid=cd641ff7-0bef-e511-a517-00155d5066d7",
             "title": "From 0 to 60 with the Firebase Realtime Database",
             "description": "Let the Firebase Realtime Database be your backend. Build your app faster, and sync your data in realtime. Come listen to David East speak how the Realtime Database is optimized for speed, security, and offline use. In this talk we'll take a look at how you can use the Realtime Database across Android, iOS, and the Web to build powerful realtime experiences.",
@@ -2773,7 +2773,7 @@
             "room": "07f1b8dd-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "322d2aeb-0bef-e511-a517-00155d5066d7",
+            "id": "TEST_ID",
             "url": "https://events.google.com/io2016/schedule?sid=322d2aeb-0bef-e511-a517-00155d5066d7",
             "title": "Use analytics to build a brilliant app",
             "description": "The average smartphone user taps and swipes their way through 1GB of data each month. But how can you turn user behavior into meaningful insights that help you build a brilliant app? The answer is app analytics! In this session we'll explore the key metrics you need to know through the app lifecycle using real examples. From first release to a thriving user base, we'll show you how to detect user delight, user dissatisfaction and how to grow your app into a successful business.",
@@ -2797,7 +2797,7 @@
             "room": "1a17939d-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "24c924f1-0bef-e511-a517-00155d5066d7",
+            "id": "TEST_ID",
             "url": "https://events.google.com/io2016/schedule?sid=24c924f1-0bef-e511-a517-00155d5066d7",
             "title": "Android application architecture: Get ready for the next billion!",
             "description": "Global smartphone usage is growing rapidly. However, network conditions around the globe vary. Plan ahead to make sure your users receive the best possible experience. We will talk about making your application \"offline ready\". This will include going through different use cases, and looking at how the user experiences in each can be improved dramatically by optimizing your app for bad or inconsistent network conditions.",
@@ -2819,7 +2819,7 @@
             "room": "1a17939d-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "cfc824f1-0bef-e511-a517-00155d5066d7",
+            "id": "TEST_ID",
             "url": "https://events.google.com/io2016/schedule?sid=cfc824f1-0bef-e511-a517-00155d5066d7",
             "title": "Glide: Easy and efficient image loading for Android",
             "description": "Image loading on Android can be hard to get right, but it doesn't have to be! Glide is a library for Android that abstracts away complexity and makes efficient image loading easy. Sam Judd will talk through performance tips and tricks to help developers use Glide to make image loading in their apps smoother and faster. This talk will also use the recently released Google Photos app as a case study to help highlight some of the improvements in API design and performance in the upcoming 4.0 version of Glide. ",
@@ -2841,7 +2841,7 @@
             "room": "07f1b8dd-09fd-e511-a517-00155d5066d7"
         },
         {
-            "id": "4c631cfd-0bef-e511-a517-00155d5066d7",
+            "id": "TEST_ID",
             "url": "https://events.google.com/io2016/schedule?sid=4c631cfd-0bef-e511-a517-00155d5066d7",
             "title": "Bringing seamless checkouts to the mobile web",
             "description": "In recent years we've seen incredible growth in the number of users shopping on the mobile web. Checkout flows, however, haven't changed and remain stuck in the past. This session will encourage you to \"think outside the app\" to explore how you can bring the seamless, one-tap checkout experience to your mobile website.",

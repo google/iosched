@@ -21,7 +21,6 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
-import com.google.samples.apps.iosched.shared.firestore.entity.LastReservationRequested
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.TestData
@@ -57,7 +56,7 @@ class ReservationActionUseCaseTest {
                 "userTest", TestData.session0, ReservationRequestAction.REQUEST))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
-        Assert.assertEquals(result, Result.Success(LastReservationRequested.RESERVATION))
+        Assert.assertEquals(result, Result.Success(ReservationRequestAction.REQUEST))
     }
 
     @Test
@@ -70,7 +69,7 @@ class ReservationActionUseCaseTest {
                 "userTest", TestData.session0, ReservationRequestAction.CANCEL))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
-        Assert.assertEquals(result, Result.Success(LastReservationRequested.CANCEL))
+        Assert.assertEquals(result, Result.Success(ReservationRequestAction.CANCEL))
     }
 
 
@@ -102,12 +101,12 @@ object TestUserEventRepository : SessionAndUserEventRepository {
 
     override fun changeReservation(
             userId: String, session: Session, action: ReservationRequestAction
-    ): LiveData<Result<LastReservationRequested>> {
+    ): LiveData<Result<ReservationRequestAction>> {
 
-        val result = MutableLiveData<Result<LastReservationRequested>>()
+        val result = MutableLiveData<Result<ReservationRequestAction>>()
         result.postValue(Result.Success(
-                if (action == ReservationRequestAction.REQUEST) LastReservationRequested.RESERVATION
-                else LastReservationRequested.CANCEL)
+                if (action == ReservationRequestAction.REQUEST) ReservationRequestAction.REQUEST
+                else ReservationRequestAction.CANCEL)
         )
         return result
     }
@@ -128,7 +127,7 @@ object FailingUserEventRepository : SessionAndUserEventRepository {
     override fun changeReservation(userId: String,
                                    session: Session,
                                    action: ReservationRequestAction):
-            LiveData<Result<LastReservationRequested>> {
+            LiveData<Result<ReservationRequestAction>> {
         throw Exception("Test")
     }
 

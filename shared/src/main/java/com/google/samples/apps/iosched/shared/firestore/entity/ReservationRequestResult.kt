@@ -10,7 +10,10 @@ data class ReservationRequestResult(
         /**
          * The status of the reservation request.
          */
-        val status: ReservationRequestStatus? = null,
+        val requestResult: ReservationRequestStatus? = null,
+
+        /* ID of the [ReservationRequest] that originated this result.*/
+        val requestId: String,
 
         /** The time the status was acquired. */
         val timestamp: Long = -1
@@ -43,7 +46,7 @@ data class ReservationRequestResult(
         CANCEL_DENIED_CUTOFF,
 
         /** The cancellation request was denied for unknown reasons. */
-        CANCEL_DENIED_UNKOWN;
+        CANCEL_DENIED_UNKNOWN;
 
         companion object {
 

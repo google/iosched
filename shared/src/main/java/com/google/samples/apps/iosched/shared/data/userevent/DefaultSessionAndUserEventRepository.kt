@@ -24,7 +24,6 @@ import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
-import com.google.samples.apps.iosched.shared.firestore.entity.LastReservationRequested
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.UserSession
@@ -94,7 +93,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
             userId: String,
             session: Session,
             action: ReservationRequestAction
-    ): LiveData<Result<LastReservationRequested>> {
+    ): LiveData<Result<ReservationRequestAction>> {
         return userEventDataSource.requestReservation(userId, session, action)
     }
     /**
@@ -118,7 +117,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
             }.toMap()
         }
 
-        val (allDataSynced, userEvents, _) = userData
+        val (userEvents, _) = userData
 
         val eventIdToUserEvent: Map<String, UserEvent?> = userEvents.map { it.id to it }.toMap()
         val allUserSessions = allSessions.map { UserSession(it,
@@ -126,20 +125,6 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                         startTime = it.startTime.toEpochMilli(),
                         endTime = it.endTime.toEpochMilli())) }
 
-        // If there are already entities that are marked as hasPendingWrite,
-        // we merge the hasPendingWrite states unless all data is synced to the backend
-        val alreadyPendingWriteIds = if (result.value is Result.Success) {
-            if (allDataSynced) {
-                emptySet()
-            } else {
-                (result.value as Result.Success).data.userSessionsPerDay.flatMap { it.value }
-                        .filter { it.userEvent.hasPendingWrite }
-                        .map { it.userEvent.id }
-                        .toSet()
-            }
-        } else {
-            emptySet()
-        }
 
         // Note: hasPendingWrite field isn't used for the StarEvent use case because
         // the UI is updated optimistically regardless of the UserEvent is stored in the
@@ -149,11 +134,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
             day to allUserSessions
                     .filter { day.contains(it.session) }
                     .map { userSession ->
-                        UserSession(userSession.session, userSession.userEvent.apply {
-                            if (alreadyPendingWriteIds.contains(id)) {
-                                hasPendingWrite = true
-                            }
-                        })
+                        UserSession(userSession.session, userSession.userEvent)
                     }
                     .sortedBy { it.session.startTime }
         }.toMap()
@@ -167,7 +148,7 @@ interface SessionAndUserEventRepository {
 
     fun changeReservation(
             userId: String, session: Session, action: ReservationRequestAction
-    ): LiveData<Result<LastReservationRequested>>
+    ): LiveData<Result<ReservationRequestAction>>
 
     fun starEvent(userId: String, userEvent: UserEvent): LiveData<Result<StarUpdatedStatus>>
 }

@@ -17,9 +17,7 @@
 package com.google.samples.apps.iosched.shared.firestore.entity
 
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus
-import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.RESERVE_DENIED_UNKNOWN
-import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.RESERVE_SUCCEEDED
-import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.RESERVE_WAITLISTED
+import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.*
 import com.google.samples.apps.iosched.shared.model.TestData
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -30,7 +28,8 @@ class UserEventTest {
     private fun createTestEvent(isStarred: Boolean, status: ReservationRequestStatus): UserEvent {
         return TestData.userEvents[0].copy(
             isStarred = isStarred,
-            reservation = ReservationRequestResult(status = status, timestamp = 0L)
+            reservationRequestResult = ReservationRequestResult(
+                    requestResult = status, timestamp = 0L, requestId = "123")
         )
     }
 

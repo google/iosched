@@ -19,7 +19,6 @@ package com.google.samples.apps.iosched.shared.domain.users
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
-import com.google.samples.apps.iosched.shared.firestore.entity.LastReservationRequested
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
 import timber.log.Timber
@@ -30,7 +29,7 @@ import javax.inject.Inject
  */
 open class ReservationActionUseCase @Inject constructor(
         private val repository: SessionAndUserEventRepository
-) : MediatorUseCase<ReservationRequestParameters, LastReservationRequested>() {
+) : MediatorUseCase<ReservationRequestParameters, ReservationRequestAction>() {
 
     override fun execute(parameters: ReservationRequestParameters) {
 
