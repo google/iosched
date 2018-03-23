@@ -32,7 +32,7 @@
     android:hint="@string/search_hint"
     android:icon="@drawable/lb_ic_in_app_search"
     android:includeInGlobalSearch="true"
-    android:label="@string/search_label"
+    android:label="@string/app_name"
     android:queryAfterZeroResults="true"
     android:searchSettingsDescription="@string/search_settings_description"
     android:searchSuggestAuthority="@string/search_authority"
