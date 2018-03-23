@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.domain.sessions
+package com.google.samples.apps.iosched.shared.fcm
 
-import com.google.samples.apps.iosched.shared.data.session.SessionRepository
-import com.google.samples.apps.iosched.shared.domain.UseCase
-import com.google.samples.apps.iosched.shared.model.Session
-import javax.inject.Inject
+import com.google.firebase.iid.FirebaseInstanceIdService
+import dagger.android.AndroidInjection
 
 /**
- * Gets offline sessions from the repository.
+ * A [FirebaseInstanceIdService] that injects into [AndroidInjection].
  */
-open class LoadOfflineSessionsUseCase @Inject constructor(private val repository: SessionRepository)
-    : UseCase<Unit, List<Session>>() {
-
-    override fun execute(parameters: Unit): List<Session> {
-        return repository.getSessionsOffline()
+open class DaggerFirebaseInstanceIdService : FirebaseInstanceIdService() {
+    override fun onCreate() {
+        super.onCreate()
+        AndroidInjection.inject(this)
     }
 }

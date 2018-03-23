@@ -25,7 +25,7 @@ import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
-import com.google.samples.apps.iosched.ui.schedule.Event
+import com.google.samples.apps.iosched.shared.result.Event
 import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 

@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.tag
+package com.google.samples.apps.iosched.shared.fcm
 
-import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
-import com.google.samples.apps.iosched.shared.model.Tag
-import javax.inject.Inject
-import javax.inject.Singleton
+import com.google.firebase.messaging.FirebaseMessagingService
+import dagger.android.AndroidInjection
 
 /**
- * Single point of access to tag data for the presentation layer.
+ * A [FirebaseMessagingService] that injects into [AndroidInjection].
  */
-@Singleton
-open class TagRepository @Inject constructor(
-    private val conferenceDataRepository: ConferenceDataRepository)
-{
-    fun getTags(): List<Tag> = conferenceDataRepository.getOfflineConferenceData().tags
+open class DaggerFirebaseMessagingService : FirebaseMessagingService() {
+    override fun onCreate() {
+        super.onCreate()
+        AndroidInjection.inject(this)
+    }
 }

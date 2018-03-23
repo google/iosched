@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.tag
+package com.google.samples.apps.iosched.shared.di
 
-import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
-import com.google.samples.apps.iosched.shared.model.Tag
-import javax.inject.Inject
-import javax.inject.Singleton
+import dagger.Module
 
 /**
- * Single point of access to tag data for the presentation layer.
+ * This is the staging version of ServiceBindingModule.
  */
-@Singleton
-open class TagRepository @Inject constructor(
-    private val conferenceDataRepository: ConferenceDataRepository)
-{
-    fun getTags(): List<Tag> = conferenceDataRepository.getOfflineConferenceData().tags
+@Module
+abstract class ServiceBindingModule {
+    // No services in staging.
 }

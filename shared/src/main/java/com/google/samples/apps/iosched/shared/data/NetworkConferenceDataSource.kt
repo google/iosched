@@ -29,7 +29,7 @@ import javax.inject.Inject
 //TODO(jalc): pass bootstrap version
 class NetworkConferenceDataSource @Inject constructor(val context: Context) : ConferenceDataSource {
 
-    override fun getConferenceData(): ConferenceData? {
+    override fun getRemoteConferenceData(): ConferenceData? {
         if (!isNetworkConnected(context)) {
 
             Timber.d("Network not connected")
@@ -40,7 +40,8 @@ class NetworkConferenceDataSource @Inject constructor(val context: Context) : Co
         val responseSource = try {
             ConferenceDataDownloader(context, "1").fetch() //TODO(jalc): pass bootstrap version
         } catch(e: IOException) {
-            return null
+            Timber.e(e)
+            throw e
         }
         val body = responseSource.body()?.byteStream() ?: return null
 

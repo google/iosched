@@ -26,7 +26,7 @@ const val bootstrap_conference_data_filename = "conference_data.json"
  * Loads bootstrap data file from resources and parses it.
  */
 object BootstrapConferenceDataSource : ConferenceDataSource{
-    override fun getConferenceData(): ConferenceData? {
+    override fun getRemoteConferenceData(): ConferenceData? {
         throw Exception("Bootstrap data source doesn't have remote data")
     }
 

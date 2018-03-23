@@ -25,7 +25,7 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.login.LoginEvent.RequestLogin
 import com.google.samples.apps.iosched.ui.login.LoginEvent.RequestLogout
-import com.google.samples.apps.iosched.ui.schedule.Event
+import com.google.samples.apps.iosched.shared.result.Event
 import javax.inject.Inject
 
 enum class LoginEvent {

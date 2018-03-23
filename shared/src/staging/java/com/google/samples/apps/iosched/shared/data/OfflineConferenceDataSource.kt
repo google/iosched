@@ -21,7 +21,7 @@ package com.google.samples.apps.iosched.shared.data
  */
 class OfflineConferenceDataSource : ConferenceDataSource {
 
-    override fun getConferenceData() = getOfflineConferenceData()
+    override fun getRemoteConferenceData() = getOfflineConferenceData()
 
     override fun getOfflineConferenceData() =
         BootstrapConferenceDataSource.getOfflineConferenceData()

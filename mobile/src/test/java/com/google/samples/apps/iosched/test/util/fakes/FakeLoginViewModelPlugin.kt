@@ -22,7 +22,7 @@ import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.ui.login.LoginEvent
 import com.google.samples.apps.iosched.ui.login.LoginViewModelPlugin
-import com.google.samples.apps.iosched.ui.schedule.Event
+import com.google.samples.apps.iosched.shared.result.Event
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 

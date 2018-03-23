@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.shared.domain.sessions
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
@@ -131,10 +130,6 @@ object FakeUserSessionMatcher : UserSessionMatcher {
 }
 
 object FailingSessionRepository : SessionRepository{
-    override fun getSessionsOffline(): List<Session> {
-        TODO("not implemented")
-    }
-
     override fun getSessions() : List<Session> {
         throw Exception("test")
     }

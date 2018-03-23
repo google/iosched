@@ -14,19 +14,26 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.tag
-
-import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
-import com.google.samples.apps.iosched.shared.model.Tag
-import javax.inject.Inject
-import javax.inject.Singleton
+package com.google.samples.apps.iosched.shared.result
 
 /**
- * Single point of access to tag data for the presentation layer.
+ * Used as a wrapper for data that is exposed via a LiveData that represents an event.
  */
-@Singleton
-open class TagRepository @Inject constructor(
-    private val conferenceDataRepository: ConferenceDataRepository)
-{
-    fun getTags(): List<Tag> = conferenceDataRepository.getOfflineConferenceData().tags
+open class Event<out T>(private val content: T, private var hasBeenHandled: Boolean = false) {
+    /**
+     * Returns the content and prevents its use again.
+     */
+    fun getContentIfNotHandled(): T? {
+        return if (hasBeenHandled) {
+            null
+        } else {
+            hasBeenHandled = true
+            content
+        }
+    }
+
+    /**
+     * Returns the content, even if it's already been handled.
+     */
+    fun peekContent(): T = content
 }

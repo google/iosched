@@ -28,7 +28,5 @@ import javax.inject.Singleton
 open class AgendaRepository @Inject constructor(
     private val conferenceDataRepository: ConferenceDataRepository
 ) {
-    fun getAgenda(): List<Block> = conferenceDataRepository.getConferenceData().blocks
-
-    fun getAgendaOffline(): List<Block> = conferenceDataRepository.getOfflineConferenceData().blocks
+    fun getAgenda(): List<Block> = conferenceDataRepository.getOfflineConferenceData().blocks
 }

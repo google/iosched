@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.shared.data
 
 import com.google.samples.apps.iosched.shared.model.ConferenceData
-import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Named
@@ -52,40 +51,46 @@ open class ConferenceDataRepository @Inject constructor(
     // Prevents multiple consumers requesting data at the same time
     private val loadConfDataLock = Any()
 
-    fun getConferenceData(forceUpdate: Boolean = false): ConferenceData {
-        synchronized(loadConfDataLock) {
-            if (forceUpdate || conferenceDataCache == null) {
-                conferenceDataCache = loadConferenceData()
-            }
-            return conferenceDataCache!!
+    fun refreshCacheWithRemoteConferenceData() {
+
+        val conferenceData = try {
+            remoteDataSource.getRemoteConferenceData()
+        } catch (e: IOException) {
+            latestException = e
+            throw e
         }
+        if (conferenceData == null) {
+            val e = Exception("Remote returned no conference data")
+            latestException = e
+            throw e
+        }
+
+        // Network data success!
+        // Update cache
+        synchronized(loadConfDataLock) {
+            conferenceDataCache = conferenceData
+        }
+
+        // Update meta
+        latestException = null
+        dataLastUpdated = System.currentTimeMillis()
+        latestUpdateSource = UpdateSource.NETWORK
+        latestException = null
+
     }
 
     fun getOfflineConferenceData(): ConferenceData {
-        val localData = remoteDataSource.getOfflineConferenceData()
-                ?:  boostrapDataSource.getOfflineConferenceData()!!
-        return localData
+        synchronized(loadConfDataLock) {
+            val offlineData = conferenceDataCache ?: getCacheOrBootstrapData()
+            conferenceDataCache = offlineData
+            return offlineData
+        }
     }
 
-    private fun loadConferenceData(): ConferenceData {
-        var conferenceData: ConferenceData? = null
-        // Try the network data source first
-        try {
-            conferenceData = remoteDataSource.getConferenceData()
-        } catch (e: IOException) {
-            Timber.d(e)
-            latestException = e
-        }
-        // Network data success!
-        if (conferenceData != null) {
-            latestException = null
-            dataLastUpdated = System.currentTimeMillis()
-            latestUpdateSource = UpdateSource.NETWORK
-            latestException = null
-            return conferenceData
-        }
+    private fun getCacheOrBootstrapData(): ConferenceData {
+        var conferenceData: ConferenceData?
 
-        // Second, try the local cache:
+        // First, try the local cache:
         conferenceData = remoteDataSource.getOfflineConferenceData()
 
         //Cache success!
@@ -94,7 +99,7 @@ open class ConferenceDataRepository @Inject constructor(
             return conferenceData
         }
 
-        // Third, use the bootstrap file:
+        // Second, use the bootstrap file:
         conferenceData = boostrapDataSource.getOfflineConferenceData()!!
         latestUpdateSource = UpdateSource.BOOTSTRAP
         return conferenceData
