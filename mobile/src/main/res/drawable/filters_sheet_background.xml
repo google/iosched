@@ -14,6 +14,14 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<resources>
-    <dimen name="drawer_width">320dp</dimen>
-</resources>
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <corners
+        android:topLeftRadius="@dimen/bottom_sheet_corner_radius"
+        android:topRightRadius="@dimen/bottom_sheet_corner_radius" />
+
+    <solid android:color="@color/white" />
+
+</shape>

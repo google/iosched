@@ -70,8 +70,8 @@
 
         <com.google.android.material.widget.CheckableImageButton
             android:id="@+id/bookmark_session"
-            android:layout_width="@dimen/min_touch_target"
-            android:layout_height="@dimen/min_touch_target"
+            android:layout_width="@dimen/a11y_min_touch_target"
+            android:layout_height="@dimen/a11y_min_touch_target"
             android:layout_marginEnd="@dimen/spacing_normal"
             android:background="?selectableItemBackgroundBorderless"
             android:checked="@{userEvent.isStarred}"
@@ -84,8 +84,8 @@
         <!-- TODO: Position and style properly  -->
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/reserve_session"
-            android:layout_width="@dimen/min_touch_target"
-            android:layout_height="@dimen/min_touch_target"
+            android:layout_width="@dimen/a11y_min_touch_target"
+            android:layout_height="@dimen/a11y_min_touch_target"
             android:layout_marginEnd="@dimen/spacing_normal"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/a11y_reserve_session_actions"

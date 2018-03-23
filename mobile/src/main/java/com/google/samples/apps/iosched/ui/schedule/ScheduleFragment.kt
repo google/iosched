@@ -31,6 +31,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.OnHierarchyChangeListener
+import androidx.view.doOnLayout
 import com.google.android.material.widget.Snackbar
 import com.google.android.material.widget.Snackbar.LENGTH_LONG
 import com.google.android.material.widget.Snackbar.LENGTH_SHORT
@@ -48,6 +49,8 @@ import com.google.samples.apps.iosched.ui.schedule.agenda.ScheduleAgendaFragment
 import com.google.samples.apps.iosched.ui.schedule.day.ScheduleDayFragment
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.util.login.LoginHandler
+import com.google.samples.apps.iosched.widget.BottomSheetBehavior
+import com.google.samples.apps.iosched.widget.HideBottomViewOnScrollBehavior
 import dagger.android.support.DaggerFragment
 import timber.log.Timber
 import javax.inject.Inject
@@ -68,6 +71,10 @@ class ScheduleFragment : DaggerFragment() {
 
     private lateinit var viewModel: ScheduleViewModel
     private lateinit var coordinatorLayout: CoordinatorLayout
+
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
+    // Peek height we want to maintain above the bottom navigation
+    private var basePeekHeight = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -143,6 +150,26 @@ class ScheduleFragment : DaggerFragment() {
                 }
             }
         })
+
+        basePeekHeight = view.resources.getDimensionPixelSize(R.dimen.bottom_sheet_peek_height)
+
+        // Tie the filters bottom sheet to the bottom navigation bar
+        bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.filter_sheet))
+        val dummyBottomView: View = view.findViewById(R.id.dummy_bottom_navigation)
+        val bottomNavBehavior = HideBottomViewOnScrollBehavior.from(dummyBottomView)
+        bottomNavBehavior.addScrollListener(object : HideBottomViewOnScrollBehavior.ScrollListener {
+            override fun onBottomViewScrolled(view: View) {
+                adjustFiltersPeekHeight(view)
+            }
+        })
+
+        // We need to call this once after layout to set the proper initial peek height.
+        dummyBottomView.doOnLayout { adjustFiltersPeekHeight(dummyBottomView) }
+    }
+
+    private fun adjustFiltersPeekHeight(bottomView: View) {
+        val peek = Math.max(0, (bottomView.height - bottomView.translationY + .5f).toInt())
+        bottomSheetBehavior.peekHeight = basePeekHeight + peek
     }
 
     private fun openSessionDetail(id: String) {

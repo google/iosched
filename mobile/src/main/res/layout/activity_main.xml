@@ -15,41 +15,23 @@
   ~ limitations under the License.
   -->
 
-<android.support.v4.widget.DrawerLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/fragment_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.google.samples.apps.iosched.ui.MainActivity">
 
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/fragment_container"
+    <com.google.android.material.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        style="@style/Widget.IOSched.BottomNav"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="@dimen/bottom_navigation_height"
+        android:layout_gravity="bottom"
+        app:layout_behavior="com.google.samples.apps.iosched.widget.HideBottomViewOnScrollBehavior"
+        app:layout_insetEdge="bottom"
+        app:menu="@menu/navigation" />
 
-        <com.google.android.material.widget.BottomNavigationView
-            android:id="@+id/navigation"
-            style="@style/Widget.IOSched.BottomNav"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/bottom_navigation_height"
-            android:layout_gravity="bottom"
-            app:layout_behavior="com.google.samples.apps.iosched.widget.HideBottomViewOnScrollBehavior"
-            app:layout_insetEdge="bottom"
-            app:menu="@menu/navigation" />
-
-    </android.support.design.widget.CoordinatorLayout>
-
-    <!-- Filters drawer. This needs to slide over the BottomNavigationView, so can't be contained
-         within the ScheduleFragment.
-    -->
-    <fragment
-        android:id="@+id/filter_drawer"
-        android:name="com.google.samples.apps.iosched.ui.schedule.filters.ScheduleFilterFragment"
-        android:layout_width="@dimen/drawer_width"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        tools:layout="@layout/fragment_schedule_filter" />
-
-</android.support.v4.widget.DrawerLayout>
+</android.support.design.widget.CoordinatorLayout>

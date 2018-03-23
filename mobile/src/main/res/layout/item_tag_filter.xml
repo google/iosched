@@ -42,8 +42,6 @@
             style="@style/Widget.IOSched.Tag.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_normal"
-            android:layout_marginStart="@dimen/margin_normal"
             android:checked="@{tagFilter.isChecked}"
             android:onClick="@{() -> viewModel.toggleFilter(tagFilter, !filterLabel.checked)}"
             android:text="@{tagFilter.tag.name}"

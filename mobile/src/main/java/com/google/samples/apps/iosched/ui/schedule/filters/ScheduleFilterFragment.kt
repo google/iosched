@@ -20,8 +20,6 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.RecyclerView.OnScrollListener
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,11 +65,6 @@ class ScheduleFilterFragment : DaggerFragment() {
             setHasFixedSize(true)
             (layoutManager as GridLayoutManager).spanSizeLookup =
                     ScheduleFilterSpanSizeLookup(filterAdapter)
-            addOnScrollListener(object : OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    filters_header.isActivated = recyclerView.canScrollVertically(-1)
-                }
-            })
         }
     }
 }
