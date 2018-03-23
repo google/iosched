@@ -52,6 +52,14 @@
             android:layout_gravity="center"
             app:goneUnless="@{viewModel.isLoading}" />
 
+        <View
+            android:id="@+id/dummy_bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/bottom_navigation_height"
+            android:layout_gravity="bottom"
+            app:layout_behavior="com.google.samples.apps.iosched.widget.HideBottomViewOnScrollBehavior"
+            app:layout_insetEdge="bottom" />
+
     </com.google.samples.apps.iosched.widget.NestedScrollingCoordinatorLayout>
 
 </layout>
