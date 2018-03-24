@@ -26,8 +26,8 @@ android {
         applicationId "com.google.samples.apps.iosched.tv"
         minSdkVersion rootProject.minTvSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode rootProject.versionCodeTv
+        versionName rootProject.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
