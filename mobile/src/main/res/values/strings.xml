@@ -17,7 +17,6 @@
 
 <resources>
     <string name="title_schedule" translation_description="The title for the schedule screen where user can see their schedule for Google I/O.">Schedule</string>
-    <string name="title_feed" translation_description="The title for the feed screen where user can all the updates from Google I/O team.">Feed</string>
     <string name="title_map" translation_description="The title for the map screen where user can see the map of the venue.">Map</string>
     <string name="title_info" translation_description="The title for the info screen where user can see various information, such as FAQ and travel info.">Info</string>
 
