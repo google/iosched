@@ -22,7 +22,6 @@ import android.view.Gravity
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.consume
 import com.google.samples.apps.iosched.shared.util.inTransaction
-import com.google.samples.apps.iosched.ui.feed.FeedFragment
 import com.google.samples.apps.iosched.ui.info.InfoFragment
 import com.google.samples.apps.iosched.ui.map.MapFragment
 import com.google.samples.apps.iosched.ui.schedule.ScheduleFragment
@@ -44,10 +43,11 @@ class MainActivity : DaggerAppCompatActivity() {
             drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         }
 
+        navigation.setSelectedItemId(R.id.navigation_schedule)
+
         navigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.navigation_schedule -> consume { replaceFragment(ScheduleFragment()) }
-                R.id.navigation_feed -> consume { replaceFragment(FeedFragment()) }
                 R.id.navigation_map -> consume { replaceFragment(MapFragment()) }
                 R.id.navigation_info -> consume { replaceFragment(InfoFragment()) }
                 else -> false
