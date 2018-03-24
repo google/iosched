@@ -224,7 +224,7 @@
                     app:flexDirection="row"
                     app:flexWrap="wrap"
                     app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
-                    app:sessionTags="@{viewModel.session.tags}" />
+                    app:sessionTags="@{viewModel.session.displayTags}" />
 
                 <Button
                     android:id="@+id/session_detail_rate_button"
