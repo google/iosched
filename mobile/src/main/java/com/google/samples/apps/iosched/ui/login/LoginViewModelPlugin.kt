@@ -62,7 +62,6 @@ interface LoginViewModelPlugin {
      */
     val performLoginEvent: MutableLiveData<Event<LoginEvent>>
 
-
     /**
      * Emit an Event on performLoginEvent to request login
      */
@@ -86,7 +85,7 @@ interface LoginViewModelPlugin {
  * Implementation of LoginViewModel that uses Firebase's auth mechanisms.
  */
 internal class FirebaseLoginViewModelPlugin @Inject constructor(
-        observeUserAuthStateUseCase: ObserveUserAuthStateUseCase
+    observeUserAuthStateUseCase: ObserveUserAuthStateUseCase
 ) : LoginViewModelPlugin {
 
     override val performLoginEvent = MutableLiveData<Event<LoginEvent>>()
@@ -103,11 +102,11 @@ internal class FirebaseLoginViewModelPlugin @Inject constructor(
             (result as? Result.Success)?.data?.getPhotoUrl()
         }
 
-        _isLoggedIn = currentFirebaseUser.map { value ->
+        _isLoggedIn = currentFirebaseUser.map {
             isLoggedIn()
         }
 
-        _isRegistered = currentFirebaseUser.map { value ->
+        _isRegistered = currentFirebaseUser.map {
             isRegistered()
         }
 
@@ -129,6 +128,7 @@ internal class FirebaseLoginViewModelPlugin @Inject constructor(
     override fun observeRegisteredUser(): LiveData<Boolean> {
         return _isRegistered
     }
+
     /**
      * Emit an Event on performLoginEvent to request login
      */

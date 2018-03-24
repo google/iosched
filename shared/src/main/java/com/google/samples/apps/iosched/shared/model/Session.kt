@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.shared.model
 
 import android.support.annotation.WorkerThread
+import com.google.samples.apps.iosched.shared.model.SessionType.SESSION
 import org.threeten.bp.ZonedDateTime
 import kotlin.LazyThreadSafetyMode.NONE
 
@@ -129,6 +130,11 @@ data class Session(
     fun levelTag(): Tag? {
         return tags.firstOrNull { it.category == Tag.CATEGORY_LEVEL }
     }
+
+    /**
+     * Whether this event is reservable, based upon [type].
+     */
+    fun isReservable() = type == SESSION
 }
 
 /**

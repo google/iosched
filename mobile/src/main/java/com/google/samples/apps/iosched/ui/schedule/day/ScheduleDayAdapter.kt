@@ -30,11 +30,10 @@ import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.ui.schedule.ScheduleEventListener
 
 class ScheduleDayAdapter(
-        private val eventListener: ScheduleEventListener,
-        private val tagViewPool: RecyclerView.RecycledViewPool,
-        private val isLoggedIn: LiveData<Boolean>,
-        private val isRegistered: LiveData<Boolean>,
-        private val lifecycleOwner: LifecycleOwner
+    private val eventListener: ScheduleEventListener,
+    private val tagViewPool: RecyclerView.RecycledViewPool,
+    private val showReservations: LiveData<Boolean>,
+    private val lifecycleOwner: LifecycleOwner
 ) : ListAdapter<UserSession, SessionViewHolder>(SessionDiff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SessionViewHolder {
@@ -45,7 +44,7 @@ class ScheduleDayAdapter(
                     it.recycleChildrenOnDetach = true
                 }
             }
-        return SessionViewHolder(binding, eventListener, isLoggedIn, isRegistered, lifecycleOwner)
+        return SessionViewHolder(binding, eventListener, showReservations, lifecycleOwner)
     }
 
     override fun onBindViewHolder(holder: SessionViewHolder, position: Int) {
@@ -54,19 +53,17 @@ class ScheduleDayAdapter(
 }
 
 class SessionViewHolder(
-        private val binding: ItemSessionBinding,
-        private val eventListener: ScheduleEventListener,
-        private val isLoggedIn: LiveData<Boolean>,
-        private val isRegistered: LiveData<Boolean>,
-        private val lifecycleOwner: LifecycleOwner
+    private val binding: ItemSessionBinding,
+    private val eventListener: ScheduleEventListener,
+    private val showReservations: LiveData<Boolean>,
+    private val lifecycleOwner: LifecycleOwner
 ) : ViewHolder(binding.root) {
 
     fun bind(userSession: UserSession) {
         binding.session = userSession.session
         binding.userEvent = userSession.userEvent
         binding.eventListener = eventListener
-        binding.isLoggedIn = isLoggedIn
-        binding.isRegistered = isRegistered
+        binding.showReservations = showReservations
         binding.setLifecycleOwner(lifecycleOwner)
         binding.executePendingBindings()
     }

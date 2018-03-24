@@ -18,10 +18,17 @@ package com.google.samples.apps.iosched.ui.schedule.day
 
 import android.content.Context
 import android.databinding.BindingAdapter
-import android.widget.ImageView
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.TextView
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
+import com.google.samples.apps.iosched.widget.ReservationStatus.RESERVABLE
+import com.google.samples.apps.iosched.widget.ReservationStatus.RESERVATION_DISABLED
+import com.google.samples.apps.iosched.widget.ReservationStatus.RESERVATION_PENDING
+import com.google.samples.apps.iosched.widget.ReservationStatus.RESERVED
+import com.google.samples.apps.iosched.widget.ReservationStatus.WAIT_LISTED
+import com.google.samples.apps.iosched.widget.ReserveButton
 import org.threeten.bp.Duration
 import org.threeten.bp.ZonedDateTime
 
@@ -34,7 +41,7 @@ fun sessionLengthLocation(
 ) {
     textView.text = textView.context.getString(
         R.string.session_duration_location,
-            durationString(textView.context, Duration.between(startTime, endTime)), room
+        durationString(textView.context, Duration.between(startTime, endTime)), room
     )
 }
 
@@ -48,23 +55,33 @@ private fun durationString(context: Context, duration: Duration): String {
     }
 }
 
-@BindingAdapter("reservation_status")
+@BindingAdapter("reservationStatus")
 fun reservationStatus(
-        imageView: ImageView,
-        userEvent: UserEvent?
+    reserveButton: ReserveButton,
+    userEvent: UserEvent?
 ) {
-
-    val context = imageView.context
-    imageView.background = context.getDrawable(getReservationDrawable(userEvent))
+    val reservationUnavailable = false // TODO determine this condition
+    reserveButton.status = when {
+        userEvent == null -> RESERVABLE
+        userEvent.isReserved() == true -> RESERVED
+        userEvent.isWaitlisted() == true -> WAIT_LISTED
+        userEvent.isReservationPending() == true || userEvent.isCancelPending() == true -> {
+            // Treat both pending reservations & cancellations the same. This is important as the
+            // icon animations all expect to do through the same pending state.
+            RESERVATION_PENDING
+        }
+        // TODO ?? -> WAIT_LIST_AVAILABLE
+        reservationUnavailable -> RESERVATION_DISABLED
+        else -> RESERVABLE
+    }
+    reserveButton.isEnabled = !reservationUnavailable
 }
 
-fun getReservationDrawable(userEvent: UserEvent?) : Int {
-
-    return when {
-        userEvent?.isCancelPending() == true -> R.drawable.ic_cancel_pending
-        userEvent?.isReserved() == true -> R.drawable.ic_reservation_reserved
-        userEvent?.isWaitlisted() == true -> R.drawable.ic_reservation_waitlisted
-        userEvent?.isReservationPending() == true -> R.drawable.ic_reservation_pending
-        else -> return R.drawable.ic_reservation_default
-    }
+@BindingAdapter(value = ["showReservations", "isReservable"], requireAll = true)
+fun showReserveButton(
+    reserveButton: ReserveButton,
+    showReservations: Boolean,
+    eventIsReservable: Boolean
+) {
+    reserveButton.visibility = if (showReservations && eventIsReservable) VISIBLE else GONE
 }
