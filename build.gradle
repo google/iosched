@@ -19,6 +19,13 @@
 
 buildscript {
     ext {
+        // App version
+        versionName = '6.0.0' // X.Y.Z; X = Major, Y = minor, Z = Patch level
+        versionCodeBase = 60000 // XYZZM; M = Module (wear, tv, mobile)
+        versionCodeWear = versionCodeBase + 1
+        versionCodeTv = versionCodeBase + 2
+        versionCodeMobile = versionCodeBase + 3
+
         // SDK and tools
         compileSdkVersion = 27
         minSdkVersion = 21
