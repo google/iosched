@@ -67,10 +67,16 @@
     <string name="a11y_speaker_headshot" translatable="false">TODO a11y content description for speaker headshot</string>
     <string name="a11y_session_item_actions" translatable="false">TODO: a11y content description for session item actions</string>
     <string name="a11y_star_session_actions" translatable="false">TODO: a11y content description for star item actions</string>
-    <string name="a11y_reserve_session_actions" translatable="false">TODO: a11y content description for reserve item actions</string>
     <string name="a11y_login" translatable="false">TODO: a11y content description for login action</string>
     <string name="a11y_logout" translatable="false">TODO: a11y content description for logout action</string>
     <string name="a11y_play_button_description" translatable="false">TODO: a11y content description for video play button</string>
+    <string name="a11y_reservation_available" translation_description="Alternative text for the button letting the user reserve a seat for a given event.">Reserve event</string>
+    <string name="a11y_reservation_working" translation_description="Alternative text for the event reservation button whilst it is working on processing a reservation.">Working to reserve event</string>
+    <string name="a11y_reservation_reserved" translation_description="Alternative text for the event reservation button when the user has reserved a seat.">Event reserved</string>
+    <string name="a11y_reservation_disabled" translation_description="Alternative text for the event reservation button when reservation is not available.">Reservation not available</string>
+    <string name="a11y_reservation_wait_list_available" translation_description="Alternative text for the event reservation button when the user can join a wait list.">Join wait list for event</string>
+    <string name="a11y_reservation_wait_listed" translation_description="Alternative text for the event reservation button when the user is on a wait list for the event.">On wait list for event</string>
+    <string name="a11y_reservation_pending" translation_description="Alternative text for the event reservation button when the user's reservation is pending.">Reservation pending</string>
 
     <!-- Sign in dialog -->
     <string name="dialog_sign_in_title" translation_description="The title of the dialog. When the user needs to sign in.">Sign in to customize your schedule</string>
