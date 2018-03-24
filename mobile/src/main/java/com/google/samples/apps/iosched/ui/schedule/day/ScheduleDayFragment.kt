@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.ui.schedule.day
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.RecycledViewPool
@@ -98,6 +99,7 @@ class ScheduleDayFragment : DaggerFragment() {
             adapter = this@ScheduleDayFragment.adapter
             recyclerView?.recycledViewPool = sessionViewPool
             (layoutManager as LinearLayoutManager).recycleChildrenOnDetach = true
+            (itemAnimator as DefaultItemAnimator).supportsChangeAnimations = false
         }
     }
 
