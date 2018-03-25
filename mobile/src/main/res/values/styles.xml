@@ -137,7 +137,7 @@
 
     <style name="Widget.IOSched.Tabs" parent="@style/Widget.MaterialComponents.TabLayout">
         <item name="tabTextAppearance">@style/TextAppearance.IOSched.Tab</item>
-        <item name="tabIndicatorColor">?colorPrimary</item>
+        <item name="tabIndicator">@drawable/tab_indicator</item>
     </style>
 
     <style name="Widget.IOSched.Tag">
