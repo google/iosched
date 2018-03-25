@@ -125,6 +125,10 @@ data class Session(
     val type: SessionType by lazy(NONE) {
         SessionType.fromTags(tags)
     }
+
+    fun levelTag(): Tag? {
+        return tags.firstOrNull { it.category == Tag.CATEGORY_LEVEL }
+    }
 }
 
 /**
