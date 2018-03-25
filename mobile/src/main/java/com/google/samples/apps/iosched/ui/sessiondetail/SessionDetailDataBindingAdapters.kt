@@ -26,6 +26,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemSpeakerDetailBinding
 import com.google.samples.apps.iosched.shared.model.Session
@@ -45,6 +46,7 @@ fun headerImage(imageView: ImageView, photoUrl: String?) {
     if (!photoUrl.isNullOrEmpty()) {
         Glide.with(imageView)
             .load(photoUrl)
+            .apply(RequestOptions().placeholder(HeaderGridDrawable(imageView.context)))
             .into(imageView)
     } else {
         imageView.setImageDrawable(HeaderGridDrawable(imageView.context))
