@@ -21,6 +21,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewModel" />
@@ -34,10 +35,10 @@
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="?actionBarSize"
             android:clipToPadding="false"
-            android:scrollbars="vertical"
-            android:scrollbarStyle="insideOverlay">
+            android:paddingBottom="?actionBarSize"
+            android:scrollbarStyle="insideOverlay"
+            android:scrollbars="vertical">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -62,28 +63,28 @@
                     android:id="@+id/detail_image"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:contentDescription="@string/a11y_session_detail_video_description"
+                    app:layout_constraintDimensionRatio="@string/session_detail_header_aspect"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintDimensionRatio="@string/session_detail_header_aspect"
-                    android:contentDescription="@string/a11y_session_detail_video_description"
                     app:headerImage="@{viewModel.session.photoUrl}" />
 
                 <!-- Play button, shown if there is a recording available -->
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    app:layout_constraintStart_toStartOf="@id/detail_image"
-                    app:layout_constraintTop_toTopOf="@id/detail_image"
-                    app:layout_constraintEnd_toEndOf="@id/detail_image"
-                    app:layout_constraintBottom_toBottomOf="@id/detail_image"
-                    android:scaleType="center"
                     android:background="@color/scrim"
+                    android:contentDescription="@string/a11y_play_button_description"
                     android:foreground="?selectableItemBackground"
                     android:onClick="@{() -> viewModel.onPlayVideo()}"
-                    android:contentDescription="@string/a11y_play_button_description"
-                    app:srcCompat="@drawable/ic_play"
-                    app:goneUnless="@{viewModel.isPlayable}" />
+                    android:scaleType="center"
+                    app:layout_constraintBottom_toBottomOf="@id/detail_image"
+                    app:layout_constraintEnd_toEndOf="@id/detail_image"
+                    app:layout_constraintStart_toStartOf="@id/detail_image"
+                    app:layout_constraintTop_toTopOf="@id/detail_image"
+                    app:goneUnless="@{viewModel.isPlayable}"
+                    app:srcCompat="@drawable/ic_play" />
 
                 <android.support.constraint.Guideline
                     android:id="@+id/guideline_title_end"
@@ -96,35 +97,35 @@
                 <com.airbnb.lottie.LottieAnimationView
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginTop="24dp"
                     android:layout_marginEnd="24dp"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintBottom_toBottomOf="@id/detail_image"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toEndOf="@id/detail_image"
                     app:layout_constraintStart_toEndOf="@id/guideline_title_end"
                     app:layout_constraintTop_toTopOf="@id/detail_image"
-                    app:layout_constraintEnd_toEndOf="@id/detail_image"
-                    app:layout_constraintBottom_toBottomOf="@id/detail_image"
                     app:layout_constraintVertical_bias="0"
-                    app:layout_constraintDimensionRatio="1:1"
                     app:eventHeaderAnim="@{viewModel.session}"
+                    app:goneUnless="@{!viewModel.hasPhoto}"
                     app:lottie_autoPlay="true"
-                    app:lottie_loop="true"
-                    app:goneUnless="@{!viewModel.hasPhoto}" />
+                    app:lottie_loop="true" />
 
                 <!-- Title on header: only shown if there isn't a photo header. -->
                 <TextView
                     android:id="@+id/session_detail_title"
+                    style="@style/Widget.IOSched.SessionDetailTitle"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:paddingBottom="@dimen/margin_normal"
+                    android:paddingTop="72dp"
+                    android:text="@{viewModel.session.title}"
+                    app:layout_constraintBottom_toBottomOf="@id/detail_image"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_title_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toTopOf="@id/detail_image"
-                    app:layout_constraintEnd_toEndOf="@id/guideline_title_end"
-                    app:layout_constraintBottom_toBottomOf="@id/detail_image"
                     app:layout_constraintVertical_bias="1"
-                    android:paddingTop="72dp"
-                    android:paddingBottom="@dimen/margin_normal"
-                    android:text="@{viewModel.session.title}"
-                    tools:text="Session Title"
                     app:goneUnless="@{!viewModel.hasPhoto}"
-                    style="@style/Widget.IOSched.SessionDetailTitle" />
+                    tools:text="Session Title" />
 
                 <Space
                     android:id="@+id/spacer"
@@ -135,24 +136,25 @@
                 <!-- Title below header: shown if there is a photo header -->
                 <TextView
                     android:id="@+id/session_detail_with_video_title"
+                    style="@style/Widget.IOSched.SessionDetailTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/spacer"
-                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     android:paddingBottom="@dimen/margin_normal"
                     android:text="@{viewModel.session.title}"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/spacer"
                     app:goneUnless="@{viewModel.hasPhoto}"
-                    tools:text="Session Title"
-                    style="@style/Widget.IOSched.SessionDetailTitle" />
+                    tools:text="Session Title" />
 
                 <TextView
                     android:id="@+id/session_detail_time"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:textColor="?android:textColorPrimary"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/session_detail_with_video_title"
-                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:sessionDetailEndTime="@{viewModel.session.endTime}"
                     app:sessionDetailStartTime="@{viewModel.session.startTime}"
                     tools:text="Session Time" />
@@ -161,11 +163,15 @@
                     android:id="@+id/session_detail_room"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/session_detail_time"
-                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     android:layout_marginTop="@dimen/spacing_micro"
                     android:text="@{viewModel.session.room.name}"
+                    android:textColor="?android:textColorPrimary"
+                    app:layout_constraintEnd_toStartOf="@id/session_detail_recorded"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/session_detail_time"
+                    app:layout_constraintWidth_default="wrap"
                     tools:text="Session Location" />
 
                 <!-- todo(tiem) b/74617185 -->
@@ -173,23 +179,37 @@
                     android:id="@+id/session_detail_recorded"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_normal"
                     android:layout_marginTop="@dimen/spacing_micro"
+                    android:contentDescription="@string/a11y_session_detail_video_icon"
+                    app:layout_constraintBottom_toBottomOf="@id/session_detail_room"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toEndOf="@id/session_detail_room"
+                    app:layout_constraintTop_toTopOf="@id/session_detail_room"
+                    app:srcCompat="@drawable/ic_livestreamed" />
+
+                <TextView
+                    android:id="@+id/session_detail_level"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_micro"
+                    android:text="@{viewModel.session.levelTag.name}"
+                    android:textColor="?android:textColorPrimary"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/session_detail_room"
-                    android:contentDescription="@string/a11y_session_detail_video_icon"
-                    app:srcCompat="@drawable/ic_livestreamed" />
+                    app:goneUnless="@{viewModel.session.levelTag != null}"
+                    tools:text="Intermediate" />
 
                 <TextView
                     android:id="@+id/session_detail_description"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/session_detail_recorded"
-                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     android:layout_marginTop="@dimen/margin_normal"
                     android:paddingTop="@dimen/spacing_normal"
                     android:text="@{viewModel.session.abstract}"
-                    android:textColor="?android:textColorPrimary"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/session_detail_level"
                     tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus et mauris blandit, porttitor leo sit amet, tincidunt tellus. Proin at rutrum risus. Sed volutpat tellus  " />
 
                 <android.support.v7.widget.RecyclerView
@@ -198,12 +218,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_normal"
                     android:orientation="horizontal"
-                    app:flexDirection="row"
-                    app:flexWrap="wrap"
-                    app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@+id/session_detail_description"
+                    app:flexDirection="row"
+                    app:flexWrap="wrap"
+                    app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
                     app:sessionTags="@{viewModel.session.tags}" />
 
                 <Button
@@ -212,9 +232,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_normal"
                     android:text="@string/rate_session"
-                    app:goneUnless="@{viewModel.showRateButton}"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/tags"
+                    app:goneUnless="@{viewModel.showRateButton}"
                     tools:text="Rate Session" />
 
                 <LinearLayout
@@ -222,23 +242,23 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_normal"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/margin_normal"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/session_detail_rate_button"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:paddingTop="@dimen/margin_normal"
-                    android:orientation="vertical"
-                    app:sessionSpeakers="@{viewModel.session.speakers}"
                     app:goneUnless="@{viewModel.hasSpeakers}"
+                    app:sessionSpeakers="@{viewModel.session.speakers}"
                     tools:listitem="@layout/item_speaker_detail">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingHorizontal="@dimen/margin_normal"
-                        android:minHeight="?actionBarSize"
                         android:gravity="start|center_vertical"
-                        android:textAppearance="@style/TextAppearance.IOSched.Subhead"
-                        android:text="@string/session_detail_speakers_header" />
+                        android:minHeight="?actionBarSize"
+                        android:paddingHorizontal="@dimen/margin_normal"
+                        android:text="@string/session_detail_speakers_header"
+                        android:textAppearance="@style/TextAppearance.IOSched.Subhead" />
 
                 </LinearLayout>
 
@@ -247,22 +267,22 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_normal"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/margin_normal"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/session_detail_speaker_list"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:paddingTop="@dimen/margin_normal"
-                    android:orientation="vertical"
                     app:goneUnless="@{viewModel.hasRelated}"
                     tools:listitem="@layout/item_speaker_detail">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingHorizontal="@dimen/margin_normal"
-                        android:minHeight="?actionBarSize"
                         android:gravity="start|center_vertical"
-                        android:textAppearance="@style/TextAppearance.IOSched.Subhead"
-                        android:text="@string/session_detail_related_header" />
+                        android:minHeight="?actionBarSize"
+                        android:paddingHorizontal="@dimen/margin_normal"
+                        android:text="@string/session_detail_related_header"
+                        android:textAppearance="@style/TextAppearance.IOSched.Subhead" />
 
                 </LinearLayout>
 
@@ -292,9 +312,9 @@
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:layout_gravity="bottom"
-            app:fabAlignmentMode="end"
             android:elevation="6dp"
-            app:contentInsetStart="@dimen/margin_normal" />
+            app:contentInsetStart="@dimen/margin_normal"
+            app:fabAlignmentMode="end" />
 
         <!-- TODO user proper icon & bind click event -->
         <com.google.android.material.widget.FloatingActionButton
@@ -302,8 +322,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_anchor="@id/toolbar"
-            app:srcCompat="@drawable/ic_star"
-            app:backgroundTint="@color/white" />
+            app:backgroundTint="@color/white"
+            app:srcCompat="@drawable/ic_star" />
 
     </android.support.design.widget.CoordinatorLayout>
 
