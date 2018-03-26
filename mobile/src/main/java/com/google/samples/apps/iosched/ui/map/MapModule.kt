@@ -18,7 +18,7 @@ package com.google.samples.apps.iosched.ui.map
 
 import android.arch.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.di.FragmentScoped
-import com.google.samples.apps.iosched.di.ViewModelKey
+import com.google.samples.apps.iosched.shared.di.ViewModelKey
 import dagger.Binds
 import dagger.Module
 import dagger.android.AndroidInjector

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.di
+package com.google.samples.apps.iosched.shared.di
 
 import android.arch.lifecycle.ViewModelProvider
 import dagger.Binds
@@ -25,7 +25,7 @@ import dagger.Module
  * our own implementation: [IOSchedViewModelFactory].
  */
 @Module
-internal abstract class ViewModelModule {
+abstract class ViewModelModule {
 
     @Binds
     internal abstract fun bindViewModelFactory(factory: IOSchedViewModelFactory)
