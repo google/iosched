@@ -77,7 +77,7 @@
             android:checked="@{userEvent.isStarred}"
             android:contentDescription="@string/a11y_star_session_actions"
             android:onClick="@{() -> eventListener.onStarClicked(userEvent)}"
-            android:src="@drawable/star_session_checkbox"
+            android:src="@drawable/asld_star_event"
             app:layout_constraintEnd_toStartOf="@id/reserve_session"
             app:layout_constraintTop_toTopOf="parent" />
 
