@@ -20,6 +20,8 @@ import android.databinding.BindingAdapter
 import android.databinding.DataBindingUtil
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -38,6 +40,7 @@ import com.google.samples.apps.iosched.shared.model.Speaker
 import com.google.samples.apps.iosched.shared.util.SpeakerUtils
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.util.drawable.HeaderGridDrawable
+import org.threeten.bp.Duration
 import org.threeten.bp.ZonedDateTime
 
 @Suppress("unused")
@@ -61,7 +64,7 @@ fun eventHeaderAnim(lottieView: LottieAnimationView, session: Session?) {
         CODELAB -> "anim/event_details_codelabs.json"
         OFFICE_HOURS -> "anim/event_details_office_hours.json"
         SANDBOX -> "anim/event_details_sandbox.json"
-        /* default to session anim */
+    /* default to session anim */
         else -> "anim/event_details_session.json"
     }
     lottieView.setAnimation(anim)
@@ -92,6 +95,19 @@ fun timeString(
         view.text = ""
     } else {
         view.text = TimeUtils.timeString(sessionDetailStartTime, sessionDetailEndTime)
+    }
+}
+
+@BindingAdapter("sessionStartCountdown")
+fun sessionStartCountdown(view: TextView, timeUntilStart: Duration?) {
+    if (timeUntilStart == null) {
+        view.visibility = GONE
+    } else {
+        view.visibility = VISIBLE
+        val minutes = timeUntilStart.toMinutes()
+        view.text = view.context.resources.getQuantityString(
+            R.plurals.session_starting_in, minutes.toInt(), minutes.toString()
+        )
     }
 }
 

@@ -32,6 +32,20 @@ class SyncTaskExecutorRule : TestWatcher() {
 
     override fun finished(description: Description?) {
         super.finished(description)
+        SyncScheduler.clearScheduledPostdelayedTasks()
         DefaultScheduler.setDelegate(null)
+    }
+
+    /**
+     * Force the (previously deferred) execution of all [Scheduler.postDelayedToMainThread] tasks.
+     *
+     * In tests, postDelayed is not eagerly executed, allowing test code to test self-scheduling
+     * tasks.
+     *
+     * This will *not* run any tasks that are scheduled as a result of running the current delayed
+     * tasks. If you need to test that more tasks were scheduled, call this function again.
+     */
+    fun runAllScheduledPostDelayedTasks() {
+        SyncScheduler.runAllScheduledPostDelayedTasks()
     }
 }
