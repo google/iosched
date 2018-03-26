@@ -130,6 +130,12 @@ fun <T : Enum<T>> Bundle.putEnum(key: String, value: T) = putString(key, value.n
 /** Read an enum value from a Bundle */
 inline fun <reified T : Enum<T>> Bundle.getEnum(key: String): T = enumValueOf(getString(key))
 
+/** Write a boolean to a Parcel (copied from Parcel, where this is @hidden). */
+fun Parcel.writeBoolean(value: Boolean) = writeInt(if (value) 1 else 0)
+
+/** Read a boolean from a Parcel (copied from Parcel, where this is @hidden). */
+fun Parcel.readBoolean() = readInt() != 0
+
 // endregion
 // region LiveData
 
