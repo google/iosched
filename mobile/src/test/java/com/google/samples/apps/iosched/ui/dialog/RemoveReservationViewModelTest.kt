@@ -57,8 +57,10 @@ class RemoveReservationViewModelTest {
         val testUid = "testUid"
         val parameters = ReservationRequestParameters(testUid,
                 TestData.session1.id, CANCEL)
+        viewModel.userId = testUid
+        viewModel.sessionId = TestData.session1.id
 
-        viewModel.onRemoveClicked(testUid, TestData.session1.id)
+        viewModel.onRemoveClicked()
 
         verify(reservationActionUseCaseMock).execute(parameters)
         val dismissDialogEvent: Event<Boolean>? =
