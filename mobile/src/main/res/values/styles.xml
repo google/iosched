@@ -232,7 +232,8 @@
         <item name="android:gravity">start</item>
     </style>
 
-    <style name="Widget.IOSched.Dialog" parent="@style/ThemeOverlay.MaterialComponents.Dialog">
-        <item name="android:windowBackground">@drawable/dialog_bg</item>
+    <style name="Theme.IOSched.Dialog" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
     </style>
 </resources>
