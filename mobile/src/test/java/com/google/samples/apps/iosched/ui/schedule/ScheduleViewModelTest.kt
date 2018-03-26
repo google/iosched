@@ -212,19 +212,6 @@ class ScheduleViewModelTest {
         assertTrue(errorMsg?.peekContent()?.isNotEmpty() ?: false)
     }
 
-    private fun createScheduleViewModel(
-        loadSessionsUseCase: LoadUserSessionsByDayUseCase = createTestLoadUserSessionsByDayUseCase(),
-        loadAgendaUseCase: LoadAgendaUseCase = createAgendaExceptionUseCase(),
-        loadTagsUseCase: LoadTagFiltersUseCase = createTagsExceptionUseCase(),
-        loginViewModelDelegate: LoginViewModelPlugin = createLoginViewModelComponent(),
-        starEventUseCase: StarEventUseCase = createStarEventUseCase(),
-        reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase()
-    ): ScheduleViewModel {
-        return ScheduleViewModel(
-                loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelDelegate,
-                starEventUseCase, reservationActionUseCase)
-    }
-
     /** Starring **/
 
     @Test
@@ -292,9 +279,13 @@ class ScheduleViewModelTest {
 
         val starEvent: Event<SnackbarMessage>? =
                 LiveDataTestUtil.getValue(viewModel.snackBarMessage)
+        // TODO change with actual resource used
         assertThat(starEvent?.getContentIfNotHandled()?.messageId,
                 `is`(not(equalTo(R.string.reservation_request_succeeded))))
-        // TODO change with actual resource used
+
+        // Verify that the login dialog was triggered
+        val loginEvent = LiveDataTestUtil.getValue(viewModel.navigateToSignInDialogAction)
+        assertEquals(true, loginEvent?.getContentIfNotHandled())
     }
 
     /** Reservations **/
@@ -329,9 +320,13 @@ class ScheduleViewModelTest {
         viewModel.onReservationClicked(TestData.session0, TestData.userEvents[4])
 
         val event: Event<SnackbarMessage>? = LiveDataTestUtil.getValue(viewModel.snackBarMessage)
+        // TODO change with actual resource used
         assertThat(event?.getContentIfNotHandled()?.messageId,
                 `is`(not(equalTo(R.string.reservation_request_succeeded))))
-        // TODO change with actual resource used
+
+        // Verify that the login dialog was triggered
+        val loginEvent = LiveDataTestUtil.getValue(viewModel.navigateToSignInDialogAction)
+        assertEquals(true, loginEvent?.getContentIfNotHandled())
     }
 
     @Test
@@ -415,6 +410,76 @@ class ScheduleViewModelTest {
                 LiveDataTestUtil.getValue(viewModel.snackBarMessage)
         assertThat(starEvent?.getContentIfNotHandled()?.messageId,
                 `is`(equalTo(R.string.waitlist_new)))
+    }
+
+    @Test
+    fun noLoggedInUser_showsReservationButton() {
+        // Given no logged in user
+        val noFirebaseUser = null
+
+        // Create ViewModel
+        val observableFirebaseUserUseCase =
+            FakeObserveUserAuthStateUseCase(
+                user = Result.Success(noFirebaseUser),
+                isRegistered = Result.Success(false))
+        val loginViewModelComponent = FirebaseLoginViewModelPlugin(observableFirebaseUserUseCase)
+        val viewModel = createScheduleViewModel(loginViewModelDelegate = loginViewModelComponent)
+
+        // Check that reservation buttons are shown
+        assertEquals(true, LiveDataTestUtil.getValue(viewModel.showReservations))
+    }
+
+    @Test
+    fun loggedInUser_registered_showsReservationButton() {
+        // Given a logged in user
+        val mockUser = mock<AuthenticatedUserInfoBasic> {
+            on { isLoggedIn() }.doReturn(true)
+        }
+
+        // Who is registered
+        val observableFirebaseUserUseCase =
+            FakeObserveUserAuthStateUseCase(
+                user = Result.Success(mockUser),
+                isRegistered = Result.Success(true))
+        val loginViewModelComponent = FirebaseLoginViewModelPlugin(observableFirebaseUserUseCase)
+        // Create ViewModel
+        val viewModel = createScheduleViewModel(loginViewModelDelegate = loginViewModelComponent)
+
+        // Check that reservation buttons are shown
+        assertEquals(true, LiveDataTestUtil.getValue(viewModel.showReservations))
+    }
+
+    @Test
+    fun loggedInUser_notRegistered_hidesReservationButton() {
+        // Given a logged in user
+        val mockUser = mock<AuthenticatedUserInfoBasic> {
+            on { isLoggedIn() }.doReturn(true)
+        }
+
+        // Who isn't registered
+        val observableFirebaseUserUseCase =
+            FakeObserveUserAuthStateUseCase(
+                user = Result.Success(mockUser),
+                isRegistered = Result.Success(false))
+        val loginViewModelComponent = FirebaseLoginViewModelPlugin(observableFirebaseUserUseCase)
+        // Create ViewModel
+        val viewModel = createScheduleViewModel(loginViewModelDelegate = loginViewModelComponent)
+
+        // Check that *no* reservation buttons are shown
+        assertEquals(false, LiveDataTestUtil.getValue(viewModel.showReservations))
+    }
+
+    private fun createScheduleViewModel(
+        loadSessionsUseCase: LoadUserSessionsByDayUseCase = createTestLoadUserSessionsByDayUseCase(),
+        loadAgendaUseCase: LoadAgendaUseCase = createAgendaExceptionUseCase(),
+        loadTagsUseCase: LoadTagFiltersUseCase = createTagsExceptionUseCase(),
+        loginViewModelDelegate: LoginViewModelPlugin = createLoginViewModelComponent(),
+        starEventUseCase: StarEventUseCase = createStarEventUseCase(),
+        reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase()
+    ): ScheduleViewModel {
+        return ScheduleViewModel(
+            loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelDelegate,
+            starEventUseCase, reservationActionUseCase)
     }
 
     /**

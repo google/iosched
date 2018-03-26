@@ -115,6 +115,8 @@ class ScheduleViewModel @Inject constructor(
     val profileContentDesc: LiveData<Int>
         get() = _profileContentDesc
 
+    val showReservations: LiveData<Boolean>
+
     /**
      * Event to navigate to the sign in Dialog. We only want to consume the event, so the
      * Boolean value isn't used actually.
@@ -230,7 +232,11 @@ class ScheduleViewModel @Inject constructor(
         loadSessionsResult.addSource(currentFirebaseUser) {
             Timber.d("Loading user session with user ${(it as? Result.Success)?.data?.getUid() }")
             refreshUserSessions()
+        }
 
+        // Show reservation button if not logged in or (logged in && registered)
+        showReservations = currentFirebaseUser.map {
+            isRegistered() || !isLoggedIn()
         }
     }
 
@@ -324,9 +330,8 @@ class ScheduleViewModel @Inject constructor(
 
     override fun onReservationClicked(session: Session, userEvent: UserEvent) {
         if (!isLoggedIn()) {
-            // TODO: This should never happen :)
-            Timber.d("You need to sign in to reserve an event")
-            _errorMessage.value = Event("Sign in to reserve events")
+            Timber.d("Showing Sign-in dialog after reserve click")
+            _navigateToSignInDialogAction.value = Event(true)
             return
         }
         if (!isRegistered()) {

@@ -90,8 +90,7 @@ class ScheduleDayFragment : DaggerFragment() {
         adapter = ScheduleDayAdapter(
             viewModel,
             tagViewPool,
-            viewModel.observeLoggedInUser(),
-            viewModel.observeRegisteredUser(),
+            viewModel.showReservations,
             this
         )
         recyclerView = view.findViewById(R.id.recyclerview)
