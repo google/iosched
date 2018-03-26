@@ -18,21 +18,21 @@ package com.google.samples.apps.iosched.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.samples.apps.iosched.shared.data.login.datasources.AuthStateUserDataSource
-import com.google.samples.apps.iosched.shared.data.login.datasources.FirebaseAuthStateUserDataSource
-import com.google.samples.apps.iosched.shared.data.login.datasources.FirestoreRegisteredUserDataSource
-import com.google.samples.apps.iosched.shared.data.login.datasources.RegisteredUserDataSource
+import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
+import com.google.samples.apps.iosched.shared.data.signin.datasources.FirebaseAuthStateUserDataSource
+import com.google.samples.apps.iosched.shared.data.signin.datasources.FirestoreRegisteredUserDataSource
+import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.fcm.FcmTokenUpdater
-import com.google.samples.apps.iosched.util.login.DefaultLoginHandler
-import com.google.samples.apps.iosched.util.login.LoginHandler
+import com.google.samples.apps.iosched.util.signin.DefaultSignInHandler
+import com.google.samples.apps.iosched.util.signin.SignInHandler
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-internal class LoginModule {
+internal class SignInModule {
     @Provides
-    fun provideLoginHandler(): LoginHandler = DefaultLoginHandler()
+    fun provideSignInHandler(): SignInHandler = DefaultSignInHandler()
 
     @Singleton
     @Provides

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.dialog
+package com.google.samples.apps.iosched.ui.reservation
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
@@ -69,8 +69,11 @@ class RemoveReservationDialogFragment : CustomDimDialogFragment(), HasSupportFra
         AndroidSupportInjection.inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         removeViewModel = viewModelProvider(viewModelFactory)
 
         requireNotNull(arguments).run {

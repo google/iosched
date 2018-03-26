@@ -29,6 +29,7 @@ import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestPar
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.ui.reservation.RemoveReservationViewModel
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
@@ -80,8 +81,8 @@ class RemoveReservationViewModelTest {
     }
 
     private fun createRemoveReservationViewModel(
-            reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase()):
-            RemoveReservationViewModel {
+        reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase()
+    ): RemoveReservationViewModel {
         return RemoveReservationViewModel(reservationActionUseCase)
     }
 

@@ -14,37 +14,43 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.sessiondetail
+package com.google.samples.apps.iosched.ui.signin
 
 import android.arch.lifecycle.ViewModel
-import com.google.samples.apps.iosched.shared.di.FragmentScoped
+import com.google.samples.apps.iosched.shared.di.ChildFragmentScoped
 import com.google.samples.apps.iosched.shared.di.ViewModelKey
-import com.google.samples.apps.iosched.ui.reservation.ReservationModule
-import com.google.samples.apps.iosched.ui.signin.SignInDialogModule
 import dagger.Binds
 import dagger.Module
+import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 
 /**
- * Module where classes needed to create the [SessionDetailFragment] are defined.
+ * Module that defines the child fragments related to sign in/out.
  */
 @Module
-internal abstract class SessionDetailModule {
+internal abstract class SignInDialogModule {
 
     /**
-     * Generates an AndroidInjector for the [SessionDetailFragment].
+     * Generates an [AndroidInjector] for the [SignInDialogFragment].
      */
-    @FragmentScoped
+    @ChildFragmentScoped
     @ContributesAndroidInjector
-    internal abstract fun contributeSessionDetailFragment(): SessionDetailFragment
+    internal abstract fun contributeSignInDialogFragment(): SignInDialogFragment
+
+    /**
+     * Generates an [AndroidInjector] for the [SignOutDialogFragment].
+     */
+    @ChildFragmentScoped
+    @ContributesAndroidInjector
+    internal abstract fun contributeSignOutDialogFragment(): SignOutDialogFragment
 
     /**
      * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
-     * want to get a [SessionDetailViewModel] class.
+     * want to get a [SignInViewModel] class.
      */
     @Binds
     @IntoMap
-    @ViewModelKey(SessionDetailViewModel::class)
-    abstract fun bindSessionDetailFragmentViewModel(viewModel: SessionDetailViewModel): ViewModel
+    @ViewModelKey(SignInViewModel::class)
+    abstract fun bindSignInViewModel(viewModel: SignInViewModel): ViewModel
 }

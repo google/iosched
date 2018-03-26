@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.dialog
+package com.google.samples.apps.iosched.ui.reservation
 
 import android.arch.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.di.ChildFragmentScoped
@@ -26,17 +26,10 @@ import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 
 /**
- * Module that defines the child fragments of the DialogFragments.
+ * Module that provides classes needed for reservations.
  */
 @Module
-internal abstract class DialogModule {
-
-    /**
-     * Generates an [AndroidInjector] for the [SignInDialogFragment].
-     */
-    @ChildFragmentScoped
-    @ContributesAndroidInjector
-    internal abstract fun contributeDialogSignInFragment(): SignInDialogFragment
+internal abstract class ReservationModule {
 
     /**
      * Generates an [AndroidInjector] for the [RemoveReservationDialogFragment].

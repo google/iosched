@@ -14,35 +14,42 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.dialog
+package com.google.samples.apps.iosched.ui.signin
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.util.login.LoginHandler
+import com.google.samples.apps.iosched.databinding.DialogSignInBinding
+import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignIn
+import com.google.samples.apps.iosched.util.signin.SignInHandler
 import com.google.samples.apps.iosched.widget.CustomDimDialogFragment
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
-import kotlinx.android.synthetic.main.dialog_signin.*
 import javax.inject.Inject
 
 /**
  * Dialog that tells the user to sign in to continue the operation.
- * This doesn't have an associating ViewModel because there is no logic other than
- * calling the method from the [LoginHandler].
  */
 class SignInDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInjector {
 
     @Inject
     lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
+
     @Inject
-    lateinit var loginHandler: LoginHandler
+    lateinit var signInHandler: SignInHandler
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private lateinit var signInViewModel: SignInViewModel
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
         return fragmentInjector
@@ -53,25 +60,30 @@ class SignInDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInject
         AndroidSupportInjection.inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_signin, container)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        button_not_now.setOnClickListener {
-            dismiss()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        signInViewModel = viewModelProvider(viewModelFactory)
+        val binding = DialogSignInBinding.inflate(inflater, container, false).apply {
+            viewModel = signInViewModel
         }
 
-        button_sign_in.setOnClickListener {
-            requestLogin()
-            dismiss()
-        }
-    }
+        signInViewModel.performSignInEvent.observe(this, Observer { event ->
+            event?.getContentIfNotHandled()?.let { signInRequest ->
+                if (signInRequest == RequestSignIn) {
+                    signInHandler.makeSignInIntent()?.let { startActivity(it) }
+                }
+            }
+        })
 
-    private fun requestLogin() {
-        loginHandler.makeLoginIntent()?.let { startActivity(it) }
+        signInViewModel.dismissDialogAction.observe(this, Observer {
+            it?.getContentIfNotHandled()?.let {
+                dismiss()
+            }
+        })
+        return binding.root
     }
 
     companion object {

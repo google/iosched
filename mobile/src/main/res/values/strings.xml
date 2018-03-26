@@ -68,8 +68,8 @@
     <string name="a11y_speaker_headshot" translatable="false">TODO a11y content description for speaker headshot</string>
     <string name="a11y_session_item_actions" translatable="false">TODO: a11y content description for session item actions</string>
     <string name="a11y_star_session_actions" translatable="false">TODO: a11y content description for star item actions</string>
-    <string name="a11y_login" translatable="false">TODO: a11y content description for login action</string>
-    <string name="a11y_logout" translatable="false">TODO: a11y content description for logout action</string>
+    <string name="a11y_sign_in" translatable="false">TODO: a11y content description for sign in action</string>
+    <string name="a11y_sign_out" translatable="false">TODO: a11y content description for sign out action</string>
     <string name="a11y_play_button_description" translatable="false">TODO: a11y content description for video play button</string>
     <string name="a11y_reservation_available" translation_description="Alternative text for the button letting the user reserve a seat for a given event.">Reserve event</string>
     <string name="a11y_reservation_working" translation_description="Alternative text for the event reservation button whilst it is working on processing a reservation.">Working to reserve event</string>
@@ -84,6 +84,11 @@
     <string name="dialog_sign_in_content" translation_description="The content of the dialog. When the user needs to sign in.">Sign in to save events, reserve seats and rate sessions (if an attendee). Actions will be synced from your account across app and site.</string>
     <string name="not_now" translation_description="The description of a button that the user doesn't want to sign in.">Not now</string>
     <string name="sign_in" translation_description="The description of a button to sign in.">Sign in</string>
+
+    <!-- Sign out dialog -->
+    <string name="dialog_sign_out_title" translation_description="The title of the dialog. Used to confirm that the user wants to sign out.">Sign out?</string>
+    <string name="dialog_sign_out_content" translation_description="The content of the dialog. Used to confirm that the user wants to sign out.">All saved events, seat reservations and session ratings (if an attendee) remain synced to your account.</string>
+    <string name="sign_out" translation_description="The description of a button to sign out.">Sign out</string>
 
     <!-- Cancel reservation dialog -->
     <string name="remove_reservation_title" translation_description="The title of the sheet when the user is about to remove their reservation.">Remove reservation?</string>

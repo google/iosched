@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.login
+package com.google.samples.apps.iosched.shared.data.signin
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.shared.data.login.datasources.AuthStateUserDataSource
-import com.google.samples.apps.iosched.shared.data.login.datasources.RegisteredUserDataSource
+import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
+import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
@@ -65,7 +65,7 @@ class ObserveUserAuthStateUseCaseTest {
                 `is`(equalTo(TEST_USER_ID))
         )
         assertThat(
-                value.data.isLoggedIn(),
+                value.data.isSignedIn(),
                 `is`(equalTo(true))
         )
         assertThat(
@@ -95,7 +95,7 @@ class ObserveUserAuthStateUseCaseTest {
                 `is`(equalTo(TEST_USER_ID))
         )
         assertThat(
-                value.data.isLoggedIn(),
+                value.data.isSignedIn(),
                 `is`(equalTo(true))
         )
         assertThat(
@@ -172,7 +172,7 @@ class FakeAuthStateUserDataSource(
             val mockUser = mock<AuthenticatedUserInfoBasic> {
                 on { isAnonymous() }.doReturn(isAnonymous)
                 on { getUid() }.doReturn(TEST_USER_ID)
-                on { isLoggedIn() }.doReturn(true)
+                on { isSignedIn() }.doReturn(true)
             }
             _firebaseUser.postValue(Result.Success(mockUser))
         } else {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.login.datasources
+package com.google.samples.apps.iosched.shared.data.signin.datasources
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
@@ -22,9 +22,9 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GetTokenResult
-import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUserInfoBasic
-import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUserRegistration
-import com.google.samples.apps.iosched.shared.data.login.FirebaseUserInfo
+import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfoBasic
+import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserRegistration
+import com.google.samples.apps.iosched.shared.data.signin.FirebaseUserInfo
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.fcm.FcmTokenUpdater
 import com.google.samples.apps.iosched.shared.result.Result

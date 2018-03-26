@@ -21,7 +21,7 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.iosched.ui.reservation.RemoveReservationViewModel" />
+            type="com.google.samples.apps.iosched.ui.signin.SignInViewModel" />
 
     </data>
 
@@ -37,7 +37,7 @@
             android:layout_marginBottom="@dimen/spacing_normal"
             android:layout_marginTop="@dimen/margin_large"
             android:paddingHorizontal="@dimen/margin_large"
-            android:text="@string/remove_reservation_title"
+            android:text="@string/dialog_sign_in_title"
             android:textAppearance="@style/TextAppearance.IOSched.DialogTitle" />
 
         <TextView
@@ -46,13 +46,12 @@
             android:layout_marginBottom="@dimen/margin_normal"
             android:layout_marginTop="@dimen/spacing_normal"
             android:paddingHorizontal="@dimen/margin_large"
-            android:text="@string/remove_reservation_content"
+            android:text="@string/dialog_sign_in_content"
             android:textAppearance="@style/TextAppearance.IOSched.DialogContent" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_normal"
             android:gravity="end"
             android:orientation="horizontal">
 
@@ -61,11 +60,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_normal"
-                android:layout_marginEnd="@dimen/spacing_normal"
                 android:layout_marginStart="@dimen/margin_large"
                 android:layout_marginTop="@dimen/margin_normal"
-                android:onClick="@{() -> viewModel.onCancelClicked()}"
-                android:text="@string/cancel" />
+                android:onClick="@{() -> viewModel.onCancel()}"
+                android:text="@string/not_now" />
 
             <Button
                 style="@style/Widget.IOSched.RaisedButton"
@@ -75,8 +73,8 @@
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginStart="@dimen/spacing_normal"
                 android:layout_marginTop="@dimen/margin_normal"
-                android:onClick="@{() -> viewModel.onRemoveClicked()}"
-                android:text="@string/remove" />
+                android:onClick="@{() -> viewModel.onSignIn()}"
+                android:text="@string/sign_in" />
 
         </LinearLayout>
 

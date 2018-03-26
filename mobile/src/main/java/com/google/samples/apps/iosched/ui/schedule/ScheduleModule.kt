@@ -19,8 +19,10 @@ package com.google.samples.apps.iosched.ui.schedule
 import android.arch.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.di.FragmentScoped
 import com.google.samples.apps.iosched.shared.di.ViewModelKey
+import com.google.samples.apps.iosched.ui.reservation.ReservationModule
 import com.google.samples.apps.iosched.ui.schedule.filters.ScheduleFilterFragment
 import com.google.samples.apps.iosched.ui.sessioncommon.SessionViewPoolModule
+import com.google.samples.apps.iosched.ui.signin.SignInDialogModule
 import dagger.Binds
 import dagger.Module
 import dagger.android.AndroidInjector
@@ -37,8 +39,12 @@ internal abstract class ScheduleModule {
      * Generates an [AndroidInjector] for the [ScheduleFragment].
      */
     @FragmentScoped
-    @ContributesAndroidInjector(modules = [ScheduleChildFragmentsModule::class,
-        SessionViewPoolModule::class])
+    @ContributesAndroidInjector(
+        modules = [
+            ScheduleChildFragmentsModule::class,
+            SessionViewPoolModule::class
+        ]
+    )
     internal abstract fun contributeScheduleFragment(): ScheduleFragment
 
     /**
@@ -55,5 +61,5 @@ internal abstract class ScheduleModule {
     @Binds
     @IntoMap
     @ViewModelKey(ScheduleViewModel::class)
-    abstract fun bindScheduleFragmentViewModel(viewModel: ScheduleViewModel): ViewModel
+    abstract fun bindScheduleViewModel(viewModel: ScheduleViewModel): ViewModel
 }
