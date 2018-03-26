@@ -23,9 +23,9 @@ import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.support.annotation.VisibleForTesting
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
-import com.google.samples.apps.iosched.shared.domain.sessions.UserEventsMessage
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CANCEL
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.REQUEST
@@ -164,21 +164,24 @@ class SessionDetailViewModel @Inject constructor(
             val message: Int? = when (it) {
                 is Result.Success ->
                     when (it.data.userMessage) {
-                        UserEventsMessage.CHANGES_IN_WAITLIST -> R.string.waitlist_new
-                        UserEventsMessage.CHANGES_IN_RESERVATIONS -> R.string.reservation_new
-                        UserEventsMessage.RESERVATION_CANCELED -> null //No-op
-                        UserEventsMessage.WAITLIST_CANCELED -> null //No-op
-                        UserEventsMessage.RESERVATION_DENIED_CUTOFF ->
+                        UserEventMessage.CHANGES_IN_WAITLIST ->
+                            R.string.waitlist_new
+                        UserEventMessage.CHANGES_IN_RESERVATIONS ->
+                            R.string.reservation_new
+                        UserEventMessage.RESERVATION_CANCELED ->
+                            null //No-op
+                        UserEventMessage.WAITLIST_CANCELED ->
+                            null //No-op
+                        UserEventMessage.RESERVATION_DENIED_CUTOFF ->
                             R.string.reservation_denied_cutoff
-                        UserEventsMessage.RESERVATION_DENIED_CLASH ->
+                        UserEventMessage.RESERVATION_DENIED_CLASH ->
                             R.string.reservation_denied_clash
-                        UserEventsMessage.RESERVATION_DENIED_UNKNOWN ->
+                        UserEventMessage.RESERVATION_DENIED_UNKNOWN ->
                             R.string.reservation_denied_unknown
-                        UserEventsMessage.CANCELLATION_DENIED_CUTOFF ->
+                        UserEventMessage.CANCELLATION_DENIED_CUTOFF ->
                             R.string.cancellation_denied_cutoff
-                        UserEventsMessage.CANCELLATION_DENIED_UNKNOWN ->
+                        UserEventMessage.CANCELLATION_DENIED_UNKNOWN ->
                             R.string.cancellation_denied_unknown
-                        UserEventsMessage.DATA_NOT_SYNCED -> null
                         null -> null
                     }
                 else -> null

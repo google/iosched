@@ -24,11 +24,11 @@ import android.databinding.ObservableBoolean
 import android.support.annotation.StringRes
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.invoke
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
-import com.google.samples.apps.iosched.shared.domain.sessions.UserEventsMessage
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CANCEL
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.REQUEST
@@ -52,9 +52,9 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_2
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_3
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
-import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.schedule.filters.LoadTagFiltersUseCase
 import com.google.samples.apps.iosched.ui.schedule.filters.TagFilter
+import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -206,16 +206,24 @@ class ScheduleViewModel @Inject constructor(
             val message: Int? = when (it) {
                 is Result.Success ->
                     when (it.data.userMessage) {
-                        UserEventsMessage.CHANGES_IN_WAITLIST -> R.string.waitlist_new
-                        UserEventsMessage.CHANGES_IN_RESERVATIONS -> R.string.reservation_new
-                        UserEventsMessage.RESERVATION_CANCELED -> null //No-op
-                        UserEventsMessage.WAITLIST_CANCELED -> null //No-op
-                        UserEventsMessage.RESERVATION_DENIED_CUTOFF -> R.string.reservation_denied_cutoff
-                        UserEventsMessage.RESERVATION_DENIED_CLASH -> R.string.reservation_denied_clash
-                        UserEventsMessage.RESERVATION_DENIED_UNKNOWN -> R.string.reservation_denied_unknown
-                        UserEventsMessage.CANCELLATION_DENIED_CUTOFF -> R.string.cancellation_denied_cutoff
-                        UserEventsMessage.CANCELLATION_DENIED_UNKNOWN -> R.string.cancellation_denied_unknown
-                        UserEventsMessage.DATA_NOT_SYNCED -> null
+                        UserEventMessage.CHANGES_IN_WAITLIST ->
+                            R.string.waitlist_new
+                        UserEventMessage.CHANGES_IN_RESERVATIONS ->
+                            R.string.reservation_new
+                        UserEventMessage.RESERVATION_CANCELED ->
+                            null //No-op
+                        UserEventMessage.WAITLIST_CANCELED ->
+                            null //No-op
+                        UserEventMessage.RESERVATION_DENIED_CUTOFF ->
+                            R.string.reservation_denied_cutoff
+                        UserEventMessage.RESERVATION_DENIED_CLASH ->
+                            R.string.reservation_denied_clash
+                        UserEventMessage.RESERVATION_DENIED_UNKNOWN ->
+                            R.string.reservation_denied_unknown
+                        UserEventMessage.CANCELLATION_DENIED_CUTOFF ->
+                            R.string.cancellation_denied_cutoff
+                        UserEventMessage.CANCELLATION_DENIED_UNKNOWN ->
+                            R.string.cancellation_denied_unknown
                         null -> null
                     }
                 else -> null
