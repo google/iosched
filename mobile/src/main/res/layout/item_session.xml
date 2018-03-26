@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright 2018 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,21 +35,17 @@
             type="com.google.samples.apps.iosched.ui.schedule.ScheduleEventListener" />
 
         <variable
-            name="isRegistered"
-            type="LiveData&lt;Boolean&gt;" />
-
-        <!-- TODO: Remove if not used. -->
-        <variable
-            name="isLoggedIn"
+            name="showReservations"
             type="LiveData&lt;Boolean&gt;" />
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
         android:onClick="@{() -> eventListener.openSessionDetail(session.id)}"
-        android:paddingVertical="@dimen/spacing_normal"
-        android:background="?selectableItemBackground">
+        android:paddingEnd="@dimen/spacing_normal"
+        android:paddingVertical="@dimen/spacing_normal">
 
         <android.support.constraint.Guideline
             android:id="@+id/keyline"
@@ -62,65 +59,62 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_normal"
-            app:layout_constraintStart_toEndOf="@id/keyline"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/bookmark_session"
+            android:text="@{session.title}"
             android:textAppearance="@style/TextAppearance.IOSched.SessionTitle"
-            android:text="@{session.title}" />
+            app:layout_constraintEnd_toStartOf="@+id/reserve_session"
+            app:layout_constraintStart_toEndOf="@id/keyline"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.samples.apps.iosched.widget.ReserveButton
+            android:id="@+id/reserve_session"
+            android:layout_width="@dimen/a11y_min_touch_target"
+            android:layout_height="@dimen/a11y_min_touch_target"
+            android:background="?selectableItemBackgroundBorderless"
+            android:onClick="@{() -> eventListener.onReservationClicked(session, userEvent)}"
+            app:layout_constraintEnd_toStartOf="@id/bookmark_session"
+            app:layout_constraintTop_toTopOf="parent"
+            app:showReservations="@{showReservations}"
+            app:isReservable="@{session.isReservable}"
+            app:reservationStatus="@{userEvent}" />
 
         <com.google.android.material.widget.CheckableImageButton
             android:id="@+id/bookmark_session"
             android:layout_width="@dimen/a11y_min_touch_target"
             android:layout_height="@dimen/a11y_min_touch_target"
-            android:layout_marginEnd="@dimen/spacing_normal"
             android:background="?selectableItemBackgroundBorderless"
             android:checked="@{userEvent.isStarred}"
             android:contentDescription="@string/a11y_star_session_actions"
             android:onClick="@{() -> eventListener.onStarClicked(userEvent)}"
             android:src="@drawable/asld_star_event"
-            app:layout_constraintEnd_toStartOf="@id/reserve_session"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- TODO: Position and style properly  -->
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/reserve_session"
-            android:layout_width="@dimen/a11y_min_touch_target"
-            android:layout_height="@dimen/a11y_min_touch_target"
-            android:layout_marginEnd="@dimen/spacing_normal"
-            android:background="?selectableItemBackgroundBorderless"
-            android:contentDescription="@string/a11y_reserve_session_actions"
-            android:onClick="@{() -> eventListener.onReservationClicked(session, userEvent)}"
-            reservation_status="@{userEvent}"
-            goneUnless="@{isRegistered}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/length_location"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/keyline"
-            app:layout_constraintTop_toBottomOf="@id/title"
-            app:layout_constraintEnd_toEndOf="@id/title"
             android:layout_marginTop="@dimen/spacing_micro"
             android:textAppearance="@style/TextAppearance.IOSched.ListSecondary"
-            app:sessionStart="@{session.startTime}"
+            app:layout_constraintEnd_toEndOf="@id/title"
+            app:layout_constraintStart_toEndOf="@id/keyline"
+            app:layout_constraintTop_toBottomOf="@id/title"
             app:sessionEnd="@{session.endTime}"
-            app:sessionRoom="@{session.room.name}" />
+            app:sessionRoom="@{session.room.name}"
+            app:sessionStart="@{session.startTime}" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/tags"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:orientation="horizontal"
             android:paddingBottom="@dimen/spacing_micro"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/keyline"
             app:layout_constraintTop_toBottomOf="@id/length_location"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
-            android:orientation="horizontal"
             app:flexDirection="row"
             app:flexWrap="wrap"
+            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
             app:sessionTags="@{session.displayTags}" />
 
     </android.support.constraint.ConstraintLayout>

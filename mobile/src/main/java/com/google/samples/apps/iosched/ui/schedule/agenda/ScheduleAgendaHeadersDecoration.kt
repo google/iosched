@@ -20,6 +20,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.Rect
+import android.graphics.Typeface.BOLD
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.RecyclerView
 import android.text.Layout.Alignment.ALIGN_CENTER
@@ -27,6 +28,7 @@ import android.text.SpannableStringBuilder
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.text.style.AbsoluteSizeSpan
+import android.text.style.StyleSpan
 import android.view.View
 import androidx.content.res.getColorOrThrow
 import androidx.content.res.getDimensionOrThrow
@@ -162,7 +164,7 @@ class ScheduleAgendaHeadersDecoration(
     private fun createHeader(day: ZonedDateTime): StaticLayout {
         val text = SpannableStringBuilder(dateFormatter.format(day)).apply {
             append(System.lineSeparator())
-            inSpans(AbsoluteSizeSpan(dayTextSize)) {
+            inSpans(AbsoluteSizeSpan(dayTextSize), StyleSpan(BOLD)) {
                 append(dayFormatter.format(day).toUpperCase())
             }
         }

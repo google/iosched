@@ -39,4 +39,13 @@
         <attr name="gridSize" format="dimension" />
         <attr name="gridStrokeWidth" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="ReserveButton">
+        <attr name="state_reservable" format="boolean" />
+        <attr name="state_reserved" format="boolean" />
+        <attr name="state_reservation_disabled" format="boolean" />
+        <attr name="state_wait_list_available" format="boolean" />
+        <attr name="state_wait_listed" format="boolean" />
+        <attr name="state_reservation_pending" format="boolean" />
+    </declare-styleable>
 </resources>
