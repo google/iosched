@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.login
+package com.google.samples.apps.iosched.shared.data.signin
 
 import com.google.samples.apps.iosched.shared.BuildConfig
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
@@ -62,5 +62,4 @@ object AuthenticatedUserRegistration {
             response.body()?.close()
         }
     }
-
 }

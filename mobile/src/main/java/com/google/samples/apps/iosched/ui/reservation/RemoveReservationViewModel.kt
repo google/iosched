@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.dialog
+package com.google.samples.apps.iosched.ui.reservation
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData

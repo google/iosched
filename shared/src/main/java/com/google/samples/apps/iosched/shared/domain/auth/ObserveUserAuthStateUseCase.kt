@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.shared.domain.auth
 
-import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUserInfo
-import com.google.samples.apps.iosched.shared.data.login.FirebaseRegisteredUserInfo
-import com.google.samples.apps.iosched.shared.data.login.datasources.AuthStateUserDataSource
-import com.google.samples.apps.iosched.shared.data.login.datasources.RegisteredUserDataSource
+import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
+import com.google.samples.apps.iosched.shared.data.signin.FirebaseRegisteredUserInfo
+import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
+import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import timber.log.Timber

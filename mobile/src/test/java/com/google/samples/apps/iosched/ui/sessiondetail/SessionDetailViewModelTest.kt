@@ -31,10 +31,10 @@ import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
-import com.google.samples.apps.iosched.test.util.fakes.FakeLoginViewModelPlugin
+import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
 import com.google.samples.apps.iosched.test.util.time.FixedTimeExecutorRule
-import com.google.samples.apps.iosched.ui.login.LoginViewModelPlugin
+import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import com.google.samples.apps.iosched.util.SetIntervalLiveData
 import org.junit.Assert.assertEquals
@@ -152,12 +152,12 @@ class SessionDetailViewModelTest {
 
 
     private fun createSessionDetailViewModel(
-            loginViewModelPlugin: LoginViewModelPlugin = FakeLoginViewModelPlugin(),
+            signInViewModelPlugin: SignInViewModelDelegate = FakeSignInViewModelDelegate(),
             loadUserSessionUseCase: LoadUserSessionUseCase = createTestLoadUserSessionUseCase(),
             reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase(),
             starEventUseCase: StarEventUseCase = FakeStarEventUseCase()
     ): SessionDetailViewModel {
-        return SessionDetailViewModel(loginViewModelPlugin, loadUserSessionUseCase,
+        return SessionDetailViewModel(signInViewModelPlugin, loadUserSessionUseCase,
                 starEventUseCase, reservationActionUseCase)
     }
 

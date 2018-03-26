@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.util.login
+package com.google.samples.apps.iosched.util.signin
 
 import android.app.Activity
 import android.content.Context
@@ -29,26 +29,26 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
  *
  * This class is used from the activities or fragments.
  */
-interface LoginHandler {
+interface SignInHandler {
 
-    fun makeLoginIntent(): Intent?
+    fun makeSignInIntent(): Intent?
 
-    fun handleLogin(resultCode: Int, data: Intent?, onComplete: (LoginResult) -> Unit)
+    fun signIn(resultCode: Int, data: Intent?, onComplete: (SignInResult) -> Unit)
 
-    fun logout(context: Context, onComplete: () -> Unit = {})
+    fun signOut(context: Context, onComplete: () -> Unit = {})
 }
 
 /**
- * Implementation of [LoginHandler] that interacts with Firebase Auth.
+ * Implementation of [SignInHandler] that interacts with Firebase Auth.
  */
-class DefaultLoginHandler : LoginHandler {
+class DefaultSignInHandler : SignInHandler {
 
     /**
-     * Request a login intent.
+     * Request a sign in intent.
      *
      * To observe the result you must pass this to startActivityForResult.
      */
-    override fun makeLoginIntent(): Intent? {
+    override fun makeSignInIntent(): Intent? {
 
         // this is mutable because FirebaseUI requires it be mutable
         val providers = mutableListOf(
@@ -69,40 +69,41 @@ class DefaultLoginHandler : LoginHandler {
     }
 
     /**
-     * Parse the response from a a login request, helper to call from onActivityResult.
+     * Parse the response from a sign in request, helper to call from onActivityResult.
      *
      * ```
-     * processLoginResult(resultCode, data) { result ->
+     * signIn(resultCode, data) { result ->
      *    return when(result) {
-     *        is LoginSuccess -> // all good
-     *        is LoginFailed -> result?.error // access FirebaseUiException - can be null (e.g. canceled)
+     *        is SignInSuccess -> // all good
+     *        is SignInFailed -> result?.error // access FirebaseUiException - can be null
+     *                                         // (e.g. canceled)
      *    }
      * }
      * ```
      *
      * @param resultCode activity result code
      * @param data activity result intent
-     * @param onComplete pass parsed result of either LoginSuccess or LoginFailed
+     * @param onComplete pass parsed result of either [SignInSuccess] or [SignInFailed]
      */
     @SuppressWarnings("unused")
-    override fun handleLogin(
+    override fun signIn(
         resultCode: Int,
         data: Intent?,
-        onComplete: (LoginResult) -> Unit
+        onComplete: (SignInResult) -> Unit
     ) {
         when (resultCode) {
-            Activity.RESULT_OK -> onComplete(LoginSuccess)
-            else -> onComplete(LoginFailed(IdpResponse.fromResultIntent(data)?.error))
+            Activity.RESULT_OK -> onComplete(SignInSuccess)
+            else -> onComplete(SignInFailed(IdpResponse.fromResultIntent(data)?.error))
         }
     }
 
     /**
-     * Attempt to log the current user out.
+     * Attempt to sign the current user out.
      *
      * @param context any context
-     * @param onComplete used to notify of logout completion.
+     * @param onComplete used to notify of signOut completion.
      */
-    override fun logout(context: Context, onComplete: () -> Unit) {
+    override fun signOut(context: Context, onComplete: () -> Unit) {
         AuthUI.getInstance()
             .signOut(context)
             .addOnCompleteListener { onComplete() }

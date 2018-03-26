@@ -39,7 +39,7 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
-import com.google.samples.apps.iosched.ui.login.LoginViewModelPlugin
+import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.SetIntervalLiveData
 import com.google.samples.apps.iosched.util.time.DefaultTime
 import org.threeten.bp.Duration
@@ -53,11 +53,11 @@ private const val TEN_SECONDS = 10_000L
  * Loads [Session] data and exposes it to the session detail view.
  */
 class SessionDetailViewModel @Inject constructor(
-    loginViewModelPlugin: LoginViewModelPlugin,
+    signInViewModelPlugin: SignInViewModelDelegate,
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val starEventUseCase: StarEventUseCase,
     private val reservationActionUseCase: ReservationActionUseCase
-) : ViewModel(), SessionDetailEventListener, LoginViewModelPlugin by loginViewModelPlugin {
+) : ViewModel(), SessionDetailEventListener, SignInViewModelDelegate by signInViewModelPlugin {
 
     private val loadUserSessionResult: MediatorLiveData<Result<LoadUserSessionUseCaseResult>>
     private val sessionState: LiveData<TimeUtils.SessionState>
@@ -220,7 +220,7 @@ class SessionDetailViewModel @Inject constructor(
     }
 
     override fun onStarClicked() {
-        if (!isLoggedIn()) {
+        if (!isSignedIn()) {
             Timber.d("Showing Sign-in dialog after star click")
             _navigateToSignInDialogAction.value = Event(true)
             return
