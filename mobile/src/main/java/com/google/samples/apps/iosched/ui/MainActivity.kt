@@ -17,30 +17,30 @@ package com.google.samples.apps.iosched.ui
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.view.View
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.consume
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.ui.info.InfoFragment
 import com.google.samples.apps.iosched.ui.map.MapFragment
 import com.google.samples.apps.iosched.ui.schedule.ScheduleFragment
+import com.google.samples.apps.iosched.widget.HideBottomViewOnScrollBehavior
+import com.google.samples.apps.iosched.widget.HideBottomViewOnScrollBehavior.BottomViewCallback
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : DaggerAppCompatActivity() {
+    companion object {
+        private const val FRAGMENT_ID = R.id.fragment_container
+        private const val STATE_BOTTOM_NAV_TRANSLATION = "state.BOTTOM_NAV_TRANSLATION"
+    }
+
+    private lateinit var behavior: HideBottomViewOnScrollBehavior<*>
+    private lateinit var currentFragment: MainNavigationFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        if (savedInstanceState == null) {
-            // Show Schedule on first creation
-            val fragment = ScheduleFragment()
-            supportFragmentManager.inTransaction {
-                add(R.id.fragment_container, fragment)
-            }
-        }
-
-        navigation.setSelectedItemId(R.id.navigation_schedule)
 
         navigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
@@ -50,11 +50,47 @@ class MainActivity : DaggerAppCompatActivity() {
                 else -> false
             }
         }
+
+        behavior = HideBottomViewOnScrollBehavior.from(navigation)
+        // Report translation whenever the bottom nav moves
+        behavior.addBottomViewCallback(object : BottomViewCallback {
+            override fun onSlide(view: View, slideOffset: Float) {
+                currentFragment.onBottomNavSlide(view.translationY)
+            }
+
+            override fun onStateChanged(view: View, newState: Int) {}
+        })
+
+        if (savedInstanceState == null) {
+            // Show Schedule on first creation
+            navigation.selectedItemId = R.id.navigation_schedule
+        } else {
+            // Find the current fragment
+            currentFragment =
+                    supportFragmentManager.findFragmentById(FRAGMENT_ID) as? MainNavigationFragment
+                    ?: throw IllegalStateException("Activity recreated, but no fragment found!")
+        }
     }
 
-    private fun replaceFragment(fragment: Fragment) {
+    private fun <F> replaceFragment(fragment: F) where F: Fragment, F: MainNavigationFragment {
         supportFragmentManager.inTransaction {
-            replace(R.id.fragment_container, fragment)
+            currentFragment = fragment
+            replace(FRAGMENT_ID, fragment)
         }
+    }
+
+    fun setBottomNavLockMode(lockMode: Int) {
+        behavior.lockMode = lockMode
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putFloat(STATE_BOTTOM_NAV_TRANSLATION, navigation.translationY)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val ty = savedInstanceState.getFloat(STATE_BOTTOM_NAV_TRANSLATION)
+        currentFragment.onBottomNavSlide(ty)
     }
 }

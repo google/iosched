@@ -26,11 +26,12 @@ import com.google.android.gms.maps.MapView
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentMapBinding
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.toolbar.*
 import javax.inject.Inject
 
-class MapFragment : DaggerFragment() {
+class MapFragment : DaggerFragment(), MainNavigationFragment {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private var mapViewBundle: Bundle? = null
