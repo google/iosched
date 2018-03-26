@@ -47,7 +47,7 @@ class SearchableActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         (applicationContext as TvApplication).searchableComponent.inject(searchableActivity = this)
 
-        viewModel = viewModelProvider<SearchableViewModel>(viewModelFactory).value
+        viewModel = viewModelProvider(viewModelFactory)
 
         val uri = if (intent == null || intent.data == null) {
             // Invalid intent and data supplied, quiting activity.

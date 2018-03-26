@@ -24,9 +24,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentInfoBinding
+import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import dagger.android.support.DaggerFragment
 
-class InfoFragment : DaggerFragment() {
+class InfoFragment : DaggerFragment(), MainNavigationFragment {
 
     private lateinit var binding: FragmentInfoBinding
 

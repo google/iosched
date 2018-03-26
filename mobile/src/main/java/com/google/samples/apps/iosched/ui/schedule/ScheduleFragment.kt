@@ -41,6 +41,9 @@ import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
+import com.google.samples.apps.iosched.shared.util.lazyFast
+import com.google.samples.apps.iosched.ui.MainActivity
+import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment.Companion.DIALOG_REMOVE_RESERVATION
@@ -50,6 +53,7 @@ import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
+import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import com.google.samples.apps.iosched.widget.HideBottomViewOnScrollBehavior
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -57,7 +61,7 @@ import javax.inject.Inject
 /**
  * The Schedule page of the top-level Activity.
  */
-class ScheduleFragment : DaggerFragment() {
+class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
 
     companion object {
         private val COUNT = ConferenceDay.values().size + 1 // Agenda
@@ -71,9 +75,12 @@ class ScheduleFragment : DaggerFragment() {
     private lateinit var viewModel: ScheduleViewModel
     private lateinit var coordinatorLayout: CoordinatorLayout
 
+    private lateinit var dummyBottomView: View
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
     // Peek height we want to maintain above the bottom navigation
-    private var basePeekHeight = 0
+    private val basePeekHeight: Int by lazyFast {
+        resources.getDimensionPixelSize(R.dimen.bottom_sheet_peek_height)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -154,24 +161,37 @@ class ScheduleFragment : DaggerFragment() {
             }
         })
 
-        basePeekHeight = view.resources.getDimensionPixelSize(R.dimen.bottom_sheet_peek_height)
-
-        // Tie the filters bottom sheet to the bottom navigation bar
+        dummyBottomView = view.findViewById(R.id.dummy_bottom_navigation)
         bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.filter_sheet))
-        val dummyBottomView: View = view.findViewById(R.id.dummy_bottom_navigation)
-        val bottomNavBehavior = HideBottomViewOnScrollBehavior.from(dummyBottomView)
-        bottomNavBehavior.addScrollListener(object : HideBottomViewOnScrollBehavior.ScrollListener {
-            override fun onBottomViewScrolled(view: View) {
-                adjustFiltersPeekHeight(view)
+
+        // Lock the bottom navigation hidden while the filters sheet is expanded.
+        bottomSheetBehavior.setBottomSheetCallback(object : BottomSheetCallback {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                val activity = requireActivity() as MainActivity
+                when (newState) {
+                    BottomSheetBehavior.STATE_EXPANDED ->
+                        activity.setBottomNavLockMode(
+                            HideBottomViewOnScrollBehavior.LOCK_MODE_LOCKED_HIDDEN)
+                    BottomSheetBehavior.STATE_COLLAPSED, BottomSheetBehavior.STATE_HIDDEN ->
+                        activity.setBottomNavLockMode(
+                            HideBottomViewOnScrollBehavior.LOCK_MODE_UNLOCKED)
+                }
             }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
 
-        // We need to call this once after layout to set the proper initial peek height.
-        dummyBottomView.doOnLayout { adjustFiltersPeekHeight(dummyBottomView) }
+        if (savedInstanceState == null) {
+            // Set the peek height on first layout
+            dummyBottomView.doOnLayout { onBottomNavSlide(dummyBottomView.translationY) }
+        }
     }
 
-    private fun adjustFiltersPeekHeight(bottomView: View) {
-        val peek = Math.max(0, (bottomView.height - bottomView.translationY + .5f).toInt())
+    override fun onBottomNavSlide(bottonNavTranslationY: Float) {
+        // Move the dummy view to change bottom edge inset (for snackbars, etc.)
+        dummyBottomView.translationY = bottonNavTranslationY
+        // Tie the filters bottom sheet to the bottom navigation bar
+        val peek = Math.max(0, (dummyBottomView.height - bottonNavTranslationY + .5f).toInt())
         bottomSheetBehavior.peekHeight = basePeekHeight + peek
     }
 

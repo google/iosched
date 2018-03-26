@@ -83,9 +83,8 @@ inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Fragmen
  */
 inline fun <reified VM : ViewModel> FragmentActivity.viewModelProvider(
     provider: ViewModelProvider.Factory
-) = lazyFast {
+) =
     ViewModelProviders.of(this, provider).get(VM::class.java)
-}
 
 /**
  * For Fragments, allows declarations like
