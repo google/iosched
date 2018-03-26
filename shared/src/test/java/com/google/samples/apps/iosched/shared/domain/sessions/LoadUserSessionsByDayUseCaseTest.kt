@@ -21,6 +21,7 @@ import android.arch.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
 import com.google.samples.apps.iosched.shared.model.Session
@@ -87,7 +88,7 @@ class LoadUserSessionsByDayUseCaseTest {
         useCase.execute(Pair(FakeUserSessionMatcher, "user1"))
 
         userEventsResult.postValue(UserEventsResult(
-                userEventsMessage = UserEventsMessage.CHANGES_IN_RESERVATIONS,
+                userEventsMessage = UserEventMessage.CHANGES_IN_RESERVATIONS,
                 userEvents = TestData.userEvents))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
@@ -98,7 +99,7 @@ class LoadUserSessionsByDayUseCaseTest {
                 `is`(equalTo(result.data.userSessionsPerDay)))
 
         assertThat(
-                UserEventsMessage.CHANGES_IN_RESERVATIONS,
+                UserEventMessage.CHANGES_IN_RESERVATIONS,
                 `is`(equalTo(result.data.userMessage)))
     }
 
