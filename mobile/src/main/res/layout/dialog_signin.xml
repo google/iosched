@@ -25,8 +25,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/spacing_normal"
-        android:paddingHorizontal="@dimen/margin_normal"
-        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_large"
+        android:paddingHorizontal="@dimen/margin_large"
         android:text="@string/dialog_sign_in_title"
         android:textAppearance="@style/TextAppearance.IOSched.DialogTitle" />
 
@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_normal"
-        android:paddingHorizontal="@dimen/margin_normal"
+        android:paddingHorizontal="@dimen/margin_large"
         android:layout_marginTop="@dimen/spacing_normal"
         android:text="@string/dialog_sign_in_content"
         android:textAppearance="@style/TextAppearance.IOSched.DialogContent" />
@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_normal"
-            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginStart="@dimen/margin_large"
             android:layout_marginTop="@dimen/margin_normal"
             android:text="@string/not_now" />
 
@@ -62,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_normal"
-            android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_large"
             android:layout_marginStart="@dimen/spacing_normal"
             android:layout_marginTop="@dimen/margin_normal"
             android:text="@string/sign_in" />
