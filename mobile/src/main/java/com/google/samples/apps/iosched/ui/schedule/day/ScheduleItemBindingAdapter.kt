@@ -62,14 +62,14 @@ fun reservationStatus(
 ) {
     val reservationUnavailable = false // TODO determine this condition
     reserveButton.status = when {
-        userEvent == null -> RESERVABLE
-        userEvent.isReserved() == true -> RESERVED
-        userEvent.isWaitlisted() == true -> WAIT_LISTED
-        userEvent.isReservationPending() == true || userEvent.isCancelPending() == true -> {
+        // Order is important e.g. a pending cancellation is also reserved.
+        userEvent?.isReservationPending() == true || userEvent?.isCancelPending() == true -> {
             // Treat both pending reservations & cancellations the same. This is important as the
             // icon animations all expect to do through the same pending state.
             RESERVATION_PENDING
         }
+        userEvent?.isReserved() == true -> RESERVED
+        userEvent?.isWaitlisted() == true -> WAIT_LISTED
         // TODO ?? -> WAIT_LIST_AVAILABLE
         reservationUnavailable -> RESERVATION_DISABLED
         else -> RESERVABLE
