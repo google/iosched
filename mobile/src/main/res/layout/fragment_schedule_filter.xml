@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/filters_sheet_background"
-        android:elevation="8dp"
+        android:elevation="@dimen/bottom_sheet_elevation"
         android:orientation="vertical"
         tools:ignore="Overdraw">
 

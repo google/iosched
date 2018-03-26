@@ -131,6 +131,8 @@ class ScheduleFragment : DaggerFragment() {
                             insetEdge = Gravity.NO_GRAVITY
                             dodgeInsetEdges = Gravity.BOTTOM
                         }
+                    // Also make it draw over the bottom sheet
+                    child.elevation = resources.getDimension(R.dimen.bottom_sheet_elevation)
                 }
             }
 
