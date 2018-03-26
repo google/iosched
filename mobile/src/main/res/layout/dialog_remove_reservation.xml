@@ -21,14 +21,6 @@
         <variable
             name="viewModel"
             type="com.google.samples.apps.iosched.ui.dialog.RemoveReservationViewModel" />
-
-        <variable
-            name="userId"
-            type="String" />
-
-        <variable
-            name="sessionId"
-            type="String" />
     </data>
 
     <LinearLayout
@@ -85,7 +77,7 @@
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginStart="@dimen/spacing_normal"
                 android:layout_marginTop="@dimen/margin_normal"
-                android:onClick="@{() -> viewModel.onRemoveClicked(userId, sessionId)}"
+                android:onClick="@{() -> viewModel.onRemoveClicked()}"
                 android:text="@string/remove" />
         </LinearLayout>
     </LinearLayout>
