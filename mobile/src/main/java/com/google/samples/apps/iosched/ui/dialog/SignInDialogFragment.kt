@@ -18,13 +18,13 @@ package com.google.samples.apps.iosched.ui.dialog
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.util.login.LoginHandler
+import com.google.samples.apps.iosched.widget.CustomDimDialogFragment
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
@@ -37,7 +37,7 @@ import javax.inject.Inject
  * This doesn't have an associating ViewModel because there is no logic other than
  * calling the method from the [LoginHandler].
  */
-class SignInDialogFragment : DialogFragment(), HasSupportFragmentInjector {
+class SignInDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInjector {
 
     @Inject
     lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
@@ -46,11 +46,6 @@ class SignInDialogFragment : DialogFragment(), HasSupportFragmentInjector {
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
         return fragmentInjector
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Widget_IOSched_Dialog)
     }
 
     override fun onAttach(context: Context?) {
@@ -65,7 +60,6 @@ class SignInDialogFragment : DialogFragment(), HasSupportFragmentInjector {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        // TODO: Make the background of the dialog transparent indigo
         button_not_now.setOnClickListener {
             dismiss()
         }
