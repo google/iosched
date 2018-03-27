@@ -65,7 +65,7 @@
             app:layout_constraintStart_toEndOf="@id/keyline"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.samples.apps.iosched.widget.ReserveButton
+        <com.google.samples.apps.iosched.ui.reservation.ReserveButton
             android:id="@+id/reserve_session"
             android:layout_width="@dimen/a11y_min_touch_target"
             android:layout_height="@dimen/a11y_min_touch_target"
