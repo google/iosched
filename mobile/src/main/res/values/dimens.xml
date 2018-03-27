@@ -53,5 +53,5 @@
     <dimen name="dialog_rounded_corner">8dp</dimen>
     <dimen name="dialog_vertical_margin">32dp</dimen>
     <dimen name="dialog_horizontal_margin">32dp</dimen>
-    <dimen name="padding_borderless_button">24dp</dimen>
+    <dimen name="padding_borderless_button">20dp</dimen>
 </resources>

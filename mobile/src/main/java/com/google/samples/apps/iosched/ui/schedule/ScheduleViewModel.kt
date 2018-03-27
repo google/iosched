@@ -23,7 +23,7 @@ import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableBoolean
 import android.support.annotation.StringRes
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUserInfo
+import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.invoke
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
@@ -52,7 +52,7 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_2
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_3
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
-import com.google.samples.apps.iosched.ui.login.LoginViewModelPlugin
+import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.schedule.filters.LoadTagFiltersUseCase
 import com.google.samples.apps.iosched.ui.schedule.filters.TagFilter
 import timber.log.Timber
@@ -67,10 +67,10 @@ class ScheduleViewModel @Inject constructor(
     private val loadUserSessionsByDayUseCase: LoadUserSessionsByDayUseCase,
     loadAgendaUseCase: LoadAgendaUseCase,
     loadTagFiltersUseCase: LoadTagFiltersUseCase,
-    loginViewModelPlugin: LoginViewModelPlugin,
+    signInViewModelDelegate: SignInViewModelDelegate,
     private val starEventUseCase: StarEventUseCase,
     private val reservationActionUseCase: ReservationActionUseCase
-) : ViewModel(), ScheduleEventListener, LoginViewModelPlugin by loginViewModelPlugin {
+) : ViewModel(), ScheduleEventListener, SignInViewModelDelegate by signInViewModelDelegate {
 
     val isLoading: LiveData<Boolean>
 
@@ -109,24 +109,24 @@ class ScheduleViewModel @Inject constructor(
     val snackBarMessage : LiveData<Event<SnackbarMessage>>
         get() = _snackBarMessage
 
-    /** Resource id of the profile button's content description; changes based on login state**/
-    private val _profileContentDesc = MediatorLiveData<Int>().apply { value = R.string.a11y_login }
+    /** Resource id of the profile button's content description; changes based on sign in state**/
+    private val _profileContentDesc = MediatorLiveData<Int>().apply { value = R.string.a11y_sign_in }
 
     val profileContentDesc: LiveData<Int>
         get() = _profileContentDesc
 
     val showReservations: LiveData<Boolean>
 
-    /**
-     * Event to navigate to the sign in Dialog. We only want to consume the event, so the
-     * Boolean value isn't used actually.
-     */
-    private val _navigateToSignInDialogAction = MutableLiveData<Event<Boolean>>()
-    val navigateToSignInDialogAction: LiveData<Event<Boolean>>
+    private val _navigateToSignInDialogAction = MutableLiveData<Event<Unit>>()
+    val navigateToSignInDialogAction: LiveData<Event<Unit>>
         get() = _navigateToSignInDialogAction
 
+    private val _navigateToSignOutDialogAction = MutableLiveData<Event<Unit>>()
+    val navigateToSignOutDialogAction: LiveData<Event<Unit>>
+        get() = _navigateToSignOutDialogAction
+
     private val _navigateToRemoveReservationDialogAction =
-            MutableLiveData<Event<ReservationRequestParameters>>()
+        MutableLiveData<Event<ReservationRequestParameters>>()
     val navigateToRemoveReservationDialogAction: LiveData<Event<ReservationRequestParameters>>
         get() = _navigateToRemoveReservationDialogAction
 
@@ -236,7 +236,7 @@ class ScheduleViewModel @Inject constructor(
 
         // Show reservation button if not logged in or (logged in && registered)
         showReservations = currentFirebaseUser.map {
-            isRegistered() || !isLoggedIn()
+            isRegistered() || !isSignedIn()
         }
     }
 
@@ -285,19 +285,19 @@ class ScheduleViewModel @Inject constructor(
     }
 
     fun onProfileClicked() {
-        if (isLoggedIn()) {
-            emitLogoutRequest()
+        if (isSignedIn()) {
+            _navigateToSignOutDialogAction.value = Event(Unit)
         } else {
-            emitLoginRequest()
+            _navigateToSignInDialogAction.value = Event(Unit)
         }
     }
 
     @StringRes
     private fun getProfileContentDescription(userResult: Result<AuthenticatedUserInfo>?): Int {
-        return if (userResult is Success && userResult.data.isLoggedIn()) {
-            R.string.a11y_logout
+        return if (userResult is Success && userResult.data.isSignedIn()) {
+            R.string.a11y_sign_out
         } else {
-            R.string.a11y_login
+            R.string.a11y_sign_in
         }
     }
 
@@ -307,9 +307,9 @@ class ScheduleViewModel @Inject constructor(
     }
 
     override fun onStarClicked(userEvent: UserEvent) {
-        if (!isLoggedIn()) {
+        if (!isSignedIn()) {
             Timber.d("Showing Sign-in dialog after star click")
-            _navigateToSignInDialogAction.value = Event(true)
+            _navigateToSignInDialogAction.value = Event(Unit)
             return
         }
         val newIsStarredState = !userEvent.isStarred
@@ -329,9 +329,9 @@ class ScheduleViewModel @Inject constructor(
     }
 
     override fun onReservationClicked(session: Session, userEvent: UserEvent) {
-        if (!isLoggedIn()) {
+        if (!isSignedIn()) {
             Timber.d("Showing Sign-in dialog after reserve click")
-            _navigateToSignInDialogAction.value = Event(true)
+            _navigateToSignInDialogAction.value = Event(Unit)
             return
         }
         if (!isRegistered()) {

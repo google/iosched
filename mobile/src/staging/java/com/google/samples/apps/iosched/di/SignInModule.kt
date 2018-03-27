@@ -17,22 +17,22 @@
 package com.google.samples.apps.iosched.di
 
 import android.content.Context
-import com.google.samples.apps.iosched.shared.data.login.datasources.StagingAuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.login.StagingAuthenticatedUser
-import com.google.samples.apps.iosched.shared.data.login.StagingLoginHandler
+import com.google.samples.apps.iosched.shared.data.login.StagingSignInHandler
+import com.google.samples.apps.iosched.shared.data.login.datasources.StagingAuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.login.datasources.StagingRegisteredUserDataSource
-import com.google.samples.apps.iosched.shared.data.login.datasources.AuthStateUserDataSource
-import com.google.samples.apps.iosched.shared.data.login.datasources.RegisteredUserDataSource
-import com.google.samples.apps.iosched.util.login.LoginHandler
+import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
+import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
+import com.google.samples.apps.iosched.util.signin.SignInHandler
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-internal class LoginModule {
+internal class SignInModule {
     @Provides
-    fun provideLoginHandler(context: Context): LoginHandler {
-        return StagingLoginHandler(StagingAuthenticatedUser(context))
+    fun provideSignInHandler(context: Context): SignInHandler {
+        return StagingSignInHandler(StagingAuthenticatedUser(context))
     }
 
     @Singleton
@@ -46,7 +46,7 @@ internal class LoginModule {
     fun provideAuthStateUserDataSource(context: Context) : AuthStateUserDataSource {
         return StagingAuthStateUserDataSource(
                 isRegistered = true,
-                isLoggedIn = true,
+                isSignedIn = true,
                 context = context,
                 userId = "StagingTest"
         )

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.login
+package com.google.samples.apps.iosched.shared.data.signin
 
 import android.net.Uri
 import com.google.firebase.auth.FirebaseUser
@@ -30,7 +30,7 @@ class FirebaseRegisteredUserInfo(
 
     override fun isRegistered(): Boolean = isRegistered ?: false
 
-    override fun isLoggedIn(): Boolean = basicUserInfo?.isLoggedIn() == true
+    override fun isSignedIn(): Boolean = basicUserInfo?.isSignedIn() == true
 
     override fun getEmail(): String? = basicUserInfo?.getEmail()
 
@@ -61,7 +61,7 @@ open class FirebaseUserInfo(
         private val firebaseUser: FirebaseUser?
 ) : AuthenticatedUserInfoBasic {
 
-    override fun isLoggedIn(): Boolean = firebaseUser != null
+    override fun isSignedIn(): Boolean = firebaseUser != null
 
     override fun getEmail(): String? = firebaseUser?.email
 

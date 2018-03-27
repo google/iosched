@@ -17,15 +17,15 @@ package com.google.samples.apps.iosched.di
 
 import com.google.samples.apps.iosched.shared.di.ActivityScoped
 import com.google.samples.apps.iosched.ui.MainActivity
-import com.google.samples.apps.iosched.ui.dialog.DialogModule
+import com.google.samples.apps.iosched.ui.signin.SignInDialogModule
 import com.google.samples.apps.iosched.ui.info.InfoModule
 import com.google.samples.apps.iosched.ui.map.MapModule
+import com.google.samples.apps.iosched.ui.reservation.ReservationModule
 import com.google.samples.apps.iosched.ui.schedule.ScheduleModule
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-
 
 /**
  * We want Dagger.Android to create a Subcomponent which has a parent Component of whichever module
@@ -41,12 +41,23 @@ abstract class ActivityBindingModule {
 
     @ActivityScoped
     @ContributesAndroidInjector(
-            modules = [ScheduleModule::class, MapModule::class, InfoModule::class,
-                DialogModule::class])
+        modules = [
+            ScheduleModule::class,
+            MapModule::class,
+            InfoModule::class,
+            SignInDialogModule::class,
+            ReservationModule::class
+        ]
+    )
     internal abstract fun mainActivity(): MainActivity
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [SessionDetailModule::class, DialogModule::class])
+    @ContributesAndroidInjector(
+        modules = [
+            SessionDetailModule::class,
+            SignInDialogModule::class,
+            ReservationModule::class
+        ]
+    )
     internal abstract fun sessionDetailActivity(): SessionDetailActivity
-
 }
