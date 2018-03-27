@@ -33,6 +33,8 @@ import android.view.View
 import android.view.ViewConfiguration
 import android.view.ViewGroup
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.util.readBoolean
+import com.google.samples.apps.iosched.shared.util.writeBoolean
 import java.lang.ref.WeakReference
 import kotlin.math.absoluteValue
 
@@ -262,13 +264,26 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
     }
 
     override fun onSaveInstanceState(parent: CoordinatorLayout, child: V): Parcelable {
-        return SavedState(super.onSaveInstanceState(parent, child), state)
+        return SavedState(
+            super.onSaveInstanceState(parent, child),
+            state,
+            peekHeight,
+            isFitToContents,
+            isHideable,
+            skipCollapsed
+        )
     }
 
     override fun onRestoreInstanceState(parent: CoordinatorLayout, child: V, state: Parcelable) {
         val ss = state as SavedState
         super.onRestoreInstanceState(parent, child, ss.superState)
-        // Intermediate states are restored as collapsed state
+
+        peekHeight = ss.peekHeight
+        isFitToContents = ss.isFitToContents
+        isHideable = ss.isHideable
+        skipCollapsed = ss.skipCollapsed
+
+        // Set state last. Intermediate states are restored as collapsed state.
         _state = if (ss.state == STATE_DRAGGING || ss.state == STATE_SETTLING) {
             STATE_COLLAPSED
         } else {
@@ -789,20 +804,44 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
     internal class SavedState : AbsSavedState {
 
         @State internal val state: Int
+        internal val peekHeight: Int
+        internal val isFitToContents: Boolean
+        internal val isHideable: Boolean
+        internal val skipCollapsed: Boolean
 
         constructor(source: Parcel) : this(source, null)
 
         constructor(source: Parcel, loader: ClassLoader?) : super(source, loader) {
             state = source.readInt()
+            peekHeight = source.readInt()
+            isFitToContents = source.readBoolean()
+            isHideable = source.readBoolean()
+            skipCollapsed = source.readBoolean()
         }
 
-        constructor(superState: Parcelable, @State state: Int) : super(superState) {
+        constructor(
+            superState: Parcelable, @State state: Int,
+            peekHeight: Int,
+            isFitToContents: Boolean,
+            isHideable: Boolean,
+            skipCollapsed: Boolean
+        ) : super(superState) {
             this.state = state
+            this.peekHeight = peekHeight
+            this.isFitToContents = isFitToContents
+            this.isHideable = isHideable
+            this.skipCollapsed = skipCollapsed
         }
 
         override fun writeToParcel(dest: Parcel, flags: Int) {
             super.writeToParcel(dest, flags)
-            dest.writeInt(state)
+            dest.apply {
+                writeInt(state)
+                writeInt(peekHeight)
+                writeBoolean(isFitToContents)
+                writeBoolean(isHideable)
+                writeBoolean(skipCollapsed)
+            }
         }
 
         companion object {
