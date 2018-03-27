@@ -40,17 +40,17 @@
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:pageMargin="@{@dimen/spacing_normal}"
-            app:pageMarginDrawable="@{@drawable/page_margin}"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            app:pageMarginDrawable="@{@drawable/page_margin}" />
 
         <!-- TODO(b/72711711): Provide a better loading indicator -->
         <ProgressBar
             android:id="@+id/loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:indeterminate="true"
             android:layout_gravity="center"
+            android:indeterminate="true"
             app:goneUnless="@{viewModel.isLoading}" />
 
         <!--
@@ -64,6 +64,17 @@
             android:layout_gravity="bottom"
             app:layout_insetEdge="bottom" />
 
+        <com.google.android.material.widget.FloatingActionButton
+            android:id="@+id/filter_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/margin_normal"
+            android:contentDescription="@string/filters"
+            app:fabSize="auto"
+            app:fabVisibility="@{!viewModel.hasAnyFilters}"
+            app:srcCompat="@drawable/ic_filter" />
+
         <!--
           ~ We use a margin to prevent the status bar from drawing over the shadow when the sheet
           ~ expands. However, marginTop pushes the sheet down from it's peekHeight when collapsed.
@@ -76,9 +87,9 @@
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
             android:layout_marginBottom="4dp"
-            app:layout_behavior="com.google.samples.apps.iosched.widget.BottomSheetBehavior"
-            app:behavior_hideable="false"
+            app:behavior_hideable="true"
             app:behavior_peekHeight="@dimen/bottom_sheet_peek_height"
+            app:layout_behavior="com.google.samples.apps.iosched.widget.BottomSheetBehavior"
             tools:layout="@layout/fragment_schedule_filter" />
 
     </com.google.samples.apps.iosched.widget.NestedScrollingCoordinatorLayout>
