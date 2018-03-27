@@ -55,15 +55,10 @@ class SessionDetailFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        setHasOptionsMenu(true)
-
         sessionDetailViewModel = viewModelProvider(viewModelFactory)
-        sessionDetailViewModel.setSessionId(checkNotNull(arguments).getString(EXTRA_SESSION_ID))
+        sessionDetailViewModel.setSessionId(requireNotNull(arguments).getString(EXTRA_SESSION_ID))
 
-        val binding: FragmentSessionDetailBinding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_session_detail, container, false
-        )
-        binding.run {
+        val binding = FragmentSessionDetailBinding.inflate(inflater, container, false).apply {
             viewModel = sessionDetailViewModel
             setLifecycleOwner(this@SessionDetailFragment)
             sessionDetailBottomAppBar.inflateMenu(R.menu.session_detail_menu)

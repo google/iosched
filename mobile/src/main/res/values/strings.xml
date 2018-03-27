@@ -78,6 +78,8 @@
     <string name="a11y_reservation_wait_list_available" translation_description="Alternative text for the event reservation button when the user can join a wait list.">Join wait list for event</string>
     <string name="a11y_reservation_wait_listed" translation_description="Alternative text for the event reservation button when the user is on a wait list for the event.">On wait list for event</string>
     <string name="a11y_reservation_pending" translation_description="Alternative text for the event reservation button when the user's reservation is pending.">Reservation pending</string>
+    <string name="a11y_starred" translation_description="Alternative text for the event bookmark button when the event has been bookmarked.">Event bookmarked</string>
+    <string name="a11y_unstarred" translation_description="Alternative text for the event bookmark button when the event has not been bookmarked.">Event not bookmarked</string>
 
     <!-- Sign in dialog -->
     <string name="dialog_sign_in_title" translation_description="The title of the dialog. When the user needs to sign in.">Sign in to customize your schedule</string>
