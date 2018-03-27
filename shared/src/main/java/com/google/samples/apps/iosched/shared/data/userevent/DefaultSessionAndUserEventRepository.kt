@@ -21,6 +21,7 @@ import android.arch.lifecycle.MediatorLiveData
 import android.support.annotation.WorkerThread
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
@@ -41,8 +42,8 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         private val userEventDataSource: UserEventDataSource,
         private val sessionRepository: SessionRepository
 ) : SessionAndUserEventRepository {
-
-    val result = MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>()
+    private val sessionsByDayResult = MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>()
+    private val sessionResult = MediatorLiveData<Result<LoadUserSessionUseCaseResult>>()
 
     override fun getObservableUserEvents(userId: String?):
             LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
@@ -50,18 +51,17 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         // If there is no logged-in user, return the map with null UserEvents
         if (userId == null) {
             val userSessionsPerDay = mapUserDataAndSessions(null, sessionRepository.getSessions())
-            result.postValue(Result.Success(
+            sessionsByDayResult.postValue(Result.Success(
                     LoadUserSessionsByDayUseCaseResult(
                             userSessionsPerDay = userSessionsPerDay,
                             userMessage = null)
             ))
-            return result
+            return sessionsByDayResult
         }
         // Observes the user events and merges them with session data.
         val observableUserEvents = userEventDataSource.getObservableUserEvents(userId)
-
-        result.removeSource(observableUserEvents)
-        result.addSource(observableUserEvents) { userEvents ->
+        sessionsByDayResult.removeSource(observableUserEvents)
+        sessionsByDayResult.addSource(observableUserEvents) { userEvents ->
             userEvents ?: return@addSource
 
             DefaultScheduler.execute {
@@ -69,7 +69,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                     // Get the sessions, synchronously
                     val allSessions = sessionRepository.getSessions()
                     // Merges sessions with user data and emits the result
-                    result.postValue(Result.Success(
+                    sessionsByDayResult.postValue(Result.Success(
                             LoadUserSessionsByDayUseCaseResult(
                                     userSessionsPerDay =  mapUserDataAndSessions(
                                             userEvents, allSessions),
@@ -77,11 +77,57 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                     ))
 
                 } catch (e: Exception) {
-                    result.postValue(Result.Error(e))
+                    sessionsByDayResult.postValue(Result.Error(e))
                 }
             }
         }
-        return result
+        return sessionsByDayResult
+    }
+
+    override fun getObservableUserEvent(
+            userId: String?,
+            eventId: String
+    ): LiveData<Result<LoadUserSessionUseCaseResult>> {
+
+        // If there is no logged-in user, return the session with a null UserEvent
+        if (userId == null) {
+            val session = sessionRepository.getSession(eventId)
+            sessionResult.postValue(Result.Success(
+                    LoadUserSessionUseCaseResult(
+                            userSession = UserSession(session, UserEvent(session.id,
+                                            session.startTime.toEpochMilli(),
+                                            session.endTime.toEpochMilli())),
+                            userMessage = null)
+            ))
+            return sessionResult
+        }
+
+        // Observes the user events and merges them with session data.
+        val observableUserEvent = userEventDataSource.getObservableUserEvent(userId, eventId)
+        sessionResult.removeSource(observableUserEvent)
+        sessionResult.addSource(observableUserEvent) { userEventResult ->
+            userEventResult ?: return@addSource
+
+            DefaultScheduler.execute {
+                try {
+                    // Get the session, synchronously
+                    val event = sessionRepository.getSession(eventId)
+
+                    // Merges session with user data and emits the result
+                    val userSession = UserSession(event,
+                            userEventResult.userEvent ?: createDefaultUserEvent(event))
+                    sessionResult.postValue(Result.Success(
+                            LoadUserSessionUseCaseResult(
+                                    userSession = userSession,
+                                    userMessage = userEventResult.userEventMessage
+                            )
+                    ))
+                } catch (e: Exception) {
+                    sessionResult.postValue(Result.Error(e))
+                }
+            }
+        }
+        return sessionResult
     }
 
     override fun starEvent(userId: String, userEvent: UserEvent):
@@ -98,6 +144,12 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                 sessionRepository.getSession(sessionId),
                 action)
     }
+
+    private fun createDefaultUserEvent(session: Session): UserEvent {
+        return UserEvent(session.id, session.startTime.toEpochMilli(),
+                session.endTime.toEpochMilli())
+    }
+
     /**
      * Merges user data with sessions.
      */
@@ -147,6 +199,9 @@ interface SessionAndUserEventRepository {
 
     fun getObservableUserEvents(userId: String?):
             LiveData<Result<LoadUserSessionsByDayUseCaseResult>>
+
+    fun getObservableUserEvent(userId: String?, eventId: String):
+            LiveData<Result<LoadUserSessionUseCaseResult>>
 
     fun changeReservation(
             userId: String, sessionId: String, action: ReservationRequestAction

@@ -87,20 +87,21 @@ object TestData : ConferenceDataSource {
         tags = listOf(webTag, sessionsTag, intermediateTag), displayTags = listOf(webTag),
         speakers = setOf(speaker), relatedSessions = emptySet())
 
-    val session4 = Session(id = "4", title = "Session 4", abstract = "",
+    val sessionWithYoutubeUrl = Session(id = "4", title = "Session 4", abstract = "",
         startTime = DAY_3.start.plusMinutes(1), endTime = DAY_3.end,
-        room = room, sessionUrl = "", liveStreamUrl = "", youTubeUrl = "", photoUrl = "",
+        room = room, sessionUrl = "", liveStreamUrl = "",
+        youTubeUrl = "\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\"", photoUrl = "",
         tags = listOf(webTag, advancedTag), displayTags = listOf(webTag),
         speakers = setOf(speaker), relatedSessions = emptySet())
 
-    val sessionsList = listOf(session0, session1, session2, session3, session4)
+    val sessionsList = listOf(session0, session1, session2, session3, sessionWithYoutubeUrl)
 
     val sessionIDs = sessionsList.map { it.id }.toList()
 
     val sessionsMap = mapOf(
         ConferenceDay.DAY_1 to listOf(session0, session1),
         ConferenceDay.DAY_2 to listOf(session2),
-        ConferenceDay.DAY_3 to listOf(session3, session4))
+        ConferenceDay.DAY_3 to listOf(session3, sessionWithYoutubeUrl))
 
     val block1 = Block(
         title = "Keynote",
@@ -152,15 +153,15 @@ object TestData : ConferenceDataSource {
     )
     private val userEvent4 = UserEvent(sessionIDs[4], isStarred = false,
             isReviewed = true,
-            startTime = session4.startTime.toInstant().toEpochMilli(),
-            endTime = session4.endTime.toInstant().toEpochMilli(),
-            reservationRequestResult = null
+            startTime = sessionWithYoutubeUrl.startTime.toInstant().toEpochMilli(),
+            endTime = sessionWithYoutubeUrl.endTime.toInstant().toEpochMilli(),
+            reservationRequest = null
     )
     private val userSession0 = UserSession(session0, userEvent0)
     private val userSession1 = UserSession(session1, userEvent1)
     private val userSession2 = UserSession(session2, userEvent2)
     private val userSession3 = UserSession(session3, userEvent3)
-    private val userSession4 = UserSession(session4, userEvent4)
+    private val userSession4 = UserSession(sessionWithYoutubeUrl, userEvent4)
     val userSessionMap = mapOf(
         ConferenceDay.DAY_1 to listOf(userSession0, userSession1),
         ConferenceDay.DAY_2 to listOf(userSession2),

@@ -46,7 +46,7 @@ abstract class ActivityBindingModule {
     internal abstract fun mainActivity(): MainActivity
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [SessionDetailModule::class])
+    @ContributesAndroidInjector(modules = [SessionDetailModule::class, DialogModule::class])
     internal abstract fun sessionDetailActivity(): SessionDetailActivity
 
 }

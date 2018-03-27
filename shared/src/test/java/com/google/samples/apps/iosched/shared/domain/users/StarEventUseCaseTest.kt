@@ -23,6 +23,7 @@ import com.google.samples.apps.iosched.shared.data.session.DefaultSessionReposit
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.TestData
@@ -78,7 +79,6 @@ class StarEventUseCaseTest {
 }
 
 val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepository {
-
     val result = MutableLiveData<Result<StarUpdatedStatus>>()
 
     override fun starEvent(userId: String, userEvent: UserEvent):
@@ -89,6 +89,13 @@ val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepositor
 
     override fun getObservableUserEvents(userId: String?):
             LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
+        throw NotImplementedError()
+    }
+
+    override fun getObservableUserEvent(
+            userId: String?,
+            eventId: String
+    ): LiveData<Result<LoadUserSessionUseCaseResult>> {
         throw NotImplementedError()
     }
 
