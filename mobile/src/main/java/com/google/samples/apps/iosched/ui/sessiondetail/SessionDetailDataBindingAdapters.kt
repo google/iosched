@@ -28,8 +28,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
-import com.google.android.material.widget.FloatingActionButton
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.widget.FloatingActionButton
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemSpeakerDetailBinding
 import com.google.samples.apps.iosched.shared.model.Session
@@ -113,13 +113,31 @@ fun sessionStartCountdown(view: TextView, timeUntilStart: Duration?) {
 }
 
 @Suppress("unused")
-@BindingAdapter("isDetailStarred")
-fun isDetailStarred(fab: FloatingActionButton, isStarred: Boolean) {
+@BindingAdapter("isDetailStarred", "isRegistered", "eventListener", requireAll = true)
+fun assignFab(fab: FloatingActionButton, isStarred: Boolean, isRegistered: Boolean,
+              eventListener: SessionDetailEventListener) {
+    if (isRegistered) {
+        assignReservationFab(fab, eventListener)
+    } else {
+        assignStarFab(fab, isStarred, eventListener)
+    }
+}
+
+private fun assignReservationFab(fab: FloatingActionButton,
+                                 eventListener: SessionDetailEventListener) {
+    // TODO: Set drawables depending on the reservation status
+    fab.setImageResource(R.drawable.ic_reservable)
+    fab.setOnClickListener { eventListener.onReservationClicked() }
+}
+
+private fun assignStarFab(fab: FloatingActionButton, isStarred: Boolean,
+                          eventListener: SessionDetailEventListener) {
     if (isStarred) {
         fab.setImageResource(R.drawable.ic_star)
     } else {
         fab.setImageResource(R.drawable.ic_star_border)
     }
+    fab.setOnClickListener { eventListener.onStarClicked() }
 }
 
 private fun createSessionSpeakerView(

@@ -50,6 +50,7 @@
     <!-- Session Detail -->
     <string name="rate_session" translation_description="The label for the button to rate the session by 5 stars">Rate Session</string>
     <string name="menu_item_session_location" translation_description="The label for the location of the session.">Session location</string>
+    <string name="menu_item_session_star" translation_description="The label for starring of the session.">Star session</string>
     <string name="session_detail_header_aspect" translatable="false">H,16:9</string>
     <string name="session_detail_speakers_header" translation_descriptions="The label for the session speakers.">Speakers</string>
     <string name="session_detail_related_header" translation_description="The label for the events related to this session.">Related Events</string>

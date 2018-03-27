@@ -29,11 +29,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.net.toUri
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.widget.Snackbar
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSessionDetailBinding
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.SnackbarMessage
+import com.google.samples.apps.iosched.ui.dialog.RemoveReservationDialogFragment
+import com.google.samples.apps.iosched.ui.dialog.RemoveReservationDialogFragment.Companion.DIALOG_REMOVE_RESERVATION
 import com.google.samples.apps.iosched.ui.dialog.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.dialog.SignInDialogFragment.Companion.DIALOG_NEED_TO_SIGN_IN
 import dagger.android.support.DaggerFragment
@@ -44,6 +48,7 @@ class SessionDetailFragment : DaggerFragment() {
     private var shareString = ""
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var sessionDetailViewModel: SessionDetailViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,7 +57,7 @@ class SessionDetailFragment : DaggerFragment() {
     ): View? {
         setHasOptionsMenu(true)
 
-        val sessionDetailViewModel: SessionDetailViewModel = viewModelProvider(viewModelFactory)
+        sessionDetailViewModel = viewModelProvider(viewModelFactory)
         sessionDetailViewModel.setSessionId(checkNotNull(arguments).getString(EXTRA_SESSION_ID))
 
         val binding: FragmentSessionDetailBinding = DataBindingUtil.inflate(
@@ -61,15 +66,18 @@ class SessionDetailFragment : DaggerFragment() {
         binding.run {
             viewModel = sessionDetailViewModel
             setLifecycleOwner(this@SessionDetailFragment)
-            toolbar.inflateMenu(R.menu.session_detail_menu)
+            sessionDetailBottomAppBar.inflateMenu(R.menu.session_detail_menu)
             // todo setup menu & fab based on attendee
-            toolbar.setOnMenuItemClickListener { item ->
+            sessionDetailBottomAppBar.setOnMenuItemClickListener { item ->
                 if (item.itemId == R.id.menu_item_share) {
                     ShareCompat.IntentBuilder.from(activity)
                         .setType("text/plain")
                         .setText(shareString)
                         .setChooserTitle(R.string.intent_chooser_session_detail)
                         .startChooser()
+                }
+                if (item.itemId == R.id.menu_item_star) {
+                    viewModel?.onStarClicked()
                 }
                 true
             }
@@ -122,8 +130,39 @@ class SessionDetailFragment : DaggerFragment() {
                 openSignInDialog(requireActivity())
             }
         })
-
+        sessionDetailViewModel.navigateToRemoveReservationDialogAction.observe(this, Observer {
+            it?.getContentIfNotHandled()?.let {
+                openRemoveReservationDialog(requireActivity(), it)
+            }
+        })
         return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        // Observing the changes from Fragment because data binding doesn't work with menu items.
+        val menu = requireActivity().findViewById<BottomAppBar>(
+                R.id.session_detail_bottom_app_bar).menu
+        val starMenu = menu.findItem(R.id.menu_item_star)
+        sessionDetailViewModel.observeRegisteredUser().observe(this, Observer {
+            it?.let {
+                if (it) {
+                    starMenu.setVisible(true)
+                } else {
+                    starMenu.setVisible(false)
+                }
+            }
+        })
+        sessionDetailViewModel.userEvent.observe(this, Observer {
+            it?.let {
+                if (it.isStarred) {
+                    starMenu.setIcon(R.drawable.ic_star)
+                } else {
+                    starMenu.setIcon(R.drawable.ic_star_border)
+                }
+            }
+        })
     }
 
     private fun openYoutubeUrl(youtubeUrl: String) {
@@ -133,6 +172,12 @@ class SessionDetailFragment : DaggerFragment() {
     private fun openSignInDialog(activity: FragmentActivity) {
         val dialog = SignInDialogFragment()
         dialog.show(activity.supportFragmentManager, DIALOG_NEED_TO_SIGN_IN)
+    }
+
+    private fun openRemoveReservationDialog(activity: FragmentActivity,
+                                            parameters: ReservationRequestParameters) {
+        val dialog = RemoveReservationDialogFragment.newInstance(parameters)
+        dialog.show(activity.supportFragmentManager, DIALOG_REMOVE_RESERVATION)
     }
 
     companion object {
