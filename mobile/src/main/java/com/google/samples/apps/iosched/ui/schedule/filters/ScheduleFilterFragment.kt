@@ -49,6 +49,7 @@ class ScheduleFilterFragment : DaggerFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentScheduleFilterBinding.inflate(inflater, container, false)
+        binding.setLifecycleOwner(this)
         return binding.root
     }
 

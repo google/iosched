@@ -32,6 +32,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.OnHierarchyChangeListener
 import androidx.view.doOnLayout
+import com.google.android.material.widget.FloatingActionButton
 import com.google.android.material.widget.Snackbar
 import com.google.android.material.widget.Snackbar.LENGTH_LONG
 import com.google.android.material.widget.Snackbar.LENGTH_SHORT
@@ -75,6 +76,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     private lateinit var viewModel: ScheduleViewModel
     private lateinit var coordinatorLayout: CoordinatorLayout
 
+    private lateinit var filtersFab: FloatingActionButton
     private lateinit var dummyBottomView: View
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
     // Peek height we want to maintain above the bottom navigation
@@ -161,6 +163,11 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
             }
         })
 
+        filtersFab = view.findViewById(R.id.filter_fab)
+        filtersFab.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+
         dummyBottomView = view.findViewById(R.id.dummy_bottom_navigation)
         bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.filter_sheet))
 
@@ -172,6 +179,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
                     BottomSheetBehavior.STATE_EXPANDED ->
                         activity.setBottomNavLockMode(
                             HideBottomViewOnScrollBehavior.LOCK_MODE_LOCKED_HIDDEN)
+
                     BottomSheetBehavior.STATE_COLLAPSED, BottomSheetBehavior.STATE_HIDDEN ->
                         activity.setBottomNavLockMode(
                             HideBottomViewOnScrollBehavior.LOCK_MODE_UNLOCKED)
@@ -181,9 +189,21 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
 
+        // We can't use DataBinding on <fragment> tags, so set up an observer manually.
+        viewModel.hasAnyFilters.observe(this, Observer {
+            val hasFilters = it ?: false
+            bottomSheetBehavior.isHideable = !hasFilters
+            bottomSheetBehavior.skipCollapsed = !hasFilters
+            if (!hasFilters && bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            }
+        })
+
         if (savedInstanceState == null) {
             // Set the peek height on first layout
             dummyBottomView.doOnLayout { onBottomNavSlide(dummyBottomView.translationY) }
+            // Make bottom sheet hidden at first
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
     }
 

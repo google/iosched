@@ -20,7 +20,6 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.databinding.ObservableBoolean
 import android.support.annotation.StringRes
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
@@ -82,8 +81,12 @@ class ScheduleViewModel @Inject constructor(
     private var cachedTagFilters = emptyList<TagFilter>()
 
     val tagFilters: LiveData<List<TagFilter>>
-    val hasAnyFilters = ObservableBoolean(false)
-    val showPinnedEvents = ObservableBoolean(false)
+    private val _hasAnyFilters = MutableLiveData<Boolean>()
+    val hasAnyFilters: LiveData<Boolean>
+        get() = _hasAnyFilters
+    private val _showPinnedEvents = MutableLiveData<Boolean>()
+    val showPinnedEvents: LiveData<Boolean>
+        get() = _showPinnedEvents
 
     private val loadSessionsResult: MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>
     private val loadAgendaResult = MutableLiveData<Result<List<Block>>>()
@@ -258,11 +261,11 @@ class ScheduleViewModel @Inject constructor(
         // If tagFilterMatcher.add or .remove returns false, we do nothing.
         if (enabled && tagFilterMatcher.add(filter.tag)) {
             filter.isChecked.set(true)
-            hasAnyFilters.set(true)
+            _hasAnyFilters.value = true
             refreshUserSessions()
         } else if (!enabled && tagFilterMatcher.remove(filter.tag)) {
             filter.isChecked.set(false)
-            hasAnyFilters.set(!tagFilterMatcher.isEmpty())
+            _hasAnyFilters.value = !tagFilterMatcher.isEmpty()
             refreshUserSessions()
         }
     }
@@ -270,16 +273,22 @@ class ScheduleViewModel @Inject constructor(
     override fun clearFilters() {
         if (tagFilterMatcher.clearAll()) {
             tagFilters.value?.forEach { it.isChecked.set(false) }
-            hasAnyFilters.set(false)
+            _hasAnyFilters.value = false
             refreshUserSessions()
         }
     }
 
     override fun togglePinnedEvents(pinned: Boolean) {
         // TODO check if logged in first
-        if (showPinnedEvents.get() != pinned) {
-            showPinnedEvents.set(pinned)
-            userSessionMatcher = if (pinned) { PinnedEventMatcher } else { tagFilterMatcher }
+        if (_showPinnedEvents.value != pinned) {
+            _showPinnedEvents.value = pinned
+            if (pinned) {
+                userSessionMatcher = PinnedEventMatcher
+                _hasAnyFilters.value = true
+            } else {
+                userSessionMatcher = tagFilterMatcher
+                _hasAnyFilters.value = !tagFilterMatcher.isEmpty()
+            }
             refreshUserSessions()
         }
     }
