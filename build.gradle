@@ -38,7 +38,7 @@ buildscript {
         targetWearSdkVersion = 27
 
         // App dependencies
-        constraintLayoutVersion = '1.1.0-beta5'
+        constraintLayoutVersion = '1.1.0-beta6'
         espressoVersion = '3.0.1'
         androidGradlePluginVersion = '3.1.0-rc02'
         hamcrestVersion = '1.3'
