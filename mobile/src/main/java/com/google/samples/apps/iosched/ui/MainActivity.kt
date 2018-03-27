@@ -32,7 +32,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : DaggerAppCompatActivity() {
     companion object {
         private const val FRAGMENT_ID = R.id.fragment_container
-        private const val STATE_BOTTOM_NAV_TRANSLATION = "state.BOTTOM_NAV_TRANSLATION"
     }
 
     private lateinit var behavior: HideBottomViewOnScrollBehavior<*>
@@ -81,16 +80,5 @@ class MainActivity : DaggerAppCompatActivity() {
 
     fun setBottomNavLockMode(lockMode: Int) {
         behavior.lockMode = lockMode
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putFloat(STATE_BOTTOM_NAV_TRANSLATION, navigation.translationY)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        val ty = savedInstanceState.getFloat(STATE_BOTTOM_NAV_TRANSLATION)
-        currentFragment.onBottomNavSlide(ty)
     }
 }

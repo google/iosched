@@ -27,9 +27,8 @@ import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDat
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
-import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
+import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.TagFilterMatcher
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import org.hamcrest.CoreMatchers.`is`
@@ -63,7 +62,7 @@ class LoadUserSessionsByDayUseCaseTest {
 
         val resultLiveData = useCase.observe()
 
-        useCase.execute(Pair(FakeUserSessionMatcher, "user1"))
+        useCase.execute(Pair(TagFilterMatcher(), "user1"))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
                 as Result.Success<LoadUserSessionsByDayUseCaseResult>
@@ -85,7 +84,7 @@ class LoadUserSessionsByDayUseCaseTest {
 
         val resultLiveData = useCase.observe()
 
-        useCase.execute(Pair(FakeUserSessionMatcher, "user1"))
+        useCase.execute(Pair(TagFilterMatcher(), "user1"))
 
         userEventsResult.postValue(UserEventsResult(
                 userEventsMessage = UserEventMessage.CHANGES_IN_RESERVATIONS,
@@ -117,16 +116,12 @@ class LoadUserSessionsByDayUseCaseTest {
 
         val resultLiveData = useCase.observe()
 
-        useCase.execute(Pair(FakeUserSessionMatcher, "user1"))
+        useCase.execute(Pair(TagFilterMatcher(), "user1"))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
 
         assertThat(result, `is`(instanceOf(Result.Error::class.java)))
     }
-}
-
-object FakeUserSessionMatcher : UserSessionMatcher {
-    override fun matches(userSession: UserSession): Boolean = true
 }
 
 object FailingSessionRepository : SessionRepository{

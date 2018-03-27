@@ -28,15 +28,13 @@
     </data>
 
     <TextView
-        style="@style/Widget.IOSched.Tag.Inline"
+        android:id="@+id/tag_name"
+        style="@style/Widget.IOSched.Tag.Chip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_normal"
-        android:layout_marginTop="@dimen/spacing_normal"
         android:text="@{tag.name}"
-        app:tagTint="@{tag.color}"
-        tools:drawableStart="@drawable/tag_dot"
-        tools:drawableTint="#f0f"
-        tools:text="Android" />
+        app:tagChipBg="@{tag.color}"
+        tools:backgroundTint="@sample/tags.json/tags/color"
+        tools:text="@sample/tags.json/tags/name" />
 
 </layout>

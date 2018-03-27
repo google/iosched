@@ -35,7 +35,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingHorizontal="@dimen/margin_normal"
         android:minHeight="?android:listPreferredItemHeightSmall">
 
         <CheckedTextView
@@ -46,9 +45,9 @@
             android:checked="@{tagFilter.isChecked}"
             android:onClick="@{() -> viewModel.toggleFilter(tagFilter, !filterLabel.checked)}"
             android:text="@{tagFilter.tag.name}"
-            app:tagColor="@{tagFilter.tag.color}"
+            app:tagFilterBg="@{tagFilter.tag.color}"
             tools:checked="@sample/tags.json/tags/checked"
-            tools:tagColor="@sample/tags.json/tags/color"
+            tools:tagFilterBg="@sample/tags.json/tags/color"
             tools:text="@sample/tags.json/tags/name" />
 
     </FrameLayout>

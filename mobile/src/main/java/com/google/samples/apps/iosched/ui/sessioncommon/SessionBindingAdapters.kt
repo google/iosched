@@ -49,15 +49,23 @@ fun tagTint(textView: TextView, color: Int) {
         )
     )
 }
+/**
+ * Creates a tag background using the tag's color.
+ */
+@BindingAdapter("tagChipBg")
+fun tagChipBg(textView: TextView, color: Int) {
+    val tintColor = tagTintOrDefault(color, textView.context)
+    val tagBg = drawableCompat(textView, R.drawable.tag_filled)?.apply { setTint(tintColor) }
+    textView.background = tagBg
+}
 
 /**
  * Creates a tag background with checkable state. When checked, the tag becomes filled and shows a
  * clear ('X') icon in place of the dot.
  */
-@BindingAdapter("tagColor")
-fun tagColor(textView: TextView, color: Int) {
-    val tintColor =
-        tagTintOrDefault(color, textView.context)
+@BindingAdapter("tagFilterBg")
+fun tagFilterBg(textView: TextView, color: Int) {
+    val tintColor = tagTintOrDefault(color, textView.context)
 
     // We can't define these with XML <selector>s because we want to tint only one state in each,
     // and StateListDrawable does not give us a way to extract any of its contained Drawables.

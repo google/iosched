@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.shared.schedule
 
 import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.model.UserSession
+import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.PinnedEventMatcher
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

@@ -24,7 +24,6 @@
     android:gravity="bottom|start"
     android:lines="1"
     android:minHeight="?listPreferredItemHeightSmall"
-    android:paddingHorizontal="@dimen/margin_normal"
     android:paddingVertical="@dimen/spacing_normal"
     android:textAppearance="@style/TextAppearance.IOSched.Subhead"
     tools:text="Topics" />

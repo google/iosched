@@ -23,7 +23,7 @@ import com.google.samples.apps.iosched.model.TestData.webTag
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.result.Result.Success
-import com.google.samples.apps.iosched.shared.schedule.TagFilterMatcher
+import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.TagFilterMatcher
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
