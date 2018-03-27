@@ -17,7 +17,6 @@
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <size android:height="@dimen/tag_height" />
     <corners android:radius="@dimen/tag_corner_radius" />
     <!-- Expect this to be tinted -->
     <solid android:color="#f0f" />

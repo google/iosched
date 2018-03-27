@@ -141,19 +141,27 @@
     </style>
 
     <style name="Widget.IOSched.Tag">
-        <item name="android:drawablePadding">@dimen/spacing_micro</item>
-        <item name="android:drawableStart">@drawable/tag_dot</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:lines">1</item>
         <item name="android:textAppearance">@style/TextAppearance.IOSched.Tag</item>
     </style>
 
-    <style name="Widget.IOSched.Tag.Filter">
-        <item name="android:background">@drawable/tag_background</item>
+    <style name="Widget.IOSched.Tag.Inline">
+        <item name="android:drawablePadding">@dimen/spacing_micro</item>
+        <item name="android:drawableStart">@drawable/tag_dot</item>
+    </style>
+
+    <style name="Widget.IOSched.Tag.Chip">
+        <item name="android:background">@drawable/tag_filled</item>
         <item name="android:paddingHorizontal" tools:targetApi="o">@dimen/tag_hz_padding</item>
+        <item name="android:paddingVertical" tools:targetApi="o">@dimen/tag_vert_padding</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="Widget.IOSched.Tag.Filter" parent="Widget.IOSched.Tag.Chip">
+        <item name="android:background">@drawable/tag_filter_background</item>
         <item name="android:drawablePadding">@dimen/spacing_normal</item>
         <item name="android:minHeight">@dimen/tag_height</item>
-        <item name="android:textColor">?android:textColorPrimary</item>
         <item name="autoSizeTextType">uniform</item>
         <item name="autoSizeMinTextSize">8sp</item>
     </style>

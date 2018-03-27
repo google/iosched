@@ -47,7 +47,7 @@ import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.schedule.TagFilterMatcher
+import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.TagFilterMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
