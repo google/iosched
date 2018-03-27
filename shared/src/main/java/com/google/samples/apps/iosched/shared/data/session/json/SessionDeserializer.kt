@@ -20,6 +20,8 @@ import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import org.threeten.bp.Instant
+import org.threeten.bp.ZoneOffset
 import org.threeten.bp.ZonedDateTime
 import java.lang.reflect.Type
 
@@ -44,8 +46,10 @@ class SessionDeserializer : JsonDeserializer<SessionTemp> {
                 id = obj.get("id").asString,
                 sessionUrl = obj.get("url").asString,
                 title = obj.get("title").asString,
-                startTime = ZonedDateTime.parse(obj.get("startTimestamp").asString),
-                endTime = ZonedDateTime.parse(obj.get("endTimestamp").asString),
+                startTime = ZonedDateTime.ofInstant(
+                        Instant.ofEpochMilli(obj.get("startTimestamp").asLong), ZoneOffset.UTC),
+                endTime = ZonedDateTime.ofInstant(
+                        Instant.ofEpochMilli(obj.get("endTimestamp").asLong), ZoneOffset.UTC),
                 abstract = obj.get("description").asString,
                 photoUrl = obj.get("photoUrl").asString,
                 liveStreamUrl = "TODO: Set livestream URL", // TODO Set livestream URL
