@@ -94,7 +94,7 @@ data class UserEvent(
 
     fun requestResultError(): ReservationRequestResult.ReservationRequestStatus? {
         // The request result is garbage if there's a pending request
-        if (!isPending()) return null
+        if (isPending()) return null
 
         return when (reservationRequestResult?.requestResult) {
             null -> null // If there's no request result, there's no error

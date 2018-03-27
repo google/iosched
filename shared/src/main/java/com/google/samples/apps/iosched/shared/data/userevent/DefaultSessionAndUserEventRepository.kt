@@ -94,9 +94,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
             val session = sessionRepository.getSession(eventId)
             sessionResult.postValue(Result.Success(
                     LoadUserSessionUseCaseResult(
-                            userSession = UserSession(session, UserEvent(session.id,
-                                            session.startTime.toEpochMilli(),
-                                            session.endTime.toEpochMilli())),
+                            userSession = UserSession(session, createDefaultUserEvent(session)),
                             userMessage = null)
             ))
             return sessionResult
@@ -119,7 +117,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                     sessionResult.postValue(Result.Success(
                             LoadUserSessionUseCaseResult(
                                     userSession = userSession,
-                                    userMessage = userEventResult.userEventsMessage
+                                    userMessage = userEventResult.userEventMessage
                             )
                     ))
                 } catch (e: Exception) {
@@ -140,14 +138,17 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
             sessionId: String,
             action: ReservationRequestAction
     ): LiveData<Result<ReservationRequestAction>> {
+
         return userEventDataSource.requestReservation(userId,
                 sessionRepository.getSession(sessionId),
                 action)
     }
 
     private fun createDefaultUserEvent(session: Session): UserEvent {
-        return UserEvent(session.id, session.startTime.toEpochMilli(),
-                session.endTime.toEpochMilli())
+        return UserEvent(
+                id = session.id,
+                startTime = session.startTime.toEpochMilli(),
+                endTime = session.endTime.toEpochMilli())
     }
 
     /**
@@ -164,9 +165,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
             return ConferenceDay.values().map { day ->
                 day to allSessions
                         .filter { day.contains(it) }
-                        .map { session -> UserSession(session, UserEvent(session.id,
-                                session.startTime.toEpochMilli(),
-                                session.endTime.toEpochMilli())) }
+                        .map { session -> UserSession(session, createDefaultUserEvent(session)) }
 
             }.toMap()
         }
@@ -174,10 +173,10 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         val (userEvents, _) = userData
 
         val eventIdToUserEvent: Map<String, UserEvent?> = userEvents.map { it.id to it }.toMap()
-        val allUserSessions = allSessions.map { UserSession(it,
-                eventIdToUserEvent[it.id] ?: UserEvent(id = it.id,
-                        startTime = it.startTime.toEpochMilli(),
-                        endTime = it.endTime.toEpochMilli())) }
+        val allUserSessions = allSessions.map { UserSession(
+                it,
+                eventIdToUserEvent[it.id] ?: createDefaultUserEvent(it)
+        ) }
 
 
         // Note: hasPendingWrite field isn't used for the StarEvent use case because
