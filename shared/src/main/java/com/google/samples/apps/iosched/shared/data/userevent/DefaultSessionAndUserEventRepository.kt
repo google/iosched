@@ -119,7 +119,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                     sessionResult.postValue(Result.Success(
                             LoadUserSessionUseCaseResult(
                                     userSession = userSession,
-                                    userMessage = userEventResult.userEventMessage
+                                    userMessage = userEventResult.userEventsMessage
                             )
                     ))
                 } catch (e: Exception) {

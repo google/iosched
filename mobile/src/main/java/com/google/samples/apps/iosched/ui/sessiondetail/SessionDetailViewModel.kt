@@ -25,6 +25,11 @@ import android.support.annotation.VisibleForTesting
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
+import com.google.samples.apps.iosched.shared.domain.sessions.UserEventsMessage
+import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CANCEL
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.REQUEST
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
@@ -33,11 +38,11 @@ import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.ui.SnackbarMessage
+import com.google.samples.apps.iosched.ui.login.LoginViewModelPlugin
 import com.google.samples.apps.iosched.util.SetIntervalLiveData
 import com.google.samples.apps.iosched.util.time.DefaultTime
 import org.threeten.bp.Duration
-import com.google.samples.apps.iosched.ui.SnackbarMessage
-import com.google.samples.apps.iosched.ui.login.LoginViewModelPlugin
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
 import javax.inject.Inject
@@ -50,8 +55,9 @@ private const val TEN_SECONDS = 10_000L
 class SessionDetailViewModel @Inject constructor(
     loginViewModelPlugin: LoginViewModelPlugin,
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
-    private val starEventUseCase: StarEventUseCase
-) : ViewModel(), LoginViewModelPlugin by loginViewModelPlugin {
+    private val starEventUseCase: StarEventUseCase,
+    private val reservationActionUseCase: ReservationActionUseCase
+) : ViewModel(), SessionDetailEventListener, LoginViewModelPlugin by loginViewModelPlugin {
 
     private val loadUserSessionResult: MediatorLiveData<Result<LoadUserSessionUseCaseResult>>
     private val sessionState: LiveData<TimeUtils.SessionState>
@@ -84,6 +90,11 @@ class SessionDetailViewModel @Inject constructor(
     val hasSpeakers: LiveData<Boolean>
     val hasRelated: LiveData<Boolean>
     val timeUntilStart: LiveData<Duration?>
+
+    private val _navigateToRemoveReservationDialogAction =
+            MutableLiveData<Event<ReservationRequestParameters>>()
+    val navigateToRemoveReservationDialogAction: LiveData<Event<ReservationRequestParameters>>
+        get() = _navigateToRemoveReservationDialogAction
 
     init {
         loadUserSessionResult = loadUserSessionUseCase.observe()
@@ -137,6 +148,48 @@ class SessionDetailViewModel @Inject constructor(
                 _snackBarMessage.postValue(Event(SnackbarMessage(R.string.event_star_error)))
             }
         }
+
+        // Show an error message if a reservation request fails
+        _snackBarMessage.addSource(reservationActionUseCase.observe()) {
+            if (it is Result.Error) {
+                _snackBarMessage.postValue(Event(SnackbarMessage(
+                        messageId = R.string.reservation_error,
+                        longDuration = true,
+                        actionId = R.string.got_it)))
+            }
+        }
+
+        // Show a message with the result of a reservation
+        _snackBarMessage.addSource(loadUserSessionUseCase.observe()) {
+            val message: Int? = when (it) {
+                is Result.Success ->
+                    when (it.data.userMessage) {
+                        UserEventsMessage.CHANGES_IN_WAITLIST -> R.string.waitlist_new
+                        UserEventsMessage.CHANGES_IN_RESERVATIONS -> R.string.reservation_new
+                        UserEventsMessage.RESERVATION_CANCELED -> null //No-op
+                        UserEventsMessage.WAITLIST_CANCELED -> null //No-op
+                        UserEventsMessage.RESERVATION_DENIED_CUTOFF ->
+                            R.string.reservation_denied_cutoff
+                        UserEventsMessage.RESERVATION_DENIED_CLASH ->
+                            R.string.reservation_denied_clash
+                        UserEventsMessage.RESERVATION_DENIED_UNKNOWN ->
+                            R.string.reservation_denied_unknown
+                        UserEventsMessage.CANCELLATION_DENIED_CUTOFF ->
+                            R.string.cancellation_denied_cutoff
+                        UserEventsMessage.CANCELLATION_DENIED_UNKNOWN ->
+                            R.string.cancellation_denied_unknown
+                        UserEventsMessage.DATA_NOT_SYNCED -> null
+                        null -> null
+                    }
+                else -> null
+            }
+
+            message?.let {
+                // Snackbar messages about changes in reservations last longer and have an action.
+                _snackBarMessage.postValue(Event(
+                        SnackbarMessage(it, actionId = R.string.got_it, longDuration = true)))
+            }
+        }
     }
 
     fun setSessionId(sessionId: String) {
@@ -166,13 +219,14 @@ class SessionDetailViewModel @Inject constructor(
         }
     }
 
-    fun onStarClicked(currentUserEvent: UserEvent) {
+    override fun onStarClicked() {
         if (!isLoggedIn()) {
             Timber.d("Showing Sign-in dialog after star click")
             _navigateToSignInDialogAction.value = Event(true)
             return
         }
-        val newIsStarredState = !currentUserEvent.isStarred
+        val userEventSnapshot = userEvent.value ?: return
+        val newIsStarredState = !userEventSnapshot.isStarred
 
         // Update the snackbar message optimistically.
         val snackbarMessage = if(newIsStarredState) {
@@ -184,8 +238,28 @@ class SessionDetailViewModel @Inject constructor(
 
         getUserId()?.let {
             starEventUseCase.execute(StarEventParameter(it,
-                    currentUserEvent.copy(isStarred = newIsStarredState)))
+                    userEventSnapshot.copy(isStarred = newIsStarredState)))
         }
+    }
+
+    override fun onReservationClicked() {
+        val userEventSnapshot = userEvent.value ?: return
+        val sessionSnapshot = session.value ?: return
+
+        val userId = getUserId() ?: return
+        if (userEventSnapshot.isReserved()
+                || userEventSnapshot.isWaitlisted()
+                || userEventSnapshot.isCancelPending() // Just in case
+                || userEventSnapshot.isReservationPending()) {
+            // Open the dialog to confirm if the user really wants to remove their reservation
+            _navigateToRemoveReservationDialogAction.value = Event(ReservationRequestParameters(
+                    userId,
+                    sessionSnapshot.id,
+                    CANCEL))
+            return
+        }
+        reservationActionUseCase.execute(
+                ReservationRequestParameters(userId, sessionSnapshot.id, REQUEST))
     }
 
     /**
@@ -203,4 +277,11 @@ class SessionDetailViewModel @Inject constructor(
     fun checkPlayable(currentSession: Session?): Boolean {
         return currentSession != null && currentSession.youTubeUrl.isNotBlank()
     }
+}
+
+interface SessionDetailEventListener {
+
+    fun onReservationClicked()
+
+    fun onStarClicked()
 }

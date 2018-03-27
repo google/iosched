@@ -53,10 +53,5 @@ open class LoadUserSessionUseCase @Inject constructor(
 
 data class LoadUserSessionUseCaseResult(
         val userSession: UserSession,
-        val userMessage: UserEventMessage?
+        val userMessage: UserEventsMessage?
 )
-
-// TODO-76284 Do we need to make one of these
-enum class UserEventMessage {
-    CHANGE_IN_RESERVATION, CHANGE_IN_WAITLIST
-}
