@@ -46,11 +46,10 @@ fun generateReservationChangeMsg(
 
         // If there are multiple messages, show just one according to order in enum.
         if (newMessage != null) {
-            userMessage?.let {
-                // Order in enum is definition order
-                if (newMessage > it) {
-                    userMessage = newMessage
-                }
+            val userMessageSnapshot = userMessage
+            // Order in enum is definition order
+            if (userMessageSnapshot == null || newMessage > userMessageSnapshot) {
+                userMessage = newMessage
             }
         }
     }
