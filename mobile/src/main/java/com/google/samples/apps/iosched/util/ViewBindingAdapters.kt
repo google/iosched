@@ -29,6 +29,7 @@ import android.widget.ImageView
 import androidx.net.toUri
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.widget.FloatingActionButton
 import com.google.samples.apps.iosched.R
 import timber.log.Timber
 
@@ -40,6 +41,15 @@ fun invisibleUnless(view: View, visible: Boolean) {
 @BindingAdapter("goneUnless")
 fun goneUnless(view: View, visible: Boolean) {
     view.visibility = if (visible) VISIBLE else GONE
+}
+
+@BindingAdapter("fabVisibility")
+fun fabVisibility(fab: FloatingActionButton, visible: Boolean) {
+    if (visible) {
+        fab.show()
+    } else {
+        fab.hide()
+    }
 }
 
 @BindingAdapter("pageMargin")
