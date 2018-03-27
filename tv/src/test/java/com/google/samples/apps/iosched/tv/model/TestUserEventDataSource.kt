@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.tv.model
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventResult
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
@@ -27,10 +28,18 @@ import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
 
 object TestUserEventDataSource : UserEventDataSource {
-
     override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {
         val result = MutableLiveData<UserEventsResult>()
         result.postValue(UserEventsResult(TestData.userEvents))
+        return result
+    }
+
+    override fun getObservableUserEvent(
+            userId: String,
+            eventId: String
+    ): LiveData<UserEventResult> {
+        val result = MutableLiveData<UserEventResult>()
+        result.postValue(UserEventResult(TestData.userEvents[0]))
         return result
     }
 

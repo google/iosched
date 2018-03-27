@@ -46,6 +46,7 @@ import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.dialog.RemoveReservationDialogFragment
 import com.google.samples.apps.iosched.ui.dialog.RemoveReservationDialogFragment.Companion.DIALOG_REMOVE_RESERVATION
 import com.google.samples.apps.iosched.ui.dialog.SignInDialogFragment
+import com.google.samples.apps.iosched.ui.dialog.SignInDialogFragment.Companion.DIALOG_NEED_TO_SIGN_IN
 import com.google.samples.apps.iosched.ui.login.LoginEvent.RequestLogin
 import com.google.samples.apps.iosched.ui.login.LoginEvent.RequestLogout
 import com.google.samples.apps.iosched.ui.schedule.agenda.ScheduleAgendaFragment
@@ -66,7 +67,6 @@ class ScheduleFragment : DaggerFragment() {
     companion object {
         private val COUNT = ConferenceDay.values().size + 1 // Agenda
         private val AGENDA_POSITION = COUNT - 1
-        private const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
     }
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory

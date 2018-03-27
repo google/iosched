@@ -190,7 +190,7 @@ class ScheduleViewModel @Inject constructor(
             }
         }
 
-        // Show an error message if a reservation request fails
+        // Show an error message if a star request fails
         _snackBarMessage.addSource(starEventUseCase.observe()) { it: Result<StarUpdatedStatus>? ->
             // Show a snackbar message on error.
             if (it is Result.Error)  {

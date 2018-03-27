@@ -28,6 +28,7 @@
     </data>
 
     <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout_session_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="MergeRootFrame">
@@ -326,14 +327,14 @@
             app:contentInsetStart="@dimen/margin_normal"
             app:fabAlignmentMode="end" />
 
-        <!-- TODO user proper icon & bind click event -->
         <com.google.android.material.widget.FloatingActionButton
             android:id="@+id/session_detail_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.onStarClicked(viewModel.userEvent)}"
             app:layout_anchor="@id/toolbar"
             app:backgroundTint="@color/white"
-            app:srcCompat="@drawable/ic_star" />
+            app:isDetailStarred="@{viewModel.userEvent.isStarred}" />
 
     </android.support.design.widget.CoordinatorLayout>
 

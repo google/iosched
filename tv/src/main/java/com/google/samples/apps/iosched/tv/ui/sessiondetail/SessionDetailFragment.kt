@@ -28,10 +28,14 @@ import android.support.v17.leanback.widget.ListRowPresenter
 import android.support.v17.leanback.widget.OnActionClickedListener
 import android.support.v4.content.ContextCompat
 import android.widget.Toast
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.NetworkConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
+import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.tv.R
@@ -58,6 +62,8 @@ class SessionDetailFragment : DetailsSupportFragment() {
 
         val dummySessionId = "61d80842-c8f6-e511-a517-00155d5066d7"
 
+        val userEventDataSource = FirestoreUserEventDataSource(FirebaseFirestore.getInstance())
+
         // TODO: inject in view model factory
         val sessionRepository =
             DefaultSessionRepository(
@@ -67,7 +73,11 @@ class SessionDetailFragment : DetailsSupportFragment() {
                     ), BootstrapConferenceDataSource
                 )
             )
-        viewModelFactory = SessionDetailViewModelFactory(sessionRepository)
+
+        val sessionAndUserEventRepository = DefaultSessionAndUserEventRepository(
+                userEventDataSource, sessionRepository)
+
+        viewModelFactory = SessionDetailViewModelFactory(sessionAndUserEventRepository)
         viewModel = viewModelProvider(viewModelFactory)
         viewModel.loadSessionById(dummySessionId)
 

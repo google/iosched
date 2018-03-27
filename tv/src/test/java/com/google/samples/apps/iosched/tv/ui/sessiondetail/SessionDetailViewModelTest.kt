@@ -20,11 +20,12 @@ package com.google.samples.apps.iosched.tv.ui.sessiondetail
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
-import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.tv.model.TestData
 import com.google.samples.apps.iosched.tv.model.TestDataRepository
+import com.google.samples.apps.iosched.tv.model.TestUserEventDataSource
 import com.google.samples.apps.iosched.tv.util.SyncTaskExecutorRule
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -46,20 +47,20 @@ class SessionDetailViewModelTest {
     private val testSession = TestData.session0
 
     @Before fun setup() {
-        viewModel = SessionDetailViewModel(createUseCase(testSession))
+        viewModel = SessionDetailViewModel(createUseCase())
         viewModel.loadSessionById(testSession.id)
     }
 
+    // TODO add tests for snackbarmessage, errormessage (see ScheduleViewModelTest examples)
     @Test fun testDataIsLoaded_observablesUpdated() {
         assertEquals(testSession, LiveDataTestUtil.getValue(viewModel.session))
     }
 
-    /**
-     * Creates a use case that will return the provided session.
-     */
-    private fun createUseCase(session: Session): LoadSessionUseCase {
-        return object : LoadSessionUseCase(DefaultSessionRepository(TestDataRepository)) {
-            override fun execute(parameters: String) = session
-        }
+   private fun createUseCase(): LoadUserSessionUseCase {
+        return LoadUserSessionUseCase(
+                DefaultSessionAndUserEventRepository(
+                        TestUserEventDataSource, DefaultSessionRepository(TestDataRepository)
+                )
+        )
     }
 }

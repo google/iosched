@@ -31,7 +31,6 @@ import com.google.samples.apps.iosched.shared.result.Result
  * Returns data loaded from a local JSON file for development and testing.
  */
 object FakeUserEventDataSource : UserEventDataSource {
-
     private val conferenceData = BootstrapConferenceDataSource.getOfflineConferenceData()!!
     private val userEvents = ArrayList<UserEvent>()
 
@@ -53,6 +52,15 @@ object FakeUserEventDataSource : UserEventDataSource {
     override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {
         val result = MutableLiveData<UserEventsResult>()
         result.postValue(UserEventsResult(userEvents))
+        return result
+    }
+
+    override fun getObservableUserEvent(
+            userId: String,
+            eventId: String
+    ): LiveData<UserEventResult> {
+        val result = MutableLiveData<UserEventResult>()
+        result.postValue(UserEventResult(userEvents[0]))
         return result
     }
 
