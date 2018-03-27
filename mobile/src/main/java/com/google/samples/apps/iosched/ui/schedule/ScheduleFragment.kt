@@ -41,22 +41,17 @@ import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
-import com.google.samples.apps.iosched.shared.util.checkAllMatched
 import com.google.samples.apps.iosched.ui.SnackbarMessage
-import com.google.samples.apps.iosched.ui.dialog.RemoveReservationDialogFragment
-import com.google.samples.apps.iosched.ui.dialog.RemoveReservationDialogFragment.Companion.DIALOG_REMOVE_RESERVATION
-import com.google.samples.apps.iosched.ui.dialog.SignInDialogFragment
-import com.google.samples.apps.iosched.ui.dialog.SignInDialogFragment.Companion.DIALOG_NEED_TO_SIGN_IN
-import com.google.samples.apps.iosched.ui.login.LoginEvent.RequestLogin
-import com.google.samples.apps.iosched.ui.login.LoginEvent.RequestLogout
+import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment
+import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment.Companion.DIALOG_REMOVE_RESERVATION
 import com.google.samples.apps.iosched.ui.schedule.agenda.ScheduleAgendaFragment
 import com.google.samples.apps.iosched.ui.schedule.day.ScheduleDayFragment
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
-import com.google.samples.apps.iosched.util.login.LoginHandler
+import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
+import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.HideBottomViewOnScrollBehavior
 import dagger.android.support.DaggerFragment
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -67,10 +62,11 @@ class ScheduleFragment : DaggerFragment() {
     companion object {
         private val COUNT = ConferenceDay.values().size + 1 // Agenda
         private val AGENDA_POSITION = COUNT - 1
+        private const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
+        private const val DIALOG_CONFIRM_SIGN_OUT = "dialog_confirm_sign_out"
     }
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    @Inject lateinit var loginHandler: LoginHandler
 
     private lateinit var viewModel: ScheduleViewModel
     private lateinit var coordinatorLayout: CoordinatorLayout
@@ -98,18 +94,15 @@ class ScheduleFragment : DaggerFragment() {
             }
         })
 
-        viewModel.performLoginEvent.observe(this, Observer { loginRequestEvent ->
-            loginRequestEvent?.getContentIfNotHandled()?.let { loginEvent ->
-                when (loginEvent) {
-                    RequestLogout -> doLogout()
-                    RequestLogin -> requestLogin()
-                }.checkAllMatched
+        viewModel.navigateToSignInDialogAction.observe(this, Observer {
+            it?.getContentIfNotHandled()?.let {
+                openSignInDialog()
             }
         })
 
-        viewModel.navigateToSignInDialogAction.observe(this, Observer {
+        viewModel.navigateToSignOutDialogAction.observe(this, Observer {
             it?.getContentIfNotHandled()?.let {
-                openSignInDialog(requireActivity())
+                openSignOutDialog()
             }
         })
         viewModel.navigateToRemoveReservationDialogAction.observe(this, Observer {
@@ -186,28 +179,22 @@ class ScheduleFragment : DaggerFragment() {
         startActivity(SessionDetailActivity.starterIntent(requireContext(), id))
     }
 
-    private fun openSignInDialog(activity: FragmentActivity) {
+    private fun openSignInDialog() {
         val dialog = SignInDialogFragment()
-        dialog.show(activity.supportFragmentManager, DIALOG_NEED_TO_SIGN_IN)
+        dialog.show(requireActivity().supportFragmentManager, DIALOG_NEED_TO_SIGN_IN)
     }
 
-    private fun openRemoveReservationDialog(activity: FragmentActivity,
-                                            parameters: ReservationRequestParameters) {
+    private fun openRemoveReservationDialog(
+        activity: FragmentActivity,
+        parameters: ReservationRequestParameters
+    ) {
         val dialog = RemoveReservationDialogFragment.newInstance(parameters)
         dialog.show(activity.supportFragmentManager, DIALOG_REMOVE_RESERVATION)
     }
 
-    private fun doLogout() {
-        // TODO: b/74393872 Implement full UX here
-        this.context?.let {
-            loginHandler.logout(it) {
-                Timber.d("Logged out!")
-            }
-        }
-    }
-
-    private fun requestLogin() {
-        loginHandler.makeLoginIntent()?.let { startActivity(it) }
+    private fun openSignOutDialog() {
+        val dialog = SignOutDialogFragment()
+        dialog.show(requireActivity().supportFragmentManager, DIALOG_CONFIRM_SIGN_OUT)
     }
 
     /**

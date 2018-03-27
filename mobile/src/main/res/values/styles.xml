@@ -183,7 +183,7 @@
         <item name="android:letterSpacing">0.025</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:paddingHorizontal" tools:ignore="NewApi">24dp</item>
-        <item name="android:paddingVertical" tools:ignore="NewApi">@dimen/margin_normal</item>
+        <item name="android:paddingVertical" tools:ignore="NewApi">12dp</item>
     </style>
 
     <style name="Widget.IOSched.BorderlessButton" parent="@style/Widget.AppCompat.Button.Borderless.Colored">
@@ -223,17 +223,21 @@
     </style>
 
     <style name="TextAppearance.IOSched.DialogTitle" parent="@style/TextAppearance.AppCompat.Title">
+        <item name="android:textSize">22sp</item>
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:gravity">start</item>
     </style>
 
     <style name="TextAppearance.IOSched.DialogContent" parent="@style/TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">?android:textColorSecondary</item>
         <item name="android:gravity">start</item>
     </style>
 
-    <style name="Theme.IOSched.Dialog" parent="Theme.MaterialComponents.Light.Dialog">
+    <style name="Theme.IOSched.Dialog" parent="@style/Theme.MaterialComponents.Light.Dialog">
+        <item name="colorPrimary">@color/indigo</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:textViewStyle">@style/Widget.IOSched.TextView</item>
     </style>
 </resources>

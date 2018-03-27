@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.login.datasources
+package com.google.samples.apps.iosched.shared.data.signin.datasources
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData

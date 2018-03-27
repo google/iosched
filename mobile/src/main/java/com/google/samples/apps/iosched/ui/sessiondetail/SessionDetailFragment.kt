@@ -36,10 +36,10 @@ import com.google.samples.apps.iosched.databinding.FragmentSessionDetailBinding
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.SnackbarMessage
-import com.google.samples.apps.iosched.ui.dialog.RemoveReservationDialogFragment
-import com.google.samples.apps.iosched.ui.dialog.RemoveReservationDialogFragment.Companion.DIALOG_REMOVE_RESERVATION
-import com.google.samples.apps.iosched.ui.dialog.SignInDialogFragment
-import com.google.samples.apps.iosched.ui.dialog.SignInDialogFragment.Companion.DIALOG_NEED_TO_SIGN_IN
+import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment
+import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment.Companion.DIALOG_REMOVE_RESERVATION
+import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
+import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment.Companion.DIALOG_NEED_TO_SIGN_IN
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 

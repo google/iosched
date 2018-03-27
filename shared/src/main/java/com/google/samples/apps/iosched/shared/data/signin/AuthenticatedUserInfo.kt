@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.login
+package com.google.samples.apps.iosched.shared.data.signin
 
 import android.net.Uri
 import com.google.firebase.auth.UserInfo
-
 
 /**
  * Interface to decouple the user info from Firebase.
@@ -32,7 +31,7 @@ interface AuthenticatedUserInfo: AuthenticatedUserInfoBasic, AuthenticatedUserIn
  */
 interface AuthenticatedUserInfoBasic {
 
-    fun isLoggedIn(): Boolean
+    fun isSignedIn(): Boolean
 
     fun getEmail(): String?
 

@@ -23,8 +23,10 @@ import android.content.Context
 import android.net.Uri
 import com.google.firebase.auth.UserInfo
 import com.google.samples.apps.iosched.shared.R
-import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUserInfo
-import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUserInfoBasic
+import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
+import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfoBasic
+import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
+import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.result.Result
 
 /**
@@ -56,12 +58,12 @@ class StagingRegisteredUserDataSource(val isRegistered: Boolean) : RegisteredUse
 open class StagingAuthenticatedUserInfo(
         val context: Context,
         val registered: Boolean = true,
-        val loggedIn: Boolean = true,
+        val signedIn: Boolean = true,
         val userId: String? = "StagingUser"
 
 ) : AuthenticatedUserInfo {
 
-    override fun isLoggedIn(): Boolean = loggedIn
+    override fun isSignedIn(): Boolean = signedIn
 
     override fun isRegistered(): Boolean = registered
 
@@ -69,7 +71,7 @@ open class StagingAuthenticatedUserInfo(
 
     override fun getProviderData(): MutableList<out UserInfo> = TODO("Not implemented")
 
-    override fun isAnonymous(): Boolean = !loggedIn
+    override fun isAnonymous(): Boolean = !signedIn
 
     override fun getPhoneNumber(): String? = TODO("Not implemented")
 
@@ -105,7 +107,7 @@ open class StagingAuthenticatedUserInfo(
  * @see LoginModule
  */
 class StagingAuthStateUserDataSource(
-        val isLoggedIn: Boolean,
+        val isSignedIn: Boolean,
         val isRegistered: Boolean,
         val userId: String?,
         val context: Context
@@ -117,7 +119,7 @@ class StagingAuthStateUserDataSource(
 
     val user = StagingAuthenticatedUserInfo(
             registered = isRegistered,
-            loggedIn = isLoggedIn, context = context)
+            signedIn = isSignedIn, context = context)
 
     override fun startListening() {
         _userId.postValue(userId)

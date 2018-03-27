@@ -14,18 +14,10 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.login
+package com.google.samples.apps.iosched.util.signin
 
-import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
-import dagger.Module
-import dagger.Provides
+import com.firebase.ui.auth.FirebaseUiException
 
-@Module
-class LoginViewModelPluginModule {
-
-    @Provides
-    fun provideLoginViewModelPlugin(dataSource: ObserveUserAuthStateUseCase):
-            LoginViewModelPlugin {
-        return FirebaseLoginViewModelPlugin(dataSource)
-    }
-}
+sealed class SignInResult
+object SignInSuccess : SignInResult()
+data class SignInFailed(val error: FirebaseUiException?) : SignInResult()
