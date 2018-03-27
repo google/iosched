@@ -30,4 +30,10 @@
         android:title="@string/menu_item_session_location"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/menu_item_star"
+        android:icon="@drawable/ic_star_border"
+        android:title="@string/menu_item_session_location"
+        app:showAsAction="always" />
+
 </menu>

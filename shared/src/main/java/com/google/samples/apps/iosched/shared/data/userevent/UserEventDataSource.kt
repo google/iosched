@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.shared.data.userevent
 
 import android.arch.lifecycle.LiveData
-import com.google.samples.apps.iosched.shared.domain.sessions.UserEventMessage
 import com.google.samples.apps.iosched.shared.domain.sessions.UserEventsMessage
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
@@ -52,4 +51,4 @@ data class UserEventsResult(
 
 data class UserEventResult(
         val userEvent: UserEvent?,
-        val userEventMessage: UserEventMessage? = null)
+        val userEventsMessage: UserEventsMessage? = null)

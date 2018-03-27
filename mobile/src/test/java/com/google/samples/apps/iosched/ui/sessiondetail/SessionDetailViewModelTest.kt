@@ -25,6 +25,7 @@ import com.google.samples.apps.iosched.shared.data.session.DefaultSessionReposit
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
+import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
@@ -147,13 +148,17 @@ class SessionDetailViewModelTest {
         assertNull(LiveDataTestUtil.getValue(vm.navigateToYouTubeAction))
     }
 
+    // TODO: Add a test for onReservationClicked
+
+
     private fun createSessionDetailViewModel(
             loginViewModelPlugin: LoginViewModelPlugin = FakeLoginViewModelPlugin(),
             loadUserSessionUseCase: LoadUserSessionUseCase = createTestLoadUserSessionUseCase(),
+            reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase(),
             starEventUseCase: StarEventUseCase = FakeStarEventUseCase()
     ): SessionDetailViewModel {
         return SessionDetailViewModel(loginViewModelPlugin, loadUserSessionUseCase,
-                starEventUseCase)
+                starEventUseCase, reservationActionUseCase)
     }
 
     private fun forceTimeUntilStartIntervalUpdate() {
@@ -179,4 +184,8 @@ class SessionDetailViewModelTest {
                 userEventDataSource, sessionRepository)
         return LoadUserSessionUseCase(userEventRepository)
     }
+
+    private fun createReservationActionUseCase() = object: ReservationActionUseCase(
+            DefaultSessionAndUserEventRepository(
+                    TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository))) {}
 }

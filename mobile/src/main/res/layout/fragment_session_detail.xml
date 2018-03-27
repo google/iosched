@@ -319,7 +319,7 @@
             android:background="@drawable/bab_fake_shadow" />
 
         <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/toolbar"
+            android:id="@+id/session_detail_bottom_app_bar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:layout_gravity="bottom"
@@ -331,8 +331,9 @@
             android:id="@+id/session_detail_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> viewModel.onStarClicked(viewModel.userEvent)}"
-            app:layout_anchor="@id/toolbar"
+            app:eventListener="@{viewModel}"
+            app:isRegistered="@{viewModel.observeRegisteredUser}"
+            app:layout_anchor="@id/session_detail_bottom_app_bar"
             app:backgroundTint="@color/white"
             app:isDetailStarred="@{viewModel.userEvent.isStarred}" />
 
