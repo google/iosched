@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.shared.domain.sessions
 
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.model.UserSession
@@ -53,5 +54,5 @@ open class LoadUserSessionUseCase @Inject constructor(
 
 data class LoadUserSessionUseCaseResult(
         val userSession: UserSession,
-        val userMessage: UserEventsMessage?
+        val userMessage: UserEventMessage?
 )

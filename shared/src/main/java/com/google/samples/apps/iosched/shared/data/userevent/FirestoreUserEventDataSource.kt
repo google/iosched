@@ -21,16 +21,15 @@ import android.arch.lifecycle.MutableLiveData
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
-import com.google.samples.apps.iosched.shared.domain.sessions.UserEventsMessage
+import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CANCEL
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.REQUEST
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
-import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequest
-import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult
-import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
@@ -48,28 +47,25 @@ class FirestoreUserEventDataSource @Inject constructor(
 ) : UserEventDataSource {
 
     companion object {
+        /**
+         * Firestore constants.
+         */
         private const val USERS_COLLECTION = "users"
         private const val EVENTS_COLLECTION = "events"
         private const val QUEUE_COLLECTION = "queue"
-        private const val ID = "id"
-        private const val START_TIME = "startTime"
-        private const val END_TIME = "endTime"
-        private const val IS_STARRED = "isStarred"
-        private const val RESERVATION_RESULT_KEY = "reservationResult"
-        private const val RESERVATION_RESULT_TIME_KEY = "timestamp"
-        private const val RESERVATION_RESULT_RESULT_KEY = "requestResult"
-        private const val RESERVATION_RESULT_REQ_ID_KEY = "requestId"
+        internal const val ID = "id"
+        internal const val START_TIME = "startTime"
+        internal const val END_TIME = "endTime"
+        internal const val IS_STARRED = "isStarred"
 
-        private const val RESERVATION_REQUEST_KEY = "reservationRequest"
+        internal const val RESERVATION_REQUEST_KEY = "reservationRequest"
 
         private const val RESERVE_REQ_ACTION = "RESERVE_REQUESTED"
         private const val RESERVE_CANCEL_ACTION = "CANCEL_REQUESTED"
 
-        private const val RESERVATION_REQUEST_ACTION_KEY = "action"
-        private const val RESERVATION_REQUEST_REQUEST_ID_KEY = "requestId"
+        internal const val RESERVATION_REQUEST_ACTION_KEY = "action"
+        internal const val RESERVATION_REQUEST_REQUEST_ID_KEY = "requestId"
         private const val RESERVATION_REQUEST_TIMESTAMP_KEY = "timestamp"
-
-        private const val RESERVATION_STATUS_KEY = "reservationStatus"
 
         private const val REQUEST_QUEUE_ACTION_KEY = "action"
         private const val REQUEST_QUEUE_SESSION_KEY = "sessionId"
@@ -77,7 +73,22 @@ class FirestoreUserEventDataSource @Inject constructor(
         private const val REQUEST_QUEUE_ACTION_RESERVE = "RESERVE"
         private const val REQUEST_QUEUE_ACTION_CANCEL = "CANCEL"
 
+        internal const val RESERVATION_RESULT_KEY = "reservationResult"
+        internal const val RESERVATION_RESULT_TIME_KEY = "timestamp"
+        internal const val RESERVATION_RESULT_RESULT_KEY = "requestResult"
+        internal const val RESERVATION_RESULT_REQ_ID_KEY = "requestId"
+
+        internal const val RESERVATION_STATUS_KEY = "reservationStatus"
     }
+
+    // Null if the listener is not yet added
+    private var eventsChangedListenerSubscription: ListenerRegistration? = null
+    private var eventChangedListenerSubscription: ListenerRegistration? = null
+
+
+    // Observable events
+    private val resultEvents = MutableLiveData<UserEventsResult>()
+    private val resultSingleEvent = MutableLiveData<UserEventResult>()
 
     /**
      * Asynchronous method to get the user events.
@@ -85,256 +96,96 @@ class FirestoreUserEventDataSource @Inject constructor(
      * This method generates important messages to the user if a reservation is confirmed or
      * waitlisted.
      */
-    //TODO: Add also RESERVE_DENIED_* and CANCEL_DENIED_* messages
     override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {
-        val result = MutableLiveData<UserEventsResult>()
         if (userId.isEmpty()) {
-            result.postValue(UserEventsResult(emptyList()))
-            return result
+            resultEvents.postValue(UserEventsResult(emptyList()))
+            return resultEvents
         }
 
-        firestore.collection(USERS_COLLECTION)
-                .document(userId)
-                // TODO: Add a way to clear this listener
-                .collection(EVENTS_COLLECTION).addSnapshotListener { snapshot, _ ->
-                    snapshot ?: return@addSnapshotListener
-
-                    Timber.d("Events changes detected")
-
-                    // Generate important user messages, like new reservations, if any.
-                    val userMessage = generateReservationChangeMsg(snapshot, result.value)
-
-                    val userEventsResult = UserEventsResult(
-                            userEvents = snapshot.documents.map { parseUserEvent(it) },
-                            userEventsMessage = userMessage)
-                    result.postValue(userEventsResult)
-                }
-        return result
+        registerListenerForEvents(resultEvents, userId)
+        return resultEvents
     }
 
     override fun getObservableUserEvent(
             userId: String,
             eventId: String
     ): LiveData<UserEventResult> {
-        val result = MutableLiveData<UserEventResult>()
 
-        firestore.collection(USERS_COLLECTION)
+        if (userId.isEmpty()) {
+            resultSingleEvent.postValue(UserEventResult(userEvent = null))
+            return resultSingleEvent
+        }
+        registerListenerForSingleEvent(resultSingleEvent, eventId, userId)
+        return resultSingleEvent
+    }
+
+    private fun registerListenerForEvents(result: MutableLiveData<UserEventsResult>, userId: String) {
+        val eventsListener: (QuerySnapshot?, FirebaseFirestoreException?) -> Unit =
+                listener@ { snapshot, _ ->
+                    snapshot ?: return@listener
+
+                    DefaultScheduler.execute {
+                        Timber.d("Events changes detected: ${snapshot.documentChanges.size}")
+
+                        // Generate important user messages, like new reservations, if any.
+                        val userMessage = generateReservationChangeMsg(snapshot, result.value)
+
+                        val userEventsResult = UserEventsResult(
+                                userEvents = snapshot.documents.map { parseUserEvent(it) },
+                                userEventsMessage = userMessage)
+                        result.postValue(userEventsResult)
+                    }
+                }
+
+        val eventsCollection = firestore.collection(USERS_COLLECTION)
                 .document(userId)
                 .collection(EVENTS_COLLECTION)
-                .document(eventId)
-                .addSnapshotListener({ snapshot, _ ->
-                    snapshot ?: return@addSnapshotListener
 
-                    // Generate message if the reservation changed
-                    val userMessage = generateReservationChangeMsgFromDocument(snapshot,
-                            result.value)
+        eventsChangedListenerSubscription?.remove() // Remove in case userId changes.
+        eventsChangedListenerSubscription = eventsCollection.addSnapshotListener(eventsListener)
+    }
 
-                    val userEvent = if (snapshot.exists()) {
-                        parseUserEvent(snapshot)
-                    } else {
-                        null
+    private fun registerListenerForSingleEvent(
+            result: MutableLiveData<UserEventResult>,
+            sessionId: String,
+            userId: String) {
+
+        val singleEventListener: (DocumentSnapshot?, FirebaseFirestoreException?) -> Unit =
+                listener@ { snapshot, _ ->
+                    snapshot ?: return@listener
+
+                    DefaultScheduler.execute {
+                        Timber.d("Event changes detected on session: $sessionId")
+
+                        // If oldValue doesn't exist, it's the first run so don't generate messages.
+                        val userMessage = result.value?.userEvent?.let { oldValue: UserEvent ->
+
+                            // Generate message if the reservation changed
+                            if (snapshot.exists()) getUserMessageFromChange(oldValue, snapshot, sessionId)
+                            else null
+                        }
+
+                        val userEvent = if (snapshot.exists()) {
+                            parseUserEvent(snapshot)
+                        } else {
+                            null
+                        }
+
+                        val userEventResult = UserEventResult(
+                                userEvent = userEvent,
+                                userEventMessage = userMessage
+                        )
+                        result.postValue(userEventResult)
                     }
-
-                    val userEventResult = UserEventResult(
-                            userEvent = userEvent,
-                            userEventsMessage = userMessage
-                    )
-                    result.postValue(userEventResult)
-                })
-        return result
-    }
-
-    /**
-     * Go through all the changes and generate user messages in case there are reservation changes.
-     */
-    private fun generateReservationChangeMsg(
-            snapshot: QuerySnapshot,
-            oldValue: UserEventsResult?
-    ): UserEventsMessage? {
-
-        // If oldValue doesn't exist, it's the first run so don't generate messages.
-        if (oldValue == null) return null
-
-        var userMessage: UserEventsMessage? = null
-
-        snapshot.documentChanges.forEach { change ->
-            val changedId: String = change.document.data[ID] as String
-            // Get the old state. If there's none, ignore.
-            val oldState = oldValue.userEvents.firstOrNull { it.id == changedId }
-
-            val newMessage = if (oldState != null) {
-                getUserMessageFromChange(change.document, oldState)
-            } else {
-                null
-            }
-            // Reservation changes have priority
-            if (newMessage == UserEventsMessage.CHANGES_IN_RESERVATIONS) {
-                userMessage = newMessage
-                return@forEach //TODO should this be a @loop, to emulate a break instead of a continue?
-            }
-            // Waitlist message has less priority
-            if (newMessage == UserEventsMessage.CHANGES_IN_WAITLIST) {
-                if (userMessage == null) {
-                    userMessage = newMessage
                 }
-            }
-        }
-        return userMessage
-    }
 
+        val eventDocument = firestore.collection(USERS_COLLECTION)
+                .document(userId)
+                .collection(EVENTS_COLLECTION)
+                .document(sessionId)
 
-    /**
-     * Look at changes in a [UserEvent] and generate a user messages in case there are reservation or
-     * waitlist changes.
-     */
-    private fun generateReservationChangeMsgFromDocument(
-            snapshot: DocumentSnapshot,
-            oldEventResult: UserEventResult?
-    ): UserEventsMessage? {
-
-        if (oldEventResult?.userEvent == null) return null
-        return getUserMessageFromChange(snapshot, oldEventResult.userEvent)
-    }
-
-    /**
-     * Given a change in a document, generate a user message to indicate a change in reservations.
-     */
-    private fun getUserMessageFromChange(
-            documentSnapshot: DocumentSnapshot,
-            oldState: UserEvent
-    ): UserEventsMessage? {
-
-        val changedId: String = documentSnapshot.data[ID] as String
-
-        // Get the new state
-        val newState = parseUserEvent(documentSnapshot)
-
-        // If the old data wasn't reserved and it's reserved now, there's a change.
-        if (!oldState.isReserved() && newState.isReserved()) {
-            Timber.d("Reservation change detected: $changedId")
-            return UserEventsMessage.CHANGES_IN_RESERVATIONS
-        }
-        // If the user was waiting for a reservation and they're waitlisted, there's a change.
-        if (oldState.isReservationPending() && newState.isWaitlisted()) {
-            Timber.d("Waitlist change detected: $changedId")
-            return UserEventsMessage.CHANGES_IN_WAITLIST
-        }
-
-        // User canceled reservation
-        if (oldState.isReserved() && !newState.isReserved()) {
-            Timber.d("Reservation cancellation detected: $changedId")
-            return UserEventsMessage.RESERVATION_CANCELED
-        }
-
-        // User canceled waitlist
-        if (oldState.isWaitlisted() && !newState.isReserved() && !newState.isWaitlisted()) {
-            Timber.d("Reservation cancellation detected: $changedId")
-            return UserEventsMessage.WAITLIST_CANCELED
-        }
-
-        // Errors: only show if it's a new one.
-        if (newState.hasRequestResultError()
-                && newState.isDifferentRequestResult(oldState.getReservationRequestResultId())) {
-
-            // Reserve cut-off
-            if (newState.isRequestResultErrorReserveDeniedCutoff()) {
-                Timber.d("Reservation error cut-off: $changedId")
-                return UserEventsMessage.RESERVATION_DENIED_CUTOFF
-            }
-            // Reserve clash
-            if (newState.isRequestResultErrorReserveDeniedClash()) {
-                Timber.d("Reservation error clash: $changedId")
-                return UserEventsMessage.RESERVATION_DENIED_CLASH
-            }
-            // Reserve unknown
-            if (newState.isRequestResultErrorReserveDeniedUnknown()) {
-                Timber.d("Reservation unknown error: $changedId")
-                return UserEventsMessage.RESERVATION_DENIED_UNKNOWN
-            }
-            // Cancel cut-off
-            if (newState.isRequestResultErrorCancelDeniedCutoff()) {
-                Timber.d("Cancellation error cut-off: $changedId")
-                return UserEventsMessage.CANCELLATION_DENIED_CUTOFF
-            }
-            // Cancel unknown
-            if (newState.isRequestResultErrorCancelDeniedUnknown()) {
-                Timber.d("Cancellation unknown error: $changedId")
-                return UserEventsMessage.CANCELLATION_DENIED_UNKNOWN
-            }
-
-        }
-        return null
-    }
-
-    private fun parseUserEvent(snapshot: DocumentSnapshot): UserEvent {
-
-        val reservationRequestResult: ReservationRequestResult? =
-                generateReservationRequestResult(snapshot)
-
-        val reservationRequest = parseReservationRequest(snapshot)
-
-        val reservationStatus = (snapshot[RESERVATION_STATUS_KEY] as? String)?.let {
-            UserEvent.ReservationStatus.getIfPresent(it)
-        }
-
-        return UserEvent(id = snapshot.id,
-                startTime = snapshot[START_TIME] as Long,
-                endTime = snapshot[END_TIME] as Long,
-                reservationRequestResult = reservationRequestResult,
-                reservationStatus = reservationStatus,
-                isStarred = snapshot[IS_STARRED] as? Boolean ?: false,
-                reservationRequest = reservationRequest
-        )
-    }
-
-    private fun generateReservationRequestResult(
-            snapshot: DocumentSnapshot
-    ): ReservationRequestResult? {
-
-        (snapshot[RESERVATION_RESULT_KEY] as? Map<*, *>)?.let { reservation ->
-            val requestResult = (reservation[RESERVATION_RESULT_RESULT_KEY] as? String)
-                    ?.let { ReservationRequestStatus.getIfPresent(it) }
-
-            val requestId = (reservation[RESERVATION_RESULT_REQ_ID_KEY] as? String)
-
-            val timestamp = reservation[RESERVATION_RESULT_TIME_KEY] as? Long ?: -1
-
-            // Mandatory fields or fail:
-            if (requestResult == null || requestId == null) {
-                Timber.e("Error parsing reservation request result: some fields null")
-                return null
-            }
-
-            return ReservationRequestResult(
-                    requestResult = requestResult,
-                    requestId = requestId,
-                    timestamp = timestamp
-            )
-        }
-        // If there's no reservation:
-        return null
-    }
-
-    private fun parseReservationRequest(
-            snapshot: DocumentSnapshot
-    ): ReservationRequest? {
-
-        (snapshot[RESERVATION_REQUEST_KEY] as? Map<*, *>)?.let { request ->
-            val action = (request[RESERVATION_REQUEST_ACTION_KEY] as? String)?.let {
-                ReservationRequest.ReservationRequestEntityAction.getIfPresent(it)
-            }
-            val requestId = (request[RESERVATION_REQUEST_REQUEST_ID_KEY] as? String)
-
-            // Mandatory fields or fail:
-            if (action == null || requestId == null) {
-                Timber.e("Error parsing reservation request from Firestore")
-                return null
-            }
-
-            return ReservationRequest(action, requestId)
-        }
-        // If there's no reservation request:
-        return null
+        eventChangedListenerSubscription?.remove() // Remove in case userId changes.
+        eventChangedListenerSubscription = eventDocument.addSnapshotListener(singleEventListener)
     }
 
     /** Firestore writes **/
@@ -353,6 +204,7 @@ class FirestoreUserEventDataSource @Inject constructor(
                 START_TIME to userEvent.startTime,
                 END_TIME to userEvent.endTime,
                 IS_STARRED to userEvent.isStarred)
+
         firestore.collection(USERS_COLLECTION)
                 .document(userId)
                 .collection(EVENTS_COLLECTION)

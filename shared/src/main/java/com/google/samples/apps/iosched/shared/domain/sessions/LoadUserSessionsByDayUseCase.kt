@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.shared.domain.sessions
 
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.model.UserSession
@@ -65,18 +66,5 @@ open class LoadUserSessionsByDayUseCase @Inject constructor(
 
 data class LoadUserSessionsByDayUseCaseResult(
     val userSessionsPerDay: Map<ConferenceDay, List<UserSession>>,
-    val userMessage: UserEventsMessage?
+    val userMessage: UserEventMessage?
 )
-
-enum class UserEventsMessage {
-    CHANGES_IN_RESERVATIONS,
-    CHANGES_IN_WAITLIST,
-    RESERVATION_CANCELED,
-    WAITLIST_CANCELED,
-    RESERVATION_DENIED_CUTOFF,
-    RESERVATION_DENIED_CLASH,
-    RESERVATION_DENIED_UNKNOWN,
-    CANCELLATION_DENIED_CUTOFF,
-    CANCELLATION_DENIED_UNKNOWN,
-    DATA_NOT_SYNCED
-}

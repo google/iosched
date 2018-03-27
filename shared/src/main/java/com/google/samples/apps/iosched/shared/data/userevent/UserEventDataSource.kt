@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.shared.data.userevent
 
 import android.arch.lifecycle.LiveData
-import com.google.samples.apps.iosched.shared.domain.sessions.UserEventsMessage
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
@@ -47,8 +46,8 @@ interface UserEventDataSource {
 data class UserEventsResult(
         /** If this is true, all [UserEvent] in the userEvents field are synced to the backend */
         val userEvents: List<UserEvent>,
-        val userEventsMessage: UserEventsMessage? = null)
+        val userEventsMessage: UserEventMessage? = null)
 
 data class UserEventResult(
         val userEvent: UserEvent?,
-        val userEventsMessage: UserEventsMessage? = null)
+        val userEventMessage: UserEventMessage? = null)
