@@ -48,7 +48,6 @@ import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.TagFilterMatcher
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
@@ -496,23 +495,6 @@ class ScheduleViewModelTest {
         return LoadUserSessionsByDayUseCase(userEventRepository)
     }
 
-
-    /**
-     * Creates a use case that throws an exception.
-     */
-    private fun createSessionsExceptionUseCase(): LoadUserSessionsByDayUseCase {
-        val sessionRepository = DefaultSessionRepository(TestDataRepository)
-        val userEventRepository = DefaultSessionAndUserEventRepository(
-                TestUserEventDataSource(), sessionRepository)
-
-
-        return object : LoadUserSessionsByDayUseCase(userEventRepository) {
-            override fun execute(parameters: Pair<UserSessionMatcher, String?>) {
-                result.postValue(Result.Error(Exception("Testing exception")))
-            }
-        }
-    }
-
     /**
      * Creates a use case that throws an exception.
      */
@@ -544,7 +526,8 @@ class ScheduleViewModelTest {
                     TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository))) {}
 }
 
-class TestRegisteredUserDataSource(val isRegistered: Result<Boolean?>) : RegisteredUserDataSource {
+class TestRegisteredUserDataSource(private val isRegistered: Result<Boolean?>) :
+        RegisteredUserDataSource {
     override fun listenToUserChanges(userId: String) { }
 
     override fun observeResult(): LiveData<Result<Boolean?>?> {
@@ -555,7 +538,7 @@ class TestRegisteredUserDataSource(val isRegistered: Result<Boolean?>) : Registe
 }
 
 class TestAuthStateUserDataSource(
-        val user: Result<AuthenticatedUserInfoBasic?>?
+        private val user: Result<AuthenticatedUserInfoBasic?>?
 ) : AuthStateUserDataSource {
     override fun startListening() { }
 

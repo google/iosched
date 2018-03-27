@@ -18,13 +18,11 @@ package com.google.samples.apps.iosched.shared.data.userevent
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
-import com.google.samples.apps.iosched.shared.domain.sessions.UserEventMessage
 import com.google.samples.apps.iosched.shared.domain.sessions.UserEventsMessage
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CANCEL
@@ -139,7 +137,7 @@ class FirestoreUserEventDataSource @Inject constructor(
 
                     val userEventResult = UserEventResult(
                             userEvent = userEvent,
-                            userEventMessage = userMessage
+                            userEventsMessage = userMessage
                     )
                     result.postValue(userEventResult)
                 })
@@ -160,7 +158,15 @@ class FirestoreUserEventDataSource @Inject constructor(
         var userMessage: UserEventsMessage? = null
 
         snapshot.documentChanges.forEach { change ->
-            val newMessage = getUserMessageFromChange(change, oldValue)
+            val changedId: String = change.document.data[ID] as String
+            // Get the old state. If there's none, ignore.
+            val oldState = oldValue.userEvents.firstOrNull { it.id == changedId }
+
+            val newMessage = if (oldState != null) {
+                getUserMessageFromChange(change.document, oldState)
+            } else {
+                null
+            }
             // Reservation changes have priority
             if (newMessage == UserEventsMessage.CHANGES_IN_RESERVATIONS) {
                 userMessage = newMessage
@@ -184,49 +190,24 @@ class FirestoreUserEventDataSource @Inject constructor(
     private fun generateReservationChangeMsgFromDocument(
             snapshot: DocumentSnapshot,
             oldEventResult: UserEventResult?
-    ): UserEventMessage? {
+    ): UserEventsMessage? {
 
-        if (oldEventResult == null) return null
-
-        val oldEvent = oldEventResult.userEvent
-        val changedId: String = snapshot.data[ID] as String
-
-        // If this is new data, ignore
-        val newReservationState = generateReservationRequestResult(snapshot)
-        val newReservationRequested = parseReservationRequest(snapshot)
-        if (oldEvent?.isReservationPending() == true
-                && newReservationRequested == null
-                && newReservationState != null
-                && newReservationState.requestResult == ReservationRequestStatus.RESERVE_SUCCEEDED) {
-            Timber.d("Reservation change detected: $changedId")
-            return UserEventMessage.CHANGE_IN_RESERVATION
-        }
-
-        // The session is waiting for a change
-        if (oldEvent?.isReservationPending() == true
-                && newReservationRequested == null
-                && newReservationState != null
-                && newReservationState.requestResult == ReservationRequestStatus.RESERVE_WAITLISTED) {
-            Timber.d("Waitlist change detected: $changedId")
-            return UserEventMessage.CHANGE_IN_WAITLIST
-        }
-        return null
+        if (oldEventResult?.userEvent == null) return null
+        return getUserMessageFromChange(snapshot, oldEventResult.userEvent)
     }
 
     /**
      * Given a change in a document, generate a user message to indicate a change in reservations.
      */
     private fun getUserMessageFromChange(
-            change: DocumentChange,
-            result: UserEventsResult
+            documentSnapshot: DocumentSnapshot,
+            oldState: UserEvent
     ): UserEventsMessage? {
 
-        val changedId: String = change.document.data[ID] as String
-        // Get the old state. If there's none, ignore.
-        val oldState = result.userEvents.firstOrNull { it.id == changedId } ?: return null
+        val changedId: String = documentSnapshot.data[ID] as String
 
         // Get the new state
-        val newState = parseUserEvent(change.document)
+        val newState = parseUserEvent(documentSnapshot)
 
         // If the old data wasn't reserved and it's reserved now, there's a change.
         if (!oldState.isReserved() && newState.isReserved()) {
