@@ -223,11 +223,6 @@ class SessionDetailViewModel @Inject constructor(
     }
 
     override fun onStarClicked() {
-        if (!isSignedIn()) {
-            Timber.d("Showing Sign-in dialog after star click")
-            _navigateToSignInDialogAction.value = Event(true)
-            return
-        }
         val userEventSnapshot = userEvent.value ?: return
         val newIsStarredState = !userEventSnapshot.isStarred
 
@@ -265,6 +260,13 @@ class SessionDetailViewModel @Inject constructor(
                 ReservationRequestParameters(userId, sessionSnapshot.id, REQUEST))
     }
 
+    override fun onLoginClicked() {
+        if (!isSignedIn()) {
+            Timber.d("Showing Sign-in dialog")
+            _navigateToSignInDialogAction.value = Event(true)
+        }
+    }
+
     /**
      * Returns the current user ID or null if not available.
      */
@@ -287,4 +289,6 @@ interface SessionDetailEventListener {
     fun onReservationClicked()
 
     fun onStarClicked()
+
+    fun onLoginClicked()
 }
