@@ -24,7 +24,7 @@ import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CANCEL
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
@@ -57,7 +57,7 @@ class RemoveReservationViewModelTest {
         val viewModel = createRemoveReservationViewModel(reservationActionUseCaseMock)
         val testUid = "testUid"
         val parameters = ReservationRequestParameters(testUid,
-                TestData.session1.id, CANCEL)
+                TestData.session1.id, CancelAction())
         viewModel.userId = testUid
         viewModel.sessionId = TestData.session1.id
 

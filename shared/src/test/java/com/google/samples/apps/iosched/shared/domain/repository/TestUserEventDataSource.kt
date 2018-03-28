@@ -22,11 +22,12 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventResult
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CANCEL
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.REQUEST
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus.STARRED
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus.UNSTARRED
+import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.TestData
@@ -65,7 +66,16 @@ class TestUserEventDataSource(
 
         val result = MutableLiveData<Result<ReservationRequestAction>>()
         result.postValue(Result.Success(
-                if (action == REQUEST) REQUEST else CANCEL))
+                if (action is RequestAction) RequestAction() else CancelAction()))
+        return result
+    }
+
+    override fun getUserEvents(userId: String): List<UserEvent> = TestData.userEvents
+
+    override fun swapReservation(userId: String, fromSession: Session, toSession: Session):
+            LiveData<Result<SwapRequestAction>> {
+        val result = MutableLiveData<Result<SwapRequestAction>>()
+        result.postValue(Result.Success(SwapRequestAction()))
         return result
     }
 }

@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.firestore.entity
 
+import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent.ReservationStatus
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent.ReservationStatus.NONE
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent.ReservationStatus.RESERVED
@@ -23,12 +24,24 @@ import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent.Reserva
 import com.google.samples.apps.iosched.shared.model.TestData
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.threeten.bp.Instant
+import org.threeten.bp.ZoneId
+import org.threeten.bp.ZonedDateTime
 
 class UserEventTest {
 
-    private fun createTestEvent(isStarred: Boolean, status: ReservationStatus): UserEvent {
+    private fun createTestEvent(isStarred: Boolean = false,
+                                status: ReservationStatus = NONE,
+                                requestResult: ReservationRequestResult? = null): UserEvent {
         return TestData.userEvents[0].copy(
-            isStarred = isStarred, reservationStatus = status)
+            isStarred = isStarred,
+                reservationStatus = status,
+                reservationRequestResult = requestResult)
+    }
+
+    private fun createRequestResult(requestStatus: ReservationRequestStatus):
+            ReservationRequestResult {
+        return ReservationRequestResult(requestStatus, requestId = "dummy", timestamp = -1)
     }
 
     @Test
@@ -47,6 +60,31 @@ class UserEventTest {
     fun notStarred_reserved_isPinned() {
         val reserved = createTestEvent(isStarred = false, status = RESERVED)
         assertTrue(reserved.isPinned())
+    }
+
+    @Test
+    fun changedBySwap_isLastRequestResultBySwap() {
+        val reservedUserEvent = createTestEvent(status = RESERVED,
+                requestResult = createRequestResult(ReservationRequestStatus.SWAP_SUCCEEDED))
+        assertTrue(reservedUserEvent.isLastRequestResultBySwap())
+
+        val noneUserEvent = createTestEvent(status = NONE,
+                requestResult = createRequestResult(ReservationRequestStatus.SWAP_SUCCEEDED))
+        assertTrue(noneUserEvent.isLastRequestResultBySwap())
+
+        val waitlistedUserEvent = createTestEvent(status = WAITLISTED,
+                requestResult = createRequestResult(ReservationRequestStatus.SWAP_WAITLISTED))
+        assertTrue(waitlistedUserEvent.isLastRequestResultBySwap())
+    }
+
+    @Test
+    fun testIsOverlapping() {
+        val dummyTime = 1000L
+        val userEvent = TestData.userEvents[0].copy(startTime = dummyTime)
+        val zonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(dummyTime),
+                ZoneId.of(ZoneId.SHORT_IDS["JST"]))
+        val session = TestData.session0.copy(startTime = zonedDateTime)
+        assertTrue(userEvent.isOverlapping(session))
     }
 
     //TODO: Add tests for isReserved, isWaitlisted, etc.

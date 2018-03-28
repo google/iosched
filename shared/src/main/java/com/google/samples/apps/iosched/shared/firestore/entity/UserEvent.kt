@@ -10,6 +10,13 @@ import com.google.samples.apps.iosched.shared.firestore.entity.ReservationReques
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.RESERVE_DENIED_UNKNOWN
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.RESERVE_SUCCEEDED
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.RESERVE_WAITLISTED
+import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.SWAP_DENIED_CLASH
+import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.SWAP_DENIED_CUTOFF
+import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.SWAP_DENIED_UNKNOWN
+import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.SWAP_SUCCEEDED
+import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.SWAP_WAITLISTED
+import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.util.toEpochMilli
 
 /**
  * Data for a user's personalized event stored in a Firestore document.
@@ -135,6 +142,17 @@ data class UserEvent(
         return reservationStatus != ReservationStatus.NONE
                 && isPending()
                 && reservationRequest?.action == CANCEL_REQUESTED
+    }
+
+    fun isLastRequestResultBySwap(): Boolean {
+        val r = reservationRequestResult?.requestResult ?: return false
+        return r == SWAP_SUCCEEDED || r == SWAP_WAITLISTED || r == SWAP_DENIED_CLASH ||
+                r == SWAP_DENIED_CUTOFF || r == SWAP_DENIED_UNKNOWN
+    }
+
+    fun isOverlapping(session: Session): Boolean {
+        // Sessions have the same start time if they are in the same time slot.
+        return this.startTime == session.startTime.toEpochMilli()
     }
 
     /**

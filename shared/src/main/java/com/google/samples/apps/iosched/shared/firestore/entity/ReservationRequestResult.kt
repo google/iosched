@@ -46,7 +46,24 @@ data class ReservationRequestResult(
         CANCEL_DENIED_CUTOFF,
 
         /** The cancellation request was denied for unknown reasons. */
-        CANCEL_DENIED_UNKNOWN;
+        CANCEL_DENIED_UNKNOWN,
+
+        /** The reservation was granted by a Swap request. */
+        SWAP_SUCCEEDED,
+
+        /** The reservation was granted but the user was placed on a waitlist by a Swap request. */
+        SWAP_WAITLISTED,
+
+        /** The reservation request was denied because it was too close to the start of the
+         * event by a Swap request. */
+        SWAP_DENIED_CUTOFF,
+
+        /** The reservation was denied because it overlapped with another reservation or
+         * waitlist by a Swap request. */
+        SWAP_DENIED_CLASH,
+
+        /** The reservation was denied for unknown reasons by a Swap request. */
+        SWAP_DENIED_UNKNOWN,;
 
         companion object {
 

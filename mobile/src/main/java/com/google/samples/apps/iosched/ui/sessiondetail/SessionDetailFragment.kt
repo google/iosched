@@ -19,7 +19,6 @@ package com.google.samples.apps.iosched.ui.sessiondetail
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
-import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.ShareCompat
@@ -34,10 +33,12 @@ import com.google.android.material.widget.Snackbar
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSessionDetailBinding
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
+import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment.Companion.DIALOG_REMOVE_RESERVATION
+import com.google.samples.apps.iosched.ui.reservation.SwapReservationDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment.Companion.DIALOG_NEED_TO_SIGN_IN
 import dagger.android.support.DaggerFragment
@@ -130,6 +131,11 @@ class SessionDetailFragment : DaggerFragment() {
                 openRemoveReservationDialog(requireActivity(), it)
             }
         })
+        sessionDetailViewModel.navigateToSwapReservationDialogAction.observe(this, Observer {
+            it?.getContentIfNotHandled()?.let {
+                openSwapReservationDialog(requireActivity(), it)
+            }
+        })
         return binding.root
     }
 
@@ -170,9 +176,19 @@ class SessionDetailFragment : DaggerFragment() {
     }
 
     private fun openRemoveReservationDialog(activity: FragmentActivity,
-                                            parameters: ReservationRequestParameters) {
+                                            parameters: ReservationRequestParameters
+    ) {
         val dialog = RemoveReservationDialogFragment.newInstance(parameters)
         dialog.show(activity.supportFragmentManager, DIALOG_REMOVE_RESERVATION)
+    }
+
+    private fun openSwapReservationDialog(
+            activity: FragmentActivity,
+            parameters: SwapRequestParameters
+    ) {
+        val dialog = SwapReservationDialogFragment.newInstance(parameters)
+        dialog.show(activity.supportFragmentManager,
+                SwapReservationDialogFragment.DIALOG_SWAP_RESERVATION)
     }
 
     companion object {
