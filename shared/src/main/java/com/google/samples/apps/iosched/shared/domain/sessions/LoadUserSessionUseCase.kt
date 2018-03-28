@@ -26,9 +26,9 @@ import javax.inject.Inject
 
 open class LoadUserSessionUseCase @Inject constructor(
         private val userEventRepository: DefaultSessionAndUserEventRepository
-) : MediatorUseCase<Pair<String,String>, LoadUserSessionUseCaseResult>() {
+) : MediatorUseCase<Pair<String?, String>, LoadUserSessionUseCaseResult>() {
 
-    override fun execute(parameters: Pair<String, String>) {
+    override fun execute(parameters: Pair<String?, String>) {
         val (userId, eventId) = parameters
         val userSession = userEventRepository.getObservableUserEvent(userId, eventId)
 

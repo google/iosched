@@ -32,11 +32,6 @@ interface AuthStateUserDataSource {
     fun startListening()
 
     /**
-     * Returns an observable of the user ID.
-     */
-    fun getUserId(): LiveData<String?>
-
-    /**
      * Returns an observable of the [AuthenticatedUserInfoBasic].
      */
     fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfoBasic?>>

@@ -22,6 +22,8 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventResult
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus.STARRED
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus.UNSTARRED
@@ -35,10 +37,6 @@ class TestUserEventDataSource(
     private val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData(),
     private val userEventResult: MutableLiveData<UserEventResult> = MutableLiveData()
 ) : UserEventDataSource {
-
-    override fun getUserEvents(userId: String): List<UserEvent> {
-        return TestData.userEvents
-    }
 
     override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {
         userEventsResult.postValue(UserEventsResult(TestData.userEvents))
@@ -69,14 +67,17 @@ class TestUserEventDataSource(
     ): LiveData<Result<ReservationRequestAction>> {
 
         val result = MutableLiveData<Result<ReservationRequestAction>>()
-        result.postValue(Result.Success(action))
+        result.postValue(Result.Success(
+                if (action is RequestAction) RequestAction() else CancelAction()))
         return result
     }
 
+    override fun getUserEvents(userId: String) = TestData.userEvents
+
     override fun swapReservation(
-        userId: String,
-        fromSession: Session,
-        toSession: Session
+            userId: String,
+            fromSession: Session,
+            toSession: Session
     ): LiveData<Result<SwapRequestAction>> {
         val result = MutableLiveData<Result<SwapRequestAction>>()
         result.postValue(Result.Success(SwapRequestAction()))

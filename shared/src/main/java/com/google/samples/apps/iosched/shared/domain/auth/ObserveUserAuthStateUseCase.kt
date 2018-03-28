@@ -24,35 +24,45 @@ import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * A [MediatorUseCase] that observes two data sources to generate an [AuthenticatedUserInfo]
  * that includes whether the user is registered (is an attendee).
  *
- * [RegisteredUserDataSource] provides general user information, like user IDs, while
- * [AuthStateUserDataSource] observes a different data source to provide a flag indicating
+ * [AuthStateUserDataSource] provides general user information, like user IDs, while
+ * [RegisteredUserDataSource] observes a different data source to provide a flag indicating
  * whether the user is registered.
  */
+@Singleton
 open class ObserveUserAuthStateUseCase @Inject constructor(
         registeredUserDataSource: RegisteredUserDataSource,
-        val authStateUserDataSource: AuthStateUserDataSource
+        private val authStateUserDataSource: AuthStateUserDataSource
 ) : MediatorUseCase<Any, AuthenticatedUserInfo>() {
-    
-    private val currentFirebaseUserObservable = authStateUserDataSource.getBasicUserInfo()
 
-    private val userIdObservable = authStateUserDataSource.getUserId()
+    private val currentFirebaseUserObservable = authStateUserDataSource.getBasicUserInfo()
 
     private val isUserRegisteredObservable = registeredUserDataSource.observeResult()
 
     init {
-        // When the user ID changes, start observing the user in firestore
-        result.addSource(userIdObservable) {
-            it?.let { registeredUserDataSource.listenToUserChanges(it) }
-        }
 
-        // If the Firebase user changes, update result.
+        // If the Firebase user changes, query firestore to figure out if they're registered.
         result.addSource(currentFirebaseUserObservable) {
-            updateUserObservable()
+            val userResult = currentFirebaseUserObservable.value
+
+            // Start observing the user in Firestore to fetch the `registered` flag
+            (userResult as? Result.Success)?.data?.getUid()?.let {
+                registeredUserDataSource.listenToUserChanges(it)
+            }
+            // Sign out
+            if (userResult is Result.Success && userResult.data?.isSignedIn() == false) {
+                registeredUserDataSource.setAnonymousValue()
+                updateUserObservable()
+            }
+            // Error
+            if (userResult is Result.Error) {
+                result.postValue(Result.Error(Exception("FirebaseAuth error")))
+            }
         }
 
         // If the Firestore information about the user changes, update result.
@@ -69,18 +79,16 @@ open class ObserveUserAuthStateUseCase @Inject constructor(
     }
 
     private fun updateUserObservable() {
-        Timber.d("Updating observable user")
-        val currentFbUser = currentFirebaseUserObservable.value
+        val currentFirebaseUser = currentFirebaseUserObservable.value
         val isRegistered = isUserRegisteredObservable.value
 
-        if (currentFbUser is Result.Success) {
+        if (currentFirebaseUser is Result.Success) {
 
-            // If the isRegistered value is an error, assign it false
-            val isRegisteredValue = (isRegistered as? Result.Success)?.data == true
+            // If the isRegistered value is an error, assign it false. Null means no info yet.
+            val isRegisteredValue: Boolean? = (isRegistered as? Result.Success)?.data
 
-            result.postValue(
-                    Result.Success(
-                            FirebaseRegisteredUserInfo(currentFbUser.data, isRegisteredValue)))
+            result.postValue(Result.Success(
+                    FirebaseRegisteredUserInfo(currentFirebaseUser.data, isRegisteredValue)))
         } else {
             Timber.e("There was a registration error.")
             result.postValue(Result.Error(Exception("Registration error")))

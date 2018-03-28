@@ -51,17 +51,16 @@ class FirebaseAuthStateUserDataSource @Inject constructor(
         private val tokenUpdater: FcmTokenUpdater
 ) : AuthStateUserDataSource {
 
-    private val userId = MutableLiveData<String?>()
-
-    private val tokenChangedObservable = MutableLiveData<Result<String?>>()
-
     private val currentFirebaseUserObservable =
             MutableLiveData<Result<AuthenticatedUserInfoBasic?>>()
+
+    private var isAlreadyListening = false
 
     // Listener that saves the [FirebaseUser], fetches the ID token, calls the registration point
     // and updates the user ID observable.
     private val authStateListener: ((FirebaseAuth) -> Unit) = { auth ->
         DefaultScheduler.execute {
+            Timber.d("Received a FirebaseAuth update.")
             // Post the current user for observers
             currentFirebaseUserObservable.postValue(Result.Success(
                     FirebaseUserInfo(auth.currentUser)))
@@ -74,32 +73,25 @@ class FirebaseAuthStateUserDataSource @Inject constructor(
                     // Do this synchronously
                     val await: GetTokenResult = Tasks.await(tokenTask)
                     await.token?.let {
-                        tokenChangedObservable.postValue(Result.Success(it))
-
-                        // Call registration point
+                        // Call registration point to generate a result in Firestore
                         Timber.d("User authenticated, hitting registration endpoint")
                         AuthenticatedUserRegistration.callRegistrationEndpoint(it)
                     }
                 } catch (e: Exception) {
                     Timber.e(e)
-                    tokenChangedObservable.postValue(Result.Error(e))
+                    return@let
                 }
                 // Save the FCM ID token in firestore
                 tokenUpdater.updateTokenForUser(currentUser.uid)
-
-                // Update user ID to kick off the registered flag listener
-                userId.postValue(currentUser.uid)
             }
         }
     }
 
     override fun startListening() {
-        clearListener()
-        firebase.addAuthStateListener(authStateListener)
-    }
-
-    override fun getUserId(): LiveData<String?> {
-        return userId
+        if (!isAlreadyListening) {
+            firebase.addAuthStateListener(authStateListener)
+            isAlreadyListening = true
+        }
     }
 
     override fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfoBasic?>> {

@@ -45,7 +45,7 @@ class StagingRegisteredUserDataSource(val isRegistered: Boolean) : RegisteredUse
         return result
     }
 
-    override fun clearListener() {
+    override fun setAnonymousValue() {
         //Noop
     }
 }
@@ -66,6 +66,8 @@ open class StagingAuthenticatedUserInfo(
     override fun isSignedIn(): Boolean = signedIn
 
     override fun isRegistered(): Boolean = registered
+
+    override fun isRegistrationDataReady(): Boolean = true
 
     override fun getEmail(): String? = TODO("Not implemented")
 
@@ -126,10 +128,6 @@ class StagingAuthStateUserDataSource(
 
         _firebaseUser.postValue(Result.Success(user))
 
-    }
-
-    override fun getUserId(): MutableLiveData<String?> {
-        return _userId
     }
 
     override fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfoBasic?>> {

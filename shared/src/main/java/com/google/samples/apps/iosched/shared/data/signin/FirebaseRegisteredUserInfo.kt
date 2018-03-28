@@ -55,6 +55,9 @@ class FirebaseRegisteredUserInfo(
     override fun getLastSignInTimestamp(): Long? = basicUserInfo?.getLastSignInTimestamp()
 
     override fun getCreationTimestamp(): Long? = basicUserInfo?.getCreationTimestamp()
+
+    override fun isRegistrationDataReady(): Boolean = isRegistered != null
+
 }
 
 open class FirebaseUserInfo(

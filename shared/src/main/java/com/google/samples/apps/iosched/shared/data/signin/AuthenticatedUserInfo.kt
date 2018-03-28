@@ -64,4 +64,6 @@ interface AuthenticatedUserInfoBasic {
 interface AuthenticatedUserInfoRegistered {
 
     fun isRegistered(): Boolean
+
+    fun isRegistrationDataReady(): Boolean
 }

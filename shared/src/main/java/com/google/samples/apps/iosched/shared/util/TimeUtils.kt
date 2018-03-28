@@ -49,18 +49,18 @@ object TimeUtils {
         fun formatMonthDay() = FORMATTER_MONTH_DAY.format(start)
     }
 
-    enum class SessionState { BEFORE, DURING, AFTER, UNKNOWN }
+    enum class SessionRelativeTimeState { BEFORE, DURING, AFTER, UNKNOWN }
 
     /** Determine whether the current time is before, during, or after a Session's time slot **/
     fun getSessionState(
         session: Session?,
         currentTime: ZonedDateTime = ZonedDateTime.now()
-    ): SessionState {
+    ): SessionRelativeTimeState {
         return when {
-            session == null -> SessionState.UNKNOWN
-            currentTime < session.startTime -> SessionState.BEFORE
-            currentTime > session.endTime -> SessionState.AFTER
-            else -> SessionState.DURING
+            session == null -> SessionRelativeTimeState.UNKNOWN
+            currentTime < session.startTime -> SessionRelativeTimeState.BEFORE
+            currentTime > session.endTime -> SessionRelativeTimeState.AFTER
+            else -> SessionRelativeTimeState.DURING
         }
     }
 
