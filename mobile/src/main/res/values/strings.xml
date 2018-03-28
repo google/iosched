@@ -141,4 +141,58 @@
         <item quantity="other">Session starting in %1$s minutes</item>
     </plurals>
 
+    <string name="expanded" translation_description="The label used on a button when a view is in an expanded state.">Expanded</string>
+    <string name="collapsed" translation_description="The label used on a button when a view is in an collapsed state.">Collapsed</string>
+
+    <!-- Info pages - TODO: update with 2018 copy and set translatable="true". -->
+    <string name="travel_directions_parking_title" translatable="false">Directions &amp; Parking</string>
+    <string name="travel_shuttle_title" translatable="false">Shuttle Service (Recommended)</string>
+    <string name="travel_carpool_parking_title" translatable="false">Carpooling</string>
+    <string name="travel_ride_sharing_title" translatable="false">Ride Share</string>
+    <string name="travel_public_transportation_title" translatable="false">Public Transportation</string>
+    <string name="travel_biking_title" translatable="false">Bicycling</string>
+
+    <string name="travel_directions_parking_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
+    <string name="travel_shuttle_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
+    <string name="travel_carpool_parking_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
+    <string name="travel_ride_sharing_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
+    <string name="travel_public_transportation_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
+    <string name="travel_biking_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
+
+    <string name="faq_1_title" translatable="false">Where do I get my badge?</string>
+    <string name="faq_2_title" translatable="false">Where\'s my lost stuff?</string>
+    <string name="faq_3_title" translatable="false">How to I talk with a Googler?</string>
+    <string name="faq_4_title" translatable="false">Should I go to After hours?</string>
+    <string name="faq_5_title" translatable="false">I love snacks. Where are they?</string>
+
+
+    <string name="faq_1_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
+    <string name="faq_2_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
+    <string name="faq_3_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
+    <string name="faq_4_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
+    <string name="faq_5_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
+
+    <string name="view_sessions_text" translatable="false">View Sessions</string>
+    <string name="view_codelabs_text" translatable="false">View Codelabs</string>
+    <string name="view_events_text" translatable="false">View Events</string>
+    <string name="view_map_text" translatable="false">View Map</string>
+    <string name="wifi_network_label" translatable="false">Wifi network:</string>
+    <string name="wifi_password_label" translatable="false">Password:</string>
+    <string name="setup_wifi"  translatable="false" translation_description="Snackbar message confirming save of wifi network">Save wifi network</string>
+    <string name="wifi_install_success"  translatable="false" translation_description="Snackbar message if failed to save the wifi network">Wifi network saved</string>
+    <string name="wifi_install_error_message" translatable="false">Sorry, unable to save wifi network</string>
+    <string name="event_sessions_title" translatable="false">Sessions</string>
+    <string name="event_sandbox_title" translatable="false">Sandbox</string>
+    <string name="event_codelabs_title" translatable="false">Codelabs</string>
+    <string name="event_officehours_title" translatable="false">Office Hours &amp; App Reviews</string>
+    <string name="event_afterhours_title" translatable="false">After Hours</string>
+    <string name="event_meals_title" translatable="false">Meals</string>
+    <string name="event_sessions_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
+    <string name="event_sandbox_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
+    <string name="event_codelabs_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
+    <string name="event_officehours_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
+    <string name="event_afterhours_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
+    <string name="event_meals_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
+    <string name="wifi_header" translatable="false">Wifi</string>
+    <string name="event_types_header" translatable="false">Event Types</string>
 </resources>

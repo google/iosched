@@ -237,6 +237,30 @@
         <item name="autoSizeMaxTextSize">34sp</item>
     </style>
 
+    <style name="TextAppearance.IOSched.CollapsibleCard" parent="@android:style/Widget.Material.TextView">
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textColor">@color/grey_800</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.WifiInfoLabel" parent="@style/TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/grey_600</item>
+        <item name="android:lineSpacingExtra">8sp</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.InfoEventTitle" parent="@android:style/Widget.Material.TextView">
+        <item name="android:textSize">24sp</item>
+        <item name="android:lineSpacingExtra">8sp</item>
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textColor">@color/grey_800</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.InfoEventDescription" parent="@style/TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/grey_800</item>
+        <item name="android:lineSpacingExtra">8sp</item>
+    </style>
+
     <style name="TextAppearance.IOSched.DialogTitle" parent="@style/TextAppearance.AppCompat.Title">
         <item name="android:textSize">22sp</item>
         <item name="android:fontFamily">@font/google_sans</item>

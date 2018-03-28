@@ -81,4 +81,13 @@ object TimeUtils {
     fun conferenceHasStarted(): Boolean {
         return ZonedDateTime.now().isAfter(ConferenceDay.DAY_1.start)
     }
+
+    fun conferenceHasEnded(): Boolean {
+        return ZonedDateTime.now().isAfter(ConferenceDay.DAY_3.end)
+    }
+
+    fun conferenceWifiOfferingStarted(): Boolean {
+        val wifiStartedTime = ZonedDateTime.parse(BuildConfig.CONFERENCE_WIFI_OFFERING_START)
+        return ZonedDateTime.now().isAfter(wifiStartedTime)
+    }
 }

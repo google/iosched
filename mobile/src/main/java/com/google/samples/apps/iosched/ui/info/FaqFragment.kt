@@ -27,6 +27,6 @@ class FaqFragment : DaggerFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_faq, container, false)
+        return inflater.inflate(R.layout.fragment_info_faq, container, false)
     }
 }
