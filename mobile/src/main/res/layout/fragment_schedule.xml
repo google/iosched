@@ -58,6 +58,17 @@
             android:indeterminateTint="@color/light_grey"
             app:goneUnless="@{viewModel.isLoading}" />
 
+        <!-- A custom snackbar implementation for more control over positioning i.e. above the
+             FAB, to control its entry/exit animation and to respond to bottom nav presence. -->
+        <com.google.samples.apps.iosched.widget.FadingSnackbar
+            android:id="@+id/snackbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="72dp"
+            app:layout_dodgeInsetEdges="bottom"
+            android:visibility="gone" />
+
         <!--
           ~ Mimic the real BottomNavigationView in the activity. It has the same height and will be
           ~ translated whenever the real one moves. We need it for layout_insetEdge.

@@ -107,7 +107,7 @@ class SessionDetailFragment : DaggerFragment() {
 
         setUpSnackbar(
                 sessionDetailViewModel.snackBarMessage,
-                coordinatorLayout,
+                binding.snackbar,
                 snackbarMessageManager
         )
 
