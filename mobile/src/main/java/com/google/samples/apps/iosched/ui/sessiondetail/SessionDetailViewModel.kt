@@ -23,6 +23,7 @@ import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.support.annotation.VisibleForTesting
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
@@ -39,6 +40,7 @@ import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.shared.util.setValueIfNew
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
@@ -63,7 +65,8 @@ class SessionDetailViewModel @Inject constructor(
 ) : ViewModel(), SessionDetailEventListener, SignInViewModelDelegate by signInViewModelPlugin {
 
     private val loadUserSessionResult: MediatorLiveData<Result<LoadUserSessionUseCaseResult>>
-    private val sessionState: LiveData<TimeUtils.SessionState>
+
+    private val sessionTimeRelativeState: LiveData<TimeUtils.SessionRelativeTimeState>
 
     private val _errorMessage = MediatorLiveData<Event<String>>()
     val errorMessage : LiveData<Event<String>>
@@ -85,8 +88,9 @@ class SessionDetailViewModel @Inject constructor(
 
     val navigateToYouTubeAction = MutableLiveData<Event<String>>()
 
-    val session: LiveData<Session?>
-    val userEvent: LiveData<UserEvent?>
+    val session = MediatorLiveData<Session>()
+    val userEvent = MediatorLiveData<UserEvent>()
+
     val showRateButton: LiveData<Boolean>
     val hasPhoto: LiveData<Boolean>
     val isPlayable: LiveData<Boolean>
@@ -94,6 +98,8 @@ class SessionDetailViewModel @Inject constructor(
     val hasRelated: LiveData<Boolean>
     val timeUntilStart: LiveData<Duration?>
     val isReservationDisabled: LiveData<Boolean>
+
+    private val sessionId = MutableLiveData<String>()
 
     private val _navigateToRemoveReservationDialogAction =
             MutableLiveData<Event<ReservationRequestParameters>>()
@@ -108,38 +114,65 @@ class SessionDetailViewModel @Inject constructor(
     init {
         loadUserSessionResult = loadUserSessionUseCase.observe()
 
-        //TODO: Deal with error SessionNotFoundException
-        session = loadUserSessionResult.map { (it as? Result.Success)?.data?.userSession?.session }
+        /* Wire observable dependencies */
 
-        userEvent = loadUserSessionResult.map {
-            (it as? Result.Success)?.data?.userSession?.userEvent
+        // If the user changes, load new data for them
+        userEvent.addSource(currentFirebaseUser) {
+            Timber.d("CurrentFirebaseUser changed, refreshing")
+            refreshUserSession()
         }
 
+        // If the session ID changes, load new data for it
+        session.addSource(sessionId) {
+            Timber.d("SessionId changed, refreshing")
+            refreshUserSession()
+        }
+
+        /* Wire result dependencies */
+
+        // If there's a new result with data, update the session
+        session.addSource(loadUserSessionResult) {
+            (loadUserSessionResult.value as? Result.Success)?.data?.userSession?.session?.let {
+                session.value = it
+            }
+        }
+
+        // If there's a new result with data, update the UserEvent
+        userEvent.addSource(loadUserSessionResult) {
+            (loadUserSessionResult.value as? Result.Success)?.data?.userSession?.userEvent?.let {
+                userEvent.value = it
+            }
+        }
+
+        /* Wire observables exposed for UI elements */
+
         // TODO this should also be called when session state is stale (b/74242921)
-        sessionState = Transformations.map(session, { currentSession ->
+        // If there's a new session, update the relative time status (before, during, after...)
+        sessionTimeRelativeState = session.map { currentSession ->
             TimeUtils.getSessionState(currentSession, ZonedDateTime.now())
-        })
+        }
 
-        hasPhoto = Transformations.map(session, { currentSession ->
+        hasPhoto = session.map { currentSession ->
             !currentSession?.photoUrl.isNullOrEmpty()
-        })
+        }
 
-        isPlayable = Transformations.map(session, { currentSession ->
+        isPlayable = session.map { currentSession ->
             checkPlayable(currentSession)
-        })
+        }
 
-        showRateButton = Transformations.map(sessionState, { currentState ->
-            currentState == TimeUtils.SessionState.AFTER
-        })
+        showRateButton = sessionTimeRelativeState.map { currentState ->
+            currentState == TimeUtils.SessionRelativeTimeState.AFTER
+        }
 
-        hasSpeakers = Transformations.map(session, { currentSession ->
+        hasSpeakers = session.map { currentSession ->
             currentSession?.speakers?.isNotEmpty() ?: false
-        })
+        }
 
-        hasRelated = Transformations.map(session, { currentSession ->
+        hasRelated = session.map { currentSession ->
             currentSession?.relatedSessions?.isNotEmpty() ?: false
-        })
+        }
 
+        // Updates periodically with a special [IntervalLiveData]
         timeUntilStart = SetIntervalLiveData.mapAtInterval(session, TEN_SECONDS) { currentSession ->
             currentSession?.startTime?.let { startTime ->
                 val duration = Duration.between(DefaultTime.now(), startTime)
@@ -158,6 +191,8 @@ class SessionDetailViewModel @Inject constructor(
                         Duration.between(DefaultTime.now(), startTime).toMinutes() <= 60
                     }
                 }
+
+        /* Wiring dependencies for stars and reservation. */
 
         // Show an error message if a star request fails
         _snackBarMessage.addSource(starEventUseCase.observe()) { result ->
@@ -199,21 +234,28 @@ class SessionDetailViewModel @Inject constructor(
         })
     }
 
-    fun setSessionId(sessionId: String) {
-        // Refresh the list of user sessions if the user is updated.
-        if (!firebaseUserSourceAttached) {
-            firebaseUserSourceAttached = true
-            loadUserSessionResult.addSource(currentFirebaseUser) {
-                Timber.d("Loading user session with user ${(it as? Result.Success)?.data?.getUid()}")
-                loadSessionById(sessionId)
-            }
+    private fun refreshUserSession() {
+        if (currentFirebaseUser.value == null) {
+            // No user information provided by [SignInViewModelDelegate] yet.
+            Timber.d("No user information available yet, not refreshing")
+            return
+        }
+        val registrationDataReady =
+                (currentFirebaseUser.value as? Result.Success)?.data?.isRegistrationDataReady()
+        if (registrationDataReady == false) {
+            // No registration information provided by [SignInViewModelDelegate] yet.
+            Timber.d("No registration information yet, not refreshing")
+            return
+        }
+        getSessionId()?.let {
+            Timber.d("Refreshing data with session ID $it and user ${getUserId()}")
+            loadUserSessionUseCase.execute(getUserId() to it)
         }
     }
 
     // TODO: write tests b/74611561
-    @VisibleForTesting
-    fun loadSessionById(sessionId: String) {
-        session.value ?: loadUserSessionUseCase.execute((getUserId() ?: "tempUser") to sessionId)
+    fun setSessionId(newSessionId: String) {
+        sessionId.setValueIfNew(newSessionId)
     }
 
     /**
@@ -289,6 +331,13 @@ class SessionDetailViewModel @Inject constructor(
     private fun getUserId() : String? {
         val user = currentFirebaseUser.value
         return (user as? Result.Success)?.data?.getUid()
+    }
+
+    /**
+     * Returns the current session ID or null if not available.
+     */
+    private fun getSessionId() : String? {
+        return sessionId.value
     }
 
     private fun requireSession(): Session {

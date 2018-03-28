@@ -45,15 +45,26 @@ class FirestoreRegisteredUserDataSource @Inject constructor(
     // Result can contain a null value (not processed) or a null result (not available).
     private val result = MutableLiveData<Result<Boolean?>?>()
 
+    // Keeping the last observed user ID, to avoid unnecessary calls
+    private var lastUserId: String? = null
+
     /**
      * Listens to changes in the user document in Firestore. A Change in the "registered" field
      * will emit a new user.
      */
-    override fun listenToUserChanges(userId: String) {
-        Timber.d("Observing firestore for changes in registration for: $userId")
+    override fun listenToUserChanges(newUserId: String) {
+        val userId = if (lastUserId != newUserId) {
+            newUserId
+        } else {
+            // No need to refresh
+            return
+        }
 
         // Remove the previous subscription, if it exists:
         registeredChangedListenerSubscription?.remove()
+
+        Timber.d("LoadUserSessionUseCase FirestoreRegisteredUserDataSource = null")
+        result.postValue(null) // Reset result
 
         // Watch the document:
         val registeredChangedListener = {
@@ -66,19 +77,26 @@ class FirestoreRegisteredUserDataSource @Inject constructor(
                     return@execute
                 }
                 val isRegistered: Boolean? = snapshot.get(REGISTERED_KEY) as? Boolean
-                Timber.d("Received registered flag: $isRegistered")
-                result.postValue(Result.Success(isRegistered))
+                // Only emit a value if it's a new value or a value change.
+                if (result.value == null
+                        || (result.value as? Result.Success)?.data != isRegistered) {
+                    Timber.d("Received registered flag: $isRegistered")
+                    result.postValue(Result.Success(isRegistered))
+                }
             }
         }
         registeredChangedListenerSubscription = firestore.collection(USERS_COLLECTION)
                 .document(userId).addSnapshotListener(registeredChangedListener)
+        lastUserId = userId
     }
 
     override fun observeResult() : LiveData<Result<Boolean?>?> {
         return result
     }
 
-    override fun clearListener() {
+    override fun setAnonymousValue() {
         registeredChangedListenerSubscription?.remove()
+        lastUserId = null
+        result.postValue(Result.Success(false))
     }
 }

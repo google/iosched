@@ -150,7 +150,7 @@ class FakeRegisteredUserDataSource(val isRegistered: Boolean) : RegisteredUserDa
         return result
     }
 
-    override fun clearListener() {
+    override fun setAnonymousValue() {
         //Noop
     }
 }
@@ -178,10 +178,6 @@ class FakeAuthStateUserDataSource(
         } else {
             _firebaseUser.postValue(Result.Error(Exception("Test")))
         }
-    }
-
-    override fun getUserId(): MutableLiveData<String?> {
-        return _userId
     }
 
     override fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfoBasic?>> {

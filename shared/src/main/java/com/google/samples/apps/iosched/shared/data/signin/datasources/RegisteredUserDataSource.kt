@@ -36,8 +36,7 @@ interface RegisteredUserDataSource {
     fun observeResult() : LiveData<Result<Boolean?>?>
 
     /**
-     * Call this method to clear listeners to avoid leaks.
+     * Clear listeners and set the result of the observable to false when the user is not signed in.
      */
-    //TODO: Really, clear it.
-    fun clearListener()
+    fun setAnonymousValue()
 }

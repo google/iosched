@@ -538,16 +538,13 @@ class TestRegisteredUserDataSource(private val isRegistered: Result<Boolean?>) :
         return MutableLiveData<Result<Boolean?>?>().apply { value = isRegistered }
     }
 
-    override fun clearListener() { }
+    override fun setAnonymousValue() { }
 }
 
 class TestAuthStateUserDataSource(
         private val user: Result<AuthenticatedUserInfoBasic?>?
 ) : AuthStateUserDataSource {
     override fun startListening() { }
-
-    override fun getUserId(): LiveData<String?> =
-        MutableLiveData<String>().apply { value = (user as? Result.Success)?.data?.getUid()}
 
     override fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfoBasic?>> =
         MutableLiveData<Result<AuthenticatedUserInfoBasic?>>().apply { value = user}

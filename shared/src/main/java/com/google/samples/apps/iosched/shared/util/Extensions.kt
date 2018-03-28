@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.shared.util
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
@@ -148,6 +149,13 @@ fun <X, Y> LiveData<X>.switchMap(body: (X) -> LiveData<Y>): LiveData<Y> {
     return Transformations.switchMap(this, body)
 }
 
+fun <T> MutableLiveData<T>.setValueIfNew(newValue: T) {
+    if (this.value != newValue) value = newValue
+}
+
+fun <T> MutableLiveData<T>.postValueIfNew(newValue: T) {
+    if (this.value != newValue) postValue(newValue)
+}
 // endregion
 
 // region ZonedDateTime

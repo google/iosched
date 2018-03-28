@@ -19,10 +19,10 @@ package com.google.samples.apps.iosched.test.util.fakes
 import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
+import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.ui.signin.SignInEvent
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
-import com.google.samples.apps.iosched.shared.result.Event
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 
@@ -57,6 +57,7 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
             on { getUid() }.doReturn(id)
             on { getPhotoUrl() }.doReturn(mock<Uri> {})
             on { isSignedIn() }.doReturn(true)
+            on { isRegistrationDataReady() }.doReturn(true)
         }
         currentFirebaseUser.postValue(Result.Success(mockUser))
     }

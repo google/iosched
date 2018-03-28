@@ -89,5 +89,7 @@ class StagingLoggedOutFirebaseUserInfo(
     override fun isRegistered(): Boolean = false
 
     override fun getPhotoUrl(): Uri? = null
+
+    override fun isRegistrationDataReady(): Boolean = true
 }
 

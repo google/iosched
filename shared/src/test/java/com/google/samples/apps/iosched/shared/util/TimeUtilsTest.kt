@@ -70,30 +70,31 @@ class TimeUtilsTest {
     }
 
     @Test fun getSessionState_unknown() {
-        Assert.assertEquals(TimeUtils.SessionState.UNKNOWN, TimeUtils.getSessionState(null))
-        Assert.assertEquals(TimeUtils.SessionState.UNKNOWN,
+        Assert.assertEquals(TimeUtils.SessionRelativeTimeState.UNKNOWN,
+                TimeUtils.getSessionState(null))
+        Assert.assertEquals(TimeUtils.SessionRelativeTimeState.UNKNOWN,
                 TimeUtils.getSessionState(null, time0800))
     }
 
     @Test fun getSessionState_before() {
         val session = TestData.session0
-        Assert.assertEquals(TimeUtils.SessionState.BEFORE,
+        Assert.assertEquals(TimeUtils.SessionRelativeTimeState.BEFORE,
                 TimeUtils.getSessionState(session, session.startTime.minusHours(1L)))
     }
 
     @Test fun getSessionState_after() {
         val session = TestData.session0
-        Assert.assertEquals(TimeUtils.SessionState.AFTER,
+        Assert.assertEquals(TimeUtils.SessionRelativeTimeState.AFTER,
                 TimeUtils.getSessionState(session, session.endTime.plusHours(1L)))
     }
 
     @Test fun getSessionState_during() {
         val session = TestData.session0
-        Assert.assertEquals(TimeUtils.SessionState.DURING,
+        Assert.assertEquals(TimeUtils.SessionRelativeTimeState.DURING,
                 TimeUtils.getSessionState(session, session.startTime))
-        Assert.assertEquals(TimeUtils.SessionState.DURING,
+        Assert.assertEquals(TimeUtils.SessionRelativeTimeState.DURING,
                 TimeUtils.getSessionState(session, session.startTime.plusMinutes(1L)))
-        Assert.assertEquals(TimeUtils.SessionState.DURING,
+        Assert.assertEquals(TimeUtils.SessionRelativeTimeState.DURING,
                 TimeUtils.getSessionState(session, session.endTime))
     }
 

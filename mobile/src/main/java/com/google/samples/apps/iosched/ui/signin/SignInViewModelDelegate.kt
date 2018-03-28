@@ -21,11 +21,10 @@ import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
+import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.map
-import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignIn
 import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignOut
-import com.google.samples.apps.iosched.shared.result.Event
 import javax.inject.Inject
 
 enum class SignInEvent {
@@ -65,12 +64,12 @@ interface SignInViewModelDelegate {
     /**
      * Emit an Event on performSignInEvent to request sign-in
      */
-    fun emitSignInRequest() = performSignInEvent.postValue(Event(RequestSignIn))
+    fun emitSignInRequest()
 
     /**
      * Emit an Event on performSignInEvent to request sign-out
      */
-    fun emitSignOutRequest() = performSignInEvent.postValue(Event(RequestSignOut))
+    fun emitSignOutRequest()
 
     fun observeSignedInUser(): LiveData<Boolean>
 
@@ -107,6 +106,15 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
         _isRegistered = currentFirebaseUser.map { isRegistered() }
 
         observeUserAuthStateUseCase.execute(Any())
+    }
+
+
+    override fun emitSignInRequest() {
+        performSignInEvent.postValue(Event(SignInEvent.RequestSignIn))
+    }
+
+    override fun emitSignOutRequest() {
+        performSignInEvent.postValue(Event(RequestSignOut))
     }
 
     override fun isSignedIn(): Boolean {
