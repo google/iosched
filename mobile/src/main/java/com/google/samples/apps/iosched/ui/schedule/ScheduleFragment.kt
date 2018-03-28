@@ -170,6 +170,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
 
         dummyBottomView = view.findViewById(R.id.dummy_bottom_navigation)
         bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.filter_sheet))
+        bottomSheetBehavior.skipCollapsed = true
 
         // Lock the bottom navigation hidden while the filters sheet is expanded.
         bottomSheetBehavior.setBottomSheetCallback(object : BottomSheetCallback {
