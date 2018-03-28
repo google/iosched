@@ -76,6 +76,7 @@ buildscript {
             maven { url "$mdc_repo_location" }
         }
         google()
+        mavenCentral()
         jcenter()
         // Android Build Server
         maven { url '../iosched-prebuilts/m2repository' }
@@ -92,6 +93,7 @@ buildscript {
 allprojects {
     repositories {
         google()
+        mavenCentral()
         jcenter()
 
         // Material Design Components in Kokoro & local
