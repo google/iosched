@@ -344,6 +344,16 @@
             app:isSignedIn="@{viewModel.observeSignedInUser}"
             app:userEvent="@{viewModel.userEvent}" />
 
+        <!-- A custom snackbar implementation for more control over positioning i.e. above the FAB,
+             and to control its entry/exit animation. -->
+        <com.google.samples.apps.iosched.widget.FadingSnackbar
+            android:id="@+id/snackbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="84dp"
+            android:visibility="gone" />
+
     </android.support.design.widget.CoordinatorLayout>
 
 </layout>

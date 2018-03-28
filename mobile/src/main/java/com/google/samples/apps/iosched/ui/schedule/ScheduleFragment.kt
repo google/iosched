@@ -26,14 +26,11 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v4.view.ViewPager.SimpleOnPageChangeListener
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.OnHierarchyChangeListener
 import androidx.view.doOnLayout
 import com.google.android.material.widget.FloatingActionButton
-import com.google.android.material.widget.Snackbar
 import com.google.android.material.widget.TabLayout
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
@@ -110,7 +107,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         filtersFab = binding.filterFab
         // We can't lookup bottomSheetBehavior here since it's on a <fragment> tag
 
-        setUpSnackbar(viewModel.snackBarMessage, coordinatorLayout, snackbarMessageManager)
+        setUpSnackbar(viewModel.snackBarMessage, binding.snackbar, snackbarMessageManager)
 
         viewModel.navigateToSessionAction.observe(this, EventObserver { sessionId ->
             openSessionDetail(sessionId)
@@ -150,25 +147,6 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
                 // Hide the FAB on the agenda page
                 isAgendaPage.set(position == AGENDA_POSITION)
             }
-        })
-
-        // Ensure snackbars appear above the hiding BottomNavigationView.
-        // We clear the Snackbar's insetEdge, which is also set in it's (final) showView() method,
-        // so we have to do it later (e.g. when it's added to the hierarchy).
-        coordinatorLayout.setOnHierarchyChangeListener(object : OnHierarchyChangeListener {
-            override fun onChildViewAdded(parent: View, child: View) {
-                if (child is Snackbar.SnackbarLayout) {
-                    child.layoutParams = (child.layoutParams as CoordinatorLayout.LayoutParams)
-                        .apply {
-                            insetEdge = Gravity.NO_GRAVITY
-                            dodgeInsetEdges = Gravity.BOTTOM
-                        }
-                    // Also make it draw over the bottom sheet
-                    child.elevation = resources.getDimension(R.dimen.bottom_sheet_elevation)
-                }
-            }
-
-            override fun onChildViewRemoved(parent: View, child: View) {}
         })
 
         bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.filter_sheet))

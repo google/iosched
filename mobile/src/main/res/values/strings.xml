@@ -36,8 +36,8 @@
     <string name="event_star_error" translation_description="The message shown for an error when user tries to add an event.">Error adding event to starred items</string>
     <string name="reservation_error" translation_description="The message shown for an error when user is trying to reserve a session attendance.">Error making changes to reservation. Wait for previous requests to finish or try again later.</string>
     <string name="reservation_request_succeeded" translation_description="The message shown when user tries to reserve a seat for a session.">Reservation requested.</string>
-    <string name="reservation_cancel_succeeded" translation_description="The message shown when user has canceled their reservation for a session.">Reservation canceled: \"%s.\"</string>
-    <string name="reservation_new" translation_description="The message shown when user's reservation is confirmed by the system.">Your seat has been reserved for \"%s\".</string>
+    <string name="reservation_cancel_succeeded" translation_description="The message shown when user has canceled their reservation for a session.">Reservation canceled: \"&lt;b>%s&lt;/b>.\"</string>
+    <string name="reservation_new" translation_description="The message shown when user's reservation is confirmed by the system.">Your seat has been reserved for \"&lt;b>%s&lt;/b>\".</string>
     <string name="reservation_replaced" translation_description="The message shown when user has chosen to replace a reservation for another and it is confirmed by the system.">Event replaced.</string>
     <string name="waitlist_new" translation_description="The message shown when user is added to the waitlist of a session reservation.">You have been waitlisted.</string>
     <string name="waitlist_cancel_succeeded" translation_description="The message shown when user has canceled their reservation and was waitlisted for a session.">Removed from waitlist.</string>
