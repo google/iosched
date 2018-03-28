@@ -48,4 +48,9 @@
         <attr name="state_wait_listed" format="boolean" />
         <attr name="state_reservation_pending" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="PushUpBehavior">
+        <attr name="behavior_pushTitle" format="reference" />
+        <attr name="behavior_pushPhoto" format="reference" />
+    </declare-styleable>
 </resources>

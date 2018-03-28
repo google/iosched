@@ -126,7 +126,6 @@
                     app:layout_constraintEnd_toEndOf="@id/guideline_title_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toTopOf="@id/detail_image"
-                    app:layout_constraintVertical_bias="1"
                     app:goneUnless="@{!viewModel.hasPhoto}"
                     tools:text="Session Title" />
 
@@ -303,12 +302,14 @@
 
         </android.support.v4.widget.NestedScrollView>
 
-        <!-- TODO what to do about this when scrolled?? -->
         <ImageButton
             android:id="@+id/up"
             android:layout_width="?actionBarSize"
             android:layout_height="?actionBarSize"
             android:layout_gravity="start|top"
+            app:layout_behavior="com.google.samples.apps.iosched.ui.sessiondetail.PushUpBehavior"
+            app:behavior_pushTitle="@id/session_detail_title"
+            app:behavior_pushPhoto="@id/detail_image"
             android:background="?selectableItemBackgroundBorderless"
             app:srcCompat="@drawable/ic_arrow_back" />
 
