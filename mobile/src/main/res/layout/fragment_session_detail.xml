@@ -65,6 +65,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:contentDescription="@string/a11y_session_detail_video_description"
+                    android:scaleType="centerCrop"
                     app:layout_constraintDimensionRatio="@string/session_detail_header_aspect"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
