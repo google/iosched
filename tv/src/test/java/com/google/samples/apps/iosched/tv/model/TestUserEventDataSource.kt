@@ -23,11 +23,13 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventResult
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
+import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
 
 object TestUserEventDataSource : UserEventDataSource {
+
     override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {
         val result = MutableLiveData<UserEventsResult>()
         result.postValue(UserEventsResult(TestData.userEvents))
@@ -55,6 +57,15 @@ object TestUserEventDataSource : UserEventDataSource {
     override fun requestReservation(
             userId: String, session: Session, action: ReservationRequestAction
     ): LiveData<Result<ReservationRequestAction>> {
+        TODO("not implemented")
+    }
+
+    override fun getUserEvents(userId: String): List<UserEvent> {
+        return TestData.userEvents
+    }
+
+    override fun swapReservation(userId: String, fromSession: Session, toSession: Session):
+            LiveData<Result<SwapRequestAction>> {
         TODO("not implemented")
     }
 }

@@ -19,9 +19,8 @@ package com.google.samples.apps.iosched.ui.reservation
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
+import com.google.samples.apps.iosched.shared.domain.users.SwapActionUseCase
+import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.Event
 import timber.log.Timber
 import javax.inject.Inject
@@ -29,14 +28,18 @@ import javax.inject.Inject
 /**
  * ViewModel for the dialog when the user is about to remove the reservation.
  */
-class RemoveReservationViewModel @Inject constructor(
-    private val reservationActionUseCase: ReservationActionUseCase
-) : ViewModel(), RemoveReservationListener {
+class SwapReservationViewModel @Inject constructor(
+    private val swapActionUseCase: SwapActionUseCase
+) : ViewModel(), SwapReservationListener {
 
 
     var userId: String? = null
 
-    var sessionId: String? = null
+    var fromId: String? = null
+
+    var fromTitle: String? = null
+
+    var toId: String? = null
 
     /**
      * Event to dismiss the opening dialog. We only want to consume the event, the
@@ -46,18 +49,25 @@ class RemoveReservationViewModel @Inject constructor(
     val dismissDialogAction: LiveData<Event<Boolean>>
         get() = _dismissDialogAction
 
-    override fun onRemoveClicked() {
+    override fun onReplaceClicked() {
         _dismissDialogAction.value = Event(true)
 
         val immutableUserId = userId
-        val immutableSessionId = sessionId
+        val immutableFromId = fromId
+        val immutableFromTitle = fromTitle
+        val immutableToId = toId
         // The user should be logged in at this point.
-        if (immutableUserId == null || immutableSessionId == null) {
-            Timber.e("Tried to remove a reservation with a null user or session ID")
+        if (immutableUserId == null || immutableFromId == null ||
+                immutableFromTitle == null || immutableToId == null) {
+            Timber.e("Tried to replace reservations with a null user or IDs")
             return
         }
-        reservationActionUseCase.execute(
-                ReservationRequestParameters(immutableUserId, immutableSessionId, CancelAction()))
+        swapActionUseCase.execute(
+                SwapRequestParameters(
+                        immutableUserId,
+                        immutableFromId,
+                        immutableFromTitle,
+                        immutableToId))
     }
 
     override fun onCancelClicked() {
@@ -65,9 +75,9 @@ class RemoveReservationViewModel @Inject constructor(
     }
 }
 
-interface RemoveReservationListener {
-
-    fun onRemoveClicked()
+interface SwapReservationListener {
 
     fun onCancelClicked()
+
+    fun onReplaceClicked()
 }

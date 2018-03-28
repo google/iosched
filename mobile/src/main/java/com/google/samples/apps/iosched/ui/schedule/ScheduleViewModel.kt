@@ -23,18 +23,19 @@ import android.arch.lifecycle.ViewModel
 import android.support.annotation.StringRes
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
-import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.invoke
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CANCEL
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.REQUEST
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.SwapAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
+import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.Session
@@ -53,6 +54,7 @@ import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.schedule.filters.LoadTagFiltersUseCase
 import com.google.samples.apps.iosched.ui.schedule.filters.TagFilter
+import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import timber.log.Timber
 import javax.inject.Inject
@@ -133,6 +135,11 @@ class ScheduleViewModel @Inject constructor(
     val navigateToRemoveReservationDialogAction: LiveData<Event<ReservationRequestParameters>>
         get() = _navigateToRemoveReservationDialogAction
 
+    private val _navigateToSwapReservationDialogAction =
+            MediatorLiveData<Event<SwapRequestParameters>>()
+    val navigateToSwapReservationDialogAction: LiveData<Event<SwapRequestParameters>>
+        get() = _navigateToSwapReservationDialogAction
+
     init {
         userSessionMatcher = tagFilterMatcher
 
@@ -183,6 +190,12 @@ class ScheduleViewModel @Inject constructor(
             _profileContentDesc.value = getProfileContentDescription(it)
         }
 
+        _navigateToSwapReservationDialogAction.addSource(reservationActionUseCase.observe(), {
+            ((it as? Result.Success)?.data as? SwapAction)?.let {
+                _navigateToSwapReservationDialogAction.postValue(Event(it.parameters))
+            }
+        })
+
         // Show an error message if a reservation request fails
         _snackBarMessage.addSource(reservationActionUseCase.observe()) {
             if (it is Result.Error) {
@@ -208,27 +221,7 @@ class ScheduleViewModel @Inject constructor(
         _snackBarMessage.addSource(loadUserSessionsByDayUseCase.observe()) {
             val message: Int? = when (it) {
                 is Result.Success ->
-                    when (it.data.userMessage) {
-                        UserEventMessage.CHANGES_IN_WAITLIST ->
-                            R.string.waitlist_new
-                        UserEventMessage.CHANGES_IN_RESERVATIONS ->
-                            R.string.reservation_new
-                        UserEventMessage.RESERVATION_CANCELED ->
-                            null //No-op
-                        UserEventMessage.WAITLIST_CANCELED ->
-                            null //No-op
-                        UserEventMessage.RESERVATION_DENIED_CUTOFF ->
-                            R.string.reservation_denied_cutoff
-                        UserEventMessage.RESERVATION_DENIED_CLASH ->
-                            R.string.reservation_denied_clash
-                        UserEventMessage.RESERVATION_DENIED_UNKNOWN ->
-                            R.string.reservation_denied_unknown
-                        UserEventMessage.CANCELLATION_DENIED_CUTOFF ->
-                            R.string.cancellation_denied_cutoff
-                        UserEventMessage.CANCELLATION_DENIED_UNKNOWN ->
-                            R.string.cancellation_denied_unknown
-                        null -> null
-                    }
+                    it.data.userMessage?.stringRes()
                 else -> null
             }
 
@@ -367,11 +360,12 @@ class ScheduleViewModel @Inject constructor(
             _navigateToRemoveReservationDialogAction.value = Event(ReservationRequestParameters(
                     userId,
                     session.id,
-                    CANCEL))
+                    CancelAction()))
             return
         }
 
-        reservationActionUseCase.execute(ReservationRequestParameters(userId, session.id, REQUEST))
+        reservationActionUseCase.execute(ReservationRequestParameters(userId, session.id,
+                RequestAction()))
     }
 
     /**

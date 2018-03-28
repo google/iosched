@@ -48,7 +48,7 @@ fun generateReservationChangeMsg(
         if (newMessage != null) {
             val userMessageSnapshot = userMessage
             // Order in enum is definition order
-            if (userMessageSnapshot == null || newMessage > userMessageSnapshot) {
+            if (userMessageSnapshot == null || newMessage < userMessageSnapshot) {
                 userMessage = newMessage
             }
         }
@@ -80,8 +80,13 @@ fun compareOldAndNewUserEvents(
 
     // If the old data wasn't reserved and it's reserved now, there's a change.
     if (!oldState.isReserved() && newState.isReserved()) {
-        Timber.d("Reservation change detected: $changedId")
-        return UserEventMessage.CHANGES_IN_RESERVATIONS
+        Timber.d("Request change detected: $changedId")
+        return if (newState.isLastRequestResultBySwap()) {
+            UserEventMessage.RESERVATIONS_REPLACED
+        } else {
+            UserEventMessage.CHANGES_IN_RESERVATIONS
+        }
+
     }
     // If the user was waiting for a reservation and they're waitlisted, there's a change.
     if (oldState.isReservationPending() && newState.isWaitlisted()) {
@@ -134,8 +139,14 @@ fun compareOldAndNewUserEvents(
     return null
 }
 
+/**
+ * Enum of messages notified to the end user.
+ * Need to be ordered by importance
+ * (e.g. CHANGE_IN_RESERVATIONS is more important than CHANGES_IN_WAITLIST)
+ */
 enum class UserEventMessage {
     CHANGES_IN_RESERVATIONS,
+    RESERVATIONS_REPLACED,
     CHANGES_IN_WAITLIST,
     RESERVATION_CANCELED,
     WAITLIST_CANCELED,
@@ -145,3 +156,4 @@ enum class UserEventMessage {
     CANCELLATION_DENIED_CUTOFF,
     CANCELLATION_DENIED_UNKNOWN
 }
+

@@ -20,6 +20,8 @@ import com.google.samples.apps.iosched.shared.firestore.entity.ReservationReques
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequest.ReservationRequestEntityAction
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus
+import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.SWAP_SUCCEEDED
+import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.SWAP_WAITLISTED
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsEqual.equalTo
@@ -52,6 +54,29 @@ class CompareOldAndNewUserEventsTest {
         val result = compareOldAndNewUserEvents(oldState, newState, oldState.id)
 
         assertThat(result, `is`(equalTo(UserEventMessage.CHANGES_IN_RESERVATIONS)))
+    }
+
+    @Test
+    fun compareOldAndNew_newStateReservedBySwap_reservationReplacedMessage() {
+        val oldState = createUserEvent()
+        val newState = createUserEvent(reservationStatus = UserEvent.ReservationStatus.RESERVED,
+                reservationRequestResult = createReservationResult(requestResult = SWAP_SUCCEEDED))
+
+        val result = compareOldAndNewUserEvents(oldState, newState, oldState.id)
+
+        assertThat(result, `is`(equalTo(UserEventMessage.RESERVATIONS_REPLACED)))
+    }
+
+    @Test
+    fun compareOldAndNew_newStateWaitlistedBySwap_waitlistChangeMessage() {
+        val oldState = createUserEvent(reservationRequest = createReservationRequest(
+                ReservationRequestEntityAction.RESERVE_REQUESTED))
+        val newState = createUserEvent(reservationStatus = UserEvent.ReservationStatus.WAITLISTED,
+                reservationRequestResult = createReservationResult(requestResult = SWAP_WAITLISTED))
+
+        val result = compareOldAndNewUserEvents(oldState, newState, oldState.id)
+
+        assertThat(result, `is`(equalTo(UserEventMessage.CHANGES_IN_WAITLIST)))
     }
 
     @Test
