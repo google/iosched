@@ -25,6 +25,7 @@
         <variable
             name="viewModel"
             type="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewModel" />
+
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -328,15 +329,17 @@
             app:contentInsetStart="@dimen/margin_normal"
             app:fabAlignmentMode="end" />
 
-        <com.google.android.material.widget.FloatingActionButton
+        <com.google.samples.apps.iosched.ui.reservation.StarReserveFab
             android:id="@+id/session_detail_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:eventListener="@{viewModel}"
-            app:isRegistered="@{viewModel.observeRegisteredUser}"
             app:layout_anchor="@id/session_detail_bottom_app_bar"
             app:backgroundTint="@color/white"
-            app:isDetailStarred="@{viewModel.userEvent.isStarred}" />
+            app:eventListener="@{viewModel}"
+            app:isRegistered="@{viewModel.observeRegisteredUser}"
+            app:isReservable="@{viewModel.session.isReservable}"
+            app:isSignedIn="@{viewModel.observeSignedInUser}"
+            app:userEvent="@{viewModel.userEvent}" />
 
     </android.support.design.widget.CoordinatorLayout>
 

@@ -23,12 +23,8 @@ import android.view.View.VISIBLE
 import android.widget.TextView
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
-import com.google.samples.apps.iosched.widget.ReservationStatus.RESERVABLE
-import com.google.samples.apps.iosched.widget.ReservationStatus.RESERVATION_DISABLED
-import com.google.samples.apps.iosched.widget.ReservationStatus.RESERVATION_PENDING
-import com.google.samples.apps.iosched.widget.ReservationStatus.RESERVED
-import com.google.samples.apps.iosched.widget.ReservationStatus.WAIT_LISTED
-import com.google.samples.apps.iosched.widget.ReserveButton
+import com.google.samples.apps.iosched.ui.reservation.ReservationButtonState
+import com.google.samples.apps.iosched.ui.reservation.ReserveButton
 import org.threeten.bp.Duration
 import org.threeten.bp.ZonedDateTime
 
@@ -61,19 +57,7 @@ fun reservationStatus(
     userEvent: UserEvent?
 ) {
     val reservationUnavailable = false // TODO determine this condition
-    reserveButton.status = when {
-        // Order is important e.g. a pending cancellation is also reserved.
-        userEvent?.isReservationPending() == true || userEvent?.isCancelPending() == true -> {
-            // Treat both pending reservations & cancellations the same. This is important as the
-            // icon animations all expect to do through the same pending state.
-            RESERVATION_PENDING
-        }
-        userEvent?.isReserved() == true -> RESERVED
-        userEvent?.isWaitlisted() == true -> WAIT_LISTED
-        // TODO ?? -> WAIT_LIST_AVAILABLE
-        reservationUnavailable -> RESERVATION_DISABLED
-        else -> RESERVABLE
-    }
+    reserveButton.status = ReservationButtonState.fromUserEvent(userEvent, reservationUnavailable)
     reserveButton.isEnabled = !reservationUnavailable
 }
 
