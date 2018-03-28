@@ -25,6 +25,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.samples.apps.iosched.databinding.DialogSignInBinding
+import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignIn
 import com.google.samples.apps.iosched.util.signin.SignInHandler
@@ -70,18 +71,14 @@ class SignInDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInject
             viewModel = signInViewModel
         }
 
-        signInViewModel.performSignInEvent.observe(this, Observer { event ->
-            event?.getContentIfNotHandled()?.let { signInRequest ->
-                if (signInRequest == RequestSignIn) {
-                    signInHandler.makeSignInIntent()?.let { startActivity(it) }
-                }
+        signInViewModel.performSignInEvent.observe(this, EventObserver { signInRequest ->
+            if (signInRequest == RequestSignIn) {
+                signInHandler.makeSignInIntent()?.let { startActivity(it) }
             }
         })
 
-        signInViewModel.dismissDialogAction.observe(this, Observer {
-            it?.getContentIfNotHandled()?.let {
-                dismiss()
-            }
+        signInViewModel.dismissDialogAction.observe(this, EventObserver {
+            dismiss()
         })
         return binding.root
     }

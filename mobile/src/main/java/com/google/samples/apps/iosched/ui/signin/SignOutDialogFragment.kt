@@ -25,6 +25,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.samples.apps.iosched.databinding.DialogSignOutBinding
+import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignOut
 import com.google.samples.apps.iosched.util.signin.SignInHandler
@@ -70,18 +71,14 @@ class SignOutDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInjec
             viewModel = signOutViewModel
         }
 
-        signOutViewModel.performSignInEvent.observe(this, Observer { event ->
-            event?.getContentIfNotHandled()?.let { signInRequest ->
-                if (signInRequest == RequestSignOut) {
-                    signInHandler.signOut(requireContext())
-                }
+        signOutViewModel.performSignInEvent.observe(this, EventObserver { signInRequest ->
+            if (signInRequest == RequestSignOut) {
+                signInHandler.signOut(requireContext())
             }
         })
 
-        signOutViewModel.dismissDialogAction.observe(this, Observer {
-            it?.getContentIfNotHandled()?.let {
-                dismiss()
-            }
+        signOutViewModel.dismissDialogAction.observe(this, EventObserver {
+            dismiss()
         })
         return binding.root
     }

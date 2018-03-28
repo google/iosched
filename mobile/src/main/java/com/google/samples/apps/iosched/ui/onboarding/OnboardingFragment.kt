@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.ui.onboarding
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Context
 import android.content.Intent
@@ -29,6 +28,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.samples.apps.iosched.databinding.FragmentOnboardingBinding
+import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainActivity
@@ -81,12 +81,10 @@ class OnboardingFragment : DaggerFragment() {
             }
         }
 
-        onboardingViewModel.navigateToMainActivity.observe(this, Observer {
-            it?.getContentIfNotHandled()?.let {
-                requireActivity().run {
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
-                }
+        onboardingViewModel.navigateToMainActivity.observe(this, EventObserver {
+            requireActivity().run {
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
             }
         })
 

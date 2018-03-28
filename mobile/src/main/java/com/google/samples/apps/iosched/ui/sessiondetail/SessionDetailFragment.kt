@@ -34,8 +34,8 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSessionDetailBinding
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
+import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
-import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment.Companion.DIALOG_REMOVE_RESERVATION
 import com.google.samples.apps.iosched.ui.reservation.SwapReservationDialogFragment
@@ -93,51 +93,39 @@ class SessionDetailFragment : DaggerFragment() {
             }
         })
 
-        sessionDetailViewModel.navigateToYouTubeAction.observe(this, Observer { navigationEvent ->
-            navigationEvent?.getContentIfNotHandled()?.let { youtubeUrl ->
-                openYoutubeUrl(youtubeUrl)
-            }
+        sessionDetailViewModel.navigateToYouTubeAction.observe(this, EventObserver { youtubeUrl ->
+            openYoutubeUrl(youtubeUrl)
         })
 
         // TODO style Snackbar so it doesn't overlap the bottom app bar (b/76112328)
-        sessionDetailViewModel.snackBarMessage.observe(this, Observer {
-            it?.getContentIfNotHandled()?.let { message: SnackbarMessage ->
-                val coordinatorLayout =
-                        requireActivity().findViewById<View>(R.id.coordinator_layout_session_detail)
-                val duration = if (message.longDuration) {
-                    Snackbar.LENGTH_LONG
-                } else {
-                    Snackbar.LENGTH_SHORT
-                }
-                Snackbar.make(coordinatorLayout, message.messageId, duration).apply {
-                    message.actionId?.let { action -> setAction(action, { this.dismiss() }) }
-                    setActionTextColor(ContextCompat.getColor(context, R.color.teal))
-                    show()
-                }
+        sessionDetailViewModel.snackBarMessage.observe(this, EventObserver { message ->
+            val coordinatorLayout =
+                requireActivity().findViewById<View>(R.id.coordinator_layout_session_detail)
+            val duration = if (message.longDuration) {
+                Snackbar.LENGTH_LONG
+            } else {
+                Snackbar.LENGTH_SHORT
+            }
+            Snackbar.make(coordinatorLayout, message.messageId, duration).apply {
+                message.actionId?.let { action -> setAction(action, { this.dismiss() }) }
+                setActionTextColor(ContextCompat.getColor(context, R.color.teal))
+                show()
             }
         })
 
-        sessionDetailViewModel.errorMessage.observe(this, Observer { message ->
+        sessionDetailViewModel.errorMessage.observe(this, EventObserver { errorMsg ->
             //TODO: Change once there's a way to show errors to the user
-            message?.getContentIfNotHandled()?.let { errorMsg ->
-                Toast.makeText(this.context, errorMsg, Toast.LENGTH_LONG).show()
-            }
+            Toast.makeText(this.context, errorMsg, Toast.LENGTH_LONG).show()
         })
 
-        sessionDetailViewModel.navigateToSignInDialogAction.observe(this, Observer {
-            it?.getContentIfNotHandled()?.let {
-                openSignInDialog(requireActivity())
-            }
+        sessionDetailViewModel.navigateToSignInDialogAction.observe(this, EventObserver {
+            openSignInDialog(requireActivity())
         })
-        sessionDetailViewModel.navigateToRemoveReservationDialogAction.observe(this, Observer {
-            it?.getContentIfNotHandled()?.let {
+        sessionDetailViewModel.navigateToRemoveReservationDialogAction.observe(this, EventObserver {
                 openRemoveReservationDialog(requireActivity(), it)
-            }
         })
-        sessionDetailViewModel.navigateToSwapReservationDialogAction.observe(this, Observer {
-            it?.getContentIfNotHandled()?.let {
-                openSwapReservationDialog(requireActivity(), it)
-            }
+        sessionDetailViewModel.navigateToSwapReservationDialogAction.observe(this, EventObserver {
+            openSwapReservationDialog(requireActivity(), it)
         })
         return binding.root
     }
