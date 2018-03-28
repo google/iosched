@@ -20,6 +20,7 @@ import android.content.Context
 import android.support.v7.widget.AppCompatImageButton
 import android.util.AttributeSet
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.util.srcAsync
 
 /**
  * An [AppCompatImageButton] extension supporting multiple custom states, representing the status
@@ -37,7 +38,7 @@ class ReserveButton(context: Context, attrs: AttributeSet) : AppCompatImageButto
 
     init {
         // Drawable defining drawables for each reservation state
-        setImageResource(R.drawable.asld_reservation)
+        srcAsync(this, R.drawable.asld_reservation)
         status = ReservationButtonState.RESERVABLE
     }
 

@@ -21,6 +21,7 @@
     <data>
 
         <import type="android.arch.lifecycle.LiveData" />
+        <import type="com.google.samples.apps.iosched.R" />
 
         <variable
             name="session"
@@ -85,7 +86,7 @@
             android:checked="@{userEvent.isStarred}"
             android:contentDescription="@string/a11y_star_session_actions"
             android:onClick="@{() -> eventListener.onStarClicked(userEvent)}"
-            android:src="@drawable/asld_star_event"
+            app:srcAsync="@{R.drawable.asld_star_event}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

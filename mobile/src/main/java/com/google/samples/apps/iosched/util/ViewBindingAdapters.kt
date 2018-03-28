@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.util
 import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.support.annotation.DrawableRes
 import android.support.v4.view.ViewPager
 import android.support.v7.content.res.AppCompatResources
 import android.view.View
@@ -31,6 +32,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.widget.FloatingActionButton
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import timber.log.Timber
 
 @BindingAdapter("invisibleUnless")
@@ -86,4 +88,21 @@ fun imageUri(imageView: ImageView, imageUri: Uri?, placeholder: Drawable?) {
 @BindingAdapter(value = ["imageUrl", "placeholder"], requireAll = false)
 fun imageUrl(imageView: ImageView, imageUrl: String?, placeholder: Drawable?) {
     imageUri(imageView, imageUrl?.toUri(), placeholder)
+}
+
+/**
+ * Loads a Drawable asynchronously.
+ *
+ * For most use cases, just use Glide. This method is particularly useful for
+ * AnimatedStateListDrawable. Its inflation is very heavy, and Glide does not support it.
+ */
+@BindingAdapter("srcAsync")
+fun srcAsync(imageView: ImageView, @DrawableRes id: Int) {
+    val context = imageView.context
+    DefaultScheduler.execute {
+        val drawable = context.getDrawable(id)
+        imageView.post {
+            imageView.setImageDrawable(drawable)
+        }
+    }
 }
