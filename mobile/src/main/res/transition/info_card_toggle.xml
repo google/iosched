@@ -15,8 +15,16 @@
   ~ limitations under the License.
   -->
 
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<transitionSet
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/fast_out_slow_in">
 
-</android.support.constraint.ConstraintLayout>
+    <transition class="com.google.samples.apps.iosched.widget.transition.Rotate">
+        <targets>
+            <target android:targetId="@id/expand_icon" />
+        </targets>
+    </transition>
+
+    <changeBounds />
+
+</transitionSet>

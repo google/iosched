@@ -24,4 +24,6 @@
     <color name="yellow">#fcd230</color>
     <color name="orange">#ff6c00</color>
     <color name="white">#fff</color>
+    <color name="grey_800">#424242</color>
+    <color name="grey_600">#747474</color>
 </resources>

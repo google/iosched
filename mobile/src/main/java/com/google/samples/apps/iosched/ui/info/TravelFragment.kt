@@ -24,8 +24,10 @@ import com.google.samples.apps.iosched.R
 import dagger.android.support.DaggerFragment
 
 class TravelFragment : DaggerFragment() {
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_travel, container, false)
+        val root = inflater.inflate(R.layout.fragment_info_travel, container, false)
+        return root
     }
 }
