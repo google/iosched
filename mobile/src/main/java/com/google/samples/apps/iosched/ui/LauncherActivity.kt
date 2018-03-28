@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.ui
 
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
+import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.checkAllMatched
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.LaunchDestination.MAIN_ACTIVITY
@@ -39,14 +39,12 @@ class LauncherActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val viewModel: LaunchViewModel = viewModelProvider(viewModelFactory)
-        viewModel.launchDestination.observe(this, Observer {
-            it?.getContentIfNotHandled()?.let { destination ->
-                when (destination) {
-                    MAIN_ACTIVITY -> startActivity(Intent(this, MainActivity::class.java))
-                    ONBOARDING -> startActivity(Intent(this, OnboardingActivity::class.java))
-                }.checkAllMatched
-                finish()
-            }
+        viewModel.launchDestination.observe(this, EventObserver { destination ->
+            when (destination) {
+                MAIN_ACTIVITY -> startActivity(Intent(this, MainActivity::class.java))
+                ONBOARDING -> startActivity(Intent(this, OnboardingActivity::class.java))
+            }.checkAllMatched
+            finish()
         })
     }
 }

@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.ui.reservation
 
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Context
 import android.os.Bundle
@@ -26,6 +25,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.samples.apps.iosched.databinding.DialogSwapReservationBinding
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
+import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.widget.CustomDimDialogFragment
 import dagger.android.AndroidInjector
@@ -90,10 +90,8 @@ class SwapReservationDialogFragment : CustomDimDialogFragment(), HasSupportFragm
         val binding = DialogSwapReservationBinding.inflate(inflater, container, false).apply {
             viewModel = swapViewModel
         }
-        swapViewModel.dismissDialogAction.observe(this, Observer {
-            it?.getContentIfNotHandled()?.let {
-                dismiss()
-            }
+        swapViewModel.dismissDialogAction.observe(this, EventObserver {
+            dismiss()
         })
         return binding.root
     }

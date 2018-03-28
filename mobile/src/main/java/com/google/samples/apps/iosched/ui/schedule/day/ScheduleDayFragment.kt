@@ -27,6 +27,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.google.samples.apps.iosched.databinding.FragmentScheduleDayBinding
+import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.getEnum
@@ -128,11 +129,9 @@ class ScheduleDayFragment : DaggerFragment() {
         })
 
         // Show an error message
-        viewModel.errorMessage.observe(this, Observer { message ->
+        viewModel.errorMessage.observe(this, EventObserver { errorMsg ->
             //TODO: Change once there's a way to show errors to the user
-            message?.getContentIfNotHandled()?.let { errorMsg ->
-                Toast.makeText(this.context, errorMsg, Toast.LENGTH_LONG).show()
-            }
+            Toast.makeText(this.context, errorMsg, Toast.LENGTH_LONG).show()
         })
     }
 }
