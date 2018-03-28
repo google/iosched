@@ -339,6 +339,7 @@
             app:eventListener="@{viewModel}"
             app:isRegistered="@{viewModel.observeRegisteredUser}"
             app:isReservable="@{viewModel.session.isReservable}"
+            app:isReservationDisabled="@{viewModel.isReservationDisabled}"
             app:isSignedIn="@{viewModel.observeSignedInUser}"
             app:userEvent="@{viewModel.userEvent}" />
 

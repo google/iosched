@@ -136,6 +136,34 @@ class SessionDetailViewModelTest {
         assertEquals(null, LiveDataTestUtil.getValue(viewModel.timeUntilStart))
     }
 
+    @Test
+    fun testSessionStartsIn61Minutes_thenReservationIsNotDisabled() {
+        fixedTimeExecutorRule.time = testSession.startTime.minusMinutes(61).toInstant()
+        forceTimeUntilStartIntervalUpdate()
+        assertFalse(LiveDataTestUtil.getValue(viewModel.isReservationDisabled)!!)
+    }
+
+    @Test
+    fun testSessionStartsIn60Minutes_thenReservationIsDisabled() {
+        fixedTimeExecutorRule.time = testSession.startTime.minusMinutes(60).toInstant()
+        forceTimeUntilStartIntervalUpdate()
+        assertTrue(LiveDataTestUtil.getValue(viewModel.isReservationDisabled)!!)
+    }
+
+    @Test
+    fun testSessionStartsNow_thenReservationIsDisabled() {
+        fixedTimeExecutorRule.time = testSession.startTime.toInstant()
+        forceTimeUntilStartIntervalUpdate()
+        assertTrue(LiveDataTestUtil.getValue(viewModel.isReservationDisabled)!!)
+    }
+
+    @Test
+    fun testSessionStarted1MinuteAgo_thenReservationIsDisabled() {
+        fixedTimeExecutorRule.time = testSession.startTime.plusMinutes(1).toInstant()
+        forceTimeUntilStartIntervalUpdate()
+        assertTrue(LiveDataTestUtil.getValue(viewModel.isReservationDisabled)!!)
+    }
+
     @Test fun testOnPlayVideo_doesNotCreateEventForVideo() {
         val sessionWithoutYoutubeUrl = testSession
         val vm = createSessionDetailViewModel()
