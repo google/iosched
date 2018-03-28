@@ -46,9 +46,7 @@ data class UserEvent(
         private val reservationRequest: ReservationRequest? = null
 ) {
     fun isPinned(): Boolean {
-        return isStarred
-                || reservationRequestResult?.requestResult == RESERVE_SUCCEEDED
-                || reservationRequestResult?.requestResult == RESERVE_WAITLISTED
+        return isStarred || isReserved() || isWaitlisted()
     }
 
     /**
