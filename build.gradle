@@ -45,11 +45,11 @@ buildscript {
         dataBindingCompilerVersion = '3.0.1'
         designLibraryVersion = '27.1.0'
         espressoVersion = '3.0.1'
-        firebaseUiVersion = "3.2.2"
+        firebaseUiVersion = "3.3.0"
         flexboxVersion = "0.3.2"
         glideVersion = "4.6.1"
         googleMapUtilsVersion = "0.5"
-        googlePlayServicesClientVersion = "11.8.0"
+        googlePlayServicesClientVersion = "12.0.1"
         googleServicesVersion = "3.2.0"
         gsonVersion = "2.8.1"
         hamcrestVersion = '1.3'
