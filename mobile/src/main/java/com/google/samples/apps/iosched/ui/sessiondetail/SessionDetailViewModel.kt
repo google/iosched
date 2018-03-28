@@ -48,6 +48,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 private const val TEN_SECONDS = 10_000L
+private const val SIXTY_SECONDS = 60_000L
 
 /**
  * Loads [Session] data and exposes it to the session detail view.
@@ -90,6 +91,7 @@ class SessionDetailViewModel @Inject constructor(
     val hasSpeakers: LiveData<Boolean>
     val hasRelated: LiveData<Boolean>
     val timeUntilStart: LiveData<Duration?>
+    val isReservationDisabled: LiveData<Boolean>
 
     private val _navigateToRemoveReservationDialogAction =
             MutableLiveData<Event<ReservationRequestParameters>>()
@@ -141,6 +143,15 @@ class SessionDetailViewModel @Inject constructor(
                 }
             }
         }
+
+        isReservationDisabled =
+                SetIntervalLiveData.mapAtInterval(session, SIXTY_SECONDS) { currentSession ->
+                    currentSession?.startTime?.let { startTime ->
+                        // Only allow reservations if the sessions starts more than an hour from now
+                        Duration.between(DefaultTime.now(), startTime).toMinutes() <= 60
+                    }
+                }
+
         // Show an error message if a star request fails
         _snackBarMessage.addSource(starEventUseCase.observe()) { result ->
             // Show a snackbar message on error.
@@ -243,21 +254,34 @@ class SessionDetailViewModel @Inject constructor(
     override fun onReservationClicked() {
         val userEventSnapshot = userEvent.value ?: return
         val sessionSnapshot = session.value ?: return
+        val isReservationDisabledSnapshot = isReservationDisabled.value ?: return
 
         val userId = getUserId() ?: return
         if (userEventSnapshot.isReserved()
                 || userEventSnapshot.isWaitlisted()
                 || userEventSnapshot.isCancelPending() // Just in case
                 || userEventSnapshot.isReservationPending()) {
-            // Open the dialog to confirm if the user really wants to remove their reservation
-            _navigateToRemoveReservationDialogAction.value = Event(ReservationRequestParameters(
-                    userId,
-                    sessionSnapshot.id,
-                    CANCEL))
+
+            if (isReservationDisabledSnapshot) {
+                _snackBarMessage.postValue(Event(
+                        SnackbarMessage(R.string.cancellation_denied_cutoff, longDuration = true)))
+            } else {
+                // Open the dialog to confirm if the user really wants to remove their reservation
+                _navigateToRemoveReservationDialogAction.value = Event(ReservationRequestParameters(
+                        userId,
+                        sessionSnapshot.id,
+                        CANCEL))
+            }
             return
         }
-        reservationActionUseCase.execute(
-                ReservationRequestParameters(userId, sessionSnapshot.id, REQUEST))
+
+        if (isReservationDisabledSnapshot) {
+            _snackBarMessage.postValue(Event(
+                    SnackbarMessage(R.string.reservation_denied_cutoff, longDuration = true)))
+        } else {
+            reservationActionUseCase.execute(
+                    ReservationRequestParameters(userId, sessionSnapshot.id, REQUEST))
+        }
     }
 
     override fun onLoginClicked() {

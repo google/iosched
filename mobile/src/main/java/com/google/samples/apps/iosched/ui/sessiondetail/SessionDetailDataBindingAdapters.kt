@@ -120,6 +120,7 @@ fun sessionStartCountdown(view: TextView, timeUntilStart: Duration?) {
     "isSignedIn",
     "isRegistered",
     "isReservable",
+    "isReservationDisabled",
     "eventListener",
     requireAll = true
 )
@@ -129,6 +130,7 @@ fun assignFab(
     isSignedIn: Boolean,
     isRegistered: Boolean,
     isReservable: Boolean,
+    isReservationDisabled: Boolean,
     eventListener: SessionDetailEventListener
 ) {
     when {
@@ -141,9 +143,8 @@ fun assignFab(
             fab.setOnClickListener { eventListener.onLoginClicked() }
         }
         isRegistered && isReservable -> {
-            val unavailable = false // TODO determine this condition
-            fab.reservationStatus = ReservationButtonState.fromUserEvent(userEvent, unavailable)
-            fab.isEnabled = !unavailable
+            fab.reservationStatus = ReservationButtonState.fromUserEvent(userEvent,
+                    isReservationDisabled)
             fab.setOnClickListener { eventListener.onReservationClicked() }
         }
         else -> {
