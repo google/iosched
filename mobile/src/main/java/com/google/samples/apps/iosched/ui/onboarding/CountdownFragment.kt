@@ -25,6 +25,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.view.postDelayed
 import com.airbnb.lottie.LottieAnimationView
+import com.airbnb.lottie.LottieAnimationView.CacheStrategy.Strong
 import com.google.samples.apps.iosched.databinding.FragmentCountdownBinding
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.Duration
@@ -48,7 +49,8 @@ class CountdownFragment : Fragment() {
 
     private val updateTime: Runnable = object : Runnable {
 
-        private val conferenceStart = TimeUtils.ConferenceDay.DAY_1.start
+        // todo: verify Keynote start time
+        private val conferenceStart = TimeUtils.ConferenceDay.DAY_1.start.plusHours(3L)
 
         override fun run() {
             var timeUntilConf = Duration.between(ZonedDateTime.now(), conferenceStart)
@@ -72,12 +74,13 @@ class CountdownFragment : Fragment() {
             secs1 = (secs / 10).toInt()
             secs2 = (secs % 10).toInt()
 
-            handler.postDelayed(this, 1000L) // run self every second
+            handler.postDelayed(this, 1_000L) // Run self every second
         }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCountdownBinding.inflate(inflater, container, false)
@@ -107,32 +110,23 @@ class AnimateDigitDelegate(
         if (oldValue != newValue) {
             val view = viewProvider()
             if (oldValue != -1) {
-                // animate out the prev digit i.e play the second half of it's comp
-                view.setAnimation("anim/$oldValue.json")
+                // Animate out the prev digit i.e play the second half of it's comp
+                view.setAnimation("anim/$oldValue.json", Strong)
                 view.setMinAndMaxProgress(0.5f, 1f)
+                // Some issues scheduling & playing 2 * 500ms comps every 1s. Speed up the
+                // outward anim slightly to give us some headroom ¯\_(ツ)_/¯
+                view.speed = 1.1f
                 view.playAnimation()
 
-                // then animate in the next digit i.e play the first half of it's comp
-                // TODO listeners don't seem to be working, use post for now and revisit
-                /*view.removeAllAnimatorListeners()
-                view.addAnimatorListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator?) {
-                        view.removeAnimatorListener(this)
-                        view.setAnimation("anim/$newValue.json")
-                        view.setMinAndMaxProgress(0f, 0.5f)
-                        view.playAnimation()
-                    }
-                })*/
-
                 view.postDelayed(500L) {
-                    view.setAnimation("anim/$newValue.json")
+                    view.setAnimation("anim/$newValue.json", Strong)
                     view.setMinAndMaxProgress(0f, 0.5f)
+                    view.speed = 1f
                     view.playAnimation()
                 }
-
             } else {
-                // initial show, just animate in the desired digit
-                view.setAnimation("anim/$newValue.json")
+                // Initial show, just animate in the desired digit
+                view.setAnimation("anim/$newValue.json", Strong)
                 view.setMinAndMaxProgress(0f, 0.5f)
                 view.playAnimation()
             }

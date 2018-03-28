@@ -93,6 +93,7 @@ dependencies {
     // Utils
     api "com.jakewharton.timber:timber:$rootProject.timberVersion"
     implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
+    implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
 
     implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttpVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpVersion"

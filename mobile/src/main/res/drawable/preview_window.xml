@@ -15,12 +15,12 @@
   ~ limitations under the License.
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppTheme.LightNav" parent="AppTheme.NoActionBar">
-        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
-        <item name="android:navigationBarColor">@color/white</item>
-        <item name="android:statusBarColor">@color/highlight_light</item>
-    </style>
+    <item android:drawable="@color/white" />
 
-</resources>
+    <item
+        android:drawable="@drawable/io_logo"
+        android:gravity="center" />
+
+</layer-list>

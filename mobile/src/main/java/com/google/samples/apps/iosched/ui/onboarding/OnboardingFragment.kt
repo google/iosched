@@ -17,10 +17,12 @@
 package com.google.samples.apps.iosched.ui.onboarding
 
 import android.annotation.SuppressLint
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.view.LayoutInflater
@@ -28,39 +30,66 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.samples.apps.iosched.databinding.FragmentOnboardingBinding
 import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.ui.MainActivity
+import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
-private const val AUTO_ADVANCE_DELAY = 6000L
-private const val INITIAL_ADVANCE_DELAY = 3000L
+private const val AUTO_ADVANCE_DELAY = 6_000L
+private const val INITIAL_ADVANCE_DELAY = 3_000L
 
-class OnboardingFragment : Fragment() {
+/**
+ * Contains the pages of the onboarding experience and responds to [OnboardingViewModel] events.
+ */
+class OnboardingFragment : DaggerFragment() {
+
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private lateinit var onboardingViewModel: OnboardingViewModel
+
+    private lateinit var binding: FragmentOnboardingBinding
+
+    private lateinit var pagerPager: ViewPagerPager
 
     private val handler = Handler()
 
     // Auto-advance the view pager to give overview of app benefits
     private val advancePager: Runnable = object : Runnable {
         override fun run() {
-            binding.pager.run { currentItem = ((currentItem + 1) % adapter!!.count) }
+            pagerPager.advance()
             handler.postDelayed(this, AUTO_ADVANCE_DELAY)
         }
     }
 
-    private lateinit var binding: FragmentOnboardingBinding
-
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        onboardingViewModel = viewModelProvider(viewModelFactory)
+
         binding = FragmentOnboardingBinding.inflate(inflater, container, false).apply {
+            viewModel = onboardingViewModel
             setLifecycleOwner(this@OnboardingFragment)
             pager.adapter = OnboardingAdapter(childFragmentManager)
+            pagerPager = ViewPagerPager(pager)
             // If user touches pager then stop auto advance
             pager.setOnTouchListener { _, _ ->
                 handler.removeCallbacks(advancePager)
                 false
             }
-            pageIndicator.setViewPager(pager)
         }
+
+        onboardingViewModel.navigateToMainActivity.observe(this, Observer {
+            it?.getContentIfNotHandled()?.let {
+                requireActivity().run {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                }
+            }
+        })
+
         return binding.root
     }
 
@@ -70,8 +99,8 @@ class OnboardingFragment : Fragment() {
     }
 
     override fun onDetach() {
-        super.onDetach()
         handler.removeCallbacks(advancePager)
+        super.onDetach()
     }
 }
 
@@ -94,5 +123,4 @@ class OnboardingAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter
     override fun getItem(position: Int) = fragments[position]
 
     override fun getCount() = fragments.size
-
 }

@@ -48,8 +48,8 @@
         app:layout_constraintVertical_chainStyle="spread_inside"
         android:padding="@dimen/onboarding_animation_padding"
         android:fitsSystemWindows="true"
+        android:importantForAccessibility="no"
         app:lottie_fileName="anim/io18_logo.json"
-        app:lottie_autoPlay="true"
         app:lottie_loop="true" />
 
     <TextView
