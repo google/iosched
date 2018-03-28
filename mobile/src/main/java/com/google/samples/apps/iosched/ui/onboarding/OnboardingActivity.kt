@@ -17,12 +17,12 @@
 package com.google.samples.apps.iosched.ui.onboarding
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.inTransaction
+import dagger.android.support.DaggerAppCompatActivity
 
-class OnboardingActivity : AppCompatActivity() {
+class OnboardingActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +31,8 @@ class OnboardingActivity : AppCompatActivity() {
         // immersive mode so images can draw behind the status bar
         val decor = window.decorView
         val flags = decor.systemUiVisibility or
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         decor.systemUiVisibility = flags
 
         if (savedInstanceState == null) {

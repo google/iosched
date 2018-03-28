@@ -43,11 +43,13 @@
         android:layout_height="0dp"
         android:fitsSystemWindows="true"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
+        android:layout_marginBottom="@dimen/margin_normal"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintBottom_toTopOf="@id/build_schedule"
         app:layout_constraintVertical_chainStyle="spread_inside"
-        app:srcCompat="@drawable/customize_schedule" />
+        app:srcCompat="@drawable/customize_schedule"
+        android:importantForAccessibility="no" />
 
     <TextView
         android:id="@+id/build_schedule"

@@ -42,7 +42,7 @@
         <Space
             android:id="@+id/spacer_top"
             android:layout_width="0dp"
-            android:layout_height="96dp"
+            android:layout_height="80dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/countdown_days_1"
             app:layout_constraintVertical_chainStyle="spread_inside" />
@@ -55,7 +55,8 @@
             app:layout_constraintTop_toBottomOf="@id/spacer_top"
             app:layout_constraintEnd_toStartOf="@id/countdown_days_2"
             app:layout_constraintBottom_toTopOf="@id/spacer_days_mins"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside"
+            android:importantForAccessibility="no" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/countdown_days_2"
@@ -65,7 +66,8 @@
             app:layout_constraintTop_toTopOf="@id/countdown_days_1"
             app:layout_constraintEnd_toEndOf="@id/spacer_days_hours"
             app:layout_constraintBottom_toBottomOf="@id/countdown_days_1"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside"
+            android:importantForAccessibility="no" />
 
         <Space
             android:id="@+id/spacer_days_hours"
@@ -83,7 +85,8 @@
             app:layout_constraintTop_toTopOf="@id/countdown_days_1"
             app:layout_constraintEnd_toStartOf="@id/countdown_hours_2"
             app:layout_constraintBottom_toBottomOf="@id/countdown_days_1"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside"
+            android:importantForAccessibility="no" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/countdown_hours_2"
@@ -93,7 +96,8 @@
             app:layout_constraintTop_toTopOf="@id/countdown_days_1"
             app:layout_constraintEnd_toStartOf="@id/guideline_end"
             app:layout_constraintBottom_toBottomOf="@id/countdown_days_1"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside"
+            android:importantForAccessibility="no" />
 
         <TextView
             android:id="@+id/countdown_days_label"
@@ -102,7 +106,8 @@
             app:layout_constraintStart_toStartOf="@id/countdown_days_1"
             app:layout_constraintTop_toBottomOf="@id/countdown_days_1"
             android:textAppearance="@style/TextAppearance.IOSched.OnboardingDeck"
-            android:text="@string/onboarding_label_days"/>
+            android:text="@string/onboarding_label_days"
+            android:importantForAccessibility="no" />
 
         <TextView
             android:id="@+id/countdown_hours_label"
@@ -111,7 +116,8 @@
             app:layout_constraintStart_toStartOf="@id/countdown_hours_1"
             app:layout_constraintTop_toBottomOf="@id/countdown_hours_1"
             android:textAppearance="@style/TextAppearance.IOSched.OnboardingDeck"
-            android:text="@string/onboarding_label_hours"/>
+            android:text="@string/onboarding_label_hours"
+            android:importantForAccessibility="no" />
 
         <Space
             android:id="@+id/spacer_days_mins"
@@ -128,7 +134,8 @@
             app:layout_constraintTop_toBottomOf="@id/spacer_days_mins"
             app:layout_constraintEnd_toStartOf="@id/countdown_mins_2"
             app:layout_constraintBottom_toTopOf="@id/spacer_mins_text"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside"
+            android:importantForAccessibility="no" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/countdown_mins_2"
@@ -138,7 +145,8 @@
             app:layout_constraintTop_toTopOf="@id/countdown_mins_1"
             app:layout_constraintEnd_toStartOf="@id/spacer_mins_secs"
             app:layout_constraintBottom_toBottomOf="@id/countdown_mins_1"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside"
+            android:importantForAccessibility="no" />
 
         <Space
             android:id="@+id/spacer_mins_secs"
@@ -156,7 +164,8 @@
             app:layout_constraintTop_toTopOf="@id/countdown_mins_1"
             app:layout_constraintEnd_toStartOf="@id/countdown_secs_2"
             app:layout_constraintBottom_toBottomOf="@id/countdown_mins_1"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside"
+            android:importantForAccessibility="no" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/countdown_secs_2"
@@ -166,12 +175,13 @@
             app:layout_constraintTop_toTopOf="@id/countdown_mins_1"
             app:layout_constraintEnd_toStartOf="@id/guideline_end"
             app:layout_constraintBottom_toBottomOf="@id/countdown_mins_1"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside"
+            android:importantForAccessibility="no" />
 
         <Space
             android:id="@+id/spacer_mins_text"
             android:layout_width="0dp"
-            android:layout_height="@dimen/spacing_normal"
+            android:layout_height="56dp"
             app:layout_constraintTop_toBottomOf="@id/countdown_mins_1"
             app:layout_constraintBottom_toTopOf="@id/watch_live" />
 
@@ -182,7 +192,8 @@
             app:layout_constraintStart_toStartOf="@id/countdown_mins_1"
             app:layout_constraintTop_toBottomOf="@id/countdown_mins_1"
             android:textAppearance="@style/TextAppearance.IOSched.OnboardingDeck"
-            android:text="@string/onboarding_label_mins"/>
+            android:text="@string/onboarding_label_mins"
+            android:importantForAccessibility="no" />
 
         <TextView
             android:id="@+id/countdown_secs_label"
@@ -191,7 +202,8 @@
             app:layout_constraintStart_toStartOf="@id/countdown_secs_1"
             app:layout_constraintTop_toBottomOf="@id/countdown_secs_1"
             android:textAppearance="@style/TextAppearance.IOSched.OnboardingDeck"
-            android:text="@string/onboarding_label_seconds"/>
+            android:text="@string/onboarding_label_seconds"
+            android:importantForAccessibility="no" />
 
         <TextView
             android:id="@+id/watch_live"

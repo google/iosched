@@ -15,12 +15,14 @@
   ~ limitations under the License.
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
-
-    <style name="AppTheme.LightNav" parent="AppTheme.NoActionBar">
-        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
-        <item name="android:navigationBarColor">@color/white</item>
-        <item name="android:statusBarColor">@color/highlight_light</item>
-    </style>
-
-</resources>
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="140dp"
+    android:height="100dp"
+    android:viewportWidth="70"
+    android:viewportHeight="50"
+    android:tint="#e1e1e1">
+    <path
+        android:fillColor="#fff"
+        android:pathData="M30.85,0l-11,49.3l2.76,0.62l11,-49.3z M0,42.09l17.76,0l0,-35.36l-17.76,0z M50.88,5.26C40.34,5.26 31.8,13.81 31.8,24.36C31.8,34.91 40.34,43.46 50.88,43.46C61.42,43.46 69.96,34.91 69.96,24.36C69.96,13.81 61.42,5.26 50.88,5.26" />
+</vector>

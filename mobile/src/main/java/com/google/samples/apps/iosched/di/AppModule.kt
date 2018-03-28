@@ -18,8 +18,11 @@ package com.google.samples.apps.iosched.di
 
 import android.content.Context
 import com.google.samples.apps.iosched.MainApplication
+import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
+import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 /**
  * Defines all the classes that need to be provided in the scope of the app.
@@ -34,4 +37,9 @@ class AppModule {
     fun provideContext(application: MainApplication): Context {
         return application.applicationContext
     }
+
+    @Singleton
+    @Provides
+    fun providesPreferenceStorage(context: Context): PreferenceStorage =
+        SharedPreferenceStorage(context)
 }

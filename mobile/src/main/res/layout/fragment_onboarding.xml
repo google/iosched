@@ -16,8 +16,13 @@
   -->
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.google.samples.apps.iosched.ui.onboarding.OnboardingViewModel" />
+    </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -30,14 +35,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:offscreenPageLimit="@{2}" />
 
         <android.support.constraint.Guideline
             android:id="@+id/guide_actions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_end="@dimen/onboarding_actions_height"/>
+            app:layout_constraintGuide_end="@dimen/onboarding_actions_height" />
 
         <Button
             android:id="@+id/get_started"
@@ -49,6 +55,7 @@
             app:layout_constraintBottom_toTopOf="@id/page_indicator"
             app:layout_constraintVertical_chainStyle="spread_inside"
             android:text="@string/onboarding_get_started"
+            android:onClick="@{() -> viewModel.getStartedClick()}"
             style="@style/Widget.IOSched.RaisedButton" />
 
         <com.pixelcan.inkpageindicator.InkPageIndicator
@@ -61,7 +68,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:ipi_currentPageIndicatorColor="#aa000000"
-            app:ipi_pageIndicatorColor="#80000000" />
+            app:ipi_pageIndicatorColor="#80000000"
+            app:viewPager="@{pager}"
+            android:importantForAccessibility="no" />
 
     </android.support.constraint.ConstraintLayout>
 

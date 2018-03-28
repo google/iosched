@@ -16,14 +16,18 @@
 package com.google.samples.apps.iosched.di
 
 import com.google.samples.apps.iosched.shared.di.ActivityScoped
+import com.google.samples.apps.iosched.ui.LaunchModule
+import com.google.samples.apps.iosched.ui.LauncherActivity
 import com.google.samples.apps.iosched.ui.MainActivity
-import com.google.samples.apps.iosched.ui.signin.SignInDialogModule
 import com.google.samples.apps.iosched.ui.info.InfoModule
 import com.google.samples.apps.iosched.ui.map.MapModule
+import com.google.samples.apps.iosched.ui.onboarding.OnboardingActivity
+import com.google.samples.apps.iosched.ui.onboarding.OnboardingModule
 import com.google.samples.apps.iosched.ui.reservation.ReservationModule
 import com.google.samples.apps.iosched.ui.schedule.ScheduleModule
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailModule
+import com.google.samples.apps.iosched.ui.signin.SignInDialogModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -38,6 +42,14 @@ import dagger.android.ContributesAndroidInjector
  */
 @Module
 abstract class ActivityBindingModule {
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = [LaunchModule::class])
+    internal abstract fun launcherActivity(): LauncherActivity
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = [OnboardingModule::class])
+    internal abstract fun onboardingActivity(): OnboardingActivity
 
     @ActivityScoped
     @ContributesAndroidInjector(
