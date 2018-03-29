@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/image_header_padding_top"
-        android:src="@drawable/ic_nav_schedule_placeholder"
+        android:src="@drawable/ic_nav_schedule"
         android:contentDescription="@string/schedule_icon_image_view_content_description" />
 
     <android.support.wear.widget.WearableRecyclerView

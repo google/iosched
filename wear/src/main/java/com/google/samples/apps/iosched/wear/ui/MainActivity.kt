@@ -143,15 +143,15 @@ class MainActivity : DaggerAppCompatActivity(), AmbientModeSupport.AmbientCallba
             when (pos) {
                 NAV_DRAWER_STATE_FRAGMENT_SCHEDULE ->
                     ContextCompat.getDrawable(
-                            activity, R.drawable.ic_nav_schedule_placeholder)
+                            activity, R.drawable.ic_nav_schedule)
 
                 NAV_DRAWER_STATE_FRAGMENT_SIGN_IN_OR_OUT ->
                     ContextCompat.getDrawable(
-                            activity, R.drawable.ic_nav_sign_in_or_out_placeholder)
+                            activity, R.drawable.ic_nav_account_circle)
 
                 NAV_DRAWER_STATE_FRAGMENT_SETTINGS ->
                     ContextCompat.getDrawable(
-                            activity, R.drawable.ic_nav_settings_placeholder)
+                            activity, R.drawable.ic_nav_info)
 
                 else -> null
             }
