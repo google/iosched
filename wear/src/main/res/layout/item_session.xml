@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="session"
+            type="com.google.samples.apps.iosched.shared.model.Session" />
+
+        <variable
+            name="userEvent"
+            type="com.google.samples.apps.iosched.shared.firestore.entity.UserEvent" />
+
+        <!-- TODO: Add EventListener w/ Session detail CL ref item_session.xml (mobile) -->
+    </data>
+
+    <!-- TODO: Convert to ConstraintLayout. -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sessionLinearLayout"
+        android:padding="@dimen/list_item_padding">
+
+        <ImageView
+            android:id="@+id/timeImageView"
+            android:layout_width="@dimen/session_icon_and_row_dimensions"
+            android:layout_height="@dimen/session_icon_and_row_dimensions"
+            android:layout_marginEnd="@dimen/session_icon_padding"
+            android:contentDescription="@string/item_session_image_view_time_icon_content_description"
+            app:sessionStart="@{session.startTime}"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/session_icon_and_row_dimensions"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="@{session.title}"
+                tools:text="Title"
+                android:textSize="@dimen/session_title_text_size"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/locationAndLengthTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Location and Room"
+                    android:textSize="@dimen/session_location_and_room_text_size"
+                    app:sessionStart="@{session.startTime}"
+                    app:sessionEnd="@{session.endTime}"
+                    app:sessionRoom="@{session.room.name}"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

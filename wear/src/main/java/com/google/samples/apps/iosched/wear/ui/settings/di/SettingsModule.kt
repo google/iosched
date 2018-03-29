@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.wear.ui.signinandout
+package com.google.samples.apps.iosched.wear.ui.settings.di
 
-import com.google.samples.apps.iosched.wear.ui.WearableFragment
+import com.google.samples.apps.iosched.shared.di.FragmentScoped
+import com.google.samples.apps.iosched.wear.ui.settings.SettingsFragment
+import dagger.Module
+import dagger.android.ContributesAndroidInjector
 
 /**
- * Allows Google users to sign in and out to see their customized schedule.
+ * Module where classes needed to create the [SettingsFragment] are defined.
  */
-class SignInOrOutFragment : WearableFragment() {
+@Module
+internal abstract class SettingsModule {
 
-    override fun onUpdateAmbient() {
-        // TODO(b/74259577): implement ambient UI
-    }
-    // TODO(b/74259644): Add Google Sign in.
+    @FragmentScoped
+    @ContributesAndroidInjector
+    internal abstract fun contributeSettingsFragment(): SettingsFragment
 }

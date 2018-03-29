@@ -17,8 +17,8 @@
 package com.google.samples.apps.iosched.wear.ui
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.wear.ambient.AmbientModeSupport
+import dagger.android.support.DaggerFragment
 
 /**
  * Base class for fragments embedded in Activities implementing Ambient support via
@@ -31,7 +31,7 @@ import android.support.wear.ambient.AmbientModeSupport
  *
  * [AmbientModeSupport]
  */
-abstract class WearableFragment : Fragment() {
+abstract class WearableFragment : DaggerFragment() {
     private var isAmbient = false
 
     abstract fun onUpdateAmbient()
