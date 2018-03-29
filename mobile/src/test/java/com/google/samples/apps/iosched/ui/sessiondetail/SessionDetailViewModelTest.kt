@@ -231,7 +231,7 @@ class SessionDetailViewModelTest {
         Session(
             id = "0", title = "Session 0", abstract = "",
             startTime = DAY_1.start,
-            endTime = DAY_1.end, room = TestData.room,
+            endTime = DAY_1.end, room = TestData.room, isLivestream = false,
             sessionUrl = "", liveStreamUrl = "", youTubeUrl = youtubeUrl, photoUrl = "",
             tags = listOf(TestData.androidTag, TestData.webTag),
             displayTags = listOf(TestData.androidTag, TestData.webTag),

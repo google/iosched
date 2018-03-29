@@ -63,6 +63,11 @@ data class SessionTemp(
         val liveStreamUrl: String,
 
         /**
+         * Indicates if the Session has a live stream.
+         */
+        val isLivestream: Boolean,
+
+        /**
          * Full URL to YouTube.
          */
         val youTubeUrl: String,
