@@ -23,15 +23,16 @@ import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.support.annotation.VisibleForTesting
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CANCEL
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.REQUEST
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.SwapAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
+import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Event
@@ -39,6 +40,7 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
+import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.SetIntervalLiveData
 import com.google.samples.apps.iosched.util.time.DefaultTime
@@ -97,6 +99,11 @@ class SessionDetailViewModel @Inject constructor(
             MutableLiveData<Event<ReservationRequestParameters>>()
     val navigateToRemoveReservationDialogAction: LiveData<Event<ReservationRequestParameters>>
         get() = _navigateToRemoveReservationDialogAction
+
+    private val _navigateToSwapReservationDialogAction =
+            MediatorLiveData<Event<SwapRequestParameters>>()
+    val navigateToSwapReservationDialogAction: LiveData<Event<SwapRequestParameters>>
+        get() = _navigateToSwapReservationDialogAction
 
     init {
         loadUserSessionResult = loadUserSessionUseCase.observe()
@@ -174,27 +181,7 @@ class SessionDetailViewModel @Inject constructor(
         _snackBarMessage.addSource(loadUserSessionUseCase.observe()) {
             val message: Int? = when (it) {
                 is Result.Success ->
-                    when (it.data.userMessage) {
-                        UserEventMessage.CHANGES_IN_WAITLIST ->
-                            R.string.waitlist_new
-                        UserEventMessage.CHANGES_IN_RESERVATIONS ->
-                            R.string.reservation_new
-                        UserEventMessage.RESERVATION_CANCELED ->
-                            null //No-op
-                        UserEventMessage.WAITLIST_CANCELED ->
-                            null //No-op
-                        UserEventMessage.RESERVATION_DENIED_CUTOFF ->
-                            R.string.reservation_denied_cutoff
-                        UserEventMessage.RESERVATION_DENIED_CLASH ->
-                            R.string.reservation_denied_clash
-                        UserEventMessage.RESERVATION_DENIED_UNKNOWN ->
-                            R.string.reservation_denied_unknown
-                        UserEventMessage.CANCELLATION_DENIED_CUTOFF ->
-                            R.string.cancellation_denied_cutoff
-                        UserEventMessage.CANCELLATION_DENIED_UNKNOWN ->
-                            R.string.cancellation_denied_unknown
-                        null -> null
-                    }
+                    it.data.userMessage?.stringRes()
                 else -> null
             }
 
@@ -204,6 +191,12 @@ class SessionDetailViewModel @Inject constructor(
                         SnackbarMessage(it, actionId = R.string.got_it, longDuration = true)))
             }
         }
+
+        _navigateToSwapReservationDialogAction.addSource(reservationActionUseCase.observe(), {
+            ((it as? Result.Success)?.data as? SwapAction)?.let {
+                _navigateToSwapReservationDialogAction.postValue(Event(it.parameters))
+            }
+        })
     }
 
     fun setSessionId(sessionId: String) {
@@ -257,11 +250,11 @@ class SessionDetailViewModel @Inject constructor(
         val isReservationDisabledSnapshot = isReservationDisabled.value ?: return
 
         val userId = getUserId() ?: return
+
         if (userEventSnapshot.isReserved()
                 || userEventSnapshot.isWaitlisted()
                 || userEventSnapshot.isCancelPending() // Just in case
                 || userEventSnapshot.isReservationPending()) {
-
             if (isReservationDisabledSnapshot) {
                 _snackBarMessage.postValue(Event(
                         SnackbarMessage(R.string.cancellation_denied_cutoff, longDuration = true)))
@@ -270,17 +263,16 @@ class SessionDetailViewModel @Inject constructor(
                 _navigateToRemoveReservationDialogAction.value = Event(ReservationRequestParameters(
                         userId,
                         sessionSnapshot.id,
-                        CANCEL))
+                        CancelAction()))
             }
             return
         }
-
         if (isReservationDisabledSnapshot) {
             _snackBarMessage.postValue(Event(
                     SnackbarMessage(R.string.reservation_denied_cutoff, longDuration = true)))
         } else {
             reservationActionUseCase.execute(
-                    ReservationRequestParameters(userId, sessionSnapshot.id, REQUEST))
+                    ReservationRequestParameters(userId, sessionSnapshot.id, RequestAction()))
         }
     }
 

@@ -16,9 +16,6 @@
 
 package com.google.samples.apps.iosched.shared.domain.users
 
-import android.os.Parcel
-import android.os.Parcelable
-import android.os.Parcelable.Creator
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
@@ -37,8 +34,8 @@ open class ReservationActionUseCase @Inject constructor(
 
         DefaultScheduler.execute {
             try {
-                val updateResult = repository.changeReservation(
-                        parameters.userId, parameters.sessionId, parameters.action)
+                val (userId, sessionId , action) = parameters
+                val updateResult = repository.changeReservation(userId, sessionId, action)
 
                 result.removeSource(updateResult)
                 result.addSource(updateResult, {
@@ -58,7 +55,34 @@ data class ReservationRequestParameters(
         val sessionId: String,
         val action: ReservationRequestAction)
 
-enum class ReservationRequestAction {
-    REQUEST,
-    CANCEL
+sealed class ReservationRequestAction {
+    class RequestAction : ReservationRequestAction() {
+        override fun equals(other: Any?): Boolean {
+            return other is RequestAction
+        }
+        // This class isn't intended to be used as a key of a collection. Overriding this to remove
+        // the lint warning
+        @Suppress("redundant")
+        override fun hashCode(): Int {
+            return super.hashCode()
+        }
+    }
+
+    class CancelAction : ReservationRequestAction() {
+        override fun equals(other: Any?): Boolean {
+            return other is CancelAction
+        }
+        // This class isn't intended to be used as a key of a collection. Overriding this to remove
+        // the lint warning
+        @Suppress("redundant")
+        override fun hashCode(): Int {
+            return super.hashCode()
+        }
+    }
+
+    /**
+     * The action when the user is trying to reserve a session, but there is already an overlapping
+     * reservation.
+     */
+    class SwapAction(val parameters: SwapRequestParameters) : ReservationRequestAction()
 }

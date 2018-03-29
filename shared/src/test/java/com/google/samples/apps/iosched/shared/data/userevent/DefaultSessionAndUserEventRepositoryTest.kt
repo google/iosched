@@ -86,4 +86,6 @@ class DefaultSessionAndUserEventRepositoryTest{
     //TODO: mapUserDataAndSessions with Result.Error
 
     //TODO: mapUserDataAndSessions are sorted
+
+    //TODO: Test changeReservation returns SwapAction
 }

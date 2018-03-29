@@ -18,19 +18,25 @@ package com.google.samples.apps.iosched.shared.data.userevent
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
+import android.arch.lifecycle.MutableLiveData
 import android.support.annotation.WorkerThread
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.SwapAction
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
+import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
+import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -71,7 +77,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                     // Merges sessions with user data and emits the result
                     sessionsByDayResult.postValue(Result.Success(
                             LoadUserSessionsByDayUseCaseResult(
-                                    userSessionsPerDay =  mapUserDataAndSessions(
+                                    userSessionsPerDay = mapUserDataAndSessions(
                                             userEvents, allSessions),
                                     userMessage = userEvents.userEventsMessage)
                     ))
@@ -128,6 +134,10 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         return sessionResult
     }
 
+    override fun getUserEvents(userId: String?): List<UserEvent> {
+        return userEventDataSource.getUserEvents(userId ?: "")
+    }
+
     override fun starEvent(userId: String, userEvent: UserEvent):
             LiveData<Result<StarUpdatedStatus>> {
         return userEventDataSource.starEvent(userId, userEvent)
@@ -139,9 +149,44 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
             action: ReservationRequestAction
     ): LiveData<Result<ReservationRequestAction>> {
 
-        return userEventDataSource.requestReservation(userId,
-                sessionRepository.getSession(sessionId),
-                action)
+        val userEvents = getUserEvents(userId)
+        val session = sessionRepository.getSession(sessionId)
+        val overlappingId = findOverlappingReservationId(session, action, userEvents)
+        if (overlappingId != null) {
+            // If there is already an overlapping reservation, return the result as
+            // SwapAction is needed.
+            val result = MutableLiveData<Result<ReservationRequestAction>>()
+            val overlappingSession = sessionRepository.getSession(overlappingId)
+            Timber.d("""User is trying to reserve a session that overlaps with the
+                |session id: $overlappingId, title: ${overlappingSession.title}""".trimMargin())
+            result.postValue(Result.Success(SwapAction(
+                    SwapRequestParameters(userId,
+                            fromId = overlappingId,
+                            fromTitle = overlappingSession.title,
+                            toId = sessionId))))
+            return result
+        }
+        return userEventDataSource.requestReservation(userId, session, action)
+    }
+
+    override fun swapReservation(userId: String,
+                                 fromId: String,
+                                 toId: String
+    ): LiveData<Result<SwapRequestAction>> {
+        val toSession = sessionRepository.getSession(toId)
+        val fromSession = sessionRepository.getSession(fromId)
+        return userEventDataSource.swapReservation(userId, fromSession, toSession)
+    }
+
+    private fun findOverlappingReservationId(session: Session,
+                                             action: ReservationRequestAction,
+                                             userEvents: List<UserEvent>
+    ): String? {
+        if (action !is RequestAction) return null
+        val overlappingUserEvent = userEvents.find {
+            it.isOverlapping(session) && (it.isReserved() || it.isWaitlisted())
+        }
+        return overlappingUserEvent?.id
     }
 
     private fun createDefaultUserEvent(session: Session): UserEvent {
@@ -178,11 +223,6 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                 eventIdToUserEvent[it.id] ?: createDefaultUserEvent(it)
         ) }
 
-
-        // Note: hasPendingWrite field isn't used for the StarEvent use case because
-        // the UI is updated optimistically regardless of the UserEvent is stored in the
-        // backend. But keeping the updating hasPendingWrite field for a proof of concept
-        // we need to use it for reservation
         return ConferenceDay.values().map { day ->
             day to allUserSessions
                     .filter { day.contains(it.session) }
@@ -202,9 +242,14 @@ interface SessionAndUserEventRepository {
     fun getObservableUserEvent(userId: String?, eventId: String):
             LiveData<Result<LoadUserSessionUseCaseResult>>
 
+    fun getUserEvents(userId: String?): List<UserEvent>
+
     fun changeReservation(
             userId: String, sessionId: String, action: ReservationRequestAction
     ): LiveData<Result<ReservationRequestAction>>
+
+    fun swapReservation(userId: String, fromId: String, toId: String):
+            LiveData<Result<SwapRequestAction>>
 
     fun starEvent(userId: String, userEvent: UserEvent): LiveData<Result<StarUpdatedStatus>>
 }

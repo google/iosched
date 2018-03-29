@@ -40,8 +40,8 @@ import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CANCEL
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.REQUEST
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.model.Block
@@ -309,7 +309,7 @@ class ScheduleViewModelTest {
         viewModel.onReservationClicked(TestData.session0, TestData.userEvents[4])
 
         verify(reservationActionUseCaseMock).execute(ReservationRequestParameters(testUid,
-            TestData.session0.id, REQUEST))
+            TestData.session0.id, RequestAction()))
     }
 
     @Test
@@ -348,7 +348,7 @@ class ScheduleViewModelTest {
             ?.getContentIfNotHandled()
         assertThat(parameters, `is`(ReservationRequestParameters(testUid,
             TestData.session1.id,
-            CANCEL)))
+            CancelAction())))
     }
 
     /** New reservation / waitlist **/

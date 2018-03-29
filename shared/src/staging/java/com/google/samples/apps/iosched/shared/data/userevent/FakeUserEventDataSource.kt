@@ -20,7 +20,10 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
+import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.RESERVE_SUCCEEDED
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
@@ -31,6 +34,7 @@ import com.google.samples.apps.iosched.shared.result.Result
  * Returns data loaded from a local JSON file for development and testing.
  */
 object FakeUserEventDataSource : UserEventDataSource {
+
     private val conferenceData = BootstrapConferenceDataSource.getOfflineConferenceData()!!
     private val userEvents = ArrayList<UserEvent>()
 
@@ -80,8 +84,19 @@ object FakeUserEventDataSource : UserEventDataSource {
 
         val result = MutableLiveData<Result<ReservationRequestAction>>()
         result.postValue(Result.Success(
-                if (action == ReservationRequestAction.REQUEST) ReservationRequestAction.REQUEST
-                else ReservationRequestAction.CANCEL))
+                if (action is RequestAction) RequestAction()
+                else CancelAction()))
+        return result
+    }
+
+    override fun getUserEvents(userId: String): List<UserEvent> {
+        return userEvents
+    }
+
+    override fun swapReservation(userId: String, fromSession: Session, toSession: Session):
+            LiveData<Result<SwapRequestAction>> {
+        val result = MutableLiveData<Result<SwapRequestAction>>()
+        result.postValue(Result.Success(SwapRequestAction()))
         return result
     }
 }
