@@ -28,4 +28,20 @@
     inner_frame_layout_padding (below variable) on round screens.
     -->
     <dimen name="inner_frame_layout_padding">5dp</dimen>
+
+    <!-- TODO: Revise properties above and remove unused variables. -->
+
+    <dimen name="image_header_padding_top">10dp</dimen>
+    <dimen name="recycler_view_padding_bottom">10dp</dimen>
+    <!-- TODO: Verify pixel use for live app (ps) -->
+    <dimen name="box_inset_layout_padding_pixels">10px</dimen>
+    <dimen name="list_item_padding">5dp</dimen>
+    <dimen name="session_icon_and_row_dimensions">48dp</dimen>
+    <dimen name="session_icon_padding">4dp</dimen>
+    <dimen name="session_title_text_size">18sp</dimen>
+    <dimen name="session_location_and_room_text_size">10sp</dimen>
+
+    <!-- Revise and rename these? -->
+
+
 </resources>
