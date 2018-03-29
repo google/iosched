@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="142"
+    android:viewportHeight="142">
+    <path
+        android:fillColor="#536DFE"
+        android:pathData="M69,71c16.54,0 30,-13.46 30,-30h20c0,27.57 -22.43,50 -50,50S19,68.57 19,41h20c0,16.54 13.46,30 30,30z" />
+    <path
+        android:fillColor="#31E7B6"
+        android:pathData="M89,51a5,5 0,1 1,-10 0,5 5,0 0,1 10,0M71,61a5,5 0,1 1,-10 0,5 5,0 0,1 10,0M57,46a5,5 0,1 1,-10 0,5 5,0 0,1 10,0m17,0a5,5 0,1 1,-10 0,5 5,0 0,1 10,0" />
+    <path
+        android:fillColor="#FF6C00"
+        android:pathData="M89,38a5,5 0,1 1,-10 0,5 5,0 0,1 10,0" />
+    <path
+        android:fillColor="#FCD230"
+        android:pathData="M66,33a5,5 0,1 1,-10 0,5 5,0 0,1 10,0" />
+    <path
+        android:fillColor="#8C9EFF"
+        android:pathData="M60,101L60,92 62,92 62,101z" />
+    <path
+        android:fillColor="#8C9EFF"
+        android:pathData="M70,101L70,92 72,92 72,101z" />
+    <path
+        android:fillColor="#8C9EFF"
+        android:pathData="M80,101L80,92 82,92 82,101z" />
+    <path
+        android:fillColor="#8C9EFF"
+        android:pathData="M90,101L90,92 92,92 92,101z" />
+    <path
+        android:fillColor="#8C9EFF"
+        android:pathData="M50,101L50,92 52,92 52,101z" />
+    <path
+        android:fillColor="#8C9EFF"
+        android:pathData="M40,101L40,92 42,92 42,101z" />
+    <path
+        android:fillColor="#8C9EFF"
+        android:pathData="M30,101L30,92 32,92 32,101z" />
+    <path
+        android:fillColor="#8C9EFF"
+        android:pathData="M20,101L20,92 22,92 22,101z" />
+    <path
+        android:fillColor="#8C9EFF"
+        android:pathData="M10,101L10,92 12,92 12,101z" />
+    <path
+        android:fillColor="#8C9EFF"
+        android:pathData="M100,101L100,92 102,92 102,101z" />
+    <path
+        android:fillColor="#8C9EFF"
+        android:pathData="M110,101L110,92 112,92 112,101z" />
+    <path
+        android:fillColor="#8C9EFF"
+        android:pathData="M120,101L120,92 122,92 122,101z" />
+    <path
+        android:fillColor="#8C9EFF"
+        android:pathData="M130,101L130,92 132,92 132,101z" />
+    <path
+        android:fillColor="#8C9EFF"
+        android:pathData="M90,101L90,92 92,92 92,101z" />
+    <path
+        android:fillColor="#8C9EFF"
+        android:pathData="M80,101L80,92 82,92 82,101z" />
+    <path
+        android:fillColor="#8C9EFF"
+        android:pathData="M70,101L70,92 72,92 72,101z" />
+    <path
+        android:fillColor="#8C9EFF"
+        android:pathData="M60,101L60,92 62,92 62,101z" />
+    <path
+        android:fillColor="#8C9EFF"
+        android:pathData="M50,101L50,92 52,92 52,101z" />
+    <path
+        android:fillColor="#8C9EFF"
+        android:pathData="M1,91h140a1,1 0,0 1,1 1v9a1,1 0,0 1,-1 1L1,102a1,1 0,0 1,-1 -1v-9a1,1 0,0 1,1 -1zM2,93v7h138v-7L2,93z" />
+</vector>
