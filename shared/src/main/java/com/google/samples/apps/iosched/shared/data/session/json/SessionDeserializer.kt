@@ -52,7 +52,8 @@ class SessionDeserializer : JsonDeserializer<SessionTemp> {
                         Instant.ofEpochMilli(obj.get("endTimestamp").asLong), ZoneOffset.UTC),
                 abstract = obj.get("description").asString,
                 photoUrl = obj.get("photoUrl").asString,
-                liveStreamUrl = "TODO: Set livestream URL", // TODO Set livestream URL
+                liveStreamUrl = "TODO: Set livestream URL", // TODO Set or remove this (b/77292964)
+                isLivestream = obj.get("isLivestream").asBoolean,
                 speakers = speakers.toSet(),
                 tags = tags.toList(),
                 relatedSessions = emptySet(),

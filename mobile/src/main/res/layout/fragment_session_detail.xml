@@ -176,7 +176,6 @@
                     app:layout_constraintWidth_default="wrap"
                     tools:text="Session Location" />
 
-                <!-- todo(tiem) b/74617185 -->
                 <ImageView
                     android:id="@+id/session_detail_recorded"
                     android:layout_width="wrap_content"
@@ -184,10 +183,12 @@
                     android:layout_marginStart="@dimen/spacing_normal"
                     android:layout_marginTop="@dimen/spacing_micro"
                     android:contentDescription="@string/a11y_session_detail_video_icon"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@id/session_detail_room"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toEndOf="@id/session_detail_room"
                     app:layout_constraintTop_toTopOf="@id/session_detail_room"
+                    app:goneUnless="@{viewModel.session.isLivestream}"
                     app:srcCompat="@drawable/ic_livestreamed" />
 
                 <TextView
