@@ -16,44 +16,37 @@
 
 package com.google.samples.apps.iosched.shared.firestore.entity
 
-import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus
-import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.*
+import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent.ReservationStatus
+import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent.ReservationStatus.NONE
+import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent.ReservationStatus.RESERVED
+import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent.ReservationStatus.WAITLISTED
 import com.google.samples.apps.iosched.shared.model.TestData
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class UserEventTest {
 
-    private fun createTestEvent(isStarred: Boolean, status: ReservationRequestStatus): UserEvent {
+    private fun createTestEvent(isStarred: Boolean, status: ReservationStatus): UserEvent {
         return TestData.userEvents[0].copy(
-            isStarred = isStarred,
-            reservationRequestResult = ReservationRequestResult(
-                    requestResult = status, timestamp = 0L, requestId = "123")
-        )
+            isStarred = isStarred, reservationStatus = status)
     }
 
     @Test
     fun starred_isPinned() {
-        val userEvent = createTestEvent(isStarred = true, status = RESERVE_DENIED_UNKNOWN)
+        val userEvent = createTestEvent(isStarred = true, status = NONE)
         assertTrue(userEvent.isPinned())
     }
 
     @Test
-    fun notStarred_reservedOrWaitlisted_isPinned() {
-        val reserved = createTestEvent(isStarred = false, status = RESERVE_SUCCEEDED)
-        val waitlisted = createTestEvent(isStarred = false, status = RESERVE_WAITLISTED)
-        assertTrue(reserved.isPinned())
+    fun notStarred_waitlisted_isPinned() {
+        val waitlisted = createTestEvent(isStarred = false, status = WAITLISTED)
         assertTrue(waitlisted.isPinned())
     }
 
     @Test
-    fun notStarredOrReservedOrWaitlisted_isNotPinned() {
-        val successStates = listOf(RESERVE_SUCCEEDED, RESERVE_WAITLISTED)
-        ReservationRequestStatus.values().subtract(successStates).forEach {
-            val userEvent = createTestEvent(isStarred = false, status = it)
-            assertFalse(userEvent.isPinned())
-        }
+    fun notStarred_reserved_isPinned() {
+        val reserved = createTestEvent(isStarred = false, status = RESERVED)
+        assertTrue(reserved.isPinned())
     }
 
     //TODO: Add tests for isReserved, isWaitlisted, etc.
