@@ -58,8 +58,8 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:text="@{session.title}"
-                tools:text="Title"
-                android:textSize="@dimen/session_title_text_size"/>
+                android:textAppearance="@style/TextAppearance.IOSched.SessionTitle"
+                tools:text="Title"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -71,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="Location and Room"
-                    android:textSize="@dimen/session_location_and_room_text_size"
+                    android:textAppearance="@style/TextAppearance.IOSched.ListSecondary"
                     app:sessionStart="@{session.startTime}"
                     app:sessionEnd="@{session.endTime}"
                     app:sessionRoom="@{session.room.name}"/>
