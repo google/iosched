@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.shared.data.userevent
 import android.arch.lifecycle.LiveData
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
+import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
@@ -28,6 +29,8 @@ interface UserEventDataSource {
     fun getObservableUserEvents(userId: String): LiveData<UserEventsResult>
 
     fun getObservableUserEvent(userId: String, eventId: String): LiveData<UserEventResult>
+
+    fun getUserEvents(userId: String): List<UserEvent>
 
     /**
      * Toggle the isStarred status for an event.
@@ -41,6 +44,9 @@ interface UserEventDataSource {
 
     fun requestReservation(userId: String, session: Session, action: ReservationRequestAction):
             LiveData<Result<ReservationRequestAction>>
+
+    fun swapReservation(userId: String, fromSession: Session, toSession: Session):
+            LiveData<Result<SwapRequestAction>>
 }
 
 data class UserEventsResult(

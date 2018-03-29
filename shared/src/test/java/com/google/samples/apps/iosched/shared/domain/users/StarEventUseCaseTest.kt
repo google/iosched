@@ -106,4 +106,13 @@ val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepositor
     ): LiveData<Result<ReservationRequestAction>> {
         throw NotImplementedError()
     }
+
+    override fun getUserEvents(userId: String?): List<UserEvent> {
+        throw NotImplementedError()
+    }
+
+    override fun swapReservation(userId: String, fromId: String, toId: String):
+            LiveData<Result<SwapRequestAction>> {
+        throw NotImplementedError()
+    }
 }
