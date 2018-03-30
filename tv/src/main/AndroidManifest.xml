@@ -31,8 +31,8 @@
         android:banner="@drawable/ic_banner"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
         android:screenOrientation="landscape"
+        android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
         <activity
@@ -51,7 +51,10 @@
         <activity
             android:name=".ui.sessiondetail.SessionDetailActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.SessionDetails"/>
+            android:theme="@style/AppTheme.SessionDetails" />
+        <activity
+            android:name=".ui.sessionplayer.SessionPlayerActivity"
+            android:screenOrientation="landscape" />
 
         <activity
             android:name=".ui.search.SearchableActivity"
@@ -68,7 +71,8 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-        <provider android:name=".search.SessionContentProvider"
+        <provider
+            android:name=".search.SessionContentProvider"
             android:authorities="@string/search_authority"
             android:exported="true"
             tools:ignore="ExportedContentProvider" />

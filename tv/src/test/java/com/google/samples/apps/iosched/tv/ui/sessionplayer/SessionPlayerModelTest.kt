@@ -16,14 +16,11 @@
 
 @file:Suppress("FunctionName")
 
-package com.google.samples.apps.iosched.tv.ui.search
+package com.google.samples.apps.iosched.tv.ui.sessionplayer
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
-import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
-import com.google.samples.apps.iosched.shared.model.Session
-import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.tv.model.TestData
 import com.google.samples.apps.iosched.tv.model.TestDataRepository
@@ -33,31 +30,25 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class SearchableViewModelTest {
+class SessionPlayerModelTest {
 
     // Executes tasks in the Architecture Components in the same thread
-    @get:Rule
-    var instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule
-    var syncTaskExecutorRule = SyncTaskExecutorRule()
+    @get:Rule var syncTaskExecutorRule = SyncTaskExecutorRule()
 
-    lateinit var viewModel: SearchableViewModel
-
+    private lateinit var viewModel: SessionPlayerViewModel
     private val testSession = TestData.session0
 
-    @Before
-    fun setup() {
-        viewModel = SearchableViewModel(createUseCase())
+    @Before fun setup() {
+        viewModel = SessionPlayerViewModel(createUseCase())
+        viewModel.loadSessionById(testSession.id)
     }
 
-    @Test
-    fun testDataIsLoaded_observablesUpdated() {
-        viewModel.loadSessionById(testSession.id)
+    @Test fun testDataIsLoaded_observablesUpdated() {
         assertEquals(testSession, LiveDataTestUtil.getValue(viewModel.session)?.peekContent())
     }
-
 
     private fun createUseCase(): LoadSessionUseCase {
         return LoadSessionUseCase(DefaultSessionRepository(TestDataRepository))
