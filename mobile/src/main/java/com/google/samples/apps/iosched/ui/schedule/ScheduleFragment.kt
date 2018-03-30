@@ -44,7 +44,6 @@ import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.lazyFast
-import com.google.samples.apps.iosched.ui.MainActivity
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment
@@ -57,8 +56,6 @@ import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
-import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
-import com.google.samples.apps.iosched.widget.HideBottomViewOnScrollBehavior
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -72,6 +69,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         private val AGENDA_POSITION = COUNT - 1
         private const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
         private const val DIALOG_CONFIRM_SIGN_OUT = "dialog_confirm_sign_out"
+        private const val STATE_BOTTOM_NAV_TRANSLATION = "state.BOTTOM_NAV_TRANSLATION"
     }
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -94,11 +92,13 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     ): View? {
         viewModel = activityViewModelProvider(viewModelFactory)
         val binding = FragmentScheduleBinding.inflate(inflater, container, false)
-        coordinatorLayout = binding.coordinatorLayout
-
-        // Set the layout variables
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
+
+        coordinatorLayout = binding.coordinatorLayout
+        dummyBottomView = binding.dummyBottomNavigation
+        filtersFab = binding.filterFab
+        // We can't lookup bottomSheetBehavior here since it's on a <fragment> tag
 
         viewModel.navigateToSessionAction.observe(this, Observer { navigationEvent ->
             navigationEvent?.getContentIfNotHandled()?.let { sessionId ->
@@ -171,42 +171,10 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
             }
         })
 
-        filtersFab = view.findViewById(R.id.filter_fab)
+        bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.filter_sheet))
         filtersFab.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
-
-        dummyBottomView = view.findViewById(R.id.dummy_bottom_navigation)
-        bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.filter_sheet))
-        bottomSheetBehavior.skipCollapsed = true
-
-        // Lock the bottom navigation hidden while the filters sheet is expanded.
-        bottomSheetBehavior.setBottomSheetCallback(object : BottomSheetCallback {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                val activity = requireActivity() as MainActivity
-                when (newState) {
-                    BottomSheetBehavior.STATE_EXPANDED ->
-                        activity.setBottomNavLockMode(
-                            HideBottomViewOnScrollBehavior.LOCK_MODE_LOCKED_HIDDEN)
-
-                    BottomSheetBehavior.STATE_COLLAPSED, BottomSheetBehavior.STATE_HIDDEN ->
-                        activity.setBottomNavLockMode(
-                            HideBottomViewOnScrollBehavior.LOCK_MODE_UNLOCKED)
-                }
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
-        })
-
-        // We can't use DataBinding on <fragment> tags, so set up an observer manually.
-        viewModel.hasAnyFilters.observe(this, Observer {
-            val hasFilters = it ?: false
-            bottomSheetBehavior.isHideable = !hasFilters
-            bottomSheetBehavior.skipCollapsed = !hasFilters
-            if (!hasFilters && bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-            }
-        })
 
         if (savedInstanceState == null) {
             // Set the peek height on first layout
@@ -214,6 +182,17 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
             // Make bottom sheet hidden at first
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putFloat(STATE_BOTTOM_NAV_TRANSLATION, dummyBottomView.translationY)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        val ty = savedInstanceState?.getFloat(STATE_BOTTOM_NAV_TRANSLATION) ?: return
+        onBottomNavSlide(ty)
     }
 
     override fun onBottomNavSlide(bottonNavTranslationY: Float) {

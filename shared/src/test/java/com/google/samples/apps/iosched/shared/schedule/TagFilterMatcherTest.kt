@@ -24,6 +24,7 @@ import com.google.samples.apps.iosched.shared.model.TestData.session0
 import com.google.samples.apps.iosched.shared.model.TestData.sessionsTag
 import com.google.samples.apps.iosched.shared.model.TestData.webTag
 import com.google.samples.apps.iosched.shared.model.UserSession
+import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.TagFilterMatcher
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
