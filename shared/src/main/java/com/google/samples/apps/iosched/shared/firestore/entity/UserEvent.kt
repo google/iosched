@@ -106,31 +106,36 @@ data class UserEvent(
             RESERVE_SUCCEEDED -> null
             RESERVE_WAITLISTED -> null
             CANCEL_SUCCEEDED -> null
+            SWAP_SUCCEEDED -> null
+            SWAP_WAITLISTED -> null
             else -> reservationRequestResult.requestResult
 
         }
     }
 
     fun isRequestResultErrorReserveDeniedCutoff(): Boolean {
-        return requestResultError() == RESERVE_DENIED_CUTOFF
+        val e = requestResultError()
+        return e == RESERVE_DENIED_CUTOFF || e == SWAP_DENIED_CUTOFF
     }
 
     fun isRequestResultErrorReserveDeniedClash(): Boolean {
-        return requestResultError() == RESERVE_DENIED_CLASH
+        val e = requestResultError()
+        return e == RESERVE_DENIED_CLASH || e == SWAP_DENIED_CLASH
     }
 
     fun isRequestResultErrorReserveDeniedUnknown(): Boolean {
-        return requestResultError() == RESERVE_DENIED_UNKNOWN
+        val e = requestResultError()
+        return e == RESERVE_DENIED_UNKNOWN || e == SWAP_DENIED_UNKNOWN
     }
 
     fun isRequestResultErrorCancelDeniedCutoff(): Boolean {
-        return requestResultError() == CANCEL_DENIED_CUTOFF
+        val e = requestResultError()
+        return e == CANCEL_DENIED_CUTOFF || e == SWAP_DENIED_CUTOFF
     }
 
     fun isRequestResultErrorCancelDeniedUnknown(): Boolean {
         return requestResultError() == CANCEL_DENIED_UNKNOWN
     }
-
 
     fun isReservationPending(): Boolean {
         return (reservationStatus == ReservationStatus.NONE || reservationStatus == null)
