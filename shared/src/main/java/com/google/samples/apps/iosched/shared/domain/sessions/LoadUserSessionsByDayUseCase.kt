@@ -48,7 +48,7 @@ open class LoadUserSessionsByDayUseCase @Inject constructor(
                             sessions.filter { sessionMatcher.matches(it) }
                         }
                         // Compute type from tags now so it's done in the background
-                        userSessions.forEach { _, value -> value.forEach { it.session.type } }
+                        userSessions.forEach { it.value.forEach { it.session.type } }
                         val usecaseResult = LoadUserSessionsByDayUseCaseResult(
                                 userSessionsPerDay = userSessions,
                                 userMessage = it.data.userMessage
