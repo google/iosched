@@ -94,15 +94,20 @@ class SharedPreferenceStorage @Inject constructor(context: Context) :
         by StringPreference(prefs, PREF_SELECTED_FILTERS, null)
 
     companion object {
-        private const val PREFS_NAME = "iosched"
-        private const val PREF_ONBOARDING = "pref_onboarding"
-        private const val PREF_SCHED_UI_HINTS_SHOWN = "pref_sched_ui_hints_shown"
-        private const val PREF_NOTIFICATIONS_SHOWN = "pref_notifications_shown"
-        private const val PREF_RECEIVE_NOTIFICATIONS = "pref_receive_notifications"
-        private const val PREF_SNACKBAR_IS_STOPPED = "pref_snackbar_is_stopped"
-        private const val PREF_SEND_USAGE_STATISTICS = "pref_send_usage_statistics"
-        private const val PREF_CONFERENCE_TIME_ZONE = "pref_conference_time_zone"
-        private const val PREF_SELECTED_FILTERS = "pref_selected_filters"
+        const val PREFS_NAME = "iosched"
+        const val PREF_ONBOARDING = "pref_onboarding"
+        const val PREF_SCHED_UI_HINTS_SHOWN = "pref_sched_ui_hints_shown"
+        const val PREF_NOTIFICATIONS_SHOWN = "pref_notifications_shown"
+        const val PREF_RECEIVE_NOTIFICATIONS = "pref_receive_notifications"
+        const val PREF_SNACKBAR_IS_STOPPED = "pref_snackbar_is_stopped"
+        const val PREF_SEND_USAGE_STATISTICS = "pref_send_usage_statistics"
+        const val PREF_CONFERENCE_TIME_ZONE = "pref_conference_time_zone"
+        const val PREF_SELECTED_FILTERS = "pref_selected_filters"
+    }
+
+    fun registerOnPreferenceChangeListener(listener: OnSharedPreferenceChangeListener) {
+        prefs.registerOnSharedPreferenceChangeListener(listener)
+
     }
 }
 

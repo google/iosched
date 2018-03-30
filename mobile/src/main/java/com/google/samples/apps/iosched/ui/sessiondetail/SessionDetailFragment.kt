@@ -34,6 +34,8 @@ import androidx.view.forEach
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSessionDetailBinding
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.model.Room
 import com.google.samples.apps.iosched.shared.model.SessionId
@@ -68,11 +70,15 @@ class SessionDetailFragment : DaggerFragment() {
 
     private lateinit var sessionDetailViewModel: SessionDetailViewModel
 
+    @Inject lateinit var analyticsHelper: AnalyticsHelper
+
     @Inject
     @field:Named("tagViewPool")
     lateinit var tagRecycledViewPool: RecycledViewPool
 
     private var room: Room? = null
+
+    lateinit var sessionTitle: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -193,6 +199,7 @@ class SessionDetailFragment : DaggerFragment() {
                 startActivity(SpeakerActivity.starterIntent(this, speakerId), options.toBundle())
             }
         })
+
         return binding.root
     }
 
@@ -233,9 +240,19 @@ class SessionDetailFragment : DaggerFragment() {
                 }
             }
         })
+
+        var titleUpdated = false
+        sessionDetailViewModel.session.observe(this, Observer {
+            if (it != null && !titleUpdated) {
+                sessionTitle = it.title
+                analyticsHelper.sendScreenView("Session Details: $sessionTitle", requireActivity())
+                titleUpdated = true
+            }
+        })
     }
 
     private fun openYoutubeUrl(youtubeUrl: String) {
+        analyticsHelper.logUiEvent(sessionTitle, AnalyticsActions.YOUTUBE_LINK)
         startActivity(Intent(Intent.ACTION_VIEW, youtubeUrl.toUri()))
     }
 

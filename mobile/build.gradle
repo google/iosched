@@ -138,6 +138,9 @@ dependencies {
     implementation("com.firebaseui:firebase-ui-auth:$rootProject.firebaseUiVersion")
     implementation "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
 
+    implementation 'com.google.firebase:firebase-core:11.8.0'
+
+
     // Utils
     // Date and time API for Java.
     api "com.jakewharton.threetenabp:threetenabp:$rootProject.threetenabpVersion"

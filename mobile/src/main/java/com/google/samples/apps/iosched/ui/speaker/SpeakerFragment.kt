@@ -27,6 +27,7 @@ import androidx.os.bundleOf
 import androidx.view.doOnLayout
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSpeakerBinding
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.model.SpeakerId
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
@@ -49,6 +50,8 @@ class SpeakerFragment : DaggerFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
     @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
+
+    @Inject lateinit var analyticsHelper: AnalyticsHelper
 
     @Inject
     @field:Named("tagViewPool")
@@ -135,6 +138,17 @@ class SpeakerFragment : DaggerFragment() {
         }
 
         return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        speakerViewModel.speaker.observe(this, Observer {
+            if (it != null) {
+                val pageName = "Speaker Details: ${it.name}"
+                analyticsHelper.sendScreenView(pageName, requireActivity())
+            }
+        })
     }
 
     companion object {

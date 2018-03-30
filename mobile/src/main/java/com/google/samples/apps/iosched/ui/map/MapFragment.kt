@@ -28,6 +28,7 @@ import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.Marker
 import com.google.samples.apps.iosched.databinding.FragmentMapBinding
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
@@ -38,6 +39,8 @@ import javax.inject.Inject
 class MapFragment : DaggerFragment(), MainNavigationFragment, OnMarkerClickListener {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject lateinit var analyticsHelper: AnalyticsHelper
+
     private lateinit var viewModel: MapViewModel
     private var mapViewBundle: Bundle? = null
     private lateinit var mapView: MapView
@@ -80,6 +83,7 @@ class MapFragment : DaggerFragment(), MainNavigationFragment, OnMarkerClickListe
         }
 
         initializeMap()
+        analyticsHelper.sendScreenView("Map", requireActivity())
 
         if (savedInstanceState == null) {
             arguments?.getString(ARG_FEATURE_ID)?.let {
@@ -98,6 +102,11 @@ class MapFragment : DaggerFragment(), MainNavigationFragment, OnMarkerClickListe
                     else -> return
                 }
                 binding.expandIcon.animate().rotationX(rotation).start()
+
+                // Analytics
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    viewModel.logViewedMarkerDetails()
+                }
             }
         })
 
