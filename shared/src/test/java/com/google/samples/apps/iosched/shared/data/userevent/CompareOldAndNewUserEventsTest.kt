@@ -161,6 +161,14 @@ class CompareOldAndNewUserEventsTest {
     }
 
     @Test
+    fun compareOldAndNew_sameId_errorMessageClashBySwap() {
+
+        val result = generateErrorResult(ReservationRequestStatus.SWAP_DENIED_CLASH)
+
+        assertThat(result, `is`(equalTo(UserEventMessage.RESERVATION_DENIED_CLASH)))
+    }
+
+    @Test
     fun compareOldAndNew_sameId_errorMessageCutoff() {
 
         val result = generateErrorResult(ReservationRequestStatus.RESERVE_DENIED_CUTOFF)
@@ -169,9 +177,25 @@ class CompareOldAndNewUserEventsTest {
     }
 
     @Test
+    fun compareOldAndNew_sameId_errorMessageCutoffBySwap() {
+
+        val result = generateErrorResult(ReservationRequestStatus.SWAP_DENIED_CUTOFF)
+
+        assertThat(result, `is`(equalTo(UserEventMessage.RESERVATION_DENIED_CUTOFF)))
+    }
+
+    @Test
     fun compareOldAndNew_sameId_errorMessageUnknown() {
 
         val result = generateErrorResult(ReservationRequestStatus.RESERVE_DENIED_UNKNOWN)
+
+        assertThat(result, `is`(equalTo(UserEventMessage.RESERVATION_DENIED_UNKNOWN)))
+    }
+
+    @Test
+    fun compareOldAndNew_sameId_errorMessageUnknownBySwap() {
+
+        val result = generateErrorResult(ReservationRequestStatus.SWAP_DENIED_UNKNOWN)
 
         assertThat(result, `is`(equalTo(UserEventMessage.RESERVATION_DENIED_UNKNOWN)))
     }
