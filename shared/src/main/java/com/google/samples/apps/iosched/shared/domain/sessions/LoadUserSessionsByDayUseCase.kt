@@ -36,6 +36,8 @@ open class LoadUserSessionsByDayUseCase @Inject constructor(
     override fun execute(parameters: Pair<UserSessionMatcher, String?>) {
         val (sessionMatcher, userId) = parameters
 
+        result.postValue(Result.Loading)
+
         val userSessionsObservable = userEventRepository.getObservableUserEvents(userId)
 
         // Avoid duplicating sources and trigger an update on the LiveData from the base class.
