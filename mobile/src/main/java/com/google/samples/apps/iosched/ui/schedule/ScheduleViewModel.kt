@@ -39,13 +39,14 @@ import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
-import com.google.samples.apps.iosched.shared.schedule.PinnedEventMatcher
-import com.google.samples.apps.iosched.shared.schedule.TagFilterMatcher
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
+import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.PinnedEventMatcher
+import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.TagFilterMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_2
@@ -76,13 +77,19 @@ class ScheduleViewModel @Inject constructor(
     val isLoading: LiveData<Boolean>
 
     // The current UserSessionMatcher, used to filter the events that are shown
-    private var userSessionMatcher: UserSessionMatcher
+    private var currentSessionMatcher: UserSessionMatcher
+    private val _userSessionMatcher = MutableLiveData<UserSessionMatcher>()
+    val userSessionMatcher: LiveData<UserSessionMatcher>
+        get() = _userSessionMatcher
 
     private val tagFilterMatcher = TagFilterMatcher()
     // Cached list of TagFilters returned by the use case. Only Result.Success modifies it.
     private var cachedTagFilters = emptyList<TagFilter>()
 
     val tagFilters: LiveData<List<TagFilter>>
+    private val _selectedFilterTags = MutableLiveData<List<Tag>>()
+    val selectedFilterTags: LiveData<List<Tag>>
+        get() = _selectedFilterTags
     private val _hasAnyFilters = MutableLiveData<Boolean>()
     val hasAnyFilters: LiveData<Boolean>
         get() = _hasAnyFilters
@@ -141,7 +148,8 @@ class ScheduleViewModel @Inject constructor(
         get() = _navigateToSwapReservationDialogAction
 
     init {
-        userSessionMatcher = tagFilterMatcher
+        currentSessionMatcher = tagFilterMatcher
+        _userSessionMatcher.value = currentSessionMatcher
 
         // Load sessions and tags and store the result in `LiveData`s
         loadSessionsResult = loadUserSessionsByDayUseCase.observe()
@@ -259,22 +267,27 @@ class ScheduleViewModel @Inject constructor(
     }
 
     override fun toggleFilter(filter: TagFilter, enabled: Boolean) {
-        // If tagFilterMatcher.add or .remove returns false, we do nothing.
+        var changed = false
         if (enabled && tagFilterMatcher.add(filter.tag)) {
             filter.isChecked.set(true)
-            _hasAnyFilters.value = true
-            refreshUserSessions()
+            changed = true
         } else if (!enabled && tagFilterMatcher.remove(filter.tag)) {
             filter.isChecked.set(false)
+            changed = true
+        }
+        // If tagFilterMatcher.add or .remove returns false, we do nothing.
+        if (changed) {
             _hasAnyFilters.value = !tagFilterMatcher.isEmpty()
+            _selectedFilterTags.value = tagFilterMatcher.getSelectedTags()
             refreshUserSessions()
         }
     }
 
-    override fun clearFilters() {
+    override fun clearTagFilters() {
         if (tagFilterMatcher.clearAll()) {
             tagFilters.value?.forEach { it.isChecked.set(false) }
             _hasAnyFilters.value = false
+            _selectedFilterTags.value = emptyList()
             refreshUserSessions()
         }
     }
@@ -284,12 +297,13 @@ class ScheduleViewModel @Inject constructor(
         if (_showPinnedEvents.value != pinned) {
             _showPinnedEvents.value = pinned
             if (pinned) {
-                userSessionMatcher = PinnedEventMatcher
+                currentSessionMatcher = PinnedEventMatcher
                 _hasAnyFilters.value = true
             } else {
-                userSessionMatcher = tagFilterMatcher
+                currentSessionMatcher = tagFilterMatcher
                 _hasAnyFilters.value = !tagFilterMatcher.isEmpty()
             }
+            _userSessionMatcher.value = currentSessionMatcher
             refreshUserSessions()
         }
     }
@@ -313,7 +327,7 @@ class ScheduleViewModel @Inject constructor(
 
     private fun refreshUserSessions() {
         Timber.d("ViewModel refreshing user sessions")
-        loadUserSessionsByDayUseCase.execute(userSessionMatcher to (getUserId() ?: "tempUser"))
+        loadUserSessionsByDayUseCase.execute(currentSessionMatcher to (getUserId() ?: "tempUser"))
     }
 
     override fun onStarClicked(userEvent: UserEvent) {
@@ -385,7 +399,7 @@ interface ScheduleEventListener {
     fun toggleFilter(filter: TagFilter, enabled: Boolean)
 
     /** Called from the UI to remove all filters. */
-    fun clearFilters()
+    fun clearTagFilters()
 
     /** Called from the UI to toggle showing starred or reserved events only. */
     fun togglePinnedEvents(pinned: Boolean)

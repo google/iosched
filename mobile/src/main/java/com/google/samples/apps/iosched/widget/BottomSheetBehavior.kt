@@ -98,7 +98,7 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
          * [STATE_SETTLING], [STATE_EXPANDED], [STATE_COLLAPSED], [STATE_HIDDEN], or
          * [STATE_HALF_EXPANDED].
          */
-        fun onStateChanged(bottomSheet: View, newState: Int)
+        fun onStateChanged(bottomSheet: View, newState: Int) {}
 
         /**
          * Called when the bottom sheet is being dragged.
@@ -108,7 +108,7 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
          * increases as this bottom sheet is moving upward. From 0 to 1 the sheet is between
          * collapsed and expanded states and from -1 to 0 it is between hidden and collapsed states.
          */
-        fun onSlide(bottomSheet: View, slideOffset: Float)
+        fun onSlide(bottomSheet: View, slideOffset: Float) {}
     }
 
     /** The current state of the bottom sheet, backing property */
@@ -166,9 +166,7 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
     private var _peekHeight = 0
     /** Peek height in pixels, or [PEEK_HEIGHT_AUTO] */
     var peekHeight
-        get() = if (peekHeightAuto) {
-            PEEK_HEIGHT_AUTO
-        } else _peekHeight
+        get() = if (peekHeightAuto) PEEK_HEIGHT_AUTO else _peekHeight
         set(value) {
             var needLayout = false
             if (value == PEEK_HEIGHT_AUTO) {
@@ -198,6 +196,9 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
                 }
             }
         }
+
+    /** Whether the bottom sheet can be dragged or not. */
+    var isDraggable = true
 
     /** Whether the bottom sheet should skip collapsed state after being expanded once. */
     var skipCollapsed = false
@@ -270,7 +271,8 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
             peekHeight,
             isFitToContents,
             isHideable,
-            skipCollapsed
+            skipCollapsed,
+            isDraggable
         )
     }
 
@@ -278,6 +280,7 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
         val ss = state as SavedState
         super.onRestoreInstanceState(parent, child, ss.superState)
 
+        isDraggable = ss.isDraggable
         peekHeight = ss.peekHeight
         isFitToContents = ss.isFitToContents
         isHideable = ss.isHideable
@@ -372,7 +375,7 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
         child: V,
         event: MotionEvent
     ): Boolean {
-        if (!child.isShown) {
+        if (!isDraggable || !child.isShown) {
             acceptTouches = false
             return false
         }
@@ -423,7 +426,7 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
         child: V,
         event: MotionEvent
     ): Boolean {
-        if (!child.isShown) {
+        if (!isDraggable || !child.isShown) {
             return false
         }
 
@@ -479,7 +482,8 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
         type: Int
     ): Boolean {
         nestedScrolled = false
-        if (viewRef?.get() == directTargetChild
+        if (isDraggable
+            && viewRef?.get() == directTargetChild
             && (axes and ViewCompat.SCROLL_AXIS_VERTICAL) != 0
         ) {
             // Scrolling view is a descendent of the sheet and scrolling vertically.
@@ -560,7 +564,8 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
         velocityX: Float,
         velocityY: Float
     ): Boolean {
-        return target == nestedScrollingChildRef?.get()
+        return isDraggable
+                && target == nestedScrollingChildRef?.get()
                 && (state != STATE_EXPANDED
                 || super.onNestedPreFling(
             coordinatorLayout, child, target, velocityX, velocityY
@@ -808,6 +813,7 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
         internal val isFitToContents: Boolean
         internal val isHideable: Boolean
         internal val skipCollapsed: Boolean
+        internal val isDraggable: Boolean
 
         constructor(source: Parcel) : this(source, null)
 
@@ -817,20 +823,24 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
             isFitToContents = source.readBoolean()
             isHideable = source.readBoolean()
             skipCollapsed = source.readBoolean()
+            isDraggable = source.readBoolean()
         }
 
         constructor(
-            superState: Parcelable, @State state: Int,
+            superState: Parcelable,
+            @State state: Int,
             peekHeight: Int,
             isFitToContents: Boolean,
             isHideable: Boolean,
-            skipCollapsed: Boolean
+            skipCollapsed: Boolean,
+            isDraggable: Boolean
         ) : super(superState) {
             this.state = state
             this.peekHeight = peekHeight
             this.isFitToContents = isFitToContents
             this.isHideable = isHideable
             this.skipCollapsed = skipCollapsed
+            this.isDraggable = isDraggable
         }
 
         override fun writeToParcel(dest: Parcel, flags: Int) {

@@ -25,6 +25,8 @@
     <string name="category_heading_tracks" translation_description="Label in the filters panel above session topics (Android, Cloud, etc.)">Topics</string>
     <string name="category_heading_types" translation_description="Label in the filters panel above event types (Sessions, Codelabs, etc.)">Types</string>
     <string name="clear_all" translation_description="The label for the button to clear all the filter conditions.">Clear all</string>
+    <string name="reset" translation_description="The label for the button to reset the filter conditions.">Reset</string>
+    <string name="pinned_events_filter_description" translation_description="Message shown when the user toggles the switch to see their pinned events.">Your starred and reserved events</string>
 
     <string name="session_duration_location" translatable="false">%1s / %2s</string>
     <string name="agenda" translation_description="The title for the agenda screen where user can see all the sessions they plan to attend.">Agenda</string>
@@ -63,6 +65,9 @@
     <string name="settings_title" translation_description="Title for the tab that shows all the settings of this app.">Settings</string>
 
     <!-- Accessibility -->
+    <string name="a11y_collapse_filters_sheet" translation_description="Description of a button to lower the filters sheet.">Lower filters sheet</string>
+    <string name="a11y_clear_tag_filters" translation_description="Description of a button to remove all current tag filters.">Clear filters</string>
+    <string name="a11y_revert_pinned" translation_description="Description of a button to revert the switch that shows only starred and reserved events.">Show all sessions</string>
     <string name="a11y_session_detail_video_icon" translatable="false">TODO: a11y text for icon</string>
     <string name="a11y_session_detail_video_description" translatable="false">TODO video description</string>
     <string name="a11y_speaker_headshot" translatable="false">TODO a11y content description for speaker headshot</string>

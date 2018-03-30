@@ -17,7 +17,16 @@
 package com.google.samples.apps.iosched.util
 
 import android.databinding.ObservableBoolean
+import android.databinding.ViewDataBinding
+import android.view.View
 
 fun ObservableBoolean.hasSameValue(other: ObservableBoolean) = get() == other.get()
 
 fun Int.isEven() = this % 2 == 0
+
+fun View.isRtl() = layoutDirection == View.LAYOUT_DIRECTION_RTL
+
+inline fun <T: ViewDataBinding> T.executeAfter(block: T.() -> Unit) {
+    block()
+    executePendingBindings()
+}
