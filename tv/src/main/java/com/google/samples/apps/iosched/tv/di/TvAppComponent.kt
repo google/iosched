@@ -23,6 +23,8 @@ import com.google.samples.apps.iosched.tv.ui.search.di.TvSearchableComponent
 import com.google.samples.apps.iosched.tv.ui.search.di.TvSearchableModule
 import com.google.samples.apps.iosched.tv.ui.sessiondetail.di.TvSessionDetailComponent
 import com.google.samples.apps.iosched.tv.ui.sessiondetail.di.TvSessionDetailModule
+import com.google.samples.apps.iosched.tv.ui.sessionplayer.di.TvSessionPlayerComponent
+import com.google.samples.apps.iosched.tv.ui.sessionplayer.di.TvSessionPlayerModule
 import dagger.Component
 import dagger.Subcomponent
 import javax.inject.Singleton
@@ -40,5 +42,6 @@ interface TvAppComponent {
 
     fun plus(scheduleModule: TvScheduleModule): TvScheduleComponent
     fun plus(sessionDetailModule: TvSessionDetailModule): TvSessionDetailComponent
+    fun plus(sessionPlayerModule: TvSessionPlayerModule): TvSessionPlayerComponent
     fun plus(searchModule: TvSearchableModule): TvSearchableComponent
 }

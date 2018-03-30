@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.tv.ui.sessiondetail
 
 import android.arch.lifecycle.Observer
+import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v17.leanback.app.DetailsSupportFragment
@@ -46,13 +47,13 @@ import com.google.samples.apps.iosched.tv.R
 import com.google.samples.apps.iosched.tv.app
 import com.google.samples.apps.iosched.tv.ui.presenter.DetailsDescriptionPresenter
 import com.google.samples.apps.iosched.tv.ui.presenter.SessionDetailsLogoPresenter
-import com.google.samples.apps.iosched.tv.ui.presenter.SessionPresenter
 import com.google.samples.apps.iosched.tv.ui.presenter.SpeakerPresenter
+import com.google.samples.apps.iosched.tv.ui.sessionplayer.SessionPlayerActivity
 import com.google.samples.apps.iosched.tv.util.toArrayObjectAdapter
 import javax.inject.Inject
 
 private const val ACTION_WATCH = 1L
-private const val ACTION_BOOKMARK = 2L
+private const val ACTION_STAR = 2L
 
 /**
  * Displays the details for a [Session].
@@ -65,6 +66,7 @@ class SessionDetailFragment : DetailsSupportFragment() {
     // Backing adapter for DetailsSupportFragment
     private lateinit var _adapter: ArrayObjectAdapter
     private lateinit var presenterSelector: ClassPresenterSelector
+    private lateinit var detailsPresenter: FullWidthDetailsOverviewRowPresenter
     private var detailsOverviewRow: DetailsOverviewRow? = null
     private lateinit var speakerListRow: ListRow
     private val speakerAdapter = ArrayObjectAdapter(SpeakerPresenter())
@@ -89,7 +91,9 @@ class SessionDetailFragment : DetailsSupportFragment() {
                 if (detailsOverviewRow == null) {
                     detailsOverviewRow = DetailsOverviewRow(it).apply {
 
-                        actionsAdapter = createSessionActions()
+                        actionsAdapter = createSessionActions(it)
+                        detailsPresenter.onActionClickedListener =
+                                SessionDetailsOnActionClickedListener(requireContext(), it)
 
                         _adapter.add(this)
                         updateSpeakers(it)
@@ -104,23 +108,25 @@ class SessionDetailFragment : DetailsSupportFragment() {
         })
     }
 
-    private fun createSessionActions(): ArrayObjectAdapter {
-        //TODO: handle when actions are selected.
-        val actionWatch = Action(
-            ACTION_WATCH,
-            resources.getString(R.string.session_detail_watch),
-            null,
-            ContextCompat.getDrawable(requireContext(), R.drawable.ic_livestreamed)
-        )
-
-        val actionBookmark = Action(
-            ACTION_BOOKMARK,
+    private fun createSessionActions(session: Session): ArrayObjectAdapter {
+        val actions = mutableListOf<Action>()
+        if (session.hasVideo()) {
+            actions += Action(
+                ACTION_WATCH,
+                resources.getString(R.string.session_detail_watch),
+                null,
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_livestreamed)
+            )
+        }
+        //TODO: add conditionally based on user's prefs.
+        actions += Action(
+            ACTION_STAR,
             resources.getString(R.string.session_detail_star),
             null,
             //TODO: change icon based on user state.
             ContextCompat.getDrawable(requireContext(), R.drawable.ic_star_border)
         )
-        return listOf(actionWatch, actionBookmark).toArrayObjectAdapter()
+        return actions.toArrayObjectAdapter()
     }
 
     private fun updateLogoImage(session: Session) {
@@ -168,7 +174,7 @@ class SessionDetailFragment : DetailsSupportFragment() {
         )
 
         // Set detail background and style.
-        val detailsPresenter = FullWidthDetailsOverviewRowPresenter(
+        detailsPresenter = FullWidthDetailsOverviewRowPresenter(
             DetailsDescriptionPresenter(),
             SessionDetailsLogoPresenter()
         ).apply {
@@ -178,10 +184,6 @@ class SessionDetailFragment : DetailsSupportFragment() {
             setListener(transitionHelper)
             isParticipatingEntranceTransition = false
             prepareEntranceTransition()
-
-            onActionClickedListener = OnActionClickedListener { action ->
-                Toast.makeText(context, action.toString(), Toast.LENGTH_SHORT).show()
-            }
         }
 
         presenterSelector = ClassPresenterSelector().apply {
@@ -191,5 +193,24 @@ class SessionDetailFragment : DetailsSupportFragment() {
         _adapter = ArrayObjectAdapter(presenterSelector)
 
         adapter = _adapter
+    }
+}
+
+/**
+ * Handles selected actions from the detail's presenter.
+ */
+private class SessionDetailsOnActionClickedListener(
+    private val context: Context, private val session: Session
+) : OnActionClickedListener {
+
+    override fun onActionClicked(action: Action) {
+        if (action.id == ACTION_WATCH && session.hasVideo()) {
+            val playerIntent = SessionPlayerActivity.createIntent(context, session.id)
+            context.startActivity(playerIntent)
+        } else {
+            // TODO: Remove toast once all actions are implemented
+            Toast.makeText(context, action.toString(), Toast.LENGTH_SHORT)
+                .show()
+        }
     }
 }

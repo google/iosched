@@ -83,22 +83,6 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun testCheckPlayable_currentSessionNull() {
-        assertFalse(viewModel.checkPlayable(null))
-    }
-
-    @Test
-    fun testCheckPlayable_currentSessionBlankUrl() {
-        assertFalse(viewModel.checkPlayable(createSessionWithUrl("  ")))
-    }
-
-    @Test
-    fun testCheckPlayable_currentSessionHasUrl() {
-        val rickSession = createSessionWithUrl("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
-        assertTrue(viewModel.checkPlayable(rickSession))
-    }
-
-    @Test
     fun testOnPlayVideo_createsEventForVideo() {
         val vm = createSessionDetailViewModelWithAuthEnabled()
 

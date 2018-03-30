@@ -115,6 +115,12 @@ data class Session(
     }
 
     /**
+     * Returns whether the session has a video or not. A session could be live streaming or have a
+     * recorded session. Both live stream and recorded videos are stored in [Session.youTubeUrl].
+     */
+    fun hasVideo() = youTubeUrl.isNotEmpty()
+
+    /**
      * The year the session was held.
      */
     val year = startTime.year
