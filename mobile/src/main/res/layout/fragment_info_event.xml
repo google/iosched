@@ -43,6 +43,13 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_begin="@dimen/margin_normal" />
 
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/margin_normal" />
+
             <TextView
                 android:id="@+id/wifi_header"
                 android:layout_width="match_parent"
@@ -177,11 +184,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/event_afterhours" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <com.google.samples.apps.iosched.widget.CountdownView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/countdown_height"
                 android:importantForAccessibility="no"
-                app:layout_constraintTop_toBottomOf="@id/event_meals" />
+                app:layout_constraintTop_toBottomOf="@id/event_meals"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"/>
 
         </android.support.constraint.ConstraintLayout>
 
