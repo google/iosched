@@ -23,6 +23,7 @@ import android.arch.lifecycle.MediatorLiveData
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.TestData
 import com.google.samples.apps.iosched.model.TestDataRepository
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
@@ -42,6 +43,7 @@ import com.google.samples.apps.iosched.shared.util.SetIntervalLiveData
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
@@ -339,12 +341,13 @@ class SessionDetailViewModelTest {
         snackbarMessageManager: SnackbarMessageManager =
             SnackbarMessageManager(FakePreferenceStorage()),
         networkUtils: NetworkUtils = mockNetworkUtils,
-        timeProvider: TimeProvider = DefaultTimeProvider
+        timeProvider: TimeProvider = DefaultTimeProvider,
+        analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper()
     ): SessionDetailViewModel {
         return SessionDetailViewModel(
             signInViewModelPlugin, loadUserSessionUseCase, loadRelatedSessionsUseCase,
             starEventUseCase, reservationActionUseCase, getTimeZoneUseCase, snackbarMessageManager,
-                timeProvider, networkUtils
+                timeProvider, networkUtils, analyticsHelper
         )
     }
 

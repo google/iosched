@@ -25,6 +25,7 @@ import android.net.Uri
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.TestData
 import com.google.samples.apps.iosched.model.TestDataRepository
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
@@ -58,6 +59,7 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
@@ -531,7 +533,8 @@ class ScheduleViewModelTest {
         loadSelectedFiltersUseCase: LoadSelectedFiltersUseCase =
             LoadSelectedFiltersUseCase(FakePreferenceStorage()),
         saveSelectedFiltersUseCase: SaveSelectedFiltersUseCase =
-            SaveSelectedFiltersUseCase(FakePreferenceStorage())
+            SaveSelectedFiltersUseCase(FakePreferenceStorage()),
+        analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper()
     ): ScheduleViewModel {
         return ScheduleViewModel(
             loadUserSessionsByDayUseCase = loadSessionsUseCase,
@@ -546,7 +549,8 @@ class ScheduleViewModelTest {
             refreshConferenceDataUseCase = refreshConferenceDataUseCase,
             observeConferenceDataUseCase = observeConferenceDataUseCase,
             loadSelectedFiltersUseCase = loadSelectedFiltersUseCase,
-            saveSelectedFiltersUseCase = saveSelectedFiltersUseCase
+            saveSelectedFiltersUseCase = saveSelectedFiltersUseCase,
+            analyticsHelper = analyticsHelper
         )
     }
 

@@ -20,8 +20,11 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.net.wifi.WifiManager
 import com.google.samples.apps.iosched.MainApplication
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
+import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.google.samples.apps.iosched.util.FirebaseAnalyticsHelper
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -53,4 +56,13 @@ class AppModule {
     fun providesClipboardManager(context: Context): ClipboardManager =
         context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE)
                 as ClipboardManager
+
+    @Singleton
+    @Provides
+    fun providesAnalyticsHelper(
+        context: Context,
+        signInDelegate: SignInViewModelDelegate,
+        preferenceStorage: PreferenceStorage
+    ): AnalyticsHelper = FirebaseAnalyticsHelper(context, signInDelegate, preferenceStorage)
+
 }

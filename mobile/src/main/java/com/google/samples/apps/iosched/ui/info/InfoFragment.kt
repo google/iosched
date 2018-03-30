@@ -19,15 +19,20 @@ package com.google.samples.apps.iosched.ui.info
 import android.os.Bundle
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentInfoBinding
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
 class InfoFragment : DaggerFragment(), MainNavigationFragment {
+
+    @Inject lateinit var analyticsHelper : AnalyticsHelper
 
     private lateinit var binding: FragmentInfoBinding
 
@@ -45,7 +50,22 @@ class InfoFragment : DaggerFragment(), MainNavigationFragment {
             viewpager.offscreenPageLimit = INFO_PAGES.size
             viewpager.adapter = InfoAdapter(childFragmentManager)
             tabs.setupWithViewPager(binding.viewpager)
+
+            // Analytics. Manually fire once for the loaded tab, then fire on tab change.
+            trackInfoScreenView(0)
+            viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrollStateChanged(state: Int) {}
+                override fun onPageScrolled(position: Int, offset: Float, offsetPixels: Int) {}
+                override fun onPageSelected(position: Int) {
+                    trackInfoScreenView(position)
+                }
+            })
         }
+    }
+
+    private fun trackInfoScreenView(position: Int) {
+        val pageName = getString(INFO_TITLES[position])
+        analyticsHelper.sendScreenView("Info - $pageName", requireActivity())
     }
 
     /**

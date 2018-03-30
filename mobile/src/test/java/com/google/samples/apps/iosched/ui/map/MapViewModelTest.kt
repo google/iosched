@@ -20,6 +20,7 @@ import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.content.Context
 import com.google.android.gms.maps.model.LatLng
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -41,7 +42,8 @@ class MapViewModelTest {
         // Create ViewModel with the test data
         val viewModel = MapViewModel(
             LoadMapTileProviderUseCase(mock(Context::class.java)),
-            LoadGeoJsonFeaturesUseCase(mock(Context::class.java))
+            LoadGeoJsonFeaturesUseCase(mock(Context::class.java)),
+            FakeAnalyticsHelper()
         )
         assertTrue(viewModel.conferenceLocationBounds.contains(
             // conference center

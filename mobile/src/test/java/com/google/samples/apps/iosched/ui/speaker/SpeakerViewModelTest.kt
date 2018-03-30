@@ -21,12 +21,14 @@ package com.google.samples.apps.iosched.ui.speaker
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.model.TestData
 import com.google.samples.apps.iosched.model.TestDataRepository
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCase
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakeEventActionsViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
@@ -99,13 +101,15 @@ class SpeakerViewModelTest {
         signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate().apply {
             loadUser("123")
         },
-        eventActionsDelegate: EventActionsViewModelDelegate = FakeEventActionsViewModelDelegate()
+        eventActionsDelegate: EventActionsViewModelDelegate = FakeEventActionsViewModelDelegate(),
+        analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper()
     ): SpeakerViewModel {
         return SpeakerViewModel(
             loadSpeakerUseCase,
             loadSpeakerSessionsUseCase,
             signInViewModelDelegate,
-            eventActionsDelegate
+            eventActionsDelegate,
+            analyticsHelper
         )
     }
 }

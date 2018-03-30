@@ -17,16 +17,21 @@
 package com.google.samples.apps.iosched
 
 import com.google.samples.apps.iosched.di.DaggerAppComponent
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.util.CrashlyticsTree
 import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * Initialization of libraries.
  */
 class MainApplication : DaggerApplication() {
+    // Even if the var isn't used, needs to be initialized at application startup.
+    @Inject lateinit var analyticsHelper: AnalyticsHelper
+
     override fun onCreate() {
         super.onCreate()
 

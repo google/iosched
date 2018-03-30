@@ -33,6 +33,7 @@ import com.google.android.material.widget.FloatingActionButton
 import com.google.android.material.widget.TabLayout
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
@@ -71,6 +72,8 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         private const val DIALOG_CONFIRM_SIGN_OUT = "dialog_confirm_sign_out"
         private const val DIALOG_SCHEDULE_HINTS = "dialog_schedule_hints"
     }
+
+    @Inject lateinit var analyticsHelper : AnalyticsHelper
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -140,11 +143,18 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
             scheduleViewModel.userHasInteracted = false
         }
         scheduleViewModel.currentEvent.observe(this, Observer { eventLocation ->
-            if (eventLocation != null && !scheduleViewModel.userHasInteracted) {
-                binding.viewpager.run {
-                    post {
-                        currentItem = eventLocation.day.ordinal
+            if (!scheduleViewModel.userHasInteracted) {
+                if (eventLocation != null) {
+                    // switch to the current day
+                    binding.viewpager.run {
+                        post {
+                            // this will trigger onPageChanged and log the page view
+                            currentItem = eventLocation.day.ordinal
+                        }
                     }
+                } else {
+                    // Showing the default page. Log it.
+                    logAnalyticsPageView(binding.viewpager.currentItem)
                 }
             }
         })
@@ -161,6 +171,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         viewPager.addOnPageChangeListener(object : SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 scheduleViewModel.setIsAgendaPage(position == AGENDA_POSITION)
+                logAnalyticsPageView(position)
             }
         })
 
@@ -263,6 +274,11 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     override fun onStart() {
         super.onStart()
         scheduleViewModel.initializeTimeZone()
+    }
+
+    private fun logAnalyticsPageView(position: Int) {
+        val page = if (position == AGENDA_POSITION) "agenda" else "Day ${position + 1}"
+        analyticsHelper.sendScreenView("Schedule - $page", requireActivity())
     }
 
     /**

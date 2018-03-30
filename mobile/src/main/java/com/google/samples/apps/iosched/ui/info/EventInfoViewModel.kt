@@ -21,6 +21,8 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.net.wifi.WifiConfiguration
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.logistics.LoadWifiInfoUseCase
 import com.google.samples.apps.iosched.shared.model.ConferenceWifiInfo
 import com.google.samples.apps.iosched.shared.result.Event
@@ -36,7 +38,8 @@ import javax.inject.Inject
 class EventInfoViewModel @Inject constructor(
     loadWifiInfoUseCase: LoadWifiInfoUseCase,
     private val wifiInstaller: WifiInstaller,
-    signInViewModelDelegate: SignInViewModelDelegate
+    signInViewModelDelegate: SignInViewModelDelegate,
+    private val analyticsHelper: AnalyticsHelper
 ) : ViewModel() {
 
     companion object {
@@ -59,7 +62,6 @@ class EventInfoViewModel @Inject constructor(
     private val _openUrlEvent = MutableLiveData<Event<String>>()
     val openUrlEvent: LiveData<Event<String>>
         get() = _openUrlEvent
-
 
     init {
         loadWifiInfoUseCase(Unit, _wifiConfig)
@@ -93,6 +95,7 @@ class EventInfoViewModel @Inject constructor(
                 )
 
         _snackbarMessage.postValue(Event(snackbarMessage))
+        analyticsHelper.logUiEvent("Events", AnalyticsActions.WIFI_CONNECT)
     }
 
     private fun checkShowScavengerHunt(isRegistered: Boolean): Boolean {
@@ -107,9 +110,11 @@ class EventInfoViewModel @Inject constructor(
 
     fun onClickScavengerHunt() {
         _openUrlEvent.value = Event(SCAVENGER_HUNT_URL)
+        analyticsHelper.logUiEvent("Scavenger Hunt", AnalyticsActions.CLICK)
     }
 
     fun onClickAssistantApp() {
         _openUrlEvent.value = Event(ASSISTANT_APP_URL)
+        analyticsHelper.logUiEvent("Assistant App", AnalyticsActions.CLICK)
     }
 }

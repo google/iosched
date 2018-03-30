@@ -20,10 +20,13 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCase
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCaseResult
+import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Speaker
 import com.google.samples.apps.iosched.shared.model.SpeakerId
 import com.google.samples.apps.iosched.shared.model.UserSession
@@ -40,7 +43,8 @@ class SpeakerViewModel @Inject constructor(
     private val loadSpeakerUseCase: LoadSpeakerUseCase,
     private val loadSpeakerSessionsUseCase: LoadUserSessionsUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
-    eventActionsViewModelDelegate: EventActionsViewModelDelegate
+    private val eventActionsViewModelDelegate: EventActionsViewModelDelegate,
+    private val analyticsHelper: AnalyticsHelper
 ) : ViewModel(),
     SignInViewModelDelegate by signInViewModelDelegate,
     EventActionsViewModelDelegate by eventActionsViewModelDelegate {
@@ -98,5 +102,24 @@ class SpeakerViewModel @Inject constructor(
      */
     override fun onCleared() {
         loadSpeakerSessionsUseCase.onCleared()
+    }
+
+    override fun onStarClicked(userEvent: UserEvent) {
+        eventActionsViewModelDelegate.onStarClicked(userEvent)
+
+        // Only recording stars, not un-stars.  Since userEvent.isStarred reflects pre-click value,
+        // checking for "old value starred, new value unstarred", in which case we don't record.
+        if (userEvent.isStarred) {
+            return
+        }
+
+        // Find the session
+        val sessionId = userEvent.id
+        val sessions = speakerUserSessions.value
+
+        if (sessions != null) {
+            val session = sessions.first { it.session.id == sessionId }.session
+            analyticsHelper.logUiEvent(session.title, AnalyticsActions.STARRED)
+        }
     }
 }

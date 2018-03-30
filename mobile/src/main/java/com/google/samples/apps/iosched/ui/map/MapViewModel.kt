@@ -30,6 +30,8 @@ import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.data.geojson.GeoJsonPoint
 import com.google.samples.apps.iosched.BuildConfig
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
@@ -39,7 +41,8 @@ import javax.inject.Inject
 
 class MapViewModel @Inject constructor(
     loadMapTileProviderUseCase: LoadMapTileProviderUseCase,
-    private val loadGeoJsonFeaturesUseCase: LoadGeoJsonFeaturesUseCase
+    private val loadGeoJsonFeaturesUseCase: LoadGeoJsonFeaturesUseCase,
+    private val analyticsHelper: AnalyticsHelper
 ) : ViewModel() {
 
     /**
@@ -138,19 +141,28 @@ class MapViewModel @Inject constructor(
         _mapCenterEvent.value = Event(update)
 
         // publish feature data
+        val title = feature.getProperty("title")
         _selectedMarkerInfo.value = MarkerInfo(
-            feature.getProperty("title"),
+            title,
             feature.getProperty("description"),
             feature.getProperty("icon")
         )
 
         // bring bottom sheet into view
         _bottomSheetStateEvent.value = Event(BottomSheetBehavior.STATE_COLLAPSED)
+
+        // Analytics
+        analyticsHelper.logUiEvent(title, AnalyticsActions.MAP_MARKER_SELECT)
     }
 
     fun onMapClick() {
         // Hide the bottom sheet
         _bottomSheetStateEvent.value = Event(BottomSheetBehavior.STATE_HIDDEN)
+    }
+
+    fun logViewedMarkerDetails() {
+        val title = _selectedMarkerInfo.value?.title ?: return
+        analyticsHelper.logUiEvent(title, AnalyticsActions.MAP_MARKER_DETAILS)
     }
 }
 

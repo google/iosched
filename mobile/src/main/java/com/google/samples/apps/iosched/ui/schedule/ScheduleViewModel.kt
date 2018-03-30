@@ -22,6 +22,8 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.support.annotation.StringRes
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
@@ -64,7 +66,7 @@ import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import org.threeten.bp.ZoneId
 import timber.log.Timber
-import java.util.*
+import java.util.UUID
 import javax.inject.Inject
 
 /**
@@ -85,7 +87,8 @@ class ScheduleViewModel @Inject constructor(
     private val refreshConferenceDataUseCase: RefreshConferenceDataUseCase,
     observeConferenceDataUseCase: ObserveConferenceDataUseCase,
     loadSelectedFiltersUseCase: LoadSelectedFiltersUseCase,
-    private val saveSelectedFiltersUseCase: SaveSelectedFiltersUseCase
+    private val saveSelectedFiltersUseCase: SaveSelectedFiltersUseCase,
+    private val analyticsHelper: AnalyticsHelper
 ) : ViewModel(), ScheduleEventListener, SignInViewModelDelegate by signInViewModelDelegate {
 
     val isLoading: LiveData<Boolean>
@@ -405,6 +408,15 @@ class ScheduleViewModel @Inject constructor(
             // Update observables
             updateFilterStateObservables()
             refreshUserSessions()
+
+            // Analytics
+            val filterName = if (filter is MyEventsFilter) {
+                "Starred & Reserved"
+            } else {
+                filter.getText()
+            }
+            val action = if (enabled) AnalyticsActions.ENABLE else AnalyticsActions.DISABLE
+            analyticsHelper.logUiEvent("Filter changed: $filterName", action)
         }
     }
 
@@ -414,6 +426,8 @@ class ScheduleViewModel @Inject constructor(
             saveSelectedFiltersUseCase(userSessionMatcher)
             updateFilterStateObservables()
             refreshUserSessions()
+
+            analyticsHelper.logUiEvent("Clear filters", AnalyticsActions.CLICK)
         }
     }
 
@@ -472,6 +486,25 @@ class ScheduleViewModel @Inject constructor(
         } else {
             R.string.event_unstarred
         }
+
+        if (newIsStarredState) {
+            val day1Sessions = sessionTimeDataDay1.value?.list
+            val day2Sessions = sessionTimeDataDay2.value?.list
+            val day3Sessions = sessionTimeDataDay3.value?.list
+
+            val allSessions = sequenceOf(
+                day1Sessions.orEmpty(),
+                day2Sessions.orEmpty(),
+                day3Sessions.orEmpty()
+            ).flatten()
+
+            val userSession = allSessions.find { it.session.id == userEvent.id }
+
+            if (userSession != null) {
+                analyticsHelper.logUiEvent(userSession.session.title, AnalyticsActions.STARRED)
+            }
+        }
+
         snackbarMessageManager.addMessage(
             SnackbarMessage(
                 messageId = stringResId,

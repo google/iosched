@@ -21,6 +21,8 @@ import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
@@ -56,7 +58,7 @@ import org.threeten.bp.Duration
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
-import java.util.*
+import java.util.UUID
 import javax.inject.Inject
 
 private const val TEN_SECONDS = 10_000L
@@ -74,7 +76,8 @@ class SessionDetailViewModel @Inject constructor(
     private val getTimeZoneUseCase: GetTimeZoneUseCase,
     private val snackbarMessageManager: SnackbarMessageManager,
     timeProvider: TimeProvider,
-    private val networkUtils: NetworkUtils
+    private val networkUtils: NetworkUtils,
+    private val analyticsHelper: AnalyticsHelper
 ) : ViewModel(), SessionDetailEventListener, EventActions,
     SignInViewModelDelegate by signInViewModelDelegate {
 
@@ -360,6 +363,10 @@ class SessionDetailViewModel @Inject constructor(
 
         // Update the snackbar message optimistically.
         val stringResId = if (newIsStarredState) {
+            val sessionTitle = session.value?.title
+            if (sessionTitle != null) {
+                analyticsHelper.logUiEvent(sessionTitle, AnalyticsActions.STARRED)
+            }
             R.string.event_starred
         } else {
             R.string.event_unstarred
@@ -414,6 +421,7 @@ class SessionDetailViewModel @Inject constructor(
                         SnackbarMessage(R.string.cancellation_denied_cutoff, longDuration = true)
                     )
                 )
+                analyticsHelper.logUiEvent(sessionSnapshot.title, AnalyticsActions.RES_CANCEL_FAILED)
             } else {
                 // Open the dialog to confirm if the user really wants to remove their reservation
                 _navigateToRemoveReservationDialogAction.value = Event(
@@ -423,6 +431,7 @@ class SessionDetailViewModel @Inject constructor(
                         sessionSnapshot.title
                     )
                 )
+                analyticsHelper.logUiEvent(sessionSnapshot.title, AnalyticsActions.RES_CANCEL)
             }
             return
         }
@@ -432,10 +441,12 @@ class SessionDetailViewModel @Inject constructor(
                     SnackbarMessage(R.string.reservation_denied_cutoff, longDuration = true)
                 )
             )
+            analyticsHelper.logUiEvent(sessionSnapshot.title, AnalyticsActions.RESERVE_FAILED)
         } else {
             reservationActionUseCase.execute(
                 ReservationRequestParameters(userId, sessionSnapshot.id, RequestAction())
             )
+            analyticsHelper.logUiEvent(sessionSnapshot.title, AnalyticsActions.RESERVE)
         }
     }
 
@@ -458,6 +469,13 @@ class SessionDetailViewModel @Inject constructor(
             return
         }
         val newIsStarredState = !userEvent.isStarred
+
+        val sessionTitle = session.value?.title
+        if (sessionTitle != null && newIsStarredState) {
+            analyticsHelper.logUiEvent(sessionTitle, AnalyticsActions.STARRED)
+        } else {
+            Timber.d("Session title is null, can't log")
+        }
 
         // Update the snackbar message optimistically.
         val snackbarMessage = if (newIsStarredState) {
