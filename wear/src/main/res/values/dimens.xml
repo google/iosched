@@ -38,10 +38,4 @@
     <dimen name="list_item_padding">5dp</dimen>
     <dimen name="session_icon_and_row_dimensions">48dp</dimen>
     <dimen name="session_icon_padding">4dp</dimen>
-    <dimen name="session_title_text_size">18sp</dimen>
-    <dimen name="session_location_and_room_text_size">10sp</dimen>
-
-    <!-- Revise and rename these? -->
-
-
 </resources>

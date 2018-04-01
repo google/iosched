@@ -20,8 +20,22 @@
     <!-- TODO: Finish expanding styles to match mobile and UX Wear review. -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/indigo</item>
+        <item name="colorPrimaryDark">@color/indigo_dark</item>
+        <item name="colorAccent">@color/indigo</item>
     </style>
+
+    <style name="TextAppearance.IOSched.SessionTitle" parent="@style/TextAppearance.AppCompat.Subhead">
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.ListSecondary" parent="@style/TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="android:textSize">10sp</item>
+
+    </style>
+
 </resources>
