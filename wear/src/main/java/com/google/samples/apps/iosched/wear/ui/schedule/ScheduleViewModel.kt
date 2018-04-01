@@ -18,9 +18,12 @@ package com.google.samples.apps.iosched.wear.ui.schedule
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
+import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
+import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
@@ -39,7 +42,7 @@ import javax.inject.Inject
  */
 class ScheduleViewModel @Inject constructor(
     private val loadUserSessionsByDayUseCase: LoadUserSessionsByDayUseCase
-) : ViewModel() {
+) : ViewModel(), ScheduleEventListener {
 
     val isLoading: LiveData<Boolean>
 
@@ -56,6 +59,10 @@ class ScheduleViewModel @Inject constructor(
     private val _errorMessage = MediatorLiveData<Event<String>>()
     val errorMessage : LiveData<Event<String>>
         get() = _errorMessage
+
+    private val _navigateToSessionAction = MutableLiveData<Event<String>>()
+    val navigateToSessionAction : LiveData<Event<String>>
+        get() = _navigateToSessionAction
 
     init {
 
@@ -93,8 +100,17 @@ class ScheduleViewModel @Inject constructor(
         DAY_3 -> day3Sessions
     }
 
+    override fun openSessionDetail(id: String) {
+        _navigateToSessionAction.value = Event(id)
+    }
+
     private fun refreshUserSessions() {
         Timber.d("ViewModel refreshing user sessions")
         loadUserSessionsByDayUseCase.execute(userSessionMatcher to ("tempUser"))
     }
+}
+
+interface ScheduleEventListener {
+    /** Called from UI to start a navigation action to the detail screen. */
+    fun openSessionDetail(id: String)
 }

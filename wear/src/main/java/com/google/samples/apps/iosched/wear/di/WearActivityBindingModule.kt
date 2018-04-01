@@ -19,6 +19,8 @@ package com.google.samples.apps.iosched.wear.di
 import com.google.samples.apps.iosched.shared.di.ActivityScoped
 import com.google.samples.apps.iosched.wear.ui.MainActivity
 import com.google.samples.apps.iosched.wear.ui.schedule.di.ScheduleModule
+import com.google.samples.apps.iosched.wear.ui.sessiondetail.SessionDetailActivity
+import com.google.samples.apps.iosched.wear.ui.sessiondetail.di.SessionDetailModule
 import com.google.samples.apps.iosched.wear.ui.settings.di.SettingsModule
 import com.google.samples.apps.iosched.wear.ui.signinandout.di.SignInOrOutModule
 import dagger.Module
@@ -38,7 +40,16 @@ import dagger.android.ContributesAndroidInjector
 abstract class WearActivityBindingModule {
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules =
-        [ScheduleModule::class, SettingsModule::class, SignInOrOutModule::class])
+    @ContributesAndroidInjector(
+            modules = [
+                ScheduleModule::class,
+                SettingsModule::class,
+                SignInOrOutModule::class
+            ]
+    )
     internal abstract fun mainActivity(): MainActivity
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = [SessionDetailModule::class])
+    internal abstract fun sessionDetailActivity(): SessionDetailActivity
 }
