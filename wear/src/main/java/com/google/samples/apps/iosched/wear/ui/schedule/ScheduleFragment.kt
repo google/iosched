@@ -27,6 +27,7 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.wear.R
 import com.google.samples.apps.iosched.wear.ui.WearableFragment
+import com.google.samples.apps.iosched.wear.ui.sessiondetail.SessionDetailActivity
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import javax.inject.Inject
 
@@ -47,13 +48,21 @@ class ScheduleFragment : WearableFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel = activityViewModelProvider(viewModelFactory)
+
+        viewModel.navigateToSessionAction.observe(this, Observer { navigationEvent ->
+            navigationEvent?.getContentIfNotHandled()?.let { sessionId ->
+                openSessionDetail(sessionId)
+            }
+        })
+
         return inflater.inflate(R.layout.fragment_schedule, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = activityViewModelProvider(viewModelFactory)
-        adapter = ScheduleAdapter()
+
+        adapter = ScheduleAdapter(viewModel)
 
         wearableRecyclerView.apply {
             // Aligns the first and last items on the list vertically centered on the screen.
@@ -85,5 +94,9 @@ class ScheduleFragment : WearableFragment() {
 
     override fun onUpdateAmbient() {
         // TODO(b/74259577): implement ambient UI
+    }
+
+    private fun openSessionDetail(id: String) {
+        startActivity(SessionDetailActivity.starterIntent(requireContext(), id))
     }
 }
