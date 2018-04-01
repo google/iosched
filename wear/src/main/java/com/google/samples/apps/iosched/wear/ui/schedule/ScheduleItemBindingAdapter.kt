@@ -65,23 +65,56 @@ fun sessionTimeIcon(
 
 private fun findTimeResource(context: Context, startTime: ZonedDateTime): Int {
 
-    // TODO: Revise code based on deliver of final time icons + add time zone checks (remove Log).
     val hour = if(startTime.hour > 12) {
         startTime.hour - 12
     } else {
         startTime.hour
     }
 
-    // TODO: Verify start times are only in 00 and 30 offline.
+    // TODO: Verify start times are only in 00 and 30 offline plus add all 30 assets.
     val minute = if(startTime.minute == 30) {
         startTime.minute
     } else {
         0
     }
 
-    // TODO: Swap placeholder w/ dynamic name once final time assets are delivered & remove log.
-    Timber.d(TAG, "Actual time: ${startTime.hour}:${startTime.minute}")
-    Timber.d(TAG, "ic_time_$hour$minute")
+    val properTimeName =
+        properTimeResourceName(hour.convertToHourString(), minute.convertToMinuteString())
 
-    return context.resources.getIdentifier("ic_time_placeholder", DRAWABLE, context.packageName)
+    // TODO: Add AM/PM once delivered & remove log.
+    Timber.d(TAG, "ZonedDateTime: ${startTime.hour} + ${startTime.minute}")
+    Timber.d(TAG, "IC time: $properTimeName")
+
+    return context.resources.getIdentifier(properTimeName, DRAWABLE, context.packageName)
 }
+
+private fun properTimeResourceName(hour: String, minute: String): String {
+    return if (minute.isNotEmpty()) {
+        hour + "_" + minute
+    } else {
+        hour
+    }
+}
+
+private fun Int.convertToHourString():String =
+    when(this) {
+        1 -> "one"
+        2 -> "two"
+        3 -> "three"
+        4 -> "four"
+        5 -> "five"
+        6 -> "six"
+        7 -> "seven"
+        8 -> "eight"
+        9 -> "nine"
+        10 -> "ten"
+        11 -> "eleven"
+        12, 0 -> "twelve"
+        else -> ""
+    }
+
+private fun Int.convertToMinuteString():String =
+    when (this) {
+        30 -> "thirty"
+        else -> ""
+    }
