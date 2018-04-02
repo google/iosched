@@ -68,6 +68,7 @@ abstract class UseCase<in P, R> {
         this(parameters, liveCallback)
         return liveCallback
     }
+
     /** Executes the use case synchronously  */
     fun executeNow(parameters: P): Result<R> {
         return try {

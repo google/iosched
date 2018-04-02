@@ -16,10 +16,10 @@
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="com.google.samples.apps.iosched.R" />
 
         <variable
             name="viewModel"
@@ -31,18 +31,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/appbar"
             style="@style/Widget.AppBar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@color/white_67"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <include layout="@layout/toolbar" />
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:minHeight="?actionBarSize"
+                android:text="@string/title_map"
+                android:textAppearance="@style/TextAppearance.IOSched.ToolbarTitle" />
 
-        </LinearLayout>
+        </FrameLayout>
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/map"
@@ -51,30 +60,11 @@
             app:isIndoorEnabled="@{false}"
             app:isMapToolbarEnabled="@{false}"
             app:isZoomControlsEnabled="@{false}"
+            app:mapStyle="@{R.raw.maps_style}"
             app:markers="@{viewModel.markers}"
             app:minZoom="@{viewModel.minZoom}"
+            app:tileDrawable="@{R.drawable.map_tile}"
             app:viewport="@{viewModel.conferenceLocationBounds}" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@drawable/map_placeholder" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:textAppearance="@style/TextAppearance.IOSched.SessionTitle.Display"
-            android:rotation="-45"
-            android:text="Coming soon"
-            tools:ignore="HardcodedText" />
 
     </android.support.constraint.ConstraintLayout>
 

@@ -27,4 +27,5 @@
     <color name="grey_800">#424242</color>
     <color name="grey_600">#747474</color>
     <color name="spacer_grey">#e0e0e0</color>
+    <color name="white_67">#abffffff</color>
 </resources>

@@ -20,8 +20,8 @@ import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.OfflineConferenceDataSource
-import com.google.samples.apps.iosched.shared.data.map.FakeMapMetadataDataSource
-import com.google.samples.apps.iosched.shared.data.map.MapMetadataDataSource
+import com.google.samples.apps.iosched.shared.data.map.DefaultMapMetadataRepository
+import com.google.samples.apps.iosched.shared.data.map.MapMetadataRepository
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
@@ -74,8 +74,8 @@ class SharedModule {
 
     @Singleton
     @Provides
-    fun provideMapMetadataDataSource(): MapMetadataDataSource {
-        return FakeMapMetadataDataSource
+    fun provideMapMetadataRepository(): MapMetadataRepository {
+        return DefaultMapMetadataRepository()
     }
 
     @Singleton

@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.data.map
 
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLngBounds
 
 /**
@@ -31,4 +32,9 @@ interface MapMetadataDataSource {
      * Keeping as API because this depends on the size of the conference, which is dynamic.
      */
     fun getMapViewportMinZoom(): Float
+
+    /**
+     * @return The default camera position for the map
+     */
+    fun getDefaultCameraPosition(): CameraPosition
 }

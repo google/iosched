@@ -17,23 +17,21 @@
 package com.google.samples.apps.iosched.ui.map
 
 import android.arch.lifecycle.ViewModelProvider
-import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.gms.maps.MapView
-import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentMapBinding
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.toolbar.*
 import javax.inject.Inject
 
 class MapFragment : DaggerFragment(), MainNavigationFragment {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var viewModel: MapViewModel
     private var mapViewBundle: Bundle? = null
     private lateinit var mapView: MapView
 
@@ -42,10 +40,6 @@ class MapFragment : DaggerFragment(), MainNavigationFragment {
         fun newInstance() = MapFragment()
 
         const val MAPVIEW_BUNDLE_KEY = "MapViewBundleKey"
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        toolbar.setTitle(R.string.title_map)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,13 +51,11 @@ class MapFragment : DaggerFragment(), MainNavigationFragment {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?): View? {
-        val binding: FragmentMapBinding = DataBindingUtil.inflate<FragmentMapBinding>(
-                inflater, R.layout.fragment_map, container, false).apply {
-            viewModel = viewModelProvider(viewModelFactory)
+        viewModel = viewModelProvider(viewModelFactory)
+        val binding = FragmentMapBinding.inflate(inflater, container, false).apply {
             setLifecycleOwner(this@MapFragment)
+            viewModel = this@MapFragment.viewModel
         }
-
-        activity?.title = getString(R.string.title_map)
 
         mapView = binding.map.apply {
             onCreate(mapViewBundle)
@@ -111,7 +103,7 @@ class MapFragment : DaggerFragment(), MainNavigationFragment {
         mapView.onLowMemory()
     }
 
-    fun initializeMap() {
+    private fun initializeMap() {
         // TODO: Move this completely to BindingAdapter.
 
         mapView.getMapAsync {

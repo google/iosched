@@ -17,13 +17,10 @@
 package com.google.samples.apps.iosched.ui.map
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.samples.apps.iosched.shared.data.map.MapMetadataRepository
-import com.google.samples.apps.iosched.shared.data.map.RemoteMapMetadataDataSource
-import com.google.samples.apps.iosched.shared.domain.map.LoadConferenceLocationUseCase
-import com.google.samples.apps.iosched.shared.domain.map.LoadConferenceMinZoomUseCase
-import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import org.junit.Assert
 import org.junit.Rule
@@ -33,15 +30,6 @@ import org.junit.Test
  * Unit tests for the [MapViewModel].
  */
 class MapViewModelTest {
-    private val conferenceLocationBoundsWest = 37.423205
-    private val conferenceLocationBoundsNorth = -122.081757
-    private val conferenceLocationBoundsEast = 37.428479
-    private val conferenceLocationBoundsSouth = -122.078109
-    private val conferenceLocation = LatLngBounds(
-            LatLng(conferenceLocationBoundsWest, conferenceLocationBoundsNorth),
-            LatLng(conferenceLocationBoundsEast, conferenceLocationBoundsSouth)
-    )
-    private val mapMinZoom = 12f
 
     // Executes tasks in the Architecture Components in the same thread
     @get:Rule var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -50,74 +38,37 @@ class MapViewModelTest {
     @get:Rule var syncTaskExecutorRule = SyncTaskExecutorRule()
 
     @Test
-    fun testDataIsLoaded_ObservablesUpdated() {
-        // Create a test use cases with test data
-        val loadConferenceLocationUseCase = createConferenceLocationUseCase(conferenceLocation)
-        val loadConferenceMinZoomUseCase = createMapMinZoomUseCase(mapMinZoom)
-        // Create ViewModel with the use case
-        val viewModel = MapViewModel(loadConferenceLocationUseCase, loadConferenceMinZoomUseCase)
+    fun testDataIsLoaded() {
+        // Create ViewModel with the test data
+        val viewModel = MapViewModel(TestMapMetadataRepository)
 
-        Assert.assertEquals(conferenceLocation,
-                LiveDataTestUtil.getValue(viewModel.conferenceLocationBounds))
-        Assert.assertEquals(mapMinZoom, LiveDataTestUtil.getValue(viewModel.minZoom))
+        Assert.assertEquals(
+            viewModel.conferenceLocationBounds,
+            TestMapMetadataRepository.getConferenceLocationBounds()
+        )
+        Assert.assertEquals(
+            viewModel.minZoom,
+            TestMapMetadataRepository.getMapViewportMinZoom()
+        )
+        Assert.assertEquals(
+            viewModel.defaultCameraPosition,
+            TestMapMetadataRepository.getDefaultCameraPosition()
+        )
     }
 
-    @Test
-    fun testDataIsLoaded_Fails() {
-        // Create ViewModel with the use case
-        // TODO: BUG - this test fails because the execute is run async even though rules are set.
-//        val viewModel = MapViewModel(createConferenceLocationExceptionUseCase(),
-// createMapMinZoomExceptionUseCase())
-//        Assert.assertTrue(LiveDataTestUtil.getValue(viewModel.errorMessageShown)!!)
-    }
+    object TestMapMetadataRepository: MapMetadataRepository {
 
-    /**
-     * Creates a use case that will return the provided list of sessions.
-     */
-    private fun createConferenceLocationUseCase(
-            bounds: LatLngBounds
-    ): LoadConferenceLocationUseCase {
-        return object : LoadConferenceLocationUseCase(
-                MapMetadataRepository(RemoteMapMetadataDataSource())) {
-            override fun execute(parameters: Unit): LatLngBounds {
-                return bounds
-            }
-        }
-    }
+        override fun getConferenceLocationBounds() = LatLngBounds(
+            LatLng(37.423205, -122.081757),
+            LatLng(37.428479, -122.078109)
+        )
+        override fun getMapViewportMinZoom() = 12f
 
-    /**
-     * Creates a use case that throws an exception.
-     */
-    private fun createConferenceLocationExceptionUseCase(): LoadConferenceLocationUseCase {
-        return object : LoadConferenceLocationUseCase(
-                MapMetadataRepository(RemoteMapMetadataDataSource())) {
-            override fun execute(parameters: Unit): LatLngBounds {
-                throw Exception("Testing exception")
-            }
-        }
-    }
-
-    /**
-     * Creates a use case that will return the provided list of sessions.
-     */
-    private fun createMapMinZoomUseCase(minZoom: Float): LoadConferenceMinZoomUseCase {
-        return object : LoadConferenceMinZoomUseCase(
-                MapMetadataRepository(RemoteMapMetadataDataSource())) {
-            override fun execute(parameters: Unit): Float {
-                return minZoom
-            }
-        }
-    }
-
-    /**
-     * Creates a use case that throws an exception.
-     */
-    private fun createMapMinZoomExceptionUseCase(): LoadConferenceMinZoomUseCase {
-        return object : LoadConferenceMinZoomUseCase(
-                MapMetadataRepository(RemoteMapMetadataDataSource())) {
-            override fun execute(parameters: Unit): Float {
-                throw Exception("Testing exception")
-            }
-        }
+        override fun getDefaultCameraPosition() = CameraPosition.builder()
+            .bearing(330f)
+            .tilt(0f)
+            .zoom(15f)
+            .target(LatLng(37.428479, -122.078109))
+            .build()
     }
 }
