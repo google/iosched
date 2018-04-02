@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="title_schedule">زمان‌بندی</string>
+    <string name="title_map">نقشه</string>
+    <string name="filters">فیلترها</string>
+    <string name="clear_all">پاک‌کردن همه</string>
+    <string name="agenda">برنامه</string>
+    <string name="event_starred">رویداد به موارد ستاره‌دار اضافه شد</string>
+    <string name="got_it">متوجه شدم</string>
+    <string name="rate_session">رتبه‌بندی جلسه</string>
+    <string name="menu_item_session_location">موقعیت مکانی جلسه</string>
+    <string name="session_detail_speakers_header">بلندگو</string>
+    <string name="session_detail_related_header">رویدادهای مرتبط</string>
+    <string name="info_title">اطلاعات</string>
+    <string name="event_title">رویداد</string>
+    <string name="travel_title">سفر</string>
+    <string name="faq_title">سؤالات متداول</string>
+    <string name="settings_title">تنظیمات</string>
+    <plurals name="duration_hours">
+        <item quantity="one">%s ساعت</item>
+        <item quantity="other">%s ساعت</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%s دقیقه</item>
+        <item quantity="other">%s دقیقه</item>
+    </plurals>
+    <string name="menu_item_share_session">هم‌رسانی جلسه</string>
+    <string name="share_text_session_detail">«%1$s» را در #io18 %2$s بررسی کنید</string>
+    <string name="intent_chooser_session_detail">هم‌رسانی</string>
+    <string name="onboarding_get_started">شروع به کار</string>
+    <string name="onboarding_welcome_to_google_i_o">به Google I/O خوش‌آمدید</string>
+    <string name="onboarding_date_location">۸ تا ۱۰ مه،\n‏۲۰۱۸ ‏ماونتین ویو، کالیفرنیا</string>
+    <string name="onboarding_build_schedule">زمان‌بندی خودتان را ایجاد کنید</string>
+    <string name="onboarding_build_sched_benefits">تجربه سفارشی I/O خودتان را ایجاد کنید و اگر شرکت‌کننده هستید صندلی رزرو کنید</string>
+    <string name="onboarding_watch_live">I/O را به‌طور زنده تماشا کنید</string>
+    <string name="onboarding_join_online">به‌صورت آنلاین به ما بپیوندید. مطالب اصلی و اکثر جلسات پخش جریانی مستقیم دارند.</string>
+    <string name="onboarding_label_days">روز</string>
+    <string name="onboarding_label_hours">ساعت</string>
+    <string name="onboarding_label_mins">دقیقه</string>
+    <string name="onboarding_label_seconds">ثانیه</string>
+</resources>

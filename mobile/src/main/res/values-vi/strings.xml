@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="title_schedule">Lịch biểu</string>
+    <string name="title_map">Bản đồ</string>
+    <string name="filters">Bộ lọc</string>
+    <string name="clear_all">Xóa tất cả</string>
+    <string name="agenda">Lịch trình sự kiện</string>
+    <string name="event_starred">Đã thêm sự kiện vào các mục có gắn dấu sao của bạn</string>
+    <string name="got_it">OK</string>
+    <string name="rate_session">Đánh giá phiên hội thảo</string>
+    <string name="menu_item_session_location">Địa điểm diễn ra phiên hội thảo</string>
+    <string name="session_detail_speakers_header">Diễn giả</string>
+    <string name="session_detail_related_header">Các sự kiện liên quan</string>
+    <string name="info_title">Thông tin</string>
+    <string name="event_title">Sự kiện</string>
+    <string name="travel_title">Thông tin di chuyển</string>
+    <string name="faq_title">CÂU HỎI THƯỜNG GẶP</string>
+    <string name="settings_title">Cài đặt</string>
+    <plurals name="duration_hours">
+        <item quantity="one">%s giờ</item>
+        <item quantity="other">%s giờ</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%s phút</item>
+        <item quantity="other">%s phút</item>
+    </plurals>
+    <string name="menu_item_share_session">Chia sẻ về phiên hội thảo</string>
+    <string name="share_text_session_detail">Hãy đến tham gia hội thảo "%1$s" tại #io18 %2$s</string>
+    <string name="intent_chooser_session_detail">Chia sẻ</string>
+    <string name="onboarding_get_started">Bắt đầu</string>
+    <string name="onboarding_welcome_to_google_i_o">Chào mừng bạn đến với Google I/O</string>
+    <string name="onboarding_date_location">8-10 tháng 5\nnăm 2018 Mountain View, CA</string>
+    <string name="onboarding_build_schedule">Tạo lịch sự kiện của riêng bạn</string>
+    <string name="onboarding_build_sched_benefits">Bạn có thể thiết kế trải nghiệm I/O dành riêng cho mình và đặt trước chỗ ngồi nếu là người tham gia sự kiện</string>
+    <string name="onboarding_watch_live">Theo dõi I/O trực tiếp</string>
+    <string name="onboarding_join_online">Hãy tham gia cùng chúng tôi trên mạng. Chúng tôi sẽ phát trực tiếp các phần thuyết trình chính và hầu hết các phiên hội thảo.</string>
+    <string name="onboarding_label_days">Ngày</string>
+    <string name="onboarding_label_hours">Giờ</string>
+    <string name="onboarding_label_mins">Phút</string>
+    <string name="onboarding_label_seconds">Giây</string>
+</resources>

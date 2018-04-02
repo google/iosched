@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="title_schedule">Расписание</string>
+    <string name="title_map">Схема места проведения</string>
+    <string name="filters">Фильтры</string>
+    <string name="clear_all">Удалить все</string>
+    <string name="agenda">Расписание</string>
+    <string name="event_starred">Мероприятие добавлено в ваше расписание</string>
+    <string name="got_it">ОК</string>
+    <string name="rate_session">Оценить сессию</string>
+    <string name="menu_item_session_location">Место проведения сессии</string>
+    <string name="session_detail_speakers_header">Выступающие</string>
+    <string name="session_detail_related_header">Похожие мероприятия</string>
+    <string name="info_title">Информация</string>
+    <string name="event_title">Мероприятие</string>
+    <string name="travel_title">Полезные сведения</string>
+    <string name="faq_title">Часто задаваемые вопросы</string>
+    <string name="settings_title">Настройки</string>
+    <plurals name="duration_hours">
+        <item quantity="one">%s час</item>
+        <item quantity="few">%s часа</item>
+        <item quantity="many">%s часов</item>
+        <item quantity="other">%s часа</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%s минута</item>
+        <item quantity="few">%s минуты</item>
+        <item quantity="many">%s минут</item>
+        <item quantity="other">%s минуты</item>
+    </plurals>
+    <string name="menu_item_share_session">Поделиться сессией</string>
+    <string name="share_text_session_detail">Узнайте о сессии "%1$s" на фестивале #io18 %2$s</string>
+    <string name="intent_chooser_session_detail">Поделиться</string>
+    <string name="onboarding_get_started">Начать</string>
+    <string name="onboarding_welcome_to_google_i_o">Добро пожаловать на фестиваль Google I/O</string>
+    <string name="onboarding_date_location">8–10 мая 2018 г.,\nМаунтин-Вью, Калифорния</string>
+    <string name="onboarding_build_schedule">Составьте свое расписание</string>
+    <string name="onboarding_build_sched_benefits">Выберите, чем хотите заняться на фестивале I/O и забронируйте места на интересных вам сессиях.</string>
+    <string name="onboarding_watch_live">Прямая трансляция фестиваля I/O</string>
+    <string name="onboarding_join_online">Присоединяйтесь к нам через Интернет: мы будем транслировать ключевые моменты выступлений и большинство сессий.</string>
+    <string name="onboarding_label_days">д.</string>
+    <string name="onboarding_label_hours">ч.</string>
+    <string name="onboarding_label_mins">м.</string>
+    <string name="onboarding_label_seconds">с.</string>
+</resources>
