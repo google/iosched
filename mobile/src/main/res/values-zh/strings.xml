@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="title_schedule">日程安排</string>
+    <string name="title_map">地图</string>
+    <string name="filters">过滤条件</string>
+    <string name="clear_all">全部清除</string>
+    <string name="agenda">日程</string>
+    <string name="event_starred">已将活动添加到您的加星标项</string>
+    <string name="got_it">知道了</string>
+    <string name="rate_session">为会议评分</string>
+    <string name="menu_item_session_location">会议位置</string>
+    <string name="session_detail_speakers_header">演讲者</string>
+    <string name="session_detail_related_header">相关活动</string>
+    <string name="info_title">信息</string>
+    <string name="event_title">活动</string>
+    <string name="travel_title">出行信息</string>
+    <string name="faq_title">常见问题解答</string>
+    <string name="settings_title">设置</string>
+    <plurals name="duration_hours">
+        <item quantity="one">%s 小时</item>
+        <item quantity="other">%s 小时</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%s 分钟</item>
+        <item quantity="other">%s 分钟</item>
+    </plurals>
+    <string name="menu_item_share_session">分享会议</string>
+    <string name="share_text_session_detail">访问 #io18 %2$s，了解“%1$s”</string>
+    <string name="intent_chooser_session_detail">分享</string>
+    <string name="onboarding_get_started">开始使用</string>
+    <string name="onboarding_welcome_to_google_i_o">欢迎来到 Google I/O 大会</string>
+    <string name="onboarding_date_location">2018 年 5 月 8 日至 10 日，加利福尼亚州山景城</string>
+    <string name="onboarding_build_schedule">创建自己的日程安排</string>
+    <string name="onboarding_build_sched_benefits">如果您是与会人员，可定制您的专属 I/O 大会体验并预订座位</string>
+    <string name="onboarding_watch_live">观看 I/O 大会直播</string>
+    <string name="onboarding_join_online">在线加入我们。我们将直播主题演讲和大部分会议内容。</string>
+    <string name="onboarding_label_days">天</string>
+    <string name="onboarding_label_hours">小时</string>
+    <string name="onboarding_label_mins">分</string>
+    <string name="onboarding_label_seconds">秒</string>
+</resources>
