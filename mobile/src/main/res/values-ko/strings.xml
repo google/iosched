@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="title_schedule">일정</string>
+    <string name="title_map">지도</string>
+    <string name="filters">필터</string>
+    <string name="clear_all">모두 삭제</string>
+    <string name="agenda">일정목록</string>
+    <string name="event_starred">별표 표시한 항목에 이벤트를 추가했습니다.</string>
+    <string name="got_it">확인</string>
+    <string name="rate_session">세션 평가</string>
+    <string name="menu_item_session_location">세션 위치</string>
+    <string name="session_detail_speakers_header">발표자</string>
+    <string name="session_detail_related_header">관련 이벤트</string>
+    <string name="info_title">정보</string>
+    <string name="event_title">이벤트</string>
+    <string name="travel_title">이동 정보</string>
+    <string name="faq_title">FAQ</string>
+    <string name="settings_title">설정</string>
+    <plurals name="duration_hours">
+        <item quantity="one">%s시간</item>
+        <item quantity="other">%s시간</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%s분</item>
+        <item quantity="other">%s분</item>
+    </plurals>
+    <string name="menu_item_share_session">세션 공유</string>
+    <string name="share_text_session_detail">#io18 %2$s에서 \'%1$s\' 확인해 보기</string>
+    <string name="intent_chooser_session_detail">공유</string>
+    <string name="onboarding_get_started">시작하기</string>
+    <string name="onboarding_welcome_to_google_i_o">Google I/O에 오신 것을 환영합니다.</string>
+    <string name="onboarding_date_location">2018년 5월 8~10일,\nMountain View, CA</string>
+    <string name="onboarding_build_schedule">내 일정 만들기</string>
+    <string name="onboarding_build_sched_benefits">맞춤 I/O 경험을 만들고 참석자인 경우 좌석을 예약합니다.</string>
+    <string name="onboarding_watch_live">I/O 실시간 스트림 보기</string>
+    <string name="onboarding_join_online">온라인으로 참여해 보세요. 기조 연설 및 대부분의 세션이 실시간으로 스트리밍됩니다.</string>
+    <string name="onboarding_label_days">일</string>
+    <string name="onboarding_label_hours">시간</string>
+    <string name="onboarding_label_mins">분</string>
+    <string name="onboarding_label_seconds">초</string>
+</resources>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="title_schedule">Orari</string>
+    <string name="title_map">Mappa</string>
+    <string name="filters">Filtri</string>
+    <string name="clear_all">Cancella tutto</string>
+    <string name="agenda">Agenda</string>
+    <string name="event_starred">Evento aggiunto a Speciali</string>
+    <string name="got_it">OK</string>
+    <string name="rate_session">Valuta sessione</string>
+    <string name="menu_item_session_location">Località sessione</string>
+    <string name="session_detail_speakers_header">Altoparlanti</string>
+    <string name="session_detail_related_header">Eventi correlati</string>
+    <string name="info_title">Informazioni</string>
+    <string name="event_title">Evento</string>
+    <string name="travel_title">Viaggi</string>
+    <string name="faq_title">Domande frequenti</string>
+    <string name="settings_title">Impostazioni</string>
+    <plurals name="duration_hours">
+        <item quantity="one">%s ora</item>
+        <item quantity="other">%s ore</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%s minuto</item>
+        <item quantity="other">%s minuti</item>
+    </plurals>
+    <string name="menu_item_share_session">Condividi sessione</string>
+    <string name="share_text_session_detail">Dai un\'occhiata a "%1$s" alla pagina #io18 %2$s</string>
+    <string name="intent_chooser_session_detail">Condividi</string>
+    <string name="onboarding_get_started">Inizia</string>
+    <string name="onboarding_welcome_to_google_i_o">Ti diamo il benvenuto in Google I/O</string>
+    <string name="onboarding_date_location">Dall\'8 al 10 maggio\n2018 a Mountain View, CA</string>
+    <string name="onboarding_build_schedule">Crea il tuo programma</string>
+    <string name="onboarding_build_sched_benefits">Crea la tua esperienza I/O personalizzata e prenota i posti se sei un invitato</string>
+    <string name="onboarding_watch_live">Guarda I/O dal vivo</string>
+    <string name="onboarding_join_online">Partecipa online. Trasmetteremo in streaming dal vivo gli interventi principali e la maggior parte delle sessioni.</string>
+    <string name="onboarding_label_days">G</string>
+    <string name="onboarding_label_hours">H</string>
+    <string name="onboarding_label_mins">M</string>
+    <string name="onboarding_label_seconds">S</string>
+</resources>
