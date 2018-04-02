@@ -96,6 +96,9 @@ class ScheduleViewModel @Inject constructor(
     private val _showPinnedEvents = MutableLiveData<Boolean>()
     val showPinnedEvents: LiveData<Boolean>
         get() = _showPinnedEvents
+    private val _emptyMessage = MutableLiveData<Int>()
+    val emptyMessage: LiveData<Int>
+        get() = _emptyMessage
 
     private val loadSessionsResult: MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>
     private val loadAgendaResult = MutableLiveData<Result<List<Block>>>()
@@ -149,6 +152,8 @@ class ScheduleViewModel @Inject constructor(
 
     init {
         currentSessionMatcher = tagFilterMatcher
+        _emptyMessage.value = R.string.schedule_tag_filters_empty
+
         _userSessionMatcher.value = currentSessionMatcher
 
         // Load sessions and tags and store the result in `LiveData`s
@@ -299,9 +304,11 @@ class ScheduleViewModel @Inject constructor(
             if (pinned) {
                 currentSessionMatcher = PinnedEventMatcher
                 _hasAnyFilters.value = true
+                _emptyMessage.value = R.string.schedule_pinned_events_empty
             } else {
                 currentSessionMatcher = tagFilterMatcher
                 _hasAnyFilters.value = !tagFilterMatcher.isEmpty()
+                _emptyMessage.value = R.string.schedule_tag_filters_empty
             }
             _userSessionMatcher.value = currentSessionMatcher
             refreshUserSessions()
