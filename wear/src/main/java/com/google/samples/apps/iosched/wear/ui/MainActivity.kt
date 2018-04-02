@@ -124,7 +124,7 @@ class MainActivity : DaggerAppCompatActivity(), AmbientModeSupport.AmbientCallba
             WearableNavigationDrawerView.WearableNavigationDrawerAdapter(),
             WearableNavigationDrawerView.OnItemSelectedListener {
 
-        private var currentNavigationItemPosition = 0
+        private var currentNavigationItemPosition = -1
         private val activity = this@MainActivity
 
         override fun getCount(): Int {

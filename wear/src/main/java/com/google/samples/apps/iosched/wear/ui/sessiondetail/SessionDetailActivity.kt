@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.wear.ui.sessiondetail
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.wear.R
 import dagger.android.support.DaggerAppCompatActivity
 
@@ -27,10 +28,16 @@ import dagger.android.support.DaggerAppCompatActivity
  */
 class SessionDetailActivity : DaggerAppCompatActivity() {
 
-    // TODO: Implement viewmodel and ui
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_session_detail)
+
+        if (savedInstanceState == null) {
+            supportFragmentManager.inTransaction {
+                val sessionId = intent.getStringExtra(EXTRA_SESSION_ID)
+                add(R.id.session_detail_container, SessionDetailFragment.newInstance(sessionId))
+            }
+        }
     }
 
     companion object {

@@ -19,7 +19,6 @@
     <!-- Base application theme. -->
     <!-- TODO: Finish expanding styles to match mobile and UX Wear review. -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/indigo</item>
         <item name="colorPrimaryDark">@color/indigo_dark</item>
         <item name="colorAccent">@color/indigo</item>
@@ -35,7 +34,18 @@
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textColor">?android:textColorSecondary</item>
         <item name="android:textSize">10sp</item>
-
     </style>
 
+    <style name="TextAppearance.IOSched.SessionDetailTitle" parent="@style/TextAppearance.IOSched.SessionTitle">
+        <item name="android:gravity">center</item>
+        <item name="android:lineSpacingMultiplier">1</item>
+        <item name="autoSizeTextType">uniform</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.SessionDetailText" parent="@style/TextAppearance.IOSched.ListSecondary">
+        <item name="android:gravity">center</item>
+        <item name="android:lineSpacingMultiplier">1</item>
+        <item name="autoSizeTextType">uniform</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 </resources>

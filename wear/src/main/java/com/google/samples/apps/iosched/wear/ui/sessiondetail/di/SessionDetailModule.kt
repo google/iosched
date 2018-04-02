@@ -16,7 +16,15 @@
 
 package com.google.samples.apps.iosched.wear.ui.sessiondetail.di
 
+import android.arch.lifecycle.ViewModel
+import com.google.samples.apps.iosched.shared.di.FragmentScoped
+import com.google.samples.apps.iosched.shared.di.ViewModelKey
+import com.google.samples.apps.iosched.wear.ui.sessiondetail.SessionDetailFragment
+import com.google.samples.apps.iosched.wear.ui.sessiondetail.SessionDetailViewModel
+import dagger.Binds
 import dagger.Module
+import dagger.android.ContributesAndroidInjector
+import dagger.multibindings.IntoMap
 
 /**
  * Module where classes needed to create the [SessionDetailFragment] are defined.
@@ -24,8 +32,16 @@ import dagger.Module
 @Module
 internal abstract class SessionDetailModule {
 
-    // TODO: Uncomment with CL for Fragment and ViewModel session details (next CL).
-    //@FragmentScoped
-    //@ContributesAndroidInjector
-    //internal abstract fun contributeSettingsFragment(): SessionDetailFragment
+    @FragmentScoped
+    @ContributesAndroidInjector
+    internal abstract fun contributeSettingsFragment(): SessionDetailFragment
+
+    /**
+     * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
+     * want to get a [SessionDetailViewModel] class.
+     */
+    @Binds
+    @IntoMap
+    @ViewModelKey(SessionDetailViewModel::class)
+    abstract fun bindSessionDetailFragmentViewModel(viewModel: SessionDetailViewModel): ViewModel
 }
