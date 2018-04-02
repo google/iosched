@@ -22,6 +22,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import androidx.net.toUri
+import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.tv.app
@@ -65,7 +66,7 @@ class SessionPlayerActivity : FragmentActivity() {
 
         private const val EXTRA_SESSION_ID = "SESSION_ID"
 
-        fun createIntent(context: Context, sessionId: String): Intent {
+        fun createIntent(context: Context, sessionId: SessionId): Intent {
             return Intent(context, SessionPlayerActivity::class.java).apply {
                 putExtra(EXTRA_SESSION_ID, sessionId)
             }

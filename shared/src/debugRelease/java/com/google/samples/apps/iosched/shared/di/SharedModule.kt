@@ -72,7 +72,7 @@ class SharedModule {
     @Singleton
     @Provides
     fun provideSessionRepository(
-            conferenceDataRepository: ConferenceDataRepository
+        conferenceDataRepository: ConferenceDataRepository
     ): SessionRepository {
         return DefaultSessionRepository(conferenceDataRepository)
     }
@@ -92,8 +92,8 @@ class SharedModule {
     @Singleton
     @Provides
     fun provideSessionAndUserEventRepository(
-            userEventDataSource: UserEventDataSource,
-            sessionRepository: SessionRepository
+        userEventDataSource: UserEventDataSource,
+        sessionRepository: SessionRepository
     ): SessionAndUserEventRepository {
         return DefaultSessionAndUserEventRepository(userEventDataSource, sessionRepository)
     }
@@ -103,10 +103,10 @@ class SharedModule {
     fun provideFirebaseFireStore(): FirebaseFirestore {
         val firestore = FirebaseFirestore.getInstance()
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder()
-                // This is to enable the offline data
-                // https://firebase.google.com/docs/firestore/manage-data/enable-offline
-                .setPersistenceEnabled(true)
-                .build()
+            // This is to enable the offline data
+            // https://firebase.google.com/docs/firestore/manage-data/enable-offline
+            .setPersistenceEnabled(true)
+            .build()
         return firestore
     }
 

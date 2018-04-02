@@ -20,15 +20,16 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import javax.inject.Inject
 
 open class LoadUserSessionUseCase @Inject constructor(
         private val userEventRepository: DefaultSessionAndUserEventRepository
-) : MediatorUseCase<Pair<String?, String>, LoadUserSessionUseCaseResult>() {
+) : MediatorUseCase<Pair<String?, SessionId>, LoadUserSessionUseCaseResult>() {
 
-    override fun execute(parameters: Pair<String?, String>) {
+    override fun execute(parameters: Pair<String?, SessionId>) {
         val (userId, eventId) = parameters
         val userSession = userEventRepository.getObservableUserEvent(userId, eventId)
 

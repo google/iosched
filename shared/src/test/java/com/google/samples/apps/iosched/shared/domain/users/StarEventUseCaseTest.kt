@@ -26,6 +26,7 @@ import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDat
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
+import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
@@ -94,14 +95,14 @@ val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepositor
 
     override fun getObservableUserEvent(
             userId: String?,
-            eventId: String
+            eventId: SessionId
     ): LiveData<Result<LoadUserSessionUseCaseResult>> {
         throw NotImplementedError()
     }
 
     override fun changeReservation(
             userId: String,
-            sessionId: String,
+            sessionId: SessionId,
             action: ReservationRequestAction
     ): LiveData<Result<ReservationRequestAction>> {
         throw NotImplementedError()

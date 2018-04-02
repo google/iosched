@@ -41,9 +41,7 @@ import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.SetIntervalLiveData
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -227,7 +225,7 @@ class SessionDetailViewModelTest {
             sessionUrl = "", liveStreamUrl = "", youTubeUrl = youtubeUrl, photoUrl = "",
             tags = listOf(TestData.androidTag, TestData.webTag),
             displayTags = listOf(TestData.androidTag, TestData.webTag),
-            speakers = setOf(TestData.speaker), relatedSessions = emptySet()
+            speakers = setOf(TestData.speaker1), relatedSessions = emptySet()
         )
 
     private fun createTestLoadUserSessionUseCase(

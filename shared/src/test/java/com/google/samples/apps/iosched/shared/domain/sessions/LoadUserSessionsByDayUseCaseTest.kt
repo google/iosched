@@ -26,6 +26,7 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageCha
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
@@ -131,7 +132,7 @@ object FailingSessionRepository : SessionRepository{
         throw Exception("test")
     }
 
-    override fun getSession(eventId: String): Session {
+    override fun getSession(eventId: SessionId): Session {
         throw Exception("test")
     }
 }

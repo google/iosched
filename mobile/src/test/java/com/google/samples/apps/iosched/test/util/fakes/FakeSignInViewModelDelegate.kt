@@ -27,6 +27,7 @@ import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 
 class FakeSignInViewModelDelegate : SignInViewModelDelegate {
+
     override val currentFirebaseUser = MutableLiveData<Result<AuthenticatedUserInfo>?>()
     override val currentUserImageUri = MutableLiveData<Uri?>()
     override val performSignInEvent = MutableLiveData<Event<SignInEvent>>()
@@ -51,6 +52,11 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
 
     override fun emitSignOutRequest() {
         signOutRequestsEmitted++
+    }
+
+    override fun getUserId() : String? {
+        val user = currentFirebaseUser.value
+        return (user as? Result.Success)?.data?.getUid()
     }
 
     fun loadUser(id: String) {

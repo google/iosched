@@ -32,6 +32,7 @@ import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
@@ -106,7 +107,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
     override fun getObservableUserEvent(
             userId: String?,
-            eventId: String
+            eventId: SessionId
     ): LiveData<Result<LoadUserSessionUseCaseResult>> {
 
         // If there is no logged-in user, return the session with a null UserEvent
@@ -162,7 +163,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
     override fun changeReservation(
             userId: String,
-            sessionId: String,
+            sessionId: SessionId,
             action: ReservationRequestAction
     ): LiveData<Result<ReservationRequestAction>> {
 
@@ -189,8 +190,8 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
     }
 
     override fun swapReservation(userId: String,
-                                 fromId: String,
-                                 toId: String
+                                 fromId: SessionId,
+                                 toId: SessionId
     ): LiveData<Result<SwapRequestAction>> {
         val toSession = sessionRepository.getSession(toId)
         val fromSession = sessionRepository.getSession(fromId)
@@ -266,16 +267,16 @@ interface SessionAndUserEventRepository {
     fun getObservableUserEvents(userId: String?):
             LiveData<Result<LoadUserSessionsByDayUseCaseResult>>
 
-    fun getObservableUserEvent(userId: String?, eventId: String):
+    fun getObservableUserEvent(userId: String?, eventId: SessionId):
             LiveData<Result<LoadUserSessionUseCaseResult>>
 
     fun getUserEvents(userId: String?): List<UserEvent>
 
     fun changeReservation(
-            userId: String, sessionId: String, action: ReservationRequestAction
+            userId: String, sessionId: SessionId, action: ReservationRequestAction
     ): LiveData<Result<ReservationRequestAction>>
 
-    fun swapReservation(userId: String, fromId: String, toId: String):
+    fun swapReservation(userId: String, fromId: SessionId, toId: SessionId):
             LiveData<Result<SwapRequestAction>>
 
     fun starEvent(userId: String, userEvent: UserEvent): LiveData<Result<StarUpdatedStatus>>

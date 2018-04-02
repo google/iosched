@@ -26,6 +26,7 @@ import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.result.Result
 
 object TestUserEventDataSource : UserEventDataSource {
@@ -38,7 +39,7 @@ object TestUserEventDataSource : UserEventDataSource {
 
     override fun getObservableUserEvent(
             userId: String,
-            eventId: String
+            eventId: SessionId
     ): LiveData<UserEventResult> {
         val result = MutableLiveData<UserEventResult>()
         result.postValue(UserEventResult(TestData.userEvents[0]))

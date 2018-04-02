@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.data.session.json
 
+import com.google.samples.apps.iosched.shared.model.SessionId
 import org.threeten.bp.ZonedDateTime
 
 /**
@@ -25,7 +26,7 @@ data class SessionTemp(
         /**
          * Unique string identifying this session.
          */
-        val id: String,
+        val id: SessionId,
 
         /**
          * Start time of the session

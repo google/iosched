@@ -30,6 +30,7 @@ import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus.UNS
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.result.Result
 
@@ -45,7 +46,7 @@ class TestUserEventDataSource(
 
     override fun getObservableUserEvent(
             userId: String,
-            eventId: String
+            eventId: SessionId
     ): LiveData<UserEventResult> {
         userEventResult.postValue(UserEventResult(TestData.userEvents[0]))
         return userEventResult

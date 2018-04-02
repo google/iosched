@@ -86,6 +86,11 @@ interface SignInViewModelDelegate {
     fun isSignedIn(): Boolean
 
     fun isRegistered(): Boolean
+
+    /**
+     * Returns the current user ID or null if not available.
+     */
+    fun getUserId() : String?
 }
 
 /**
@@ -161,5 +166,10 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
 
     override fun observeRegisteredUser(): LiveData<Boolean> {
         return _isRegistered
+    }
+
+    override fun getUserId() : String? {
+        val user = currentFirebaseUser.value
+        return (user as? Result.Success)?.data?.getUid()
     }
 }
