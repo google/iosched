@@ -65,6 +65,7 @@ object ConferenceDataJsonParser {
                     abstract = session.abstract,
                     sessionUrl = session.sessionUrl,
                     liveStreamUrl = session.liveStreamUrl,
+                    isLivestream = session.isLivestream,
                     youTubeUrl = session.youTubeUrl,
                     tags = tags,
                     displayTags = tags.filter { it.category == Tag.CATEGORY_TRACK },
