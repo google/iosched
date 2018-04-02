@@ -18,12 +18,14 @@ package com.google.samples.apps.iosched.ui.schedule.day
 
 import android.content.Context
 import android.databinding.BindingAdapter
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.TextView
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
-import com.google.samples.apps.iosched.ui.reservation.ReservationButtonState
+import com.google.samples.apps.iosched.ui.reservation.ReservationTextView
+import com.google.samples.apps.iosched.ui.reservation.ReservationViewState
 import com.google.samples.apps.iosched.ui.reservation.ReserveButton
 import org.threeten.bp.Duration
 import org.threeten.bp.ZonedDateTime
@@ -57,15 +59,21 @@ fun reservationStatus(
     userEvent: UserEvent?
 ) {
     val reservationUnavailable = false // TODO determine this condition
-    reserveButton.status = ReservationButtonState.fromUserEvent(userEvent, reservationUnavailable)
+    reserveButton.status = ReservationViewState.fromUserEvent(userEvent, reservationUnavailable)
     reserveButton.isEnabled = !reservationUnavailable
 }
 
 @BindingAdapter(value = ["showReservations", "isReservable"], requireAll = true)
-fun showReserveButton(
-    reserveButton: ReserveButton,
+fun showReservationView(
+    view: View,
     showReservations: Boolean,
     eventIsReservable: Boolean
 ) {
-    reserveButton.visibility = if (showReservations && eventIsReservable) VISIBLE else GONE
+    view.visibility = if (showReservations && eventIsReservable) VISIBLE else GONE
+}
+
+@BindingAdapter("reservationStatus")
+fun reservationStatus(textView: ReservationTextView, userEvent: UserEvent?) {
+    val reservationUnavailable = false // TODO determine this condition
+    textView.status = ReservationViewState.fromUserEvent(userEvent, reservationUnavailable)
 }
