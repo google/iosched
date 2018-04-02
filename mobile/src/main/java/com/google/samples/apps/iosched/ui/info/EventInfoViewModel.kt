@@ -19,13 +19,6 @@ package com.google.samples.apps.iosched.ui.info
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.domain.invoke
-import com.google.samples.apps.iosched.shared.domain.map.LoadConferenceLocationUseCase
-import com.google.samples.apps.iosched.shared.domain.map.LoadConferenceMinZoomUseCase
-import com.google.samples.apps.iosched.shared.util.map
 import javax.inject.Inject
 
 class EventInfoViewModel @Inject constructor() : ViewModel() {

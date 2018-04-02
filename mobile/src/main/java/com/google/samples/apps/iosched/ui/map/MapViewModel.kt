@@ -19,18 +19,12 @@ package com.google.samples.apps.iosched.ui.map
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.domain.invoke
-import com.google.samples.apps.iosched.shared.domain.map.LoadConferenceLocationUseCase
-import com.google.samples.apps.iosched.shared.domain.map.LoadConferenceMinZoomUseCase
-import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.shared.data.map.MapMetadataRepository
 import javax.inject.Inject
 
 class MapViewModel @Inject constructor(
-        private val loadConferenceLocationUseCase: LoadConferenceLocationUseCase,
-        private val loadConferenceMinZoomUseCase: LoadConferenceMinZoomUseCase
+    mapMetadataRepository: MapMetadataRepository
 ) : ViewModel() {
 
     /**
@@ -41,12 +35,17 @@ class MapViewModel @Inject constructor(
     /**
      * Area covered by the venue. Determines the viewport of the map.
      */
-    val conferenceLocationBounds: LiveData<LatLngBounds?>
+    val conferenceLocationBounds = mapMetadataRepository.getConferenceLocationBounds()
 
     /**
      * Min zoom level for map.
      */
-    val minZoom: LiveData<Float?>
+    val minZoom = mapMetadataRepository.getMapViewportMinZoom()
+
+    /**
+     * Default camera position
+     */
+    val defaultCameraPosition = mapMetadataRepository.getDefaultCameraPosition()
 
     /**
      * True if any errors occur in fetching the data.
@@ -60,27 +59,6 @@ class MapViewModel @Inject constructor(
         // TODO fetch markers.
         markers = MutableLiveData()
 
-        // Fetch conference location.
-        val conferenceLocationLiveResult = loadConferenceLocationUseCase()
-        conferenceLocationBounds = conferenceLocationLiveResult.map {
-            errorMessageShown.value = it is Result.Error
-            (it as? Result.Success)?.data
-        }
-
-        // Fetch map min zoom.
-        val minZoomLiveResult = loadConferenceMinZoomUseCase()
-        minZoom = minZoomLiveResult.map {
-            errorMessageShown.value = errorMessageShown.value!! || it is Result.Error
-            (it as? Result.Success)?.data
-        }
-
-        // Check if there were errors.
-        conferenceLocationLiveResult.map { conferenceLocationResult ->
-            minZoomLiveResult.map { minZoomResult ->
-                errorMessageShown.value =
-                        conferenceLocationResult is Result.Error || minZoomResult is Result.Error
-            }
-        }
-
+        // TODO fetch tile
     }
 }

@@ -31,7 +31,13 @@ android {
         versionCode rootProject.versionCodeMobile
         versionName rootProject.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
         resValue "string", "google_maps_key", (project.findProperty("IOSCHED_GOOGLE_MAPS_API_KEY") ?: "")
+
+        buildConfigField "float[]",
+                "MAP_FLOORPLAN_MAPPING",
+                "{${map_floorplan_nw}, ${map_floorplan_ne}, ${map_floorplan_se}}"
+
     }
     buildTypes {
         release {

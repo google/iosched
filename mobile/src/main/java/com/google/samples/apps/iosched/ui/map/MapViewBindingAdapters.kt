@@ -17,11 +17,25 @@
 package com.google.samples.apps.iosched.ui.map
 
 import android.databinding.BindingAdapter
+import android.support.annotation.DrawableRes
+import android.support.annotation.RawRes
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.TileOverlayOptions
+import com.google.samples.apps.iosched.util.loadDrawableAsync
+
+@BindingAdapter("mapStyle")
+fun mapStyle(mapView: MapView, @RawRes resId: Int) {
+    if (resId != 0) {
+        mapView.getMapAsync { map ->
+            map.setMapStyle(MapStyleOptions.loadRawResourceStyle(mapView.context, resId))
+        }
+    }
+}
 
 /**
  * Adds list of markers to the GoogleMap.
@@ -100,4 +114,19 @@ fun isMapToolbarEnabled(mapView: MapView, isMapToolbarEnabled: Boolean?) {
             it.uiSettings.isMapToolbarEnabled = isMapToolbarEnabled
         }
     }
+}
+
+@BindingAdapter("tileDrawable")
+fun tileDrawable(mapView: MapView, @DrawableRes resId: Int) {
+    val dpi = mapView.resources.displayMetrics.densityDpi / 160f
+    loadDrawableAsync(mapView, resId, { drawable ->
+        mapView.getMapAsync { map ->
+            val provider = DrawableTileProvider(dpi, drawable)
+            map.addTileOverlay(
+                TileOverlayOptions()
+                    .tileProvider(provider)
+                    .visible(true)
+            )
+        }
+    })
 }

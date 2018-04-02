@@ -47,11 +47,7 @@ fun goneUnless(view: View, visible: Boolean) {
 
 @BindingAdapter("fabVisibility")
 fun fabVisibility(fab: FloatingActionButton, visible: Boolean) {
-    if (visible) {
-        fab.show()
-    } else {
-        fab.hide()
-    }
+    if (visible) fab.show() else fab.hide()
 }
 
 @BindingAdapter("pageMargin")

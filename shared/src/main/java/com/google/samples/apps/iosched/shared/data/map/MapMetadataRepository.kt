@@ -16,19 +16,39 @@
 
 package com.google.samples.apps.iosched.shared.data.map
 
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.samples.apps.iosched.shared.BuildConfig
 import javax.inject.Inject
 import javax.inject.Singleton
 
+interface MapMetadataRepository {
+    fun getConferenceLocationBounds(): LatLngBounds
+    fun getMapViewportMinZoom(): Float
+    fun getDefaultCameraPosition(): CameraPosition
+}
+
 @Singleton
-class MapMetadataRepository @Inject constructor(
-        private val dataSource: MapMetadataDataSource
-) {
-    fun getConferenceLocationBounds(): LatLngBounds {
-        return dataSource.getConferenceLocationBounds()
+class DefaultMapMetadataRepository @Inject constructor() : MapMetadataRepository {
+    companion object {
+        private val EVENT_LOCATION_BOUNDS = LatLngBounds(
+            BuildConfig.MAP_VIEWPORT_BOUND_NW,
+            BuildConfig.MAP_VIEWPORT_BOUND_SE
+        )
+
+        private const val MAP_VIEWPORT_MIN_ZOOM = BuildConfig.MAP_VIEWPORT_MIN_ZOOM
+
+        private val DEFAULT_CAMERA = CameraPosition.Builder()
+            .bearing(BuildConfig.MAP_DEFAULT_CAMERA_BEARING)
+            .target(BuildConfig.MAP_DEFAULT_CAMERA_TARGET)
+            .zoom(BuildConfig.MAP_DEFAULT_CAMERA_ZOOM)
+            .tilt(BuildConfig.MAP_DEFAULT_CAMERA_TILT)
+            .build()
     }
 
-    fun getMapMinZoom(): Float {
-        return dataSource.getMapViewportMinZoom()
-    }
+    override fun getConferenceLocationBounds() = EVENT_LOCATION_BOUNDS
+
+    override fun getMapViewportMinZoom() = MAP_VIEWPORT_MIN_ZOOM
+
+    override fun getDefaultCameraPosition() = DEFAULT_CAMERA
 }
