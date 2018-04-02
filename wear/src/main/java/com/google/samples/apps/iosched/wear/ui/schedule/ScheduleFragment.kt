@@ -23,6 +23,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
@@ -95,7 +96,7 @@ class ScheduleFragment : WearableFragment() {
         // TODO(b/74259577): implement ambient UI
     }
 
-    private fun openSessionDetail(id: String) {
+    private fun openSessionDetail(id: SessionId) {
         startActivity(SessionDetailActivity.starterIntent(requireContext(), id))
     }
 }

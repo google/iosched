@@ -21,6 +21,8 @@ import com.google.samples.apps.iosched.shared.model.SessionType.SESSION
 import org.threeten.bp.ZonedDateTime
 import kotlin.LazyThreadSafetyMode.NONE
 
+typealias SessionId = String
+
 /**
  * Describes a conference session. Sessions have specific start and end times, and they represent a
  * variety of conference events: talks, sandbox demos, office hours, etc. A session is usually
@@ -30,7 +32,7 @@ data class Session(
     /**
      * Unique string identifying this session.
      */
-    val id: String,
+    val id: SessionId,
 
     /**
      * Start time of the session
@@ -101,7 +103,7 @@ data class Session(
     /**
      * IDs of the sessions related to this session.
      */
-    val relatedSessions: Set<String>
+    val relatedSessions: Set<SessionId>
 ) {
 
     /**

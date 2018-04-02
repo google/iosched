@@ -22,6 +22,7 @@ import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import com.google.samples.apps.iosched.tv.R
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.SessionId
 
 /**
  * Loads the [SessionDetailFragment] with an id to display a particular [Session]
@@ -36,7 +37,7 @@ class SessionDetailActivity : FragmentActivity() {
     companion object {
         const val EXTRA_SESSION_ID = "com.google.samples.apps.iosched.tv.EXTRA_SESSION_ID"
 
-        fun createIntent(context: Context, sessionId: String): Intent {
+        fun createIntent(context: Context, sessionId: SessionId): Intent {
             return Intent(context, SessionDetailActivity::class.java).apply {
                 putExtra(EXTRA_SESSION_ID, sessionId)
             }

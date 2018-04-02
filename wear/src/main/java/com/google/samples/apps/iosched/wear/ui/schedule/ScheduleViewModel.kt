@@ -24,6 +24,7 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsBy
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
@@ -100,7 +101,7 @@ class ScheduleViewModel @Inject constructor(
         DAY_3 -> day3Sessions
     }
 
-    override fun openSessionDetail(id: String) {
+    override fun openSessionDetail(id: SessionId) {
         _navigateToSessionAction.value = Event(id)
     }
 
@@ -112,5 +113,5 @@ class ScheduleViewModel @Inject constructor(
 
 interface ScheduleEventListener {
     /** Called from UI to start a navigation action to the detail screen. */
-    fun openSessionDetail(id: String)
+    fun openSessionDetail(id: SessionId)
 }

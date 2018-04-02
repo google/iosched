@@ -16,6 +16,8 @@
 
 package com.google.samples.apps.iosched.shared.model
 
+typealias SpeakerId = String
+
 /**
  * Describes a speaker at the conference.
  */
@@ -23,7 +25,7 @@ data class Speaker(
     /**
      * Unique string identifying this speaker.
      */
-    val id: String,
+    val id: SpeakerId,
 
     /**
      * Name of this speaker.
@@ -46,14 +48,24 @@ data class Speaker(
     val abstract: String,
 
     /**
-     * Full URL of the speaker's G+ profile.
+     * Full URL of the speaker's website.
      */
-    val gPlusUrl: String,
+    val websiteUrl: String? = null,
 
     /**
      * Full URL of the speaker's Twitter profile.
      */
-    val twitterUrl: String
+    val twitterUrl: String? = null,
+
+    /**
+     * Full URL of the speaker's Github profile.
+     */
+    val githubUrl: String? = null,
+
+    /**
+     * Full URL of the speaker's LinkedIn profile.
+     */
+    val linkedInUrl: String? = null
 ) {
     val hasCompany
         get() = company.isNotEmpty()

@@ -26,6 +26,7 @@
     <item name="text_line_spacing" format="float" type="dimen">1.2</item>
 
     <dimen name="speaker_headshot_size">40dp</dimen>
+    <dimen name="speaker_large_headshot_size">112dp</dimen>
     <dimen name="session_keyline">64dp</dimen>
     <dimen name="time_header_hour_text_size">24sp</dimen>
     <dimen name="time_header_meridiem_text_size">12sp</dimen>

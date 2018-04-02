@@ -35,6 +35,7 @@ import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.result.Result
 import timber.log.Timber
 import java.util.UUID
@@ -115,7 +116,7 @@ class FirestoreUserEventDataSource @Inject constructor(
 
     override fun getObservableUserEvent(
             userId: String,
-            eventId: String
+            eventId: SessionId
     ): LiveData<UserEventResult> {
 
         if (userId.isEmpty()) {
@@ -163,7 +164,7 @@ class FirestoreUserEventDataSource @Inject constructor(
     }
 
     private fun registerListenerForSingleEvent(
-            sessionId: String,
+            sessionId: SessionId,
             userId: String) {
 
         val result = resultSingleEvent

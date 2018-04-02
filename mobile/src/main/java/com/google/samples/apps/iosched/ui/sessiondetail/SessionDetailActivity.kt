@@ -20,6 +20,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import dagger.android.support.DaggerAppCompatActivity
 
@@ -40,7 +41,7 @@ class SessionDetailActivity : DaggerAppCompatActivity() {
     companion object {
         private const val EXTRA_SESSION_ID = "SESSION_ID"
 
-        fun starterIntent(context: Context, sessionId: String): Intent {
+        fun starterIntent(context: Context, sessionId: SessionId): Intent {
             return Intent(context, SessionDetailActivity::class.java).apply {
                 putExtra(EXTRA_SESSION_ID, sessionId)
             }

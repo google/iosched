@@ -40,6 +40,7 @@ import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Event
@@ -292,7 +293,7 @@ class ScheduleViewModel @Inject constructor(
         DAY_3 -> day3Sessions
     }
 
-    override fun openEventDetail(id: String) {
+    override fun openEventDetail(id: SessionId) {
         _navigateToSessionAction.value = Event(id)
     }
 
@@ -415,14 +416,6 @@ class ScheduleViewModel @Inject constructor(
 
         reservationActionUseCase.execute(ReservationRequestParameters(userId, session.id,
                 RequestAction()))
-    }
-
-    /**
-     * Returns the current user ID or null if not available.
-     */
-    private fun getUserId() : String? {
-        val user = currentFirebaseUser.value
-        return (user as? Result.Success)?.data?.getUid()
     }
 }
 
