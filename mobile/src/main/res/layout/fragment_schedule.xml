@@ -25,6 +25,10 @@
             name="viewModel"
             type="com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel" />
 
+        <variable
+            name="isAgendaPage"
+            type="android.databinding.ObservableBoolean" />
+
     </data>
 
     <com.google.samples.apps.iosched.widget.NestedScrollingCoordinatorLayout
@@ -72,7 +76,7 @@
             android:layout_margin="@dimen/margin_normal"
             android:contentDescription="@string/filters"
             app:fabSize="auto"
-            app:fabVisibility="@{!viewModel.hasAnyFilters}"
+            app:fabVisibility="@{!viewModel.hasAnyFilters &amp;&amp; !isAgendaPage}"
             app:hoveredFocusedTranslationZ="0dp"
             app:pressedTranslationZ="0dp"
             app:srcCompat="@drawable/ic_filter" />

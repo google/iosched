@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.ui.schedule
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
+import android.databinding.ObservableBoolean
 import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.Fragment
@@ -26,6 +27,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
+import android.support.v4.view.ViewPager.SimpleOnPageChangeListener
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -85,15 +87,19 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         resources.getDimensionPixelSize(R.dimen.bottom_sheet_peek_height)
     }
 
+    private val isAgendaPage = ObservableBoolean(false)
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         viewModel = activityViewModelProvider(viewModelFactory)
-        val binding = FragmentScheduleBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
-        binding.setLifecycleOwner(this)
+        val binding = FragmentScheduleBinding.inflate(inflater, container, false).apply {
+            setLifecycleOwner(this@ScheduleFragment)
+            viewModel = this@ScheduleFragment.viewModel
+            isAgendaPage = this@ScheduleFragment.isAgendaPage
+        }
 
         coordinatorLayout = binding.coordinatorLayout
         dummyBottomView = binding.dummyBottomNavigation
@@ -137,6 +143,13 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
 
         val tabs: TabLayout = view.findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewpager)
+
+        viewpager.addOnPageChangeListener(object : SimpleOnPageChangeListener() {
+            override fun onPageSelected(position: Int) {
+                // Hide the FAB on the agenda page
+                isAgendaPage.set(position == AGENDA_POSITION)
+            }
+        })
 
         // Ensure snackbars appear above the hiding BottomNavigationView.
         // We clear the Snackbar's insetEdge, which is also set in it's (final) showView() method,
