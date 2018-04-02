@@ -34,6 +34,7 @@ import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
 import com.google.samples.apps.iosched.test.util.time.FixedTimeExecutorRule
+import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.SetIntervalLiveData
@@ -217,10 +218,11 @@ class SessionDetailViewModelTest {
             signInViewModelPlugin: SignInViewModelDelegate = FakeSignInViewModelDelegate(),
             loadUserSessionUseCase: LoadUserSessionUseCase = createTestLoadUserSessionUseCase(),
             reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase(),
-            starEventUseCase: StarEventUseCase = FakeStarEventUseCase()
+            starEventUseCase: StarEventUseCase = FakeStarEventUseCase(),
+            snackbarMessageManager: SnackbarMessageManager = SnackbarMessageManager()
     ): SessionDetailViewModel {
         return SessionDetailViewModel(signInViewModelPlugin, loadUserSessionUseCase,
-                starEventUseCase, reservationActionUseCase)
+                starEventUseCase, reservationActionUseCase,snackbarMessageManager)
     }
 
     private fun forceTimeUntilStartIntervalUpdate(vm: SessionDetailViewModel) {

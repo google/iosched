@@ -17,19 +17,19 @@
 package com.google.samples.apps.iosched.ui.sessioncommon
 
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
-import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage.CANCELLATION_DENIED_CUTOFF
-import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage.CANCELLATION_DENIED_UNKNOWN
-import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage.CHANGES_IN_RESERVATIONS
-import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage.CHANGES_IN_WAITLIST
-import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage.RESERVATIONS_REPLACED
-import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage.RESERVATION_CANCELED
-import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage.RESERVATION_DENIED_CLASH
-import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage.RESERVATION_DENIED_CUTOFF
-import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage.RESERVATION_DENIED_UNKNOWN
-import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage.WAITLIST_CANCELED
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.CANCELLATION_DENIED_CUTOFF
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.CANCELLATION_DENIED_UNKNOWN
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.CHANGES_IN_RESERVATIONS
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.CHANGES_IN_WAITLIST
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.RESERVATIONS_REPLACED
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.RESERVATION_CANCELED
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.RESERVATION_DENIED_CLASH
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.RESERVATION_DENIED_CUTOFF
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.RESERVATION_DENIED_UNKNOWN
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.WAITLIST_CANCELED
 
-fun UserEventMessage.stringRes(): Int {
+fun UserEventMessageChangeType.stringRes(): Int {
    return when (this) {
        CHANGES_IN_RESERVATIONS -> R.string.reservation_new
        RESERVATIONS_REPLACED -> R.string.reservation_replaced

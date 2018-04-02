@@ -22,6 +22,7 @@ import com.google.samples.apps.iosched.shared.data.session.DefaultSessionReposit
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
 import com.google.samples.apps.iosched.shared.model.Session
@@ -87,7 +88,8 @@ class LoadUserSessionsByDayUseCaseTest {
         useCase.execute(Pair(TagFilterMatcher(), "user1"))
 
         userEventsResult.postValue(UserEventsResult(
-                userEventsMessage = UserEventMessage.CHANGES_IN_RESERVATIONS,
+                userEventsMessage = UserEventMessage(
+                        UserEventMessageChangeType.CHANGES_IN_RESERVATIONS),
                 userEvents = TestData.userEvents))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
@@ -98,7 +100,7 @@ class LoadUserSessionsByDayUseCaseTest {
                 `is`(equalTo(result.data.userSessionsPerDay)))
 
         assertThat(
-                UserEventMessage.CHANGES_IN_RESERVATIONS,
+                UserEventMessage(UserEventMessageChangeType.CHANGES_IN_RESERVATIONS),
                 `is`(equalTo(result.data.userMessage)))
     }
 

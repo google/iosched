@@ -19,6 +19,16 @@ package com.google.samples.apps.iosched.shared.data.userevent
 import android.support.annotation.VisibleForTesting
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.CANCELLATION_DENIED_CUTOFF
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.CANCELLATION_DENIED_UNKNOWN
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.CHANGES_IN_RESERVATIONS
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.CHANGES_IN_WAITLIST
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.RESERVATIONS_REPLACED
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.RESERVATION_CANCELED
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.RESERVATION_DENIED_CLASH
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.RESERVATION_DENIED_CUTOFF
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.RESERVATION_DENIED_UNKNOWN
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.WAITLIST_CANCELED
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import timber.log.Timber
 
@@ -48,7 +58,7 @@ fun generateReservationChangeMsg(
         if (newMessage != null) {
             val userMessageSnapshot = userMessage
             // Order in enum is definition order
-            if (userMessageSnapshot == null || newMessage < userMessageSnapshot) {
+            if (userMessageSnapshot == null || newMessage.type < userMessageSnapshot.type) {
                 userMessage = newMessage
             }
         }
@@ -82,28 +92,40 @@ fun compareOldAndNewUserEvents(
     if (!oldState.isReserved() && newState.isReserved()) {
         Timber.d("Request change detected: $changedId")
         return if (newState.isLastRequestResultBySwap()) {
-            UserEventMessage.RESERVATIONS_REPLACED
+            UserEventMessage(RESERVATIONS_REPLACED, newState.id, newState.getReservationRequestResultId())
         } else {
-            UserEventMessage.CHANGES_IN_RESERVATIONS
+            UserEventMessage(
+                    CHANGES_IN_RESERVATIONS,
+                    newState.id,
+                    newState.getReservationRequestResultId())
         }
 
     }
     // If the user was waiting for a reservation and they're waitlisted, there's a change.
     if (oldState.isReservationPending() && newState.isWaitlisted()) {
         Timber.d("Waitlist change detected: $changedId")
-        return UserEventMessage.CHANGES_IN_WAITLIST
+        return UserEventMessage(
+                CHANGES_IN_WAITLIST,
+                newState.id,
+                newState.getReservationRequestResultId())
     }
 
     // User canceled reservation
     if (oldState.isReserved() && !newState.isReserved()) {
         Timber.d("Reservation cancellation detected: $changedId")
-        return UserEventMessage.RESERVATION_CANCELED
+        return UserEventMessage(
+                RESERVATION_CANCELED,
+                newState.id,
+                newState.getReservationRequestResultId())
     }
 
     // User canceled waitlist
     if (oldState.isWaitlisted() && !newState.isReserved() && !newState.isWaitlisted()) {
         Timber.d("Reservation cancellation detected: $changedId")
-        return UserEventMessage.WAITLIST_CANCELED
+        return UserEventMessage(
+                WAITLIST_CANCELED,
+                newState.id,
+                newState.getReservationRequestResultId())
     }
 
     // Errors: only show if it's a new one.
@@ -113,38 +135,59 @@ fun compareOldAndNewUserEvents(
         // Reserve cut-off
         if (newState.isRequestResultErrorReserveDeniedCutoff()) {
             Timber.d("Reservation error cut-off: $changedId")
-            return UserEventMessage.RESERVATION_DENIED_CUTOFF
+            return UserEventMessage(
+                    RESERVATION_DENIED_CUTOFF,
+                    newState.id,
+                    newState.getReservationRequestResultId())
         }
         // Reserve clash
         if (newState.isRequestResultErrorReserveDeniedClash()) {
             Timber.d("Reservation error clash: $changedId")
-            return UserEventMessage.RESERVATION_DENIED_CLASH
+            return UserEventMessage(
+                    RESERVATION_DENIED_CLASH,
+                    newState.id,
+                    newState.getReservationRequestResultId())
         }
         // Reserve unknown
         if (newState.isRequestResultErrorReserveDeniedUnknown()) {
             Timber.d("Reservation unknown error: $changedId")
-            return UserEventMessage.RESERVATION_DENIED_UNKNOWN
+            return UserEventMessage(
+                    RESERVATION_DENIED_UNKNOWN,
+                    newState.id,
+                    newState.getReservationRequestResultId())
         }
         // Cancel cut-off
         if (newState.isRequestResultErrorCancelDeniedCutoff()) {
             Timber.d("Cancellation error cut-off: $changedId")
-            return UserEventMessage.CANCELLATION_DENIED_CUTOFF
+            return UserEventMessage(
+                    CANCELLATION_DENIED_CUTOFF,
+                    newState.id,
+                    newState.getReservationRequestResultId())
         }
         // Cancel unknown
         if (newState.isRequestResultErrorCancelDeniedUnknown()) {
             Timber.d("Cancellation unknown error: $changedId")
-            return UserEventMessage.CANCELLATION_DENIED_UNKNOWN
+            return UserEventMessage(
+                    CANCELLATION_DENIED_UNKNOWN,
+                    newState.id,
+                    newState.getReservationRequestResultId())
         }
     }
     return null
 }
+
+data class UserEventMessage(
+        val type: UserEventMessageChangeType,
+        val sessionId: String? = null,
+        val changeRequestId: String? = null
+)
 
 /**
  * Enum of messages notified to the end user.
  * Need to be ordered by importance
  * (e.g. CHANGE_IN_RESERVATIONS is more important than CHANGES_IN_WAITLIST)
  */
-enum class UserEventMessage {
+enum class UserEventMessageChangeType {
     CHANGES_IN_RESERVATIONS,
     RESERVATIONS_REPLACED,
     CHANGES_IN_WAITLIST,

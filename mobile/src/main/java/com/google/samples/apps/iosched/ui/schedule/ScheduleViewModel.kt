@@ -54,6 +54,7 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_2
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_3
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
+import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.filters.LoadTagFiltersUseCase
 import com.google.samples.apps.iosched.ui.schedule.filters.TagFilter
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
@@ -67,13 +68,14 @@ import javax.inject.Inject
  * create the object, so defining a [@Provides] method for this class won't be needed.
  */
 class ScheduleViewModel @Inject constructor(
-    private val loadUserSessionsByDayUseCase: LoadUserSessionsByDayUseCase,
-    loadAgendaUseCase: LoadAgendaUseCase,
-    loadTagFiltersUseCase: LoadTagFiltersUseCase,
-    signInViewModelDelegate: SignInViewModelDelegate,
-    private val starEventUseCase: StarEventUseCase,
-    private val reservationActionUseCase: ReservationActionUseCase,
-    scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase
+        private val loadUserSessionsByDayUseCase: LoadUserSessionsByDayUseCase,
+        loadAgendaUseCase: LoadAgendaUseCase,
+        loadTagFiltersUseCase: LoadTagFiltersUseCase,
+        signInViewModelDelegate: SignInViewModelDelegate,
+        private val starEventUseCase: StarEventUseCase,
+        private val reservationActionUseCase: ReservationActionUseCase,
+        scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase,
+        private val snackbarMessageManager: SnackbarMessageManager
 ) : ViewModel(), ScheduleEventListener, SignInViewModelDelegate by signInViewModelDelegate {
 
     val isLoading: LiveData<Boolean>
@@ -238,16 +240,18 @@ class ScheduleViewModel @Inject constructor(
 
         // Show a message with the result of a reservation
         _snackBarMessage.addSource(loadUserSessionsByDayUseCase.observe()) {
-            val message: Int? = when (it) {
-                is Result.Success ->
-                    it.data.userMessage?.stringRes()
-                else -> null
-            }
+            if (it is Result.Success) {
+                it.data.userMessage?.type?.stringRes()?.let { messageId ->
+                    // There is a message to display:
 
-            message?.let {
-                // Snackbar messages about changes in reservations last longer and have an action.
-                _snackBarMessage.postValue(Event(
-                        SnackbarMessage(it, actionId = R.string.got_it, longDuration = true)))
+                    snackbarMessageManager.addMessage(SnackbarMessage(
+                            messageId = messageId,
+                            actionId = R.string.got_it,
+                            longDuration = true,
+                            session = it.data.userMessageSession,
+                            requestChangeId = it.data.userMessage?.changeRequestId
+                    ))
+                }
             }
         }
 
