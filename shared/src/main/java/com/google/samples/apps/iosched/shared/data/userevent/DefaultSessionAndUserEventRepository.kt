@@ -80,11 +80,17 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                     // Get the sessions, synchronously
                     val allSessions = sessionRepository.getSessions()
                     // Merges sessions with user data and emits the result
+
+                    val userEventsMessageSession = allSessions.firstOrNull() {
+                        it.id == userEvents.userEventsMessage?.sessionId
+                    }
+
                     sessionsByDayResult.postValue(Result.Success(
                             LoadUserSessionsByDayUseCaseResult(
                                     userSessionsPerDay = mapUserDataAndSessions(
                                             userEvents, allSessions),
-                                    userMessage = userEvents.userEventsMessage)
+                                    userMessage = userEvents.userEventsMessage,
+                                    userMessageSession = userEventsMessageSession)
                     ))
 
                 } catch (e: Exception) {

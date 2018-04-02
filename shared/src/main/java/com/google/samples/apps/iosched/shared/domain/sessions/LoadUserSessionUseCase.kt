@@ -60,5 +60,7 @@ open class LoadUserSessionUseCase @Inject constructor(
 
 data class LoadUserSessionUseCaseResult(
         val userSession: UserSession,
-        val userMessage: UserEventMessage?
+
+        /** A message to show to the user with important changes like reservation confirmations */
+        val userMessage: UserEventMessage? = null
 )

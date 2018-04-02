@@ -42,7 +42,7 @@ class CompareOldAndNewUserEventsTest {
 
         val result = compareOldAndNewUserEvents(oldState, newState, oldState.id)
 
-        assertThat(result, `is`(nullValue()))
+        assertThat(result?.type, `is`(nullValue()))
     }
 
     @Test
@@ -53,7 +53,7 @@ class CompareOldAndNewUserEventsTest {
 
         val result = compareOldAndNewUserEvents(oldState, newState, oldState.id)
 
-        assertThat(result, `is`(equalTo(UserEventMessage.CHANGES_IN_RESERVATIONS)))
+        assertThat(result?.type, `is`(equalTo(UserEventMessageChangeType.CHANGES_IN_RESERVATIONS)))
     }
 
     @Test
@@ -64,7 +64,7 @@ class CompareOldAndNewUserEventsTest {
 
         val result = compareOldAndNewUserEvents(oldState, newState, oldState.id)
 
-        assertThat(result, `is`(equalTo(UserEventMessage.RESERVATIONS_REPLACED)))
+        assertThat(result?.type, `is`(equalTo(UserEventMessageChangeType.RESERVATIONS_REPLACED)))
     }
 
     @Test
@@ -76,7 +76,7 @@ class CompareOldAndNewUserEventsTest {
 
         val result = compareOldAndNewUserEvents(oldState, newState, oldState.id)
 
-        assertThat(result, `is`(equalTo(UserEventMessage.CHANGES_IN_WAITLIST)))
+        assertThat(result?.type, `is`(equalTo(UserEventMessageChangeType.CHANGES_IN_WAITLIST)))
     }
 
     @Test
@@ -87,7 +87,7 @@ class CompareOldAndNewUserEventsTest {
 
         val result = compareOldAndNewUserEvents(oldState, newState, oldState.id)
 
-        assertThat(result, `is`(equalTo(UserEventMessage.RESERVATION_CANCELED)))
+        assertThat(result?.type, `is`(equalTo(UserEventMessageChangeType.RESERVATION_CANCELED)))
     }
 
     @Test
@@ -100,7 +100,7 @@ class CompareOldAndNewUserEventsTest {
 
         val result = compareOldAndNewUserEvents(oldState, newState, oldState.id)
 
-        assertThat(result, `is`(equalTo(UserEventMessage.CHANGES_IN_WAITLIST)))
+        assertThat(result?.type, `is`(equalTo(UserEventMessageChangeType.CHANGES_IN_WAITLIST)))
     }
 
     @Test
@@ -111,7 +111,7 @@ class CompareOldAndNewUserEventsTest {
 
         val result = compareOldAndNewUserEvents(oldState, newState, oldState.id)
 
-        assertThat(result, `is`(equalTo(UserEventMessage.WAITLIST_CANCELED)))
+        assertThat(result?.type, `is`(equalTo(UserEventMessageChangeType.WAITLIST_CANCELED)))
     }
 
     @Test
@@ -125,7 +125,7 @@ class CompareOldAndNewUserEventsTest {
         val newState = createUserEvent(
                 reservationRequest = newStateRequest)
         val result = compareOldAndNewUserEvents(oldState, newState, oldState.id)
-        assertThat(result, `is`(nullValue()))
+        assertThat(result?.type, `is`(nullValue()))
     }
 
     @Test
@@ -149,7 +149,7 @@ class CompareOldAndNewUserEventsTest {
 
         val result = compareOldAndNewUserEvents(oldState, newState, oldState.id)
 
-        assertThat(result, `is`(nullValue()))
+        assertThat(result?.type, `is`(nullValue()))
     }
 
     @Test
@@ -157,7 +157,7 @@ class CompareOldAndNewUserEventsTest {
 
         val result = generateErrorResult(ReservationRequestStatus.RESERVE_DENIED_CLASH)
 
-        assertThat(result, `is`(equalTo(UserEventMessage.RESERVATION_DENIED_CLASH)))
+        assertThat(result?.type, `is`(equalTo(UserEventMessageChangeType.RESERVATION_DENIED_CLASH)))
     }
 
     @Test
@@ -165,7 +165,7 @@ class CompareOldAndNewUserEventsTest {
 
         val result = generateErrorResult(ReservationRequestStatus.SWAP_DENIED_CLASH)
 
-        assertThat(result, `is`(equalTo(UserEventMessage.RESERVATION_DENIED_CLASH)))
+        assertThat(result?.type, `is`(equalTo(UserEventMessageChangeType.RESERVATION_DENIED_CLASH)))
     }
 
     @Test
@@ -173,7 +173,8 @@ class CompareOldAndNewUserEventsTest {
 
         val result = generateErrorResult(ReservationRequestStatus.RESERVE_DENIED_CUTOFF)
 
-        assertThat(result, `is`(equalTo(UserEventMessage.RESERVATION_DENIED_CUTOFF)))
+        assertThat(result?.type,
+                `is`(equalTo(UserEventMessageChangeType.RESERVATION_DENIED_CUTOFF)))
     }
 
     @Test
@@ -181,7 +182,8 @@ class CompareOldAndNewUserEventsTest {
 
         val result = generateErrorResult(ReservationRequestStatus.SWAP_DENIED_CUTOFF)
 
-        assertThat(result, `is`(equalTo(UserEventMessage.RESERVATION_DENIED_CUTOFF)))
+        assertThat(result?.type,
+                `is`(equalTo(UserEventMessageChangeType.RESERVATION_DENIED_CUTOFF)))
     }
 
     @Test
@@ -189,7 +191,8 @@ class CompareOldAndNewUserEventsTest {
 
         val result = generateErrorResult(ReservationRequestStatus.RESERVE_DENIED_UNKNOWN)
 
-        assertThat(result, `is`(equalTo(UserEventMessage.RESERVATION_DENIED_UNKNOWN)))
+        assertThat(result?.type,
+                `is`(equalTo(UserEventMessageChangeType.RESERVATION_DENIED_UNKNOWN)))
     }
 
     @Test
@@ -197,7 +200,8 @@ class CompareOldAndNewUserEventsTest {
 
         val result = generateErrorResult(ReservationRequestStatus.SWAP_DENIED_UNKNOWN)
 
-        assertThat(result, `is`(equalTo(UserEventMessage.RESERVATION_DENIED_UNKNOWN)))
+        assertThat(result?.type,
+                `is`(equalTo(UserEventMessageChangeType.RESERVATION_DENIED_UNKNOWN)))
     }
 
     @Test
@@ -205,7 +209,8 @@ class CompareOldAndNewUserEventsTest {
 
         val result = generateErrorResult(ReservationRequestStatus.CANCEL_DENIED_CUTOFF)
 
-        assertThat(result, `is`(equalTo(UserEventMessage.CANCELLATION_DENIED_CUTOFF)))
+        assertThat(result?.type,
+                `is`(equalTo(UserEventMessageChangeType.CANCELLATION_DENIED_CUTOFF)))
     }
 
     @Test
@@ -213,7 +218,8 @@ class CompareOldAndNewUserEventsTest {
 
         val result = generateErrorResult(ReservationRequestStatus.CANCEL_DENIED_UNKNOWN)
 
-        assertThat(result, `is`(equalTo(UserEventMessage.CANCELLATION_DENIED_UNKNOWN)))
+        assertThat(result?.type,
+                `is`(equalTo(UserEventMessageChangeType.CANCELLATION_DENIED_UNKNOWN)))
     }
 
     private fun generateErrorResult(errorResult: ReservationRequestStatus): UserEventMessage? {

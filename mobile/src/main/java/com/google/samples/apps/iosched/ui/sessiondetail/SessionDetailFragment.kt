@@ -20,25 +20,26 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.ShareCompat
-import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.net.toUri
 import com.google.android.material.bottomappbar.BottomAppBar
-import com.google.android.material.widget.Snackbar
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSessionDetailBinding
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
+import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment.Companion.DIALOG_REMOVE_RESERVATION
 import com.google.samples.apps.iosched.ui.reservation.SwapReservationDialogFragment
+import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment.Companion.DIALOG_NEED_TO_SIGN_IN
 import dagger.android.support.DaggerFragment
@@ -50,6 +51,10 @@ class SessionDetailFragment : DaggerFragment() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var sessionDetailViewModel: SessionDetailViewModel
+    private lateinit var coordinatorLayout: CoordinatorLayout
+
+    @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,6 +69,7 @@ class SessionDetailFragment : DaggerFragment() {
 
         val binding = FragmentSessionDetailBinding.inflate(inflater, container, false).apply {
             viewModel = sessionDetailViewModel
+            coordinatorLayout = coordinatorLayoutSessionDetail
             setLifecycleOwner(this@SessionDetailFragment)
             sessionDetailBottomAppBar.inflateMenu(R.menu.session_detail_menu)
             // todo setup menu & fab based on attendee
@@ -98,20 +104,12 @@ class SessionDetailFragment : DaggerFragment() {
         })
 
         // TODO style Snackbar so it doesn't overlap the bottom app bar (b/76112328)
-        sessionDetailViewModel.snackBarMessage.observe(this, EventObserver { message ->
-            val coordinatorLayout =
-                requireActivity().findViewById<View>(R.id.coordinator_layout_session_detail)
-            val duration = if (message.longDuration) {
-                Snackbar.LENGTH_LONG
-            } else {
-                Snackbar.LENGTH_SHORT
-            }
-            Snackbar.make(coordinatorLayout, message.messageId, duration).apply {
-                message.actionId?.let { action -> setAction(action, { this.dismiss() }) }
-                setActionTextColor(ContextCompat.getColor(context, R.color.teal))
-                show()
-            }
-        })
+
+        setUpSnackbar(
+                sessionDetailViewModel.snackBarMessage,
+                coordinatorLayout,
+                snackbarMessageManager
+        )
 
         sessionDetailViewModel.errorMessage.observe(this, EventObserver { errorMsg ->
             //TODO: Change once there's a way to show errors to the user
@@ -122,7 +120,7 @@ class SessionDetailFragment : DaggerFragment() {
             openSignInDialog(requireActivity())
         })
         sessionDetailViewModel.navigateToRemoveReservationDialogAction.observe(this, EventObserver {
-                openRemoveReservationDialog(requireActivity(), it)
+            openRemoveReservationDialog(requireActivity(), it)
         })
         sessionDetailViewModel.navigateToSwapReservationDialogAction.observe(this, EventObserver {
             openSwapReservationDialog(requireActivity(), it)

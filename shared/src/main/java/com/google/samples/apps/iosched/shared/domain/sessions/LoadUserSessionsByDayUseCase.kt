@@ -20,6 +20,7 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
@@ -53,7 +54,8 @@ open class LoadUserSessionsByDayUseCase @Inject constructor(
                         userSessions.forEach { it.value.forEach { it.session.type } }
                         val usecaseResult = LoadUserSessionsByDayUseCaseResult(
                                 userSessionsPerDay = userSessions,
-                                userMessage = it.data.userMessage
+                                userMessage = it.data.userMessage,
+                                userMessageSession = it.data.userMessageSession
                         )
                         result.postValue(Result.Success(usecaseResult))
                     }
@@ -67,6 +69,12 @@ open class LoadUserSessionsByDayUseCase @Inject constructor(
 }
 
 data class LoadUserSessionsByDayUseCaseResult(
+
     val userSessionsPerDay: Map<ConferenceDay, List<UserSession>>,
-    val userMessage: UserEventMessage?
+
+    /** A message to show to the user with important changes like reservation confirmations */
+    val userMessage: UserEventMessage? = null,
+
+    /** The session the user message is about, if any. */
+    val userMessageSession: Session? = null
 )

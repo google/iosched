@@ -36,6 +36,7 @@ import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
@@ -56,6 +57,7 @@ import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
 import com.google.samples.apps.iosched.ui.SnackbarMessage
+import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.schedule.filters.LoadTagFiltersUseCase
 import com.google.samples.apps.iosched.ui.schedule.filters.TagFilter
@@ -363,9 +365,11 @@ class ScheduleViewModelTest {
         val source = TestUserEventDataSource(userEventsResult)
         val loadSessionsUseCase = createTestLoadUserSessionsByDayUseCase(source)
         val signInDelegate = FakeSignInViewModelDelegate()
+        val snackbarMessageManager = SnackbarMessageManager()
         val viewModel = createScheduleViewModel(
             loadSessionsUseCase = loadSessionsUseCase,
-            signInViewModelDelegate = signInDelegate)
+            signInViewModelDelegate = signInDelegate,
+            snackbarMessageManager = snackbarMessageManager)
 
         // Kick off the viewmodel by loading a user.
         signInDelegate.loadUser("test")
@@ -373,16 +377,20 @@ class ScheduleViewModelTest {
         // Observe viewmodel to load sessions
         viewModel.getSessionsForDay(ConferenceDay.DAY_1).observeForever() {}
 
+        // Observe snackbar so messages are received
+        viewModel.snackBarMessage.observeForever { }
+
         // A session goes from not-reserved to reserved
         val oldValue = LiveDataTestUtil.getValue(userEventsResult)
         val newValue = oldValue!!.copy(
-            userEventsMessage = UserEventMessage.CHANGES_IN_RESERVATIONS)
+            userEventsMessage = UserEventMessage(
+                    UserEventMessageChangeType.CHANGES_IN_RESERVATIONS))
 
         userEventsResult.postValue(newValue)
 
-        val starEvent: Event<SnackbarMessage>? =
-            LiveDataTestUtil.getValue(viewModel.snackBarMessage)
-        assertThat(starEvent?.getContentIfNotHandled()?.messageId,
+        val reservationMessage: Event<SnackbarMessage>? =
+                LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
+        assertThat(reservationMessage?.getContentIfNotHandled()?.messageId,
             `is`(equalTo(R.string.reservation_new)))
     }
 
@@ -394,9 +402,11 @@ class ScheduleViewModelTest {
         val source = TestUserEventDataSource(userEventsResult)
         val loadSessionsUseCase = createTestLoadUserSessionsByDayUseCase(source)
         val signInDelegate = FakeSignInViewModelDelegate()
+        val snackbarMessageManager = SnackbarMessageManager()
         val viewModel = createScheduleViewModel(
             loadSessionsUseCase = loadSessionsUseCase,
-            signInViewModelDelegate = signInDelegate)
+            signInViewModelDelegate = signInDelegate,
+            snackbarMessageManager = snackbarMessageManager)
 
         // Kick off the viewmodel by loading a user.
         signInDelegate.loadUser("test")
@@ -404,16 +414,20 @@ class ScheduleViewModelTest {
         // Observe viewmodel to load sessions
         viewModel.getSessionsForDay(ConferenceDay.DAY_1).observeForever() {}
 
+        // Observe snackbar so messages are received
+        viewModel.snackBarMessage.observeForever { }
+
         // A session goes from not-reserved to reserved
         val oldValue = LiveDataTestUtil.getValue(userEventsResult)
         val newValue = oldValue!!.copy(
-            userEventsMessage = UserEventMessage.CHANGES_IN_WAITLIST)
+            userEventsMessage = UserEventMessage(UserEventMessageChangeType.CHANGES_IN_WAITLIST))
 
         userEventsResult.postValue(newValue)
 
-        val starEvent: Event<SnackbarMessage>? =
-            LiveDataTestUtil.getValue(viewModel.snackBarMessage)
-        assertThat(starEvent?.getContentIfNotHandled()?.messageId,
+        val waitlistMessage: Event<SnackbarMessage>? =
+            LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
+
+        assertThat(waitlistMessage?.getContentIfNotHandled()?.messageId,
             `is`(equalTo(R.string.waitlist_new)))
     }
 
@@ -489,11 +503,19 @@ class ScheduleViewModelTest {
         signInViewModelDelegate: SignInViewModelDelegate = createSignInViewModelDelegate(),
         starEventUseCase: StarEventUseCase = createStarEventUseCase(),
         reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase(),
+        snackbarMessageManager: SnackbarMessageManager = SnackbarMessageManager(),
         scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase = FakeScheduleUiHintsShownUseCase()
     ): ScheduleViewModel {
         return ScheduleViewModel(
-            loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, signInViewModelDelegate,
-            starEventUseCase, reservationActionUseCase, scheduleUiHintsShownUseCase)
+            loadUserSessionsByDayUseCase = loadSessionsUseCase,
+                loadAgendaUseCase = loadAgendaUseCase,
+                loadTagFiltersUseCase = loadTagsUseCase,
+                signInViewModelDelegate = signInViewModelDelegate,
+                starEventUseCase = starEventUseCase,
+                reservationActionUseCase = reservationActionUseCase,
+                snackbarMessageManager = snackbarMessageManager,
+                scheduleUiHintsShownUseCase = scheduleUiHintsShownUseCase
+        )
     }
 
     /**

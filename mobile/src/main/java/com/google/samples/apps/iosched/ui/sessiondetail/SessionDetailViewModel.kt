@@ -39,6 +39,7 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.shared.util.setValueIfNew
 import com.google.samples.apps.iosched.ui.SnackbarMessage
+import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.SetIntervalLiveData
@@ -58,7 +59,8 @@ class SessionDetailViewModel @Inject constructor(
     signInViewModelPlugin: SignInViewModelDelegate,
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val starEventUseCase: StarEventUseCase,
-    private val reservationActionUseCase: ReservationActionUseCase
+    private val reservationActionUseCase: ReservationActionUseCase,
+    private val snackbarMessageManager: SnackbarMessageManager
 ) : ViewModel(), SessionDetailEventListener, SignInViewModelDelegate by signInViewModelPlugin {
 
     private val loadUserSessionResult: MediatorLiveData<Result<LoadUserSessionUseCaseResult>>
@@ -72,8 +74,6 @@ class SessionDetailViewModel @Inject constructor(
     private val _snackBarMessage = MediatorLiveData<Event<SnackbarMessage>>()
     val snackBarMessage : LiveData<Event<SnackbarMessage>>
         get() = _snackBarMessage
-
-    private var firebaseUserSourceAttached = false
 
     /**
      * Event to navigate to the sign in Dialog. We only want to consume the event, so the
@@ -208,19 +208,21 @@ class SessionDetailViewModel @Inject constructor(
                         actionId = R.string.got_it)))
             }
         }
-
         // Show a message with the result of a reservation
         _snackBarMessage.addSource(loadUserSessionUseCase.observe()) {
-            val message: Int? = when (it) {
-                is Result.Success ->
-                    it.data.userMessage?.stringRes()
-                else -> null
-            }
 
-            message?.let {
-                // Snackbar messages about changes in reservations last longer and have an action.
-                _snackBarMessage.postValue(Event(
-                        SnackbarMessage(it, actionId = R.string.got_it, longDuration = true)))
+            if (it is Result.Success) {
+                it.data.userMessage?.type?.stringRes()?.let { messageId ->
+                    // There is a message to display:
+
+                    snackbarMessageManager.addMessage(SnackbarMessage(
+                            messageId = messageId,
+                            actionId = R.string.got_it,
+                            longDuration = true,
+                            session = it.data.userSession.session,
+                            requestChangeId = it.data.userMessage?.changeRequestId
+                    ))
+                }
             }
         }
 
