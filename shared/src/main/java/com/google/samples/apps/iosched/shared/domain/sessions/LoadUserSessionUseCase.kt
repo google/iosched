@@ -33,6 +33,7 @@ open class LoadUserSessionUseCase @Inject constructor(
         val userSession = userEventRepository.getObservableUserEvent(userId, eventId)
 
         result.removeSource(userSession)
+        result.value = null
         result.addSource(userSession) {
             DefaultScheduler.execute {
                 when (it) {
@@ -49,6 +50,11 @@ open class LoadUserSessionUseCase @Inject constructor(
                 }
             }
         }
+    }
+
+    fun onCleared() {
+        // This use case is no longer going to be used so remove subscriptions
+        userEventRepository.clearSingleEventSubscriptions()
     }
 }
 

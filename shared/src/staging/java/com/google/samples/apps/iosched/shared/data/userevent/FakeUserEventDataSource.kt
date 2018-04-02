@@ -99,4 +99,6 @@ object FakeUserEventDataSource : UserEventDataSource {
         result.postValue(Result.Success(SwapRequestAction()))
         return result
     }
+
+    override fun clearSingleEventSubscriptions() { }
 }
