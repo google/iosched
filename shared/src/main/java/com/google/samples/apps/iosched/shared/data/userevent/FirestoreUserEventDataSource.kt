@@ -123,7 +123,7 @@ class FirestoreUserEventDataSource @Inject constructor(
             resultSingleEvent.postValue(UserEventResult(userEvent = null))
             return resultSingleEvent
         }
-        registerListenerForSingleEvent(resultSingleEvent, eventId, userId)
+        registerListenerForSingleEvent(eventId, userId)
         return resultSingleEvent
     }
 
@@ -163,9 +163,10 @@ class FirestoreUserEventDataSource @Inject constructor(
     }
 
     private fun registerListenerForSingleEvent(
-            result: MutableLiveData<UserEventResult>,
             sessionId: String,
             userId: String) {
+
+        val result = resultSingleEvent
 
         val singleEventListener: (DocumentSnapshot?, FirebaseFirestoreException?) -> Unit =
                 listener@ { snapshot, _ ->
@@ -178,8 +179,11 @@ class FirestoreUserEventDataSource @Inject constructor(
                         val userMessage = result.value?.userEvent?.let { oldValue: UserEvent ->
 
                             // Generate message if the reservation changed
-                            if (snapshot.exists()) getUserMessageFromChange(oldValue, snapshot, sessionId)
-                            else null
+                            if (snapshot.exists()) {
+                                getUserMessageFromChange(oldValue, snapshot, sessionId)
+                            } else {
+                                null
+                            }
                         }
 
                         val userEvent = if (snapshot.exists()) {
@@ -202,7 +206,13 @@ class FirestoreUserEventDataSource @Inject constructor(
                 .document(sessionId)
 
         eventChangedListenerSubscription?.remove() // Remove in case userId changes.
+        resultSingleEvent.value = null
         eventChangedListenerSubscription = eventDocument.addSnapshotListener(singleEventListener)
+    }
+
+    override fun clearSingleEventSubscriptions() {
+        resultSingleEvent.value = null
+        eventChangedListenerSubscription?.remove() // Remove to avoid leaks
     }
 
     /** Firestore writes **/

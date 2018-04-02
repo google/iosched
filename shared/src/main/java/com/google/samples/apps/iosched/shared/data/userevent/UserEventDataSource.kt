@@ -47,6 +47,8 @@ interface UserEventDataSource {
 
     fun swapReservation(userId: String, fromSession: Session, toSession: Session):
             LiveData<Result<SwapRequestAction>>
+
+    fun clearSingleEventSubscriptions()
 }
 
 data class UserEventsResult(

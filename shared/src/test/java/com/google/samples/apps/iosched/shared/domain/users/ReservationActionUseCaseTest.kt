@@ -129,6 +129,7 @@ object TestUserEventRepository : SessionAndUserEventRepository {
         TODO("not implemented")
     }
 
+    override fun clearSingleEventSubscriptions() { }
 }
 
 object FailingUserEventRepository : SessionAndUserEventRepository {
@@ -164,4 +165,5 @@ object FailingUserEventRepository : SessionAndUserEventRepository {
             LiveData<Result<SwapRequestAction>> {
         TODO("not implemented")
     }
+    override fun clearSingleEventSubscriptions() { }
 }
