@@ -49,7 +49,7 @@ class StarReserveFab(
             }
         }
 
-    var reservationStatus = ReservationButtonState.RESERVATION_DISABLED
+    var reservationStatus = ReservationViewState.RESERVATION_DISABLED
         set(value) {
             if (value != field || mode != RESERVE) {
                 field = value

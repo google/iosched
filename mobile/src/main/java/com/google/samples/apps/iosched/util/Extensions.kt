@@ -18,7 +18,10 @@ package com.google.samples.apps.iosched.util
 
 import android.databinding.ObservableBoolean
 import android.databinding.ViewDataBinding
+import android.graphics.drawable.Drawable
+import android.support.annotation.DrawableRes
 import android.view.View
+import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 
 fun ObservableBoolean.hasSameValue(other: ObservableBoolean) = get() == other.get()
 
@@ -29,4 +32,17 @@ fun View.isRtl() = layoutDirection == View.LAYOUT_DIRECTION_RTL
 inline fun <T: ViewDataBinding> T.executeAfter(block: T.() -> Unit) {
     block()
     executePendingBindings()
+}
+
+/**
+ * Loads a drawable asynchronously and passes it into the callback function. This is similar to the
+ * [srcAsync] binding adapter but can be used by any View type.
+ */
+inline fun loadDrawableAsync(view: View, @DrawableRes id: Int, crossinline f: (Drawable) -> Unit) {
+    DefaultScheduler.execute {
+        val drawable = view.context.getDrawable(id)
+        view.post {
+            f(drawable)
+        }
+    }
 }

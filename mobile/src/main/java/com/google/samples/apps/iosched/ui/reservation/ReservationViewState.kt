@@ -23,34 +23,44 @@ import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 /**
  * Models the different states of a reservation and a corresponding content description.
  */
-enum class ReservationButtonState(val state: IntArray, @StringRes val contentDescription: Int) {
+enum class ReservationViewState(
+    val state: IntArray,
+    @StringRes val text: Int,
+    @StringRes val contentDescription: Int
+) {
     RESERVABLE(
         intArrayOf(R.attr.state_reservable),
+        R.string.reservation_reservable,
         R.string.a11y_reservation_available
     ),
     WAIT_LIST_AVAILABLE(
         intArrayOf(R.attr.state_wait_list_available),
-        R.string.a11y_reservation_reserved
+        R.string.reservation_waitlist_available,
+        R.string.a11y_reservation_wait_list_available
     ),
     WAIT_LISTED(
         intArrayOf(R.attr.state_wait_listed),
-        R.string.a11y_reservation_disabled
+        R.string.reservation_waitlisted,
+        R.string.a11y_reservation_wait_listed
     ),
     RESERVED(
         intArrayOf(R.attr.state_reserved),
-        R.string.a11y_reservation_wait_list_available
+        R.string.reservation_reserved,
+        R.string.a11y_reservation_reserved
     ),
     RESERVATION_PENDING(
         intArrayOf(R.attr.state_reservation_pending),
-        R.string.a11y_reservation_wait_listed
+        R.string.reservation_pending,
+        R.string.a11y_reservation_pending
     ),
     RESERVATION_DISABLED(
         intArrayOf(R.attr.state_reservation_disabled),
-        R.string.a11y_reservation_pending
+        R.string.reservation_disabled,
+        R.string.a11y_reservation_disabled
     );
 
     companion object {
-        fun fromUserEvent(userEvent: UserEvent?, unavailable: Boolean): ReservationButtonState {
+        fun fromUserEvent(userEvent: UserEvent?, unavailable: Boolean): ReservationViewState {
             return when {
                 // Order is significant e.g. a pending cancellation is also reserved.
                 userEvent?.isReservationPending() == true

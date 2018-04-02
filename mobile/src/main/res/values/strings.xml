@@ -51,6 +51,13 @@
     <string name="schedule_tag_filters_empty" translationDescription="The message shown when a schedule page is empty because no events match the current filters.">No events today match your current filters.</string>
     <string name="schedule_pinned_events_empty" translationDescription="The message shown when a schedule page is empty because no events are starred or reserved.">You have no starred or reserved events today.</string>
 
+    <string name="reservation_reservable" translationDescription="Label shown on events for which the user can request to reserve a seat.">Reserve seat</string>
+    <string name="reservation_reserved" translationDescription="Label shown on events for which the user has reserved a seat.">Reserved</string>
+    <string name="reservation_waitlisted" translationDescription="Label shown on events for which the user is on the waitlist.">Waitlisted</string>
+    <string name="reservation_waitlist_available" translationDescription="Label shown on events for which the user can join the waitlist.">Join waitlist</string>
+    <string name="reservation_disabled" translationDescription="Label shown on events for which the user cannot request a seat.">Reservations unavailable</string>
+    <string name="reservation_pending" translationDescription="Label shown on events for which a reservation request is pending.">Reservation pending</string>
+
     <!-- Session Detail -->
     <string name="rate_session" translation_description="The label for the button to rate the session by 5 stars">Rate Session</string>
     <string name="menu_item_session_location" translation_description="The label for the location of the session.">Session location</string>

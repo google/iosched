@@ -17,29 +17,34 @@
 package com.google.samples.apps.iosched.ui.reservation
 
 import android.content.Context
-import android.support.v7.widget.AppCompatImageButton
+import android.support.v7.widget.AppCompatTextView
 import android.util.AttributeSet
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.util.srcAsync
+import com.google.samples.apps.iosched.util.loadDrawableAsync
 
 /**
- * An [AppCompatImageButton] extension supporting multiple custom states, representing the status
+ * An [AppCompatTextView] extension supporting multiple custom states, representing the status
  * of a user's reservation for an event.
  */
-class ReserveButton(context: Context, attrs: AttributeSet) : AppCompatImageButton(context, attrs) {
+class ReservationTextView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = android.R.attr.textViewStyle
+) : AppCompatTextView(context, attrs, defStyleAttr) {
 
-    var status = ReservationViewState.RESERVATION_DISABLED
+    var status = ReservationViewState.RESERVABLE
         set(value) {
             if (value == field) return
             field = value
-            contentDescription = context.getString(value.contentDescription)
+            setText(value.text)
             refreshDrawableState()
         }
 
     init {
-        // Drawable defining drawables for each reservation state
-        srcAsync(this, R.drawable.asld_reservation)
-        status = ReservationViewState.RESERVABLE
+        setText(ReservationViewState.RESERVABLE.text)
+        loadDrawableAsync(this, R.drawable.asld_reservation, {
+            setCompoundDrawablesRelativeWithIntrinsicBounds(it, null, null, null)
+        })
     }
 
     override fun onCreateDrawableState(extraSpace: Int): IntArray {

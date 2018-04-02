@@ -40,8 +40,8 @@ import com.google.samples.apps.iosched.shared.model.SessionType.SANDBOX
 import com.google.samples.apps.iosched.shared.model.Speaker
 import com.google.samples.apps.iosched.shared.util.SpeakerUtils
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-import com.google.samples.apps.iosched.ui.reservation.ReservationButtonState
-import com.google.samples.apps.iosched.ui.reservation.ReservationButtonState.RESERVABLE
+import com.google.samples.apps.iosched.ui.reservation.ReservationViewState
+import com.google.samples.apps.iosched.ui.reservation.ReservationViewState.RESERVABLE
 import com.google.samples.apps.iosched.ui.reservation.StarReserveFab
 import com.google.samples.apps.iosched.util.drawable.HeaderGridDrawable
 import org.threeten.bp.Duration
@@ -143,7 +143,7 @@ fun assignFab(
             fab.setOnClickListener { eventListener.onLoginClicked() }
         }
         isRegistered && isReservable -> {
-            fab.reservationStatus = ReservationButtonState.fromUserEvent(userEvent,
+            fab.reservationStatus = ReservationViewState.fromUserEvent(userEvent,
                     isReservationDisabled)
             fab.setOnClickListener { eventListener.onReservationClicked() }
         }

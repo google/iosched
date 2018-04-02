@@ -16,11 +16,13 @@
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <import type="android.arch.lifecycle.LiveData" />
+
         <import type="com.google.samples.apps.iosched.R" />
 
         <variable
@@ -46,7 +48,8 @@
         android:background="?selectableItemBackground"
         android:onClick="@{() -> eventListener.openSessionDetail(session.id)}"
         android:paddingEnd="@dimen/spacing_normal"
-        android:paddingVertical="@dimen/spacing_normal">
+        android:paddingVertical="@dimen/spacing_normal"
+        tools:targetApi="o">
 
         <android.support.constraint.Guideline
             android:id="@+id/keyline"
@@ -62,21 +65,9 @@
             android:layout_marginTop="@dimen/spacing_normal"
             android:text="@{session.title}"
             android:textAppearance="@style/TextAppearance.IOSched.SessionTitle"
-            app:layout_constraintEnd_toStartOf="@+id/reserve_session"
+            app:layout_constraintEnd_toStartOf="@+id/bookmark_session"
             app:layout_constraintStart_toEndOf="@id/keyline"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.samples.apps.iosched.ui.reservation.ReserveButton
-            android:id="@+id/reserve_session"
-            android:layout_width="@dimen/a11y_min_touch_target"
-            android:layout_height="@dimen/a11y_min_touch_target"
-            android:background="?selectableItemBackgroundBorderless"
-            android:onClick="@{() -> eventListener.onReservationClicked(session, userEvent)}"
-            app:layout_constraintEnd_toStartOf="@id/bookmark_session"
-            app:layout_constraintTop_toTopOf="parent"
-            app:showReservations="@{showReservations}"
-            app:isReservable="@{session.isReservable}"
-            app:reservationStatus="@{userEvent}" />
 
         <com.google.android.material.widget.CheckableImageButton
             android:id="@+id/bookmark_session"
@@ -86,9 +77,27 @@
             android:checked="@{userEvent.isStarred}"
             android:contentDescription="@string/a11y_star_session_actions"
             android:onClick="@{() -> eventListener.onStarClicked(userEvent)}"
-            app:srcAsync="@{R.drawable.asld_star_event}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcAsync="@{R.drawable.asld_star_event}" />
+
+        <com.google.samples.apps.iosched.ui.reservation.ReservationTextView
+            android:id="@+id/reservation_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_micro"
+            android:drawablePadding="@dimen/spacing_normal"
+            android:gravity="center_vertical"
+            android:textAppearance="@style/TextAppearance.IOSched.ReservationStatus"
+            app:layout_constraintEnd_toEndOf="@id/title"
+            app:layout_constraintStart_toEndOf="@id/keyline"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:isReservable="@{session.isReservable}"
+            app:reservationStatus="@{userEvent}"
+            app:showReservations="@{showReservations}"
+            tools:drawableStart="@drawable/ic_reserved"
+            tools:text="Reserved"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/length_location"
@@ -98,7 +107,7 @@
             android:textAppearance="@style/TextAppearance.IOSched.ListSecondary"
             app:layout_constraintEnd_toEndOf="@id/title"
             app:layout_constraintStart_toEndOf="@id/keyline"
-            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintTop_toBottomOf="@id/reservation_status"
             app:sessionEnd="@{session.endTime}"
             app:sessionRoom="@{session.room.name}"
             app:sessionStart="@{session.startTime}" />

@@ -16,6 +16,20 @@
   -->
 
 <resources>
+    <!-- Reservation states -->
+    <!-- Event is reservable; user has no reservation status-->
+    <attr name="state_reservable" format="boolean" />
+    <!-- Event is not reservable -->
+    <attr name="state_reservation_disabled" format="boolean" />
+    <!-- Event is reservable; user can join wait list -->
+    <attr name="state_wait_list_available" format="boolean" />
+    <!-- Reservation request is pending for this event -->
+    <attr name="state_reservation_pending" format="boolean" />
+    <!-- User has reserved a seat for the event -->
+    <attr name="state_reserved" format="boolean" />
+    <!-- User is on the wait list for the event -->
+    <attr name="state_wait_listed" format="boolean" />
+
     <declare-styleable name="TimeHeader">
         <attr name="android:width" />
         <attr name="android:paddingTop" />
@@ -41,12 +55,12 @@
     </declare-styleable>
 
     <declare-styleable name="ReserveButton">
-        <attr name="state_reservable" format="boolean" />
-        <attr name="state_reserved" format="boolean" />
-        <attr name="state_reservation_disabled" format="boolean" />
-        <attr name="state_wait_list_available" format="boolean" />
-        <attr name="state_wait_listed" format="boolean" />
-        <attr name="state_reservation_pending" format="boolean" />
+        <attr name="state_reservable"/>
+        <attr name="state_reserved"/>
+        <attr name="state_reservation_disabled" />
+        <attr name="state_wait_list_available" />
+        <attr name="state_wait_listed" />
+        <attr name="state_reservation_pending" />
     </declare-styleable>
 
     <declare-styleable name="PushUpBehavior">
