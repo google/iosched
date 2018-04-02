@@ -60,7 +60,8 @@ android {
                 "TimberArgCount",
                 "TimberArgTypes",
                 "TimberExceptionLogging",
-                "TimberTagLength"
+                "TimberTagLength",
+                "MissingTranslation"
     }
 
     // debug and release variants share the same source dir

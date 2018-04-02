@@ -69,6 +69,10 @@ android {
         debug.java.srcDir 'src/debugRelease/java'
         release.java.srcDir 'src/debugRelease/java'
     }
+
+    lintOptions {
+        disable 'MissingTranslation'
+    }
 }
 
 dependencies {

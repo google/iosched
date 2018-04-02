@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="title_schedule">الجدول الزمني</string>
+    <string name="title_map">الخريطة</string>
+    <string name="filters">فلاتر</string>
+    <string name="clear_all">إزالة كل الشروط</string>
+    <string name="agenda">جدول الأعمال</string>
+    <string name="event_starred">تمّت إضافة الحدث إلى العناصر المميّزة بنجمة.</string>
+    <string name="got_it">حسنًا</string>
+    <string name="rate_session">تقييم الجلسة</string>
+    <string name="menu_item_session_location">موقع الجلسة</string>
+    <string name="session_detail_speakers_header">مكبّرات الصوت</string>
+    <string name="session_detail_related_header">الأحداث ذات الصلة</string>
+    <string name="info_title">معلومات</string>
+    <string name="event_title">الحدث</string>
+    <string name="travel_title">السفر</string>
+    <string name="faq_title">الأسئلة الشائعة</string>
+    <string name="settings_title">الإعدادات</string>
+    <plurals name="duration_hours">
+        <item quantity="one">ساعة واحدة (%s)</item>
+        <item quantity="zero">%s ساعة</item>
+        <item quantity="two">ساعتان (%s)</item>
+        <item quantity="few">%s ساعات</item>
+        <item quantity="many">%s ساعة</item>
+        <item quantity="other">%s ساعة</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">دقيقة واحدة (%s)</item>
+        <item quantity="zero">%s دقيقة</item>
+        <item quantity="two">دقيقتان (%s)</item>
+        <item quantity="few">%s دقائق</item>
+        <item quantity="many">%s دقيقة</item>
+        <item quantity="other">%s دقيقة</item>
+    </plurals>
+    <string name="menu_item_share_session">مشاركة الجلسة</string>
+    <string name="share_text_session_detail">يُرجى الاطّلاع على "%1$s" على العنوان #io18 %2$s.</string>
+    <string name="intent_chooser_session_detail">مشاركة</string>
+    <string name="onboarding_get_started">البدء</string>
+    <string name="onboarding_welcome_to_google_i_o">أهلاً بك في Google I/O</string>
+    <string name="onboarding_date_location">من 8 إلى 10 أيار (مايو)، \n2018 Mountain View, CA</string>
+    <string name="onboarding_build_schedule">إنشاء جدول زمني خاص بك</string>
+    <string name="onboarding_build_sched_benefits">يمكنك إنشاء تجربة I/O مخصّصة وحجز مقاعد إذا كنت من الحضور.</string>
+    <string name="onboarding_watch_live">مشاهدة I/O مباشرةً</string>
+    <string name="onboarding_join_online">ندعوك للانضمام إلينا حيث نبثّ الأفكار الرئيسية ومعظم الجلسات مباشرةً على الإنترنت.</string>
+    <string name="onboarding_label_days">يوم</string>
+    <string name="onboarding_label_hours">س</string>
+    <string name="onboarding_label_mins">د</string>
+    <string name="onboarding_label_seconds">ث</string>
+</resources>

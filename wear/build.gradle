@@ -64,7 +64,8 @@ android {
                 "TimberArgCount",
                 "TimberArgTypes",
                 "TimberExceptionLogging",
-                "TimberTagLength"
+                "TimberTagLength",
+                "MissingTranslation"
     }
 }
 
