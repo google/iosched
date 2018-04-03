@@ -29,7 +29,6 @@ import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownU
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.SwapAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
@@ -55,6 +54,7 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_3
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
+import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
 import com.google.samples.apps.iosched.ui.schedule.filters.LoadTagFiltersUseCase
 import com.google.samples.apps.iosched.ui.schedule.filters.TagFilter
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
@@ -145,8 +145,8 @@ class ScheduleViewModel @Inject constructor(
         get() = _navigateToSignOutDialogAction
 
     private val _navigateToRemoveReservationDialogAction =
-        MutableLiveData<Event<ReservationRequestParameters>>()
-    val navigateToRemoveReservationDialogAction: LiveData<Event<ReservationRequestParameters>>
+        MutableLiveData<Event<RemoveReservationDialogParameters>>()
+    val navigateToRemoveReservationDialogAction: LiveData<Event<RemoveReservationDialogParameters>>
         get() = _navigateToRemoveReservationDialogAction
 
     private val _navigateToSwapReservationDialogAction =
@@ -393,10 +393,11 @@ class ScheduleViewModel @Inject constructor(
                 || userEvent.isCancelPending() // Just in case
                 || userEvent.isReservationPending()) {
             // Open the dialog to confirm if the user really wants to remove their reservation
-            _navigateToRemoveReservationDialogAction.value = Event(ReservationRequestParameters(
-                    userId,
-                    session.id,
-                    CancelAction()))
+            _navigateToRemoveReservationDialogAction.value =
+                    Event(RemoveReservationDialogParameters(
+                            userId,
+                            session.id,
+                            session.title))
             return
         }
 

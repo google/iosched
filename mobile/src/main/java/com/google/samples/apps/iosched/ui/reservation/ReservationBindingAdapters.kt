@@ -31,6 +31,13 @@ fun makeSessionTitlesBold(textView: TextView, fromTitle: String, toTitle: String
     textView.text = makeTextBold(text, toTitle)
 }
 
+@BindingAdapter("sessionTitle", requireAll = true)
+fun makeSessionTitleBold(textView: TextView, sessionTitle: String) {
+    val text: CharSequence =
+            textView.context.getString(R.string.remove_reservation_content, sessionTitle)
+    textView.text = makeTextBold(text, sessionTitle)
+}
+
 private fun makeTextBold(text: CharSequence, boldText: String): CharSequence {
     val from = text.indexOf(boldText)
     val end = from + boldText.length

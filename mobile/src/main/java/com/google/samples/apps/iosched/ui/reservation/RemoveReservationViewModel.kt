@@ -38,6 +38,8 @@ class RemoveReservationViewModel @Inject constructor(
 
     var sessionId: String? = null
 
+    var sessionTitle: String? = null
+
     /**
      * Event to dismiss the opening dialog. We only want to consume the event, the
      * Boolean value isn't used.

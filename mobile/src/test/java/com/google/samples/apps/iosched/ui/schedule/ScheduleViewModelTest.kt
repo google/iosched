@@ -43,7 +43,6 @@ import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUs
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
@@ -58,6 +57,7 @@ import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelega
 import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
+import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.schedule.filters.LoadTagFiltersUseCase
 import com.google.samples.apps.iosched.ui.schedule.filters.TagFilter
@@ -350,9 +350,9 @@ class ScheduleViewModelTest {
         val parameters = LiveDataTestUtil.getValue(
             viewModel.navigateToRemoveReservationDialogAction)
             ?.getContentIfNotHandled()
-        assertThat(parameters, `is`(ReservationRequestParameters(testUid,
+        assertThat(parameters, `is`(RemoveReservationDialogParameters(testUid,
             TestData.session1.id,
-            CancelAction())))
+            TestData.session1.title)))
     }
 
     /** New reservation / waitlist **/

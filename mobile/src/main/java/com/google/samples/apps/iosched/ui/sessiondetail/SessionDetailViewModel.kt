@@ -24,7 +24,6 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.SwapAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
@@ -40,6 +39,7 @@ import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.shared.util.setValueIfNew
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
+import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.SetIntervalLiveData
@@ -99,8 +99,8 @@ class SessionDetailViewModel @Inject constructor(
     private val sessionId = MutableLiveData<String>()
 
     private val _navigateToRemoveReservationDialogAction =
-            MutableLiveData<Event<ReservationRequestParameters>>()
-    val navigateToRemoveReservationDialogAction: LiveData<Event<ReservationRequestParameters>>
+            MutableLiveData<Event<RemoveReservationDialogParameters>>()
+    val navigateToRemoveReservationDialogAction: LiveData<Event<RemoveReservationDialogParameters>>
         get() = _navigateToRemoveReservationDialogAction
 
     private val _navigateToSwapReservationDialogAction =
@@ -306,10 +306,11 @@ class SessionDetailViewModel @Inject constructor(
                         SnackbarMessage(R.string.cancellation_denied_cutoff, longDuration = true)))
             } else {
                 // Open the dialog to confirm if the user really wants to remove their reservation
-                _navigateToRemoveReservationDialogAction.value = Event(ReservationRequestParameters(
-                        userId,
-                        sessionSnapshot.id,
-                        CancelAction()))
+                _navigateToRemoveReservationDialogAction.value = Event(
+                        RemoveReservationDialogParameters(
+                            userId,
+                            sessionSnapshot.id,
+                            sessionSnapshot.title))
             }
             return
         }

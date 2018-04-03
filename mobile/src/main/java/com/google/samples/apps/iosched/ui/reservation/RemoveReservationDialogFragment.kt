@@ -24,7 +24,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.samples.apps.iosched.databinding.DialogRemoveReservationBinding
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.widget.CustomDimDialogFragment
@@ -43,11 +42,14 @@ class RemoveReservationDialogFragment : CustomDimDialogFragment(), HasSupportFra
         const val DIALOG_REMOVE_RESERVATION = "dialog_remove_reservation"
         private const val USER_ID_KEY = "user_id"
         private const val SESSION_ID_KEY = "session_id"
+        private const val SESSION_TITLE_KEY = "session_title"
 
-        fun newInstance(parameters: ReservationRequestParameters): RemoveReservationDialogFragment {
+        fun newInstance(parameters: RemoveReservationDialogParameters
+        ): RemoveReservationDialogFragment {
             val bundle = Bundle().apply {
                 putString(USER_ID_KEY, parameters.userId)
                 putString(SESSION_ID_KEY, parameters.sessionId)
+                putString(SESSION_TITLE_KEY, parameters.sessionTitle)
             }
             return RemoveReservationDialogFragment().apply { arguments = bundle }
         }
@@ -79,6 +81,7 @@ class RemoveReservationDialogFragment : CustomDimDialogFragment(), HasSupportFra
         requireNotNull(arguments).run {
             removeViewModel.userId = getString(USER_ID_KEY)
             removeViewModel.sessionId = getString(SESSION_ID_KEY)
+            removeViewModel.sessionTitle = getString(SESSION_TITLE_KEY)
         }
 
         val binding = DialogRemoveReservationBinding.inflate(inflater, container, false).apply {
@@ -90,3 +93,9 @@ class RemoveReservationDialogFragment : CustomDimDialogFragment(), HasSupportFra
         return binding.root
     }
 }
+
+data class RemoveReservationDialogParameters (
+    val userId: String,
+    val sessionId: String,
+    val sessionTitle: String
+)
