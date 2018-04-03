@@ -75,8 +75,8 @@
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginStart="@dimen/spacing_normal"
                 android:layout_marginTop="@dimen/margin_normal"
-                android:onClick="@{() -> viewModel.onReplaceClicked()}"
-                android:text="@string/replace" />
+                android:onClick="@{() -> viewModel.onSwapClicked()}"
+                android:text="@string/swap" />
 
         </LinearLayout>
 
