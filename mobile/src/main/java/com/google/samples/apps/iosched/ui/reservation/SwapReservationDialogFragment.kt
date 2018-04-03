@@ -45,6 +45,7 @@ class SwapReservationDialogFragment : CustomDimDialogFragment(), HasSupportFragm
         private const val FROM_ID_KEY = "from_id"
         private const val FROM_TITLE_KEY = "from_title"
         private const val TO_ID_KEY = "to_id"
+        private const val TO_TITLE_KEY = "to_title"
 
         fun newInstance(parameters: SwapRequestParameters): SwapReservationDialogFragment {
             val bundle = Bundle().apply {
@@ -52,6 +53,7 @@ class SwapReservationDialogFragment : CustomDimDialogFragment(), HasSupportFragm
                 putString(FROM_ID_KEY, parameters.fromId)
                 putString(FROM_TITLE_KEY, parameters.fromTitle)
                 putString(TO_ID_KEY, parameters.toId)
+                putString(TO_TITLE_KEY, parameters.toTitle)
             }
             return SwapReservationDialogFragment().apply { arguments = bundle }
         }
@@ -85,6 +87,7 @@ class SwapReservationDialogFragment : CustomDimDialogFragment(), HasSupportFragm
             swapViewModel.fromId = getString(FROM_ID_KEY)
             swapViewModel.fromTitle = getString(FROM_TITLE_KEY)
             swapViewModel.toId = getString(TO_ID_KEY)
+            swapViewModel.toTitle = getString(TO_TITLE_KEY)
         }
 
         val binding = DialogSwapReservationBinding.inflate(inflater, container, false).apply {

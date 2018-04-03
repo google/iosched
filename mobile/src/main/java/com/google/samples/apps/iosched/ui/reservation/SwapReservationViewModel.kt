@@ -41,6 +41,8 @@ class SwapReservationViewModel @Inject constructor(
 
     var toId: String? = null
 
+    var toTitle: String? = null
+
     /**
      * Event to dismiss the opening dialog. We only want to consume the event, the
      * Boolean value isn't used.
@@ -56,9 +58,10 @@ class SwapReservationViewModel @Inject constructor(
         val immutableFromId = fromId
         val immutableFromTitle = fromTitle
         val immutableToId = toId
+        val immutableToTitle = toId
         // The user should be logged in at this point.
         if (immutableUserId == null || immutableFromId == null ||
-                immutableFromTitle == null || immutableToId == null) {
+                immutableFromTitle == null || immutableToId == null || immutableToTitle == null) {
             Timber.e("Tried to replace reservations with a null user or IDs")
             return
         }
@@ -67,7 +70,8 @@ class SwapReservationViewModel @Inject constructor(
                         immutableUserId,
                         immutableFromId,
                         immutableFromTitle,
-                        immutableToId))
+                        immutableToId,
+                        immutableToTitle))
     }
 
     override fun onCancelClicked() {
