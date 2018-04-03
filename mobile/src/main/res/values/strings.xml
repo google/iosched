@@ -106,9 +106,9 @@
     <string name="remove" translation_description="The label of the button to release the seat.">Remove</string>
 
     <!-- Swap reservations dialog -->
-    <string name="swap_reservation_title" translation_description="The title of the dialog when the user is about to change their reservation from one session to another.">Replace session?</string>
+    <string name="swap_reservation_title" translation_description="The title of the dialog when the user is about to change their reservation from one session to another.">Swap reservation?</string>
     <string name="swap_reservation_content" translation_description="The content of the dialog when the user is about to change their reservation from one session to another.">You already have a reservation/waitlist request for this time. Only one reservation per time block is allowed. Would you like to override your previously reserved session, \"%1$s\"?</string>
-    <string name="replace" translation_description="The label of the button to replace the reservation with another.">Replace</string>
+    <string name="swap" translation_description="The label of the button to swap the reservation with another.">Swap</string>
 
     <plurals name="duration_hours">
         <item quantity="one" translation_description="Unit for duration of time by hours. Singular.">%s hour</item>
