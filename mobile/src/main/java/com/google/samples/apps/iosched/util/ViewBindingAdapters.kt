@@ -68,7 +68,8 @@ fun clipToCircle(view: View, clip: Boolean) {
 @BindingAdapter(value = ["imageUri", "placeholder"], requireAll = false)
 fun imageUri(imageView: ImageView, imageUri: Uri?, placeholder: Drawable?) {
     val placeholderDrawable = placeholder ?: AppCompatResources.getDrawable(
-        imageView.context, R.drawable.generic_placeholder)
+        imageView.context, R.drawable.generic_placeholder
+    )
     when (imageUri) {
         null -> {
             Timber.d("Unsetting image url")
