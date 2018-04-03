@@ -55,6 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:indeterminate="true"
+            android:indeterminateTint="@color/light_grey"
             app:goneUnless="@{viewModel.isLoading}" />
 
         <!--
