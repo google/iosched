@@ -79,6 +79,10 @@
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
+    <style name="TextAppearance.IOSched.ReservationStatus" parent="@style/TextAppearance.IOSched.ListSecondary">
+        <item name="android:textAllCaps">true</item>
+    </style>
+
     <style name="TextAppearance.IOSched.Tag" parent="@style/TextAppearance.IOSched.ListSecondary">
         <item name="android:fontFamily">@font/google_sans</item>
     </style>
