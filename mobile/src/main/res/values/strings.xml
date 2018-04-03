@@ -48,6 +48,8 @@
     <string name="cancellation_denied_cutoff" translation_description="The message shown when user is trying to cancel a reservation but it's denied because the session starts too soon">Cancellation denied: too close to start time.</string>
     <string name="cancellation_denied_unknown" translation_description="The message shown when user is trying to cancel a reservation but it's denied because of an unknown error">Cancellation denied: unknown error.</string>
 
+    <string name="schedule_tag_filters_empty" translationDescription="The message shown when a schedule page is empty because no events match the current filters.">No events today match your current filters.</string>
+    <string name="schedule_pinned_events_empty" translationDescription="The message shown when a schedule page is empty because no events are starred or reserved.">You have no starred or reserved events today.</string>
 
     <!-- Session Detail -->
     <string name="rate_session" translation_description="The label for the button to rate the session by 5 stars">Rate Session</string>
