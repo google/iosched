@@ -48,8 +48,13 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         private val userEventDataSource: UserEventDataSource,
         private val sessionRepository: SessionRepository
 ) : SessionAndUserEventRepository {
+
     private val sessionsByDayResult = MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>()
     private val sessionResult = MediatorLiveData<Result<LoadUserSessionUseCaseResult>>()
+
+    // Keep a reference to the observable for a single event (from the details screen) so we can
+    // stop observing when done.
+    private var observableUserEvent: LiveData<UserEventResult>? = null
 
     override fun getObservableUserEvents(userId: String?):
             LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
@@ -107,9 +112,10 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         }
 
         // Observes the user events and merges them with session data.
-        val observableUserEvent = userEventDataSource.getObservableUserEvent(userId, eventId)
-        sessionResult.removeSource(observableUserEvent)
-        sessionResult.addSource(observableUserEvent) { userEventResult ->
+        val newObservableUserEvent = userEventDataSource.getObservableUserEvent(userId, eventId)
+        sessionResult.removeSource(newObservableUserEvent) // Avoid multiple subscriptions
+        sessionResult.value = null // Prevent old data from being emitted
+        sessionResult.addSource(newObservableUserEvent) { userEventResult ->
             userEventResult ?: return@addSource
 
             DefaultScheduler.execute {
@@ -131,6 +137,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                 }
             }
         }
+        this.observableUserEvent = newObservableUserEvent
         return sessionResult
     }
 
@@ -232,6 +239,15 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                     .sortedBy { it.session.startTime }
         }.toMap()
     }
+
+    override fun clearSingleEventSubscriptions() {
+        // The details screen is closing so reset subscriptions and old values
+        sessionResult.value = null
+        // The UserEvent data source can stop observing user data
+        userEventDataSource.clearSingleEventSubscriptions()
+        // Also free its observable in the repository.
+        observableUserEvent?.let { sessionResult.removeSource(it) }
+    }
 }
 
 interface SessionAndUserEventRepository {
@@ -252,5 +268,7 @@ interface SessionAndUserEventRepository {
             LiveData<Result<SwapRequestAction>>
 
     fun starEvent(userId: String, userEvent: UserEvent): LiveData<Result<StarUpdatedStatus>>
+
+    fun clearSingleEventSubscriptions()
 }
 
