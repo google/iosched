@@ -65,8 +65,7 @@
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_normal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/grid"
-            tools:text="@string/placeholder_lorem_ipsum" />
+            app:layout_constraintTop_toBottomOf="@+id/grid" />
 
         <!-- space maintains bottom margins if buttons aren't shown -->
         <Space
