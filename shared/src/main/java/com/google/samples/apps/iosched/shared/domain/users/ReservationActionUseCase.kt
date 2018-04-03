@@ -34,7 +34,7 @@ open class ReservationActionUseCase @Inject constructor(
 
         DefaultScheduler.execute {
             try {
-                val (userId, sessionId , action) = parameters
+                val (userId, sessionId, action) = parameters
                 val updateResult = repository.changeReservation(userId, sessionId, action)
 
                 result.removeSource(updateResult)

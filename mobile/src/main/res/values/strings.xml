@@ -116,7 +116,7 @@
 
     <!-- Cancel reservation dialog -->
     <string name="remove_reservation_title" translation_description="The title of the dialog when the user is about to remove their reservation.">Remove reservation?</string>
-    <string name="remove_reservation_content" translation_description="The content of the dialog when the user is about to cancel their reservation.">You\'re about to give up your seat for this session. If you decide not to reserve a seat but still want to attend, all sessions will have a portion of seats available first come, first serve onsite.</string>
+    <string name="remove_reservation_content" translation_description="The content of the dialog when the user is about to cancel their reservation.">You\'re about to give up your seat for \"%1$s\". If you decide not to reserve a seat but still want to attend, all sessions will have a portion of seats available first come, first serve onsite.</string>
     <string name="cancel" translation_description="The label of the button to keep the seat.">Cancel</string>
     <string name="remove" translation_description="The label of the button to release the seat.">Remove</string>
 

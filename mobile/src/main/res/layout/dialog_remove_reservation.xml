@@ -15,7 +15,8 @@
   ~ limitations under the License.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -46,8 +47,8 @@
             android:layout_marginBottom="@dimen/margin_normal"
             android:layout_marginTop="@dimen/spacing_normal"
             android:paddingHorizontal="@dimen/margin_large"
-            android:text="@string/remove_reservation_content"
-            android:textAppearance="@style/TextAppearance.IOSched.DialogContent" />
+            android:textAppearance="@style/TextAppearance.IOSched.DialogContent"
+            app:sessionTitle="@{viewModel.sessionTitle}" />
 
         <LinearLayout
             android:layout_width="match_parent"

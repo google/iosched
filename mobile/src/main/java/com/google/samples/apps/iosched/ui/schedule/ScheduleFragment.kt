@@ -37,7 +37,6 @@ import com.google.android.material.widget.Snackbar
 import com.google.android.material.widget.TabLayout
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
@@ -47,6 +46,7 @@ import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment.Companion.DIALOG_REMOVE_RESERVATION
+import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
 import com.google.samples.apps.iosched.ui.reservation.SwapReservationDialogFragment
 import com.google.samples.apps.iosched.ui.reservation.SwapReservationDialogFragment.Companion.DIALOG_SWAP_RESERVATION
 import com.google.samples.apps.iosched.ui.schedule.agenda.ScheduleAgendaFragment
@@ -223,7 +223,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
 
     private fun openRemoveReservationDialog(
         activity: FragmentActivity,
-        parameters: ReservationRequestParameters
+        parameters: RemoveReservationDialogParameters
     ) {
         val dialog = RemoveReservationDialogFragment.newInstance(parameters)
         dialog.show(activity.supportFragmentManager, DIALOG_REMOVE_RESERVATION)
