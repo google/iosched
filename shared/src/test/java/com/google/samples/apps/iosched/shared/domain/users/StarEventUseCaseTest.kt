@@ -115,4 +115,5 @@ val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepositor
             LiveData<Result<SwapRequestAction>> {
         throw NotImplementedError()
     }
+    override fun clearSingleEventSubscriptions() { }
 }

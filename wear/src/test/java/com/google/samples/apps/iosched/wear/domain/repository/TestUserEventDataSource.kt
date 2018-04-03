@@ -83,4 +83,6 @@ class TestUserEventDataSource(
         result.postValue(Result.Success(SwapRequestAction()))
         return result
     }
+
+    override fun clearSingleEventSubscriptions() { }
 }

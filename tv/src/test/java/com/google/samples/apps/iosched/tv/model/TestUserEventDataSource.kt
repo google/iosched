@@ -68,4 +68,5 @@ object TestUserEventDataSource : UserEventDataSource {
             LiveData<Result<SwapRequestAction>> {
         TODO("not implemented")
     }
+    override fun clearSingleEventSubscriptions() { }
 }

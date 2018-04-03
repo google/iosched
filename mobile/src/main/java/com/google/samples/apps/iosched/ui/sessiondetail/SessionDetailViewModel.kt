@@ -19,11 +19,8 @@ package com.google.samples.apps.iosched.ui.sessiondetail
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
-import android.support.annotation.VisibleForTesting
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
@@ -256,6 +253,11 @@ class SessionDetailViewModel @Inject constructor(
     // TODO: write tests b/74611561
     fun setSessionId(newSessionId: String) {
         sessionId.setValueIfNew(newSessionId)
+    }
+
+    override fun onCleared() {
+        // Clear subscriptions that might be leaked or that will not be used in the future.
+        loadUserSessionUseCase.onCleared()
     }
 
     /**
