@@ -49,7 +49,7 @@ class SwapReservationViewModel @Inject constructor(
     val dismissDialogAction: LiveData<Event<Boolean>>
         get() = _dismissDialogAction
 
-    override fun onReplaceClicked() {
+    override fun onSwapClicked() {
         _dismissDialogAction.value = Event(true)
 
         val immutableUserId = userId
@@ -79,5 +79,5 @@ interface SwapReservationListener {
 
     fun onCancelClicked()
 
-    fun onReplaceClicked()
+    fun onSwapClicked()
 }
