@@ -58,6 +58,9 @@ import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
+import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_COLLAPSED
+import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_EXPANDED
+import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_HIDDEN
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -214,6 +217,15 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         // Tie the filters bottom sheet to the bottom navigation bar
         val peek = Math.max(0, (dummyBottomView.height - bottonNavTranslationY + .5f).toInt())
         bottomSheetBehavior.peekHeight = basePeekHeight + peek
+    }
+
+    override fun onBackPressed(): Boolean {
+        if (bottomSheetBehavior.state == STATE_EXPANDED) {
+            bottomSheetBehavior.state =
+                    if (bottomSheetBehavior.skipCollapsed) STATE_HIDDEN else STATE_COLLAPSED
+            return true
+        }
+        return super.onBackPressed()
     }
 
     private fun openSessionDetail(id: String) {

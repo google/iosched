@@ -83,4 +83,10 @@ class MainActivity : DaggerAppCompatActivity() {
     fun setBottomNavLockMode(lockMode: Int) {
         behavior.lockMode = lockMode
     }
+
+    override fun onBackPressed() {
+        if (!currentFragment.onBackPressed()) {
+            super.onBackPressed()
+        }
+    }
 }
