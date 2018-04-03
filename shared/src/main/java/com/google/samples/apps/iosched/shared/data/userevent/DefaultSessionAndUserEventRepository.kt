@@ -170,7 +170,8 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                     SwapRequestParameters(userId,
                             fromId = overlappingId,
                             fromTitle = overlappingSession.title,
-                            toId = sessionId))))
+                            toId = sessionId,
+                            toTitle = session.title))))
             return result
         }
         return userEventDataSource.requestReservation(userId, session, action)

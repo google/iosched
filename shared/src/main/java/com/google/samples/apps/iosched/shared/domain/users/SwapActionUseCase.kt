@@ -56,6 +56,7 @@ open class SwapActionUseCase @Inject constructor(
 data class SwapRequestParameters(val userId: String,
                                  val fromId: String,
                                  val fromTitle: String,
-                                 val toId: String)
+                                 val toId: String,
+                                 val toTitle: String)
 
 class SwapRequestAction
