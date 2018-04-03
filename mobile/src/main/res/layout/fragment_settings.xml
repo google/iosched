@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2018 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,89 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settings_scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbarStyle="insideOverlay"
+    android:scrollbars="vertical">
 
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/settings_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</android.support.constraint.ConstraintLayout>
+        <!--TODO: make button ripple the entire width of row for switches-->
+        <Switch
+            android:id="@+id/settings_time_zone"
+            style="@style/TextAppearance.IOSched.SettingsSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:text="@string/settings_oss_licenses"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Switch
+            android:id="@+id/settings_send_anonymous_usage_statistics"
+            style="@style/TextAppearance.IOSched.SettingsSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_send_anonymous_usage_statistics"
+            app:layout_constraintTop_toBottomOf="@+id/settings_time_zone" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="@dimen/margin_large"
+            android:background="@color/spacer_grey"
+            app:layout_constraintTop_toBottomOf="@+id/settings_send_anonymous_usage_statistics" />
+
+        <Button
+            android:id="@+id/terms_of_service"
+            style="@style/TextAppearance.IOSched.SettingsButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:gravity="start"
+            android:text="@string/settings_tos"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <Button
+            android:id="@+id/privacy_policy"
+            style="@style/TextAppearance.IOSched.SettingsButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/settings_privacy_policy"
+            app:layout_constraintTop_toBottomOf="@id/terms_of_service" />
+
+        <Button
+            android:id="@+id/open_source_license"
+            style="@style/TextAppearance.IOSched.SettingsButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/settings_oss_licenses"
+            app:layout_constraintTop_toBottomOf="@id/privacy_policy" />
+
+        <TextView
+            android:id="@+id/version_build_number"
+            style="@style/TextAppearance.IOSched.SettingsSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/open_source_license"
+            tools:text="Version X.X, build X" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:contentDescription="@string/built_with_material_content_description"
+            android:src="@drawable/built_with_material"
+            app:layout_constraintTop_toBottomOf="@+id/version_build_number" />
+    </android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.NestedScrollView>
