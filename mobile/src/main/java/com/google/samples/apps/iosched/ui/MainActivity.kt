@@ -49,6 +49,8 @@ class MainActivity : DaggerAppCompatActivity() {
                 else -> false
             }
         }
+        // Add a listener to prevent reselects from being treated as selects.
+        navigation.setOnNavigationItemReselectedListener {}
 
         behavior = HideBottomViewOnScrollBehavior.from(navigation)
         // Report translation whenever the bottom nav moves
