@@ -73,6 +73,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         private val AGENDA_POSITION = COUNT - 1
         private const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
         private const val DIALOG_CONFIRM_SIGN_OUT = "dialog_confirm_sign_out"
+        private const val DIALOG_SCHEDULE_HINTS = "dialog_schedule_hints"
         private const val STATE_BOTTOM_NAV_TRANSLATION = "state.BOTTOM_NAV_TRANSLATION"
     }
 
@@ -124,6 +125,11 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         })
         viewModel.navigateToSwapReservationDialogAction.observe(this, EventObserver {
             openSwapReservationDialog(requireActivity(), it)
+        })
+        viewModel.scheduleUiHintsShown.observe(this, EventObserver {
+            if (!it) {
+                openScheduleUiHintsDialog()
+            }
         })
         return binding.root
     }
@@ -243,6 +249,11 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     private fun openSignOutDialog() {
         val dialog = SignOutDialogFragment()
         dialog.show(requireActivity().supportFragmentManager, DIALOG_CONFIRM_SIGN_OUT)
+    }
+
+    private fun openScheduleUiHintsDialog() {
+        val dialog = ScheduleUiHintsDialogFragment()
+        dialog.show(requireActivity().supportFragmentManager, DIALOG_SCHEDULE_HINTS)
     }
 
     /**
