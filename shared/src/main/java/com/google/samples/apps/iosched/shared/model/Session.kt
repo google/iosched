@@ -55,7 +55,7 @@ data class Session(
     /**
      * The session room.
      */
-    val room: Room,
+    val room: Room?,
 
     /**
      * Full URL for the session online.
@@ -65,7 +65,7 @@ data class Session(
     /**
      * Url for the session livestream.
      */
-    val liveStreamUrl: String,
+    val liveStreamUrl: String?,
 
     /**
      * Indicates if the Session has a live stream.
@@ -96,7 +96,7 @@ data class Session(
     /**
      * The session's photo URL.
      */
-    val photoUrl: String,
+    val photoUrl: String?,
 
     /**
      * IDs of the sessions related to this session.

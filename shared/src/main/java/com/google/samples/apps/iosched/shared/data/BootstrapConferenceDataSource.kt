@@ -16,11 +16,8 @@
 
 package com.google.samples.apps.iosched.shared.data
 
+import com.google.samples.apps.iosched.shared.BuildConfig
 import com.google.samples.apps.iosched.shared.model.ConferenceData
-
-
-//TODO(jalc): Move
-const val bootstrap_conference_data_filename = "conference_data.json"
 
 /**
  * Loads bootstrap data file from resources and parses it.
@@ -37,7 +34,7 @@ object BootstrapConferenceDataSource : ConferenceDataSource{
     fun loadAndParseBootstrapData(): ConferenceData {
 
         val conferenceDataStream = this.javaClass.classLoader
-                .getResource(bootstrap_conference_data_filename).openStream()
+                .getResource(BuildConfig.BOOTSTRAP_CONF_DATA_FILENAME).openStream()
 
         return ConferenceDataJsonParser.parseConferenceData(conferenceDataStream)
     }

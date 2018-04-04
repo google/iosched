@@ -26,7 +26,7 @@ object ColorUtils {
                 // Set the alpha value
                 color = color or 0x00000000ff000000
             } else if (colorString.length != 9) {
-                throw IllegalArgumentException("Unknown color")
+                throw IllegalArgumentException("Unknown color: $colorString")
             }
             return color.toInt()
         }

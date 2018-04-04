@@ -37,26 +37,28 @@ class SessionDeserializer : JsonDeserializer<SessionTemp> {
     ): SessionTemp {
         val obj = json?.asJsonObject!!
 
-        val tags: List<String> = getListFromJsonArray(obj, "tags")
+        val tagNames: List<String> = getListFromJsonArray(obj, "tagNames")
 
         val speakers = getListFromJsonArray(obj, "speakers")
+
+        val relatedSessions = getListFromJsonArray(obj, "relatedSessions")
 
         @Suppress("UNNECESSARY_SAFE_CALL") // obj.get can return null
         return SessionTemp(
                 id = obj.get("id").asString,
-                sessionUrl = obj.get("url").asString,
+                sessionUrl = getUrlFromId(obj.get("id").asString),
                 title = obj.get("title").asString,
                 startTime = ZonedDateTime.ofInstant(
                         Instant.ofEpochMilli(obj.get("startTimestamp").asLong), ZoneOffset.UTC),
                 endTime = ZonedDateTime.ofInstant(
                         Instant.ofEpochMilli(obj.get("endTimestamp").asLong), ZoneOffset.UTC),
                 abstract = obj.get("description").asString,
-                photoUrl = obj.get("photoUrl").asString,
+                photoUrl = obj.get("photoUrl")?.asString,
                 liveStreamUrl = "TODO: Set livestream URL", // TODO Set or remove this (b/77292964)
-                isLivestream = obj.get("isLivestream").asBoolean,
+                isLivestream = obj.get("livestream").asBoolean,
                 speakers = speakers.toSet(),
-                tags = tags.toList(),
-                relatedSessions = emptySet(),
+                tagNames = tagNames.toList(),
+                relatedSessions = relatedSessions.toSet(),
                 youTubeUrl = obj.get("youtubeUrl")?.asString ?: "",
                 room = obj.get("room").asString
         )
@@ -67,5 +69,10 @@ class SessionDeserializer : JsonDeserializer<SessionTemp> {
         val stringList = ArrayList<String>()
         array.mapTo(stringList) { it.asString }
         return stringList
+    }
+
+    private fun getUrlFromId(id: String): String {
+        val prefix = "https://events.google.com/io/schedule/?section=day&sid="
+        return if (id.isNotEmpty()) prefix + id else ""
     }
 }

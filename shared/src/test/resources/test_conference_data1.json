@@ -16,11 +16,11 @@
             "end": "2018-05-08T19:00-07:00"
         },
         {
-            "title": "Lip sync battle room",
-            "type": "lipsync",
-            "color": "#E6E3E6",
-            "start": "2018-05-08T07:00-07:00",
-            "end": "2018-05-08T19:00-07:00"
+            "title": "Keynote",
+            "type": "keynote",
+            "color": "#FCD230",
+            "start": "2018-05-08T10:00-07:00",
+            "end": "2018-05-08T11:30-07:00"
         }
     ],
     "map": [
@@ -53,123 +53,172 @@
     ],
     "rooms": [
         {
-            "id": "a4eedfa7-09fd-e511-a517-00155d5066d7",
-            "name": "The Cool Room",
-            "original_id": "a4eedfa7-09fd-e511-a517-00155d5066d7"
+            "id": "040f4750-2bf0-459b-9db2-e36b418ad7f5",
+            "capacity": 0,
+            "name": "Amphitheatre",
+            "filter": true
         },
         {
-            "id": "34b13834-0afd-e511-a517-00155d5066d7",
-            "name": "Amphitheatre",
-            "original_id": "34b13834-0afd-e511-a517-00155d5066d7"
+            "id": "c82507f9-e904-49e3-a1ce-9b95a97e816d",
+            "capacity": 0,
+            "name": "Codelabs building",
+            "filter": false
         }
     ],
     "sessions": [
         {
-            "id": "keynote",
-            "url": "https://events.google.com/io2016/",
-            "title": "Keynote Staging!",
-            "description": "Join us to learn about product and platform innovation at Google, starting with a live kickoff from Google CEO Sundar Pichai.",
-            "startTimestamp": "1525795200000",
-            "endTimestamp": "1525798800000",
-            "photoUrl": "https://storage.googleapis.com/io2016-festivus/images/sessions/__w-200-400-600-800-1000__/9d72d428-2b03-e611-a517-00155d5066d7.jpg",
-            "isLivestream": false,
-            "tags": [
-                "FLAG_KEYNOTE"
+            "id": "03d28d6f-c417-4c1a-a0ab-e4aa5c72ad90",
+            "title": "[Session] Build real consumer devices with Android Things",
+            "description": "This talk will walk through the journey of building consumer devices like Smart Displays using Android Things, how platform features were ramped up to support product needs, and the vision to help OEM partners reduce time to market by leveraging Android Things.",
+            "type": "Sessions",
+            "contentLevels": [
+                "Intermediate"
             ],
-            "mainTag": "FLAG_KEYNOTE",
-            "color": "#b5ebf7",
-            "hashtag": "keynote",
-            "room": "34b13834-0afd-e511-a517-00155d5066d7",
-            "speakers": []
-        },
-        {
-            "id": "61d80842-c8f6-e511-a517-00155d5066d7",
-            "url": "https://events.google.com/io2016/schedule?sid=61d80842-c8f6-e511-a517-00155d5066d7",
-            "title": "Advanced Data Binding",
-            "description": "Android Data Binding preview was introduced at Google I/O in 2015, and released later that Fall. Come and learn about new Data Binding features, including two-way data binding and lambda expressions. We will also talk about the design decisions behind Data Binding's architecture, how it works with animations, RecyclerView, dependency injection and the best practices you can apply while you are integrating it with your application.",
-            "startTimestamp": "1525809600000",
-            "endTimestamp": "1525813200000",
-            "isFeatured": false,
-            "photoUrl": "https://storage.googleapis.com/io2016-festivus/images/sessions/__w-200-400-600-800-1000__/61d80842-c8f6-e511-a517-00155d5066d7.jpg",
-            "isLivestream": false,
-            "tags": [
-                "TRACK_ANDROID",
-                "TYPE_SESSIONS",
-                "THEME_DEVELOP"
+            "tagNames": [
+                "topic_iot",
+                "type_sessions",
+                "level_intermediate"
             ],
-            "mainTag": "TRACK_ANDROID",
-            "color": "#AED581",
+            "startTimestamp": 1525890600000,
+            "endTimestamp": 1525894200000,
+            "livestream": true,
+            "youtubeUrl": "https://www.youtube.com/watch?v=Y2VF8tmLFHw",
+            "room": "9c37194e-fe72-4218-8e23-fd296eed747f",
             "speakers": [
-                "44cd40c9-c2ee-e511-a517-00155d5066d7",
-                "2609dbe7-c2ee-e511-a517-00155d5066d7"
+                "0cf3da88-0678-4089-ab4f-04a501306214",
+                "d602581b-fd9a-4a1d-89f1-9d3d6ab0ca9b"
             ],
-            "room": "a4eedfa7-09fd-e511-a517-00155d5066d7"
-        }
-    ],
-    "speakers": [
-        {
-            "id": "44cd40c9-c2ee-e511-a517-00155d5066d7",
-            "name": "Yigit Boyar",
-            "bio": "Yigit works on building UI widgets and improving layout performance as part of Android UI Toolkit Team. Prior to Google, he was the Android Engineering Lead at Path.com where he was mostly focused on building application architecture, real time camera filters and buttery smooth UI performance. He received his bachelor's degree in computer engineering from Middle East Technical University, Turkey",
-            "company": "Google",
-            "plusoneUrl": "",
-            "twitterUrl": "https://twitter.com/yigitboyar"
+            "relatedSessions": [
+                "832f04cc-f4da-48bd-bd8f-8d6532fe4af7",
+                "49734f51-eb79-42e3-a148-e508db973bf0"
+            ]
         },
         {
-            "id": "2609dbe7-c2ee-e511-a517-00155d5066d7",
-            "name": "Wojtek Kalicinski",
-            "bio": "Wojtek provides outreach to developers on new Android framework features, tools and testing as part of his job as a Senior Developer Advocate. He has worked with Android since the early days of the platform and enjoys looking for ways to make apps more usable, mostly through better development patterns and code optimizations. Prior to working at Google, Wojtek was a co-founder and CTO at a digital agency startup. For many years he was also involved in organizing and speaking at community events through Google Developer Groups.",
-            "company": "Google",
-            "plusoneUrl": "https://plus.google.com/+WojtekKalicinski",
-            "twitterUrl": "https://twitter.com/wkalic"
+            "id": "040f4750-2bf0-459b-9db2-e36b418ad7f5",
+            "title": "[Session] Google Cloud Platform on a shoestring budget",
+            "description": "Sometimes you make technical decisions for performance. Sometimes you make them for simplicity, or even for \"coolness.\" And sometimes, you need to make decisions based on costs. This session throws out all other considerations and shows you how to accomplish the most common cloud tasks as cost-effectively as possible. If you're looking to store data, stream media, and secure your content on a showstring budget, this is the talk for you.",
+            "type": "Sessions",
+            "contentLevels": [
+                "Intermediate"
+            ],
+            "tagNames": [
+                "type_sessions",
+                "level_intermediate",
+                "topic_cloud"
+            ],
+            "startTimestamp": 1525966200000,
+            "endTimestamp": 1525969800000,
+            "livestream": true,
+            "youtubeUrl": "https://www.youtube.com/watch?v=Y2VF8tmLFHw",
+            "room": "040f4750-2bf0-459b-9db2-e36b418ad7f5",
+            "speakers": [
+                "c15067ba-9b7e-41af-96f2-02ff159db7c7"
+            ],
+            "relatedSessions": [
+                "10f0eaac-a040-45b2-b37c-b7c96d170592",
+                "b133aafb-c75e-44aa-9ee3-ddc3859e3e8c",
+                "fe21204a-8956-48b9-9a60-e42eb4607756"
+            ]
+        },
+        {
+            "id": "086cd75d-8f7a-45d7-99bb-69dd3709535a",
+            "title": "[Session] Code beautiful UI with Flutter and Material Design",
+            "description": "To stand out, apps need to have smooth, motion-rich, customized designs. Watch beautiful UIs come to life in record time with Flutter and the latest evolution of Material Design. Learn how Flutter’s layout and stateful hot reload can make UI development intuitive and fast, how to go beyond stock widgets to deliver customized interfaces, and how to add motion and animation for delightful user experiences. Best part: do this all with a single codebase that produces native apps on iOS and Android.",
+            "type": "Sessions",
+            "contentLevels": [
+                "Beginner",
+                "Intermediate"
+            ],
+            "tagNames": [
+                "topic_flutter",
+                "topic_design",
+                "level_beginner",
+                "type_sessions",
+                "level_intermediate"
+            ],
+            "startTimestamp": 1525879800000,
+            "endTimestamp": 1525883400000,
+            "livestream": true,
+            "youtubeUrl": "https://www.youtube.com/watch?v=Y2VF8tmLFHw",
+            "room": "3570bda2-0bc3-4b3b-a7c7-8514f8026ab3",
+            "speakers": [
+                "9ccd454d-1718-47c0-a543-67303a59df4b",
+                "7c4b4e96-d521-4952-b2f2-363c2095db35"
+            ],
+            "relatedSessions": [
+                "94f05260-0dfd-4867-8d04-399e96595035",
+                "dab2bf45-6e44-4605-a997-9d446f95ef38"
+            ]
         }
     ],
+    "speakers": {
+        "c15067ba-9b7e-41af-96f2-02ff159db7c7": {
+            "id": "c15067ba-9b7e-41af-96f2-02ff159db7c7",
+            "name": "",
+            "bio": "",
+            "company": "",
+            "thumbnailUrl": "",
+            "socialLinks": {
+                "github": "",
+                "website": "",
+                "twitter": "",
+                "linkedin": ""
+            }
+        },
+        "63e61007-fe4e-44a9-b7bd-5238fae42bbf": {
+            "id": "63e61007-fe4e-44a9-b7bd-5238fae42bbf",
+            "name": "",
+            "bio": "",
+            "company": "",
+            "thumbnailUrl": "",
+            "socialLinks": {
+                "github": "",
+                "website": "",
+                "twitter": "",
+                "linkedin": ""
+            }
+        },
+        "2d300b5f-0352-4e25-a4f8-8ae1fc6a0b9d": {
+            "id": "2d300b5f-0352-4e25-a4f8-8ae1fc6a0b9d",
+            "name": "",
+            "bio": "",
+            "company": "",
+            "thumbnailUrl": "",
+            "socialLinks": {
+                "github": "",
+                "website": "",
+                "twitter": "",
+                "linkedin": ""
+            }
+        }
+    },
     "tags": [
         {
-            "category": "TYPE",
-            "tag": "TYPE_SESSIONS",
-            "name": "Sessions",
-            "original_id": "6ce9302c-35c9-e511-ab0e-00155d5066d7",
-            "abstract": "",
-            "order_in_category": 6
+            "id": "0a87138f-6cf7-4a47-a749-0dafd0c84e9c",
+            "name": "Cloud",
+            "order_in_category": 0,
+            "category": "topic",
+            "tag": "topic_cloud",
+            "color": "#4768FD",
+            "fontColor": "#FFFFFF"
         },
         {
-            "category": "THEME",
-            "tag": "THEME_DEVELOP",
-            "name": "Develop",
-            "original_id": "6ee9302c-35c9-e511-ab0e-00155d5066d7",
-            "abstract": "",
-            "order_in_category": 0
+            "id": "061c48b8-5655-4eb3-ae63-f3a535e74b26",
+            "name": "Ads",
+            "order_in_category": 0,
+            "category": "topic",
+            "tag": "topic_ads",
+            "color": "#574DDD",
+            "fontColor": "#FFFFFF"
         },
         {
-            "category": "TRACK",
-            "tag": "TRACK_ANDROID",
-            "name": "Android",
-            "original_id": "8fe01677-60ec-e511-a517-00155d5066d7",
-            "abstract": "",
-            "order_in_category": 1,
-            "photoUrl": "https://storage.googleapis.com/io2016-festivus/images/sessions/__w-200-400-600-800-1000__/61d80842-c8f6-e511-a517-00155d5066d7.jpg",
-            "color": "#AED581"
-        }
-    ],
-    "video_library": [
-        {
-            "year": "2015",
-            "desc": "On May 28, 2015 we welcomed 6,000 developers to our 8th annual Google I/O developer conference in San Francisco. Google I/O 2015 kicked-off with a live keynote from our Senior Vice-President of Products, Sundar Pichai.",
-            "title": "Google I/O 2015 - Keynote",
-            "topic": "Keynote",
-            "id": "7V-fIGMDsmE",
-            "thumbnailUrl": "http://img.youtube.com/vi/7V-fIGMDsmE/hqdefault.jpg",
-            "vid": "7V-fIGMDsmE"
-        },
-        {
-            "year": "2015",
-            "desc": "The living room ecosystem and its 1 billion TVs are exploding with new entertainment and new forms of interactivity. With the tremendous growth of Google Cast and Android TV devices, building engaging living room experiences has never been easier or more important. Whether you're building applications to deliver media, live tv or a multi-screen game, come join us as we discuss how to build a great TV application, get it discovered, and how to engage users in the many hours a day that people spend in front of their TV. (Note: Tune into this live stream on CHANNEL 1.)",
-            "title": "Developing for the living room with Google",
-            "topic": "Misc.",
-            "id": "w7adxgUfATw",
-            "thumbnailUrl": "http://img.youtube.com/vi/w7adxgUfATw/hqdefault.jpg",
-            "vid": "w7adxgUfATw"
+            "id": "920863b7-3ebb-498d-bb59-33e63244664f",
+            "name": "Flutter",
+            "order_in_category": 0,
+            "category": "topic",
+            "tag": "topic_flutter",
+            "color": "#31E7B6",
+            "fontColor": "#202124"
         }
     ]
 }
