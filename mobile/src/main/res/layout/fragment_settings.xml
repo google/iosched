@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright 2018 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -97,5 +98,7 @@
             android:contentDescription="@string/built_with_material_content_description"
             android:src="@drawable/built_with_material"
             app:layout_constraintTop_toBottomOf="@+id/version_build_number" />
+
     </android.support.constraint.ConstraintLayout>
+
 </android.support.v4.widget.NestedScrollView>

@@ -255,20 +255,14 @@
         <item name="android:elevation">@dimen/dialog_elevation</item>
     </style>
 
-    <style name="TextAppearance.IOSched.CollapsibleCard" parent="@android:style/Widget.Material.TextView">
+    <style name="TextAppearance.IOSched.CollapsibleCard" parent="@style/TextAppearance.AppCompat.Title">
+        <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@font/google_sans</item>
-        <item name="android:textColor">@color/grey_800</item>
+        <item name="android:textColor">@color/collapsing_section</item>
     </style>
 
-    <style name="TextAppearance.IOSched.WifiInfoLabel" parent="@style/TextAppearance.AppCompat.Body1">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/grey_600</item>
-        <item name="android:lineSpacingExtra">8sp</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.InfoEventTitle" parent="@android:style/Widget.Material.TextView">
+    <style name="TextAppearance.IOSched.InfoEventTitle" parent="@style/TextAppearance.AppCompat.Title">
         <item name="android:textSize">24sp</item>
-        <item name="android:lineSpacingExtra">8sp</item>
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textColor">@color/grey_800</item>
     </style>

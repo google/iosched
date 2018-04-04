@@ -37,7 +37,6 @@
 
             <TextView
                 android:id="@+id/card_title"
-                style="@style/TextAppearance.IOSched.CollapsibleCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -46,7 +45,7 @@
                 android:paddingEnd="@dimen/margin_normal"
                 android:paddingStart="@dimen/margin_normal"
                 android:paddingTop="@dimen/spacing_micro"
-                android:textColor="@color/collapsing_section"
+                android:textAppearance="@style/TextAppearance.IOSched.CollapsibleCard"
                 tools:text="@string/travel_shuttle_title" />
 
             <ImageView
@@ -65,7 +64,6 @@
 
         <com.google.samples.apps.iosched.widget.HtmlTextView
             android:id="@+id/card_description"
-            style="@style/TextAppearance.IOSched.CollapsibleCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/margin_normal"
@@ -73,6 +71,7 @@
             android:paddingStart="@dimen/margin_normal"
             android:paddingTop="@dimen/spacing_normal"
             android:visibility="gone"
+            android:textColor="?android:textColorPrimary"
             tools:text="This is a card description" />
 
     </LinearLayout>
