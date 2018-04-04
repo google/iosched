@@ -61,7 +61,7 @@
             app:isMapToolbarEnabled="@{false}"
             app:isZoomControlsEnabled="@{false}"
             app:mapStyle="@{R.raw.maps_style}"
-            app:markers="@{viewModel.markers}"
+            app:mapMarkers="@{R.raw.map_markers}"
             app:minZoom="@{viewModel.minZoom}"
             app:tileDrawable="@{R.drawable.map_tile}"
             app:viewport="@{viewModel.conferenceLocationBounds}" />

@@ -24,7 +24,6 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.TileOverlayOptions
 import com.google.samples.apps.iosched.util.loadDrawableAsync
 
@@ -40,14 +39,11 @@ fun mapStyle(mapView: MapView, @RawRes resId: Int) {
 /**
  * Adds list of markers to the GoogleMap.
  */
-@BindingAdapter("markers")
-fun markers(mapView: MapView, markers: List<MarkerOptions>?) {
-    if (markers != null) {
-        mapView.getMapAsync { map ->
-            markers.forEach { marker ->
-                map.addMarker(marker)
-            }
-        }
+@BindingAdapter("mapMarkers")
+fun mapMarkers(mapView: MapView, @RawRes markers: Int) {
+    mapView.getMapAsync {
+        val layer = applyGeoJsonLayer(it, markers, mapView.context)
+        layer.addLayerToMap()
     }
 }
 

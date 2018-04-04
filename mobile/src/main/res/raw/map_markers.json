@@ -1,0 +1,1127 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "",
+        "type": "LABEL",
+        "title": "Amphitheatre",
+        "tag": "amphi",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.08068,
+          37.426791
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "16ce7c17-f0ef-4c75-828c-655745953690",
+        "type": "SESSION",
+        "title": "Amphitheatre",
+        "tag": "amphi",
+        "description": "Attend the two Keynotes on May 17: The first will feature our latest product and platform innovations with Sundar Pichai (CEO, Google). The second will focus specifically on updates to our developer products and platforms, featuring Jason Titus (Head of Google’s Developer Product Group). The Amphitheatre will also host breakout sessions throughout the three days of the event, and the After Hours Concert on Day 2."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080837,
+          37.426897
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "0ebecfd3-6a9a-4d2a-8b1d-6e002951468e",
+        "type": "SESSION",
+        "title": "Stage 1",
+        "tag": "stage1",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080357,
+          37.425493
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "",
+        "type": "LABEL",
+        "title": "Stage 1",
+        "tag": "stage1",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080336,
+          37.425458
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "6063da53-c8ce-44a7-9928-cf6eb4fb39df",
+        "type": "SESSION",
+        "title": "Stage 2",
+        "tag": "stage2",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080343,
+          37.425078
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "",
+        "type": "LABEL",
+        "title": "Stage 2",
+        "tag": "stage2",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.08033,
+          37.425034
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "8c4125e7-041c-4396-ab5b-c8aab512a73a",
+        "type": "SESSION",
+        "title": "Stage 3",
+        "tag": "stage3",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079734,
+          37.425124
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "",
+        "type": "LABEL",
+        "title": "Stage 3",
+        "tag": "stage3",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079734,
+          37.425067
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "rest1",
+        "type": "ICON_restroom",
+        "title": "Restrooms",
+        "tag": "rest1",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079708,
+          37.423942
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "restsouth",
+        "type": "ICON_restroom",
+        "title": "Restrooms",
+        "tag": "restsouth",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079258,
+          37.423809
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "rest3",
+        "type": "ICON_restroom",
+        "title": "Restrooms",
+        "tag": "rest3",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078777,
+          37.425154
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "restleft",
+        "type": "ICON_restroom",
+        "title": "Restrooms",
+        "tag": "restleft",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080149,
+          37.425995
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "rest5",
+        "type": "ICON_restroom",
+        "title": "Restrooms",
+        "tag": "rest5",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.081327,
+          37.426233
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "restright",
+        "type": "ICON_restroom",
+        "title": "Restrooms",
+        "tag": "restright",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079655,
+          37.426617
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "28095346-3094-4103-b6b9-7a88cab8b371",
+        "type": "MISC",
+        "title": "Food Court",
+        "tag": "eats",
+        "description": "Hungry? Pass by our centrally located EATS Market to grab a bite."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079878,
+          37.424593
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "eats",
+        "type": "ICON_food",
+        "title": "Food Court",
+        "tag": "eats",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079977,
+          37.424591
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "sandboxa",
+        "type": "SANDBOX",
+        "title": "Sandbox A",
+        "tag": "sandboxa",
+        "description": "Learn more about IoT and how our products work together to improve everyday experiences. Interact with Android Auto, Android Things, Android TV, Cast, Google Assistant, Google Home, and Nest."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079675,
+          37.425742
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "",
+        "type": "LABEL",
+        "title": "A",
+        "tag": "sandboxa",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079788,
+          37.425742
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "sandboxb",
+        "type": "SANDBOX",
+        "title": "Sandbox B",
+        "tag": "sandboxb",
+        "description": "Interact with and learn more about the Google Assistant."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079884,
+          37.425682
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "",
+        "type": "LABEL",
+        "title": "B",
+        "tag": "sandboxb",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07997,
+          37.425682
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ab2b6acd-d484-4c4c-ae8b-c72ee248f6b7",
+        "type": "SANDBOX",
+        "title": "Sandbox C",
+        "tag": "sandboxc",
+        "description": "Interact with and learn more about Android Platforms, Android Studio, Instant apps, Android Wear, Android Auto, and the Google Play Console. Learn more about the Google Play Awards and this year’s winners, or sign up for an App Review with the Google Play team."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07976,
+          37.425557
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "",
+        "type": "LABEL",
+        "title": "C",
+        "tag": "sandboxc",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079639,
+          37.425557
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "e6ce7473-75fe-4c6b-a790-0a73a8c78c0a",
+        "type": "SESSION",
+        "title": "Stage 7",
+        "tag": "stage7",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07875,
+          37.425495
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "",
+        "type": "LABEL",
+        "title": "Stage 7",
+        "tag": "stage7",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078731,
+          37.425444
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "c51b13d5-28ca-4848-b5a6-6df5b4a6f946",
+        "type": "SESSION",
+        "title": "Stage 4",
+        "tag": "stage4",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079598,
+          37.424312
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "",
+        "type": "LABEL",
+        "title": "Stage 4",
+        "tag": "stage4",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079606,
+          37.424196
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "c75f8dff-36b3-4248-bc82-d0523ad8f6df",
+        "type": "SESSION",
+        "title": "Stage 5",
+        "tag": "stage5",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078793,
+          37.42395
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "",
+        "type": "LABEL",
+        "title": "Stage 5",
+        "tag": "stage5",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078769,
+          37.423909
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "54adc1dc-ee51-44c4-a919-87aec2351826",
+        "type": "SESSION",
+        "title": "Stage 6",
+        "tag": "stage6",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078839,
+          37.424518
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "",
+        "type": "LABEL",
+        "title": "Stage 6",
+        "tag": "stage6",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07868,
+          37.424518
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "sandboxd",
+        "type": "SANDBOX",
+        "title": "Sandbox D",
+        "tag": "sandboxd",
+        "description": "Interact with and learn more about Android Pay."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080351,
+          37.425725
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "",
+        "type": "LABEL",
+        "title": "D",
+        "tag": "sandboxd",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080464,
+          37.425725
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "67548e53-cc35-459e-aedb-6963f9881910",
+        "type": "SANDBOX",
+        "title": "Sandbox E",
+        "tag": "sandboxe",
+        "description": "Interact with and learn more about Accessibility for Android, Chrome, Voice, and more. You can also sign up for an UX App Review with Google designers, and learn more about Material Design and Google Design Sprints."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080081,
+          37.424321
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "",
+        "type": "LABEL",
+        "title": "E",
+        "tag": "sandboxe",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080134,
+          37.424248
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "sandboxf",
+        "type": "SANDBOX",
+        "title": "Sandbox F",
+        "tag": "sandboxf",
+        "description": "Interact with and learn more about Google’s VR and AR platforms: Daydream and Tango."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080008,
+          37.424105
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "",
+        "type": "LABEL",
+        "title": "F",
+        "tag": "sandboxf",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080069,
+          37.424009
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "sandboxg",
+        "type": "SANDBOX",
+        "title": "Sandbox G",
+        "tag": "sandboxg",
+        "description": "Interact with and learn more about Google Maps and Mobile Web, including Progressive Web Apps, AMP, Payments, and Device Frameworks."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079065,
+          37.424107
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "",
+        "type": "LABEL",
+        "title": "G",
+        "tag": "sandboxg",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079086,
+          37.424031
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "sandboxh",
+        "type": "SANDBOX",
+        "title": "Sandbox H",
+        "tag": "sandboxh",
+        "description": "Interact with and learn more about Machine Learning, Firebase and Google Cloud Platform."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079161,
+          37.425061
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "",
+        "type": "LABEL",
+        "title": "H",
+        "tag": "sandboxh",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079208,
+          37.424964
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "sandboxi",
+        "type": "SANDBOX",
+        "title": "Sandbox I",
+        "tag": "sandboxi",
+        "description": "Interact with and learn more about Experiments across Android, Chrome and AI. You can also play with the winning 2017 Experiments Challenge Contest executions."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079024,
+          37.425219
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "",
+        "type": "LABEL",
+        "title": "I",
+        "tag": "sandboxi",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079054,
+          37.425162
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "officehours",
+        "type": "OFFICEHOURS",
+        "title": "Office Hours",
+        "tag": "officehours",
+        "description": "Come talk to Googlers about your projects and get answers to your most pressing technical questions. Product teams will be on hand throughout the event during defined time slots; check the event schedule to confirm when the product you’re looking for some help with will be staffed."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079239,
+          37.425681
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "",
+        "type": "LABEL",
+        "title": "Office Hours",
+        "tag": "officehours",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079245,
+          37.425569
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "4748d33e-f935-4c9e-bca6-67b61b875dc7",
+        "type": "CODELAB",
+        "title": "Codelabs",
+        "tag": "codelabs",
+        "description": "Ready-to-code kiosks that allow you to try out the latest and greatest Google technologies. You'll have over 50 hands-on, self-paced tutorials to choose from and Googlers will be around to help out as needed."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079996,
+          37.426367
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "",
+        "type": "LABEL",
+        "title": "Codelabs",
+        "tag": "codelabs",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080185,
+          37.426242
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "registration",
+        "type": "MISC",
+        "title": "Registration",
+        "tag": "registration",
+        "description": "Pick-up your badge starting on May 16 between 7AM - 7PM. Check the event agenda for the badge pick-up schedule on May 17-19."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079497,
+          37.426102
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "",
+        "type": "LABEL",
+        "title": "Registration",
+        "tag": "registration",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07937,
+          37.4264
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "press",
+        "type": "MISC",
+        "title": "Press Lounge",
+        "tag": "press",
+        "description": "Reserved for guests with Press badges."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07977,
+          37.427036
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "",
+        "type": "LABEL",
+        "title": "Press Lounge",
+        "tag": "press",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079755,
+          37.427028
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "emt-n",
+        "type": "ICON_medical",
+        "title": "Medical Station",
+        "tag": "emt-n",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080339,
+          37.425971
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "emt-s",
+        "type": "ICON_medical",
+        "title": "Medical Station",
+        "tag": "emt-s",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080216,
+          37.424171
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "storeright",
+        "type": "ICON_store",
+        "title": "I/O Store",
+        "tag": "storeright",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080232,
+          37.426128
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "foodright",
+        "type": "ICON_food",
+        "title": "Food",
+        "tag": "foodright",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080436,
+          37.426155
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "storeleft",
+        "type": "ICON_store",
+        "title": "I/O Store",
+        "tag": "storeleft",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079803,
+          37.42665
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "foodleft",
+        "type": "ICON_food",
+        "title": "Food",
+        "tag": "foodleft",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07987,
+          37.426763
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "food-2",
+        "type": "ICON_food",
+        "title": "Food",
+        "tag": "food-2",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.081391,
+          37.425874
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "parking1",
+        "type": "ICON_parking",
+        "title": "Parking",
+        "tag": "parking",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07852,
+          37.42588
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ride",
+        "type": "ICON_ride",
+        "title": "Rideshare",
+        "tag": "ride",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07836,
+          37.42588
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bike",
+        "type": "ICON_bike",
+        "title": "Bike",
+        "tag": "bike",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.0782,
+          37.42588
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "charging1",
+        "type": "ICON_charging",
+        "title": "Charging Station",
+        "tag": "charging1",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079466,
+          37.425315
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "charging2",
+        "type": "ICON_charging",
+        "title": "Charging Station",
+        "tag": "charging2",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079361,
+          37.424278
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "parking2",
+        "type": "ICON_parking",
+        "title": "Parking",
+        "tag": "parking",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078932,
+          37.426298
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ada",
+        "type": "ICON_ada",
+        "title": "ADA",
+        "tag": "ada",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079082,
+          37.426298
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "info",
+        "type": "ICON_info",
+        "title": "Info",
+        "tag": "info",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079625,
+          37.426169
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "shuttle",
+        "type": "ICON_shuttle",
+        "title": "Shuttle Stop",
+        "tag": "shuttle",
+        "description": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078739,
+          37.426298
+        ]
+      }
+    }
+  ]
+}

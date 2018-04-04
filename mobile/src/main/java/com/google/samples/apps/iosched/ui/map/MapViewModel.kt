@@ -16,21 +16,14 @@
 
 package com.google.samples.apps.iosched.ui.map
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.samples.apps.iosched.shared.data.map.MapMetadataRepository
 import javax.inject.Inject
 
 class MapViewModel @Inject constructor(
     mapMetadataRepository: MapMetadataRepository
 ) : ViewModel() {
-
-    /**
-     * Markers for key locations on map (i.e. sessions, code labs, food, bathrooms, etc.)
-     */
-    val markers: LiveData<List<MarkerOptions?>>
 
     /**
      * Area covered by the venue. Determines the viewport of the map.
@@ -51,14 +44,4 @@ class MapViewModel @Inject constructor(
      * True if any errors occur in fetching the data.
      */
     val errorMessageShown = MutableLiveData<Boolean>().apply { value = false }
-
-    // TODO: add cameraTarget and zoomLevel to VM and wire it from domain layer to databinding.
-
-    init {
-
-        // TODO fetch markers.
-        markers = MutableLiveData()
-
-        // TODO fetch tile
-    }
 }
