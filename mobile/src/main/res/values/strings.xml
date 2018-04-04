@@ -125,6 +125,12 @@
     <string name="swap_reservation_content" translation_description="The content of the dialog when the user is about to change their reservation from one session to another.">You already have a reservation/waitlist for \"%1$s\"?. Only one reservation per time block is allowed. Would you like to swap for \"%2$s\"?</string>
     <string name="swap" translation_description="The label of the button to swap the reservation with another.">Swap</string>
 
+    <!-- Notifications preference dialog -->
+    <string name="notifications_preference_dialog_title" translation_description="The title of the dialog for the notifications preference">I/O Notifications</string>
+    <string name="notifications_preference_dialog_content" translation_description="The content of the dialog for the notifications preference">Would you like to receive notifications about I/O? We\'ll send you information about session start times, after hours events, session recordings, and more. You can change this setting under \"Info > Settings\" at any time.</string>
+    <string name="no" translation_description="Negative answer to the question \'Would you like to receive notification?\'">No</string>
+    <string name="yes" translation_description="Positive answer to the question \'Would you like to receive notification?\'">Yes</string>
+
     <plurals name="duration_hours">
         <item quantity="one" translation_description="Unit for duration of time by hours. Singular.">%s hour</item>
         <item quantity="other" translation_description="Unit for duration of time by hours. Plural.">%s hours</item>

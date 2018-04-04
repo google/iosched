@@ -17,16 +17,20 @@
 package com.google.samples.apps.iosched.ui.signin
 
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
+import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module
 class SignInViewModelDelegateModule {
 
+    @Singleton
     @Provides
     fun provideSignInViewModelDelegate(
-        dataSource: ObserveUserAuthStateUseCase
+        dataSource: ObserveUserAuthStateUseCase,
+        notificationsPrefIsShownUseCase: NotificationsPrefIsShownUseCase
     ): SignInViewModelDelegate {
-        return FirebaseSignInViewModelDelegate(dataSource)
+        return FirebaseSignInViewModelDelegate(dataSource, notificationsPrefIsShownUseCase)
     }
 }

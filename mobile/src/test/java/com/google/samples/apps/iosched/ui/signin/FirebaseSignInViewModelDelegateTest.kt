@@ -20,10 +20,12 @@ import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.net.Uri
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfoBasic
+import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.ui.schedule.FakeObserveUserAuthStateUseCase
+import com.google.samples.apps.iosched.ui.schedule.FakePreferenceStorage
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import junit.framework.TestCase.assertEquals
@@ -49,7 +51,8 @@ class FirebaseSignInViewModelDelegateTest {
             FakeObserveUserAuthStateUseCase(
                 user = Result.Success(null),
                 isRegistered = Result.Success(false)
-            )
+            ),
+            createNotificationsPrefIsShownUseCase()
         )
 
         val currentFirebaseUser = LiveDataTestUtil.getValue(
@@ -78,7 +81,8 @@ class FirebaseSignInViewModelDelegateTest {
             FakeObserveUserAuthStateUseCase(
                 user = Result.Success(user),
                 isRegistered = Result.Success(true)
-            )
+            ),
+            createNotificationsPrefIsShownUseCase()
         )
 
         assertEquals(
@@ -105,7 +109,8 @@ class FirebaseSignInViewModelDelegateTest {
             FakeObserveUserAuthStateUseCase(
                 user = Result.Success(user),
                 isRegistered = Result.Success(false)
-            )
+            ),
+            createNotificationsPrefIsShownUseCase()
         )
 
         assertEquals(
@@ -126,7 +131,8 @@ class FirebaseSignInViewModelDelegateTest {
             FakeObserveUserAuthStateUseCase(
                 user = Result.Success(null),
                 isRegistered = Result.Success(false)
-            )
+            ),
+            createNotificationsPrefIsShownUseCase()
         )
 
         subject.emitSignInRequest()
@@ -144,7 +150,8 @@ class FirebaseSignInViewModelDelegateTest {
             FakeObserveUserAuthStateUseCase(
                 user = Result.Success(null),
                 isRegistered = Result.Success(false)
-            )
+            ),
+            createNotificationsPrefIsShownUseCase()
         )
 
         subject.emitSignOutRequest()
@@ -153,5 +160,9 @@ class FirebaseSignInViewModelDelegateTest {
             LiveDataTestUtil.getValue(subject.performSignInEvent)?.peekContent(),
             SignInEvent.RequestSignOut
         )
+    }
+
+    private fun createNotificationsPrefIsShownUseCase(): NotificationsPrefIsShownUseCase {
+        return NotificationsPrefIsShownUseCase(FakePreferenceStorage())
     }
 }
