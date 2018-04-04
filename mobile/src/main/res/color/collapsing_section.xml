@@ -14,8 +14,9 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
+
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- use activated as a proxy for expanded state -->
-    <item android:state_activated="true" android:color="?colorAccent" />
+    <item android:state_activated="true" android:color="?colorPrimary" />
     <item android:color="?android:textColorPrimary" />
 </selector>
