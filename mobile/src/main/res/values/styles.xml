@@ -136,6 +136,15 @@
         <item name="android:textColor">?colorPrimary</item>
     </style>
 
+    <style name="TextApparance.IOSched.Map.Label" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">#FFF</item>
+        <item name="android:shadowColor">#FF000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">3</item>
+    </style>
+
     <style name="Widget.IOSched" parent="@android:style/Widget" />
 
     <style name="Widget.IOSched.BottomNav" parent="@style/Widget.MaterialComponents.BottomNavigationView.Colored">

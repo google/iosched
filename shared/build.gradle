@@ -110,7 +110,7 @@ dependencies {
     implementation "android.arch.lifecycle:viewmodel:$rootProject.archLifecycleVersion"
 
     // Maps
-    implementation("com.google.maps.android:android-maps-utils:$rootProject.googleMapUtilsVersion") {
+    api("com.google.maps.android:android-maps-utils:$rootProject.googleMapUtilsVersion") {
         exclude group: "com.google.android.gms"
     }
     api("com.google.android.gms:play-services-maps:$rootProject.googlePlayServicesClientVersion")
