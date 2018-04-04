@@ -56,7 +56,7 @@ private const val SIXTY_SECONDS = 60_000L
  * Loads [Session] data and exposes it to the session detail view.
  */
 class SessionDetailViewModel @Inject constructor(
-    signInViewModelPlugin: SignInViewModelDelegate,
+    private val signInViewModelPlugin: SignInViewModelDelegate,
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val starEventUseCase: StarEventUseCase,
     private val reservationActionUseCase: ReservationActionUseCase,
