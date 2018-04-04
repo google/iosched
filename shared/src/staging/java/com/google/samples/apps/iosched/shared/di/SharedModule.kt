@@ -19,7 +19,10 @@ package com.google.samples.apps.iosched.shared.di
 import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.FakeLogisticsDataSource
 import com.google.samples.apps.iosched.shared.data.OfflineConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.logistics.LogisticsDataSource
+import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
 import com.google.samples.apps.iosched.shared.data.map.DefaultMapMetadataRepository
 import com.google.samples.apps.iosched.shared.data.map.MapMetadataRepository
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
@@ -99,6 +102,20 @@ class SharedModule {
     @Provides
     fun provideTopicSubscriber(): TopicSubscriber {
         return StagingTopicSubscriber()
+    }
+
+    @Singleton
+    @Provides
+    fun provideLogisticsRepository(
+            logisticsDataSource: LogisticsDataSource
+    ): LogisticsRepository {
+        return LogisticsRepository(logisticsDataSource)
+    }
+
+    @Singleton
+    @Provides
+    fun provideLogisticsDataSource(): LogisticsDataSource {
+        return FakeLogisticsDataSource()
     }
 }
 

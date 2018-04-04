@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.shared.di
 import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
@@ -37,6 +38,13 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Named
 import javax.inject.Singleton
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import com.google.samples.apps.iosched.shared.BuildConfig
+import com.google.samples.apps.iosched.shared.R
+import com.google.samples.apps.iosched.shared.data.logistics.LogisticsDataSource
+import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
+import com.google.samples.apps.iosched.shared.data.logistics.RemoteConfigLogisticsDataSource
+
 
 /**
  * Module where classes created in the shared module are created.
@@ -114,5 +122,31 @@ class SharedModule {
     @Provides
     fun provideTopicSubscriber(): TopicSubscriber {
         return FcmTopicSubscriber()
+    }
+
+    @Singleton
+    @Provides
+    fun provideFirebaseRemoteConfig(): FirebaseRemoteConfig {
+        val remoteConfig = FirebaseRemoteConfig.getInstance()
+        val configSettings = FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .build()
+        remoteConfig.setConfigSettings(configSettings)
+        remoteConfig.setDefaults(R.xml.remote_config_defaults)
+        return remoteConfig
+    }
+
+    @Singleton
+    @Provides
+    fun provideLogisticsDataSource(remoteConfig: FirebaseRemoteConfig): LogisticsDataSource {
+        return RemoteConfigLogisticsDataSource(remoteConfig)
+    }
+
+    @Singleton
+    @Provides
+    fun provideLogisticsRepository(
+            logisticsDataSource: LogisticsDataSource
+    ): LogisticsRepository {
+        return LogisticsRepository(logisticsDataSource)
     }
 }

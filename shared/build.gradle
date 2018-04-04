@@ -42,8 +42,6 @@ android {
         buildConfigField "String",
                 "CONFERENCE_WIFI_OFFERING_START",
                 "\"${conference_wifi_offering_start}\""
-        resValue "string", "wifi_ssid", "\"${conference_wifi_ssid}\""
-        resValue "string", "wifi_password", "\"${conference_wifi_password}\""
 
         buildConfigField "com.google.android.gms.maps.model.LatLng",
                 "MAP_VIEWPORT_BOUND_NW",
@@ -60,7 +58,6 @@ android {
         buildConfigField "com.google.android.gms.maps.model.LatLng",
                 "MAP_DEFAULT_CAMERA_TARGET",
                 "new com.google.android.gms.maps.model.LatLng(${map_default_camera_target})"
-
         consumerProguardFiles 'consumer-proguard-rules.pro'
     }
 
@@ -141,6 +138,7 @@ dependencies {
     api "com.google.firebase:firebase-firestore:$rootProject.googlePlayServicesClientVersion"
     api "com.google.firebase:firebase-auth:$rootProject.googlePlayServicesClientVersion"
     api "com.google.firebase:firebase-messaging:$rootProject.googlePlayServicesClientVersion"
+    api "com.google.firebase:firebase-config:$rootProject.googlePlayServicesClientVersion"
 
     // Fabric
     api "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
