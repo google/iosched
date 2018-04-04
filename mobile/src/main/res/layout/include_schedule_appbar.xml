@@ -62,12 +62,12 @@
 
             <Switch
                 android:id="@+id/switch_pinned_events"
+                style="@style/Widget.IOSched.TogglePinnedEventsSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:checked="@{viewModel.showPinnedEvents}"
-                android:onCheckedChanged="@{(view, checked) -> viewModel.togglePinnedEvents(checked)}"
-                android:thumb="@drawable/btn_pinned_events_thumb" />
+                android:onCheckedChanged="@{(view, checked) -> viewModel.togglePinnedEvents(checked)}" />
 
         </FrameLayout>
 
