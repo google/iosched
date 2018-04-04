@@ -58,6 +58,14 @@
     <string name="reservation_disabled" translationDescription="Label shown on events for which the user cannot request a seat.">Reservations unavailable</string>
     <string name="reservation_pending" translationDescription="Label shown on events for which a reservation request is pending.">Reservation pending</string>
 
+    <!-- Schedule UI hints -->
+    <string name="schedule_hint_title" translationDescription="The title of the schedule hint dialog.">Customize your schedule</string>
+    <string name="schedule_hint_view_only_your_events" translationDescription="The schedule hint for the switch that toggles if the attendee wants to see their pinned events.">View only your events</string>
+    <string name="schedule_hint_star_event" translationDescription="The schedule hint for the icon to star an event.">Add to your starred events</string>
+    <string name="schedule_hint_reserve_session_seat" translationDescription="The schedule hint for the icon to reserve a session.">Reserve a session seat</string>
+    <string name="schedule_hint_star_event_content_description" translationDescription="The content description for the icon to star an event.">An image to star an event</string>
+    <string name="schedule_hint_reserve_session_seat_content_description" translationDescription="The content description for the icon to reserve a session.">An image to reserve a session seat</string>
+
     <!-- Session Detail -->
     <string name="rate_session" translation_description="The label for the button to rate the session by 5 stars">Rate Session</string>
     <string name="menu_item_session_location" translation_description="The label for the location of the session.">Session location</string>

@@ -17,12 +17,11 @@
 package com.google.samples.apps.iosched.ui.schedule
 
 import android.arch.lifecycle.ViewModel
+import com.google.samples.apps.iosched.shared.di.ChildFragmentScoped
 import com.google.samples.apps.iosched.shared.di.FragmentScoped
 import com.google.samples.apps.iosched.shared.di.ViewModelKey
-import com.google.samples.apps.iosched.ui.reservation.ReservationModule
 import com.google.samples.apps.iosched.ui.schedule.filters.ScheduleFilterFragment
 import com.google.samples.apps.iosched.ui.sessioncommon.SessionViewPoolModule
-import com.google.samples.apps.iosched.ui.signin.SignInDialogModule
 import dagger.Binds
 import dagger.Module
 import dagger.android.AndroidInjector
@@ -55,6 +54,13 @@ internal abstract class ScheduleModule {
     internal abstract fun contributeScheduleFilterFragment(): ScheduleFilterFragment
 
     /**
+     * Generates an [AndroidInjector] for the [ScheduleUiHintsDialogFragment].
+     */
+    @ChildFragmentScoped
+    @ContributesAndroidInjector
+    internal abstract fun contributeScheduleUiHintsDialogFragment(): ScheduleUiHintsDialogFragment
+
+    /**
      * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
      * want to get a [ScheduleViewModel] class.
      */
@@ -62,4 +68,14 @@ internal abstract class ScheduleModule {
     @IntoMap
     @ViewModelKey(ScheduleViewModel::class)
     abstract fun bindScheduleViewModel(viewModel: ScheduleViewModel): ViewModel
+
+    /**
+     * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
+     * want to get a [ScheduleUiHintsDialogViewModel] class.
+     */
+    @Binds
+    @IntoMap
+    @ViewModelKey(ScheduleUiHintsDialogViewModel::class)
+    abstract fun bindScheduleUiHintsDialogViewModel(
+            viewModel: ScheduleUiHintsDialogViewModel): ViewModel
 }

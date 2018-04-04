@@ -26,6 +26,7 @@ import android.net.Uri
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.TestData
 import com.google.samples.apps.iosched.model.TestDataRepository
+import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfoBasic
@@ -38,6 +39,7 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
+import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
@@ -472,17 +474,26 @@ class ScheduleViewModelTest {
         assertEquals(false, LiveDataTestUtil.getValue(viewModel.showReservations))
     }
 
+    @Test
+    fun scheduleHints_notShown_on_launch() {
+        val viewModel = createScheduleViewModel()
+
+        val event = LiveDataTestUtil.getValue(viewModel.scheduleUiHintsShown)
+        assertEquals(event?.getContentIfNotHandled(), false)
+    }
+
     private fun createScheduleViewModel(
         loadSessionsUseCase: LoadUserSessionsByDayUseCase = createTestLoadUserSessionsByDayUseCase(),
         loadAgendaUseCase: LoadAgendaUseCase = createAgendaExceptionUseCase(),
         loadTagsUseCase: LoadTagFiltersUseCase = createTagsExceptionUseCase(),
         signInViewModelDelegate: SignInViewModelDelegate = createSignInViewModelDelegate(),
         starEventUseCase: StarEventUseCase = createStarEventUseCase(),
-        reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase()
+        reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase(),
+        scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase = FakeScheduleUiHintsShownUseCase()
     ): ScheduleViewModel {
         return ScheduleViewModel(
             loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, signInViewModelDelegate,
-            starEventUseCase, reservationActionUseCase)
+            starEventUseCase, reservationActionUseCase, scheduleUiHintsShownUseCase)
     }
 
     /**
@@ -528,6 +539,7 @@ class ScheduleViewModelTest {
     private fun createReservationActionUseCase() = object: ReservationActionUseCase(
         DefaultSessionAndUserEventRepository(
             TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository))) {}
+
 }
 
 class TestRegisteredUserDataSource(private val isRegistered: Result<Boolean?>) :
@@ -558,3 +570,9 @@ class FakeObserveUserAuthStateUseCase(
 ) : ObserveUserAuthStateUseCase(
     TestRegisteredUserDataSource(isRegistered),
     TestAuthStateUserDataSource(user))
+
+class FakePreferenceStorage(override var onboardingCompleted: Boolean = false,
+                            override var scheduleUiHintsShown: Boolean = false) : PreferenceStorage
+
+class FakeScheduleUiHintsShownUseCase : ScheduleUiHintsShownUseCase(
+        preferenceStorage = FakePreferenceStorage())

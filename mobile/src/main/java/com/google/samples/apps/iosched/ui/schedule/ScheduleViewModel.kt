@@ -25,6 +25,7 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.invoke
+import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
@@ -71,7 +72,8 @@ class ScheduleViewModel @Inject constructor(
     loadTagFiltersUseCase: LoadTagFiltersUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
     private val starEventUseCase: StarEventUseCase,
-    private val reservationActionUseCase: ReservationActionUseCase
+    private val reservationActionUseCase: ReservationActionUseCase,
+    scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase
 ) : ViewModel(), ScheduleEventListener, SignInViewModelDelegate by signInViewModelDelegate {
 
     val isLoading: LiveData<Boolean>
@@ -149,6 +151,10 @@ class ScheduleViewModel @Inject constructor(
             MediatorLiveData<Event<SwapRequestParameters>>()
     val navigateToSwapReservationDialogAction: LiveData<Event<SwapRequestParameters>>
         get() = _navigateToSwapReservationDialogAction
+
+    private val scheduleUiHintsShownResult = MutableLiveData<Result<Boolean>>()
+    /** Indicates if the UI hints for the schedule have been shown */
+    val scheduleUiHintsShown: LiveData<Event<Boolean>>
 
     init {
         currentSessionMatcher = tagFilterMatcher
@@ -254,6 +260,11 @@ class ScheduleViewModel @Inject constructor(
         // Show reservation button if not logged in or (logged in && registered)
         showReservations = currentFirebaseUser.map {
             isRegistered() || !isSignedIn()
+        }
+
+        scheduleUiHintsShownUseCase(Unit, scheduleUiHintsShownResult)
+        scheduleUiHintsShown = scheduleUiHintsShownResult.map {
+            Event((it as? Result.Success)?.data == true)
         }
     }
 
