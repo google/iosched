@@ -39,11 +39,19 @@ internal abstract class InfoModule {
 
     /**
      * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
-     * want to get a [EventInfoViewModel] class.
+     * want to get a [SettingsViewModel] class.
      */
     @Binds
     @IntoMap
     @ViewModelKey(SettingsViewModel::class)
     abstract fun bindSettingsFragmentViewModel(viewModel: SettingsViewModel): ViewModel
 
+    /**
+     * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
+     * want to get a [EventInfoViewModel] class.
+     */
+    @Binds
+    @IntoMap
+    @ViewModelKey(EventInfoViewModel::class)
+    abstract fun bindEventInfoFragmentViewModel(viewModel: EventInfoViewModel): ViewModel
 }

@@ -16,42 +16,40 @@
 
 package com.google.samples.apps.iosched.ui.info
 
+import android.arch.lifecycle.ViewModelProvider
 import android.databinding.BindingAdapter
-import android.net.wifi.WifiConfiguration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import com.google.android.material.widget.Snackbar
-import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentInfoEventBinding
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-import com.google.samples.apps.iosched.util.wifi.WifiInstaller
+import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
+import com.google.samples.apps.iosched.ui.setUpSnackbar
 import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
 class EventFragment : DaggerFragment() {
-    private lateinit var binding: FragmentInfoEventBinding
-    private val wifiInstaller = WifiInstaller(WifiConfiguration().apply {
-        // Must be in double quotes to tell system this is an ASCII SSID and passphrase.
-        SSID = String.format("\"%s\"", context?.getString(R.string.wifi_ssid))
-        preSharedKey = String.format("\"%s\"", context?.getString(R.string.wifi_ssid))
-    })
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
+    private lateinit var eventInfoViewModel: EventInfoViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        binding = FragmentInfoEventBinding.inflate(inflater, container, false)
-        val context = context ?: return null
-        // TODO wire wifi text to RemoteConfig.
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        context ?: return null
+        eventInfoViewModel = viewModelProvider(viewModelFactory)
 
-        binding.wifiPasswordValue.setOnClickListener {
-            val saved = wifiInstaller.installConferenceWiFi(context)
-            Snackbar.make(binding.root, if (saved)
-                R.string.wifi_install_success
-            else
-                R.string.wifi_install_error_message, Snackbar.LENGTH_SHORT).show()
+        val binding = FragmentInfoEventBinding.inflate(inflater, container, false).apply {
+            viewModel = eventInfoViewModel
+            setLifecycleOwner(this@EventFragment)
         }
+        setUpSnackbar(eventInfoViewModel.snackBarMessage, binding.snackbar, snackbarMessageManager)
+
         // TODO: launch filtered schedule
         // TODO: launch map
         // TODO: launch codelabs
