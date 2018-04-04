@@ -19,12 +19,10 @@ package com.google.samples.apps.iosched.shared.data
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonIOException
 import com.google.gson.JsonSyntaxException
-import com.google.samples.apps.iosched.shared.data.session.json.BlockDeserializer
 import com.google.samples.apps.iosched.shared.data.session.json.SessionDeserializer
 import com.google.samples.apps.iosched.shared.data.session.json.SessionTemp
 import com.google.samples.apps.iosched.shared.data.session.json.SpeakerDeserializer
 import com.google.samples.apps.iosched.shared.data.session.json.TagDeserializer
-import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.ConferenceData
 import com.google.samples.apps.iosched.shared.model.Room
 import com.google.samples.apps.iosched.shared.model.Session
@@ -40,7 +38,6 @@ object ConferenceDataJsonParser {
 
         val gson = GsonBuilder()
                 .registerTypeAdapter(SessionTemp::class.java, SessionDeserializer())
-                .registerTypeAdapter(Block::class.java, BlockDeserializer())
                 .registerTypeAdapter(Tag::class.java, TagDeserializer())
                 .registerTypeAdapter(Speaker::class.java, SpeakerDeserializer())
                 .create()
@@ -56,7 +53,7 @@ object ConferenceDataJsonParser {
         val sessions: MutableList<Session> = mutableListOf()
 
         data.sessions.forEach { session: SessionTemp ->
-            val tags = data.tags.filter { it.id in session.tags }
+            val tags = data.tags.filter { it.tag in session.tagNames }
             val newSession = Session(
                     id = session.id,
                     startTime = session.startTime,
@@ -69,10 +66,10 @@ object ConferenceDataJsonParser {
                     youTubeUrl = session.youTubeUrl,
                     tags = tags,
                     displayTags = tags.filter { it.category == Tag.CATEGORY_TRACK },
-                    speakers = data.speakers.filter { it.id in session.speakers }.toSet(),
+                    speakers = session.speakers.mapNotNull { data.speakers[it] }.toSet(),
                     photoUrl = session.photoUrl,
                     relatedSessions = session.relatedSessions,
-                    room = data.rooms.first { it.id == session.room }
+                    room = data.rooms.firstOrNull { it.id == session.room }
             )
             sessions.add(newSession)
         }
@@ -80,8 +77,7 @@ object ConferenceDataJsonParser {
         return ConferenceData(
                 sessions = sessions,
                 tags = data.tags,
-                speakers = data.speakers,
-                blocks = data.blocks,
+                speakers = data.speakers.values.toList(),
                 rooms = data.rooms,
                 version = data.version)
     }
@@ -92,9 +88,8 @@ object ConferenceDataJsonParser {
  * of lists of domain objects.
  */
 data class TempConferenceData(
-        val blocks: List<Block>,
         val sessions: List<SessionTemp>,
-        val speakers: List<Speaker>,
+        val speakers: Map<String, Speaker>,
         val rooms: List<Room>,
         val tags: List<Tag>,
         val version: Int

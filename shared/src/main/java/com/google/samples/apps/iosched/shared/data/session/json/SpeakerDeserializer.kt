@@ -37,9 +37,9 @@ class SpeakerDeserializer : JsonDeserializer<Speaker> {
                 id = obj.get("id").asString,
                 name = obj.get("name").asString,
                 imageUrl = obj.get("thumbnailUrl")?.asString ?: "",
-                company = obj.get("company").asString,
-                abstract = obj.get("bio").asString,
-                gPlusUrl = obj.get("plusoneUrl").asString,
-                twitterUrl = obj.get("twitterUrl").asString)
+                company = obj.get("company")?.asString ?: "",
+                abstract = obj.get("bio")?.asString ?: "",
+                gPlusUrl = obj.get("plusoneUrl")?.asString ?: "",
+                twitterUrl = obj.get("twitterUrl")?.asString ?: "")
     }
 }

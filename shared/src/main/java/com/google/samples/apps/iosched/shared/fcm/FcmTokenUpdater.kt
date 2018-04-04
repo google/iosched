@@ -30,8 +30,6 @@ class FcmTokenUpdater @Inject constructor(
         val firestore: FirebaseFirestore
 ) {
 
-
-
     fun updateTokenForUser(userId: String) {
         val token = FirebaseInstanceId.getInstance().token
 
@@ -39,13 +37,15 @@ class FcmTokenUpdater @Inject constructor(
             Timber.e("Error getting FCM ID token for user $userId")
             return
         }
-        val tokenInfo = mapOf(LAST_VISIT_KEY to FieldValue.serverTimestamp())
+        val tokenInfo = mapOf(
+                LAST_VISIT_KEY to FieldValue.serverTimestamp(),
+                TOKEN_ID_KEY to token)
 
         firestore
                 .collection(Companion.USERS_COLLECTION)
                 .document(userId)
                 .collection(FCM_IDS_COLLECTION)
-                .document(token)
+                .document(token.take(25))
                 .set(tokenInfo, SetOptions.merge()).addOnCompleteListener( {
                     if (it.isSuccessful) {
                         Timber.d("FCM ID token successfully uploaded for user $userId\"")
@@ -59,6 +59,7 @@ class FcmTokenUpdater @Inject constructor(
     companion object {
         private const val USERS_COLLECTION = "users"
         private const val LAST_VISIT_KEY = "lastVisit"
+        private const val TOKEN_ID_KEY = "tokenId"
         private const val FCM_IDS_COLLECTION = "fcmTokens"
     }
 }
