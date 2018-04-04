@@ -156,8 +156,8 @@ data class UserEvent(
     }
 
     fun isOverlapping(session: Session): Boolean {
-        // Sessions have the same start time if they are in the same time slot.
-        return this.startTime == session.startTime.toEpochMilli()
+        return this.startTime < session.endTime.toEpochMilli() &&
+                this.endTime > session.startTime.toEpochMilli()
     }
 
     /**
