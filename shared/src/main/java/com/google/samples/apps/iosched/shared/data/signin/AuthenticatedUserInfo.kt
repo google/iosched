@@ -53,8 +53,6 @@ interface AuthenticatedUserInfoBasic {
 
     fun getPhotoUrl(): Uri?
 
-    fun getProviders(): MutableList<String>?
-
     fun getProviderId(): String?
 }
 

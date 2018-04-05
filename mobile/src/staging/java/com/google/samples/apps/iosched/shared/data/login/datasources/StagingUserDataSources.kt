@@ -94,8 +94,6 @@ open class StagingAuthenticatedUserInfo(
         return uri
     }
 
-    override fun getProviders(): MutableList<String> = TODO("Not implemented")
-
     override fun getProviderId(): String = TODO("Not implemented")
 
     override fun getLastSignInTimestamp(): Long? = TODO("not implemented")
