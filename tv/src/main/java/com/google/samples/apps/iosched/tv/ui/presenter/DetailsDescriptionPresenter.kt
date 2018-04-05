@@ -47,7 +47,7 @@ class DetailsDescriptionPresenter : Presenter() {
         // TODO: move to data binding.
         holder.titleView.text = session.title
         holder.timeView.text = TimeUtils.timeString(session.startTime, session.endTime)
-        holder.roomView.text = session.room.name
+        holder.roomView.text = session.room?.name ?: ""
         holder.descriptionView.text = session.abstract
 
         holder.tagRecyclerView.adapter = TagAdapter().apply {

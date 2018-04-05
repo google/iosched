@@ -547,7 +547,7 @@ class ScheduleViewModelTest {
      * Creates a use case that throws an exception.
      */
     private fun createAgendaExceptionUseCase(): LoadAgendaUseCase {
-        return object : LoadAgendaUseCase(AgendaRepository(TestDataRepository)) {
+        return object : LoadAgendaUseCase(AgendaRepository()) {
             override fun execute(parameters: Unit): List<Block> {
                 throw Exception("Testing exception")
             }

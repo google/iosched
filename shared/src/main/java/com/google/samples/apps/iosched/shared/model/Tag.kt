@@ -30,9 +30,14 @@ data class Tag (
     val id: String,
 
     /**
-     * Tag category type. For example, "Track", "Level", "Type", "Theme". etc.
+     * Tag category type. For example, "track", "level", "type", "theme". etc.
      */
     val category: String,
+
+    /**
+     * Tag code. For example, "topic_iot", "type_afterhours", "topic_ar&vr", etc.
+     */
+    val tag: String,
 
     /**
      * This tag's order within its [category].
@@ -40,33 +45,38 @@ data class Tag (
     val orderInCategory: Int,
 
     /**
-     * Tag name within a category. For example, "Android", or "Ads", or "Design".
+     * Display tag name within a category. For example, "Android", or "Ads", or "Design".
      */
     val name: String,
 
     /**
      * The color associated with this tag as a color integer.
      */
-    val color: Int
+    val color: Int,
+
+    /**
+     * The font color associated with this tag as a color integer.
+     */
+    val fontColor: Int? = null
 ) {
 
     companion object {
         /** Category value for topic tags */
-        const val CATEGORY_TRACK = "TRACK"
+        const val CATEGORY_TRACK = "topic"
         /** Category value for type tags */
-        const val CATEGORY_TYPE = "TYPE"
+        const val CATEGORY_TYPE = "type"
         /** Category value for theme tags */
-        const val CATEGORY_THEME = "THEME"
+        const val CATEGORY_THEME = "theme"
         /** Category value for level tags */
-        const val CATEGORY_LEVEL = "LEVEL"
+        const val CATEGORY_LEVEL = "level"
 
         // Exhaustive list of IDs for tags with category = TYPE
-        const val TYPE_SESSIONS = "TYPE_SESSIONS"
-        const val TYPE_APP_REVIEWS = "TYPE_APPREVIEWS"
-        const val TYPE_AFTERHOURS = "TYPE_AFTERHOURS"
-        const val TYPE_CODELABS = "TYPE_CODELABS"
-        const val TYPE_OFFICEHOURS = "TYPE_OFFICEHOURS"
-        const val TYPE_SANDBOXDEMO = "TYPE_SANDBOXDEMO"
+        const val TYPE_SESSIONS = "type_sessions"
+        const val TYPE_APP_REVIEWS = "type_appreviews"
+        const val TYPE_AFTERHOURS = "type_afterhours"
+        const val TYPE_CODELABS = "type_codelabs"
+        const val TYPE_OFFICEHOURS = "type_officehours"
+        const val TYPE_SANDBOXDEMO = "type_sandboxdemos"
     }
 
     /** Only IDs are used for equality. */

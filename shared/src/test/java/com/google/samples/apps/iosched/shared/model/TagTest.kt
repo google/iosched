@@ -24,9 +24,9 @@ import org.hamcrest.CoreMatchers.`is` as Is
 
 class TagTest {
 
-    val androidTagId1 = Tag("1", "TRACK", 0, "Android", 0xFFAED581.toInt())
-    val androidTagId2 = Tag("2", "TRACK", 0, "Android", 0xFFAED581.toInt())
-    val webTagId2 = Tag("2", "TRACK", 1, "Web", 0xFFFFF176.toInt())
+    val androidTagId1 = Tag("1", "TRACK", "track_android", 0, "Android", 0xFFAED581.toInt())
+    val androidTagId2 = Tag("2", "TRACK", "track_android", 0, "Android", 0xFFAED581.toInt())
+    val webTagId2 = Tag("2", "TRACK", "track_web", 1, "Web", 0xFFFFF176.toInt())
 
     @Test
     fun tag_differentId_notEqual() {
