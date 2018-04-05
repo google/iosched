@@ -21,8 +21,10 @@ import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
+import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignOut
 import javax.inject.Inject
@@ -62,6 +64,12 @@ interface SignInViewModelDelegate {
     val performSignInEvent: MutableLiveData<Event<SignInEvent>>
 
     /**
+     * Emits an non-null Event when the dialog to ask the user notifications preference should be
+     * shown.
+     */
+    val shouldShowNotificationsPrefAction: LiveData<Event<Boolean>>
+
+    /**
      * Emit an Event on performSignInEvent to request sign-in
      */
     fun emitSignInRequest()
@@ -84,15 +92,19 @@ interface SignInViewModelDelegate {
  * Implementation of SignInViewModelDelegate that uses Firebase's auth mechanisms.
  */
 internal class FirebaseSignInViewModelDelegate @Inject constructor(
-        observeUserAuthStateUseCase: ObserveUserAuthStateUseCase
+        observeUserAuthStateUseCase: ObserveUserAuthStateUseCase,
+        private val notificationsPrefIsShownUseCase: NotificationsPrefIsShownUseCase
 ) : SignInViewModelDelegate {
 
     override val performSignInEvent = MutableLiveData<Event<SignInEvent>>()
     override val currentFirebaseUser: LiveData<Result<AuthenticatedUserInfo>?>
     override val currentUserImageUri: LiveData<Uri?>
+    override val shouldShowNotificationsPrefAction: LiveData<Event<Boolean>>
 
     private val _isRegistered: LiveData<Boolean>
     private val _isSignedIn: LiveData<Boolean>
+
+    private val notificationsPrefIsShown = MutableLiveData<Result<Boolean>>()
 
     init {
         currentFirebaseUser = observeUserAuthStateUseCase.observe()
@@ -106,10 +118,28 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
         _isRegistered = currentFirebaseUser.map { isRegistered() }
 
         observeUserAuthStateUseCase.execute(Any())
+
+        notificationsPrefIsShownUseCase(Unit, notificationsPrefIsShown)
+
+        // TODO: For some reasons, currentFirebaseUser is updated twice when an user signs in.
+        //       this variable is to prevent the notifications preference dialog from being shown
+        //       twice
+        var isSignedInPrevious = false
+        shouldShowNotificationsPrefAction = _isSignedIn.map {
+            val result = (notificationsPrefIsShown.value as? Success)?.data == false &&
+                        isSignedIn() &&
+                        isSignedInPrevious != it
+            isSignedInPrevious = it
+            Event(result)
+        }
     }
 
 
     override fun emitSignInRequest() {
+        // Refresh the notificationsPrefIsShown because it's used to judge if the
+        // notifications preference dialog should be shown
+        notificationsPrefIsShownUseCase(Unit, notificationsPrefIsShown)
+
         performSignInEvent.postValue(Event(SignInEvent.RequestSignIn))
     }
 

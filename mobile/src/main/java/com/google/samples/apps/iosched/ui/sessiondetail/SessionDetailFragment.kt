@@ -40,6 +40,8 @@ import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFra
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
 import com.google.samples.apps.iosched.ui.reservation.SwapReservationDialogFragment
 import com.google.samples.apps.iosched.ui.setUpSnackbar
+import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment
+import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment.Companion.DIALOG_NOTIFICATIONS_PREFERENCE
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment.Companion.DIALOG_NEED_TO_SIGN_IN
 import dagger.android.support.DaggerFragment
@@ -125,6 +127,11 @@ class SessionDetailFragment : DaggerFragment() {
         sessionDetailViewModel.navigateToSwapReservationDialogAction.observe(this, EventObserver {
             openSwapReservationDialog(requireActivity(), it)
         })
+        sessionDetailViewModel.shouldShowNotificationsPrefAction.observe(this, EventObserver {
+            if (it) {
+                openNotificationsPreferenceDialog()
+            }
+        })
         return binding.root
     }
 
@@ -162,6 +169,11 @@ class SessionDetailFragment : DaggerFragment() {
     private fun openSignInDialog(activity: FragmentActivity) {
         val dialog = SignInDialogFragment()
         dialog.show(activity.supportFragmentManager, DIALOG_NEED_TO_SIGN_IN)
+    }
+
+    private fun openNotificationsPreferenceDialog() {
+        val dialog = NotificationsPreferenceDialogFragment()
+        dialog.show(requireActivity().supportFragmentManager, DIALOG_NOTIFICATIONS_PREFERENCE)
     }
 
     private fun openRemoveReservationDialog(activity: FragmentActivity,

@@ -30,6 +30,7 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
     override val currentFirebaseUser = MutableLiveData<Result<AuthenticatedUserInfo>?>()
     override val currentUserImageUri = MutableLiveData<Uri?>()
     override val performSignInEvent = MutableLiveData<Event<SignInEvent>>()
+    override val shouldShowNotificationsPrefAction = MutableLiveData<Event<Boolean>>()
 
     var injectIsSignedIn = true
     var signInRequestsEmitted = 0

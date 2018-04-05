@@ -50,6 +50,8 @@ import com.google.samples.apps.iosched.ui.schedule.agenda.ScheduleAgendaFragment
 import com.google.samples.apps.iosched.ui.schedule.day.ScheduleDayFragment
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.ui.setUpSnackbar
+import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment
+import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment.Companion.DIALOG_NOTIFICATIONS_PREFERENCE
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
@@ -129,6 +131,11 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         viewModel.scheduleUiHintsShown.observe(this, EventObserver {
             if (!it) {
                 openScheduleUiHintsDialog()
+            }
+        })
+        viewModel.shouldShowNotificationsPrefAction.observe(this, EventObserver {
+            if (it) {
+                openNotificationsPreferenceDialog()
             }
         })
         return binding.root
@@ -223,6 +230,11 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     private fun openScheduleUiHintsDialog() {
         val dialog = ScheduleUiHintsDialogFragment()
         dialog.show(requireActivity().supportFragmentManager, DIALOG_SCHEDULE_HINTS)
+    }
+
+    private fun openNotificationsPreferenceDialog() {
+        val dialog = NotificationsPreferenceDialogFragment()
+        dialog.show(requireActivity().supportFragmentManager, DIALOG_NOTIFICATIONS_PREFERENCE)
     }
 
     /**
