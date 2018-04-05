@@ -48,8 +48,6 @@ class FirebaseRegisteredUserInfo(
 
     override fun getPhotoUrl(): Uri? = basicUserInfo?.getPhotoUrl()
 
-    override fun getProviders(): MutableList<String>? = basicUserInfo?.getProviders()
-
     override fun getProviderId(): String? = basicUserInfo?.getProviderId()
 
     override fun getLastSignInTimestamp(): Long? = basicUserInfo?.getLastSignInTimestamp()
@@ -81,8 +79,6 @@ open class FirebaseUserInfo(
     override fun getDisplayName(): String? = firebaseUser?.displayName
 
     override fun getPhotoUrl(): Uri? = firebaseUser?.photoUrl
-
-    override fun getProviders(): MutableList<String>? = firebaseUser?.providers
 
     override fun getProviderId(): String? = firebaseUser?.providerId
 
