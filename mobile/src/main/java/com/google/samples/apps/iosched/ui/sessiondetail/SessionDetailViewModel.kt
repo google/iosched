@@ -51,6 +51,7 @@ import com.google.samples.apps.iosched.util.time.DefaultTime
 import org.threeten.bp.Duration
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
+import java.util.UUID
 import javax.inject.Inject
 
 private const val TEN_SECONDS = 10_000L
@@ -231,8 +232,7 @@ class SessionDetailViewModel @Inject constructor(
             if (it is Result.Error) {
                 _snackBarMessage.postValue(Event(SnackbarMessage(
                         messageId = R.string.reservation_error,
-                        longDuration = true,
-                        actionId = R.string.got_it)))
+                        longDuration = true)))
             }
         }
         // Show a message with the result of a reservation
@@ -244,7 +244,6 @@ class SessionDetailViewModel @Inject constructor(
 
                     snackbarMessageManager.addMessage(SnackbarMessage(
                             messageId = messageId,
-                            actionId = R.string.got_it,
                             longDuration = true,
                             session = it.data.userSession.session,
                             requestChangeId = it.data.userMessage?.changeRequestId
@@ -305,12 +304,14 @@ class SessionDetailViewModel @Inject constructor(
         val newIsStarredState = !userEventSnapshot.isStarred
 
         // Update the snackbar message optimistically.
-        val snackbarMessage = if(newIsStarredState) {
-            SnackbarMessage(R.string.event_starred, R.string.got_it)
+        val stringResId = if (newIsStarredState) {
+            R.string.event_starred
         } else {
-            SnackbarMessage(R.string.event_unstarred)
+            R.string.event_unstarred
         }
-        _snackBarMessage.postValue(Event(snackbarMessage))
+        snackbarMessageManager.addMessage(SnackbarMessage(messageId = stringResId,
+                actionId = R.string.dont_show,
+                requestChangeId = UUID.randomUUID().toString()))
 
         getUserId()?.let {
             starEventUseCase.execute(StarEventParameter(it,

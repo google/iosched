@@ -23,6 +23,7 @@ import com.google.samples.apps.iosched.ui.info.InfoModule
 import com.google.samples.apps.iosched.ui.map.MapModule
 import com.google.samples.apps.iosched.ui.onboarding.OnboardingActivity
 import com.google.samples.apps.iosched.ui.onboarding.OnboardingModule
+import com.google.samples.apps.iosched.ui.prefs.PreferenceModule
 import com.google.samples.apps.iosched.ui.reservation.ReservationModule
 import com.google.samples.apps.iosched.ui.schedule.ScheduleModule
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
@@ -58,7 +59,8 @@ abstract class ActivityBindingModule {
             MapModule::class,
             InfoModule::class,
             SignInDialogModule::class,
-            ReservationModule::class
+            ReservationModule::class,
+            PreferenceModule::class
         ]
     )
     internal abstract fun mainActivity(): MainActivity
@@ -68,7 +70,8 @@ abstract class ActivityBindingModule {
         modules = [
             SessionDetailModule::class,
             SignInDialogModule::class,
-            ReservationModule::class
+            ReservationModule::class,
+            PreferenceModule::class
         ]
     )
     internal abstract fun sessionDetailActivity(): SessionDetailActivity

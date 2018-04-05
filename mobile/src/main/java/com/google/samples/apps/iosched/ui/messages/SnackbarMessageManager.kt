@@ -18,6 +18,8 @@ package com.google.samples.apps.iosched.ui.messages
 
 import android.arch.lifecycle.MutableLiveData
 import android.support.annotation.VisibleForTesting
+import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager.Companion.MAX_ITEMS
@@ -36,7 +38,8 @@ import javax.inject.Singleton
  *
  */
 @Singleton
-open class SnackbarMessageManager @Inject constructor() {
+open class SnackbarMessageManager @Inject constructor(
+        private val preferenceStorage: PreferenceStorage) {
     companion object {
         // Keep a fixed number of old items
         @VisibleForTesting
@@ -48,6 +51,9 @@ open class SnackbarMessageManager @Inject constructor() {
     private val result = MutableLiveData<Event<SnackbarMessage>>()
 
     fun addMessage(msg: SnackbarMessage) {
+        if (isSnackbarShouldBeIgnored(msg)) {
+            return
+        }
         // If the new message is about the same change as a pending one, keep the new one. (rare)
         val sameRequestId = messages.filter {
             it.peekContent().requestChangeId == msg.requestChangeId
@@ -80,5 +86,10 @@ open class SnackbarMessageManager @Inject constructor() {
 
     fun observeNextMessage(): MutableLiveData<Event<SnackbarMessage>> {
         return result
+    }
+
+    private fun isSnackbarShouldBeIgnored(msg: SnackbarMessage): Boolean {
+        return preferenceStorage.observableSnackbarIsStopped.value == true &&
+                msg.actionId == R.string.dont_show
     }
 }
