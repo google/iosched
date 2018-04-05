@@ -44,6 +44,12 @@ class ViewPagerPager(private val viewPager: ViewPager) {
                 onEnd = { viewPager.endFakeDrag() }
             )
             addUpdateListener {
+                if (!viewPager.isFakeDragging) {
+                    // Sometimes onAnimationUpdate is called with initial value before
+                    // onAnimationStart is called.
+                    return@addUpdateListener
+                }
+
                 val dragPoint = (animatedValue as Int)
                 val dragBy = dragPoint - dragProgress
                 viewPager.fakeDragBy(-dragBy.toFloat())
