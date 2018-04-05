@@ -241,6 +241,11 @@
         <item name="autoSizeMaxTextSize">34sp</item>
     </style>
 
+    <style name="Widget.IOSched.Dialog">
+        <item name="android:background">@drawable/dialog_bg</item>
+        <item name="android:elevation">@dimen/dialog_elevation</item>
+    </style>
+
     <style name="TextAppearance.IOSched.CollapsibleCard" parent="@android:style/Widget.Material.TextView">
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textColor">@color/grey_800</item>
