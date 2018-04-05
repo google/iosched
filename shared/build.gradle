@@ -38,6 +38,7 @@ android {
         buildConfigField("String", "CONFERENCE_WIFI_OFFERING_START", "\"${conference_wifi_offering_start}\"")
         buildConfigField("String", "REGISTRATION_ENDPOINT_URL", "\"${registration_url}\"")
         buildConfigField "String", "CONFERENCE_DATA_URL", "\"${conference_data_url}\""
+        buildConfigField "String", "BOOTSTRAP_CONF_DATA_FILENAME", "\"${bootstrap_conference_data_filename}\""
 
         resValue "string", "wifi_ssid", "\"${conference_wifi_ssid}\""
         resValue "string", "wifi_password", "\"${conference_wifi_password}\""

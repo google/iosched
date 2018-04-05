@@ -133,7 +133,6 @@ private class TestConfDataSourceSession0 : ConferenceDataSource {
     private val conferenceData = ConferenceData(
             sessions = listOf(TestData.session0),
             tags = listOf(TestData.androidTag, TestData.webTag),
-            blocks = emptyList(),
             speakers = listOf(TestData.speaker),
             rooms = emptyList(),
             version = NETWORK_DATA_VERSION
@@ -145,7 +144,6 @@ private class TestConfDataSourceSession1 : ConferenceDataSource {
         return ConferenceData(
                 sessions = listOf(TestData.session1),
                 tags = listOf(TestData.androidTag, TestData.webTag),
-                blocks = emptyList(),
                 speakers = listOf(TestData.speaker),
                 rooms = emptyList(),
                 version = NETWORK_DATA_VERSION
@@ -156,7 +154,6 @@ private class TestConfDataSourceSession1 : ConferenceDataSource {
         return ConferenceData(
                 sessions = listOf(TestData.session1),
                 tags = listOf(TestData.androidTag, TestData.webTag),
-                blocks = emptyList(),
                 speakers = listOf(TestData.speaker),
                 rooms = emptyList(),
                 version = CACHE_DATA_VERSION
@@ -173,7 +170,6 @@ private class BootstrapDataSourceSession3 : ConferenceDataSource {
         return ConferenceData(
                 sessions = listOf(TestData.session3),
                 tags = listOf(TestData.androidTag, TestData.webTag),
-                blocks = emptyList(),
                 speakers = listOf(TestData.speaker),
                 rooms = emptyList(),
                 version = BOOTSTRAP_DATA_VERSION
@@ -190,7 +186,6 @@ private class TestConfDataSourceOnlyCachedSession1 : ConferenceDataSource {
         return ConferenceData(
                 sessions = listOf(TestData.session1),
                 tags = listOf(TestData.androidTag, TestData.webTag),
-                blocks = emptyList(),
                 speakers = listOf(TestData.speaker),
                 rooms = emptyList(),
                 version = CACHE_DATA_VERSION
@@ -217,7 +212,6 @@ private class ThrowingDataSourceCacheSession2 : ConferenceDataSource {
         return ConferenceData(
                 sessions = listOf(TestData.session2),
                 tags = listOf(TestData.androidTag, TestData.webTag),
-                blocks = emptyList(),
                 speakers = listOf(TestData.speaker),
                 rooms = emptyList(),
                 version = CACHE_DATA_VERSION

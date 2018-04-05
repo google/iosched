@@ -46,7 +46,7 @@ abstract class UseCase<in P, R> {
                     }
                 }
                 catch (e: Exception) {
-                    Timber.d(e)
+                    Timber.e(e)
                     result.postValue(Result.Error(e))
                 }
             }

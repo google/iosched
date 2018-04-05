@@ -76,7 +76,7 @@ data class SessionTemp(
          * IDs of the `Tag`s associated with the session. Ordered, with the most important tags
          * appearing first.
          */
-        val tags: List<String>,
+        val tagNames: List<String>,
 
         /**
          * IDs of the session speakers.
@@ -86,7 +86,7 @@ data class SessionTemp(
         /**
          * The session's photo URL.
          */
-        val photoUrl: String,
+        val photoUrl: String?,
 
         /**
          * IDs of the sessions related to this session.
