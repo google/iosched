@@ -23,6 +23,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
 
@@ -53,9 +54,11 @@ fun agendaIcon(imageView: ImageView, type: String) {
     imageView.setImageDrawable(AppCompatResources.getDrawable(imageView.context, iconId))
 }
 
-@BindingAdapter(value=["startTime", "endTime"], requireAll = true)
+@BindingAdapter(value = ["startTime", "endTime"], requireAll = true)
 fun agendaDuration(textView: TextView, startTime: ZonedDateTime, endTime: ZonedDateTime) {
-    textView.text = textView.context.getString(R.string.agenda_duration,
-        agendaTimePattern.format(startTime),
-        agendaTimePattern.format(endTime))
+    textView.text = textView.context.getString(
+        R.string.agenda_duration,
+        agendaTimePattern.format(TimeUtils.zonedTime(startTime)),
+        agendaTimePattern.format(TimeUtils.zonedTime(endTime))
+    )
 }

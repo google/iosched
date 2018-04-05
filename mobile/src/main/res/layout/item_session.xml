@@ -109,7 +109,7 @@
             app:layout_constraintStart_toEndOf="@id/keyline"
             app:layout_constraintTop_toBottomOf="@id/reservation_status"
             app:sessionEnd="@{session.endTime}"
-            app:sessionRoom="@{session.room.name}"
+            app:sessionRoom="@{session.room}"
             app:sessionStart="@{session.startTime}" />
 
         <android.support.v7.widget.RecyclerView

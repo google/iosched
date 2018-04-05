@@ -38,8 +38,11 @@ import androidx.view.get
 import androidx.view.isEmpty
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.model.Session
+import org.threeten.bp.ZoneId
+
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
+
 
 /**
  * A [RecyclerView.ItemDecoration] which draws sticky headers for a given list of sessions.
@@ -81,8 +84,9 @@ class ScheduleTimeHeadersDecoration(
     }
 
     // Get the sessions index:start time and create header layouts for each
+    // TODO: let user pick between local or conference time zone (b/77606102). Show local for now.
     private val timeSlots: Map<Int, StaticLayout> =
-        indexSessionHeaders(sessions).map {
+        indexSessionHeaders(sessions, ZoneId.systemDefault()).map {
             it.first to createHeader(it.second)
         }.toMap()
 
