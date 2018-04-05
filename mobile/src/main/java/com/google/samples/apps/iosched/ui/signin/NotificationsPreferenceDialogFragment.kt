@@ -18,38 +18,35 @@ package com.google.samples.apps.iosched.ui.signin
 
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.samples.apps.iosched.databinding.DialogSignInBinding
-import com.google.samples.apps.iosched.shared.result.EventObserver
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
-import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignIn
-import com.google.samples.apps.iosched.util.signin.SignInHandler
 import com.google.samples.apps.iosched.widget.CustomDimDialogFragment
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
+import kotlinx.android.synthetic.main.dialog_notifications_preference.*
 import javax.inject.Inject
 
 /**
- * Dialog that tells the user to sign in to continue the operation.
+ * Dialog that asks the user notifications preference.
  */
-class SignInDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInjector {
+class NotificationsPreferenceDialogFragment : CustomDimDialogFragment(),
+        HasSupportFragmentInjector {
 
     @Inject
     lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
 
     @Inject
-    lateinit var signInHandler: SignInHandler
-
-    @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var signInViewModel: SignInViewModel
+    private lateinit var viewModel: NotificationsPreferenceViewModel
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
         return fragmentInjector
@@ -65,24 +62,29 @@ class SignInDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInject
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        signInViewModel = viewModelProvider(viewModelFactory)
-        val binding = DialogSignInBinding.inflate(inflater, container, false).apply {
-            viewModel = signInViewModel
-        }
+        return inflater.inflate(R.layout.dialog_notifications_preference, container, false)
+    }
 
-        signInViewModel.performSignInEvent.observe(this, EventObserver { signInRequest ->
-            if (signInRequest == RequestSignIn) {
-                signInHandler.makeSignInIntent()?.let { startActivity(it) }
-            }
-        })
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = viewModelProvider(viewModelFactory)
 
-        signInViewModel.dismissDialogAction.observe(this, EventObserver {
+        notifications_pref_button_no.setOnClickListener {
+            viewModel.onNoClicked()
             dismiss()
-        })
-        return binding.root
+        }
+        notifications_pref_button_yes.setOnClickListener {
+            viewModel.onYesClicked()
+            dismiss()
+        }
+    }
+
+    override fun onDismiss(dialog: DialogInterface?) {
+        super.onDismiss(dialog)
+        viewModel.onDismissed()
     }
 
     companion object {
-        const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
+        const val DIALOG_NOTIFICATIONS_PREFERENCE = "dialog_notifications_preference"
     }
 }

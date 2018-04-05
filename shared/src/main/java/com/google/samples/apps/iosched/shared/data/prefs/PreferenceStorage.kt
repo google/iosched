@@ -28,6 +28,8 @@ import javax.inject.Inject
 interface PreferenceStorage {
     var onboardingCompleted: Boolean
     var scheduleUiHintsShown: Boolean
+    var notificationsPreferenceShown: Boolean
+    var preferToReceiveNotifications: Boolean
 }
 
 /**
@@ -41,25 +43,37 @@ class SharedPreferenceStorage @Inject constructor(context: Context) :
 
     @get:WorkerThread
     override var onboardingCompleted
-        get() = prefs.getBoolean(
-            PREF_ONBOARDING, false)
+        get() = prefs.getBoolean(PREF_ONBOARDING, false)
         set(value) = prefs.edit {
-            putBoolean(
-                PREF_ONBOARDING, value)
+            putBoolean(PREF_ONBOARDING, value)
         }
 
     @get:WorkerThread
     override var scheduleUiHintsShown: Boolean
-        get() = prefs.getBoolean(
-            PREF_SCHED_UI_HINTS_SHOWN, false)
+        get() = prefs.getBoolean(PREF_SCHED_UI_HINTS_SHOWN, false)
         set(value) = prefs.edit {
-            putBoolean(
-                PREF_SCHED_UI_HINTS_SHOWN, value)
+            putBoolean(PREF_SCHED_UI_HINTS_SHOWN, value)
+        }
+
+    @get:WorkerThread
+    override var notificationsPreferenceShown: Boolean
+        get() = prefs.getBoolean(PREF_NOTIFICATIONS_SHOWN, false)
+        set(value) = prefs.edit {
+            putBoolean(PREF_NOTIFICATIONS_SHOWN, value)
+        }
+
+    @get:WorkerThread
+    override var preferToReceiveNotifications: Boolean
+        get() = prefs.getBoolean(PREF_RECEIVE_NOTIFICATIONS, true)
+        set(value) = prefs.edit {
+            putBoolean(PREF_RECEIVE_NOTIFICATIONS, value)
         }
 
     companion object {
         private const val PREFS_NAME = "iosched"
         private const val PREF_ONBOARDING = "pref_onboarding"
         private const val PREF_SCHED_UI_HINTS_SHOWN = "pref_sched_ui_hints_shown"
+        private const val PREF_NOTIFICATIONS_SHOWN = "pref_notifications_shown"
+        private const val PREF_RECEIVE_NOTIFICATIONS = "pref_receive_notifications"
     }
 }
