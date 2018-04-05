@@ -40,13 +40,13 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageCha
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
-import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
+import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
@@ -171,8 +171,9 @@ class ScheduleViewModelTest {
             FakeObserveUserAuthStateUseCase(
                 user = Result.Success(mockUser),
                 isRegistered = Result.Success(false))
-        val signInViewModelComponent =
-                createFirebaseSignInViewModelDelegate(observableFirebaseUserUseCase)
+        val signInViewModelComponent = FirebaseSignInViewModelDelegate(
+                observableFirebaseUserUseCase,
+                mock {})
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
         // Check that the expected content description is set
@@ -190,8 +191,10 @@ class ScheduleViewModelTest {
             FakeObserveUserAuthStateUseCase(
                 user = Result.Success(noFirebaseUser),
                 isRegistered = Result.Success(false))
-        val signInViewModelComponent =
-                createFirebaseSignInViewModelDelegate(observableFirebaseUserUseCase)
+        val signInViewModelComponent = FirebaseSignInViewModelDelegate(
+                observableFirebaseUserUseCase,
+                mock {})
+
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
         // Check that the expected content description is set
@@ -207,8 +210,9 @@ class ScheduleViewModelTest {
         val observableFirebaseUserUseCase =
             FakeObserveUserAuthStateUseCase(user = errorLoadingFirebaseUser,
                 isRegistered = Result.Success(false))
-        val signInViewModelComponent =
-                createFirebaseSignInViewModelDelegate(observableFirebaseUserUseCase)
+        val signInViewModelComponent = FirebaseSignInViewModelDelegate(
+                observableFirebaseUserUseCase,
+                mock {})
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
         // Check that the expected content description is set
@@ -445,8 +449,10 @@ class ScheduleViewModelTest {
             FakeObserveUserAuthStateUseCase(
                 user = Result.Success(noFirebaseUser),
                 isRegistered = Result.Success(false))
-        val signInViewModelComponent =
-                createFirebaseSignInViewModelDelegate(observableFirebaseUserUseCase)
+        val signInViewModelComponent = FirebaseSignInViewModelDelegate(
+                observableFirebaseUserUseCase,
+                mock {})
+
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
         // Check that reservation buttons are shown
@@ -465,8 +471,10 @@ class ScheduleViewModelTest {
             FakeObserveUserAuthStateUseCase(
                 user = Result.Success(mockUser),
                 isRegistered = Result.Success(true))
-        val signInViewModelComponent =
-                createFirebaseSignInViewModelDelegate(observableFirebaseUserUseCase)
+        val signInViewModelComponent = FirebaseSignInViewModelDelegate(
+                observableFirebaseUserUseCase,
+                mock {})
+
         // Create ViewModel
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
@@ -486,8 +494,10 @@ class ScheduleViewModelTest {
             FakeObserveUserAuthStateUseCase(
                 user = Result.Success(mockUser),
                 isRegistered = Result.Success(false))
-        val signInViewModelComponent =
-                createFirebaseSignInViewModelDelegate(observableFirebaseUserUseCase)
+        val signInViewModelComponent = FirebaseSignInViewModelDelegate(
+                observableFirebaseUserUseCase,
+                mock {})
+
         // Create ViewModel
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
@@ -504,14 +514,17 @@ class ScheduleViewModelTest {
     }
 
     private fun createScheduleViewModel(
-        loadSessionsUseCase: LoadUserSessionsByDayUseCase = createTestLoadUserSessionsByDayUseCase(),
+        loadSessionsUseCase: LoadUserSessionsByDayUseCase =
+                createTestLoadUserSessionsByDayUseCase(),
         loadAgendaUseCase: LoadAgendaUseCase = createAgendaExceptionUseCase(),
         loadTagsUseCase: LoadTagFiltersUseCase = createTagsExceptionUseCase(),
         signInViewModelDelegate: SignInViewModelDelegate = createSignInViewModelDelegate(),
         starEventUseCase: StarEventUseCase = createStarEventUseCase(),
         reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase(),
         snackbarMessageManager: SnackbarMessageManager = SnackbarMessageManager(),
-        scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase = FakeScheduleUiHintsShownUseCase()
+        scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase =
+                FakeScheduleUiHintsShownUseCase(),
+        topicSubscriber: TopicSubscriber = mock {}
     ): ScheduleViewModel {
         return ScheduleViewModel(
             loadUserSessionsByDayUseCase = loadSessionsUseCase,
@@ -521,7 +534,8 @@ class ScheduleViewModelTest {
                 starEventUseCase = starEventUseCase,
                 reservationActionUseCase = reservationActionUseCase,
                 snackbarMessageManager = snackbarMessageManager,
-                scheduleUiHintsShownUseCase = scheduleUiHintsShownUseCase
+                scheduleUiHintsShownUseCase = scheduleUiHintsShownUseCase,
+                topicSubscriber = topicSubscriber
         )
     }
 
@@ -568,19 +582,6 @@ class ScheduleViewModelTest {
     private fun createReservationActionUseCase() = object: ReservationActionUseCase(
         DefaultSessionAndUserEventRepository(
             TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository))) {}
-
-    private fun createNotificationsPrefIsShownUseCase(): NotificationsPrefIsShownUseCase {
-        return NotificationsPrefIsShownUseCase(FakePreferenceStorage())
-    }
-
-    private fun createFirebaseSignInViewModelDelegate(
-            observeUserAuthStateUseCase: ObserveUserAuthStateUseCase,
-            notificationsPrefIsShownUseCase: NotificationsPrefIsShownUseCase =
-                    createNotificationsPrefIsShownUseCase()
-    ): FirebaseSignInViewModelDelegate {
-        return FirebaseSignInViewModelDelegate(observeUserAuthStateUseCase,
-                notificationsPrefIsShownUseCase)
-    }
 }
 
 class TestRegisteredUserDataSource(private val isRegistered: Result<Boolean?>) :
@@ -610,7 +611,9 @@ class FakeObserveUserAuthStateUseCase(
     isRegistered: Result<Boolean?>
 ) : ObserveUserAuthStateUseCase(
     TestRegisteredUserDataSource(isRegistered),
-    TestAuthStateUserDataSource(user))
+    TestAuthStateUserDataSource(user),
+    mock {}
+)
 
 class FakePreferenceStorage(override var onboardingCompleted: Boolean = false,
                             override var scheduleUiHintsShown: Boolean = false,
