@@ -50,22 +50,31 @@ fun tagTint(textView: TextView, color: Int) {
     )
 }
 /**
- * Creates a tag background using the tag's color.
+ * Creates a tag background using the tag's color and sets text color according to the background.
  */
-@BindingAdapter("tagChipBg")
-fun tagChipBg(textView: TextView, color: Int) {
-    val tintColor = tagTintOrDefault(color, textView.context)
+@BindingAdapter("tagChip")
+fun tagChip(textView: TextView, tag: Tag) {
+    val tintColor = tagTintOrDefault(tag.color, textView.context)
     val tagBg = drawableCompat(textView, R.drawable.tag_filled)?.apply { setTint(tintColor) }
     textView.background = tagBg
+
+    val textColor = if (tag.isLightFontColor()) {
+        // tag has a relatively dark background
+        R.color.tag_filter_text_dark
+    } else {
+        R.color.tag_filter_text_light
+    }
+    textView.setTextColor(ContextCompat.getColor(textView.context, textColor))
 }
 
 /**
  * Creates a tag background with checkable state. When checked, the tag becomes filled and shows a
- * clear ('X') icon in place of the dot.
+ * clear ('X') icon in place of the dot. Also sets text color according to the background for the
+ * checked state.
  */
-@BindingAdapter("tagFilterBg")
-fun tagFilterBg(textView: TextView, color: Int) {
-    val tintColor = tagTintOrDefault(color, textView.context)
+@BindingAdapter("tagFilter")
+fun tagFilter(textView: TextView, tag: Tag) {
+    val tintColor = tagTintOrDefault(tag.color, textView.context)
 
     // We can't define these with XML <selector>s because we want to tint only one state in each,
     // and StateListDrawable does not give us a way to extract any of its contained Drawables.
@@ -107,6 +116,16 @@ fun tagFilterBg(textView: TextView, color: Int) {
     }
     ((textView.background as InsetDrawable).drawable as RippleDrawable)
         .setDrawableByLayerId(R.id.tag_fill, tagBg)
+
+    val textColorRes = if (tag.isLightFontColor()) {
+        // tag has a relatively dark background
+        R.color.tag_filter_text_statelist_dark
+    } else {
+        R.color.tag_filter_text_statelist_light
+    }
+
+    val textColors = AppCompatResources.getColorStateList(textView.context, textColorRes)
+    textView.setTextColor(textColors)
 }
 
 fun tagTintOrDefault(color: Int, context: Context): Int {

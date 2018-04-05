@@ -16,6 +16,8 @@
 
 package com.google.samples.apps.iosched.shared.model
 
+import android.graphics.Color
+
 /**
  * Describes a tag, which contains meta-information about a conference session. A tag has two
  * components, a category, and a name, and together these give a tag its semantic meaning. For
@@ -86,4 +88,6 @@ data class Tag (
     override fun hashCode(): Int = id.hashCode()
 
     fun isUiContentEqual(other: Tag) = color == other.color && name == other.name
+
+    fun isLightFontColor() = fontColor == Color.WHITE
 }
