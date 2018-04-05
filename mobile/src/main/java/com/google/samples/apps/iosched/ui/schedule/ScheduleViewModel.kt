@@ -36,6 +36,7 @@ import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
+import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.Session
@@ -75,6 +76,7 @@ class ScheduleViewModel @Inject constructor(
         private val starEventUseCase: StarEventUseCase,
         private val reservationActionUseCase: ReservationActionUseCase,
         scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase,
+        topicSubscriber: TopicSubscriber,
         private val snackbarMessageManager: SnackbarMessageManager
 ) : ViewModel(), ScheduleEventListener, SignInViewModelDelegate by signInViewModelDelegate {
 
@@ -270,6 +272,9 @@ class ScheduleViewModel @Inject constructor(
         scheduleUiHintsShown = scheduleUiHintsShownResult.map {
             Event((it as? Result.Success)?.data == true)
         }
+
+        // Subscribe user to schedule updates
+        topicSubscriber.subscribeToScheduleUpdates()
     }
 
     /**

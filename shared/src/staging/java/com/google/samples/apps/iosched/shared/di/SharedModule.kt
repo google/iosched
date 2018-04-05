@@ -28,6 +28,8 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.data.userevent.FakeUserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
+import com.google.samples.apps.iosched.shared.fcm.StagingTopicSubscriber
+import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -92,4 +94,11 @@ class SharedModule {
     ): SessionAndUserEventRepository {
         return DefaultSessionAndUserEventRepository(userEventDataSource, sessionRepository)
     }
+
+    @Singleton
+    @Provides
+    fun provideTopicSubscriber(): TopicSubscriber {
+        return StagingTopicSubscriber()
+    }
 }
+

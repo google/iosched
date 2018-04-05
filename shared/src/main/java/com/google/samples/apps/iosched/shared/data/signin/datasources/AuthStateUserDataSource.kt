@@ -39,6 +39,5 @@ interface AuthStateUserDataSource {
     /**
      * Call this method to clear listeners to avoid leaks.
      */
-    //TODO: Really, call it.
     fun clearListener()
 }
