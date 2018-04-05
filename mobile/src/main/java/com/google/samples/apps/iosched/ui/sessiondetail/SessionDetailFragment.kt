@@ -35,6 +35,7 @@ import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
+import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment.Companion.DIALOG_REMOVE_RESERVATION
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
@@ -111,10 +112,15 @@ class SessionDetailFragment : DaggerFragment() {
 
         // TODO style Snackbar so it doesn't overlap the bottom app bar (b/76112328)
 
+        val snackbarPreferenceViewModel: SnackbarPreferenceViewModel =
+                activityViewModelProvider(viewModelFactory)
         setUpSnackbar(
                 sessionDetailViewModel.snackBarMessage,
                 binding.snackbar,
-                snackbarMessageManager
+                snackbarMessageManager,
+                actionClickListener = {
+                    snackbarPreferenceViewModel.onStopClicked()
+                }
         )
 
         sessionDetailViewModel.errorMessage.observe(this, EventObserver { errorMsg ->

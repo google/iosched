@@ -17,13 +17,19 @@
 package com.google.samples.apps.iosched.ui.messages
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import android.arch.lifecycle.LiveData
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.TestData
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.ui.SnackbarMessage
+import com.nhaarman.mockito_kotlin.doReturn
+import com.nhaarman.mockito_kotlin.mock
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.nullValue
 import org.hamcrest.core.Is.`is`
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Rule
@@ -46,7 +52,7 @@ class SnackbarMessageManagerTest {
 
     @Before
     fun createSubject() {
-        snackbarMessageManager = SnackbarMessageManager()
+        snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
     }
 
     @Test
@@ -110,6 +116,33 @@ class SnackbarMessageManagerTest {
         // The oldest message request ID should be 5, because we added 15 and the maximum is 10.
         val oldestId = (addedMsgs - SnackbarMessageManager.MAX_ITEMS).toString()
         assertThat(result?.getContentIfNotHandled()?.requestChangeId, `is`(equalTo(oldestId)))
+    }
+
+    @Test
+    fun addOneMessage_snackbarIsStopped_actionDontShow() {
+        val mockSnackbarIsStopped = mock<LiveData<Boolean>>{
+            on { value }.doReturn(true)
+        }
+        val snackbarMessageManager = SnackbarMessageManager(
+                FakePreferenceStorage(observableSnackbarIsStopped = mockSnackbarIsStopped))
+        snackbarMessageManager.addMessage((msg1.copy(actionId = R.string.dont_show)))
+
+
+        val result = LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
+        assertNull(result)
+    }
+
+    @Test
+    fun addOneMessage_snackbarAppears_actionNotDontShow() {
+        val mockSnackbarIsStopped = mock<LiveData<Boolean>>{
+            on { value }.doReturn(true)
+        }
+        val snackbarMessageManager = SnackbarMessageManager(
+                FakePreferenceStorage(observableSnackbarIsStopped = mockSnackbarIsStopped))
+        snackbarMessageManager.addMessage(msg1)
+
+        val result = LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
+        assertThat(result?.peekContent(), `is`(equalTo(msg1)))
     }
 
     private fun createMessage(requestId: String): SnackbarMessage {

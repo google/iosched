@@ -26,7 +26,6 @@ import android.net.Uri
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.TestData
 import com.google.samples.apps.iosched.model.TestDataRepository
-import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfoBasic
@@ -54,6 +53,7 @@ import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.TagFil
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
 import com.google.samples.apps.iosched.ui.SnackbarMessage
@@ -232,20 +232,16 @@ class ScheduleViewModelTest {
     @Test
     fun testStarEvent() {
         // Create test use cases with test data
-        val viewModel = createScheduleViewModel()
+        val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
+        val viewModel = createScheduleViewModel(snackbarMessageManager = snackbarMessageManager)
 
         viewModel.onStarClicked(TestData.userEvents[0])
 
-        val starEvent: Event<SnackbarMessage>? =
-            LiveDataTestUtil.getValue(viewModel.snackBarMessage)
-
-        val snackbarEventContent = starEvent?.getContentIfNotHandled()
-
-        assertThat(snackbarEventContent?.messageId,
-            `is`(equalTo(R.string.event_starred)))
-
-        assertThat(snackbarEventContent?.actionId,
-            `is`(equalTo(R.string.got_it)))
+        val nextMessageEvent: Event<SnackbarMessage>? =
+                LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
+        val message = nextMessageEvent?.getContentIfNotHandled()
+        assertThat(message?.messageId, `is`(equalTo(R.string.event_starred)))
+        assertThat(message?.actionId, `is`(equalTo(R.string.dont_show)))
 
         //TODO: check changes in data source
     }
@@ -253,33 +249,16 @@ class ScheduleViewModelTest {
     @Test
     fun testUnstarEvent() {
         // Create test use cases with test data
-
-        val viewModel = createScheduleViewModel()
+        val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
+        val viewModel = createScheduleViewModel(snackbarMessageManager = snackbarMessageManager)
 
         viewModel.onStarClicked(TestData.userEvents[1])
 
-        val starEvent: Event<SnackbarMessage>?
-                = LiveDataTestUtil.getValue(viewModel.snackBarMessage)
-        val snackbarEventContent = starEvent?.getContentIfNotHandled()
-
-        assertThat(snackbarEventContent?.messageId,
-            `is`(equalTo(R.string.event_unstarred)))
-
-        assertThat(snackbarEventContent?.longDuration,
-            `is`(equalTo(false)))
-    }
-
-    @Test
-    fun testStarNullUserEvent() {
-        // Create test use cases with test data
-        val viewModel = createScheduleViewModel()
-
-        viewModel.onStarClicked(TestData.userEvents[0])
-
-        val starEvent: Event<SnackbarMessage>? =
-            LiveDataTestUtil.getValue(viewModel.snackBarMessage)
-        assertThat(starEvent?.getContentIfNotHandled()?.messageId,
-            `is`(equalTo(R.string.event_starred)))
+        val nextMessageEvent: Event<SnackbarMessage>? =
+                LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
+        val message = nextMessageEvent?.getContentIfNotHandled()
+        assertThat(message?.messageId, `is`(equalTo(R.string.event_unstarred)))
+        assertThat(message?.actionId, `is`(equalTo(R.string.dont_show)))
     }
 
     @Test
@@ -368,12 +347,11 @@ class ScheduleViewModelTest {
     @Test
     fun reservationReceived() {
         // Create test use cases with test data
-        val userEventsResult: MutableLiveData<UserEventsResult>
-                = MutableLiveData<UserEventsResult>()
+        val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
         val source = TestUserEventDataSource(userEventsResult)
         val loadSessionsUseCase = createTestLoadUserSessionsByDayUseCase(source)
         val signInDelegate = FakeSignInViewModelDelegate()
-        val snackbarMessageManager = SnackbarMessageManager()
+        val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
         val viewModel = createScheduleViewModel(
             loadSessionsUseCase = loadSessionsUseCase,
             signInViewModelDelegate = signInDelegate,
@@ -410,7 +388,7 @@ class ScheduleViewModelTest {
         val source = TestUserEventDataSource(userEventsResult)
         val loadSessionsUseCase = createTestLoadUserSessionsByDayUseCase(source)
         val signInDelegate = FakeSignInViewModelDelegate()
-        val snackbarMessageManager = SnackbarMessageManager()
+        val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
         val viewModel = createScheduleViewModel(
             loadSessionsUseCase = loadSessionsUseCase,
             signInViewModelDelegate = signInDelegate,
@@ -521,7 +499,8 @@ class ScheduleViewModelTest {
         signInViewModelDelegate: SignInViewModelDelegate = createSignInViewModelDelegate(),
         starEventUseCase: StarEventUseCase = createStarEventUseCase(),
         reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase(),
-        snackbarMessageManager: SnackbarMessageManager = SnackbarMessageManager(),
+        snackbarMessageManager: SnackbarMessageManager = SnackbarMessageManager(
+                FakePreferenceStorage()),
         scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase =
                 FakeScheduleUiHintsShownUseCase(),
         topicSubscriber: TopicSubscriber = mock {}
@@ -614,12 +593,6 @@ class FakeObserveUserAuthStateUseCase(
     TestAuthStateUserDataSource(user),
     mock {}
 )
-
-class FakePreferenceStorage(override var onboardingCompleted: Boolean = false,
-                            override var scheduleUiHintsShown: Boolean = false,
-                            override var notificationsPreferenceShown: Boolean = false,
-                            override var preferToReceiveNotifications: Boolean = false
-) : PreferenceStorage
 
 class FakeScheduleUiHintsShownUseCase : ScheduleUiHintsShownUseCase(
         preferenceStorage = FakePreferenceStorage())

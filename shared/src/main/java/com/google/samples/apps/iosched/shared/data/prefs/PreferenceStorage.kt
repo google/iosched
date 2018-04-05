@@ -16,8 +16,11 @@
 
 package com.google.samples.apps.iosched.shared.data.prefs
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.support.annotation.WorkerThread
 import androidx.content.edit
 import javax.inject.Inject
@@ -30,6 +33,8 @@ interface PreferenceStorage {
     var scheduleUiHintsShown: Boolean
     var notificationsPreferenceShown: Boolean
     var preferToReceiveNotifications: Boolean
+    var snackbarIsStopped: Boolean
+    var observableSnackbarIsStopped: LiveData<Boolean>
 }
 
 /**
@@ -38,8 +43,18 @@ interface PreferenceStorage {
 class SharedPreferenceStorage @Inject constructor(context: Context) :
     PreferenceStorage {
 
-    private val prefs = context.applicationContext.getSharedPreferences(
-        PREFS_NAME, MODE_PRIVATE)
+    private val prefs = context.applicationContext.getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+
+    private val observableShowSnackbarResult = MutableLiveData<Boolean>()
+    private val changeListener = OnSharedPreferenceChangeListener { _, key ->
+        if (key == PREF_SNACKBAR_IS_STOPPED) {
+            observableShowSnackbarResult.value = snackbarIsStopped
+        }
+    }
+
+    init {
+        prefs.registerOnSharedPreferenceChangeListener(changeListener)
+    }
 
     @get:WorkerThread
     override var onboardingCompleted
@@ -69,11 +84,24 @@ class SharedPreferenceStorage @Inject constructor(context: Context) :
             putBoolean(PREF_RECEIVE_NOTIFICATIONS, value)
         }
 
+    @get:WorkerThread
+    override var snackbarIsStopped: Boolean
+        get() = prefs.getBoolean(PREF_SNACKBAR_IS_STOPPED, false)
+        set(value) = prefs.edit { putBoolean(PREF_SNACKBAR_IS_STOPPED, value) }
+
+    override var observableSnackbarIsStopped: LiveData<Boolean>
+        get() {
+            observableShowSnackbarResult.value = snackbarIsStopped
+            return observableShowSnackbarResult
+        }
+        set(value) = throw IllegalAccessException("This property can't be changed")
+
     companion object {
         private const val PREFS_NAME = "iosched"
         private const val PREF_ONBOARDING = "pref_onboarding"
         private const val PREF_SCHED_UI_HINTS_SHOWN = "pref_sched_ui_hints_shown"
         private const val PREF_NOTIFICATIONS_SHOWN = "pref_notifications_shown"
         private const val PREF_RECEIVE_NOTIFICATIONS = "pref_receive_notifications"
+        private const val PREF_SNACKBAR_IS_STOPPED = "pref_snackbar_is_stopped"
     }
 }

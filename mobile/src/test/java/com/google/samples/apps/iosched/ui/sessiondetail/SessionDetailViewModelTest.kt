@@ -32,6 +32,7 @@ import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
 import com.google.samples.apps.iosched.test.util.time.FixedTimeExecutorRule
@@ -205,7 +206,8 @@ class SessionDetailViewModelTest {
         loadRelatedSessionsUseCase: LoadUserSessionsUseCase = createTestLoadUserSessionsUseCase(),
         reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase(),
         starEventUseCase: StarEventUseCase = FakeStarEventUseCase(),
-        snackbarMessageManager: SnackbarMessageManager = SnackbarMessageManager()
+        snackbarMessageManager: SnackbarMessageManager =
+                SnackbarMessageManager(FakePreferenceStorage())
     ): SessionDetailViewModel {
         return SessionDetailViewModel(
             signInViewModelPlugin, loadUserSessionUseCase, loadRelatedSessionsUseCase,

@@ -40,8 +40,10 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.lazyFast
+import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
+import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment.Companion.DIALOG_REMOVE_RESERVATION
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
@@ -79,7 +81,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var viewModel: ScheduleViewModel
+    private lateinit var scheduleViewModel: ScheduleViewModel
     private lateinit var coordinatorLayout: CoordinatorLayout
 
     @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
@@ -99,10 +101,10 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = activityViewModelProvider(viewModelFactory)
+        scheduleViewModel = activityViewModelProvider(viewModelFactory)
         val binding = FragmentScheduleBinding.inflate(inflater, container, false).apply {
             setLifecycleOwner(this@ScheduleFragment)
-            viewModel = this@ScheduleFragment.viewModel
+            viewModel = this@ScheduleFragment.scheduleViewModel
             isAgendaPage = this@ScheduleFragment.isAgendaPage
         }
 
@@ -111,31 +113,36 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         filtersFab = binding.filterFab
         // We can't lookup bottomSheetBehavior here since it's on a <fragment> tag
 
-        setUpSnackbar(viewModel.snackBarMessage, binding.snackbar, snackbarMessageManager)
+        val snackbarPrefViewModel: SnackbarPreferenceViewModel =
+                viewModelProvider(viewModelFactory)
+        setUpSnackbar(scheduleViewModel.snackBarMessage, binding.snackbar, snackbarMessageManager,
+                actionClickListener = {
+                    snackbarPrefViewModel.onStopClicked()
+                })
 
-        viewModel.navigateToSessionAction.observe(this, EventObserver { sessionId ->
+        scheduleViewModel.navigateToSessionAction.observe(this, EventObserver { sessionId ->
             openSessionDetail(sessionId)
         })
 
-        viewModel.navigateToSignInDialogAction.observe(this, EventObserver {
+        scheduleViewModel.navigateToSignInDialogAction.observe(this, EventObserver {
             openSignInDialog()
         })
 
-        viewModel.navigateToSignOutDialogAction.observe(this, EventObserver {
+        scheduleViewModel.navigateToSignOutDialogAction.observe(this, EventObserver {
             openSignOutDialog()
         })
-        viewModel.navigateToRemoveReservationDialogAction.observe(this, EventObserver {
+        scheduleViewModel.navigateToRemoveReservationDialogAction.observe(this, EventObserver {
             openRemoveReservationDialog(requireActivity(), it)
         })
-        viewModel.navigateToSwapReservationDialogAction.observe(this, EventObserver {
+        scheduleViewModel.navigateToSwapReservationDialogAction.observe(this, EventObserver {
             openSwapReservationDialog(requireActivity(), it)
         })
-        viewModel.scheduleUiHintsShown.observe(this, EventObserver {
+        scheduleViewModel.scheduleUiHintsShown.observe(this, EventObserver {
             if (!it) {
                 openScheduleUiHintsDialog()
             }
         })
-        viewModel.shouldShowNotificationsPrefAction.observe(this, EventObserver {
+        scheduleViewModel.shouldShowNotificationsPrefAction.observe(this, EventObserver {
             if (it) {
                 openNotificationsPreferenceDialog()
             }
