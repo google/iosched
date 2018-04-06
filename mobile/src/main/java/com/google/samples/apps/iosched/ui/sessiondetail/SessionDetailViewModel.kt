@@ -37,6 +37,8 @@ import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.time.MockableTime
+import com.google.samples.apps.iosched.shared.util.SetIntervalLiveData.DefaultIntervalMapper
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.shared.util.setValueIfNew
@@ -46,8 +48,6 @@ import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogPar
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
-import com.google.samples.apps.iosched.util.SetIntervalLiveData
-import com.google.samples.apps.iosched.util.time.DefaultTime
 import org.threeten.bp.Duration
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
@@ -66,7 +66,8 @@ class SessionDetailViewModel @Inject constructor(
     private val loadRelatedSessionUseCase: LoadUserSessionsUseCase,
     private val starEventUseCase: StarEventUseCase,
     private val reservationActionUseCase: ReservationActionUseCase,
-    private val snackbarMessageManager: SnackbarMessageManager
+    private val snackbarMessageManager: SnackbarMessageManager,
+    mockableTime: MockableTime
 ) : ViewModel(), SessionDetailEventListener, EventActions,
     SignInViewModelDelegate by signInViewModelPlugin {
 
@@ -198,9 +199,9 @@ class SessionDetailViewModel @Inject constructor(
         }
 
         // Updates periodically with a special [IntervalLiveData]
-        timeUntilStart = SetIntervalLiveData.mapAtInterval(session, TEN_SECONDS) { currentSession ->
+        timeUntilStart = DefaultIntervalMapper.mapAtInterval(session, TEN_SECONDS) { currentSession ->
             currentSession?.startTime?.let { startTime ->
-                val duration = Duration.between(DefaultTime.now(), startTime)
+                val duration = Duration.between(mockableTime.now(), startTime)
                 val minutes = duration.toMinutes()
                 when (minutes) {
                     in 1..5 -> duration
@@ -210,10 +211,10 @@ class SessionDetailViewModel @Inject constructor(
         }
 
         isReservationDisabled =
-                SetIntervalLiveData.mapAtInterval(session, SIXTY_SECONDS) { currentSession ->
+                DefaultIntervalMapper.mapAtInterval(session, SIXTY_SECONDS) { currentSession ->
                     currentSession?.startTime?.let { startTime ->
                         // Only allow reservations if the sessions starts more than an hour from now
-                        Duration.between(DefaultTime.now(), startTime).toMinutes() <= 60
+                        Duration.between(mockableTime.now(), startTime).toMinutes() <= 60
                     }
                 }
 
@@ -320,6 +321,12 @@ class SessionDetailViewModel @Inject constructor(
     }
 
     override fun onReservationClicked() {
+        if (!isSignedIn()) {
+            Timber.d("Showing Sign-in dialog after reserve click")
+            _navigateToSignInDialogAction.value = Event(Unit)
+            return
+        }
+
         val userEventSnapshot = userEvent.value ?: return
         val sessionSnapshot = session.value ?: return
         val isReservationDisabledSnapshot = isReservationDisabled.value ?: return

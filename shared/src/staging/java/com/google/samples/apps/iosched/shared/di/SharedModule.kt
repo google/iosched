@@ -30,6 +30,10 @@ import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEvent
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.fcm.StagingTopicSubscriber
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
+import com.google.samples.apps.iosched.shared.time.DefaultTime
+import com.google.samples.apps.iosched.shared.time.MockableTime
+import com.google.samples.apps.iosched.shared.util.SetIntervalLiveData.DefaultIntervalMapper
+import com.google.samples.apps.iosched.shared.util.SetIntervalLiveData.IntervalMapper
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -99,6 +103,13 @@ class SharedModule {
     @Provides
     fun provideTopicSubscriber(): TopicSubscriber {
         return StagingTopicSubscriber()
+    }
+
+    @Singleton
+    @Provides
+    fun provideMockableTime(): MockableTime {
+        // TODO: Make the time configurable
+        return DefaultTime
     }
 }
 
