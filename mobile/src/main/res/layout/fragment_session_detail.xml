@@ -171,6 +171,7 @@
                     app:layout_constraintEnd_toStartOf="@id/session_detail_recorded"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintBottom_toTopOf="@id/session_detail_level_barrier"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/session_detail_time"
                     app:layout_constraintWidth_default="wrap"
@@ -182,14 +183,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_normal"
                     android:layout_marginTop="@dimen/spacing_micro"
-                    android:visibility="gone"
                     android:importantForAccessibility="no"
-                    app:layout_constraintBottom_toBottomOf="@id/session_detail_room"
+                    app:layout_constraintBottom_toTopOf="@id/session_detail_level_barrier"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toEndOf="@id/session_detail_room"
-                    app:layout_constraintTop_toTopOf="@id/session_detail_room"
+                    app:layout_constraintTop_toBottomOf="@id/session_detail_time"
                     app:goneUnless="@{viewModel.session.isLivestream}"
                     app:srcCompat="@drawable/ic_livestreamed" />
+
+                <android.support.constraint.Barrier
+                    android:id="@+id/session_detail_level_barrier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="session_detail_room,session_detail_recorded" />
 
                 <TextView
                     android:id="@+id/session_detail_level"
@@ -199,7 +206,7 @@
                     android:text="@{viewModel.session.levelTag.name}"
                     android:textColor="?android:textColorPrimary"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/session_detail_room"
+                    app:layout_constraintTop_toBottomOf="@id/session_detail_level_barrier"
                     app:goneUnless="@{viewModel.session.levelTag != null}"
                     tools:text="Intermediate" />
 
