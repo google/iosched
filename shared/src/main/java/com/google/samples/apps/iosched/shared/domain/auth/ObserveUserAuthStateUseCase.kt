@@ -21,6 +21,7 @@ import com.google.samples.apps.iosched.shared.data.signin.FirebaseRegisteredUser
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
+import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Result
 import timber.log.Timber
 import javax.inject.Inject
@@ -37,7 +38,8 @@ import javax.inject.Singleton
 @Singleton
 open class ObserveUserAuthStateUseCase @Inject constructor(
         registeredUserDataSource: RegisteredUserDataSource,
-        private val authStateUserDataSource: AuthStateUserDataSource
+        private val authStateUserDataSource: AuthStateUserDataSource,
+        private val topicSubscriber: TopicSubscriber
 ) : MediatorUseCase<Any, AuthenticatedUserInfo>() {
 
     private val currentFirebaseUserObservable = authStateUserDataSource.getBasicUserInfo()
@@ -58,6 +60,7 @@ open class ObserveUserAuthStateUseCase @Inject constructor(
             if (userResult is Result.Success && userResult.data?.isSignedIn() == false) {
                 registeredUserDataSource.setAnonymousValue()
                 updateUserObservable()
+                unsubscribeFromRegisteredTopic() // Stop receiving notifications for attendees
             }
             // Error
             if (userResult is Result.Error) {
@@ -87,11 +90,24 @@ open class ObserveUserAuthStateUseCase @Inject constructor(
             // If the isRegistered value is an error, assign it false. Null means no info yet.
             val isRegisteredValue: Boolean? = (isRegistered as? Result.Success)?.data
 
+            // Whenever there's new user data and the user is an attendee, subscribe to topic:
+            if (isRegisteredValue == true && currentFirebaseUser.data?.isSignedIn() == true) {
+                subscribeToRegisteredTopic()
+            }
+
             result.postValue(Result.Success(
                     FirebaseRegisteredUserInfo(currentFirebaseUser.data, isRegisteredValue)))
         } else {
             Timber.e("There was a registration error.")
             result.postValue(Result.Error(Exception("Registration error")))
         }
+    }
+
+    private fun subscribeToRegisteredTopic() {
+        topicSubscriber.subscribeToAttendeeUpdates()
+    }
+
+    private fun unsubscribeFromRegisteredTopic() {
+        topicSubscriber.unsubscribeFromAttendeeUpdates()
     }
 }
