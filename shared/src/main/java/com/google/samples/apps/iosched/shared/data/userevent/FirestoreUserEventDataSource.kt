@@ -36,7 +36,6 @@ import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import timber.log.Timber
 import java.util.UUID
 import java.util.concurrent.TimeUnit
@@ -230,8 +229,6 @@ class FirestoreUserEventDataSource @Inject constructor(
         val result = MutableLiveData<Result<StarUpdatedStatus>>()
 
         val data = mapOf(ID to userEvent.id,
-                START_TIME to userEvent.startTime,
-                END_TIME to userEvent.endTime,
                 IS_STARRED to userEvent.isStarred)
 
         firestore.collection(USERS_COLLECTION)
@@ -288,8 +285,6 @@ class FirestoreUserEventDataSource @Inject constructor(
         )
 
         val userSessionData = mapOf(ID to session.id,
-                START_TIME to session.startTime.toEpochMilli(),
-                END_TIME to session.endTime.toEpochMilli(),
                 RESERVATION_REQUEST_KEY to reservationRequest)
 
         batch.set(userSession, userSessionData, SetOptions.merge())
@@ -346,8 +341,6 @@ class FirestoreUserEventDataSource @Inject constructor(
                 RESERVATION_REQUEST_TIMESTAMP_KEY to serverTimestamp
         )
         val userSessionData = mapOf(ID to toSession.id,
-                START_TIME to toSession.startTime.toEpochMilli(),
-                END_TIME to toSession.endTime.toEpochMilli(),
                 RESERVATION_REQUEST_KEY to toSwapRequest)
         batch.set(toUserSession, userSessionData, SetOptions.merge())
 

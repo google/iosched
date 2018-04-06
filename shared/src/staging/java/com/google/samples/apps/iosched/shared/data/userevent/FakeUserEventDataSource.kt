@@ -45,9 +45,6 @@ object FakeUserEventDataSource : UserEventDataSource {
             if (i in 1..50) {
                 userEvents.add(UserEvent(session.id,
                         isStarred = i % 2 == 0,
-                        startTime = session.startTime.toInstant().toEpochMilli(),
-                        endTime = session.endTime.toInstant().toEpochMilli(),
-                        isReviewed = i % 3 == 0,
                         reservationRequestResult = reservation))
             }
         }

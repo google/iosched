@@ -35,7 +35,6 @@ import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
-import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -164,9 +163,10 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
             action: ReservationRequestAction
     ): LiveData<Result<ReservationRequestAction>> {
 
+        val sessions = sessionRepository.getSessions().associateBy {it.id}
         val userEvents = getUserEvents(userId)
         val session = sessionRepository.getSession(sessionId)
-        val overlappingId = findOverlappingReservationId(session, action, userEvents)
+        val overlappingId = findOverlappingReservationId(session, action, sessions, userEvents)
         if (overlappingId != null) {
             // If there is already an overlapping reservation, return the result as
             // SwapAction is needed.
@@ -196,20 +196,19 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
     private fun findOverlappingReservationId(session: Session,
                                              action: ReservationRequestAction,
+                                             sessions: Map<String, Session>,
                                              userEvents: List<UserEvent>
     ): String? {
         if (action !is RequestAction) return null
         val overlappingUserEvent = userEvents.find {
-            it.isOverlapping(session) && (it.isReserved() || it.isWaitlisted())
+            sessions[it.id]?.isOverlapping(session) == true
+                    && (it.isReserved() || it.isWaitlisted())
         }
         return overlappingUserEvent?.id
     }
 
     private fun createDefaultUserEvent(session: Session): UserEvent {
-        return UserEvent(
-                id = session.id,
-                startTime = session.startTime.toEpochMilli(),
-                endTime = session.endTime.toEpochMilli())
+        return UserEvent(id = session.id)
     }
 
     /**
