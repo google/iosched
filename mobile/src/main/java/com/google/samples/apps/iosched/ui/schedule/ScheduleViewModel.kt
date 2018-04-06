@@ -112,6 +112,8 @@ class ScheduleViewModel @Inject constructor(
     private val day2Sessions: LiveData<List<UserSession>>
     private val day3Sessions: LiveData<List<UserSession>>
 
+    val eventCount: LiveData<Int>
+
     val agenda: LiveData<List<Block>>
 
     /** LiveData for Actions and Events **/
@@ -179,6 +181,10 @@ class ScheduleViewModel @Inject constructor(
         }
         day3Sessions = loadSessionsResult.map {
             (it as? Result.Success)?.data?.userSessionsPerDay?.get(DAY_3) ?: emptyList()
+        }
+
+        eventCount= loadSessionsResult.map {
+            (it as? Result.Success)?.data?.userSessionCount ?: 0
         }
 
         isLoading = loadSessionsResult.map { it == Result.Loading }

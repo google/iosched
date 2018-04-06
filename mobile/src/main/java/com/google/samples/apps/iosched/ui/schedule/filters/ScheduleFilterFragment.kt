@@ -28,6 +28,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.view.doOnLayout
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleFilterBinding
@@ -153,6 +154,10 @@ class ScheduleFilterFragment : DaggerFragment() {
             behavior.state = if (behavior.skipCollapsed) STATE_HIDDEN else STATE_COLLAPSED
         }
 
+        binding.expand.setOnClickListener {
+            behavior.state = STATE_EXPANDED
+        }
+
         // This fragment is in the layout of a parent fragment, so its view hierarchy is restored
         // when the parent's hierarchy is restored. However, the dispatch order seems to traverse
         // child fragments first, meaning the views we care about have not actually been restored
@@ -250,5 +255,16 @@ fun clearFilterShortcutClick(view: View, viewModel: ScheduleViewModel) {
             PinnedEventMatcher -> viewModel.togglePinnedEvents(false)
             is TagFilterMatcher -> viewModel.clearTagFilters()
         }
+    }
+}
+
+@BindingAdapter(value = ["hasFilters", "eventCount"], requireAll = true)
+fun filterHeader(textView: TextView, hasFilters: Boolean?, eventCount: Int?) {
+    if (hasFilters == true && eventCount != null) {
+        textView.text = textView.resources.getQuantityString(
+            R.plurals.filter_event_count, eventCount, eventCount
+        )
+    } else {
+        textView.setText(R.string.filters)
     }
 }
