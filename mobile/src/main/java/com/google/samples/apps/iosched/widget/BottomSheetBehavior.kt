@@ -237,7 +237,7 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
     private var nestedScrolled = false
     private var nestedScrollingChildRef: WeakReference<View>? = null
 
-    private var callback: BottomSheetCallback? = null
+    private val callbacks: MutableSet<BottomSheetCallback> = mutableSetOf()
 
     constructor() : super()
 
@@ -294,15 +294,21 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
         }
     }
 
-    fun setBottomSheetCallback(callback: BottomSheetCallback?) {
-        this.callback = callback
+    fun addBottomSheetCallback(callback: BottomSheetCallback) {
+        callbacks.add(callback)
+    }
+
+    fun removeBottomSheetCallback(callback: BottomSheetCallback) {
+        callbacks.remove(callback)
     }
 
     private fun setStateInternal(@State state: Int) {
         if (_state != state) {
             _state = state
-            viewRef?.get()?.let {
-                callback?.onStateChanged(it, state)
+            viewRef?.get()?.let { view ->
+                callbacks.forEach { callback ->
+                    callback.onStateChanged(view, state)
+                }
             }
         }
     }
@@ -699,13 +705,13 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
 
     private fun dispatchOnSlide(top: Int) {
         viewRef?.get()?.let { sheet ->
-            callback?.apply {
-                val denom = if (top > collapsedOffset) {
-                    parentHeight - collapsedOffset
-                } else {
-                    collapsedOffset - getExpandedOffset()
-                }
-                onSlide(sheet, (collapsedOffset - top).toFloat() / denom)
+            val denom = if (top > collapsedOffset) {
+                parentHeight - collapsedOffset
+            } else {
+                collapsedOffset - getExpandedOffset()
+            }
+            callbacks.forEach { callback ->
+                callback.onSlide(sheet, (collapsedOffset - top).toFloat() / denom)
             }
         }
     }
