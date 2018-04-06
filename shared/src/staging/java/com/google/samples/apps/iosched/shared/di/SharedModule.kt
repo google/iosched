@@ -33,6 +33,8 @@ import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEvent
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.fcm.StagingTopicSubscriber
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
+import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
+import com.google.samples.apps.iosched.shared.time.TimeProvider
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -116,6 +118,13 @@ class SharedModule {
     @Provides
     fun provideLogisticsDataSource(): LogisticsDataSource {
         return FakeLogisticsDataSource()
+    }
+
+    @Singleton
+    @Provides
+    fun provideTimeProvider(): TimeProvider {
+        // TODO: Make the time configurable
+        return DefaultTimeProvider
     }
 }
 

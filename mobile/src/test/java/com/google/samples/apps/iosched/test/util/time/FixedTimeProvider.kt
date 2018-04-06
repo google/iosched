@@ -16,16 +16,16 @@
 
 package com.google.samples.apps.iosched.test.util.time
 
-import com.google.samples.apps.iosched.util.time.DefaultTime
-import com.google.samples.apps.iosched.util.time.MockableTime
+import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
+import com.google.samples.apps.iosched.shared.time.TimeProvider
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 import org.threeten.bp.Instant
 
 /**
- * Fix the MockableTime to a fixed time
+ * Fix the TimeProvider to a fixed time
  */
-class FixedTime(var instant: Instant) : MockableTime {
+class FixedTimeProvider(var instant: Instant) : TimeProvider {
     constructor(timeInMilis: Long) : this(Instant.ofEpochMilli(timeInMilis))
 
     override fun now(): Instant {
@@ -34,9 +34,11 @@ class FixedTime(var instant: Instant) : MockableTime {
 }
 
 /**
- * Rule to be used in tests that sets the clocked used by DefaultTime.
+ * Rule to be used in tests that sets the clocked used by DefaultTimeProvider.
  */
-class FixedTimeExecutorRule(val fixedTime: FixedTime = FixedTime(1_000_000)) : TestWatcher() {
+class FixedTimeExecutorRule(
+    private val fixedTime: FixedTimeProvider = FixedTimeProvider(1_000_000)
+) : TestWatcher() {
 
     var time: Instant
         get() = fixedTime.instant
@@ -46,11 +48,11 @@ class FixedTimeExecutorRule(val fixedTime: FixedTime = FixedTime(1_000_000)) : T
 
     override fun starting(description: Description?) {
         super.starting(description)
-        DefaultTime.setDelegate(fixedTime)
+        DefaultTimeProvider.setDelegate(fixedTime)
     }
 
     override fun finished(description: Description?) {
         super.finished(description)
-        DefaultTime.setDelegate(null)
+        DefaultTimeProvider.setDelegate(null)
     }
 }
