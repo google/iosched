@@ -121,29 +121,21 @@ object TestData : ConferenceDataSource {
     private val userEvent0 = UserEvent(
         sessionIDs[0], isStarred = false,
         isReviewed = false,
-        startTime = session0.startTime.toInstant().toEpochMilli(),
-        endTime = session0.endTime.toInstant().toEpochMilli(),
         reservationRequestResult = ReservationRequestResult(
                     RESERVE_SUCCEEDED, "123", System.currentTimeMillis()))
     private val userEvent1 = UserEvent(
         sessionIDs[1], isStarred = true,
         isReviewed = true,
-        startTime = session1.startTime.toInstant().toEpochMilli(),
-        endTime = session1.endTime.toInstant().toEpochMilli(),
         reservationRequestResult = ReservationRequestResult(
                     RESERVE_WAITLISTED, "123", System.currentTimeMillis()))
     private val userEvent2 = UserEvent(
         sessionIDs[2], isStarred = true,
         isReviewed = false,
-        startTime = session2.startTime.toInstant().toEpochMilli(),
-        endTime = session2.endTime.toInstant().toEpochMilli(),
         reservationRequestResult = ReservationRequestResult(
                     RESERVE_DENIED_CUTOFF, "123", System.currentTimeMillis()))
     private val userEvent3 = UserEvent(
         sessionIDs[3], isStarred = false,
         isReviewed = true,
-        startTime = session3.startTime.toInstant().toEpochMilli(),
-        endTime = session3.endTime.toInstant().toEpochMilli(),
         reservationRequestResult = ReservationRequestResult(
                     RESERVE_DENIED_UNKNOWN, "123", System.currentTimeMillis()))
     val userEvents = listOf(userEvent0, userEvent1, userEvent2, userEvent3)
