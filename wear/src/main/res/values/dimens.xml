@@ -38,4 +38,7 @@
     <dimen name="list_item_padding">5dp</dimen>
     <dimen name="session_icon_and_row_dimensions">48dp</dimen>
     <dimen name="session_icon_padding">4dp</dimen>
+    <dimen name="session_detail_end_spacer">20dp</dimen>
+    <dimen name="session_detail_activity_horizontal_padding">10dp</dimen>
+    <dimen name="sesssion_details_horizontal_padding">4dp</dimen>
 </resources>
