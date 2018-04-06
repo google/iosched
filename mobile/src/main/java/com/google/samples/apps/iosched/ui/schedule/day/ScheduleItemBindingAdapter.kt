@@ -24,9 +24,12 @@ import android.view.View.VISIBLE
 import android.widget.TextView
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
+import com.google.samples.apps.iosched.shared.model.Room
 import com.google.samples.apps.iosched.ui.reservation.ReservationTextView
 import com.google.samples.apps.iosched.ui.reservation.ReservationViewState
 import com.google.samples.apps.iosched.ui.reservation.ReserveButton
+
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.Duration
 import org.threeten.bp.ZonedDateTime
 
@@ -35,12 +38,28 @@ fun sessionLengthLocation(
     textView: TextView,
     startTime: ZonedDateTime,
     endTime: ZonedDateTime,
-    room: String
+    room: Room
 ) {
-    textView.text = textView.context.getString(
-        R.string.session_duration_location,
-        durationString(textView.context, Duration.between(startTime, endTime)), room
-    )
+    textView.text = if (!TimeUtils.inConferenceTimeZone()) {
+        val localStartTime = TimeUtils.zonedTime(startTime)
+        val localEndTime = TimeUtils.zonedTime(endTime)
+
+        // Show the local time, the duration, and the abbreviated room name.
+        // Example: "Tue, May 8 / 1 hour / Stage 1"
+        textView.context.getString(
+            R.string.session_date_duration_location,
+            TimeUtils.abbreviatedTimeString(localStartTime),
+            durationString(textView.context, Duration.between(localStartTime, localEndTime)),
+            room.abbreviatedName
+        )
+    } else {
+        // Assume user is at the conference and show the duration and the full room name
+        // Example: "1 hour / Stage2||Hydra"
+        textView.context.getString(
+            R.string.session_duration_location,
+            durationString(textView.context, Duration.between(startTime, endTime)), room
+        )
+    }
 }
 
 private fun durationString(context: Context, duration: Duration): String {

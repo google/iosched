@@ -19,15 +19,21 @@ package com.google.samples.apps.iosched.ui.schedule.day
 import com.google.samples.apps.iosched.model.TestData
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 
 class SessionHeaderIndexerTest {
+    companion object {
+        val timeZone = "America/Los_Angeles"
+        val startTimeString = "2018-05-08T07:00:00-07:00[$timeZone]"
+    }
 
     @Test
     fun indexSessions_groupsCorrectly() {
         // Given a list of test sessions with a range of start times (on the hour)
         val session = TestData.session1
-        val start = ZonedDateTime.parse("2018-05-08T07:00:00-07:00")
+        val start = ZonedDateTime.parse(startTimeString)
+
         val sessions = listOf(
             session.copy(startTime = start),
             session.copy(startTime = start),
@@ -38,7 +44,7 @@ class SessionHeaderIndexerTest {
         )
 
         // Process this list to group by start time, keyed on index
-        val grouped = indexSessionHeaders(sessions).toMap()
+        val grouped = indexSessionHeaders(sessions, ZoneId.of(timeZone)).toMap()
 
         // Then verify that the correct groupings are made and indexes used
         assertEquals(3, grouped.size)
@@ -52,7 +58,7 @@ class SessionHeaderIndexerTest {
     fun indexSessions_roundsTimeDown() {
         // Given a list of test sessions with start times not on the hour
         val session = TestData.session1
-        val start = ZonedDateTime.parse("2018-05-08T07:00:00-07:00")
+        val start = ZonedDateTime.parse(startTimeString)
         val sessions = listOf(
             session.copy(startTime = start),
             session.copy(startTime = start.plusMinutes(10)),
@@ -67,7 +73,7 @@ class SessionHeaderIndexerTest {
         )
 
         // Process this list to group by start time, keyed on index
-        val grouped = indexSessionHeaders(sessions).toMap()
+        val grouped = indexSessionHeaders(sessions, ZoneId.of(timeZone)).toMap()
 
         // Then verify that the correct groupings are made, rounding down the time to the hour
         assertEquals(2, grouped.size)
@@ -80,7 +86,7 @@ class SessionHeaderIndexerTest {
     fun indexSessions_acrossDays() {
         // Given a list of test sessions which cross into a new day
         val session = TestData.session1
-        val start = ZonedDateTime.parse("2018-05-08T22:00:00-07:00")
+        val start = ZonedDateTime.parse(startTimeString)
         val sessions = listOf(
             session.copy(startTime = start),                // 10PM
             session.copy(startTime = start.plusHours(1)),   // 11PM
@@ -90,7 +96,7 @@ class SessionHeaderIndexerTest {
         )
 
         // Process this list to group by start time, keyed on index
-        val grouped = indexSessionHeaders(sessions).toMap()
+        val grouped = indexSessionHeaders(sessions, ZoneId.of(timeZone)).toMap()
 
         // Then verify that the correct groupings are made and in the correct order
         assertEquals(5, grouped.size)
