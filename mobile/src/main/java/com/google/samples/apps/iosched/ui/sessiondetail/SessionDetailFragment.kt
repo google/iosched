@@ -105,6 +105,10 @@ class SessionDetailFragment : DaggerFragment() {
             openYoutubeUrl(youtubeUrl)
         })
 
+        sessionDetailViewModel.navigateToSessionAction.observe(this, EventObserver { sessionId ->
+            startActivity(SessionDetailActivity.starterIntent(requireContext(), sessionId))
+        })
+
         // TODO style Snackbar so it doesn't overlap the bottom app bar (b/76112328)
 
         setUpSnackbar(

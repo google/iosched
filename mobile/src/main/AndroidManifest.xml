@@ -36,12 +36,11 @@
 
         <activity
             android:name=".ui.onboarding.OnboardingActivity"
-            android:label="iosched onboarding"
             android:theme="@style/AppTheme.Onboarding" />
 
         <activity
             android:name=".ui.sessiondetail.SessionDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.SessionDetails" />
 
         <!-- This activity alias lets us change the main entry point without breaking launcher
              shortcuts. DO NOT change its android:name attribute. -->

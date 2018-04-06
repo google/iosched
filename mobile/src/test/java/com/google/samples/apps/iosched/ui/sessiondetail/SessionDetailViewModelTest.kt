@@ -25,6 +25,7 @@ import com.google.samples.apps.iosched.shared.data.session.DefaultSessionReposit
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.model.Session
@@ -215,14 +216,17 @@ class SessionDetailViewModelTest {
     }
 
     private fun createSessionDetailViewModel(
-            signInViewModelPlugin: SignInViewModelDelegate = FakeSignInViewModelDelegate(),
-            loadUserSessionUseCase: LoadUserSessionUseCase = createTestLoadUserSessionUseCase(),
-            reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase(),
-            starEventUseCase: StarEventUseCase = FakeStarEventUseCase(),
-            snackbarMessageManager: SnackbarMessageManager = SnackbarMessageManager()
+        signInViewModelPlugin: SignInViewModelDelegate = FakeSignInViewModelDelegate(),
+        loadUserSessionUseCase: LoadUserSessionUseCase = createTestLoadUserSessionUseCase(),
+        loadRelatedSessionsUseCase: LoadUserSessionsUseCase = createTestLoadUserSessionsUseCase(),
+        reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase(),
+        starEventUseCase: StarEventUseCase = FakeStarEventUseCase(),
+        snackbarMessageManager: SnackbarMessageManager = SnackbarMessageManager()
     ): SessionDetailViewModel {
-        return SessionDetailViewModel(signInViewModelPlugin, loadUserSessionUseCase,
-                starEventUseCase, reservationActionUseCase,snackbarMessageManager)
+        return SessionDetailViewModel(
+            signInViewModelPlugin, loadUserSessionUseCase, loadRelatedSessionsUseCase,
+            starEventUseCase, reservationActionUseCase, snackbarMessageManager
+        )
     }
 
     private fun forceTimeUntilStartIntervalUpdate(vm: SessionDetailViewModel) {
@@ -238,8 +242,8 @@ class SessionDetailViewModelTest {
             tags = listOf(TestData.androidTag, TestData.webTag),
             displayTags = listOf(TestData.androidTag, TestData.webTag),
             speakers = setOf(TestData.speaker), relatedSessions = emptySet()
-
         )
+
     private fun createTestLoadUserSessionUseCase(
             userEventDataSource: UserEventDataSource = TestUserEventDataSource()
     ): LoadUserSessionUseCase {
@@ -247,6 +251,15 @@ class SessionDetailViewModelTest {
         val userEventRepository = DefaultSessionAndUserEventRepository(
                 userEventDataSource, sessionRepository)
         return LoadUserSessionUseCase(userEventRepository)
+    }
+
+    private fun createTestLoadUserSessionsUseCase(
+        userEventDataSource: UserEventDataSource = TestUserEventDataSource()
+    ): LoadUserSessionsUseCase {
+        val sessionRepository = DefaultSessionRepository(TestDataRepository)
+        val userEventRepository = DefaultSessionAndUserEventRepository(
+            userEventDataSource, sessionRepository)
+        return LoadUserSessionsUseCase(userEventRepository)
     }
 
     private fun createReservationActionUseCase() = object: ReservationActionUseCase(
