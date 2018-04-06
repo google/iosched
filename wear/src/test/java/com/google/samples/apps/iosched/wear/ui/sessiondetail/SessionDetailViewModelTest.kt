@@ -20,9 +20,11 @@ package com.google.samples.apps.iosched.wear.ui.sessiondetail
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
-import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.wear.domain.repository.TestUserEventDataSource
 import com.google.samples.apps.iosched.wear.model.TestData
 import com.google.samples.apps.iosched.wear.model.TestDataRepository
 import com.google.samples.apps.iosched.wear.util.SyncTaskExecutorRule
@@ -47,7 +49,8 @@ class SessionDetailViewModelTest {
 
     @Before
     fun setup() {
-        viewModel = SessionDetailViewModel(createUseCase(testSession))
+        viewModel = SessionDetailViewModel(createTestLoadUserSessionUseCase())
+        viewModel.loadSessionById(testSession.id)
     }
 
     @Test
@@ -59,9 +62,12 @@ class SessionDetailViewModelTest {
     /**
      * Creates a use case that will return the provided session.
      */
-    private fun createUseCase(session: Session): LoadSessionUseCase {
-        return object : LoadSessionUseCase(DefaultSessionRepository(TestDataRepository)) {
-            override fun execute(parameters: String) = session
-        }
+    private fun createTestLoadUserSessionUseCase(
+        userEventDataSource: UserEventDataSource = TestUserEventDataSource()
+    ): LoadUserSessionUseCase {
+        val sessionRepository = DefaultSessionRepository(TestDataRepository)
+        val userEventRepository = DefaultSessionAndUserEventRepository(
+                userEventDataSource, sessionRepository)
+        return LoadUserSessionUseCase(userEventRepository)
     }
 }
