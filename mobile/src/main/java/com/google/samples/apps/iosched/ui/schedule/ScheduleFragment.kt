@@ -36,9 +36,7 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.EventObserver
-
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.lazyFast
@@ -58,6 +56,7 @@ import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFr
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
+import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_COLLAPSED
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_EXPANDED
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_HIDDEN
@@ -149,6 +148,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         viewpager.offscreenPageLimit = COUNT - 1
         viewpager.adapter = ScheduleAdapter(childFragmentManager)
 
+        val appbar: View = view.findViewById(R.id.appbar)
         val tabs: TabLayout = view.findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewpager)
 
@@ -163,6 +163,17 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         filtersFab.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetCallback {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                val a11yState = if (newState == STATE_EXPANDED) {
+                    View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
+                } else {
+                    View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
+                }
+                viewpager.importantForAccessibility = a11yState
+                appbar.importantForAccessibility = a11yState
+            }
+        })
 
         if (savedInstanceState == null) {
             // Set the peek height on first layout
