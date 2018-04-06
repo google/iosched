@@ -36,7 +36,7 @@
             style="@style/Widget.AppBar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/white_67"
+            android:background="@color/white_90"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -57,6 +57,7 @@
             android:id="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/bottom_navigation_height"
             app:isIndoorEnabled="@{false}"
             app:isMapToolbarEnabled="@{false}"
             app:isZoomControlsEnabled="@{false}"
