@@ -57,7 +57,7 @@ fun sessionLengthLocation(
         // Example: "1 hour / Stage2||Hydra"
         textView.context.getString(
             R.string.session_duration_location,
-            durationString(textView.context, Duration.between(startTime, endTime)), room
+            durationString(textView.context, Duration.between(startTime, endTime)), room.name
         )
     }
 }
