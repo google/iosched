@@ -75,7 +75,7 @@
             android:layout_height="@dimen/a11y_min_touch_target"
             android:background="?selectableItemBackgroundBorderless"
             android:checked="@{userEvent.isStarred}"
-            android:contentDescription="@string/a11y_star_session_actions"
+            android:contentDescription="@string/a11y_star"
             android:onClick="@{() -> eventListener.onStarClicked(userEvent)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

@@ -65,7 +65,7 @@
                     android:id="@+id/detail_image"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:contentDescription="@string/a11y_session_detail_video_description"
+                    android:importantForAccessibility="no"
                     android:scaleType="centerCrop"
                     app:layout_constraintDimensionRatio="@string/session_detail_header_aspect"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -74,11 +74,11 @@
                     app:headerImage="@{viewModel.session.photoUrl}" />
 
                 <!-- Play button, shown if there is a recording available -->
-                <ImageView
+                <ImageButton
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="@color/scrim"
-                    android:contentDescription="@string/a11y_play_button_description"
+                    android:contentDescription="@string/a11y_play"
                     android:foreground="?selectableItemBackground"
                     android:onClick="@{() -> viewModel.onPlayVideo()}"
                     android:scaleType="center"
@@ -182,8 +182,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_normal"
                     android:layout_marginTop="@dimen/spacing_micro"
-                    android:contentDescription="@string/a11y_session_detail_video_icon"
                     android:visibility="gone"
+                    android:importantForAccessibility="no"
                     app:layout_constraintBottom_toBottomOf="@id/session_detail_room"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toEndOf="@id/session_detail_room"
