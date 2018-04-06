@@ -38,6 +38,8 @@ interface PreferenceStorage {
     var preferToReceiveNotifications: Boolean
     var snackbarIsStopped: Boolean
     var observableSnackbarIsStopped: LiveData<Boolean>
+    var sendUsageStatistics: Boolean
+    var preferConferenceTimeZone: Boolean
 }
 
 /**
@@ -81,6 +83,12 @@ class SharedPreferenceStorage @Inject constructor(context: Context) :
         }
         set(value) = throw IllegalAccessException("This property can't be changed")
 
+    override var sendUsageStatistics: Boolean
+        by BooleanPreference(prefs, PREF_SEND_USAGE_STATISTICS, false)
+
+    override var preferConferenceTimeZone: Boolean
+        by BooleanPreference(prefs, PREF_CONFERENCE_TIME_ZONE, true)
+
     companion object {
         private const val PREFS_NAME = "iosched"
         private const val PREF_ONBOARDING = "pref_onboarding"
@@ -88,6 +96,8 @@ class SharedPreferenceStorage @Inject constructor(context: Context) :
         private const val PREF_NOTIFICATIONS_SHOWN = "pref_notifications_shown"
         private const val PREF_RECEIVE_NOTIFICATIONS = "pref_receive_notifications"
         private const val PREF_SNACKBAR_IS_STOPPED = "pref_snackbar_is_stopped"
+        private const val PREF_SEND_USAGE_STATISTICS = "pref_send_usage_statistics"
+        private const val PREF_CONFERENCE_TIME_ZONE = "pref_conference_time_zone"
     }
 }
 

@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.domain.prefs
+package com.google.samples.apps.iosched.shared.domain.settings
 
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
 
-/**
- * Records the user preference if the user wants to receive notifications from iosched.
- */
-open class NotificationsPrefSaveActionUseCase @Inject constructor(
-    private val preferenceStorage: PreferenceStorage
-) : UseCase<Boolean, Boolean>() {
+open class SetAnalyticsSettingUseCase @Inject constructor(private val preferenceStorage: PreferenceStorage) :
+    UseCase<Boolean, Boolean>() {
+
     override fun execute(parameters: Boolean): Boolean {
-        preferenceStorage.preferToReceiveNotifications = parameters
-        return preferenceStorage.preferToReceiveNotifications
+        preferenceStorage.sendUsageStatistics = parameters
+        return preferenceStorage.sendUsageStatistics
     }
 }
