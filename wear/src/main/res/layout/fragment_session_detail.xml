@@ -14,58 +14,118 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<android.support.wear.widget.BoxInsetLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:padding="@dimen/box_inset_layout_padding_pixels">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Convert to ConstraintLayout. -->
-    <LinearLayout
-        android:id="@+id/content_view"
+    <data>
+        <variable
+            name="viewModel"
+            type="com.google.samples.apps.iosched.wear.ui.sessiondetail.SessionDetailViewModel" />
+    </data>
+
+    <ScrollView
+        android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        app:boxedEdges="all">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/titleTextView"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/content_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Title" />
+            android:gravity="center">
 
-        <TextView
-            android:id="@+id/timeTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Time" />
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                android:gravity="center"
+                android:text="@{viewModel.session.title}"
+                android:textAppearance="@style/TextAppearance.IOSched.SessionDetailTitle"
+                app:layout_constraintBottom_toTopOf="@+id/roomTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Title"
+                android:paddingLeft="@dimen/sesssion_details_horizontal_padding"
+                android:paddingRight="@dimen/sesssion_details_horizontal_padding"/>
 
-        <TextView
-            android:id="@+id/locationAndLengthTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Location" />
+            <TextView
+                android:id="@+id/timeTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.IOSched.SessionDetailText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+                app:sessionDetailEndTime="@{viewModel.session.endTime}"
+                app:sessionDetailStartTime="@{viewModel.session.startTime}"
+                tools:text="Time" />
 
-        <TextView
-            android:id="@+id/tagsTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Tags"/>
+            <TextView
+                android:id="@+id/roomTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                android:gravity="center"
+                android:text="@{viewModel.session.room.name}"
+                android:textAppearance="@style/TextAppearance.IOSched.SessionDetailText"
+                app:layout_constraintBottom_toTopOf="@+id/descriptionTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+                tools:text="Location" />
 
-        <TextView
-            android:id="@+id/descriptionTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Description"/>
 
+            <!-- TODO: Add Tags after UX tests -->
+            <TextView
+                android:id="@+id/tagsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.IOSched.SessionDetailText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/roomTextView"
+                tools:text="Tags" />
 
-        <TextView
-            android:id="@+id/speakersTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Speakers"/>
-    </LinearLayout>
-</android.support.wear.widget.BoxInsetLayout>
+            <TextView
+                android:id="@+id/descriptionTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                android:gravity="center"
+                android:text="@{viewModel.session.abstract}"
+                android:textAppearance="@style/TextAppearance.IOSched.SessionDetailText"
+                app:layout_constraintBottom_toTopOf="@+id/view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/roomTextView"
+                tools:text="Description" />
+
+            <!-- TODO: Add Speakers after UX tests -->
+            <TextView
+                android:id="@+id/speakersTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.IOSched.SessionDetailText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/descriptionTextView"
+                tools:text="Speakers" />
+
+            <!-- Additional space to scroll content at the bottom to the middle of the device. -->
+            <View
+                android:id="@+id/view"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/session_detail_end_spacer"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/speakersTextView"
+                app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+</layout>

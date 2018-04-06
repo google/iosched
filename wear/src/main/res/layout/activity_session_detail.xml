@@ -15,19 +15,33 @@
   ~ limitations under the License.
   -->
 
-<android.support.wear.widget.BoxInsetLayout
+<LinearLayout
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/box_inset_layout_padding_pixels">
+    android:background="?colorPrimary"
+    android:orientation="vertical"
+    tools:context=".ui.sessiondetail.SessionDetailActivity"
+    tools:deviceIds="wear"
+    android:paddingLeft="@dimen/session_detail_activity_horizontal_padding"
+    android:paddingRight="@dimen/session_detail_activity_horizontal_padding" >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/image_header_padding_top"
+        android:src="@drawable/ic_nav_schedule"
+        android:contentDescription="@string/schedule_icon_image_view_content_description" />
 
     <FrameLayout
         android:id="@+id/session_detail_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:padding="@dimen/inner_frame_layout_padding"
-        app:boxedEdges="all"/>
+        android:layout_height="wrap_content" />
 
-</android.support.wear.widget.BoxInsetLayout>
+    <!-- TODO: Convert Linear to ConstraintLayout & check on performance issues w/ Constraints. -->
+    <!-- TODO: Add a loading screen (check mobile version). -->
+</LinearLayout>
+
+
