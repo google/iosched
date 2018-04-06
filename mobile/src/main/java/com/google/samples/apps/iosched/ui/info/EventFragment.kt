@@ -16,23 +16,23 @@
 
 package com.google.samples.apps.iosched.ui.info
 
+import android.databinding.BindingAdapter
 import android.net.wifi.WifiConfiguration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.TextView
 import com.google.android.material.widget.Snackbar
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.databinding.FragmentInfoEventBinding
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.util.wifi.WifiInstaller
-import com.google.samples.apps.iosched.widget.EventView
 import dagger.android.support.DaggerFragment
 
 class EventFragment : DaggerFragment() {
-    private var sandboxEventContent: EventView? = null
-    private var codeLabsEventContent: EventView? = null
-    private var officeHoursEventContent: EventView? = null
-    private var afterHoursEventContent: EventView? = null
+    private lateinit var binding: FragmentInfoEventBinding
     private val wifiInstaller = WifiInstaller(WifiConfiguration().apply {
         // Must be in double quotes to tell system this is an ASCII SSID and passphrase.
         SSID = String.format("\"%s\"", context?.getString(R.string.wifi_ssid))
@@ -41,38 +41,45 @@ class EventFragment : DaggerFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val root = inflater.inflate(R.layout.fragment_info_event, container, false)
+        binding = FragmentInfoEventBinding.inflate(inflater, container, false)
         val context = context ?: return null
         // TODO wire wifi text to RemoteConfig.
 
-        // TODO move to data binding.
-        val wifiSavePassword = root.findViewById<TextView>(R.id.wifi_password_value)
-        wifiSavePassword.setOnClickListener {
+        binding.wifiPasswordValue.setOnClickListener {
             val saved = wifiInstaller.installConferenceWiFi(context)
-            Snackbar.make(root, if (saved)
+            Snackbar.make(binding.root, if (saved)
                 R.string.wifi_install_success
             else
                 R.string.wifi_install_error_message, Snackbar.LENGTH_SHORT).show()
         }
-        sandboxEventContent = root.findViewById(R.id.event_sandbox) as EventView
-        codeLabsEventContent = root.findViewById(R.id.event_codelabs) as EventView
-        officeHoursEventContent = root.findViewById(R.id.event_officehours) as EventView
-        afterHoursEventContent = root.findViewById(R.id.event_afterhours) as EventView
         // TODO: launch filtered schedule
-        sandboxEventContent?.onViewSessionsClicked = { _, _ -> Unit }
-        codeLabsEventContent?.onViewSessionsClicked = { _, _ -> Unit }
-        officeHoursEventContent?.onViewSessionsClicked = { _, _ -> Unit }
-        afterHoursEventContent?.onViewSessionsClicked = { _, _ -> Unit }
         // TODO: launch map
-        sandboxEventContent?.onViewMapClicked = { _, _ -> Unit }
-        codeLabsEventContent?.onViewMapClicked = { _, _ -> Unit }
-        officeHoursEventContent?.onViewMapClicked = { _, _ -> Unit }
-        afterHoursEventContent?.onViewMapClicked = { _, _ -> Unit }
         // TODO: launch codelabs
-        sandboxEventContent?.onViewCodelabsClicked = { _, _ -> Unit }
-        codeLabsEventContent?.onViewCodelabsClicked = { _, _ -> Unit }
-        officeHoursEventContent?.onViewCodelabsClicked = { _, _ -> Unit }
-        afterHoursEventContent?.onViewCodelabsClicked = { _, _ -> Unit }
-        return root
+        binding.eventSandbox.apply {
+            onViewSessionsClicked = { _, _ -> Unit }
+            onViewMapClicked = { _, _ -> Unit }
+            onViewCodelabsClicked = { _, _ -> Unit }
+        }
+        binding.eventCodelabs.apply {
+            onViewSessionsClicked = { _, _ -> Unit }
+            onViewMapClicked = { _, _ -> Unit }
+            onViewCodelabsClicked = { _, _ -> Unit }
+        }
+        binding.eventOfficehours.apply {
+            onViewSessionsClicked = { _, _ -> Unit }
+            onViewMapClicked = { _, _ -> Unit }
+            onViewCodelabsClicked = { _, _ -> Unit }
+        }
+        binding.eventAfterhours.apply {
+            onViewSessionsClicked = { _, _ -> Unit }
+            onViewMapClicked = { _, _ -> Unit }
+            onViewCodelabsClicked = { _, _ -> Unit }
+        }
+        return binding.root
     }
+}
+
+@BindingAdapter("countdownVisibility")
+fun countdownVisibility(countdown: View, ignored: Boolean?) {
+    countdown.visibility = if (TimeUtils.conferenceHasStarted()) GONE else VISIBLE
 }

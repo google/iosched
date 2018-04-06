@@ -192,7 +192,8 @@
                 android:layout_marginEnd="@dimen/onboarding_margins"
                 app:layout_constraintTop_toBottomOf="@id/event_meals"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:countdownVisibility="@{true}" />
 
         </android.support.constraint.ConstraintLayout>
 
