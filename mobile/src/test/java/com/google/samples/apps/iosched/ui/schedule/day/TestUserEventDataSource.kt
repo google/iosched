@@ -44,7 +44,8 @@ class TestUserEventDataSource(
     }
 
     override fun getObservableUserEvent(userId: String, eventId: String): LiveData<UserEventResult> {
-        userEventResult.postValue(UserEventResult(TestData.userEvents[0]))
+        userEventResult.postValue(UserEventResult(TestData.userEvents
+                .find {it.id == eventId} ?: TestData.userEvents[0]))
         return userEventResult
     }
 
