@@ -24,14 +24,6 @@
             android:height="24dp"
             android:viewportWidth="24"
             android:viewportHeight="24">
-            <group>
-                <clip-path
-                    android:name="sand_mask"
-                    android:pathData="M 0 9 L 24 9 L 24 20 L 0 20 Z" />
-                <path
-                    android:fillColor="?android:textColorTertiary"
-                    android:pathData="M 8 9 L 11.75 12.33 L 8 16.08 L 8 19.67 L 16 19.67 L 16 16.09 L 12.25 12.33 L 16 9 Z" />
-            </group>
             <path
                 android:name="outline"
                 android:fillAlpha="0"
@@ -79,17 +71,6 @@
                     android:valueTo="@color/indigo"
                     android:valueType="colorType" />
             </set>
-        </aapt:attr>
-    </target>
-    <target android:name="sand_mask">
-        <aapt:attr name="android:animation">
-            <objectAnimator
-                android:duration="250"
-                android:interpolator="@android:interpolator/fast_out_linear_in"
-                android:propertyName="pathData"
-                android:valueFrom="M 0 9 L 24 9 L 24 20 L 0 20 Z"
-                android:valueTo="M 0 20 L 24 20 L 24 20 L 0 20 Z"
-                android:valueType="pathType" />
         </aapt:attr>
     </target>
     <target android:name="star_group">
