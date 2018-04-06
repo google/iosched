@@ -58,6 +58,7 @@ import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
 import com.google.samples.apps.iosched.ui.schedule.filters.LoadTagFiltersUseCase
 import com.google.samples.apps.iosched.ui.schedule.filters.TagFilter
+import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import timber.log.Timber
@@ -293,7 +294,7 @@ class ScheduleViewModel @Inject constructor(
         DAY_3 -> day3Sessions
     }
 
-    override fun openSessionDetail(id: String) {
+    override fun openEventDetail(id: String) {
         _navigateToSessionAction.value = Event(id)
     }
 
@@ -425,10 +426,7 @@ class ScheduleViewModel @Inject constructor(
     }
 }
 
-interface ScheduleEventListener {
-    /** Called from UI to start a navigation action to the detail screen. */
-    fun openSessionDetail(id: String)
-
+interface ScheduleEventListener : EventActions {
     /** Called from the UI to enable or disable a particular filter. */
     fun toggleFilter(filter: TagFilter, enabled: Boolean)
 
@@ -439,6 +437,4 @@ interface ScheduleEventListener {
     fun togglePinnedEvents(pinned: Boolean)
 
     fun onReservationClicked(session: Session, userEvent: UserEvent)
-
-    fun onStarClicked(userEvent: UserEvent)
 }
