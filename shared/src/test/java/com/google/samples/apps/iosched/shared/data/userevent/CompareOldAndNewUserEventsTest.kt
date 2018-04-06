@@ -243,8 +243,6 @@ class CompareOldAndNewUserEventsTest {
     }
 
     private fun createUserEvent(id: String = "123",
-                                startTime: Long = 0,
-                                endTime: Long = 0,
                                 isStarred: Boolean = false,
                                 isReviewed: Boolean = false,
                                 reservationStatus: UserEvent.ReservationStatus? = null,
@@ -252,8 +250,6 @@ class CompareOldAndNewUserEventsTest {
                                 reservationRequest: ReservationRequest? = null): UserEvent {
         return UserEvent(
                 id,
-                startTime,
-                endTime,
                 isStarred,
                 isReviewed,
                 reservationStatus,
