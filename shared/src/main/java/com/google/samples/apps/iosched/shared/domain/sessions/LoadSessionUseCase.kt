@@ -17,19 +17,25 @@
 package com.google.samples.apps.iosched.shared.domain.sessions
 
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.result.Result
 import javax.inject.Inject
 
 open class LoadSessionUseCase @Inject constructor(private val repository: SessionRepository)
-    : UseCase<String, Session>() {
+    : MediatorUseCase<String, Session>() {
 
-    override fun execute(parameters: String): Session {
+    override fun execute(parameters: String) {
         val session = repository.getSessions().firstOrNull { it -> it.id == parameters }
-                ?: throw SessionNotFoundException()
-        session.type // Compute type from tags now so it's done in the background
-        return session
+
+        if( session == null ) {
+            result.postValue(Result.Error(SessionNotFoundException()))
+        } else {
+            session.type // Compute type from tags now so it's done in the background
+            result.postValue(Result.Success(session))
+        }
     }
 }
 
-class SessionNotFoundException : Throwable()
+class SessionNotFoundException : Exception()

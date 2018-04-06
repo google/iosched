@@ -16,14 +16,14 @@
 
 package com.google.samples.apps.iosched.tv.ui.search
 
-import android.arch.lifecycle.Observer
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.IntentCompat.EXTRA_START_PLAYBACK
+import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.tv.TvApplication
-import com.google.samples.apps.iosched.tv.ui.MainActivity
+import com.google.samples.apps.iosched.tv.ui.sessiondetail.SessionDetailActivity
+import com.google.samples.apps.iosched.tv.ui.sessionplayer.SessionPlayerActivity
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -33,8 +33,8 @@ import javax.inject.Inject
  * The assistant determines if the content should begin immediately, and lets us know with the
  * boolean extra value, [EXTRA_START_PLAYBACK].
  *
- * If EXTRA_START_PLAYBACK is *true*, then launches [TODO_PlaybackActivity], otherwise, launches
- * [TODO_SessionDetailsActivity].
+ * If EXTRA_START_PLAYBACK is *true*, then launches [SessionPlayerActivity], otherwise, launches
+ * [SessionDetailActivity].
  */
 class SearchableActivity : FragmentActivity() {
 
@@ -57,25 +57,21 @@ class SearchableActivity : FragmentActivity() {
             intent.data
         }
 
-        Timber.d("Search data " + uri)
+        Timber.d("Search data $uri")
         val id = uri.lastPathSegment
 
         val startPlayback = intent.getBooleanExtra(EXTRA_START_PLAYBACK, false)
         Timber.d("Should start playback? ${if (startPlayback) "yes" else "no"}")
 
-        if (startPlayback) {
-            // TODO: start playback.
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        } else {
-            viewModel.session.observe(
-                    this, Observer { _ ->
-                // TODO: open session details. May require VM/UseCase to search for session by id.
-                startActivity(Intent(this, MainActivity::class.java))
+        viewModel.session.observe(this, EventObserver { session ->
+                val intent = if (startPlayback) {
+                    SessionPlayerActivity.createIntent(context = this, sessionId = session.id)
+                } else {
+                    SessionDetailActivity.createIntent(context = this, sessionId = session.id)
+                }
+                startActivity(intent)
                 finish()
-            }
-            )
-            viewModel.loadSessionById(id)
-        }
+            })
+        viewModel.loadSessionById(id)
     }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.tv.ui.search
+package com.google.samples.apps.iosched.tv.ui.sessionplayer
 
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
@@ -28,10 +28,10 @@ import com.google.samples.apps.iosched.shared.util.setValueIfNew
 import javax.inject.Inject
 
 /**
- * Loads [Session] by id and exposes it to either be played or shown.
+ * Loads [Session] data and exposes it to the session player view.
  */
-class SearchableViewModel @Inject constructor(
-    private val loadSessionUseCase: LoadSessionUseCase
+class SessionPlayerViewModel @Inject constructor(
+        private val loadSessionUseCase: LoadSessionUseCase
 ) : ViewModel() {
 
     private val useCaseResult: MutableLiveData<Result<Session>>
