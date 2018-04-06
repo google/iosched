@@ -159,6 +159,7 @@ class FirestoreUserEventDataSource @Inject constructor(
                 .collection(EVENTS_COLLECTION)
 
         eventsChangedListenerSubscription?.remove() // Remove in case userId changes.
+        result.postValue(null) // Post a value in case there are no changes to the data on start
         eventsChangedListenerSubscription = eventsCollection.addSnapshotListener(eventsListener)
     }
 
@@ -211,6 +212,7 @@ class FirestoreUserEventDataSource @Inject constructor(
     }
 
     override fun clearSingleEventSubscriptions() {
+        Timber.d("Firestore Event data source: Clearing subscriptions")
         resultSingleEvent.value = null
         eventChangedListenerSubscription?.remove() // Remove to avoid leaks
     }

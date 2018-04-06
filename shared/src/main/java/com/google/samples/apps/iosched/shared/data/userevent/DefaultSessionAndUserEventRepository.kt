@@ -61,6 +61,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
         // If there is no logged-in user, return the map with null UserEvents
         if (userId == null) {
+            Timber.d("EventRepository: No user logged in, returning sessions without user events.")
             val userSessionsPerDay = mapUserDataAndSessions(null, sessionRepository.getSessions())
             sessionsByDayResult.postValue(Result.Success(
                     LoadUserSessionsByDayUseCaseResult(
@@ -73,23 +74,23 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         val observableUserEvents = userEventDataSource.getObservableUserEvents(userId)
         sessionsByDayResult.removeSource(observableUserEvents)
         sessionsByDayResult.addSource(observableUserEvents) { userEvents ->
-            userEvents ?: return@addSource
-
             DefaultScheduler.execute {
                 try {
+                    Timber.d("EventRepository: Received " +
+                            "${userEvents?.userEvents?.size ?: 0} user events changes")
+
                     // Get the sessions, synchronously
                     val allSessions = sessionRepository.getSessions()
+
                     // Merges sessions with user data and emits the result
-
                     val userEventsMessageSession = allSessions.firstOrNull() {
-                        it.id == userEvents.userEventsMessage?.sessionId
+                        it.id == userEvents?.userEventsMessage?.sessionId
                     }
-
                     sessionsByDayResult.postValue(Result.Success(
                             LoadUserSessionsByDayUseCaseResult(
                                     userSessionsPerDay = mapUserDataAndSessions(
                                             userEvents, allSessions),
-                                    userMessage = userEvents.userEventsMessage,
+                                    userMessage = userEvents?.userEventsMessage,
                                     userMessageSession = userEventsMessageSession)
                     ))
 
@@ -108,6 +109,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
         // If there is no logged-in user, return the session with a null UserEvent
         if (userId == null) {
+            Timber.d("EventRepository: No user logged in, returning session without user event.")
             val session = sessionRepository.getSession(eventId)
             sessionResult.postValue(Result.Success(
                     LoadUserSessionUseCaseResult(
@@ -122,20 +124,20 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         sessionResult.removeSource(newObservableUserEvent) // Avoid multiple subscriptions
         sessionResult.value = null // Prevent old data from being emitted
         sessionResult.addSource(newObservableUserEvent) { userEventResult ->
-            userEventResult ?: return@addSource
 
             DefaultScheduler.execute {
                 try {
+                    Timber.d("EventRepository: Received user event changes")
                     // Get the session, synchronously
                     val event = sessionRepository.getSession(eventId)
 
                     // Merges session with user data and emits the result
                     val userSession = UserSession(event,
-                            userEventResult.userEvent ?: createDefaultUserEvent(event))
+                            userEventResult?.userEvent ?: createDefaultUserEvent(event))
                     sessionResult.postValue(Result.Success(
                             LoadUserSessionUseCaseResult(
                                     userSession = userSession,
-                                    userMessage = userEventResult.userEventMessage
+                                    userMessage = userEventResult?.userEventMessage
                             )
                     ))
                 } catch (e: Exception) {

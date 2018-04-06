@@ -349,7 +349,7 @@ class ScheduleViewModel @Inject constructor(
 
     private fun refreshUserSessions() {
         Timber.d("ViewModel refreshing user sessions")
-        loadUserSessionsByDayUseCase.execute(currentSessionMatcher to (getUserId() ?: "tempUser"))
+        loadUserSessionsByDayUseCase.execute(currentSessionMatcher to getUserId())
     }
 
     override fun onStarClicked(userEvent: UserEvent) {
