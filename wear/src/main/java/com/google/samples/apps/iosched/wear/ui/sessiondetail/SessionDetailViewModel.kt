@@ -17,33 +17,37 @@
 package com.google.samples.apps.iosched.wear.ui.sessiondetail
 
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Transformations
+import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.ViewModel
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.util.map
 import javax.inject.Inject
 
 /**
  * Loads [Session] data and exposes it to the session detail view.
  */
 class SessionDetailViewModel @Inject constructor(
-    private val loadSessionUseCase: LoadSessionUseCase
+    private val loadUserSessionUseCase: LoadUserSessionUseCase
 ) : ViewModel() {
 
-    val useCaseResult = MutableLiveData<Result<Session>>()
+    private val loadUserSessionResult: MediatorLiveData<Result<LoadUserSessionUseCaseResult>>
     val session: LiveData<Session?>
 
-    // TODO: Add error message if session doesn't load (w/ timeout)
+    // TODO: Remove it once the FirebaseUser is available when the app is launched
+    val tempUser = "user1"
 
     init {
-        session = Transformations.map(useCaseResult) { result ->
-            (result as? Result.Success)?.data
-        }
+        loadUserSessionResult = loadUserSessionUseCase.observe()
+        session = loadUserSessionResult.map { (it as? Result.Success)?.data?.userSession?.session }
+
+        //TODO: Deal with error SessionNotFoundException
     }
 
+    // TODO (jewalker): Sync with Ben
     fun loadSessionById(sessionId: String) {
-        loadSessionUseCase(sessionId, useCaseResult)
+        session.value ?: loadUserSessionUseCase.execute(tempUser to sessionId)
     }
 }
