@@ -55,11 +55,13 @@
             android:layout_marginBottom="@dimen/schedule_page_padding_bottom"
             android:layout_marginHorizontal="@dimen/margin_large"
             android:drawableTop="@drawable/io_logo"
+            android:drawablePadding="@dimen/spacing_normal"
             android:gravity="center"
             android:text="@{viewModel.emptyMessage}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             app:goneUnless="@{isEmpty &amp;&amp; !viewModel.isLoading}"
             tools:text="@string/schedule_tag_filters_empty"
             tools:visibility="visible" />
+
     </FrameLayout>
+
 </layout>
