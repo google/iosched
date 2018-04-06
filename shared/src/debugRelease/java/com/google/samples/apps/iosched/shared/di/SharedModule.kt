@@ -31,6 +31,8 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
+import com.google.samples.apps.iosched.shared.fcm.FcmTopicSubscriber
+import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -106,5 +108,11 @@ class SharedModule {
                 .setPersistenceEnabled(true)
                 .build()
         return firestore
+    }
+
+    @Singleton
+    @Provides
+    fun provideTopicSubscriber(): TopicSubscriber {
+        return FcmTopicSubscriber()
     }
 }
