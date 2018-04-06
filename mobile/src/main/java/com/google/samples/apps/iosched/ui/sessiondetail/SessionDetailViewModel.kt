@@ -154,7 +154,7 @@ class SessionDetailViewModel @Inject constructor(
         }
 
         isPlayable = session.map { currentSession ->
-            checkPlayable(currentSession)
+            currentSession?.hasVideo() == true
         }
 
         showRateButton = sessionTimeRelativeState.map { currentState ->
@@ -267,7 +267,7 @@ class SessionDetailViewModel @Inject constructor(
      */
     fun onPlayVideo() {
         val currentSession = session.value
-        if (checkPlayable(currentSession)) {
+        if (currentSession?.hasVideo() == true) {
             navigateToYouTubeAction.value = Event(requireSession().youTubeUrl)
         }
     }
@@ -347,10 +347,6 @@ class SessionDetailViewModel @Inject constructor(
 
     private fun requireSession(): Session {
         return session.value ?: throw IllegalStateException("Session should not be null")
-    }
-
-    fun checkPlayable(currentSession: Session?): Boolean {
-        return currentSession != null && currentSession.youTubeUrl.isNotBlank()
     }
 }
 
