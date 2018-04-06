@@ -15,8 +15,6 @@ import com.google.samples.apps.iosched.shared.firestore.entity.ReservationReques
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.SWAP_DENIED_UNKNOWN
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.SWAP_SUCCEEDED
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.SWAP_WAITLISTED
-import com.google.samples.apps.iosched.shared.model.Session
-import com.google.samples.apps.iosched.shared.util.toEpochMilli
 
 /**
  * Data for a user's personalized event stored in a Firestore document.
@@ -26,16 +24,6 @@ data class UserEvent(
          * The unique ID for the event.
          */
         val id: String,
-
-        /** The start time for the event. Stored in Firestore to facilitate detection of overlapping
-         * events.
-         */
-        val startTime: Long,
-
-        /** The end time for the event. Stored in Firestore to facilitate detection of overlapping
-         * events.
-         */
-        val endTime: Long,
 
         /** Tracks whether the user has starred the event. */
         val isStarred: Boolean = false,
@@ -153,11 +141,6 @@ data class UserEvent(
         val r = reservationRequestResult?.requestResult ?: return false
         return r == SWAP_SUCCEEDED || r == SWAP_WAITLISTED || r == SWAP_DENIED_CLASH ||
                 r == SWAP_DENIED_CUTOFF || r == SWAP_DENIED_UNKNOWN
-    }
-
-    fun isOverlapping(session: Session): Boolean {
-        return this.startTime < session.endTime.toEpochMilli() &&
-                this.endTime > session.startTime.toEpochMilli()
     }
 
     /**

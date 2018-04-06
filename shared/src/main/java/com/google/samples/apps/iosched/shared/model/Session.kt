@@ -140,6 +140,11 @@ data class Session(
      * Whether this event is reservable, based upon [type].
      */
     fun isReservable() = type == SESSION
+
+
+    fun isOverlapping(session: Session): Boolean {
+        return this.startTime < session.endTime && this.endTime > session.startTime
+    }
 }
 
 /**

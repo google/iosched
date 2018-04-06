@@ -45,8 +45,6 @@ fun parseUserEvent(snapshot: DocumentSnapshot): UserEvent {
     }
 
     return UserEvent(id = snapshot.id,
-            startTime = snapshot[FirestoreUserEventDataSource.START_TIME] as Long,
-            endTime = snapshot[FirestoreUserEventDataSource.END_TIME] as Long,
             reservationRequestResult = reservationRequestResult,
             reservationStatus = reservationStatus,
             isStarred = snapshot[FirestoreUserEventDataSource.IS_STARRED] as? Boolean ?: false,
