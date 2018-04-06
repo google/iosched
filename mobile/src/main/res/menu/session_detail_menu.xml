@@ -33,7 +33,7 @@
     <item
         android:id="@+id/menu_item_star"
         android:icon="@drawable/ic_star_border"
-        android:title="@string/menu_item_session_location"
+        android:title="@string/menu_item_session_star"
         app:showAsAction="always" />
 
 </menu>

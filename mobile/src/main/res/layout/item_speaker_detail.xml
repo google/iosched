@@ -36,7 +36,7 @@
             android:layout_width="@dimen/speaker_headshot_size"
             android:layout_height="@dimen/speaker_headshot_size"
             android:layout_marginStart="@dimen/margin_normal"
-            android:contentDescription="@string/a11y_speaker_headshot"
+            android:importantForAccessibility="no"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:imageUrl="@{speaker.imageUrl}"
