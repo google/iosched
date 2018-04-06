@@ -27,13 +27,15 @@ import com.google.samples.apps.iosched.wear.databinding.ItemSessionBinding
 /**
  * Provides a binding from our ViewModel data to the views displayed within a WearableRecyclerView.
  */
-class ScheduleAdapter : ListAdapter<UserSession, SessionViewHolder>(SessionDiff) {
+class ScheduleAdapter(
+    private val eventListener: ScheduleEventListener
+) : ListAdapter<UserSession, SessionViewHolder>(SessionDiff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SessionViewHolder {
 
         val binding =
             ItemSessionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return SessionViewHolder(binding)
+        return SessionViewHolder(binding, eventListener)
     }
 
     override fun onBindViewHolder(holder: SessionViewHolder, position: Int) {
@@ -42,12 +44,14 @@ class ScheduleAdapter : ListAdapter<UserSession, SessionViewHolder>(SessionDiff)
 }
 
 class SessionViewHolder(
-    private val binding: ItemSessionBinding
+    private val binding: ItemSessionBinding,
+    private val eventListener: ScheduleEventListener
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(userSession: UserSession) {
         binding.session = userSession.session
         binding.userEvent = userSession.userEvent
+        binding.eventListener = eventListener
         binding.executePendingBindings()
     }
 }

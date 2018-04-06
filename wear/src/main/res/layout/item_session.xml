@@ -27,7 +27,9 @@
             name="userEvent"
             type="com.google.samples.apps.iosched.shared.firestore.entity.UserEvent" />
 
-        <!-- TODO: Add EventListener w/ Session detail CL ref item_session.xml (mobile) -->
+        <variable
+            name="eventListener"
+            type="com.google.samples.apps.iosched.wear.ui.schedule.ScheduleEventListener" />
     </data>
 
     <!-- TODO: Convert to ConstraintLayout. -->
@@ -36,6 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/sessionLinearLayout"
+        android:onClick="@{() -> eventListener.openSessionDetail(session.id)}"
         android:padding="@dimen/list_item_padding">
 
         <ImageView
