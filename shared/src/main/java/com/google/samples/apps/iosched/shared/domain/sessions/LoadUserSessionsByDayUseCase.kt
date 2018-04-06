@@ -57,7 +57,8 @@ open class LoadUserSessionsByDayUseCase @Inject constructor(
                         val usecaseResult = LoadUserSessionsByDayUseCaseResult(
                                 userSessionsPerDay = userSessions,
                                 userMessage = it.data.userMessage,
-                                userMessageSession = it.data.userMessageSession
+                                userMessageSession = it.data.userMessageSession,
+                                userSessionCount = userSessions.values.map { it.size }.sum()
                         )
                         result.postValue(Result.Success(usecaseResult))
                     }
@@ -78,5 +79,7 @@ data class LoadUserSessionsByDayUseCaseResult(
     val userMessage: UserEventMessage? = null,
 
     /** The session the user message is about, if any. */
-    val userMessageSession: Session? = null
+    val userMessageSession: Session? = null,
+
+    val userSessionCount: Int
 )

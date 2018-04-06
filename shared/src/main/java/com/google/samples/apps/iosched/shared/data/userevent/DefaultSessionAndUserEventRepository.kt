@@ -62,11 +62,13 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         // If there is no logged-in user, return the map with null UserEvents
         if (userId == null) {
             Timber.d("EventRepository: No user logged in, returning sessions without user events.")
-            val userSessionsPerDay = mapUserDataAndSessions(null, sessionRepository.getSessions())
+            val allSessions = sessionRepository.getSessions()
+            val userSessionsPerDay = mapUserDataAndSessions(null, allSessions)
             sessionsByDayResult.postValue(Result.Success(
-                    LoadUserSessionsByDayUseCaseResult(
-                            userSessionsPerDay = userSessionsPerDay,
-                            userMessage = null)
+                LoadUserSessionsByDayUseCaseResult(
+                    userSessionsPerDay = userSessionsPerDay,
+                    userMessage = null,
+                    userSessionCount = allSessions.size)
             ))
             return sessionsByDayResult
         }
@@ -83,15 +85,16 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                     val allSessions = sessionRepository.getSessions()
 
                     // Merges sessions with user data and emits the result
-                    val userEventsMessageSession = allSessions.firstOrNull() {
+                    val userEventsMessageSession = allSessions.firstOrNull {
                         it.id == userEvents?.userEventsMessage?.sessionId
                     }
                     sessionsByDayResult.postValue(Result.Success(
-                            LoadUserSessionsByDayUseCaseResult(
-                                    userSessionsPerDay = mapUserDataAndSessions(
-                                            userEvents, allSessions),
-                                    userMessage = userEvents?.userEventsMessage,
-                                    userMessageSession = userEventsMessageSession)
+                        LoadUserSessionsByDayUseCaseResult(
+                            userSessionsPerDay = mapUserDataAndSessions(
+                                userEvents, allSessions),
+                            userMessage = userEvents?.userEventsMessage,
+                            userMessageSession = userEventsMessageSession,
+                            userSessionCount = allSessions.size)
                     ))
 
                 } catch (e: Exception) {
@@ -280,4 +283,3 @@ interface SessionAndUserEventRepository {
 
     fun clearSingleEventSubscriptions()
 }
-
