@@ -36,8 +36,8 @@
             android:id="@+id/directions_parking_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardTitle="@string/travel_directions_parking_title"
-            app:cardDescription="@string/travel_directions_parking_description"/>
+            app:cardTitle="@string/travel_directions_title"
+            app:cardDescription="@string/travel_directions_description"/>
 
         <com.google.samples.apps.iosched.widget.CollapsibleCard
             android:id="@+id/shuttle_card"
