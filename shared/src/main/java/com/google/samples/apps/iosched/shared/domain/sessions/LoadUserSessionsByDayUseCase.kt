@@ -25,6 +25,7 @@ import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -37,6 +38,7 @@ open class LoadUserSessionsByDayUseCase @Inject constructor(
     override fun execute(parameters: Pair<UserSessionMatcher, String?>) {
         val (sessionMatcher, userId) = parameters
 
+        Timber.d("LoadUserSessionsByDayUseCase: Refreshing sessions with user data")
         result.postValue(Result.Loading)
 
         val userSessionsObservable = userEventRepository.getObservableUserEvents(userId)
