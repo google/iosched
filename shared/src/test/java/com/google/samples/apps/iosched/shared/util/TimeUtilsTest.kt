@@ -20,13 +20,17 @@ import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.model.TestData.session0
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Assert
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import java.util.regex.Pattern
+
 
 class TimeUtilsTest {
 
@@ -96,6 +100,11 @@ class TimeUtilsTest {
                 TimeUtils.getSessionState(session, session.startTime.plusMinutes(1L)))
         Assert.assertEquals(TimeUtils.SessionRelativeTimeState.DURING,
                 TimeUtils.getSessionState(session, session.endTime))
+    }
+
+    @Test fun abbreviatedTimeString() {
+        val a = ZonedDateTime.parse("2018-04-01T12:30:40Z[GMT]")
+        Assert.assertEquals(TimeUtils.abbreviatedTimeString(a), "Sun, Apr 1")
     }
 
     @Test fun timeString_sameMeridiem() {

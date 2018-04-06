@@ -23,7 +23,9 @@ import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import java.util.*
 
+
 object TimeUtils {
+
     val CONFERENCE_TIMEZONE = ZoneId.of(BuildConfig.CONFERENCE_TIMEZONE)
     val CONFERENCE_DAYS = ConferenceDay.values()
 
@@ -62,6 +64,18 @@ object TimeUtils {
             currentTime > session.endTime -> SessionRelativeTimeState.AFTER
             else -> SessionRelativeTimeState.DURING
         }
+    }
+
+    fun zonedTime(time: ZonedDateTime, zoneId: ZoneId = ZoneId.systemDefault()): ZonedDateTime {
+        return ZonedDateTime.ofInstant(time.toInstant(), zoneId)
+    }
+
+    fun inConferenceTimeZone(): Boolean {
+        return ZoneId.systemDefault() == CONFERENCE_TIMEZONE
+    }
+
+    fun abbreviatedTimeString(startTime: ZonedDateTime): String {
+        return DateTimeFormatter.ofPattern("EEE, MMM d").format(startTime)
     }
 
     fun timeString(startTime: ZonedDateTime, endTime: ZonedDateTime): String {

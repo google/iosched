@@ -98,7 +98,10 @@ fun timeString(
     if (sessionDetailStartTime == null || sessionDetailEndTime == null) {
         view.text = ""
     } else {
-        view.text = TimeUtils.timeString(sessionDetailStartTime, sessionDetailEndTime)
+        view.text = TimeUtils.timeString(
+            TimeUtils.zonedTime(sessionDetailStartTime),
+            TimeUtils.zonedTime(sessionDetailEndTime)
+        )
     }
 }
 
