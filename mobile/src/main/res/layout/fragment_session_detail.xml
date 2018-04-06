@@ -45,7 +45,7 @@
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/spacing_normal">
+                android:paddingBottom="@dimen/margin_normal">
 
                 <android.support.constraint.Guideline
                     android:id="@+id/guideline_start"
@@ -286,6 +286,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/session_detail_speaker_list"
                     app:goneUnless="@{viewModel.hasRelated}"
+                    app:relatedEvents="@{viewModel.relatedUserSessions}"
+                    app:eventListener="@{viewModel}"
                     tools:listitem="@layout/item_speaker_detail">
 
                     <TextView

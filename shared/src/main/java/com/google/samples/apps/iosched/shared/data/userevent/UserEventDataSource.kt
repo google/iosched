@@ -52,7 +52,6 @@ interface UserEventDataSource {
 }
 
 data class UserEventsResult(
-        /** If this is true, all [UserEvent] in the userEvents field are synced to the backend */
         val userEvents: List<UserEvent>,
         val userEventsMessage: UserEventMessage? = null)
 

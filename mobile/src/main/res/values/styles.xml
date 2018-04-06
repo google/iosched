@@ -30,6 +30,7 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:navigationBarColor">@color/indigo_dark</item>
         <item name="android:textColorTertiary">@color/text_color_tertiary</item>
+        <item name="sessionListKeyline">@dimen/session_keyline</item>
     </style>
 
     <style name="AppTheme.Launcher" parent="@style/AppTheme.LightNav">
@@ -46,6 +47,10 @@
     <style name="AppTheme.Onboarding" parent="AppTheme.LightNav">
         <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
+    <style name="AppTheme.SessionDetails" parent="AppTheme.LightNav">
+        <item name="sessionListKeyline">@dimen/margin_normal</item>
     </style>
 
     <style name="AppTheme.PopupTheme" parent="ThemeOverlay.MaterialComponents.Light" />

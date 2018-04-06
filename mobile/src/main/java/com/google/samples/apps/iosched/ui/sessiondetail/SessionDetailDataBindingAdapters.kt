@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.ui.sessiondetail
 
 import android.databinding.BindingAdapter
-import android.databinding.DataBindingUtil
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -30,6 +29,7 @@ import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.databinding.ItemSessionBinding
 import com.google.samples.apps.iosched.databinding.ItemSpeakerDetailBinding
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
@@ -38,11 +38,13 @@ import com.google.samples.apps.iosched.shared.model.SessionType.CODELAB
 import com.google.samples.apps.iosched.shared.model.SessionType.OFFICE_HOURS
 import com.google.samples.apps.iosched.shared.model.SessionType.SANDBOX
 import com.google.samples.apps.iosched.shared.model.Speaker
+import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.util.SpeakerUtils
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.ui.reservation.ReservationViewState
 import com.google.samples.apps.iosched.ui.reservation.ReservationViewState.RESERVABLE
 import com.google.samples.apps.iosched.ui.reservation.StarReserveFab
+import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.util.drawable.HeaderGridDrawable
 import org.threeten.bp.Duration
 import org.threeten.bp.ZonedDateTime
@@ -72,20 +74,6 @@ fun eventHeaderAnim(lottieView: LottieAnimationView, session: Session?) {
         else -> "anim/event_details_session.json"
     }
     lottieView.setAnimation(anim)
-}
-
-@Suppress("unused")
-@BindingAdapter("sessionSpeakers")
-fun sessionSpeakers(layout: LinearLayout, speakers: Set<Speaker>?) {
-    if (speakers != null) {
-        // remove all views other than the header
-        for (i in layout.childCount - 1 downTo 1) {
-            layout.removeViewAt(i)
-        }
-        SpeakerUtils.alphabeticallyOrderedSpeakerList(speakers).forEach {
-            layout.addView(createSessionSpeakerView(layout, it))
-        }
-    }
 }
 
 @Suppress("unused")
@@ -154,17 +142,60 @@ fun assignFab(
     }
 }
 
-private fun createSessionSpeakerView(
-    container: ViewGroup,
-    speaker: Speaker
-): View {
-    val binding: ItemSpeakerDetailBinding = DataBindingUtil.inflate(
+@BindingAdapter("sessionSpeakers")
+fun sessionSpeakers(layout: LinearLayout, speakers: Set<Speaker>?) {
+    if (speakers != null) {
+        // remove all views other than the header
+        for (i in layout.childCount - 1 downTo 1) {
+            layout.removeViewAt(i)
+        }
+        SpeakerUtils.alphabeticallyOrderedSpeakerList(speakers).forEach {
+            layout.addView(createSessionSpeakerView(layout, it))
+        }
+    }
+}
+
+private fun createSessionSpeakerView(container: ViewGroup, presenter: Speaker): View {
+    val binding = ItemSpeakerDetailBinding.inflate(
         LayoutInflater.from(container.context),
-        R.layout.item_speaker_detail,
         container,
         false
-    )
+    ).apply {
+        speaker = presenter
+    }
+    return binding.root
+}
 
-    binding.speaker = speaker
+@BindingAdapter(value = ["relatedEvents", "eventListener"], requireAll = true)
+fun relatedEvents(
+    layout: LinearLayout,
+    relatedEvents: List<UserSession>?,
+    eventListener: EventActions
+) {
+    if (relatedEvents != null) {
+        // remove all views other than the header
+        for (i in layout.childCount - 1 downTo 1) {
+            layout.removeViewAt(i)
+        }
+        relatedEvents.forEach {
+            layout.addView(createRelatedEventView(layout, it, eventListener))
+        }
+    }
+}
+
+private fun createRelatedEventView(
+    container: ViewGroup,
+    related: UserSession,
+    listener: EventActions
+): View {
+    val binding = ItemSessionBinding.inflate(
+        LayoutInflater.from(container.context),
+        container,
+        false
+    ).apply {
+        session = related.session
+        userEvent = related.userEvent
+        eventListener = listener
+    }
     return binding.root
 }

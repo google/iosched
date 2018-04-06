@@ -23,6 +23,8 @@ import android.arch.lifecycle.ViewModel
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.SwapAction
@@ -32,6 +34,7 @@ import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils
@@ -40,6 +43,7 @@ import com.google.samples.apps.iosched.shared.util.setValueIfNew
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
+import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.SetIntervalLiveData
@@ -58,12 +62,16 @@ private const val SIXTY_SECONDS = 60_000L
 class SessionDetailViewModel @Inject constructor(
     private val signInViewModelPlugin: SignInViewModelDelegate,
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
+    private val loadRelatedSessionUseCase: LoadUserSessionsUseCase,
     private val starEventUseCase: StarEventUseCase,
     private val reservationActionUseCase: ReservationActionUseCase,
     private val snackbarMessageManager: SnackbarMessageManager
-) : ViewModel(), SessionDetailEventListener, SignInViewModelDelegate by signInViewModelPlugin {
+) : ViewModel(), SessionDetailEventListener, EventActions,
+    SignInViewModelDelegate by signInViewModelPlugin {
 
     private val loadUserSessionResult: MediatorLiveData<Result<LoadUserSessionUseCaseResult>>
+
+    private val loadRelatedUserSessions: LiveData<Result<LoadUserSessionsUseCaseResult>>
 
     private val sessionTimeRelativeState: LiveData<TimeUtils.SessionRelativeTimeState>
 
@@ -75,18 +83,15 @@ class SessionDetailViewModel @Inject constructor(
     val snackBarMessage : LiveData<Event<SnackbarMessage>>
         get() = _snackBarMessage
 
-    /**
-     * Event to navigate to the sign in Dialog. We only want to consume the event, so the
-     * Boolean value isn't used actually.
-     */
-    private val _navigateToSignInDialogAction = MutableLiveData<Event<Boolean>>()
-    val navigateToSignInDialogAction: LiveData<Event<Boolean>>
+    private val _navigateToSignInDialogAction = MutableLiveData<Event<Unit>>()
+    val navigateToSignInDialogAction: LiveData<Event<Unit>>
         get() = _navigateToSignInDialogAction
 
     val navigateToYouTubeAction = MutableLiveData<Event<String>>()
 
     val session = MediatorLiveData<Session>()
     val userEvent = MediatorLiveData<UserEvent>()
+    val relatedUserSessions = MediatorLiveData<List<UserSession>>()
 
     val showRateButton: LiveData<Boolean>
     val hasPhoto: LiveData<Boolean>
@@ -108,8 +113,14 @@ class SessionDetailViewModel @Inject constructor(
     val navigateToSwapReservationDialogAction: LiveData<Event<SwapRequestParameters>>
         get() = _navigateToSwapReservationDialogAction
 
+    private val _navigateToSessionAction = MutableLiveData<Event<String>>()
+    val navigateToSessionAction : LiveData<Event<String>>
+        get() = _navigateToSessionAction
+
     init {
         loadUserSessionResult = loadUserSessionUseCase.observe()
+
+        loadRelatedUserSessions = loadRelatedSessionUseCase.observe()
 
         /* Wire observable dependencies */
 
@@ -138,6 +149,22 @@ class SessionDetailViewModel @Inject constructor(
         userEvent.addSource(loadUserSessionResult) {
             (loadUserSessionResult.value as? Result.Success)?.data?.userSession?.userEvent?.let {
                 userEvent.value = it
+            }
+        }
+
+        // If there's a new Session, then load any related sessions
+        loadRelatedUserSessions.addSource(loadUserSessionResult) {
+            (loadUserSessionResult.value as? Result.Success)?.data?.userSession?.session?.let {
+                val related = it.relatedSessions
+                if (related.isNotEmpty()) {
+                    loadRelatedSessionUseCase.execute(getUserId() to related)
+                }
+            }
+        }
+
+        relatedUserSessions.addSource(loadRelatedUserSessions) {
+            (loadRelatedUserSessions.value as? Result.Success)?.data?.let {
+                relatedUserSessions.value = it.userSessions
             }
         }
 
@@ -260,6 +287,7 @@ class SessionDetailViewModel @Inject constructor(
     override fun onCleared() {
         // Clear subscriptions that might be leaked or that will not be used in the future.
         loadUserSessionUseCase.onCleared()
+        loadRelatedSessionUseCase.onCleared()
     }
 
     /**
@@ -326,7 +354,34 @@ class SessionDetailViewModel @Inject constructor(
     override fun onLoginClicked() {
         if (!isSignedIn()) {
             Timber.d("Showing Sign-in dialog")
-            _navigateToSignInDialogAction.value = Event(true)
+            _navigateToSignInDialogAction.value = Event(Unit)
+        }
+    }
+
+    // copied from SchedVM, TODO refactor
+    override fun openEventDetail(id: String) {
+        _navigateToSessionAction.value = Event(id)
+    }
+
+    override fun onStarClicked(userEvent: UserEvent) {
+        if (!isSignedIn()) {
+            Timber.d("Showing Sign-in dialog after star click")
+            _navigateToSignInDialogAction.value = Event(Unit)
+            return
+        }
+        val newIsStarredState = !userEvent.isStarred
+
+        // Update the snackbar message optimistically.
+        val snackbarMessage = if(newIsStarredState) {
+            SnackbarMessage(R.string.event_starred, R.string.got_it)
+        } else {
+            SnackbarMessage(R.string.event_unstarred)
+        }
+        _snackBarMessage.postValue(Event(snackbarMessage))
+
+        getUserId()?.let {
+            starEventUseCase.execute(StarEventParameter(it,
+                userEvent.copy(isStarred = newIsStarredState)))
         }
     }
 
