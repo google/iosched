@@ -26,4 +26,7 @@ class FakePreferenceStorage(override var onboardingCompleted: Boolean = false,
                             override var preferToReceiveNotifications: Boolean = false,
                             override var snackbarIsStopped: Boolean = false,
                             override var observableSnackbarIsStopped: LiveData<Boolean> =
-                                    MutableLiveData()) : PreferenceStorage
+                                    MutableLiveData(),
+                            override var preferConferenceTimeZone: Boolean = true,
+                            override var sendUsageStatistics: Boolean = false
+) : PreferenceStorage

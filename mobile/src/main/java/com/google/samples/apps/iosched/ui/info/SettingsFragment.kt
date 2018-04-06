@@ -16,18 +16,26 @@
 
 package com.google.samples.apps.iosched.ui.info
 
+import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.databinding.FragmentSettingsBinding
+import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
 class SettingsFragment : DaggerFragment() {
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_settings, container, false)
+        val binding = FragmentSettingsBinding.inflate(inflater, container, false).apply {
+            viewModel = viewModelProvider(viewModelFactory)
+            setLifecycleOwner(this@SettingsFragment)
+        }
+        return binding.root
     }
 
 }

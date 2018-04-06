@@ -16,10 +16,14 @@
 
 package com.google.samples.apps.iosched.ui.info
 
+import android.arch.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.di.FragmentScoped
+import com.google.samples.apps.iosched.shared.di.ViewModelKey
+import dagger.Binds
 import dagger.Module
 import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
+import dagger.multibindings.IntoMap
 
 /**
  * Module where classes needed to create the [InfoFragment] are defined.
@@ -33,5 +37,13 @@ internal abstract class InfoModule {
     @ContributesAndroidInjector(modules = [InfoFragmentsModule::class])
     internal abstract fun contributeInfoFragment(): InfoFragment
 
+    /**
+     * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
+     * want to get a [EventInfoViewModel] class.
+     */
+    @Binds
+    @IntoMap
+    @ViewModelKey(SettingsViewModel::class)
+    abstract fun bindSettingsFragmentViewModel(viewModel: SettingsViewModel): ViewModel
 
 }
