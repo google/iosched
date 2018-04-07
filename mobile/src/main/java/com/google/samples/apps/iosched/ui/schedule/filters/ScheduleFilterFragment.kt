@@ -115,7 +115,7 @@ class ScheduleFilterFragment : DaggerFragment() {
             })
         }
 
-        behavior.setBottomSheetCallback(object : BottomSheetCallback {
+        behavior.addBottomSheetCallback(object : BottomSheetCallback {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 val activity = requireActivity() as MainActivity
                 // Lock the bottom navigation hidden while the filters sheet is expanded.
