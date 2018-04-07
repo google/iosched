@@ -62,12 +62,12 @@
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_normal"
             android:text="@{session.title}"
             android:textAppearance="@style/TextAppearance.IOSched.SessionTitle"
             app:layout_constraintEnd_toStartOf="@+id/bookmark_session"
             app:layout_constraintStart_toEndOf="@id/keyline"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="What's new in Android" />
 
         <com.google.android.material.widget.CheckableImageButton
             android:id="@+id/bookmark_session"
@@ -99,18 +99,40 @@
             tools:text="Reserved"
             tools:visibility="visible" />
 
-        <TextView
-            android:id="@+id/length_location"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_micro"
-            android:textAppearance="@style/TextAppearance.IOSched.ListSecondary"
-            app:layout_constraintEnd_toEndOf="@id/title"
+        <ImageView
+            android:id="@+id/livestream_icon"
+            android:layout_width="18dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="14dp"
+            android:importantForAccessibility="no"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toStartOf="@id/length_location"
             app:layout_constraintStart_toEndOf="@id/keyline"
             app:layout_constraintTop_toBottomOf="@id/reservation_status"
+            app:layout_constraintBottom_toTopOf="@id/tags_barrier"
+            app:goneUnless="@{session.isLivestream}"
+            app:srcCompat="@drawable/ic_livestreamed" />
+
+        <TextView
+            android:id="@+id/length_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.IOSched.ListSecondary"
+            app:layout_constraintEnd_toEndOf="@id/livestream_icon"
+            app:layout_constraintStart_toEndOf="@id/livestream_icon"
+            app:layout_constraintTop_toBottomOf="@id/reservation_status"
+            app:layout_constraintBottom_toTopOf="@id/tags_barrier"
             app:sessionEnd="@{session.endTime}"
             app:sessionRoom="@{session.room}"
-            app:sessionStart="@{session.startTime}" />
+            app:sessionStart="@{session.startTime}"
+            tools:text="1 hour / Amphitheatre" />
+
+        <android.support.constraint.Barrier
+            android:id="@+id/tags_barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="livestream_icon,length_location" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/tags"
@@ -121,11 +143,12 @@
             android:paddingBottom="@dimen/spacing_micro"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/keyline"
-            app:layout_constraintTop_toBottomOf="@id/length_location"
+            app:layout_constraintTop_toBottomOf="@id/tags_barrier"
             app:flexDirection="row"
             app:flexWrap="wrap"
             app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
-            app:sessionTags="@{session.displayTags}" />
+            app:sessionTags="@{session.displayTags}"
+            tools:listitem="@layout/item_session_tag" />
 
     </android.support.constraint.ConstraintLayout>
 
