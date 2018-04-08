@@ -59,6 +59,11 @@ class CountdownView @JvmOverloads constructor(
         override fun run() {
             var timeUntilConf = Duration.between(ZonedDateTime.now(), conferenceStart)
 
+            if (timeUntilConf.isNegative) {
+                // stop the countdown once conf starts
+                return
+            }
+
             val days = timeUntilConf.toDays()
             days1 = (days / 10).toInt()
             days2 = (days % 10).toInt()
