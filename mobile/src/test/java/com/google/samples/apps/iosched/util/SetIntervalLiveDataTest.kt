@@ -19,7 +19,6 @@ package com.google.samples.apps.iosched.util
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
-import com.google.samples.apps.iosched.shared.util.SetIntervalLiveData.DefaultIntervalMapper
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import junit.framework.Assert.assertEquals
@@ -39,7 +38,7 @@ class SetIntervalLiveDataTest {
         val source = MutableLiveData<Int>()
         source.value = 5
 
-        val subject = DefaultIntervalMapper.mapAtInterval(source) { sourceValue ->
+        val subject = SetIntervalLiveData.mapAtInterval(source) { sourceValue ->
             sourceValue?.run {
                 sourceValue + 5
             }
@@ -55,7 +54,7 @@ class SetIntervalLiveDataTest {
 
         var calls = 0
 
-        val subject = DefaultIntervalMapper.mapAtInterval(source) {
+        val subject = SetIntervalLiveData.mapAtInterval(source) {
             ++calls
         }
 
@@ -69,7 +68,7 @@ class SetIntervalLiveDataTest {
 
         var calls = 0
 
-        val subject = DefaultIntervalMapper.mapAtInterval(source) {
+        val subject = SetIntervalLiveData.mapAtInterval(source) {
             ++calls
         }
 
@@ -90,7 +89,7 @@ class SetIntervalLiveDataTest {
 
         var calls = 0
 
-        val subject = DefaultIntervalMapper.mapAtInterval(source) { sourceValue ->
+        val subject = SetIntervalLiveData.mapAtInterval(source) { sourceValue ->
             sourceValue?.run {
                 calls++
                 sourceValue + 5
@@ -108,7 +107,7 @@ class SetIntervalLiveDataTest {
 
         var timeModifier = 5
 
-        val subject = DefaultIntervalMapper.mapAtInterval(source) { sourceValue ->
+        val subject = SetIntervalLiveData.mapAtInterval(source) { sourceValue ->
             sourceValue?.run {
                 sourceValue + timeModifier
             }
@@ -134,7 +133,7 @@ class SetIntervalLiveDataTest {
 
         var calls = 0
 
-        val subject = DefaultIntervalMapper.mapAtInterval(source) {
+        val subject = SetIntervalLiveData.mapAtInterval(source) {
             ++calls
         }
         assertEquals(1, LiveDataTestUtil.getValue(subject))
