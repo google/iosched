@@ -169,6 +169,13 @@
     <string name="travel_title" translation_description="The title for the tab that shows travel information, such as carpool and bus schedules.">Travel</string>
     <string name="faq_title" translation_description="The title for the tab that shows FAQ.">FAQ</string>
     <string name="settings_title" translation_description="Title for the tab that shows all the settings of this app.">Settings</string>
+    <string name="about_title" translation_description="Title for the 'About' tab that shows miscellaneous info.">About</string>
+
+    <string name="faq_url" translatable="false">https://events.google.com/io/faq/</string>
+    <string name="tos_url" translatable="false">https://policies.google.com/terms</string>
+    <string name="privacy_policy_url" translatable="false">https://policies.google.com/privacy</string>
+    <!--TODO: verify this is correct OSS url-->
+    <string name="oss_url" translatable="false">https://github.com/google/iosched#copyright</string>
 
     <string name="travel_directions_title" translation_description="Header label for driving directions details.">Driving Directions</string>
     <string name="travel_shuttle_title" translation_description="Header label for shuttle service details.">Shuttle Service (Recommended)</string>
@@ -183,19 +190,6 @@
     <string name="travel_ride_sharing_description" translation_description="Ride sharing app instructions and discounts."><b>Waze Carpool</b>\nWaze Carpool is a trusted community of drivers and riders that is available to make your Google I/O commute fun, fast and affordable. Driving? Open <a href="http://Waze.com/get">Waze</a> when you get to the Bay Area. Looking for a ride? Install <a href="http://Waze.com/carpool">Waze Carpool</a> before you arrive. Check back here in the coming weeks for carpool discount codes exclusive to Google I/O attendees.\n\n<b>Lyft Line</b>\nDownload the Lyft app from Google Play and use Lyft Line to share a ride for less with others going the same way.\n<b>Discount code</b>: Googleio18\nThis code is valid from May 8–10, 2018 for shared rides with Lyft Line. It’s redeemable for up to $10 per trip and for up to 250 users per day. Rides must begin or end at Shoreline Amphitheatre.</string>
     <string name="travel_public_transportation_description"  translation_description="Public transportation instructions.">Public transit doesn’t go directly to Google I/O. Stay tuned for the exact transportation locations serviced by Google I/O event shuttles.</string>
     <string name="travel_biking_description" translation_description="Bicycle instructions.">Complimentary bike parking will be available at Shoreline Amphitheatre in Parking Lot A. The Silicon Valley Bicycle Coalition will provide secure valet parking for your bicycle from 7am until the event ends each day. There are two trails, Stevens Creek Trail and Permanente Creek Trail, that are convenient for bike riders heading to Shoreline Amphitheatre. Check Google Maps for the best bike routes and directions.\n\nThe Bay Area Bike to Work Day is scheduled on Thursday, May 10th. There will be thousands of cyclists participating near Shoreline and there are hundreds of energizer stations throughout the area. Please check out the Silicon Valley Bike to Work Day website for more information.</string>
-
-    <string name="faq_1_title" translatable="false">Where do I get my badge?</string>
-    <string name="faq_2_title" translatable="false">Where\'s my lost stuff?</string>
-    <string name="faq_3_title" translatable="false">How to I talk with a Googler?</string>
-    <string name="faq_4_title" translatable="false">Should I go to After hours?</string>
-    <string name="faq_5_title" translatable="false">I love snacks. Where are they?</string>
-
-
-    <string name="faq_1_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
-    <string name="faq_2_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
-    <string name="faq_3_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
-    <string name="faq_4_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
-    <string name="faq_5_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
 
     <string name="view_sessions_text" translation_description="Link label for viewing all sessions in schedule.">View Sessions</string>
     <string name="view_codelabs_text" translation_description="Link label for viewing all codelabs.">View Codelabs</string>
@@ -219,6 +213,8 @@
     <string name="event_meals_description" translatable="false">Lorem ipsum about meals and snacks and all the wonderful food available where and when. Drinks, and have fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the food.</string>
     <string name="wifi_header" translation_description="Header label for wifi information.">Wifi</string>
     <string name="event_types_header" translation_description="Header label for information on the different event types.">Event Types</string>
+    <string name="general_header" translation_description="Header label for general info.">General</string>
+    <string name="agreements_header" translation_description="Header label for links to TOS, privacy policy, OSS licenses.">Agreements</string>
 
     <!--Info pages - Strings ready to translate-->
     <string name="settings_time_zone_label" translate_description="Set time zone in app to PST.">Events in Pacific Time Zone (UTC-8)</string>
@@ -227,6 +223,7 @@
     <string name="settings_privacy_policy" translation_description="Open link to privacy policy.">Privacy policy</string>
     <string name="settings_oss_licenses" translation_description="Open link to open source licenses.">Open sources licenses</string>
     <string name="settings_version_label" translation_description="Version and build numbers.">Version %1$s, build %2$s</string>
+    <string name="faq_label" translation_description="Label for link to FAQ on website.">FAQ</string>
     <string name="built_with_material_content_description" translation_description="The app was built with Material Components.">Built with Material Components.</string>
 
     <!-- Day labels for schedule -->
