@@ -29,10 +29,10 @@ import android.widget.Toast
 import com.google.samples.apps.iosched.databinding.FragmentScheduleDayBinding
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
-import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.getEnum
 import com.google.samples.apps.iosched.shared.util.lazyFast
 import com.google.samples.apps.iosched.shared.util.putEnum
+import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.util.clearDecorations
 import com.google.samples.apps.iosched.util.executeAfter
@@ -82,7 +82,7 @@ class ScheduleDayFragment : DaggerFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = activityViewModelProvider(viewModelFactory)
+        viewModel = viewModelProvider(viewModelFactory)
         binding = FragmentScheduleDayBinding.inflate(inflater, container, false).apply {
             setLifecycleOwner(this@ScheduleDayFragment)
             viewModel = this@ScheduleDayFragment.viewModel
