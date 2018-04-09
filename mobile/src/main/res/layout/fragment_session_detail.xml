@@ -109,11 +109,11 @@
                     app:layout_constraintTop_toTopOf="@id/detail_image"
                     app:layout_constraintVertical_bias="0"
                     app:eventHeaderAnim="@{viewModel.session}"
-                    app:goneUnless="@{!viewModel.hasPhoto}"
+                    app:goneUnless="@{!viewModel.hasPhotoOrVideo}"
                     app:lottie_autoPlay="true"
                     app:lottie_loop="true" />
 
-                <!-- Title on header: only shown if there isn't a photo header. -->
+                <!-- Title on header: only shown if there isn't a photo header or video. -->
                 <TextView
                     android:id="@+id/session_detail_title"
                     style="@style/Widget.IOSched.SessionDetailTitle"
@@ -126,7 +126,7 @@
                     app:layout_constraintEnd_toEndOf="@id/guideline_title_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toTopOf="@id/detail_image"
-                    app:goneUnless="@{!viewModel.hasPhoto}"
+                    app:goneUnless="@{!viewModel.hasPhotoOrVideo}"
                     tools:text="Session Title" />
 
                 <Space
@@ -135,7 +135,7 @@
                     android:layout_height="24dp"
                     app:layout_constraintTop_toBottomOf="@id/detail_image" />
 
-                <!-- Title below header: shown if there is a photo header -->
+                <!-- Title below header: shown if there is a photo header or video. -->
                 <TextView
                     android:id="@+id/session_detail_with_video_title"
                     style="@style/Widget.IOSched.SessionDetailTitle"
@@ -146,7 +146,7 @@
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/spacer"
-                    app:goneUnless="@{viewModel.hasPhoto}"
+                    app:goneUnless="@{viewModel.hasPhotoOrVideo}"
                     tools:text="Session Title" />
 
                 <TextView

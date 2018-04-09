@@ -95,7 +95,7 @@ class SessionDetailViewModel @Inject constructor(
     val relatedUserSessions = MediatorLiveData<List<UserSession>>()
 
     val showRateButton: LiveData<Boolean>
-    val hasPhoto: LiveData<Boolean>
+    val hasPhotoOrVideo: LiveData<Boolean>
     val isPlayable: LiveData<Boolean>
     val hasSpeakers: LiveData<Boolean>
     val hasRelated: LiveData<Boolean>
@@ -177,8 +177,8 @@ class SessionDetailViewModel @Inject constructor(
             TimeUtils.getSessionState(currentSession, ZonedDateTime.now())
         }
 
-        hasPhoto = session.map { currentSession ->
-            !currentSession?.photoUrl.isNullOrEmpty()
+        hasPhotoOrVideo = session.map { currentSession ->
+            !currentSession?.photoUrl.isNullOrEmpty() || !currentSession?.youTubeUrl.isNullOrEmpty()
         }
 
         isPlayable = session.map { currentSession ->
