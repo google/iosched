@@ -18,18 +18,15 @@ package com.google.samples.apps.iosched.ui.schedule.day
 
 import android.content.Context
 import android.databinding.BindingAdapter
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.TextView
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Room
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.ui.reservation.ReservationTextView
 import com.google.samples.apps.iosched.ui.reservation.ReservationViewState
-import com.google.samples.apps.iosched.ui.reservation.ReserveButton
-
-import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.Duration
 import org.threeten.bp.ZonedDateTime
 
@@ -72,27 +69,26 @@ private fun durationString(context: Context, duration: Duration): String {
     }
 }
 
-@BindingAdapter("reservationStatus")
-fun reservationStatus(
-    reserveButton: ReserveButton,
-    userEvent: UserEvent?
-) {
-    val reservationUnavailable = false // TODO determine this condition
-    reserveButton.status = ReservationViewState.fromUserEvent(userEvent, reservationUnavailable)
-    reserveButton.isEnabled = !reservationUnavailable
-}
-
-@BindingAdapter(value = ["showReservations", "isReservable"], requireAll = true)
-fun showReservationView(
-    view: View,
+@BindingAdapter(
+    "reservationStatus",
+    "showReservations",
+    "isReservable",
+    requireAll = true
+)
+fun setReservationStatus(
+    textView: ReservationTextView,
+    userEvent: UserEvent?,
     showReservations: Boolean,
-    eventIsReservable: Boolean
+    isReservable: Boolean
 ) {
-    view.visibility = if (showReservations && eventIsReservable) VISIBLE else GONE
-}
-
-@BindingAdapter("reservationStatus")
-fun reservationStatus(textView: ReservationTextView, userEvent: UserEvent?) {
-    val reservationUnavailable = false // TODO determine this condition
-    textView.status = ReservationViewState.fromUserEvent(userEvent, reservationUnavailable)
+    when (isReservable && showReservations) {
+        true -> {
+            val reservationUnavailable = false // TODO determine this condition
+            textView.status = ReservationViewState.fromUserEvent(userEvent, reservationUnavailable)
+            textView.visibility = VISIBLE
+        }
+        false -> {
+            textView.visibility = GONE
+        }
+    }
 }
