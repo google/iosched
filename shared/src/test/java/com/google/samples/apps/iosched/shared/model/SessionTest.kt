@@ -16,6 +16,10 @@
 
 package com.google.samples.apps.iosched.shared.model
 
+import com.google.samples.apps.iosched.shared.model.SessionType.CODELAB
+import com.google.samples.apps.iosched.shared.model.SessionType.SESSION
+import org.hamcrest.CoreMatchers
+import org.hamcrest.MatcherAssert
 import org.hamcrest.core.Is
 import org.junit.Assert
 import org.junit.Test
@@ -68,6 +72,16 @@ class SessionTest{
     fun testIsNotOverlapping_sessionStartsAfterSessionEnds() {
         testIsOverlapping(eventStart = 1000L, eventEnd = 2000L,
                 sessionStart = 3000L, sessionEnd = 4000L, expected = false)
+    }
+
+    @Test
+    fun testType_sessions() {
+        MatcherAssert.assertThat(TestData.session0.type, CoreMatchers.`is`(SESSION))
+    }
+
+    @Test
+    fun testType_codelabs() {
+        MatcherAssert.assertThat(TestData.session1.type, CoreMatchers.`is`(CODELAB))
     }
 
     private fun testIsOverlapping(eventStart: Long,

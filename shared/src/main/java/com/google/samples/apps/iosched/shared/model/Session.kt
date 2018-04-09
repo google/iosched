@@ -162,7 +162,8 @@ enum class SessionType {
     OFFICE_HOURS,
     CODELAB,
     SANDBOX,
-    AFTER_HOURS;
+    AFTER_HOURS,
+    UNKNOWN;
 
     companion object {
 
@@ -174,13 +175,14 @@ enum class SessionType {
         fun fromTags(tags: List<Tag>): SessionType {
             val typeTag = tags.firstOrNull { it.category == Tag.CATEGORY_TYPE }
 
-            return when (typeTag?.id) {
+            return when (typeTag?.tag) {
                 Tag.TYPE_APP_REVIEWS -> APP_REVIEW
                 Tag.TYPE_AFTERHOURS -> AFTER_HOURS
                 Tag.TYPE_CODELABS -> CODELAB
                 Tag.TYPE_OFFICEHOURS -> OFFICE_HOURS
                 Tag.TYPE_SANDBOXDEMO -> SANDBOX
-                else -> SESSION
+                Tag.TYPE_SESSIONS -> SESSION
+                else -> UNKNOWN
             }
         }
     }
