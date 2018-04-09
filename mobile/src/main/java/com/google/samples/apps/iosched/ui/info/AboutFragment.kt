@@ -16,17 +16,38 @@
 
 package com.google.samples.apps.iosched.ui.info
 
+import android.content.Intent
+import android.databinding.BindingAdapter
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.samples.apps.iosched.R
+import android.widget.Button
+import com.google.samples.apps.iosched.databinding.FragmentInfoAboutBinding
 import dagger.android.support.DaggerFragment
 
-class FaqFragment : DaggerFragment() {
+// TODO use chrome custom tabs if user has chrome installed.
+@BindingAdapter("websiteLink")
+fun websiteLink(
+    button: Button,
+    url: String?
+) {
+    url ?: return
+    button.setOnClickListener {
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(url)
+        }
+        it.context.startActivity(intent, null)
+    }
+}
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_info_faq, container, false)
+class AboutFragment : DaggerFragment() {
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return FragmentInfoAboutBinding.inflate(inflater).root
     }
 }
