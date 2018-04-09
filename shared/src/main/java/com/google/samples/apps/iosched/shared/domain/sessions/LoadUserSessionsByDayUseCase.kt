@@ -51,6 +51,7 @@ open class LoadUserSessionsByDayUseCase @Inject constructor(
                     is Result.Success -> {
                         val userSessions = it.data.userSessionsPerDay.mapValues { (_, sessions) ->
                             sessions.filter { sessionMatcher.matches(it) }
+                                    .sortedBy { it.session.startTime }
                         }
                         // Compute type from tags now so it's done in the background
                         userSessions.forEach { it.value.forEach { it.session.type } }
