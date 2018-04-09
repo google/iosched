@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.util
+package com.google.samples.apps.iosched.util
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
@@ -34,7 +34,7 @@ private const val ONE_SECOND = 1_000L
  * @param intervalMs How often to run the map operation on the last value provided from source
  * @param map operation to map source data to output
  */
-open class SetIntervalLiveData<in P, R>(
+class SetIntervalLiveData<in P, R>(
     source: LiveData<P>,
     private val intervalMs: Long = ONE_SECOND,
     private val map: (P?) -> R?
@@ -58,29 +58,7 @@ open class SetIntervalLiveData<in P, R>(
         }
     }
 
-    object DefaultIntervalMapper : IntervalMapper {
-
-        var delegate: IntervalMapper = IntervalMapperDelegate
-
-        override fun <P, R> mapAtInterval(
-                source: LiveData<P>,
-                interval: Long,
-                map: (P?) -> R?
-        ): SetIntervalLiveData<P, R> {
-            return delegate.mapAtInterval(source, interval, map)
-        }
-    }
-
-    internal object IntervalMapperDelegate : IntervalMapper {
-        override fun <P, R> mapAtInterval(source: LiveData<P>,
-                                          interval: Long,
-                                          map: (P?) -> R?): SetIntervalLiveData<P, R> {
-            return SetIntervalLiveData(source, interval, map)
-        }
-    }
-
-    interface IntervalMapper {
-
+    companion object {
         /**
          * Apply a map operation to a LiveData repeatedly on an interval.
          *
@@ -89,10 +67,12 @@ open class SetIntervalLiveData<in P, R>(
          * @param map operation to map the source data to output
          */
         fun <P, R> mapAtInterval(
-                source: LiveData<P>,
-                interval: Long = ONE_SECOND,
-                map: (P?) -> R?
-        ): SetIntervalLiveData<P, R>
+            source: LiveData<P>,
+            interval: Long = ONE_SECOND,
+            map: (P?) -> R?
+        ): SetIntervalLiveData<P, R> {
+            return SetIntervalLiveData(source, interval, map)
+        }
     }
 
     /**

@@ -16,8 +16,8 @@
 
 package com.google.samples.apps.iosched.test.util.time
 
-import com.google.samples.apps.iosched.shared.time.DefaultTime
-import com.google.samples.apps.iosched.shared.time.MockableTime
+import com.google.samples.apps.iosched.util.time.DefaultTime
+import com.google.samples.apps.iosched.util.time.MockableTime
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 import org.threeten.bp.Instant
