@@ -45,7 +45,7 @@
             android:checked="@{tagFilter.isChecked}"
             android:onClick="@{() -> viewModel.toggleFilter(tagFilter, !filterLabel.checked)}"
             android:text="@{tagFilter.tag.name}"
-            app:tagFilterBg="@{tagFilter.tag.color}"
+            app:tagFilter="@{tagFilter.tag}"
             tools:checked="@sample/tags.json/tags/checked"
             tools:tagFilterBg="@sample/tags.json/tags/color"
             tools:text="@sample/tags.json/tags/name" />
