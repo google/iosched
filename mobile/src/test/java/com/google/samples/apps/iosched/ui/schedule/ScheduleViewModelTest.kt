@@ -20,7 +20,6 @@ package com.google.samples.apps.iosched.ui.schedule
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
 import com.google.samples.apps.iosched.R
@@ -42,8 +41,6 @@ import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUs
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.model.Block
@@ -58,7 +55,6 @@ import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelega
 import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
-import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.schedule.filters.LoadTagFiltersUseCase
 import com.google.samples.apps.iosched.ui.schedule.filters.TagFilter
@@ -66,7 +62,6 @@ import com.google.samples.apps.iosched.ui.signin.FirebaseSignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.core.Is.`is`
@@ -282,66 +277,6 @@ class ScheduleViewModelTest {
         assertNotNull(signInEvent?.getContentIfNotHandled())
     }
 
-    /** Reservations **/
-
-    @Test
-    fun testReserveEvent() {
-        val reservationActionUseCaseMock = mock<ReservationActionUseCase> {
-            on { observe() }.doReturn(MediatorLiveData())
-        }
-        val signInDelegate = FakeSignInViewModelDelegate()
-        val viewModel = createScheduleViewModel(
-            reservationActionUseCase = reservationActionUseCaseMock,
-            signInViewModelDelegate = signInDelegate)
-        val testUid = "testUid"
-        // Kick off the viewmodel by loading a user.
-        signInDelegate.loadUser(testUid)
-
-        viewModel.onReservationClicked(TestData.session0, TestData.userEvents[4])
-
-        verify(reservationActionUseCaseMock).execute(ReservationRequestParameters(testUid,
-            TestData.session0.id, RequestAction()))
-    }
-
-    @Test
-    fun testReserveEvent_notLoggedIn() {
-        // Create test use cases with test data
-        val signInDelegate = FakeSignInViewModelDelegate()
-        signInDelegate.injectIsSignedIn = false
-
-        val viewModel = createScheduleViewModel(signInViewModelDelegate = signInDelegate)
-
-        viewModel.onReservationClicked(TestData.session0, TestData.userEvents[4])
-
-        val event: Event<SnackbarMessage>? = LiveDataTestUtil.getValue(viewModel.snackBarMessage)
-        // TODO change with actual resource used
-        assertThat(event?.getContentIfNotHandled()?.messageId,
-            `is`(not(equalTo(R.string.reservation_request_succeeded))))
-
-        // Then the sign in dialog should ne shown
-        val signInEvent = LiveDataTestUtil.getValue(viewModel.navigateToSignInDialogAction)
-        assertNotNull(signInEvent?.getContentIfNotHandled())
-    }
-
-    @Test
-    fun testCancelEvent() {
-        val signInDelegate = FakeSignInViewModelDelegate()
-        val viewModel = createScheduleViewModel(
-            signInViewModelDelegate = signInDelegate)
-        val testUid = "testUid"
-        // Kick off the viewmodel by loading a user.
-        signInDelegate.loadUser(testUid)
-
-        viewModel.onReservationClicked(TestData.session1, TestData.userEvents[0])
-
-        val parameters = LiveDataTestUtil.getValue(
-            viewModel.navigateToRemoveReservationDialogAction)
-            ?.getContentIfNotHandled()
-        assertThat(parameters, `is`(RemoveReservationDialogParameters(testUid,
-            TestData.session1.id,
-            TestData.session1.title)))
-    }
-
     /** New reservation / waitlist **/
 
     @Test
@@ -498,7 +433,6 @@ class ScheduleViewModelTest {
         loadTagsUseCase: LoadTagFiltersUseCase = createTagsExceptionUseCase(),
         signInViewModelDelegate: SignInViewModelDelegate = createSignInViewModelDelegate(),
         starEventUseCase: StarEventUseCase = createStarEventUseCase(),
-        reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase(),
         snackbarMessageManager: SnackbarMessageManager = SnackbarMessageManager(
                 FakePreferenceStorage()),
         scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase =
@@ -511,7 +445,6 @@ class ScheduleViewModelTest {
                 loadTagFiltersUseCase = loadTagsUseCase,
                 signInViewModelDelegate = signInViewModelDelegate,
                 starEventUseCase = starEventUseCase,
-                reservationActionUseCase = reservationActionUseCase,
                 snackbarMessageManager = snackbarMessageManager,
                 scheduleUiHintsShownUseCase = scheduleUiHintsShownUseCase,
                 topicSubscriber = topicSubscriber

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.util.time
+package com.google.samples.apps.iosched.shared.time
 
 import org.threeten.bp.Instant
 
