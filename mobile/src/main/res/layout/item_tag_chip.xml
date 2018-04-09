@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@{tag.name}"
-        app:tagChipBg="@{tag.color}"
+        app:tagChip="@{tag}"
         tools:backgroundTint="@sample/tags.json/tags/color"
         tools:text="@sample/tags.json/tags/name" />
 
