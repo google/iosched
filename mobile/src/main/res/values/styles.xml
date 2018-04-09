@@ -290,7 +290,7 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/grey_800</item>
     </style>
-    <style name="TextAppearance.IOSched.SettingsButtons" parent="@style/Widget.AppCompat.Button.Borderless.Colored">
+    <style name="TextAppearance.IOSched.AboutButtons" parent="@style/Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:padding">@dimen/margin_normal</item>
         <item name="android:textSize">14sp</item>
     </style>

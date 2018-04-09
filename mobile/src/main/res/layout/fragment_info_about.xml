@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="com.google.samples.apps.iosched.R" />
+    </data>
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/settings_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbars="vertical">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/settings_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/margin_normal" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/margin_normal" />
+
+            <TextView
+                android:id="@+id/general_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:text="@string/general_header"
+                android:textAppearance="@style/TextAppearance.IOSched.Subhead"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/faq_link"
+                style="@style/TextAppearance.IOSched.AboutButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:gravity="start"
+                android:text="@string/faq_label"
+                app:websiteLink="@{@string/faq_url}"
+                app:layout_constraintTop_toBottomOf="@+id/general_header" />
+
+            <TextView
+                android:id="@+id/agreements_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:text="@string/agreements_header"
+                android:textAppearance="@style/TextAppearance.IOSched.Subhead"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/faq_link" />
+
+            <Button
+                android:id="@+id/terms_of_service"
+                style="@style/TextAppearance.IOSched.AboutButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:gravity="start"
+                android:text="@string/settings_tos"
+                app:websiteLink="@{@string/tos_url}"
+                app:layout_constraintTop_toBottomOf="@+id/agreements_header" />
+
+            <Button
+                android:id="@+id/privacy_policy"
+                style="@style/TextAppearance.IOSched.AboutButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="@string/settings_privacy_policy"
+                app:websiteLink="@{@string/privacy_policy_url}"
+                app:layout_constraintTop_toBottomOf="@id/terms_of_service" />
+
+            <Button
+                android:id="@+id/open_source_license"
+                style="@style/TextAppearance.IOSched.AboutButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="@string/settings_oss_licenses"
+                app:websiteLink="@{@string/oss_url}"
+                app:layout_constraintTop_toBottomOf="@id/privacy_policy" />
+
+            <TextView
+                android:id="@+id/version_build_number"
+                style="@style/TextAppearance.IOSched.SettingsSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/open_source_license"
+                tools:text="Version X.X, build X" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:contentDescription="@string/built_with_material_content_description"
+                android:src="@drawable/built_with_material"
+                app:layout_constraintTop_toBottomOf="@+id/version_build_number" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+</layout>
