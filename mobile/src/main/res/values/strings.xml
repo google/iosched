@@ -83,6 +83,8 @@
     <!-- Accessibility -->
     <string name="a11y_collapse_filters_sheet" translation_description="Description of a button to lower the filters sheet.">Lower filters sheet</string>
     <string name="a11y_clear_tag_filters" translation_description="Description of a button to remove all current tag filters.">Clear filters</string>
+
+    <string name="a11y_pinned" translation_description="Description of a button that used to show only starred and reserved events.">Only starred and reserved events</string>
     <string name="a11y_revert_pinned" translation_description="Description of a button to revert the switch that shows only starred and reserved events.">Show all sessions</string>
 
     <string name="a11y_reservation_available" translation_description="Alternative text for the button letting the user reserve a seat for a given event.">Reserve event</string>
