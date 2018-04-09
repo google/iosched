@@ -21,9 +21,12 @@ import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import android.content.SharedPreferences
 import android.support.annotation.WorkerThread
 import androidx.content.edit
 import javax.inject.Inject
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 /**
  * Storage for app and user preferences.
@@ -56,38 +59,20 @@ class SharedPreferenceStorage @Inject constructor(context: Context) :
         prefs.registerOnSharedPreferenceChangeListener(changeListener)
     }
 
-    @get:WorkerThread
     override var onboardingCompleted
-        get() = prefs.getBoolean(PREF_ONBOARDING, false)
-        set(value) = prefs.edit {
-            putBoolean(PREF_ONBOARDING, value)
-        }
+            by BooleanPreference(prefs, PREF_ONBOARDING, false)
 
-    @get:WorkerThread
     override var scheduleUiHintsShown: Boolean
-        get() = prefs.getBoolean(PREF_SCHED_UI_HINTS_SHOWN, false)
-        set(value) = prefs.edit {
-            putBoolean(PREF_SCHED_UI_HINTS_SHOWN, value)
-        }
+            by BooleanPreference(prefs, PREF_SCHED_UI_HINTS_SHOWN, false)
 
-    @get:WorkerThread
-    override var notificationsPreferenceShown: Boolean
-        get() = prefs.getBoolean(PREF_NOTIFICATIONS_SHOWN, false)
-        set(value) = prefs.edit {
-            putBoolean(PREF_NOTIFICATIONS_SHOWN, value)
-        }
+    override var notificationsPreferenceShown
+            by BooleanPreference(prefs, PREF_NOTIFICATIONS_SHOWN, false)
 
-    @get:WorkerThread
-    override var preferToReceiveNotifications: Boolean
-        get() = prefs.getBoolean(PREF_RECEIVE_NOTIFICATIONS, true)
-        set(value) = prefs.edit {
-            putBoolean(PREF_RECEIVE_NOTIFICATIONS, value)
-        }
+    override var preferToReceiveNotifications
+            by BooleanPreference(prefs, PREF_RECEIVE_NOTIFICATIONS, true)
 
-    @get:WorkerThread
     override var snackbarIsStopped: Boolean
-        get() = prefs.getBoolean(PREF_SNACKBAR_IS_STOPPED, false)
-        set(value) = prefs.edit { putBoolean(PREF_SNACKBAR_IS_STOPPED, value) }
+            by BooleanPreference(prefs, PREF_SNACKBAR_IS_STOPPED, false)
 
     override var observableSnackbarIsStopped: LiveData<Boolean>
         get() {
@@ -103,5 +88,19 @@ class SharedPreferenceStorage @Inject constructor(context: Context) :
         private const val PREF_NOTIFICATIONS_SHOWN = "pref_notifications_shown"
         private const val PREF_RECEIVE_NOTIFICATIONS = "pref_receive_notifications"
         private const val PREF_SNACKBAR_IS_STOPPED = "pref_snackbar_is_stopped"
+    }
+}
+
+class BooleanPreference(private val preferences: SharedPreferences,
+                        private val name: String,
+                        private val defaultValue: Boolean): ReadWriteProperty<Any, Boolean> {
+
+    @WorkerThread
+    override fun getValue(thisRef: Any, property: KProperty<*>): Boolean {
+        return preferences.getBoolean(name, defaultValue)
+    }
+
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) {
+        preferences.edit { putBoolean(name, value) }
     }
 }
