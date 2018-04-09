@@ -47,7 +47,7 @@
     <string name="waitlist_new" translation_description="The message shown when user is added to the waitlist of a session reservation.">You have been waitlisted.</string>
     <string name="waitlist_cancel_succeeded" translation_description="The message shown when user has canceled their reservation and was waitlisted for a session.">Removed from waitlist.</string>
     <string name="got_it" translation_description="The label for dismissing a information messages.">Got it</string>
-    <string name="dont_show" translation_description="The label for opting out Snackbar messages.">Don\'t show</string>
+    <string name="dont_show" translation_description="The label for opting out of in-app notification messages.">Don\'t show</string>
     <string name="reservation_denied_cutoff" translation_description="The message shown when user's reservation is denied because the session starts too soon">Reservation denied: too close to start time.</string>
     <string name="reservation_denied_clash" translation_description="The message shown when user's reservation is denied because they have reserved another event at that time">Reservation denied: clash with another reservation</string>
     <string name="reservation_denied_unknown" translation_description="The message shown when user's reservation is denied because of an unknown error">Reservation denied: unknown error.</string>
@@ -84,7 +84,7 @@
     <string name="a11y_collapse_filters_sheet" translation_description="Description of a button to lower the filters sheet.">Lower filters sheet</string>
     <string name="a11y_clear_tag_filters" translation_description="Description of a button to remove all current tag filters.">Clear filters</string>
 
-    <string name="a11y_pinned" translation_description="Description of a button that used to show only starred and reserved events.">Only starred and reserved events</string>
+    <string name="a11y_pinned" translation_description="Description of a button that's used to show only starred and reserved events.">Only starred and reserved events</string>
     <string name="a11y_revert_pinned" translation_description="Description of a button to revert the switch that shows only starred and reserved events.">Show all sessions</string>
 
     <string name="a11y_reservation_available" translation_description="Alternative text for the button letting the user reserve a seat for a given event.">Reserve event</string>
