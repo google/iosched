@@ -18,10 +18,9 @@ package com.google.samples.apps.iosched.shared.model
 
 import com.google.samples.apps.iosched.shared.model.SessionType.CODELAB
 import com.google.samples.apps.iosched.shared.model.SessionType.SESSION
-import org.hamcrest.CoreMatchers
-import org.hamcrest.MatcherAssert
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is
-import org.junit.Assert
 import org.junit.Test
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
@@ -76,12 +75,12 @@ class SessionTest{
 
     @Test
     fun testType_sessions() {
-        MatcherAssert.assertThat(TestData.session0.type, CoreMatchers.`is`(SESSION))
+        assertThat(TestData.session0.type, `is`(SESSION))
     }
 
     @Test
     fun testType_codelabs() {
-        MatcherAssert.assertThat(TestData.session1.type, CoreMatchers.`is`(CODELAB))
+        assertThat(TestData.session1.type, `is`(CODELAB))
     }
 
     private fun testIsOverlapping(eventStart: Long,
@@ -93,7 +92,7 @@ class SessionTest{
                 startTime = toZonedTime(eventStart), endTime = toZonedTime(eventEnd))
         val session = TestData.session0.copy(
                 startTime = toZonedTime(sessionStart), endTime = toZonedTime(sessionEnd))
-        Assert.assertThat(baseSession.isOverlapping(session), Is.`is`(expected))
+        assertThat(baseSession.isOverlapping(session), Is.`is`(expected))
     }
 
     private fun toZonedTime(sessionStart: Long): ZonedDateTime {

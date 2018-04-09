@@ -40,7 +40,9 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
 
     override fun observeSignedInUser() = TODO("Not implemented")
 
-    override fun observeRegisteredUser() = TODO("Not implemented")
+    override fun observeRegisteredUser() = MutableLiveData<Boolean>().apply {
+        value = injectIsSignedIn
+    }
 
     override fun isRegistered(): Boolean = injectIsSignedIn
 
