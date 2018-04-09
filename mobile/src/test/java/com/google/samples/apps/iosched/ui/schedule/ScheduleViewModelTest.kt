@@ -177,7 +177,7 @@ class ScheduleViewModelTest {
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
         // Check that the expected content description is set
-        assertEquals(R.string.a11y_sign_out,
+        assertEquals(R.string.sign_out,
             LiveDataTestUtil.getValue(viewModel.profileContentDesc))
     }
 
@@ -198,7 +198,7 @@ class ScheduleViewModelTest {
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
         // Check that the expected content description is set
-        assertEquals(R.string.a11y_sign_in, LiveDataTestUtil.getValue(viewModel.profileContentDesc))
+        assertEquals(R.string.sign_in, LiveDataTestUtil.getValue(viewModel.profileContentDesc))
     }
 
     @Test
@@ -216,7 +216,7 @@ class ScheduleViewModelTest {
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
         // Check that the expected content description is set
-        assertEquals(R.string.a11y_sign_in, LiveDataTestUtil.getValue(viewModel.profileContentDesc))
+        assertEquals(R.string.sign_in, LiveDataTestUtil.getValue(viewModel.profileContentDesc))
     }
 
     @Test

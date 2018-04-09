@@ -85,9 +85,6 @@
     <string name="a11y_clear_tag_filters" translation_description="Description of a button to remove all current tag filters.">Clear filters</string>
     <string name="a11y_revert_pinned" translation_description="Description of a button to revert the switch that shows only starred and reserved events.">Show all sessions</string>
 
-    <string name="a11y_sign_in" translatable="false">TODO: a11y content description for sign in action</string>
-    <string name="a11y_sign_out" translatable="false">TODO: a11y content description for sign out action</string>
-
     <string name="a11y_reservation_available" translation_description="Alternative text for the button letting the user reserve a seat for a given event.">Reserve event</string>
     <string name="a11y_reservation_working" translation_description="Alternative text for the event reservation button whilst it is working on processing a reservation.">Working to reserve event</string>
     <string name="a11y_reservation_reserved" translation_description="Alternative text for the event reservation button when the user has reserved a seat.">Event reserved</string>
