@@ -163,7 +163,7 @@
 
                 <TextView
                     android:id="@+id/session_detail_room"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_micro"
                     android:text="@{viewModel.session.room.name}"
@@ -174,7 +174,7 @@
                     app:layout_constraintBottom_toTopOf="@id/session_detail_level_barrier"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/session_detail_time"
-                    app:layout_constraintWidth_default="wrap"
+                    app:layout_constrainedWidth="true"
                     tools:text="Session Location" />
 
                 <ImageView
