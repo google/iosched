@@ -135,7 +135,7 @@ class ScheduleViewModel @Inject constructor(
         get() = _snackBarMessage
 
     /** Resource id of the profile button's content description; changes based on sign in state**/
-    private val _profileContentDesc = MediatorLiveData<Int>().apply { value = R.string.a11y_sign_in }
+    private val _profileContentDesc = MediatorLiveData<Int>().apply { value = R.string.sign_in }
 
     val profileContentDesc: LiveData<Int>
         get() = _profileContentDesc
@@ -351,9 +351,9 @@ class ScheduleViewModel @Inject constructor(
     @StringRes
     private fun getProfileContentDescription(userResult: Result<AuthenticatedUserInfo>?): Int {
         return if (userResult is Success && userResult.data.isSignedIn()) {
-            R.string.a11y_sign_out
+            R.string.sign_out
         } else {
-            R.string.a11y_sign_in
+            R.string.sign_in
         }
     }
 
