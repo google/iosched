@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.data
 
+import android.support.annotation.Keep
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonIOException
 import com.google.gson.JsonSyntaxException
@@ -87,6 +88,7 @@ object ConferenceDataJsonParser {
  * Temporary data type for conference data where some collections are lists of IDs instead
  * of lists of domain objects.
  */
+@Keep
 data class TempConferenceData(
         val sessions: List<SessionTemp>,
         val speakers: Map<String, Speaker>,
