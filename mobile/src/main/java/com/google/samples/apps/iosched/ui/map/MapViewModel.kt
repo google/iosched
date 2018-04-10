@@ -16,8 +16,10 @@
 
 package com.google.samples.apps.iosched.ui.map
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.google.android.gms.maps.model.LatLng
 import com.google.samples.apps.iosched.shared.data.map.MapMetadataRepository
 import javax.inject.Inject
 
@@ -44,4 +46,12 @@ class MapViewModel @Inject constructor(
      * True if any errors occur in fetching the data.
      */
     val errorMessageShown = MutableLiveData<Boolean>().apply { value = false }
+
+    private val _mapCenter = MutableLiveData<LatLng>()
+    val mapCenter: LiveData<LatLng>
+        get() = _mapCenter
+
+    init {
+        _mapCenter.value = defaultCameraPosition.target
+    }
 }

@@ -63,11 +63,11 @@ fun viewport(mapView: MapView, bounds: LatLngBounds?) {
  * Sets the center of the map's camera target. This will be called initially and then every time the
  * user selects an event or a marker.
  */
-@BindingAdapter(value = ["centerTarget", "zoomLevel"], requireAll = true)
-fun cameraTarget(mapView: MapView, target: LatLng?, zoomLevel: Float?) {
-    if (target != null && zoomLevel != null) {
+@BindingAdapter("mapCenter")
+fun mapCenter(mapView: MapView, target: LatLng?) {
+    if (target != null) {
         mapView.getMapAsync {
-            it.animateCamera(CameraUpdateFactory.newLatLngZoom(target, zoomLevel))
+            it.animateCamera(CameraUpdateFactory.newLatLng(target))
         }
     }
 }
