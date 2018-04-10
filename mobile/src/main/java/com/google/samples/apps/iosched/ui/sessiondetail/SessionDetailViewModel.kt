@@ -25,6 +25,7 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUse
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCaseResult
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.SwapAction
@@ -40,6 +41,7 @@ import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.shared.util.setValueIfNew
 import com.google.samples.apps.iosched.ui.SnackbarMessage
@@ -51,9 +53,10 @@ import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.SetIntervalLiveData
 import com.google.samples.apps.iosched.util.time.DefaultTime
 import org.threeten.bp.Duration
+import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
-import java.util.UUID
+import java.util.*
 import javax.inject.Inject
 
 private const val TEN_SECONDS = 10_000L
@@ -68,6 +71,7 @@ class SessionDetailViewModel @Inject constructor(
     private val loadRelatedSessionUseCase: LoadUserSessionsUseCase,
     private val starEventUseCase: StarEventUseCase,
     private val reservationActionUseCase: ReservationActionUseCase,
+    private val getTimeZoneUseCase: GetTimeZoneUseCase,
     private val snackbarMessageManager: SnackbarMessageManager
 ) : ViewModel(), SessionDetailEventListener, EventActions,
     SignInViewModelDelegate by signInViewModelDelegate {
@@ -78,12 +82,16 @@ class SessionDetailViewModel @Inject constructor(
 
     private val sessionTimeRelativeState: LiveData<TimeUtils.SessionRelativeTimeState>
 
+    private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
+
+    val timeZoneId: LiveData<ZoneId>
+
     private val _errorMessage = MediatorLiveData<Event<String>>()
-    val errorMessage : LiveData<Event<String>>
+    val errorMessage: LiveData<Event<String>>
         get() = _errorMessage
 
     private val _snackBarMessage = MediatorLiveData<Event<SnackbarMessage>>()
-    val snackBarMessage : LiveData<Event<SnackbarMessage>>
+    val snackBarMessage: LiveData<Event<SnackbarMessage>>
         get() = _snackBarMessage
 
     private val _navigateToSignInDialogAction = MutableLiveData<Event<Unit>>()
@@ -117,12 +125,12 @@ class SessionDetailViewModel @Inject constructor(
     private val sessionId = MutableLiveData<SessionId>()
 
     private val _navigateToRemoveReservationDialogAction =
-            MutableLiveData<Event<RemoveReservationDialogParameters>>()
+        MutableLiveData<Event<RemoveReservationDialogParameters>>()
     val navigateToRemoveReservationDialogAction: LiveData<Event<RemoveReservationDialogParameters>>
         get() = _navigateToRemoveReservationDialogAction
 
     private val _navigateToSwapReservationDialogAction =
-            MediatorLiveData<Event<SwapRequestParameters>>()
+        MediatorLiveData<Event<SwapRequestParameters>>()
     val navigateToSwapReservationDialogAction: LiveData<Event<SwapRequestParameters>>
         get() = _navigateToSwapReservationDialogAction
 
@@ -138,6 +146,8 @@ class SessionDetailViewModel @Inject constructor(
         loadUserSessionResult = loadUserSessionUseCase.observe()
 
         loadRelatedUserSessions = loadRelatedSessionUseCase.observe()
+
+        getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
 
         /* Wire observable dependencies */
 
@@ -189,6 +199,18 @@ class SessionDetailViewModel @Inject constructor(
         _relatedUserSessions.addSource(loadRelatedUserSessions) {
             (loadRelatedUserSessions.value as? Result.Success)?.data?.let {
                 _relatedUserSessions.value = it.userSessions
+            }
+        }
+
+        val showInConferenceTimeZone = preferConferenceTimeZoneResult.map {
+            (it as? Result.Success<Boolean>)?.data ?: true
+        }
+
+        timeZoneId = showInConferenceTimeZone.map { inConferenceTimeZone ->
+            if (inConferenceTimeZone) {
+                TimeUtils.CONFERENCE_TIMEZONE
+            } else {
+                ZoneId.systemDefault()
             }
         }
 
@@ -253,9 +275,14 @@ class SessionDetailViewModel @Inject constructor(
         // Show an error message if a reservation request fails
         _snackBarMessage.addSource(reservationActionUseCase.observe()) {
             if (it is Result.Error) {
-                _snackBarMessage.postValue(Event(SnackbarMessage(
-                        messageId = R.string.reservation_error,
-                        longDuration = true)))
+                _snackBarMessage.postValue(
+                    Event(
+                        SnackbarMessage(
+                            messageId = R.string.reservation_error,
+                            longDuration = true
+                        )
+                    )
+                )
             }
         }
         // Show a message with the result of a reservation
@@ -265,12 +292,14 @@ class SessionDetailViewModel @Inject constructor(
                 it.data.userMessage?.type?.stringRes()?.let { messageId ->
                     // There is a message to display:
 
-                    snackbarMessageManager.addMessage(SnackbarMessage(
+                    snackbarMessageManager.addMessage(
+                        SnackbarMessage(
                             messageId = messageId,
                             longDuration = true,
                             session = it.data.userSession.session,
                             requestChangeId = it.data.userMessage?.changeRequestId
-                    ))
+                        )
+                    )
                 }
             }
         }
@@ -289,7 +318,7 @@ class SessionDetailViewModel @Inject constructor(
             return
         }
         val registrationDataReady =
-                (currentFirebaseUser.value as? Result.Success)?.data?.isRegistrationDataReady()
+            (currentFirebaseUser.value as? Result.Success)?.data?.isRegistrationDataReady()
         if (registrationDataReady == false) {
             // No registration information provided by [SignInViewModelDelegate] yet.
             Timber.d("No registration information yet, not refreshing")
@@ -332,13 +361,21 @@ class SessionDetailViewModel @Inject constructor(
         } else {
             R.string.event_unstarred
         }
-        snackbarMessageManager.addMessage(SnackbarMessage(messageId = stringResId,
+        snackbarMessageManager.addMessage(
+            SnackbarMessage(
+                messageId = stringResId,
                 actionId = R.string.dont_show,
-                requestChangeId = UUID.randomUUID().toString()))
+                requestChangeId = UUID.randomUUID().toString()
+            )
+        )
 
         getUserId()?.let {
-            starEventUseCase.execute(StarEventParameter(it,
-                    userEventSnapshot.copy(isStarred = newIsStarredState)))
+            starEventUseCase.execute(
+                StarEventParameter(
+                    it,
+                    userEventSnapshot.copy(isStarred = newIsStarredState)
+                )
+            )
         }
     }
 
@@ -350,28 +387,38 @@ class SessionDetailViewModel @Inject constructor(
         val userId = getUserId() ?: return
 
         if (userEventSnapshot.isReserved()
-                || userEventSnapshot.isWaitlisted()
-                || userEventSnapshot.isCancelPending() // Just in case
-                || userEventSnapshot.isReservationPending()) {
+            || userEventSnapshot.isWaitlisted()
+            || userEventSnapshot.isCancelPending() // Just in case
+            || userEventSnapshot.isReservationPending()
+        ) {
             if (isReservationDisabledSnapshot) {
-                _snackBarMessage.postValue(Event(
-                        SnackbarMessage(R.string.cancellation_denied_cutoff, longDuration = true)))
+                _snackBarMessage.postValue(
+                    Event(
+                        SnackbarMessage(R.string.cancellation_denied_cutoff, longDuration = true)
+                    )
+                )
             } else {
                 // Open the dialog to confirm if the user really wants to remove their reservation
                 _navigateToRemoveReservationDialogAction.value = Event(
-                        RemoveReservationDialogParameters(
-                            userId,
-                            sessionSnapshot.id,
-                            sessionSnapshot.title))
+                    RemoveReservationDialogParameters(
+                        userId,
+                        sessionSnapshot.id,
+                        sessionSnapshot.title
+                    )
+                )
             }
             return
         }
         if (isReservationDisabledSnapshot) {
-            _snackBarMessage.postValue(Event(
-                    SnackbarMessage(R.string.reservation_denied_cutoff, longDuration = true)))
+            _snackBarMessage.postValue(
+                Event(
+                    SnackbarMessage(R.string.reservation_denied_cutoff, longDuration = true)
+                )
+            )
         } else {
             reservationActionUseCase.execute(
-                    ReservationRequestParameters(userId, sessionSnapshot.id, RequestAction()))
+                ReservationRequestParameters(userId, sessionSnapshot.id, RequestAction())
+            )
         }
     }
 
@@ -396,7 +443,7 @@ class SessionDetailViewModel @Inject constructor(
         val newIsStarredState = !userEvent.isStarred
 
         // Update the snackbar message optimistically.
-        val snackbarMessage = if(newIsStarredState) {
+        val snackbarMessage = if (newIsStarredState) {
             SnackbarMessage(R.string.event_starred, R.string.got_it)
         } else {
             SnackbarMessage(R.string.event_unstarred)
@@ -404,8 +451,12 @@ class SessionDetailViewModel @Inject constructor(
         _snackBarMessage.postValue(Event(snackbarMessage))
 
         getUserId()?.let {
-            starEventUseCase.execute(StarEventParameter(it,
-                userEvent.copy(isStarred = newIsStarredState)))
+            starEventUseCase.execute(
+                StarEventParameter(
+                    it,
+                    userEvent.copy(isStarred = newIsStarredState)
+                )
+            )
         }
     }
 

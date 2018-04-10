@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.schedule
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.databinding.ObservableBoolean
 import android.os.Bundle
@@ -37,7 +38,6 @@ import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.lazyFast
@@ -116,9 +116,9 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
 
         val snackbarPrefViewModel: SnackbarPreferenceViewModel = viewModelProvider(viewModelFactory)
         setUpSnackbar(scheduleViewModel.snackBarMessage, binding.snackbar, snackbarMessageManager,
-                actionClickListener = {
-                    snackbarPrefViewModel.onStopClicked()
-                })
+            actionClickListener = {
+                snackbarPrefViewModel.onStopClicked()
+            })
 
         scheduleViewModel.navigateToSessionAction.observe(this, EventObserver { sessionId ->
             openSessionDetail(sessionId)
@@ -153,7 +153,6 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val viewpager: ViewPager = view.findViewById(R.id.viewpager)
         viewpager.offscreenPageLimit = COUNT - 1
-        viewpager.adapter = ScheduleAdapter(childFragmentManager)
 
         val appbar: View = view.findViewById(R.id.appbar)
         val tabs: TabLayout = view.findViewById(R.id.tabs)
@@ -188,6 +187,11 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
             // Make bottom sheet hidden at first
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
+
+        scheduleViewModel.labelsForDays.observe(this, Observer<List<Int>> {
+            it ?: return@Observer
+            viewpager.adapter = ScheduleAdapter(childFragmentManager, it)
+        })
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -261,7 +265,8 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     /**
      * Adapter that build a page for each conference day.
      */
-    inner class ScheduleAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+    inner class ScheduleAdapter(fm: FragmentManager, val labelsForDays: List<Int>) :
+        FragmentPagerAdapter(fm) {
 
         override fun getCount() = COUNT
 
@@ -275,29 +280,8 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         override fun getPageTitle(position: Int): CharSequence {
             return when (position) {
                 AGENDA_POSITION -> getString(R.string.agenda)
-                else -> getString(getLabelForDay(ConferenceDay.values()[position]))
+                else -> getString(labelsForDays[position])
             }
-        }
-    }
-
-    /**
-     * Gets the label to display for each conference date. When using time zones other than the
-     * conference zone, conference days and calendar dates may not align. To minimize confusion,
-     * we show actual dates when using conference zone time; otherwise, we show the day number.
-     */
-    fun getLabelForDay(value: TimeUtils.ConferenceDay): Int {
-        if (!TimeUtils.inConferenceTimeZone()) {
-            return when (value) {
-                ConferenceDay.DAY_1 -> R.string.day1
-                ConferenceDay.DAY_2 -> R.string.day2
-                else -> R.string.day3
-            }
-        }
-
-        return when (value) {
-            ConferenceDay.DAY_1 -> R.string.day1_date
-            ConferenceDay.DAY_2 -> R.string.day2_date
-            else -> R.string.day3_date
         }
     }
 }

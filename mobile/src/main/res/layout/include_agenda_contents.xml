@@ -21,6 +21,11 @@
     tools:showIn="@layout/item_agenda_light">
 
     <data>
+
+        <variable
+            name="timeZoneId"
+            type="org.threeten.bp.ZoneId" />
+
         <variable
             name="agenda"
             type="com.google.samples.apps.iosched.shared.model.Block" />
@@ -77,7 +82,8 @@
             android:paddingBottom="@dimen/agenda_block_padding_vert"
             android:textAppearance="@style/TextAppearance.IOSched.ListSecondary"
             app:startTime="@{agenda.startTime}"
-            app:endTime="@{agenda.endTime}" />
+            app:endTime="@{agenda.endTime}"
+            app:timeZoneId="@{timeZoneId}"/>
 
     </merge>
 

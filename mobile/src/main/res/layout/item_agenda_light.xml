@@ -22,6 +22,10 @@
 
     <data>
         <variable
+            name="timeZoneId"
+            type="org.threeten.bp.ZoneId" />
+
+        <variable
             name="agenda"
             type="com.google.samples.apps.iosched.shared.model.Block" />
     </data>
@@ -36,7 +40,8 @@
 
         <include
             layout="@layout/include_agenda_contents"
-            app:agenda="@{agenda}" />
+            app:agenda="@{agenda}"
+            app:timeZoneId="@{timeZoneId}"/>
 
     </android.support.constraint.ConstraintLayout>
 
