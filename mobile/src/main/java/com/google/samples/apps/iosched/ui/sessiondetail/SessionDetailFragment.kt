@@ -33,7 +33,7 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSessionDetailBinding
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment
@@ -64,7 +64,10 @@ class SessionDetailFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        sessionDetailViewModel = viewModelProvider(viewModelFactory)
+
+        // TODO: Scoping the VM to the activity because of bug
+        // https://issuetracker.google.com/issues/74139250 (fixed in Supportlib 28.0.0-alpha1)
+        sessionDetailViewModel = activityViewModelProvider(viewModelFactory)
         sessionDetailViewModel.setSessionId(requireNotNull(arguments).getString(EXTRA_SESSION_ID))
 
         val binding = FragmentSessionDetailBinding.inflate(inflater, container, false).apply {
@@ -110,7 +113,7 @@ class SessionDetailFragment : DaggerFragment() {
         // TODO style Snackbar so it doesn't overlap the bottom app bar (b/76112328)
 
         val snackbarPreferenceViewModel: SnackbarPreferenceViewModel =
-                viewModelProvider(viewModelFactory)
+                activityViewModelProvider(viewModelFactory)
         setUpSnackbar(
                 sessionDetailViewModel.snackBarMessage,
                 binding.snackbar,

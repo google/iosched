@@ -36,7 +36,7 @@ import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.PinnedEventMatcher
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.TagFilterMatcher
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.MainActivity
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
@@ -95,7 +95,7 @@ class ScheduleFilterFragment : DaggerFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = viewModelProvider(viewModelFactory)
+        viewModel = activityViewModelProvider(viewModelFactory)
         binding.viewModel = viewModel
 
         behavior = BottomSheetBehavior.from(binding.filterSheet)

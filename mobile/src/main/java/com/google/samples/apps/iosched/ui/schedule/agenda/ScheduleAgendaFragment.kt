@@ -25,7 +25,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.samples.apps.iosched.databinding.FragmentScheduleAgendaBinding
 import com.google.samples.apps.iosched.shared.model.Block
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.util.clearDecorations
 import dagger.android.support.DaggerFragment
@@ -51,7 +51,7 @@ class ScheduleAgendaFragment : DaggerFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = viewModelProvider(viewModelFactory)
+        viewModel = activityViewModelProvider(viewModelFactory)
         binding.viewModel = viewModel
     }
 }
