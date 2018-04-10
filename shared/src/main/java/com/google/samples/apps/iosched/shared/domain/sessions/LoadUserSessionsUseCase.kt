@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.shared.domain.sessions
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import timber.log.Timber
@@ -29,7 +30,7 @@ import javax.inject.Inject
  */
 open class LoadUserSessionsUseCase @Inject constructor(
     private val userEventRepository: DefaultSessionAndUserEventRepository
-) : MediatorUseCase<Pair<String?, Set<String>>, LoadUserSessionsUseCaseResult>() {
+) : MediatorUseCase<Pair<String?, Set<SessionId>>, LoadUserSessionsUseCaseResult>() {
 
     override fun execute(parameters: Pair<String?, Set<String>>) {
         val (userId, eventIds) = parameters

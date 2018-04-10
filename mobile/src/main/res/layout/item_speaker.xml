@@ -23,13 +23,17 @@
         <variable
             name="speaker"
             type="com.google.samples.apps.iosched.shared.model.Speaker"/>
+        <variable
+            name="eventListener"
+            type="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailEventListener"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
-        android:paddingVertical="@dimen/spacing_normal">
+        android:paddingVertical="@dimen/spacing_normal"
+        android:onClick="@{() -> eventListener.onSpeakerClicked(speaker.id)}">
 
         <ImageView
             android:id="@+id/speaker_item_headshot"
@@ -37,26 +41,23 @@
             android:layout_height="@dimen/speaker_headshot_size"
             android:layout_marginStart="@dimen/margin_normal"
             android:importantForAccessibility="no"
+            android:transitionName="@string/speaker_headshot_transition"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:imageUrl="@{speaker.imageUrl}"
-            app:placeholder="@{@drawable/ic_default_avatar}"
-            tools:src="@drawable/ic_default_avatar"
-            app:clipToCircle="@{true}" />
+            app:speakerImage="@{speaker}" />
 
         <TextView
             android:id="@+id/speaker_item_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
             android:text="@{speaker.name}"
-            android:textAppearance="@style/TextAppearance.IOSched.SpeakerTitle"
-            app:layout_constraintBottom_toTopOf="@id/speaker_item_company"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/speaker_item_headshot"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/speaker_item_company"
+            android:textAppearance="@style/TextAppearance.IOSched.SpeakerTitle"
             tools:text="Speaker Name" />
 
         <TextView
@@ -66,30 +67,13 @@
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginTop="@dimen/spacing_micro"
             android:text="@{speaker.company}"
-            android:textColor="?android:textColorPrimary"
-            app:goneUnless="@{speaker.hasCompany}"
-            app:layout_constraintBottom_toTopOf="@+id/speaker_item_bio"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/speaker_item_name"
             app:layout_constraintTop_toBottomOf="@id/speaker_item_name"
-            tools:text="Speaker Company" />
-
-        <TextView
-            android:id="@+id/speaker_item_bio"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_normal"
-            android:layout_marginStart="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_normal"
-            android:text="@{speaker.abstract}"
-            android:textColor="?android:textColorPrimary"
-            app:goneUnless="@{speaker.hasAbstract}"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/speaker_item_company"
-            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat." />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:goneUnless="@{speaker.hasCompany}"
+            android:textColor="?android:textColorPrimary"
+            tools:text="Speaker Company" />
 
     </android.support.constraint.ConstraintLayout>
 

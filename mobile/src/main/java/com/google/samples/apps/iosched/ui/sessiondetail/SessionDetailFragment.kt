@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.sessiondetail
 
+import android.app.ActivityOptions
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
@@ -23,15 +24,19 @@ import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.ShareCompat
+import android.support.v7.widget.RecyclerView.RecycledViewPool
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.net.toUri
+import androidx.view.forEach
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSessionDetailBinding
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
+import com.google.samples.apps.iosched.shared.model.SessionId
+import com.google.samples.apps.iosched.shared.model.SpeakerId
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
@@ -45,8 +50,11 @@ import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFr
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment.Companion.DIALOG_NOTIFICATIONS_PREFERENCE
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment.Companion.DIALOG_NEED_TO_SIGN_IN
+import com.google.samples.apps.iosched.ui.speaker.SpeakerActivity
 import dagger.android.support.DaggerFragment
+import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Named
 
 class SessionDetailFragment : DaggerFragment() {
 
@@ -58,6 +66,9 @@ class SessionDetailFragment : DaggerFragment() {
 
     @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
 
+    @Inject
+    @field:Named("tagViewPool")
+    lateinit var tagRecycledViewPool: RecycledViewPool
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,6 +83,7 @@ class SessionDetailFragment : DaggerFragment() {
 
         val binding = FragmentSessionDetailBinding.inflate(inflater, container, false).apply {
             viewModel = sessionDetailViewModel
+            tagViewPool = tagRecycledViewPool
             coordinatorLayout = coordinatorLayoutSessionDetail
             setLifecycleOwner(this@SessionDetailFragment)
             sessionDetailBottomAppBar.inflateMenu(R.menu.session_detail_menu)
@@ -137,9 +149,19 @@ class SessionDetailFragment : DaggerFragment() {
         sessionDetailViewModel.navigateToSwapReservationDialogAction.observe(this, EventObserver {
             openSwapReservationDialog(requireActivity(), it)
         })
+
         sessionDetailViewModel.shouldShowNotificationsPrefAction.observe(this, EventObserver {
             if (it) {
                 openNotificationsPreferenceDialog()
+            }
+        })
+
+        sessionDetailViewModel.navigateToSpeakerDetail.observe(this, EventObserver { speakerId ->
+            requireActivity().run {
+                val sharedElement = findSpeakerHeadshot(binding.sessionDetailSpeakerList, speakerId)
+                val options = ActivityOptions.makeSceneTransitionAnimation(
+                    this, sharedElement, getString(R.string.speaker_headshot_transition))
+                startActivity(SpeakerActivity.starterIntent(this, speakerId), options.toBundle())
             }
         })
         return binding.root
@@ -202,10 +224,20 @@ class SessionDetailFragment : DaggerFragment() {
                 SwapReservationDialogFragment.DIALOG_SWAP_RESERVATION)
     }
 
+    private fun findSpeakerHeadshot(speakers: ViewGroup, speakerId: SpeakerId): View {
+        speakers.forEach {
+            if (it.getTag(R.id.tag_speaker_id) == speakerId) {
+                return it.findViewById(R.id.speaker_item_headshot)
+            }
+        }
+        Timber.e("Could not find view for speaker id $speakerId")
+        return speakers
+    }
+
     companion object {
         private const val EXTRA_SESSION_ID = "SESSION_ID"
 
-        fun newInstance(sessionId: String): SessionDetailFragment {
+        fun newInstance(sessionId: SessionId): SessionDetailFragment {
             val bundle = Bundle().apply { putString(EXTRA_SESSION_ID, sessionId) }
             return SessionDetailFragment().apply { arguments = bundle }
         }

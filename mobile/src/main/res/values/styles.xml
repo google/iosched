@@ -53,6 +53,11 @@
         <item name="sessionListKeyline">@dimen/margin_normal</item>
     </style>
 
+    <style name="AppTheme.Speaker" parent="AppTheme.LightNav">
+        <item name="android:windowSharedElementEnterTransition">@transition/speaker_shared_enter</item>
+        <item name="sessionListKeyline">@dimen/margin_normal</item>
+    </style>
+
     <style name="AppTheme.PopupTheme" parent="ThemeOverlay.MaterialComponents.Light" />
 
     <style name="Widget.AppBar" parent="@style/Widget.Design.AppBarLayout">
@@ -153,6 +158,12 @@
     <style name="TextAppearance.IOSched.FadingSnackbarAction" parent="@style/TextAppearance.AppCompat.Button">
         <item name="android:textColor">@color/teal</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/google_sans</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.Links" parent="@style/TextAppearance.IOSched.Body">
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:textColorLink">?colorPrimary</item>
         <item name="android:fontFamily">@font/google_sans</item>
     </style>
 

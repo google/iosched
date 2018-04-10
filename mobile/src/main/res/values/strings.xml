@@ -233,4 +233,15 @@
     <string name="day1_date" translation_description="Actual date of the first day of the conference">May 8</string>
     <string name="day2_date" translation_description="Actual date of the second day of the conference">May 9</string>
     <string name="day3_date" translation_description="Actual date of the third day of the conference">May 10</string>
+
+    <!-- Speaker -->
+    <string name="speaker_link_website" translation_description="The label for a link to a speaker's Website">Website</string>
+    <string name="speaker_link_twitter" translation_description="The label for a link to a speaker's Twitter profile">Twitter</string>
+    <string name="speaker_link_github" translation_description="The label for a link to a speaker's Github profile">Github</string>
+    <string name="speaker_link_linkedin" translation_description="The label for a link to a speaker's LinkedIn profile">LinkedIn</string>
+    <!-- \u0020 is breakable whitespace - whitespace characters at start/end of string res are trimmed. -->
+    <string name="speaker_link_separator" translatable="false">\u0020/\u0020</string>
+    <string name="speaker_events_subhead" translation_description="The heading for a list of events a speaker is associated with">Events</string>
+    <string name="speaker_headshot_transition" translatable="false">speaker_headshot</string>
+
 </resources>

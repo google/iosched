@@ -26,9 +26,12 @@ import com.google.samples.apps.iosched.ui.onboarding.OnboardingModule
 import com.google.samples.apps.iosched.ui.prefs.PreferenceModule
 import com.google.samples.apps.iosched.ui.reservation.ReservationModule
 import com.google.samples.apps.iosched.ui.schedule.ScheduleModule
+import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegateModule
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailModule
 import com.google.samples.apps.iosched.ui.signin.SignInDialogModule
+import com.google.samples.apps.iosched.ui.speaker.SpeakerActivity
+import com.google.samples.apps.iosched.ui.speaker.SpeakerModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -75,4 +78,15 @@ abstract class ActivityBindingModule {
         ]
     )
     internal abstract fun sessionDetailActivity(): SessionDetailActivity
+
+    @ActivityScoped
+    @ContributesAndroidInjector(
+        modules = [
+            SpeakerModule::class,
+            SignInDialogModule::class,
+            EventActionsViewModelDelegateModule::class,
+            PreferenceModule::class
+        ]
+    )
+    internal abstract fun speakerActivity(): SpeakerActivity
 }

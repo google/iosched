@@ -35,6 +35,7 @@ import com.google.android.material.widget.TabLayout
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
+import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
@@ -113,8 +114,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         filtersFab = binding.filterFab
         // We can't lookup bottomSheetBehavior here since it's on a <fragment> tag
 
-        val snackbarPrefViewModel: SnackbarPreferenceViewModel =
-                viewModelProvider(viewModelFactory)
+        val snackbarPrefViewModel: SnackbarPreferenceViewModel = viewModelProvider(viewModelFactory)
         setUpSnackbar(scheduleViewModel.snackBarMessage, binding.snackbar, snackbarMessageManager,
                 actionClickListener = {
                     snackbarPrefViewModel.onStopClicked()
@@ -218,7 +218,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         return super.onBackPressed()
     }
 
-    private fun openSessionDetail(id: String) {
+    private fun openSessionDetail(id: SessionId) {
         startActivity(SessionDetailActivity.starterIntent(requireContext(), id))
     }
 

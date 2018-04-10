@@ -24,6 +24,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.samples.apps.iosched.databinding.DialogRemoveReservationBinding
+import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.widget.CustomDimDialogFragment
@@ -96,6 +97,6 @@ class RemoveReservationDialogFragment : CustomDimDialogFragment(), HasSupportFra
 
 data class RemoveReservationDialogParameters (
     val userId: String,
-    val sessionId: String,
+    val sessionId: SessionId,
     val sessionTitle: String
 )

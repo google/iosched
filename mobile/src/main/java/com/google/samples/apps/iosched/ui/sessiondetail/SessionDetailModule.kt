@@ -19,8 +19,7 @@ package com.google.samples.apps.iosched.ui.sessiondetail
 import android.arch.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.di.FragmentScoped
 import com.google.samples.apps.iosched.shared.di.ViewModelKey
-import com.google.samples.apps.iosched.ui.reservation.ReservationModule
-import com.google.samples.apps.iosched.ui.signin.SignInDialogModule
+import com.google.samples.apps.iosched.ui.sessioncommon.SessionViewPoolModule
 import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -36,7 +35,7 @@ internal abstract class SessionDetailModule {
      * Generates an AndroidInjector for the [SessionDetailFragment].
      */
     @FragmentScoped
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [SessionViewPoolModule::class])
     internal abstract fun contributeSessionDetailFragment(): SessionDetailFragment
 
     /**

@@ -21,11 +21,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewModel" />
-
+        <variable
+            name="tagViewPool"
+            type="android.support.v7.widget.RecyclerView.RecycledViewPool" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -269,7 +270,8 @@
                     app:layout_constraintTop_toBottomOf="@id/session_detail_rate_button"
                     app:goneUnless="@{viewModel.hasSpeakers}"
                     app:sessionSpeakers="@{viewModel.session.speakers}"
-                    tools:listitem="@layout/item_speaker_detail">
+                    app:eventListener="@{viewModel}"
+                    tools:listitem="@layout/item_speaker">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -282,7 +284,6 @@
 
                 </LinearLayout>
 
-                <!-- todo bind related sessions b/72689885 -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -295,7 +296,8 @@
                     app:goneUnless="@{viewModel.hasRelated}"
                     app:relatedEvents="@{viewModel.relatedUserSessions}"
                     app:eventListener="@{viewModel}"
-                    tools:listitem="@layout/item_speaker_detail">
+                    app:tagViewPool="@{tagViewPool}"
+                    tools:listitem="@layout/item_session">
 
                     <TextView
                         android:layout_width="match_parent"
