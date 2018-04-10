@@ -25,7 +25,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
-import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
+import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.wear.R
 import com.google.samples.apps.iosched.wear.ui.WearableFragment
 import com.google.samples.apps.iosched.wear.ui.sessiondetail.SessionDetailActivity
@@ -49,7 +49,7 @@ class ScheduleFragment : WearableFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = activityViewModelProvider(viewModelFactory)
+        viewModel = viewModelProvider(viewModelFactory)
 
         viewModel.navigateToSessionAction.observe(this, Observer { navigationEvent ->
             navigationEvent?.getContentIfNotHandled()?.let { sessionId ->

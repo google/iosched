@@ -36,12 +36,12 @@ import android.widget.Toast
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
-import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.getEnum
 import com.google.samples.apps.iosched.shared.util.getThemeColor
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.shared.util.lazyFast
 import com.google.samples.apps.iosched.shared.util.putEnum
+import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.tv.R
 import com.google.samples.apps.iosched.tv.app
 import com.google.samples.apps.iosched.tv.ui.SpinnerFragment
@@ -84,7 +84,7 @@ class ScheduleFragment : RowsSupportFragment() {
             add(R.id.main_frame, spinnerFragment)
         }
 
-        viewModel = activityViewModelProvider(viewModelFactory)
+        viewModel = viewModelProvider(viewModelFactory)
 
         noSessionsRow = createNoSessionRow()
 
