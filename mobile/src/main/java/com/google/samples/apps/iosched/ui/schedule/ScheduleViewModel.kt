@@ -28,6 +28,7 @@ import com.google.samples.apps.iosched.shared.domain.invoke
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.SwapAction
@@ -49,6 +50,7 @@ import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.PinnedEventMatcher
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.TagFilterMatcher
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_2
@@ -62,8 +64,9 @@ import com.google.samples.apps.iosched.ui.schedule.filters.TagFilter
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import org.threeten.bp.ZoneId
 import timber.log.Timber
-import java.util.UUID
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -72,15 +75,16 @@ import javax.inject.Inject
  * create the object, so defining a [@Provides] method for this class won't be needed.
  */
 class ScheduleViewModel @Inject constructor(
-        private val loadUserSessionsByDayUseCase: LoadUserSessionsByDayUseCase,
-        loadAgendaUseCase: LoadAgendaUseCase,
-        loadTagFiltersUseCase: LoadTagFiltersUseCase,
-        signInViewModelDelegate: SignInViewModelDelegate,
-        private val starEventUseCase: StarEventUseCase,
-        private val reservationActionUseCase: ReservationActionUseCase,
-        scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase,
-        topicSubscriber: TopicSubscriber,
-        private val snackbarMessageManager: SnackbarMessageManager
+    private val loadUserSessionsByDayUseCase: LoadUserSessionsByDayUseCase,
+    loadAgendaUseCase: LoadAgendaUseCase,
+    loadTagFiltersUseCase: LoadTagFiltersUseCase,
+    signInViewModelDelegate: SignInViewModelDelegate,
+    private val starEventUseCase: StarEventUseCase,
+    private val reservationActionUseCase: ReservationActionUseCase,
+    scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase,
+    topicSubscriber: TopicSubscriber,
+    private val snackbarMessageManager: SnackbarMessageManager,
+    getTimeZoneUseCase: GetTimeZoneUseCase
 ) : ViewModel(), ScheduleEventListener, SignInViewModelDelegate by signInViewModelDelegate {
 
     val isLoading: LiveData<Boolean>
@@ -90,6 +94,26 @@ class ScheduleViewModel @Inject constructor(
     private val _userSessionMatcher = MutableLiveData<UserSessionMatcher>()
     val userSessionMatcher: LiveData<UserSessionMatcher>
         get() = _userSessionMatcher
+
+    private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
+
+    /**
+     * Gets the label to display for each conference date. When using time zones other than the
+     * conference zone, conference days and calendar dates may not align. To minimize confusion,
+     * we show actual dates when using conference zone time; otherwise, we show the day number.
+     */
+    val labelsForDays: LiveData<List<Int>>
+    val timeZoneId: LiveData<ZoneId>
+
+    private val _sessionTimeDataDay1 = MediatorLiveData<SessionTimeData>()
+    val  sessionTimeDataDay1: LiveData<SessionTimeData>
+        get() = _sessionTimeDataDay1
+    private val _sessionTimeDataDay2 = MediatorLiveData<SessionTimeData>()
+    val  sessionTimeDataDay2: LiveData<SessionTimeData>
+        get() = _sessionTimeDataDay2
+    private val _sessionTimeDataDay3 = MediatorLiveData<SessionTimeData>()
+    val  sessionTimeDataDay3: LiveData<SessionTimeData>
+        get() = _sessionTimeDataDay3
 
     private val tagFilterMatcher = TagFilterMatcher()
     // Cached list of TagFilters returned by the use case. Only Result.Success modifies it.
@@ -124,15 +148,15 @@ class ScheduleViewModel @Inject constructor(
     /** LiveData for Actions and Events **/
 
     private val _errorMessage = MediatorLiveData<Event<String>>()
-    val errorMessage : LiveData<Event<String>>
+    val errorMessage: LiveData<Event<String>>
         get() = _errorMessage
 
     private val _navigateToSessionAction = MutableLiveData<Event<String>>()
-    val navigateToSessionAction : LiveData<Event<String>>
+    val navigateToSessionAction: LiveData<Event<String>>
         get() = _navigateToSessionAction
 
     private val _snackBarMessage = MediatorLiveData<Event<SnackbarMessage>>()
-    val snackBarMessage : LiveData<Event<SnackbarMessage>>
+    val snackBarMessage: LiveData<Event<SnackbarMessage>>
         get() = _snackBarMessage
 
     /** Resource id of the profile button's content description; changes based on sign in state**/
@@ -157,7 +181,7 @@ class ScheduleViewModel @Inject constructor(
         get() = _navigateToRemoveReservationDialogAction
 
     private val _navigateToSwapReservationDialogAction =
-            MediatorLiveData<Event<SwapRequestParameters>>()
+        MediatorLiveData<Event<SwapRequestParameters>>()
     val navigateToSwapReservationDialogAction: LiveData<Event<SwapRequestParameters>>
         get() = _navigateToSwapReservationDialogAction
 
@@ -188,7 +212,7 @@ class ScheduleViewModel @Inject constructor(
             (it as? Result.Success)?.data?.userSessionsPerDay?.get(DAY_3) ?: emptyList()
         }
 
-        eventCount= loadSessionsResult.map {
+        eventCount = loadSessionsResult.map {
             (it as? Result.Success)?.data?.userSessionCount ?: 0
         }
 
@@ -231,19 +255,29 @@ class ScheduleViewModel @Inject constructor(
         // Show an error message if a reservation request fails
         _snackBarMessage.addSource(reservationActionUseCase.observe()) {
             if (it is Result.Error) {
-                _snackBarMessage.postValue(Event(SnackbarMessage(
-                        messageId = R.string.reservation_error,
-                        longDuration = true)))
+                _snackBarMessage.postValue(
+                    Event(
+                        SnackbarMessage(
+                            messageId = R.string.reservation_error,
+                            longDuration = true
+                        )
+                    )
+                )
             }
         }
 
         // Show an error message if a star request fails
         _snackBarMessage.addSource(starEventUseCase.observe()) { it: Result<StarUpdatedStatus>? ->
             // Show a snackbar message on error.
-            if (it is Result.Error)  {
-                _snackBarMessage.postValue(Event(SnackbarMessage(
-                        messageId = R.string.event_star_error,
-                        longDuration = true)))
+            if (it is Result.Error) {
+                _snackBarMessage.postValue(
+                    Event(
+                        SnackbarMessage(
+                            messageId = R.string.event_star_error,
+                            longDuration = true
+                        )
+                    )
+                )
             }
         }
 
@@ -253,19 +287,21 @@ class ScheduleViewModel @Inject constructor(
                 it.data.userMessage?.type?.stringRes()?.let { messageId ->
                     // There is a message to display:
 
-                    snackbarMessageManager.addMessage(SnackbarMessage(
+                    snackbarMessageManager.addMessage(
+                        SnackbarMessage(
                             messageId = messageId,
                             longDuration = true,
                             session = it.data.userMessageSession,
                             requestChangeId = it.data.userMessage?.changeRequestId
-                    ))
+                        )
+                    )
                 }
             }
         }
 
         // Refresh the list of user sessions if the user is updated.
         loadSessionsResult.addSource(currentFirebaseUser) {
-            Timber.d("Loading user session with user ${(it as? Result.Success)?.data?.getUid() }")
+            Timber.d("Loading user session with user ${(it as? Result.Success)?.data?.getUid()}")
             refreshUserSessions()
         }
 
@@ -279,6 +315,61 @@ class ScheduleViewModel @Inject constructor(
             Event((it as? Result.Success)?.data == true)
         }
 
+        getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
+
+        val showInConferenceTimeZone = preferConferenceTimeZoneResult.map {
+            (it as? Result.Success<Boolean>)?.data ?: true
+        }
+
+        timeZoneId = showInConferenceTimeZone.map { inConferenceTimeZone ->
+            if (inConferenceTimeZone) {
+                TimeUtils.CONFERENCE_TIMEZONE
+            } else {
+                ZoneId.systemDefault()
+            }
+        }
+
+        labelsForDays = showInConferenceTimeZone.map { inConferenceTimeZone ->
+            if (TimeUtils.physicallyInConferenceTimeZone() || inConferenceTimeZone) {
+                return@map listOf(R.string.day1_date, R.string.day2_date, R.string.day3_date)
+            } else {
+                return@map listOf(R.string.day1, R.string.day2, R.string.day3)
+            }
+        }
+
+        _sessionTimeDataDay1.addSource(timeZoneId, {
+            _sessionTimeDataDay1.value = _sessionTimeDataDay1.value?.apply {
+                timeZoneId = it
+            } ?: SessionTimeData(timeZoneId = it)
+        })
+        _sessionTimeDataDay1.addSource(day1Sessions, {
+            _sessionTimeDataDay1.value = _sessionTimeDataDay1.value?.apply {
+                list = it
+            } ?: SessionTimeData(list = it)
+        })
+
+        _sessionTimeDataDay2.addSource(timeZoneId, {
+            _sessionTimeDataDay2.value = _sessionTimeDataDay2.value?.apply {
+                timeZoneId = it
+            } ?: SessionTimeData(timeZoneId = it)
+        })
+        _sessionTimeDataDay2.addSource(day2Sessions, {
+            _sessionTimeDataDay2.value = _sessionTimeDataDay2.value?.apply {
+                list = it
+            } ?: SessionTimeData(list = it)
+        })
+
+        _sessionTimeDataDay3.addSource(timeZoneId, {
+            _sessionTimeDataDay3.value = _sessionTimeDataDay3.value?.apply {
+                timeZoneId = it
+            } ?: SessionTimeData(timeZoneId = it)
+        })
+        _sessionTimeDataDay3.addSource(day3Sessions, {
+            _sessionTimeDataDay3.value = _sessionTimeDataDay3.value?.apply {
+                list = it
+            } ?: SessionTimeData(list = it)
+        })
+
         // Subscribe user to schedule updates
         topicSubscriber.subscribeToScheduleUpdates()
     }
@@ -286,8 +377,17 @@ class ScheduleViewModel @Inject constructor(
     /**
      * Called from each schedule day fragment to load data.
      */
-    fun getSessionsForDay(day: ConferenceDay):
-        LiveData<List<UserSession>> = when (day) {
+    fun getSessionTimeDataForDay(day: ConferenceDay):
+            LiveData<SessionTimeData> = when (day) {
+        DAY_1 -> sessionTimeDataDay1
+        DAY_2 -> sessionTimeDataDay2
+        DAY_3 -> sessionTimeDataDay3
+    }
+
+    /*
+     * Note: only for testing.
+     */
+    fun getSessionsForDay(day: ConferenceDay): LiveData<List<UserSession>> = when(day) {
         DAY_1 -> day1Sessions
         DAY_2 -> day2Sessions
         DAY_3 -> day3Sessions
@@ -377,13 +477,21 @@ class ScheduleViewModel @Inject constructor(
         } else {
             R.string.event_unstarred
         }
-        snackbarMessageManager.addMessage(SnackbarMessage(messageId = stringResId,
+        snackbarMessageManager.addMessage(
+            SnackbarMessage(
+                messageId = stringResId,
                 actionId = R.string.dont_show,
-                requestChangeId = UUID.randomUUID().toString()))
+                requestChangeId = UUID.randomUUID().toString()
+            )
+        )
 
         getUserId()?.let {
-            starEventUseCase.execute(StarEventParameter(it,
-                    userEvent.copy(isStarred = newIsStarredState)))
+            starEventUseCase.execute(
+                StarEventParameter(
+                    it,
+                    userEvent.copy(isStarred = newIsStarredState)
+                )
+            )
         }
     }
 
@@ -402,22 +510,32 @@ class ScheduleViewModel @Inject constructor(
 
         val userId = getUserId() ?: return
         if (userEvent.isReserved()
-                || userEvent.isWaitlisted()
-                || userEvent.isCancelPending() // Just in case
-                || userEvent.isReservationPending()) {
+            || userEvent.isWaitlisted()
+            || userEvent.isCancelPending() // Just in case
+            || userEvent.isReservationPending()
+        ) {
             // Open the dialog to confirm if the user really wants to remove their reservation
             _navigateToRemoveReservationDialogAction.value =
-                    Event(RemoveReservationDialogParameters(
+                    Event(
+                        RemoveReservationDialogParameters(
                             userId,
                             session.id,
-                            session.title))
+                            session.title
+                        )
+                    )
             return
         }
 
-        reservationActionUseCase.execute(ReservationRequestParameters(userId, session.id,
-                RequestAction()))
+        reservationActionUseCase.execute(
+            ReservationRequestParameters(
+                userId, session.id,
+                RequestAction()
+            )
+        )
     }
 }
+
+data class SessionTimeData(var list: List<UserSession>? = null, var timeZoneId: ZoneId? = null)
 
 interface ScheduleEventListener : EventActions {
     /** Called from the UI to enable or disable a particular filter. */

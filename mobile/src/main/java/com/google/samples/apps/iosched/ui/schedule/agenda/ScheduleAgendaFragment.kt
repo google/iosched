@@ -29,6 +29,7 @@ import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.util.clearDecorations
 import dagger.android.support.DaggerFragment
+import org.threeten.bp.ZoneId
 import javax.inject.Inject
 
 class ScheduleAgendaFragment : DaggerFragment() {
@@ -56,12 +57,15 @@ class ScheduleAgendaFragment : DaggerFragment() {
     }
 }
 
-@BindingAdapter("agendaItems")
-fun agendaItems(recyclerView: RecyclerView, list: List<Block>?) {
+@BindingAdapter(value = ["agendaItems", "timeZoneId"])
+fun agendaItems(recyclerView: RecyclerView, list: List<Block>?, timeZoneId: ZoneId?) {
     if (recyclerView.adapter == null) {
         recyclerView.adapter = ScheduleAgendaAdapter()
     }
-    (recyclerView.adapter as ScheduleAgendaAdapter).submitList(list ?: emptyList())
+    val adapter = (recyclerView.adapter as ScheduleAgendaAdapter).apply {
+        this.submitList(list ?: emptyList())
+        this.timeZoneId = timeZoneId ?: ZoneId.systemDefault()
+    }
 
     // Recreate the decoration used for the sticky date headers
     recyclerView.clearDecorations()

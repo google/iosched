@@ -48,6 +48,7 @@ import com.google.samples.apps.iosched.ui.reservation.StarReserveFab
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.util.drawable.HeaderGridDrawable
 import org.threeten.bp.Duration
+import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 
 @Suppress("unused")
@@ -78,18 +79,19 @@ fun eventHeaderAnim(lottieView: LottieAnimationView, session: Session?) {
 }
 
 @Suppress("unused")
-@BindingAdapter(value = ["sessionDetailStartTime", "sessionDetailEndTime"], requireAll = true)
+@BindingAdapter(value = ["sessionDetailStartTime", "sessionDetailEndTime", "timeZoneId"], requireAll = true)
 fun timeString(
     view: TextView,
     sessionDetailStartTime: ZonedDateTime?,
-    sessionDetailEndTime: ZonedDateTime?
+    sessionDetailEndTime: ZonedDateTime?,
+    timeZoneId: ZoneId?
 ) {
-    if (sessionDetailStartTime == null || sessionDetailEndTime == null) {
+    if (sessionDetailStartTime == null || sessionDetailEndTime == null || timeZoneId == null) {
         view.text = ""
     } else {
         view.text = TimeUtils.timeString(
-            TimeUtils.zonedTime(sessionDetailStartTime),
-            TimeUtils.zonedTime(sessionDetailEndTime)
+            TimeUtils.zonedTime(sessionDetailStartTime, timeZoneId),
+            TimeUtils.zonedTime(sessionDetailEndTime, timeZoneId)
         )
     }
 }

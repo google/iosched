@@ -26,16 +26,19 @@ import android.view.ViewGroup
 import com.google.samples.apps.iosched.BR
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.model.Block
+import org.threeten.bp.ZoneId
 
-class ScheduleAgendaAdapter : ListAdapter<Block, AgendaViewHolder>(BlockDiff) {
+class ScheduleAgendaAdapter(var timeZoneId: ZoneId = ZoneId.systemDefault()) :
+    ListAdapter<Block, AgendaViewHolder>(BlockDiff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AgendaViewHolder {
         return AgendaViewHolder(
-            DataBindingUtil.inflate(LayoutInflater.from(parent.context), viewType, parent, false))
+            DataBindingUtil.inflate(LayoutInflater.from(parent.context), viewType, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: AgendaViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), timeZoneId)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -50,8 +53,9 @@ class ScheduleAgendaAdapter : ListAdapter<Block, AgendaViewHolder>(BlockDiff) {
 class AgendaViewHolder(
     private val binding: ViewDataBinding
 ) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(block: Block) {
+    fun bind(block: Block, timeZoneId: ZoneId) {
         binding.setVariable(BR.agenda, block)
+        binding.setVariable(BR.timeZoneId, timeZoneId)
         binding.executePendingBindings()
     }
 }
@@ -59,10 +63,9 @@ class AgendaViewHolder(
 object BlockDiff : DiffUtil.ItemCallback<Block>() {
     override fun areItemsTheSame(oldItem: Block?, newItem: Block?): Boolean {
         return oldItem?.title == newItem?.title
-            && oldItem?.startTime == newItem?.startTime
-            && oldItem?.endTime == newItem?.endTime
+                && oldItem?.startTime == newItem?.startTime
+                && oldItem?.endTime == newItem?.endTime
     }
 
     override fun areContentsTheSame(oldItem: Block?, newItem: Block?) = oldItem == newItem
-
 }

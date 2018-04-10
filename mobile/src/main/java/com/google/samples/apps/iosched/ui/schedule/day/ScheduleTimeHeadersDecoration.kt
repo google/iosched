@@ -48,7 +48,8 @@ import org.threeten.bp.format.DateTimeFormatter
  */
 class ScheduleTimeHeadersDecoration(
     context: Context,
-    sessions: List<Session>
+    sessions: List<Session>,
+    zoneId: ZoneId
 ) : RecyclerView.ItemDecoration() {
 
     private val paint: TextPaint
@@ -88,7 +89,7 @@ class ScheduleTimeHeadersDecoration(
     // Get the sessions index:start time and create header layouts for each
     // TODO: let user pick between local or conference time zone (b/77606102). Show local for now.
     private val timeSlots: Map<Int, StaticLayout> =
-        indexSessionHeaders(sessions, ZoneId.systemDefault()).map {
+        indexSessionHeaders(sessions, zoneId).map {
             it.first to createHeader(it.second)
         }.toMap()
 

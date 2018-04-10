@@ -28,11 +28,13 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.samples.apps.iosched.databinding.ItemSessionBinding
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.ui.schedule.ScheduleEventListener
+import org.threeten.bp.ZoneId
 
 class ScheduleDayAdapter(
     private val eventListener: ScheduleEventListener,
     private val tagViewPool: RecyclerView.RecycledViewPool,
     private val showReservations: LiveData<Boolean>,
+    private val timeZoneId: LiveData<ZoneId>,
     private val lifecycleOwner: LifecycleOwner
 ) : ListAdapter<UserSession, SessionViewHolder>(SessionDiff) {
 
@@ -44,7 +46,9 @@ class ScheduleDayAdapter(
                     it.recycleChildrenOnDetach = true
                 }
             }
-        return SessionViewHolder(binding, eventListener, showReservations, lifecycleOwner)
+        return SessionViewHolder(
+            binding, eventListener, showReservations, timeZoneId, lifecycleOwner
+        )
     }
 
     override fun onBindViewHolder(holder: SessionViewHolder, position: Int) {
@@ -56,6 +60,7 @@ class SessionViewHolder(
     private val binding: ItemSessionBinding,
     private val eventListener: ScheduleEventListener,
     private val showReservations: LiveData<Boolean>,
+    private val timeZoneId: LiveData<ZoneId>,
     private val lifecycleOwner: LifecycleOwner
 ) : ViewHolder(binding.root) {
 
@@ -64,6 +69,7 @@ class SessionViewHolder(
         binding.userEvent = userSession.userEvent
         binding.eventListener = eventListener
         binding.showReservations = showReservations
+        binding.timeZoneId = timeZoneId
         binding.setLifecycleOwner(lifecycleOwner)
         binding.executePendingBindings()
     }

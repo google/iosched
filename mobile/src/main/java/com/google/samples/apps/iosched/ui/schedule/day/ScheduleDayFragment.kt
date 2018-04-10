@@ -34,6 +34,7 @@ import com.google.samples.apps.iosched.shared.util.getEnum
 import com.google.samples.apps.iosched.shared.util.lazyFast
 import com.google.samples.apps.iosched.shared.util.putEnum
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
+import com.google.samples.apps.iosched.ui.schedule.SessionTimeData
 import com.google.samples.apps.iosched.util.clearDecorations
 import com.google.samples.apps.iosched.util.executeAfter
 import dagger.android.support.DaggerFragment
@@ -95,6 +96,7 @@ class ScheduleDayFragment : DaggerFragment() {
             viewModel,
             tagViewPool,
             viewModel.showReservations,
+            viewModel.timeZoneId,
             this
         )
 
@@ -109,23 +111,9 @@ class ScheduleDayFragment : DaggerFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val activity = requireActivity()
-        viewModel.getSessionsForDay(conferenceDay).observe(activity, Observer { list ->
-            val finalList = list ?: emptyList()
-            adapter.submitList(finalList)
-
-            binding.recyclerview.let {
-                // Recreate the decoration used for the sticky time headers
-                it.clearDecorations()
-                if (list != null && list.isNotEmpty()) {
-                    it.addItemDecoration(
-                        ScheduleTimeHeadersDecoration(it.context, list.map { it.session })
-                    )
-                }
-            }
-
-            binding.executeAfter {
-                isEmpty = finalList.isEmpty()
-            }
+        viewModel.getSessionTimeDataForDay(conferenceDay).observe(activity, Observer {
+            it ?: return@Observer
+            initializeList(it)
         })
 
         // Show an error message
@@ -134,4 +122,27 @@ class ScheduleDayFragment : DaggerFragment() {
             Toast.makeText(this.context, errorMsg, Toast.LENGTH_LONG).show()
         })
     }
+
+    fun initializeList(sessionTimeData: SessionTimeData) {
+        // Require the list and timeZoneId to be loaded.
+        val list = sessionTimeData.list ?: return
+        val timeZoneId = sessionTimeData.timeZoneId ?: return
+        adapter.submitList(list)
+
+        binding.recyclerview.let {
+            // Recreate the decoration used for the sticky time headers
+            it.clearDecorations()
+            if (list.isNotEmpty()) {
+                it.addItemDecoration(
+                    ScheduleTimeHeadersDecoration(it.context, list.map { it.session }, timeZoneId)
+                )
+            }
+        }
+
+        binding.executeAfter {
+            isEmpty = list.isEmpty()
+        }
+    }
 }
+
+

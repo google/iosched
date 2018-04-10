@@ -160,6 +160,7 @@
                     app:layout_constraintTop_toBottomOf="@id/session_detail_with_video_title"
                     app:sessionDetailEndTime="@{viewModel.session.endTime}"
                     app:sessionDetailStartTime="@{viewModel.session.startTime}"
+                    app:timeZoneId="@{viewModel.timeZoneId}"
                     tools:text="Session Time" />
 
                 <TextView

@@ -44,6 +44,10 @@
         <variable
             name="alwaysShowDate"
             type="Boolean" />
+
+        <variable
+            name="timeZoneId"
+            type="LiveData&lt;org.threeten.bp.ZoneId&gt;" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -130,6 +134,7 @@
             app:sessionRoom="@{session.room}"
             app:sessionStart="@{session.startTime}"
             app:alwaysShowDate="@{alwaysShowDate}"
+            app:timeZoneId="@{timeZoneId}"
             tools:text="1 hour / Amphitheatre" />
 
         <android.support.constraint.Barrier

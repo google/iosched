@@ -26,6 +26,7 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.model.Session
@@ -63,7 +64,8 @@ class SessionDetailViewModelTest {
     private lateinit var viewModel: SessionDetailViewModel
     private val testSession = TestData.session0
 
-    @Before fun setup() {
+    @Before
+    fun setup() {
         viewModel = createSessionDetailViewModel()
         viewModel.setSessionId(testSession.id)
     }
@@ -92,7 +94,7 @@ class SessionDetailViewModelTest {
 
         vm.onPlayVideo()
         assertEquals(
-                TestData.sessionWithYoutubeUrl.youTubeUrl,
+            TestData.sessionWithYoutubeUrl.youTubeUrl,
             LiveDataTestUtil.getValue(vm.navigateToYouTubeAction)?.peekContent()
         )
     }
@@ -176,7 +178,8 @@ class SessionDetailViewModelTest {
 //        assertTrue(LiveDataTestUtil.getValue(viewModel.isReservationDisabled)!!)
 //    }
 
-    @Test fun testOnPlayVideo_doesNotCreateEventForVideo() {
+    @Test
+    fun testOnPlayVideo_doesNotCreateEventForVideo() {
         val sessionWithoutYoutubeUrl = testSession
         val vm = createSessionDetailViewModelWithAuthEnabled()
 
@@ -189,7 +192,6 @@ class SessionDetailViewModelTest {
     }
 
     // TODO: Add a test for onReservationClicked
-
 
     private fun createSessionDetailViewModelWithAuthEnabled(): SessionDetailViewModel {
         // If session ID and user are available, session data can be loaded
@@ -204,12 +206,13 @@ class SessionDetailViewModelTest {
         loadRelatedSessionsUseCase: LoadUserSessionsUseCase = createTestLoadUserSessionsUseCase(),
         reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase(),
         starEventUseCase: StarEventUseCase = FakeStarEventUseCase(),
+        getTimeZoneUseCase: GetTimeZoneUseCase = createGetTimeZoneUseCase(),
         snackbarMessageManager: SnackbarMessageManager =
-                SnackbarMessageManager(FakePreferenceStorage())
+            SnackbarMessageManager(FakePreferenceStorage())
     ): SessionDetailViewModel {
         return SessionDetailViewModel(
             signInViewModelPlugin, loadUserSessionUseCase, loadRelatedSessionsUseCase,
-            starEventUseCase, reservationActionUseCase, snackbarMessageManager
+            starEventUseCase, reservationActionUseCase, getTimeZoneUseCase, snackbarMessageManager
         )
     }
 
@@ -229,11 +232,12 @@ class SessionDetailViewModelTest {
         )
 
     private fun createTestLoadUserSessionUseCase(
-            userEventDataSource: UserEventDataSource = TestUserEventDataSource()
+        userEventDataSource: UserEventDataSource = TestUserEventDataSource()
     ): LoadUserSessionUseCase {
         val sessionRepository = DefaultSessionRepository(TestDataRepository)
         val userEventRepository = DefaultSessionAndUserEventRepository(
-                userEventDataSource, sessionRepository)
+            userEventDataSource, sessionRepository
+        )
         return LoadUserSessionUseCase(userEventRepository)
     }
 
@@ -242,11 +246,17 @@ class SessionDetailViewModelTest {
     ): LoadUserSessionsUseCase {
         val sessionRepository = DefaultSessionRepository(TestDataRepository)
         val userEventRepository = DefaultSessionAndUserEventRepository(
-            userEventDataSource, sessionRepository)
+            userEventDataSource, sessionRepository
+        )
         return LoadUserSessionsUseCase(userEventRepository)
     }
 
-    private fun createReservationActionUseCase() = object: ReservationActionUseCase(
-            DefaultSessionAndUserEventRepository(
-                    TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository))) {}
+    private fun createReservationActionUseCase() = object : ReservationActionUseCase(
+        DefaultSessionAndUserEventRepository(
+            TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
+        )
+    ) {}
+
+    private fun createGetTimeZoneUseCase() =
+        object : GetTimeZoneUseCase(FakePreferenceStorage()) {}
 }

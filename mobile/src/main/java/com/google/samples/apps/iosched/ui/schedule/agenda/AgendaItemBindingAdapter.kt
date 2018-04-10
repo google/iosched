@@ -24,12 +24,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.TimeUtils
+import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
 
 private val agendaTimePattern = DateTimeFormatter.ofPattern("h:mm a")
 
-@BindingAdapter(value=["agendaColor", "agendaStrokeColor", "agendaStrokeWidth"], requireAll = true)
+@BindingAdapter(
+    value = ["agendaColor", "agendaStrokeColor", "agendaStrokeWidth"], requireAll = true
+)
 fun agendaColor(view: View, fillColor: Int, strokeColor: Int, strokeWidth: Float) {
     view.background = (view.background as? GradientDrawable ?: GradientDrawable()).apply {
         setColor(fillColor)
@@ -54,11 +57,14 @@ fun agendaIcon(imageView: ImageView, type: String) {
     imageView.setImageDrawable(AppCompatResources.getDrawable(imageView.context, iconId))
 }
 
-@BindingAdapter(value = ["startTime", "endTime"], requireAll = true)
-fun agendaDuration(textView: TextView, startTime: ZonedDateTime, endTime: ZonedDateTime) {
+@BindingAdapter(value = ["startTime", "endTime", "timeZoneId"], requireAll = true)
+fun agendaDuration(
+    textView: TextView, startTime: ZonedDateTime, endTime: ZonedDateTime,
+    timeZoneId: ZoneId
+) {
     textView.text = textView.context.getString(
         R.string.agenda_duration,
-        agendaTimePattern.format(TimeUtils.zonedTime(startTime)),
-        agendaTimePattern.format(TimeUtils.zonedTime(endTime))
+        agendaTimePattern.format(TimeUtils.zonedTime(startTime, timeZoneId)),
+        agendaTimePattern.format(TimeUtils.zonedTime(endTime, timeZoneId))
     )
 }

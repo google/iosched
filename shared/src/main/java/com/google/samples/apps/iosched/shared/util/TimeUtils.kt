@@ -70,7 +70,7 @@ object TimeUtils {
         return ZonedDateTime.ofInstant(time.toInstant(), zoneId)
     }
 
-    fun inConferenceTimeZone(): Boolean {
+    fun physicallyInConferenceTimeZone(): Boolean {
         return ZoneId.systemDefault() == CONFERENCE_TIMEZONE
     }
 
