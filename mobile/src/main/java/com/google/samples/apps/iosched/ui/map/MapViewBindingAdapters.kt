@@ -19,13 +19,14 @@ package com.google.samples.apps.iosched.ui.map
 import android.databinding.BindingAdapter
 import android.support.annotation.DimenRes
 import android.support.annotation.RawRes
-import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.TileOverlayOptions
 import com.google.android.gms.maps.model.TileProvider
+import com.google.maps.android.data.geojson.GeoJsonLayer
+import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.util.getFloat
 
 @BindingAdapter("mapStyle")
@@ -41,11 +42,8 @@ fun mapStyle(mapView: MapView, @RawRes resId: Int) {
  * Adds list of markers to the GoogleMap.
  */
 @BindingAdapter("mapMarkers")
-fun mapMarkers(mapView: MapView, @RawRes markers: Int) {
-    mapView.getMapAsync {
-        val layer = applyGeoJsonLayer(it, markers, mapView.context)
-        layer.addLayerToMap()
-    }
+fun mapMarkers(mapView: MapView, geoJsonLayer: GeoJsonLayer?) {
+    geoJsonLayer?.addLayerToMap()
 }
 
 /**
@@ -61,15 +59,13 @@ fun mapViewport(mapView: MapView, bounds: LatLngBounds?) {
 }
 
 /**
- * Sets the center of the map's camera target. This will be called initially and then every time the
- * user selects an event or a marker.
+ * Sets the center of the map's camera. Call this every time the user selects a marker.
  */
 @BindingAdapter("mapCenter")
-fun mapCenter(mapView: MapView, target: LatLng?) {
-    if (target != null) {
-        mapView.getMapAsync {
-            it.animateCamera(CameraUpdateFactory.newLatLng(target))
-        }
+fun mapCenter(mapView: MapView, event: Event<CameraUpdate>?) {
+    val update = event?.getContentIfNotHandled() ?: return
+    mapView.getMapAsync {
+        it.animateCamera(update)
     }
 }
 

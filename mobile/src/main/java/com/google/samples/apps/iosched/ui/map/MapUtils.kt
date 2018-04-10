@@ -19,10 +19,8 @@ package com.google.samples.apps.iosched.ui.map
 import android.content.Context
 import android.graphics.Bitmap
 import android.support.annotation.DrawableRes
-import android.support.annotation.RawRes
 import android.support.v7.content.res.AppCompatResources
 import androidx.graphics.drawable.toBitmap
-import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.data.geojson.GeoJsonPointStyle
@@ -30,16 +28,8 @@ import com.google.maps.android.ui.IconGenerator
 import com.google.samples.apps.iosched.R
 import java.util.Locale
 
-/**
- * Convert a raw resource to a GeoJsonLayer for display on a Map. The content of the resource must
- * follow the [GeoJSON format][https://tools.ietf.org/html/rfc7946].
- */
-fun applyGeoJsonLayer(
-    map: GoogleMap,
-    @RawRes resId: Int,
-    context: Context
-): GeoJsonLayer {
-    val layer = GeoJsonLayer(map, resId, context)
+/** Process a [GeoJsonLayer] for display on a Map. */
+fun processGeoJsonLayer(layer: GeoJsonLayer, context: Context) {
     val iconGenerator = getLabelIconGenerator(context)
     layer.features.forEach { feature ->
         val id = feature.getProperty("id")
@@ -53,8 +43,6 @@ fun applyGeoJsonLayer(
             else -> GeoJsonPointStyle() // no styling
         }
     }
-
-    return layer
 }
 
 
