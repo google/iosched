@@ -41,10 +41,12 @@ buildscript {
         androidGradlePluginVersion = '3.1.0'
         archLifecycleVersion = '1.1.0'
         constraintLayoutVersion = '1.1.0-beta6'
+        crashlyticsVersion = '2.9.1'
         dagger = "2.14.1"
         dataBindingCompilerVersion = '3.0.1'
         designLibraryVersion = '27.1.0'
         espressoVersion = '3.0.1'
+        fabricVersion = '1.25.1'
         firebaseUiVersion = "3.3.0"
         flexboxVersion = "0.3.2"
         glideVersion = "4.6.1"
@@ -78,6 +80,9 @@ buildscript {
         google()
         mavenCentral()
         jcenter()
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
         // Android Build Server
         maven { url '../iosched-prebuilts/m2repository' }
     }
@@ -85,6 +90,7 @@ buildscript {
         classpath "com.android.tools.build:gradle:$androidGradlePluginVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "com.google.gms:google-services:$googleServicesVersion"
+        classpath "io.fabric.tools:gradle:$fabricVersion"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
