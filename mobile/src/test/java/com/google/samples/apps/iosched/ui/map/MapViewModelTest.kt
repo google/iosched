@@ -40,7 +40,8 @@ class MapViewModelTest {
     fun testDataIsLoaded() {
         // Create ViewModel with the test data
         val viewModel = MapViewModel(
-            LoadMapTileProviderUseCase(mock(Context::class.java))
+            LoadMapTileProviderUseCase(mock(Context::class.java)),
+            LoadGeoJsonFeaturesUseCase(mock(Context::class.java))
         )
         assertTrue(viewModel.conferenceLocationBounds.contains(
             // conference center

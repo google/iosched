@@ -35,10 +35,12 @@ import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSessionDetailBinding
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
+import com.google.samples.apps.iosched.shared.model.Room
 import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.model.SpeakerId
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
+import com.google.samples.apps.iosched.ui.map.MapActivity
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment
@@ -70,6 +72,8 @@ class SessionDetailFragment : DaggerFragment() {
     @field:Named("tagViewPool")
     lateinit var tagRecycledViewPool: RecycledViewPool
 
+    private var room: Room? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -91,9 +95,13 @@ class SessionDetailFragment : DaggerFragment() {
                         .setText(shareString)
                         .setChooserTitle(R.string.intent_chooser_session_detail)
                         .startChooser()
-                }
-                if (item.itemId == R.id.menu_item_star) {
+                } else if (item.itemId == R.id.menu_item_star) {
                     viewModel?.onStarClicked()
+                } else if (item.itemId == R.id.menu_item_map) {
+                    val roomId = room?.id
+                    if (roomId != null) {
+                        startActivity(MapActivity.starterIntent(requireContext(), roomId))
+                    }
                 }
                 true
             }
@@ -129,6 +137,7 @@ class SessionDetailFragment : DaggerFragment() {
         })
 
         sessionDetailViewModel.session.observe(this, Observer {
+            room = it?.room
             shareString = if (it == null) {
                 ""
             } else {

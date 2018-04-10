@@ -17,20 +17,28 @@
 package com.google.samples.apps.iosched.ui.map
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.CameraUpdate
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.TileProvider
+import com.google.maps.android.data.geojson.GeoJsonFeature
+import com.google.maps.android.data.geojson.GeoJsonLayer
+import com.google.maps.android.data.geojson.GeoJsonPoint
 import com.google.samples.apps.iosched.BuildConfig
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.util.map
 import javax.inject.Inject
 
 class MapViewModel @Inject constructor(
-    loadMapTileProviderUseCase: LoadMapTileProviderUseCase
+    loadMapTileProviderUseCase: LoadMapTileProviderUseCase,
+    private val loadGeoJsonFeaturesUseCase: LoadGeoJsonFeaturesUseCase
 ) : ViewModel() {
 
     /**
@@ -46,17 +54,77 @@ class MapViewModel @Inject constructor(
      */
     val errorMessageShown = MutableLiveData<Boolean>().apply { value = false }
 
-    private val _mapCenter = MutableLiveData<LatLng>()
-    val mapCenter: LiveData<LatLng>
-        get() = _mapCenter
-
     private val tileProviderResult = MutableLiveData<Result<TileProvider>>()
     val tileProvider: LiveData<TileProvider?>
+
+    private val _mapCenterEvent = MutableLiveData<Event<CameraUpdate>>()
+    val mapCenterEvent: LiveData<Event<CameraUpdate>>
+        get() = _mapCenterEvent
+
+    private val loadGeoJsonResult = MutableLiveData<Result<GeoJsonData>>()
+
+    private val _geoJsonLayer = MediatorLiveData<GeoJsonLayer>()
+    val geoJsonLayer: LiveData<GeoJsonLayer>
+        get() = _geoJsonLayer
+
+    private val featureLookup: MutableMap<String, GeoJsonFeature> = mutableMapOf()
+    private var hasLoadedFeatures = false
+    private var requestedFeatureId: String? = null
+
+    private val focusZoomLevel = BuildConfig.MAP_CAMERA_FOCUS_ZOOM
 
     init {
         loadMapTileProviderUseCase(R.drawable.map_tile, tileProviderResult)
         tileProvider = tileProviderResult.map { result ->
             (result as? Success)?.data
         }
+
+        _geoJsonLayer.addSource(loadGeoJsonResult, { result ->
+            if (result is Success) {
+                hasLoadedFeatures = true
+                setMapFeatures(result.data.featureMap)
+                _geoJsonLayer.value = result.data.geoJsonLayer
+            }
+        })
+    }
+
+    fun onMapReady(googleMap: GoogleMap) {
+        loadGeoJsonFeaturesUseCase(
+            LoadGeoJsonParams(googleMap, R.raw.map_markers),
+            loadGeoJsonResult
+        )
+    }
+
+    fun onMapDestroyed() {
+        // The geo json layer is tied to the GoogleMap, so we should release it.
+        hasLoadedFeatures = false
+        featureLookup.clear()
+        _geoJsonLayer.value = null
+    }
+
+    private fun setMapFeatures(features: Map<String, GeoJsonFeature>) {
+        featureLookup.clear()
+        featureLookup.putAll(features)
+        // if we have a pending request to highlight a feature, resolve it now
+        val featureId = requestedFeatureId ?: return
+        requestedFeatureId = null
+        highlightFeature(featureId)
+    }
+
+    fun requestHighlightFeature(featureId: String) {
+        if (hasLoadedFeatures) {
+            highlightFeature(featureId)
+        } else {
+            // save and re-evaluate when the map features are loaded
+            requestedFeatureId = featureId
+        }
+    }
+
+    private fun highlightFeature(featureId: String) {
+        val feature = featureLookup[featureId] ?: return
+        val geometry = feature.geometry as? GeoJsonPoint ?: return
+        // center map on the requested feature.
+        val update = CameraUpdateFactory.newLatLngZoom(geometry.coordinates, focusZoomLevel)
+        _mapCenterEvent.value = Event(update)
     }
 }
