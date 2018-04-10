@@ -51,7 +51,7 @@ object TestData : ConferenceDataSource {
     )
 
     val speaker = Speaker(id = "1", name = "Troy McClure", imageUrl = "",
-            company = "", abstract = "", gPlusUrl = "", twitterUrl = "")
+            company = "", abstract = "")
 
     val room = Room(id = "1", name = "Tent 1", capacity = 40)
 

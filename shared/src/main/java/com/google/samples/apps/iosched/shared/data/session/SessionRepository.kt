@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.shared.data.session
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.SessionNotFoundException
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.SessionId
 import javax.inject.Inject
 
 /**
@@ -28,7 +29,7 @@ import javax.inject.Inject
  */
 interface SessionRepository {
     fun getSessions(): List<Session>
-    fun getSession(eventId: String): Session
+    fun getSession(eventId: SessionId): Session
 }
 
 class DefaultSessionRepository @Inject constructor(
@@ -39,7 +40,7 @@ class DefaultSessionRepository @Inject constructor(
         return conferenceDataRepository.getOfflineConferenceData().sessions
     }
 
-    override fun getSession(eventId: String): Session {
+    override fun getSession(eventId: SessionId): Session {
         return conferenceDataRepository.getOfflineConferenceData().sessions.firstOrNull { session ->
             session.id == eventId } ?: throw SessionNotFoundException()
     }

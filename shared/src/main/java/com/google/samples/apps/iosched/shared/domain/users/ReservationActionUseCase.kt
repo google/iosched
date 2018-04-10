@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.shared.domain.users
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.result.Result
 import timber.log.Timber
 import javax.inject.Inject
@@ -52,7 +53,7 @@ open class ReservationActionUseCase @Inject constructor(
 
 data class ReservationRequestParameters(
         val userId: String,
-        val sessionId: String,
+        val sessionId: SessionId,
         val action: ReservationRequestAction)
 
 sealed class ReservationRequestAction {

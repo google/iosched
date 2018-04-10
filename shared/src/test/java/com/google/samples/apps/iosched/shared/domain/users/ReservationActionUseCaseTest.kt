@@ -25,6 +25,7 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsBy
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
+import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
@@ -101,7 +102,7 @@ object TestUserEventRepository : SessionAndUserEventRepository {
 
     override fun getObservableUserEvent(
             userId: String?,
-            eventId: String
+            eventId: SessionId
     ): LiveData<Result<LoadUserSessionUseCaseResult>> {
         TODO("not implemented")
     }
@@ -112,7 +113,7 @@ object TestUserEventRepository : SessionAndUserEventRepository {
     }
 
     override fun changeReservation(
-            userId: String, sessionId: String, action: ReservationRequestAction
+            userId: String, sessionId: SessionId, action: ReservationRequestAction
     ): LiveData<Result<ReservationRequestAction>> {
 
         val result = MutableLiveData<Result<ReservationRequestAction>>()
@@ -125,7 +126,11 @@ object TestUserEventRepository : SessionAndUserEventRepository {
         TODO("not implemented")
     }
 
-    override fun swapReservation(userId: String, fromId: String, toId: String): LiveData<Result<SwapRequestAction>> {
+    override fun swapReservation(
+        userId: String,
+        fromId: SessionId,
+        toId: SessionId
+    ): LiveData<Result<SwapRequestAction>> {
         TODO("not implemented")
     }
 
@@ -140,7 +145,7 @@ object FailingUserEventRepository : SessionAndUserEventRepository {
 
     override fun getObservableUserEvent(
             userId: String?,
-            eventId: String
+            eventId: SessionId
     ): LiveData<Result<LoadUserSessionUseCaseResult>> {
         TODO("not implemented")
     }
@@ -151,7 +156,7 @@ object FailingUserEventRepository : SessionAndUserEventRepository {
     }
 
     override fun changeReservation(userId: String,
-                                   sessionId: String,
+                                   sessionId: SessionId,
                                    action: ReservationRequestAction):
             LiveData<Result<ReservationRequestAction>> {
         throw Exception("Test")
@@ -161,7 +166,7 @@ object FailingUserEventRepository : SessionAndUserEventRepository {
         TODO("not implemented")
     }
 
-    override fun swapReservation(userId: String, fromId: String, toId: String):
+    override fun swapReservation(userId: String, fromId: SessionId, toId: SessionId):
             LiveData<Result<SwapRequestAction>> {
         TODO("not implemented")
     }

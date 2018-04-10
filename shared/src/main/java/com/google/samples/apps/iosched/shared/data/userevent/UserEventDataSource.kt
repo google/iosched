@@ -22,13 +22,14 @@ import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.result.Result
 
 interface UserEventDataSource {
 
     fun getObservableUserEvents(userId: String): LiveData<UserEventsResult>
 
-    fun getObservableUserEvent(userId: String, eventId: String): LiveData<UserEventResult>
+    fun getObservableUserEvent(userId: String, eventId: SessionId): LiveData<UserEventResult>
 
     fun getUserEvents(userId: String): List<UserEvent>
 

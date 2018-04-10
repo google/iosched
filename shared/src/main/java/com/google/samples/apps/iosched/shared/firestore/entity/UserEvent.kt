@@ -15,6 +15,7 @@ import com.google.samples.apps.iosched.shared.firestore.entity.ReservationReques
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.SWAP_DENIED_UNKNOWN
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.SWAP_SUCCEEDED
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.SWAP_WAITLISTED
+import com.google.samples.apps.iosched.shared.model.SessionId
 
 /**
  * Data for a user's personalized event stored in a Firestore document.
@@ -23,7 +24,7 @@ data class UserEvent(
         /**
          * The unique ID for the event.
          */
-        val id: String,
+        val id: SessionId,
 
         /** Tracks whether the user has starred the event. */
         val isStarred: Boolean = false,

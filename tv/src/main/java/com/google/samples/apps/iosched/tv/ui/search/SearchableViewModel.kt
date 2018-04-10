@@ -21,6 +21,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.map
@@ -48,7 +49,7 @@ class SearchableViewModel @Inject constructor(
         }
     }
 
-    fun loadSessionById(sessionId: String) {
+    fun loadSessionById(sessionId: SessionId) {
         loadSessionUseCase.execute(sessionId)
     }
 }

@@ -28,6 +28,7 @@ import com.google.samples.apps.iosched.shared.firestore.entity.ReservationReques
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.RESERVE_SUCCEEDED
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.result.Result
 
 /**
@@ -58,14 +59,14 @@ object FakeUserEventDataSource : UserEventDataSource {
 
     override fun getObservableUserEvent(
             userId: String,
-            eventId: String
+            eventId: SessionId
     ): LiveData<UserEventResult> {
         val result = MutableLiveData<UserEventResult>()
         result.postValue(UserEventResult(userEvents[0]))
         return result
     }
 
-    override fun starEvent(userId: String, userEvent: UserEvent):
+    override fun starEvent(userId: SessionId, userEvent: UserEvent):
             LiveData<Result<StarUpdatedStatus>> {
 
         val result = MutableLiveData<Result<StarUpdatedStatus>>()

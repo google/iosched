@@ -28,20 +28,20 @@ class SpeakerUtilsTest {
 
     @Before fun setup() {
         speaker1 = Speaker(id = "1", name = "Troy McClure", imageUrl = "",
-                company = "", abstract = "", gPlusUrl = "", twitterUrl = "")
+                company = "", abstract = "")
 
         speaker2 = Speaker(id = "2", name = "Ziggy Anderson", imageUrl = "",
-                company = "", abstract = "", gPlusUrl = "", twitterUrl = "")
+                company = "", abstract = "")
 
         speaker3 = Speaker(id = "3", name = "Leah Hadley", imageUrl = "",
-                company = "", abstract = "", gPlusUrl = "", twitterUrl = "")
+                company = "", abstract = "")
     }
 
     @Test fun alphabeticallyOrderedSpeakerListSortSpeakers() {
         val speakerSet = linkedSetOf(speaker1,speaker2,speaker3)
 
         val speakerList = SpeakerUtils.alphabeticallyOrderedSpeakerList(speakerSet)
-        val expectedSpeakerList = arrayListOf<Speaker>(speaker3,speaker1,speaker2)
+        val expectedSpeakerList = arrayListOf(speaker3,speaker1,speaker2)
 
         Assert.assertEquals(expectedSpeakerList, speakerList)
     }

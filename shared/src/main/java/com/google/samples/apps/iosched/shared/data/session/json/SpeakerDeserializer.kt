@@ -28,18 +28,22 @@ import java.lang.reflect.Type
 class SpeakerDeserializer : JsonDeserializer<Speaker> {
 
     override fun deserialize(
-            json: JsonElement?,
-            typeOfT: Type?,
-            context: JsonDeserializationContext?
+        json: JsonElement?,
+        typeOfT: Type?,
+        context: JsonDeserializationContext?
     ): Speaker {
         val obj = json?.asJsonObject!!
+        val social = obj.getAsJsonObject("socialLinks")
         return Speaker(
-                id = obj.get("id").asString,
-                name = obj.get("name").asString,
-                imageUrl = obj.get("thumbnailUrl")?.asString ?: "",
-                company = obj.get("company")?.asString ?: "",
-                abstract = obj.get("bio")?.asString ?: "",
-                gPlusUrl = obj.get("plusoneUrl")?.asString ?: "",
-                twitterUrl = obj.get("twitterUrl")?.asString ?: "")
+            id = obj.get("id").asString,
+            name = obj.get("name").asString,
+            imageUrl = obj.get("thumbnailUrl")?.asString ?: "",
+            company = obj.get("company")?.asString ?: "",
+            abstract = obj.get("bio")?.asString ?: "",
+            websiteUrl = social?.get("website")?.asString,
+            twitterUrl = social?.get("twitter")?.asString,
+            githubUrl = social?.get("github")?.asString,
+            linkedInUrl = social?.get("linkedin")?.asString
+        )
     }
 }

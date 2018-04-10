@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.ui.sessiondetail
 
 import android.databinding.BindingAdapter
+import android.support.v7.widget.RecyclerView.RecycledViewPool
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -30,7 +31,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemSessionBinding
-import com.google.samples.apps.iosched.databinding.ItemSpeakerDetailBinding
+import com.google.samples.apps.iosched.databinding.ItemSpeakerBinding
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.SessionType.AFTER_HOURS
@@ -70,7 +71,7 @@ fun eventHeaderAnim(lottieView: LottieAnimationView, session: Session?) {
         CODELAB -> "anim/event_details_codelabs.json"
         OFFICE_HOURS -> "anim/event_details_office_hours.json"
         SANDBOX -> "anim/event_details_sandbox.json"
-    /* default to session anim */
+        /* default to session anim */
         else -> "anim/event_details_session.json"
     }
     lottieView.setAnimation(anim)
@@ -145,35 +146,46 @@ fun assignFab(
     }
 }
 
-@BindingAdapter("sessionSpeakers")
-fun sessionSpeakers(layout: LinearLayout, speakers: Set<Speaker>?) {
+@BindingAdapter(value = ["sessionSpeakers", "eventListener"], requireAll = true)
+fun createSessionSpeakerViews(
+    layout: LinearLayout,
+    speakers: Set<Speaker>?,
+    eventListener: SessionDetailEventListener
+) {
     if (speakers != null) {
         // remove all views other than the header
         for (i in layout.childCount - 1 downTo 1) {
             layout.removeViewAt(i)
         }
         SpeakerUtils.alphabeticallyOrderedSpeakerList(speakers).forEach {
-            layout.addView(createSessionSpeakerView(layout, it))
+            layout.addView(createSpeakerView(layout, it, eventListener))
         }
     }
 }
 
-private fun createSessionSpeakerView(container: ViewGroup, presenter: Speaker): View {
-    val binding = ItemSpeakerDetailBinding.inflate(
+private fun createSpeakerView(
+    container: ViewGroup,
+    presenter: Speaker,
+    listener: SessionDetailEventListener
+): View {
+    val binding = ItemSpeakerBinding.inflate(
         LayoutInflater.from(container.context),
         container,
         false
     ).apply {
+        eventListener = listener
         speaker = presenter
+        root.setTag(R.id.tag_speaker_id, presenter.id) // Used to identify which view was clicked
     }
     return binding.root
 }
 
-@BindingAdapter(value = ["relatedEvents", "eventListener"], requireAll = true)
-fun relatedEvents(
+@BindingAdapter(value = ["relatedEvents", "eventListener", "tagViewPool"], requireAll = true)
+fun createRelatedSessionViews(
     layout: LinearLayout,
     relatedEvents: List<UserSession>?,
-    eventListener: EventActions
+    eventListener: EventActions,
+    tagViewPool: RecycledViewPool?
 ) {
     if (relatedEvents != null) {
         // remove all views other than the header
@@ -181,24 +193,26 @@ fun relatedEvents(
             layout.removeViewAt(i)
         }
         relatedEvents.forEach {
-            layout.addView(createRelatedEventView(layout, it, eventListener))
+            layout.addView(createEventView(layout, it, eventListener, tagViewPool))
         }
     }
 }
 
-private fun createRelatedEventView(
+private fun createEventView(
     container: ViewGroup,
-    related: UserSession,
-    listener: EventActions
+    event: UserSession,
+    listener: EventActions,
+    tagViewPool: RecycledViewPool?
 ): View {
     val binding = ItemSessionBinding.inflate(
         LayoutInflater.from(container.context),
         container,
         false
     ).apply {
-        session = related.session
-        userEvent = related.userEvent
+        session = event.session
+        userEvent = event.userEvent
         eventListener = listener
+        tags.recycledViewPool = tagViewPool
     }
     return binding.root
 }

@@ -34,6 +34,8 @@ import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.SessionId
+import com.google.samples.apps.iosched.shared.model.SpeakerId
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
@@ -61,14 +63,14 @@ private const val SIXTY_SECONDS = 60_000L
  * Loads [Session] data and exposes it to the session detail view.
  */
 class SessionDetailViewModel @Inject constructor(
-    private val signInViewModelPlugin: SignInViewModelDelegate,
+    private val signInViewModelDelegate: SignInViewModelDelegate,
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val loadRelatedSessionUseCase: LoadUserSessionsUseCase,
     private val starEventUseCase: StarEventUseCase,
     private val reservationActionUseCase: ReservationActionUseCase,
     private val snackbarMessageManager: SnackbarMessageManager
 ) : ViewModel(), SessionDetailEventListener, EventActions,
-    SignInViewModelDelegate by signInViewModelPlugin {
+    SignInViewModelDelegate by signInViewModelDelegate {
 
     private val loadUserSessionResult: MediatorLiveData<Result<LoadUserSessionUseCaseResult>>
 
@@ -90,9 +92,17 @@ class SessionDetailViewModel @Inject constructor(
 
     val navigateToYouTubeAction = MutableLiveData<Event<String>>()
 
-    val session = MediatorLiveData<Session>()
-    val userEvent = MediatorLiveData<UserEvent>()
-    val relatedUserSessions = MediatorLiveData<List<UserSession>>()
+    private val _session = MediatorLiveData<Session>()
+    val session: LiveData<Session>
+        get() = _session
+
+    private val _userEvent = MediatorLiveData<UserEvent>()
+    val userEvent: LiveData<UserEvent>
+        get() = _userEvent
+
+    private val _relatedUserSessions = MediatorLiveData<List<UserSession>>()
+    val relatedUserSessions: LiveData<List<UserSession>>
+        get() = _relatedUserSessions
 
     val showRateButton: LiveData<Boolean>
     val hasPhotoOrVideo: LiveData<Boolean>
@@ -102,7 +112,7 @@ class SessionDetailViewModel @Inject constructor(
     val timeUntilStart: LiveData<Duration?>
     val isReservationDisabled: LiveData<Boolean>
 
-    private val sessionId = MutableLiveData<String>()
+    private val sessionId = MutableLiveData<SessionId>()
 
     private val _navigateToRemoveReservationDialogAction =
             MutableLiveData<Event<RemoveReservationDialogParameters>>()
@@ -114,9 +124,13 @@ class SessionDetailViewModel @Inject constructor(
     val navigateToSwapReservationDialogAction: LiveData<Event<SwapRequestParameters>>
         get() = _navigateToSwapReservationDialogAction
 
-    private val _navigateToSessionAction = MutableLiveData<Event<String>>()
-    val navigateToSessionAction : LiveData<Event<String>>
+    private val _navigateToSessionAction = MutableLiveData<Event<SessionId>>()
+    val navigateToSessionAction : LiveData<Event<SessionId>>
         get() = _navigateToSessionAction
+
+    private val _navigateToSpeakerDetail = MutableLiveData<Event<SpeakerId>>()
+    val navigateToSpeakerDetail: LiveData<Event<SpeakerId>>
+        get() = _navigateToSpeakerDetail
 
     init {
         loadUserSessionResult = loadUserSessionUseCase.observe()
@@ -126,13 +140,13 @@ class SessionDetailViewModel @Inject constructor(
         /* Wire observable dependencies */
 
         // If the user changes, load new data for them
-        userEvent.addSource(currentFirebaseUser) {
+        _userEvent.addSource(currentFirebaseUser) {
             Timber.d("CurrentFirebaseUser changed, refreshing")
             refreshUserSession()
         }
 
         // If the session ID changes, load new data for it
-        session.addSource(sessionId) {
+        _session.addSource(sessionId) {
             Timber.d("SessionId changed, refreshing")
             refreshUserSession()
         }
@@ -140,16 +154,16 @@ class SessionDetailViewModel @Inject constructor(
         /* Wire result dependencies */
 
         // If there's a new result with data, update the session
-        session.addSource(loadUserSessionResult) {
+        _session.addSource(loadUserSessionResult) {
             (loadUserSessionResult.value as? Result.Success)?.data?.userSession?.session?.let {
-                session.value = it
+                _session.value = it
             }
         }
 
         // If there's a new result with data, update the UserEvent
-        userEvent.addSource(loadUserSessionResult) {
+        _userEvent.addSource(loadUserSessionResult) {
             (loadUserSessionResult.value as? Result.Success)?.data?.userSession?.userEvent?.let {
-                userEvent.value = it
+                _userEvent.value = it
             }
         }
 
@@ -163,9 +177,9 @@ class SessionDetailViewModel @Inject constructor(
             }
         }
 
-        relatedUserSessions.addSource(loadRelatedUserSessions) {
+        _relatedUserSessions.addSource(loadRelatedUserSessions) {
             (loadRelatedUserSessions.value as? Result.Success)?.data?.let {
-                relatedUserSessions.value = it.userSessions
+                _relatedUserSessions.value = it.userSessions
             }
         }
 
@@ -279,7 +293,7 @@ class SessionDetailViewModel @Inject constructor(
     }
 
     // TODO: write tests b/74611561
-    fun setSessionId(newSessionId: String) {
+    fun setSessionId(newSessionId: SessionId) {
         sessionId.setValueIfNew(newSessionId)
     }
 
@@ -360,7 +374,7 @@ class SessionDetailViewModel @Inject constructor(
     }
 
     // copied from SchedVM, TODO refactor
-    override fun openEventDetail(id: String) {
+    override fun openEventDetail(id: SessionId) {
         _navigateToSessionAction.value = Event(id)
     }
 
@@ -386,18 +400,14 @@ class SessionDetailViewModel @Inject constructor(
         }
     }
 
-    /**
-     * Returns the current user ID or null if not available.
-     */
-    private fun getUserId() : String? {
-        val user = currentFirebaseUser.value
-        return (user as? Result.Success)?.data?.getUid()
+    override fun onSpeakerClicked(speakerId: SpeakerId) {
+        _navigateToSpeakerDetail.postValue(Event(speakerId))
     }
 
     /**
      * Returns the current session ID or null if not available.
      */
-    private fun getSessionId() : String? {
+    private fun getSessionId() : SessionId? {
         return sessionId.value
     }
 
@@ -413,4 +423,6 @@ interface SessionDetailEventListener {
     fun onStarClicked()
 
     fun onLoginClicked()
+
+    fun onSpeakerClicked(speakerId: SpeakerId)
 }

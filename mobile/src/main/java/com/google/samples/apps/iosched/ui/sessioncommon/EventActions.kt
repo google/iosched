@@ -17,11 +17,12 @@
 package com.google.samples.apps.iosched.ui.sessioncommon
 
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
+import com.google.samples.apps.iosched.shared.model.SessionId
 
 /**
  * Actions that can be performed on events.
  */
 interface EventActions {
-    fun openEventDetail(id: String)
+    fun openEventDetail(id: SessionId)
     fun onStarClicked(userEvent: UserEvent)
 }
