@@ -25,21 +25,38 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Room
 import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.shared.util.TimeUtils.zonedTime
 import com.google.samples.apps.iosched.ui.reservation.ReservationTextView
 import com.google.samples.apps.iosched.ui.reservation.ReservationViewState
 import org.threeten.bp.Duration
 import org.threeten.bp.ZonedDateTime
 
-@BindingAdapter(value = ["sessionStart", "sessionEnd", "sessionRoom"], requireAll = true)
+@BindingAdapter(
+    "sessionStart",
+    "sessionEnd",
+    "alwaysShowDate",
+    "sessionRoom",
+    requireAll = true
+)
 fun sessionLengthLocation(
     textView: TextView,
     startTime: ZonedDateTime,
     endTime: ZonedDateTime,
+    alwaysShowDate: Boolean,
     room: Room
 ) {
-    textView.text = if (!TimeUtils.inConferenceTimeZone()) {
-        val localStartTime = TimeUtils.zonedTime(startTime)
-        val localEndTime = TimeUtils.zonedTime(endTime)
+    textView.text = if (alwaysShowDate) {
+        // In places where sessions are shown without day/time labels, show the full date & time
+        // (respecting timezone) plus location. Example: "Wed, May 9, 9 – 10 am / Stage 1"
+        val timeString = if (TimeUtils.inConferenceTimeZone()) {
+            TimeUtils.timeString(startTime, endTime)
+        } else {
+            TimeUtils.timeString(zonedTime(startTime), zonedTime(endTime))
+        }
+        textView.context.getString(R.string.session_duration_location, timeString, room.name)
+    } else if (!TimeUtils.inConferenceTimeZone()) {
+        val localStartTime = zonedTime(startTime)
+        val localEndTime = zonedTime(endTime)
 
         // Show the local time, the duration, and the abbreviated room name.
         // Example: "Tue, May 8 / 1 hour / Stage 1"

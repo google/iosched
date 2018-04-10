@@ -46,6 +46,7 @@ open class LoadUserSessionsUseCase @Inject constructor(
                         // Filter down to events for sessions we're interested in
                         val relevantUserSessions = it.data.userSessionsPerDay
                             .flatMap { it.value.filter { it.session.id in eventIds } }
+                            .sortedBy { it.session.startTime }
                         if (relevantUserSessions.isNotEmpty()) {
                             val useCaseResult = LoadUserSessionsUseCaseResult(relevantUserSessions)
                             result.postValue(Result.Success(useCaseResult))
