@@ -212,6 +212,7 @@ private fun createEventView(
         session = event.session
         userEvent = event.userEvent
         eventListener = listener
+        alwaysShowDate = true
         tags.recycledViewPool = tagViewPool
     }
     return binding.root

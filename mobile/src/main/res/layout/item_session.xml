@@ -40,6 +40,10 @@
         <variable
             name="showReservations"
             type="LiveData&lt;Boolean&gt;" />
+
+        <variable
+            name="alwaysShowDate"
+            type="Boolean" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -125,6 +129,7 @@
             app:sessionEnd="@{session.endTime}"
             app:sessionRoom="@{session.room}"
             app:sessionStart="@{session.startTime}"
+            app:alwaysShowDate="@{alwaysShowDate}"
             tools:text="1 hour / Amphitheatre" />
 
         <android.support.constraint.Barrier
