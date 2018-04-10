@@ -61,6 +61,7 @@
             app:isIndoorEnabled="@{false}"
             app:isMapToolbarEnabled="@{false}"
             app:isZoomControlsEnabled="@{false}"
+            app:mapCenter="@{viewModel.mapCenter}"
             app:mapStyle="@{R.raw.maps_style}"
             app:mapMarkers="@{R.raw.map_markers}"
             app:minZoom="@{viewModel.minZoom}"
