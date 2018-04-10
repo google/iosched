@@ -35,3 +35,7 @@
 # For 'wear' module
 -dontwarn android.support.v4.**
 -dontwarn org.threeten.bp.**
+
+-keep class com.google.samples.apps.iosched.shared.model.** {
+    *;
+}
