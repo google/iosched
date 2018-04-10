@@ -55,7 +55,6 @@ class DefaultSignInHandler : SignInHandler {
                 AuthUI.IdpConfig.GoogleBuilder().setSignInOptions(
                         GoogleSignInOptions.Builder()
                                 .requestId()
-                                .requestProfile()
                                 .requestEmail()
                                 .build()
                 )
