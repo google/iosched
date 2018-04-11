@@ -38,6 +38,7 @@
         <attr name="android:textColor" />
         <attr name="android:fontFamily" />
         <attr name="hourTextSize" format="dimension" />
+        <attr name="hourMinTextSize" format="dimension" />
         <attr name="meridiemTextSize" format="dimension" />
     </declare-styleable>
 
