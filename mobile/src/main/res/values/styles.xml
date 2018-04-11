@@ -93,9 +93,7 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
-    <style name="TextAppearance.IOSched.Tag" parent="@style/TextAppearance.IOSched.ListSecondary">
-        <item name="android:fontFamily">@font/google_sans</item>
-    </style>
+    <style name="TextAppearance.IOSched.Tag" parent="@style/TextAppearance.IOSched.ListSecondary" />
 
     <style name="TextAppearance.IOSched.AgendaTitle" parent="@style/TextAppearance.AppCompat.Body1">
         <item name="android:fontFamily">@font/google_sans</item>
