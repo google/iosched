@@ -28,13 +28,16 @@
     <dimen name="speaker_headshot_size">40dp</dimen>
     <dimen name="speaker_large_headshot_size">112dp</dimen>
     <dimen name="session_keyline">64dp</dimen>
+
     <dimen name="time_header_hour_text_size">24sp</dimen>
+    <dimen name="time_header_hour_min_text_size">20sp</dimen>
     <dimen name="time_header_meridiem_text_size">12sp</dimen>
-    <dimen name="time_header_padding_top">12dp</dimen>
+    <dimen name="time_header_padding_top">4dp</dimen>
 
     <dimen name="agenda_item_stroke">2dp</dimen>
     <dimen name="agenda_block_padding_vert">12dp</dimen>
     <dimen name="agenda_icon_width">56dp</dimen>
+
     <dimen name="onboarding_actions_height">112dp</dimen>
     <dimen name="onboarding_margins">48dp</dimen>
     <dimen name="onboarding_animation_padding">40dp</dimen>
