@@ -111,6 +111,8 @@ class SessionDetailViewModel @Inject constructor(
     val hasRelated: LiveData<Boolean>
     val timeUntilStart: LiveData<Duration?>
     val isReservationDisabled: LiveData<Boolean>
+    private val _shouldShowStarInBottomNav = MediatorLiveData<Boolean>()
+    val shouldShowStarInBottomNav: LiveData<Boolean> = _shouldShowStarInBottomNav
 
     private val sessionId = MutableLiveData<SessionId>()
 
@@ -159,6 +161,13 @@ class SessionDetailViewModel @Inject constructor(
                 _session.value = it
             }
         }
+
+        _shouldShowStarInBottomNav.addSource(session, {
+            _shouldShowStarInBottomNav.value = showStarInBottomNav()
+        })
+        _shouldShowStarInBottomNav.addSource(observeRegisteredUser(), {
+            _shouldShowStarInBottomNav.value = showStarInBottomNav()
+        })
 
         // If there's a new result with data, update the UserEvent
         _userEvent.addSource(loadUserSessionResult) {
@@ -413,6 +422,10 @@ class SessionDetailViewModel @Inject constructor(
 
     private fun requireSession(): Session {
         return session.value ?: throw IllegalStateException("Session should not be null")
+    }
+
+    private fun showStarInBottomNav(): Boolean {
+        return observeRegisteredUser().value == true && session.value?.isReservable() == true
     }
 }
 
