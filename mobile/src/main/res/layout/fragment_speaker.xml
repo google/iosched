@@ -125,7 +125,7 @@
                     app:twitterUrl="@{viewModel.speaker.twitterUrl}"
                     app:githubUrl="@{viewModel.speaker.githubUrl}"
                     app:linkedInUrl="@{viewModel.speaker.linkedInUrl}"
-                    tools:text="Twitter / Github" />
+                    tools:text="Twitter / GitHub" />
 
                 <TextView
                     android:id="@+id/speaker_bio"

@@ -58,7 +58,7 @@ data class Speaker(
     val twitterUrl: String? = null,
 
     /**
-     * Full URL of the speaker's Github profile.
+     * Full URL of the speaker's GitHub profile.
      */
     val githubUrl: String? = null,
 
