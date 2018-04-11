@@ -136,7 +136,7 @@ data class Session(
     /**
      * The type of the event e.g. Session, Codelab etc.
      */
-    val type: SessionType by lazyFast {
+    val type: SessionType by lazy(LazyThreadSafetyMode.PUBLICATION) {
         SessionType.fromTags(tags)
     }
 
