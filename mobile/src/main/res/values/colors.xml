@@ -24,4 +24,12 @@
     <color name="scrim">#33000000</color> <!-- 20% black -->
     <color name="indigo_transparent">#e54768fd</color> <!-- 90% indigo -->
     <color name="dark_gray">#ff808080</color>
+
+    <integer-array name="swipe_refresh">
+        <item>@color/indigo</item>
+        <item>@color/teal</item>
+        <item>@color/light_blue</item>
+        <item>@color/yellow</item>
+        <item>@color/orange</item>
+    </integer-array>
 </resources>
