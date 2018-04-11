@@ -159,6 +159,7 @@
         <item name="android:textColor">@color/teal</item>
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="TextAppearance.IOSched.Links" parent="@style/TextAppearance.IOSched.Body">
