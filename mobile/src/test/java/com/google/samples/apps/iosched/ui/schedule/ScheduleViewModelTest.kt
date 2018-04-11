@@ -25,6 +25,8 @@ import android.net.Uri
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.TestData
 import com.google.samples.apps.iosched.model.TestDataRepository
+import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
+import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfoBasic
@@ -36,12 +38,12 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
+import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
-import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.model.Block
@@ -74,6 +76,7 @@ import org.junit.Assert.assertThat
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mockito.verify
 
 /**
  * Unit tests for the [ScheduleViewModel].
@@ -110,7 +113,7 @@ class ScheduleViewModelTest {
         signInDelegate.loadUser("test")
 
         // Observe viewmodel to load sessions
-        viewModel.getSessionsForDay(DAY_1).observeForever() {}
+        viewModel.getSessionsForDay(DAY_1).observeForever {}
 
         // Check that data were loaded correctly
         // Sessions
@@ -311,7 +314,7 @@ class ScheduleViewModelTest {
         signInDelegate.loadUser("test")
 
         // Observe viewmodel to load sessions
-        viewModel.getSessionTimeDataForDay(ConferenceDay.DAY_1).observeForever() {}
+        viewModel.getSessionTimeDataForDay(ConferenceDay.DAY_1).observeForever {}
 
         // Observe snackbar so messages are received
         viewModel.snackBarMessage.observeForever { }
@@ -337,8 +340,7 @@ class ScheduleViewModelTest {
     @Test
     fun waitlistReceived() {
         // Create test use cases with test data
-        val userEventsResult: MutableLiveData<UserEventsResult> =
-            MutableLiveData<UserEventsResult>()
+        val userEventsResult = MutableLiveData<UserEventsResult>()
         val source = TestUserEventDataSource(userEventsResult)
         val loadSessionsUseCase = createTestLoadUserSessionsByDayUseCase(source)
         val signInDelegate = FakeSignInViewModelDelegate()
@@ -353,7 +355,7 @@ class ScheduleViewModelTest {
         signInDelegate.loadUser("test")
 
         // Observe viewmodel to load sessions
-        viewModel.getSessionTimeDataForDay(ConferenceDay.DAY_1).observeForever() {}
+        viewModel.getSessionTimeDataForDay(ConferenceDay.DAY_1).observeForever {}
 
         // Observe snackbar so messages are received
         viewModel.snackBarMessage.observeForever { }
@@ -452,6 +454,28 @@ class ScheduleViewModelTest {
         assertEquals(event?.getContentIfNotHandled(), false)
     }
 
+    @Test
+    fun swipeRefresh_refreshesRemoteConfData() {
+        // Given a view model with a mocked remote data source
+        val remoteDataSource = mock<ConferenceDataSource> {}
+        val viewModel = createScheduleViewModel(
+            refreshConferenceDataUseCase = RefreshConferenceDataUseCase(
+                ConferenceDataRepository(
+                    remoteDataSource = remoteDataSource,
+                    boostrapDataSource = TestData)
+            )
+        )
+
+        // When swipe refresh is called
+        viewModel.onSwipeRefresh()
+
+        // Then the remote data source attempts to fetch new data
+        verify(remoteDataSource).getRemoteConferenceData()
+
+        // And the swipe refreshing status is set to false
+        assertEquals(false, LiveDataTestUtil.getValue(viewModel.swipeRefreshing))
+    }
+
     private fun createScheduleViewModel(
         loadSessionsUseCase: LoadUserSessionsByDayUseCase =
             createTestLoadUserSessionsByDayUseCase(),
@@ -465,7 +489,9 @@ class ScheduleViewModelTest {
         scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase =
             FakeScheduleUiHintsShownUseCase(),
         getTimeZoneUseCase: GetTimeZoneUseCase = createGetTimeZoneUseCase(),
-        topicSubscriber: TopicSubscriber = mock {}
+        topicSubscriber: TopicSubscriber = mock {},
+        refreshConferenceDataUseCase: RefreshConferenceDataUseCase =
+            RefreshConferenceDataUseCase(TestDataRepository)
     ): ScheduleViewModel {
         return ScheduleViewModel(
             loadUserSessionsByDayUseCase = loadSessionsUseCase,
@@ -476,7 +502,8 @@ class ScheduleViewModelTest {
             snackbarMessageManager = snackbarMessageManager,
             scheduleUiHintsShownUseCase = scheduleUiHintsShownUseCase,
             getTimeZoneUseCase = getTimeZoneUseCase,
-            topicSubscriber = topicSubscriber
+            topicSubscriber = topicSubscriber,
+            refreshConferenceDataUseCase = refreshConferenceDataUseCase
         )
     }
 
@@ -520,12 +547,6 @@ class ScheduleViewModelTest {
     private fun createSignInViewModelDelegate() = FakeSignInViewModelDelegate()
 
     private fun createStarEventUseCase() = FakeStarEventUseCase()
-
-    private fun createReservationActionUseCase() = object : ReservationActionUseCase(
-        DefaultSessionAndUserEventRepository(
-            TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
-        )
-    ) {}
 
     private fun createGetTimeZoneUseCase() =
         object : GetTimeZoneUseCase(FakePreferenceStorage()) {}

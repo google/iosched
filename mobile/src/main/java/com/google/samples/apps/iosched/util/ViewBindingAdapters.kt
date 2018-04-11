@@ -21,6 +21,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.support.annotation.DrawableRes
 import android.support.v4.view.ViewPager
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.content.res.AppCompatResources
 import android.view.View
 import android.view.View.GONE
@@ -102,4 +103,12 @@ fun srcAsync(imageView: ImageView, @DrawableRes id: Int) {
             imageView.setImageDrawable(drawable)
         }
     }
+}
+
+/**
+ * Sets the colors of the [SwipeRefreshLayout] loading indicator.
+ */
+@BindingAdapter("swipeRefreshColors")
+fun setSwipeRefreshColors(swipeRefreshLayout: SwipeRefreshLayout, colorResIds: IntArray) {
+    swipeRefreshLayout.setColorSchemeColors(*colorResIds)
 }

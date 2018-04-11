@@ -23,6 +23,7 @@ import android.arch.lifecycle.ViewModel
 import android.support.annotation.StringRes
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
+import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.invoke
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
@@ -76,10 +77,13 @@ class ScheduleViewModel @Inject constructor(
     scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase,
     topicSubscriber: TopicSubscriber,
     private val snackbarMessageManager: SnackbarMessageManager,
-    getTimeZoneUseCase: GetTimeZoneUseCase
+    getTimeZoneUseCase: GetTimeZoneUseCase,
+    private val refreshConferenceDataUseCase: RefreshConferenceDataUseCase
 ) : ViewModel(), ScheduleEventListener, SignInViewModelDelegate by signInViewModelDelegate {
 
     val isLoading: LiveData<Boolean>
+
+    val swipeRefreshing: LiveData<Boolean>
 
     // The current UserSessionMatcher, used to filter the events that are shown
     private var currentSessionMatcher: UserSessionMatcher
@@ -128,6 +132,7 @@ class ScheduleViewModel @Inject constructor(
     private val loadSessionsResult: MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>
     private val loadAgendaResult = MutableLiveData<Result<List<Block>>>()
     private val loadTagsResult = MutableLiveData<Result<List<TagFilter>>>()
+    private val swipeRefreshResult = MutableLiveData<Result<Boolean>>()
 
     private val day1Sessions: LiveData<List<UserSession>>
     private val day2Sessions: LiveData<List<UserSession>>
@@ -332,6 +337,11 @@ class ScheduleViewModel @Inject constructor(
             } ?: SessionTimeData(list = it)
         })
 
+        swipeRefreshing = swipeRefreshResult.map {
+            // Whenever refresh finishes, stop the indicator, whatever the result
+            false
+        }
+
         // Subscribe user to schedule updates
         topicSubscriber.subscribeToScheduleUpdates()
     }
@@ -401,6 +411,10 @@ class ScheduleViewModel @Inject constructor(
             _userSessionMatcher.value = currentSessionMatcher
             refreshUserSessions()
         }
+    }
+
+    fun onSwipeRefresh() {
+        refreshConferenceDataUseCase(Any(), swipeRefreshResult)
     }
 
     fun onProfileClicked() {
