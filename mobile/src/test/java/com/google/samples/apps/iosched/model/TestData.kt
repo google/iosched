@@ -82,7 +82,7 @@ object TestData : ConferenceDataSource {
         abstract = ""
     )
 
-    val room = Room(id = "1", name = "Tent 1", capacity = 40)
+    val room = Room(id = "1", name = "Tent 1")
 
     val session0 = Session(id = "0", title = "Session 0", abstract = "",
         startTime = DAY_1.start, endTime = DAY_1.end, isLivestream = false,
