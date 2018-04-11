@@ -175,7 +175,7 @@
             android:layout_width="?actionBarSize"
             android:layout_height="?actionBarSize"
             android:layout_gravity="start|top"
-            app:layout_behavior="com.google.samples.apps.iosched.ui.sessiondetail.PushUpBehavior"
+            app:layout_behavior="com.google.samples.apps.iosched.ui.speaker.PushUpBehavior"
             app:behavior_pushTitle="@id/speaker_name"
             app:behavior_pushPhoto="@id/header_grid"
             android:background="?selectableItemBackgroundBorderless"
