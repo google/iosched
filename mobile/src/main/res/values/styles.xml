@@ -214,6 +214,7 @@
         <item name="android:textColor">?colorPrimary</item>
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="hourTextSize">@dimen/time_header_hour_text_size</item>
+        <item name="hourMinTextSize">@dimen/time_header_hour_min_text_size</item>
         <item name="meridiemTextSize">@dimen/time_header_meridiem_text_size</item>
     </style>
 
