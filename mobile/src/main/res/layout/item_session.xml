@@ -23,8 +23,6 @@
 
         <import type="android.arch.lifecycle.LiveData" />
 
-        <import type="com.google.samples.apps.iosched.R" />
-
         <variable
             name="session"
             type="com.google.samples.apps.iosched.shared.model.Session" />
@@ -87,7 +85,7 @@
             android:onClick="@{() -> eventListener.onStarClicked(userEvent)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcAsync="@{R.drawable.asld_star_event}" />
+            android:src="@drawable/asld_star_event" />
 
         <com.google.samples.apps.iosched.ui.reservation.ReservationTextView
             android:id="@+id/reservation_status"
