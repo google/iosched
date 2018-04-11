@@ -19,10 +19,8 @@
 
     <item android:drawable="@color/white" />
 
-    <item>
-        <bitmap
-            android:gravity="center"
-            android:src="@drawable/io_logo" />
-    </item>
+    <item
+        android:drawable="@drawable/io_logo"
+        android:gravity="center" />
 
 </layer-list>
