@@ -79,7 +79,6 @@ class SessionDetailFragment : DaggerFragment() {
         // TODO: Scoping the VM to the activity because of bug
         // https://issuetracker.google.com/issues/74139250 (fixed in Supportlib 28.0.0-alpha1)
         sessionDetailViewModel = activityViewModelProvider(viewModelFactory)
-        sessionDetailViewModel.setSessionId(requireNotNull(arguments).getString(EXTRA_SESSION_ID))
 
         val binding = FragmentSessionDetailBinding.inflate(inflater, container, false).apply {
             viewModel = sessionDetailViewModel
@@ -165,6 +164,18 @@ class SessionDetailFragment : DaggerFragment() {
             }
         })
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Timber.d("Loading details for session $arguments")
+        sessionDetailViewModel.setSessionId(requireNotNull(arguments).getString(EXTRA_SESSION_ID))
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Force a refresh when this screen gets added to a backstack and user comes back to it.
+        sessionDetailViewModel.setSessionId(null)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

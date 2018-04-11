@@ -114,7 +114,7 @@ class SessionDetailViewModel @Inject constructor(
     private val _shouldShowStarInBottomNav = MediatorLiveData<Boolean>()
     val shouldShowStarInBottomNav: LiveData<Boolean> = _shouldShowStarInBottomNav
 
-    private val sessionId = MutableLiveData<SessionId>()
+    private val sessionId = MutableLiveData<SessionId?>()
 
     private val _navigateToRemoveReservationDialogAction =
             MutableLiveData<Event<RemoveReservationDialogParameters>>()
@@ -302,7 +302,7 @@ class SessionDetailViewModel @Inject constructor(
     }
 
     // TODO: write tests b/74611561
-    fun setSessionId(newSessionId: SessionId) {
+    fun setSessionId(newSessionId: SessionId?) {
         sessionId.setValueIfNew(newSessionId)
     }
 
