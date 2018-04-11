@@ -43,7 +43,6 @@ import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
 
-
 /**
  * A [RecyclerView.ItemDecoration] which draws sticky headers for a given list of sessions.
  */
@@ -55,8 +54,10 @@ class ScheduleTimeHeadersDecoration(
     private val paint: TextPaint
     private val width: Int
     private val paddingTop: Int
+    private val hourMinTextSize: Int
     private val meridiemTextSize: Int
     private val hourFormatter = DateTimeFormatter.ofPattern("h")
+    private val hourMinFormatter = DateTimeFormatter.ofPattern("h:m")
     private val meridiemFormatter = DateTimeFormatter.ofPattern("a")
 
     init {
@@ -78,8 +79,9 @@ class ScheduleTimeHeadersDecoration(
         }
         width = attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_android_width)
         paddingTop = attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_android_paddingTop)
+        hourMinTextSize = attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_hourMinTextSize)
         meridiemTextSize =
-            attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_meridiemTextSize)
+                attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_meridiemTextSize)
         attrs.recycle()
     }
 
@@ -142,10 +144,19 @@ class ScheduleTimeHeadersDecoration(
     }
 
     /**
-     * Create a header layout for the given [startTime]
+     * Create a header layout for the given [startTime].
      */
     private fun createHeader(startTime: ZonedDateTime): StaticLayout {
-        val text = SpannableStringBuilder(hourFormatter.format(startTime)).apply {
+        val text = if (startTime.minute == 0) {
+            SpannableStringBuilder(hourFormatter.format(startTime))
+        } else {
+            // Use a smaller text size and different pattern if event does not start on the hour
+            SpannableStringBuilder().apply {
+                inSpans(AbsoluteSizeSpan(hourMinTextSize)) {
+                    append(hourMinFormatter.format(startTime))
+                }
+            }
+        }.apply {
             append(System.lineSeparator())
             inSpans(AbsoluteSizeSpan(meridiemTextSize), StyleSpan(BOLD)) {
                 append(meridiemFormatter.format(startTime).toUpperCase())
