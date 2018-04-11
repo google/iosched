@@ -118,7 +118,7 @@
 
     <!-- Swap reservations dialog -->
     <string name="swap_reservation_title" translation_description="The title of the dialog when the user is about to change their reservation from one session to another.">Swap reservation?</string>
-    <string name="swap_reservation_content" translation_description="The content of the dialog when the user is about to change their reservation from one session to another.">You already have a reservation/waitlist for \"%1$s\"?. Only one reservation per time block is allowed. Would you like to swap for \"%2$s\"?</string>
+    <string name="swap_reservation_content" translation_description="The content of the dialog when the user is about to change their reservation from one session to another.">You already have a reservation/waitlist for \"%1$s\". Only one reservation per time block is allowed. Would you like to swap for \"%2$s\"?</string>
     <string name="swap" translation_description="The label of the button to swap the reservation with another.">Swap</string>
 
     <!-- Notifications preference dialog -->
@@ -237,7 +237,7 @@
     <!-- Speaker -->
     <string name="speaker_link_website" translation_description="The label for a link to a speaker's Website">Website</string>
     <string name="speaker_link_twitter" translation_description="The label for a link to a speaker's Twitter profile">Twitter</string>
-    <string name="speaker_link_github" translation_description="The label for a link to a speaker's Github profile">Github</string>
+    <string name="speaker_link_github" translation_description="The label for a link to a speaker's GitHub profile">GitHub</string>
     <string name="speaker_link_linkedin" translation_description="The label for a link to a speaker's LinkedIn profile">LinkedIn</string>
     <!-- \u0020 is breakable whitespace - whitespace characters at start/end of string res are trimmed. -->
     <string name="speaker_link_separator" translatable="false">\u0020/\u0020</string>
