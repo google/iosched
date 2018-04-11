@@ -174,7 +174,7 @@ class SessionDetailFragment : DaggerFragment() {
         val menu = requireActivity().findViewById<BottomAppBar>(
                 R.id.session_detail_bottom_app_bar).menu
         val starMenu = menu.findItem(R.id.menu_item_star)
-        sessionDetailViewModel.observeRegisteredUser().observe(this, Observer {
+        sessionDetailViewModel.shouldShowStarInBottomNav.observe(this, Observer {
             it?.let {
                 if (it) {
                     starMenu.setVisible(true)

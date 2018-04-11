@@ -428,8 +428,8 @@ class ScheduleViewModelTest {
                 user = Result.Success(noFirebaseUser),
                 isRegistered = Result.Success(false))
         val signInViewModelComponent = FirebaseSignInViewModelDelegate(
-                observableFirebaseUserUseCase,
-                mock {})
+            observableFirebaseUserUseCase,
+            mock {})
 
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
@@ -450,8 +450,8 @@ class ScheduleViewModelTest {
                 user = Result.Success(mockUser),
                 isRegistered = Result.Success(true))
         val signInViewModelComponent = FirebaseSignInViewModelDelegate(
-                observableFirebaseUserUseCase,
-                mock {})
+            observableFirebaseUserUseCase,
+            mock {})
 
         // Create ViewModel
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
@@ -473,8 +473,8 @@ class ScheduleViewModelTest {
                 user = Result.Success(mockUser),
                 isRegistered = Result.Success(false))
         val signInViewModelComponent = FirebaseSignInViewModelDelegate(
-                observableFirebaseUserUseCase,
-                mock {})
+            observableFirebaseUserUseCase,
+            mock {})
 
         // Create ViewModel
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)

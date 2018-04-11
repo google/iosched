@@ -18,8 +18,8 @@ package com.google.samples.apps.iosched.shared.model
 
 import android.support.annotation.WorkerThread
 import com.google.samples.apps.iosched.shared.model.SessionType.SESSION
+import com.google.samples.apps.iosched.shared.util.lazyFast
 import org.threeten.bp.ZonedDateTime
-import kotlin.LazyThreadSafetyMode.NONE
 
 typealias SessionId = String
 
@@ -136,7 +136,7 @@ data class Session(
     /**
      * The type of the event e.g. Session, Codelab etc.
      */
-    val type: SessionType by lazy(NONE) {
+    val type: SessionType by lazyFast {
         SessionType.fromTags(tags)
     }
 
