@@ -44,6 +44,8 @@ class ScheduleUiHintsDialogFragment : CustomDimDialogFragment(), HasSupportFragm
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
+    private lateinit var viewModel: ScheduleUiHintsDialogViewModel
+
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
         return fragmentInjector
     }
@@ -63,7 +65,7 @@ class ScheduleUiHintsDialogFragment : CustomDimDialogFragment(), HasSupportFragm
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModel = viewModelProvider(viewModelFactory)
         view.findViewById<View>(R.id.schedule_hint_button_dismiss).setOnClickListener {
             dismiss()
         }
@@ -71,8 +73,6 @@ class ScheduleUiHintsDialogFragment : CustomDimDialogFragment(), HasSupportFragm
 
     override fun onDismiss(dialog: DialogInterface?) {
         super.onDismiss(dialog)
-
-        val viewModel: ScheduleUiHintsDialogViewModel = viewModelProvider(viewModelFactory)
         viewModel.onDismissed()
     }
 }
