@@ -48,7 +48,8 @@ fun generateReservationChangeMsg(
 
     snapshot.documentChanges.forEach { change ->
 
-        val changedId: String = change.document.data[FirestoreUserEventDataSource.ID] as String
+        val changedId: String = change.document.data[FirestoreUserEventDataSource.ID]
+                as? String ?: return null
 
         val eventOldValue = oldValue.userEvents.firstOrNull { it.id == changedId } ?: return null
 
