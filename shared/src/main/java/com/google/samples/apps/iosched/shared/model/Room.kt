@@ -28,12 +28,7 @@ data class Room (
     /**
      * The name of the room.
      */
-    val name: String,
-
-    /**
-     * The number of attendees a room can hold.
-     */
-    val capacity: Int
+    val name: String
 ) {
     val abbreviatedName
         get() = name.split("|")[0]

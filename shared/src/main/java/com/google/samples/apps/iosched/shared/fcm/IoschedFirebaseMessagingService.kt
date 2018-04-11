@@ -35,8 +35,8 @@ class IoschedFirebaseMessagingService : DaggerFirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         Timber.d("Message data payload: ${remoteMessage?.data}")
         val data = remoteMessage?.data ?: return
-        if (data.containsKey(TRIGGER_EVENT_DATA_SYNC)) {
-            // Schedule job on JobScheduler when FCM message with key `TRIGGER_EVENT_DATA_SYNC`
+        if (data[TRIGGER_EVENT_DATA_SYNC_key] == TRIGGER_EVENT_DATA_SYNC) {
+            // Schedule job on JobScheduler when FCM message with action `TRIGGER_EVENT_DATA_SYNC`
             // is received.
             scheduleFetchEventData()
         }
@@ -63,6 +63,7 @@ class IoschedFirebaseMessagingService : DaggerFirebaseMessagingService() {
 
     companion object {
         private const val TRIGGER_EVENT_DATA_SYNC = "sync_event_data"
+        private const val TRIGGER_EVENT_DATA_SYNC_key = "action"
 
         // Some latency to avoid load spikes
         private val MINIMUM_LATENCY = TimeUnit.SECONDS.toSeconds(5)

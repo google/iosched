@@ -60,7 +60,7 @@ object TestData : ConferenceDataSource {
     val speaker = Speaker(id = "1", name = "Troy McClure", imageUrl = "",
             company = "", abstract = "")
 
-    val room = Room(id = "1", name = "Tent 1", capacity = 40)
+    val room = Room(id = "1", name = "Tent 1")
 
     val session0 = Session(id = "0", title = "Session 0", abstract = "This session is awesome",
         startTime = DAY_1.start, endTime = DAY_1.end, isLivestream = false,
