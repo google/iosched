@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.shared.model
 
 import com.google.samples.apps.iosched.shared.model.SessionType.CODELAB
 import com.google.samples.apps.iosched.shared.model.SessionType.SESSION
+import com.google.samples.apps.iosched.shared.model.SessionType.UNKNOWN
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is
@@ -81,6 +82,12 @@ class SessionTest{
     @Test
     fun testType_codelabs() {
         assertThat(TestData.session1.type, `is`(CODELAB))
+    }
+
+    @Test
+    fun testType_unknown() {
+        val session = TestData.session0.copy(tags = listOf())
+        assertThat(session.type, `is`(UNKNOWN))
     }
 
     private fun testIsOverlapping(eventStart: Long,
