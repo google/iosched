@@ -49,7 +49,7 @@ android {
         debug {
             resValue "string",
                     "google_maps_key",
-                    "ABC" // TODO: Debug key
+                    "AIzaSyAhJx57ikQH9rYc8IT8W3d2As5cGHMBvuo"
         }
         staging {
             initWith debug
