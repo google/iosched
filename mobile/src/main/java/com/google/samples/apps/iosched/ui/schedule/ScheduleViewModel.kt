@@ -29,18 +29,12 @@ import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownU
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
-import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.SwapAction
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
-import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Block
-import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.model.UserSession
@@ -58,7 +52,6 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_3
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
-import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
 import com.google.samples.apps.iosched.ui.schedule.filters.LoadTagFiltersUseCase
 import com.google.samples.apps.iosched.ui.schedule.filters.TagFilter
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
@@ -80,7 +73,6 @@ class ScheduleViewModel @Inject constructor(
     loadTagFiltersUseCase: LoadTagFiltersUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
     private val starEventUseCase: StarEventUseCase,
-    private val reservationActionUseCase: ReservationActionUseCase,
     scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase,
     topicSubscriber: TopicSubscriber,
     private val snackbarMessageManager: SnackbarMessageManager,
@@ -175,16 +167,6 @@ class ScheduleViewModel @Inject constructor(
     val navigateToSignOutDialogAction: LiveData<Event<Unit>>
         get() = _navigateToSignOutDialogAction
 
-    private val _navigateToRemoveReservationDialogAction =
-        MutableLiveData<Event<RemoveReservationDialogParameters>>()
-    val navigateToRemoveReservationDialogAction: LiveData<Event<RemoveReservationDialogParameters>>
-        get() = _navigateToRemoveReservationDialogAction
-
-    private val _navigateToSwapReservationDialogAction =
-        MediatorLiveData<Event<SwapRequestParameters>>()
-    val navigateToSwapReservationDialogAction: LiveData<Event<SwapRequestParameters>>
-        get() = _navigateToSwapReservationDialogAction
-
     private val scheduleUiHintsShownResult = MutableLiveData<Result<Boolean>>()
     /** Indicates if the UI hints for the schedule have been shown */
     val scheduleUiHintsShown: LiveData<Event<Boolean>>
@@ -244,26 +226,6 @@ class ScheduleViewModel @Inject constructor(
 
         _profileContentDesc.addSource(currentFirebaseUser) {
             _profileContentDesc.value = getProfileContentDescription(it)
-        }
-
-        _navigateToSwapReservationDialogAction.addSource(reservationActionUseCase.observe(), {
-            ((it as? Result.Success)?.data as? SwapAction)?.let {
-                _navigateToSwapReservationDialogAction.postValue(Event(it.parameters))
-            }
-        })
-
-        // Show an error message if a reservation request fails
-        _snackBarMessage.addSource(reservationActionUseCase.observe()) {
-            if (it is Result.Error) {
-                _snackBarMessage.postValue(
-                    Event(
-                        SnackbarMessage(
-                            messageId = R.string.reservation_error,
-                            longDuration = true
-                        )
-                    )
-                )
-            }
         }
 
         // Show an error message if a star request fails
@@ -494,45 +456,6 @@ class ScheduleViewModel @Inject constructor(
             )
         }
     }
-
-    override fun onReservationClicked(session: Session, userEvent: UserEvent) {
-        if (!isSignedIn()) {
-            Timber.d("Showing Sign-in dialog after reserve click")
-            _navigateToSignInDialogAction.value = Event(Unit)
-            return
-        }
-        if (!isRegistered()) {
-            // TODO: This should never happen :)
-            Timber.d("You need to be an attendee to reserve an event")
-            _errorMessage.value = Event("You're not an attendee")
-            return
-        }
-
-        val userId = getUserId() ?: return
-        if (userEvent.isReserved()
-            || userEvent.isWaitlisted()
-            || userEvent.isCancelPending() // Just in case
-            || userEvent.isReservationPending()
-        ) {
-            // Open the dialog to confirm if the user really wants to remove their reservation
-            _navigateToRemoveReservationDialogAction.value =
-                    Event(
-                        RemoveReservationDialogParameters(
-                            userId,
-                            session.id,
-                            session.title
-                        )
-                    )
-            return
-        }
-
-        reservationActionUseCase.execute(
-            ReservationRequestParameters(
-                userId, session.id,
-                RequestAction()
-            )
-        )
-    }
 }
 
 data class SessionTimeData(var list: List<UserSession>? = null, var timeZoneId: ZoneId? = null)
@@ -546,6 +469,4 @@ interface ScheduleEventListener : EventActions {
 
     /** Called from the UI to toggle showing starred or reserved events only. */
     fun togglePinnedEvents(pinned: Boolean)
-
-    fun onReservationClicked(session: Session, userEvent: UserEvent)
 }
