@@ -194,8 +194,10 @@
 
     <style name="Widget.IOSched.Tag.Chip">
         <item name="android:background">@drawable/tag_filled</item>
-        <item name="android:paddingHorizontal" tools:targetApi="o">@dimen/tag_hz_padding</item>
-        <item name="android:paddingVertical" tools:targetApi="o">@dimen/tag_vert_padding</item>
+        <item name="android:paddingLeft">@dimen/tag_hz_padding</item>
+        <item name="android:paddingRight">@dimen/tag_hz_padding</item>
+        <item name="android:paddingTop">@dimen/tag_vert_padding</item>
+        <item name="android:paddingBottom">@dimen/tag_vert_padding</item>
         <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 
@@ -234,7 +236,8 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:paddingLeft">24dp</item>
         <item name="android:paddingRight">24dp</item>
-        <item name="android:paddingVertical" tools:ignore="NewApi">12dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
     </style>
 
     <style name="Widget.IOSched.BorderlessButton" parent="@style/Widget.AppCompat.Button.Borderless.Colored">
@@ -243,8 +246,10 @@
         <item name="android:textColor">?colorPrimary</item>
         <item name="android:letterSpacing">0.025</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:paddingHorizontal" tools:ignore="NewApi">24dp</item>
-        <item name="android:paddingVertical" tools:ignore="NewApi">@dimen/padding_borderless_button</item>
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:paddingRight">24dp</item>
+        <item name="android:paddingTop">@dimen/padding_borderless_button</item>
+        <item name="android:paddingBottom">@dimen/padding_borderless_button</item>
     </style>
 
     <style name="Widget.IOSched.OnboardingDeck" parent="@android:style/Widget.Material.TextView">
