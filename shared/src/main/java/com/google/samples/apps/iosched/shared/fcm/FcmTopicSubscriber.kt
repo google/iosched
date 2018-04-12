@@ -53,7 +53,7 @@ class FcmTopicSubscriber : TopicSubscriber {
 
 
     companion object {
-        private const val CONFERENCE_DATA_UPDATE_TOPIC_KEY = "conference_data_sync_2018"
-        private const val REGISTERED_USER_TOPIC_KEY = "registered_2018"
+        private const val CONFERENCE_DATA_UPDATE_TOPIC_KEY = "CONFERENCE_DATA_SYNC_2018"
+        private const val REGISTERED_USER_TOPIC_KEY = "REGISTERED_2018"
     }
 }
