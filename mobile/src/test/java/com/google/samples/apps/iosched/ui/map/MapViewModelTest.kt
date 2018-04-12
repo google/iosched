@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.ui.map
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import android.content.Context
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
@@ -25,6 +26,7 @@ import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mockito
 
 /**
  * Unit tests for the [MapViewModel].
@@ -40,7 +42,10 @@ class MapViewModelTest {
     @Test
     fun testDataIsLoaded() {
         // Create ViewModel with the test data
-        val viewModel = MapViewModel(TestMapMetadataRepository)
+        val viewModel = MapViewModel(
+            TestMapMetadataRepository,
+            LoadMapTileProviderUseCase(Mockito.mock(Context::class.java))
+        )
 
         Assert.assertEquals(
             viewModel.conferenceLocationBounds,
