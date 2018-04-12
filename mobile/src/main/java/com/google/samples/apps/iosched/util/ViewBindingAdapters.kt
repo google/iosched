@@ -89,23 +89,6 @@ fun imageUrl(imageView: ImageView, imageUrl: String?, placeholder: Drawable?) {
 }
 
 /**
- * Loads a Drawable asynchronously.
- *
- * For most use cases, just use Glide. This method is particularly useful for
- * AnimatedStateListDrawable. Its inflation is very heavy, and Glide does not support it.
- */
-@BindingAdapter("srcAsync")
-fun srcAsync(imageView: ImageView, @DrawableRes id: Int) {
-    val context = imageView.context
-    DefaultScheduler.execute {
-        val drawable = context.getDrawable(id)
-        imageView.post {
-            imageView.setImageDrawable(drawable)
-        }
-    }
-}
-
-/**
  * Sets the colors of the [SwipeRefreshLayout] loading indicator.
  */
 @BindingAdapter("swipeRefreshColors")

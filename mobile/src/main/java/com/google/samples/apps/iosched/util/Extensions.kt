@@ -35,8 +35,7 @@ inline fun <T: ViewDataBinding> T.executeAfter(block: T.() -> Unit) {
 }
 
 /**
- * Loads a drawable asynchronously and passes it into the callback function. This is similar to the
- * [srcAsync] binding adapter but can be used by any View type.
+ * Loads a drawable asynchronously and passes it into the callback function.
  */
 inline fun loadDrawableAsync(view: View, @DrawableRes id: Int, crossinline f: (Drawable) -> Unit) {
     DefaultScheduler.execute {
