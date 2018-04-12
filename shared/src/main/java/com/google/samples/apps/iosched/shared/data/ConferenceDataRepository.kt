@@ -16,6 +16,8 @@
 
 package com.google.samples.apps.iosched.shared.data
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.model.ConferenceData
 import java.io.IOException
 import javax.inject.Inject
@@ -36,9 +38,6 @@ open class ConferenceDataRepository @Inject constructor(
     // In-memory cache of the conference data
     private var conferenceDataCache: ConferenceData? = null
 
-    var dataLastUpdated = 0L
-        private set
-
     val currentConferenceDataVersion: Int
         get() = conferenceDataCache?.version ?: 0
 
@@ -47,6 +46,10 @@ open class ConferenceDataRepository @Inject constructor(
 
     var latestUpdateSource: UpdateSource = UpdateSource.NONE
         private set
+
+    private val _dataLastUpdatedObservable = MutableLiveData<Long>()
+    val dataLastUpdatedObservable: LiveData<Long>
+        get() = _dataLastUpdatedObservable
 
     // Prevents multiple consumers requesting data at the same time
     private val loadConfDataLock = Any()
@@ -73,7 +76,7 @@ open class ConferenceDataRepository @Inject constructor(
 
         // Update meta
         latestException = null
-        dataLastUpdated = System.currentTimeMillis()
+        _dataLastUpdatedObservable.postValue(System.currentTimeMillis())
         latestUpdateSource = UpdateSource.NETWORK
         latestException = null
 
