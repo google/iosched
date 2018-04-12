@@ -62,7 +62,7 @@ class IoschedFirebaseMessagingService : DaggerFirebaseMessagingService() {
     }
 
     companion object {
-        private const val TRIGGER_EVENT_DATA_SYNC = "sync_event_data"
+        private const val TRIGGER_EVENT_DATA_SYNC = "SYNC_EVENT_DATA"
         private const val TRIGGER_EVENT_DATA_SYNC_key = "action"
 
         // Some latency to avoid load spikes
