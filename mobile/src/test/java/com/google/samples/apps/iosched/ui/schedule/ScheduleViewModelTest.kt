@@ -43,10 +43,12 @@ import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.model.Block
+import com.google.samples.apps.iosched.shared.model.ConferenceData
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.TagFilterMatcher
@@ -69,6 +71,7 @@ import com.nhaarman.mockito_kotlin.mock
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.core.Is.`is`
+import org.hamcrest.core.IsEqual
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -476,6 +479,34 @@ class ScheduleViewModelTest {
         assertEquals(false, LiveDataTestUtil.getValue(viewModel.swipeRefreshing))
     }
 
+    @Test
+    fun newDataFromConfRepo_scheduleUpdated() {
+        val repo = ConferenceDataRepository(
+            remoteDataSource = TestConfDataSourceSession0(),
+            boostrapDataSource = BootstrapDataSourceSession3())
+
+        val loadUserSessionsByDayUseCase = createTestLoadUserSessionsByDayUseCase(
+            conferenceDataRepo = repo
+        )
+        val viewModel = createScheduleViewModel(
+            loadSessionsUseCase = loadUserSessionsByDayUseCase,
+            observeConferenceDataUseCase = ObserveConferenceDataUseCase(repo)
+        )
+
+        // Observe viewmodel to load sessions
+        viewModel.getSessionsForDay(DAY_1).observeForever {}
+
+        // Trigger a refresh on the repo
+        repo.refreshCacheWithRemoteConferenceData()
+
+        // The new value should be present
+        val newValue = LiveDataTestUtil.getValue(viewModel.getSessionsForDay(DAY_1))
+
+        assertThat(
+            newValue?.first()?.session,
+            `is`(IsEqual.equalTo(TestData.session0)))
+    }
+
     private fun createScheduleViewModel(
         loadSessionsUseCase: LoadUserSessionsByDayUseCase =
             createTestLoadUserSessionsByDayUseCase(),
@@ -491,7 +522,9 @@ class ScheduleViewModelTest {
         getTimeZoneUseCase: GetTimeZoneUseCase = createGetTimeZoneUseCase(),
         topicSubscriber: TopicSubscriber = mock {},
         refreshConferenceDataUseCase: RefreshConferenceDataUseCase =
-            RefreshConferenceDataUseCase(TestDataRepository)
+            RefreshConferenceDataUseCase(TestDataRepository),
+        observeConferenceDataUseCase: ObserveConferenceDataUseCase =
+            ObserveConferenceDataUseCase(TestDataRepository)
     ): ScheduleViewModel {
         return ScheduleViewModel(
             loadUserSessionsByDayUseCase = loadSessionsUseCase,
@@ -503,7 +536,8 @@ class ScheduleViewModelTest {
             scheduleUiHintsShownUseCase = scheduleUiHintsShownUseCase,
             getTimeZoneUseCase = getTimeZoneUseCase,
             topicSubscriber = topicSubscriber,
-            refreshConferenceDataUseCase = refreshConferenceDataUseCase
+            refreshConferenceDataUseCase = refreshConferenceDataUseCase,
+            observeConferenceDataUseCase = observeConferenceDataUseCase
         )
     }
 
@@ -511,10 +545,10 @@ class ScheduleViewModelTest {
      * Creates a test [LoadUserSessionsByDayUseCase].
      */
     private fun createTestLoadUserSessionsByDayUseCase(
-        userEventDataSource: UserEventDataSource = TestUserEventDataSource()
+        userEventDataSource: UserEventDataSource = TestUserEventDataSource(),
+        conferenceDataRepo: ConferenceDataRepository = TestDataRepository
     ): LoadUserSessionsByDayUseCase {
-
-        val sessionRepository = DefaultSessionRepository(TestDataRepository)
+        val sessionRepository = DefaultSessionRepository(conferenceDataRepo)
         val userEventRepository = DefaultSessionAndUserEventRepository(
             userEventDataSource, sessionRepository
         )
@@ -586,3 +620,38 @@ class FakeObserveUserAuthStateUseCase(
 class FakeScheduleUiHintsShownUseCase : ScheduleUiHintsShownUseCase(
     preferenceStorage = FakePreferenceStorage()
 )
+
+
+class TestConfDataSourceSession0 : ConferenceDataSource {
+    override fun getRemoteConferenceData(): ConferenceData? {
+        return conferenceData
+    }
+
+    override fun getOfflineConferenceData(): ConferenceData? {
+        return conferenceData
+    }
+
+    private val conferenceData = ConferenceData(
+        sessions = listOf(TestData.session0),
+        tags = listOf(TestData.androidTag, TestData.webTag),
+        speakers = listOf(TestData.speaker1),
+        rooms = emptyList(),
+        version = 42
+    )
+}
+
+class BootstrapDataSourceSession3 : ConferenceDataSource {
+    override fun getRemoteConferenceData(): ConferenceData? {
+        throw NotImplementedError() // Not used
+    }
+
+    override fun getOfflineConferenceData(): ConferenceData? {
+        return ConferenceData(
+            sessions = listOf(TestData.session3),
+            tags = listOf(TestData.androidTag, TestData.webTag),
+            speakers = listOf(TestData.speaker1),
+            rooms = emptyList(),
+            version = 42
+        )
+    }
+}
