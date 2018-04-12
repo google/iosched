@@ -20,11 +20,17 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.TileProvider
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.data.map.MapMetadataRepository
+import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.Result.Success
+import com.google.samples.apps.iosched.shared.util.map
 import javax.inject.Inject
 
 class MapViewModel @Inject constructor(
-    mapMetadataRepository: MapMetadataRepository
+    mapMetadataRepository: MapMetadataRepository,
+    loadMapTileProviderUseCase: LoadMapTileProviderUseCase
 ) : ViewModel() {
 
     /**
@@ -51,7 +57,15 @@ class MapViewModel @Inject constructor(
     val mapCenter: LiveData<LatLng>
         get() = _mapCenter
 
+    private val tileProviderResult = MutableLiveData<Result<TileProvider>>()
+    val tileProvider: LiveData<TileProvider?>
+
     init {
         _mapCenter.value = defaultCameraPosition.target
+
+        loadMapTileProviderUseCase(R.drawable.map_tile, tileProviderResult)
+        tileProvider = tileProviderResult.map { result ->
+            (result as? Success)?.data
+        }
     }
 }

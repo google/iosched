@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.ui.map
 
 import android.databinding.BindingAdapter
-import android.support.annotation.DrawableRes
 import android.support.annotation.RawRes
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
@@ -25,7 +24,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.TileOverlayOptions
-import com.google.samples.apps.iosched.util.loadDrawableAsync
+import com.google.android.gms.maps.model.TileProvider
 
 @BindingAdapter("mapStyle")
 fun mapStyle(mapView: MapView, @RawRes resId: Int) {
@@ -72,7 +71,6 @@ fun mapCenter(mapView: MapView, target: LatLng?) {
     }
 }
 
-
 /**
  * Sets the minimum zoom level of the map (how far out the user is allowed to zoom).
  */
@@ -112,17 +110,15 @@ fun isMapToolbarEnabled(mapView: MapView, isMapToolbarEnabled: Boolean?) {
     }
 }
 
-@BindingAdapter("tileDrawable")
-fun tileDrawable(mapView: MapView, @DrawableRes resId: Int) {
-    val dpi = mapView.resources.displayMetrics.densityDpi / 160f
-    loadDrawableAsync(mapView, resId, { drawable ->
+@BindingAdapter("tileProvider")
+fun tileDrawable(mapView: MapView, tileProvider: TileProvider?) {
+    if (tileProvider != null) {
         mapView.getMapAsync { map ->
-            val provider = DrawableTileProvider(dpi, drawable)
             map.addTileOverlay(
                 TileOverlayOptions()
-                    .tileProvider(provider)
+                    .tileProvider(tileProvider)
                     .visible(true)
             )
         }
-    })
+    }
 }

@@ -21,6 +21,7 @@ import android.graphics.Bitmap.Config.ARGB_8888
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Matrix
+import android.graphics.Picture
 import android.graphics.drawable.Drawable
 import android.support.v4.util.Pools.Pool
 import android.support.v4.util.Pools.SynchronizedPool
@@ -32,7 +33,7 @@ import java.io.ByteArrayOutputStream
 
 class DrawableTileProvider(
     dpi: Float,
-    private val drawable: Drawable
+    drawable: Drawable
 ) : TileProvider {
 
     companion object {
@@ -41,18 +42,26 @@ class DrawableTileProvider(
 
     private val scale = Math.round(dpi + .3f) // Make it look nice for tvdpi (1.3x)
     private val tileSize = BASE_TILE_SIZE * scale
+
+    private val picture: Picture
     private val baseMatrix: Matrix
 
-    private val pool: Pool<TileGenerator> = SynchronizedPool(7)
+    private val pool: Pool<TileGenerator> = SynchronizedPool(5)
 
     init {
         drawable.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
-        val width = drawable.intrinsicWidth.toFloat()
-        val height = drawable.intrinsicHeight.toFloat()
+        val width = drawable.intrinsicWidth
+        val height = drawable.intrinsicHeight
+
+        picture = Picture()
+        val canvas = picture.beginRecording(width, height)
+        drawable.draw(canvas)
+        picture.endRecording()
+
         val points = floatArrayOf(
             0f, 0f, // North-west
-            width, 0f, // North-east
-            width, height // Sourth-east
+            width.toFloat(), 0f, // North-east
+            width.toFloat(), height.toFloat() // Sourth-east
         )
 
         baseMatrix = Matrix().apply {
@@ -63,7 +72,7 @@ class DrawableTileProvider(
 
     override fun getTile(x: Int, y: Int, zoom: Int): Tile {
         val tileGenerator = pool.acquire()
-                ?: TileGenerator(tileSize, scale, baseMatrix, drawable)
+                ?: TileGenerator(tileSize, scale, baseMatrix, picture)
         val data = tileGenerator.getTileImageData(x, y, zoom)
         if (!pool.release(tileGenerator)) {
             // Not returned to pool
@@ -72,12 +81,12 @@ class DrawableTileProvider(
         return Tile(tileSize, tileSize, data)
     }
 
-    /** Generates tiles from a drawable. */
+    /** Generates tiles from a picture. */
     internal class TileGenerator(
         private val tileSize: Int,
         private val scale: Int,
         private val baseMatrix: Matrix,
-        private val drawable: Drawable
+        private val picture: Picture
     ) {
         // Tiles are square, and each pixel is represented by 4 bytes.
         private val outputStream = ByteArrayOutputStream(tileSize * tileSize * 4)
@@ -97,7 +106,8 @@ class DrawableTileProvider(
                 setMatrix(matrix)
             }
 
-            drawable.draw(canvas)
+            // TODO maybe synchronize?
+            picture.draw(canvas)
 
             val stream = BufferedOutputStream(outputStream)
             stream.use {
