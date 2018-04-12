@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.util.time
+package com.google.samples.apps.iosched.shared.time
 
 import org.threeten.bp.Instant
 
-interface MockableTime {
+interface TimeProvider {
     fun now(): Instant
 }
 
-object DefaultTime : MockableTime {
-    private var delegate: MockableTime = WallclockTime
+object DefaultTimeProvider : TimeProvider {
+    private var delegate: TimeProvider = WallclockTimeProvider
 
-    fun setDelegate(newDelegate: MockableTime?) {
-        delegate = newDelegate ?: WallclockTime
+    fun setDelegate(newDelegate: TimeProvider?) {
+        delegate = newDelegate ?: WallclockTimeProvider
     }
 
     override fun now(): Instant {
@@ -34,7 +34,7 @@ object DefaultTime : MockableTime {
     }
 }
 
-internal object WallclockTime : MockableTime {
+internal object WallclockTimeProvider : TimeProvider {
     override fun now(): Instant {
         return Instant.now()
     }
