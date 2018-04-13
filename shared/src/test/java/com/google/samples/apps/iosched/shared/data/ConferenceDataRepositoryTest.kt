@@ -16,16 +16,20 @@
 
 package com.google.samples.apps.iosched.shared.data
 
+import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.shared.model.ConferenceData
 import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.model.TestData.session0
 import com.google.samples.apps.iosched.shared.model.TestData.session1
 import com.google.samples.apps.iosched.shared.model.TestData.session3
+import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import org.hamcrest.core.IsEqual.equalTo
 import org.hamcrest.core.IsNot.not
 import org.hamcrest.core.IsNull.notNullValue
 import org.hamcrest.core.IsNull.nullValue
 import org.junit.Assert.assertThat
+import org.junit.Rule
 import org.junit.Test
 import java.io.IOException
 import org.hamcrest.core.Is.`is` as Is
@@ -34,6 +38,15 @@ import org.hamcrest.core.Is.`is` as Is
  * Unit tests for [ConferenceDataRepository].
  */
 class ConferenceDataRepositoryTest {
+
+    // Executes tasks in the Architecture Components in the same thread
+    @get:Rule
+    var instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    // Executes tasks in a synchronous [TaskScheduler]
+    @get:Rule
+    var syncTaskExecutorRule = SyncTaskExecutorRule()
+
 
     private lateinit var repo: ConferenceDataRepository
 
@@ -53,7 +66,7 @@ class ConferenceDataRepositoryTest {
         assertThat(data.sessions.first(), Is(equalTo(session0)))
         // and meta info should be set
         assertThat(repo.latestUpdateSource, Is(equalTo(UpdateSource.NETWORK)))
-        assertThat(repo.dataLastUpdated, Is(not(equalTo(0L))))
+        assertThat(LiveDataTestUtil.getValue(repo.dataLastUpdatedObservable), Is(not(equalTo(0L))))
         assertThat(repo.latestException, Is(nullValue()))
         assertThat(repo.currentConferenceDataVersion, Is(equalTo(NETWORK_DATA_VERSION)))
     }
@@ -80,7 +93,7 @@ class ConferenceDataRepositoryTest {
         assertThat(data.sessions.first(), Is(equalTo(session3)))
         // and meta info should be set
         assertThat(repo.latestUpdateSource, Is(equalTo(UpdateSource.BOOTSTRAP)))
-        assertThat(repo.dataLastUpdated, Is(equalTo(0L)))
+        assertThat(LiveDataTestUtil.getValue(repo.dataLastUpdatedObservable), Is(not(equalTo(0L))))
         assertThat(repo.latestException, Is(notNullValue()))
         assertThat(repo.currentConferenceDataVersion, Is(equalTo(BOOTSTRAP_DATA_VERSION)))
     }
@@ -107,7 +120,7 @@ class ConferenceDataRepositoryTest {
         assertThat(data.sessions.first(), Is(equalTo(session1)))
         // and meta info should be set
         assertThat(repo.latestUpdateSource, Is(equalTo(UpdateSource.BOOTSTRAP)))
-        assertThat(repo.dataLastUpdated, Is(equalTo(0L)))
+        assertThat(LiveDataTestUtil.getValue(repo.dataLastUpdatedObservable), Is(not(equalTo(0L))))
         assertThat(repo.latestException, Is(notNullValue()))
         assertThat(repo.currentConferenceDataVersion, Is(equalTo(CACHE_DATA_VERSION)))
     }
@@ -121,7 +134,7 @@ private const val NETWORK_DATA_VERSION = 42
 private const val CACHE_DATA_VERSION = 23
 private const val BOOTSTRAP_DATA_VERSION = 314
 
-private class TestConfDataSourceSession0 : ConferenceDataSource {
+class TestConfDataSourceSession0 : ConferenceDataSource {
     override fun getRemoteConferenceData(): ConferenceData? {
         return conferenceData
     }
@@ -161,7 +174,7 @@ private class TestConfDataSourceSession1 : ConferenceDataSource {
     }
 }
 
-private class BootstrapDataSourceSession3 : ConferenceDataSource {
+class BootstrapDataSourceSession3 : ConferenceDataSource {
     override fun getRemoteConferenceData(): ConferenceData? {
         throw NotImplementedError() // Not used
     }
