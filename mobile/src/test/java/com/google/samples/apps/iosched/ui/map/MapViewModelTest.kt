@@ -26,7 +26,7 @@ import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito
+import org.mockito.Mockito.mock
 
 /**
  * Unit tests for the [MapViewModel].
@@ -44,7 +44,7 @@ class MapViewModelTest {
         // Create ViewModel with the test data
         val viewModel = MapViewModel(
             TestMapMetadataRepository,
-            LoadMapTileProviderUseCase(Mockito.mock(Context::class.java))
+            LoadMapTileProviderUseCase(mock(Context::class.java))
         )
 
         Assert.assertEquals(

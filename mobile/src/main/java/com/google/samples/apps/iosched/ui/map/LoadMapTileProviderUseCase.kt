@@ -25,8 +25,12 @@ class LoadMapTileProviderUseCase @Inject constructor(
     private val context: Context
 ): UseCase<Int, TileProvider>() {
 
+    companion object {
+        private const val DPI_SCALE_1X = 160f
+    }
+
     override fun execute(parameters: Int): TileProvider {
-        val dpi = context.resources.displayMetrics.densityDpi / 160f
+        val dpi = context.resources.displayMetrics.densityDpi / DPI_SCALE_1X
         val drawable = context.getDrawable(parameters)
         return DrawableTileProvider(dpi, drawable)
     }
