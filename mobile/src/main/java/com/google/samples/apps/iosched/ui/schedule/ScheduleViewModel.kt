@@ -29,6 +29,7 @@ import com.google.samples.apps.iosched.shared.domain.invoke
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
+import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
@@ -60,7 +61,7 @@ import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import org.threeten.bp.ZoneId
 import timber.log.Timber
-import java.util.*
+import java.util.UUID
 import javax.inject.Inject
 
 /**
@@ -78,7 +79,8 @@ class ScheduleViewModel @Inject constructor(
     topicSubscriber: TopicSubscriber,
     private val snackbarMessageManager: SnackbarMessageManager,
     getTimeZoneUseCase: GetTimeZoneUseCase,
-    private val refreshConferenceDataUseCase: RefreshConferenceDataUseCase
+    private val refreshConferenceDataUseCase: RefreshConferenceDataUseCase,
+    observeConferenceDataUseCase: ObserveConferenceDataUseCase
 ) : ViewModel(), ScheduleEventListener, SignInViewModelDelegate by signInViewModelDelegate {
 
     val isLoading: LiveData<Boolean>
@@ -102,13 +104,13 @@ class ScheduleViewModel @Inject constructor(
     val timeZoneId: LiveData<ZoneId>
 
     private val _sessionTimeDataDay1 = MediatorLiveData<SessionTimeData>()
-    val  sessionTimeDataDay1: LiveData<SessionTimeData>
+    val sessionTimeDataDay1: LiveData<SessionTimeData>
         get() = _sessionTimeDataDay1
     private val _sessionTimeDataDay2 = MediatorLiveData<SessionTimeData>()
-    val  sessionTimeDataDay2: LiveData<SessionTimeData>
+    val sessionTimeDataDay2: LiveData<SessionTimeData>
         get() = _sessionTimeDataDay2
     private val _sessionTimeDataDay3 = MediatorLiveData<SessionTimeData>()
-    val  sessionTimeDataDay3: LiveData<SessionTimeData>
+    val sessionTimeDataDay3: LiveData<SessionTimeData>
         get() = _sessionTimeDataDay3
 
     private val tagFilterMatcher = TagFilterMatcher()
@@ -184,6 +186,11 @@ class ScheduleViewModel @Inject constructor(
 
         // Load sessions and tags and store the result in `LiveData`s
         loadSessionsResult = loadUserSessionsByDayUseCase.observe()
+
+        loadSessionsResult.addSource(observeConferenceDataUseCase.observe()) {
+            Timber.d("Detected new data in conference data repository")
+            refreshUserSessions()
+        }
 
         loadAgendaUseCase(loadAgendaResult)
         loadTagFiltersUseCase(tagFilterMatcher, loadTagsResult)
@@ -344,6 +351,9 @@ class ScheduleViewModel @Inject constructor(
 
         // Subscribe user to schedule updates
         topicSubscriber.subscribeToScheduleUpdates()
+
+        // Observe updates in conference data
+        observeConferenceDataUseCase.execute(Any())
     }
 
     /**
