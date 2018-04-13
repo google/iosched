@@ -22,7 +22,7 @@ import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 
 /**
- * Find the first session at each start time (rounded down to nearest hour) and return pairs of
+ * Find the first session at each start time (rounded down to nearest minute) and return pairs of
  * index to start time. Assumes that [sessions] are sorted by ascending start time.
  */
 
@@ -31,5 +31,5 @@ fun indexSessionHeaders(sessions: List<Session>, zoneId: ZoneId): List<Pair<Int,
         .mapIndexed { index, session ->
             index to TimeUtils.zonedTime(session.startTime, zoneId)
         }
-        .distinctBy { it.second.hour }
+        .distinctBy { it.second.hour to it.second.minute }
 }
