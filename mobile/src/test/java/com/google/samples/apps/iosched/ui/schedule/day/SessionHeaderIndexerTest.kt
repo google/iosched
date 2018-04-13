@@ -55,31 +55,26 @@ class SessionHeaderIndexerTest {
     }
 
     @Test
-    fun indexSessions_roundsTimeDown() {
+    fun indexSessions_doesNotRoundTimeDown() {
         // Given a list of test sessions with start times not on the hour
         val session = TestData.session1
         val start = ZonedDateTime.parse(startTimeString)
         val sessions = listOf(
+            session.copy(startTime = start.minusMinutes(30)),
+            session.copy(startTime = start.minusMinutes(30)),
+            session.copy(startTime = start.minusMinutes(15)),
             session.copy(startTime = start),
-            session.copy(startTime = start.plusMinutes(10)),
-            session.copy(startTime = start.plusMinutes(20)),
+            session.copy(startTime = start.plusMinutes(15)),
             session.copy(startTime = start.plusMinutes(30)),
-            session.copy(startTime = start.plusMinutes(40)),
-            session.copy(startTime = start.plusMinutes(50)),
-            session.copy(startTime = start.plusMinutes(60)),
-            session.copy(startTime = start.plusMinutes(70)),
-            session.copy(startTime = start.plusMinutes(80)),
-            session.copy(startTime = start.plusMinutes(90))
+            session.copy(startTime = start.plusMinutes(30))
         )
 
         // Process this list to group by start time, keyed on index
         val grouped = indexSessionHeaders(sessions, ZoneId.of(timeZone)).toMap()
 
-        // Then verify that the correct groupings are made, rounding down the time to the hour
-        assertEquals(2, grouped.size)
-        assertEquals(setOf(0, 6), grouped.keys)
-        assertEquals(start, grouped[0])
-        assertEquals(start.plusHours(1), grouped[6])
+        // Then verify that the correct groupings are made and no rounding occurs
+        assertEquals(5, grouped.size)
+        assertEquals(setOf(0, 2, 3, 4, 5), grouped.keys)
     }
 
     @Test
