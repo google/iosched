@@ -86,7 +86,6 @@ class SessionDetailFragment : DaggerFragment() {
             coordinatorLayout = coordinatorLayoutSessionDetail
             setLifecycleOwner(this@SessionDetailFragment)
             sessionDetailBottomAppBar.inflateMenu(R.menu.session_detail_menu)
-            // todo setup menu & fab based on attendee
             sessionDetailBottomAppBar.setOnMenuItemClickListener { item ->
                 if (item.itemId == R.id.menu_item_share) {
                     ShareCompat.IntentBuilder.from(activity)
