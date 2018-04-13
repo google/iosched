@@ -36,6 +36,20 @@ android {
                 "MAP_FLOORPLAN_MAPPING",
                 "{${map_floorplan_nw}, ${map_floorplan_ne}, ${map_floorplan_se}}"
 
+        buildConfigField "com.google.android.gms.maps.model.LatLng",
+                "MAP_VIEWPORT_BOUND_NW",
+                "new com.google.android.gms.maps.model.LatLng(${map_viewport_bound_nw})"
+        buildConfigField "com.google.android.gms.maps.model.LatLng",
+                "MAP_VIEWPORT_BOUND_SE",
+                "new com.google.android.gms.maps.model.LatLng(${map_viewport_bound_se})"
+
+        resValue "dimen", "map_camera_bearing", "${map_default_camera_bearing}"
+        resValue "dimen", "map_camera_target_lat", "${map_default_camera_target_lat}"
+        resValue "dimen", "map_camera_target_lng", "${map_default_camera_target_lng}"
+        resValue "dimen", "map_camera_tilt", "${map_default_camera_tilt}"
+        resValue "dimen", "map_camera_zoom", "${map_default_camera_zoom}"
+        resValue "dimen", "map_viewport_min_zoom", "${map_viewport_min_zoom}"
+
     }
     buildTypes {
         release {

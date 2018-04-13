@@ -23,8 +23,6 @@ import com.google.samples.apps.iosched.shared.data.FakeLogisticsDataSource
 import com.google.samples.apps.iosched.shared.data.OfflineConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsDataSource
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
-import com.google.samples.apps.iosched.shared.data.map.DefaultMapMetadataRepository
-import com.google.samples.apps.iosched.shared.data.map.MapMetadataRepository
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
@@ -77,12 +75,6 @@ class SharedModule {
             conferenceDataRepository: ConferenceDataRepository
     ): SessionRepository {
         return DefaultSessionRepository(conferenceDataRepository)
-    }
-
-    @Singleton
-    @Provides
-    fun provideMapMetadataRepository(): MapMetadataRepository {
-        return DefaultMapMetadataRepository()
     }
 
     @Singleton

@@ -37,27 +37,14 @@ android {
         buildConfigField "String", "CONFERENCE_DAY3_START", "\"${conference_day3_start}\""
         buildConfigField "String", "CONFERENCE_DAY3_END", "\"${conference_day3_end}\""
 
-        buildConfigField "String", "BOOTSTRAP_CONF_DATA_FILENAME", "\"${bootstrap_conference_data_filename}\""
+        buildConfigField "String",
+                "BOOTSTRAP_CONF_DATA_FILENAME",
+                "\"${bootstrap_conference_data_filename}\""
 
         buildConfigField "String",
                 "CONFERENCE_WIFI_OFFERING_START",
                 "\"${conference_wifi_offering_start}\""
 
-        buildConfigField "com.google.android.gms.maps.model.LatLng",
-                "MAP_VIEWPORT_BOUND_NW",
-                "new com.google.android.gms.maps.model.LatLng(${map_viewport_bound_nw})"
-        buildConfigField "com.google.android.gms.maps.model.LatLng",
-                "MAP_VIEWPORT_BOUND_SE",
-                "new com.google.android.gms.maps.model.LatLng(${map_viewport_bound_se})"
-
-        buildConfigField "float", "MAP_VIEWPORT_MIN_ZOOM", "${map_viewport_min_zoom}"
-        buildConfigField "float", "MAP_DEFAULT_CAMERA_BEARING", "${map_default_camera_bearing}"
-        buildConfigField "float", "MAP_DEFAULT_CAMERA_ZOOM", "${map_default_camera_zoom}"
-        buildConfigField "float", "MAP_DEFAULT_CAMERA_TILT", "${map_default_camera_tilt}"
-        buildConfigField "float", "MAP_VENUE_CAMERA_ZOOM", "${map_venue_camera_zoom}"
-        buildConfigField "com.google.android.gms.maps.model.LatLng",
-                "MAP_DEFAULT_CAMERA_TARGET",
-                "new com.google.android.gms.maps.model.LatLng(${map_default_camera_target})"
         consumerProguardFiles 'consumer-proguard-rules.pro'
     }
 

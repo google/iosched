@@ -20,33 +20,26 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.TileProvider
+import com.google.samples.apps.iosched.BuildConfig
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.data.map.MapMetadataRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.util.map
 import javax.inject.Inject
 
 class MapViewModel @Inject constructor(
-    mapMetadataRepository: MapMetadataRepository,
     loadMapTileProviderUseCase: LoadMapTileProviderUseCase
 ) : ViewModel() {
 
     /**
      * Area covered by the venue. Determines the viewport of the map.
      */
-    val conferenceLocationBounds = mapMetadataRepository.getConferenceLocationBounds()
-
-    /**
-     * Min zoom level for map.
-     */
-    val minZoom = mapMetadataRepository.getMapViewportMinZoom()
-
-    /**
-     * Default camera position
-     */
-    val defaultCameraPosition = mapMetadataRepository.getDefaultCameraPosition()
+    val conferenceLocationBounds = LatLngBounds(
+        BuildConfig.MAP_VIEWPORT_BOUND_NW,
+        BuildConfig.MAP_VIEWPORT_BOUND_SE
+    )
 
     /**
      * True if any errors occur in fetching the data.
@@ -61,8 +54,6 @@ class MapViewModel @Inject constructor(
     val tileProvider: LiveData<TileProvider?>
 
     init {
-        _mapCenter.value = defaultCameraPosition.target
-
         loadMapTileProviderUseCase(R.drawable.map_tile, tileProviderResult)
         tileProvider = tileProviderResult.map { result ->
             (result as? Success)?.data

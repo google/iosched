@@ -20,12 +20,16 @@ import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import com.google.samples.apps.iosched.shared.BuildConfig
+import com.google.samples.apps.iosched.shared.R
 import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.NetworkConferenceDataSource
-import com.google.samples.apps.iosched.shared.data.map.DefaultMapMetadataRepository
-import com.google.samples.apps.iosched.shared.data.map.MapMetadataRepository
+import com.google.samples.apps.iosched.shared.data.logistics.LogisticsDataSource
+import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
+import com.google.samples.apps.iosched.shared.data.logistics.RemoteConfigLogisticsDataSource
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
@@ -40,12 +44,6 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Named
 import javax.inject.Singleton
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
-import com.google.samples.apps.iosched.shared.BuildConfig
-import com.google.samples.apps.iosched.shared.R
-import com.google.samples.apps.iosched.shared.data.logistics.LogisticsDataSource
-import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
-import com.google.samples.apps.iosched.shared.data.logistics.RemoteConfigLogisticsDataSource
 
 
 /**
@@ -85,12 +83,6 @@ class SharedModule {
         conferenceDataRepository: ConferenceDataRepository
     ): SessionRepository {
         return DefaultSessionRepository(conferenceDataRepository)
-    }
-
-    @Singleton
-    @Provides
-    fun provideMapMetadataRepository(): MapMetadataRepository {
-        return DefaultMapMetadataRepository()
     }
 
     @Singleton

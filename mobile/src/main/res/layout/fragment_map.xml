@@ -19,6 +19,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="com.google.samples.apps.iosched.R" />
 
         <variable
@@ -58,15 +59,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/bottom_navigation_height"
+            app:cameraBearing="@dimen/map_camera_bearing"
+            app:cameraTargetLat="@dimen/map_camera_target_lat"
+            app:cameraTargetLng="@dimen/map_camera_target_lng"
+            app:cameraTilt="@dimen/map_camera_tilt"
+            app:cameraZoom="@dimen/map_camera_zoom"
             app:isIndoorEnabled="@{false}"
             app:isMapToolbarEnabled="@{false}"
-            app:isZoomControlsEnabled="@{false}"
             app:mapCenter="@{viewModel.mapCenter}"
-            app:mapStyle="@{R.raw.maps_style}"
             app:mapMarkers="@{R.raw.map_markers}"
-            app:minZoom="@{viewModel.minZoom}"
-            app:tileProvider="@{viewModel.tileProvider}"
-            app:viewport="@{viewModel.conferenceLocationBounds}" />
+            app:mapMinZoom="@{R.dimen.map_viewport_min_zoom}"
+            app:mapStyle="@{R.raw.maps_style}"
+            app:mapTileProvider="@{viewModel.tileProvider}"
+            app:mapViewport="@{viewModel.conferenceLocationBounds}"
+            app:uiZoomControls="false" />
 
     </android.support.constraint.ConstraintLayout>
 

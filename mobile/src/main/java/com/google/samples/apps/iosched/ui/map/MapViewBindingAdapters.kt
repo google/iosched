@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.ui.map
 
 import android.databinding.BindingAdapter
+import android.support.annotation.DimenRes
 import android.support.annotation.RawRes
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
@@ -25,6 +26,7 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.TileOverlayOptions
 import com.google.android.gms.maps.model.TileProvider
+import com.google.samples.apps.iosched.util.getFloat
 
 @BindingAdapter("mapStyle")
 fun mapStyle(mapView: MapView, @RawRes resId: Int) {
@@ -49,8 +51,8 @@ fun mapMarkers(mapView: MapView, @RawRes markers: Int) {
 /**
  * Sets the map viewport to a specific rectangle specified by two Latitude/Longitude points.
  */
-@BindingAdapter("viewport")
-fun viewport(mapView: MapView, bounds: LatLngBounds?) {
+@BindingAdapter("mapViewport")
+fun mapViewport(mapView: MapView, bounds: LatLngBounds?) {
     if (bounds != null) {
         mapView.getMapAsync {
             it.setLatLngBoundsForCameraTarget(bounds)
@@ -74,12 +76,11 @@ fun mapCenter(mapView: MapView, target: LatLng?) {
 /**
  * Sets the minimum zoom level of the map (how far out the user is allowed to zoom).
  */
-@BindingAdapter("minZoom")
-fun minZoom(mapView: MapView, minZoom: Float?) {
-    if (minZoom != null) {
-        mapView.getMapAsync {
-            it.setMinZoomPreference(minZoom)
-        }
+@BindingAdapter("mapMinZoom")
+fun mapMinZoom(mapView: MapView, @DimenRes resId: Int) {
+    val minZoom = mapView.resources.getFloat(resId)
+    mapView.getMapAsync {
+        it.setMinZoomPreference(minZoom)
     }
 }
 
@@ -88,15 +89,6 @@ fun isIndoorEnabled(mapView: MapView, isIndoorEnabled: Boolean?) {
     if (isIndoorEnabled != null) {
         mapView.getMapAsync {
             it.isIndoorEnabled = isIndoorEnabled
-        }
-    }
-}
-
-@BindingAdapter("isZoomControlsEnabled")
-fun isZoomControlsEnabled(mapView: MapView, isZoomControlsEnabled: Boolean?) {
-    if (isZoomControlsEnabled != null) {
-        mapView.getMapAsync {
-            it.uiSettings.isZoomControlsEnabled = isZoomControlsEnabled
         }
     }
 }
@@ -110,8 +102,8 @@ fun isMapToolbarEnabled(mapView: MapView, isMapToolbarEnabled: Boolean?) {
     }
 }
 
-@BindingAdapter("tileProvider")
-fun tileDrawable(mapView: MapView, tileProvider: TileProvider?) {
+@BindingAdapter("mapTileProvider")
+fun mapTileDrawable(mapView: MapView, tileProvider: TileProvider?) {
     if (tileProvider != null) {
         mapView.getMapAsync { map ->
             map.addTileOverlay(
