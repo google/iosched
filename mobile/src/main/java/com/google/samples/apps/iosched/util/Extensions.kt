@@ -17,11 +17,14 @@
 package com.google.samples.apps.iosched.util
 
 import android.app.Activity
+import android.content.res.Resources
 import android.databinding.ObservableBoolean
 import android.databinding.ViewDataBinding
 import android.graphics.drawable.Drawable
+import android.support.annotation.DimenRes
 import android.support.annotation.DrawableRes
 import android.text.StaticLayout
+import android.util.TypedValue
 import android.view.View
 import androidx.view.postDelayed
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
@@ -75,4 +78,13 @@ fun StaticLayout.textWidth() : Int {
  */
 fun lerp(a: Float, b: Float, t: Float): Float {
     return a + (b - a) * t
+}
+
+/**
+ * Alternative to Resources.getDimension() for values that are TYPE_FLOAT.
+ */
+fun Resources.getFloat(@DimenRes resId: Int): Float {
+    val outValue = TypedValue()
+    getValue(resId, outValue, true)
+    return outValue.float
 }

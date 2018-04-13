@@ -18,12 +18,9 @@ package com.google.samples.apps.iosched.ui.map
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.content.Context
-import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
-import com.google.samples.apps.iosched.shared.data.map.MapMetadataRepository
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
-import org.junit.Assert
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -43,37 +40,11 @@ class MapViewModelTest {
     fun testDataIsLoaded() {
         // Create ViewModel with the test data
         val viewModel = MapViewModel(
-            TestMapMetadataRepository,
             LoadMapTileProviderUseCase(mock(Context::class.java))
         )
-
-        Assert.assertEquals(
-            viewModel.conferenceLocationBounds,
-            TestMapMetadataRepository.getConferenceLocationBounds()
-        )
-        Assert.assertEquals(
-            viewModel.minZoom,
-            TestMapMetadataRepository.getMapViewportMinZoom()
-        )
-        Assert.assertEquals(
-            viewModel.defaultCameraPosition,
-            TestMapMetadataRepository.getDefaultCameraPosition()
-        )
-    }
-
-    object TestMapMetadataRepository: MapMetadataRepository {
-
-        override fun getConferenceLocationBounds() = LatLngBounds(
-            LatLng(37.423205, -122.081757),
-            LatLng(37.428479, -122.078109)
-        )
-        override fun getMapViewportMinZoom() = 12f
-
-        override fun getDefaultCameraPosition() = CameraPosition.builder()
-            .bearing(330f)
-            .tilt(0f)
-            .zoom(15f)
-            .target(LatLng(37.428479, -122.078109))
-            .build()
+        assertTrue(viewModel.conferenceLocationBounds.contains(
+            // conference center
+            LatLng(37.425842,-122.079933)
+        ))
     }
 }
