@@ -65,7 +65,7 @@
             app:mapStyle="@{R.raw.maps_style}"
             app:mapMarkers="@{R.raw.map_markers}"
             app:minZoom="@{viewModel.minZoom}"
-            app:tileDrawable="@{R.drawable.map_tile}"
+            app:tileProvider="@{viewModel.tileProvider}"
             app:viewport="@{viewModel.conferenceLocationBounds}" />
 
     </android.support.constraint.ConstraintLayout>
