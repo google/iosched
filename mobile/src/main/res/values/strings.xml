@@ -227,6 +227,8 @@
     <string name="faq_label" translation_description="Label for link to FAQ on website.">FAQ</string>
     <string name="built_with_material_content_description" translation_description="The app was built with Material Components.">Built with Material Components.</string>
     <string name="tap_to_join_network" translation_description="Tap to join Wifi network.">(tap to join network)</string>
+    <string name="scavenger_hunt_description" translationDescription="Text explaining the scavenger hunt happening at I/O.">Take part in the I/O Android Things Scavenger Hunt! (Hint: You may learn that there\'s an Android Things Developer Kit in your future!)</string>
+    <string name="scavenger_hunt_start_button" translationDescription="Label used on a button to start the scavenger hunt.">Get started now</string>
 
     <!-- Day labels for schedule -->
     <string name="day1" translation_description="Label for the first day of the conference">Day 1</string>
