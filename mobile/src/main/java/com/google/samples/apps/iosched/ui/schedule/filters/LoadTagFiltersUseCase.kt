@@ -19,7 +19,9 @@ package com.google.samples.apps.iosched.ui.schedule.filters
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import com.google.samples.apps.iosched.shared.model.Tag
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.TagFilterMatcher
+import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
+import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
+import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.TagFilter
 import com.google.samples.apps.iosched.util.isEven
 import javax.inject.Inject
 
@@ -28,18 +30,18 @@ import javax.inject.Inject
  */
 open class LoadTagFiltersUseCase @Inject constructor(
     private val tagRepository: TagRepository
-) : UseCase<TagFilterMatcher, List<TagFilter>>() {
+) : UseCase<UserSessionMatcher, List<EventFilter>>() {
 
-    override fun execute(parameters: TagFilterMatcher): List<TagFilter> {
+    override fun execute(parameters: UserSessionMatcher): List<EventFilter> {
         val tags = tagRepository.getTags()
         parameters.removeOrphanedTags(tags)
 
-        return tags.filter { it.category in TagFilterMatcher.FILTER_CATEGORIES }
+        val filters = tags.filter { it.category in UserSessionMatcher.FILTER_CATEGORIES }
             // Only tags in these categories appear in the filters list
             // Map category -> List<TagFilter>
             .groupBy { it.category }
             // Sort entries in desired order
-            .toSortedMap(compareBy { key -> TagFilterMatcher.FILTER_CATEGORIES.indexOf(key) })
+            .toSortedMap(compareBy { key -> UserSessionMatcher.FILTER_CATEGORIES.indexOf(key) })
             // Interleave items in each category. This makes them appear ordered vertically when
             // displayed in the 2-column grid.
             .mapValues { entry -> interleaveSort(entry.value) }
@@ -47,6 +49,9 @@ open class LoadTagFiltersUseCase @Inject constructor(
             .flatMap { entry -> entry.value }
             // Convert to TagFilters, checking ones that are currently selected
             .map { TagFilter(it, it in parameters) }
+            .toMutableList<EventFilter>()
+        filters.add(0, MyEventsFilter(parameters.getShowPinnedEventsOnly()))
+        return filters
     }
 
     fun interleaveSort(tags: List<Tag>): List<Tag> {

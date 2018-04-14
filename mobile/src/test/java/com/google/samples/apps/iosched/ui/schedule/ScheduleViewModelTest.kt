@@ -51,7 +51,7 @@ import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.ConferenceData
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.TagFilterMatcher
+import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
@@ -62,8 +62,8 @@ import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
+import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter
 import com.google.samples.apps.iosched.ui.schedule.filters.LoadTagFiltersUseCase
-import com.google.samples.apps.iosched.ui.schedule.filters.TagFilter
 import com.google.samples.apps.iosched.ui.signin.FirebaseSignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.doReturn
@@ -129,7 +129,8 @@ class ScheduleViewModelTest {
         }
         assertFalse(LiveDataTestUtil.getValue(viewModel.isLoading)!!)
         // Tags
-        assertEquals(TestData.tagFiltersList, LiveDataTestUtil.getValue(viewModel.tagFilters))
+        val loadedFilters = LiveDataTestUtil.getValue(viewModel.eventFilters)
+        assertTrue(loadedFilters?.containsAll(TestData.tagFiltersList) ?: false)
     }
 
     @Test
@@ -561,7 +562,7 @@ class ScheduleViewModelTest {
      */
     private fun createTagsExceptionUseCase(): LoadTagFiltersUseCase {
         return object : LoadTagFiltersUseCase(TagRepository(TestDataRepository)) {
-            override fun execute(parameters: TagFilterMatcher): List<TagFilter> {
+            override fun execute(parameters: UserSessionMatcher): List<EventFilter> {
                 throw Exception("Testing exception")
             }
         }

@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/margin_normal"
-            app:layout_scrollFlags="scroll|snap|enterAlways">
+            app:layout_scrollFlags="scroll|snap">
 
             <ImageView
                 android:id="@+id/profile_button"
@@ -59,16 +59,6 @@
                 android:minHeight="?actionBarSize"
                 android:text="@string/title_schedule"
                 android:textAppearance="@style/TextAppearance.IOSched.ToolbarTitle" />
-
-            <Switch
-                android:id="@+id/switch_pinned_events"
-                style="@style/Widget.IOSched.TogglePinnedEventsSwitch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:checked="@{viewModel.showPinnedEvents}"
-                android:contentDescription="@string/a11y_pinned"
-                android:onCheckedChanged="@{(view, checked) -> viewModel.togglePinnedEvents(checked)}" />
 
         </FrameLayout>
 

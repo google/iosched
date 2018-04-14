@@ -31,6 +31,8 @@
         <item quantity="one">%1$d Event</item>
         <item quantity="other">%1$d Events</item>
     </plurals>
+    <string name="starred_and_reserved">Your starred and reserved events</string>
+    <string name="starred_and_reserved_short">Starred &amp; reserved</string>
 
     <string name="session_duration_location" translatable="false">%1s / %2s</string>
     <string name="session_date_duration_location" translatable="false">%1s / %2s / %3s</string>
@@ -54,8 +56,7 @@
     <string name="cancellation_denied_cutoff" translation_description="The message shown when user is trying to cancel a reservation but it's denied because the session starts too soon">Cancellation denied: too close to start time.</string>
     <string name="cancellation_denied_unknown" translation_description="The message shown when user is trying to cancel a reservation but it's denied because of an unknown error">Cancellation denied: unknown error.</string>
 
-    <string name="schedule_tag_filters_empty" translationDescription="The message shown when a schedule page is empty because no events match the current filters.">No events today match your current filters.</string>
-    <string name="schedule_pinned_events_empty" translationDescription="The message shown when a schedule page is empty because no events are starred or reserved.">You have no starred or reserved events today.</string>
+    <string name="schedule_filters_empty" translationDescription="The message shown when a schedule page is empty because no events match the current filters.">No events today match your current filters.</string>
 
     <string name="reservation_reservable" translationDescription="Label shown on events for which the user can request to reserve a seat.">Reserve seat</string>
     <string name="reservation_reserved" translationDescription="Label shown on events for which the user has reserved a seat.">Reserved</string>

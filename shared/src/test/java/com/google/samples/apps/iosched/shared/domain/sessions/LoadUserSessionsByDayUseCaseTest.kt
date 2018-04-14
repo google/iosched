@@ -30,7 +30,7 @@ import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.TagFilterMatcher
+import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import org.hamcrest.CoreMatchers.`is`
@@ -64,7 +64,7 @@ class LoadUserSessionsByDayUseCaseTest {
 
         val resultLiveData = useCase.observe()
 
-        useCase.execute(Pair(TagFilterMatcher(), "user1"))
+        useCase.execute(Pair(UserSessionMatcher(), "user1"))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
                 as Result.Success<LoadUserSessionsByDayUseCaseResult>
@@ -86,7 +86,7 @@ class LoadUserSessionsByDayUseCaseTest {
 
         val resultLiveData = useCase.observe()
 
-        useCase.execute(Pair(TagFilterMatcher(), "user1"))
+        useCase.execute(Pair(UserSessionMatcher(), "user1"))
 
         userEventsResult.postValue(UserEventsResult(
                 userEventsMessage = UserEventMessage(
@@ -119,7 +119,7 @@ class LoadUserSessionsByDayUseCaseTest {
 
         val resultLiveData = useCase.observe()
 
-        useCase.execute(Pair(TagFilterMatcher(), "user1"))
+        useCase.execute(Pair(UserSessionMatcher(), "user1"))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
 

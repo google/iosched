@@ -24,18 +24,18 @@ import com.google.samples.apps.iosched.shared.model.TestData.session0
 import com.google.samples.apps.iosched.shared.model.TestData.sessionsTag
 import com.google.samples.apps.iosched.shared.model.TestData.webTag
 import com.google.samples.apps.iosched.shared.model.UserSession
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.TagFilterMatcher
+import org.junit.Assert
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
 /**
- * Unit tests for [TagFilterMatcher].
+ * Unit tests for [UserSessionMatcher].
  */
-class TagFilterMatcherTest {
+class UserSessionMatcherTest {
 
-    private var sessionMatcher = TagFilterMatcher()
+    private var sessionMatcher = UserSessionMatcher()
 
     private fun createTestUserSession(vararg tags: Tag): UserSession {
         return UserSession(session0.copy(tags = tags.asList()), TestData.userEvents[0])
@@ -44,7 +44,7 @@ class TagFilterMatcherTest {
     @Before
     fun createSessionFilters() {
         // Reset filters
-        sessionMatcher = TagFilterMatcher()
+        sessionMatcher.clearAll()
     }
 
     @Test
@@ -128,72 +128,72 @@ class TagFilterMatcherTest {
     @Test
     fun newInstance_isEmpty() {
         // New instance should be empty
-        assertTrue(sessionMatcher.isEmpty())
+        assertFalse(sessionMatcher.hasAnyFilters())
     }
 
     @Test
     fun add() {
         // Given empty filters
-        assertTrue(sessionMatcher.isEmpty())
+        assertFalse(sessionMatcher.hasAnyFilters())
         // Adding a tag -> no longer empty
         assertTrue(sessionMatcher.add(androidTag))
-        assertFalse(sessionMatcher.isEmpty())
+        assertTrue(sessionMatcher.hasAnyFilters())
         // Adding same tag -> no change
         assertFalse(sessionMatcher.add(androidTag))
-        assertFalse(sessionMatcher.isEmpty())
+        assertTrue(sessionMatcher.hasAnyFilters())
     }
 
     @Test
     fun remove() {
         // Given empty filters
-        assertTrue(sessionMatcher.isEmpty())
+        assertFalse(sessionMatcher.hasAnyFilters())
         // Remove non-existing tag -> no change
         assertFalse(sessionMatcher.remove(webTag))
-        assertTrue(sessionMatcher.isEmpty())
+        assertFalse(sessionMatcher.hasAnyFilters())
 
         // Add a tag -> no longer empty
         assertTrue(sessionMatcher.add(androidTag))
-        assertFalse(sessionMatcher.isEmpty())
+        assertTrue(sessionMatcher.hasAnyFilters())
         // Remove non-existing tag -> no change
         assertFalse(sessionMatcher.remove(webTag))
-        assertFalse(sessionMatcher.isEmpty())
+        assertTrue(sessionMatcher.hasAnyFilters())
         // Remove existing tag -> empty
         assertTrue(sessionMatcher.remove(androidTag))
-        assertTrue(sessionMatcher.isEmpty())
+        assertFalse(sessionMatcher.hasAnyFilters())
     }
 
     @Test
     fun addAll() {
         // Given empty filters
-        assertTrue(sessionMatcher.isEmpty())
+        assertFalse(sessionMatcher.hasAnyFilters())
         // Add multiple tags -> no longer empty
         sessionMatcher.addAll(androidTag, webTag)
-        assertFalse(sessionMatcher.isEmpty())
+        assertTrue(sessionMatcher.hasAnyFilters())
 
         // Remove one -> filters changed, but not empty
         assertTrue(sessionMatcher.remove(androidTag))
-        assertFalse(sessionMatcher.isEmpty())
+        assertTrue(sessionMatcher.hasAnyFilters())
         // Remove the other -> empty
         assertTrue(sessionMatcher.remove(webTag))
-        assertTrue(sessionMatcher.isEmpty())
+        assertFalse(sessionMatcher.hasAnyFilters())
     }
 
     @Test
     fun clearAll() {
         // Given empty filters
-        assertTrue(sessionMatcher.isEmpty())
+        assertFalse(sessionMatcher.hasAnyFilters())
         // Add multiple tags -> no longer empty
         sessionMatcher.addAll(androidTag, webTag)
-        assertFalse(sessionMatcher.isEmpty())
+        assertTrue(sessionMatcher.hasAnyFilters())
         // Clear all -> empty
         sessionMatcher.clearAll()
-        assertTrue(sessionMatcher.isEmpty())
+        assertFalse(sessionMatcher.hasAnyFilters())
     }
 
     @Test
     fun contains() {
         // Given empty filters
-        assertTrue(sessionMatcher.isEmpty())
+        assertFalse(sessionMatcher.hasAnyFilters())
         // Does not contain
         assertFalse(sessionMatcher.contains(androidTag))
         // Add tag
@@ -207,16 +207,16 @@ class TagFilterMatcherTest {
     @Test
     fun removeOrphanedTags_noChangeIfEmpty() {
         // Given empty filters
-        assertTrue(sessionMatcher.isEmpty())
+        assertFalse(sessionMatcher.hasAnyFilters())
         // removeOrphanedTags -> no change
         sessionMatcher.removeOrphanedTags(listOf(androidTag, webTag, codelabsTag, sessionsTag))
-        assertTrue(sessionMatcher.isEmpty())
+        assertFalse(sessionMatcher.hasAnyFilters())
     }
 
     @Test
     fun removeOrphanedTags_removesMissingTagsOnly() {
         // Given empty filters
-        assertTrue(sessionMatcher.isEmpty())
+        assertFalse(sessionMatcher.hasAnyFilters())
         // Add tags
         sessionMatcher.addAll(androidTag, sessionsTag)
         assertTrue(sessionMatcher.contains(androidTag))
@@ -229,5 +229,15 @@ class TagFilterMatcherTest {
         assertFalse(sessionMatcher.contains(androidTag))
         // But this tag remains
         assertTrue(sessionMatcher.contains(sessionsTag))
+    }
+
+    @Test
+    fun userEventIsPinned_matches() {
+        sessionMatcher.setShowPinnedEventsOnly(true)
+
+        TestData.userEvents.forEach {
+            val userSession = UserSession(TestData.session0, it)
+            Assert.assertEquals(it.isPinned(), sessionMatcher.matches(userSession))
+        }
     }
 }

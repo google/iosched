@@ -32,6 +32,8 @@
 
     <attr name="sessionListKeyline" format="dimension" />
 
+    <attr name="eventFilterViewStyle" format="reference" />
+
     <declare-styleable name="TimeHeader">
         <attr name="android:width" />
         <attr name="android:paddingTop" />
@@ -85,7 +87,8 @@
         <attr name="cardDescription" format="string"/>
     </declare-styleable>
 
-    <declare-styleable name="TagFilterView">
+    <declare-styleable name="EventFilterView">
+        <attr name="android:checked" />
         <attr name="android:text" />
         <attr name="android:textColor" />
         <attr name="android:textSize" />
@@ -95,5 +98,6 @@
         <attr name="outlineWidth" format="dimension" />
         <attr name="clearIcon" format="reference" />
         <attr name="foreground" format="reference" />
+        <attr name="showIcons" format="boolean" />
     </declare-styleable>
 </resources>

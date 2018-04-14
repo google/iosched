@@ -22,8 +22,8 @@
     <data>
 
         <variable
-            name="tagFilter"
-            type="com.google.samples.apps.iosched.ui.schedule.filters.TagFilter" />
+            name="eventFilter"
+            type="com.google.samples.apps.iosched.ui.schedule.filters.EventFilter" />
 
         <variable
             name="viewModel"
@@ -36,17 +36,17 @@
         android:gravity="center_vertical"
         android:minHeight="?android:listPreferredItemHeightSmall">
 
-        <com.google.samples.apps.iosched.ui.schedule.filters.TagFilterView
+        <com.google.samples.apps.iosched.ui.schedule.filters.EventFilterView
             android:id="@+id/filter_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_micro"
             android:layout_marginBottom="@dimen/spacing_micro"
-            android:checked="@{tagFilter.isChecked}"
-            android:text="@{tagFilter.tag.name}"
-            app:color="@{tagFilter.tag.color}"
-            app:selectedTextColor="@{tagFilter.tag.fontColor}"
-            app:animateOnClick="@{() -> viewModel.toggleFilter(tagFilter, !filterLabel.checked)}" />
+            android:checked="@{eventFilter.isChecked}"
+            app:animateOnClick="@{() -> viewModel.toggleFilter(eventFilter, !filterLabel.checked)}"
+            app:color="@{eventFilter.getColor()}"
+            app:eventFilterText="@{eventFilter}"
+            app:selectedTextColor="@{eventFilter.getSelectedTextColor()}" />
 
     </FrameLayout>
 

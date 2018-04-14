@@ -20,29 +20,30 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.google.samples.apps.iosched.databinding.ItemTagChipBinding
-import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.databinding.ItemFilterChipBinding
+import com.google.samples.apps.iosched.util.executeAfter
 
-class TagChipAdapter : RecyclerView.Adapter<TagChipViewHolder>() {
+class FilterChipAdapter : RecyclerView.Adapter<TagChipViewHolder>() {
 
-    var tags = emptyList<Tag>()
+    var filters = emptyList<EventFilter>()
 
-    override fun getItemCount() = tags.size
+    override fun getItemCount() = filters.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagChipViewHolder {
         return TagChipViewHolder(
-            ItemTagChipBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemFilterChipBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
     override fun onBindViewHolder(holder: TagChipViewHolder, position: Int) {
-        holder.bind(tags[position])
+        holder.bind(filters[position])
     }
 }
 
-class TagChipViewHolder(private val binding: ItemTagChipBinding) : ViewHolder(binding.root) {
-    fun bind(tag: Tag) {
-        binding.tag = tag
-        binding.executePendingBindings()
+class TagChipViewHolder(private val binding: ItemFilterChipBinding) : ViewHolder(binding.root) {
+    fun bind(item: EventFilter) {
+        binding.executeAfter {
+            eventFilter = item
+        }
     }
 }

@@ -57,9 +57,9 @@
             android:drawableTop="@drawable/io_logo"
             android:drawablePadding="@dimen/spacing_normal"
             android:gravity="center"
-            android:text="@{viewModel.emptyMessage}"
+            android:text="@string/schedule_filters_empty"
             app:goneUnless="@{isEmpty &amp;&amp; !viewModel.isLoading}"
-            tools:text="@string/schedule_tag_filters_empty"
+            tools:text="@string/schedule_filters_empty"
             tools:visibility="visible" />
 
     </FrameLayout>

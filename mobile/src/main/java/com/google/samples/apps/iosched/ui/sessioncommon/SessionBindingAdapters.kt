@@ -45,26 +45,6 @@ fun tagTint(textView: TextView, color: Int) {
     )
 }
 
-/**
- * Creates a tag background using the tag's color and sets text color according to the background.
- */
-@BindingAdapter("tagChip")
-fun tagChip(textView: TextView, tag: Tag) {
-    textView.background = (textView.resources.getDrawable(
-        R.drawable.tag_filled, textView.context.theme
-    ) as GradientDrawable).apply {
-        setColor(tagTintOrDefault(tag.color, textView.context))
-    }
-
-    val textColor = if (tag.isLightFontColor()) {
-        // tag has a relatively dark background
-        R.color.tag_filter_text_dark
-    } else {
-        R.color.tag_filter_text_light
-    }
-    textView.setTextColor(ContextCompat.getColor(textView.context, textColor))
-}
-
 fun tagTintOrDefault(color: Int, context: Context): Int {
     return if (color != TRANSPARENT) {
         color
