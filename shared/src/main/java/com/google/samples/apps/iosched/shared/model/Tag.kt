@@ -64,7 +64,7 @@ data class Tag (
 
     companion object {
         /** Category value for topic tags */
-        const val CATEGORY_TRACK = "topic"
+        const val CATEGORY_TOPIC = "topic"
         /** Category value for type tags */
         const val CATEGORY_TYPE = "type"
         /** Category value for theme tags */

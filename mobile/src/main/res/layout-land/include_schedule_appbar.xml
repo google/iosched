@@ -56,16 +56,6 @@
                 android:layout_height="?actionBarSize"
                 android:layout_gravity="center"/>
 
-            <Switch
-                android:id="@+id/switch_pinned_events"
-                style="@style/Widget.IOSched.TogglePinnedEventsSwitch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:checked="@{viewModel.showPinnedEvents}"
-                android:contentDescription="@string/a11y_pinned"
-                android:onCheckedChanged="@{(view, checked) -> viewModel.togglePinnedEvents(checked)}" />
-
         </FrameLayout>
 
     </com.google.android.material.widget.AppBarLayout>

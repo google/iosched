@@ -31,6 +31,7 @@
         <item name="android:navigationBarColor">@color/indigo_dark</item>
         <item name="android:textColorTertiary">@color/text_color_tertiary</item>
         <item name="sessionListKeyline">@dimen/session_keyline</item>
+        <item name="eventFilterViewStyle">@style/Widget.IOSched.EventFilters</item>
     </style>
 
     <style name="AppTheme.Launcher" parent="@style/AppTheme.LightNav">
@@ -201,7 +202,7 @@
         <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 
-    <style name="Widget.IOSched.TagFilters">
+    <style name="Widget.IOSched.EventFilters">
         <item name="android:padding">@dimen/spacing_normal</item>
         <item name="android:strokeColor">?android:textColorTertiary</item>
         <item name="android:textColor">?android:textColorPrimary</item>
@@ -209,6 +210,7 @@
         <item name="outlineWidth">1dp</item>
         <item name="clearIcon">@drawable/tag_clear</item>
         <item name="foreground">?selectableItemBackground</item>
+        <item name="showIcons">true</item>
     </style>
 
     <style name="Widget.IOSched.TimeHeaders">

@@ -23,8 +23,10 @@ import com.google.samples.apps.iosched.model.TestData.webTag
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.result.Result.Success
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.TagFilterMatcher
+import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
+import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class LoadTagFiltersUseCaseTest {
@@ -44,8 +46,9 @@ class LoadTagFiltersUseCaseTest {
     @Test
     fun loadsTagFilters() {
         val useCase = LoadTagFiltersUseCase(TagRepository(TestDataRepository))
-        val result = useCase.executeNow(TagFilterMatcher()) as Success
+        val result = useCase.executeNow(UserSessionMatcher()) as Success
 
-        assertEquals(TestData.tagFiltersList, result.data)
+        assertTrue(result.data[0] is MyEventsFilter)
+        assertTrue(result.data.containsAll(TestData.tagFiltersList))
     }
 }

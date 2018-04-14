@@ -35,7 +35,7 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_2
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_3
-import com.google.samples.apps.iosched.ui.schedule.filters.TagFilter
+import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.TagFilter
 
 /**
  * Test data for unit tests.
@@ -186,6 +186,7 @@ object TestData : ConferenceDataSource {
         androidTag, webTag, cloudTag, // TRACK
         sessionsTag, codelabsTag      // TYPE
     ).map { TagFilter(it, false) }
+
 
     // endregion Extras for verification
 

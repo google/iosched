@@ -22,14 +22,11 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
-import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
-import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.TagFilterMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_2
@@ -48,8 +45,8 @@ class ScheduleViewModel @Inject constructor(
     val isLoading: LiveData<Boolean>
 
     // Filters by pinned events, since users should only see their pinned events on Wear.
-    // TODO: Swap out empty TagFilterMatcher() with PinnedEventMatcher once sign-in is enabled.
-    private val userSessionMatcher: UserSessionMatcher = TagFilterMatcher()
+    // TODO: call userSessionMatcher.setShowPinnedEventsOnly(true) once sign-in is enabled.
+    private val userSessionMatcher = UserSessionMatcher()
 
     private val loadSessionsResult: MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>
 

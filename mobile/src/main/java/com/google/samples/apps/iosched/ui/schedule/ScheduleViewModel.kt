@@ -38,14 +38,11 @@ import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.SessionId
-import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.PinnedEventMatcher
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.TagFilterMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
@@ -54,8 +51,10 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_3
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
+import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter
+import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
+import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.TagFilter
 import com.google.samples.apps.iosched.ui.schedule.filters.LoadTagFiltersUseCase
-import com.google.samples.apps.iosched.ui.schedule.filters.TagFilter
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
@@ -88,7 +87,7 @@ class ScheduleViewModel @Inject constructor(
     val swipeRefreshing: LiveData<Boolean>
 
     // The current UserSessionMatcher, used to filter the events that are shown
-    private var currentSessionMatcher: UserSessionMatcher
+    private val userSessionMatcher = UserSessionMatcher()
 
     private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
 
@@ -110,35 +109,28 @@ class ScheduleViewModel @Inject constructor(
     val sessionTimeDataDay3: LiveData<SessionTimeData>
         get() = _sessionTimeDataDay3
 
-    private val tagFilterMatcher = TagFilterMatcher()
     // Cached list of TagFilters returned by the use case. Only Result.Success modifies it.
-    private var cachedTagFilters = emptyList<TagFilter>()
+    private var cachedEventFilters = emptyList<EventFilter>()
 
-    val tagFilters: LiveData<List<TagFilter>>
-    private val _selectedFilterTags = MutableLiveData<List<Tag>>()
-    val selectedFilterTags: LiveData<List<Tag>>
-        get() = _selectedFilterTags
-    private val _hasTagFilters = MutableLiveData<Boolean>()
-    val hasTagFilters: LiveData<Boolean>
-        get() = _hasTagFilters
-    private val _showPinnedEvents = MutableLiveData<Boolean>()
-    val showPinnedEvents: LiveData<Boolean>
-        get() = _showPinnedEvents
+    val eventFilters: LiveData<List<EventFilter>>
+    private val _selectedFilters = MutableLiveData<List<EventFilter>>()
+    val selectedFilters: LiveData<List<EventFilter>>
+        get() = _selectedFilters
+    private val _hasAnyFilters = MutableLiveData<Boolean>()
+    val hasAnyFilters: LiveData<Boolean>
+        get() = _hasAnyFilters
     private val _isAgendaPage = MutableLiveData<Boolean>()
     val isAgendaPage: LiveData<Boolean>
         get() = _isAgendaPage
-    private val _emptyMessage = MutableLiveData<Int>()
-    val emptyMessage: LiveData<Int>
-        get() = _emptyMessage
 
-    private var _transientUiStateVar = TransientUiState(false, false, false)
+    private var _transientUiStateVar = TransientUiState(false, false)
     private val _transientUiState = MutableLiveData<TransientUiState>()
     val transientUiState: LiveData<TransientUiState>
         get() = _transientUiState
 
     private val loadSessionsResult: MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>
     private val loadAgendaResult = MutableLiveData<Result<List<Block>>>()
-    private val loadTagsResult = MutableLiveData<Result<List<TagFilter>>>()
+    private val loadTagsResult = MutableLiveData<Result<List<EventFilter>>>()
     private val swipeRefreshResult = MutableLiveData<Result<Boolean>>()
 
     private val day1Sessions: LiveData<List<UserSession>>
@@ -184,9 +176,6 @@ class ScheduleViewModel @Inject constructor(
     val scheduleUiHintsShown: LiveData<Event<Boolean>>
 
     init {
-        currentSessionMatcher = tagFilterMatcher
-        _emptyMessage.value = R.string.schedule_tag_filters_empty
-
         // Load sessions and tags and store the result in `LiveData`s
         loadSessionsResult = loadUserSessionsByDayUseCase.observe()
 
@@ -196,7 +185,7 @@ class ScheduleViewModel @Inject constructor(
         }
 
         loadAgendaUseCase(loadAgendaResult)
-        loadTagFiltersUseCase(tagFilterMatcher, loadTagsResult)
+        loadTagFiltersUseCase(userSessionMatcher, loadTagsResult)
 
         // map LiveData results from UseCase to each day's individual LiveData
         day1Sessions = loadSessionsResult.map {
@@ -231,12 +220,12 @@ class ScheduleViewModel @Inject constructor(
         }
         // TODO handle agenda errors
 
-        tagFilters = loadTagsResult.map {
+        eventFilters = loadTagsResult.map {
             if (it is Success) {
-                cachedTagFilters = it.data
+                cachedEventFilters = it.data
             }
             // TODO handle Error result
-            cachedTagFilters
+            cachedEventFilters
         }
 
         _profileContentDesc.addSource(currentFirebaseUser) {
@@ -383,50 +372,34 @@ class ScheduleViewModel @Inject constructor(
         _navigateToSessionAction.value = Event(id)
     }
 
-    override fun toggleFilter(filter: TagFilter, enabled: Boolean) {
-        var changed = false
-        if (enabled && tagFilterMatcher.add(filter.tag)) {
-            filter.isChecked.set(true)
-            changed = true
-        } else if (!enabled && tagFilterMatcher.remove(filter.tag)) {
-            filter.isChecked.set(false)
-            changed = true
-        }
-        // If tagFilterMatcher.add or .remove returns false, we do nothing.
-        if (changed) {
-            val hasTagFilters = !tagFilterMatcher.isEmpty()
-            _hasTagFilters.value = hasTagFilters
-            _selectedFilterTags.value = tagFilterMatcher.getSelectedTags()
-            setTransientUiState(_transientUiStateVar.copy(hasTagFilters = hasTagFilters))
-            refreshUserSessions()
-        }
-    }
-
-    override fun clearTagFilters() {
-        if (tagFilterMatcher.clearAll()) {
-            tagFilters.value?.forEach { it.isChecked.set(false) }
-            _hasTagFilters.value = false
-            _selectedFilterTags.value = emptyList()
-            setTransientUiState(_transientUiStateVar.copy(hasTagFilters = false))
-            refreshUserSessions()
-        }
-    }
-
-    override fun togglePinnedEvents(pinned: Boolean) {
-        // TODO check if logged in first
-        if (_showPinnedEvents.value != pinned) {
-            _showPinnedEvents.value = pinned
-            if (pinned) {
-                currentSessionMatcher = PinnedEventMatcher
-                _showPinnedEvents.value = true
-                _emptyMessage.value = R.string.schedule_pinned_events_empty
-                setTransientUiState(_transientUiStateVar.copy(showPinnedEvents = true))
-            } else {
-                currentSessionMatcher = tagFilterMatcher
-                _showPinnedEvents.value = false
-                _emptyMessage.value = R.string.schedule_tag_filters_empty
-                setTransientUiState(_transientUiStateVar.copy(showPinnedEvents = false))
+    override fun toggleFilter(filter: EventFilter, enabled: Boolean) {
+        val changed = when (filter) {
+            is MyEventsFilter -> userSessionMatcher.setShowPinnedEventsOnly(enabled)
+            is TagFilter -> {
+                if (enabled) {
+                    userSessionMatcher.add(filter.tag)
+                } else {
+                    userSessionMatcher.remove(filter.tag)
+                }
             }
+        }
+        if (changed) {
+            // Actually toggle the filter
+            filter.isChecked.set(enabled)
+            val hasAnyFilters = userSessionMatcher.hasAnyFilters()
+            _hasAnyFilters.value = hasAnyFilters
+            _selectedFilters.value = cachedEventFilters.filter { it.isChecked.get() }
+            setTransientUiState(_transientUiStateVar.copy(hasAnyFilters = hasAnyFilters))
+            refreshUserSessions()
+        }
+    }
+
+    override fun clearFilters() {
+        if (userSessionMatcher.clearAll()) {
+            eventFilters.value?.forEach { it.isChecked.set(false) }
+            _hasAnyFilters.value = false
+            _selectedFilters.value = emptyList()
+            setTransientUiState(_transientUiStateVar.copy(hasAnyFilters = false))
             refreshUserSessions()
         }
     }
@@ -454,7 +427,7 @@ class ScheduleViewModel @Inject constructor(
 
     private fun refreshUserSessions() {
         Timber.d("ViewModel refreshing user sessions")
-        loadUserSessionsByDayUseCase.execute(currentSessionMatcher to getUserId())
+        loadUserSessionsByDayUseCase.execute(userSessionMatcher to getUserId())
     }
 
     override fun onStarClicked(userEvent: UserEvent) {
@@ -506,17 +479,13 @@ data class SessionTimeData(var list: List<UserSession>? = null, var timeZoneId: 
 
 interface ScheduleEventListener : EventActions {
     /** Called from the UI to enable or disable a particular filter. */
-    fun toggleFilter(filter: TagFilter, enabled: Boolean)
+    fun toggleFilter(filter: EventFilter, enabled: Boolean)
 
     /** Called from the UI to remove all filters. */
-    fun clearTagFilters()
-
-    /** Called from the UI to toggle showing starred or reserved events only. */
-    fun togglePinnedEvents(pinned: Boolean)
+    fun clearFilters()
 }
 
 data class TransientUiState(
     val isAgendaPage: Boolean,
-    val showPinnedEvents: Boolean,
-    val hasTagFilters: Boolean
+    val hasAnyFilters: Boolean
 )

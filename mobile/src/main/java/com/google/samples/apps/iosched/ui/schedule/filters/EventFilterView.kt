@@ -51,7 +51,7 @@ import com.google.samples.apps.iosched.util.textWidth
  * A custom view for displaying filters. Allows a custom presentation of the tag color and selection
  * state.
  */
-class TagFilterView @JvmOverloads constructor(
+class EventFilterView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -73,6 +73,14 @@ class TagFilterView @JvmOverloads constructor(
             field = value
             contentDescription = value
             requestLayout()
+        }
+
+    var showIcons: Boolean = true
+        set(value) {
+            if (field != value) {
+                field = value
+                requestLayout()
+            }
         }
 
     private var progress = 0f
@@ -106,36 +114,41 @@ class TagFilterView @JvmOverloads constructor(
 
     init {
         val a = context.obtainStyledAttributes(
-            R.style.Widget_IOSched_TagFilters,
-            R.styleable.TagFilterView
+            attrs,
+            R.styleable.EventFilterView,
+            R.attr.eventFilterViewStyle,
+            R.style.Widget_IOSched_EventFilters
         )
         outlinePaint = Paint(ANTI_ALIAS_FLAG).apply {
-            color = a.getColorOrThrow(R.styleable.TagFilterView_android_strokeColor)
-            strokeWidth = a.getDimensionOrThrow(R.styleable.TagFilterView_outlineWidth)
+            color = a.getColorOrThrow(R.styleable.EventFilterView_android_strokeColor)
+            strokeWidth = a.getDimensionOrThrow(R.styleable.EventFilterView_outlineWidth)
             style = STROKE
         }
-        defaultTextColor = a.getColorOrThrow(R.styleable.TagFilterView_android_textColor)
+        defaultTextColor = a.getColorOrThrow(R.styleable.EventFilterView_android_textColor)
         textPaint = TextPaint(ANTI_ALIAS_FLAG).apply {
             color = defaultTextColor
-            textSize = a.getDimensionOrThrow(R.styleable.TagFilterView_android_textSize)
+            textSize = a.getDimensionOrThrow(R.styleable.EventFilterView_android_textSize)
         }
         dotPaint = Paint(ANTI_ALIAS_FLAG)
-        clear = a.getDrawableOrThrow(R.styleable.TagFilterView_clearIcon).apply {
+        clear = a.getDrawableOrThrow(R.styleable.EventFilterView_clearIcon).apply {
             setBounds(
                 -intrinsicWidth / 2, -intrinsicHeight / 2, intrinsicWidth / 2, intrinsicHeight / 2
             )
         }
-        touchFeedback = a.getDrawableOrThrow(R.styleable.TagFilterView_foreground).apply {
-            callback = this@TagFilterView
+        touchFeedback = a.getDrawableOrThrow(R.styleable.EventFilterView_foreground).apply {
+            callback = this@EventFilterView
         }
-        padding = a.getDimensionPixelSizeOrThrow(R.styleable.TagFilterView_android_padding)
+        padding = a.getDimensionPixelSizeOrThrow(R.styleable.EventFilterView_android_padding)
+        isChecked = a.getBoolean(R.styleable.EventFilterView_android_checked, false)
+        showIcons = a.getBoolean(R.styleable.EventFilterView_showIcons, true)
         a.recycle()
         clipToOutline = true
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val nonTextWidth =
-            (4 * padding) + clear.intrinsicWidth + (2 * outlinePaint.strokeWidth).toInt()
+        val nonTextWidth = (4 * padding) +
+                (2 * outlinePaint.strokeWidth).toInt() +
+                if (showIcons) clear.intrinsicWidth else 0
         val availableTextWidth = when (MeasureSpec.getMode(widthMeasureSpec)) {
             MeasureSpec.EXACTLY -> MeasureSpec.getSize(widthMeasureSpec) - nonTextWidth
             MeasureSpec.AT_MOST -> MeasureSpec.getSize(widthMeasureSpec) - nonTextWidth
@@ -157,11 +170,11 @@ class TagFilterView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         val strokeWidth = outlinePaint.strokeWidth
         val iconRadius = clear.intrinsicWidth / 2f
+        val halfStroke = strokeWidth / 2f
+        val rounding = (height - strokeWidth) / 2f
 
         // Outline
         if (progress < 1f) {
-            val halfStroke = strokeWidth / 2f
-            val rounding = (height - strokeWidth) / 2f
             canvas.drawRoundRect(
                 halfStroke,
                 halfStroke,
@@ -174,20 +187,36 @@ class TagFilterView @JvmOverloads constructor(
         }
 
         // Tag color dot/background
-        // Draws beyond bounds and relies on clipToOutline to enforce pill shape
-        val dotRadius = lerp(
-            strokeWidth + iconRadius,
-            width.toFloat(),
-            progress
-        )
-        canvas.drawCircle(strokeWidth + padding + iconRadius, height / 2f, dotRadius, dotPaint)
+        if (showIcons) {
+            // Draws beyond bounds and relies on clipToOutline to enforce pill shape
+            val dotRadius = lerp(
+                strokeWidth + iconRadius,
+                width.toFloat(),
+                progress
+            )
+            canvas.drawCircle(strokeWidth + padding + iconRadius, height / 2f, dotRadius, dotPaint)
+        } else {
+            canvas.drawRoundRect(
+                halfStroke,
+                halfStroke,
+                width - halfStroke,
+                height - halfStroke,
+                rounding,
+                rounding,
+                dotPaint
+            )
+        }
 
         // Text
-        val textX = lerp(
-            strokeWidth + padding + clear.intrinsicWidth + padding,
-            strokeWidth + padding * 2f,
-            progress
-        )
+        val textX = if (showIcons) {
+            lerp(
+                strokeWidth + padding + clear.intrinsicWidth + padding,
+                strokeWidth + padding * 2f,
+                progress
+            )
+        } else {
+            strokeWidth + padding * 2f
+        }
         val selectedColor = selectedTextColor
         textPaint.color = if (selectedColor != null && selectedColor != 0 && progress > 0) {
             ColorUtils.blendARGB(defaultTextColor, selectedColor, progress)
@@ -202,7 +231,7 @@ class TagFilterView @JvmOverloads constructor(
         }
 
         // Clear icon
-        if (progress > 0f) {
+        if (showIcons && progress > 0f) {
             canvas.withTranslation(
                 x = width - strokeWidth - padding - iconRadius,
                 y = height / 2f

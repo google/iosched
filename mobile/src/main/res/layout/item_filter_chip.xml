@@ -23,18 +23,19 @@
     <data>
 
         <variable
-            name="tag"
-            type="com.google.samples.apps.iosched.shared.model.Tag" />
+            name="eventFilter"
+            type="com.google.samples.apps.iosched.ui.schedule.filters.EventFilter" />
     </data>
 
-    <TextView
-        android:id="@+id/tag_name"
-        style="@style/Widget.IOSched.Tag.Chip"
+    <com.google.samples.apps.iosched.ui.schedule.filters.EventFilterView
+        android:id="@+id/filter_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@{tag.name}"
-        app:tagChip="@{tag}"
-        tools:backgroundTint="@sample/tags.json/tags/color"
+        android:checked="true"
+        app:color="@{eventFilter.getColor()}"
+        app:eventFilterTextShort="@{eventFilter}"
+        app:selectedTextColor="@{eventFilter.getSelectedTextColor()}"
+        app:showIcons="false"
         tools:text="@sample/tags.json/tags/name" />
 
 </layout>

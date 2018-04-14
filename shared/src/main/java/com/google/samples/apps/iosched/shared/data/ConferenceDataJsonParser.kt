@@ -68,7 +68,7 @@ object ConferenceDataJsonParser {
                     isLivestream = session.isLivestream,
                     youTubeUrl = session.youTubeUrl,
                     tags = tags,
-                    displayTags = tags.filter { it.category == Tag.CATEGORY_TRACK },
+                    displayTags = tags.filter { it.category == Tag.CATEGORY_TOPIC },
                     speakers = session.speakers.mapNotNull { data.speakers[it] }.toSet(),
                     photoUrl = session.photoUrl,
                     relatedSessions = session.relatedSessions,

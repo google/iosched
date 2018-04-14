@@ -31,7 +31,6 @@ import android.widget.TextView
 import androidx.view.doOnLayout
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleFilterBinding
-import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.MainActivity
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
@@ -97,7 +96,7 @@ class ScheduleFilterFragment : DaggerFragment() {
         behavior = BottomSheetBehavior.from(binding.filterSheet)
 
         filterAdapter = ScheduleFilterAdapter(viewModel)
-        viewModel.tagFilters.observe(this, Observer { filterAdapter.submitTagFilterList(it) })
+        viewModel.eventFilters.observe(this, Observer { filterAdapter.submitTagFilterList(it) })
 
         binding.recyclerview.apply {
             adapter = filterAdapter
@@ -127,19 +126,6 @@ class ScheduleFilterFragment : DaggerFragment() {
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 updateFilterHeadersAlpha(slideOffset)
-            }
-        })
-
-        // We can't use DataBinding on <fragment> tags, so set up an observer manually.
-        viewModel.showPinnedEvents.observe(this, Observer {
-            val pinned = it ?: return@Observer
-            if (pinned) {
-                behavior.isDraggable = false
-                if (behavior.state == STATE_EXPANDED) {
-                    behavior.state = STATE_COLLAPSED
-                }
-            } else {
-                behavior.isDraggable = true
             }
         })
 
@@ -183,22 +169,22 @@ class ScheduleFilterFragment : DaggerFragment() {
     }
 }
 
-@BindingAdapter("filterDescriptionTags")
-fun filterDescriptionTags(recyclerView : RecyclerView, tags: List<Tag>?) {
-    val tagChipAdapter: TagChipAdapter
+@BindingAdapter("selectedFilters")
+fun selectedFilters(recyclerView : RecyclerView, filters: List<EventFilter>?) {
+    val filterChipAdapter: FilterChipAdapter
     if (recyclerView.adapter == null) {
-        tagChipAdapter = TagChipAdapter()
+        filterChipAdapter = FilterChipAdapter()
         recyclerView.apply {
-            adapter = tagChipAdapter
+            adapter = filterChipAdapter
             addItemDecoration(SpaceDecoration(
                 end = resources.getDimensionPixelSize(R.dimen.spacing_normal)
             ))
         }
     } else {
-        tagChipAdapter = recyclerView.adapter as TagChipAdapter
+        filterChipAdapter = recyclerView.adapter as FilterChipAdapter
     }
-    tagChipAdapter.tags = tags ?: emptyList()
-    tagChipAdapter.notifyDataSetChanged()
+    filterChipAdapter.filters = filters ?: emptyList()
+    filterChipAdapter.notifyDataSetChanged()
 }
 
 @BindingAdapter(value = ["hasFilters", "eventCount"], requireAll = true)
@@ -210,4 +196,32 @@ fun filterHeader(textView: TextView, hasFilters: Boolean?, eventCount: Int?) {
     } else {
         textView.setText(R.string.filters)
     }
+}
+
+@BindingAdapter("animateOnClick")
+fun animateOnClick(filter: EventFilterView, listener: View.OnClickListener) {
+    filter.setOnClickListener {
+        filter.animateChecked(!filter.isChecked)
+        listener.onClick(filter)
+    }
+}
+
+@BindingAdapter("eventFilterText")
+fun eventFilterText(view: EventFilterView, filter: EventFilter) {
+    val text = if (filter.getTextResId() != 0) {
+        view.resources.getText(filter.getTextResId())
+    } else {
+        filter.getText()
+    }
+    view.text = text
+}
+
+@BindingAdapter("eventFilterTextShort")
+fun eventFilterTextShort(view: EventFilterView, filter: EventFilter) {
+    val text = if (filter.getShortTextResId() != 0) {
+        view.resources.getText(filter.getShortTextResId())
+    } else {
+        filter.getShortText()
+    }
+    view.text = text
 }

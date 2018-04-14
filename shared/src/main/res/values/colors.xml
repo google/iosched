@@ -28,7 +28,4 @@
     <color name="grey_600">#747474</color>
     <color name="spacer_grey">#e0e0e0</color>
     <color name="white_90">#e6ffffff</color>
-
-    <color name="tag_filter_text_light">#202124</color>
-    <color name="tag_filter_text_dark">@color/white</color>
 </resources>

@@ -23,7 +23,7 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsBy
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.TagFilterMatcher
+import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.map
@@ -34,7 +34,7 @@ import com.google.samples.apps.iosched.shared.util.map
 class ScheduleViewModel(loadSessionsByDayUseCase: LoadUserSessionsByDayUseCase) : ViewModel() {
 
     // The current UserSessionMatcher, used to filter the events that are shown
-    private var userSessionMatcher = TagFilterMatcher()
+    private var userSessionMatcher = UserSessionMatcher()
 
     // TODO: Remove it once the FirebaseUser is available when the app is launched
     val tempUser = "user1"

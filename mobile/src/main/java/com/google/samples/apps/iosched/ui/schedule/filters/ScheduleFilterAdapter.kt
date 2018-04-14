@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.ui.schedule.filters
 
-import android.support.annotation.StringRes
 import android.support.v7.recyclerview.extensions.ListAdapter
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.GridLayoutManager.SpanSizeLookup
@@ -26,12 +25,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.databinding.ItemTagFilterBinding
-import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.databinding.ItemEventFilterBinding
 import com.google.samples.apps.iosched.shared.util.exceptionInDebug
 import com.google.samples.apps.iosched.shared.util.inflate
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
-import com.google.samples.apps.iosched.ui.schedule.filters.ScheduleFilterAdapter.FilterCategoryHeading
+import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.EventFilterCategory
+import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.EventFilterCategory.NONE
+import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.TagFilter
 
 /**
  * Adapter for the filters drawer
@@ -41,37 +41,27 @@ class ScheduleFilterAdapter(val viewModel: ScheduleViewModel) :
 
     companion object {
         private const val VIEW_TYPE_HEADING = R.layout.item_filter_heading
-        private const val VIEW_TYPE_TAGFILTER = R.layout.item_tag_filter
+        private const val VIEW_TYPE_FILTER = R.layout.item_event_filter
 
         /**
-         * Insert [FilterCategoryHeading]s in a list of [TagFilter]s to make a heterogeneous list.
+         * Inserts category headings in a list of [EventFilter]s to make a heterogeneous list.
+         * Assumes the items are already sorted by the value of [EventFilter.getFilterCategory],
+         * with items belonging to [NONE] first.
          */
-        private fun insertCategoryHeadings(list: List<TagFilter>?): List<Any> {
+        private fun insertCategoryHeadings(list: List<EventFilter>?): List<Any> {
             val newList = mutableListOf<Any>()
-            var previousCategory: String? = null
+            var previousCategory: EventFilterCategory = NONE
             list?.forEach {
-                if (it.tag.category != previousCategory) {
-                    newList.add(createCategoryHeading(it.tag.category))
+                val category = it.getFilterCategory()
+                if (category != previousCategory && category != NONE) {
+                    newList.add(category)
                 }
                 newList.add(it)
-                previousCategory = it.tag.category
+                previousCategory = category
             }
             return newList
         }
-
-        /** Convert a [Tag.category] to a heading with text. */
-        private fun createCategoryHeading(category: String): FilterCategoryHeading {
-            val titleRes = when (category) {
-                Tag.CATEGORY_TRACK -> R.string.category_heading_tracks
-                Tag.CATEGORY_TYPE -> R.string.category_heading_types
-                else -> throw IllegalArgumentException("Unsupported category")
-            }
-            return FilterCategoryHeading(titleRes)
-        }
     }
-
-    /** Item that represents a filter category heading. */
-    internal data class FilterCategoryHeading(@StringRes val stringRes: Int)
 
     override fun submitList(list: MutableList<Any>?) {
         exceptionInDebug(
@@ -81,26 +71,26 @@ class ScheduleFilterAdapter(val viewModel: ScheduleViewModel) :
     }
 
     /** Prefer this method over [submitList] to add category headings. */
-    fun submitTagFilterList(list: List<TagFilter>?) {
+    fun submitTagFilterList(list: List<EventFilter>?) {
         super.submitList(insertCategoryHeadings(list))
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is FilterCategoryHeading -> VIEW_TYPE_HEADING
-            is TagFilter -> VIEW_TYPE_TAGFILTER
+            is EventFilterCategory -> VIEW_TYPE_HEADING
+            is EventFilter -> VIEW_TYPE_FILTER
             else -> throw IllegalArgumentException("Unknown item type")
         }
     }
 
     fun getSpanSize(position: Int): Int {
-        return if (getItemViewType(position) == VIEW_TYPE_HEADING) { 2 } else { 1 }
+        return if (getItem(position) is TagFilter) 1 else 2
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
             VIEW_TYPE_HEADING -> createHeadingViewHolder(parent)
-            VIEW_TYPE_TAGFILTER -> createFilterViewHolder(parent)
+            VIEW_TYPE_FILTER -> createFilterViewHolder(parent)
             else -> throw IllegalArgumentException("Unknown item type")
         }
     }
@@ -110,7 +100,7 @@ class ScheduleFilterAdapter(val viewModel: ScheduleViewModel) :
     }
 
     private fun createFilterViewHolder(parent: ViewGroup): FilterViewHolder {
-        val binding = ItemTagFilterBinding.inflate(
+        val binding = ItemEventFilterBinding.inflate(
             LayoutInflater.from(parent.context),
             parent, false
         ).apply {
@@ -121,8 +111,8 @@ class ScheduleFilterAdapter(val viewModel: ScheduleViewModel) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (holder) {
-            is HeadingViewHolder -> holder.bind(getItem(position) as FilterCategoryHeading)
-            is FilterViewHolder -> holder.bind(getItem(position) as TagFilter)
+            is HeadingViewHolder -> holder.bind(getItem(position) as EventFilterCategory)
+            is FilterViewHolder -> holder.bind(getItem(position) as EventFilter)
         }
     }
 
@@ -130,17 +120,17 @@ class ScheduleFilterAdapter(val viewModel: ScheduleViewModel) :
     class HeadingViewHolder(itemView: View) : ViewHolder(itemView) {
         private val textView = itemView as TextView
 
-        internal fun bind(item: FilterCategoryHeading) {
-            textView.setText(item.stringRes)
+        internal fun bind(item: EventFilterCategory) {
+            textView.setText(item.resId)
         }
     }
 
     /** ViewHolder for [TagFilter] items. */
-    class FilterViewHolder(private val binding: ItemTagFilterBinding) :
+    class FilterViewHolder(private val binding: ItemEventFilterBinding) :
         ViewHolder(binding.root) {
 
-        internal fun bind(item: TagFilter) {
-            binding.tagFilter = item
+        internal fun bind(item: EventFilter) {
+            binding.eventFilter = item
             binding.executePendingBindings()
         }
     }
@@ -150,13 +140,9 @@ internal object TagFilterDiff : DiffUtil.ItemCallback<Any>() {
     override fun areItemsTheSame(oldItem: Any, newItem: Any) = oldItem == newItem
 
     override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
-        // This method is only called if areItemsTheSame() returns true. For FilterCategoryHeading
-        // items, that check suffices for this one as well.
-        return when (oldItem) {
-            is FilterCategoryHeading -> true
-            is TagFilter -> oldItem.isUiContentEqual(newItem as TagFilter)
-            else -> throw IllegalArgumentException("Unknown item type")
-        }
+        // This method is only called if areItemsTheSame() returns true. For anything other than
+        // TagFilter items, that check suffices for this one as well.
+        return (oldItem as? TagFilter)?.isUiContentEqual(newItem as TagFilter) ?: true
     }
 }
 

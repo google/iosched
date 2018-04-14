@@ -192,8 +192,8 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     }
 
     private fun updateFiltersUi(uiState: TransientUiState) {
-        val showFab = !uiState.isAgendaPage && !uiState.hasTagFilters && !uiState.showPinnedEvents
-        val hideable = uiState.isAgendaPage || (!uiState.showPinnedEvents && !uiState.hasTagFilters)
+        val showFab = !uiState.isAgendaPage && !uiState.hasAnyFilters
+        val hideable = uiState.isAgendaPage || !uiState.hasAnyFilters
 
         fabVisibility(filtersFab, showFab)
         bottomSheetBehavior.isHideable = hideable

@@ -31,7 +31,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.widget.FloatingActionButton
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.ui.schedule.filters.TagFilterView
 import com.google.samples.apps.iosched.widget.CustomSwipeRefreshLayout
 import timber.log.Timber
 
@@ -93,12 +92,4 @@ fun imageUrl(imageView: ImageView, imageUrl: String?, placeholder: Drawable?) {
 @BindingAdapter("swipeRefreshColors")
 fun setSwipeRefreshColors(swipeRefreshLayout: CustomSwipeRefreshLayout, colorResIds: IntArray) {
     swipeRefreshLayout.setColorSchemeColors(*colorResIds)
-}
-
-@BindingAdapter("animateOnClick")
-fun animateOnClick(filter: TagFilterView, listener: View.OnClickListener) {
-    filter.setOnClickListener {
-        filter.animateChecked(!filter.isChecked)
-        listener.onClick(filter)
-    }
 }
