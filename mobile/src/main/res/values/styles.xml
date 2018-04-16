@@ -201,12 +201,14 @@
         <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 
-    <style name="Widget.IOSched.Tag.Filter" parent="Widget.IOSched.Tag.Chip">
-        <item name="android:background">@drawable/tag_filter_background</item>
-        <item name="android:drawablePadding">@dimen/spacing_normal</item>
-        <item name="android:minHeight">@dimen/tag_height</item>
-        <item name="autoSizeTextType">uniform</item>
-        <item name="autoSizeMinTextSize">8sp</item>
+    <style name="Widget.IOSched.TagFilters">
+        <item name="android:padding">@dimen/spacing_normal</item>
+        <item name="android:strokeColor">?android:textColorTertiary</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="outlineWidth">1dp</item>
+        <item name="clearIcon">@drawable/tag_clear</item>
+        <item name="foreground">?selectableItemBackground</item>
     </style>
 
     <style name="Widget.IOSched.TimeHeaders">

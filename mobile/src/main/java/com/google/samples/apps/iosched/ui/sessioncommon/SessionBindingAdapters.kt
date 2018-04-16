@@ -19,10 +19,12 @@ package com.google.samples.apps.iosched.ui.sessioncommon
 import android.content.Context
 import android.databinding.BindingAdapter
 import android.graphics.Color.TRANSPARENT
+import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.InsetDrawable
 import android.graphics.drawable.RippleDrawable
 import android.graphics.drawable.StateListDrawable
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.RecyclerView
 import android.util.StateSet
@@ -42,21 +44,24 @@ fun sessionTags(recyclerView: RecyclerView, sessionTags: List<Tag>?) {
 @BindingAdapter("tagTint")
 fun tagTint(textView: TextView, color: Int) {
     // Tint the colored dot
-    textView.compoundDrawablesRelative[0]?.setTint(
+    (textView.compoundDrawablesRelative[0] as? GradientDrawable)?.setColor(
         tagTintOrDefault(
             color,
             textView.context
         )
     )
 }
+
 /**
  * Creates a tag background using the tag's color and sets text color according to the background.
  */
 @BindingAdapter("tagChip")
 fun tagChip(textView: TextView, tag: Tag) {
-    val tintColor = tagTintOrDefault(tag.color, textView.context)
-    val tagBg = drawableCompat(textView, R.drawable.tag_filled)?.apply { setTint(tintColor) }
-    textView.background = tagBg
+    textView.background = (textView.resources.getDrawable(
+        R.drawable.tag_filled, textView.context.theme
+    ) as GradientDrawable).apply {
+        setColor(tagTintOrDefault(tag.color, textView.context))
+    }
 
     val textColor = if (tag.isLightFontColor()) {
         // tag has a relatively dark background
@@ -67,67 +72,6 @@ fun tagChip(textView: TextView, tag: Tag) {
     textView.setTextColor(ContextCompat.getColor(textView.context, textColor))
 }
 
-/**
- * Creates a tag background with checkable state. When checked, the tag becomes filled and shows a
- * clear ('X') icon in place of the dot. Also sets text color according to the background for the
- * checked state.
- */
-@BindingAdapter("tagFilter")
-fun tagFilter(textView: TextView, tag: Tag) {
-    val tintColor = tagTintOrDefault(tag.color, textView.context)
-
-    // We can't define these with XML <selector>s because we want to tint only one state in each,
-    // and StateListDrawable does not give us a way to extract any of its contained Drawables.
-    // We also can't tint using an XML color <selector> because there's no way to specify *no* tint
-    // for a state (different from transparent tint, which makes the drawable invisible).
-    val dotOrClear = StateListDrawable().apply {
-        // clear icon when checked
-        addState(
-            intArrayOf(android.R.attr.state_checked),
-            drawableCompat(
-                textView,
-                R.drawable.tag_clear
-            )
-        )
-        // colored dot by default
-        addState(StateSet.WILD_CARD,
-            drawableCompat(
-                textView,
-                R.drawable.tag_dot
-            )?.apply { setTint(tintColor) })
-    }
-    textView.setCompoundDrawablesRelativeWithIntrinsicBounds(dotOrClear, null, null, null)
-
-    val tagBg = StateListDrawable().apply {
-        // filled chip when checked
-        addState(intArrayOf(android.R.attr.state_checked),
-            drawableCompat(
-                textView,
-                R.drawable.tag_filled
-            )?.apply { setTint(tintColor) })
-        // outline by default
-        addState(
-            StateSet.WILD_CARD,
-            drawableCompat(
-                textView,
-                R.drawable.tag_outline
-            )
-        )
-    }
-    ((textView.background as InsetDrawable).drawable as RippleDrawable)
-        .setDrawableByLayerId(R.id.tag_fill, tagBg)
-
-    val textColorRes = if (tag.isLightFontColor()) {
-        // tag has a relatively dark background
-        R.color.tag_filter_text_statelist_dark
-    } else {
-        R.color.tag_filter_text_statelist_light
-    }
-
-    val textColors = AppCompatResources.getColorStateList(textView.context, textColorRes)
-    textView.setTextColor(textColors)
-}
-
 fun tagTintOrDefault(color: Int, context: Context): Int {
     return if (color != TRANSPARENT) {
         color
@@ -135,5 +79,3 @@ fun tagTintOrDefault(color: Int, context: Context): Int {
         ContextCompat.getColor(context, R.color.default_tag_color)
     }
 }
-
-fun drawableCompat(view: View, id: Int) = AppCompatResources.getDrawable(view.context, id)

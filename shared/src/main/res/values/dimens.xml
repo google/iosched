@@ -16,7 +16,6 @@
   -->
 
 <resources>
-    <dimen name="tag_height">32sp</dimen>
     <dimen name="tag_dot_size">12dp</dimen>
     <dimen name="tag_hz_padding">12dp</dimen>
     <dimen name="tag_vert_padding">6dp</dimen>
