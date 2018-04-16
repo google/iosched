@@ -16,11 +16,13 @@
 
 package com.google.samples.apps.iosched.util
 
+import android.app.Activity
 import android.databinding.ObservableBoolean
 import android.databinding.ViewDataBinding
 import android.graphics.drawable.Drawable
 import android.support.annotation.DrawableRes
 import android.view.View
+import androidx.view.postDelayed
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 
 fun ObservableBoolean.hasSameValue(other: ObservableBoolean) = get() == other.get()
@@ -43,5 +45,15 @@ inline fun loadDrawableAsync(view: View, @DrawableRes id: Int, crossinline f: (D
         view.post {
             f(drawable)
         }
+    }
+}
+
+/**
+ * An extension to `postponeEnterTransition` which will resume after a timeout.
+ */
+fun Activity.postponeEnterTransition(timeout: Long) {
+    postponeEnterTransition()
+    window.decorView.postDelayed(timeout) {
+        startPostponedEnterTransition()
     }
 }

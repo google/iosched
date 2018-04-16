@@ -33,6 +33,7 @@ import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
+import com.google.samples.apps.iosched.util.postponeEnterTransition
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 import javax.inject.Named
@@ -61,7 +62,7 @@ class SpeakerFragment : DaggerFragment() {
         speakerViewModel.setSpeakerId(requireNotNull(arguments).getString(SPEAKER_ID))
 
         // Delay the Activity enter transition until speaker image has loaded
-        activity?.postponeEnterTransition()
+        activity?.postponeEnterTransition(500L)
 
         val binding = FragmentSpeakerBinding.inflate(inflater, container, false).apply {
             setLifecycleOwner(this@SpeakerFragment)
