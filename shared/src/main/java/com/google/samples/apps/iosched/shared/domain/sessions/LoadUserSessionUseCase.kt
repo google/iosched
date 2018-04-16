@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.domain.sessions
 
+import android.arch.lifecycle.LiveData
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
@@ -29,13 +30,19 @@ open class LoadUserSessionUseCase @Inject constructor(
         private val userEventRepository: DefaultSessionAndUserEventRepository
 ) : MediatorUseCase<Pair<String?, SessionId>, LoadUserSessionUseCaseResult>() {
 
+    private var userSession: LiveData<Result<LoadUserSessionUseCaseResult>>? = null
+
     override fun execute(parameters: Pair<String?, SessionId>) {
         val (userId, eventId) = parameters
-        val userSession = userEventRepository.getObservableUserEvent(userId, eventId)
 
-        result.removeSource(userSession)
-        result.value = null
-        result.addSource(userSession) {
+        // Remove old data sources
+        clearSources()
+
+        // Fetch an observable of the data
+        val newUserSession = userEventRepository.getObservableUserEvent(userId, eventId)
+
+        // Post new values to the result object.
+        result.addSource(newUserSession) {
             DefaultScheduler.execute {
                 when (it) {
                     is Result.Success -> {
@@ -51,11 +58,19 @@ open class LoadUserSessionUseCase @Inject constructor(
                 }
             }
         }
+        // Save a reference to the observable for later cleaning of sources.
+        userSession = newUserSession
     }
 
     fun onCleared() {
-        // This use case is no longer going to be used so remove subscriptions
-        userEventRepository.clearSingleEventSubscriptions()
+        clearSources()
+    }
+
+    private fun clearSources() {
+        userSession?.let {
+            result.removeSource(it)
+        }
+        result.value = null
     }
 }
 
