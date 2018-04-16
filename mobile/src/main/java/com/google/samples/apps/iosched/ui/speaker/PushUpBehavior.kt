@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.sessiondetail
+package com.google.samples.apps.iosched.ui.speaker
 
 import android.content.Context
 import android.support.annotation.IdRes
