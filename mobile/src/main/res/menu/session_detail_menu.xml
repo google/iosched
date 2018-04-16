@@ -16,7 +16,9 @@
   -->
 
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="AlwaysShowAction">
 
     <item
         android:id="@+id/menu_item_share"
@@ -24,11 +26,13 @@
         android:title="@string/menu_item_share_session"
         app:showAsAction="always" />
 
+    <!-- TODO re-show map button.  Temporarily hiding while b/78025651 is in progress
     <item
         android:id="@+id/menu_item_map"
         android:icon="@drawable/ic_map"
         android:title="@string/menu_item_session_location"
         app:showAsAction="always" />
+    -->
 
     <item
         android:id="@+id/menu_item_star"
