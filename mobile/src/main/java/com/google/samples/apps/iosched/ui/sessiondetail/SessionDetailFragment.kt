@@ -21,15 +21,16 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.ShareCompat
+import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.RecyclerView.RecycledViewPool
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.net.toUri
+import androidx.view.doOnLayout
 import androidx.view.forEach
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.samples.apps.iosched.R
@@ -61,10 +62,10 @@ class SessionDetailFragment : DaggerFragment() {
     private var shareString = ""
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var sessionDetailViewModel: SessionDetailViewModel
-    private lateinit var coordinatorLayout: CoordinatorLayout
 
     @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
+
+    private lateinit var sessionDetailViewModel: SessionDetailViewModel
 
     @Inject
     @field:Named("tagViewPool")
@@ -82,8 +83,6 @@ class SessionDetailFragment : DaggerFragment() {
 
         val binding = FragmentSessionDetailBinding.inflate(inflater, container, false).apply {
             viewModel = sessionDetailViewModel
-            tagViewPool = tagRecycledViewPool
-            coordinatorLayout = coordinatorLayoutSessionDetail
             setLifecycleOwner(this@SessionDetailFragment)
             sessionDetailBottomAppBar.inflateMenu(R.menu.session_detail_menu)
             sessionDetailBottomAppBar.setOnMenuItemClickListener { item ->
@@ -104,6 +103,28 @@ class SessionDetailFragment : DaggerFragment() {
             }
         }
 
+        val detailsAdapter = SessionDetailAdapter(this, sessionDetailViewModel, tagRecycledViewPool)
+        binding.sessionDetailRecyclerView.run {
+            adapter = detailsAdapter
+            itemAnimator.run {
+                addDuration = 120L
+                moveDuration = 120L
+                changeDuration = 120L
+                removeDuration = 100L
+            }
+            doOnLayout {
+                addOnScrollListener(PushUpScrollListener(binding.up, it))
+            }
+        }
+
+        sessionDetailViewModel.session.observe(this, Observer {
+            detailsAdapter.speakers = it?.speakers?.toList() ?: emptyList()
+        })
+
+        sessionDetailViewModel.relatedUserSessions.observe(this, Observer {
+            detailsAdapter.related = it ?: emptyList()
+        })
+
         sessionDetailViewModel.session.observe(this, Observer {
             shareString = if (it == null) {
                 ""
@@ -119,8 +140,6 @@ class SessionDetailFragment : DaggerFragment() {
         sessionDetailViewModel.navigateToSessionAction.observe(this, EventObserver { sessionId ->
             startActivity(SessionDetailActivity.starterIntent(requireContext(), sessionId))
         })
-
-        // TODO style Snackbar so it doesn't overlap the bottom app bar (b/76112328)
 
         val snackbarPreferenceViewModel: SnackbarPreferenceViewModel =
                 activityViewModelProvider(viewModelFactory)
@@ -156,7 +175,7 @@ class SessionDetailFragment : DaggerFragment() {
 
         sessionDetailViewModel.navigateToSpeakerDetail.observe(this, EventObserver { speakerId ->
             requireActivity().run {
-                val sharedElement = findSpeakerHeadshot(binding.sessionDetailSpeakerList, speakerId)
+                val sharedElement = findSpeakerHeadshot(binding.sessionDetailRecyclerView, speakerId)
                 val options = ActivityOptions.makeSceneTransitionAnimation(
                     this, sharedElement, getString(R.string.speaker_headshot_transition))
                 startActivity(SpeakerActivity.starterIntent(this, speakerId), options.toBundle())
