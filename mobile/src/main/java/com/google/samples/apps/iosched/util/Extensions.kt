@@ -21,6 +21,7 @@ import android.databinding.ObservableBoolean
 import android.databinding.ViewDataBinding
 import android.graphics.drawable.Drawable
 import android.support.annotation.DrawableRes
+import android.text.StaticLayout
 import android.view.View
 import androidx.view.postDelayed
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
@@ -56,4 +57,22 @@ fun Activity.postponeEnterTransition(timeout: Long) {
     window.decorView.postDelayed(timeout) {
         startPostponedEnterTransition()
     }
+}
+
+/**
+ * Calculated the widest line in a [StaticLayout].
+ */
+fun StaticLayout.textWidth() : Int {
+    var width = 0f
+    for (i in 0 until lineCount) {
+        width = width.coerceAtLeast(getLineWidth(i))
+    }
+    return width.toInt()
+}
+
+/**
+ * Linearly interpolate between two values.
+ */
+fun lerp(a: Float, b: Float, t: Float): Float {
+    return a + (b - a) * t
 }
