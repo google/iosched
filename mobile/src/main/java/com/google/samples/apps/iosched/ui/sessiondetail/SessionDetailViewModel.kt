@@ -55,7 +55,7 @@ import org.threeten.bp.Duration
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
-import java.util.*
+import java.util.UUID
 import javax.inject.Inject
 
 private const val TEN_SECONDS = 10_000L
@@ -338,7 +338,6 @@ class SessionDetailViewModel @Inject constructor(
     override fun onCleared() {
         // Clear subscriptions that might be leaked or that will not be used in the future.
         loadUserSessionUseCase.onCleared()
-        loadRelatedSessionUseCase.onCleared()
     }
 
     /**

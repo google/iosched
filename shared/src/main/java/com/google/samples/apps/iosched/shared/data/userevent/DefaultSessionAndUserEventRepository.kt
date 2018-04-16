@@ -50,7 +50,6 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 ) : SessionAndUserEventRepository {
 
     private val sessionsByDayResult = MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>()
-    private val sessionResult = MediatorLiveData<Result<LoadUserSessionUseCaseResult>>()
 
     // Keep a reference to the observable for a single event (from the details screen) so we can
     // stop observing when done.
@@ -109,6 +108,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
             userId: String?,
             eventId: SessionId
     ): LiveData<Result<LoadUserSessionUseCaseResult>> {
+        val sessionResult = MediatorLiveData<Result<LoadUserSessionUseCaseResult>>()
 
         // If there is no logged-in user, return the session with a null UserEvent
         if (userId == null) {
@@ -253,12 +253,8 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
     }
 
     override fun clearSingleEventSubscriptions() {
-        // The details screen is closing so reset subscriptions and old values
-        sessionResult.value = null
         // The UserEvent data source can stop observing user data
         userEventDataSource.clearSingleEventSubscriptions()
-        // Also free its observable in the repository.
-        observableUserEvent?.let { sessionResult.removeSource(it) }
     }
 }
 
