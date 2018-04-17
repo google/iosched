@@ -77,21 +77,28 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         sessionsByDayResult.addSource(observableUserEvents) { userEvents ->
             DefaultScheduler.execute {
                 try {
-                    Timber.d("EventRepository: Received " +
-                            "${userEvents?.userEvents?.size ?: 0} user events changes")
+                    // Not update the result when userEvents is null, otherwise the count of the
+                    // filtered result in the use case is going to be 0, that results blur when
+                    // the pinned item switch is toggled.
+                    userEvents ?: return@execute
+
+                    Timber.d(
+                        """EventRepository: Received ${userEvents.userEvents.size}
+                            |user events changes""".trimMargin()
+                    )
 
                     // Get the sessions, synchronously
                     val allSessions = sessionRepository.getSessions()
 
                     // Merges sessions with user data and emits the result
                     val userEventsMessageSession = allSessions.firstOrNull {
-                        it.id == userEvents?.userEventsMessage?.sessionId
+                        it.id == userEvents.userEventsMessage?.sessionId
                     }
                     sessionsByDayResult.postValue(Result.Success(
                         LoadUserSessionsByDayUseCaseResult(
                             userSessionsPerDay = mapUserDataAndSessions(
                                 userEvents, allSessions),
-                            userMessage = userEvents?.userEventsMessage,
+                            userMessage = userEvents.userEventsMessage,
                             userMessageSession = userEventsMessageSession,
                             userSessionCount = allSessions.size)
                     ))
