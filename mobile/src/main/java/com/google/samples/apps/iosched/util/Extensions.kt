@@ -41,18 +41,6 @@ inline fun <T: ViewDataBinding> T.executeAfter(block: T.() -> Unit) {
 }
 
 /**
- * Loads a drawable asynchronously and passes it into the callback function.
- */
-inline fun loadDrawableAsync(view: View, @DrawableRes id: Int, crossinline f: (Drawable) -> Unit) {
-    DefaultScheduler.execute {
-        val drawable = view.context.getDrawable(id)
-        view.post {
-            f(drawable)
-        }
-    }
-}
-
-/**
  * An extension to `postponeEnterTransition` which will resume after a timeout.
  */
 fun Activity.postponeEnterTransition(timeout: Long) {
