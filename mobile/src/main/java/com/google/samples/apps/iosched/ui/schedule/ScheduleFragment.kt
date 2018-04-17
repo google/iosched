@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.ui.schedule
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
-import android.databinding.ObservableBoolean
 import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.Fragment
@@ -51,6 +50,7 @@ import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFr
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment.Companion.DIALOG_NOTIFICATIONS_PREFERENCE
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
+import com.google.samples.apps.iosched.util.fabVisibility
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_COLLAPSED
@@ -88,8 +88,6 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         resources.getDimensionPixelSize(R.dimen.bottom_sheet_peek_height)
     }
 
-    private val isAgendaPage = ObservableBoolean(false)
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -99,7 +97,6 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         val binding = FragmentScheduleBinding.inflate(inflater, container, false).apply {
             setLifecycleOwner(this@ScheduleFragment)
             viewModel = this@ScheduleFragment.scheduleViewModel
-            isAgendaPage = this@ScheduleFragment.isAgendaPage
         }
 
         coordinatorLayout = binding.coordinatorLayout
@@ -134,6 +131,9 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
                 openNotificationsPreferenceDialog()
             }
         })
+        scheduleViewModel.transientUiState.observe(this, Observer {
+            updateFiltersUi(it ?: return@Observer)
+        })
         return binding.root
     }
 
@@ -147,8 +147,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
 
         viewpager.addOnPageChangeListener(object : SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
-                // Hide the FAB on the agenda page
-                isAgendaPage.set(position == AGENDA_POSITION)
+                scheduleViewModel.setIsAgendaPage(position == AGENDA_POSITION)
             }
         })
 
@@ -192,6 +191,17 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         onBottomNavSlide(ty)
     }
 
+    private fun updateFiltersUi(uiState: TransientUiState) {
+        val showFab = !uiState.isAgendaPage && !uiState.hasTagFilters && !uiState.showPinnedEvents
+        val hideable = uiState.isAgendaPage || (!uiState.showPinnedEvents && !uiState.hasTagFilters)
+
+        fabVisibility(filtersFab, showFab)
+        bottomSheetBehavior.isHideable = hideable
+        if (hideable && bottomSheetBehavior.state == STATE_COLLAPSED) {
+            bottomSheetBehavior.state = STATE_HIDDEN
+        }
+    }
+
     override fun onBottomNavSlide(bottonNavTranslationY: Float) {
         // Move the dummy view to change bottom edge inset (for snackbars, etc.)
         dummyBottomView.translationY = bottonNavTranslationY
@@ -202,8 +212,12 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
 
     override fun onBackPressed(): Boolean {
         if (bottomSheetBehavior.state == STATE_EXPANDED) {
-            bottomSheetBehavior.state =
-                    if (bottomSheetBehavior.skipCollapsed) STATE_HIDDEN else STATE_COLLAPSED
+            // collapse or hide the sheet
+            if (bottomSheetBehavior.isHideable && bottomSheetBehavior.skipCollapsed) {
+                bottomSheetBehavior.state = STATE_HIDDEN
+            } else {
+                bottomSheetBehavior.state = STATE_COLLAPSED
+            }
             return true
         }
         return super.onBackPressed()

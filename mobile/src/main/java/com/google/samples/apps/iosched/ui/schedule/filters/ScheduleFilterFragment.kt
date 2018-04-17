@@ -27,15 +27,11 @@ import android.support.v7.widget.RecyclerView.OnScrollListener
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.view.doOnLayout
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleFilterBinding
 import com.google.samples.apps.iosched.shared.model.Tag
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.PinnedEventMatcher
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher.TagFilterMatcher
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.MainActivity
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
@@ -135,19 +131,16 @@ class ScheduleFilterFragment : DaggerFragment() {
         })
 
         // We can't use DataBinding on <fragment> tags, so set up an observer manually.
-        viewModel.hasAnyFilters.observe(this, Observer {
-            val hasFilters = it ?: false
-            behavior.skipCollapsed = !hasFilters
-            behavior.isHideable = !hasFilters
-            if (!hasFilters && behavior.state == STATE_COLLAPSED) {
-                behavior.state = STATE_HIDDEN
+        viewModel.showPinnedEvents.observe(this, Observer {
+            val pinned = it ?: return@Observer
+            if (pinned) {
+                behavior.isDraggable = false
+                if (behavior.state == STATE_EXPANDED) {
+                    behavior.state = STATE_COLLAPSED
+                }
+            } else {
+                behavior.isDraggable = true
             }
-        })
-
-        viewModel.userSessionMatcher.observe(this, Observer {
-            val matcher = it ?: return@Observer
-            bindDraggableState(matcher)
-            setDescriptionView(matcher)
         })
 
         binding.collapseArrow.setOnClickListener {
@@ -172,10 +165,6 @@ class ScheduleFilterFragment : DaggerFragment() {
         }
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-    }
-
     private fun updateFilterHeadersAlpha(slideOffset: Float) {
         // Alpha of normal header views increases as the sheet expands, while alpha of description
         // views increases as the sheet collapses. To prevent overlap, we use a threshold at which
@@ -191,25 +180,6 @@ class ScheduleFilterFragment : DaggerFragment() {
      */
     private fun offsetToAlpha(value: Float, rangeMin: Float, rangeMax: Float): Float {
         return ((value - rangeMin) / (rangeMax - rangeMin)).coerceIn(0f, 1f)
-    }
-
-    private fun bindDraggableState(matcher: UserSessionMatcher) {
-        when (matcher) {
-            is TagFilterMatcher -> behavior.isDraggable = true
-            PinnedEventMatcher -> {
-                behavior.isDraggable = false
-                if (behavior.state == STATE_EXPANDED) {
-                    behavior.state = STATE_COLLAPSED
-                }
-            }
-        }
-    }
-
-    private fun setDescriptionView(matcher: UserSessionMatcher) {
-        binding.filterDescriptionTags.visibility =
-                if (matcher is TagFilterMatcher) View.VISIBLE else View.GONE
-        binding.filterDescriptionPinned.visibility =
-                if (matcher == PinnedEventMatcher) View.VISIBLE else View.GONE
     }
 }
 
@@ -229,33 +199,6 @@ fun filterDescriptionTags(recyclerView : RecyclerView, tags: List<Tag>?) {
     }
     tagChipAdapter.tags = tags ?: emptyList()
     tagChipAdapter.notifyDataSetChanged()
-}
-
-@BindingAdapter("clearFilterShortcutIcon")
-fun clearFilterShortcutIcon(
-    view: ImageView,
-    matcher: UserSessionMatcher
-) {
-    when (matcher) {
-        PinnedEventMatcher -> view.apply {
-            setImageResource(R.drawable.ic_undo)
-            contentDescription = resources.getString(R.string.a11y_revert_pinned)
-        }
-        is TagFilterMatcher -> view.apply {
-            setImageResource(R.drawable.ic_clear_all)
-            contentDescription = resources.getString(R.string.a11y_clear_tag_filters)
-        }
-    }
-}
-
-@BindingAdapter("clearFilterShortcutClick")
-fun clearFilterShortcutClick(view: View, viewModel: ScheduleViewModel) {
-    view.setOnClickListener {
-        when (viewModel.userSessionMatcher.value){
-            PinnedEventMatcher -> viewModel.togglePinnedEvents(false)
-            is TagFilterMatcher -> viewModel.clearTagFilters()
-        }
-    }
 }
 
 @BindingAdapter(value = ["hasFilters", "eventCount"], requireAll = true)
