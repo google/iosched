@@ -20,7 +20,6 @@ import android.content.Context
 import android.support.v7.widget.AppCompatTextView
 import android.util.AttributeSet
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.util.loadDrawableAsync
 
 /**
  * An [AppCompatTextView] extension supporting multiple custom states, representing the status
@@ -42,9 +41,8 @@ class ReservationTextView @JvmOverloads constructor(
 
     init {
         setText(ReservationViewState.RESERVABLE.text)
-        loadDrawableAsync(this, R.drawable.asld_reservation, {
-            setCompoundDrawablesRelativeWithIntrinsicBounds(it, null, null, null)
-        })
+        val drawable = context.getDrawable(R.drawable.asld_reservation)
+        setCompoundDrawablesRelativeWithIntrinsicBounds(drawable, null, null, null)
     }
 
     override fun onCreateDrawableState(extraSpace: Int): IntArray {
