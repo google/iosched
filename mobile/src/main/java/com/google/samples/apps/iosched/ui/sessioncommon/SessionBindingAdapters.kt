@@ -20,15 +20,8 @@ import android.content.Context
 import android.databinding.BindingAdapter
 import android.graphics.Color.TRANSPARENT
 import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.InsetDrawable
-import android.graphics.drawable.RippleDrawable
-import android.graphics.drawable.StateListDrawable
 import android.support.v4.content.ContextCompat
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.RecyclerView
-import android.util.StateSet
-import android.view.View
 import android.widget.TextView
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.model.Tag
