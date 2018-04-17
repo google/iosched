@@ -21,7 +21,6 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.support.annotation.DrawableRes
 import android.support.v4.view.ViewPager
-import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.content.res.AppCompatResources
 import android.view.View
 import android.view.View.GONE
@@ -34,6 +33,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.widget.FloatingActionButton
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.widget.CustomSwipeRefreshLayout
 import timber.log.Timber
 
 @BindingAdapter("invisibleUnless")
@@ -89,9 +89,9 @@ fun imageUrl(imageView: ImageView, imageUrl: String?, placeholder: Drawable?) {
 }
 
 /**
- * Sets the colors of the [SwipeRefreshLayout] loading indicator.
+ * Sets the colors of the [CustomSwipeRefreshLayout] loading indicator.
  */
 @BindingAdapter("swipeRefreshColors")
-fun setSwipeRefreshColors(swipeRefreshLayout: SwipeRefreshLayout, colorResIds: IntArray) {
+fun setSwipeRefreshColors(swipeRefreshLayout: CustomSwipeRefreshLayout, colorResIds: IntArray) {
     swipeRefreshLayout.setColorSchemeColors(*colorResIds)
 }

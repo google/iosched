@@ -40,7 +40,7 @@
             layout="@layout/include_schedule_appbar"
             app:viewModel="@{viewModel}" />
 
-        <android.support.v4.widget.SwipeRefreshLayout
+        <com.google.samples.apps.iosched.widget.CustomSwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -56,7 +56,7 @@
                 app:pageMargin="@{@dimen/spacing_normal}"
                 app:pageMarginDrawable="@{@drawable/page_margin}" />
 
-        </android.support.v4.widget.SwipeRefreshLayout>
+        </com.google.samples.apps.iosched.widget.CustomSwipeRefreshLayout>
 
         <!-- TODO(b/72711711): Provide a better loading indicator -->
         <ProgressBar
