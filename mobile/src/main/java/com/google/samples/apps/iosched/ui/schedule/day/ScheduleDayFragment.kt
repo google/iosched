@@ -26,6 +26,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.view.doOnNextLayout
 import com.google.samples.apps.iosched.databinding.FragmentScheduleDayBinding
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
@@ -104,7 +105,13 @@ class ScheduleDayFragment : DaggerFragment() {
             adapter = this@ScheduleDayFragment.adapter
             recycledViewPool = sessionViewPool
             (layoutManager as LinearLayoutManager).recycleChildrenOnDetach = true
-            (itemAnimator as DefaultItemAnimator).supportsChangeAnimations = false
+            (itemAnimator as DefaultItemAnimator).run {
+                supportsChangeAnimations = false
+                addDuration = 160L
+                moveDuration = 160L
+                changeDuration = 160L
+                removeDuration = 120L
+            }
         }
     }
 
@@ -123,19 +130,23 @@ class ScheduleDayFragment : DaggerFragment() {
         })
     }
 
-    fun initializeList(sessionTimeData: SessionTimeData) {
+    private fun initializeList(sessionTimeData: SessionTimeData) {
         // Require the list and timeZoneId to be loaded.
         val list = sessionTimeData.list ?: return
         val timeZoneId = sessionTimeData.timeZoneId ?: return
         adapter.submitList(list)
 
-        binding.recyclerview.let {
-            // Recreate the decoration used for the sticky time headers
-            it.clearDecorations()
-            if (list.isNotEmpty()) {
-                it.addItemDecoration(
-                    ScheduleTimeHeadersDecoration(it.context, list.map { it.session }, timeZoneId)
-                )
+        binding.recyclerview.run {
+            doOnNextLayout { // i.e. after diffing
+                // Recreate the decoration used for the sticky time headers
+                clearDecorations()
+                if (list.isNotEmpty()) {
+                    addItemDecoration(
+                        ScheduleTimeHeadersDecoration(
+                            it.context, list.map { it.session }, timeZoneId
+                        )
+                    )
+                }
             }
         }
 
