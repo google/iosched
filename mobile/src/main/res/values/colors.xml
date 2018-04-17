@@ -21,6 +21,7 @@
     <color name="light_grey">#e6e6e6</color>
     <color name="default_tag_color">#999</color>
     <color name="highlight_light">#33ffffff</color> <!-- 20% white -->
+    <color name="reddish">#d32f2f</color>
     <color name="scrim">#33000000</color> <!-- 20% black -->
     <color name="indigo_transparent">#e54768fd</color> <!-- 90% indigo -->
     <color name="dark_gray">#ff808080</color>

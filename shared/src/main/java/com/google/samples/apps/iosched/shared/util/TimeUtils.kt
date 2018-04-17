@@ -16,12 +16,15 @@
 
 package com.google.samples.apps.iosched.shared.util
 
+import android.content.Context
+import android.text.format.DateUtils
 import com.google.samples.apps.iosched.shared.BuildConfig
 import com.google.samples.apps.iosched.shared.model.Session
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 object TimeUtils {
@@ -64,6 +67,29 @@ object TimeUtils {
             currentTime > session.endTime -> SessionRelativeTimeState.AFTER
             else -> SessionRelativeTimeState.DURING
         }
+    }
+
+    /**
+     * Converts a [dateTime] to a short localised string.
+     *
+     * The returned string contains the date, time and weekday, but no year, localised in the
+     * timezone and Locale.
+     * Examples: <code>Tuesday, 9 May, 1:55pm</code> in EN_US and
+     * <code>Dienstag, 9. Mai, 13:55</code> in DE_DE.
+     */
+    fun timeString(context: Context, dateTime: ZonedDateTime): String {
+        val sb = StringBuilder()
+
+        val flags = DateUtils.FORMAT_SHOW_DATE or
+                DateUtils.FORMAT_NO_YEAR or
+                DateUtils.FORMAT_SHOW_WEEKDAY or
+                DateUtils.FORMAT_SHOW_TIME
+
+        // Convert the time from s to ms
+        val timestamp = TimeUnit.SECONDS.toMillis(dateTime.toEpochSecond())
+
+        sb.append(DateUtils.formatDateTime(context, timestamp, flags))
+        return sb.toString()
     }
 
     fun zonedTime(time: ZonedDateTime, zoneId: ZoneId = ZoneId.systemDefault()): ZonedDateTime {
