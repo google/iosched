@@ -85,10 +85,6 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TextAppearance.IOSched.Small" parent="TextAppearance.AppCompat.Small">
-        <item name="android:textColor">?android:textColorPrimary</item>
-    </style>
-
     <style name="TextAppearance.IOSched.ListSecondary" parent="@style/TextAppearance.AppCompat.Body1">
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
@@ -280,20 +276,6 @@
         <item name="android:lineSpacingMultiplier">1</item>
         <item name="autoSizeTextType">uniform</item>
         <item name="autoSizeMaxTextSize">34sp</item>
-    </style>
-
-    <style name="Widget.IOSched.Feed" parent="Widget.IOSched" />
-
-    <style name="Widget.IOSched.Feed.Title">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
-
-    </style>
-
-    <style name="Widget.IOSched.Feed.Category">
-        <item name="android:textAppearance">@style/TextAppearance.IOSched.Small</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:lines">1</item>
-        <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="Widget.IOSched.Dialog">

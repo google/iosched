@@ -26,7 +26,6 @@ import com.google.samples.apps.iosched.shared.firestore.entity.ReservationReques
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.ConferenceData
-import com.google.samples.apps.iosched.shared.model.FeedItem
 import com.google.samples.apps.iosched.shared.model.Room
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.Speaker
@@ -58,20 +57,6 @@ object TestData : ConferenceDataSource {
         androidTag, cloudTag, webTag, sessionsTag, codelabsTag, beginnerTag,
         intermediateTag, advancedTag
     )
-
-    val feedItem1 = FeedItem(id = "0", title = "Item 1", message = "", timestamp = DAY_1.start,
-            imageUrl = "", color = 0, category = "", priority = true, emergency = true)
-
-    val feedItem2 = FeedItem(id = "1", title = "Item 2", message = "", timestamp = DAY_1.end,
-            imageUrl = "", color = 0, category = "", priority = true, emergency = false)
-
-    val feedItem3 = FeedItem(id = "2", title = "Item 3", message = "", timestamp = DAY_2.start,
-            imageUrl = "", color = 0, category = "", priority = false, emergency = false)
-
-    val feedItem4 = FeedItem(id = "3", title = "Item 4", message = "", timestamp = DAY_2.end,
-            imageUrl = "", color = 0, category = "", priority = false, emergency = false)
-
-    val feed = listOf(feedItem1, feedItem2, feedItem3, feedItem4)
 
     val speaker1 = Speaker(
         id = "1",
