@@ -61,7 +61,7 @@ import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import org.threeten.bp.ZoneId
 import timber.log.Timber
-import java.util.UUID
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -89,9 +89,6 @@ class ScheduleViewModel @Inject constructor(
 
     // The current UserSessionMatcher, used to filter the events that are shown
     private var currentSessionMatcher: UserSessionMatcher
-    private val _userSessionMatcher = MutableLiveData<UserSessionMatcher>()
-    val userSessionMatcher: LiveData<UserSessionMatcher>
-        get() = _userSessionMatcher
 
     private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
 
@@ -121,15 +118,23 @@ class ScheduleViewModel @Inject constructor(
     private val _selectedFilterTags = MutableLiveData<List<Tag>>()
     val selectedFilterTags: LiveData<List<Tag>>
         get() = _selectedFilterTags
-    private val _hasAnyFilters = MutableLiveData<Boolean>()
-    val hasAnyFilters: LiveData<Boolean>
-        get() = _hasAnyFilters
+    private val _hasTagFilters = MutableLiveData<Boolean>()
+    val hasTagFilters: LiveData<Boolean>
+        get() = _hasTagFilters
     private val _showPinnedEvents = MutableLiveData<Boolean>()
     val showPinnedEvents: LiveData<Boolean>
         get() = _showPinnedEvents
+    private val _isAgendaPage = MutableLiveData<Boolean>()
+    val isAgendaPage: LiveData<Boolean>
+        get() = _isAgendaPage
     private val _emptyMessage = MutableLiveData<Int>()
     val emptyMessage: LiveData<Int>
         get() = _emptyMessage
+
+    private var _transientUiStateVar = TransientUiState(false, false, false)
+    private val _transientUiState = MutableLiveData<TransientUiState>()
+    val transientUiState: LiveData<TransientUiState>
+        get() = _transientUiState
 
     private val loadSessionsResult: MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>
     private val loadAgendaResult = MutableLiveData<Result<List<Block>>>()
@@ -181,8 +186,6 @@ class ScheduleViewModel @Inject constructor(
     init {
         currentSessionMatcher = tagFilterMatcher
         _emptyMessage.value = R.string.schedule_tag_filters_empty
-
-        _userSessionMatcher.value = currentSessionMatcher
 
         // Load sessions and tags and store the result in `LiveData`s
         loadSessionsResult = loadUserSessionsByDayUseCase.observe()
@@ -348,6 +351,7 @@ class ScheduleViewModel @Inject constructor(
             // Whenever refresh finishes, stop the indicator, whatever the result
             false
         }
+        _transientUiState.value = _transientUiStateVar
 
         // Subscribe user to schedule updates
         topicSubscriber.subscribeToScheduleUpdates()
@@ -390,8 +394,10 @@ class ScheduleViewModel @Inject constructor(
         }
         // If tagFilterMatcher.add or .remove returns false, we do nothing.
         if (changed) {
-            _hasAnyFilters.value = !tagFilterMatcher.isEmpty()
+            val hasTagFilters = !tagFilterMatcher.isEmpty()
+            _hasTagFilters.value = hasTagFilters
             _selectedFilterTags.value = tagFilterMatcher.getSelectedTags()
+            setTransientUiState(_transientUiStateVar.copy(hasTagFilters = hasTagFilters))
             refreshUserSessions()
         }
     }
@@ -399,8 +405,9 @@ class ScheduleViewModel @Inject constructor(
     override fun clearTagFilters() {
         if (tagFilterMatcher.clearAll()) {
             tagFilters.value?.forEach { it.isChecked.set(false) }
-            _hasAnyFilters.value = false
+            _hasTagFilters.value = false
             _selectedFilterTags.value = emptyList()
+            setTransientUiState(_transientUiStateVar.copy(hasTagFilters = false))
             refreshUserSessions()
         }
     }
@@ -411,14 +418,15 @@ class ScheduleViewModel @Inject constructor(
             _showPinnedEvents.value = pinned
             if (pinned) {
                 currentSessionMatcher = PinnedEventMatcher
-                _hasAnyFilters.value = true
+                _showPinnedEvents.value = true
                 _emptyMessage.value = R.string.schedule_pinned_events_empty
+                setTransientUiState(_transientUiStateVar.copy(showPinnedEvents = true))
             } else {
                 currentSessionMatcher = tagFilterMatcher
-                _hasAnyFilters.value = !tagFilterMatcher.isEmpty()
+                _showPinnedEvents.value = false
                 _emptyMessage.value = R.string.schedule_tag_filters_empty
+                setTransientUiState(_transientUiStateVar.copy(showPinnedEvents = false))
             }
-            _userSessionMatcher.value = currentSessionMatcher
             refreshUserSessions()
         }
     }
@@ -480,6 +488,18 @@ class ScheduleViewModel @Inject constructor(
             )
         }
     }
+
+    fun setIsAgendaPage(isAgendaPage: Boolean) {
+        if (_isAgendaPage.value != isAgendaPage) {
+            _isAgendaPage.value = isAgendaPage
+            setTransientUiState(_transientUiStateVar.copy(isAgendaPage = isAgendaPage))
+        }
+    }
+
+    private fun setTransientUiState(state: TransientUiState) {
+        _transientUiStateVar = state
+        _transientUiState.value = state
+    }
 }
 
 data class SessionTimeData(var list: List<UserSession>? = null, var timeZoneId: ZoneId? = null)
@@ -494,3 +514,9 @@ interface ScheduleEventListener : EventActions {
     /** Called from the UI to toggle showing starred or reserved events only. */
     fun togglePinnedEvents(pinned: Boolean)
 }
+
+data class TransientUiState(
+    val isAgendaPage: Boolean,
+    val showPinnedEvents: Boolean,
+    val hasTagFilters: Boolean
+)

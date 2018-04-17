@@ -94,7 +94,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
-            android:layout_weight="1"
             android:alpha="@{descriptionAlpha}"
             android:fadingEdgeLength="@dimen/margin_large"
             android:orientation="horizontal"
@@ -104,6 +103,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:filterDescriptionTags="@{viewModel.selectedFilterTags}"
+            app:goneUnless="@{!viewModel.showPinnedEvents}"
             app:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/item_tag_filter"
             tools:visibility="gone" />
@@ -116,11 +116,12 @@
             android:layout_marginStart="@dimen/margin_normal"
             android:alpha="@{descriptionAlpha}"
             android:text="@string/pinned_events_filter_description"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintBottom_toTopOf="@id/guide_peek_height"
             app:layout_constraintEnd_toStartOf="@id/clear_filters_shortcut"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:goneUnless="@{viewModel.showPinnedEvents}"
             tools:visibility="gone" />
 
         <!-- Shortcut for clearing the current filters, shown with the filters description -->
@@ -132,16 +133,15 @@
             android:alpha="@{descriptionAlpha}"
             android:background="?selectableItemBackgroundBorderless"
             android:clickable="@{descriptionAlpha > 0f}"
+            android:contentDescription="@string/a11y_clear_tag_filters"
             android:scaleType="center"
             android:tint="@color/dark_gray"
+            android:onClick="@{(v) -> viewModel.clearTagFilters()}"
             app:layout_constraintBottom_toTopOf="@id/guide_peek_height"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:clearFilterShortcutClick="@{viewModel}"
-            app:clearFilterShortcutIcon="@{viewModel.userSessionMatcher}"
-            app:goneUnless="@{viewModel.hasAnyFilters}"
-            tools:ignore="ContentDescription"
-            tools:srcCompat="@drawable/ic_clear_all"
+            app:srcCompat="@drawable/ic_clear_all"
+            app:goneUnless="@{viewModel.hasTagFilters &amp;&amp; !viewModel.showPinnedEvents}"
             tools:visibility="gone" />
 
         <View
@@ -166,8 +166,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:hasFilters="@{viewModel.hasAnyFilters}"
-            app:eventCount="@{viewModel.eventCount}" />
+            app:hasFilters="@{viewModel.hasTagFilters}"
+            app:eventCount="@{viewModel.eventCount}"
+            tools:text="@string/filters" />
 
         <Button
             android:id="@+id/reset"
@@ -185,7 +186,7 @@
             app:layout_constraintBottom_toTopOf="@id/guide_peek_height"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:goneUnless="@{viewModel.hasAnyFilters}"
+            app:goneUnless="@{viewModel.hasTagFilters}"
             tools:targetApi="o"
             tools:visibility="visible" />
 
