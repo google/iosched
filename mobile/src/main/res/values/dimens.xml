@@ -23,6 +23,8 @@
     <dimen name="spacing_micro">4dp</dimen>
 
     <dimen name="divider">1dp</dimen>
+    <dimen name="feed_image_width">60dp</dimen>
+    <dimen name="feed_card_corner_radius">8dp</dimen>
     <item name="text_line_spacing" format="float" type="dimen">1.2</item>
 
     <dimen name="speaker_headshot_size">40dp</dimen>

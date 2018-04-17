@@ -30,6 +30,8 @@ import android.view.View
 import android.widget.TextView
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.shared.util.TimeUtils
+import org.threeten.bp.ZonedDateTime
 
 @BindingAdapter("sessionTags")
 fun sessionTags(recyclerView: RecyclerView, sessionTags: List<Tag>?) {
@@ -37,6 +39,11 @@ fun sessionTags(recyclerView: RecyclerView, sessionTags: List<Tag>?) {
         .apply {
             tags = sessionTags ?: emptyList()
         }
+}
+
+@BindingAdapter("dateTime")
+fun dateTime(textView: TextView, dateTime: ZonedDateTime) {
+    textView.text = TimeUtils.timeString(textView.context, dateTime)
 }
 
 @BindingAdapter("tagTint")

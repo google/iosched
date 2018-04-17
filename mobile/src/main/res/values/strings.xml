@@ -17,6 +17,7 @@
 
 <resources>
     <string name="title_schedule" translation_description="The title for the schedule screen where user can see their schedule for Google I/O.">Schedule</string>
+    <string name="title_feed" translation_description="The title for the feed screen where user can all the updates from Google I/O team.">Feed</string>
     <string name="title_map" translation_description="The title for the map screen where user can see the map of the venue.">Map</string>
     <string name="title_info" translation_description="The title for the info screen where user can see various information, such as FAQ and travel info.">Info</string>
 
@@ -126,6 +127,12 @@
     <string name="notifications_preference_dialog_content" translation_description="The content of the dialog for the notifications preference">Would you like to receive notifications about I/O? We\'ll send you information about session start times, after hours events, session recordings, and more. You can change this setting under \"Info > Settings\" at any time.</string>
     <string name="no" translation_description="Negative answer to the question \'Would you like to receive notification?\'">No</string>
     <string name="yes" translation_description="Positive answer to the question \'Would you like to receive notification?\'">Yes</string>
+
+    <!-- Feed -->
+    <string name="feed_item_pinned_icon" translation_description="Content description for an icon that indicates an entry in the news feed that is pinned at the top.">Pinned Item</string>
+    <string name="feed_item_emergency_icon" translation_description="Content description for an icon that indicates an entry in the news feed that is marked as an emergency message.">Priority item</string>
+    <string name="feed_not_available" translation_description="Message that is shown when the feed could not be loaded or is empty.">Feed not available.</string>
+    <string name="feed_loading_error" translation_description="Short error message that is displayed in a Snackbar when the feed could not be loaded.">Could not load feed. Try again later.</string>
 
     <plurals name="duration_hours">
         <item quantity="one" translation_description="Unit for duration of time by hours. Singular.">%s hour</item>

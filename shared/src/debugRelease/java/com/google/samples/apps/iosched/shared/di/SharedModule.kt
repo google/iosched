@@ -24,6 +24,10 @@ import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.NetworkConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
+import com.google.samples.apps.iosched.shared.data.feed.FeedDataSource
+import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
+import com.google.samples.apps.iosched.shared.data.feed.FirestoreFeedDataSource
 import com.google.samples.apps.iosched.shared.data.map.DefaultMapMetadataRepository
 import com.google.samples.apps.iosched.shared.data.map.MapMetadataRepository
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
@@ -81,24 +85,33 @@ class SharedModule {
 
     @Singleton
     @Provides
+    fun provideFeedDataSource(firestore: FirebaseFirestore): FeedDataSource {
+        return FirestoreFeedDataSource(firestore)
+    }
+
+    @Singleton
+    @Provides
+    fun provideFeedRepository(dataSource : FeedDataSource) : FeedRepository {
+        return DefaultFeedRepository(dataSource)
+    }
+
+    @Singleton
+    @Provides
     fun provideSessionRepository(
         conferenceDataRepository: ConferenceDataRepository
     ): SessionRepository {
         return DefaultSessionRepository(conferenceDataRepository)
     }
-
     @Singleton
     @Provides
     fun provideMapMetadataRepository(): MapMetadataRepository {
         return DefaultMapMetadataRepository()
     }
-
     @Singleton
     @Provides
     fun provideUserEventDataSource(firestore: FirebaseFirestore): UserEventDataSource {
         return FirestoreUserEventDataSource(firestore)
     }
-
     @Singleton
     @Provides
     fun provideSessionAndUserEventRepository(
@@ -107,7 +120,6 @@ class SharedModule {
     ): SessionAndUserEventRepository {
         return DefaultSessionAndUserEventRepository(userEventDataSource, sessionRepository)
     }
-
     @Singleton
     @Provides
     fun provideFirebaseFireStore(): FirebaseFirestore {
