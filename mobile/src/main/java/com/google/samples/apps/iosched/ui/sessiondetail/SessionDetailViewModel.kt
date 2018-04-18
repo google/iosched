@@ -233,7 +233,9 @@ class SessionDetailViewModel @Inject constructor(
         }
 
         showRateButton = sessionTimeRelativeState.map { currentState ->
-            currentState == TimeUtils.SessionRelativeTimeState.AFTER
+            // TODO: uncomment when rate session logic is hooked up
+            // currentState == TimeUtils.SessionRelativeTimeState.AFTER
+            false
         }
 
         hasSpeakers = session.map { currentSession ->
