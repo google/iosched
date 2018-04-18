@@ -41,6 +41,7 @@ import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.time.TimeProvider
+import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import com.google.samples.apps.iosched.shared.util.SetIntervalLiveData.DefaultIntervalMapper
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
@@ -55,7 +56,7 @@ import org.threeten.bp.Duration
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
-import java.util.UUID
+import java.util.*
 import javax.inject.Inject
 
 private const val TEN_SECONDS = 10_000L
@@ -72,7 +73,8 @@ class SessionDetailViewModel @Inject constructor(
     private val reservationActionUseCase: ReservationActionUseCase,
     private val getTimeZoneUseCase: GetTimeZoneUseCase,
     private val snackbarMessageManager: SnackbarMessageManager,
-    timeProvider: TimeProvider
+    timeProvider: TimeProvider,
+    private val networkUtils: NetworkUtils
 ) : ViewModel(), SessionDetailEventListener, EventActions,
     SignInViewModelDelegate by signInViewModelDelegate {
 
@@ -379,6 +381,14 @@ class SessionDetailViewModel @Inject constructor(
     }
 
     override fun onReservationClicked() {
+        if (!networkUtils.hasNetworkConnection()) {
+            Timber.d("No network connection, ignoring reserve click.")
+            _snackBarMessage.postValue(Event(SnackbarMessage(
+                    messageId = R.string.no_network_connection,
+                    requestChangeId = UUID.randomUUID().toString()
+            )))
+            return
+        }
         if (!isSignedIn()) {
             Timber.d("Showing Sign-in dialog after reserve click")
             _navigateToSignInDialogAction.value = Event(Unit)
