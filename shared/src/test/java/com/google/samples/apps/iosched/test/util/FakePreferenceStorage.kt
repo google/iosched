@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.test.util.fakes
+package com.google.samples.apps.iosched.test.util
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData

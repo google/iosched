@@ -20,8 +20,8 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.SharedPreferences
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.support.annotation.WorkerThread
 import androidx.content.edit
 import javax.inject.Inject
@@ -40,6 +40,7 @@ interface PreferenceStorage {
     var observableSnackbarIsStopped: LiveData<Boolean>
     var sendUsageStatistics: Boolean
     var preferConferenceTimeZone: Boolean
+    var selectedFilters: String?
 }
 
 /**
@@ -89,6 +90,9 @@ class SharedPreferenceStorage @Inject constructor(context: Context) :
     override var preferConferenceTimeZone: Boolean
         by BooleanPreference(prefs, PREF_CONFERENCE_TIME_ZONE, true)
 
+    override var selectedFilters: String?
+        by StringPreference(prefs, PREF_SELECTED_FILTERS, null)
+
     companion object {
         private const val PREFS_NAME = "iosched"
         private const val PREF_ONBOARDING = "pref_onboarding"
@@ -98,12 +102,15 @@ class SharedPreferenceStorage @Inject constructor(context: Context) :
         private const val PREF_SNACKBAR_IS_STOPPED = "pref_snackbar_is_stopped"
         private const val PREF_SEND_USAGE_STATISTICS = "pref_send_usage_statistics"
         private const val PREF_CONFERENCE_TIME_ZONE = "pref_conference_time_zone"
+        private const val PREF_SELECTED_FILTERS = "pref_selected_filters"
     }
 }
 
-class BooleanPreference(private val preferences: SharedPreferences,
-                        private val name: String,
-                        private val defaultValue: Boolean): ReadWriteProperty<Any, Boolean> {
+class BooleanPreference(
+    private val preferences: SharedPreferences,
+    private val name: String,
+    private val defaultValue: Boolean
+) : ReadWriteProperty<Any, Boolean> {
 
     @WorkerThread
     override fun getValue(thisRef: Any, property: KProperty<*>): Boolean {
@@ -112,5 +119,21 @@ class BooleanPreference(private val preferences: SharedPreferences,
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) {
         preferences.edit { putBoolean(name, value) }
+    }
+}
+
+class StringPreference(
+    private val preferences: SharedPreferences,
+    private val name: String,
+    private val defaultValue: String?
+) : ReadWriteProperty<Any, String?> {
+
+    @WorkerThread
+    override fun getValue(thisRef: Any, property: KProperty<*>): String {
+        return preferences.getString(name, defaultValue)
+    }
+
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: String?) {
+        preferences.edit { putString(name, value) }
     }
 }

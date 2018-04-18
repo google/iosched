@@ -183,7 +183,7 @@ object TestData : ConferenceDataSource {
     // region Extras for verification
 
     val tagFiltersList = listOf(
-        androidTag, webTag, cloudTag, // TRACK
+        androidTag, webTag, cloudTag, // TOPIC
         sessionsTag, codelabsTag      // TYPE
     ).map { TagFilter(it, false) }
 

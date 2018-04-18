@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.schedule
 
+import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.model.TestData.androidTag
@@ -24,7 +25,11 @@ import com.google.samples.apps.iosched.shared.model.TestData.session0
 import com.google.samples.apps.iosched.shared.model.TestData.sessionsTag
 import com.google.samples.apps.iosched.shared.model.TestData.webTag
 import com.google.samples.apps.iosched.shared.model.UserSession
+import com.google.samples.apps.iosched.test.util.FakePreferenceStorage
+import com.nhaarman.mockito_kotlin.doReturn
+import com.nhaarman.mockito_kotlin.mock
 import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -35,6 +40,9 @@ import org.junit.Test
  */
 class UserSessionMatcherTest {
 
+    private val testJson = "{\"showPinnedEventsOnly\":true,\"tagsAndCategories\":[{\"id\":\"1\"," +
+            "\"category\":\"topic\"},{\"id\":\"3\",\"category\":\"topic\"}]}"
+
     private var sessionMatcher = UserSessionMatcher()
 
     private fun createTestUserSession(vararg tags: Tag): UserSession {
@@ -44,7 +52,7 @@ class UserSessionMatcherTest {
     @Before
     fun createSessionFilters() {
         // Reset filters
-        sessionMatcher.clearAll()
+        sessionMatcher = UserSessionMatcher()
     }
 
     @Test
@@ -239,5 +247,55 @@ class UserSessionMatcherTest {
             val userSession = UserSession(TestData.session0, it)
             Assert.assertEquals(it.isPinned(), sessionMatcher.matches(userSession))
         }
+    }
+
+    @Test
+    fun load_emptyValue_noChange() {
+        // Given empty filters
+        assertFalse(sessionMatcher.hasAnyFilters())
+        // Load from an empty PreferenceStorage
+        sessionMatcher.load(FakePreferenceStorage())
+        // No change
+        assertFalse(sessionMatcher.hasAnyFilters())
+    }
+
+    @Test
+    fun load_invalidJson_noChange() {
+        // Given empty filters
+        assertFalse(sessionMatcher.hasAnyFilters())
+        // Load malformed json
+        val storage = mock<PreferenceStorage> {
+            on { selectedFilters }.doReturn("{foobar[")
+        }
+        sessionMatcher.load(storage)
+        // No change
+        assertFalse(sessionMatcher.hasAnyFilters())
+    }
+
+    @Test
+    fun loadSavedFilters() {
+        // Given empty filters
+        assertFalse(sessionMatcher.hasAnyFilters())
+        // Load from an non-empty PreferenceStorage
+        val preferenceStorage = FakePreferenceStorage().apply {
+            selectedFilters = testJson
+        }
+        sessionMatcher.load(preferenceStorage)
+        // Filters were loaded
+        assertTrue(sessionMatcher.getShowPinnedEventsOnly())
+        assertTrue(sessionMatcher.contains(androidTag))
+        assertTrue(sessionMatcher.contains(webTag))
+    }
+
+    @Test
+    fun saveFilters() {
+        // Apply some filters
+        sessionMatcher.addAll(androidTag, webTag)
+        sessionMatcher.setShowPinnedEventsOnly(true)
+        // Save to preferences
+        val preferenceStorage = FakePreferenceStorage()
+        sessionMatcher.save(preferenceStorage)
+        // Storage contains expected JSON
+        assertEquals(testJson, preferenceStorage.selectedFilters)
     }
 }
