@@ -34,6 +34,7 @@ import com.google.samples.apps.iosched.databinding.FragmentScheduleFilterBinding
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.MainActivity
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
+import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_COLLAPSED
@@ -198,11 +199,20 @@ fun filterHeader(textView: TextView, hasFilters: Boolean?, eventCount: Int?) {
     }
 }
 
-@BindingAdapter("animateOnClick")
-fun animateOnClick(filter: EventFilterView, listener: View.OnClickListener) {
+@BindingAdapter("eventFilter", "viewModel", requireAll = true)
+fun setClickListenerForFilter(
+    filter: EventFilterView,
+    eventFilter: EventFilter,
+    viewModel: ScheduleViewModel
+) {
     filter.setOnClickListener {
-        filter.animateChecked(!filter.isChecked)
-        listener.onClick(filter)
+        if (eventFilter is MyEventsFilter && !viewModel.isSignedIn()) {
+            viewModel.onSignInRequired()
+        } else {
+            val checked = !filter.isChecked
+            filter.animateChecked(checked)
+            viewModel.toggleFilter(eventFilter, checked)
+        }
     }
 }
 
