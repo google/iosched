@@ -197,6 +197,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
 
         fabVisibility(filtersFab, showFab)
         bottomSheetBehavior.isHideable = hideable
+        bottomSheetBehavior.skipCollapsed = !uiState.hasAnyFilters
         if (hideable && bottomSheetBehavior.state == STATE_COLLAPSED) {
             bottomSheetBehavior.state = STATE_HIDDEN
         }
