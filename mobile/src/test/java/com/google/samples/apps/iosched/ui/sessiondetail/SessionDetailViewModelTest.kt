@@ -37,6 +37,7 @@ import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
 import com.google.samples.apps.iosched.shared.time.TimeProvider
+import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import com.google.samples.apps.iosched.shared.util.SetIntervalLiveData
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
@@ -85,8 +86,14 @@ class SessionDetailViewModelTest {
     private lateinit var viewModel: SessionDetailViewModel
     private val testSession = TestData.session0
 
+    private lateinit var mockNetworkUtils: NetworkUtils
+
     @Before
     fun setup() {
+        mockNetworkUtils = mock {
+            on { hasNetworkConnection() }.doReturn(true)
+        }
+
         viewModel = createSessionDetailViewModel()
         viewModel.setSessionId(testSession.id)
     }
@@ -168,6 +175,25 @@ class SessionDetailViewModelTest {
         // Then the sign in dialog should ne shown
         val signInEvent = LiveDataTestUtil.getValue(viewModel.navigateToSignInDialogAction)
         Assert.assertNotNull(signInEvent?.getContentIfNotHandled())
+    }
+
+    @Test
+    fun testReserveEvent_noInternet() {
+        // Create test use cases with test data
+        val signInDelegate = FakeSignInViewModelDelegate()
+        signInDelegate.injectIsSignedIn = false
+
+        val networkUtils: NetworkUtils = mock {
+            on { hasNetworkConnection() }.doReturn(false)
+        }
+
+        val viewModel = createSessionDetailViewModel(networkUtils = networkUtils)
+
+        viewModel.onReservationClicked()
+
+        val event: Event<SnackbarMessage>? = LiveDataTestUtil.getValue(viewModel.snackBarMessage)
+        Assert.assertThat(event?.getContentIfNotHandled()?.messageId,
+                `is`(equalTo(R.string.no_network_connection)))
     }
 
     @Test
@@ -312,12 +338,13 @@ class SessionDetailViewModelTest {
         getTimeZoneUseCase: GetTimeZoneUseCase = createGetTimeZoneUseCase(),
         snackbarMessageManager: SnackbarMessageManager =
             SnackbarMessageManager(FakePreferenceStorage()),
+        networkUtils: NetworkUtils = mockNetworkUtils,
         timeProvider: TimeProvider = DefaultTimeProvider
     ): SessionDetailViewModel {
         return SessionDetailViewModel(
             signInViewModelPlugin, loadUserSessionUseCase, loadRelatedSessionsUseCase,
             starEventUseCase, reservationActionUseCase, getTimeZoneUseCase, snackbarMessageManager,
-            timeProvider
+                timeProvider, networkUtils
         )
     }
 
