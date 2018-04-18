@@ -34,10 +34,14 @@ import com.google.samples.apps.iosched.databinding.ItemSessionBinding
 import com.google.samples.apps.iosched.databinding.ItemSpeakerBinding
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.SessionType
 import com.google.samples.apps.iosched.shared.model.SessionType.AFTER_HOURS
+import com.google.samples.apps.iosched.shared.model.SessionType.APP_REVIEW
 import com.google.samples.apps.iosched.shared.model.SessionType.CODELAB
 import com.google.samples.apps.iosched.shared.model.SessionType.OFFICE_HOURS
 import com.google.samples.apps.iosched.shared.model.SessionType.SANDBOX
+import com.google.samples.apps.iosched.shared.model.SessionType.SESSION
+import com.google.samples.apps.iosched.shared.model.SessionType.UNKNOWN
 import com.google.samples.apps.iosched.shared.model.Speaker
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.util.SpeakerUtils
@@ -62,6 +66,22 @@ fun headerImage(imageView: ImageView, photoUrl: String?) {
     } else {
         imageView.setImageDrawable(HeaderGridDrawable(imageView.context))
     }
+}
+
+@Suppress("unused")
+@BindingAdapter("eventType")
+fun headerLogoImage(imageView: ImageView, eventType: SessionType?) {
+    val resId = when (eventType) {
+        AFTER_HOURS -> R.drawable.event_header_afterhours
+        APP_REVIEW -> R.drawable.event_header_office_hours
+        CODELAB -> R.drawable.event_header_codelabs
+        OFFICE_HOURS -> R.drawable.event_header_office_hours
+        SANDBOX -> R.drawable.event_header_sandbox
+        SESSION -> R.drawable.event_header_sessions
+        UNKNOWN -> R.drawable.event_header_sessions
+        else -> R.drawable.event_header_sessions
+    }
+    imageView.setImageDrawable(imageView.context.getDrawable(resId))
 }
 
 @Suppress("unused")
