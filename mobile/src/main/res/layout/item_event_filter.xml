@@ -43,9 +43,10 @@
             android:layout_marginTop="@dimen/spacing_micro"
             android:layout_marginBottom="@dimen/spacing_micro"
             android:checked="@{eventFilter.isChecked}"
-            app:animateOnClick="@{() -> viewModel.toggleFilter(eventFilter, !filterLabel.checked)}"
             app:color="@{eventFilter.getColor()}"
+            app:eventFilter="@{eventFilter}"
             app:eventFilterText="@{eventFilter}"
+            app:viewModel="@{viewModel}"
             app:selectedTextColor="@{eventFilter.getSelectedTextColor()}" />
 
     </FrameLayout>

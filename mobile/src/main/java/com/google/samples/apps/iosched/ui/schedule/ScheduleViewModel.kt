@@ -416,6 +416,10 @@ class ScheduleViewModel @Inject constructor(
         }
     }
 
+    fun onSignInRequired() {
+        _navigateToSignInDialogAction.value = Event(Unit)
+    }
+
     @StringRes
     private fun getProfileContentDescription(userResult: Result<AuthenticatedUserInfo>?): Int {
         return if (userResult is Success && userResult.data.isSignedIn()) {
