@@ -16,15 +16,26 @@
 
 package com.google.samples.apps.iosched.ui.sessiondetail
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import com.firebase.ui.auth.IdpResponse
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.util.inTransaction
+import com.google.samples.apps.iosched.ui.SnackbarMessage
+import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
+import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
 import dagger.android.support.DaggerAppCompatActivity
+import timber.log.Timber
+import java.util.*
+import javax.inject.Inject
 
 class SessionDetailActivity : DaggerAppCompatActivity() {
+
+    @Inject
+    lateinit var snackbarMessageManager: SnackbarMessageManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +45,19 @@ class SessionDetailActivity : DaggerAppCompatActivity() {
             supportFragmentManager.inTransaction {
                 val sessionId = intent.getStringExtra(EXTRA_SESSION_ID)
                 add(R.id.session_detail_container, SessionDetailFragment.newInstance(sessionId))
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if( resultCode == Activity.RESULT_CANCELED ) {
+            Timber.d("An activity returned RESULT_CANCELED")
+            val response = IdpResponse.fromResultIntent(data)
+            response?.error?.let {
+                snackbarMessageManager.addMessage(SnackbarMessage(
+                        messageId = FirebaseAuthErrorCodeConverter.convert(it.errorCode),
+                        requestChangeId = UUID.randomUUID().toString()))
             }
         }
     }
