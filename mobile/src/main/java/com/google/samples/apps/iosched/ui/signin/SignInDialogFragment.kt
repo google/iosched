@@ -72,7 +72,9 @@ class SignInDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInject
 
         signInViewModel.performSignInEvent.observe(this, EventObserver { signInRequest ->
             if (signInRequest == RequestSignIn) {
-                signInHandler.makeSignInIntent()?.let { startActivity(it) }
+                signInHandler.makeSignInIntent()?.let {
+                    startActivityForResult(it, SIGN_IN_ACTIVITY_REQUEST_CODE)
+                }
             }
         })
 
@@ -84,5 +86,6 @@ class SignInDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInject
 
     companion object {
         const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
+        const val SIGN_IN_ACTIVITY_REQUEST_CODE = 42
     }
 }
