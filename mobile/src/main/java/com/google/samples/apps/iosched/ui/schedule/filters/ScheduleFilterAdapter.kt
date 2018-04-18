@@ -37,7 +37,7 @@ import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.TagFilter
  * Adapter for the filters drawer
  */
 class ScheduleFilterAdapter(val viewModel: ScheduleViewModel) :
-    ListAdapter<Any, ViewHolder>(TagFilterDiff) {
+    ListAdapter<Any, ViewHolder>(EventFilterDiff) {
 
     companion object {
         private const val VIEW_TYPE_HEADING = R.layout.item_filter_heading
@@ -65,13 +65,13 @@ class ScheduleFilterAdapter(val viewModel: ScheduleViewModel) :
 
     override fun submitList(list: MutableList<Any>?) {
         exceptionInDebug(
-            RuntimeException("call `submitTagFilterList()` instead to add category headings.")
+            RuntimeException("call `submitEventFilterList()` instead to add category headings.")
         )
         super.submitList(list)
     }
 
     /** Prefer this method over [submitList] to add category headings. */
-    fun submitTagFilterList(list: List<EventFilter>?) {
+    fun submitEventFilterList(list: List<EventFilter>?) {
         super.submitList(insertCategoryHeadings(list))
     }
 
@@ -136,7 +136,7 @@ class ScheduleFilterAdapter(val viewModel: ScheduleViewModel) :
     }
 }
 
-internal object TagFilterDiff : DiffUtil.ItemCallback<Any>() {
+internal object EventFilterDiff : DiffUtil.ItemCallback<Any>() {
     override fun areItemsTheSame(oldItem: Any, newItem: Any) = oldItem == newItem
 
     override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {

@@ -28,7 +28,7 @@ import javax.inject.Inject
 /**
  * Use case that loads a list of [TagFilter]s for the schedule filters UI.
  */
-open class LoadTagFiltersUseCase @Inject constructor(
+open class LoadEventFiltersUseCase @Inject constructor(
     private val tagRepository: TagRepository
 ) : UseCase<UserSessionMatcher, List<EventFilter>>() {
 

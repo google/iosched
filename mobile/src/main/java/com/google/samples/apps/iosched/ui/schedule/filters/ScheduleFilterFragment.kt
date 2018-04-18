@@ -97,7 +97,7 @@ class ScheduleFilterFragment : DaggerFragment() {
         behavior = BottomSheetBehavior.from(binding.filterSheet)
 
         filterAdapter = ScheduleFilterAdapter(viewModel)
-        viewModel.eventFilters.observe(this, Observer { filterAdapter.submitTagFilterList(it) })
+        viewModel.eventFilters.observe(this, Observer { filterAdapter.submitEventFilterList(it) })
 
         binding.recyclerview.apply {
             adapter = filterAdapter

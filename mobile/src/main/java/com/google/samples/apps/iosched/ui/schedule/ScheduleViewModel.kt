@@ -54,7 +54,7 @@ import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.TagFilter
-import com.google.samples.apps.iosched.ui.schedule.filters.LoadTagFiltersUseCase
+import com.google.samples.apps.iosched.ui.schedule.filters.LoadEventFiltersUseCase
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
@@ -71,7 +71,7 @@ import javax.inject.Inject
 class ScheduleViewModel @Inject constructor(
     private val loadUserSessionsByDayUseCase: LoadUserSessionsByDayUseCase,
     loadAgendaUseCase: LoadAgendaUseCase,
-    loadTagFiltersUseCase: LoadTagFiltersUseCase,
+    loadEventFiltersUseCase: LoadEventFiltersUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
     private val starEventUseCase: StarEventUseCase,
     scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase,
@@ -130,7 +130,7 @@ class ScheduleViewModel @Inject constructor(
 
     private val loadSessionsResult: MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>
     private val loadAgendaResult = MutableLiveData<Result<List<Block>>>()
-    private val loadTagsResult = MutableLiveData<Result<List<EventFilter>>>()
+    private val loadFiltersResult = MutableLiveData<Result<List<EventFilter>>>()
     private val swipeRefreshResult = MutableLiveData<Result<Boolean>>()
 
     private val day1Sessions: LiveData<List<UserSession>>
@@ -185,7 +185,7 @@ class ScheduleViewModel @Inject constructor(
         }
 
         loadAgendaUseCase(loadAgendaResult)
-        loadTagFiltersUseCase(userSessionMatcher, loadTagsResult)
+        loadEventFiltersUseCase(userSessionMatcher, loadFiltersResult)
 
         // map LiveData results from UseCase to each day's individual LiveData
         day1Sessions = loadSessionsResult.map {
@@ -209,7 +209,7 @@ class ScheduleViewModel @Inject constructor(
                 _errorMessage.value = Event(content = result.exception.message ?: "Error")
             }
         })
-        _errorMessage.addSource(loadTagsResult, { result ->
+        _errorMessage.addSource(loadFiltersResult, { result ->
             if (result is Result.Error) {
                 _errorMessage.value = Event(content = result.exception.message ?: "Error")
             }
@@ -220,7 +220,7 @@ class ScheduleViewModel @Inject constructor(
         }
         // TODO handle agenda errors
 
-        eventFilters = loadTagsResult.map {
+        eventFilters = loadFiltersResult.map {
             if (it is Success) {
                 cachedEventFilters = it.data
             }

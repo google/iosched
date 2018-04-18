@@ -63,7 +63,7 @@ import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter
-import com.google.samples.apps.iosched.ui.schedule.filters.LoadTagFiltersUseCase
+import com.google.samples.apps.iosched.ui.schedule.filters.LoadEventFiltersUseCase
 import com.google.samples.apps.iosched.ui.signin.FirebaseSignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.doReturn
@@ -102,7 +102,7 @@ class ScheduleViewModelTest {
                 TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
             )
         )
-        val loadTagsUseCase = LoadTagFiltersUseCase(TagRepository(TestDataRepository))
+        val loadTagsUseCase = LoadEventFiltersUseCase(TagRepository(TestDataRepository))
         val signInDelegate = FakeSignInViewModelDelegate()
 
         // Create ViewModel with the use cases
@@ -512,7 +512,7 @@ class ScheduleViewModelTest {
         loadSessionsUseCase: LoadUserSessionsByDayUseCase =
             createTestLoadUserSessionsByDayUseCase(),
         loadAgendaUseCase: LoadAgendaUseCase = createAgendaExceptionUseCase(),
-        loadTagsUseCase: LoadTagFiltersUseCase = createTagsExceptionUseCase(),
+        loadTagsUseCase: LoadEventFiltersUseCase = createTagsExceptionUseCase(),
         signInViewModelDelegate: SignInViewModelDelegate = createSignInViewModelDelegate(),
         starEventUseCase: StarEventUseCase = createStarEventUseCase(),
         snackbarMessageManager: SnackbarMessageManager = SnackbarMessageManager(
@@ -530,7 +530,7 @@ class ScheduleViewModelTest {
         return ScheduleViewModel(
             loadUserSessionsByDayUseCase = loadSessionsUseCase,
             loadAgendaUseCase = loadAgendaUseCase,
-            loadTagFiltersUseCase = loadTagsUseCase,
+            loadEventFiltersUseCase = loadTagsUseCase,
             signInViewModelDelegate = signInViewModelDelegate,
             starEventUseCase = starEventUseCase,
             snackbarMessageManager = snackbarMessageManager,
@@ -560,8 +560,8 @@ class ScheduleViewModelTest {
     /**
      * Creates a use case that throws an exception.
      */
-    private fun createTagsExceptionUseCase(): LoadTagFiltersUseCase {
-        return object : LoadTagFiltersUseCase(TagRepository(TestDataRepository)) {
+    private fun createTagsExceptionUseCase(): LoadEventFiltersUseCase {
+        return object : LoadEventFiltersUseCase(TagRepository(TestDataRepository)) {
             override fun execute(parameters: UserSessionMatcher): List<EventFilter> {
                 throw Exception("Testing exception")
             }
