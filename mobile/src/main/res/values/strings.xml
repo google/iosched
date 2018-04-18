@@ -56,22 +56,22 @@
     <string name="cancellation_denied_cutoff" translation_description="The message shown when user is trying to cancel a reservation but it's denied because the session starts too soon">Cancellation denied: too close to start time.</string>
     <string name="cancellation_denied_unknown" translation_description="The message shown when user is trying to cancel a reservation but it's denied because of an unknown error">Cancellation denied: unknown error.</string>
 
-    <string name="schedule_filters_empty" translationDescription="The message shown when a schedule page is empty because no events match the current filters.">No events today match your current filters.</string>
+    <string name="schedule_filters_empty" translation_description="The message shown when a schedule page is empty because no events match the current filters.">No events today match your current filters.</string>
 
-    <string name="reservation_reservable" translationDescription="Label shown on events for which the user can request to reserve a seat.">Reserve seat</string>
-    <string name="reservation_reserved" translationDescription="Label shown on events for which the user has reserved a seat.">Reserved</string>
-    <string name="reservation_waitlisted" translationDescription="Label shown on events for which the user is on the waitlist.">Waitlisted</string>
-    <string name="reservation_waitlist_available" translationDescription="Label shown on events for which the user can join the waitlist.">Join waitlist</string>
-    <string name="reservation_disabled" translationDescription="Label shown on events for which the user cannot request a seat.">Reservations unavailable</string>
-    <string name="reservation_pending" translationDescription="Label shown on events for which a reservation request is pending.">Reservation pending</string>
+    <string name="reservation_reservable" translation_description="Label shown on events for which the user can request to reserve a seat.">Reserve seat</string>
+    <string name="reservation_reserved" translation_description="Label shown on events for which the user has reserved a seat.">Reserved</string>
+    <string name="reservation_waitlisted" translation_description="Label shown on events for which the user is on the waitlist.">Waitlisted</string>
+    <string name="reservation_waitlist_available" translation_description="Label shown on events for which the user can join the waitlist.">Join waitlist</string>
+    <string name="reservation_disabled" translation_description="Label shown on events for which the user cannot request a seat.">Reservations unavailable</string>
+    <string name="reservation_pending" translation_description="Label shown on events for which a reservation request is pending.">Reservation pending</string>
 
     <!-- Schedule UI hints -->
-    <string name="schedule_hint_title" translationDescription="The title of the schedule hint dialog.">Customize your schedule</string>
-    <string name="schedule_hint_view_only_your_events" translationDescription="The schedule hint for the switch that toggles if the attendee wants to see their pinned events.">View only your events</string>
-    <string name="schedule_hint_star_event" translationDescription="The schedule hint for the icon to star an event.">Add to your starred events</string>
-    <string name="schedule_hint_reserve_session_seat" translationDescription="The schedule hint for the icon to reserve a session.">Reserve a session seat</string>
-    <string name="schedule_hint_star_event_content_description" translationDescription="The content description for the icon to star an event.">An image to star an event</string>
-    <string name="schedule_hint_reserve_session_seat_content_description" translationDescription="The content description for the icon to reserve a session.">An image to reserve a session seat</string>
+    <string name="schedule_hint_title" translation_description="The title of the schedule hint dialog.">Customize your schedule</string>
+    <string name="schedule_hint_view_only_your_events" translation_description="The schedule hint for the switch that toggles if the attendee wants to see their pinned events.">View only your events</string>
+    <string name="schedule_hint_star_event" translation_description="The schedule hint for the icon to star an event.">Add to your starred events</string>
+    <string name="schedule_hint_reserve_session_seat" translation_description="The schedule hint for the icon to reserve a session.">Reserve a session seat</string>
+    <string name="schedule_hint_star_event_content_description" translation_description="The content description for the icon to star an event.">An image to star an event</string>
+    <string name="schedule_hint_reserve_session_seat_content_description" translation_description="The content description for the icon to reserve a session.">An image to reserve a session seat</string>
 
     <!-- Session Detail -->
     <string name="rate_session" translation_description="The label for the button to rate the session by 5 stars">Rate Session</string>
@@ -228,8 +228,8 @@
     <string name="faq_label" translation_description="Label for link to FAQ on website.">FAQ</string>
     <string name="built_with_material_content_description" translation_description="The app was built with Material Components.">Built with Material Components.</string>
     <string name="tap_to_join_network" translation_description="Tap to join Wifi network.">(tap to join network)</string>
-    <string name="scavenger_hunt_description" translationDescription="Text explaining the scavenger hunt happening at I/O.">Take part in the I/O Android Things Scavenger Hunt! (Hint: You may learn that there\'s an Android Things Developer Kit in your future!)</string>
-    <string name="scavenger_hunt_start_button" translationDescription="Label used on a button to start the scavenger hunt.">Get started now</string>
+    <string name="scavenger_hunt_description" translation_description="Text explaining the scavenger hunt happening at I/O.">Take part in the I/O Android Things Scavenger Hunt! (Hint: You may learn that there\'s an Android Things Developer Kit in your future!)</string>
+    <string name="scavenger_hunt_start_button" translation_description="Label used on a button to start the scavenger hunt.">Get started now</string>
 
     <!-- Day labels for schedule -->
     <string name="day1" translation_description="Label for the first day of the conference">Day 1</string>
