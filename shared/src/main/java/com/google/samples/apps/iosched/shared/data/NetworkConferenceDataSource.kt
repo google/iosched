@@ -17,8 +17,8 @@
 package com.google.samples.apps.iosched.shared.data
 
 import android.content.Context
-import android.net.ConnectivityManager
 import com.google.samples.apps.iosched.shared.model.ConferenceData
+import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
@@ -27,11 +27,13 @@ import javax.inject.Inject
  * Downloads and parses conference data.
  */
 //TODO(jalc): pass bootstrap version
-class NetworkConferenceDataSource @Inject constructor(val context: Context) : ConferenceDataSource {
+class NetworkConferenceDataSource @Inject constructor(
+        val context: Context,
+        private val networkUtils: NetworkUtils
+) : ConferenceDataSource {
 
     override fun getRemoteConferenceData(): ConferenceData? {
-        if (!isNetworkConnected(context)) {
-
+        if (!networkUtils.hasNetworkConnection()) {
             Timber.d("Network not connected")
             return null
         }
@@ -81,11 +83,4 @@ class NetworkConferenceDataSource @Inject constructor(val context: Context) : Co
         responseSource.close()
         return parsedData
     }
-}
-
-fun isNetworkConnected(context: Context): Boolean {
-    val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-    val activeNetwork = cm.activeNetworkInfo
-    return activeNetwork != null && activeNetwork.isConnectedOrConnecting
 }

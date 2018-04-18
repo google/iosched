@@ -251,4 +251,6 @@
     <string name="speaker_events_subhead" translation_description="The heading for a list of events a speaker is associated with">Events</string>
     <string name="speaker_headshot_transition" translatable="false">speaker_headshot</string>
 
+    <string name="no_network_connection" translation_description="Snackbar message when there is not network connection">No internet connection.</string>
+
 </resources>

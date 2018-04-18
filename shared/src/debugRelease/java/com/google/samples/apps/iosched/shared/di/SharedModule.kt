@@ -40,11 +40,11 @@ import com.google.samples.apps.iosched.shared.fcm.FcmTopicSubscriber
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
 import com.google.samples.apps.iosched.shared.time.TimeProvider
+import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
 import javax.inject.Singleton
-
 
 /**
  * Module where classes created in the shared module are created.
@@ -57,8 +57,11 @@ class SharedModule {
     @Singleton
     @Provides
     @Named("remoteConfDatasource")
-    fun provideConferenceDataSource(context: Context): ConferenceDataSource {
-        return NetworkConferenceDataSource(context)
+    fun provideConferenceDataSource(
+            context: Context,
+            networkUtils: NetworkUtils
+    ): ConferenceDataSource {
+        return NetworkConferenceDataSource(context, networkUtils)
     }
 
     @Singleton
