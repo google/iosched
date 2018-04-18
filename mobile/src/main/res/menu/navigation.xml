@@ -15,19 +15,23 @@
   ~ limitations under the License.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/navigation_info"
         android:icon="@drawable/ic_nav_info"
-        android:title="@string/title_info" />
+        android:title="@string/title_info"
+        app:contentDescription="@string/title_info" />
 
     <item
         android:id="@+id/navigation_schedule"
         android:icon="@drawable/ic_nav_schedule"
-        android:title="@string/title_schedule" />
+        android:title="@string/title_schedule"
+        app:contentDescription="@string/title_schedule" />
 
     <item
         android:id="@+id/navigation_map"
         android:icon="@drawable/ic_nav_map"
-        android:title="@string/title_map" />
+        android:title="@string/title_map"
+        app:contentDescription="@string/title_map" />
 </menu>
