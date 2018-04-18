@@ -26,6 +26,8 @@ import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.invoke
+import com.google.samples.apps.iosched.shared.domain.prefs.LoadSelectedFiltersUseCase
+import com.google.samples.apps.iosched.shared.domain.prefs.SaveSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.EventLocation
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
@@ -81,7 +83,9 @@ class ScheduleViewModel @Inject constructor(
     private val snackbarMessageManager: SnackbarMessageManager,
     private val getTimeZoneUseCase: GetTimeZoneUseCase,
     private val refreshConferenceDataUseCase: RefreshConferenceDataUseCase,
-    observeConferenceDataUseCase: ObserveConferenceDataUseCase
+    observeConferenceDataUseCase: ObserveConferenceDataUseCase,
+    loadSelectedFiltersUseCase: LoadSelectedFiltersUseCase,
+    private val saveSelectedFiltersUseCase: SaveSelectedFiltersUseCase
 ) : ViewModel(), ScheduleEventListener, SignInViewModelDelegate by signInViewModelDelegate {
 
     val isLoading: LiveData<Boolean>
@@ -90,6 +94,7 @@ class ScheduleViewModel @Inject constructor(
 
     // The current UserSessionMatcher, used to filter the events that are shown
     private val userSessionMatcher = UserSessionMatcher()
+    private val loadSelectedFiltersResult = MutableLiveData<Result<Unit>>()
 
     private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
 
@@ -132,7 +137,7 @@ class ScheduleViewModel @Inject constructor(
 
     private val loadSessionsResult: MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>
     private val loadAgendaResult = MutableLiveData<Result<List<Block>>>()
-    private val loadFiltersResult = MutableLiveData<Result<List<EventFilter>>>()
+    private val loadEventFiltersResult = MediatorLiveData<Result<List<EventFilter>>>()
     private val swipeRefreshResult = MutableLiveData<Result<Boolean>>()
 
     val eventCount: LiveData<Int>
@@ -183,13 +188,30 @@ class ScheduleViewModel @Inject constructor(
         // Load sessions and tags and store the result in `LiveData`s
         loadSessionsResult = loadUserSessionsByDayUseCase.observe()
 
-        loadSessionsResult.addSource(observeConferenceDataUseCase.observe()) {
+        val conferenceDataAvailable = observeConferenceDataUseCase.observe()
+
+        // Load EventFilters when persisted filters are loaded and when there's new conference data
+        loadEventFiltersResult.addSource(loadSelectedFiltersResult) {
+            loadEventFiltersUseCase(userSessionMatcher, loadEventFiltersResult)
+        }
+        loadEventFiltersResult.addSource(conferenceDataAvailable) {
+            loadEventFiltersUseCase(userSessionMatcher, loadEventFiltersResult)
+        }
+
+        // Load persisted filters to the matcher
+        loadSelectedFiltersUseCase(userSessionMatcher, loadSelectedFiltersResult)
+
+        // Load sessions when persisted filters are loaded and when there's new conference data
+        loadSessionsResult.addSource(conferenceDataAvailable) {
             Timber.d("Detected new data in conference data repository")
+            refreshUserSessions()
+        }
+        loadSessionsResult.addSource(loadSelectedFiltersResult) {
+            Timber.d("Loaded filters from persistent storage")
             refreshUserSessions()
         }
 
         loadAgendaUseCase(loadAgendaResult)
-        loadEventFiltersUseCase(userSessionMatcher, loadFiltersResult)
 
         eventCount = loadSessionsResult.map {
             (it as? Result.Success)?.data?.userSessionCount ?: 0
@@ -202,7 +224,7 @@ class ScheduleViewModel @Inject constructor(
                 _errorMessage.value = Event(content = result.exception.message ?: "Error")
             }
         })
-        _errorMessage.addSource(loadFiltersResult, { result ->
+        _errorMessage.addSource(loadEventFiltersResult, { result ->
             if (result is Result.Error) {
                 _errorMessage.value = Event(content = result.exception.message ?: "Error")
             }
@@ -213,9 +235,10 @@ class ScheduleViewModel @Inject constructor(
         }
         // TODO handle agenda errors
 
-        eventFilters = loadFiltersResult.map {
+        eventFilters = loadEventFiltersResult.map {
             if (it is Success) {
                 cachedEventFilters = it.data
+                updateFilterStateObservables()
             }
             // TODO handle Error result
             cachedEventFilters
@@ -337,7 +360,6 @@ class ScheduleViewModel @Inject constructor(
             // Whenever refresh finishes, stop the indicator, whatever the result
             false
         }
-        _transientUiState.value = _transientUiStateVar
 
         // Subscribe user to schedule updates
         topicSubscriber.subscribeToScheduleUpdates()
@@ -378,10 +400,10 @@ class ScheduleViewModel @Inject constructor(
         if (changed) {
             // Actually toggle the filter
             filter.isChecked.set(enabled)
-            val hasAnyFilters = userSessionMatcher.hasAnyFilters()
-            _hasAnyFilters.value = hasAnyFilters
-            _selectedFilters.value = cachedEventFilters.filter { it.isChecked.get() }
-            setTransientUiState(_transientUiStateVar.copy(hasAnyFilters = hasAnyFilters))
+            // Persist the filters
+            saveSelectedFiltersUseCase(userSessionMatcher)
+            // Update observables
+            updateFilterStateObservables()
             refreshUserSessions()
         }
     }
@@ -389,11 +411,19 @@ class ScheduleViewModel @Inject constructor(
     override fun clearFilters() {
         if (userSessionMatcher.clearAll()) {
             eventFilters.value?.forEach { it.isChecked.set(false) }
-            _hasAnyFilters.value = false
-            _selectedFilters.value = emptyList()
-            setTransientUiState(_transientUiStateVar.copy(hasAnyFilters = false))
+            saveSelectedFiltersUseCase(userSessionMatcher)
+            updateFilterStateObservables()
             refreshUserSessions()
         }
+    }
+
+    // Update all observables related to the filter state. Called from methods that modify
+    // selected filters in the UserSessionMatcher.
+    private fun updateFilterStateObservables() {
+        val hasAnyFilters = userSessionMatcher.hasAnyFilters()
+        _hasAnyFilters.value = hasAnyFilters
+        _selectedFilters.value = cachedEventFilters.filter { it.isChecked.get() }
+        setTransientUiState(_transientUiStateVar.copy(hasAnyFilters = hasAnyFilters))
     }
 
     fun onSwipeRefresh() {

@@ -41,6 +41,8 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
+import com.google.samples.apps.iosched.shared.domain.prefs.LoadSelectedFiltersUseCase
+import com.google.samples.apps.iosched.shared.domain.prefs.SaveSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
@@ -512,7 +514,7 @@ class ScheduleViewModelTest {
         loadSessionsUseCase: LoadUserSessionsByDayUseCase =
             createTestLoadUserSessionsByDayUseCase(),
         loadAgendaUseCase: LoadAgendaUseCase = createAgendaExceptionUseCase(),
-        loadTagsUseCase: LoadEventFiltersUseCase = createTagsExceptionUseCase(),
+        loadTagsUseCase: LoadEventFiltersUseCase = createEventFiltersExceptionUseCase(),
         signInViewModelDelegate: SignInViewModelDelegate = createSignInViewModelDelegate(),
         starEventUseCase: StarEventUseCase = createStarEventUseCase(),
         snackbarMessageManager: SnackbarMessageManager = SnackbarMessageManager(
@@ -525,7 +527,11 @@ class ScheduleViewModelTest {
         refreshConferenceDataUseCase: RefreshConferenceDataUseCase =
             RefreshConferenceDataUseCase(TestDataRepository),
         observeConferenceDataUseCase: ObserveConferenceDataUseCase =
-            ObserveConferenceDataUseCase(TestDataRepository)
+            ObserveConferenceDataUseCase(TestDataRepository),
+        loadSelectedFiltersUseCase: LoadSelectedFiltersUseCase =
+            LoadSelectedFiltersUseCase(FakePreferenceStorage()),
+        saveSelectedFiltersUseCase: SaveSelectedFiltersUseCase =
+            SaveSelectedFiltersUseCase(FakePreferenceStorage())
     ): ScheduleViewModel {
         return ScheduleViewModel(
             loadUserSessionsByDayUseCase = loadSessionsUseCase,
@@ -533,12 +539,14 @@ class ScheduleViewModelTest {
             loadEventFiltersUseCase = loadTagsUseCase,
             signInViewModelDelegate = signInViewModelDelegate,
             starEventUseCase = starEventUseCase,
-            snackbarMessageManager = snackbarMessageManager,
             scheduleUiHintsShownUseCase = scheduleUiHintsShownUseCase,
-            getTimeZoneUseCase = getTimeZoneUseCase,
             topicSubscriber = topicSubscriber,
+            snackbarMessageManager = snackbarMessageManager,
+            getTimeZoneUseCase = getTimeZoneUseCase,
             refreshConferenceDataUseCase = refreshConferenceDataUseCase,
-            observeConferenceDataUseCase = observeConferenceDataUseCase
+            observeConferenceDataUseCase = observeConferenceDataUseCase,
+            loadSelectedFiltersUseCase = loadSelectedFiltersUseCase,
+            saveSelectedFiltersUseCase = saveSelectedFiltersUseCase
         )
     }
 
@@ -560,7 +568,7 @@ class ScheduleViewModelTest {
     /**
      * Creates a use case that throws an exception.
      */
-    private fun createTagsExceptionUseCase(): LoadEventFiltersUseCase {
+    private fun createEventFiltersExceptionUseCase(): LoadEventFiltersUseCase {
         return object : LoadEventFiltersUseCase(TagRepository(TestDataRepository)) {
             override fun execute(parameters: UserSessionMatcher): List<EventFilter> {
                 throw Exception("Testing exception")

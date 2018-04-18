@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.schedule.filters
 
+import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.model.TestData
 import com.google.samples.apps.iosched.model.TestData.androidTag
 import com.google.samples.apps.iosched.model.TestData.cloudTag
@@ -27,9 +28,14 @@ import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import org.junit.Rule
 import org.junit.Test
 
 class LoadEventFiltersUseCaseTest {
+
+    @Rule
+    @JvmField
+    val instantTaskExecutor = InstantTaskExecutorRule()
 
     @Test
     fun interleaveSort() {
@@ -44,11 +50,11 @@ class LoadEventFiltersUseCaseTest {
     }
 
     @Test
-    fun loadsTagFilters() {
+    fun loadsFilters() {
         val useCase = LoadEventFiltersUseCase(TagRepository(TestDataRepository))
         val result = useCase.executeNow(UserSessionMatcher()) as Success
 
         assertTrue(result.data[0] is MyEventsFilter)
-        assertTrue(result.data.containsAll(TestData.tagFiltersList))
+        assertEquals(result.data.subList(1, result.data.size), TestData.tagFiltersList)
     }
 }

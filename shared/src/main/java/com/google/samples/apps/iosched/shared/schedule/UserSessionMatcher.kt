@@ -16,8 +16,11 @@
 
 package com.google.samples.apps.iosched.shared.schedule
 
+import com.google.gson.GsonBuilder
+import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.model.UserSession
+import timber.log.Timber
 
 /** Capable of discerning [UserSession]s that match some criterion. */
 class UserSessionMatcher {
@@ -29,7 +32,9 @@ class UserSessionMatcher {
 
     private var showPinnedEventsOnly = false
 
-    private val selectedTags = HashSet<Tag>()
+    private val selectedTags = HashSet<TagIdAndCategory>()
+
+    private val gson = GsonBuilder().create()
 
     @Synchronized
     fun setShowPinnedEventsOnly(pinnedOnly: Boolean): Boolean {
@@ -44,10 +49,10 @@ class UserSessionMatcher {
     fun getShowPinnedEventsOnly() = showPinnedEventsOnly
 
     @Synchronized
-    fun add(tag: Tag) = selectedTags.add(tag)
+    fun add(tag: Tag) = selectedTags.add(TagIdAndCategory.fromTag(tag))
 
     @Synchronized
-    fun remove(tag: Tag) = selectedTags.remove(tag)
+    fun remove(tag: Tag) = selectedTags.remove(TagIdAndCategory.fromTag(tag))
 
     /** Returns true if the set of filtered tags changed. */
     @Synchronized
@@ -74,7 +79,7 @@ class UserSessionMatcher {
     }
 
     @Synchronized
-    operator fun contains(tag: Tag) = selectedTags.contains(tag)
+    operator fun contains(tag: Tag) = selectedTags.contains(TagIdAndCategory.fromTag(tag))
 
     /**
      * Remove any tags that aren't in [newTags]. Call this whenever a new list of Tags is loaded
@@ -85,7 +90,8 @@ class UserSessionMatcher {
         if (newTags.isEmpty()) {
             selectedTags.clear()
         } else {
-            selectedTags.removeAll(selectedTags.subtract(newTags))
+            val valid = newTags.map { TagIdAndCategory(it.id, it.category) }
+            selectedTags.removeAll(selectedTags.subtract(valid))
         }
     }
 
@@ -96,8 +102,9 @@ class UserSessionMatcher {
             return false
         }
         var match = true
+        val sessionTags = userSession.session.tags.map { TagIdAndCategory(it.id, it.category) }
         selectedTags.groupBy { it.category }.forEach { (_, tagsInCategory) ->
-            if (userSession.session.tags.intersect(tagsInCategory).isEmpty()) {
+            if (sessionTags.intersect(tagsInCategory).isEmpty()) {
                 match = false
                 return@forEach
             }
@@ -105,11 +112,47 @@ class UserSessionMatcher {
         return match
     }
 
-    @Synchronized
-    fun getSelectedTags(): List<Tag> {
-        return selectedTags.toList()
-            .sortedWith(
-                compareBy({ FILTER_CATEGORIES.indexOf(it.category) }, { it.orderInCategory })
-            )
+    fun save(preferenceStorage: PreferenceStorage) {
+        val state = SavedFilterPreferences(showPinnedEventsOnly, selectedTags.toList())
+        preferenceStorage.selectedFilters = gson.toJson(state)
+    }
+
+    fun load(preferenceStorage: PreferenceStorage) {
+        val prefValue = preferenceStorage.selectedFilters
+        if (prefValue != null) {
+            val state = try {
+                gson.fromJson(prefValue, SavedFilterPreferences::class.java)
+            } catch (t: Throwable) {
+                Timber.e("Error reading filter preferences", t)
+                return
+            }
+            showPinnedEventsOnly = state.showPinnedEventsOnly
+            selectedTags.addAll(state.tagsAndCategories)
+        }
     }
 }
+
+// Copy of Tag with only the id and category, for smaller serializing/deserializing.
+data class TagIdAndCategory(
+    val id: String,
+    val category: String
+) {
+    /** Only IDs are used for equality. */
+    override fun equals(other: Any?): Boolean =
+        this === other || (other is TagIdAndCategory && other.id == id)
+
+    /** Only IDs are used for equality. */
+    override fun hashCode(): Int = id.hashCode()
+
+    companion object {
+        fun fromTag(tag: Tag): TagIdAndCategory {
+            return TagIdAndCategory(tag.id, tag.category)
+        }
+    }
+}
+
+// POJO saved to/loaded from preferences
+data class SavedFilterPreferences(
+    val showPinnedEventsOnly: Boolean,
+    val tagsAndCategories: List<TagIdAndCategory>
+)
