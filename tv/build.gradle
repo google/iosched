@@ -30,12 +30,14 @@ android {
         versionCode rootProject.versionCodeTv
         versionName rootProject.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [crashlyticsEnabled: true]
     }
 
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
+            manifestPlaceholders = [crashlyticsEnabled: true]
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
@@ -47,6 +49,10 @@ android {
             // "staging" build type.
             // Used with :test-shared, which doesn't have a staging variant.
             matchingFallbacks = ['debug']
+        }
+
+        debug {
+            manifestPlaceholders = [crashlyticsEnabled: false]
         }
     }
     dataBinding {
