@@ -47,18 +47,21 @@ android {
         resValue "dimen", "map_camera_tilt", "${map_default_camera_tilt}"
         resValue "dimen", "map_camera_zoom", "${map_default_camera_zoom}"
         resValue "dimen", "map_viewport_min_zoom", "${map_viewport_min_zoom}"
+        manifestPlaceholders = [crashlyticsEnabled: true]
 
     }
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
+            manifestPlaceholders = [crashlyticsEnabled: true]
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             resValue "string",
                     "google_maps_key",
                     "AIzaSyD5jqwKMm1SeoYsW25vxCXfTlhDBeZ4H5c"
         }
         debug {
+            manifestPlaceholders = [crashlyticsEnabled: false]
             resValue "string",
                     "google_maps_key",
                     "AIzaSyAhJx57ikQH9rYc8IT8W3d2As5cGHMBvuo"

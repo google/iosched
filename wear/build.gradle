@@ -29,12 +29,14 @@ android {
         targetSdkVersion rootProject.targetWearSdkVersion
         versionCode rootProject.versionCodeWear
         versionName rootProject.versionName
+        manifestPlaceholders = [crashlyticsEnabled: true]
     }
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [crashlyticsEnabled: true]
         }
 
         staging {
@@ -45,6 +47,10 @@ android {
             // "staging" build type.
             // Used with :test-shared, which doesn't have a staging variant.
             matchingFallbacks = ['debug']
+        }
+
+        debug {
+            manifestPlaceholders = [crashlyticsEnabled: false]
         }
     }
 
