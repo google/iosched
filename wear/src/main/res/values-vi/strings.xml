@@ -24,4 +24,5 @@
         <item quantity="one">%s phút</item>
         <item quantity="other">%s phút</item>
     </plurals>
+    <string name="item_session_image_view_time_icon_content_description">Biểu tượng thời gian bắt đầu.</string>
 </resources>

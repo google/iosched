@@ -24,4 +24,5 @@
         <item quantity="one">%s นาที</item>
         <item quantity="other">%s นาที</item>
     </plurals>
+    <string name="item_session_image_view_time_icon_content_description">ไอคอนของเวลาเริ่มต้น</string>
 </resources>

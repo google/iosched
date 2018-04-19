@@ -16,5 +16,8 @@
 -->
 <resources>
     <string name="no_sessions_available">没有可用的会议</string>
+    <string name="search_hint">搜索 Google I/O 会议</string>
+    <string name="search_settings_description">搜索 Google I/O 会议</string>
     <string name="session_detail_speakers_header">演讲者</string>
+    <string name="session_detail_watch">观看</string>
 </resources>

@@ -28,4 +28,5 @@
         <item quantity="many">%s минут</item>
         <item quantity="other">%s минуты</item>
     </plurals>
+    <string name="item_session_image_view_time_icon_content_description">Значок времени начала</string>
 </resources>
