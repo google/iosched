@@ -312,7 +312,9 @@
         <item name="android:textColor">@color/grey_800</item>
     </style>
     <style name="TextAppearance.IOSched.AboutButtons" parent="@style/Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:padding">@dimen/margin_normal</item>
+        <item name="android:textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
     </style>
 
