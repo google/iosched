@@ -17,8 +17,8 @@
 package com.google.samples.apps.iosched.shared.util
 
 import android.content.Context
+import android.content.Context.CONNECTIVITY_SERVICE
 import android.net.ConnectivityManager
-import androidx.content.systemService
 import javax.inject.Inject
 
 /**
@@ -27,7 +27,7 @@ import javax.inject.Inject
 open class NetworkUtils @Inject constructor(val context: Context) {
 
     open fun hasNetworkConnection(): Boolean {
-        val connectivityManager: ConnectivityManager = context.systemService()
+        val connectivityManager= context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetworkInfo = connectivityManager.activeNetworkInfo
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting
     }
