@@ -16,5 +16,8 @@
 -->
 <resources>
     <string name="no_sessions_available">참여 가능한 세션이 없습니다.</string>
+    <string name="search_hint">Google I/O 세션 검색</string>
+    <string name="search_settings_description">Google I/O의 세션을 검색합니다.</string>
     <string name="session_detail_speakers_header">발표자</string>
+    <string name="session_detail_watch">보기</string>
 </resources>

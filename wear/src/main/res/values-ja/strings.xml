@@ -24,4 +24,5 @@
         <item quantity="one">%s分</item>
         <item quantity="other">%s分</item>
     </plurals>
+    <string name="item_session_image_view_time_icon_content_description">開始時間のアイコン。</string>
 </resources>

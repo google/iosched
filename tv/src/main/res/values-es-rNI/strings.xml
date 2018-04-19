@@ -16,5 +16,8 @@
 -->
 <resources>
     <string name="no_sessions_available">No hay sesiones disponibles</string>
-    <string name="session_detail_speakers_header">Altavoces</string>
+    <string name="search_hint">Buscar sesiones de Google I/O</string>
+    <string name="search_settings_description">Buscar sesiones en Google I/O</string>
+    <string name="session_detail_speakers_header">Expositores</string>
+    <string name="session_detail_watch">Mirar</string>
 </resources>

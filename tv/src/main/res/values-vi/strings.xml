@@ -16,5 +16,8 @@
 -->
 <resources>
     <string name="no_sessions_available">Không có phiên hội thảo nào</string>
+    <string name="search_hint">Tìm kiếm các phiên sự kiện của Google I/O</string>
+    <string name="search_settings_description">Tìm kiếm các phiên sự kiện từ Google I/O</string>
     <string name="session_detail_speakers_header">Diễn giả</string>
+    <string name="session_detail_watch">Xem</string>
 </resources>
