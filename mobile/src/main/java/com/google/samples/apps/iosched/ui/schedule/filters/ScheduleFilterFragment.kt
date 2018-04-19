@@ -29,12 +29,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.view.doOnLayout
+import androidx.view.postDelayed
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleFilterBinding
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.MainActivity
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
+import com.google.samples.apps.iosched.ui.schedule.filters.EventFilterView.Companion.DESELECTING_DURATION
+import com.google.samples.apps.iosched.ui.schedule.filters.EventFilterView.Companion.SELECTING_DURATION
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_COLLAPSED
@@ -211,7 +214,13 @@ fun setClickListenerForFilter(
         } else {
             val checked = !filter.isChecked
             filter.animateChecked(checked)
-            viewModel.toggleFilter(eventFilter, checked)
+
+            // Delay actually applying the toggle until the animation has run
+            filter.postDelayed(
+                delayInMillis = if (checked) SELECTING_DURATION else DESELECTING_DURATION
+            ) {
+                viewModel.toggleFilter(eventFilter, checked)
+            }
         }
     }
 }

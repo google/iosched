@@ -71,7 +71,7 @@ class EventFilterView @JvmOverloads constructor(
     var text: CharSequence? = null
         set(value) {
             field = value
-            contentDescription = value
+            updateContentDescription()
             requestLayout()
         }
 
@@ -88,6 +88,9 @@ class EventFilterView @JvmOverloads constructor(
             if (field != value) {
                 field = value
                 postInvalidateOnAnimation()
+                if (value == 0f || value == 1f) {
+                    updateContentDescription()
+                }
             }
         }
 
@@ -258,7 +261,7 @@ class EventFilterView @JvmOverloads constructor(
                     progress = newProgress
                 }
                 interpolator = interp
-                duration = if (checked) 500L else 300L
+                duration = if (checked) SELECTING_DURATION else DESELECTING_DURATION
                 start()
             }
         }
@@ -299,5 +302,15 @@ class EventFilterView @JvmOverloads constructor(
         } else {
             StaticLayout(text, textPaint, textWidth, ALIGN_NORMAL, 1f, 0f, true)
         }
+    }
+
+    private fun updateContentDescription() {
+        val desc = if (isChecked) R.string.a11y_filter_applied else R.string.a11y_filter_not_applied
+        contentDescription = resources.getString(desc, text)
+    }
+
+    companion object {
+        const val SELECTING_DURATION = 350L
+        const val DESELECTING_DURATION = 200L
     }
 }
