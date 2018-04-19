@@ -84,6 +84,8 @@
     <!-- Accessibility -->
     <string name="a11y_collapse_filters_sheet" translation_description="Description of a button to lower the filters sheet.">Lower filters sheet</string>
     <string name="a11y_clear_tag_filters" translation_description="Description of a button to remove all current tag filters.">Clear filters</string>
+    <string name="a11y_filter_applied" translation_description="Alternative text when an event filter is applies">%1s filter applied</string>
+    <string name="a11y_filter_not_applied" translation_description="Alternative text when an event filter is not applies">%1s filter not applied</string>
 
     <string name="a11y_pinned" translation_description="Description of a button that's used to show only starred and reserved events.">Only starred and reserved events</string>
     <string name="a11y_revert_pinned" translation_description="Description of a button to revert the switch that shows only starred and reserved events.">Show all sessions</string>
