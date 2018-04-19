@@ -85,7 +85,7 @@ class CustomDimDialog(context: Context?) : AppCompatDialog(context, R.style.Them
                     }
                 }
             }
-            background = ColorDrawable(ResourcesCompat.getColor(res, R.color.indigo_transparent,
+            background = ColorDrawable(ResourcesCompat.getColor(res, R.color.scrim,
                     context.theme))
         }
     }
