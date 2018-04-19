@@ -23,10 +23,10 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
+        android:name=".WearApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".WearApplication"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <uses-library
@@ -49,5 +49,10 @@
 
         <activity
             android:name=".ui.sessiondetail.SessionDetailActivity" />
+
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="${crashlyticsEnabled}" />
+
     </application>
 </manifest>
