@@ -177,8 +177,7 @@
     <string name="faq_url" translatable="false">https://events.google.com/io/faq/</string>
     <string name="tos_url" translatable="false">https://policies.google.com/terms</string>
     <string name="privacy_policy_url" translatable="false">https://policies.google.com/privacy</string>
-    <!--TODO: verify this is correct OSS url-->
-    <string name="oss_url" translatable="false">https://github.com/google/iosched#copyright</string>
+    <string name="oss_file" translatable="false">file:///android_asset/licenses.html</string>
 
     <string name="travel_directions_title" translation_description="Header label for driving directions details.">Driving Directions</string>
     <string name="travel_shuttle_title" translation_description="Header label for shuttle service details.">Shuttle Service (Recommended)</string>

@@ -107,7 +107,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:text="@string/settings_oss_licenses"
-                app:websiteLink="@{@string/oss_url}"
+                app:dialogTitle="@{@string/settings_oss_licenses}"
+                app:fileLink="@{@string/oss_file}"
                 app:layout_constraintTop_toBottomOf="@id/privacy_policy" />
 
             <TextView
