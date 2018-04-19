@@ -16,5 +16,8 @@
 -->
 <resources>
     <string name="no_sessions_available">沒有可參加的講座</string>
+    <string name="search_hint">搜尋 Google I/O 大會活動</string>
+    <string name="search_settings_description">搜尋 Google I/O 大會的活動</string>
     <string name="session_detail_speakers_header">講者</string>
+    <string name="session_detail_watch">觀賞</string>
 </resources>

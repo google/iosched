@@ -16,5 +16,8 @@
 -->
 <resources>
     <string name="no_sessions_available">ไม่มีเซสชัน</string>
+    <string name="search_hint">ค้นหาเซสชัน Google I/O</string>
+    <string name="search_settings_description">ค้นหาเซสชันจาก Google I/O</string>
     <string name="session_detail_speakers_header">ลำโพง</string>
+    <string name="session_detail_watch">ดู</string>
 </resources>

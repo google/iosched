@@ -16,5 +16,8 @@
 -->
 <resources>
     <string name="no_sessions_available">جلسه‌ای دردسترس نیست</string>
+    <string name="search_hint">جستجوی جلسات Google I/O</string>
+    <string name="search_settings_description">جستجوی جلسات مربوط به Google I/O</string>
     <string name="session_detail_speakers_header">بلندگو</string>
+    <string name="session_detail_watch">تماشا</string>
 </resources>

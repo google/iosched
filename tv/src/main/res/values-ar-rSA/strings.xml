@@ -16,5 +16,8 @@
 -->
 <resources>
     <string name="no_sessions_available">لا تتوفر أي جلسات.</string>
+    <string name="search_hint">البحث عن جلسات Google I/O</string>
+    <string name="search_settings_description">البحث عن جلسات من Google I/O</string>
     <string name="session_detail_speakers_header">مكبّرات الصوت</string>
+    <string name="session_detail_watch">مشاهدة</string>
 </resources>

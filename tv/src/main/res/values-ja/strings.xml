@@ -16,5 +16,8 @@
 -->
 <resources>
     <string name="no_sessions_available">セッションはありません</string>
+    <string name="search_hint">Google I/O のセッションを検索</string>
+    <string name="search_settings_description">Google I/O からセッションを検索します</string>
     <string name="session_detail_speakers_header">スピーカー</string>
+    <string name="session_detail_watch">見る</string>
 </resources>

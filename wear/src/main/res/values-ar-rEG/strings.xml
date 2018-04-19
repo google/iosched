@@ -32,4 +32,5 @@
         <item quantity="many">%s دقيقة</item>
         <item quantity="other">%s دقيقة</item>
     </plurals>
+    <string name="item_session_image_view_time_icon_content_description">رمز وقت البدء</string>
 </resources>
