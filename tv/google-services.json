@@ -8,23 +8,15 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:447780894619:android:f642e16a06f96c5c",
+        "mobilesdk_app_id": "1:447780894619:android:4fafa826cd727889",
         "android_client_info": {
-          "package_name": "com.google.samples.apps.iosched.shared"
+          "package_name": "com.google.samples.apps.iosched.tv"
         }
       },
       "oauth_client": [
         {
           "client_id": "447780894619-an6s48nvj18f25v4nc5te03q2c4g9dqf.apps.googleusercontent.com",
           "client_type": 3
-        },
-        {
-          "client_id": "447780894619-nko1el7a76etvlbn1vhc3b03tmpbjs5g.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.google.samples.apps.iosched.shared",
-            "certificate_hash": "e499e9081b4ddf63788f4dfb4e7018c54f93188b"
-          }
         },
         {
           "client_id": "447780894619-tbe57ou9oflnoic5scbc8mj8tnnj9o2r.apps.googleusercontent.com",
@@ -41,20 +33,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "447780894619-an6s48nvj18f25v4nc5te03q2c4g9dqf.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "447780894619-c9ovo169ue58khaq7pmj9pvvkbmjt6l2.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.google.iosched.dev"
-              }
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

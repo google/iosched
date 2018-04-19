@@ -19,23 +19,20 @@ package com.google.samples.apps.iosched.tv
 import android.app.Application
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
-import com.crashlytics.android.Crashlytics
-import com.crashlytics.android.core.CrashlyticsCore
 import com.google.samples.apps.iosched.shared.di.SharedModule
-import com.google.samples.apps.iosched.shared.util.CrashlyticsTree
 import com.google.samples.apps.iosched.tv.di.DaggerTvAppComponent
 import com.google.samples.apps.iosched.tv.di.TvAppComponent
 import com.google.samples.apps.iosched.tv.di.TvAppModule
 import com.google.samples.apps.iosched.tv.ui.schedule.di.TvScheduleComponent
 import com.google.samples.apps.iosched.tv.ui.schedule.di.TvScheduleModule
-import com.google.samples.apps.iosched.tv.ui.sessiondetail.di.TvSessionDetailComponent
-import com.google.samples.apps.iosched.tv.ui.sessiondetail.di.TvSessionDetailModule
 import com.google.samples.apps.iosched.tv.ui.search.di.TvSearchableComponent
 import com.google.samples.apps.iosched.tv.ui.search.di.TvSearchableModule
+import com.google.samples.apps.iosched.tv.ui.sessiondetail.di.TvSessionDetailComponent
+import com.google.samples.apps.iosched.tv.ui.sessiondetail.di.TvSessionDetailModule
 import com.google.samples.apps.iosched.tv.ui.sessionplayer.di.TvSessionPlayerComponent
 import com.google.samples.apps.iosched.tv.ui.sessionplayer.di.TvSessionPlayerModule
+import com.google.samples.apps.iosched.tv.util.CrashlyticsTree
 import com.jakewharton.threetenabp.AndroidThreeTen
-import io.fabric.sdk.android.Fabric
 import timber.log.Timber
 
 /**
@@ -45,15 +42,11 @@ class TvApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        // Crashlytics and logging
-        val core = CrashlyticsCore.Builder()
-            .disabled(BuildConfig.DEBUG)
-            .build()
-        Fabric.with(this, Crashlytics.Builder().core(core).build())
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+        } else {
+            Timber.plant(CrashlyticsTree())
         }
-        Timber.plant(CrashlyticsTree())
 
         // ThreeTenBP for times and dates
         AndroidThreeTen.init(this)

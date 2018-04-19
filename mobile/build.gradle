@@ -15,12 +15,10 @@
  */
 
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
-
 apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -129,8 +127,9 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
 
-    // Firebase
+    // Fabric and Firebase
     implementation("com.firebaseui:firebase-ui-auth:$rootProject.firebaseUiVersion")
+    implementation "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
 
     // Utils
     // Date and time API for Java.
@@ -162,3 +161,5 @@ configurations.all {
         }
     }
 }
+
+apply plugin: 'com.google.gms.google-services'

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.util
+package com.google.samples.apps.iosched.wear.util
 
 import android.util.Log
 import com.crashlytics.android.Crashlytics
@@ -29,9 +29,12 @@ class CrashlyticsTree : Timber.Tree() {
             return
         }
 
-        Crashlytics.setInt(CRASHLYTICS_KEY_PRIORITY, priority)
-        Crashlytics.setString(CRASHLYTICS_KEY_TAG, tag)
-        Crashlytics.setString(CRASHLYTICS_KEY_MESSAGE, message)
+        Crashlytics.setInt(
+            CRASHLYTICS_KEY_PRIORITY, priority)
+        Crashlytics.setString(
+            CRASHLYTICS_KEY_TAG, tag)
+        Crashlytics.setString(
+            CRASHLYTICS_KEY_MESSAGE, message)
 
         if (t == null) {
             Crashlytics.logException(Exception(message))
