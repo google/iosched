@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:447780894619:android:f642e16a06f96c5c",
+        "mobilesdk_app_id": "1:447780894619:android:66c485c6a5187053",
         "android_client_info": {
-          "package_name": "com.google.samples.apps.iosched.shared"
+          "package_name": "com.google.samples.apps.iosched"
         }
       },
       "oauth_client": [
@@ -19,10 +19,10 @@
           "client_type": 3
         },
         {
-          "client_id": "447780894619-nko1el7a76etvlbn1vhc3b03tmpbjs5g.apps.googleusercontent.com",
+          "client_id": "447780894619-u3o7j05aqv0u0mb0nmu7btseg1csrrlg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.google.samples.apps.iosched.shared",
+            "package_name": "com.google.samples.apps.iosched",
             "certificate_hash": "e499e9081b4ddf63788f4dfb4e7018c54f93188b"
           }
         },

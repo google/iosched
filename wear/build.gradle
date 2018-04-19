@@ -18,6 +18,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion rootProject.compileWearSdkVersion
@@ -106,6 +107,9 @@ dependencies {
     testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"
     implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
 
+    // Fabric and Firebase
+    implementation "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
+
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$rootProject.kotlinVersion"
 
@@ -116,7 +120,6 @@ dependencies {
     // Local unit tests
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
-
 }
 
 // Force Dagger's transitive dependencies to use the project's version of the support libraries.
@@ -129,3 +132,5 @@ configurations.all {
         }
     }
 }
+
+apply plugin: 'com.google.gms.google-services'

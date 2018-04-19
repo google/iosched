@@ -18,7 +18,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -126,9 +125,6 @@ dependencies {
     api "com.google.firebase:firebase-auth:$rootProject.googlePlayServicesClientVersion"
     api "com.google.firebase:firebase-messaging:$rootProject.googlePlayServicesClientVersion"
     api "com.google.firebase:firebase-config:$rootProject.googlePlayServicesClientVersion"
-
-    // Fabric
-    api "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
 
     // ThreeTenBP for the shared module only. Date and time API for Java.
     testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"

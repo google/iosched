@@ -16,14 +16,12 @@
 
 package com.google.samples.apps.iosched.wear
 
-import com.crashlytics.android.Crashlytics
-import com.crashlytics.android.core.CrashlyticsCore
-import com.google.samples.apps.iosched.shared.util.CrashlyticsTree
+
 import com.google.samples.apps.iosched.wear.di.DaggerWearAppComponent
+import com.google.samples.apps.iosched.wear.util.CrashlyticsTree
 import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
-import io.fabric.sdk.android.Fabric
 import timber.log.Timber
 
 /**
@@ -33,15 +31,11 @@ class WearApplication: DaggerApplication () {
     override fun onCreate() {
         super.onCreate()
 
-        // Crashlytics and logging
-        val core = CrashlyticsCore.Builder()
-            .disabled(BuildConfig.DEBUG)
-            .build()
-        Fabric.with(this, Crashlytics.Builder().core(core).build())
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+        } else {
+            Timber.plant(CrashlyticsTree())
         }
-        Timber.plant(CrashlyticsTree())
 
         // ThreeTenBP for times and dates
         AndroidThreeTen.init(this)
