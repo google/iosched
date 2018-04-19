@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.info
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.databinding.BindingAdapter
 import android.net.Uri
@@ -23,7 +24,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
 import android.widget.Button
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentInfoAboutBinding
 import dagger.android.support.DaggerFragment
 
@@ -39,6 +42,19 @@ fun websiteLink(
             data = Uri.parse(url)
         }
         it.context.startActivity(intent, null)
+    }
+}
+
+@BindingAdapter(value = ["dialogTitle", "fileLink"], requireAll = true)
+fun createDialogForFile(button: Button, dialogTitle: String, fileLink: String) {
+    val context = button.context
+    button.setOnClickListener {
+        val webView = WebView(context).apply { loadUrl(fileLink) }
+        AlertDialog.Builder(context)
+                .setTitle(dialogTitle)
+                .setView(webView)
+                .create()
+                .show()
     }
 }
 
