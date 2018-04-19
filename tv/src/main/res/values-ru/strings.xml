@@ -16,5 +16,8 @@
 -->
 <resources>
     <string name="no_sessions_available">Сессий нет</string>
+    <string name="search_hint">Введите название сессии</string>
+    <string name="search_settings_description">Поиск сессий фестиваля Google I/O</string>
     <string name="session_detail_speakers_header">Выступающие</string>
+    <string name="session_detail_watch">Посмотреть</string>
 </resources>

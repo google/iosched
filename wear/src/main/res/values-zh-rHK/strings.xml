@@ -24,4 +24,5 @@
         <item quantity="one">%s 分鐘</item>
         <item quantity="other">%s 分鐘</item>
     </plurals>
+    <string name="item_session_image_view_time_icon_content_description">開始時間圖示。</string>
 </resources>

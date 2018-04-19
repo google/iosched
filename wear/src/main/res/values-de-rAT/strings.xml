@@ -24,4 +24,5 @@
         <item quantity="one">%s Minute</item>
         <item quantity="other">%s Minuten</item>
     </plurals>
+    <string name="item_session_image_view_time_icon_content_description">Symbol für die Startzeit.</string>
 </resources>
