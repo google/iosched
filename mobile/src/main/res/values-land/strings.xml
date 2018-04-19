@@ -17,5 +17,5 @@
 
 <resources>
     <!-- Session Detail -->
-    <string name="session_detail_header_aspect" translatable="false">H,6:1</string>
+    <string name="session_detail_header_aspect" translatable="false">H,3:1</string>
 </resources>
