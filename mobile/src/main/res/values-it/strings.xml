@@ -26,13 +26,14 @@
         <item quantity="one">%1$d evento</item>
         <item quantity="other">%1$d eventi</item>
     </plurals>
-    <string name="starred_and_reserved">I tuoi eventi speciali e prenotati</string>
     <string name="agenda">Agenda</string>
     <string name="event_starred">Evento aggiunto a Speciali</string>
     <string name="event_unstarred">Evento rimosso da speciali</string>
     <string name="event_star_error">Errore durante l\'aggiunta dell\'evento a speciali</string>
     <string name="reservation_error">Errore durante le modifiche alla prenotazione. Attendi il completamento delle precedenti richieste o riprova più tardi.</string>
     <string name="reservation_request_succeeded">Prenotazione richiesta.</string>
+    <string name="reservation_cancel_succeeded">Prenotazione annullata: \"&lt;b&gt;%s&lt;/b&gt;.\"</string>
+    <string name="reservation_new">Il tuo posto è stato prenotato per \"&lt;b&gt;%s&lt;/b&gt;\".</string>
     <string name="reservation_replaced">Evento sostituito.</string>
     <string name="waitlist_new">Il tuo nome è stato inserito in lista d\'attesa.</string>
     <string name="waitlist_cancel_succeeded">Rimosso dalla lista d\'attesa.</string>
@@ -43,7 +44,7 @@
     <string name="reservation_denied_unknown">Prenotazione negata: errore sconosciuto.</string>
     <string name="cancellation_denied_cutoff">Cancellazione negata: troppo vicino all\'orario di inizio.</string>
     <string name="cancellation_denied_unknown">Cancellazione negata: errore sconosciuto.</string>
-    <string name="schedule_filters_empty">Nessun evento di oggi corrisponde ai tuoi filtri.</string>
+    <string name="schedule_filters_empty">Non hai eventi speciali o prenotati per oggi.</string>
     <string name="reservation_reservable">Prenota il posto</string>
     <string name="reservation_reserved">Prenotato</string>
     <string name="reservation_waitlisted">In lista d\'attesa</string>
@@ -82,11 +83,14 @@
     <string name="dialog_sign_out_content">Tutti gli eventi salvati, le prenotazioni dei posti e le valutazioni delle sessioni (in caso di partecipazione) rimangono sincronizzati con il tuo account.</string>
     <string name="sign_out">Esci</string>
     <string name="remove_reservation_title">Rimuovere la prenotazione?</string>
+    <string name="remove_reservation_content">Stai per rinunciare al tuo posto per \"%1$s\". Se decidi di non prenotare un posto, ma vuoi comunque partecipare, tutte le sessioni riservano alcuni posti che verranno assegnati in base all\'ordine di arrivo.</string>
     <string name="cancel">Annulla</string>
     <string name="remove">Rimuovi</string>
     <string name="swap_reservation_title">Cambiare la prenotazione?</string>
+    <string name="swap_reservation_content">Hai già una prenotazione o sei già in lista d\'attesa per \"%1$s\". È consentita una sola prenotazione per fascia oraria. Vuoi cambiarla con \"%2$s\"?</string>
     <string name="swap">Cambia</string>
     <string name="notifications_preference_dialog_title">Notifiche I/O</string>
+    <string name="notifications_preference_dialog_content">Vuoi ricevere notifiche su I/O? Ti invieremo informazioni sugli orari di inizio delle sessioni, gli eventi fuori orario, le registrazioni delle sessioni e molto altro ancora. Puoi cambiare questa impostazione da \"Informazioni &gt; Impostazioni\" in qualsiasi momento.</string>
     <string name="no">No</string>
     <string name="yes">Sì</string>
     <plurals name="duration_hours">
@@ -98,7 +102,7 @@
         <item quantity="other">%s minuti</item>
     </plurals>
     <string name="menu_item_share_session">Condividi sessione</string>
-    <string name="share_text_session_detail">Dai un\'occhiata a "%1$s" alla pagina #io18 %2$s</string>
+    <string name="share_text_session_detail">Dai un\'occhiata a \"%1$s\" alla pagina #io18 %2$s</string>
     <string name="intent_chooser_session_detail">Condividi</string>
     <string name="onboarding_get_started">Inizia</string>
     <string name="onboarding_welcome_to_google_i_o">Ti diamo il benvenuto in Google I/O</string>
@@ -123,11 +127,14 @@
     <string name="settings_title">Impostazioni</string>
     <string name="travel_directions_title">Indicazioni stradali</string>
     <string name="travel_shuttle_title">Servizio navetta (consigliato)</string>
+    <string name="travel_carpool_parking_title">Parcheggio e carpooling</string>
     <string name="travel_ride_sharing_title">Carsharing</string>
     <string name="travel_public_transportation_title">Trasporti pubblici</string>
     <string name="travel_biking_title">Bici</string>
+    <string name="travel_directions_description">Trova indicazioni su <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> o <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a> per 1 Amphitheatre Pkwy, Mountain View, CA 94043</string>
     <string name="travel_shuttle_description">A tutti i partecipanti di Google I/O verrà offerto gratuitamente un servizio navetta dagli hotel consigliati da Google. Un servizio selezionato è disponibile anche da San Francisco e altre località della penisola. Per salire a bordo delle navette per gli eventi Google I/O, dovrai mostrare l\'email di conferma di Google I/O o il badge della conferenza.\n\nCiascun punto di raccolta dispone di veicoli con accessibilità ADA. Indica sul modulo di registrazione se necessiti di qualsiasi assistenza speciale o ADA: il team dell\'organizzazione ti contatterà direttamente.</string>
     <string name="travel_carpool_parking_description">Il parcheggio è molto limitato ed è disponibile solo negli appositi lotti di Google I/O situati di fronte allo Shoreline Amphitheatre, lungo Shoreline Boulevard. Non c\'è parcheggio per gli eventi lungo l\'Amphitheatre Parkway o Charleston Road. Se hai intenzione di utilizzare l\'auto, ti consigliamo di condividere un veicolo con altri partecipanti, in quanto le auto con due o più persone potranno usufruire di parcheggi preferenziali.</string>
+    <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\nWaze Carpool è una community affidabile di conducenti e passeggeri che renderà il tuo tragitto giornaliero per Google I/O divertente, veloce e conveniente. Vuoi venire in auto? Apri <a href="http://Waze.com/get">Waze</a> quando arrivi alla Bay Area. Cerchi un passaggio? Installa <a href="http://Waze.com/carpool">Waze Carpool</a> prima di arrivare. Nelle prossime settimane, torna qui per ricevere esclusivi codici sconto per il carpooling dedicati ai partecipanti di Google I/O.\n\n<b>Lyft Line</b>\nScarica l\'app Lyft da Google Play e usa Lyft Line per condividere una corsa con altre persone dirette nella tua stessa direzione, a un costo minore.\n<b>Codice sconto</b>: Googleio18\nQuesto codice è valido dall\'8 al 10 maggio 2018 per corse condivise con Lyft Line e può essere riscattato fino a $ 10 a viaggio, per un massimo di 250 utenti al giorno. Le corse devono iniziare o terminare presso lo Shoreline Amphitheatre.</string>
     <string name="travel_public_transportation_description">Il trasporto pubblico non passa direttamente da Google I/O. Continua a seguirci per conoscere le località esatte servite dalle navette per gli eventi di Google I/O.</string>
     <string name="travel_biking_description">Presso lo Shoreline Amphitheatre, nel Parking Lot A, è disponibile un parcheggio gratuito per biciclette. La Silicon Valley Bicycle Coalition fornirà un servizio parcheggiatori per la tua bicicletta, tutti i giorni dalle 7:00 fino al termine dell\'evento. Lo Stevens Creek Trail e il Permanente Creek Trail sono due percorsi convenienti per tutti coloro che vorranno raggiungere in bicicletta lo Shoreline Amphitheatre. Controlla Google Maps per i migliori percorsi ciclabili e le indicazioni stradali.\n\nIl Bike to Work Day della Bay Area si terrà giovedì 10 maggio: migliaia di ciclisti si riverseranno vicino allo Shoreline e, in tutta l\'area, sono state predisposte centinaia di stazioni di ristoro. Per ulteriori informazioni, vai sul sito di Bike to Work Day della Silicon Valley.</string>
     <string name="view_sessions_text">Visualizza le sessioni</string>
@@ -141,6 +148,7 @@
     <string name="event_sessions_title">Sessioni</string>
     <string name="event_sandbox_title">Sandbox</string>
     <string name="event_codelabs_title">Codelab</string>
+    <string name="event_officehours_title">Orario di ufficio e revisione delle app</string>
     <string name="event_afterhours_title">Eventi fuori orario</string>
     <string name="event_meals_title">Pasti</string>
     <string name="event_sandbox_description">Spazi dedicati per esplorare, imparare a usare e sperimentare i nostri ultimi prodotti e piattaforme tramite dimostrazioni interattive, installazioni e molto altro ancora.</string>

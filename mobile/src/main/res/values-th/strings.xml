@@ -26,13 +26,14 @@
         <item quantity="one">%1$d กิจกรรม</item>
         <item quantity="other">%1$d กิจกรรม</item>
     </plurals>
-    <string name="starred_and_reserved">กิจกรรมที่ติดดาวและจองไว้</string>
     <string name="agenda">กำหนดการ</string>
     <string name="event_starred">เพิ่มกิจกรรมลงในรายการที่ติดดาวแล้ว</string>
     <string name="event_unstarred">นำกิจกรรมออกจากรายการที่ติดดาวแล้ว</string>
     <string name="event_star_error">เกิดข้อผิดพลาดในการเพิ่มกิจกรรมไปยังรายการที่ติดดาว</string>
     <string name="reservation_error">เกิดข้อผิดพลาดในการแก้ไขการจอง โปรดรอให้คำขอก่อนหน้าเสร็จสิ้นหรือลองอีกครั้งภายหลัง</string>
     <string name="reservation_request_succeeded">ส่งคำขอการจองแล้ว</string>
+    <string name="reservation_cancel_succeeded">การจองที่ยกเลิก: \"&lt;b&gt;%s&lt;/b&gt;\"</string>
+    <string name="reservation_new">ระบบได้จองที่นั่งสำหรับ \"&lt;b&gt;%s&lt;/b&gt;\" แล้ว</string>
     <string name="reservation_replaced">แทนที่กิจกรรมแล้ว</string>
     <string name="waitlist_new">คุณอยู่ในรายชื่อรอเรียกแล้ว</string>
     <string name="waitlist_cancel_succeeded">นำออกจากรายชื่อรอเรียกแล้ว</string>
@@ -43,7 +44,7 @@
     <string name="reservation_denied_unknown">การจองถูกปฏิเสธ: เกิดข้อผิดพลาดที่ไม่รู้จัก</string>
     <string name="cancellation_denied_cutoff">การยกเลิกถูกปฏิเสธ: ใกล้กับเวลาเริ่มต้นเกินไป</string>
     <string name="cancellation_denied_unknown">การยกเลิกถูกปฏิเสธ: เกิดข้อผิดพลาดที่ไม่รู้จัก</string>
-    <string name="schedule_filters_empty">ไม่มีกิจกรรมที่ตรงกับตัวกรองปัจจุบัน</string>
+    <string name="schedule_filters_empty">คุณไม่มีกิจกรรมที่ติดดาวหรือจองไว้ในวันนี้</string>
     <string name="reservation_reservable">จองที่นั่ง</string>
     <string name="reservation_reserved">จองแล้ว</string>
     <string name="reservation_waitlisted">อยู่ในรายชื่อรอเรียก</string>
@@ -82,11 +83,14 @@
     <string name="dialog_sign_out_content">กิจกรรม การจองที่นั่ง และการให้คะแนนเซสชัน (หากเป็นผู้เข้าร่วม) ทั้งหมดจะยังซิงค์กับบัญชี</string>
     <string name="sign_out">ออกจากระบบ</string>
     <string name="remove_reservation_title">นำการจองออกไหม</string>
+    <string name="remove_reservation_content">คุณกำลังจะยกเลิกที่นั่งสำหรับ \"%1$s\" หากคุณตัดสินใจที่จะไม่จองที่นั่งแต่ยังต้องการเข้าร่วม เซสชันทั้งหมดจะยังมีที่นั่งจำนวนหนึ่งที่ให้สิทธิ์ผู้ที่มาก่อนได้ก่อน</string>
     <string name="cancel">ยกเลิก</string>
     <string name="remove">ลบ</string>
     <string name="swap_reservation_title">สลับการจองไหม</string>
+    <string name="swap_reservation_content">คุณมีการจอง/อยู่ในรายชื่อรอเรียกสำหรับ \"%1$s\" แล้วใช่ไหม ระบบอนุญาตให้มีการจองเพียง 1 ครั้งต่อช่วงเวลาเท่านั้น คุณต้องการสลับเป็น \"%2$s\" ไหม</string>
     <string name="swap">สลับ</string>
     <string name="notifications_preference_dialog_title">การแจ้งเตือน I/O</string>
+    <string name="notifications_preference_dialog_content">คุณต้องการรับการแจ้งเตือนเกี่ยวกับ I/O ไหม เราจะส่งข้อมูลเกี่ยวกับเวลาเริ่มต้นของเซสชัน กิจกรรมหลังเซสชัน การบันทึกเซสชัน และอื่นๆ ให้ คุณเปลี่ยนการตั้งค่านี้ใน \"ข้อมูล &gt; การตั้งค่า\" ได้ทุกเมื่อ</string>
     <string name="no">ไม่</string>
     <string name="yes">ใช่</string>
     <plurals name="duration_hours">
@@ -98,7 +102,7 @@
         <item quantity="other">%s นาที</item>
     </plurals>
     <string name="menu_item_share_session">แชร์เซสชัน</string>
-    <string name="share_text_session_detail">ลองดู "%1$s" ที่ #io18 %2$s</string>
+    <string name="share_text_session_detail">ลองดู \"%1$s\" ที่ #io18 %2$s</string>
     <string name="intent_chooser_session_detail">แชร์</string>
     <string name="onboarding_get_started">เริ่มต้นใช้งาน</string>
     <string name="onboarding_welcome_to_google_i_o">ยินดีต้อนรับสู่ Google I/O</string>
@@ -123,11 +127,14 @@
     <string name="settings_title">การตั้งค่า</string>
     <string name="travel_directions_title">เส้นทางการขับขี่</string>
     <string name="travel_shuttle_title">บริการรถรับส่ง (แนะนำ)</string>
+    <string name="travel_carpool_parking_title">ที่จอดรถและการโดยสารรถร่วมกัน</string>
     <string name="travel_ride_sharing_title">บริการร่วมเดินทาง</string>
     <string name="travel_public_transportation_title">การขนส่งมวลชน</string>
     <string name="travel_biking_title">ขี่จักรยาน</string>
+    <string name="travel_directions_description">ค้นหาเส้นทางใน <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> หรือ <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a> ไปยัง 1 Amphitheatre Pkwy, Mountain View, CA 94043</string>
     <string name="travel_shuttle_description">มีรถรับส่งให้กับผู้เข้าร่วมกิจกรรม Google I/O ทุกคนจากโรงแรมที่ Google แนะนำโดยไม่มีค่าใช้จ่าย นอกจากนี้ยังมีบริการรับส่งจากซานฟรานซิสโกและสถานที่อื่นๆ ตามคาบสมุทร คุณต้องแสดงอีเมลยืนยันจาก Google I/O หรือป้ายการประชุมเพื่อขึ้นรถรับส่งของกิจกรรม Google I/O ทั้งหมด\n\nในแต่ละจุดรับส่งมีรถที่เป็นไปตามข้อกำหนด ADA โปรดระบุในแบบฟอร์มลงทะเบียนหากคุณต้องการความช่วยเหลือด้าน ADA หรือความช่วยเหลือพิเศษใดๆ และทีมวางแผนจะติดตามผลกับคุณโดยตรง</string>
     <string name="travel_carpool_parking_description">ที่จอดรถมีจำนวนจำกัดและมีเฉพาะในสถานที่ที่ Google I/O กำหนดไว้ซึ่งตั้งอยู่ระหว่าง Shoreline Amphitheatre บริเวณ Shoreline Boulevard เท่านั้น ไม่มีที่จอดรถสำหรับกิจกรรมใน Amphitheatre Parkway หรือ Charleston Road หากคุณจะเดินทางด้วยรถยนต์ส่วนตัว เราแนะนำให้โดยสารร่วมกับผู้เข้าร่วมคนอื่น เนื่องจากที่จอดรถจะเปิดให้บริการสำหรับรถที่มีผู้โดยสารอย่างน้อย 2 คนขึ้นไป</string>
+    <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\nWaze Carpool เป็นชุมชนของคนขับรถและผู้โดยสารที่น่าเชื่อถือ ซึ่งพร้อมให้บริการเพื่อให้การเดินทางมาที่ Google I/O เป็นเรื่องสนุก รวดเร็วและประหยัดเงิน หากคุณมีรถ ลองเปิด <a href="http://Waze.com/get">Waze</a> เมื่อคุณมาถึง Bay Area หรือหากคุณกำลังมองหาคนขับ ลองติดตั้ง <a href="http://Waze.com/carpool">Waze Carpool</a> ก่อนที่จะเดินทาง แล้วกลับมาดูที่นี่ในอีกไม่กี่สัปดาห์ข้างหน้าเพื่อรับรหัสส่วนลดสำหรับการโดยสารรถร่วมกันพิเศษสำหรับผู้เข้าร่วม Google I/O\n\n<b>Lyft Line</b>\nดาวน์โหลดแอป Lyft จาก Google Play แล้วใช้ Lyft Line เพื่อโดยสารรถร่วมกับผู้อื่นที่ไปทางเดียวกันในราคาที่ถูกลง\n<b>รหัสส่วนลด</b>: Googleio18\nรหัสนี้ใช้ได้ตั้งแต่ 8-10 พฤษภาคม 2018 สำหรับการโดยสารรถร่วมกันผ่าน Lyft Line โดยใช้แลกสิทธิ์ได้ไม่เกิน $10 ต่อการเดินทาง และไม่เกิน 250 คนในแต่ละวัน การเดินทางจะต้องเริ่มหรือสิ้นสุดที่ Shoreline Amphitheatre</string>
     <string name="travel_public_transportation_description">การขนส่งสาธารณะให้บริการไม่ถึงงาน Google I/O โปรดติดตามเพื่อดูตำแหน่งที่ให้บริการการเดินทางโดยรถรับส่งสำหรับกิจกรรม Google I/O</string>
     <string name="travel_biking_description">มีที่จอดรถจักรยานฟรีที่ Shoreline Amphitheatre ใน Parking Lot A โดย Silicon Valley Bicycle Coalition ให้บริการรับจอดรถจักรยานที่ปลอดภัยตั้งแต่เวลา 7.00 น. จนถึงเวลาที่กิจกรรมสิ้นสุดในแต่ละวัน มีทางจักรยาน 2 ทางคือ Stevens Creek Trail และ Permanente Creek Trail ที่อำนวยความสะดวกให้กับผู้ที่จะเดินทางด้วยจักรยานมายัง Shoreline Amphitheatre ตรวจสอบ Google Maps เพื่อดูเส้นทางการเดินทางด้วยจักรยานที่ดีที่สุด\n\nงาน Bay Area Bike to Work Day จะมีขึ้นในวันพฤหัสบดีที่ 10 พฤษภาคมโดยจะมีนักปั่นจักรยานหลายพันคนเข้าร่วมงานใกล้กับ Shoreline และจะมีจุดพักหลายร้อยจุดทั่วทั้งบริเวณงาน โปรดดูเว็บไซต์ Silicon Valley Bike to Work Day สำหรับข้อมูลเพิ่มเติม</string>
     <string name="view_sessions_text">ดูเซสชัน</string>
@@ -141,6 +148,7 @@
     <string name="event_sessions_title">เซสชัน</string>
     <string name="event_sandbox_title">แซนด์บ็อกซ์</string>
     <string name="event_codelabs_title">Codelabs</string>
+    <string name="event_officehours_title">Office Hours และ App Reviews</string>
     <string name="event_afterhours_title">หลังเซสชัน</string>
     <string name="event_meals_title">อาหาร</string>
     <string name="event_sandbox_description">พื้นที่ที่สร้างขึ้นเพื่อการสำรวจ เรียนรู้ และเล่นผลิตภัณฑ์และแพลตฟอร์มล่าสุดของเราผ่านการสาธิตเชิงโต้ตอบ การติดตั้ง และอื่นๆ</string>

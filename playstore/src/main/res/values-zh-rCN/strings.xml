@@ -21,4 +21,5 @@
     <string name="playstore_change">更新 2018 年 Google I/O 大会相关信息\n• 提前预约活动席位\n• 了解有关活动的重要信息、交通方式详情和常见问题解答。</string>
     <string name="playstore_required_permissions">所需权限</string>
     <string name="playstore_optional_permissions">可选权限</string>
+    <string name="playstore_permission_location_information">位置信息：需要获取位置信息，以便显示用户所在位置周围的场地地图。</string>
 </resources>

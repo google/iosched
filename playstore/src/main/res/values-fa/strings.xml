@@ -21,4 +21,5 @@
     <string name="playstore_change">به‌روزرسانی‌شده برای Google I/O 2018‏\n• رزرو صندلی برای رویدادها جلوتر از زما‌ن‌بندی\n• مطالعه اطلاعات مهم درباره «رویداد»، جزئیات «سفر» و سوالات متداول.</string>
     <string name="playstore_required_permissions">مجوزهای لازم</string>
     <string name="playstore_optional_permissions">مجوزهای اختیاری</string>
+    <string name="playstore_permission_location_information">اطلاعات مکان: برای نشان دادن نقشه محل برگزاری در اطراف مکان کاربر نیاز است.</string>
 </resources>

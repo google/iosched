@@ -21,4 +21,5 @@
     <string name="playstore_change">更新 2018 年 Google I/O 大會相關訊息\n• 可事先預約活動席位\n• 可查看有關大會活動的重要資訊、交通方式詳細資訊和常見問題。</string>
     <string name="playstore_required_permissions">必要權限</string>
     <string name="playstore_optional_permissions">選用權限</string>
+    <string name="playstore_permission_location_information">位置資訊：授予這項權限後，應用程式即可顯示使用者所在位置一帶的會場地圖。</string>
 </resources>
