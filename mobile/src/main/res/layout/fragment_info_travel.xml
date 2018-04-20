@@ -18,7 +18,7 @@
 <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:scrollbarStyle="insideOverlay"
@@ -36,49 +36,49 @@
             android:id="@+id/directions_parking_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardTitle="@string/travel_directions_title"
-            app:cardDescription="@string/travel_directions_description"/>
+            app:cardDescription="@string/travel_directions_description"
+            app:cardTitle="@string/travel_directions_title" />
 
         <com.google.samples.apps.iosched.widget.CollapsibleCard
             android:id="@+id/shuttle_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardTitle="@string/travel_shuttle_title"
-            app:cardDescription="@string/travel_shuttle_description"/>
+            app:cardDescription="@string/travel_shuttle_description"
+            app:cardTitle="@string/travel_shuttle_title" />
 
         <com.google.samples.apps.iosched.widget.CollapsibleCard
             android:id="@+id/public_transportation_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardTitle="@string/travel_public_transportation_title"
-            app:cardDescription="@string/travel_public_transportation_description"/>
+            app:cardDescription="@string/travel_public_transportation_description"
+            app:cardTitle="@string/travel_public_transportation_title" />
 
         <com.google.samples.apps.iosched.widget.CollapsibleCard
             android:id="@+id/biking_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardTitle="@string/travel_biking_title"
-            app:cardDescription="@string/travel_biking_description"/>
+            app:cardDescription="@string/travel_biking_description"
+            app:cardTitle="@string/travel_biking_title" />
 
         <com.google.samples.apps.iosched.widget.CollapsibleCard
             android:id="@+id/ride_sharing_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardTitle="@string/travel_ride_sharing_title"
-            app:cardDescription="@string/travel_ride_sharing_description"/>
+            app:cardDescription="@string/travel_ride_sharing_description"
+            app:cardTitle="@string/travel_ride_sharing_title" />
 
         <com.google.samples.apps.iosched.widget.CollapsibleCard
             android:id="@+id/carpooling_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardTitle="@string/travel_carpool_parking_title"
-            app:cardDescription="@string/travel_carpool_parking_description"/>
+            app:cardDescription="@string/travel_carpool_parking_description"
+            app:cardTitle="@string/travel_carpool_parking_title" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/info_transport_footer"
-            android:importantForAccessibility="no" />
+            android:importantForAccessibility="no"
+            android:src="@drawable/info_transport_footer" />
 
     </LinearLayout>
 
