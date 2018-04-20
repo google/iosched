@@ -25,6 +25,7 @@ import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
+import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -32,10 +33,10 @@ import javax.inject.Inject
  * Loads sessions into lists keyed by [ConferenceDay].
  */
 open class LoadUserSessionsByDayUseCase @Inject constructor(
-        private val userEventRepository: DefaultSessionAndUserEventRepository
-): MediatorUseCase<Pair<UserSessionMatcher, String?>, LoadUserSessionsByDayUseCaseResult>() {
+    private val userEventRepository: DefaultSessionAndUserEventRepository
+) : MediatorUseCase<LoadUserSessionsByDayUseCaseParameters, LoadUserSessionsByDayUseCaseResult>() {
 
-    override fun execute(parameters: Pair<UserSessionMatcher, String?>) {
+    override fun execute(parameters: LoadUserSessionsByDayUseCaseParameters) {
         val (sessionMatcher, userId) = parameters
 
         Timber.d("LoadUserSessionsByDayUseCase: Refreshing sessions with user data")
@@ -51,15 +52,20 @@ open class LoadUserSessionsByDayUseCase @Inject constructor(
                     is Result.Success -> {
                         val userSessions = it.data.userSessionsPerDay.mapValues { (_, sessions) ->
                             sessions.filter { sessionMatcher.matches(it) }
-                                    .sortedBy { it.session.startTime }
+                                .sortedBy { it.session.startTime }
                         }
+
                         // Compute type from tags now so it's done in the background
                         userSessions.forEach { it.value.forEach { it.session.type } }
+
                         val usecaseResult = LoadUserSessionsByDayUseCaseResult(
-                                userSessionsPerDay = userSessions,
-                                userMessage = it.data.userMessage,
-                                userMessageSession = it.data.userMessageSession,
-                                userSessionCount = userSessions.values.map { it.size }.sum()
+                            userSessionsPerDay = userSessions,
+                            userMessage = it.data.userMessage,
+                            userMessageSession = it.data.userMessageSession,
+                            userSessionCount = userSessions.values.map { it.size }.sum(),
+                            firstUnfinishedSession = findFirstUnfinishedSession(
+                                userSessions, parameters.now
+                            )
                         )
                         result.postValue(Result.Success(usecaseResult))
                     }
@@ -70,7 +76,46 @@ open class LoadUserSessionsByDayUseCase @Inject constructor(
             }
         }
     }
+
+    /**
+     * During the conference, find the first session which has not finished so that the UI can
+     * scroll to it.
+     */
+    private fun findFirstUnfinishedSession(
+        userSessions: Map<ConferenceDay, List<UserSession>>,
+        now: ZonedDateTime
+    ): EventLocation? {
+        if (now.isAfter(ConferenceDay.DAY_1.start) && now.isBefore(ConferenceDay.DAY_3.end)) {
+            var unfinishedDay: ConferenceDay? = null
+            var unfinishedSessionIndex = -1
+            run loop@{
+                ConferenceDay.values().filter { now.isBefore(it.end) }
+                    .forEach { day ->
+                        userSessions[day]?.forEachIndexed { sessionIndex, userSession ->
+                            if (userSession.session.endTime.isAfter(now)) {
+                                unfinishedDay = day
+                                unfinishedSessionIndex = sessionIndex
+                                return@loop
+                            }
+                        }
+                    }
+            }
+            val day = unfinishedDay
+            if (day != null && unfinishedSessionIndex != -1) {
+                return EventLocation(day, unfinishedSessionIndex)
+            }
+        }
+        return null
+    }
 }
+
+data class LoadUserSessionsByDayUseCaseParameters(
+    val userSessionMatcher: UserSessionMatcher,
+
+    val userId: String?,
+
+    val now: ZonedDateTime = ZonedDateTime.now()
+)
 
 data class LoadUserSessionsByDayUseCaseResult(
 
@@ -82,5 +127,11 @@ data class LoadUserSessionsByDayUseCaseResult(
     /** The session the user message is about, if any. */
     val userMessageSession: Session? = null,
 
-    val userSessionCount: Int
+    /** The total number of sessions. */
+    val userSessionCount: Int,
+
+    /** The location of the first session which has not finished or null. */
+    val firstUnfinishedSession: EventLocation? = null
 )
+
+data class EventLocation(val day: ConferenceDay, val sessionIndex: Int)

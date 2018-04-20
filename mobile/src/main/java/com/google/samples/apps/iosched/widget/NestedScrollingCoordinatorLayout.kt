@@ -21,6 +21,7 @@ import android.support.design.widget.CoordinatorLayout
 import android.support.v4.view.NestedScrollingChild2
 import android.support.v4.view.NestedScrollingChildHelper
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 
 /**
@@ -34,6 +35,9 @@ class NestedScrollingCoordinatorLayout @JvmOverloads constructor(
 
     private val scrollingChildHelper =
         NestedScrollingChildHelper(this).apply { isNestedScrollingEnabled = true }
+
+    /** A listener for hooking in to `onInterceptTouchEvent` */
+    var onInterceptTouchListener: (() -> Boolean)? = null
 
     override fun hasNestedScrollingParent(): Boolean {
         return scrollingChildHelper.hasNestedScrollingParent()
@@ -208,5 +212,9 @@ class NestedScrollingCoordinatorLayout @JvmOverloads constructor(
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         scrollingChildHelper.onDetachedFromWindow()
+    }
+
+    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+        return super.onInterceptTouchEvent(ev) || onInterceptTouchListener?.invoke() ?: false
     }
 }

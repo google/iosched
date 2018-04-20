@@ -21,6 +21,7 @@ import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseParameters
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.model.UserSession
@@ -55,11 +56,11 @@ class ScheduleViewModel @Inject constructor(
     private val day3Sessions: LiveData<List<UserSession>>
 
     private val _errorMessage = MediatorLiveData<Event<String>>()
-    val errorMessage : LiveData<Event<String>>
+    val errorMessage: LiveData<Event<String>>
         get() = _errorMessage
 
     private val _navigateToSessionAction = MutableLiveData<Event<String>>()
-    val navigateToSessionAction : LiveData<Event<String>>
+    val navigateToSessionAction: LiveData<Event<String>>
         get() = _navigateToSessionAction
 
     init {
@@ -104,7 +105,9 @@ class ScheduleViewModel @Inject constructor(
 
     private fun refreshUserSessions() {
         Timber.d("ViewModel refreshing user sessions")
-        loadUserSessionsByDayUseCase.execute(userSessionMatcher to ("tempUser"))
+        loadUserSessionsByDayUseCase.execute(
+            LoadUserSessionsByDayUseCaseParameters(userSessionMatcher, ("tempUser"))
+        )
     }
 }
 

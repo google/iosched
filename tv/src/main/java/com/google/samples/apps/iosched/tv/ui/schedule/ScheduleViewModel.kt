@@ -20,6 +20,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseParameters
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
@@ -54,7 +55,9 @@ class ScheduleViewModel(loadSessionsByDayUseCase: LoadUserSessionsByDayUseCase) 
     init {
         // Load sessions and tags and store the result in `LiveData`s
         loadSessionsResult = loadSessionsByDayUseCase.observe()
-        loadSessionsByDayUseCase.execute(parameters = userSessionMatcher to tempUser)
+        loadSessionsByDayUseCase.execute(
+            LoadUserSessionsByDayUseCaseParameters(userSessionMatcher, tempUser)
+        )
 
         // Map LiveData results from UseCase to each day's individual LiveData
         day1Sessions = groupSessionsByTimeSlot(loadSessionsResult, ConferenceDay.DAY_1)

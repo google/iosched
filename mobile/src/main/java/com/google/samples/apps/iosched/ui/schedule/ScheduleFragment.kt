@@ -134,6 +134,22 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         scheduleViewModel.transientUiState.observe(this, Observer {
             updateFiltersUi(it ?: return@Observer)
         })
+
+        // VM outlives the UI so reset this flag when fragment is recreated.
+        scheduleViewModel.userHasInteracted = false
+        binding.coordinatorLayout.onInterceptTouchListener = {
+            scheduleViewModel.userHasInteracted = true
+            false
+        }
+        scheduleViewModel.currentEvent.observe(this, Observer { eventLocation ->
+            if (eventLocation != null && !scheduleViewModel.userHasInteracted) {
+                binding.viewpager.run {
+                    post {
+                        currentItem = eventLocation.day.ordinal
+                    }
+                }
+            }
+        })
         return binding.root
     }
 
@@ -260,7 +276,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     /**
      * Adapter that build a page for each conference day.
      */
-    inner class ScheduleAdapter(fm: FragmentManager, val labelsForDays: List<Int>) :
+    inner class ScheduleAdapter(fm: FragmentManager, private val labelsForDays: List<Int>) :
         FragmentPagerAdapter(fm) {
 
         override fun getCount() = COUNT
