@@ -21,4 +21,5 @@
     <string name="playstore_change">Aktualisiert für Google I/O 2018\n• Vorab-Reservierung von Plätzen für Veranstaltungen\n• Lesen Sie die wichtigen Informationen zur Veranstaltung, Reisedetails und FAQ.</string>
     <string name="playstore_required_permissions">Erforderliche Berechtigung</string>
     <string name="playstore_optional_permissions">Optionale Berechtigungen</string>
+    <string name="playstore_permission_location_information">Standortinformationen: werden benötigt, um die Karte des Veranstaltungsorts entsprechend der Position des Nutzers anzuzeigen.</string>
 </resources>

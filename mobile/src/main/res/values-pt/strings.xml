@@ -26,13 +26,14 @@
         <item quantity="one">%1$d evento</item>
         <item quantity="other">%1$d eventos</item>
     </plurals>
-    <string name="starred_and_reserved">Seus eventos marcados com estrela e reservados</string>
     <string name="agenda">Compromissos</string>
     <string name="event_starred">Evento adicionado aos seus itens com estrela</string>
     <string name="event_unstarred">Evento removido dos itens marcados com estrela</string>
     <string name="event_star_error">Erro ao adicionar evento aos itens marcados com estrela</string>
     <string name="reservation_error">Erro ao fazer alterações na reserva. Aguarde a conclusão das solicitações anteriores ou tente novamente mais tarde.</string>
     <string name="reservation_request_succeeded">Reserva solicitada.</string>
+    <string name="reservation_cancel_succeeded">Reserva cancelada: &lt;b&gt;%s&lt;/b&gt;.</string>
+    <string name="reservation_new">Seu assento foi reservado para &lt;b&gt;%s&lt;/b&gt;.</string>
     <string name="reservation_replaced">Evento substituído.</string>
     <string name="waitlist_new">Você foi colocado na lista de espera.</string>
     <string name="waitlist_cancel_succeeded">Removido da lista de espera.</string>
@@ -43,7 +44,7 @@
     <string name="reservation_denied_unknown">Reserva negada: erro desconhecido.</string>
     <string name="cancellation_denied_cutoff">Cancelamento negado: muito perto do horário de início.</string>
     <string name="cancellation_denied_unknown">Cancelamento negado: erro desconhecido.</string>
-    <string name="schedule_filters_empty">Nenhum evento hoje corresponde aos seus filtros atuais.</string>
+    <string name="schedule_filters_empty">Você não tem eventos marcados com estrela ou reservados hoje.</string>
     <string name="reservation_reservable">Reservar assento</string>
     <string name="reservation_reserved">Reservado</string>
     <string name="reservation_waitlisted">Na lista de espera</string>
@@ -82,11 +83,14 @@
     <string name="dialog_sign_out_content">Todos os eventos salvos, assentos reservados e avaliações das sessões de que você participou permanecem sincronizados com sua conta.</string>
     <string name="sign_out">Sair</string>
     <string name="remove_reservation_title">Remover reserva?</string>
+    <string name="remove_reservation_content">Você está prestes a desistir do seu assento em \"%1$s\". Se decidir não reservar uma vaga, mas ainda quiser participar, uma parte dos assentos de todas as sessões estará disponível por ordem de chegada.</string>
     <string name="cancel">Cancelar</string>
     <string name="remove">Remover</string>
     <string name="swap_reservation_title">Trocar reserva?</string>
+    <string name="swap_reservation_content">Você já tem uma reserva ou já está na lista de espera para \"%1$s\". Só é possível fazer uma reserva por horário. Quer trocar por \"%2$s\"?</string>
     <string name="swap">Trocar</string>
     <string name="notifications_preference_dialog_title">Notificações do I/O</string>
+    <string name="notifications_preference_dialog_content">Quer receber notificações sobre o I/O? Nós enviaremos informações sobre o horário de início das sessões, os eventos que ocorrerão após as sessões, as gravações de sessões e muito mais. Você pode alterar essas configurações em \"Informações &gt; Configurações\" a qualquer momento.</string>
     <string name="no">Não</string>
     <string name="yes">Sim</string>
     <plurals name="duration_hours">
@@ -98,7 +102,7 @@
         <item quantity="other">%s minutos</item>
     </plurals>
     <string name="menu_item_share_session">Compartilhar sessão</string>
-    <string name="share_text_session_detail">Veja a sessão "%1$s" em #io18 %2$s</string>
+    <string name="share_text_session_detail">Veja a sessão \"%1$s\" em #io18 %2$s</string>
     <string name="intent_chooser_session_detail">Compartilhar</string>
     <string name="onboarding_get_started">Primeiros passos</string>
     <string name="onboarding_welcome_to_google_i_o">Boas-vindas ao Google I/O</string>
@@ -123,13 +127,16 @@
     <string name="settings_title">Configurações</string>
     <string name="travel_directions_title">Rotas de carro</string>
     <string name="travel_shuttle_title">Serviço de transporte (recomendado)</string>
+    <string name="travel_carpool_parking_title">Estacionamento e carona</string>
     <string name="travel_ride_sharing_title">Compartilhamento de carona</string>
     <string name="travel_public_transportation_title">Transporte público</string>
     <string name="travel_biking_title">Bicicleta</string>
+    <string name="travel_directions_description">Encontre rotas no <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> ou no <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a> para 1 Amphitheatre Pkwy, Mountain View, CA 94043</string>
     <string name="travel_shuttle_description">O transporte para o evento será fornecido gratuitamente para todos os participantes do Google I/O saindo de todos os hotéis recomendados pelo Google. Também há alguns serviços que saem de São Francisco e outros locais da península. É preciso mostrar seu e-mail de confirmação ou seu crachá da conferência Google I/O para embarcar no transporte para o evento.\n\nCada local de embarque pode ter veículos adaptados para pessoas com deficiência. Indique no seu formulário de inscrição se você tem algum tipo de deficiência ou alguma necessidade especial. Nossa equipe de planejamento entrará em contato diretamente com você.</string>
     <string name="travel_carpool_parking_description">O estacionamento é muito limitado e está disponível apenas em lotes separados para o Google I/O localizados em frente ao anfiteatro Shoreline, na Shoreline Boulevard. Não há estacionamento para o evento na Amphitheatre Parkway ou na Charleston Road. Se você planeja ir de carro, recomendamos oferecer carona para outros participantes, porque haverá vagas de estacionamento preferencial disponíveis para carros com duas ou mais pessoas.</string>
+    <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\nO Waze Carpool é uma comunidade confiável de motoristas e passageiros disponível para tornar seu trajeto até o Google I/O mais divertido, rápido e barato. Vai dirigir? Abra o <a href="http://Waze.com/get">Waze</a> quando chegar à baía. Quer carona? Instale o <a href="http://Waze.com/carpool">Waze Carpool</a> antes de chegar. Confira esta página nas próximas semanas para receber códigos de desconto exclusivos para os participantes do Google I/O.\n\n<b>Lyft Line</b>\nFaça o download do app Lyft no Google Play e use o Lyft Line para compartilhar uma viagem por menos com quem vai para o mesmo lugar que você.\n<b>Código de desconto</b>: Googleio18\nEsse código é válido de 8 a 10 de maio de 2018 para viagens compartilhadas pelo Lyft Line. É possível resgatar até US$ 10 por viagem e até 250 usuários por dia. As viagens precisam começar ou terminar no anfiteatro Shoreline.</string>
     <string name="travel_public_transportation_description">O transporte público não vai diretamente para o Google I/O. Fique atento aos locais exatos atendidos pelos serviços de transporte do Google I/O.</string>
-    <string name="travel_biking_description">Haverá um estacionamento gratuito para bicicletas no Estacionamento A do anfiteatro Shoreline. A Silicon Valley Bicycle Coalition fornecerá serviço de manobrista seguro para sua bicicleta das 7h até o fim do evento todos os dias. Há duas trilhas, Stevens Creek Trail e Permanente Creek Trail, convenientes para ciclistas que forem para o anfiteatro Shoreline. Confira o Google Maps para ver as melhores rotas e caminhos de bicicleta.\n\nO "Bike to Work Day" da região está agendado para quinta-feira, dia 10 de maio. Milhares de ciclistas participarão perto de Shoreline, e há centenas de pontos de apoio na área. Confira o site do Silicon Valley Bike to Work Day para mais informações.</string>
+    <string name="travel_biking_description">Haverá um estacionamento gratuito para bicicletas no Estacionamento A do anfiteatro Shoreline. A Silicon Valley Bicycle Coalition fornecerá serviço de manobrista seguro para sua bicicleta das 7h até o fim do evento todos os dias. Há duas trilhas, Stevens Creek Trail e Permanente Creek Trail, convenientes para ciclistas que forem para o anfiteatro Shoreline. Confira o Google Maps para ver as melhores rotas e caminhos de bicicleta.\n\nO \"Bike to Work Day\" da região está agendado para quinta-feira, dia 10 de maio. Milhares de ciclistas participarão perto de Shoreline, e há centenas de pontos de apoio na área. Confira o site do Silicon Valley Bike to Work Day para mais informações.</string>
     <string name="view_sessions_text">Ver sessões</string>
     <string name="view_codelabs_text">Ver codelabs</string>
     <string name="view_events_text">Ver eventos</string>
@@ -141,6 +148,7 @@
     <string name="event_sessions_title">Sessões</string>
     <string name="event_sandbox_title">Sandbox</string>
     <string name="event_codelabs_title">Codelabs</string>
+    <string name="event_officehours_title">Horários para esclarecimento de dúvidas e avaliações de aplicativos</string>
     <string name="event_afterhours_title">Eventos após as sessões:</string>
     <string name="event_meals_title">Refeições</string>
     <string name="event_sandbox_description">Espaços dedicados para explorar, aprender e usar nossos produtos e plataformas mais recentes por meio de demonstrações interativas, instalações físicas e muito mais.</string>

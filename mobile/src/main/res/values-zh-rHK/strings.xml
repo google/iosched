@@ -26,13 +26,14 @@
         <item quantity="one">%1$d 個活動</item>
         <item quantity="other">%1$d 個活動</item>
     </plurals>
-    <string name="starred_and_reserved">你已加星號和預約的活動</string>
     <string name="agenda">議程</string>
     <string name="event_starred">已為活動加上星號</string>
     <string name="event_unstarred">已從加上星號的項目中移除活動</string>
     <string name="event_star_error">將活動新增至已加星號的項目時發生錯誤</string>
     <string name="reservation_error">變更預約項目時發生錯誤。請等待先前的要求處理完畢或稍後再試。</string>
     <string name="reservation_request_succeeded">已提出預約申請。</string>
+    <string name="reservation_cancel_succeeded">已取消預約：「&lt;b&gt;%s&lt;/b&gt;」。</string>
+    <string name="reservation_new">已為你預留「&lt;b&gt;%s&lt;/b&gt;」的席位。</string>
     <string name="reservation_replaced">已取代活動。</string>
     <string name="waitlist_new">你已排入候補名單。</string>
     <string name="waitlist_cancel_succeeded">已從候補名單中移除。</string>
@@ -43,7 +44,7 @@
     <string name="reservation_denied_unknown">預約遭拒：發生不明錯誤。</string>
     <string name="cancellation_denied_cutoff">取消遭拒：申請時間過於接近活動開始時間。</string>
     <string name="cancellation_denied_unknown">取消遭拒：發生不明錯誤。</string>
-    <string name="schedule_filters_empty">今天沒有任何活動符合你目前設定的篩選條件。</string>
+    <string name="schedule_filters_empty">你今天沒有已加星號或已預約的活動。</string>
     <string name="reservation_reservable">預約席位</string>
     <string name="reservation_reserved">已預約</string>
     <string name="reservation_waitlisted">已排入候補名單</string>
@@ -82,11 +83,14 @@
     <string name="dialog_sign_out_content">所有已儲存的活動、席位預約和活動評分 (只有參與者能為活動評分) 都會持續同步至你的帳戶。</string>
     <string name="sign_out">登出</string>
     <string name="remove_reservation_title">要移除預約項目嗎？</string>
+    <string name="remove_reservation_content">你即將放棄「%1$s」的預約席位。如果你決定不預約席位，但仍想參加，我們在所有活動場次都會保留部分座位給未預約的參與者；座位有限，先到先入座。</string>
     <string name="cancel">取消</string>
     <string name="remove">移除</string>
     <string name="swap_reservation_title">要更換預約項目嗎？</string>
+    <string name="swap_reservation_content">你是否已預約「%1$s」/已排入這場活動的候補名單？每個時段只允許預約一場活動。是否要換成「%2$s」？</string>
     <string name="swap">更換</string>
     <string name="notifications_preference_dialog_title">I/O 大會通知</string>
+    <string name="notifications_preference_dialog_content">願意接收有關 I/O 大會的通知嗎？我們會將活動開始時間、會後活動、講座錄影存檔等相關資訊傳送給你。如果想調整通知接收設定，隨時可以前往「[資訊] &gt; [設定]」進行變更。</string>
     <string name="no">否</string>
     <string name="yes">是</string>
     <plurals name="duration_hours">
@@ -123,11 +127,14 @@
     <string name="settings_title">設定</string>
     <string name="travel_directions_title">行車路線</string>
     <string name="travel_shuttle_title">接駁服務 (建議使用)</string>
+    <string name="travel_carpool_parking_title">停車與共乘資訊</string>
     <string name="travel_ride_sharing_title">共乘應用程式</string>
     <string name="travel_public_transportation_title">大眾運輸</string>
     <string name="travel_biking_title">騎乘自行車</string>
+    <string name="travel_directions_description">請在 <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google 地圖</a>或 <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a> 中輸入以下地址：1 Amphitheatre Pkwy, Mountain View, CA 94043</string>
     <string name="travel_shuttle_description">在 Google 推薦的所有飯店均設有活動接駁車站點，Google I/O 大會的參與者可以免費利用這項服務。舊金山和半島地區也設有部分站點，歡迎多加利用。搭乘接駁車時，請出示你收到的 Google I/O 大會確認電子郵件或會議徽章。\n\n每個上車地點皆可停放符合《美國身心障礙者權益保障法》(ADA) 規定的福祉車。如有任何關於 ADA 的需求或需要特別協助，請在報名表上註明，我們的活動規劃小組將會直接與你聯繫。</string>
     <string name="travel_carpool_parking_description">會場周邊的停車位數量相當有限。海岸露天劇場 (Shoreline Amphitheater) 旁的海岸大道 (Shoreline Boulevard) 上才設有 Google I/O 大會的指定停車格。露天劇場大道 (Amphitheatre Parkway) 或查爾斯頓路 (Charleston Road) 沿途並沒有大會來賓專用停車格，請特別留意。我們的首選停車位僅供乘載人數超過兩人的車輛停靠，因此建議來賓盡量和其他與會者採用共乘方式前往會場。</string>
+    <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\nWaze Carpool 是由駕駛與乘客組成的社群，提供值得信賴的乘車服務，能以經濟實惠的價格帶你快速前往 Google I/O 會場，途中還有機會結識其他共乘者。如果你打算自行開車，抵達灣區時，不妨開啟 <a href="http://Waze.com/get">Waze</a> 應用程式來提供共乘服務。如要與他人共乘，請在抵達灣區之前先安裝 <a href="http://Waze.com/carpool">Waze Carpool</a> 應用程式。未來幾週，別忘了回到這裡查看 Google I/O 大會參與者專屬的共乘折扣代碼。\n\n<b>Lyft Line</b>\n歡迎前往 Google Play 下載 Lyft 應用程式；使用 Lyft Line 能以較低的車資與其他同路乘客共乘車輛。\n<b>折扣代碼</b>：Googleio18\n這組代碼的有效期限為 2018 年 5 月 8 日至 10 日，可於透過 Lyft Line 共乘時使用。每趟車程最多可折抵 $10 美元的車費，每天最多可供 250 位使用者利用。請注意，搭車或下車地點必須為海岸露天劇場。</string>
     <string name="travel_public_transportation_description">大眾運輸工具並未直達 Google I/O 會場地點。請密切留意 Google I/O 大會提供的接駁車停靠站資訊。</string>
     <string name="travel_biking_description">若騎自行車前來，可以將車輛免費停放在海岸露天劇場的 A 區停車場。大會活動期間，矽谷單車聯盟 (Silicon Valley Bicycle Coalition) 每天上午 7 點到當天活動結束為止，皆為自行車騎士提供安全的代客停車服務。建議選擇史蒂文斯溪小道 (Stevens Creek Trail) 和佩曼南緹溪小道 (Permanente Creek Trail) 前往海岸露天劇場。如要取得適合自行車行駛的路線指引，請查看 Google 地圖。\n\n灣區今年的「騎自行車上班日」定於 5 月 10 日週四，屆時海岸地區會有上千名自行車騎士上路，整個地區將設置上百個補給站。詳情請瀏覽「矽谷騎自行車上班日」(Silicon Valley Bike to Work Day) 網站。</string>
     <string name="view_sessions_text">查看活動時間表</string>
@@ -141,6 +148,7 @@
     <string name="event_sessions_title">活動</string>
     <string name="event_sandbox_title">沙箱</string>
     <string name="event_codelabs_title">Codelab</string>
+    <string name="event_officehours_title">諮詢時段和應用程式實務討論</string>
     <string name="event_afterhours_title">會後活動</string>
     <string name="event_meals_title">餐點</string>
     <string name="event_sandbox_description">這個專用空間提供互動示範、實體裝置操作等體驗，供你探索、學習及試用我們的最新產品和平台。</string>
