@@ -17,10 +17,13 @@
 package com.google.samples.apps.iosched.ui.info
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.databinding.BindingAdapter
 import android.net.Uri
 import android.os.Bundle
+import android.support.customtabs.CustomTabsIntent
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +33,9 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentInfoAboutBinding
 import dagger.android.support.DaggerFragment
 
-// TODO use chrome custom tabs if user has chrome installed.
+const val SERVICE_ACTION = "android.support.customtabs.action.CustomTabsService"
+const val CHROME_PACKAGE = "com.android.chrome"
+
 @BindingAdapter("websiteLink")
 fun websiteLink(
     button: Button,
@@ -38,10 +43,18 @@ fun websiteLink(
 ) {
     url ?: return
     button.setOnClickListener {
-        val intent = Intent(Intent.ACTION_VIEW).apply {
-            data = Uri.parse(url)
+        val context = it.context
+        if (context.isChromeCustomTabsSupported()) {
+            CustomTabsIntent.Builder().apply {
+                setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                setSecondaryToolbarColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
+            }.build().launchUrl(context, Uri.parse(url))
+        } else {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(url)
+            }
+            context.startActivity(intent, null)
         }
-        it.context.startActivity(intent, null)
     }
 }
 
@@ -51,11 +64,18 @@ fun createDialogForFile(button: Button, dialogTitle: String, fileLink: String) {
     button.setOnClickListener {
         val webView = WebView(context).apply { loadUrl(fileLink) }
         AlertDialog.Builder(context)
-                .setTitle(dialogTitle)
-                .setView(webView)
-                .create()
-                .show()
+            .setTitle(dialogTitle)
+            .setView(webView)
+            .create()
+            .show()
     }
+}
+
+private fun Context.isChromeCustomTabsSupported(): Boolean {
+    val serviceIntent = Intent(SERVICE_ACTION)
+    serviceIntent.setPackage(CHROME_PACKAGE)
+    val resolveInfos = packageManager.queryIntentServices(serviceIntent, 0)
+    return !(resolveInfos == null || resolveInfos.isEmpty())
 }
 
 class AboutFragment : DaggerFragment() {
