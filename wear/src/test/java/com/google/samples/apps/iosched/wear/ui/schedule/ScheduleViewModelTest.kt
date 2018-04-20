@@ -23,8 +23,8 @@ import com.google.samples.apps.iosched.shared.data.session.DefaultSessionReposit
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseParameters
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.wear.domain.repository.TestUserEventDataSource
@@ -118,7 +118,7 @@ class ScheduleViewModelTest {
 
 
         return object : LoadUserSessionsByDayUseCase(userEventRepository) {
-            override fun execute(parameters: Pair<UserSessionMatcher, String?>) {
+            override fun execute(parameters: LoadUserSessionsByDayUseCaseParameters) {
                 result.postValue(Result.Error(Exception("Testing exception")))
             }
         }

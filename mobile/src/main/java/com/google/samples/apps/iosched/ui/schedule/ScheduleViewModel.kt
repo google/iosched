@@ -27,7 +27,9 @@ import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCas
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.invoke
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.EventLocation
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseParameters
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
@@ -170,6 +172,12 @@ class ScheduleViewModel @Inject constructor(
     private val scheduleUiHintsShownResult = MutableLiveData<Result<Boolean>>()
     /** Indicates if the UI hints for the schedule have been shown */
     val scheduleUiHintsShown: LiveData<Event<Boolean>>
+
+    // Flag used by UI to not auto scroll to current event is user has interacted e.g. filtered
+    var userHasInteracted = false
+
+    // The currently happening event
+    val currentEvent: LiveData<EventLocation?>
 
     init {
         // Load sessions and tags and store the result in `LiveData`s
@@ -336,6 +344,10 @@ class ScheduleViewModel @Inject constructor(
 
         // Observe updates in conference data
         observeConferenceDataUseCase.execute(Any())
+
+        currentEvent = loadSessionsResult.map { result ->
+            (result as? Success)?.data?.firstUnfinishedSession
+        }
     }
 
     /**
@@ -411,7 +423,9 @@ class ScheduleViewModel @Inject constructor(
 
     private fun refreshUserSessions() {
         Timber.d("ViewModel refreshing user sessions")
-        loadUserSessionsByDayUseCase.execute(userSessionMatcher to getUserId())
+        loadUserSessionsByDayUseCase.execute(
+            LoadUserSessionsByDayUseCaseParameters(userSessionMatcher, getUserId())
+        )
     }
 
     override fun onStarClicked(userEvent: UserEvent) {

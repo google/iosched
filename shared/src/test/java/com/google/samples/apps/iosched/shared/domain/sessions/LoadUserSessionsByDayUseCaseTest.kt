@@ -32,6 +32,7 @@ import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.Matchers.equalTo
@@ -64,7 +65,7 @@ class LoadUserSessionsByDayUseCaseTest {
 
         val resultLiveData = useCase.observe()
 
-        useCase.execute(Pair(UserSessionMatcher(), "user1"))
+        useCase.execute(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1"))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
                 as Result.Success<LoadUserSessionsByDayUseCaseResult>
@@ -86,7 +87,7 @@ class LoadUserSessionsByDayUseCaseTest {
 
         val resultLiveData = useCase.observe()
 
-        useCase.execute(Pair(UserSessionMatcher(), "user1"))
+        useCase.execute(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1"))
 
         userEventsResult.postValue(UserEventsResult(
                 userEventsMessage = UserEventMessage(
@@ -119,11 +120,103 @@ class LoadUserSessionsByDayUseCaseTest {
 
         val resultLiveData = useCase.observe()
 
-        useCase.execute(Pair(UserSessionMatcher(), "user1"))
+        useCase.execute(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1"))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
 
         assertThat(result, `is`(instanceOf(Result.Error::class.java)))
+    }
+
+    @Test
+    fun returnsCurrentEventIndex() {
+        // Given the use case
+        val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
+
+        val testUserEventRepository = DefaultSessionAndUserEventRepository(
+            TestUserEventDataSource(userEventsResult),
+            DefaultSessionRepository(TestDataRepository))
+        val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
+        val resultLiveData = useCase.observe()
+
+        // When we execute it, passing Day 2 +3hrs as the current time
+        val now = ConferenceDay.DAY_2.start.plusHours(3L)
+        useCase.execute(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1", now))
+
+        // Then the expected indexes are returned
+        val result = LiveDataTestUtil.getValue(resultLiveData)
+                as Result.Success<LoadUserSessionsByDayUseCaseResult>
+        assertThat(
+            EventLocation(ConferenceDay.DAY_2, 0),
+            `is`(equalTo(result.data.firstUnfinishedSession)))
+    }
+
+    @Test
+    fun midConference_afterDayEnd_returnsCurrentEventIndex() {
+        // Given the use case
+        val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
+
+        val testUserEventRepository = DefaultSessionAndUserEventRepository(
+            TestUserEventDataSource(userEventsResult),
+            DefaultSessionRepository(TestDataRepository))
+        val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
+        val resultLiveData = useCase.observe()
+
+        // When we execute it, passing Day 2 *after the end of day*
+        val now = ConferenceDay.DAY_2.end.plusHours(3L)
+        useCase.execute(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1", now))
+
+        // Then returns the index of the first session the next day
+        val result = LiveDataTestUtil.getValue(resultLiveData)
+                as Result.Success<LoadUserSessionsByDayUseCaseResult>
+        assertThat(
+            EventLocation(ConferenceDay.DAY_3, 0),
+            `is`(equalTo(result.data.firstUnfinishedSession)))
+    }
+
+    @Test
+    fun beforeConference_returnsNoCurrentEventIndex() {
+        // Given the use case
+        val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
+
+        val testUserEventRepository = DefaultSessionAndUserEventRepository(
+            TestUserEventDataSource(userEventsResult),
+            DefaultSessionRepository(TestDataRepository))
+        val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
+        val resultLiveData = useCase.observe()
+
+        // When we execute it, passing a current time *before* the conference
+        val now = ConferenceDay.DAY_1.start.minusDays(2L)
+        useCase.execute(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1", now))
+
+        // Then the expected indexes are returned
+        val result = LiveDataTestUtil.getValue(resultLiveData)
+                as Result.Success<LoadUserSessionsByDayUseCaseResult>
+        assertThat(
+            null,
+            `is`(equalTo(result.data.firstUnfinishedSession)))
+    }
+
+    @Test
+    fun afterConference_returnsNoCurrentEventIndex() {
+        // Given the use case
+        val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
+
+        val testUserEventRepository = DefaultSessionAndUserEventRepository(
+            TestUserEventDataSource(userEventsResult),
+            DefaultSessionRepository(TestDataRepository))
+        val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
+        val resultLiveData = useCase.observe()
+
+        // When we execute it, passing a current time *after* the conference
+        val now = ConferenceDay.DAY_3.end.plusHours(2L)
+        useCase.execute(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1", now))
+
+        // Then the expected indexes are returned
+        val result = LiveDataTestUtil.getValue(resultLiveData)
+                as Result.Success<LoadUserSessionsByDayUseCaseResult>
+        assertThat(
+            null,
+            `is`(equalTo(result.data.firstUnfinishedSession)))
     }
 }
 

@@ -27,6 +27,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.view.doOnNextLayout
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleDayBinding
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
@@ -113,6 +114,24 @@ class ScheduleDayFragment : DaggerFragment() {
                 removeDuration = 120L
             }
         }
+
+        // During conference, scroll to current event
+        viewModel.currentEvent.observe(this, Observer { eventLocation ->
+            if (eventLocation != null &&
+                !viewModel.userHasInteracted &&
+                eventLocation.day == conferenceDay &&
+                eventLocation.sessionIndex != -1
+            ) {
+                binding.recyclerview.run {
+                    post {
+                        (layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
+                            eventLocation.sessionIndex,
+                            resources.getDimensionPixelSize(R.dimen.margin_normal)
+                        )
+                    }
+                }
+            }
+        })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
