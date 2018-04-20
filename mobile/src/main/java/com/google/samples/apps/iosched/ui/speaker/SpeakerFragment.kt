@@ -24,12 +24,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.os.bundleOf
+import androidx.view.doOnLayout
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSpeakerBinding
 import com.google.samples.apps.iosched.shared.model.SpeakerId
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
+import com.google.samples.apps.iosched.ui.sessiondetail.PushUpScrollListener
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
@@ -67,17 +70,6 @@ class SpeakerFragment : DaggerFragment() {
         val binding = FragmentSpeakerBinding.inflate(inflater, container, false).apply {
             setLifecycleOwner(this@SpeakerFragment)
             viewModel = speakerViewModel
-            tagViewPool = tagRecycledViewPool
-            headshotLoadListener = object : ImageLoadListener {
-
-                override fun onImageLoaded() {
-                    activity?.startPostponedEnterTransition()
-                }
-
-                override fun onImageLoadFailed() {
-                    activity?.startPostponedEnterTransition()
-                }
-            }
         }
         // If speaker does not have a profile image to load, we need to resume
         speakerViewModel.hasProfileImage.observe(this, Observer {
@@ -107,6 +99,36 @@ class SpeakerFragment : DaggerFragment() {
                 snackbarPrefViewModel.onStopClicked()
             }
         )
+
+        val headshotLoadListener = object : ImageLoadListener {
+            override fun onImageLoaded() {
+                activity?.startPostponedEnterTransition()
+            }
+
+            override fun onImageLoadFailed() {
+                activity?.startPostponedEnterTransition()
+            }
+        }
+        val speakerAdapter =
+            SpeakerAdapter(this, speakerViewModel, headshotLoadListener, tagRecycledViewPool)
+        binding.speakerDetailRecyclerView.run {
+            adapter = speakerAdapter
+            itemAnimator.run {
+                addDuration = 120L
+                moveDuration = 120L
+                changeDuration = 120L
+                removeDuration = 100L
+            }
+            doOnLayout {
+                addOnScrollListener(
+                    PushUpScrollListener(binding.up, it, R.id.speaker_name, R.id.speaker_grid_image)
+                )
+            }
+        }
+
+        speakerViewModel.speakerUserSessions.observe(this, Observer {
+            speakerAdapter.speakerSessions = it ?: emptyList()
+        })
 
         binding.up.setOnClickListener {
             requireActivity().finishAfterTransition()

@@ -23,7 +23,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.ShareCompat
-import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.RecyclerView.RecycledViewPool
 import android.view.LayoutInflater
 import android.view.View
@@ -113,7 +112,11 @@ class SessionDetailFragment : DaggerFragment() {
                 removeDuration = 100L
             }
             doOnLayout {
-                addOnScrollListener(PushUpScrollListener(binding.up, it))
+                addOnScrollListener(
+                    PushUpScrollListener(
+                        binding.up, it, R.id.session_detail_title, R.id.detail_image
+                    )
+                )
             }
         }
 
