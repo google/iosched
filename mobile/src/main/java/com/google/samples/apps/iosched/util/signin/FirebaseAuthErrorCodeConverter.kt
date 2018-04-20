@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.util.signin
 
 import com.firebase.ui.auth.ErrorCodes
 import com.google.samples.apps.iosched.R
+import timber.log.Timber
 
 /**
  * Converts [ErrorCodes] from firebase to translatable strings.
@@ -26,8 +27,26 @@ object FirebaseAuthErrorCodeConverter {
 
     fun convert(code: Int): Int {
         return when(code) {
-            ErrorCodes.NO_NETWORK -> R.string.firebase_auth_no_network_connection
-            else -> R.string.firebase_auth_unknown_error
+            ErrorCodes.NO_NETWORK -> {
+                Timber.d("FirebaseAuth error: no_network")
+                R.string.firebase_auth_no_network_connection
+            }
+            ErrorCodes.DEVELOPER_ERROR -> {
+                Timber.w("FirebaseAuth error: developer_error")
+                R.string.firebase_auth_unknown_error
+            }
+            ErrorCodes.PLAY_SERVICES_UPDATE_CANCELLED -> {
+                Timber.d("FirebaseAuth error: play_services_update_cancelled")
+                R.string.firebase_auth_unknown_error
+            }
+            ErrorCodes.PROVIDER_ERROR -> {
+                Timber.w("FirebaseAuth error: provider_error")
+                R.string.firebase_auth_unknown_error
+            }
+            else -> {
+                Timber.w("FirebaseAuth error: unknown_error")
+                R.string.firebase_auth_unknown_error
+            }
         }
     }
 }
