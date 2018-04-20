@@ -21,4 +21,5 @@
     <string name="playstore_change">Mise à jour pour Google I/O 2018\n• Réservez des places à des événements en avance\n• Consultez les informations importantes sur l\'événement, les détails relatifs aux trajets et la FAQ.</string>
     <string name="playstore_required_permissions">Autorisations requises</string>
     <string name="playstore_optional_permissions">Autorisations facultatives</string>
+    <string name="playstore_permission_location_information">Données de localisation : nécessaire pour afficher le plan du site autour de l\'emplacement de l\'utilisateur.</string>
 </resources>

@@ -26,13 +26,14 @@
         <item quantity="one">%1$d Sự kiện</item>
         <item quantity="other">%1$d Sự kiện</item>
     </plurals>
-    <string name="starred_and_reserved">Các sự kiện được gắn dấu sao và đặt chỗ của bạn</string>
     <string name="agenda">Lịch trình sự kiện</string>
     <string name="event_starred">Đã thêm sự kiện vào các mục có gắn dấu sao của bạn</string>
     <string name="event_unstarred">Đã xóa sự kiện khỏi các mục được gắn dấu sao</string>
     <string name="event_star_error">Xảy ra lỗi khi thêm sự kiện vào các mục được gắn dấu sao</string>
     <string name="reservation_error">Xảy ra lỗi khi thay đổi đặt chỗ. Vui lòng đợi cho đến khi các yêu cầu trước đó kết thúc hoặc thử lại sau.</string>
     <string name="reservation_request_succeeded">Đã yêu cầu đặt chỗ.</string>
+    <string name="reservation_cancel_succeeded">Đã hủy đặt chỗ: \"&lt;b&gt;%s&lt;/b&gt;.\"</string>
+    <string name="reservation_new">Bạn đã đặt chỗ tại \"&lt;b&gt;%s&lt;/b&gt;\".</string>
     <string name="reservation_replaced">Đã thay đổi sự kiện.</string>
     <string name="waitlist_new">Bạn đã được ghi tên trong danh sách chờ đặt chỗ.</string>
     <string name="waitlist_cancel_succeeded">Đã xóa khỏi danh sách chờ đặt chỗ.</string>
@@ -43,7 +44,7 @@
     <string name="reservation_denied_unknown">Đặt chỗ bị từ chối: lỗi không xác định.</string>
     <string name="cancellation_denied_cutoff">Từ chối hủy: quá sát thời gian bắt đầu.</string>
     <string name="cancellation_denied_unknown">Từ chối hủy: lỗi không xác định.</string>
-    <string name="schedule_filters_empty">Hôm nay không có sự kiện nào phù hợp với các bộ lọc hiện tại của bạn.</string>
+    <string name="schedule_filters_empty">Hôm nay bạn chưa gắn sao hay đặt chỗ cho sự kiện nào.</string>
     <string name="reservation_reservable">Đặt chỗ</string>
     <string name="reservation_reserved">Đã đặt chỗ</string>
     <string name="reservation_waitlisted">Được đưa vào danh sách chờ đặt chỗ</string>
@@ -82,11 +83,14 @@
     <string name="dialog_sign_out_content">Tất cả sự kiện đã lưu, đặt chỗ và xếp hạng phiên sự kiện (nếu tham dự) vẫn được đồng bộ hóa với tài khoản của bạn.</string>
     <string name="sign_out">Đăng xuất</string>
     <string name="remove_reservation_title">Xóa yêu cầu đặt chỗ</string>
+    <string name="remove_reservation_content">Bạn sắp từ bỏ đặt chỗ tại \"%1$s\". Nếu bạn quyết định không đặt chỗ nhưng vẫn muốn tham dự, tất cả các phiên sự kiện sẽ có một số chỗ ngồi dành cho những người đến sớm.</string>
     <string name="cancel">Hủy</string>
     <string name="remove">Xóa</string>
     <string name="swap_reservation_title">Thay đổi đặt chỗ?</string>
+    <string name="swap_reservation_content">Bạn đã đặt chỗ/đã có tên trong danh sách chờ đặt chỗ tại \"%1$s\". Mỗi lần chỉ được một đặt chỗ. Bạn có muốn thay đổi sang đặt chỗ tại \"%2$s\"?</string>
     <string name="swap">Hoán đổi</string>
     <string name="notifications_preference_dialog_title">Thông báo I/O</string>
+    <string name="notifications_preference_dialog_content">Bạn muốn nhận thông báo về I/O? Chúng tôi sẽ gửi thông tin cho bạn về thời gian bắt đầu phiên sự kiện, những sự kiện hậu kỳ, ghi hình sự kiện, v.v. Bạn có thể thay đổi mục cài đặt tại \"Thông tin &gt; Cài đặt\" bất kỳ lúc nào.</string>
     <string name="no">Không</string>
     <string name="yes">Có</string>
     <plurals name="duration_hours">
@@ -98,7 +102,7 @@
         <item quantity="other">%s phút</item>
     </plurals>
     <string name="menu_item_share_session">Chia sẻ về phiên hội thảo</string>
-    <string name="share_text_session_detail">Hãy đến tham gia hội thảo "%1$s" tại #io18 %2$s</string>
+    <string name="share_text_session_detail">Hãy đến tham gia hội thảo \"%1$s\" tại #io18 %2$s</string>
     <string name="intent_chooser_session_detail">Chia sẻ</string>
     <string name="onboarding_get_started">Bắt đầu</string>
     <string name="onboarding_welcome_to_google_i_o">Chào mừng bạn đến với Google I/O</string>
@@ -123,11 +127,14 @@
     <string name="settings_title">Cài đặt</string>
     <string name="travel_directions_title">Chỉ đường lái xe</string>
     <string name="travel_shuttle_title">Dịch vụ đưa đón (đề xuất)</string>
+    <string name="travel_carpool_parking_title">Đỗ xe và Đi chung xe</string>
     <string name="travel_ride_sharing_title">Chia sẻ chuyến đi</string>
     <string name="travel_public_transportation_title">Giao thông công cộng</string>
     <string name="travel_biking_title">Đi xe đạp</string>
+    <string name="travel_directions_description">Tìm đường đến số 1 Amphitheatre Pkwy, Mountain View, CA 94043 trên <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> hoặc <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a></string>
     <string name="travel_shuttle_description">Sẽ có dịch vụ đưa đón miễn phí đến sự kiện dành cho tất cả những người tham dự Google I/O từ những khách sạn do Google đề xuất. Cũng có dịch vụ tùy chọn từ San Francisco đến những khu vực khác dọc Bán đảo. Bạn phải xuất trình email xác nhận của Google I/O hoặc thẻ hội nghị để lên các phương tiện đưa đón đến sự kiện của Google I/O.\n\nMỗi vị trí đón khách đều có phương tiện trợ giúp đặc biệt dành cho người khuyết tật theo Ðạo luật người khuyết tật Hoa Kỳ (ADA). Vui lòng ghi rõ trên phiếu đăng ký nếu bạn có bất kỳ yêu cầu hỗ trợ đặc biệt nào hoặc yêu cầu theo ADA và bộ phận kế hoạch sẽ trực tiếp hỗ trợ bạn.</string>
     <string name="travel_carpool_parking_description">Chỗ đỗ xe rất hạn chế và chỉ có tại khu vực dành riêng cho Google I/O từ Nhà hát vòm Shoreline (Shoreline Amphitheatre) dọc theo Đại lộ Shoreline (Shoreline Boulevard). Dọc theo Đại lộ Amphitheatre (Amphitheatre Parkway) hoặc Đường Charleston (Charleston Road) không có chỗ đỗ xe dành riêng cho sự kiện. Nếu bạn dự định lái xe, chúng tôi khuyên bạn đi chung xe với những người tham dự khác vì khu vực đỗ xe của sự kiện chỉ dành cho những ô tô chở từ hai người trở lên.</string>
+    <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\nWaze Carpool là một cộng đồng lái xe và người đi chung xe đáng tin cậy có thể khiến hành trình của bạn đến Google I/O trở nên vui vẻ, nhanh chóng và tiết kiệm. Bạn lái xe ư? Hãy mở <a href="http://Waze.com/get">Waze</a> khi bạn đến Vùng Vịnh (Bay Area). Bạn muốn đi nhờ xe ư? Hãy cài đặt <a href="http://Waze.com/carpool">Waze Carpool</a> trước khi đến. Trong mấy tuần sắp tới, vui lòng vào đây để xem mã giảm giá đi chung xe dành riêng cho những người tham dự Google I/O.\n\n<b>Lyft Line</b>\nTải ứng dụng Lyft xuống từ Google Play và sử dụng Lyft Line để chia sẻ chuyến đi với những người khác có cùng hành trình nhằm tiết kiệm chi phí.\n<b>Mã giảm giá</b>: Googleio18\nĐây là mã có hiệu lực từ ngày 8 đến ngày 10 tháng 5 năm 2018 dành cho những người đi chung xe sử dụng Lyft Line. Mỗi chuyến đi có thể được giảm tới $10 và mỗi ngày tối đa 250 người có thể sử dụng mã này. Người đi chung xe phải có điểm xuất phát hoặc điểm đến là Nhà hát vòm Shoreline (Shoreline Amphitheatre).</string>
     <string name="travel_public_transportation_description">Không có phương tiện công cộng đi thẳng tới Google I/O. Hãy chú ý theo dõi vị trí chính xác của các dịch vụ đưa đón đến sự kiện của Google I/O.</string>
     <string name="travel_biking_description">Có khu vực giữ xe đạp miễn phí tại Nhà hát vòm Shoreline (Shoreline Amphitheatre) ở Bãi đỗ xe A. Hàng ngày Hiệp hội Xe đạp Thung lũng Silicon (Silicon Valley Bicycle Coalition) sẽ cung cấp khu vực trông giữ xe đạp an toàn từ 7 giờ sáng đến khi sự kiện kết thúc. Có hai tuyến đường tiện lợi để người đi xe đạp tới thẳng Nhà hát vòm Shoreline (Shoreline Amphitheatre) là Stevens Creek và Permanente Creek Trail. Hãy kiểm tra Google Maps để tìm tuyến đường và hướng đi tiện lợi nhất cho người đi xe đạp.\n\nTổ chức Ngày Đạp xe đi làm Vùng Vinh (Bay Area Bike to Work Day) lên kế hoạch đạp xe vào ngày thứ Năm, 10 tháng 5. Sẽ có hàng nghìn người đi xe đạp tham gia gần Shoreline và khu vực này có hàng trăm trạm nghỉ chân. Vui lòng truy cập trang web của Tổ chức Ngày Đạp xe đi làm của Thung lũng Silicon (Silicon Valley Bike to Work Day) để biết thêm thông tin chi tiết.</string>
     <string name="view_sessions_text">Xem các phiên sự kiện</string>
@@ -141,6 +148,7 @@
     <string name="event_sessions_title">Số phiên</string>
     <string name="event_sandbox_title">Hộp cát</string>
     <string name="event_codelabs_title">Phòng thí nghiệm lập trình</string>
+    <string name="event_officehours_title">Giờ làm việc và Đánh giá ứng dụng</string>
     <string name="event_afterhours_title">Sau giờ làm việc</string>
     <string name="event_meals_title">Bữa ăn</string>
     <string name="event_sandbox_description">Không gian thiết kế dành riêng để khám phá, tìm hiểu và chơi thử các sản phẩm và nền tảng mới nhất của chúng tôi thông qua các bản demo tương tác, cài đặt vật lý và nhiều hơn thế nữa.</string>

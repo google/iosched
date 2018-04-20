@@ -28,13 +28,14 @@
         <item quantity="many">%1$d мероприятий</item>
         <item quantity="other">%1$d мероприятия</item>
     </plurals>
-    <string name="starred_and_reserved">Сохраненные мероприятия</string>
     <string name="agenda">Расписание</string>
     <string name="event_starred">Мероприятие добавлено в ваше расписание</string>
     <string name="event_unstarred">Мероприятие удалено из вашего расписания.</string>
     <string name="event_star_error">Не удалось добавить мероприятие в расписание.</string>
     <string name="reservation_error">Не удалось изменить бронирование. Дождитесь подтверждения предыдущих запросов или повторите попытку позже.</string>
     <string name="reservation_request_succeeded">Запрос на бронирование места отправлен.</string>
+    <string name="reservation_cancel_succeeded">Бронирование места на сессии \"&lt;b&gt;%s&lt;/b&gt;\" отменено.</string>
+    <string name="reservation_new">Место на сессии \"&lt;b&gt;%s&lt;/b&gt;\" забронировано.</string>
     <string name="reservation_replaced">Мероприятие заменено.</string>
     <string name="waitlist_new">Вы добавлены в список ожидания.</string>
     <string name="waitlist_cancel_succeeded">Вы удалены из списка ожидания.</string>
@@ -45,7 +46,7 @@
     <string name="reservation_denied_unknown">Запрос на бронирование отклонен из-за неизвестной ошибки.</string>
     <string name="cancellation_denied_cutoff">Запрос на отмену бронирования отклонен, так как до сессии осталось слишком мало времени.</string>
     <string name="cancellation_denied_unknown">Запрос на отмену бронирования отклонен из-за неизвестной ошибки.</string>
-    <string name="schedule_filters_empty">Нет мероприятий, соответствующих этим параметрам.</string>
+    <string name="schedule_filters_empty">Сегодня у вас нет сохраненных мероприятий и сессий, на которые вы забронировали место.</string>
     <string name="reservation_reservable">Забронировать место</string>
     <string name="reservation_reserved">Место забронировано</string>
     <string name="reservation_waitlisted">В списке ожидания</string>
@@ -84,11 +85,14 @@
     <string name="dialog_sign_out_content">Данные о ваших оценках, добавленных в расписание мероприятиях и забронированных местах будут сохранены.</string>
     <string name="sign_out">Выйти</string>
     <string name="remove_reservation_title">Отменить бронирование?</string>
+    <string name="remove_reservation_content">Если вы сделаете это, занять место на сессии \"%1$s\" можно будет только в порядке живой очереди.</string>
     <string name="cancel">Отменить</string>
     <string name="remove">Удалить</string>
     <string name="swap_reservation_title">Заменить бронирование?</string>
+    <string name="swap_reservation_content">Ранее вы уже забронировали место на сессии \"%1$s\", которая будет проходить в то же время, что и сессия \"%2$s\". Если вы подадите заявку на участие в последнем мероприятии, предыдущая броня будет снята.</string>
     <string name="swap">Заменить</string>
     <string name="notifications_preference_dialog_title">Уведомления о фестивале</string>
+    <string name="notifications_preference_dialog_content">Если вы включите уведомления, мы будем сообщать вам о начале сессий и появлении записей с них, а также о развлекательных мероприятиях и других важных новостях фестиваля. Изменить параметры уведомлений можно будет в любое время в разделе \"Информация\" в настройках.</string>
     <string name="no">Нет</string>
     <string name="yes">Да</string>
     <plurals name="duration_hours">
@@ -104,7 +108,7 @@
         <item quantity="other">%s минуты</item>
     </plurals>
     <string name="menu_item_share_session">Поделиться сессией</string>
-    <string name="share_text_session_detail">Узнайте о сессии "%1$s" на фестивале #io18 %2$s</string>
+    <string name="share_text_session_detail">Узнайте о сессии \"%1$s\" на фестивале #io18 %2$s</string>
     <string name="intent_chooser_session_detail">Поделиться</string>
     <string name="onboarding_get_started">Начать</string>
     <string name="onboarding_welcome_to_google_i_o">Добро пожаловать на фестиваль Google I/O</string>
@@ -131,13 +135,16 @@
     <string name="settings_title">Настройки</string>
     <string name="travel_directions_title">Схема проезда</string>
     <string name="travel_shuttle_title">Трансфер (рекомендуется)</string>
+    <string name="travel_carpool_parking_title">Карпулинг и парковка</string>
     <string name="travel_ride_sharing_title">Райдшеринг</string>
     <string name="travel_public_transportation_title">Общественный транспорт</string>
     <string name="travel_biking_title">Велосипеды</string>
+    <string name="travel_directions_description">Фестиваль будет проходить по адресу 1 Amphitheatre Parkway, Mountain View, CA 94043, США. Информацию о том, как добраться, можно посмотреть в <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Картах</a> или приложении <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a>.</string>
     <string name="travel_shuttle_description">Бесплатный трансфер на фестиваль Google I/O будет предоставлен тем его участникам, которые остановятся в рекомендованных отелях, а также тем, кто проживает в Сан-Франциско и других крупных городах полуострова. Воспользоваться трансфером можно только после предъявления значка участника Google I/O.\n\nЕсли вам необходимы особая помощь или транспортное средство для перевозки людей с ограниченными возможностями, укажите это в форме регистрации. Наши специалисты по планированию мероприятий свяжутся с вами напрямую.</string>
     <string name="travel_carpool_parking_description">Поскольку количество парковочных мест ограничено, а большинство из них отведено для автомобилей с двумя или более пассажирами, рекомендуем вам найти попутчиков среди других участников фестиваля. Оставлять автомобили можно только на специальных местах вдоль бульвара Shoreline Boulevard, на противоположной стороне от здания Shoreline Amphitheatre. Вдоль аллеи Amphitheatre Parkway и улицы Charleston Road парковаться нельзя.</string>
+    <string name="travel_ride_sharing_description"><b>Приложение Waze Carpool</b>\nБлагодаря этому сервису добраться до места проведения фестиваля значительно проще. Для водителей предусмотрено приложение <a href="http://Waze.com/get">Waze</a>, а для тех, кто ищет попутчиков, – <a href="http://Waze.com/carpool">Waze Carpool</a>. Для участников фестиваля предусмотрены промокоды. Подробнее о них мы расскажем позже.\n\n<b>Сервис Lyft Line</b>\nПриложение Lyft – отличный способ найти попутчиков и сэкономить на плате за проезд.\n<b>Промокод для скидки:</b> Googleio18\nКод можно применять с 8 по 10 мая 2018 года только при поездках с пунктом отправления или назначения в Shoreline Amphitheatre. Стоимость поездки не должна превышать 10 долларов США. Воспользоваться промокодом могут не более 250 человек в день.</string>
     <string name="travel_public_transportation_description">Прямых маршрутов до места проведения фестиваля нет, поэтому будет организован трансфер. Подробнее о нем мы сообщим позже. Следите за новостями!</string>
-    <string name="travel_biking_description">Велосипедисты могут добраться до амфитеатра по одной из двух дорожек: Stevens Creek Trail или Permanente Creek Trail. Посмотреть, где они расположены, можно в сервисе "Google Карты". В зоне A у здания Shoreline Amphitheatre расположена бесплатная велопарковка. Кроме того, ежедневно с 7 часов утра и до окончания мероприятий будет работать пункт парковки от организации Silicon Valley Bicycle Coalition.\n\n10 мая в Области залива Сан-Франциско состоится акция "На работу на велосипеде". В ней примут участие сотни велосипедистов. На маршруте будут организованы пункты питания. С подробной информацией можно ознакомиться на сайте мероприятия.</string>
+    <string name="travel_biking_description">Велосипедисты могут добраться до амфитеатра по одной из двух дорожек: Stevens Creek Trail или Permanente Creek Trail. Посмотреть, где они расположены, можно в сервисе \"Google Карты\". В зоне A у здания Shoreline Amphitheatre расположена бесплатная велопарковка. Кроме того, ежедневно с 7 часов утра и до окончания мероприятий будет работать пункт парковки от организации Silicon Valley Bicycle Coalition.\n\n10 мая в Области залива Сан-Франциско состоится акция \"На работу на велосипеде\". В ней примут участие сотни велосипедистов. На маршруте будут организованы пункты питания. С подробной информацией можно ознакомиться на сайте мероприятия.</string>
     <string name="view_sessions_text">Показать сессии</string>
     <string name="view_codelabs_text">Показать занятия в формате Codelab</string>
     <string name="view_events_text">Показать все мероприятия</string>
@@ -149,6 +156,7 @@
     <string name="event_sessions_title">Сеансы</string>
     <string name="event_sandbox_title">Тестирования</string>
     <string name="event_codelabs_title">Мероприятия в формате Codelab</string>
+    <string name="event_officehours_title">Персональные консультации</string>
     <string name="event_afterhours_title">Развлекательные мероприятия</string>
     <string name="event_meals_title">Питание</string>
     <string name="event_sandbox_description">В специально оборудованных для этого помещениях мы покажем, как работают наши новейшие технологические достижения.</string>

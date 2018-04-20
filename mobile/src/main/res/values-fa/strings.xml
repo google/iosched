@@ -26,13 +26,14 @@
         <item quantity="one">%1$d رویداد</item>
         <item quantity="other">%1$d رویداد</item>
     </plurals>
-    <string name="starred_and_reserved">رویدادهای ستاره‌دار و رزروشده</string>
     <string name="agenda">برنامه</string>
     <string name="event_starred">رویداد به موارد ستاره‌دار اضافه شد</string>
     <string name="event_unstarred">رویداد از موارد ستاره‌دار برداشته شد</string>
     <string name="event_star_error">خطا هنگام اضافه‌کردن رویداد به موارد ستاره‌دار</string>
     <string name="reservation_error">خطا هنگام ایجاد تغییر در رزرو. منتظر بمانید تا درخواست‌های قبلی تکمیل شود یا بعداً دوباره امتحان کنید.</string>
     <string name="reservation_request_succeeded">رزرو درخواست شد.</string>
+    <string name="reservation_cancel_succeeded">رزرو لغو شد: «&lt;b&gt;%s&lt;/b&gt;.»</string>
+    <string name="reservation_new">صندلی‌تان برای «&lt;b&gt;%s&lt;/b&gt;» رزرو شد.</string>
     <string name="reservation_replaced">رویداد جایگزین شد.</string>
     <string name="waitlist_new">در فهرست انتظار قرار گرفتید.</string>
     <string name="waitlist_cancel_succeeded">از فهرست انتظار برداشته شدید.</string>
@@ -43,7 +44,7 @@
     <string name="reservation_denied_unknown">رزرو رد شد: خطای ناشناس.</string>
     <string name="cancellation_denied_cutoff">لغو رد شد: فاصله زمانی بسیار کم تا زمان شروع.</string>
     <string name="cancellation_denied_unknown">لغو رد شد: خطای ناشناس.</string>
-    <string name="schedule_filters_empty">هیچ رویدادی مطابق با فیلترهای فعلی‌تان برای امروز ندارید.</string>
+    <string name="schedule_filters_empty">هیچ رویداد ستاره‌دار یا رزرو‌شده‌ای برای امروز ندارید.</string>
     <string name="reservation_reservable">رزرو صندلی</string>
     <string name="reservation_reserved">رزرو شد</string>
     <string name="reservation_waitlisted">در فهرست انتظار قرار گرفت</string>
@@ -82,11 +83,14 @@
     <string name="dialog_sign_out_content">همه رویدادهای ذخیره‌شده، صندلی‌های رزرو‌شده و جلسات رتبه‌بندی‌شده (اگر شرکت‌کننده هستید)، با حسابتان هم‌گام باقی می‌ماند.</string>
     <string name="sign_out">خروج از سیستم</string>
     <string name="remove_reservation_title">رزرو حذف شود؟</string>
+    <string name="remove_reservation_content">درحال واگذارکردن صندلی‌تان در «%1$s» هستید. اگر تصمیم ندارید صندلی رزرو کنید اما همچنان می‌خواهید شرکت کنید، بخشی از صندلی‌های همه جلسات به‌ترتیب ورود شرکت‌کنندگان، درمحل دردسترس خواهد بود.</string>
     <string name="cancel">لغو</string>
     <string name="remove">حذف</string>
     <string name="swap_reservation_title">رزرو تعویض شود؟</string>
+    <string name="swap_reservation_content">از قبل برای «%1$s» رزرو کرده‌اید/در فهرست انتظار قرار دارید؟. فقط یک رزرو به‌ازای هر بخش زمانی ممکن است. می‌خواهید با «%2$s» تعویض کنید؟</string>
     <string name="swap">تعویض</string>
     <string name="notifications_preference_dialog_title">اعلان I/O</string>
+    <string name="notifications_preference_dialog_content">می‌خواهید اعلان‌های مربوط به I/O را دریافت کنید؟ اطلاعات مربوط به زمان شروع جلسه، رویدادهای پس از ساعات کاری، موارد ضبط‌شده جلسات و غیره را برایتان ارسال می‌کنیم. هرزمان خواستید می‌توانید این تنظیمات را در «اطلاعات &gt; تنظیمات» تغییر دهید.</string>
     <string name="no">نه</string>
     <string name="yes">بله</string>
     <plurals name="duration_hours">
@@ -123,11 +127,14 @@
     <string name="settings_title">تنظیمات</string>
     <string name="travel_directions_title">مسیرهای رانندگی</string>
     <string name="travel_shuttle_title">سرویس رفت‌وبرگشت (توصیه‌شده)</string>
+    <string name="travel_carpool_parking_title">پارکینگ و سواری اشتراکی</string>
     <string name="travel_ride_sharing_title">هم‌سفری</string>
     <string name="travel_public_transportation_title">حمل‌ونقل عمومی</string>
     <string name="travel_biking_title">دوچرخه‌سواری</string>
+    <string name="travel_directions_description">یافتن مسیرهای رفتن به 1 Amphitheatre Pkwy، Mountain View، CA 94043 در <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> یا <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a></string>
     <string name="travel_shuttle_description">سرویس رفت‌وبرگشت رویدادها از همه هتل‌هایی که Google توصیه کرده است، بدون هیچ هزینه‌ای به همه شرکت‌کنندگان Google I/O ارائه می‌شود. همچنین سرویس‌های ویژه‌ای از سانفرانسیسکو و سایر مکان‌هایی که در مسیر شبه‌جزیره قرار دارد، ارائه می‌شود. برای سوارشدن به سرویس‌های رفت‌وبرگشت Google I/O باید رایانامه تأیید Google I/O یا نشان کنفرانس را نشان دهید.\n\nامکان درخواست خودروی دسترس‌پذیر با صندلی چرخ‌دار ADA در همه مکان‌های سوارشدن وجود دارد. لطفاً اگر نیاز به ADA یا هرگونه کمک خاصی دارید، در فرم ثبت‌نامتان ذکر کنید تا تیم برنامه‌ریزی برای پیگیری به‌طور مستقیم با شما تماس بگیرد.</string>
     <string name="travel_carpool_parking_description">تعداد پارکینگ‌ها بسیار محدود بوده و فقط در مکان‌های تعیین‌شده توسط Google I/O از Shoreline Amphitheatre در امتداد Shoreline Boulevard دردسترس است. هیچ پارکینگی برای این رویداد در مسیر Amphitheatre Parkway یا Charleston Road وجود ندارد. اگر می‌خواهید با خودرو به این رویداد بروید، توصیه می‌کنیم که از سواری اشتراکی با سایر شرکت‌کنندگان استفاده کنید چون فضاهای ویژه‌ای برای پارک‌کردن خودروهایی که دو سرنشین یا بیشتر دارد درنظرگرفته شده است.</string>
+    <string name="travel_ride_sharing_description"><b>Waze Carpool</b>‏\n‏Waze Carpool انجمنی از رانندگان و مسافران معتمد است که می‌تواند رفت‌و‌آمد به Google I/O را مفرح، سریع و مقرون به‌صرفه کند. رانندگی می‌کنید؟ هنگامی که به Bay Area رسیدید، <a href="http://Waze.com/get">Waze</a> را باز کنید. به‌دنبال سواری می‌گردید؟ پیش از رسیدن، <a href="http://Waze.com/carpool">Waze Carpool</a> را نصب کنید. طی هفته‌های آینده، برای دریافت کدهای تخفیف سواری اشتراکی مختص شرکت‌کنندگان Google I/O، به اینجا سر بزنید.\n\n‏<b>Lyft Line</b>‏\n برنامه Lyft را از Google Play بارگیری کنید و از Lyft Line برای به‌اشتراک‌گذاشتن سواری با سایر افرادی که با شما هم‌مسیر هستند استفاده کرده و هزینه کمتری پرداخت کنید. \n<b>کد تخفیف</b>: Googleio18\nاین کد از ۸ تا ۱۰ مه ۲۰۱۸ برای سواری‌های اشتراکی ازطریق Lyft Line معتبر است. تا حداکثر ۱۰ دلار برای هر سفر و حداکثر برای ۲۵۰ کاربر در روز قابل‌استفاده است. مسیر حرکت باید از Shoreline Amphitheatre شروع شده یا به آن ختم شود.</string>
     <string name="travel_public_transportation_description">حمل‌و‌نقل عمومی مستقیماً به Google I/O نمی‌رود. برای اطلاع از مکان‌های دقیق حمل‌ونقل که توسط سرویس‌های رفت‌و‌برگشت رویداد Google I/O ارائه می‌شود، با ما درارتباط باشید.</string>
     <string name="travel_biking_description">پارکینگ رایگان برای دوچرخه در پارکینگ A در Shoreline Amphitheatre دردسترس خواهد بود. Silicon Valley Bicycle Coalition از ساعت ۷ صبح تا پایان رویداد در هر روز، خدمات پارکینگ وله امن برای دوچرخه ارايه می‌دهد. دو مسیر Stevens Creek Trail و Permanente Creek Trail برای دوچرخه‌سوارانی که به‌سمت Shoreline Amphitheatre می‌روند، مناسب است. برای اطلاع از بهترین مسیرها و راه‌های دوچرخه‌سواری به Google Maps مراجعه کنید.\n\n‏ Bike to Work Day در Bay Area برای روز پنج‌شنبه ۱۰ مه زمان‌بندی شده است. در آن روز هزاران دوچرخه‌سوار در نزدیکی Shoreline حضور خواهند داشت و صدها ایستگاه تجدید قوا در سراسر مسیر قرار خواهد گرفت. لطفاً برای کسب اطلاعات بیشتر به وب‌سایت Silicon Valley Bike to Work Day مراجعه کنید.</string>
     <string name="view_sessions_text">مشاهده جلسات</string>
@@ -141,6 +148,7 @@
     <string name="event_sessions_title">جلسات</string>
     <string name="event_sandbox_title">جعبه ایمنی</string>
     <string name="event_codelabs_title">Codelabs</string>
+    <string name="event_officehours_title">ساعت اداری و بازبینی برنامه</string>
     <string name="event_afterhours_title">پس از ساعات کاری</string>
     <string name="event_meals_title">غذا</string>
     <string name="event_sandbox_description">فضای ویژه برای کاوش، یادگیری و بازی با جدیدترین محصولات و پلتفورم‌های ما ازطریق برنامه‌های نمایشی تعاملی، نصب فیزیکی و غیره.</string>

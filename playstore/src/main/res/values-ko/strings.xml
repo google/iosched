@@ -21,4 +21,5 @@
     <string name="playstore_change">Google I/O 2018에 맞게 업데이트되었습니다.\n• 일정보다 앞서 이벤트 좌석 예약\n• 이벤트, 이동 정보, FAQ에 대한 중요 정보 읽기</string>
     <string name="playstore_required_permissions">필수 권한</string>
     <string name="playstore_optional_permissions">선택 권한</string>
+    <string name="playstore_permission_location_information">위치 정보: 사용자 위치 주변의 이벤트 장소 지도를 표시하는 데 필요합니다.</string>
 </resources>
