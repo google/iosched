@@ -26,13 +26,14 @@
         <item quantity="one">%1$d Veranstaltung</item>
         <item quantity="other">%1$d Veranstaltungen</item>
     </plurals>
-    <string name="starred_and_reserved">Ihre markierten und reservierten Veranstaltungen</string>
     <string name="agenda">Terminübersicht</string>
     <string name="event_starred">Veranstaltung wurde Ihren markierten Elementen hinzugefügt</string>
     <string name="event_unstarred">Veranstaltung aus markierten Elementen entfernt</string>
     <string name="event_star_error">Fehler beim Hinzufügen der Veranstaltung zu markierten Elementen</string>
     <string name="reservation_error">Fehler beim Ändern der Reservierung. Warten Sie, bis vorangegangene Anfragen abgeschlossen sind oder versuchen Sie es später noch einmal.</string>
     <string name="reservation_request_succeeded">Reservierung angefragt.</string>
+    <string name="reservation_cancel_succeeded">Reservierung storniert: \"&lt;b&gt;%s&lt;/b&gt;.\"</string>
+    <string name="reservation_new">Ihr Platz für \"&lt;b&gt;%s&lt;/b&gt;\" ist reserviert.</string>
     <string name="reservation_replaced">Veranstaltung getauscht.</string>
     <string name="waitlist_new">Sie stehen auf der Warteliste.</string>
     <string name="waitlist_cancel_succeeded">Von Warteliste entfernt.</string>
@@ -43,7 +44,7 @@
     <string name="reservation_denied_unknown">Reservierung abgelehnt: unbekannter Fehler.</string>
     <string name="cancellation_denied_cutoff">Stornierung abgelehnt: zu kurz vor Startzeit.</string>
     <string name="cancellation_denied_unknown">Stornierung abgelehnt: unbekannter Fehler.</string>
-    <string name="schedule_filters_empty">Keinen Veranstaltungen heute, die den Filterkriterien entsprechen.</string>
+    <string name="schedule_filters_empty">Für heute sind keine markierten oder reservierten Veranstaltungen vorhanden.</string>
     <string name="reservation_reservable">Platz reservieren</string>
     <string name="reservation_reserved">Reserviert</string>
     <string name="reservation_waitlisted">Auf der Warteliste</string>
@@ -82,11 +83,14 @@
     <string name="dialog_sign_out_content">Alle gespeicherten Veranstaltungen, Platzreservierungen und Sitzungsbewertungen (von Teilnehmern) werden in Ihrem Konto synchronisiert.</string>
     <string name="sign_out">Abmelden</string>
     <string name="remove_reservation_title">Reservierung entfernen?</string>
+    <string name="remove_reservation_content">Sie sind dabei, Ihren Platz für \"%1$s\" zu stornieren. Wenn Sie Ihre Reservierung stornieren, aber kurzfristig doch noch teilnehmen möchten: Bei allen Sitzungen wird eine bestimmte Anzahl von Plätzen direkt vor Ort an die ersten eintreffenden Interessenten vergeben.</string>
     <string name="cancel">Abbrechen</string>
     <string name="remove">Entfernen</string>
     <string name="swap_reservation_title">Reservierung tauschen?</string>
+    <string name="swap_reservation_content">Sie haben bereits eine Reservierung bzw. stehen auf der Warteliste für \"%1$s\". Es ist nur eine Reservierung pro Zeitblock zulässig. Möchten Sie den Tausch gegen \"%2$s\" vornehmen?</string>
     <string name="swap">Tauschen</string>
     <string name="notifications_preference_dialog_title">I/O-Benachrichtigungen</string>
+    <string name="notifications_preference_dialog_content">Möchten Sie Benachrichtigungen zu I/O erhalten? Dann senden wir Ihnen Informationen zu Anfangszeiten von Sitzungen, Rahmenprogramm, Sitzungsaufzeichnungen und vieles mehr. Diese Einstellung können Sie unter \"Info &gt; Settings\" (Informationen &gt; Einstellungen) jederzeit ändern.</string>
     <string name="no">Nein</string>
     <string name="yes">Ja</string>
     <plurals name="duration_hours">
@@ -123,13 +127,16 @@
     <string name="settings_title">Einstellungen</string>
     <string name="travel_directions_title">Routenplaner</string>
     <string name="travel_shuttle_title">Shuttleservice (empfohlen)</string>
+    <string name="travel_carpool_parking_title">Parken und Fahrgemeinschaften</string>
     <string name="travel_ride_sharing_title">Mitfahrportale</string>
     <string name="travel_public_transportation_title">Öffentliche Verkehrsmittel</string>
     <string name="travel_biking_title">Mit dem Fahrrad</string>
+    <string name="travel_directions_description">Die Wegbeschreibung zu 1 Amphitheatre Pkwy, Mountain View, CA 94043 finden Sie auf <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> oder <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a></string>
     <string name="travel_shuttle_description">Teilnehmer der Google I/O können von allen Hotels aus, die Google empfiehlt, einen kostenlosen Shuttleservice zur Veranstaltung nutzen. Ausserdem wird dieser Service von ausgewählten Standorten in San Francisco und anderen Orten auf der Halbinsel angeboten. Zeigen Sie beim Einsteigen in ein Google I/O-Shuttle bitte die Google I/O-Bestätigungs-E-Mail oder das Ansteckschild der Konferenz vor.\n\nDer Einsatz von barrierefreien Fahrzeugen ist an jedem Abholort möglich. Geben Sie bitte auf Ihrem Registrierungsformular an, ob Sie besondere Unterstützung benötigen. Das Planungsteam wird sich dann mit Ihnen in Verbindung setzen.</string>
     <string name="travel_carpool_parking_description">Parkplätze sind nur sehr begrenzt vorhanden und befinden sich ausschliesslich auf den für die Google I/O ausgewiesenen Flächen gegenüber dem Shoreline Amphitheatre entlang dem Shoreline Boulevard. Auf dem Amphitheatre Parkway oder der Charleston Road gibt es keine Parkplätze für die Veranstaltung. Wenn Sie mit dem Auto anreisen möchten, empfehlen wir, dass Sie mit anderen Teilnehmern Fahrgemeinschaften bilden, da die bevorzugten Parkplätze für Autos mit mindestens zwei Insassen reserviert sind.</string>
+    <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\nWaze Carpool ist eine vertrauenswürdige Community von Fahrern und Mitfahrern, die es Ihnen ermöglicht, bequem, schnell und kostengünstig zur Google I/O zu pendeln. Sie möchten fahren? Öffnen Sie <a href="http://Waze.com/get">Waze</a>, sobald Sie in der Bay Area ankommen. Sie suchen eine Mitfahrgelegenheit? Installieren Sie vor Ihrer Ankunft <a href="http://Waze.com/carpool">Waze Carpool</a>. In den kommenden Wochen finden Sie hier Carpool-Rabattcodes exklusiv für Teilnehmer der Google I/O.\n\n<b>Lyft Line</b>\nLaden Sie die App Lyft von Google Play herunter und nutzen Sie Lyft Line, um mit anderen, die denselben Weg haben, kostengünstig ein Auto zu teilen.\n<b>Rabattcode</b>: Googleio18\nDieser Code ist vom 8. bis 10. Mai 2018 für Fahrgemeinschaften mit Lyft Line gültig. Er kann pro Strecke gegen bis zu 10 $ und von bis zu 250 Nutzern pro Tag eingelöst werden. Die Fahrten müssen am Shoreline Amphitheatre beginnen oder enden.</string>
     <string name="travel_public_transportation_description">Der öffentliche Nahverkehr reicht nicht bis direkt zur Google I/O. Informieren Sie sich über die Haltestellen der Shuttles zur Google I/O.</string>
-    <string name="travel_biking_description">Am Shoreline Amphitheatre auf Parkplatz A stehen kostenlose Fahrradstellplätze zur Verfügung. Die Silicon Valley Bicycle Coalition bietet täglich von 7 Uhr bis zum Ende der Veranstaltung einen sicheren Parkdienst an. Es gibt zwei Radwege, den Stevens Creek Trail und den Permanente Creek Trail, über die Radfahrer das Shoreline bequem erreichen können. Die besten Radwege und -routen finden Sie auf Google Maps.\n\nAm 10. Mai findet der "Bay Area Bike to Work Day" statt. In der unmittelbaren Umgebung des Shoreline Amphitheatre werden dann Tausende teilnehmende Radfahrer unterwegs sein und es wird in der Gegend Hunderte Verpflegungsstationen geben. Weitere Informationen dazu finden Sie auf der Website von Silicon Valley Bike to Work Day.</string>
+    <string name="travel_biking_description">Am Shoreline Amphitheatre auf Parkplatz A stehen kostenlose Fahrradstellplätze zur Verfügung. Die Silicon Valley Bicycle Coalition bietet täglich von 7 Uhr bis zum Ende der Veranstaltung einen sicheren Parkdienst an. Es gibt zwei Radwege, den Stevens Creek Trail und den Permanente Creek Trail, über die Radfahrer das Shoreline bequem erreichen können. Die besten Radwege und -routen finden Sie auf Google Maps.\n\nAm 10. Mai findet der \"Bay Area Bike to Work Day\" statt. In der unmittelbaren Umgebung des Shoreline Amphitheatre werden dann Tausende teilnehmende Radfahrer unterwegs sein und es wird in der Gegend Hunderte Verpflegungsstationen geben. Weitere Informationen dazu finden Sie auf der Website von Silicon Valley Bike to Work Day.</string>
     <string name="view_sessions_text">Sitzungen anzeigen</string>
     <string name="view_codelabs_text">Codelabs anzeigen</string>
     <string name="view_events_text">Veranstaltungen anzeigen</string>
@@ -141,6 +148,7 @@
     <string name="event_sessions_title">Sitzungen</string>
     <string name="event_sandbox_title">Sandbox</string>
     <string name="event_codelabs_title">Codelabs</string>
+    <string name="event_officehours_title">Geschäftszeiten und App-Rezensionen</string>
     <string name="event_afterhours_title">Rahmenprogramm</string>
     <string name="event_meals_title">Verpflegung</string>
     <string name="event_sandbox_description">Spezielle Bereiche zum Erkunden, Lernen und spielerischen Experimentieren mit unseren neuesten Produkten und Plattformen – anhand von interaktiven Demos, physischen Installationen und vielem mehr.</string>
@@ -149,7 +157,7 @@
     <string name="event_afterhours_description">An zwei Abenden findet nach dem Ende der Sitzungen in der Nähe des Shoreline ein Rahmenprogramm mit Essen, Getränken und Unterhaltung statt. Am ersten Abend gibt es eine Party in den Räumen von Sandbox und am zweiten veranstalten wir ein exklusives Konzert im Amphitheatre.</string>
     <string name="wifi_header">WLAN</string>
     <string name="event_types_header">Veranstaltungsarten</string>
-    <string name="settings_time_zone_label">Veranstaltungen in der Zeitzone "Pacific Standard Time" (UTC-8)</string>
+    <string name="settings_time_zone_label">Veranstaltungen in der Zeitzone \"Pacific Standard Time\" (UTC-8)</string>
     <string name="settings_send_anonymous_usage_statistics">Anonyme Nutzungsstatistiken senden</string>
     <string name="settings_tos">Nutzungsbedingungen</string>
     <string name="settings_privacy_policy">Datenschutzerklärung</string>

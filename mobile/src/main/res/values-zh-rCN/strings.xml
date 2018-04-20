@@ -26,13 +26,14 @@
         <item quantity="one">%1$d 个活动</item>
         <item quantity="other">%1$d 个活动</item>
     </plurals>
-    <string name="starred_and_reserved">您已加星标的活动和预约的活动</string>
     <string name="agenda">日程</string>
     <string name="event_starred">已将活动添加到您的加星标项</string>
     <string name="event_unstarred">活动已从已加星标的项中移除</string>
     <string name="event_star_error">向已加星标的项添加活动时出错</string>
     <string name="reservation_error">更改预约时出错。请等待之前的请求完成，或稍后再试。</string>
     <string name="reservation_request_succeeded">已提交预约请求。</string>
+    <string name="reservation_cancel_succeeded">已取消预约：&lt;b&gt;%s&lt;/b&gt;。</string>
+    <string name="reservation_new">已为您预约&lt;b&gt;%s&lt;/b&gt;的席位。</string>
     <string name="reservation_replaced">活动已更换。</string>
     <string name="waitlist_new">您已进入候补名单。</string>
     <string name="waitlist_cancel_succeeded">已从候补名单中移除。</string>
@@ -43,7 +44,7 @@
     <string name="reservation_denied_unknown">预约被拒：未知错误。</string>
     <string name="cancellation_denied_cutoff">取消请求被拒：与开始时间相隔太近。</string>
     <string name="cancellation_denied_unknown">取消请求被拒：未知错误。</string>
-    <string name="schedule_filters_empty">今天没有与您当前过滤条件匹配的活动。</string>
+    <string name="schedule_filters_empty">您今天没有已加星标或预约的活动。</string>
     <string name="reservation_reservable">预约席位</string>
     <string name="reservation_reserved">已预约</string>
     <string name="reservation_waitlisted">已进入候补名单</string>
@@ -82,11 +83,14 @@
     <string name="dialog_sign_out_content">所有已保存的活动、席位预约和会议评分（如果是会议参加者）都会持续同步到您的帐号中。</string>
     <string name="sign_out">退出帐号</string>
     <string name="remove_reservation_title">要移除预约项目吗？</string>
+    <string name="remove_reservation_content">您即将放弃“%1$s”的预约席位。如果您决定不预约席位，但仍想参加会议，我们的所有会议都会保留部分无需预约的座位：座位有限，先到现场者先得。</string>
     <string name="cancel">取消</string>
     <string name="remove">移除</string>
     <string name="swap_reservation_title">要更换预约项目吗？</string>
+    <string name="swap_reservation_content">您已经有“%1$s”的预约席位/候补资格？每个时间段只能有一项预约。要改为预约“%2$s”吗？</string>
     <string name="swap">更换</string>
     <string name="notifications_preference_dialog_title">I/O 大会通知</string>
+    <string name="notifications_preference_dialog_content">想要接收有关 I/O 大会的通知吗？我们会向您发送会议开始时间、会后活动、会议录像等相关信息。您可以随时在“信息”&gt;“设置”下更改此设置。</string>
     <string name="no">否</string>
     <string name="yes">是</string>
     <plurals name="duration_hours">
@@ -123,11 +127,14 @@
     <string name="settings_title">设置</string>
     <string name="travel_directions_title">行车路线</string>
     <string name="travel_shuttle_title">班车服务（推荐）</string>
+    <string name="travel_carpool_parking_title">停车和拼车</string>
     <string name="travel_ride_sharing_title">拼车应用</string>
     <string name="travel_public_transportation_title">公共交通</string>
     <string name="travel_biking_title">骑车</string>
+    <string name="travel_directions_description">在 <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google 地图</a>或 <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a> 上查找前往 1 Amphitheatre Pkwy, Mountain View, CA 94043 的路线</string>
     <string name="travel_shuttle_description">所有 Google I/O 大会参加者都可以免费搭乘从 Google 推荐的所有酒店出发的活动班车。旧金山及半岛沿线的其他一些地点也提供限定的服务。您必须出示自己的 Google I/O 大会确认电子邮件或会议徽章才能搭乘任何 Google I/O 大会活动班车。\n\n每个接送点都可使用 ADA 无障碍交通工具。如有 ADA 方面的需求或需要特别协助，请在您的注册表单上指明，规划团队会直接与您联系。</string>
     <string name="travel_carpool_parking_description">停车位非常有限，只有沿 Shoreline Boulevard 的 Shoreline Amphitheatre 对面有 Google I/O 大会指定停车位。Amphitheatre Parkway 和 Charleston Road 沿线均没有活动专用停车位。如果您打算驾车前来，建议您与其他参加者拼车，因为我们的首选停车位仅供乘载人数达到两人或两人以上的车辆停靠。</string>
+    <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\nWaze Carpool 是由司机和乘客组成的可信社区，可以帮助您以经济实惠的价格快速前往 Google I/O 大会会场，为您的行程增添趣味。如果您打算自己开车，可以在到达旧金山湾区时打开 <a href="http://Waze.com/get">Waze</a>。如果您想搭车，可以在到达湾区之前安装 <a href="http://Waze.com/carpool">Waze Carpool</a>。敬请在未来几周返回这里，查看专为 Google I/O 大会参加者提供的拼车折扣代码。\n\n<b>Lyft Line</b>\n从 Google Play 下载 Lyft 应用，并使用 Lyft Line 与相同路线的其他人拼车以减少行程费用。\n<b>折扣代码</b>：Googleio18\n该代码在 2018 年 5 月 8 日到 10 日期间有效，可在通过 Lyft Line 拼车时使用。每次行程最多可兑换 10 美元，每天最多可供 250 名用户使用。乘车或下车点必须是 Shoreline Amphitheatre。</string>
     <string name="travel_public_transportation_description">没有直达 Google I/O 大会会场的公交线路。敬请关注 Google I/O 大会活动班车的确切站点。</string>
     <string name="travel_biking_description">Shoreline Amphitheatre 的 A 停车场将提供免费的自行车存放服务。Silicon Valley Bicycle Coalition 每天将从早上 7 点开始为您的自行车提供安全的代客停车服务，直到当天活动结束。骑自行车者可通过两条便利的路线前往 Shoreline Amphitheatre：一条是 Stevens Creek Trail，另一条是 Permanente Creek Trail。请查看 Google 地图，以获取最佳骑车路线和方向。\n\n湾区今年的骑车上班日 (Bike to Work Day) 定为 5 月 10 日（星期四），届时海岸线附近将有数千人骑自行车参与节日活动，整个地区将设置数百个补给站。如需了解详情，请访问 Silicon Valley Bike to Work Day 网站。</string>
     <string name="view_sessions_text">查看会议</string>
@@ -141,6 +148,7 @@
     <string name="event_sessions_title">会议</string>
     <string name="event_sandbox_title">沙盒</string>
     <string name="event_codelabs_title">代码实验室</string>
+    <string name="event_officehours_title">交流时间和应用评价</string>
     <string name="event_afterhours_title">会后活动</string>
     <string name="event_meals_title">用餐</string>
     <string name="event_sandbox_description">这些专用空间用于通过互动式演示、物理装置等方式探索、学习及试用我们的最新产品和平台。</string>

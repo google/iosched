@@ -21,4 +21,5 @@
     <string name="playstore_change">Actualizado para Google I/O 2018\n• Reserva puestos con anticipación para los eventos.\n• Lee información importante sobre el evento, información sobre el viaje y preguntas frecuentes.</string>
     <string name="playstore_required_permissions">Permisos necesarios</string>
     <string name="playstore_optional_permissions">Permisos opcionales</string>
+    <string name="playstore_permission_location_information">Información de la ubicación: Se necesita para mostrar el mapa del evento en la ubicación del usuario.</string>
 </resources>
