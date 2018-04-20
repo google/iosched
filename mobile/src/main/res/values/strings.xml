@@ -203,6 +203,7 @@
     <string name="wifi_password_label" translation_description="Label for wifi network password">Password:</string>
     <string name="wifi_install_success" translation_description="Snackbar message when wifi network is successfully saved.">Wifi network saved</string>
     <string name="wifi_install_error_message" translation_description="Snackbar message when saving wifi network fails.">Sorry, unable to save wifi network</string>
+    <string name="wifi_install_clipboard_message" translation_description="WiFi install failed, so tell the user we saved the password to the clipboard.">Unable to save wifi network.\nSaved password to clipboard instead.</string>
     <string name="event_sessions_title" translation_description="Header label for general information on &quot;sessions&quot;.">Sessions</string>
     <string name="event_sandbox_title" translation_description="Header label for general &quot;sandbox&quot; description.">Sandbox</string>
     <string name="event_codelabs_title" translation_description="Header label for general information on &quot;codelabs&quot;.">Codelabs</string>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2018 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,9 +60,9 @@
                     android:id="@+id/wifi_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_normal"
                     android:layout_marginBottom="@dimen/margin_normal"
                     android:layout_marginStart="@dimen/margin_normal"
+                    android:layout_marginTop="@dimen/margin_normal"
                     android:text="@string/wifi_header"
                     android:textAppearance="@style/TextAppearance.IOSched.Subhead"
                     app:layout_constraintStart_toStartOf="@+id/guideline_start"
@@ -83,9 +82,10 @@
                     android:id="@+id/wifi_password_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/padding_borderless_button"
+                    android:paddingTop="@dimen/padding_borderless_button"
                     android:text="@string/wifi_password_label"
                     android:textColor="?android:textColorPrimary"
-                    android:paddingTop="@dimen/spacing_normal"
                     app:layout_constraintStart_toStartOf="@+id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/wifi_network_label" />
 
@@ -100,7 +100,8 @@
                     android:id="@+id/wifi_network_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_normal"
+                    android:paddingEnd="@dimen/margin_normal"
+                    android:paddingStart="@dimen/margin_normal"
                     android:text="@{viewModel.wifiSsid}"
                     android:textColor="?android:textColorPrimary"
                     app:layout_constraintBaseline_toBaselineOf="@+id/wifi_network_label"
@@ -112,10 +113,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_normal"
-                    android:layout_marginStart="@dimen/margin_normal"
                     android:background="?selectableItemBackground"
-                    android:text="@{viewModel.wifiPassword.concat(` ` + @string/tap_to_join_network)}"
                     android:onClick="@{() -> viewModel.onWifiConnect()}"
+                    android:paddingBottom="@dimen/padding_borderless_button"
+                    android:paddingEnd="@dimen/margin_normal"
+                    android:paddingStart="@dimen/margin_normal"
+                    android:paddingTop="@dimen/padding_borderless_button"
+                    android:text="@{viewModel.wifiPassword.concat(` ` + @string/tap_to_join_network)}"
                     android:textColor="@color/indigo"
                     app:layout_constraintBaseline_toBaselineOf="@id/wifi_password_label"
                     app:layout_constraintStart_toEndOf="@+id/wifi_label_barrier" />
@@ -136,83 +140,84 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_normal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/event_types_header"
                     app:eventDescription="@string/event_sessions_description"
                     app:eventTitle="@string/event_sessions_title"
-                    app:eventTypeLogo="@drawable/event_header_sessions"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/event_types_header" />
+                    app:eventTypeLogo="@drawable/event_header_sessions" />
 
                 <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_sandbox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/event_sessions"
                     app:eventDescription="@string/event_sandbox_description"
                     app:eventTitle="@string/event_sandbox_title"
-                    app:eventTypeLogo="@drawable/event_header_sandbox"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/event_sessions" />
+                    app:eventTypeLogo="@drawable/event_header_sandbox" />
 
                 <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_codelabs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/event_sandbox"
                     app:eventDescription="@string/event_codelabs_description"
                     app:eventTitle="@string/event_codelabs_title"
-                    app:eventTypeLogo="@drawable/event_header_codelabs"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/event_sandbox" />
+                    app:eventTypeLogo="@drawable/event_header_codelabs" />
 
                 <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_officehours"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/event_codelabs"
                     app:eventDescription="@string/event_officehours_description"
                     app:eventTitle="@string/event_officehours_title"
-                    app:eventTypeLogo="@drawable/event_header_office_hours"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/event_codelabs" />
+                    app:eventTypeLogo="@drawable/event_header_office_hours" />
 
                 <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_afterhours"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/event_officehours"
                     app:eventDescription="@string/event_afterhours_description"
                     app:eventTitle="@string/event_afterhours_title"
-                    app:eventTypeLogo="@drawable/event_header_afterhours"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/event_officehours" />
+                    app:eventTypeLogo="@drawable/event_header_afterhours" />
 
                 <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_meals"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/event_afterhours"
                     app:eventDescription="@string/event_meals_description"
                     app:eventTitle="@string/event_meals_title"
-                    app:eventTypeLogo="@drawable/event_header_meals"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/event_afterhours" />
+                    app:eventTypeLogo="@drawable/event_header_meals" />
 
                 <com.google.samples.apps.iosched.widget.CountdownView
                     android:layout_width="0dp"
                     android:layout_height="@dimen/countdown_height"
-                    android:importantForAccessibility="no"
-                    android:layout_marginStart="@dimen/onboarding_margins"
                     android:layout_marginEnd="@dimen/onboarding_margins"
-                    app:layout_constraintTop_toBottomOf="@id/event_meals"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="@dimen/onboarding_margins"
+                    android:importantForAccessibility="no"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/event_meals"
                     app:countdownVisibility="@{true}" />
 
             </android.support.constraint.ConstraintLayout>
 
         </android.support.v4.widget.NestedScrollView>
+
         <com.google.samples.apps.iosched.widget.FadingSnackbar
             android:id="@+id/snackbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:layout_dodgeInsetEdges="bottom"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:layout_dodgeInsetEdges="bottom" />
 
         <View
             android:id="@+id/dummy_bottom_navigation"

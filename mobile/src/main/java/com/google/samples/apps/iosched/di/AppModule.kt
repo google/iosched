@@ -16,12 +16,12 @@
 
 package com.google.samples.apps.iosched.di
 
+import android.content.ClipboardManager
 import android.content.Context
 import android.net.wifi.WifiManager
 import com.google.samples.apps.iosched.MainApplication
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
-import com.google.samples.apps.iosched.util.wifi.WifiInstaller
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -47,5 +47,10 @@ class AppModule {
 
     @Provides
     fun providesWifiManager(context: Context): WifiManager =
-            context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+
+    @Provides
+    fun providesClipboardManager(context: Context): ClipboardManager =
+        context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE)
+                as ClipboardManager
 }
