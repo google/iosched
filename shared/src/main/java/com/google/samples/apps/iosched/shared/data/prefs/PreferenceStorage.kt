@@ -84,7 +84,7 @@ class SharedPreferenceStorage @Inject constructor(context: Context) :
         set(value) = throw IllegalAccessException("This property can't be changed")
 
     override var sendUsageStatistics: Boolean
-        by BooleanPreference(prefs, PREF_SEND_USAGE_STATISTICS, false)
+        by BooleanPreference(prefs, PREF_SEND_USAGE_STATISTICS, true)
 
     override var preferConferenceTimeZone: Boolean
         by BooleanPreference(prefs, PREF_CONFERENCE_TIME_ZONE, true)
