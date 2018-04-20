@@ -31,6 +31,7 @@ class UserSessionMatcher {
 
     private val selectedTags = HashSet<Tag>()
 
+    @Synchronized
     fun setShowPinnedEventsOnly(pinnedOnly: Boolean): Boolean {
         if (showPinnedEventsOnly != pinnedOnly) {
             showPinnedEventsOnly = pinnedOnly
@@ -39,13 +40,17 @@ class UserSessionMatcher {
         return false
     }
 
+    @Synchronized
     fun getShowPinnedEventsOnly() = showPinnedEventsOnly
 
+    @Synchronized
     fun add(tag: Tag) = selectedTags.add(tag)
 
+    @Synchronized
     fun remove(tag: Tag) = selectedTags.remove(tag)
 
     /** Returns true if the set of filtered tags changed. */
+    @Synchronized
     fun addAll(vararg tags: Tag): Boolean {
         var changed = false
         tags.forEach {
@@ -55,6 +60,7 @@ class UserSessionMatcher {
     }
 
     /** Returns true if the filters are changed by this call. */
+    @Synchronized
     fun clearAll(): Boolean {
         val changed = hasAnyFilters()
         showPinnedEventsOnly = false
@@ -62,16 +68,19 @@ class UserSessionMatcher {
         return changed
     }
 
+    @Synchronized
     fun hasAnyFilters(): Boolean {
         return showPinnedEventsOnly || selectedTags.isNotEmpty()
     }
 
+    @Synchronized
     operator fun contains(tag: Tag) = selectedTags.contains(tag)
 
     /**
      * Remove any tags that aren't in [newTags]. Call this whenever a new list of Tags is loaded
      * in order to reconcile the currently selected filters.
      */
+    @Synchronized
     fun removeOrphanedTags(newTags: List<Tag>) {
         if (newTags.isEmpty()) {
             selectedTags.clear()
@@ -81,6 +90,7 @@ class UserSessionMatcher {
     }
 
     /** Return true if the [UserSession] matches the current filters. */
+    @Synchronized
     fun matches(userSession: UserSession): Boolean {
         if (showPinnedEventsOnly && !userSession.userEvent.isPinned()) {
             return false
@@ -95,6 +105,7 @@ class UserSessionMatcher {
         return match
     }
 
+    @Synchronized
     fun getSelectedTags(): List<Tag> {
         return selectedTags.toList()
             .sortedWith(
