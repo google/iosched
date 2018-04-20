@@ -16,23 +16,25 @@
 
 package com.google.samples.apps.iosched.ui.sessiondetail
 
+import android.support.annotation.IdRes
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
-import com.google.samples.apps.iosched.R
 
 /**
  * A [RecyclerView.OnScrollListener] which adjusts the position of the [up] view based on scroll.
  */
 class PushUpScrollListener(
     private val up: View,
-    recyclerView: View
+    recyclerView: View,
+    @IdRes titleResId: Int,
+    @IdRes imageResId: Int
 ) : RecyclerView.OnScrollListener() {
 
     private var pushPointY = -1
 
     init {
-        val title = recyclerView.findViewById<TextView>(R.id.session_detail_title)
+        val title = recyclerView.findViewById<TextView>(titleResId)
         pushPointY = if (title.visibility == View.VISIBLE) {
             // If title is in header, push the up button from the first line of text.
             // Due to using auto-sizing text, the view needs to be a fixed height (not wrap)
@@ -41,7 +43,7 @@ class PushUpScrollListener(
             textTop - up.height
         } else {
             // If no title in header, push the up button based on the bottom of the photo
-            val photo = recyclerView.findViewById<View>(R.id.detail_image)
+            val photo = recyclerView.findViewById<View>(imageResId)
             photo.height - up.height
         }
     }
