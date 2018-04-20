@@ -18,19 +18,14 @@ package com.google.samples.apps.iosched.ui.speaker
 
 import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
-import android.support.v7.widget.RecyclerView.RecycledViewPool
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 import android.text.method.LinkMovementMethod
 import android.text.style.URLSpan
-import android.view.LayoutInflater
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -39,10 +34,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.databinding.ItemSessionBinding
 import com.google.samples.apps.iosched.shared.model.Speaker
-import com.google.samples.apps.iosched.shared.model.UserSession
-import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 
 /**
  * Formats a [TextView] to display a [Speaker]'s social links.
@@ -83,50 +75,6 @@ fun createSpeakerLinksView(
     } else {
         textView.visibility = GONE
     }
-}
-
-/**
- * Creates views for displaying [UserSession]s, adding them to [container].
- */
-@BindingAdapter(value = ["speakerSessions", "eventListener", "tagViewPool"], requireAll = true)
-fun createSpeakerSessionsViews(
-    container: LinearLayout,
-    sessions: List<UserSession>?,
-    eventListener: EventActions,
-    tagViewPool: RecycledViewPool?
-) {
-    if (sessions != null) {
-        // remove all views other than the header
-        for (i in container.childCount - 1 downTo 1) {
-            container.removeViewAt(i)
-        }
-        sessions.forEach {
-            container.addView(createEventView(container, it, eventListener, tagViewPool))
-        }
-    }
-}
-
-/**
- * Creates a view for displaying a [UserSession].
- */
-private fun createEventView(
-    container: ViewGroup,
-    event: UserSession,
-    listener: EventActions,
-    tagViewPool: RecycledViewPool?
-): View {
-    val binding = ItemSessionBinding.inflate(
-        LayoutInflater.from(container.context),
-        container,
-        false
-    ).apply {
-        session = event.session
-        userEvent = event.userEvent
-        eventListener = listener
-        alwaysShowDate = true
-        tags.recycledViewPool = tagViewPool
-    }
-    return binding.root
 }
 
 /**
