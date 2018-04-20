@@ -64,8 +64,12 @@ class EventInfoViewModel @Inject constructor(
             })
         }
         val snackbarMessage =
-            if (success) SnackbarMessage(R.string.wifi_install_success)
-            else SnackbarMessage(R.string.wifi_install_error_message)
+            if (success)
+                SnackbarMessage(R.string.wifi_install_success)
+            else
+                SnackbarMessage(
+                    messageId = R.string.wifi_install_clipboard_message, longDuration = true
+                )
 
         _snackbarMessage.postValue(Event(snackbarMessage))
     }
