@@ -32,31 +32,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.constraint.Guideline
-                android:id="@+id/guideline_start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_begin="@dimen/margin_normal" />
-
-            <android.support.constraint.Guideline
-                android:id="@+id/guideline_end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_end="@dimen/margin_normal" />
-
-            <TextView
-                android:id="@+id/general_header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_normal"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:text="@string/general_header"
-                android:textAppearance="@style/TextAppearance.IOSched.Subhead"
-                app:layout_constraintStart_toStartOf="@+id/guideline_start"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <Button
                 android:id="@+id/faq_link"
                 style="@style/TextAppearance.IOSched.AboutButtons"
@@ -66,29 +41,17 @@
                 android:gravity="start"
                 android:text="@string/faq_label"
                 app:websiteLink="@{@string/faq_url}"
-                app:layout_constraintTop_toBottomOf="@+id/general_header" />
-
-            <TextView
-                android:id="@+id/agreements_header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_normal"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:text="@string/agreements_header"
-                android:textAppearance="@style/TextAppearance.IOSched.Subhead"
-                app:layout_constraintStart_toStartOf="@+id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@+id/faq_link" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/terms_of_service"
                 style="@style/TextAppearance.IOSched.AboutButtons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_normal"
                 android:gravity="start"
                 android:text="@string/settings_tos"
                 app:websiteLink="@{@string/tos_url}"
-                app:layout_constraintTop_toBottomOf="@+id/agreements_header" />
+                app:layout_constraintTop_toBottomOf="@+id/faq_link" />
 
             <Button
                 android:id="@+id/privacy_policy"
