@@ -72,6 +72,7 @@
             app:mapStyle="@{R.raw.maps_style}"
             app:mapTileProvider="@{viewModel.tileProvider}"
             app:mapViewport="@{viewModel.conferenceLocationBounds}"
+            app:uiCompass="false"
             app:uiZoomControls="false" />
 
     </android.support.constraint.ConstraintLayout>
