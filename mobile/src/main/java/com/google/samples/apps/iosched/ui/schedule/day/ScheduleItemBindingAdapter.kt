@@ -53,10 +53,8 @@ fun sessionLengthLocation(
     textView.text = if (alwaysShowDate) {
         // In places where sessions are shown without day/time labels, show the full date & time
         // (respecting timezone) plus location. Example: "Wed, May 9, 9 – 10 am / Stage 1"
-        val timeString = TimeUtils.timeString(localStartTime, localEndTime)
-        textView.context.getString(R.string.session_duration_location, timeString, room.name)
+        fullDateTime(localStartTime, localEndTime, textView, room)
     } else if (finalTimeZoneId != TimeUtils.CONFERENCE_TIMEZONE) {
-
         // Show the local time, the duration, and the abbreviated room name.
         // Example: "Tue, May 8 / 1 hour / Stage 1"
         textView.context.getString(
@@ -73,6 +71,19 @@ fun sessionLengthLocation(
             durationString(textView.context, Duration.between(startTime, endTime)), room.name
         )
     }
+    // For accessibility, always use the full date time; without this, sticky headers will confuse
+    // a Talkback user.
+    textView.contentDescription = fullDateTime(localStartTime, localEndTime, textView, room)
+}
+
+private fun fullDateTime(
+    localStartTime: ZonedDateTime,
+    localEndTime: ZonedDateTime,
+    textView: TextView,
+    room: Room
+): String {
+    val timeString = TimeUtils.timeString(localStartTime, localEndTime)
+    return textView.context.getString(R.string.session_duration_location, timeString, room.name)
 }
 
 private fun durationString(context: Context, duration: Duration): String {
