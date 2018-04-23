@@ -63,12 +63,11 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
             Timber.d("EventRepository: No user logged in, returning sessions without user events.")
             val allSessions = sessionRepository.getSessions()
             val userSessionsPerDay = mapUserDataAndSessions(null, allSessions)
-            sessionsByDayResult.postValue(Result.Success(
+            sessionsByDayResult.value = Result.Success(
                 LoadUserSessionsByDayUseCaseResult(
                     userSessionsPerDay = userSessionsPerDay,
                     userMessage = null,
-                    userSessionCount = allSessions.size)
-            ))
+                    userSessionCount = allSessions.size))
             return sessionsByDayResult
         }
         // Observes the user events and merges them with session data.
