@@ -255,4 +255,6 @@
 
     <string name="no_network_connection" translation_description="Snackbar message when there is not network connection">No internet connection.</string>
 
+    <string name="navigate_up" translation-description="Arrow at the top left of the screen for navigation">Navigate up</string>
+
 </resources>

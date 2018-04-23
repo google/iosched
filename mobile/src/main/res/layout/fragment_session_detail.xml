@@ -49,6 +49,7 @@
             android:layout_height="?actionBarSize"
             android:layout_gravity="start|top"
             android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/navigate_up"
             app:srcCompat="@drawable/ic_arrow_back" />
 
         <!-- Workaround for b/72034805 — BAB shadow can't extend beyond bounds nor concave shape -->
