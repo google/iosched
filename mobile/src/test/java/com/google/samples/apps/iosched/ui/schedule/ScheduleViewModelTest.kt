@@ -116,7 +116,7 @@ class ScheduleViewModelTest {
         signInDelegate.loadUser("test")
 
         // Observe viewmodel to load sessions
-        viewModel.getSessionsForDay(DAY_1).observeForever {}
+        viewModel.getSessionTimeDataForDay(DAY_1).observeForever {}
 
         // Check that data were loaded correctly
         // Sessions
@@ -124,7 +124,7 @@ class ScheduleViewModelTest {
 
             assertEquals(
                 TestData.userSessionMap[day],
-                LiveDataTestUtil.getValue(viewModel.getSessionsForDay(day))
+                LiveDataTestUtil.getValue(viewModel.getSessionTimeDataForDay(day))?.list
             )
         }
         assertFalse(LiveDataTestUtil.getValue(viewModel.isLoading)!!)
@@ -495,16 +495,16 @@ class ScheduleViewModelTest {
         )
 
         // Observe viewmodel to load sessions
-        viewModel.getSessionsForDay(DAY_1).observeForever {}
+        viewModel.getSessionTimeDataForDay(DAY_1).observeForever {}
 
         // Trigger a refresh on the repo
         repo.refreshCacheWithRemoteConferenceData()
 
         // The new value should be present
-        val newValue = LiveDataTestUtil.getValue(viewModel.getSessionsForDay(DAY_1))
+        val newValue = LiveDataTestUtil.getValue(viewModel.getSessionTimeDataForDay(DAY_1))
 
         assertThat(
-            newValue?.first()?.session,
+            newValue?.list?.first()?.session,
             `is`(IsEqual.equalTo(TestData.session0)))
     }
 
