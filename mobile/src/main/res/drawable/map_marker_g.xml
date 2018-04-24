@@ -1,0 +1,31 @@
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M20,0a20,20 0 1,1 0,40a20,20 0 1,1 0,-40" />
+    <path
+        android:fillColor="#3FE5B6"
+        android:pathData="M20,0a20,20 0 1,1 0,40a20,20 0 1,1 0,-40M20,2a18,18 0 0,0 0,36a18,18 0 0,0 0,-36" />
+    <path
+        android:fillColor="#202124"
+        android:pathData="M17.7871,24.498C16.8701,23.977 16.1411,23.26 15.6031,22.348C15.0641,21.435 14.7951,20.418 14.7951,19.299C14.7951,18.18 15.0641,17.162 15.6031,16.25C16.1411,15.338 16.8701,14.621 17.7871,14.1C18.7041,13.576 19.7071,13.314 20.7951,13.314C21.6591,13.314 22.4641,13.469 23.2111,13.779C23.9571,14.088 24.5811,14.519 25.0831,15.074L23.8351,16.322C23.4611,15.906 23.0161,15.586 22.4991,15.363C21.9811,15.139 21.4081,15.027 20.7791,15.027C20.0431,15.027 19.3551,15.203 18.7151,15.555C18.0751,15.906 17.5631,16.408 17.1791,17.059C16.7951,17.709 16.6031,18.457 16.6031,19.299C16.6031,20.143 16.7951,20.889 17.1791,21.539C17.5631,22.189 18.0751,22.691 18.7151,23.043C19.3551,23.394 20.0481,23.57 20.7951,23.57C21.4771,23.57 22.0481,23.469 22.5071,23.268C22.9661,23.064 23.3761,22.793 23.7391,22.451C23.9741,22.217 24.1731,21.924 24.3391,21.57C24.5041,21.219 24.6141,20.834 24.6671,20.418L20.7791,20.418L20.7791,18.818L26.3631,18.818C26.4161,19.117 26.4431,19.428 26.4431,19.746C26.4431,20.473 26.3311,21.168 26.1071,21.834C25.8831,22.502 25.5251,23.08 25.0351,23.57C23.9571,24.713 22.5441,25.283 20.7951,25.283C19.7071,25.283 18.7041,25.021 17.7871,24.498" />
+</vector>
