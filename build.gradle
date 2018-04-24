@@ -58,6 +58,7 @@ buildscript {
         junitVersion = '4.12'
         kotlinVersion = '1.2.31'
         ktxVersion = "0.2"
+        leakCanaryVersion = "1.5.4"
         lottieVersion = "2.5.1"
         mdcVersion = '1.0.0-alpha'
         mockitoVersion = "2.8.9"
