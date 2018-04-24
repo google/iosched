@@ -100,13 +100,13 @@ class ScheduleViewModel @Inject constructor(
     val timeZoneId: LiveData<ZoneId>
 
     private val _sessionTimeDataDay1 = MediatorLiveData<SessionTimeData>()
-    val sessionTimeDataDay1: LiveData<SessionTimeData>
+    private val sessionTimeDataDay1: LiveData<SessionTimeData>
         get() = _sessionTimeDataDay1
     private val _sessionTimeDataDay2 = MediatorLiveData<SessionTimeData>()
-    val sessionTimeDataDay2: LiveData<SessionTimeData>
+    private val sessionTimeDataDay2: LiveData<SessionTimeData>
         get() = _sessionTimeDataDay2
     private val _sessionTimeDataDay3 = MediatorLiveData<SessionTimeData>()
-    val sessionTimeDataDay3: LiveData<SessionTimeData>
+    private val sessionTimeDataDay3: LiveData<SessionTimeData>
         get() = _sessionTimeDataDay3
 
     // Cached list of TagFilters returned by the use case. Only Result.Success modifies it.
@@ -132,10 +132,6 @@ class ScheduleViewModel @Inject constructor(
     private val loadAgendaResult = MutableLiveData<Result<List<Block>>>()
     private val loadFiltersResult = MutableLiveData<Result<List<EventFilter>>>()
     private val swipeRefreshResult = MutableLiveData<Result<Boolean>>()
-
-    private val day1Sessions: LiveData<List<UserSession>>
-    private val day2Sessions: LiveData<List<UserSession>>
-    private val day3Sessions: LiveData<List<UserSession>>
 
     val eventCount: LiveData<Int>
 
@@ -186,17 +182,6 @@ class ScheduleViewModel @Inject constructor(
 
         loadAgendaUseCase(loadAgendaResult)
         loadEventFiltersUseCase(userSessionMatcher, loadFiltersResult)
-
-        // map LiveData results from UseCase to each day's individual LiveData
-        day1Sessions = loadSessionsResult.map {
-            (it as? Result.Success)?.data?.userSessionsPerDay?.get(DAY_1) ?: emptyList()
-        }
-        day2Sessions = loadSessionsResult.map {
-            (it as? Result.Success)?.data?.userSessionsPerDay?.get(DAY_2) ?: emptyList()
-        }
-        day3Sessions = loadSessionsResult.map {
-            (it as? Result.Success)?.data?.userSessionsPerDay?.get(DAY_3) ?: emptyList()
-        }
 
         eventCount = loadSessionsResult.map {
             (it as? Result.Success)?.data?.userSessionCount ?: 0
@@ -308,10 +293,12 @@ class ScheduleViewModel @Inject constructor(
                 timeZoneId = it
             } ?: SessionTimeData(timeZoneId = it)
         })
-        _sessionTimeDataDay1.addSource(day1Sessions, {
+        _sessionTimeDataDay1.addSource(loadSessionsResult, {
+            val userSessions =
+                (it as? Result.Success)?.data?.userSessionsPerDay?.get(DAY_1) ?: return@addSource
             _sessionTimeDataDay1.value = _sessionTimeDataDay1.value?.apply {
-                list = it
-            } ?: SessionTimeData(list = it)
+                list = userSessions
+            } ?: SessionTimeData(list = userSessions)
         })
 
         _sessionTimeDataDay2.addSource(timeZoneId, {
@@ -319,10 +306,12 @@ class ScheduleViewModel @Inject constructor(
                 timeZoneId = it
             } ?: SessionTimeData(timeZoneId = it)
         })
-        _sessionTimeDataDay2.addSource(day2Sessions, {
+        _sessionTimeDataDay2.addSource(loadSessionsResult, {
+            val userSessions =
+                (it as? Result.Success)?.data?.userSessionsPerDay?.get(DAY_2) ?: return@addSource
             _sessionTimeDataDay2.value = _sessionTimeDataDay2.value?.apply {
-                list = it
-            } ?: SessionTimeData(list = it)
+                list = userSessions
+            } ?: SessionTimeData(list = userSessions)
         })
 
         _sessionTimeDataDay3.addSource(timeZoneId, {
@@ -330,10 +319,12 @@ class ScheduleViewModel @Inject constructor(
                 timeZoneId = it
             } ?: SessionTimeData(timeZoneId = it)
         })
-        _sessionTimeDataDay3.addSource(day3Sessions, {
+        _sessionTimeDataDay3.addSource(loadSessionsResult, {
+            val userSessions =
+                (it as? Result.Success)?.data?.userSessionsPerDay?.get(DAY_3) ?: return@addSource
             _sessionTimeDataDay3.value = _sessionTimeDataDay3.value?.apply {
-                list = it
-            } ?: SessionTimeData(list = it)
+                list = userSessions
+            } ?: SessionTimeData(list = userSessions)
         })
 
         swipeRefreshing = swipeRefreshResult.map {
@@ -357,15 +348,6 @@ class ScheduleViewModel @Inject constructor(
         DAY_1 -> sessionTimeDataDay1
         DAY_2 -> sessionTimeDataDay2
         DAY_3 -> sessionTimeDataDay3
-    }
-
-    /*
-     * Note: only for testing.
-     */
-    fun getSessionsForDay(day: ConferenceDay): LiveData<List<UserSession>> = when(day) {
-        DAY_1 -> day1Sessions
-        DAY_2 -> day2Sessions
-        DAY_3 -> day3Sessions
     }
 
     override fun openEventDetail(id: SessionId) {
