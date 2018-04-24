@@ -1,0 +1,28 @@
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector android:height="24dp" android:viewportHeight="40"
+    android:viewportWidth="40" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#FFFFFF" android:fillType="evenOdd"
+        android:pathData="M38.1196,19.5605C38.1196,29.8105 29.8096,38.1205 19.5596,38.1205C9.3096,38.1205 0.9996,29.8105 0.9996,19.5605C0.9996,9.3095 9.3096,0.9995 19.5596,0.9995C29.8096,0.9995 38.1196,9.3095 38.1196,19.5605"
+        android:strokeColor="#00000000" android:strokeWidth="1"/>
+    <path android:fillColor="#F17030" android:fillType="evenOdd"
+        android:pathData="M19.5596,2C9.8766,2 1.9996,9.878 1.9996,19.561C1.9996,29.243 9.8766,37.12 19.5596,37.12C29.2426,37.12 37.1196,29.243 37.1196,19.561C37.1196,9.878 29.2426,2 19.5596,2M19.5596,39.12C8.7746,39.12 -0.0004,30.346 -0.0004,19.561C-0.0004,8.774 8.7746,-0 19.5596,-0C30.3456,-0 39.1196,8.774 39.1196,19.561C39.1196,30.346 30.3456,39.12 19.5596,39.12"
+        android:strokeColor="#00000000" android:strokeWidth="1"/>
+    <path android:fillColor="#202124" android:fillType="evenOdd"
+        android:pathData="M18.777,25.3211l1.792,0l0,-11.456l-1.792,0z"
+        android:strokeColor="#00000000" android:strokeWidth="1"/>
+</vector>
