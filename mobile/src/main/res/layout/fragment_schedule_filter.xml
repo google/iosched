@@ -163,7 +163,6 @@
             android:alpha="@{headerAlpha}"
             android:clickable="@{headerAlpha > 0f}"
             android:minWidth="0dp"
-            android:onClick="@{(v) -> viewModel.clearFilters()}"
             android:paddingHorizontal="@dimen/margin_normal"
             android:paddingVertical="0dp"
             android:text="@string/reset"
@@ -171,6 +170,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:goneUnless="@{viewModel.hasAnyFilters}"
+            app:eventFilters="@{recyclerview}"
+            app:animatedOnClick="@{() -> viewModel.clearFilters()}"
             tools:targetApi="o"
             tools:visibility="visible" />
 

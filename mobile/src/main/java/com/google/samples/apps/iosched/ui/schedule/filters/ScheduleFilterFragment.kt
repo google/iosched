@@ -26,9 +26,12 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.OnScrollListener
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.view.doOnLayout
+import androidx.view.forEach
 import androidx.view.postDelayed
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleFilterBinding
@@ -159,15 +162,17 @@ class ScheduleFilterFragment : DaggerFragment() {
 }
 
 @BindingAdapter("selectedFilters")
-fun selectedFilters(recyclerView : RecyclerView, filters: List<EventFilter>?) {
+fun selectedFilters(recyclerView: RecyclerView, filters: List<EventFilter>?) {
     val filterChipAdapter: FilterChipAdapter
     if (recyclerView.adapter == null) {
         filterChipAdapter = FilterChipAdapter()
         recyclerView.apply {
             adapter = filterChipAdapter
-            addItemDecoration(SpaceDecoration(
-                end = resources.getDimensionPixelSize(R.dimen.spacing_normal)
-            ))
+            addItemDecoration(
+                SpaceDecoration(
+                    end = resources.getDimensionPixelSize(R.dimen.spacing_normal)
+                )
+            )
         }
     } else {
         filterChipAdapter = recyclerView.adapter as FilterChipAdapter
@@ -206,6 +211,32 @@ fun setClickListenerForFilter(
             ) {
                 viewModel.toggleFilter(eventFilter, checked)
             }
+        }
+    }
+}
+
+/**
+ * Sets up the `onClickListener` for the filter reset button, so that it calls the given
+ * [listener] with the side effect of animating deselecting any filters.
+ */
+@BindingAdapter(value = ["eventFilters", "animatedOnClick"], requireAll = false)
+fun setResetFiltersClickListener(
+    reset: Button,
+    eventFilters: ViewGroup,
+    listener: OnClickListener
+) {
+    reset.setOnClickListener {
+        eventFilters.forEach { outer ->
+            if (outer is ViewGroup) {
+                outer.forEach { view ->
+                    if (view is EventFilterView && view.isChecked) {
+                        view.animateChecked(false)
+                    }
+                }
+            }
+        }
+        reset.postDelayed(DESELECTING_DURATION) {
+            listener.onClick(reset)
         }
     }
 }
