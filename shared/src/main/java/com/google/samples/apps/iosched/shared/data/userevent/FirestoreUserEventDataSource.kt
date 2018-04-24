@@ -38,7 +38,7 @@ import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.result.Result
 import timber.log.Timber
-import java.util.UUID
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -159,7 +159,12 @@ class FirestoreUserEventDataSource @Inject constructor(
                 .collection(EVENTS_COLLECTION)
 
         eventsChangedListenerSubscription?.remove() // Remove in case userId changes.
-        result.postValue(null) // Post a value in case there are no changes to the data on start
+        // Set a value in case there are no changes to the data on start
+        // This needs to be set to avoid that the upper layer LiveData detects the old data as a
+        // new data.
+        // When addSource was called in DefaultSessionAndUserEventRepository#getObservableUserEvents,
+        // the old data was considered as a new data even though it's for another user's data
+        result.value = null
         eventsChangedListenerSubscription = eventsCollection.addSnapshotListener(eventsListener)
     }
 
