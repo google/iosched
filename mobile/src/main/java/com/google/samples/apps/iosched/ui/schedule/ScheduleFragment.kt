@@ -252,6 +252,11 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         dialog.show(requireActivity().supportFragmentManager, DIALOG_NOTIFICATIONS_PREFERENCE)
     }
 
+    override fun onStart() {
+        super.onStart()
+        scheduleViewModel.initializeTimeZone()
+    }
+
     /**
      * Adapter that build a page for each conference day.
      */
