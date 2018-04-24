@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched
 import com.google.samples.apps.iosched.di.DaggerAppComponent
 import com.google.samples.apps.iosched.util.CrashlyticsTree
 import com.jakewharton.threetenabp.AndroidThreeTen
+import com.squareup.leakcanary.LeakCanary
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import timber.log.Timber
@@ -29,6 +30,12 @@ import timber.log.Timber
 class MainApplication : DaggerApplication() {
     override fun onCreate() {
         super.onCreate()
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return
+        }
+
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         } else {
@@ -37,6 +44,8 @@ class MainApplication : DaggerApplication() {
 
         // ThreeTenBP for times and dates
         AndroidThreeTen.init(this)
+
+        LeakCanary.install(this)
     }
 
     /**
