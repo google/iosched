@@ -178,6 +178,10 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
             it ?: return@Observer
             viewpager.adapter = ScheduleAdapter(childFragmentManager, it)
         })
+
+        if (savedInstanceState == null) {
+            scheduleViewModel.setIsAgendaPage(false)
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
