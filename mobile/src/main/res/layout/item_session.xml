@@ -152,9 +152,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/keyline"
             app:layout_constraintTop_toBottomOf="@id/tags_barrier"
-            app:flexDirection="row"
-            app:flexWrap="wrap"
-            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
             app:sessionTags="@{session.displayTags}"
             tools:listitem="@layout/item_session_tag" />
 

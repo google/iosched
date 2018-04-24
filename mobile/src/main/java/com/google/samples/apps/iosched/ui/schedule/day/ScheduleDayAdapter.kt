@@ -24,10 +24,10 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.samples.apps.iosched.databinding.ItemSessionBinding
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.ui.schedule.ScheduleEventListener
+import com.google.samples.apps.iosched.widget.UnscrollableFlexboxLayoutManager
 import org.threeten.bp.ZoneId
 
 class ScheduleDayAdapter(
@@ -41,9 +41,13 @@ class ScheduleDayAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SessionViewHolder {
         val binding =
             ItemSessionBinding.inflate(LayoutInflater.from(parent.context), parent, false).apply {
-                tags.recycledViewPool = tagViewPool
-                (tags.layoutManager as? FlexboxLayoutManager)?.let {
-                    it.recycleChildrenOnDetach = true
+                tags.apply {
+                    recycledViewPool = tagViewPool
+                    // Use a customized FlexboxLayoutManager so that swiping the tags are doesn't
+                    // trigger pull to refresh behavior.
+                    layoutManager = UnscrollableFlexboxLayoutManager(parent.context).apply {
+                        recycleChildrenOnDetach = true
+                    }
                 }
             }
         return SessionViewHolder(
