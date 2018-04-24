@@ -77,7 +77,7 @@ class ScheduleViewModel @Inject constructor(
     scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase,
     topicSubscriber: TopicSubscriber,
     private val snackbarMessageManager: SnackbarMessageManager,
-    getTimeZoneUseCase: GetTimeZoneUseCase,
+    private val getTimeZoneUseCase: GetTimeZoneUseCase,
     private val refreshConferenceDataUseCase: RefreshConferenceDataUseCase,
     observeConferenceDataUseCase: ObserveConferenceDataUseCase
 ) : ViewModel(), ScheduleEventListener, SignInViewModelDelegate by signInViewModelDelegate {
@@ -265,8 +265,6 @@ class ScheduleViewModel @Inject constructor(
         scheduleUiHintsShown = scheduleUiHintsShownResult.map {
             Event((it as? Result.Success)?.data == true)
         }
-
-        getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
 
         val showInConferenceTimeZone = preferConferenceTimeZoneResult.map {
             (it as? Result.Success<Boolean>)?.data ?: true
@@ -458,6 +456,10 @@ class ScheduleViewModel @Inject constructor(
     private fun setTransientUiState(state: TransientUiState) {
         _transientUiStateVar = state
         _transientUiState.value = state
+    }
+
+    fun initializeTimeZone() {
+        getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
     }
 }
 
