@@ -39,9 +39,9 @@ import androidx.view.isEmpty
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.model.Session
 import org.threeten.bp.ZoneId
-
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
+import timber.log.Timber
 
 /**
  * A [RecyclerView.ItemDecoration] which draws sticky headers for a given list of sessions.
@@ -107,7 +107,16 @@ class ScheduleTimeHeadersDecoration(
         // Loop over each attached view looking for header items.
         // Loop backwards as a lower header can push another higher one upward.
         for (i in parent.childCount - 1 downTo 0) {
-            val view = parent[i]
+            val view = parent.getChildAt(i)
+            if (view == null) {
+                // This should not be null, but observed null at times.
+                // Guard against it to avoid crash and log the state.
+                Timber.w(
+                    """View is null. Index: $i, childCount: ${parent.childCount},
+                        |RecyclerView.State: $state""".trimMargin()
+                )
+                continue
+            }
             val viewTop = view.top + view.translationY.toInt()
             if (view.bottom > 0 && viewTop < parent.height) {
                 val position = parent.getChildAdapterPosition(view)
