@@ -70,6 +70,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         private const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
         private const val DIALOG_CONFIRM_SIGN_OUT = "dialog_confirm_sign_out"
         private const val DIALOG_SCHEDULE_HINTS = "dialog_schedule_hints"
+        private const val STATE_VIEWPAGER_POSITION = "state.VIEWPAGER_POSITION"
     }
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -80,6 +81,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
 
     private lateinit var filtersFab: FloatingActionButton
+    private lateinit var viewPager: ViewPager
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
     private lateinit var snackbar: FadingSnackbar
 
@@ -97,6 +99,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         coordinatorLayout = binding.coordinatorLayout
         filtersFab = binding.filterFab
         snackbar = binding.snackbar
+        viewPager = binding.viewpager
         // We can't lookup bottomSheetBehavior here since it's on a <fragment> tag
 
         val snackbarPrefViewModel: SnackbarPreferenceViewModel = viewModelProvider(viewModelFactory)
@@ -147,14 +150,13 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val viewpager: ViewPager = view.findViewById(R.id.viewpager)
-        viewpager.offscreenPageLimit = COUNT - 1
+        viewPager.offscreenPageLimit = COUNT - 1
 
         val appbar: View = view.findViewById(R.id.appbar)
         val tabs: TabLayout = view.findViewById(R.id.tabs)
-        tabs.setupWithViewPager(viewpager)
+        tabs.setupWithViewPager(viewPager)
 
-        viewpager.addOnPageChangeListener(object : SimpleOnPageChangeListener() {
+        viewPager.addOnPageChangeListener(object : SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 scheduleViewModel.setIsAgendaPage(position == AGENDA_POSITION)
             }
@@ -171,18 +173,37 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
                 } else {
                     View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
                 }
-                viewpager.importantForAccessibility = a11yState
+                viewPager.importantForAccessibility = a11yState
                 appbar.importantForAccessibility = a11yState
             }
         })
 
         scheduleViewModel.labelsForDays.observe(this, Observer<List<Int>> {
             it ?: return@Observer
-            viewpager.adapter = ScheduleAdapter(childFragmentManager, it)
+            viewPager.adapter = ScheduleAdapter(childFragmentManager, it)
         })
 
         if (savedInstanceState == null) {
             scheduleViewModel.setIsAgendaPage(false)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(STATE_VIEWPAGER_POSITION, viewPager.currentItem)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
+        savedInstanceState?.let {
+
+            val viewPagerPos = it.getInt(STATE_VIEWPAGER_POSITION)
+            viewPager.run {
+                post {
+                    currentItem = viewPagerPos
+                }
+            }
         }
     }
 

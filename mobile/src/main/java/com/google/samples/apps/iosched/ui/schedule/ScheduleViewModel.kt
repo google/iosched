@@ -178,7 +178,7 @@ class ScheduleViewModel @Inject constructor(
     /** Indicates if the UI hints for the schedule have been shown */
     val scheduleUiHintsShown: LiveData<Event<Boolean>>
 
-    // Flag used by UI to not auto scroll to current event is user has interacted e.g. filtered
+    // Flags used to indicate if the "scroll to now" feature has been used already.
     var userHasInteracted = false
 
     // The currently happening event

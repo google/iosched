@@ -16,22 +16,26 @@
 package com.google.samples.apps.iosched.ui
 
 import android.app.Activity
+import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import com.firebase.ui.auth.IdpResponse
+import com.google.android.material.widget.HideBottomViewOnScrollBehavior
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.consume
 import com.google.samples.apps.iosched.shared.util.inTransaction
+import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.info.InfoFragment
 import com.google.samples.apps.iosched.ui.map.MapFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.ScheduleFragment
+import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
-import java.util.*
+import java.util.UUID
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -42,17 +46,31 @@ class MainActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var snackbarMessageManager: SnackbarMessageManager
 
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private lateinit var behavior: HideBottomViewOnScrollBehavior<*>
     private lateinit var currentFragment: MainNavigationFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // This VM instance is shared between activity and fragments, as it's scoped to MainActivity
+        val scheduleViewModel: ScheduleViewModel = viewModelProvider(viewModelFactory)
+
         navigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.navigation_schedule -> consume { replaceFragment(ScheduleFragment()) }
-                R.id.navigation_map -> consume { replaceFragment(MapFragment()) }
-                R.id.navigation_info -> consume { replaceFragment(InfoFragment()) }
+                R.id.navigation_map -> consume {
+                    // Scroll to current event next time the schedule is opened.
+                    scheduleViewModel.userHasInteracted = false
+                    replaceFragment(MapFragment())
+                }
+                R.id.navigation_info -> consume {
+                    // Scroll to current event next time the schedule is opened.
+                    scheduleViewModel.userHasInteracted = false
+                    replaceFragment(InfoFragment())
+                }
                 else -> false
             }
         }
