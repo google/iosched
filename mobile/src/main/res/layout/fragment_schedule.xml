@@ -27,7 +27,7 @@
 
     </data>
 
-    <com.google.samples.apps.iosched.widget.NestedScrollingCoordinatorLayout
+    <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -75,17 +75,6 @@
             app:layout_dodgeInsetEdges="bottom"
             android:visibility="gone" />
 
-        <!--
-          ~ Mimic the real BottomNavigationView in the activity. It has the same height and will be
-          ~ translated whenever the real one moves. We need it for layout_insetEdge.
-          -->
-        <View
-            android:id="@+id/dummy_bottom_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/bottom_navigation_height"
-            android:layout_gravity="bottom"
-            app:layout_insetEdge="bottom" />
-
         <com.google.android.material.widget.FloatingActionButton
             android:id="@+id/filter_fab"
             android:layout_width="wrap_content"
@@ -116,6 +105,6 @@
             app:layout_behavior="com.google.samples.apps.iosched.widget.BottomSheetBehavior"
             tools:layout="@layout/fragment_schedule_filter" />
 
-    </com.google.samples.apps.iosched.widget.NestedScrollingCoordinatorLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
 </layout>
