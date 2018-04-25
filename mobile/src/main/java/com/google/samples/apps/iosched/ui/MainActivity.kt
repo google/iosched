@@ -19,7 +19,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.View
 import com.firebase.ui.auth.IdpResponse
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.consume
@@ -29,8 +28,6 @@ import com.google.samples.apps.iosched.ui.map.MapFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.ScheduleFragment
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
-import com.google.samples.apps.iosched.widget.HideBottomViewOnScrollBehavior
-import com.google.samples.apps.iosched.widget.HideBottomViewOnScrollBehavior.BottomViewCallback
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
@@ -45,7 +42,6 @@ class MainActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var snackbarMessageManager: SnackbarMessageManager
 
-    private lateinit var behavior: HideBottomViewOnScrollBehavior<*>
     private lateinit var currentFragment: MainNavigationFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,16 +58,6 @@ class MainActivity : DaggerAppCompatActivity() {
         }
         // Add a listener to prevent reselects from being treated as selects.
         navigation.setOnNavigationItemReselectedListener {}
-
-        behavior = HideBottomViewOnScrollBehavior.from(navigation)
-        // Report translation whenever the bottom nav moves
-        behavior.addBottomViewCallback(object : BottomViewCallback {
-            override fun onSlide(view: View, slideOffset: Float) {
-                currentFragment.onBottomNavSlide(view.translationY)
-            }
-
-            override fun onStateChanged(view: View, newState: Int) {}
-        })
 
         if (savedInstanceState == null) {
             // Show Schedule on first creation
@@ -104,13 +90,14 @@ class MainActivity : DaggerAppCompatActivity() {
         }
     }
 
-    fun setBottomNavLockMode(lockMode: Int) {
-        behavior.lockMode = lockMode
-    }
-
     override fun onBackPressed() {
         if (!currentFragment.onBackPressed()) {
             super.onBackPressed()
         }
+    }
+
+    override fun onUserInteraction() {
+        super.onUserInteraction()
+        currentFragment.onUserInteraction()
     }
 }

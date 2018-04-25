@@ -28,7 +28,6 @@ import android.support.v4.view.ViewPager.SimpleOnPageChangeListener
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.view.doOnLayout
 import com.google.android.material.widget.FloatingActionButton
 import com.google.android.material.widget.TabLayout
 import com.google.samples.apps.iosched.R
@@ -37,7 +36,6 @@ import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
-import com.google.samples.apps.iosched.shared.util.lazyFast
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
@@ -70,7 +68,6 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         private const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
         private const val DIALOG_CONFIRM_SIGN_OUT = "dialog_confirm_sign_out"
         private const val DIALOG_SCHEDULE_HINTS = "dialog_schedule_hints"
-        private const val STATE_BOTTOM_NAV_TRANSLATION = "state.BOTTOM_NAV_TRANSLATION"
     }
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -81,12 +78,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
 
     private lateinit var filtersFab: FloatingActionButton
-    private lateinit var dummyBottomView: View
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
-    // Peek height we want to maintain above the bottom navigation
-    private val basePeekHeight: Int by lazyFast {
-        resources.getDimensionPixelSize(R.dimen.bottom_sheet_peek_height)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -100,7 +92,6 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         }
 
         coordinatorLayout = binding.coordinatorLayout
-        dummyBottomView = binding.dummyBottomNavigation
         filtersFab = binding.filterFab
         // We can't lookup bottomSheetBehavior here since it's on a <fragment> tag
 
@@ -135,11 +126,9 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
             updateFiltersUi(it ?: return@Observer)
         })
 
-        // VM outlives the UI so reset this flag when fragment is recreated.
-        scheduleViewModel.userHasInteracted = false
-        binding.coordinatorLayout.onInterceptTouchListener = {
-            scheduleViewModel.userHasInteracted = true
-            false
+        if (savedInstanceState == null) {
+            // VM outlives the UI, so reset this flag when a new Schedule page is shown
+            scheduleViewModel.userHasInteracted = false
         }
         scheduleViewModel.currentEvent.observe(this, Observer { eventLocation ->
             if (eventLocation != null && !scheduleViewModel.userHasInteracted) {
@@ -183,13 +172,6 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
             }
         })
 
-        if (savedInstanceState == null) {
-            // Set the peek height on first layout
-            dummyBottomView.doOnLayout { onBottomNavSlide(dummyBottomView.translationY) }
-            // Make bottom sheet hidden at first
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-        }
-
         scheduleViewModel.labelsForDays.observe(this, Observer<List<Int>> {
             it ?: return@Observer
             viewpager.adapter = ScheduleAdapter(childFragmentManager, it)
@@ -198,17 +180,6 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         if (savedInstanceState == null) {
             scheduleViewModel.setIsAgendaPage(false)
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putFloat(STATE_BOTTOM_NAV_TRANSLATION, dummyBottomView.translationY)
-    }
-
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        val ty = savedInstanceState?.getFloat(STATE_BOTTOM_NAV_TRANSLATION) ?: return
-        onBottomNavSlide(ty)
     }
 
     private fun updateFiltersUi(uiState: TransientUiState) {
@@ -223,14 +194,6 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         }
     }
 
-    override fun onBottomNavSlide(bottonNavTranslationY: Float) {
-        // Move the dummy view to change bottom edge inset (for snackbars, etc.)
-        dummyBottomView.translationY = bottonNavTranslationY
-        // Tie the filters bottom sheet to the bottom navigation bar
-        val peek = Math.max(0, (dummyBottomView.height - bottonNavTranslationY + .5f).toInt())
-        bottomSheetBehavior.peekHeight = basePeekHeight + peek
-    }
-
     override fun onBackPressed(): Boolean {
         if (bottomSheetBehavior.state == STATE_EXPANDED) {
             // collapse or hide the sheet
@@ -242,6 +205,10 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
             return true
         }
         return super.onBackPressed()
+    }
+
+    override fun onUserInteraction() {
+        scheduleViewModel.userHasInteracted = true
     }
 
     private fun openSessionDetail(id: SessionId) {
@@ -274,7 +241,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     }
 
     /**
-     * Adapter that build a page for each conference day.
+     * Adapter that builds a page for each conference day.
      */
     inner class ScheduleAdapter(fm: FragmentManager, private val labelsForDays: List<Int>) :
         FragmentPagerAdapter(fm) {
