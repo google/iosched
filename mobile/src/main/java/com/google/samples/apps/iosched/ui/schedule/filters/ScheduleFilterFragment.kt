@@ -33,7 +33,6 @@ import androidx.view.postDelayed
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleFilterBinding
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
-import com.google.samples.apps.iosched.ui.MainActivity
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilterView.Companion.DESELECTING_DURATION
@@ -43,7 +42,6 @@ import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCal
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_COLLAPSED
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_EXPANDED
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_HIDDEN
-import com.google.samples.apps.iosched.widget.HideBottomViewOnScrollBehavior
 import com.google.samples.apps.iosched.widget.SpaceDecoration
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -115,19 +113,6 @@ class ScheduleFilterFragment : DaggerFragment() {
         }
 
         behavior.addBottomSheetCallback(object : BottomSheetCallback {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                val activity = requireActivity() as MainActivity
-                // Lock the bottom navigation hidden while the filters sheet is expanded.
-                when (newState) {
-                    STATE_EXPANDED -> activity.setBottomNavLockMode(
-                        HideBottomViewOnScrollBehavior.LOCK_MODE_LOCKED_HIDDEN
-                    )
-                    STATE_COLLAPSED, STATE_HIDDEN -> activity.setBottomNavLockMode(
-                        HideBottomViewOnScrollBehavior.LOCK_MODE_UNLOCKED
-                    )
-                }
-            }
-
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 updateFilterHeadersAlpha(slideOffset)
             }
