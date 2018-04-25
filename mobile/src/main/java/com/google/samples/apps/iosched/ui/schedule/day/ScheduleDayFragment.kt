@@ -85,6 +85,7 @@ class ScheduleDayFragment : DaggerFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // VM shared across the [MainActivity], [ScheduleFragment] and the [ScheduleDayFragment]s.
         viewModel = activityViewModelProvider(viewModelFactory)
         binding = FragmentScheduleDayBinding.inflate(inflater, container, false).apply {
             setLifecycleOwner(this@ScheduleDayFragment)
@@ -115,7 +116,7 @@ class ScheduleDayFragment : DaggerFragment() {
             }
         }
 
-        // During conference, scroll to current event
+        // During conference, scroll to current event. Do this only once.
         viewModel.currentEvent.observe(this, Observer { eventLocation ->
             if (eventLocation != null &&
                 !viewModel.userHasInteracted &&
