@@ -28,6 +28,7 @@ import android.support.v4.view.ViewPager.SimpleOnPageChangeListener
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.view.updateLayoutParams
 import com.google.android.material.widget.FloatingActionButton
 import com.google.android.material.widget.TabLayout
 import com.google.samples.apps.iosched.R
@@ -54,6 +55,7 @@ import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCal
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_COLLAPSED
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_EXPANDED
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_HIDDEN
+import com.google.samples.apps.iosched.widget.FadingSnackbar
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -79,6 +81,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
 
     private lateinit var filtersFab: FloatingActionButton
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
+    private lateinit var snackbar: FadingSnackbar
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -93,10 +96,11 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
 
         coordinatorLayout = binding.coordinatorLayout
         filtersFab = binding.filterFab
+        snackbar = binding.snackbar
         // We can't lookup bottomSheetBehavior here since it's on a <fragment> tag
 
         val snackbarPrefViewModel: SnackbarPreferenceViewModel = viewModelProvider(viewModelFactory)
-        setUpSnackbar(scheduleViewModel.snackBarMessage, binding.snackbar, snackbarMessageManager,
+        setUpSnackbar(scheduleViewModel.snackBarMessage, snackbar, snackbarMessageManager,
             actionClickListener = {
                 snackbarPrefViewModel.onStopClicked()
             })
@@ -187,6 +191,16 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         val hideable = uiState.isAgendaPage || !uiState.hasAnyFilters
 
         fabVisibility(filtersFab, showFab)
+        // Set snackbar position depending whether fab/filters show.
+        snackbar.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+            bottomMargin = resources.getDimensionPixelSize(
+                if (showFab) {
+                    R.dimen.snackbar_margin_bottom_fab
+                } else {
+                    R.dimen.bottom_sheet_peek_height
+                }
+            )
+        }
         bottomSheetBehavior.isHideable = hideable
         bottomSheetBehavior.skipCollapsed = !uiState.hasAnyFilters
         if (hideable && bottomSheetBehavior.state == STATE_COLLAPSED) {

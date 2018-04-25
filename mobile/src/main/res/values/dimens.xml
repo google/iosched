@@ -62,4 +62,14 @@
     <dimen name="info_event_buttons_margin">40dp</dimen>
 
     <dimen name="countdown_height">300dp</dimen>
+
+    <dimen name="snackbar_width">@dimen/match_parent</dimen>
+    <dimen name="snackbar_margin_end_fab">0dp</dimen>
+    <dimen name="snackbar_margin_bottom_fab">72dp</dimen>
+    <dimen name="snackbar_margin_bottom_bab">84dp</dimen>
+
+    <!-- per android.view.ViewGroup.LayoutParams -->
+    <item name="match_parent" format="integer" type="dimen">-1</item>
+    <item name="wrap_content" format="integer" type="dimen">-2</item>
+
 </resources>

@@ -65,14 +65,14 @@
             app:goneUnless="@{viewModel.isLoading}" />
 
         <!-- A custom snackbar implementation for more control over positioning i.e. above the
-             FAB, to control its entry/exit animation and to respond to bottom nav presence. -->
+             FAB, to control its entry/exit animation. -->
         <com.google.samples.apps.iosched.widget.FadingSnackbar
             android:id="@+id/snackbar"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/snackbar_width"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="72dp"
-            app:layout_dodgeInsetEdges="bottom"
+            android:layout_gravity="bottom|start"
+            android:layout_marginBottom="@dimen/snackbar_margin_bottom_fab"
+            android:layout_marginEnd="@dimen/snackbar_margin_end_fab"
             android:visibility="gone" />
 
         <com.google.android.material.widget.FloatingActionButton
