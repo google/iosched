@@ -107,6 +107,12 @@ class CountdownView @JvmOverloads constructor(
             private val viewProvider: () -> LottieAnimationView
     ) : ObservableProperty<Int>(-1) {
         override fun afterChange(property: KProperty<*>, oldValue: Int, newValue: Int) {
+            // Sanity check, `newValue` should always be in range [0–9]
+            if (newValue < 0 || newValue > 9) {
+                Timber.e("Trying to animate to digit: $newValue")
+                return
+            }
+
             if (oldValue != newValue) {
                 val view = viewProvider()
                 if (oldValue != -1) {
