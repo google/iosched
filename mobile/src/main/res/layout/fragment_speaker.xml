@@ -50,9 +50,9 @@
 
         <com.google.samples.apps.iosched.widget.FadingSnackbar
             android:id="@+id/snackbar"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/snackbar_width"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:layout_gravity="bottom|start"
             android:visibility="gone" />
 
     </android.support.design.widget.CoordinatorLayout>
