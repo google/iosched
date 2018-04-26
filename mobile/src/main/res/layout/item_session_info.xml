@@ -60,6 +60,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:headerImage="@{viewModel.session.photoUrl}" />
 
+        <!-- Static header image, shown if there is a photo or video -->
         <ImageView
             android:id="@+id/detail_event_type_logo"
             android:layout_width="wrap_content"
@@ -68,6 +69,7 @@
             android:layout_marginTop="@dimen/event_logo_top_margin"
             android:importantForAccessibility="no"
             app:eventType="@{viewModel.session.type}"
+            app:goneUnless="@{viewModel.hasPhotoOrVideo}"
             app:layout_constraintEnd_toEndOf="@+id/detail_image"
             app:layout_constraintTop_toTopOf="@+id/detail_image" />
 
@@ -94,7 +96,7 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.65" />
 
-        <!-- Header animation, shown only if there isn't a photo -->
+        <!-- Header animation, shown only if there isn't a photo or video -->
         <com.airbnb.lottie.LottieAnimationView
             android:layout_width="0dp"
             android:layout_height="0dp"
