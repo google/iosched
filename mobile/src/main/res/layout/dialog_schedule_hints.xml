@@ -77,7 +77,8 @@
         app:layout_constraintEnd_toEndOf="@+id/schedule_hint_guideline_end_text"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@+id/schedule_hint_guideline_start_text"
-        app:layout_constraintTop_toBottomOf="@+id/schedule_hint_title" />
+        app:layout_constraintTop_toBottomOf="@+id/schedule_hint_title"
+        app:layout_constrainedWidth="true" />
 
     <ImageView
         android:id="@+id/schedule_hint_imageview_reserve_seat"
@@ -101,7 +102,8 @@
         app:layout_constraintEnd_toEndOf="@+id/schedule_hint_guideline_end_text"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@+id/schedule_hint_guideline_start_text"
-        app:layout_constraintTop_toBottomOf="@+id/schedule_hint_textview_star_event" />
+        app:layout_constraintTop_toBottomOf="@+id/schedule_hint_textview_star_event"
+        app:layout_constrainedWidth="true" />
 
     <Button
         android:id="@+id/schedule_hint_button_dismiss"
