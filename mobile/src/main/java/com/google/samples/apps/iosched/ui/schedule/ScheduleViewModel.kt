@@ -206,7 +206,7 @@ class ScheduleViewModel @Inject constructor(
             Timber.d("Detected new data in conference data repository")
             refreshUserSessions()
         }
-        loadSessionsResult.addSource(loadSelectedFiltersResult) {
+        loadSessionsResult.addSource(loadEventFiltersResult) {
             Timber.d("Loaded filters from persistent storage")
             refreshUserSessions()
         }
