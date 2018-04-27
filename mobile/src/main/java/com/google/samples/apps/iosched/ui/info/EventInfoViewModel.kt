@@ -25,15 +25,26 @@ import com.google.samples.apps.iosched.shared.domain.logistics.LoadWifiInfoUseCa
 import com.google.samples.apps.iosched.shared.model.ConferenceWifiInfo
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
+import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.wifi.WifiInstaller
+import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 
 class EventInfoViewModel @Inject constructor(
     loadWifiInfoUseCase: LoadWifiInfoUseCase,
-    private val wifiInstaller: WifiInstaller
+    private val wifiInstaller: WifiInstaller,
+    signInViewModelDelegate: SignInViewModelDelegate
 ) : ViewModel() {
+
+    companion object {
+        private const val SCAVENGER_HUNT_URL =
+            "https://androidthings.withgoogle.com/iosearch"
+        private const val ASSISTANT_APP_URL =
+            "https://assistant.google.com/services/a/uid/000000449633043c"
+    }
 
     private val _wifiConfig = MutableLiveData<Result<ConferenceWifiInfo>>()
     val wifiSsid: LiveData<String?>
@@ -43,6 +54,13 @@ class EventInfoViewModel @Inject constructor(
     val snackBarMessage: LiveData<Event<SnackbarMessage>>
         get() = _snackbarMessage
 
+    val showScavengerHunt: LiveData<Boolean>
+
+    private val _openUrlEvent = MutableLiveData<Event<String>>()
+    val openUrlEvent: LiveData<Event<String>>
+        get() = _openUrlEvent
+
+
     init {
         loadWifiInfoUseCase(Unit, _wifiConfig)
         wifiSsid = _wifiConfig.map {
@@ -50,6 +68,9 @@ class EventInfoViewModel @Inject constructor(
         }
         wifiPassword = _wifiConfig.map {
             (it as? Result.Success)?.data?.password
+        }
+        showScavengerHunt = signInViewModelDelegate.observeRegisteredUser().map {
+            checkShowScavengerHunt(it)
         }
     }
 
@@ -72,5 +93,23 @@ class EventInfoViewModel @Inject constructor(
                 )
 
         _snackbarMessage.postValue(Event(snackbarMessage))
+    }
+
+    private fun checkShowScavengerHunt(isRegistered: Boolean): Boolean {
+        if (isRegistered) {
+            // Show scavenger hunt to attendees during the conference
+            val now = ZonedDateTime.now()
+            return now.isAfter(ConferenceDay.DAY_1.start) && now.isBefore(ConferenceDay.DAY_3.end)
+        } else {
+            return false
+        }
+    }
+
+    fun onClickScavengerHunt() {
+        _openUrlEvent.value = Event(SCAVENGER_HUNT_URL)
+    }
+
+    fun onClickAssistantApp() {
+        _openUrlEvent.value = Event(ASSISTANT_APP_URL)
     }
 }
