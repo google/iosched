@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="80dp" />
+        app:layout_constraintGuide_begin="56dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/schedule_hint_guideline_end_text"
@@ -97,7 +97,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_normal"
-        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_normal"
         android:text="@string/schedule_hint_reserve_session_seat"
         android:textAppearance="@style/TextAppearance.IOSched.DialogContent"
         app:layout_constraintEnd_toEndOf="@+id/schedule_hint_guideline_end_text"
