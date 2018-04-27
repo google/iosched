@@ -52,7 +52,8 @@
         app:layout_constraintBottom_toTopOf="@id/schedule_hint_imageview_star_event"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constrainedWidth="true" />
 
     <ImageView
         android:id="@+id/schedule_hint_imageview_star_event"
