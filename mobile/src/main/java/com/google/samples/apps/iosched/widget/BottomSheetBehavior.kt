@@ -857,6 +857,7 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
                 writeBoolean(isFitToContents)
                 writeBoolean(isHideable)
                 writeBoolean(skipCollapsed)
+                writeBoolean(isDraggable)
             }
         }
 
