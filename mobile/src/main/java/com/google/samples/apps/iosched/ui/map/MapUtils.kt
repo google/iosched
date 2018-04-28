@@ -58,7 +58,7 @@ private fun getLabelIconGenerator(context: Context): IconGenerator {
  * Returns the drawable resource id for an icon marker, or 0 if no resource with this name exists.
  */
 @DrawableRes
-private fun getDrawableResourceForIcon(context: Context, iconType: String?): Int {
+fun getDrawableResourceForIcon(context: Context, iconType: String?): Int {
     if (iconType == null) {
         return 0
     }
