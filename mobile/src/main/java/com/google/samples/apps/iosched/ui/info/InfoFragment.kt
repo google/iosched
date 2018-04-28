@@ -49,7 +49,7 @@ class InfoFragment : DaggerFragment(), MainNavigationFragment {
     }
 
     /**
-     * Adapter that build a page for each info screen.
+     * Adapter that builds a page for each info screen.
      */
     inner class InfoAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
