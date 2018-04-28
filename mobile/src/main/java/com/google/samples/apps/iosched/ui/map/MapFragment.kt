@@ -16,8 +16,11 @@
 
 package com.google.samples.apps.iosched.ui.map
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.support.v4.widget.NestedScrollView
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +30,8 @@ import com.google.android.gms.maps.model.Marker
 import com.google.samples.apps.iosched.databinding.FragmentMapBinding
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
+import com.google.samples.apps.iosched.widget.BottomSheetBehavior
+import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -36,6 +41,9 @@ class MapFragment : DaggerFragment(), MainNavigationFragment, OnMarkerClickListe
     private lateinit var viewModel: MapViewModel
     private var mapViewBundle: Bundle? = null
     private lateinit var mapView: MapView
+
+    private lateinit var binding: FragmentMapBinding
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
 
     companion object {
         val TAG: String = MapFragment::class.java.simpleName
@@ -62,7 +70,7 @@ class MapFragment : DaggerFragment(), MainNavigationFragment, OnMarkerClickListe
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?): View? {
         viewModel = viewModelProvider(viewModelFactory)
-        val binding = FragmentMapBinding.inflate(inflater, container, false).apply {
+        binding = FragmentMapBinding.inflate(inflater, container, false).apply {
             setLifecycleOwner(this@MapFragment)
             viewModel = this@MapFragment.viewModel
         }
@@ -79,7 +87,68 @@ class MapFragment : DaggerFragment(), MainNavigationFragment, OnMarkerClickListe
             }
         }
 
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetCallback {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                // Orient the expand/collapse icon accordingly
+                val rotation = when (newState) {
+                    BottomSheetBehavior.STATE_EXPANDED -> 0f
+                    BottomSheetBehavior.STATE_COLLAPSED -> 180f
+                    BottomSheetBehavior.STATE_HIDDEN -> 180f
+                    else -> return
+                }
+                binding.expandIcon.animate().rotationX(rotation).start()
+            }
+        })
+
+        // Make the header clickable.
+        binding.clickable.setOnClickListener {
+            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            } else {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            }
+        }
+        // Mimic elevation change by activating header shadow.
+        binding.descriptionScrollview.setOnScrollChangeListener {
+                v: NestedScrollView, _: Int, _: Int, _: Int, _: Int ->
+            binding.sheetHeaderShadow.isActivated = v.canScrollVertically(-1)
+        }
+
+        viewModel.selectedMarkerInfo.observe(this, Observer {
+            updateInfoSheet(it ?: return@Observer)
+        })
+
         return binding.root
+    }
+
+    private fun updateInfoSheet(markerInfo: MarkerInfo) {
+        val iconRes = getDrawableResourceForIcon(binding.markerIcon.context, markerInfo.iconName)
+        binding.markerIcon.apply {
+            setImageResource(iconRes)
+            visibility = if (iconRes == 0) View.GONE else View.VISIBLE
+        }
+
+        binding.markerTitle.text = markerInfo.title
+
+        val desc = Html.fromHtml(markerInfo.description ?: "")
+        val descVisibility = if (desc.isEmpty()) View.GONE else View.VISIBLE
+        binding.markerDescription.apply {
+            text = desc
+            visibility = descVisibility
+        }
+
+        // Hide/disable expansion affordances when there is no description.
+        binding.expandIcon.visibility = descVisibility
+        binding.clickable.isClickable = !desc.isEmpty()
+    }
+
+    override fun onBackPressed(): Boolean {
+        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            return true
+        }
+        return super.onBackPressed()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -126,9 +195,7 @@ class MapFragment : DaggerFragment(), MainNavigationFragment, OnMarkerClickListe
 
             it?.apply {
                 setOnMarkerClickListener(this@MapFragment)
-                setOnMapClickListener {
-                    // TODO fwd to VM
-                }
+                setOnMapClickListener { viewModel.onMapClick() }
                 // TODO: if user has enabled location permission, enable that on map.
             }
         }

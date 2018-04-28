@@ -154,6 +154,12 @@
         <item name="android:shadowRadius">3</item>
     </style>
 
+    <style name="TextAppearance.IOSched.Map.InfoTitle" parent="@style/TextAppearance.AppCompat.Title">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textColor">@color/collapsing_section</item>
+    </style>
+
     <style name="TextAppearance.IOSched.FadingSnackbarAction" parent="@style/TextAppearance.AppCompat.Button">
         <item name="android:textColor">@color/teal</item>
         <item name="android:textStyle">bold</item>

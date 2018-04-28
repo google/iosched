@@ -34,6 +34,7 @@ import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import javax.inject.Inject
 
 class MapViewModel @Inject constructor(
@@ -73,6 +74,13 @@ class MapViewModel @Inject constructor(
 
     private val focusZoomLevel = BuildConfig.MAP_CAMERA_FOCUS_ZOOM
 
+    private val _bottomSheetStateEvent = MutableLiveData<Event<Int>>()
+    val bottomSheetStateEvent: LiveData<Event<Int>>
+        get() = _bottomSheetStateEvent
+    private val _selectedMarkerInfo = MutableLiveData<MarkerInfo>()
+    val selectedMarkerInfo: LiveData<MarkerInfo>
+        get() = _selectedMarkerInfo
+
     init {
         loadMapTileProviderUseCase(R.drawable.map_tile, tileProviderResult)
         tileProvider = tileProviderResult.map { result ->
@@ -86,6 +94,8 @@ class MapViewModel @Inject constructor(
                 _geoJsonLayer.value = result.data.geoJsonLayer
             }
         })
+
+        _bottomSheetStateEvent.value = Event(BottomSheetBehavior.STATE_HIDDEN)
     }
 
     fun onMapReady(googleMap: GoogleMap) {
@@ -126,5 +136,26 @@ class MapViewModel @Inject constructor(
         // center map on the requested feature.
         val update = CameraUpdateFactory.newLatLngZoom(geometry.coordinates, focusZoomLevel)
         _mapCenterEvent.value = Event(update)
+
+        // publish feature data
+        _selectedMarkerInfo.value = MarkerInfo(
+            feature.getProperty("title"),
+            feature.getProperty("description"),
+            feature.getProperty("icon")
+        )
+
+        // bring bottom sheet into view
+        _bottomSheetStateEvent.value = Event(BottomSheetBehavior.STATE_COLLAPSED)
+    }
+
+    fun onMapClick() {
+        // Hide the bottom sheet
+        _bottomSheetStateEvent.value = Event(BottomSheetBehavior.STATE_HIDDEN)
     }
 }
+
+data class MarkerInfo(
+    val title: String,
+    val description: String?,
+    val iconName: String?
+)

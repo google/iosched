@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.ui.map
 import android.databinding.BindingAdapter
 import android.support.annotation.DimenRes
 import android.support.annotation.RawRes
+import android.view.View
 import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLngBounds
@@ -28,6 +29,7 @@ import com.google.android.gms.maps.model.TileProvider
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.util.getFloat
+import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 
 @BindingAdapter("mapStyle")
 fun mapStyle(mapView: MapView, @RawRes resId: Int) {
@@ -109,4 +111,10 @@ fun mapTileDrawable(mapView: MapView, tileProvider: TileProvider?) {
             )
         }
     }
+}
+
+@BindingAdapter("bottomSheetState")
+fun bottomSheetState(view: View, event: Event<Int>?) {
+    val state = event?.getContentIfNotHandled() ?: return
+    BottomSheetBehavior.from(view).state = state
 }
