@@ -70,7 +70,6 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         private const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
         private const val DIALOG_CONFIRM_SIGN_OUT = "dialog_confirm_sign_out"
         private const val DIALOG_SCHEDULE_HINTS = "dialog_schedule_hints"
-        private const val STATE_VIEWPAGER_POSITION = "state.VIEWPAGER_POSITION"
     }
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -84,6 +83,9 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     private lateinit var viewPager: ViewPager
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
     private lateinit var snackbar: FadingSnackbar
+
+    // Stores the labels of the viewpager to avoid unnecessary recreation
+    private var labelsForDays: List<Int>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -180,30 +182,14 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
 
         scheduleViewModel.labelsForDays.observe(this, Observer<List<Int>> {
             it ?: return@Observer
-            viewPager.adapter = ScheduleAdapter(childFragmentManager, it)
+            if (it != labelsForDays) { // Avoid unnecessary recreation.
+                viewPager.adapter = ScheduleAdapter(childFragmentManager, it)
+                labelsForDays = it
+            }
         })
 
         if (savedInstanceState == null) {
             scheduleViewModel.setIsAgendaPage(false)
-        }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putInt(STATE_VIEWPAGER_POSITION, viewPager.currentItem)
-    }
-
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-
-        savedInstanceState?.let {
-
-            val viewPagerPos = it.getInt(STATE_VIEWPAGER_POSITION)
-            viewPager.run {
-                post {
-                    currentItem = viewPagerPos
-                }
-            }
         }
     }
 
