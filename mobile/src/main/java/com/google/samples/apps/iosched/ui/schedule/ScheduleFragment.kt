@@ -229,7 +229,11 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     }
 
     override fun onUserInteraction() {
-        scheduleViewModel.userHasInteracted = true
+        // Guard against a crash.
+        // Rarely observed the method was called before the ViewModel was initialized.
+        if (::scheduleViewModel.isInitialized) {
+            scheduleViewModel.userHasInteracted = true
+        }
     }
 
     private fun openSessionDetail(id: SessionId) {
