@@ -27,8 +27,11 @@ import dagger.android.support.DaggerAppCompatActivity
 /** Shell activity hosting a [MapFragment] */
 class MapActivity : DaggerAppCompatActivity() {
 
+    private lateinit var fragment: MapFragment
+
     companion object {
         const val EXTRA_FEATURE_ID = "extra.FEATURE_ID"
+        const val FRAGMENT_ID = R.id.fragment_container
 
         fun starterIntent(context: Context, featureId: String): Intent {
             return Intent(context, MapActivity::class.java).apply {
@@ -43,14 +46,22 @@ class MapActivity : DaggerAppCompatActivity() {
 
         if (savedInstanceState == null) {
             val featureId = intent.getStringExtra(EXTRA_FEATURE_ID)
-            val fragment = if (!TextUtils.isEmpty(featureId)) {
+            fragment = if (!TextUtils.isEmpty(featureId)) {
                 MapFragment.newInstance(featureId)
             } else {
                 MapFragment()
             }
             supportFragmentManager.inTransaction {
-                add(R.id.fragment_container, fragment)
+                add(FRAGMENT_ID, fragment)
             }
+        } else {
+            fragment = supportFragmentManager.findFragmentById(FRAGMENT_ID) as MapFragment
+        }
+    }
+
+    override fun onBackPressed() {
+        if (!fragment.onBackPressed()) {
+            super.onBackPressed()
         }
     }
 }

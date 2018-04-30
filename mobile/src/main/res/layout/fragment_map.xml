@@ -16,7 +16,8 @@
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -28,19 +29,17 @@
 
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/map_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <FrameLayout
             android:id="@+id/appbar"
             style="@style/Widget.AppBar"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white_90"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:background="@color/white_90">
 
             <TextView
                 android:id="@+id/title"
@@ -74,6 +73,108 @@
             app:uiCompass="false"
             app:uiZoomControls="false" />
 
-    </android.support.constraint.ConstraintLayout>
+        <!-- USe marginBottom to prevent the sheet from covering the app bar. -->
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/bottom_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="60dp"
+            android:background="@drawable/filters_sheet_background"
+            android:elevation="@dimen/bottom_sheet_elevation"
+            app:layout_behavior="com.google.samples.apps.iosched.widget.BottomSheetBehavior"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="@dimen/bottom_sheet_peek_height"
+            app:bottomSheetState="@{viewModel.bottomSheetStateEvent}">
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guide_peek_height"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="@dimen/bottom_sheet_peek_height" />
+
+            <View
+                android:id="@+id/clickable"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="?selectableItemBackground"
+                app:layout_constraintBottom_toBottomOf="@id/guide_peek_height"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/marker_icon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:importantForAccessibility="no"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/guide_peek_height"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/map_marker_lounge" />
+
+            <ImageView
+                android:id="@+id/expand_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_expand_more"
+                android:tint="@color/collapsing_section"
+                android:tintMode="src_in"
+                app:layout_constraintBottom_toBottomOf="@id/guide_peek_height"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/marker_title"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/bottom_sheet_peek_height"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:lines="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:textAppearance="@style/TextAppearance.IOSched.Map.InfoTitle"
+                app:layout_constraintEnd_toStartOf="@id/expand_icon"
+                app:layout_constraintStart_toEndOf="@id/marker_icon"
+                tools:text="Community Lounge" />
+
+            <!--
+              ~ Mimics raising the elevation of a container around the header elements (like when an
+              ~ AppBarLayout reaches the collapsed state). We fake this because (a) there is no
+              ~ container view around these views, and (b) the extra elevation shows along the top
+              ~ of the sheet, particularly around the rounded corners, and doesn't look good.
+              -->
+            <View
+                android:id="@+id/sheet_header_shadow"
+                android:layout_width="0dp"
+                android:layout_height="4dp"
+                android:alpha="0"
+                android:background="@drawable/filters_sheet_header_shadow"
+                android:stateListAnimator="@animator/active_alpha"
+                app:layout_constraintTop_toBottomOf="@id/guide_peek_height" />
+
+            <!--
+              ~ Bug: When a sheet's height is the same as it's peek height, an upward drag breaks
+              ~ the UI. To avoid this, use a 1px minHeight.
+              -->
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/description_scrollview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="1px"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/guide_peek_height">
+
+                <TextView
+                    android:id="@+id/marker_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin_normal" />
+            </android.support.v4.widget.NestedScrollView>
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
 
 </layout>
