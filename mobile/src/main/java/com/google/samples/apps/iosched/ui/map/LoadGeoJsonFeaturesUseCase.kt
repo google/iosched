@@ -50,7 +50,10 @@ class LoadGeoJsonFeaturesUseCase @Inject constructor(
         layer.features.forEach {
             val id = it.getProperty("id")
             if (!TextUtils.isEmpty(id)) {
-                featureMap[id] = it
+                // Marker can map to multiple room IDs
+                for (part in id.split(",")) {
+                    featureMap[part] = it
+                }
             }
         }
         return featureMap

@@ -378,7 +378,7 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "office-hours",
+        "id": "4902fc2b-dbf1-49dc-828f-2566dde55e03,b5a545c7-20cb-4d88-8752-a08374c64d00,d01912b6-5851-453d-b7ef-178a83d47d16,7b8119cb-f45f-4e6e-88bc-7ab636a56ede,c964e4db-d3d1-40fe-a62d-50a1ca5a80f5,652c0038-28f3-4a82-9ba1-246584d14834,70635fce-7fee-42d8-a288-850a4130fcfd,e97ebb11-69a1-4fad-b8ff-dcffad23c55e,08978718-3431-4b51-8998-262a0093fcf8",
         "title": "Office Hours &\nApp Reviews",
         "icon": "",
         "description": "Come talk to Googlers about your projects and get answers to your most pressing technical questions. Product teams will be on hand throughout the event during defined time slots; check the event schedule to confirm when the product you’re looking for some help with will be staffed.",
