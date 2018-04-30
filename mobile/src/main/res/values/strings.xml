@@ -217,6 +217,7 @@
     <string name="event_afterhours_description" translation_description="General information on after hours.">After Sessions end for the day, stick around Shoreline for two evenings of food, drinks, and fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the Amphitheatre.</string>
     <string name="event_meals_description" translation_description="General information on meals.">Attendees are offered complimentary breakfast, lunch, and snacks on all three days of the conference. Dinner will also be available on Day 1 and 2 during the After Hours events.</string>
     <string name="wifi_header" translation_description="Header label for wifi information.">Wifi</string>
+    <string name="related_apps_header" translation_description="Header label for related apps.">Related Apps</string>
     <string name="event_types_header" translation_description="Header label for information on the different event types.">Event Types</string>
     <string name="general_header" translation_description="Header label for general info.">General</string>
     <string name="agreements_header" translation_description="Header label for links to TOS, privacy policy, OSS licenses.">Agreements</string>
