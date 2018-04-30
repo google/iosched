@@ -14,12 +14,15 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
         <import type="com.google.samples.apps.iosched.R" />
     </data>
+
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/settings_scroll"
         android:layout_width="match_parent"
@@ -86,11 +89,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginBottom="@dimen/spacing_normal"
                 android:contentDescription="@string/built_with_material_content_description"
                 android:src="@drawable/built_with_material"
+                android:scaleType="fitStart"
                 app:layout_constraintTop_toBottomOf="@+id/version_build_number" />
 
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v4.widget.NestedScrollView>
+
 </layout>
