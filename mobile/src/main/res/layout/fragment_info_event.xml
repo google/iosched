@@ -120,15 +120,26 @@
                     app:layout_constraintEnd_toStartOf="@id/guideline_end"
                     tools:text="whatislove" />
 
+                <TextView
+                    android:id="@+id/related_apps_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_normal"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:text="@string/related_apps_header"
+                    android:textAppearance="@style/TextAppearance.IOSched.Subhead"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/wifi_password_value" />
+
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/scavenger_hunt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_large"
+                    android:layout_marginTop="@dimen/spacing_normal"
                     android:background="?selectableItemBackground"
                     android:onClick="@{() -> viewModel.onClickScavengerHunt()}"
                     android:paddingVertical="@dimen/spacing_normal"
-                    app:layout_constraintTop_toBottomOf="@+id/wifi_password_value"
+                    app:layout_constraintTop_toBottomOf="@+id/related_apps_header"
                     app:goneUnless="@{viewModel.showScavengerHunt}">
 
                     <ImageView
@@ -170,7 +181,7 @@
                     android:id="@+id/assistant_app"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_normal"
+                    android:layout_marginTop="@dimen/spacing_normal"
                     android:background="?selectableItemBackground"
                     android:onClick="@{() -> viewModel.onClickAssistantApp()}"
                     android:paddingVertical="@dimen/spacing_normal"
