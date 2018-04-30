@@ -305,6 +305,10 @@
         <item name="android:lineSpacingExtra">8sp</item>
     </style>
 
+    <style name="TextAppearance.IOSched.InfoEventDescription.AppCallout">
+        <item name="android:textColor">?android:textColorLink</item>
+    </style>
+
     <style name="TextAppearance.IOSched.SettingsSwitch" parent="@style/TextAppearance.AppCompat.Body1">
         <item name="android:background">?selectableItemBackground</item>
         <item name="android:padding">@dimen/margin_normal</item>

@@ -16,8 +16,11 @@
 
 package com.google.samples.apps.iosched.ui.info
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
+import android.content.Intent
 import android.databinding.BindingAdapter
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -74,6 +77,14 @@ class EventFragment : DaggerFragment() {
             onViewCodelabsClicked = { _, _ -> Unit }
         }
         return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        eventInfoViewModel.openUrlEvent.observe(this, Observer {
+            val url = it?.getContentIfNotHandled() ?: return@Observer
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        })
     }
 }
 
