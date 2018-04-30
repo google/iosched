@@ -46,6 +46,10 @@
             android:name=".ui.speaker.SpeakerActivity"
             android:theme="@style/AppTheme.Speaker" />
 
+        <activity
+            android:name=".ui.map.MapActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <!-- This activity alias lets us change the main entry point without breaking launcher
              shortcuts. DO NOT change its android:name attribute. -->
         <activity-alias
