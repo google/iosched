@@ -21,14 +21,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.model.Marker
 import com.google.samples.apps.iosched.databinding.FragmentMapBinding
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class MapFragment : DaggerFragment(), MainNavigationFragment {
+class MapFragment : DaggerFragment(), MainNavigationFragment, OnMarkerClickListener {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: MapViewModel
@@ -37,9 +39,17 @@ class MapFragment : DaggerFragment(), MainNavigationFragment {
 
     companion object {
         val TAG: String = MapFragment::class.java.simpleName
-        fun newInstance() = MapFragment()
+        private const val MAPVIEW_BUNDLE_KEY = "MapViewBundleKey"
 
-        const val MAPVIEW_BUNDLE_KEY = "MapViewBundleKey"
+        private const val ARG_FEATURE_ID = "arg.FEATURE_ID"
+
+        fun newInstance(featureId: String): MapFragment {
+            return MapFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_FEATURE_ID, featureId)
+                }
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +72,12 @@ class MapFragment : DaggerFragment(), MainNavigationFragment {
         }
 
         initializeMap()
+
+        if (savedInstanceState == null) {
+            arguments?.getString(ARG_FEATURE_ID)?.let {
+                viewModel.requestHighlightFeature(it)
+            }
+        }
 
         return binding.root
     }
@@ -96,6 +112,7 @@ class MapFragment : DaggerFragment(), MainNavigationFragment {
     override fun onDestroy() {
         super.onDestroy()
         mapView.onDestroy()
+        viewModel.onMapDestroyed()
     }
 
     override fun onLowMemory() {
@@ -104,23 +121,24 @@ class MapFragment : DaggerFragment(), MainNavigationFragment {
     }
 
     private fun initializeMap() {
-        // TODO: Move this completely to BindingAdapter.
-
         mapView.getMapAsync {
-            // TODO: Initialize marker icon bitmaps (active and normal).
+            viewModel.onMapReady(it)
 
             it?.apply {
-                // TODO set maps style.
-
-                setOnMarkerClickListener {
-                    // TODO fwd to VM
-                    false
-                }
+                setOnMarkerClickListener(this@MapFragment)
                 setOnMapClickListener {
                     // TODO fwd to VM
                 }
                 // TODO: if user has enabled location permission, enable that on map.
             }
         }
+    }
+
+    override fun onMarkerClick(marker: Marker): Boolean {
+        // This is a hack. We set the geojson feature ID as the snippet since there is no other way
+        // to add metadata and we need to look up the feature again by ID.
+        val id = marker.snippet ?: return false
+        viewModel.requestHighlightFeature(id)
+        return true
     }
 }

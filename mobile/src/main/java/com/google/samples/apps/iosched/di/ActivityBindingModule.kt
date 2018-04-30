@@ -20,6 +20,7 @@ import com.google.samples.apps.iosched.ui.LaunchModule
 import com.google.samples.apps.iosched.ui.LauncherActivity
 import com.google.samples.apps.iosched.ui.MainActivity
 import com.google.samples.apps.iosched.ui.info.InfoModule
+import com.google.samples.apps.iosched.ui.map.MapActivity
 import com.google.samples.apps.iosched.ui.map.MapModule
 import com.google.samples.apps.iosched.ui.onboarding.OnboardingActivity
 import com.google.samples.apps.iosched.ui.onboarding.OnboardingModule
@@ -89,4 +90,13 @@ abstract class ActivityBindingModule {
         ]
     )
     internal abstract fun speakerActivity(): SpeakerActivity
+
+    @ActivityScoped
+    @ContributesAndroidInjector(
+        modules = [
+            MapModule::class,
+            PreferenceModule::class
+        ]
+    )
+    internal abstract fun mapActivity(): MapActivity
 }
