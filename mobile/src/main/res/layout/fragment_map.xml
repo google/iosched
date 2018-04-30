@@ -58,7 +58,6 @@
             android:id="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/bottom_navigation_height"
             app:cameraBearing="@dimen/map_camera_bearing"
             app:cameraTargetLat="@dimen/map_camera_target_lat"
             app:cameraTargetLng="@dimen/map_camera_target_lng"
