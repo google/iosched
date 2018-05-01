@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.ui.speaker
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.support.v4.app.NavUtils
 import android.support.v7.widget.RecyclerView.RecycledViewPool
 import android.view.LayoutInflater
 import android.view.View
@@ -134,7 +135,7 @@ class SpeakerFragment : DaggerFragment() {
         })
 
         binding.up.setOnClickListener {
-            requireActivity().finishAfterTransition()
+            NavUtils.navigateUpFromSameTask(requireActivity())
         }
 
         return binding.root

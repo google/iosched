@@ -22,6 +22,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
+import android.support.v4.app.NavUtils
 import android.support.v4.app.ShareCompat
 import android.support.v7.widget.RecyclerView.RecycledViewPool
 import android.view.LayoutInflater
@@ -112,7 +113,7 @@ class SessionDetailFragment : DaggerFragment() {
                 true
             }
             up.setOnClickListener {
-                requireActivity().finishAfterTransition()
+                NavUtils.navigateUpFromSameTask(requireActivity())
             }
         }
 
