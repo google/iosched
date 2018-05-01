@@ -104,9 +104,7 @@ class SessionDetailAdapter(
                 executePendingBindings()
             }
             is RelatedViewHolder -> holder.binding.apply {
-                val userSession = differ.currentList[position] as UserSession
-                session = userSession.session
-                userEvent = userSession.userEvent
+                userSession = differ.currentList[position] as UserSession
                 eventListener = sessionDetailViewModel
                 setLifecycleOwner(lifecycleOwner)
                 executePendingBindings()

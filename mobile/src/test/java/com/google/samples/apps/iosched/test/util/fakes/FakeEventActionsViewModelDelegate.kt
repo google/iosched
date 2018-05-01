@@ -17,8 +17,8 @@
 package com.google.samples.apps.iosched.test.util.fakes
 
 import android.arch.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.SessionId
+import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
@@ -31,5 +31,5 @@ class FakeEventActionsViewModelDelegate : EventActionsViewModelDelegate {
 
     override fun openEventDetail(id: SessionId) = TODO("Not implemented")
 
-    override fun onStarClicked(userEvent: UserEvent) = TODO("Not implemented")
+    override fun onStarClicked(userSession: UserSession) = TODO("Not implemented")
 }

@@ -26,7 +26,6 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUs
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCase
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCaseResult
-import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Speaker
 import com.google.samples.apps.iosched.shared.model.SpeakerId
 import com.google.samples.apps.iosched.shared.model.UserSession
@@ -104,17 +103,17 @@ class SpeakerViewModel @Inject constructor(
         loadSpeakerSessionsUseCase.onCleared()
     }
 
-    override fun onStarClicked(userEvent: UserEvent) {
-        eventActionsViewModelDelegate.onStarClicked(userEvent)
+    override fun onStarClicked(userSession: UserSession) {
+        eventActionsViewModelDelegate.onStarClicked(userSession)
 
         // Only recording stars, not un-stars.  Since userEvent.isStarred reflects pre-click value,
         // checking for "old value starred, new value unstarred", in which case we don't record.
-        if (userEvent.isStarred) {
+        if (userSession.userEvent.isStarred) {
             return
         }
 
         // Find the session
-        val sessionId = userEvent.id
+        val sessionId = userSession.userEvent.id
         val sessions = speakerUserSessions.value
 
         if (sessions != null) {

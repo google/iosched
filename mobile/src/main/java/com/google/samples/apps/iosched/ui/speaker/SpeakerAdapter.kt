@@ -82,9 +82,7 @@ class SpeakerAdapter(
                 executePendingBindings()
             }
             is SpeakerSessionViewHolder -> holder.binding.apply {
-                val userSession = differ.currentList[position] as UserSession
-                session = userSession.session
-                userEvent = userSession.userEvent
+                userSession = differ.currentList[position] as UserSession
                 eventListener = speakerViewModel
                 setLifecycleOwner(lifecycleOwner)
                 executePendingBindings()
@@ -95,8 +93,8 @@ class SpeakerAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (differ.currentList[position]) {
-            is SpeakerItem -> R.layout.item_speaker_info
-            is SpeakerEventsHeaderItem -> R.layout.item_speaker_events_header
+            SpeakerItem -> R.layout.item_speaker_info
+            SpeakerEventsHeaderItem -> R.layout.item_speaker_events_header
             is UserSession -> R.layout.item_session
             else -> throw IllegalStateException("Unknown view type at position $position")
         }

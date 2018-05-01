@@ -41,7 +41,6 @@ import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
-import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.model.UserSession
@@ -472,13 +471,13 @@ class ScheduleViewModel @Inject constructor(
         )
     }
 
-    override fun onStarClicked(userEvent: UserEvent) {
+    override fun onStarClicked(userSession: UserSession) {
         if (!isSignedIn()) {
             Timber.d("Showing Sign-in dialog after star click")
             _navigateToSignInDialogAction.value = Event(Unit)
             return
         }
-        val newIsStarredState = !userEvent.isStarred
+        val newIsStarredState = !userSession.userEvent.isStarred
 
         // Update the snackbar message optimistically.
         val stringResId = if (newIsStarredState) {
@@ -488,21 +487,7 @@ class ScheduleViewModel @Inject constructor(
         }
 
         if (newIsStarredState) {
-            val day1Sessions = sessionTimeDataDay1.value?.list
-            val day2Sessions = sessionTimeDataDay2.value?.list
-            val day3Sessions = sessionTimeDataDay3.value?.list
-
-            val allSessions = sequenceOf(
-                day1Sessions.orEmpty(),
-                day2Sessions.orEmpty(),
-                day3Sessions.orEmpty()
-            ).flatten()
-
-            val userSession = allSessions.find { it.session.id == userEvent.id }
-
-            if (userSession != null) {
-                analyticsHelper.logUiEvent(userSession.session.title, AnalyticsActions.STARRED)
-            }
+            analyticsHelper.logUiEvent(userSession.session.title, AnalyticsActions.STARRED)
         }
 
         snackbarMessageManager.addMessage(
@@ -517,7 +502,7 @@ class ScheduleViewModel @Inject constructor(
             starEventUseCase.execute(
                 StarEventParameter(
                     it,
-                    userEvent.copy(isStarred = newIsStarredState)
+                    userSession.userEvent.copy(isStarred = newIsStarredState)
                 )
             )
         }

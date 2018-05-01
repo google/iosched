@@ -22,8 +22,8 @@ import android.arch.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
-import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.SessionId
+import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
@@ -64,13 +64,13 @@ class DefaultEventActionsViewModelDelegate @Inject constructor(
         _navigateToEventAction.value = Event(id)
     }
 
-    override fun onStarClicked(userEvent: UserEvent) {
+    override fun onStarClicked(userSession: UserSession) {
         if (!isSignedIn()) {
             Timber.d("Showing Sign-in dialog after star click")
             _navigateToSignInDialogAction.value = Event(Unit)
             return
         }
-        val newIsStarredState = !userEvent.isStarred
+        val newIsStarredState = !userSession.userEvent.isStarred
 
         // Update the snackbar message optimistically.
         val stringResId = if (newIsStarredState) {
@@ -89,7 +89,7 @@ class DefaultEventActionsViewModelDelegate @Inject constructor(
         getUserId()?.let {
             starEventUseCase.execute(
                 StarEventParameter(
-                    it, userEvent.copy(isStarred = newIsStarredState)
+                    it, userSession.userEvent.copy(isStarred = newIsStarredState)
                 )
             )
         }
