@@ -69,8 +69,7 @@ class SessionViewHolder(
 ) : ViewHolder(binding.root) {
 
     fun bind(userSession: UserSession) {
-        binding.session = userSession.session
-        binding.userEvent = userSession.userEvent
+        binding.userSession = userSession
         binding.eventListener = eventListener
         binding.showReservations = showReservations
         binding.timeZoneId = timeZoneId

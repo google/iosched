@@ -253,7 +253,7 @@ class ScheduleViewModelTest {
         val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
         val viewModel = createScheduleViewModel(snackbarMessageManager = snackbarMessageManager)
 
-        viewModel.onStarClicked(TestData.userEvents[0])
+        viewModel.onStarClicked(TestData.userSession0)
 
         val nextMessageEvent: Event<SnackbarMessage>? =
             LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
@@ -270,7 +270,7 @@ class ScheduleViewModelTest {
         val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
         val viewModel = createScheduleViewModel(snackbarMessageManager = snackbarMessageManager)
 
-        viewModel.onStarClicked(TestData.userEvents[1])
+        viewModel.onStarClicked(TestData.userSession1)
 
         val nextMessageEvent: Event<SnackbarMessage>? =
             LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
@@ -287,7 +287,7 @@ class ScheduleViewModelTest {
 
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInDelegate)
 
-        viewModel.onStarClicked(TestData.userEvents[1])
+        viewModel.onStarClicked(TestData.userSession1)
 
         val starEvent: Event<SnackbarMessage>? =
             LiveDataTestUtil.getValue(viewModel.snackBarMessage)

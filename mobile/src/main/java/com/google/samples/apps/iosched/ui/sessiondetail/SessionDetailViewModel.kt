@@ -462,13 +462,13 @@ class SessionDetailViewModel @Inject constructor(
         _navigateToSessionAction.value = Event(id)
     }
 
-    override fun onStarClicked(userEvent: UserEvent) {
+    override fun onStarClicked(userSession: UserSession) {
         if (!isSignedIn()) {
             Timber.d("Showing Sign-in dialog after star click")
             _navigateToSignInDialogAction.value = Event(Unit)
             return
         }
-        val newIsStarredState = !userEvent.isStarred
+        val newIsStarredState = !userSession.userEvent.isStarred
 
         val sessionTitle = session.value?.title
         if (sessionTitle != null && newIsStarredState) {
@@ -489,7 +489,7 @@ class SessionDetailViewModel @Inject constructor(
             starEventUseCase.execute(
                 StarEventParameter(
                     it,
-                    userEvent.copy(isStarred = newIsStarredState)
+                    userSession.userEvent.copy(isStarred = newIsStarredState)
                 )
             )
         }

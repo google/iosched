@@ -24,12 +24,8 @@
         <import type="android.arch.lifecycle.LiveData" />
 
         <variable
-            name="session"
-            type="com.google.samples.apps.iosched.shared.model.Session" />
-
-        <variable
-            name="userEvent"
-            type="com.google.samples.apps.iosched.shared.firestore.entity.UserEvent" />
+            name="userSession"
+            type="com.google.samples.apps.iosched.shared.model.UserSession" />
 
         <variable
             name="eventListener"
@@ -52,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
-        android:onClick="@{() -> eventListener.openEventDetail(session.id)}"
+        android:onClick="@{() -> eventListener.openEventDetail(userSession.session.id)}"
         android:paddingEnd="@dimen/spacing_normal"
         android:paddingVertical="@dimen/spacing_normal"
         tools:targetApi="o">
@@ -68,7 +64,7 @@
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{session.title}"
+            android:text="@{userSession.session.title}"
             android:textAppearance="@style/TextAppearance.IOSched.SessionTitle"
             app:layout_constraintEnd_toStartOf="@+id/bookmark_session"
             app:layout_constraintStart_toEndOf="@id/keyline"
@@ -80,9 +76,9 @@
             android:layout_width="@dimen/a11y_min_touch_target"
             android:layout_height="@dimen/a11y_min_touch_target"
             android:background="?selectableItemBackgroundBorderless"
-            android:checked="@{userEvent.isStarred}"
+            android:checked="@{userSession.userEvent.isStarred}"
             android:contentDescription="@string/a11y_star"
-            android:onClick="@{() -> eventListener.onStarClicked(userEvent)}"
+            android:onClick="@{() -> eventListener.onStarClicked(userSession)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/asld_star_event" />
@@ -98,8 +94,8 @@
             app:layout_constraintEnd_toEndOf="@id/title"
             app:layout_constraintStart_toEndOf="@id/keyline"
             app:layout_constraintTop_toBottomOf="@id/title"
-            app:isReservable="@{session.isReservable}"
-            app:reservationStatus="@{userEvent}"
+            app:isReservable="@{userSession.session.isReservable}"
+            app:reservationStatus="@{userSession.userEvent}"
             app:showReservations="@{showReservations}"
             tools:drawableStart="@drawable/ic_reserved"
             tools:text="Reserved"
@@ -116,7 +112,7 @@
             app:layout_constraintStart_toEndOf="@id/keyline"
             app:layout_constraintTop_toBottomOf="@id/reservation_status"
             app:layout_constraintBottom_toTopOf="@id/tags_barrier"
-            app:goneUnless="@{session.isLivestream}"
+            app:goneUnless="@{userSession.session.isLivestream}"
             app:srcCompat="@drawable/ic_livestreamed" />
 
         <TextView
@@ -128,9 +124,9 @@
             app:layout_constraintStart_toEndOf="@id/livestream_icon"
             app:layout_constraintTop_toBottomOf="@id/reservation_status"
             app:layout_constraintBottom_toTopOf="@id/tags_barrier"
-            app:sessionEnd="@{session.endTime}"
-            app:sessionRoom="@{session.room}"
-            app:sessionStart="@{session.startTime}"
+            app:sessionEnd="@{userSession.session.endTime}"
+            app:sessionRoom="@{userSession.session.room}"
+            app:sessionStart="@{userSession.session.startTime}"
             app:alwaysShowDate="@{alwaysShowDate}"
             app:timeZoneId="@{timeZoneId}"
             tools:text="1 hour / Amphitheatre" />
@@ -152,7 +148,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/keyline"
             app:layout_constraintTop_toBottomOf="@id/tags_barrier"
-            app:sessionTags="@{session.displayTags}"
+            app:sessionTags="@{userSession.session.displayTags}"
             tools:listitem="@layout/item_session_tag" />
 
     </android.support.constraint.ConstraintLayout>
