@@ -73,7 +73,7 @@
             app:uiCompass="false"
             app:uiZoomControls="false" />
 
-        <!-- USe marginBottom to prevent the sheet from covering the app bar. -->
+        <!-- Use marginBottom to prevent the sheet from covering the app bar. -->
         <android.support.constraint.ConstraintLayout
             android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
@@ -92,6 +92,30 @@
                 android:layout_height="0dp"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_begin="@dimen/bottom_sheet_peek_height" />
+
+            <!--
+              ~ Bug: When a sheet's height is the same as it's peek height, an upward drag breaks
+              ~ the UI. To avoid this, use a 1px minHeight.
+              ~ Also, we don't use contraintTop_toBottomOf the guideline because that pushes the
+              ~ view down and can leave it partly off screen if the description is long. Instead we
+              ~ use paddingTop to leave room for the header views.
+              -->
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/description_scrollview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="1px"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:paddingTop="@dimen/bottom_sheet_peek_height">
+
+                <TextView
+                    android:id="@+id/marker_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin_normal" />
+            </android.support.v4.widget.NestedScrollView>
 
             <View
                 android:id="@+id/clickable"
@@ -154,25 +178,6 @@
                 android:stateListAnimator="@animator/active_alpha"
                 app:layout_constraintTop_toBottomOf="@id/guide_peek_height" />
 
-            <!--
-              ~ Bug: When a sheet's height is the same as it's peek height, an upward drag breaks
-              ~ the UI. To avoid this, use a 1px minHeight.
-              -->
-            <android.support.v4.widget.NestedScrollView
-                android:id="@+id/description_scrollview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="1px"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/guide_peek_height">
-
-                <TextView
-                    android:id="@+id/marker_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/margin_normal" />
-            </android.support.v4.widget.NestedScrollView>
         </android.support.constraint.ConstraintLayout>
 
     </android.support.design.widget.CoordinatorLayout>
