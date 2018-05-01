@@ -214,7 +214,9 @@ class MapFragment : DaggerFragment(), MainNavigationFragment, OnMarkerClickListe
         // This is a hack. We set the geojson feature ID as the snippet since there is no other way
         // to add metadata and we need to look up the feature again by ID.
         val id = marker.snippet ?: return false
-        viewModel.requestHighlightFeature(id)
+        // Marker IDs can be comma-separated list of rooms. Uses the first ID if there's a comma,
+        // or the whole ID if there is no comma.
+        viewModel.requestHighlightFeature(id.split(",")[0])
         return true
     }
 }
