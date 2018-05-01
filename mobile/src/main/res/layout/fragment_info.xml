@@ -31,10 +31,9 @@
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="?actionBarSize"
+                android:layout_height="?actionBarSize"
                 android:gravity="center"
-                app:layout_scrollFlags="scroll|snap"
+                app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
                 android:text="@string/title_info"
                 android:textAppearance="@style/TextAppearance.IOSched.ToolbarTitle" />
 
