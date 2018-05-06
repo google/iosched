@@ -58,21 +58,14 @@ open class AgendaRepository @Inject constructor() {
                             color = 0xff4768fd.toInt(),
                             isDark = true,
                             startTime = ZonedDateTime.parse("2018-05-08T11:30-07:00"),
-                            endTime = ZonedDateTime.parse("2018-05-08T19:30-07:00")
-                    ),
-                    Block(title = "Sandbox",
-                            type = "sandbox",
-                            color = 0xff4768fd.toInt(),
-                            isDark = true,
-                            startTime = ZonedDateTime.parse("2018-05-08T11:30-07:00"),
-                            endTime = ZonedDateTime.parse("2018-05-08T19:30-07:00")
+                            endTime = ZonedDateTime.parse("2018-05-08T12:30-07:00")
                     ),
                     Block(title = "Office Hours & App Review",
                             type = "office_hours",
                             color = 0xff4768fd.toInt(),
                             isDark = true,
                             startTime = ZonedDateTime.parse("2018-05-08T11:30-07:00"),
-                            endTime = ZonedDateTime.parse("2018-05-08T19:30-07:00")
+                            endTime = ZonedDateTime.parse("2018-05-08T12:30-07:00")
                     ),
                     Block(title = "I/O Store",
                             type = "store",
@@ -84,14 +77,35 @@ open class AgendaRepository @Inject constructor() {
                     Block(title = "Keynote",
                             type = "keynote",
                             color = 0xfffcd230.toInt(),
-                            startTime = ZonedDateTime.parse("2018-05-08T12:00-07:00"),
-                            endTime = ZonedDateTime.parse("2018-05-08T13:00-07:00")
+                            startTime = ZonedDateTime.parse("2018-05-08T12:45-07:00"),
+                            endTime = ZonedDateTime.parse("2018-05-08T13:45-07:00")
                     ),
                     Block(title = "Sessions",
                             type = "session",
                             color = 0xff27e5fd.toInt(),
                             startTime = ZonedDateTime.parse("2018-05-08T14:00-07:00"),
                             endTime = ZonedDateTime.parse("2018-05-08T19:00-07:00")
+                    ),
+                    Block(title = "Codelabs",
+                            type = "codelab",
+                            color = 0xff4768fd.toInt(),
+                            isDark = true,
+                            startTime = ZonedDateTime.parse("2018-05-08T14:00-07:00"),
+                            endTime = ZonedDateTime.parse("2018-05-08T19:30-07:00")
+                    ),
+                    Block(title = "Sandbox",
+                            type = "sandbox",
+                            color = 0xff4768fd.toInt(),
+                            isDark = true,
+                            startTime = ZonedDateTime.parse("2018-05-08T14:00-07:00"),
+                            endTime = ZonedDateTime.parse("2018-05-08T19:30-07:00")
+                    ),
+                    Block(title = "Office Hours & App Review",
+                            type = "office_hours",
+                            color = 0xff4768fd.toInt(),
+                            isDark = true,
+                            startTime = ZonedDateTime.parse("2018-05-08T14:00-07:00"),
+                            endTime = ZonedDateTime.parse("2018-05-08T19:30-07:00")
                     ),
                     Block(title = "After hours party",
                             type = "after_hours",
@@ -156,7 +170,7 @@ open class AgendaRepository @Inject constructor() {
                             type = "concert",
                             color = 0xff202124.toInt(),
                             isDark = true,
-                            startTime = ZonedDateTime.parse("2018-05-09T20:30-07:00"),
+                            startTime = ZonedDateTime.parse("2018-05-09T19:30-07:00"),
                             endTime = ZonedDateTime.parse("2018-05-09T22:00-07:00")
                     ),
                     Block(title = "Breakfast",
