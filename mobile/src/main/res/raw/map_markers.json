@@ -855,9 +855,9 @@
       "type": "Feature",
       "properties": {
         "id": "ada-parking",
-        "title": "ADA Parking",
+        "title": "Accessible Parking",
         "icon": "map_marker_ada",
-        "description": "When arriving to the venue, please follow signs for ADA parking and have your placard hanging from the car mirror and visible to parking employees at all times to expedite the parking process. Accessible parking spaces are readily available on a first-come, first-served basis and may not be reserved in advance to fairly serve all attendees.",
+        "description": "When arriving to the venue, please follow signs for Accessible parking and have your placard hanging from the car mirror and visible to parking employees at all times to expedite the parking process. Accessible parking spaces are readily available on a first-come, first-served basis and may not be reserved in advance to fairly serve all attendees.",
         "hasSessions": "false"
       },
       "geometry": {
