@@ -27,11 +27,13 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentInfoEventBinding
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.setUpSnackbar
+import com.google.samples.apps.iosched.widget.FadingSnackbar
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -51,7 +53,8 @@ class EventFragment : DaggerFragment() {
             viewModel = eventInfoViewModel
             setLifecycleOwner(this@EventFragment)
         }
-        setUpSnackbar(eventInfoViewModel.snackBarMessage, binding.snackbar, snackbarMessageManager)
+        val snackbarLayout = requireActivity().findViewById<FadingSnackbar>(R.id.snackbar)
+        setUpSnackbar(eventInfoViewModel.snackBarMessage, snackbarLayout, snackbarMessageManager)
 
         // TODO: launch filtered schedule
         // TODO: launch map
