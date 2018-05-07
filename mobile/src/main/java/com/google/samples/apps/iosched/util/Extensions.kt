@@ -20,14 +20,12 @@ import android.app.Activity
 import android.content.res.Resources
 import android.databinding.ObservableBoolean
 import android.databinding.ViewDataBinding
-import android.graphics.drawable.Drawable
+import android.net.wifi.WifiConfiguration
 import android.support.annotation.DimenRes
-import android.support.annotation.DrawableRes
 import android.text.StaticLayout
 import android.util.TypedValue
 import android.view.View
 import androidx.view.postDelayed
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 
 fun ObservableBoolean.hasSameValue(other: ObservableBoolean) = get() == other.get()
 
@@ -35,7 +33,7 @@ fun Int.isEven() = this % 2 == 0
 
 fun View.isRtl() = layoutDirection == View.LAYOUT_DIRECTION_RTL
 
-inline fun <T: ViewDataBinding> T.executeAfter(block: T.() -> Unit) {
+inline fun <T : ViewDataBinding> T.executeAfter(block: T.() -> Unit) {
     block()
     executePendingBindings()
 }
@@ -53,7 +51,7 @@ fun Activity.postponeEnterTransition(timeout: Long) {
 /**
  * Calculated the widest line in a [StaticLayout].
  */
-fun StaticLayout.textWidth() : Int {
+fun StaticLayout.textWidth(): Int {
     var width = 0f
     for (i in 0 until lineCount) {
         width = width.coerceAtLeast(getLineWidth(i))
@@ -75,4 +73,55 @@ fun Resources.getFloat(@DimenRes resId: Int): Float {
     val outValue = TypedValue()
     getValue(resId, outValue, true)
     return outValue.float
+}
+
+/**
+ * Return the Wifi config wrapped in quotes.
+ */
+fun WifiConfiguration.quoteSsidAndPassword(): WifiConfiguration {
+    return WifiConfiguration().apply {
+        SSID = this@quoteSsidAndPassword.SSID.wrapInQuotes()
+        preSharedKey = this@quoteSsidAndPassword.preSharedKey.wrapInQuotes()
+    }
+}
+
+/**
+ * Return the Wifi config without quotes.
+ */
+fun WifiConfiguration.unquoteSsidAndPassword(): WifiConfiguration {
+    return WifiConfiguration().apply {
+        SSID = this@unquoteSsidAndPassword.SSID.unwrapQuotes()
+        preSharedKey = this@unquoteSsidAndPassword.preSharedKey.unwrapQuotes()
+    }
+}
+
+fun String.wrapInQuotes(): String {
+    var formattedConfigString: String = this
+    if (!startsWith("\"")) {
+        formattedConfigString = "\"${formattedConfigString}"
+    }
+    if (!endsWith("\"")) {
+        formattedConfigString = "${formattedConfigString}\""
+    }
+    return formattedConfigString
+}
+
+fun String.unwrapQuotes(): String {
+    var formattedConfigString: String = this
+    if (formattedConfigString.startsWith("\"")) {
+        if (formattedConfigString.length > 1) {
+            formattedConfigString = formattedConfigString.substring(1)
+        } else {
+            formattedConfigString = ""
+        }
+    }
+    if (formattedConfigString.endsWith("\"")) {
+        if (formattedConfigString.length > 1) {
+            formattedConfigString =
+                    formattedConfigString.substring(0, formattedConfigString.length - 1)
+        } else {
+            formattedConfigString = ""
+        }
+    }
+    return formattedConfigString
 }

@@ -20,6 +20,8 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiManager
+import com.google.samples.apps.iosched.util.quoteSsidAndPassword
+import com.google.samples.apps.iosched.util.unquoteSsidAndPassword
 import javax.inject.Inject
 
 /**
@@ -29,7 +31,8 @@ class WifiInstaller @Inject constructor(
     private val wifiManager: WifiManager,
     private val clipboardManager: ClipboardManager
 ) {
-    fun installConferenceWifi(conferenceWifiConfig: WifiConfiguration): Boolean {
+    fun installConferenceWifi(rawWifiConfig: WifiConfiguration): Boolean {
+        val conferenceWifiConfig = rawWifiConfig.quoteSsidAndPassword()
         if (!wifiManager.isWifiEnabled) {
             wifiManager.isWifiEnabled = true
         }
@@ -40,7 +43,10 @@ class WifiInstaller @Inject constructor(
             success = true
         } else {
             val clip: ClipData =
-                ClipData.newPlainText("wifi_password", conferenceWifiConfig.preSharedKey)
+                ClipData.newPlainText(
+                    "wifi_password",
+                    conferenceWifiConfig.unquoteSsidAndPassword().preSharedKey
+                )
             clipboardManager.primaryClip = clip
         }
         return success
