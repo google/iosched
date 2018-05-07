@@ -53,6 +53,13 @@
             app:pageMargin="@{@dimen/spacing_normal}"
             app:pageMarginDrawable="@{@drawable/page_margin}" />
 
+        <com.google.samples.apps.iosched.widget.FadingSnackbar
+            android:id="@+id/snackbar"
+            android:layout_width="@dimen/snackbar_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:visibility="gone" />
+
     </android.support.design.widget.CoordinatorLayout>
 
 </layout>

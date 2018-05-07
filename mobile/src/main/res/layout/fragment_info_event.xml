@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright 2018 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -82,8 +83,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_small"
-                    android:gravity="center_vertical"
-                    android:minHeight="@dimen/a11y_min_touch_target"
                     android:text="@string/wifi_password_label"
                     android:textColor="?android:textColorPrimary"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -114,7 +113,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:minHeight="@dimen/a11y_min_touch_target"
-                    android:background="?selectableItemBackground"
+                    android:background="@drawable/inset_borderless_btn"
                     android:onClick="@{() -> viewModel.onWifiConnect()}"
                     android:layout_marginStart="@dimen/margin_normal"
                     android:text="@{viewModel.wifiPassword.concat(` ` + @string/tap_to_join_network)}"
@@ -312,12 +311,6 @@
 
         </android.support.v4.widget.NestedScrollView>
 
-        <com.google.samples.apps.iosched.widget.FadingSnackbar
-            android:id="@+id/snackbar"
-            android:layout_width="@dimen/snackbar_width"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|start"
-            android:visibility="gone" />
     </android.support.design.widget.CoordinatorLayout>
 
 </layout>
