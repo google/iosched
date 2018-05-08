@@ -96,5 +96,6 @@ appengine {
         // together with the appengineEndpointsExportClientLibs task.
         // clientLibJarOut = new File('PATH_TO_OUTPUT_DIRECTORY')
         googleClientVersion = '1.23.0'
+        
     }
 }
