@@ -60,7 +60,8 @@ dependencies {
     // Note that if the Ping endpoint (FcmSendEndpoint.java) is updated this jar needs to be
     // regenerated. See doc/FCM.md
     compile files('libs/rpc-ping.jar')
-    compile 'com.google.api-client:google-api-client-appengine:1.22.0'
+    compile 'com.google.api-client:google-api-client-appengine:1.23.0'
+    compile group: 'com.google.api.client', name: 'google-api-client-repackaged-com-google-common-base', version: '1.2.3-alpha'
 
     testCompile 'junit:junit:[4,)'
     testCompile 'org.mockito:mockito-core:1.10.19'
@@ -94,5 +95,7 @@ appengine {
         // Use this field to set the output directory of Endpoints client library jars. This is used
         // together with the appengineEndpointsExportClientLibs task.
         // clientLibJarOut = new File('PATH_TO_OUTPUT_DIRECTORY')
+        googleClientVersion = '1.23.0'
+        
     }
 }
