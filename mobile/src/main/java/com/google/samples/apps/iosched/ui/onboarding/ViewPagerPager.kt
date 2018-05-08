@@ -31,6 +31,8 @@ class ViewPagerPager(private val viewPager: ViewPager) {
         AnimationUtils.loadInterpolator(viewPager.context, android.R.interpolator.fast_out_slow_in)
 
     fun advance() {
+        if (viewPager.width <= 0) return
+
         val current = viewPager.currentItem
         val next = ((current + 1) % requireNotNull(viewPager.adapter).count)
         val pages = next - current
