@@ -18,7 +18,7 @@ package com.google.samples.apps.iosched.server.gcm;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
-import com.google.api.client.repackaged.com.google.common.base.Strings;
+import com.google.appengine.repackaged.com.google.common.base.Strings;
 import com.google.api.server.spi.auth.common.User;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
