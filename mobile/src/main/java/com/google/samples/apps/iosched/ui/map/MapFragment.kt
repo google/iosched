@@ -153,7 +153,9 @@ class MapFragment : DaggerFragment(), MainNavigationFragment, OnMarkerClickListe
     }
 
     override fun onBackPressed(): Boolean {
-        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+        if (::bottomSheetBehavior.isInitialized &&
+            bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED
+        ) {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             return true
         }
