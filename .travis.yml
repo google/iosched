@@ -41,7 +41,7 @@ before_install:
 # Create and start emulator
 #  - echo no | android create avd --force -n test -t "android-"$ANDROID_API_LEVEL --abi $ANDROID_ABI
 #  - emulator -avd test -no-skin -no-audio -no-window &
-  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
+  - echo no | android create avd --force -n test -t android-25 --abi armeabi-v7a
   - emulator -avd test -no-skin -no-audio -no-window &
 
 before_script:
