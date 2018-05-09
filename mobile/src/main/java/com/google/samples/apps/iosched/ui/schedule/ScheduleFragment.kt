@@ -227,7 +227,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     }
 
     override fun onBackPressed(): Boolean {
-        if (bottomSheetBehavior.state == STATE_EXPANDED) {
+        if (::bottomSheetBehavior.isInitialized && bottomSheetBehavior.state == STATE_EXPANDED) {
             // collapse or hide the sheet
             if (bottomSheetBehavior.isHideable && bottomSheetBehavior.skipCollapsed) {
                 bottomSheetBehavior.state = STATE_HIDDEN
