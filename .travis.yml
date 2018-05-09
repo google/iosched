@@ -14,21 +14,37 @@
 
 language: android
 
+env:
+  global:
+    - ANDROID_API_LEVEL=25
+    - ANDROID_TARGET=android-25
+    - ANDROID_BUILD_TOOLS_VERSION=25.0.2
+    - ANDROID_ABI=armeabi-v7a
+
 android:
   components:
-    - build-tools-21.1.2
-    - android-21
-    - addon-google_apis-google-21
+    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
+    - android-$ANDROID_API_LEVEL
+    # For Google Maps API v1
+    - addon-google_apis-google-$ANDROID_API_LEVEL
+    # Latest artifacts in local repository
     - extra-google-m2repository
     - extra-android-m2repository
-    - sys-img-armeabi-v7a-addon-google_apis-google-21
+    # Specify at least one system image,
+    - sys-img-armeabi-v7a-google_apis-$ANDROID_API_LEVEL
+
 
 notifications:
   email: false
 
 before_install:
-  - echo no | android create avd --force -n test -t "Google Inc.:Google APIs:21" --abi google_apis/armeabi-v7a
+# Create and start emulator
+#  - echo no | android create avd --force -n test -t "android-"$ANDROID_API_LEVEL --abi $ANDROID_ABI
+#  - emulator -avd test -no-skin -no-audio -no-window &
+  - echo no | android create avd --force -n test -t android-25 --abi google_apis/armeabi-v7a
   - emulator -avd test -no-skin -no-audio -no-window &
+
+#  - echo no | android create avd --force -n test --abi armeabi-v7a -k 'system-images;android-25;google_apis_playstore;x86'
 
 before_script:
   - ./scripts/wait_for_emulator.sh
