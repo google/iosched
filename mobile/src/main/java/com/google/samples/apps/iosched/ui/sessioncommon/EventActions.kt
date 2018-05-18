@@ -16,8 +16,8 @@
 
 package com.google.samples.apps.iosched.ui.sessioncommon
 
-import com.google.samples.apps.iosched.shared.model.SessionId
-import com.google.samples.apps.iosched.shared.model.UserSession
+import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.model.userdata.UserSession
 
 /**
  * Actions that can be performed on events.

@@ -21,7 +21,7 @@ import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.google.samples.apps.iosched.databinding.ItemSessionTagBinding
-import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.model.Tag
 
 class TagAdapter : RecyclerView.Adapter<TagViewHolder>() {
 

@@ -36,6 +36,6 @@
 -dontwarn android.support.v4.**
 -dontwarn org.threeten.bp.**
 
--keep class com.google.samples.apps.iosched.shared.model.** {
+-keep class com.google.samples.apps.iosched.model.** {
     *;
 }

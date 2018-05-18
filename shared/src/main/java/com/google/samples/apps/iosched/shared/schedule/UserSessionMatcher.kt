@@ -17,9 +17,9 @@
 package com.google.samples.apps.iosched.shared.schedule
 
 import com.google.gson.GsonBuilder
+import com.google.samples.apps.iosched.model.Tag
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
-import com.google.samples.apps.iosched.shared.model.Tag
-import com.google.samples.apps.iosched.shared.model.UserSession
 import timber.log.Timber
 
 /** Capable of discerning [UserSession]s that match some criterion. */

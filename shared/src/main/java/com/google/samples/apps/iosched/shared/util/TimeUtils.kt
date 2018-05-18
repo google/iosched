@@ -16,40 +16,32 @@
 
 package com.google.samples.apps.iosched.shared.util
 
+import com.google.samples.apps.iosched.model.ConferenceDay
+import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.shared.BuildConfig
-import com.google.samples.apps.iosched.shared.model.Session
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
-import java.util.*
-
 
 object TimeUtils {
 
     val CONFERENCE_TIMEZONE = ZoneId.of(BuildConfig.CONFERENCE_TIMEZONE)
-    val CONFERENCE_DAYS = ConferenceDay.values()
 
-    private val formatPattern = "MMMM d"
-    val FORMATTER_MONTH_DAY = DateTimeFormatter.ofPattern(formatPattern, Locale.getDefault())
+    val ConferenceDays  = listOf (
 
-    enum class ConferenceDay(val start: ZonedDateTime, val end: ZonedDateTime) {
-        DAY_1(
+        ConferenceDay(
             ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_START),
             ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_END)
         ),
-        DAY_2(
+        ConferenceDay(
             ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY2_START),
             ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY2_END)
         ),
-        DAY_3(
+        ConferenceDay(
             ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY3_START),
             ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY3_END)
-        );
-
-        fun contains(session: Session) = start <= session.startTime && end >= session.endTime
-
-        fun formatMonthDay() = FORMATTER_MONTH_DAY.format(start)
-    }
+        )
+    )
 
     enum class SessionRelativeTimeState { BEFORE, DURING, AFTER, UNKNOWN }
 
@@ -93,11 +85,11 @@ object TimeUtils {
     }
 
     fun conferenceHasStarted(): Boolean {
-        return ZonedDateTime.now().isAfter(ConferenceDay.DAY_1.start)
+        return ZonedDateTime.now().isAfter(ConferenceDays.first().start)
     }
 
     fun conferenceHasEnded(): Boolean {
-        return ZonedDateTime.now().isAfter(ConferenceDay.DAY_3.end)
+        return ZonedDateTime.now().isAfter(ConferenceDays.last().end)
     }
 
     fun conferenceWifiOfferingStarted(): Boolean {

@@ -30,11 +30,8 @@ import androidx.view.doOnNextLayout
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleDayBinding
 import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
-import com.google.samples.apps.iosched.shared.util.getEnum
 import com.google.samples.apps.iosched.shared.util.lazyFast
-import com.google.samples.apps.iosched.shared.util.putEnum
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.ui.schedule.SessionTimeData
 import com.google.samples.apps.iosched.util.clearDecorations
@@ -52,9 +49,9 @@ class ScheduleDayFragment : DaggerFragment() {
         private const val TAG = "ScheduleDayFragment"
         private const val ARG_CONFERENCE_DAY = "arg.CONFERENCE_DAY"
 
-        fun newInstance(day: ConferenceDay): ScheduleDayFragment {
+        fun newInstance(day: Int): ScheduleDayFragment {
             val args = Bundle().apply {
-                putEnum(ARG_CONFERENCE_DAY, day)
+                putInt(ARG_CONFERENCE_DAY, day)
             }
             return ScheduleDayFragment().apply { arguments = args }
         }
@@ -74,9 +71,9 @@ class ScheduleDayFragment : DaggerFragment() {
     @field:Named("tagViewPool")
     lateinit var tagViewPool: RecycledViewPool
 
-    private val conferenceDay: ConferenceDay by lazyFast {
+    private val conferenceDay: Int by lazyFast {
         val args = arguments ?: throw IllegalStateException("Missing arguments!")
-        args.getEnum<ConferenceDay>(ARG_CONFERENCE_DAY)
+        args.getInt(ARG_CONFERENCE_DAY)
     }
 
     private lateinit var adapter: ScheduleDayAdapter

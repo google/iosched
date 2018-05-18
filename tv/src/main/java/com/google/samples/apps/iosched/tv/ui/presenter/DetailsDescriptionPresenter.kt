@@ -20,7 +20,7 @@ import android.support.v17.leanback.widget.AbstractDetailsDescriptionPresenter
 import android.support.v17.leanback.widget.Presenter
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.tv.R
 import com.google.samples.apps.iosched.tv.ui.adapter.TagAdapter

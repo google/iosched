@@ -20,6 +20,11 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.support.annotation.WorkerThread
+import com.google.samples.apps.iosched.model.userdata.UserEvent
+import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.model.ConferenceDay
+import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
@@ -30,12 +35,8 @@ import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAct
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
-import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
-import com.google.samples.apps.iosched.shared.model.Session
-import com.google.samples.apps.iosched.shared.model.SessionId
-import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -142,7 +143,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
                     // Merges session with user data and emits the result
                     val userSession = UserSession(event,
-                            userEventResult?.userEvent ?: createDefaultUserEvent(event))
+                        userEventResult?.userEvent ?: createDefaultUserEvent(event))
                     sessionResult.postValue(Result.Success(
                             LoadUserSessionUseCaseResult(
                                     userSession = userSession,
@@ -232,7 +233,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
         // If there is no logged-in user, return the map with null UserEvents
         if (userData == null) {
-            return ConferenceDay.values().map { day ->
+            return ConferenceDays.map { day ->
                 day to allSessions
                         .filter { day.contains(it) }
                         .map { session -> UserSession(session, createDefaultUserEvent(session)) }
@@ -243,12 +244,14 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         val (userEvents, _) = userData
 
         val eventIdToUserEvent: Map<String, UserEvent?> = userEvents.map { it.id to it }.toMap()
-        val allUserSessions = allSessions.map { UserSession(
+        val allUserSessions = allSessions.map {
+            UserSession(
                 it,
                 eventIdToUserEvent[it.id] ?: createDefaultUserEvent(it)
-        ) }
+            )
+        }
 
-        return ConferenceDay.values().map { day ->
+        return ConferenceDays.map { day ->
             day to allUserSessions
                     .filter { day.contains(it.session) }
                     .map { userSession ->

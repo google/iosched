@@ -81,6 +81,7 @@ android {
 dependencies {
     implementation project(":shared")
     testImplementation project(':test-shared')
+    testImplementation project(':androidTest-shared')
 
     // UI
     implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"

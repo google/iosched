@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.shared.data
 
 import android.content.Context
-import com.google.samples.apps.iosched.shared.model.ConferenceData
+import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import timber.log.Timber
 import java.io.IOException

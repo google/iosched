@@ -18,7 +18,7 @@ package com.google.samples.apps.iosched.shared.domain.search
 
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.domain.UseCase
-import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.model.Session
 import timber.log.Timber
 import javax.inject.Inject
 

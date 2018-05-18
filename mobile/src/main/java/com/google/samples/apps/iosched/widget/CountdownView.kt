@@ -21,8 +21,6 @@ import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.widget.FrameLayout
 import androidx.view.postDelayed
 import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieAnimationView.CacheStrategy.Strong
@@ -54,7 +52,7 @@ class CountdownView @JvmOverloads constructor(
     private val updateTime: Runnable = object : Runnable {
 
         // todo: verify Keynote start time
-        private val conferenceStart = TimeUtils.ConferenceDay.DAY_1.start.plusHours(3L)
+        private val conferenceStart = TimeUtils.ConferenceDays.first().start.plusHours(3L)
 
         override fun run() {
             var timeUntilConf = Duration.between(ZonedDateTime.now(), conferenceStart)

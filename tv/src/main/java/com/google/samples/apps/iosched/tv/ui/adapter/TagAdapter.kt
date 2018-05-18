@@ -24,7 +24,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.model.Tag
 import com.google.samples.apps.iosched.tv.R
 
 class TagAdapter : RecyclerView.Adapter<TagViewHolder>() {

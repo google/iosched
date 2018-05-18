@@ -19,16 +19,16 @@
 package com.google.samples.apps.iosched.wear.ui.schedule
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseParameters
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
-import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
+import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.wear.domain.repository.TestUserEventDataSource
-import com.google.samples.apps.iosched.wear.model.TestData
 import com.google.samples.apps.iosched.wear.model.TestDataRepository
 import com.google.samples.apps.iosched.wear.util.SyncTaskExecutorRule
 import org.junit.Assert
@@ -61,14 +61,14 @@ class ScheduleViewModelTest {
         val viewModel = createScheduleViewModel(loadSessionsUseCase = loadSessionsUseCase)
 
         // Observe viewmodel to load sessions
-        viewModel.getSessionsForDay(ConferenceDay.DAY_1).observeForever {}
+        viewModel.getSessionsForDay(0).observeForever {}
 
         // Check that data were loaded correctly
         // Sessions
-        for (day in ConferenceDay.values()) {
+        ConferenceDays.forEachIndexed { index, day ->
             Assert.assertEquals(
                     TestData.userSessionMap[day],
-                    LiveDataTestUtil.getValue(viewModel.getSessionsForDay(day))
+                    LiveDataTestUtil.getValue(viewModel.getSessionsForDay(index))
             )
         }
         assertFalse(LiveDataTestUtil.getValue(viewModel.isLoading)!!)

@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.shared.data.tag
 
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
-import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.model.Tag
 import javax.inject.Inject
 import javax.inject.Singleton
 

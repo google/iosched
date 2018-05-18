@@ -20,7 +20,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.model.SpeakerId
+import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import dagger.android.support.DaggerAppCompatActivity
 

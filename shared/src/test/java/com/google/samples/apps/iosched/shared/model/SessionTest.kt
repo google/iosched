@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.model
+package com.google.samples.apps.iosched.model
 
-import com.google.samples.apps.iosched.shared.model.SessionType.CODELAB
-import com.google.samples.apps.iosched.shared.model.SessionType.SESSION
-import com.google.samples.apps.iosched.shared.model.SessionType.UNKNOWN
+import com.google.samples.apps.iosched.model.SessionType.CODELAB
+import com.google.samples.apps.iosched.model.SessionType.SESSION
+import com.google.samples.apps.iosched.model.SessionType.UNKNOWN
+import com.google.samples.apps.iosched.test.data.TestData
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is

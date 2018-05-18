@@ -17,8 +17,8 @@
 package com.google.samples.apps.iosched.shared.data.logistics
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 import com.google.samples.apps.iosched.shared.BuildConfig
-import com.google.samples.apps.iosched.shared.model.ConferenceWifiInfo
 import javax.inject.Inject
 
 class RemoteConfigLogisticsDataSource @Inject constructor(
@@ -28,7 +28,7 @@ class RemoteConfigLogisticsDataSource @Inject constructor(
     override fun getWifiInfo(): ConferenceWifiInfo {
         // TODO: right now, this returns what is currently in the RemoteConfig cache, and triggers
         // a fetch that will impact the cache the next time this is called. We should update
-        // livedata when activateFetched() is called. 
+        // livedata when activateFetched() is called.
         firebaseRemoteConfig.fetch(CACHE_EXPIRATION).addOnCompleteListener {
             if (it.isSuccessful) {
                 firebaseRemoteConfig.activateFetched()

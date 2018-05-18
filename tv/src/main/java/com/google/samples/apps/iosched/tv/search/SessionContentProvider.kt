@@ -26,7 +26,7 @@ import android.media.Rating
 import android.net.Uri
 import android.provider.BaseColumns
 import com.google.samples.apps.iosched.shared.domain.search.SearchUseCase
-import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.tv.TvApplication
 import timber.log.Timber

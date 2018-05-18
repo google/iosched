@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.schedule.agenda
 
-import com.google.samples.apps.iosched.shared.model.Block
+import com.google.samples.apps.iosched.model.Block
 import org.threeten.bp.ZonedDateTime
 
 /**

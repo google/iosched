@@ -19,20 +19,18 @@
 package com.google.samples.apps.iosched.tv.ui.schedule
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseParameters
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
-import com.google.samples.apps.iosched.shared.util.TimeUtils
-import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
-import com.google.samples.apps.iosched.tv.model.TestData
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.tv.model.TestDataRepository
 import com.google.samples.apps.iosched.tv.model.TestUserEventDataSource
 import com.google.samples.apps.iosched.tv.util.SyncTaskExecutorRule
+import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.core.Is.`is`
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertThat
 import org.junit.Rule
@@ -60,10 +58,16 @@ class ScheduleViewModelTest {
         val viewModel = ScheduleViewModel(loadSessionsUseCase)
 
         // Check that data was loaded correctly
-        for (day in TimeUtils.ConferenceDay.values()) {
-            val actual = LiveDataTestUtil.getValue(viewModel.getSessionsGroupedByTimeForDay(day))
-            assertEquals(actual, TestData.sessionsByDayGroupedByTimeMap[day])
-        }
+        val day1Result = LiveDataTestUtil.getValue(
+            viewModel.getSessionsGroupedByTimeForDay(ConferenceDays[0]))
+        val day2Result = LiveDataTestUtil.getValue(
+            viewModel.getSessionsGroupedByTimeForDay(ConferenceDays[1]))
+        val day3Result = LiveDataTestUtil.getValue(
+            viewModel.getSessionsGroupedByTimeForDay(ConferenceDays[2]))
+
+        assertThat(day1Result?.size, `is`(equalTo(1)))
+        assertThat(day2Result?.size, `is`(equalTo(1)))
+        assertThat(day3Result?.size, `is`(equalTo(2)))
 
         assertThat("Once sessions are loaded, isLoading should be false",
                 LiveDataTestUtil.getValue(viewModel.isLoading),

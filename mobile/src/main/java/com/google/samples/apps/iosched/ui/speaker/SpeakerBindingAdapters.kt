@@ -34,7 +34,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.model.Speaker
+import com.google.samples.apps.iosched.model.Speaker
 
 /**
  * Formats a [TextView] to display a [Speaker]'s social links.

@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.schedule.agenda
 
-import com.google.samples.apps.iosched.model.TestData
+import com.google.samples.apps.iosched.test.data.TestData
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.threeten.bp.ZonedDateTime

@@ -26,9 +26,9 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUs
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCase
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCaseResult
-import com.google.samples.apps.iosched.shared.model.Speaker
-import com.google.samples.apps.iosched.shared.model.SpeakerId
-import com.google.samples.apps.iosched.shared.model.UserSession
+import com.google.samples.apps.iosched.model.Speaker
+import com.google.samples.apps.iosched.model.SpeakerId
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate

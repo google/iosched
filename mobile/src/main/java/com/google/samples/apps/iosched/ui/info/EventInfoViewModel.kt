@@ -21,13 +21,13 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.net.wifi.WifiConfiguration
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.logistics.LoadWifiInfoUseCase
-import com.google.samples.apps.iosched.shared.model.ConferenceWifiInfo
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
@@ -102,7 +102,8 @@ class EventInfoViewModel @Inject constructor(
         if (isRegistered) {
             // Show scavenger hunt to attendees during the conference
             val now = ZonedDateTime.now()
-            return now.isAfter(ConferenceDay.DAY_1.start) && now.isBefore(ConferenceDay.DAY_3.end)
+            return now.isAfter(ConferenceDays.first().start)
+                && now.isBefore(ConferenceDays.last().end)
         } else {
             return false
         }

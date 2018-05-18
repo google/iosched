@@ -25,9 +25,9 @@ import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventD
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource.Companion.RESERVATION_RESULT_RESULT_KEY
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource.Companion.RESERVATION_RESULT_TIME_KEY
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource.Companion.RESERVATION_STATUS_KEY
-import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequest
-import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult
-import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
+import com.google.samples.apps.iosched.model.reservations.ReservationRequest
+import com.google.samples.apps.iosched.model.reservations.ReservationRequestResult
+import com.google.samples.apps.iosched.model.userdata.UserEvent
 import timber.log.Timber
 
 /**
@@ -45,10 +45,10 @@ fun parseUserEvent(snapshot: DocumentSnapshot): UserEvent {
     }
 
     return UserEvent(id = snapshot.id,
-            reservationRequestResult = reservationRequestResult,
-            reservationStatus = reservationStatus,
-            isStarred = snapshot[FirestoreUserEventDataSource.IS_STARRED] as? Boolean ?: false,
-            reservationRequest = reservationRequest
+        reservationRequestResult = reservationRequestResult,
+        reservationStatus = reservationStatus,
+        isStarred = snapshot[FirestoreUserEventDataSource.IS_STARRED] as? Boolean ?: false,
+        reservationRequest = reservationRequest
     )
 }
 
@@ -74,9 +74,9 @@ private fun generateReservationRequestResult(
         }
 
         return ReservationRequestResult(
-                requestResult = requestResult,
-                requestId = requestId,
-                timestamp = timestamp
+            requestResult = requestResult,
+            requestId = requestId,
+            timestamp = timestamp
         )
     }
     // If there's no reservation:

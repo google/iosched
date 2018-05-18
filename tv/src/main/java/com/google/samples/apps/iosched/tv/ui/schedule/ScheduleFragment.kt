@@ -33,15 +33,13 @@ import android.support.v17.leanback.widget.Presenter
 import android.support.v4.app.ActivityOptionsCompat
 import android.view.ViewGroup
 import android.widget.Toast
-import com.google.samples.apps.iosched.shared.model.Session
-import com.google.samples.apps.iosched.shared.model.UserSession
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
+import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
-import com.google.samples.apps.iosched.shared.util.getEnum
 import com.google.samples.apps.iosched.shared.util.getThemeColor
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.shared.util.lazyFast
-import com.google.samples.apps.iosched.shared.util.putEnum
 import com.google.samples.apps.iosched.tv.R
 import com.google.samples.apps.iosched.tv.app
 import com.google.samples.apps.iosched.tv.ui.SpinnerFragment
@@ -60,9 +58,9 @@ class ScheduleFragment : RowsSupportFragment() {
 
     private lateinit var viewModel: ScheduleViewModel
 
-    private val conferenceDay: ConferenceDay by lazyFast {
+    private val conferenceDay: Int by lazyFast {
         val args = requireNotNull(arguments, { "Missing arguments!" })
-        args.getEnum<ConferenceDay>(ARG_CONFERENCE_DAY)
+        args.getInt(ARG_CONFERENCE_DAY)
     }
 
     private val rowsAdapter = ArrayObjectAdapter(ListRowPresenter())
@@ -110,7 +108,7 @@ class ScheduleFragment : RowsSupportFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.getSessionsGroupedByTimeForDay(conferenceDay)
+        viewModel.getSessionsGroupedByTimeForDay(ConferenceDays[conferenceDay])
             .observe(requireActivity(), Observer { map ->
                 loadAdapter(sessionsByTimeSlot = map ?: emptyMap())
             })
@@ -209,9 +207,9 @@ class ScheduleFragment : RowsSupportFragment() {
 
         const val ARG_CONFERENCE_DAY = "com.google.samples.apps.iosched.tv.ARG_CONFERENCE_DAY"
 
-        fun newInstance(day: ConferenceDay): ScheduleFragment {
+        fun newInstance(day: Int): ScheduleFragment {
             val args = Bundle().apply {
-                putEnum(ARG_CONFERENCE_DAY, day)
+                putInt(ARG_CONFERENCE_DAY, day)
             }
             return ScheduleFragment().apply { arguments = args }
         }

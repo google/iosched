@@ -22,6 +22,9 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.support.annotation.StringRes
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.model.Block
+import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
@@ -41,18 +44,12 @@ import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
-import com.google.samples.apps.iosched.shared.model.Block
-import com.google.samples.apps.iosched.shared.model.SessionId
-import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_2
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_3
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
@@ -326,7 +323,7 @@ class ScheduleViewModel @Inject constructor(
         })
         _sessionTimeDataDay1.addSource(loadSessionsResult, {
             val userSessions =
-                (it as? Result.Success)?.data?.userSessionsPerDay?.get(DAY_1) ?: return@addSource
+                (it as? Result.Success)?.data?.userSessionsPerDay?.get(ConferenceDays[0]) ?: return@addSource
             _sessionTimeDataDay1.value = _sessionTimeDataDay1.value?.apply {
                 list = userSessions
             } ?: SessionTimeData(list = userSessions)
@@ -339,7 +336,7 @@ class ScheduleViewModel @Inject constructor(
         })
         _sessionTimeDataDay2.addSource(loadSessionsResult, {
             val userSessions =
-                (it as? Result.Success)?.data?.userSessionsPerDay?.get(DAY_2) ?: return@addSource
+                (it as? Result.Success)?.data?.userSessionsPerDay?.get(ConferenceDays[1]) ?: return@addSource
             _sessionTimeDataDay2.value = _sessionTimeDataDay2.value?.apply {
                 list = userSessions
             } ?: SessionTimeData(list = userSessions)
@@ -352,7 +349,7 @@ class ScheduleViewModel @Inject constructor(
         })
         _sessionTimeDataDay3.addSource(loadSessionsResult, {
             val userSessions =
-                (it as? Result.Success)?.data?.userSessionsPerDay?.get(DAY_3) ?: return@addSource
+                (it as? Result.Success)?.data?.userSessionsPerDay?.get(ConferenceDays[2]) ?: return@addSource
             _sessionTimeDataDay3.value = _sessionTimeDataDay3.value?.apply {
                 list = userSessions
             } ?: SessionTimeData(list = userSessions)
@@ -377,11 +374,16 @@ class ScheduleViewModel @Inject constructor(
     /**
      * Called from each schedule day fragment to load data.
      */
-    fun getSessionTimeDataForDay(day: ConferenceDay):
+    fun getSessionTimeDataForDay(day: Int):
             LiveData<SessionTimeData> = when (day) {
-        DAY_1 -> sessionTimeDataDay1
-        DAY_2 -> sessionTimeDataDay2
-        DAY_3 -> sessionTimeDataDay3
+        0 -> sessionTimeDataDay1
+        1 -> sessionTimeDataDay2
+        2 -> sessionTimeDataDay3
+        else -> {
+            val exception = Exception("Invalid day: $day")
+            Timber.e(exception)
+            throw exception
+        }
     }
 
     override fun openEventDetail(id: SessionId) {
