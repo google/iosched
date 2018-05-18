@@ -16,13 +16,13 @@
 
 package com.google.samples.apps.iosched.shared.data.userevent
 
-import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequest
-import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequest.ReservationRequestEntityAction
-import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult
-import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus
-import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.SWAP_SUCCEEDED
-import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.SWAP_WAITLISTED
-import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
+import com.google.samples.apps.iosched.model.reservations.ReservationRequest
+import com.google.samples.apps.iosched.model.reservations.ReservationRequest.ReservationRequestEntityAction
+import com.google.samples.apps.iosched.model.reservations.ReservationRequestResult
+import com.google.samples.apps.iosched.model.reservations.ReservationRequestResult.ReservationRequestStatus
+import com.google.samples.apps.iosched.model.reservations.ReservationRequestResult.ReservationRequestStatus.SWAP_SUCCEEDED
+import com.google.samples.apps.iosched.model.reservations.ReservationRequestResult.ReservationRequestStatus.SWAP_WAITLISTED
+import com.google.samples.apps.iosched.model.userdata.UserEvent
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsEqual.equalTo
 import org.hamcrest.core.IsNull.nullValue
@@ -249,24 +249,24 @@ class CompareOldAndNewUserEventsTest {
                                 reservationRequestResult: ReservationRequestResult? = null,
                                 reservationRequest: ReservationRequest? = null): UserEvent {
         return UserEvent(
-                id,
-                isStarred,
-                isReviewed,
-                reservationStatus,
-                reservationRequestResult,
-                reservationRequest)
+            id,
+            isStarred,
+            isReviewed,
+            reservationStatus,
+            reservationRequestResult,
+            reservationRequest)
     }
 
     private fun createReservationResult(
-            requestResult: ReservationRequestResult.ReservationRequestStatus? = null,
-            requestId: String = "213",
-            timestamp: Long = -1
+        requestResult: ReservationRequestResult.ReservationRequestStatus? = null,
+        requestId: String = "213",
+        timestamp: Long = -1
     ) : ReservationRequestResult {
 
         return ReservationRequestResult(
-                requestResult = requestResult,
-                requestId = requestId,
-                timestamp = timestamp
+            requestResult = requestResult,
+            requestId = requestId,
+            timestamp = timestamp
         )
     }
 
@@ -276,8 +276,8 @@ class CompareOldAndNewUserEventsTest {
             requestId: String = "321"
     ) : ReservationRequest {
         return ReservationRequest(
-                action = action,
-                requestId = requestId
+            action = action,
+            requestId = requestId
         )
     }
 }

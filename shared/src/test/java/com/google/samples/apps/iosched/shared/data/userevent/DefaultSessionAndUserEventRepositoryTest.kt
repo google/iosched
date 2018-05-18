@@ -17,15 +17,15 @@
 package com.google.samples.apps.iosched.shared.data.userevent
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
-import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
-import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.test.data.TestData
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsInstanceOf
@@ -61,7 +61,7 @@ class DefaultSessionAndUserEventRepositoryTest{
                 `is`(equalTo(TestData.sessionsMap.keys.size)))
 
         val sessionsFirstDay: List<UserSession>?
-                = userEvents.data.userSessionsPerDay[TimeUtils.ConferenceDay.DAY_1]
+                = userEvents.data.userSessionsPerDay[TimeUtils.ConferenceDays.first()]
 
         // Starred session
         assertThat(sessionsFirstDay?.get(0)?.userEvent?.isStarred,

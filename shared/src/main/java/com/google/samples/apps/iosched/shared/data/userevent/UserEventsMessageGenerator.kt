@@ -29,7 +29,7 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageCha
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.RESERVATION_DENIED_CUTOFF
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.RESERVATION_DENIED_UNKNOWN
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.WAITLIST_CANCELED
-import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
+import com.google.samples.apps.iosched.model.userdata.UserEvent
 import timber.log.Timber
 
 
@@ -71,9 +71,9 @@ fun generateReservationChangeMsg(
  * Given a change in a document, generate a user message to indicate a change in reservations.
  */
 fun getUserMessageFromChange(
-        oldValue: UserEvent,
-        documentSnapshot: DocumentSnapshot,
-        changeId: String
+    oldValue: UserEvent,
+    documentSnapshot: DocumentSnapshot,
+    changeId: String
 ): UserEventMessage? {
 
     // Get the new state
@@ -84,9 +84,9 @@ fun getUserMessageFromChange(
 
 @VisibleForTesting
 fun compareOldAndNewUserEvents(
-        oldState: UserEvent,
-        newState: UserEvent,
-        changedId: String
+    oldState: UserEvent,
+    newState: UserEvent,
+    changedId: String
 ): UserEventMessage? {
 
     // If the old data wasn't reserved and it's reserved now, there's a change.

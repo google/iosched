@@ -16,8 +16,8 @@
 
 package com.google.samples.apps.iosched.shared.data
 
+import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.shared.BuildConfig
-import com.google.samples.apps.iosched.shared.model.ConferenceData
 
 /**
  * Loads bootstrap data file from resources and parses it.

@@ -20,7 +20,7 @@ import android.databinding.ObservableBoolean
 import android.graphics.Color
 import android.support.annotation.StringRes
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.model.Tag
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.EventFilterCategory.NONE
 import com.google.samples.apps.iosched.util.hasSameValue
 

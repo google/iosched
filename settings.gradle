@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-include ':mobile', ':tv', ':wear', ':shared', ':test-shared'
+include ':mobile', ':tv', ':wear', ':shared', ':test-shared', ':model', ':androidTest-shared'

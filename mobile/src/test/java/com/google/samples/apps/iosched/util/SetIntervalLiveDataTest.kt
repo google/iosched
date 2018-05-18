@@ -19,8 +19,8 @@ package com.google.samples.apps.iosched.util
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
+import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.util.SetIntervalLiveData.DefaultIntervalMapper
-import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import junit.framework.Assert.assertEquals
 import org.junit.Rule

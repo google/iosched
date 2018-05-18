@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.util
 
-import com.google.samples.apps.iosched.shared.model.Speaker
+import com.google.samples.apps.iosched.model.Speaker
 
 object SpeakerUtils{
 

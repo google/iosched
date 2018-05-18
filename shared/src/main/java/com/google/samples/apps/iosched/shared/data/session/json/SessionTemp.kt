@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.data.session.json
 
-import com.google.samples.apps.iosched.shared.model.SessionId
+import com.google.samples.apps.iosched.model.SessionId
 import org.threeten.bp.ZonedDateTime
 
 /**

@@ -27,7 +27,7 @@
 
         <variable
             name="agenda"
-            type="com.google.samples.apps.iosched.shared.model.Block" />
+            type="com.google.samples.apps.iosched.model.Block" />
     </data>
 
     <android.support.constraint.ConstraintLayout

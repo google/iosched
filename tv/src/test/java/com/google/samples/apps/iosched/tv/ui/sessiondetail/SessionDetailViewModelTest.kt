@@ -19,12 +19,12 @@
 package com.google.samples.apps.iosched.tv.ui.sessiondetail
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
-import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
-import com.google.samples.apps.iosched.tv.model.TestData
 import com.google.samples.apps.iosched.tv.model.TestDataRepository
+import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.tv.model.TestUserEventDataSource
 import com.google.samples.apps.iosched.tv.util.SyncTaskExecutorRule
 import org.junit.Assert.assertEquals

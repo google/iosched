@@ -20,9 +20,9 @@ import android.arch.lifecycle.LiveData
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
-import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
-import com.google.samples.apps.iosched.shared.model.Session
-import com.google.samples.apps.iosched.shared.model.SessionId
+import com.google.samples.apps.iosched.model.userdata.UserEvent
+import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.result.Result
 
 interface UserEventDataSource {
@@ -53,9 +53,9 @@ interface UserEventDataSource {
 }
 
 data class UserEventsResult(
-        val userEvents: List<UserEvent>,
-        val userEventsMessage: UserEventMessage? = null)
+    val userEvents: List<UserEvent>,
+    val userEventsMessage: UserEventMessage? = null)
 
 data class UserEventResult(
-        val userEvent: UserEvent?,
-        val userEventMessage: UserEventMessage? = null)
+    val userEvent: UserEvent?,
+    val userEventMessage: UserEventMessage? = null)

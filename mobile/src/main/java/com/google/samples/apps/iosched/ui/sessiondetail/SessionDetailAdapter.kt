@@ -28,8 +28,8 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemSessionBinding
 import com.google.samples.apps.iosched.databinding.ItemSessionInfoBinding
 import com.google.samples.apps.iosched.databinding.ItemSpeakerBinding
-import com.google.samples.apps.iosched.shared.model.Speaker
-import com.google.samples.apps.iosched.shared.model.UserSession
+import com.google.samples.apps.iosched.model.Speaker
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewHolder.HeaderViewHolder
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewHolder.RelatedViewHolder
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewHolder.SessionInfoViewHolder

@@ -16,18 +16,18 @@
 
 package com.google.samples.apps.iosched.shared.domain.tags
 
+import com.google.samples.apps.iosched.model.Tag
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
-import com.google.samples.apps.iosched.shared.model.Tag
-import com.google.samples.apps.iosched.shared.model.TestData.advancedTag
-import com.google.samples.apps.iosched.shared.model.TestData.androidTag
-import com.google.samples.apps.iosched.shared.model.TestData.beginnerTag
-import com.google.samples.apps.iosched.shared.model.TestData.cloudTag
-import com.google.samples.apps.iosched.shared.model.TestData.codelabsTag
-import com.google.samples.apps.iosched.shared.model.TestData.intermediateTag
-import com.google.samples.apps.iosched.shared.model.TestData.sessionsTag
-import com.google.samples.apps.iosched.shared.model.TestData.webTag
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.test.data.TestData.advancedTag
+import com.google.samples.apps.iosched.test.data.TestData.androidTag
+import com.google.samples.apps.iosched.test.data.TestData.beginnerTag
+import com.google.samples.apps.iosched.test.data.TestData.cloudTag
+import com.google.samples.apps.iosched.test.data.TestData.codelabsTag
+import com.google.samples.apps.iosched.test.data.TestData.intermediateTag
+import com.google.samples.apps.iosched.test.data.TestData.sessionsTag
+import com.google.samples.apps.iosched.test.data.TestData.webTag
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

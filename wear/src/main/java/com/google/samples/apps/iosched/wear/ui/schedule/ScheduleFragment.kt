@@ -23,9 +23,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.google.samples.apps.iosched.shared.model.SessionId
+import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.wear.R
 import com.google.samples.apps.iosched.wear.ui.WearableFragment
@@ -81,7 +80,7 @@ class ScheduleFragment : WearableFragment() {
         super.onActivityCreated(savedInstanceState)
 
         // TODO: Replace DAY_1 with current day once sign-in is implemented (followup CL).
-        viewModel.getSessionsForDay(DAY_1).observe(requireActivity(), Observer { list ->
+        viewModel.getSessionsForDay(0).observe(requireActivity(), Observer { list ->
             adapter.submitList(list ?: emptyList())
         })
 

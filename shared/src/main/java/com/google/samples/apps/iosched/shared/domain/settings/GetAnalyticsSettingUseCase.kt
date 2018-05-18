@@ -19,7 +19,7 @@ package com.google.samples.apps.iosched.shared.domain.settings
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.domain.UseCase
-import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.model.Session
 import javax.inject.Inject
 
 open class GetAnalyticsSettingUseCase @Inject constructor(private val preferenceStorage: PreferenceStorage)

@@ -21,8 +21,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import com.google.samples.apps.iosched.tv.R
-import com.google.samples.apps.iosched.shared.model.Session
-import com.google.samples.apps.iosched.shared.model.SessionId
+import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.model.SessionId
 
 /**
  * Loads the [SessionDetailFragment] with an id to display a particular [Session]

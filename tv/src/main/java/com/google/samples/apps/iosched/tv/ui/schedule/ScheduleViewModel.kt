@@ -19,14 +19,15 @@ package com.google.samples.apps.iosched.tv.ui.schedule
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseParameters
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
-import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.shared.util.map
 
 /**
@@ -60,9 +61,9 @@ class ScheduleViewModel(loadSessionsByDayUseCase: LoadUserSessionsByDayUseCase) 
         )
 
         // Map LiveData results from UseCase to each day's individual LiveData
-        day1Sessions = groupSessionsByTimeSlot(loadSessionsResult, ConferenceDay.DAY_1)
-        day2Sessions = groupSessionsByTimeSlot(loadSessionsResult, ConferenceDay.DAY_2)
-        day3Sessions = groupSessionsByTimeSlot(loadSessionsResult, ConferenceDay.DAY_3)
+        day1Sessions = groupSessionsByTimeSlot(loadSessionsResult, ConferenceDays[0])
+        day2Sessions = groupSessionsByTimeSlot(loadSessionsResult, ConferenceDays[1])
+        day3Sessions = groupSessionsByTimeSlot(loadSessionsResult, ConferenceDays[2])
 
         isLoading = loadSessionsResult.map { it == Result.Loading }
 
@@ -95,9 +96,10 @@ class ScheduleViewModel(loadSessionsByDayUseCase: LoadUserSessionsByDayUseCase) 
             day: ConferenceDay
     ): LiveData<Map<String, List<UserSession>>> =
             when (day) {
-                ConferenceDay.DAY_1 -> day1Sessions
-                ConferenceDay.DAY_2 -> day2Sessions
-                ConferenceDay.DAY_3 -> day3Sessions
+                ConferenceDays[0] -> day1Sessions
+                ConferenceDays[1] -> day2Sessions
+                ConferenceDays[2] -> day3Sessions
+                else -> throw Exception("Day not found")
             }
 }
 

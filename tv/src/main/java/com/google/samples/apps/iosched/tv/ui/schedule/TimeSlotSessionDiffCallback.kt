@@ -19,7 +19,7 @@ package com.google.samples.apps.iosched.tv.ui.schedule
 import android.support.v17.leanback.widget.DiffCallback
 import android.support.v17.leanback.widget.ListRow
 import android.text.TextUtils
-import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.model.Session
 
 /**
  * Compares if two [ListRow]s are the same.
