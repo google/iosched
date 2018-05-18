@@ -18,7 +18,7 @@ package com.google.samples.apps.iosched.widget.transition
 import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.content.Context
-import android.support.annotation.Keep
+import androidx.annotation.Keep
 import android.transition.Transition
 import android.transition.TransitionValues
 import android.util.AttributeSet

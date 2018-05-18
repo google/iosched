@@ -28,7 +28,7 @@ android {
         targetSdkVersion rootProject.targetSdkVersion
         versionCode rootProject.versionCodeMobile
         versionName rootProject.versionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "float[]",
                 "MAP_FLOORPLAN_MAPPING",
@@ -100,7 +100,7 @@ android {
     }
 
     lintOptions {
-        disable 'MissingTranslation'
+        disable "InvalidPackage", "MissingTranslation"
     }
 }
 
@@ -112,18 +112,18 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // UI
-    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:customtabs:$rootProject.supportLibraryVersion"
-    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
-    implementation "com.google.android.material:material:$rootProject.mdcVersion"
+    implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
+    implementation "androidx.browser:browser:$rootProject.browserVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
+    implementation "com.google.android.material:material:$rootProject.materialVersion"
     implementation "com.google.android:flexbox:$rootProject.flexboxVersion"
     implementation "com.airbnb.android:lottie:$rootProject.lottieVersion"
     implementation "com.pacioianu.david:ink-page-indicator:$rootProject.pageIndicatorVersion"
 
     // Architecture Components
-    implementation "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
-    kapt "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
-    testImplementation "android.arch.core:core-testing:$rootProject.archLifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
+    kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleVersion"
+    testImplementation "androidx.arch.core:core-testing:$rootProject.lifecycleVersion"
 
     // Dagger
     implementation "com.google.dagger:dagger-android:$rootProject.dagger"
@@ -136,11 +136,8 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
 
     // Fabric and Firebase
-    implementation("com.firebaseui:firebase-ui-auth:$rootProject.firebaseUiVersion")
+    implementation "com.firebaseui:firebase-ui-auth:$rootProject.firebaseUiVersion"
     implementation "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
-
-    implementation 'com.google.firebase:firebase-core:11.8.0'
-
 
     // Utils
     // Date and time API for Java.
@@ -149,11 +146,11 @@ dependencies {
     implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
 
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$rootProject.kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlinVersion"
 
     // Instrumentation tests
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
-    androidTestImplementation "com.android.support.test:runner:$rootProject.runnerVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
+    androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
 
     // Local unit tests
     testImplementation "junit:junit:$rootProject.junitVersion"
@@ -165,17 +162,6 @@ dependencies {
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
     stagingImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
-}
-
-// Force Dagger's transitive dependencies to use the project's version of the support libraries.
-configurations.all {
-    resolutionStrategy {
-        eachDependency { details ->
-            if (details.requested.group == 'com.android.support') {
-                details.useVersion supportLibraryVersion
-            }
-        }
-    }
 }
 
 apply plugin: 'com.google.gms.google-services'

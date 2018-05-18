@@ -28,7 +28,7 @@
             type="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailEventListener"/>
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
@@ -75,6 +75,6 @@
             android:textColor="?android:textColorPrimary"
             tools:text="Speaker Company" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

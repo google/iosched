@@ -16,16 +16,16 @@
 
 package com.google.samples.apps.iosched.ui.speaker
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.support.v4.app.NavUtils
-import android.support.v7.widget.RecyclerView.RecycledViewPool
+import androidx.core.app.NavUtils
+import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.os.bundleOf
-import androidx.view.doOnLayout
+import androidx.core.os.bundleOf
+import androidx.core.view.doOnLayout
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSpeakerBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
@@ -117,7 +117,7 @@ class SpeakerFragment : DaggerFragment() {
             SpeakerAdapter(this, speakerViewModel, headshotLoadListener, tagRecycledViewPool)
         binding.speakerDetailRecyclerView.run {
             adapter = speakerAdapter
-            itemAnimator.run {
+            itemAnimator?.run {
                 addDuration = 120L
                 moveDuration = 120L
                 changeDuration = 120L

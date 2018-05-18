@@ -34,7 +34,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlinVersion"
 
     // Architecture Components
-    implementation "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
-    implementation "android.arch.lifecycle:livedata:$rootProject.archLifecycleVersion"
-    implementation "android.arch.lifecycle:viewmodel:$rootProject.archLifecycleVersion"
+    implementation "android.arch.lifecycle:extensions:$rootProject.lifecycleVersion"
+    implementation "android.arch.lifecycle:livedata:$rootProject.lifecycleVersion"
+    implementation "android.arch.lifecycle:viewmodel:$rootProject.lifecycleVersion"
 }

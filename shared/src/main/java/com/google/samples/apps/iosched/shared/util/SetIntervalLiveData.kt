@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.shared.util
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MediatorLiveData
-import android.support.annotation.UiThread
-import android.support.annotation.WorkerThread
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.annotation.UiThread
+import androidx.annotation.WorkerThread
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 
 private const val ONE_SECOND = 1_000L

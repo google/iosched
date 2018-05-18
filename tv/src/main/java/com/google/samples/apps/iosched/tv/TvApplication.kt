@@ -17,8 +17,8 @@
 package com.google.samples.apps.iosched.tv
 
 import android.app.Application
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.tv.di.DaggerTvAppComponent
 import com.google.samples.apps.iosched.tv.di.TvAppComponent

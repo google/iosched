@@ -16,8 +16,8 @@
 
 package com.google.samples.apps.iosched.tv.ui.presenter
 
-import android.support.v17.leanback.widget.AbstractDetailsDescriptionPresenter
-import android.support.v17.leanback.widget.Presenter
+import androidx.leanback.widget.AbstractDetailsDescriptionPresenter
+import androidx.leanback.widget.Presenter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.google.samples.apps.iosched.model.Session

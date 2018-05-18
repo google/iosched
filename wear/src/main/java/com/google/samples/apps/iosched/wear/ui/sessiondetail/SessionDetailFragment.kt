@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.wear.ui.sessiondetail
 
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

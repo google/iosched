@@ -16,8 +16,8 @@
 
 package com.google.samples.apps.iosched.ui.messages
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
-import android.arch.lifecycle.LiveData
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.LiveData
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil

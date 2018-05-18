@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.schedule
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShowActionUseCase
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule

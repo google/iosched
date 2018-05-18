@@ -20,8 +20,8 @@ import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.app.AppCompatDialog
+import androidx.core.content.res.ResourcesCompat
+import androidx.appcompat.app.AppCompatDialog
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View

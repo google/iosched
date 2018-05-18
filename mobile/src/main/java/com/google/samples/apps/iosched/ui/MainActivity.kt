@@ -16,12 +16,11 @@
 package com.google.samples.apps.iosched.ui
 
 import android.app.Activity
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import com.firebase.ui.auth.IdpResponse
-import com.google.android.material.widget.HideBottomViewOnScrollBehavior
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.consume
 import com.google.samples.apps.iosched.shared.util.inTransaction
@@ -33,7 +32,7 @@ import com.google.samples.apps.iosched.ui.schedule.ScheduleFragment
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.navigation
 import timber.log.Timber
 import java.util.UUID
 import javax.inject.Inject
@@ -48,7 +47,6 @@ class MainActivity : DaggerAppCompatActivity() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var behavior: HideBottomViewOnScrollBehavior<*>
     private lateinit var currentFragment: MainNavigationFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {

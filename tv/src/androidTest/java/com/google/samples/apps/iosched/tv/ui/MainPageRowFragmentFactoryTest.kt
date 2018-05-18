@@ -18,10 +18,10 @@
 
 package com.google.samples.apps.iosched.tv.ui
 
-import android.support.test.filters.SmallTest
-import android.support.test.runner.AndroidJUnit4
-import android.support.v17.leanback.widget.HeaderItem
-import android.support.v17.leanback.widget.Row
+import androidx.test.filters.SmallTest
+import androidx.test.runner.AndroidJUnit4
+import androidx.leanback.widget.HeaderItem
+import androidx.leanback.widget.Row
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.getEnum
 import com.google.samples.apps.iosched.tv.ui.schedule.ScheduleFragment

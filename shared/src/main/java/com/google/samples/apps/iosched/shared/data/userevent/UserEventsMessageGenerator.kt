@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.data.userevent
 
-import android.support.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType.CANCELLATION_DENIED_CUTOFF

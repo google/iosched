@@ -17,14 +17,14 @@
 package com.google.samples.apps.iosched.ui.onboarding
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import androidx.view.doOnLayout
+import androidx.core.view.ViewCompat.animate
+import androidx.core.view.doOnLayout
+import androidx.fragment.app.Fragment
 import com.airbnb.lottie.LottieAnimationView
-
 import com.google.samples.apps.iosched.R
 
 /**

@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.domain.sessions
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase

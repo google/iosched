@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.map
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import android.content.Context
 import com.google.android.gms.maps.model.LatLng
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule

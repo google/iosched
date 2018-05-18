@@ -16,16 +16,15 @@
 
 package com.google.samples.apps.iosched.ui.sessiondetail
 
-import android.databinding.BindingAdapter
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.databinding.BindingAdapter
 import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionType
 import com.google.samples.apps.iosched.model.SessionType.AFTER_HOURS
@@ -35,6 +34,7 @@ import com.google.samples.apps.iosched.model.SessionType.OFFICE_HOURS
 import com.google.samples.apps.iosched.model.SessionType.SANDBOX
 import com.google.samples.apps.iosched.model.SessionType.SESSION
 import com.google.samples.apps.iosched.model.SessionType.UNKNOWN
+import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.ui.reservation.ReservationViewState
 import com.google.samples.apps.iosched.ui.reservation.ReservationViewState.RESERVABLE

@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.info
 
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

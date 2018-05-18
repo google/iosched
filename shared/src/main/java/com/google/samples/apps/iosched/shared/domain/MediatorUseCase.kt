@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.domain
 
-import android.arch.lifecycle.MediatorLiveData
+import androidx.lifecycle.MediatorLiveData
 import com.google.samples.apps.iosched.shared.result.Result
 
 /**

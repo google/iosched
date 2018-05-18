@@ -16,17 +16,17 @@
 
 package com.google.samples.apps.iosched.ui.schedule.day
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView.RecycledViewPool
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.view.doOnNextLayout
+import androidx.core.view.doOnNextLayout
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleDayBinding
 import com.google.samples.apps.iosched.shared.result.EventObserver
@@ -102,7 +102,7 @@ class ScheduleDayFragment : DaggerFragment() {
 
         binding.recyclerview.apply {
             adapter = this@ScheduleDayFragment.adapter
-            recycledViewPool = sessionViewPool
+            setRecycledViewPool(sessionViewPool)
             (layoutManager as LinearLayoutManager).recycleChildrenOnDetach = true
             (itemAnimator as DefaultItemAnimator).run {
                 supportsChangeAnimations = false
@@ -172,5 +172,3 @@ class ScheduleDayFragment : DaggerFragment() {
         }
     }
 }
-
-

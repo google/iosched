@@ -16,14 +16,14 @@
 
 package com.google.samples.apps.iosched.ui.schedule.day
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LiveData
-import android.support.v7.recyclerview.extensions.ListAdapter
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.RecyclerView.ViewHolder
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.databinding.ItemSessionBinding
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.ui.schedule.ScheduleEventListener
@@ -32,7 +32,7 @@ import org.threeten.bp.ZoneId
 
 class ScheduleDayAdapter(
     private val eventListener: ScheduleEventListener,
-    private val tagViewPool: RecyclerView.RecycledViewPool,
+    private val tagViewPool: RecycledViewPool,
     private val showReservations: LiveData<Boolean>,
     private val timeZoneId: LiveData<ZoneId>,
     private val lifecycleOwner: LifecycleOwner
@@ -42,7 +42,7 @@ class ScheduleDayAdapter(
         val binding =
             ItemSessionBinding.inflate(LayoutInflater.from(parent.context), parent, false).apply {
                 tags.apply {
-                    recycledViewPool = tagViewPool
+                    setRecycledViewPool(tagViewPool)
                     // Use a customized FlexboxLayoutManager so that swiping the tags are doesn't
                     // trigger pull to refresh behavior.
                     layoutManager = UnscrollableFlexboxLayoutManager(parent.context).apply {

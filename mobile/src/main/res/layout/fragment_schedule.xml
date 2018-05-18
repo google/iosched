@@ -27,7 +27,7 @@
 
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -45,7 +45,7 @@
             app:refreshing="@{viewModel.swipeRefreshing}"
             app:enabled="@{!viewModel.isAgendaPage}">
 
-            <android.support.v4.view.ViewPager
+            <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -75,7 +75,7 @@
             android:layout_marginEnd="@dimen/snackbar_margin_end_fab"
             android:visibility="gone" />
 
-        <com.google.android.material.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/filter_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -105,6 +105,6 @@
             app:layout_behavior="com.google.samples.apps.iosched.widget.BottomSheetBehavior"
             tools:layout="@layout/fragment_schedule_filter" />
 
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

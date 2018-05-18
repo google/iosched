@@ -16,14 +16,14 @@
 
 package com.google.samples.apps.iosched.ui.speaker
 
-import android.arch.lifecycle.LifecycleOwner
-import android.support.v7.recyclerview.extensions.AsyncListDiffer
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.RecyclerView.RecycledViewPool
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemSessionBinding
 import com.google.samples.apps.iosched.databinding.ItemSpeakerInfoBinding
@@ -31,6 +31,7 @@ import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.ui.speaker.SpeakerViewHolder.HeaderViewHolder
 import com.google.samples.apps.iosched.ui.speaker.SpeakerViewHolder.SpeakerInfoViewHolder
 import com.google.samples.apps.iosched.ui.speaker.SpeakerViewHolder.SpeakerSessionViewHolder
+import java.util.Collections.emptyList
 
 /**
  * [RecyclerView.Adapter] for presenting a speaker details, composed of information about the
@@ -66,7 +67,7 @@ class SpeakerAdapter(
             )
             R.layout.item_session -> SpeakerSessionViewHolder(
                 ItemSessionBinding.inflate(inflater, parent, false).apply {
-                    tags.recycledViewPool = tagRecycledViewPool
+                    tags.setRecycledViewPool(tagRecycledViewPool)
                 }
             )
             else -> throw IllegalStateException("Unknown viewType $viewType")

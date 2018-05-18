@@ -64,15 +64,7 @@ android {
     }
 
     lintOptions {
-        disable "BinaryOperationInTimber",
-                "LogNotTimber",
-                "StringFormatInTimber",
-                "ThrowableNotAtBeginning",
-                "TimberArgCount",
-                "TimberArgTypes",
-                "TimberExceptionLogging",
-                "TimberTagLength",
-                "MissingTranslation"
+        disable "InvalidPackage", "MissingTranslation"
     }
 }
 
@@ -91,17 +83,17 @@ dependencies {
     testImplementation project(':androidTest-shared')
 
     // UI
-    implementation "com.android.support:percent:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:wear:$rootProject.supportLibraryVersion"
-    implementation "com.google.android.support:wearable:$rootProject.wearableSupportLibraryVersion"
+    implementation "androidx.wear:wear:$rootProject.wearVersion"
     compileOnly "com.google.android.wearable:wearable:$rootProject.wearableSupportLibraryVersion"
 
+    // Due to a bug in Databinding, we need this dependency for release variant, or else proguard
+    // will fail the build. b/80242780
+    releaseImplementation "androidx.cardview:cardview:1.0.0-alpha1"
+
     // Architecture Components
-    implementation "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
-    kapt "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
-    testImplementation "android.arch.core:core-testing:$rootProject.archLifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
+    kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleVersion"
+    testImplementation "androidx.arch.core:core-testing:$rootProject.lifecycleVersion"
 
     // Dagger
     implementation "com.google.dagger:dagger-android:$rootProject.dagger"
@@ -113,32 +105,20 @@ dependencies {
     // Date and time API for Java.
     api "com.jakewharton.threetenabp:threetenabp:$rootProject.threetenabpVersion"
     testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"
-    implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
 
     // Fabric and Firebase
     implementation "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
 
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$rootProject.kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlinVersion"
 
     // Instrumentation tests
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
-    androidTestImplementation "com.android.support.test:runner:$rootProject.runnerVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
+    androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
 
     // Local unit tests
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
-}
-
-// Force Dagger's transitive dependencies to use the project's version of the support libraries.
-configurations.all {
-    resolutionStrategy {
-        eachDependency { details ->
-            if (details.requested.group == 'com.android.support') {
-                details.useVersion supportLibraryVersion
-            }
-        }
-    }
 }
 
 apply plugin: 'com.google.gms.google-services'

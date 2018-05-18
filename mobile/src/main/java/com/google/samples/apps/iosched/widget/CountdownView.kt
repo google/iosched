@@ -17,11 +17,11 @@
 package com.google.samples.apps.iosched.widget
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import androidx.view.postDelayed
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.postDelayed
 import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieAnimationView.CacheStrategy.Strong
 import com.google.samples.apps.iosched.R

@@ -16,15 +16,15 @@
 
 package com.google.samples.apps.iosched.ui.schedule.filters
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.model.MobileTestData
-import com.google.samples.apps.iosched.test.data.TestData.androidTag
-import com.google.samples.apps.iosched.test.data.TestData.cloudTag
-import com.google.samples.apps.iosched.test.data.TestData.webTag
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
+import com.google.samples.apps.iosched.test.data.TestData.androidTag
+import com.google.samples.apps.iosched.test.data.TestData.cloudTag
+import com.google.samples.apps.iosched.test.data.TestData.webTag
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

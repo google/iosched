@@ -17,10 +17,10 @@
 package com.google.samples.apps.iosched.widget
 
 import android.graphics.Rect
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.RecyclerView.ItemDecoration
-import android.support.v7.widget.RecyclerView.State
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
+import androidx.recyclerview.widget.RecyclerView.State
 import com.google.samples.apps.iosched.util.isRtl
 
 /** ItemDecoration that adds space around items. */

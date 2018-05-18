@@ -16,9 +16,9 @@
 
 package com.google.samples.apps.iosched.ui.map
 
-import android.databinding.BindingAdapter
-import android.support.annotation.DimenRes
-import android.support.annotation.RawRes
+import androidx.databinding.BindingAdapter
+import androidx.annotation.DimenRes
+import androidx.annotation.RawRes
 import android.view.View
 import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.MapView

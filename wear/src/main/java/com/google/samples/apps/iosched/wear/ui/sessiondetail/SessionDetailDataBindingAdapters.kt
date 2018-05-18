@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.wear.ui.sessiondetail
 
-import android.databinding.BindingAdapter
+import androidx.databinding.BindingAdapter
 import android.widget.TextView
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.ZonedDateTime

@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.ui
 
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
 import com.google.samples.apps.iosched.shared.result.EventObserver

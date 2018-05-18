@@ -55,7 +55,7 @@
     <dimen name="dialog_vertical_margin">32dp</dimen>
     <dimen name="dialog_horizontal_margin">32dp</dimen>
     <dimen name="dialog_elevation">24dp</dimen>
-    <dimen name="padding_borderless_button">20dp</dimen>
+    <dimen name="padding_borderless_button">16dp</dimen>
 
     <dimen name="event_logo_end_margin">48dp</dimen>
     <dimen name="event_logo_top_margin">32dp</dimen>

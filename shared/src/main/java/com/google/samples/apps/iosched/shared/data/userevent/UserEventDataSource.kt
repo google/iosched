@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.data.userevent
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction

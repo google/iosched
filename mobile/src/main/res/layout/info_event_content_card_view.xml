@@ -22,7 +22,7 @@
     <!-- It seems that ConstraintLayout currently doesn't support merge tags so we need a
          (otherwise useless) wrapping FrameLayout :( -->
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/margin_normal">
@@ -104,6 +104,6 @@
             app:layout_constraintStart_toEndOf="@id/event_view_sessions"
             app:layout_constraintTop_toBottomOf="@id/event_content_description" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </merge>

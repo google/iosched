@@ -22,9 +22,9 @@ import android.graphics.ColorFilter
 import android.graphics.Paint
 import android.graphics.PixelFormat
 import android.graphics.drawable.Drawable
-import androidx.content.res.getColorOrThrow
-import androidx.content.res.getDimensionOrThrow
-import androidx.content.res.getDimensionPixelSizeOrThrow
+import androidx.core.content.res.getColorOrThrow
+import androidx.core.content.res.getDimensionOrThrow
+import androidx.core.content.res.getDimensionPixelSizeOrThrow
 import com.google.samples.apps.iosched.R
 
 /**

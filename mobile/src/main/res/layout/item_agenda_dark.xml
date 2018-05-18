@@ -30,7 +30,7 @@
             type="com.google.samples.apps.iosched.model.Block" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/spacing_micro"
@@ -44,6 +44,6 @@
             app:agenda="@{agenda}"
             app:timeZoneId="@{timeZoneId}"/>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

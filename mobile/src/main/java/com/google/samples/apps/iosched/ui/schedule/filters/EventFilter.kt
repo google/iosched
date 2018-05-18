@@ -16,9 +16,9 @@
 
 package com.google.samples.apps.iosched.ui.schedule.filters
 
-import android.databinding.ObservableBoolean
+import androidx.databinding.ObservableBoolean
 import android.graphics.Color
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Tag
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.EventFilterCategory.NONE

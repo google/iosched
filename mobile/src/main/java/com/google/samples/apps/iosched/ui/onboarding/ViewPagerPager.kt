@@ -17,9 +17,9 @@
 package com.google.samples.apps.iosched.ui.onboarding
 
 import android.animation.ValueAnimator
-import android.support.v4.view.ViewPager
 import android.view.animation.AnimationUtils
-import androidx.animation.addListener
+import androidx.core.animation.addListener
+import androidx.viewpager.widget.ViewPager
 
 /**
  * Helper class for automatically scrolling pages of a [ViewPager] which does not allow you to

@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.wear.ui
 
 import android.os.Bundle
-import android.support.wear.ambient.AmbientModeSupport
+import androidx.wear.ambient.AmbientModeSupport
 import dagger.android.support.DaggerFragment
 
 /**

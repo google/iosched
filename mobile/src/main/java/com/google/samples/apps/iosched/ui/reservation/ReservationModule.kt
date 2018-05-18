@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.reservation
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.di.ChildFragmentScoped
 import com.google.samples.apps.iosched.shared.di.ViewModelKey
 import dagger.Binds

@@ -18,20 +18,21 @@ package com.google.samples.apps.iosched.widget
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
-import android.support.annotation.IntDef
-import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.CoordinatorLayout.Behavior
-import android.support.v4.view.AbsSavedState
-import android.support.v4.view.ViewCompat
-import android.support.v4.widget.ViewDragHelper
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.VelocityTracker
 import android.view.View
 import android.view.ViewConfiguration
 import android.view.ViewGroup
+import androidx.annotation.IntDef
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior
+import androidx.core.view.ViewCompat
+import androidx.customview.view.AbsSavedState
+import androidx.customview.widget.ViewDragHelper
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.readBoolean
 import com.google.samples.apps.iosched.shared.util.writeBoolean
@@ -266,7 +267,7 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
 
     override fun onSaveInstanceState(parent: CoordinatorLayout, child: V): Parcelable {
         return SavedState(
-            super.onSaveInstanceState(parent, child),
+            super.onSaveInstanceState(parent, child) ?: Bundle.EMPTY,
             state,
             peekHeight,
             isFitToContents,
@@ -278,7 +279,7 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
 
     override fun onRestoreInstanceState(parent: CoordinatorLayout, child: V, state: Parcelable) {
         val ss = state as SavedState
-        super.onRestoreInstanceState(parent, child, ss.superState)
+        super.onRestoreInstanceState(parent, child, ss.superState ?: Bundle.EMPTY)
 
         isDraggable = ss.isDraggable
         peekHeight = ss.peekHeight

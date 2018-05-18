@@ -31,9 +31,9 @@
             type="com.google.samples.apps.iosched.model.Block" />
     </data>
 
-    <merge tools:parentTag="android.support.constraint.ConstraintLayout">
+    <merge tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/keyline"
             android:layout_width="0dp"
             android:layout_height="0dp"

@@ -16,9 +16,9 @@
 
 package com.google.samples.apps.iosched.ui.info
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import android.net.wifi.WifiConfiguration
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo

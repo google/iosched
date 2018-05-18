@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.test.util.time
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import com.google.samples.apps.iosched.shared.util.SetIntervalLiveData
 import com.google.samples.apps.iosched.shared.util.SetIntervalLiveData.DefaultIntervalMapper
 import com.google.samples.apps.iosched.shared.util.SetIntervalLiveData.IntervalMapper

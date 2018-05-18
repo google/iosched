@@ -20,22 +20,24 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.Typeface.BOLD
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.widget.RecyclerView
+import androidx.core.content.res.ResourcesCompat
+import androidx.recyclerview.widget.RecyclerView
 import android.text.Layout.Alignment.ALIGN_CENTER
 import android.text.SpannableStringBuilder
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.StyleSpan
-import androidx.content.res.getColorOrThrow
-import androidx.content.res.getDimensionOrThrow
-import androidx.content.res.getDimensionPixelSizeOrThrow
-import androidx.content.res.getResourceIdOrThrow
-import androidx.graphics.withTranslation
-import androidx.text.inSpans
-import androidx.view.get
-import androidx.view.isEmpty
+import androidx.core.content.res.getColorOrThrow
+import androidx.core.content.res.getDimensionOrThrow
+import androidx.core.content.res.getDimensionPixelSizeOrThrow
+import androidx.core.content.res.getResourceIdOrThrow
+import androidx.core.graphics.withTranslation
+import androidx.core.text.inSpans
+import androidx.core.view.get
+import androidx.core.view.isEmpty
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
+import androidx.recyclerview.widget.RecyclerView.State
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Session
 import org.threeten.bp.ZoneId
@@ -50,7 +52,7 @@ class ScheduleTimeHeadersDecoration(
     context: Context,
     sessions: List<Session>,
     zoneId: ZoneId
-) : RecyclerView.ItemDecoration() {
+) : ItemDecoration() {
 
     private val paint: TextPaint
     private val width: Int
@@ -98,7 +100,7 @@ class ScheduleTimeHeadersDecoration(
      * [timeSlots]. We also look back to see if there are any headers _before_ the first header we
      * found i.e. which needs to be sticky.
      */
-    override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State?) {
+    override fun onDrawOver(c: Canvas, parent: RecyclerView, state: State) {
         if (timeSlots.isEmpty() || parent.isEmpty()) return
 
         var earliestFoundHeaderPos = -1

@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.ui.sessiondetail
 
-import android.support.annotation.IdRes
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.IdRes
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * A [RecyclerView.OnScrollListener] which adjusts the position of the [up] view based on scroll.

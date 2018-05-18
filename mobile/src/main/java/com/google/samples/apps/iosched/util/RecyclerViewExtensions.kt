@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.util
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 
 fun RecyclerView.clearDecorations() {
     if (itemDecorationCount > 0) {

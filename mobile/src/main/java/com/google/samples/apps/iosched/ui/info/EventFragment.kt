@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.ui.info
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import android.content.Intent
-import android.databinding.BindingAdapter
+import androidx.databinding.BindingAdapter
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater

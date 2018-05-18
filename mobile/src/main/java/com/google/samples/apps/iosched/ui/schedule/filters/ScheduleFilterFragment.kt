@@ -16,23 +16,23 @@
 
 package com.google.samples.apps.iosched.ui.schedule.filters
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.databinding.BindingAdapter
-import android.databinding.ObservableFloat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.databinding.BindingAdapter
+import androidx.databinding.ObservableFloat
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.RecyclerView.OnScrollListener
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.view.doOnLayout
-import androidx.view.forEach
-import androidx.view.postDelayed
+import androidx.core.view.doOnLayout
+import androidx.core.view.forEach
+import androidx.core.view.postDelayed
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleFilterBinding
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
