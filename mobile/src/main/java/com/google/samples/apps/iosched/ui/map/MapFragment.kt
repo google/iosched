@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.ui.map
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.support.v4.widget.NestedScrollView
+import androidx.core.widget.NestedScrollView
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.View

@@ -16,20 +16,20 @@
 
 package com.google.samples.apps.iosched.util
 
-import android.databinding.BindingAdapter
+import androidx.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.support.v4.view.ViewPager
-import android.support.v7.content.res.AppCompatResources
+import androidx.viewpager.widget.ViewPager
+import androidx.appcompat.content.res.AppCompatResources
 import android.view.View
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.ImageView
-import androidx.net.toUri
+import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.material.widget.FloatingActionButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.widget.CustomSwipeRefreshLayout
 import timber.log.Timber

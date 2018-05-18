@@ -16,8 +16,8 @@
 
 package com.google.samples.apps.iosched.tv.ui.schedule
 
-import android.support.v17.leanback.widget.DiffCallback
-import android.support.v17.leanback.widget.ListRow
+import androidx.leanback.widget.DiffCallback
+import androidx.leanback.widget.ListRow
 import android.text.TextUtils
 import com.google.samples.apps.iosched.model.Session
 

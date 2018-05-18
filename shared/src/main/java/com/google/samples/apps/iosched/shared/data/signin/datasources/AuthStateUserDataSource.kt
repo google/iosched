@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.data.signin.datasources
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfoBasic
 import com.google.samples.apps.iosched.shared.result.Result
 

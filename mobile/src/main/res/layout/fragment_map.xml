@@ -29,7 +29,7 @@
 
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/map_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -74,7 +74,7 @@
             app:uiZoomControls="false" />
 
         <!-- Use marginBottom to prevent the sheet from covering the app bar. -->
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
             app:behavior_peekHeight="@dimen/bottom_sheet_peek_height"
             app:bottomSheetState="@{viewModel.bottomSheetStateEvent}">
 
-            <android.support.constraint.Guideline
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guide_peek_height"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -100,7 +100,7 @@
               ~ view down and can leave it partly off screen if the description is long. Instead we
               ~ use paddingTop to leave room for the header views.
               -->
-            <android.support.v4.widget.NestedScrollView
+            <androidx.core.widget.NestedScrollView
                 android:id="@+id/description_scrollview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/margin_normal" />
-            </android.support.v4.widget.NestedScrollView>
+            </androidx.core.widget.NestedScrollView>
 
             <View
                 android:id="@+id/clickable"
@@ -178,8 +178,8 @@
                 android:stateListAnimator="@animator/active_alpha"
                 app:layout_constraintTop_toBottomOf="@id/guide_peek_height" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

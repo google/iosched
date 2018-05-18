@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.ui.reservation
 
-import android.databinding.BindingAdapter
+import androidx.databinding.BindingAdapter
 import android.widget.TextView
-import androidx.text.bold
-import androidx.text.buildSpannedString
+import androidx.core.text.bold
+import androidx.core.text.buildSpannedString
 import com.google.samples.apps.iosched.R
 
 

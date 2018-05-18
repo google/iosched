@@ -17,8 +17,8 @@
 package com.google.samples.apps.iosched.tv.ui.search
 
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
-import android.support.v4.content.IntentCompat.EXTRA_START_PLAYBACK
+import androidx.fragment.app.FragmentActivity
+import androidx.core.content.IntentCompat.EXTRA_START_PLAYBACK
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.tv.TvApplication

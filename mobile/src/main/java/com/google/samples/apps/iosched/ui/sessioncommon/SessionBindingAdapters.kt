@@ -17,12 +17,12 @@
 package com.google.samples.apps.iosched.ui.sessioncommon
 
 import android.content.Context
-import android.databinding.BindingAdapter
 import android.graphics.Color.TRANSPARENT
 import android.graphics.drawable.GradientDrawable
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Tag
 

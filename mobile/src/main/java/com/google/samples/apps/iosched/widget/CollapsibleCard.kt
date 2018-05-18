@@ -21,7 +21,7 @@ import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.M
 import android.os.Parcel
 import android.os.Parcelable
-import android.support.v7.content.res.AppCompatResources
+import androidx.appcompat.content.res.AppCompatResources
 import android.transition.Transition
 import android.transition.TransitionInflater
 import android.transition.TransitionManager

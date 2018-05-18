@@ -24,11 +24,11 @@
             type="com.google.samples.apps.iosched.ui.onboarding.OnboardingViewModel" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v4.view.ViewPager
+        <androidx.viewpager.widget.ViewPager
             android:id="@+id/pager"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -38,7 +38,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:offscreenPageLimit="@{2}" />
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_actions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -72,6 +72,6 @@
             app:viewPager="@{pager}"
             android:importantForAccessibility="no" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

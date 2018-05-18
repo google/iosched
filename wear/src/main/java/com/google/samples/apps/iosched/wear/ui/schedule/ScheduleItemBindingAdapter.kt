@@ -17,9 +17,9 @@
 package com.google.samples.apps.iosched.wear.ui.schedule
 
 import android.content.Context
-import android.databinding.BindingAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.databinding.BindingAdapter
 import com.google.samples.apps.iosched.wear.R
 import org.threeten.bp.Duration
 import org.threeten.bp.ZonedDateTime
@@ -82,8 +82,8 @@ private fun findTimeResource(context: Context, startTime: ZonedDateTime): Int {
         properTimeResourceName(hour.convertToHourString(), minute.convertToMinuteString())
 
     // TODO: Add AM/PM once delivered & remove log.
-    Timber.d(TAG, "ZonedDateTime: ${startTime.hour} + ${startTime.minute}")
-    Timber.d(TAG, "IC time: $properTimeName")
+    Timber.tag(TAG).d("ZonedDateTime: ${startTime.hour} + ${startTime.minute}")
+    Timber.tag(TAG).d("IC time: $properTimeName")
 
     return context.resources.getIdentifier(properTimeName, DRAWABLE, context.packageName)
 }

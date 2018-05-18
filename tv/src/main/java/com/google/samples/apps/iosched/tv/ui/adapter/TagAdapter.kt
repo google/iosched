@@ -18,12 +18,12 @@ package com.google.samples.apps.iosched.tv.ui.adapter
 
 import android.content.Context
 import android.graphics.Color
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.google.samples.apps.iosched.model.Tag
 import com.google.samples.apps.iosched.tv.R
 
@@ -41,21 +41,16 @@ class TagAdapter : RecyclerView.Adapter<TagViewHolder>() {
 
     override fun onBindViewHolder(holder: TagViewHolder, position: Int) {
         val tag = tags[position]
-        val tagView = holder.tag
 
-        tagView?.let {
-            it.text = tag.name
-
-        it.compoundDrawablesRelative[0]?.setTint(
-                tagTintOrDefault(
-                    tag.color,
-                    tagView.context
-                )
+        holder.tagView?.apply {
+            text = tag.name
+            compoundDrawablesRelative[0]?.setTint(
+                tagTintOrDefault(tag.color, context)
             )
         }
     }
 
-    fun tagTintOrDefault(color: Int, context: Context): Int {
+    private fun tagTintOrDefault(color: Int, context: Context): Int {
         return if (color != Color.TRANSPARENT) {
             color
         } else {
@@ -64,6 +59,6 @@ class TagAdapter : RecyclerView.Adapter<TagViewHolder>() {
     }
 }
 
-class TagViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-    val tag = itemView?.findViewById<TextView>(R.id.tag_name)
+class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    val tagView = itemView.findViewById<TextView>(R.id.tag_name)
 }

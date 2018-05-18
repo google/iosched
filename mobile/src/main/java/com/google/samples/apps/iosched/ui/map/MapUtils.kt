@@ -18,9 +18,9 @@ package com.google.samples.apps.iosched.ui.map
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.support.annotation.DrawableRes
-import android.support.v7.content.res.AppCompatResources
-import androidx.graphics.drawable.toBitmap
+import androidx.annotation.DrawableRes
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.graphics.drawable.toBitmap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.data.geojson.GeoJsonPointStyle

@@ -30,7 +30,7 @@
         android:src="@drawable/ic_nav_schedule"
         android:contentDescription="@string/schedule_icon_image_view_content_description" />
 
-    <android.support.wear.widget.WearableRecyclerView
+    <androidx.wear.widget.WearableRecyclerView
         android:id="@+id/wearableRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

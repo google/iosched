@@ -16,9 +16,9 @@
 
 package com.google.samples.apps.iosched.ui
 
-import android.arch.lifecycle.LiveData
-import android.support.v4.app.Fragment
 import android.text.Html
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager

@@ -18,8 +18,8 @@
 
 package com.google.samples.apps.iosched.ui.sessiondetail
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
-import android.arch.lifecycle.MediatorLiveData
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MediatorLiveData
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.Session

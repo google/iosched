@@ -16,12 +16,12 @@
 
 package com.google.samples.apps.iosched.shared.domain.users
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
-import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository

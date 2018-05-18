@@ -29,7 +29,7 @@ android {
         targetSdkVersion rootProject.targetSdkVersion
         versionCode rootProject.versionCodeTv
         versionName rootProject.versionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [crashlyticsEnabled: true]
     }
 
@@ -60,15 +60,7 @@ android {
     }
 
     lintOptions {
-        disable "BinaryOperationInTimber",
-                "LogNotTimber",
-                "StringFormatInTimber",
-                "ThrowableNotAtBeginning",
-                "TimberArgCount",
-                "TimberArgTypes",
-                "TimberExceptionLogging",
-                "TimberTagLength",
-                "MissingTranslation"
+        disable "InvalidPackage", "MissingTranslation"
     }
 
     // debug and release variants share the same source dir
@@ -84,17 +76,17 @@ dependencies {
     testImplementation project(':androidTest-shared')
 
     // UI
-    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
-    implementation "com.android.support:leanback-v17:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:support-tv-provider:$rootProject.supportLibraryVersion"
-    implementation "com.google.android.material:material:$rootProject.mdcVersion"
+    implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
+    implementation "androidx.leanback:leanback:$rootProject.leanbackVersion"
+    implementation "androidx.tvprovider:tvprovider:$rootProject.tvproviderVersion"
+    implementation "com.google.android.material:material:$rootProject.materialVersion"
     implementation "com.google.android:flexbox:$rootProject.flexboxVersion"
 
     // Architecture Components
-    implementation "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
-    kapt "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
-    testImplementation "android.arch.core:core-testing:$rootProject.archLifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
+    kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleVersion"
+    testImplementation "androidx.arch.core:core-testing:$rootProject.lifecycleVersion"
 
     // Dagger
     implementation "com.google.dagger:dagger-android:$rootProject.dagger"
@@ -116,26 +108,15 @@ dependencies {
     implementation "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
 
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$rootProject.kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlinVersion"
 
     // Instrumentation tests
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
-    androidTestImplementation "com.android.support.test:runner:$rootProject.runnerVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
+    androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
 
     // Local unit tests
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
-}
-
-// Force Dagger's transitive dependencies to use the project's version of the support libraries.
-configurations.all {
-    resolutionStrategy {
-        eachDependency { details ->
-            if (details.requested.group == 'com.android.support') {
-                details.useVersion supportLibraryVersion
-            }
-        }
-    }
 }
 
 apply plugin: 'com.google.gms.google-services'

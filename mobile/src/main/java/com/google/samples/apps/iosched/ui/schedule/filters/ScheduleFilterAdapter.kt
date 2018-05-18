@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.ui.schedule.filters
 
-import android.support.v7.recyclerview.extensions.ListAdapter
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.GridLayoutManager.SpanSizeLookup
-import android.support.v7.widget.RecyclerView.ViewHolder
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

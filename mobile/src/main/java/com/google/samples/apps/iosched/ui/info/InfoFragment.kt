@@ -17,12 +17,12 @@
 package com.google.samples.apps.iosched.ui.info
 
 import android.os.Bundle
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentInfoBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
@@ -36,8 +36,11 @@ class InfoFragment : DaggerFragment(), MainNavigationFragment {
 
     private lateinit var binding: FragmentInfoBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentInfoBinding.inflate(inflater, container, false).apply {
             setLifecycleOwner(this@InfoFragment)
         }
@@ -53,7 +56,7 @@ class InfoFragment : DaggerFragment(), MainNavigationFragment {
 
             // Analytics. Manually fire once for the loaded tab, then fire on tab change.
             trackInfoScreenView(0)
-            viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            viewpager.addOnPageChangeListener(object : OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {}
                 override fun onPageScrolled(position: Int, offset: Float, offsetPixels: Int) {}
                 override fun onPageSelected(position: Int) {

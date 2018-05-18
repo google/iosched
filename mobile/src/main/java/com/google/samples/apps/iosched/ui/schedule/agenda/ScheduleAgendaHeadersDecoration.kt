@@ -21,8 +21,6 @@ import android.graphics.Canvas
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.Rect
 import android.graphics.Typeface.BOLD
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.widget.RecyclerView
 import android.text.Layout.Alignment.ALIGN_CENTER
 import android.text.SpannableStringBuilder
 import android.text.StaticLayout
@@ -30,14 +28,18 @@ import android.text.TextPaint
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.StyleSpan
 import android.view.View
-import androidx.content.res.getColorOrThrow
-import androidx.content.res.getDimensionOrThrow
-import androidx.content.res.getDimensionPixelSizeOrThrow
-import androidx.content.res.getResourceIdOrThrow
-import androidx.graphics.withTranslation
-import androidx.text.inSpans
-import androidx.view.get
-import androidx.view.isEmpty
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.content.res.getColorOrThrow
+import androidx.core.content.res.getDimensionOrThrow
+import androidx.core.content.res.getDimensionPixelSizeOrThrow
+import androidx.core.content.res.getResourceIdOrThrow
+import androidx.core.graphics.withTranslation
+import androidx.core.text.inSpans
+import androidx.core.view.get
+import androidx.core.view.isEmpty
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
+import androidx.recyclerview.widget.RecyclerView.State
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Block
 import org.threeten.bp.ZonedDateTime
@@ -50,7 +52,7 @@ import org.threeten.bp.format.DateTimeFormatter
 class ScheduleAgendaHeadersDecoration(
     context: Context,
     blocks: List<Block>
-) : RecyclerView.ItemDecoration() {
+) : ItemDecoration() {
 
     private val paint: TextPaint
     private val width: Int
@@ -91,10 +93,7 @@ class ScheduleAgendaHeadersDecoration(
     /**
      *  Add gaps between days, split over the last and first block of a day.
      */
-    override fun getItemOffsets(
-        outRect: Rect, view: View, parent: RecyclerView,
-        state: RecyclerView.State
-    ) {
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: State) {
         val position = parent.getChildAdapterPosition(view)
         if (position <= 0) return
 
@@ -112,7 +111,8 @@ class ScheduleAgendaHeadersDecoration(
      * [daySlots]. We also look back to see if there are any headers _before_ the first header we
      * found i.e. which needs to be sticky.
      */
-    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State?) {
+
+    override fun onDraw(c: Canvas, parent: RecyclerView, state: State) {
         if (daySlots.isEmpty() || parent.isEmpty()) return
 
         var earliestFoundHeaderPos = -1

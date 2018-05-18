@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.sessioncommon
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import com.google.samples.apps.iosched.shared.di.FragmentScoped
 import dagger.Module
 import dagger.Provides

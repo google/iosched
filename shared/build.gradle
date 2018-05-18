@@ -26,7 +26,7 @@ android {
         targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "CONFERENCE_TIMEZONE", "\"${conference_timezone}\""
         buildConfigField "String", "CONFERENCE_DAY1_START", "\"${conference_day1_start}\""
@@ -67,17 +67,9 @@ android {
             matchingFallbacks = ['debug']
         }
     }
-    // Workaround for bug in timber:
-    // https://github.com/JakeWharton/timber/issues/292
+
     lintOptions {
-        disable "BinaryOperationInTimber",
-                "LogNotTimber",
-                "StringFormatInTimber",
-                "ThrowableNotAtBeginning",
-                "TimberArgCount",
-                "TimberArgTypes",
-                "TimberExceptionLogging",
-                "TimberTagLength"
+        disable 'InvalidPackage'
     }
 
     // debug and release variants share the same source dir
@@ -94,26 +86,27 @@ dependencies {
     testImplementation project(':androidTest-shared')
 
     // Architecture Components
-    implementation "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
-    implementation "android.arch.lifecycle:livedata:$rootProject.archLifecycleVersion"
-    implementation "android.arch.lifecycle:viewmodel:$rootProject.archLifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$rootProject.lifecycleVersion"
 
     // Maps
     api("com.google.maps.android:android-maps-utils:$rootProject.googleMapUtilsVersion") {
         exclude group: "com.google.android.gms"
     }
-    api("com.google.android.gms:play-services-maps:$rootProject.googlePlayServicesClientVersion")
+    api "com.google.android.gms:play-services-maps:$rootProject.googlePlayServicesMapsVersion"
 
     // Utils
     api "com.jakewharton.timber:timber:$rootProject.timberVersion"
     implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
     implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
 
+    // OkHttp
     implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttpVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpVersion"
 
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$rootProject.kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlinVersion"
 
     // Dagger
     implementation "com.google.dagger:dagger-android:$rootProject.dagger"
@@ -122,36 +115,24 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
 
     // Firebase
-    api "com.google.firebase:firebase-core:$rootProject.googlePlayServicesClientVersion"
-    api "com.google.firebase:firebase-firestore:$rootProject.googlePlayServicesClientVersion"
-    api "com.google.firebase:firebase-auth:$rootProject.googlePlayServicesClientVersion"
-    api "com.google.firebase:firebase-messaging:$rootProject.googlePlayServicesClientVersion"
-    api "com.google.firebase:firebase-config:$rootProject.googlePlayServicesClientVersion"
+    api "com.google.firebase:firebase-auth:$rootProject.firebaseAuthVersion"
+    api "com.google.firebase:firebase-config:$rootProject.firebaseConfigVersion"
+    api "com.google.firebase:firebase-core:$rootProject.firebaseCoreVersion"
+    api "com.google.firebase:firebase-firestore:$rootProject.firebaseFirestoreVersion"
+    api "com.google.firebase:firebase-messaging:$rootProject.firebaseMessagingVersion"
 
     // ThreeTenBP for the shared module only. Date and time API for Java.
     testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"
     compileOnly "org.threeten:threetenbp:$rootProject.threetenbpVersion:no-tzdb"
 
     // Unit tests
-    testImplementation "android.arch.core:core-testing:$rootProject.archLifecycleVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation "com.nhaarman:mockito-kotlin:$rootProject.mockitoKotlinVersion"
 
     // unit tests livedata
-    testImplementation "android.arch.core:core-testing:1.1.0"
-}
-
-// Force Dagger's transitive dependencies to use the project's version of the support libraries.
-configurations.all {
-    resolutionStrategy {
-        eachDependency { details ->
-            if (details.requested.group == 'com.android.support') {
-                details.useVersion supportLibraryVersion
-            }
-        }
-    }
+    testImplementation "androidx.arch.core:core-testing:$rootProject.lifecycleVersion"
 }
 
 apply plugin: 'com.google.gms.google-services'

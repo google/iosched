@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.data.login
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import android.content.Context
 import android.content.Intent
 import android.net.Uri

@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.shared.data.logistics
 
-import android.arch.lifecycle.LiveData
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 
 interface LogisticsDataSource {

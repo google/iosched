@@ -23,8 +23,8 @@ import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.Picture
 import android.graphics.drawable.Drawable
-import android.support.v4.util.Pools.Pool
-import android.support.v4.util.Pools.SynchronizedPool
+import androidx.core.util.Pools.Pool
+import androidx.core.util.Pools.SynchronizedPool
 import com.google.android.gms.maps.model.Tile
 import com.google.android.gms.maps.model.TileProvider
 import com.google.samples.apps.iosched.BuildConfig

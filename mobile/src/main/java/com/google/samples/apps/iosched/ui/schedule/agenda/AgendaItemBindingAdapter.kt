@@ -16,9 +16,9 @@
 
 package com.google.samples.apps.iosched.ui.schedule.agenda
 
-import android.databinding.BindingAdapter
+import androidx.databinding.BindingAdapter
 import android.graphics.drawable.GradientDrawable
-import android.support.v7.content.res.AppCompatResources
+import androidx.appcompat.content.res.AppCompatResources
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView

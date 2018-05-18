@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.ui.schedule.day
 
 import android.content.Context
-import android.databinding.BindingAdapter
+import androidx.databinding.BindingAdapter
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.TextView

@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.tv.ui.presenter
 
-import android.support.v17.leanback.widget.Presenter
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
+import androidx.leanback.widget.Presenter
+import androidx.recyclerview.widget.RecyclerView
 import com.google.samples.apps.iosched.tv.R
 
 /**

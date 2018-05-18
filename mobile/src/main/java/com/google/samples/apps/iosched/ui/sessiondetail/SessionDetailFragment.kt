@@ -17,21 +17,21 @@
 package com.google.samples.apps.iosched.ui.sessiondetail
 
 import android.app.ActivityOptions
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
-import android.support.v4.app.NavUtils
-import android.support.v4.app.ShareCompat
-import android.support.v7.widget.RecyclerView.RecycledViewPool
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.net.toUri
-import androidx.view.doOnLayout
-import androidx.view.forEach
+import androidx.core.app.NavUtils
+import androidx.core.app.ShareCompat
+import androidx.core.net.toUri
+import androidx.core.view.doOnLayout
+import androidx.core.view.forEach
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSessionDetailBinding
@@ -120,7 +120,7 @@ class SessionDetailFragment : DaggerFragment() {
         val detailsAdapter = SessionDetailAdapter(this, sessionDetailViewModel, tagRecycledViewPool)
         binding.sessionDetailRecyclerView.run {
             adapter = detailsAdapter
-            itemAnimator.run {
+            itemAnimator?.run {
                 addDuration = 120L
                 moveDuration = 120L
                 changeDuration = 120L
@@ -267,8 +267,9 @@ class SessionDetailFragment : DaggerFragment() {
         dialog.show(requireActivity().supportFragmentManager, DIALOG_NOTIFICATIONS_PREFERENCE)
     }
 
-    private fun openRemoveReservationDialog(activity: FragmentActivity,
-                                            parameters: RemoveReservationDialogParameters
+    private fun openRemoveReservationDialog(
+        activity: FragmentActivity,
+        parameters: RemoveReservationDialogParameters
     ) {
         val dialog = RemoveReservationDialogFragment.newInstance(parameters)
         dialog.show(activity.supportFragmentManager, DIALOG_REMOVE_RESERVATION)

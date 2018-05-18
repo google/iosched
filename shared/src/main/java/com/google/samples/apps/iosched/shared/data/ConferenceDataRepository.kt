@@ -16,8 +16,8 @@
 
 package com.google.samples.apps.iosched.shared.data
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.ConferenceData
 import java.io.IOException
 import javax.inject.Inject
@@ -96,7 +96,7 @@ open class ConferenceDataRepository @Inject constructor(
         // First, try the local cache:
         conferenceData = remoteDataSource.getOfflineConferenceData()
 
-        //Cache success!
+        // Cache success!
         if (conferenceData != null) {
             latestUpdateSource = UpdateSource.CACHE
             return conferenceData

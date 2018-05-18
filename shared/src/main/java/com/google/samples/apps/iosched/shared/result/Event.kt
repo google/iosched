@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.result
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 
 /**
  * Used as a wrapper for data that is exposed via a LiveData that represents an event.

@@ -17,10 +17,10 @@
 package com.google.samples.apps.iosched.ui.reservation
 
 import android.content.Context
-import android.support.annotation.DrawableRes
 import android.util.AttributeSet
 import android.widget.Checkable
-import com.google.android.material.widget.FloatingActionButton
+import androidx.annotation.DrawableRes
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.ui.reservation.StarReserveFabMode.RESERVE
 import com.google.samples.apps.iosched.ui.reservation.StarReserveFabMode.STAR

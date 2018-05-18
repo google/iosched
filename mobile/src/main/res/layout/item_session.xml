@@ -21,7 +21,7 @@
 
     <data>
 
-        <import type="android.arch.lifecycle.LiveData" />
+        <import type="androidx.lifecycle.LiveData" />
 
         <variable
             name="userSession"
@@ -44,7 +44,7 @@
             type="LiveData&lt;org.threeten.bp.ZoneId&gt;" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
@@ -53,7 +53,7 @@
         android:paddingVertical="@dimen/spacing_normal"
         tools:targetApi="o">
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/keyline"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -71,7 +71,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="What's new in Android" />
 
-        <com.google.android.material.widget.CheckableImageButton
+        <com.google.android.material.internal.CheckableImageButton
             android:id="@+id/bookmark_session"
             android:layout_width="@dimen/a11y_min_touch_target"
             android:layout_height="@dimen/a11y_min_touch_target"
@@ -131,14 +131,14 @@
             app:timeZoneId="@{timeZoneId}"
             tools:text="1 hour / Amphitheatre" />
 
-        <android.support.constraint.Barrier
+        <androidx.constraintlayout.widget.Barrier
             android:id="@+id/tags_barrier"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
             app:constraint_referenced_ids="livestream_icon,length_location" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tags"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -151,6 +151,6 @@
             app:sessionTags="@{userSession.session.displayTags}"
             tools:listitem="@layout/item_session_tag" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

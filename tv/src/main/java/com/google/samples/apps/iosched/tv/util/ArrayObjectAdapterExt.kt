@@ -16,8 +16,8 @@
 
 package com.google.samples.apps.iosched.tv.util
 
-import android.support.v17.leanback.widget.ArrayObjectAdapter
-import android.support.v17.leanback.widget.Presenter
+import androidx.leanback.widget.ArrayObjectAdapter
+import androidx.leanback.widget.Presenter
 
 /**
  * Extension functions to make the [ArrayObjectAdapter] feel like a [Collection] object and provides

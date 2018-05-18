@@ -17,10 +17,10 @@
 package com.google.samples.apps.iosched.tv.ui.presenter
 
 import android.graphics.drawable.Drawable
-import android.support.v17.leanback.widget.ImageCardView
-import android.support.v17.leanback.widget.Presenter
-import android.support.v4.content.ContextCompat
-import android.support.v7.view.ContextThemeWrapper
+import androidx.leanback.widget.ImageCardView
+import androidx.leanback.widget.Presenter
+import androidx.core.content.ContextCompat
+import androidx.appcompat.view.ContextThemeWrapper
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget

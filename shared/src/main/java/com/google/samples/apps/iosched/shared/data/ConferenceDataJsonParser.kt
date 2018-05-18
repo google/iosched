@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.data
 
-import android.support.annotation.Keep
+import androidx.annotation.Keep
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonIOException
 import com.google.gson.JsonSyntaxException

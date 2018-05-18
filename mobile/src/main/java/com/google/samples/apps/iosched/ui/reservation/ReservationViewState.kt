@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.reservation
 
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.userdata.UserEvent
 

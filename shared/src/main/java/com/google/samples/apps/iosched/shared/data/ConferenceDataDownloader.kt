@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.shared.data
 
 import android.content.Context
-import android.support.annotation.WorkerThread
+import androidx.annotation.WorkerThread
 import com.google.samples.apps.iosched.shared.BuildConfig
 import okhttp3.Cache
 import okhttp3.CacheControl

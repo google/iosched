@@ -123,7 +123,7 @@ class UserSessionMatcher {
             val state = try {
                 gson.fromJson(prefValue, SavedFilterPreferences::class.java)
             } catch (t: Throwable) {
-                Timber.e("Error reading filter preferences", t)
+                Timber.e(t, "Error reading filter preferences")
                 return
             }
             showPinnedEventsOnly = state.showPinnedEventsOnly

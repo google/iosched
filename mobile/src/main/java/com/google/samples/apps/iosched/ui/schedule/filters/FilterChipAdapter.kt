@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.ui.schedule.filters
 
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.samples.apps.iosched.databinding.ItemFilterChipBinding
 import com.google.samples.apps.iosched.util.executeAfter
 

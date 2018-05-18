@@ -25,14 +25,14 @@
             type="com.google.samples.apps.iosched.ui.info.SettingsViewModel" />
     </data>
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/settings_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbarStyle="insideOverlay"
         android:scrollbars="vertical">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/settings_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -70,7 +70,7 @@
                 android:text="@string/settings_send_anonymous_usage_statistics"
                 app:layout_constraintTop_toBottomOf="@+id/settings_enable_notifications" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 </layout>

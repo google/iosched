@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.tv.ui
 
-import android.support.v17.leanback.app.BrowseSupportFragment
+import androidx.leanback.app.BrowseSupportFragment
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.tv.ui.schedule.ScheduleFragment
 

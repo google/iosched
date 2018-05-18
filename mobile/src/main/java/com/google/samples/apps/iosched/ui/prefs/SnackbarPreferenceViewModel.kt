@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.prefs
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.domain.prefs.StopSnackbarActionUseCase
 import javax.inject.Inject
 

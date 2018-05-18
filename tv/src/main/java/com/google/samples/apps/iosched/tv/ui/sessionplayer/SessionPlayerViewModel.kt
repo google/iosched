@@ -16,9 +16,9 @@
 
 package com.google.samples.apps.iosched.tv.ui.sessionplayer
 
-import android.arch.lifecycle.MediatorLiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.shared.result.Event

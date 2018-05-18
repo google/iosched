@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.sessiondetail
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.di.FragmentScoped
 import com.google.samples.apps.iosched.shared.di.ViewModelKey
 import com.google.samples.apps.iosched.ui.sessioncommon.SessionViewPoolModule

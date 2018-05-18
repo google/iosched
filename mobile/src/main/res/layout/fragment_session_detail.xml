@@ -26,13 +26,13 @@
             type="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewModel" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout_session_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="MergeRootFrame">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/session_detail_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -93,6 +93,6 @@
             android:layout_marginBottom="@dimen/snackbar_margin_bottom_bab"
             android:visibility="gone" />
 
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

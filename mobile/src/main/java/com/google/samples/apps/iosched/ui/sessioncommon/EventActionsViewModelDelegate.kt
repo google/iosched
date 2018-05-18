@@ -16,9 +16,9 @@
 
 package com.google.samples.apps.iosched.ui.sessioncommon
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MediatorLiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase

@@ -25,7 +25,7 @@
 
     </data>
 
-    <com.google.android.material.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         style="@style/Widget.AppBar"
         android:layout_width="match_parent"
@@ -50,7 +50,7 @@
                 app:imageUri="@{viewModel.currentUserImageUri}"
                 app:placeholder="@{@drawable/ic_account_circle}" />
 
-            <com.google.android.material.widget.TabLayout
+            <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="wrap_content"
                 android:layout_height="?actionBarSize"
@@ -58,5 +58,5 @@
 
         </FrameLayout>
 
-    </com.google.android.material.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 </layout>

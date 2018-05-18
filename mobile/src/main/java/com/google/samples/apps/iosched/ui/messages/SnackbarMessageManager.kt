@@ -16,8 +16,8 @@
 
 package com.google.samples.apps.iosched.ui.messages
 
-import android.arch.lifecycle.MutableLiveData
-import android.support.annotation.VisibleForTesting
+import androidx.lifecycle.MutableLiveData
+import androidx.annotation.VisibleForTesting
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.result.Event

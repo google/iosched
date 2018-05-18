@@ -17,12 +17,12 @@
 package com.google.samples.apps.iosched.tv.ui
 
 import android.os.Bundle
-import android.support.v17.leanback.app.BrowseSupportFragment
-import android.support.v17.leanback.widget.ArrayObjectAdapter
-import android.support.v17.leanback.widget.HeaderItem
-import android.support.v17.leanback.widget.ListRowPresenter
-import android.support.v17.leanback.widget.PageRow
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
+import androidx.leanback.app.BrowseSupportFragment
+import androidx.leanback.widget.ArrayObjectAdapter
+import androidx.leanback.widget.HeaderItem
+import androidx.leanback.widget.ListRowPresenter
+import androidx.leanback.widget.PageRow
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.shared.util.getThemeColor
 import com.google.samples.apps.iosched.tv.R

@@ -16,13 +16,13 @@
 
 package com.google.samples.apps.iosched.ui.schedule.agenda
 
-import android.arch.lifecycle.ViewModelProvider
-import android.databinding.BindingAdapter
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.BindingAdapter
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.google.samples.apps.iosched.databinding.FragmentScheduleAgendaBinding
 import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider

@@ -16,14 +16,14 @@
 
 package com.google.samples.apps.iosched.ui.schedule
 
-import android.arch.lifecycle.ViewModelProvider
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.widget.CustomDimDialogFragment

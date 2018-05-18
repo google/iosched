@@ -19,11 +19,10 @@ package com.google.samples.apps.iosched.wear.ui
 import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
-import android.support.wear.ambient.AmbientModeSupport
-import android.support.wear.widget.drawer.WearableNavigationDrawerView
 import android.view.ViewTreeObserver
+import androidx.core.content.ContextCompat
+import androidx.wear.ambient.AmbientModeSupport
+import androidx.wear.widget.drawer.WearableNavigationDrawerView
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.wear.R
 import com.google.samples.apps.iosched.wear.R.layout
@@ -31,7 +30,7 @@ import com.google.samples.apps.iosched.wear.ui.schedule.ScheduleFragment
 import com.google.samples.apps.iosched.wear.ui.settings.SettingsFragment
 import com.google.samples.apps.iosched.wear.ui.signinandout.SignInOrOutFragment
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.navigationDrawer
 
 private const val NAV_DRAWER_STATE_SIZE = 3
 
@@ -49,7 +48,7 @@ class MainActivity : DaggerAppCompatActivity(), AmbientModeSupport.AmbientCallba
 
     private lateinit var navigationDrawerAdapter: NavigationDrawerAdapter
 
-    private var contentFragment: Fragment? = null
+    private var contentFragment: WearableFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,7 +97,7 @@ class MainActivity : DaggerAppCompatActivity(), AmbientModeSupport.AmbientCallba
             navigationDrawer.controller.closeDrawer()
 
             // If the current fragment does not support ambient mode, exit the app.
-            (contentFragment as? WearableFragment)?.onEnterAmbient(ambientDetails) ?: finish()
+            contentFragment?.onEnterAmbient(ambientDetails) ?: finish()
         }
 
         /**
@@ -109,14 +108,14 @@ class MainActivity : DaggerAppCompatActivity(), AmbientModeSupport.AmbientCallba
         override fun onUpdateAmbient() {
             super.onUpdateAmbient()
 
-            (contentFragment as WearableFragment).onExitAmbient()
+            contentFragment?.onExitAmbient()
         }
 
         /** Restores the UI to active (non-ambient) mode.  */
         override fun onExitAmbient() {
             super.onExitAmbient()
 
-            (contentFragment as WearableFragment).onUpdateAmbient()
+            contentFragment?.onUpdateAmbient()
         }
     }
 
@@ -163,7 +162,7 @@ class MainActivity : DaggerAppCompatActivity(), AmbientModeSupport.AmbientCallba
                 return
             }
 
-            contentFragment = when (selectedItemPos) {
+            val fragment = when (selectedItemPos) {
                 NAV_DRAWER_STATE_FRAGMENT_SCHEDULE -> ScheduleFragment()
                 NAV_DRAWER_STATE_FRAGMENT_SIGN_IN_OR_OUT -> SignInOrOutFragment()
                 NAV_DRAWER_STATE_FRAGMENT_SETTINGS -> SettingsFragment()
@@ -172,9 +171,10 @@ class MainActivity : DaggerAppCompatActivity(), AmbientModeSupport.AmbientCallba
             }
 
             supportFragmentManager.inTransaction {
-                replace(R.id.main_content_view, contentFragment)
+                replace(R.id.main_content_view, fragment)
             }
 
+            contentFragment = fragment
             currentNavigationItemPosition = selectedItemPos
         }
     }

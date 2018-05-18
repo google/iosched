@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.widget
 
 import android.content.Context
-import android.support.v7.widget.AppCompatTextView
+import androidx.appcompat.widget.AppCompatTextView
 import android.text.Spanned
 import android.text.style.ClickableSpan
 import android.util.AttributeSet

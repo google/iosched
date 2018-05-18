@@ -18,7 +18,7 @@ package com.google.samples.apps.iosched.widget
 
 import android.app.Dialog
 import android.os.Bundle
-import android.support.v7.app.AppCompatDialogFragment
+import androidx.appcompat.app.AppCompatDialogFragment
 
 open class CustomDimDialogFragment : AppCompatDialogFragment() {
 

@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.signin
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefSaveActionUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefShownActionUseCase
 import javax.inject.Inject

@@ -28,14 +28,14 @@
 
         <variable
             name="headerAlpha"
-            type="android.databinding.ObservableFloat" />
+            type="androidx.databinding.ObservableFloat" />
 
         <variable
             name="descriptionAlpha"
-            type="android.databinding.ObservableFloat" />
+            type="androidx.databinding.ObservableFloat" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/filter_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -46,14 +46,14 @@
         android:focusable="true"
         tools:ignore="Overdraw">
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_peek_height"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="@dimen/bottom_sheet_peek_height" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -89,7 +89,7 @@
             app:layout_constraintTop_toBottomOf="@id/guide_peek_height" />
 
         <!-- Description view shown when tag filters are active -->
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/filter_description_tags"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -191,6 +191,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_chevron_collapse" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

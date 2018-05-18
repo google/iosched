@@ -15,7 +15,7 @@
   ~ limitations under the License.
   -->
 
-<android.support.wear.widget.drawer.WearableDrawerLayout
+<androidx.wear.widget.drawer.WearableDrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -31,11 +31,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <android.support.wear.widget.drawer.WearableNavigationDrawerView
+    <androidx.wear.widget.drawer.WearableNavigationDrawerView
         android:id="@+id/navigationDrawer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:navigationStyle="singlePage"
         android:background="?colorPrimaryDark"/>
 
-</android.support.wear.widget.drawer.WearableDrawerLayout>
+</androidx.wear.widget.drawer.WearableDrawerLayout>

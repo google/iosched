@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.ui.schedule.day
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.model.userdata.UserEvent
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventResult
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
