@@ -25,11 +25,11 @@ import com.google.samples.apps.iosched.shared.data.session.json.SessionDeseriali
 import com.google.samples.apps.iosched.shared.data.session.json.SessionTemp
 import com.google.samples.apps.iosched.shared.data.session.json.SpeakerDeserializer
 import com.google.samples.apps.iosched.shared.data.session.json.TagDeserializer
-import com.google.samples.apps.iosched.shared.model.ConferenceData
-import com.google.samples.apps.iosched.shared.model.Room
-import com.google.samples.apps.iosched.shared.model.Session
-import com.google.samples.apps.iosched.shared.model.Speaker
-import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.model.ConferenceData
+import com.google.samples.apps.iosched.model.Room
+import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.model.Speaker
+import com.google.samples.apps.iosched.model.Tag
 import java.io.InputStream
 
 object ConferenceDataJsonParser {

@@ -24,7 +24,7 @@
 
         <variable
             name="tag"
-            type="com.google.samples.apps.iosched.shared.model.Tag" />
+            type="com.google.samples.apps.iosched.model.Tag" />
     </data>
 
     <TextView

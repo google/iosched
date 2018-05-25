@@ -24,12 +24,12 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUse
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
-import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
-import com.google.samples.apps.iosched.shared.model.SessionId
-import com.google.samples.apps.iosched.shared.model.TestData
+import com.google.samples.apps.iosched.model.userdata.UserEvent
+import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
-import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import org.junit.Assert
 import org.junit.Assert.assertTrue
 import org.junit.Rule

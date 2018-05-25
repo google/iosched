@@ -26,6 +26,9 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
+import com.google.samples.apps.iosched.model.userdata.UserEvent
+import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
@@ -33,12 +36,9 @@ import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAct
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.SwapAction
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
-import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
-import com.google.samples.apps.iosched.shared.model.Session
-import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.result.Result
 import timber.log.Timber
-import java.util.*
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 

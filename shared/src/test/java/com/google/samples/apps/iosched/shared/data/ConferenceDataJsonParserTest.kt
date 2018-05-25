@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.shared.data
 
 import com.google.gson.JsonSyntaxException
-import com.google.samples.apps.iosched.shared.model.Speaker
+import com.google.samples.apps.iosched.model.Speaker
 import org.hamcrest.CoreMatchers.hasItem
 import org.hamcrest.core.IsEqual.equalTo
 import org.junit.Assert.assertThat

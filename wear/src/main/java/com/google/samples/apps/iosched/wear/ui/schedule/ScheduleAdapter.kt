@@ -21,7 +21,7 @@ import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.google.samples.apps.iosched.shared.model.UserSession
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.wear.databinding.ItemSessionBinding
 
 /**

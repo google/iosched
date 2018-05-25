@@ -24,7 +24,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.widget.TextView
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.model.Tag
 
 @BindingAdapter("sessionTags")
 fun sessionTags(recyclerView: RecyclerView, sessionTags: List<Tag>?) {

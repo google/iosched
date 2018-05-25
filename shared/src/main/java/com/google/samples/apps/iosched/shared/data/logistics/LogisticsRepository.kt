@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.shared.data.logistics
 
 import android.arch.lifecycle.LiveData
-import com.google.samples.apps.iosched.shared.model.ConferenceWifiInfo
+import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -21,7 +21,8 @@ package com.google.samples.apps.iosched.ui.sessiondetail
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.MediatorLiveData
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.model.TestData
+import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
@@ -34,14 +35,13 @@ import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseC
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
-import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import com.google.samples.apps.iosched.shared.util.SetIntervalLiveData
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
-import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
+import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
@@ -358,8 +358,8 @@ class SessionDetailViewModelTest {
     private fun createSessionWithUrl(youtubeUrl: String) =
         Session(
             id = "0", title = "Session 0", abstract = "",
-            startTime = DAY_1.start,
-            endTime = DAY_1.end, room = TestData.room, isLivestream = false,
+            startTime = ConferenceDays.first().start,
+            endTime = ConferenceDays.first().end, room = TestData.room, isLivestream = false,
             sessionUrl = "", liveStreamUrl = "", youTubeUrl = youtubeUrl, photoUrl = "",
             tags = listOf(TestData.androidTag, TestData.webTag),
             displayTags = listOf(TestData.androidTag, TestData.webTag),

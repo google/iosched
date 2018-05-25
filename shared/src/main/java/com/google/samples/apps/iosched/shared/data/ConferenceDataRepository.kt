@@ -18,7 +18,7 @@ package com.google.samples.apps.iosched.shared.data
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.shared.model.ConferenceData
+import com.google.samples.apps.iosched.model.ConferenceData
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Named

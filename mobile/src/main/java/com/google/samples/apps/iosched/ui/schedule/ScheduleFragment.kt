@@ -33,10 +33,10 @@ import com.google.android.material.widget.FloatingActionButton
 import com.google.android.material.widget.TabLayout
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
+import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.model.SessionId
 import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
@@ -66,7 +66,7 @@ import javax.inject.Inject
 class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
 
     companion object {
-        private val COUNT = ConferenceDay.values().size + 1 // Agenda
+        private val COUNT = ConferenceDays.size + 1 // Agenda
         private val AGENDA_POSITION = COUNT - 1
         private const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
         private const val DIALOG_CONFIRM_SIGN_OUT = "dialog_confirm_sign_out"
@@ -149,7 +149,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
                     binding.viewpager.run {
                         post {
                             // this will trigger onPageChanged and log the page view
-                            currentItem = eventLocation.day.ordinal
+                            currentItem = eventLocation.day
                         }
                     }
                 } else {
@@ -292,7 +292,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         override fun getItem(position: Int): Fragment {
             return when (position) {
                 AGENDA_POSITION -> ScheduleAgendaFragment()
-                else -> ScheduleDayFragment.newInstance(ConferenceDay.values()[position])
+                else -> ScheduleDayFragment.newInstance(position)
             }
         }
 

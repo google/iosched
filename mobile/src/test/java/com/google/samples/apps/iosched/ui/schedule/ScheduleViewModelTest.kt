@@ -23,8 +23,12 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.model.TestData
+import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.model.Block
+import com.google.samples.apps.iosched.model.ConferenceData
+import com.google.samples.apps.iosched.model.MobileTestData
 import com.google.samples.apps.iosched.model.TestDataRepository
+import com.google.samples.apps.iosched.model.TestDataSource
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
@@ -50,14 +54,10 @@ import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceD
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
-import com.google.samples.apps.iosched.shared.model.Block
-import com.google.samples.apps.iosched.shared.model.ConferenceData
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
-import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
@@ -120,21 +120,21 @@ class ScheduleViewModelTest {
         signInDelegate.loadUser("test")
 
         // Observe viewmodel to load sessions
-        viewModel.getSessionTimeDataForDay(DAY_1).observeForever {}
+        viewModel.getSessionTimeDataForDay(0).observeForever {}
 
         // Check that data were loaded correctly
         // Sessions
-        for (day in ConferenceDay.values()) {
+        TestData.TestConferenceDays.forEachIndexed { index, day ->
 
             assertEquals(
                 TestData.userSessionMap[day],
-                LiveDataTestUtil.getValue(viewModel.getSessionTimeDataForDay(day))?.list
+                LiveDataTestUtil.getValue(viewModel.getSessionTimeDataForDay(index))?.list
             )
         }
         assertFalse(LiveDataTestUtil.getValue(viewModel.isLoading)!!)
         // Tags
         val loadedFilters = LiveDataTestUtil.getValue(viewModel.eventFilters)
-        assertTrue(loadedFilters?.containsAll(TestData.tagFiltersList) ?: false)
+        assertTrue(loadedFilters?.containsAll(MobileTestData.tagFiltersList) ?: false)
     }
 
     @Test
@@ -322,7 +322,7 @@ class ScheduleViewModelTest {
         signInDelegate.loadUser("test")
 
         // Observe viewmodel to load sessions
-        viewModel.getSessionTimeDataForDay(ConferenceDay.DAY_1).observeForever {}
+        viewModel.getSessionTimeDataForDay(0).observeForever {}
 
         // Observe snackbar so messages are received
         viewModel.snackBarMessage.observeForever { }
@@ -363,7 +363,7 @@ class ScheduleViewModelTest {
         signInDelegate.loadUser("test")
 
         // Observe viewmodel to load sessions
-        viewModel.getSessionTimeDataForDay(ConferenceDay.DAY_1).observeForever {}
+        viewModel.getSessionTimeDataForDay(0).observeForever {}
 
         // Observe snackbar so messages are received
         viewModel.snackBarMessage.observeForever { }
@@ -470,7 +470,7 @@ class ScheduleViewModelTest {
             refreshConferenceDataUseCase = RefreshConferenceDataUseCase(
                 ConferenceDataRepository(
                     remoteDataSource = remoteDataSource,
-                    boostrapDataSource = TestData)
+                    boostrapDataSource = TestDataSource)
             )
         )
 
@@ -499,13 +499,13 @@ class ScheduleViewModelTest {
         )
 
         // Observe viewmodel to load sessions
-        viewModel.getSessionTimeDataForDay(DAY_1).observeForever {}
+        viewModel.getSessionTimeDataForDay(0).observeForever {}
 
         // Trigger a refresh on the repo
         repo.refreshCacheWithRemoteConferenceData()
 
         // The new value should be present
-        val newValue = LiveDataTestUtil.getValue(viewModel.getSessionTimeDataForDay(DAY_1))
+        val newValue = LiveDataTestUtil.getValue(viewModel.getSessionTimeDataForDay(0))
 
         assertThat(
             newValue?.list?.first()?.session,

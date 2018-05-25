@@ -38,9 +38,9 @@ import com.google.samples.apps.iosched.databinding.FragmentSessionDetailBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
-import com.google.samples.apps.iosched.shared.model.Room
-import com.google.samples.apps.iosched.shared.model.SessionId
-import com.google.samples.apps.iosched.shared.model.SpeakerId
+import com.google.samples.apps.iosched.model.Room
+import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.map.MapActivity

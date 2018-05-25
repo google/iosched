@@ -25,7 +25,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.google.samples.apps.iosched.BR
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.model.Block
+import com.google.samples.apps.iosched.model.Block
 import org.threeten.bp.ZoneId
 
 class ScheduleAgendaAdapter(var timeZoneId: ZoneId = ZoneId.systemDefault()) :

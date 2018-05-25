@@ -18,11 +18,11 @@
 
 package com.google.samples.apps.iosched.shared.domain.search
 
+import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
-import com.google.samples.apps.iosched.shared.model.Session
-import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.test.data.TestData
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsCollectionContaining.hasItem
 import org.hamcrest.core.IsCollectionContaining.hasItems

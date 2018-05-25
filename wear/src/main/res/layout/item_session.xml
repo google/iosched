@@ -21,11 +21,11 @@
     <data>
         <variable
             name="session"
-            type="com.google.samples.apps.iosched.shared.model.Session" />
+            type="com.google.samples.apps.iosched.model.Session" />
 
         <variable
             name="userEvent"
-            type="com.google.samples.apps.iosched.shared.firestore.entity.UserEvent" />
+            type="com.google.samples.apps.iosched.model.userdata.UserEvent" />
 
         <variable
             name="eventListener"

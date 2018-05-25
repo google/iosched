@@ -38,8 +38,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
-import com.google.samples.apps.iosched.shared.model.Session
-import com.google.samples.apps.iosched.shared.model.Speaker
+import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.model.Speaker
 import com.google.samples.apps.iosched.shared.util.SpeakerUtils
 import com.google.samples.apps.iosched.shared.util.getThemeColor
 import com.google.samples.apps.iosched.shared.util.viewModelProvider

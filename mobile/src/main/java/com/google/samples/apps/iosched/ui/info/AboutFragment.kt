@@ -84,6 +84,6 @@ class AboutFragment : DaggerFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return FragmentInfoAboutBinding.inflate(inflater).root
+        return FragmentInfoAboutBinding.inflate(inflater, container, false).root
     }
 }

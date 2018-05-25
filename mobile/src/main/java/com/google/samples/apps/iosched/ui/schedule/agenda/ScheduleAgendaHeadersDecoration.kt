@@ -39,7 +39,7 @@ import androidx.text.inSpans
 import androidx.view.get
 import androidx.view.isEmpty
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.model.Block
+import com.google.samples.apps.iosched.model.Block
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
 

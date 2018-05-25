@@ -86,7 +86,9 @@ repositories {
 
 dependencies {
     implementation project(":shared")
+    implementation project(":model")
     testImplementation project(':test-shared')
+    testImplementation project(':androidTest-shared')
 
     // UI
     implementation "com.android.support:percent:$rootProject.supportLibraryVersion"

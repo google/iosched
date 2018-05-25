@@ -19,13 +19,13 @@
 package com.google.samples.apps.iosched.wear.ui.sessiondetail
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
-import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.wear.domain.repository.TestUserEventDataSource
-import com.google.samples.apps.iosched.wear.model.TestData
 import com.google.samples.apps.iosched.wear.model.TestDataRepository
 import com.google.samples.apps.iosched.wear.util.SyncTaskExecutorRule
 import org.junit.Assert.assertEquals

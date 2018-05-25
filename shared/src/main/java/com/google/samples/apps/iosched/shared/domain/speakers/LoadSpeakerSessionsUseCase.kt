@@ -18,13 +18,13 @@ package com.google.samples.apps.iosched.shared.domain.speakers
 
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.domain.UseCase
-import com.google.samples.apps.iosched.shared.model.Speaker
-import com.google.samples.apps.iosched.shared.model.SpeakerId
-import com.google.samples.apps.iosched.shared.model.SessionId
+import com.google.samples.apps.iosched.model.Speaker
+import com.google.samples.apps.iosched.model.SpeakerId
+import com.google.samples.apps.iosched.model.SessionId
 import javax.inject.Inject
 
 /**
- * Loads a [Speaker] and the IDs of any [com.google.samples.apps.iosched.shared.model.Session]s
+ * Loads a [Speaker] and the IDs of any [com.google.samples.apps.iosched.model.Session]s
  * they are speaking in.
  */
 open class LoadSpeakerUseCase @Inject constructor(

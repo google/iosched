@@ -22,7 +22,7 @@
     <data>
         <variable
             name="speaker"
-            type="com.google.samples.apps.iosched.shared.model.Speaker"/>
+            type="com.google.samples.apps.iosched.model.Speaker"/>
         <variable
             name="eventListener"
             type="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailEventListener"/>
