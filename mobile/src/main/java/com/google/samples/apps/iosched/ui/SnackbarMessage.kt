@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.ui
 
-import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.model.Session
 
 data class SnackbarMessage(
         /** Resource string ID of the message to show */

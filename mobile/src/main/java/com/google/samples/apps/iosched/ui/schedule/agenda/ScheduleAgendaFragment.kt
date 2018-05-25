@@ -24,7 +24,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.samples.apps.iosched.databinding.FragmentScheduleAgendaBinding
-import com.google.samples.apps.iosched.shared.model.Block
+import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.util.clearDecorations

@@ -19,7 +19,7 @@ package com.google.samples.apps.iosched.shared.data.session.json
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
-import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.model.Tag
 import java.lang.reflect.Type
 
 /**

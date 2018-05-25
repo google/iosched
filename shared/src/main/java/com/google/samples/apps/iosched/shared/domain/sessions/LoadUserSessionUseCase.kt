@@ -21,8 +21,8 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
-import com.google.samples.apps.iosched.shared.model.SessionId
-import com.google.samples.apps.iosched.shared.model.UserSession
+import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import javax.inject.Inject
 
@@ -75,8 +75,8 @@ open class LoadUserSessionUseCase @Inject constructor(
 }
 
 data class LoadUserSessionUseCaseResult(
-        val userSession: UserSession,
+    val userSession: UserSession,
 
-        /** A message to show to the user with important changes like reservation confirmations */
+    /** A message to show to the user with important changes like reservation confirmations */
         val userMessage: UserEventMessage? = null
 )

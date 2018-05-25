@@ -20,18 +20,15 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseParameters
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
-import com.google.samples.apps.iosched.shared.model.SessionId
-import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_2
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_3
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.shared.util.map
 import timber.log.Timber
 import javax.inject.Inject
@@ -70,13 +67,13 @@ class ScheduleViewModel @Inject constructor(
 
         // map LiveData results from UseCase to each day's individual LiveData
         day1Sessions = loadSessionsResult.map {
-            (it as? Result.Success)?.data?.userSessionsPerDay?.get(DAY_1) ?: emptyList()
+            (it as? Result.Success)?.data?.userSessionsPerDay?.get(ConferenceDays[0]) ?: emptyList()
         }
         day2Sessions = loadSessionsResult.map {
-            (it as? Result.Success)?.data?.userSessionsPerDay?.get(DAY_2) ?: emptyList()
+            (it as? Result.Success)?.data?.userSessionsPerDay?.get(ConferenceDays[1]) ?: emptyList()
         }
         day3Sessions = loadSessionsResult.map {
-            (it as? Result.Success)?.data?.userSessionsPerDay?.get(DAY_3) ?: emptyList()
+            (it as? Result.Success)?.data?.userSessionsPerDay?.get(ConferenceDays[2]) ?: emptyList()
         }
 
         isLoading = loadSessionsResult.map { it == Result.Loading }
@@ -92,11 +89,16 @@ class ScheduleViewModel @Inject constructor(
     /**
      * Called from each schedule day fragment to load data.
      */
-    fun getSessionsForDay(day: ConferenceDay):
-            LiveData<List<UserSession>> = when (day) {
-        DAY_1 -> day1Sessions
-        DAY_2 -> day2Sessions
-        DAY_3 -> day3Sessions
+    fun getSessionsForDay(day: Int):
+        LiveData<List<UserSession>> = when (day) {
+        0 -> day1Sessions
+        1 -> day2Sessions
+        2 -> day3Sessions
+        else -> {
+            val exception = Exception("Invalid day: $day")
+            Timber.e(exception)
+            throw exception
+        }
     }
 
     override fun openSessionDetail(id: SessionId) {

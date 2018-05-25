@@ -25,7 +25,7 @@ import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.google.samples.apps.iosched.databinding.ItemSessionBinding
-import com.google.samples.apps.iosched.shared.model.UserSession
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.ui.schedule.ScheduleEventListener
 import com.google.samples.apps.iosched.widget.UnscrollableFlexboxLayoutManager
 import org.threeten.bp.ZoneId

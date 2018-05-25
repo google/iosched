@@ -16,15 +16,16 @@
 
 package com.google.samples.apps.iosched.shared.domain.sessions
 
+import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.model.ConferenceDay
+import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
-import com.google.samples.apps.iosched.shared.model.Session
-import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
 import javax.inject.Inject
@@ -85,11 +86,11 @@ open class LoadUserSessionsByDayUseCase @Inject constructor(
         userSessions: Map<ConferenceDay, List<UserSession>>,
         now: ZonedDateTime
     ): EventLocation? {
-        if (now.isAfter(ConferenceDay.DAY_1.start) && now.isBefore(ConferenceDay.DAY_3.end)) {
+        if (now.isAfter(ConferenceDays.first().start) && now.isBefore(ConferenceDays.last().end)) {
             var unfinishedDay: ConferenceDay? = null
             var unfinishedSessionIndex = -1
             run loop@{
-                ConferenceDay.values().filter { now.isBefore(it.end) }
+                ConferenceDays.filter { now.isBefore(it.end) }
                     .forEach { day ->
                         userSessions[day]?.forEachIndexed { sessionIndex, userSession ->
                             if (userSession.session.endTime.isAfter(now)) {
@@ -102,7 +103,7 @@ open class LoadUserSessionsByDayUseCase @Inject constructor(
             }
             val day = unfinishedDay
             if (day != null && unfinishedSessionIndex != -1) {
-                return EventLocation(day, unfinishedSessionIndex)
+                return EventLocation(ConferenceDays.indexOf(day), unfinishedSessionIndex)
             }
         }
         return null
@@ -134,4 +135,4 @@ data class LoadUserSessionsByDayUseCaseResult(
     val firstUnfinishedSession: EventLocation? = null
 )
 
-data class EventLocation(val day: ConferenceDay, val sessionIndex: Int)
+data class EventLocation(val day: Int, val sessionIndex: Int)

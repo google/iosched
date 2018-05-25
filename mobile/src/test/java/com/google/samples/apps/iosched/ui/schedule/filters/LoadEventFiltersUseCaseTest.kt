@@ -17,10 +17,10 @@
 package com.google.samples.apps.iosched.ui.schedule.filters
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.samples.apps.iosched.model.TestData
-import com.google.samples.apps.iosched.model.TestData.androidTag
-import com.google.samples.apps.iosched.model.TestData.cloudTag
-import com.google.samples.apps.iosched.model.TestData.webTag
+import com.google.samples.apps.iosched.model.MobileTestData
+import com.google.samples.apps.iosched.test.data.TestData.androidTag
+import com.google.samples.apps.iosched.test.data.TestData.cloudTag
+import com.google.samples.apps.iosched.test.data.TestData.webTag
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.result.Result.Success
@@ -55,6 +55,6 @@ class LoadEventFiltersUseCaseTest {
         val result = useCase.executeNow(UserSessionMatcher()) as Success
 
         assertTrue(result.data[0] is MyEventsFilter)
-        assertEquals(result.data.subList(1, result.data.size), TestData.tagFiltersList)
+        assertEquals(result.data.subList(1, result.data.size), MobileTestData.tagFiltersList)
     }
 }

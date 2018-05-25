@@ -18,6 +18,9 @@ package com.google.samples.apps.iosched.shared.domain.sessions
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.MutableLiveData
+import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
@@ -25,15 +28,12 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
-import com.google.samples.apps.iosched.shared.model.Session
-import com.google.samples.apps.iosched.shared.model.SessionId
-import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
-import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
+import com.google.samples.apps.iosched.test.data.TestData
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.instanceOf
@@ -139,14 +139,14 @@ class LoadUserSessionsByDayUseCaseTest {
         val resultLiveData = useCase.observe()
 
         // When we execute it, passing Day 2 +3hrs as the current time
-        val now = ConferenceDay.DAY_2.start.plusHours(3L)
+        val now = ConferenceDays.first().start.plusHours(3L)
         useCase.execute(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1", now))
 
         // Then the expected indexes are returned
         val result = LiveDataTestUtil.getValue(resultLiveData)
                 as Result.Success<LoadUserSessionsByDayUseCaseResult>
         assertThat(
-            EventLocation(ConferenceDay.DAY_2, 0),
+            EventLocation(0, 0),
             `is`(equalTo(result.data.firstUnfinishedSession)))
     }
 
@@ -162,14 +162,14 @@ class LoadUserSessionsByDayUseCaseTest {
         val resultLiveData = useCase.observe()
 
         // When we execute it, passing Day 2 *after the end of day*
-        val now = ConferenceDay.DAY_2.end.plusHours(3L)
+        val now = ConferenceDays[1].end.plusHours(3L)
         useCase.execute(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1", now))
 
         // Then returns the index of the first session the next day
         val result = LiveDataTestUtil.getValue(resultLiveData)
                 as Result.Success<LoadUserSessionsByDayUseCaseResult>
         assertThat(
-            EventLocation(ConferenceDay.DAY_3, 0),
+            EventLocation(2, 0),
             `is`(equalTo(result.data.firstUnfinishedSession)))
     }
 
@@ -185,7 +185,7 @@ class LoadUserSessionsByDayUseCaseTest {
         val resultLiveData = useCase.observe()
 
         // When we execute it, passing a current time *before* the conference
-        val now = ConferenceDay.DAY_1.start.minusDays(2L)
+        val now = ConferenceDays.first().start.minusDays(2L)
         useCase.execute(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1", now))
 
         // Then the expected indexes are returned
@@ -208,7 +208,7 @@ class LoadUserSessionsByDayUseCaseTest {
         val resultLiveData = useCase.observe()
 
         // When we execute it, passing a current time *after* the conference
-        val now = ConferenceDay.DAY_3.end.plusHours(2L)
+        val now = ConferenceDays.last().end.plusHours(2L)
         useCase.execute(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1", now))
 
         // Then the expected indexes are returned

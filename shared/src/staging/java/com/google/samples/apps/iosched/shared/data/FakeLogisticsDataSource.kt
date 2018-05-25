@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.shared.data
 
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsDataSource
-import com.google.samples.apps.iosched.shared.model.ConferenceWifiInfo
+import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 
 /**
  * LogisticsDataSource data source that never touches the network.

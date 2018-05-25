@@ -18,8 +18,8 @@ package com.google.samples.apps.iosched.shared.data.session
 
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.SessionNotFoundException
-import com.google.samples.apps.iosched.shared.model.Session
-import com.google.samples.apps.iosched.shared.model.SessionId
+import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.model.SessionId
 import javax.inject.Inject
 
 /**

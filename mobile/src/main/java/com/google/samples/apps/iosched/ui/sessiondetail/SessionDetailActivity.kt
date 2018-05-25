@@ -22,7 +22,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.firebase.ui.auth.IdpResponse
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.model.SessionId
+import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager

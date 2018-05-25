@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.ui.signin
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import junit.framework.Assert.assertEquals

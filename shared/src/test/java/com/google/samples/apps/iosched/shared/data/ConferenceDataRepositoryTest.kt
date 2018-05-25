@@ -17,12 +17,11 @@
 package com.google.samples.apps.iosched.shared.data
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.samples.apps.iosched.shared.model.ConferenceData
-import com.google.samples.apps.iosched.shared.model.TestData
-import com.google.samples.apps.iosched.shared.model.TestData.session0
-import com.google.samples.apps.iosched.shared.model.TestData.session1
-import com.google.samples.apps.iosched.shared.model.TestData.session3
-import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.model.ConferenceData
+import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.data.TestData.session1
+import com.google.samples.apps.iosched.test.data.TestData.session3
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import org.hamcrest.core.IsEqual.equalTo
 import org.hamcrest.core.IsNot.not
@@ -63,7 +62,7 @@ class ConferenceDataRepositoryTest {
         val data = repo.getOfflineConferenceData()
 
         // Only session 0 should be available because remote has priority
-        assertThat(data.sessions.first(), Is(equalTo(session0)))
+        assertThat(data.sessions.first(), Is(equalTo(TestData.session0)))
         // and meta info should be set
         assertThat(repo.latestUpdateSource, Is(equalTo(UpdateSource.NETWORK)))
         assertThat(LiveDataTestUtil.getValue(repo.dataLastUpdatedObservable), Is(not(equalTo(0L))))
@@ -146,7 +145,7 @@ class TestConfDataSourceSession0 : ConferenceDataSource {
     private val conferenceData = ConferenceData(
             sessions = listOf(TestData.session0),
             tags = listOf(TestData.androidTag, TestData.webTag),
-            speakers = listOf(TestData.speaker),
+            speakers = listOf(TestData.speaker1),
             rooms = emptyList(),
             version = NETWORK_DATA_VERSION
     )
@@ -157,7 +156,7 @@ private class TestConfDataSourceSession1 : ConferenceDataSource {
         return ConferenceData(
                 sessions = listOf(TestData.session1),
                 tags = listOf(TestData.androidTag, TestData.webTag),
-                speakers = listOf(TestData.speaker),
+                speakers = listOf(TestData.speaker1),
                 rooms = emptyList(),
                 version = NETWORK_DATA_VERSION
         )
@@ -167,7 +166,7 @@ private class TestConfDataSourceSession1 : ConferenceDataSource {
         return ConferenceData(
                 sessions = listOf(TestData.session1),
                 tags = listOf(TestData.androidTag, TestData.webTag),
-                speakers = listOf(TestData.speaker),
+                speakers = listOf(TestData.speaker1),
                 rooms = emptyList(),
                 version = CACHE_DATA_VERSION
         )
@@ -183,7 +182,7 @@ class BootstrapDataSourceSession3 : ConferenceDataSource {
         return ConferenceData(
                 sessions = listOf(TestData.session3),
                 tags = listOf(TestData.androidTag, TestData.webTag),
-                speakers = listOf(TestData.speaker),
+                speakers = listOf(TestData.speaker1),
                 rooms = emptyList(),
                 version = BOOTSTRAP_DATA_VERSION
         )
@@ -199,7 +198,7 @@ private class TestConfDataSourceOnlyCachedSession1 : ConferenceDataSource {
         return ConferenceData(
                 sessions = listOf(TestData.session1),
                 tags = listOf(TestData.androidTag, TestData.webTag),
-                speakers = listOf(TestData.speaker),
+                speakers = listOf(TestData.speaker1),
                 rooms = emptyList(),
                 version = CACHE_DATA_VERSION
         )
@@ -225,7 +224,7 @@ private class ThrowingDataSourceCacheSession2 : ConferenceDataSource {
         return ConferenceData(
                 sessions = listOf(TestData.session2),
                 tags = listOf(TestData.androidTag, TestData.webTag),
-                speakers = listOf(TestData.speaker),
+                speakers = listOf(TestData.speaker1),
                 rooms = emptyList(),
                 version = CACHE_DATA_VERSION
         )

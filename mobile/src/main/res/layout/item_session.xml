@@ -25,7 +25,7 @@
 
         <variable
             name="userSession"
-            type="com.google.samples.apps.iosched.shared.model.UserSession" />
+            type="com.google.samples.apps.iosched.model.userdata.UserSession" />
 
         <variable
             name="eventListener"

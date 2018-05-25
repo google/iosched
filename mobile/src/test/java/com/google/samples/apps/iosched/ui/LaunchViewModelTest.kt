@@ -21,7 +21,7 @@ package com.google.samples.apps.iosched.ui
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompletedUseCase
-import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.ui.LaunchDestination.MAIN_ACTIVITY
 import com.google.samples.apps.iosched.ui.LaunchDestination.ONBOARDING

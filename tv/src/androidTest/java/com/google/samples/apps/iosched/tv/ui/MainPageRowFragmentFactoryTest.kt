@@ -46,7 +46,7 @@ class MainPageRowFragmentFactoryTest {
 
     @Test
     fun createFragment_withConferenceDay() {
-        val expectedDay = ConferenceDay.DAY_1
+        val expectedDay = ConferenceDays.first()
         val row = Row(HeaderItem(expectedDay.ordinal.toLong(), expectedDay.name))
 
         val fragment = mainPageRowFragmentFactory.createFragment(row)

@@ -16,18 +16,14 @@
 
 package com.google.samples.apps.iosched.shared.util
 
-import com.google.samples.apps.iosched.shared.model.TestData
-import com.google.samples.apps.iosched.shared.model.TestData.session0
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.whenever
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
+import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.data.TestData.session0
 import org.junit.Assert
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import java.util.regex.Pattern
 
@@ -38,37 +34,39 @@ class TimeUtilsTest {
     private lateinit var time1000: ZonedDateTime
     private lateinit var time1300: ZonedDateTime
 
-    @Before fun setup() {
+    @Before
+    fun setup() {
         time0800 = ZonedDateTime.parse("2018-05-08T08:00:00.000-08:00[America/Los_Angeles]")
         time1000 = ZonedDateTime.parse("2018-05-08T10:00:00.000-08:00[America/Los_Angeles]")
         time1300 = ZonedDateTime.parse("2018-05-08T13:00:00.000-08:00[America/Los_Angeles]")
     }
 
-    @Test fun conferenceDay_contains() {
+    @Test
+    fun conferenceDay_contains() {
         val inDay1 = session0.copy(
-            startTime = ConferenceDay.DAY_1.start,
-            endTime = ConferenceDay.DAY_1.end
+            startTime = ConferenceDays.first().start,
+            endTime = ConferenceDays.first().end
         )
-        assertTrue(DAY_1.contains(inDay1))
+        assertTrue(ConferenceDays.first().contains(inDay1))
 
         // Starts before DAY_1
         val notInDay1 = session0.copy(
-            startTime = ConferenceDay.DAY_1.start.minusMinutes(1),
-            endTime = ConferenceDay.DAY_1.end
+            startTime = ConferenceDays.first().start.minusMinutes(1),
+            endTime = ConferenceDays.first().end
         )
-        assertFalse(DAY_1.contains(notInDay1))
+        assertFalse(ConferenceDays.first().contains(notInDay1))
 
         // Ends after DAY_1
         val alsoNotInDay1 = session0.copy(
-            startTime = ConferenceDay.DAY_1.start,
-            endTime = ConferenceDay.DAY_1.end.plusMinutes(1)
+            startTime = ConferenceDays.first().start,
+            endTime = ConferenceDays.first().end.plusMinutes(1)
         )
-        assertFalse(DAY_1.contains(alsoNotInDay1))
+        assertFalse(ConferenceDays.first().contains(alsoNotInDay1))
     }
 
     @Test fun conferenceDay_formatMonthDay() {
         val pattern = Pattern.compile("""0\d""") // zero followed by any digit
-        ConferenceDay.values().forEach {
+        ConferenceDays.forEach {
             assertFalse(pattern.matcher(it.formatMonthDay()).find())
         }
     }

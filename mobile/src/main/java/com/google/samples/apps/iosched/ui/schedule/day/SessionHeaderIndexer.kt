@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.schedule.day
 
-import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime

@@ -28,10 +28,10 @@ import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus.STARRED
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus.UNSTARRED
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
-import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
-import com.google.samples.apps.iosched.shared.model.Session
-import com.google.samples.apps.iosched.shared.model.SessionId
-import com.google.samples.apps.iosched.shared.model.TestData
+import com.google.samples.apps.iosched.model.userdata.UserEvent
+import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.shared.result.Result
 
 class TestUserEventDataSource(
