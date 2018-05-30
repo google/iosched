@@ -18,9 +18,8 @@ package com.google.samples.apps.iosched.shared.util
 
 import com.google.samples.apps.iosched.model.Speaker
 
-object SpeakerUtils{
+object SpeakerUtils {
 
     fun alphabeticallyOrderedSpeakerList(speakerSet: Set<Speaker>) =
-            ArrayList<Speaker>(speakerSet).sortedBy { it.name }
-
+        ArrayList<Speaker>(speakerSet).sortedBy { it.name }
 }

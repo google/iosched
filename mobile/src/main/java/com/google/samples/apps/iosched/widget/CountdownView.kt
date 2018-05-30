@@ -33,13 +33,12 @@ import kotlin.properties.ObservableProperty
 import kotlin.reflect.KProperty
 
 class CountdownView @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    private val root: View = LayoutInflater.from(context)
-            .inflate(R.layout.countdown, this, true)
+    private val root: View = LayoutInflater.from(context).inflate(R.layout.countdown, this, true)
     private var days1 by AnimateDigitDelegate { root.findViewById(R.id.countdown_days_1) }
     private var days2 by AnimateDigitDelegate { root.findViewById(R.id.countdown_days_2) }
     private var hours1 by AnimateDigitDelegate { root.findViewById(R.id.countdown_hours_1) }
@@ -102,7 +101,7 @@ class CountdownView @JvmOverloads constructor(
      * [viewProvider]
      */
     private class AnimateDigitDelegate(
-            private val viewProvider: () -> LottieAnimationView
+        private val viewProvider: () -> LottieAnimationView
     ) : ObservableProperty<Int>(-1) {
         override fun afterChange(property: KProperty<*>, oldValue: Int, newValue: Int) {
             // Sanity check, `newValue` should always be in range [0–9]

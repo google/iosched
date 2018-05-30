@@ -16,9 +16,9 @@
 
 package com.google.samples.apps.iosched.ui.schedule.filters
 
+import com.google.samples.apps.iosched.model.Tag
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.domain.UseCase
-import com.google.samples.apps.iosched.model.Tag
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.TagFilter

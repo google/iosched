@@ -24,7 +24,7 @@ import org.junit.runner.Description
 /**
  * Rule to be used in tests that sets a synchronous task scheduler used to avoid race conditions.
  */
-class SyncExecutorRule: TestWatcher() {
+class SyncExecutorRule : TestWatcher() {
     override fun starting(description: Description?) {
         super.starting(description)
         DefaultScheduler.setDelegate(SyncScheduler)

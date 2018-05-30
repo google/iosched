@@ -23,7 +23,7 @@ package com.google.samples.apps.iosched.model
  * {category: "TYPE", name: "OFFICEHOURS"}. The first tag defines the session track as Android, and
  * the second tag defines the session type as an office hour.
  */
-data class Tag (
+data class Tag(
     /**
      * Unique string identifying this tag.
      */

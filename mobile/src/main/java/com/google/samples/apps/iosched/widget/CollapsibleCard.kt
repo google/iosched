@@ -21,7 +21,6 @@ import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.M
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.appcompat.content.res.AppCompatResources
 import android.transition.Transition
 import android.transition.TransitionInflater
 import android.transition.TransitionManager
@@ -32,6 +31,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import com.google.samples.apps.iosched.R
 
 class CollapsibleCard @JvmOverloads constructor(
@@ -68,7 +68,7 @@ class CollapsibleCard @JvmOverloads constructor(
         expandIcon = root.findViewById(R.id.expand_icon)
         if (SDK_INT < M) {
             expandIcon.imageTintList =
-                    AppCompatResources.getColorStateList(context, R.color.collapsing_section)
+                AppCompatResources.getColorStateList(context, R.color.collapsing_section)
         }
         toggle = TransitionInflater.from(context)
             .inflateTransition(R.transition.info_card_toggle)
@@ -79,11 +79,11 @@ class CollapsibleCard @JvmOverloads constructor(
 
     private fun setTitleContentDescription(cardTitle: String?) {
         val res = resources
-        cardTitleView.contentDescription = "$cardTitle, " +
-                if (expanded)
-                    res.getString(R.string.expanded)
-                else
-                    res.getString(R.string.collapsed)
+        cardTitleView.contentDescription = "$cardTitle, " + if (expanded) {
+            res.getString(R.string.expanded)
+        } else {
+            res.getString(R.string.collapsed)
+        }
     }
 
     private fun toggleExpanded() {

@@ -20,11 +20,11 @@ import com.google.samples.apps.iosched.model.Tag
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import javax.inject.Inject
 
-open class LoadTagsByCategoryUseCase @Inject constructor(repository: TagRepository)
-    : LoadTagsUseCase(repository) {
+open class LoadTagsByCategoryUseCase @Inject constructor(repository: TagRepository) :
+    LoadTagsUseCase(repository) {
 
     override fun execute(parameters: Unit): List<Tag> {
         return super.execute(parameters)
-                .sortedWith(compareBy<Tag> { it.category }.thenBy { it.orderInCategory })
+            .sortedWith(compareBy<Tag> { it.category }.thenBy { it.orderInCategory })
     }
 }

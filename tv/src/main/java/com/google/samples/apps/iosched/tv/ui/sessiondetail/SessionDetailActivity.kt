@@ -20,9 +20,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
-import com.google.samples.apps.iosched.tv.R
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.tv.R
 
 /**
  * Loads the [SessionDetailFragment] with an id to display a particular [Session]

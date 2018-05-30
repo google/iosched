@@ -27,10 +27,10 @@
     </data>
 
     <LinearLayout
+        style="@style/Widget.IOSched.Dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        style="@style/Widget.IOSched.Dialog">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"

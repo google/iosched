@@ -20,8 +20,6 @@ import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.core.content.res.ResourcesCompat
-import androidx.appcompat.app.AppCompatDialog
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
@@ -29,6 +27,8 @@ import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.widget.FrameLayout
+import androidx.appcompat.app.AppCompatDialog
+import androidx.core.content.res.ResourcesCompat
 import com.google.samples.apps.iosched.R
 
 /**
@@ -62,8 +62,9 @@ class CustomDimDialog(context: Context?) : AppCompatDialog(context, R.style.Them
         val horizontalMargin = res.getDimensionPixelSize(R.dimen.dialog_horizontal_margin)
         return FrameLayout(context).apply {
             addView(content, FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.WRAP_CONTENT,
-                    FrameLayout.LayoutParams.WRAP_CONTENT).apply {
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
                 setMargins(horizontalMargin, verticalMargin, horizontalMargin, verticalMargin)
                 gravity = Gravity.CENTER
             })
@@ -85,10 +86,7 @@ class CustomDimDialog(context: Context?) : AppCompatDialog(context, R.style.Them
                     }
                 }
             }
-            background = ColorDrawable(ResourcesCompat.getColor(res, R.color.scrim,
-                    context.theme))
+            background = ColorDrawable(ResourcesCompat.getColor(res, R.color.scrim, context.theme))
         }
     }
-
 }
-

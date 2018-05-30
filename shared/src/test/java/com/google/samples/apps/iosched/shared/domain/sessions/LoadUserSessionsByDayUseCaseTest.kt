@@ -59,8 +59,9 @@ class LoadUserSessionsByDayUseCaseTest {
         val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
 
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
-                TestUserEventDataSource(userEventsResult),
-                DefaultSessionRepository(TestDataRepository))
+            TestUserEventDataSource(userEventsResult),
+            DefaultSessionRepository(TestDataRepository)
+        )
         val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
 
         val resultLiveData = useCase.observe()
@@ -68,11 +69,12 @@ class LoadUserSessionsByDayUseCaseTest {
         useCase.execute(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1"))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
-                as Result.Success<LoadUserSessionsByDayUseCaseResult>
+            as Result.Success<LoadUserSessionsByDayUseCaseResult>
 
         assertThat(
-                TestData.userSessionMap,
-                `is`(equalTo(result.data.userSessionsPerDay)))
+            TestData.userSessionMap,
+            `is`(equalTo(result.data.userSessionsPerDay))
+        )
     }
 
     @Test
@@ -81,29 +83,36 @@ class LoadUserSessionsByDayUseCaseTest {
         val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
 
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
-                TestUserEventDataSource(userEventsResult),
-                DefaultSessionRepository(TestDataRepository))
+            TestUserEventDataSource(userEventsResult),
+            DefaultSessionRepository(TestDataRepository)
+        )
         val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
 
         val resultLiveData = useCase.observe()
 
         useCase.execute(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1"))
 
-        userEventsResult.postValue(UserEventsResult(
+        userEventsResult.postValue(
+            UserEventsResult(
                 userEventsMessage = UserEventMessage(
-                        UserEventMessageChangeType.CHANGES_IN_RESERVATIONS),
-                userEvents = TestData.userEvents))
+                    UserEventMessageChangeType.CHANGES_IN_RESERVATIONS
+                ),
+                userEvents = TestData.userEvents
+            )
+        )
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
-                as Result.Success<LoadUserSessionsByDayUseCaseResult>
+            as Result.Success<LoadUserSessionsByDayUseCaseResult>
 
         assertThat(
-                TestData.userSessionMap,
-                `is`(equalTo(result.data.userSessionsPerDay)))
+            TestData.userSessionMap,
+            `is`(equalTo(result.data.userSessionsPerDay))
+        )
 
         assertThat(
-                UserEventMessage(UserEventMessageChangeType.CHANGES_IN_RESERVATIONS),
-                `is`(equalTo(result.data.userMessage)))
+            UserEventMessage(UserEventMessageChangeType.CHANGES_IN_RESERVATIONS),
+            `is`(equalTo(result.data.userMessage))
+        )
     }
 
     @Test
@@ -112,8 +121,8 @@ class LoadUserSessionsByDayUseCaseTest {
         val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
 
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
-                TestUserEventDataSource(userEventsResult),
-                FailingSessionRepository
+            TestUserEventDataSource(userEventsResult),
+            FailingSessionRepository
         )
 
         val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
@@ -134,7 +143,8 @@ class LoadUserSessionsByDayUseCaseTest {
 
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
             TestUserEventDataSource(userEventsResult),
-            DefaultSessionRepository(TestDataRepository))
+            DefaultSessionRepository(TestDataRepository)
+        )
         val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
         val resultLiveData = useCase.observe()
 
@@ -144,10 +154,11 @@ class LoadUserSessionsByDayUseCaseTest {
 
         // Then the expected indexes are returned
         val result = LiveDataTestUtil.getValue(resultLiveData)
-                as Result.Success<LoadUserSessionsByDayUseCaseResult>
+            as Result.Success<LoadUserSessionsByDayUseCaseResult>
         assertThat(
             EventLocation(0, 0),
-            `is`(equalTo(result.data.firstUnfinishedSession)))
+            `is`(equalTo(result.data.firstUnfinishedSession))
+        )
     }
 
     @Test
@@ -157,7 +168,8 @@ class LoadUserSessionsByDayUseCaseTest {
 
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
             TestUserEventDataSource(userEventsResult),
-            DefaultSessionRepository(TestDataRepository))
+            DefaultSessionRepository(TestDataRepository)
+        )
         val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
         val resultLiveData = useCase.observe()
 
@@ -167,10 +179,11 @@ class LoadUserSessionsByDayUseCaseTest {
 
         // Then returns the index of the first session the next day
         val result = LiveDataTestUtil.getValue(resultLiveData)
-                as Result.Success<LoadUserSessionsByDayUseCaseResult>
+            as Result.Success<LoadUserSessionsByDayUseCaseResult>
         assertThat(
             EventLocation(2, 0),
-            `is`(equalTo(result.data.firstUnfinishedSession)))
+            `is`(equalTo(result.data.firstUnfinishedSession))
+        )
     }
 
     @Test
@@ -180,7 +193,8 @@ class LoadUserSessionsByDayUseCaseTest {
 
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
             TestUserEventDataSource(userEventsResult),
-            DefaultSessionRepository(TestDataRepository))
+            DefaultSessionRepository(TestDataRepository)
+        )
         val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
         val resultLiveData = useCase.observe()
 
@@ -190,10 +204,11 @@ class LoadUserSessionsByDayUseCaseTest {
 
         // Then the expected indexes are returned
         val result = LiveDataTestUtil.getValue(resultLiveData)
-                as Result.Success<LoadUserSessionsByDayUseCaseResult>
+            as Result.Success<LoadUserSessionsByDayUseCaseResult>
         assertThat(
             null,
-            `is`(equalTo(result.data.firstUnfinishedSession)))
+            `is`(equalTo(result.data.firstUnfinishedSession))
+        )
     }
 
     @Test
@@ -203,7 +218,8 @@ class LoadUserSessionsByDayUseCaseTest {
 
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
             TestUserEventDataSource(userEventsResult),
-            DefaultSessionRepository(TestDataRepository))
+            DefaultSessionRepository(TestDataRepository)
+        )
         val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
         val resultLiveData = useCase.observe()
 
@@ -213,15 +229,16 @@ class LoadUserSessionsByDayUseCaseTest {
 
         // Then the expected indexes are returned
         val result = LiveDataTestUtil.getValue(resultLiveData)
-                as Result.Success<LoadUserSessionsByDayUseCaseResult>
+            as Result.Success<LoadUserSessionsByDayUseCaseResult>
         assertThat(
             null,
-            `is`(equalTo(result.data.firstUnfinishedSession)))
+            `is`(equalTo(result.data.firstUnfinishedSession))
+        )
     }
 }
 
-object FailingSessionRepository : SessionRepository{
-    override fun getSessions() : List<Session> {
+object FailingSessionRepository : SessionRepository {
+    override fun getSessions(): List<Session> {
         throw Exception("test")
     }
 

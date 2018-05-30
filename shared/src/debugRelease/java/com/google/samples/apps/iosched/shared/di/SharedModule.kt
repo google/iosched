@@ -58,8 +58,8 @@ class SharedModule {
     @Provides
     @Named("remoteConfDatasource")
     fun provideConferenceDataSource(
-            context: Context,
-            networkUtils: NetworkUtils
+        context: Context,
+        networkUtils: NetworkUtils
     ): ConferenceDataSource {
         return NetworkConferenceDataSource(context, networkUtils)
     }
@@ -126,8 +126,8 @@ class SharedModule {
     fun provideFirebaseRemoteConfig(): FirebaseRemoteConfig {
         val remoteConfig = FirebaseRemoteConfig.getInstance()
         val configSettings = FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
-                .build()
+            .setDeveloperModeEnabled(BuildConfig.DEBUG)
+            .build()
         remoteConfig.setConfigSettings(configSettings)
         remoteConfig.setDefaults(R.xml.remote_config_defaults)
         return remoteConfig
@@ -142,7 +142,7 @@ class SharedModule {
     @Singleton
     @Provides
     fun provideLogisticsRepository(
-            logisticsDataSource: LogisticsDataSource
+        logisticsDataSource: LogisticsDataSource
     ): LogisticsRepository {
         return LogisticsRepository(logisticsDataSource)
     }

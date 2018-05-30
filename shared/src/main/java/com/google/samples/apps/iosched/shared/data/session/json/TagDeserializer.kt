@@ -28,19 +28,19 @@ import java.lang.reflect.Type
 class TagDeserializer : JsonDeserializer<Tag> {
 
     override fun deserialize(
-            json: JsonElement?,
-            typeOfT: Type?,
-            context: JsonDeserializationContext?
+        json: JsonElement?,
+        typeOfT: Type?,
+        context: JsonDeserializationContext?
     ): Tag {
         val obj = json?.asJsonObject!!
         return Tag(
-                id = obj.get("id").asString,
-                category = obj.get("category").asString,
-                tag = obj.get("tag").asString,
-                orderInCategory = obj.get("order_in_category")?.asInt ?: 999,
-                color = parseColor(obj.get("color")?.asString),
-                fontColor = parseColor(obj.get("fontColor")?.asString),
-                name = obj.get("name").asString
+            id = obj.get("id").asString,
+            category = obj.get("category").asString,
+            tag = obj.get("tag").asString,
+            orderInCategory = obj.get("order_in_category")?.asInt ?: 999,
+            color = parseColor(obj.get("color")?.asString),
+            fontColor = parseColor(obj.get("fontColor")?.asString),
+            name = obj.get("name").asString
         )
     }
 }

@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.ui.signin
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import android.net.Uri
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
@@ -91,15 +91,15 @@ interface SignInViewModelDelegate {
     /**
      * Returns the current user ID or null if not available.
      */
-    fun getUserId() : String?
+    fun getUserId(): String?
 }
 
 /**
  * Implementation of SignInViewModelDelegate that uses Firebase's auth mechanisms.
  */
 internal class FirebaseSignInViewModelDelegate @Inject constructor(
-        observeUserAuthStateUseCase: ObserveUserAuthStateUseCase,
-        private val notificationsPrefIsShownUseCase: NotificationsPrefIsShownUseCase
+    observeUserAuthStateUseCase: ObserveUserAuthStateUseCase,
+    private val notificationsPrefIsShownUseCase: NotificationsPrefIsShownUseCase
 ) : SignInViewModelDelegate {
 
     override val performSignInEvent = MutableLiveData<Event<SignInEvent>>()
@@ -136,15 +136,12 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
         }
     }
 
-    fun showNotificationPref() {
-        val result = (notificationsPrefIsShown.value as? Success)?.data == false &&
-            isSignedIn()
-        // Only show the notification if the preference is not set and
-        // the event hasn't been handled already.
-        if (result &&
-            (shouldShowNotificationsPrefAction.value == null
-                || shouldShowNotificationsPrefAction.value?.hasBeenHandled == false)
-        ){
+    private fun showNotificationPref() {
+        val result = (notificationsPrefIsShown.value as? Success)?.data == false && isSignedIn()
+        // Show the notification if the preference is not set and the event hasn't been handled yet.
+        if (result && (shouldShowNotificationsPrefAction.value == null ||
+                shouldShowNotificationsPrefAction.value?.hasBeenHandled == false)
+        ) {
             shouldShowNotificationsPrefAction.value = Event(true)
         }
     }
@@ -177,7 +174,7 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
         return _isRegistered
     }
 
-    override fun getUserId() : String? {
+    override fun getUserId(): String? {
         val user = currentFirebaseUser.value
         return (user as? Result.Success)?.data?.getUid()
     }

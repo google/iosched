@@ -15,8 +15,8 @@
   ~ limitations under the License.
   -->
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/IOSchedTag"
     android:id="@+id/tag_name"
+    style="@style/IOSchedTag"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/margin_normal"

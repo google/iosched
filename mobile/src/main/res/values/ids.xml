@@ -16,5 +16,5 @@
   -->
 
 <resources>
-    <item type="id" name="tag_speaker_id" />
+    <item name="tag_speaker_id" type="id" />
 </resources>

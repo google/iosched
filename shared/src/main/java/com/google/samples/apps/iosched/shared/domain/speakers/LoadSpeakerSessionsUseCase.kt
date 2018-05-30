@@ -16,11 +16,11 @@
 
 package com.google.samples.apps.iosched.shared.domain.speakers
 
-import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
-import com.google.samples.apps.iosched.shared.domain.UseCase
+import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.Speaker
 import com.google.samples.apps.iosched.model.SpeakerId
-import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
+import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
 
 /**
@@ -34,7 +34,7 @@ open class LoadSpeakerUseCase @Inject constructor(
     override fun execute(parameters: SpeakerId): LoadSpeakerUseCaseResult {
         val speaker = conferenceDataRepository.getOfflineConferenceData().speakers
             .firstOrNull { it.id == parameters }
-                ?: throw  SpeakerNotFoundException("No speaker found with id $parameters")
+            ?: throw SpeakerNotFoundException("No speaker found with id $parameters")
         val sessionIds = conferenceDataRepository.getOfflineConferenceData().sessions
             .filter { it.speakers.find { it.id == parameters } != null }
             .map { it.id }

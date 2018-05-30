@@ -40,13 +40,19 @@ object FakeUserEventDataSource : UserEventDataSource {
     private val userEvents = ArrayList<UserEvent>()
 
     init {
-        conferenceData.sessions.forEachIndexed {i, session ->
-            val reservation = ReservationRequestResult(RESERVE_SUCCEEDED, "123",
-                    System.currentTimeMillis())
+        conferenceData.sessions.forEachIndexed { i, session ->
+            val reservation = ReservationRequestResult(
+                RESERVE_SUCCEEDED, "123",
+                System.currentTimeMillis()
+            )
             if (i in 1..50) {
-                userEvents.add(UserEvent(session.id,
+                userEvents.add(
+                    UserEvent(
+                        session.id,
                         isStarred = i % 2 == 0,
-                        reservationRequestResult = reservation))
+                        reservationRequestResult = reservation
+                    )
+                )
             }
         }
     }
@@ -58,32 +64,40 @@ object FakeUserEventDataSource : UserEventDataSource {
     }
 
     override fun getObservableUserEvent(
-            userId: String,
-            eventId: SessionId
+        userId: String,
+        eventId: SessionId
     ): LiveData<UserEventResult> {
         val result = MutableLiveData<UserEventResult>()
         result.postValue(UserEventResult(userEvents[0]))
         return result
     }
 
-    override fun starEvent(userId: SessionId, userEvent: UserEvent):
-            LiveData<Result<StarUpdatedStatus>> {
-
+    override fun starEvent(
+        userId: SessionId,
+        userEvent: UserEvent
+    ): LiveData<Result<StarUpdatedStatus>> {
         val result = MutableLiveData<Result<StarUpdatedStatus>>()
-        result.postValue(Result.Success(
+        result.postValue(
+            Result.Success(
                 if (userEvent.isStarred) StarUpdatedStatus.STARRED
-                else StarUpdatedStatus.UNSTARRED))
+                else StarUpdatedStatus.UNSTARRED
+            )
+        )
         return result
     }
 
     override fun requestReservation(
-            userId: String, session: Session, action: ReservationRequestAction
+        userId: String,
+        session: Session,
+        action: ReservationRequestAction
     ): LiveData<Result<ReservationRequestAction>> {
-
         val result = MutableLiveData<Result<ReservationRequestAction>>()
-        result.postValue(Result.Success(
+        result.postValue(
+            Result.Success(
                 if (action is RequestAction) RequestAction()
-                else CancelAction()))
+                else CancelAction()
+            )
+        )
         return result
     }
 
@@ -91,12 +105,15 @@ object FakeUserEventDataSource : UserEventDataSource {
         return userEvents
     }
 
-    override fun swapReservation(userId: String, fromSession: Session, toSession: Session):
-            LiveData<Result<SwapRequestAction>> {
+    override fun swapReservation(
+        userId: String,
+        fromSession: Session,
+        toSession: Session
+    ): LiveData<Result<SwapRequestAction>> {
         val result = MutableLiveData<Result<SwapRequestAction>>()
         result.postValue(Result.Success(SwapRequestAction()))
         return result
     }
 
-    override fun clearSingleEventSubscriptions() { }
+    override fun clearSingleEventSubscriptions() {}
 }

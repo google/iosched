@@ -19,6 +19,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.google.samples.apps.iosched.ui.onboarding.OnboardingViewModel" />
@@ -32,10 +33,10 @@
             android:id="@+id/pager"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:offscreenPageLimit="@{2}" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -47,30 +48,30 @@
 
         <Button
             android:id="@+id/get_started"
+            style="@style/Widget.IOSched.RaisedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.getStartedClick()}"
+            android:text="@string/onboarding_get_started"
+            app:layout_constraintBottom_toTopOf="@id/page_indicator"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guide_actions"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/page_indicator"
-            app:layout_constraintVertical_chainStyle="spread_inside"
-            android:text="@string/onboarding_get_started"
-            android:onClick="@{() -> viewModel.getStartedClick()}"
-            style="@style/Widget.IOSched.RaisedButton" />
+            app:layout_constraintVertical_chainStyle="spread_inside" />
 
         <com.pixelcan.inkpageindicator.InkPageIndicator
             android:id="@+id/page_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
+            android:importantForAccessibility="no"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/get_started"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:ipi_currentPageIndicatorColor="#aa000000"
             app:ipi_pageIndicatorColor="#80000000"
-            app:viewPager="@{pager}"
-            android:importantForAccessibility="no" />
+            app:viewPager="@{pager}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

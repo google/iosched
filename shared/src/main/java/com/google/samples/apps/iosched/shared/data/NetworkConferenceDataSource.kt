@@ -27,8 +27,8 @@ import javax.inject.Inject
  * Downloads and parses conference data.
  */
 class NetworkConferenceDataSource @Inject constructor(
-        val context: Context,
-        private val networkUtils: NetworkUtils
+    val context: Context,
+    private val networkUtils: NetworkUtils
 ) : ConferenceDataSource {
 
     override fun getRemoteConferenceData(): ConferenceData? {
@@ -39,8 +39,8 @@ class NetworkConferenceDataSource @Inject constructor(
 
         Timber.d("Trying to download data from network")
         val responseSource = try {
-            ConferenceDataDownloader(context, "1").fetch() //TODO(jalc): pass bootstrap version
-        } catch(e: IOException) {
+            ConferenceDataDownloader(context, "1").fetch() // TODO(jalc): pass bootstrap version
+        } catch (e: IOException) {
             Timber.e(e)
             throw e
         }
@@ -63,8 +63,8 @@ class NetworkConferenceDataSource @Inject constructor(
     override fun getOfflineConferenceData(): ConferenceData? {
 
         val responseSource = try {
-            ConferenceDataDownloader(context, "1").fetchCached() //TODO(jalc): pass version
-        } catch(e: IOException) {
+            ConferenceDataDownloader(context, "1").fetchCached()
+        } catch (e: IOException) {
             return null
         }
         val body = responseSource?.body()?.byteStream()

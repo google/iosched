@@ -17,12 +17,12 @@
 package com.google.samples.apps.iosched.widget
 
 import android.content.Context
-import androidx.annotation.StringRes
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.core.view.postDelayed
 import com.google.samples.apps.iosched.R
 

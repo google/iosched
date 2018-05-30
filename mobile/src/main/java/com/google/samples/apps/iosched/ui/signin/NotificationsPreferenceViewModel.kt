@@ -25,8 +25,8 @@ import javax.inject.Inject
  * ViewModel for the dialog to show notifications preference
  */
 class NotificationsPreferenceViewModel @Inject constructor(
-        private val notificationsPrefShownActionUseCase: NotificationsPrefShownActionUseCase,
-        private val notificationsPrefSaveActionUseCase: NotificationsPrefSaveActionUseCase
+    private val notificationsPrefShownActionUseCase: NotificationsPrefShownActionUseCase,
+    private val notificationsPrefSaveActionUseCase: NotificationsPrefSaveActionUseCase
 ) : ViewModel() {
 
     fun onYesClicked() {

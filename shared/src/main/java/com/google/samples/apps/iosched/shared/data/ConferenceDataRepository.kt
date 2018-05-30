@@ -31,8 +31,8 @@ import javax.inject.Singleton
  */
 @Singleton
 open class ConferenceDataRepository @Inject constructor(
-        @Named("remoteConfDatasource") private val remoteDataSource: ConferenceDataSource,
-        @Named("bootstrapConfDataSource") private val boostrapDataSource: ConferenceDataSource
+    @Named("remoteConfDatasource") private val remoteDataSource: ConferenceDataSource,
+    @Named("bootstrapConfDataSource") private val boostrapDataSource: ConferenceDataSource
 ) {
 
     // In-memory cache of the conference data
@@ -79,7 +79,6 @@ open class ConferenceDataRepository @Inject constructor(
         _dataLastUpdatedObservable.postValue(System.currentTimeMillis())
         latestUpdateSource = UpdateSource.NETWORK
         latestException = null
-
     }
 
     fun getOfflineConferenceData(): ConferenceData {

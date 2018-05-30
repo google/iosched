@@ -32,8 +32,8 @@
             android:id="@+id/title_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="?android:listPreferredItemHeightSmall"
-            android:background="?selectableItemBackground">
+            android:background="?selectableItemBackground"
+            android:minHeight="?android:listPreferredItemHeightSmall">
 
             <TextView
                 android:id="@+id/card_title"
@@ -52,9 +52,9 @@
                 android:id="@+id/expand_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_normal"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/margin_normal"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_expand_more"
                 android:tint="@color/collapsing_section"
@@ -70,8 +70,8 @@
             android:paddingEnd="@dimen/margin_normal"
             android:paddingStart="@dimen/margin_normal"
             android:paddingTop="@dimen/spacing_normal"
-            android:visibility="gone"
             android:textColor="?android:textColorPrimary"
+            android:visibility="gone"
             tools:text="This is a card description" />
 
     </LinearLayout>

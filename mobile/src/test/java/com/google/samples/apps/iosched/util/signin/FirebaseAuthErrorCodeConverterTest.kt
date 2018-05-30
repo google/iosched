@@ -20,7 +20,7 @@ import com.firebase.ui.auth.ErrorCodes
 import com.google.samples.apps.iosched.R
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsEqual.equalTo
-import org.junit.Assert.*
+import org.junit.Assert.assertThat
 import org.junit.Test
 
 class FirebaseAuthErrorCodeConverterTest {
@@ -37,12 +37,13 @@ class FirebaseAuthErrorCodeConverterTest {
         // All error codes except for NO_NETWORK should convert to
         // R.string.firebase_auth_unknown_error
         val errorCodes = listOf(
-                ErrorCodes.DEVELOPER_ERROR,
-                ErrorCodes.PLAY_SERVICES_UPDATE_CANCELLED,
-                ErrorCodes.PROVIDER_ERROR,
-                ErrorCodes.UNKNOWN_ERROR)
+            ErrorCodes.DEVELOPER_ERROR,
+            ErrorCodes.PLAY_SERVICES_UPDATE_CANCELLED,
+            ErrorCodes.PROVIDER_ERROR,
+            ErrorCodes.UNKNOWN_ERROR
+        )
 
         errorCodes.map { FirebaseAuthErrorCodeConverter.convert(it) }
-                .forEach { assertThat(it, `is`(equalTo(R.string.firebase_auth_unknown_error))) }
+            .forEach { assertThat(it, `is`(equalTo(R.string.firebase_auth_unknown_error))) }
     }
 }

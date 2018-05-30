@@ -16,8 +16,10 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.google.samples.apps.iosched">
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
     <application
         android:name=".MainApplication"
         android:allowBackup="true"
@@ -40,13 +42,13 @@
 
         <activity
             android:name=".ui.sessiondetail.SessionDetailActivity"
-            android:theme="@style/AppTheme.SessionDetails"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/AppTheme.SessionDetails" />
 
         <activity
             android:name=".ui.speaker.SpeakerActivity"
-            android:theme="@style/AppTheme.Speaker"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/AppTheme.Speaker" />
 
         <activity
             android:name=".ui.map.MapActivity"

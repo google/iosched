@@ -34,15 +34,17 @@ import javax.inject.Singleton
  * generation and location of subcomponents.
  */
 @Singleton
-@Component(modules = [
-    AndroidSupportInjectionModule::class,
-    AppModule::class,
-    ActivityBindingModule::class,
-    ViewModelModule::class,
-    ServiceBindingModule::class,
-    SharedModule::class,
-    SignInModule::class,
-    SignInViewModelDelegateModule::class])
+@Component(
+    modules = [
+        AndroidSupportInjectionModule::class,
+        AppModule::class,
+        ActivityBindingModule::class,
+        ViewModelModule::class,
+        ServiceBindingModule::class,
+        SharedModule::class,
+        SignInModule::class,
+        SignInViewModelDelegateModule::class]
+)
 interface AppComponent : AndroidInjector<MainApplication> {
     @Component.Builder
     abstract class Builder : AndroidInjector.Builder<MainApplication>()

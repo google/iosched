@@ -27,13 +27,13 @@
         android:drawable="@drawable/ic_star_border" />
 
     <transition
+        android:drawable="@drawable/avd_star_event"
         android:fromId="@id/unstarred"
-        android:toId="@id/starred"
-        android:drawable="@drawable/avd_star_event" />
+        android:toId="@id/starred" />
 
     <transition
+        android:drawable="@drawable/avd_unstar_event"
         android:fromId="@id/starred"
-        android:toId="@id/unstarred"
-        android:drawable="@drawable/avd_unstar_event" />
+        android:toId="@id/unstarred" />
 
 </animated-selector>

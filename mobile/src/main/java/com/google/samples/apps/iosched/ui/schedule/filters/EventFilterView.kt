@@ -150,8 +150,8 @@ class EventFilterView @JvmOverloads constructor(
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val nonTextWidth = (4 * padding) +
-                (2 * outlinePaint.strokeWidth).toInt() +
-                if (showIcons) clear.intrinsicWidth else 0
+            (2 * outlinePaint.strokeWidth).toInt() +
+            if (showIcons) clear.intrinsicWidth else 0
         val availableTextWidth = when (MeasureSpec.getMode(widthMeasureSpec)) {
             MeasureSpec.EXACTLY -> MeasureSpec.getSize(widthMeasureSpec) - nonTextWidth
             MeasureSpec.AT_MOST -> MeasureSpec.getSize(widthMeasureSpec) - nonTextWidth

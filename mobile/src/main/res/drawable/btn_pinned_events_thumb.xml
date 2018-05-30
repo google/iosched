@@ -28,11 +28,11 @@
     <transition
         android:drawable="@drawable/btn_pinned_events_thumb_unchecked_checked"
         android:fromId="@id/unchecked"
-        android:toId="@id/checked"/>
+        android:toId="@id/checked" />
 
     <transition
         android:drawable="@drawable/btn_pinned_events_thumb_checked_unchecked"
         android:fromId="@id/checked"
-        android:toId="@id/unchecked"/>
+        android:toId="@id/unchecked" />
 
 </animated-selector>

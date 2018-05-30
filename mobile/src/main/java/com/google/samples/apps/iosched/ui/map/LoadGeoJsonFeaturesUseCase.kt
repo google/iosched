@@ -36,7 +36,7 @@ data class GeoJsonData(
 /** Use case that loads a GeoJsonLayer and its features. */
 class LoadGeoJsonFeaturesUseCase @Inject constructor(
     private val context: Context
-): UseCase<LoadGeoJsonParams, GeoJsonData>() {
+) : UseCase<LoadGeoJsonParams, GeoJsonData>() {
 
     override fun execute(parameters: LoadGeoJsonParams): GeoJsonData {
         val layer = GeoJsonLayer(parameters.first, parameters.second, context)

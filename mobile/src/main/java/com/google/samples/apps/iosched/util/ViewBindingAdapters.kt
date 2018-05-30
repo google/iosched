@@ -16,17 +16,17 @@
 
 package com.google.samples.apps.iosched.util
 
-import androidx.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import androidx.viewpager.widget.ViewPager
-import androidx.appcompat.content.res.AppCompatResources
 import android.view.View
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.ImageView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.net.toUri
+import androidx.databinding.BindingAdapter
+import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton

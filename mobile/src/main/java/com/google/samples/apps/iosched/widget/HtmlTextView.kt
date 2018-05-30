@@ -17,15 +17,15 @@
 package com.google.samples.apps.iosched.widget
 
 import android.content.Context
-import androidx.appcompat.widget.AppCompatTextView
 import android.text.Spanned
 import android.text.style.ClickableSpan
 import android.util.AttributeSet
 import android.view.MotionEvent
+import androidx.appcompat.widget.AppCompatTextView
 
 class HtmlTextView @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null
+    context: Context,
+    attrs: AttributeSet? = null
 ) : AppCompatTextView(context, attrs) {
 
     /**

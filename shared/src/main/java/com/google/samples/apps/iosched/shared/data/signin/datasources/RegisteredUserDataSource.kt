@@ -33,7 +33,7 @@ interface RegisteredUserDataSource {
     /**
      * Returns the holder of the result of listening to the data source.
      */
-    fun observeResult() : LiveData<Result<Boolean?>?>
+    fun observeResult(): LiveData<Result<Boolean?>?>
 
     /**
      * Clear listeners and set the result of the observable to false when the user is not signed in.

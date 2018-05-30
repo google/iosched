@@ -17,6 +17,9 @@
 package com.google.samples.apps.iosched.shared.data.userevent
 
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.samples.apps.iosched.model.reservations.ReservationRequest
+import com.google.samples.apps.iosched.model.reservations.ReservationRequestResult
+import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource.Companion.RESERVATION_REQUEST_ACTION_KEY
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource.Companion.RESERVATION_REQUEST_KEY
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource.Companion.RESERVATION_REQUEST_REQUEST_ID_KEY
@@ -25,9 +28,6 @@ import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventD
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource.Companion.RESERVATION_RESULT_RESULT_KEY
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource.Companion.RESERVATION_RESULT_TIME_KEY
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource.Companion.RESERVATION_STATUS_KEY
-import com.google.samples.apps.iosched.model.reservations.ReservationRequest
-import com.google.samples.apps.iosched.model.reservations.ReservationRequestResult
-import com.google.samples.apps.iosched.model.userdata.UserEvent
 import timber.log.Timber
 
 /**
@@ -36,7 +36,7 @@ import timber.log.Timber
 fun parseUserEvent(snapshot: DocumentSnapshot): UserEvent {
 
     val reservationRequestResult: ReservationRequestResult? =
-            generateReservationRequestResult(snapshot)
+        generateReservationRequestResult(snapshot)
 
     val reservationRequest = parseReservationRequest(snapshot)
 
@@ -44,7 +44,8 @@ fun parseUserEvent(snapshot: DocumentSnapshot): UserEvent {
         UserEvent.ReservationStatus.getIfPresent(it)
     }
 
-    return UserEvent(id = snapshot.id,
+    return UserEvent(
+        id = snapshot.id,
         reservationRequestResult = reservationRequestResult,
         reservationStatus = reservationStatus,
         isStarred = snapshot[FirestoreUserEventDataSource.IS_STARRED] as? Boolean ?: false,
@@ -56,12 +57,12 @@ fun parseUserEvent(snapshot: DocumentSnapshot): UserEvent {
  * Parse the result of a reservation request.
  */
 private fun generateReservationRequestResult(
-        snapshot: DocumentSnapshot
+    snapshot: DocumentSnapshot
 ): ReservationRequestResult? {
 
     (snapshot[RESERVATION_RESULT_KEY] as? Map<*, *>)?.let { reservation ->
         val requestResult = (reservation[RESERVATION_RESULT_RESULT_KEY] as? String)
-                ?.let { ReservationRequestResult.ReservationRequestStatus.getIfPresent(it) }
+            ?.let { ReservationRequestResult.ReservationRequestStatus.getIfPresent(it) }
 
         val requestId = (reservation[RESERVATION_RESULT_REQ_ID_KEY] as? String)
 

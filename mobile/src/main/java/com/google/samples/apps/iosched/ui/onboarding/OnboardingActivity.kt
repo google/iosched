@@ -31,8 +31,8 @@ class OnboardingActivity : DaggerAppCompatActivity() {
         // immersive mode so images can draw behind the status bar
         val decor = window.decorView
         val flags = decor.systemUiVisibility or
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         decor.systemUiVisibility = flags
 
         if (savedInstanceState == null) {

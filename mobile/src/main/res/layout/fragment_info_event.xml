@@ -103,24 +103,24 @@
                     android:text="@{viewModel.wifiSsid}"
                     android:textColor="?android:textColorPrimary"
                     app:layout_constraintBaseline_toBaselineOf="@id/wifi_network_label"
-                    app:layout_constraintStart_toEndOf="@id/wifi_label_barrier"
                     app:layout_constraintEnd_toStartOf="@id/guideline_end"
+                    app:layout_constraintStart_toEndOf="@id/wifi_label_barrier"
                     tools:text="IO2018" />
 
                 <TextView
                     android:id="@+id/wifi_password_value"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_normal"
+                    android:background="@drawable/inset_borderless_btn"
                     android:gravity="center_vertical"
                     android:minHeight="@dimen/a11y_min_touch_target"
-                    android:background="@drawable/inset_borderless_btn"
                     android:onClick="@{() -> viewModel.onWifiConnect()}"
-                    android:layout_marginStart="@dimen/margin_normal"
                     android:text="@{viewModel.wifiPassword.concat(` ` + @string/tap_to_join_network)}"
                     android:textColor="@color/indigo"
                     app:layout_constraintBaseline_toBaselineOf="@id/wifi_password_label"
-                    app:layout_constraintStart_toEndOf="@id/wifi_label_barrier"
                     app:layout_constraintEnd_toStartOf="@id/guideline_end"
+                    app:layout_constraintStart_toEndOf="@id/wifi_label_barrier"
                     tools:text="whatislove" />
 
                 <TextView
@@ -174,9 +174,9 @@
                         android:layout_marginStart="@dimen/margin_normal"
                         android:layout_marginTop="@dimen/spacing_micro"
                         android:text="@string/scavenger_hunt_description2"
-                        app:layout_constraintTop_toBottomOf="@id/scavenger_hunt_description"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/scavenger_hunt_logo" />
+                        app:layout_constraintStart_toEndOf="@id/scavenger_hunt_logo"
+                        app:layout_constraintTop_toBottomOf="@id/scavenger_hunt_description" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -219,9 +219,9 @@
                         android:layout_marginStart="@dimen/margin_normal"
                         android:layout_marginTop="@dimen/spacing_micro"
                         android:text="@string/assistant_app_description2"
-                        app:layout_constraintTop_toBottomOf="@id/assistant_app_description"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/assistant_app_logo" />
+                        app:layout_constraintStart_toEndOf="@id/assistant_app_logo"
+                        app:layout_constraintTop_toBottomOf="@id/assistant_app_description" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

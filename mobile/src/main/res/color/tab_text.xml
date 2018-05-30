@@ -16,6 +16,6 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="?android:textColorPrimary" android:state_selected="true"/>
-    <item android:color="?android:textColorSecondary"/>
+    <item android:color="?android:textColorPrimary" android:state_selected="true" />
+    <item android:color="?android:textColorSecondary" />
 </selector>

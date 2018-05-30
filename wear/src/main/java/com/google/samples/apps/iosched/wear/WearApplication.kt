@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.wear
 
-
 import com.google.samples.apps.iosched.wear.di.DaggerWearAppComponent
 import com.google.samples.apps.iosched.wear.util.CrashlyticsTree
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -27,7 +26,7 @@ import timber.log.Timber
 /**
  * Initialization of libraries.
  */
-class WearApplication: DaggerApplication () {
+class WearApplication : DaggerApplication() {
     override fun onCreate() {
         super.onCreate()
 
@@ -49,5 +48,4 @@ class WearApplication: DaggerApplication () {
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
         return DaggerWearAppComponent.builder().create(this)
     }
-
 }

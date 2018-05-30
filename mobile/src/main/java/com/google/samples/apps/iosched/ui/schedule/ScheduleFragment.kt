@@ -73,7 +73,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         private const val DIALOG_SCHEDULE_HINTS = "dialog_schedule_hints"
     }
 
-    @Inject lateinit var analyticsHelper : AnalyticsHelper
+    @Inject lateinit var analyticsHelper: AnalyticsHelper
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -304,4 +304,3 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         }
     }
 }
-

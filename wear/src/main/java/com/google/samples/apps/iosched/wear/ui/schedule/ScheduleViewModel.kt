@@ -61,7 +61,6 @@ class ScheduleViewModel @Inject constructor(
         get() = _navigateToSessionAction
 
     init {
-
         // Load sessions and tags and store the result in `LiveData`s
         loadSessionsResult = loadUserSessionsByDayUseCase.observe()
 
@@ -89,8 +88,7 @@ class ScheduleViewModel @Inject constructor(
     /**
      * Called from each schedule day fragment to load data.
      */
-    fun getSessionsForDay(day: Int):
-        LiveData<List<UserSession>> = when (day) {
+    fun getSessionsForDay(day: Int): LiveData<List<UserSession>> = when (day) {
         0 -> day1Sessions
         1 -> day2Sessions
         2 -> day3Sessions

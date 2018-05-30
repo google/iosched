@@ -25,7 +25,7 @@ import javax.inject.Inject
  * Forces a refresh in the conference data repository.
  */
 open class ObserveConferenceDataUseCase @Inject constructor(
-        private val repository: ConferenceDataRepository
+    private val repository: ConferenceDataRepository
 ) : MediatorUseCase<Any, Long>() {
 
     override fun execute(parameters: Any) {

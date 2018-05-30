@@ -17,17 +17,15 @@
 package com.google.samples.apps.iosched.tv.ui.presenter
 
 import android.graphics.drawable.Drawable
-import androidx.leanback.widget.ImageCardView
-import androidx.leanback.widget.Presenter
-import androidx.core.content.ContextCompat
-import androidx.appcompat.view.ContextThemeWrapper
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.leanback.widget.ImageCardView
+import androidx.leanback.widget.Presenter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
-import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.Speaker
 import com.google.samples.apps.iosched.tv.R
 

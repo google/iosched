@@ -36,7 +36,7 @@ import org.junit.Test
 /**
  * Unit test for [DefaultSessionAndUserEventRepository].
  */
-class DefaultSessionAndUserEventRepositoryTest{
+class DefaultSessionAndUserEventRepositoryTest {
 
     // Executes tasks in the Architecture Components in the same thread
     @get:Rule
@@ -49,43 +49,49 @@ class DefaultSessionAndUserEventRepositoryTest{
     @Test
     fun observableUserEvents_areMappedCorrectly() {
         val repository = DefaultSessionAndUserEventRepository(
-                userEventDataSource = TestUserEventDataSource(),
-                sessionRepository = DefaultSessionRepository(TestDataRepository)
+            userEventDataSource = TestUserEventDataSource(),
+            sessionRepository = DefaultSessionRepository(TestDataRepository)
         )
 
         val userEvents = LiveDataTestUtil.getValue(repository.getObservableUserEvents("user"))
 
         assertThat(userEvents, `is`(IsInstanceOf(Result.Success::class.java)))
 
-        assertThat((userEvents as Result.Success).data.userSessionsPerDay.keys.size,
-                `is`(equalTo(TestData.sessionsMap.keys.size)))
+        assertThat(
+            (userEvents as Result.Success).data.userSessionsPerDay.keys.size,
+            `is`(equalTo(TestData.sessionsMap.keys.size))
+        )
 
-        val sessionsFirstDay: List<UserSession>?
-                = userEvents.data.userSessionsPerDay[TimeUtils.ConferenceDays.first()]
+        val sessionsFirstDay: List<UserSession>? =
+            userEvents.data.userSessionsPerDay[TimeUtils.ConferenceDays.first()]
 
         // Starred session
-        assertThat(sessionsFirstDay?.get(0)?.userEvent?.isStarred,
-                `is`(equalTo(TestData.userEvents[0].isStarred)))
+        assertThat(
+            sessionsFirstDay?.get(0)?.userEvent?.isStarred,
+            `is`(equalTo(TestData.userEvents[0].isStarred))
+        )
 
         // Non-starred session
-        assertThat(sessionsFirstDay?.get(1)?.userEvent?.isStarred,
-                `is`(equalTo(TestData.userEvents[1].isStarred)))
+        assertThat(
+            sessionsFirstDay?.get(1)?.userEvent?.isStarred,
+            `is`(equalTo(TestData.userEvents[1].isStarred))
+        )
 
         // Session info gets merged too
         assertThat(sessionsFirstDay?.get(0)?.session, `is`(equalTo(TestData.session0)))
     }
 
-    //TODO: Test error cases
+    // TODO: Test error cases
 
-    //TODO: Test updateIsStarred
+    // TODO: Test updateIsStarred
 
-    //TODO: Test changeReservation
+    // TODO: Test changeReservation
 
-    //TODO: mapUserDataAndSessions with allDataSynced = true
+    // TODO: mapUserDataAndSessions with allDataSynced = true
 
-    //TODO: mapUserDataAndSessions with Result.Error
+    // TODO: mapUserDataAndSessions with Result.Error
 
-    //TODO: mapUserDataAndSessions are sorted
+    // TODO: mapUserDataAndSessions are sorted
 
-    //TODO: Test changeReservation returns SwapAction
+    // TODO: Test changeReservation returns SwapAction
 }

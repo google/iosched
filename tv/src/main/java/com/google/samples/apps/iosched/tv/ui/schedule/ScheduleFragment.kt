@@ -17,11 +17,13 @@
 package com.google.samples.apps.iosched.tv.ui.schedule
 
 import android.app.Activity
-import androidx.lifecycle.Observer
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.app.ActivityOptionsCompat
 import androidx.leanback.app.BackgroundManager
 import androidx.leanback.app.RowsSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
@@ -30,11 +32,9 @@ import androidx.leanback.widget.ImageCardView
 import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
 import androidx.leanback.widget.Presenter
-import androidx.core.app.ActivityOptionsCompat
-import android.view.ViewGroup
-import android.widget.Toast
-import com.google.samples.apps.iosched.model.userdata.UserSession
+import androidx.lifecycle.Observer
 import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.getThemeColor
@@ -123,7 +123,7 @@ class ScheduleFragment : RowsSupportFragment() {
         })
 
         viewModel.errorMessage.observe(this, Observer { message ->
-            //TODO: Change once there's a way to show errors to the user
+            // TODO: Change once there's a way to show errors to the user
             if (!message.isNullOrEmpty() && !viewModel.wasErrorMessageShown()) {
                 // Prevent the message from showing more than once
                 viewModel.onErrorMessageShown()

@@ -22,5 +22,8 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 
-class FakeStarEventUseCase : StarEventUseCase(DefaultSessionAndUserEventRepository(
-        TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)))
+class FakeStarEventUseCase : StarEventUseCase(
+    DefaultSessionAndUserEventRepository(
+        TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
+    )
+)

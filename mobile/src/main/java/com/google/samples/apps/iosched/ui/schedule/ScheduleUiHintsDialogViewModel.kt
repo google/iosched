@@ -24,11 +24,10 @@ import javax.inject.Inject
  * ViewModel for the dialog to show the schedule hints.
  */
 class ScheduleUiHintsDialogViewModel @Inject constructor(
-        private val scheduleUiHintsShowActionUseCase: ScheduleUiHintsShowActionUseCase
+    private val scheduleUiHintsShowActionUseCase: ScheduleUiHintsShowActionUseCase
 ) : ViewModel() {
 
     fun onDismissed() {
         scheduleUiHintsShowActionUseCase(true)
     }
 }
-

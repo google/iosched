@@ -50,8 +50,8 @@ internal abstract class SignInDialogModule {
      */
     @ChildFragmentScoped
     @ContributesAndroidInjector
-    internal abstract fun contributeNotificationsPreferenceDialogFragment()
-            : NotificationsPreferenceDialogFragment
+    internal abstract fun contributeNotificationsPreferenceDialogFragment():
+        NotificationsPreferenceDialogFragment
 
     /**
      * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
@@ -69,6 +69,6 @@ internal abstract class SignInDialogModule {
     @Binds
     @IntoMap
     @ViewModelKey(NotificationsPreferenceViewModel::class)
-    abstract fun bindNotificationsPreferenceViewModel(viewModel: NotificationsPreferenceViewModel)
-            : ViewModel
+    abstract fun bindNotificationsPreferenceViewModel(viewModel: NotificationsPreferenceViewModel):
+        ViewModel
 }

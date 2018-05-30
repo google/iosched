@@ -24,7 +24,7 @@ import javax.inject.Inject
  * Forces a refresh in the conference data repository.
  */
 open class RefreshConferenceDataUseCase @Inject constructor(
-        private val repository: ConferenceDataRepository
+    private val repository: ConferenceDataRepository
 ) : UseCase<Any, Boolean>() {
 
     override fun execute(parameters: Any): Boolean {
@@ -33,7 +33,6 @@ open class RefreshConferenceDataUseCase @Inject constructor(
         } catch (e: Exception) {
             Timber.e(e, "Conference data refresh failed")
             throw e
-
         }
         return true
     }

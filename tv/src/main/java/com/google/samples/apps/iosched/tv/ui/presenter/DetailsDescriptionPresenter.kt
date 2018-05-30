@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.tv.ui.presenter
 
-import androidx.leanback.widget.AbstractDetailsDescriptionPresenter
-import androidx.leanback.widget.Presenter
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.leanback.widget.AbstractDetailsDescriptionPresenter
+import androidx.leanback.widget.Presenter
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.tv.R

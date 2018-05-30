@@ -28,8 +28,10 @@ import kotlin.reflect.KClass
  * @see [com.google.samples.apps.iosched.ui.schedule.ScheduleModule.bindScheduleFragmentViewModel]
  * for an usage example.
  */
-@Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER,
-        AnnotationTarget.PROPERTY_SETTER)
+@Target(
+    AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER,
+    AnnotationTarget.PROPERTY_SETTER
+)
 @Retention(AnnotationRetention.RUNTIME)
 @MapKey
 annotation class ViewModelKey(val value: KClass<out ViewModel>)

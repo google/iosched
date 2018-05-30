@@ -40,10 +40,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/filters_sheet_background"
-        android:elevation="@dimen/bottom_sheet_elevation"
-        android:orientation="vertical"
         android:clickable="true"
+        android:elevation="@dimen/bottom_sheet_elevation"
         android:focusable="true"
+        android:orientation="vertical"
         tools:ignore="Overdraw">
 
         <androidx.constraintlayout.widget.Guideline
@@ -57,11 +57,11 @@
             android:id="@+id/recyclerview"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:clipToPadding="false"
             android:nestedScrollingEnabled="false"
             android:orientation="vertical"
             android:paddingHorizontal="@dimen/margin_normal"
             android:paddingVertical="@dimen/margin_normal"
-            android:clipToPadding="false"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -118,24 +118,24 @@
             android:background="?selectableItemBackgroundBorderless"
             android:clickable="@{descriptionAlpha > 0f}"
             android:contentDescription="@string/a11y_clear_tag_filters"
+            android:onClick="@{(v) -> viewModel.clearFilters()}"
             android:scaleType="center"
             android:tint="@color/dark_gray"
-            android:onClick="@{(v) -> viewModel.clearFilters()}"
             app:layout_constraintBottom_toTopOf="@id/guide_peek_height"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_clear_all"
             app:goneUnless="@{viewModel.hasAnyFilters}"
+            app:srcCompat="@drawable/ic_clear_all"
             tools:visibility="gone" />
 
         <View
             android:id="@+id/expand"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/guide_peek_height"
             app:layout_constraintEnd_toStartOf="@id/clear_filters_shortcut"
-            app:layout_constraintBottom_toTopOf="@id/guide_peek_height" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Header views shown when the sheet is expanded -->
 
@@ -150,8 +150,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:hasFilters="@{viewModel.hasAnyFilters}"
             app:eventCount="@{viewModel.eventCount}"
+            app:hasFilters="@{viewModel.hasAnyFilters}"
             tools:text="@string/filters" />
 
         <Button
@@ -169,9 +169,9 @@
             app:layout_constraintBottom_toTopOf="@id/guide_peek_height"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:goneUnless="@{viewModel.hasAnyFilters}"
-            app:eventFilters="@{recyclerview}"
             app:animatedOnClick="@{() -> viewModel.clearFilters()}"
+            app:eventFilters="@{recyclerview}"
+            app:goneUnless="@{viewModel.hasAnyFilters}"
             tools:targetApi="o"
             tools:visibility="visible" />
 

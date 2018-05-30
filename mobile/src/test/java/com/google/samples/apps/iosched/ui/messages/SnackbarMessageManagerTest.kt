@@ -19,8 +19,8 @@ package com.google.samples.apps.iosched.ui.messages
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.ui.SnackbarMessage
@@ -120,13 +120,13 @@ class SnackbarMessageManagerTest {
 
     @Test
     fun addOneMessage_snackbarIsStopped_actionDontShow() {
-        val mockSnackbarIsStopped = mock<LiveData<Boolean>>{
+        val mockSnackbarIsStopped = mock<LiveData<Boolean>> {
             on { value }.doReturn(true)
         }
         val snackbarMessageManager = SnackbarMessageManager(
-                FakePreferenceStorage(observableSnackbarIsStopped = mockSnackbarIsStopped))
+            FakePreferenceStorage(observableSnackbarIsStopped = mockSnackbarIsStopped)
+        )
         snackbarMessageManager.addMessage((msg1.copy(actionId = R.string.dont_show)))
-
 
         val result = LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
         assertNull(result)
@@ -134,11 +134,12 @@ class SnackbarMessageManagerTest {
 
     @Test
     fun addOneMessage_snackbarAppears_actionNotDontShow() {
-        val mockSnackbarIsStopped = mock<LiveData<Boolean>>{
+        val mockSnackbarIsStopped = mock<LiveData<Boolean>> {
             on { value }.doReturn(true)
         }
         val snackbarMessageManager = SnackbarMessageManager(
-                FakePreferenceStorage(observableSnackbarIsStopped = mockSnackbarIsStopped))
+            FakePreferenceStorage(observableSnackbarIsStopped = mockSnackbarIsStopped)
+        )
         snackbarMessageManager.addMessage(msg1)
 
         val result = LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
@@ -147,24 +148,24 @@ class SnackbarMessageManagerTest {
 
     private fun createMessage(requestId: String): SnackbarMessage {
         return SnackbarMessage(
-                messageId = 100,
-                actionId = 500,
-                requestChangeId = requestId,
-                session = TestData.session0)
+            messageId = 100,
+            actionId = 500,
+            requestChangeId = requestId,
+            session = TestData.session0
+        )
     }
 }
 
-
 val msg1 = SnackbarMessage(
-        messageId = 123,
-        actionId = 321,
-        requestChangeId = "42",
-        session = TestData.session0
+    messageId = 123,
+    actionId = 321,
+    requestChangeId = "42",
+    session = TestData.session0
 )
 
 val msg2 = SnackbarMessage(
-        messageId = 123,
-        actionId = 321,
-        requestChangeId = "43",
-        session = TestData.session1
+    messageId = 123,
+    actionId = 321,
+    requestChangeId = "43",
+    session = TestData.session1
 )

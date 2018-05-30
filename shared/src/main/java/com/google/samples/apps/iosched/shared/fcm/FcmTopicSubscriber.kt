@@ -28,7 +28,7 @@ class FcmTopicSubscriber : TopicSubscriber {
     override fun subscribeToScheduleUpdates() {
         try {
             FirebaseMessaging.getInstance().subscribeToTopic(CONFERENCE_DATA_UPDATE_TOPIC_KEY)
-        } catch (e: Exception){
+        } catch (e: Exception) {
             Timber.e(e, "Error subscribing to conference data update topic")
         }
     }
@@ -50,7 +50,6 @@ class FcmTopicSubscriber : TopicSubscriber {
             Timber.e(e, "Error unsubscribing from registered topic")
         }
     }
-
 
     companion object {
         private const val CONFERENCE_DATA_UPDATE_TOPIC_KEY = "CONFERENCE_DATA_SYNC_2018"

@@ -27,8 +27,7 @@ object TimeUtils {
 
     val CONFERENCE_TIMEZONE = ZoneId.of(BuildConfig.CONFERENCE_TIMEZONE)
 
-    val ConferenceDays  = listOf (
-
+    val ConferenceDays = listOf(
         ConferenceDay(
             ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_START),
             ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_END)

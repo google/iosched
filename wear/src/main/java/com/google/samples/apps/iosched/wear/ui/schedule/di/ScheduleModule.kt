@@ -44,5 +44,4 @@ internal abstract class ScheduleModule {
     @IntoMap
     @ViewModelKey(ScheduleViewModel::class)
     abstract fun bindScheduleFragmentViewModel(viewModel: ScheduleViewModel): ViewModel
-
 }

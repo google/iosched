@@ -81,14 +81,15 @@ fun eventHeaderAnim(lottieView: LottieAnimationView, session: Session?) {
         CODELAB -> "anim/event_details_codelabs.json"
         OFFICE_HOURS -> "anim/event_details_office_hours.json"
         SANDBOX -> "anim/event_details_sandbox.json"
-        /* default to session anim */
-        else -> "anim/event_details_session.json"
+        else -> "anim/event_details_session.json" // default to session anim
     }
     lottieView.setAnimation(anim)
 }
 
 @Suppress("unused")
-@BindingAdapter(value = ["sessionDetailStartTime", "sessionDetailEndTime", "timeZoneId"], requireAll = true)
+@BindingAdapter(
+    value = ["sessionDetailStartTime", "sessionDetailEndTime", "timeZoneId"], requireAll = true
+)
 fun timeString(
     view: TextView,
     sessionDetailStartTime: ZonedDateTime?,
@@ -146,8 +147,10 @@ fun assignFab(
             fab.setOnClickListener { eventListener.onLoginClicked() }
         }
         isRegistered && isReservable -> {
-            fab.reservationStatus = ReservationViewState.fromUserEvent(userEvent,
-                    isReservationDisabled)
+            fab.reservationStatus = ReservationViewState.fromUserEvent(
+                userEvent,
+                isReservationDisabled
+            )
             fab.setOnClickListener { eventListener.onReservationClicked() }
         }
         else -> {

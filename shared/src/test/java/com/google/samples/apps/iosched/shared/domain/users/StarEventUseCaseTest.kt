@@ -53,7 +53,8 @@ class StarEventUseCaseTest {
     @Test
     fun sessionIsStarredSuccessfully() {
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
-                TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository))
+            TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
+        )
         val useCase = StarEventUseCase(testUserEventRepository)
 
         val resultLiveData = useCase.observe()
@@ -64,10 +65,8 @@ class StarEventUseCaseTest {
         Assert.assertEquals(result, Result.Success(StarUpdatedStatus.STARRED))
     }
 
-
     @Test
     fun sessionIsStarredUnsuccessfully() {
-
         val useCase = StarEventUseCase(FailingSessionAndUserEventRepository)
 
         val resultLiveData = useCase.observe()
@@ -82,28 +81,31 @@ class StarEventUseCaseTest {
 val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepository {
     val result = MutableLiveData<Result<StarUpdatedStatus>>()
 
-    override fun starEvent(userId: String, userEvent: UserEvent):
-            LiveData<Result<StarUpdatedStatus>> {
+    override fun starEvent(
+        userId: String,
+        userEvent: UserEvent
+    ): LiveData<Result<StarUpdatedStatus>> {
         result.postValue(Result.Error(Exception("Test")))
         return result
     }
 
-    override fun getObservableUserEvents(userId: String?):
-            LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
+    override fun getObservableUserEvents(
+        userId: String?
+    ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
         throw NotImplementedError()
     }
 
     override fun getObservableUserEvent(
-            userId: String?,
-            eventId: SessionId
+        userId: String?,
+        eventId: SessionId
     ): LiveData<Result<LoadUserSessionUseCaseResult>> {
         throw NotImplementedError()
     }
 
     override fun changeReservation(
-            userId: String,
-            sessionId: SessionId,
-            action: ReservationRequestAction
+        userId: String,
+        sessionId: SessionId,
+        action: ReservationRequestAction
     ): LiveData<Result<ReservationRequestAction>> {
         throw NotImplementedError()
     }
@@ -112,9 +114,13 @@ val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepositor
         throw NotImplementedError()
     }
 
-    override fun swapReservation(userId: String, fromId: String, toId: String):
-            LiveData<Result<SwapRequestAction>> {
+    override fun swapReservation(
+        userId: String,
+        fromId: String,
+        toId: String
+    ): LiveData<Result<SwapRequestAction>> {
         throw NotImplementedError()
     }
-    override fun clearSingleEventSubscriptions() { }
+
+    override fun clearSingleEventSubscriptions() {}
 }

@@ -19,9 +19,7 @@ package com.google.samples.apps.iosched.ui.speaker
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.di.FragmentScoped
 import com.google.samples.apps.iosched.shared.di.ViewModelKey
-import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegateModule
 import com.google.samples.apps.iosched.ui.sessioncommon.SessionViewPoolModule
-import com.google.samples.apps.iosched.ui.signin.SignInDialogModule
 import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector

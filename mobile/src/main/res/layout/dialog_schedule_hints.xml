@@ -17,9 +17,9 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.IOSched.Dialog"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    style="@style/Widget.IOSched.Dialog">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/schedule_hint_guideline_start_icon"
@@ -49,11 +49,11 @@
         android:layout_margin="@dimen/margin_large"
         android:text="@string/schedule_hint_title"
         android:textAppearance="@style/TextAppearance.IOSched.DialogTitle"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@id/schedule_hint_imageview_star_event"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constrainedWidth="true" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/schedule_hint_imageview_star_event"
@@ -74,12 +74,12 @@
         android:layout_marginTop="@dimen/margin_large"
         android:text="@string/schedule_hint_star_event"
         android:textAppearance="@style/TextAppearance.IOSched.DialogContent"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@+id/schedule_hint_textview_reserve_seat"
         app:layout_constraintEnd_toEndOf="@+id/schedule_hint_guideline_end_text"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@+id/schedule_hint_guideline_start_text"
-        app:layout_constraintTop_toBottomOf="@+id/schedule_hint_title"
-        app:layout_constrainedWidth="true" />
+        app:layout_constraintTop_toBottomOf="@+id/schedule_hint_title" />
 
     <ImageView
         android:id="@+id/schedule_hint_imageview_reserve_seat"
@@ -100,11 +100,11 @@
         android:layout_marginTop="@dimen/margin_normal"
         android:text="@string/schedule_hint_reserve_session_seat"
         android:textAppearance="@style/TextAppearance.IOSched.DialogContent"
+        app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="@+id/schedule_hint_guideline_end_text"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@+id/schedule_hint_guideline_start_text"
-        app:layout_constraintTop_toBottomOf="@+id/schedule_hint_textview_star_event"
-        app:layout_constrainedWidth="true" />
+        app:layout_constraintTop_toBottomOf="@+id/schedule_hint_textview_star_event" />
 
     <Button
         android:id="@+id/schedule_hint_button_dismiss"

@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.shared.util
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.annotation.UiThread
 import androidx.annotation.WorkerThread
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 
 private const val ONE_SECOND = 1_000L
@@ -54,7 +54,6 @@ open class SetIntervalLiveData<in P, R>(
             // since this is not in the background thread, go to background before running
             // (potentially expensive) map operation.
             taskScheduler.execute(::updateValue)
-
         }
     }
 

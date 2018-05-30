@@ -35,7 +35,6 @@ object MobileTestData {
         androidTag, webTag, cloudTag, // TOPIC
         sessionsTag, codelabsTag      // TYPE
     ).map { TagFilter(it, false) }
-
 }
 
 object TestDataSource : ConferenceDataSource {
@@ -46,7 +45,6 @@ object TestDataSource : ConferenceDataSource {
     override fun getOfflineConferenceData(): ConferenceData? {
         return TestData.conferenceData
     }
-
 }
 
 /** ConferenceDataRepository for tests */

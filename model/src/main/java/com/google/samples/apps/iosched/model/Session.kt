@@ -128,7 +128,7 @@ data class Session(
     /**
      * The duration of the session.
      */
-    //TODO: Get duration from the YouTube video. Not every talk fills the full session time.
+    // TODO: Get duration from the YouTube video. Not every talk fills the full session time.
     val duration = endTime.toInstant().toEpochMilli() - startTime.toInstant().toEpochMilli()
 
     /**
@@ -146,7 +146,6 @@ data class Session(
      * Whether this event is reservable, based upon [type].
      */
     fun isReservable() = type == SESSION
-
 
     fun isOverlapping(session: Session): Boolean {
         return this.startTime < session.endTime && this.endTime > session.startTime

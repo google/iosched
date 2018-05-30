@@ -32,7 +32,7 @@ import timber.log.Timber
 /**
  * Firebase Analytics implementation of AnalyticsHelper
  */
-class FirebaseAnalyticsHelper (
+class FirebaseAnalyticsHelper(
     context: Context,
     signInViewModelDelegate: SignInViewModelDelegate,
     preferenceStorage: PreferenceStorage
@@ -57,7 +57,7 @@ class FirebaseAnalyticsHelper (
     private val FA_KEY_UI_ACTION = "ui_action"
     private val FA_CONTENT_TYPE_UI_EVENT = "ui event"
 
-    private var analyticsEnabled : Boolean = false
+    private var analyticsEnabled: Boolean = false
         set(enabled) {
             field = enabled
             Timber.d("Setting Analytics enabled: $enabled")
@@ -119,7 +119,7 @@ class FirebaseAnalyticsHelper (
 
     override fun setUserRegistered(isRegistered: Boolean) {
         // todo(alexlucas) : Set up user properties in both dev and prod
-        firebaseAnalytics.setUserProperty(UPROP_USER_REGISTERED, isRegistered.toString());
+        firebaseAnalytics.setUserProperty(UPROP_USER_REGISTERED, isRegistered.toString())
     }
 
     /**
@@ -137,7 +137,7 @@ class FirebaseAnalyticsHelper (
                 val sendStats = pref.getBoolean(key, false)
                 analyticsEnabled = sendStats
             } else {
-                logUiEvent("Preference: " + key, action)
+                logUiEvent("Preference: $key", action)
             }
         }
 
@@ -148,6 +148,6 @@ class FirebaseAnalyticsHelper (
 
     private fun getBooleanPreferenceAction(prefs: SharedPreferences, key: String): String {
         return if (prefs.getBoolean(key, true)) AnalyticsActions.ENABLE
-            else AnalyticsActions.DISABLE
+        else AnalyticsActions.DISABLE
     }
 }

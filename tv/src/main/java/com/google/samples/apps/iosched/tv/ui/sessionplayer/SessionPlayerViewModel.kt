@@ -19,11 +19,10 @@ package com.google.samples.apps.iosched.tv.ui.sessionplayer
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
 import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.shared.util.setValueIfNew
 import javax.inject.Inject
 
@@ -31,7 +30,7 @@ import javax.inject.Inject
  * Loads [Session] data and exposes it to the session player view.
  */
 class SessionPlayerViewModel @Inject constructor(
-        private val loadSessionUseCase: LoadSessionUseCase
+    private val loadSessionUseCase: LoadSessionUseCase
 ) : ViewModel() {
 
     private val useCaseResult: MutableLiveData<Result<Session>>

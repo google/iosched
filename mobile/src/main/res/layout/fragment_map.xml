@@ -105,10 +105,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="1px"
+                android:paddingTop="@dimen/bottom_sheet_peek_height"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:paddingTop="@dimen/bottom_sheet_peek_height">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/marker_description"
@@ -131,8 +131,8 @@
                 android:layout_height="32dp"
                 android:layout_marginStart="@dimen/margin_normal"
                 android:importantForAccessibility="no"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/guide_peek_height"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/map_marker_lounge" />
 
@@ -155,9 +155,9 @@
                 android:layout_height="@dimen/bottom_sheet_peek_height"
                 android:layout_marginEnd="@dimen/margin_normal"
                 android:layout_marginStart="@dimen/margin_normal"
-                android:lines="1"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
+                android:lines="1"
                 android:textAppearance="@style/TextAppearance.IOSched.Map.InfoTitle"
                 app:layout_constraintEnd_toStartOf="@id/expand_icon"
                 app:layout_constraintStart_toEndOf="@id/marker_icon"

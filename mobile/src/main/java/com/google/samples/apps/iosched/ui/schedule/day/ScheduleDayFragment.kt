@@ -79,7 +79,8 @@ class ScheduleDayFragment : DaggerFragment() {
     private lateinit var adapter: ScheduleDayAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // VM shared across the [MainActivity], [ScheduleFragment] and the [ScheduleDayFragment]s.
@@ -142,7 +143,7 @@ class ScheduleDayFragment : DaggerFragment() {
 
         // Show an error message
         viewModel.errorMessage.observe(this, EventObserver { errorMsg ->
-            //TODO: Change once there's a way to show errors to the user
+            // TODO: Change once there's a way to show errors to the user
             Toast.makeText(this.context, errorMsg, Toast.LENGTH_LONG).show()
         })
     }
@@ -154,7 +155,8 @@ class ScheduleDayFragment : DaggerFragment() {
         adapter.submitList(list)
 
         binding.recyclerview.run {
-            doOnNextLayout { // i.e. after diffing
+            // we want this to run after diffing
+            doOnNextLayout {
                 // Recreate the decoration used for the sticky time headers
                 clearDecorations()
                 if (list.isNotEmpty()) {

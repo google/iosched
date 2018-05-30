@@ -47,12 +47,12 @@ import javax.inject.Inject
  * [FirestoreRegisteredUserDataSource].
  */
 class FirebaseAuthStateUserDataSource @Inject constructor(
-        val firebase: FirebaseAuth,
-        private val tokenUpdater: FcmTokenUpdater
+    val firebase: FirebaseAuth,
+    private val tokenUpdater: FcmTokenUpdater
 ) : AuthStateUserDataSource {
 
     private val currentFirebaseUserObservable =
-            MutableLiveData<Result<AuthenticatedUserInfoBasic?>>()
+        MutableLiveData<Result<AuthenticatedUserInfoBasic?>>()
 
     private var isAlreadyListening = false
 
@@ -62,8 +62,11 @@ class FirebaseAuthStateUserDataSource @Inject constructor(
         DefaultScheduler.execute {
             Timber.d("Received a FirebaseAuth update.")
             // Post the current user for observers
-            currentFirebaseUserObservable.postValue(Result.Success(
-                    FirebaseUserInfo(auth.currentUser)))
+            currentFirebaseUserObservable.postValue(
+                Result.Success(
+                    FirebaseUserInfo(auth.currentUser)
+                )
+            )
 
             auth.currentUser?.let { currentUser ->
 

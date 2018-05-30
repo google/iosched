@@ -16,14 +16,14 @@
 
 package com.google.samples.apps.iosched.ui.map
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.core.widget.NestedScrollView
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.NestedScrollView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.Marker
@@ -70,8 +70,11 @@ class MapFragment : DaggerFragment(), MainNavigationFragment, OnMarkerClickListe
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         viewModel = viewModelProvider(viewModelFactory)
         binding = FragmentMapBinding.inflate(inflater, container, false).apply {
             setLifecycleOwner(this@MapFragment)
@@ -119,10 +122,10 @@ class MapFragment : DaggerFragment(), MainNavigationFragment, OnMarkerClickListe
             }
         }
         // Mimic elevation change by activating header shadow.
-        binding.descriptionScrollview.setOnScrollChangeListener {
-                v: NestedScrollView, _: Int, _: Int, _: Int, _: Int ->
-            binding.sheetHeaderShadow.isActivated = v.canScrollVertically(-1)
-        }
+        binding.descriptionScrollview
+            .setOnScrollChangeListener { v: NestedScrollView, _: Int, _: Int, _: Int, _: Int ->
+                binding.sheetHeaderShadow.isActivated = v.canScrollVertically(-1)
+            }
 
         viewModel.selectedMarkerInfo.observe(this, Observer {
             updateInfoSheet(it ?: return@Observer)
@@ -165,7 +168,7 @@ class MapFragment : DaggerFragment(), MainNavigationFragment, OnMarkerClickListe
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         val mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY)
-                ?: Bundle().apply { putBundle(MAPVIEW_BUNDLE_KEY, this) }
+            ?: Bundle().apply { putBundle(MAPVIEW_BUNDLE_KEY, this) }
         mapView.onSaveInstanceState(mapViewBundle)
     }
 

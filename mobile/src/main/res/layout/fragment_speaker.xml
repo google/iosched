@@ -21,6 +21,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.google.samples.apps.iosched.ui.speaker.SpeakerViewModel" />
@@ -37,8 +38,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
-            app:layoutManager="LinearLayoutManager"
-            app:hasFixedSize="@{true}" />
+            app:hasFixedSize="@{true}"
+            app:layoutManager="LinearLayoutManager" />
 
         <ImageButton
             android:id="@+id/up"

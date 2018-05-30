@@ -59,8 +59,10 @@ class CompareOldAndNewUserEventsTest {
     @Test
     fun compareOldAndNew_newStateReservedBySwap_reservationReplacedMessage() {
         val oldState = createUserEvent()
-        val newState = createUserEvent(reservationStatus = UserEvent.ReservationStatus.RESERVED,
-                reservationRequestResult = createReservationResult(requestResult = SWAP_SUCCEEDED))
+        val newState = createUserEvent(
+            reservationStatus = UserEvent.ReservationStatus.RESERVED,
+            reservationRequestResult = createReservationResult(requestResult = SWAP_SUCCEEDED)
+        )
 
         val result = compareOldAndNewUserEvents(oldState, newState, oldState.id)
 
@@ -69,10 +71,15 @@ class CompareOldAndNewUserEventsTest {
 
     @Test
     fun compareOldAndNew_newStateWaitlistedBySwap_waitlistChangeMessage() {
-        val oldState = createUserEvent(reservationRequest = createReservationRequest(
-                ReservationRequestEntityAction.RESERVE_REQUESTED))
-        val newState = createUserEvent(reservationStatus = UserEvent.ReservationStatus.WAITLISTED,
-                reservationRequestResult = createReservationResult(requestResult = SWAP_WAITLISTED))
+        val oldState = createUserEvent(
+            reservationRequest = createReservationRequest(
+                ReservationRequestEntityAction.RESERVE_REQUESTED
+            )
+        )
+        val newState = createUserEvent(
+            reservationStatus = UserEvent.ReservationStatus.WAITLISTED,
+            reservationRequestResult = createReservationResult(requestResult = SWAP_WAITLISTED)
+        )
 
         val result = compareOldAndNewUserEvents(oldState, newState, oldState.id)
 
@@ -93,8 +100,11 @@ class CompareOldAndNewUserEventsTest {
     @Test
     fun compareOldAndNew_newStateWaitlisted_waitlistChangeMessage() {
 
-        val oldState = createUserEvent(reservationRequest = createReservationRequest(
-                ReservationRequestEntityAction.RESERVE_REQUESTED))
+        val oldState = createUserEvent(
+            reservationRequest = createReservationRequest(
+                ReservationRequestEntityAction.RESERVE_REQUESTED
+            )
+        )
 
         val newState = createUserEvent(reservationStatus = UserEvent.ReservationStatus.WAITLISTED)
 
@@ -119,11 +129,12 @@ class CompareOldAndNewUserEventsTest {
 
         val oldState = createUserEvent()
         val newStateRequest = createReservationRequest(
-                action = ReservationRequestEntityAction.RESERVE_REQUESTED
+            action = ReservationRequestEntityAction.RESERVE_REQUESTED
         )
 
         val newState = createUserEvent(
-                reservationRequest = newStateRequest)
+            reservationRequest = newStateRequest
+        )
         val result = compareOldAndNewUserEvents(oldState, newState, oldState.id)
         assertThat(result?.type, `is`(nullValue()))
     }
@@ -133,18 +144,18 @@ class CompareOldAndNewUserEventsTest {
 
         val oldState = createUserEvent()
         val newStateRequest = createReservationRequest(
-                action = ReservationRequestEntityAction.RESERVE_REQUESTED,
-                requestId = "something"
+            action = ReservationRequestEntityAction.RESERVE_REQUESTED,
+            requestId = "something"
         )
         val newRequestResult = createReservationResult(
-                requestResult = ReservationRequestStatus.RESERVE_DENIED_CLASH,
-                requestId = "something_different"
+            requestResult = ReservationRequestStatus.RESERVE_DENIED_CLASH,
+            requestId = "something_different"
 
         )
 
         val newState = createUserEvent(
-                reservationRequest = newStateRequest,
-                reservationRequestResult = newRequestResult
+            reservationRequest = newStateRequest,
+            reservationRequestResult = newRequestResult
         )
 
         val result = compareOldAndNewUserEvents(oldState, newState, oldState.id)
@@ -173,8 +184,10 @@ class CompareOldAndNewUserEventsTest {
 
         val result = generateErrorResult(ReservationRequestStatus.RESERVE_DENIED_CUTOFF)
 
-        assertThat(result?.type,
-                `is`(equalTo(UserEventMessageChangeType.RESERVATION_DENIED_CUTOFF)))
+        assertThat(
+            result?.type,
+            `is`(equalTo(UserEventMessageChangeType.RESERVATION_DENIED_CUTOFF))
+        )
     }
 
     @Test
@@ -182,8 +195,10 @@ class CompareOldAndNewUserEventsTest {
 
         val result = generateErrorResult(ReservationRequestStatus.SWAP_DENIED_CUTOFF)
 
-        assertThat(result?.type,
-                `is`(equalTo(UserEventMessageChangeType.RESERVATION_DENIED_CUTOFF)))
+        assertThat(
+            result?.type,
+            `is`(equalTo(UserEventMessageChangeType.RESERVATION_DENIED_CUTOFF))
+        )
     }
 
     @Test
@@ -191,8 +206,10 @@ class CompareOldAndNewUserEventsTest {
 
         val result = generateErrorResult(ReservationRequestStatus.RESERVE_DENIED_UNKNOWN)
 
-        assertThat(result?.type,
-                `is`(equalTo(UserEventMessageChangeType.RESERVATION_DENIED_UNKNOWN)))
+        assertThat(
+            result?.type,
+            `is`(equalTo(UserEventMessageChangeType.RESERVATION_DENIED_UNKNOWN))
+        )
     }
 
     @Test
@@ -200,8 +217,10 @@ class CompareOldAndNewUserEventsTest {
 
         val result = generateErrorResult(ReservationRequestStatus.SWAP_DENIED_UNKNOWN)
 
-        assertThat(result?.type,
-                `is`(equalTo(UserEventMessageChangeType.RESERVATION_DENIED_UNKNOWN)))
+        assertThat(
+            result?.type,
+            `is`(equalTo(UserEventMessageChangeType.RESERVATION_DENIED_UNKNOWN))
+        )
     }
 
     @Test
@@ -209,8 +228,10 @@ class CompareOldAndNewUserEventsTest {
 
         val result = generateErrorResult(ReservationRequestStatus.CANCEL_DENIED_CUTOFF)
 
-        assertThat(result?.type,
-                `is`(equalTo(UserEventMessageChangeType.CANCELLATION_DENIED_CUTOFF)))
+        assertThat(
+            result?.type,
+            `is`(equalTo(UserEventMessageChangeType.CANCELLATION_DENIED_CUTOFF))
+        )
     }
 
     @Test
@@ -218,50 +239,55 @@ class CompareOldAndNewUserEventsTest {
 
         val result = generateErrorResult(ReservationRequestStatus.CANCEL_DENIED_UNKNOWN)
 
-        assertThat(result?.type,
-                `is`(equalTo(UserEventMessageChangeType.CANCELLATION_DENIED_UNKNOWN)))
+        assertThat(
+            result?.type,
+            `is`(equalTo(UserEventMessageChangeType.CANCELLATION_DENIED_UNKNOWN))
+        )
     }
 
     private fun generateErrorResult(errorResult: ReservationRequestStatus): UserEventMessage? {
         val oldState = createUserEvent()
         val newStateRequest = createReservationRequest(
-                action = ReservationRequestEntityAction.RESERVE_REQUESTED,
-                requestId = "42"
+            action = ReservationRequestEntityAction.RESERVE_REQUESTED,
+            requestId = "42"
         )
         val newRequestResult = createReservationResult(
-                requestResult = errorResult,
-                requestId = "42"
+            requestResult = errorResult,
+            requestId = "42"
 
         )
 
         val newState = createUserEvent(
-                reservationRequest = newStateRequest,
-                reservationRequestResult = newRequestResult
+            reservationRequest = newStateRequest,
+            reservationRequestResult = newRequestResult
         )
 
         return compareOldAndNewUserEvents(oldState, newState, oldState.id)
     }
 
-    private fun createUserEvent(id: String = "123",
-                                isStarred: Boolean = false,
-                                isReviewed: Boolean = false,
-                                reservationStatus: UserEvent.ReservationStatus? = null,
-                                reservationRequestResult: ReservationRequestResult? = null,
-                                reservationRequest: ReservationRequest? = null): UserEvent {
+    private fun createUserEvent(
+        id: String = "123",
+        isStarred: Boolean = false,
+        isReviewed: Boolean = false,
+        reservationStatus: UserEvent.ReservationStatus? = null,
+        reservationRequestResult: ReservationRequestResult? = null,
+        reservationRequest: ReservationRequest? = null
+    ): UserEvent {
         return UserEvent(
             id,
             isStarred,
             isReviewed,
             reservationStatus,
             reservationRequestResult,
-            reservationRequest)
+            reservationRequest
+        )
     }
 
     private fun createReservationResult(
         requestResult: ReservationRequestResult.ReservationRequestStatus? = null,
         requestId: String = "213",
         timestamp: Long = -1
-    ) : ReservationRequestResult {
+    ): ReservationRequestResult {
 
         return ReservationRequestResult(
             requestResult = requestResult,
@@ -271,10 +297,10 @@ class CompareOldAndNewUserEventsTest {
     }
 
     private fun createReservationRequest(
-            action: ReservationRequestEntityAction =
-                    ReservationRequestEntityAction.RESERVE_REQUESTED,
-            requestId: String = "321"
-    ) : ReservationRequest {
+        action: ReservationRequestEntityAction =
+            ReservationRequestEntityAction.RESERVE_REQUESTED,
+        requestId: String = "321"
+    ): ReservationRequest {
         return ReservationRequest(
             action = action,
             requestId = requestId

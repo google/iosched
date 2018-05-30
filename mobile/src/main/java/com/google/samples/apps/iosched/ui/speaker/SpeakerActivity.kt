@@ -25,6 +25,7 @@ import com.google.samples.apps.iosched.shared.util.inTransaction
 import dagger.android.support.DaggerAppCompatActivity
 
 internal const val SPEAKER_ID = "speaker_id"
+
 class SpeakerActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +41,7 @@ class SpeakerActivity : DaggerAppCompatActivity() {
     }
 
     companion object {
-        fun starterIntent(context: Context, speakerId : SpeakerId): Intent {
+        fun starterIntent(context: Context, speakerId: SpeakerId): Intent {
             return Intent(context, SpeakerActivity::class.java).apply {
                 putExtra(SPEAKER_ID, speakerId)
             }

@@ -16,10 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.info
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import android.content.Intent
-import androidx.databinding.BindingAdapter
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -27,6 +24,9 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.databinding.BindingAdapter
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentInfoEventBinding
 import com.google.samples.apps.iosched.shared.util.TimeUtils
@@ -43,7 +43,8 @@ class EventFragment : DaggerFragment() {
     private lateinit var eventInfoViewModel: EventInfoViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         context ?: return null

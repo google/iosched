@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.tv.ui.search.di
 
 import com.google.samples.apps.iosched.tv.TvApplication
 import com.google.samples.apps.iosched.tv.search.SessionContentProvider
-import com.google.samples.apps.iosched.tv.ui.schedule.di.TvScheduleModule
 import com.google.samples.apps.iosched.tv.ui.search.SearchableActivity
 import com.google.samples.apps.iosched.tv.ui.search.SearchableViewModelFactory
 import dagger.Subcomponent

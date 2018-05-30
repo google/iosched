@@ -20,7 +20,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnClickListener
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -29,9 +28,9 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.util.drawable.HeaderGridDrawable
 
 class EventView @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     var onViewSessionsClicked: (view: View, uri: String) -> Unit = { _, _ -> Unit }
@@ -39,8 +38,7 @@ class EventView @JvmOverloads constructor(
     var onViewCodelabsClicked: (view: View, uri: String) -> Unit = { _, _ -> Unit }
 
     init {
-        val arr = context.obtainStyledAttributes(attrs, R.styleable.EventView,
-                defStyleAttr, 0)
+        val arr = context.obtainStyledAttributes(attrs, R.styleable.EventView, defStyleAttr, 0)
         val eventTitle = arr.getString(R.styleable.EventView_eventTitle)
         val eventDescription = arr.getString(R.styleable.EventView_eventDescription)
         val eventTitleBackground = arr.getDrawable(R.styleable.EventView_eventTypeLogo)
@@ -50,24 +48,22 @@ class EventView @JvmOverloads constructor(
         arr.recycle()
 
         val rootView = LayoutInflater.from(context)
-                .inflate(R.layout.info_event_content_card_view, this, true)
+            .inflate(R.layout.info_event_content_card_view, this, true)
 
-        val gridHeader = rootView.findViewById<ImageView>(R.id.grid).apply {
+        rootView.findViewById<ImageView>(R.id.grid).apply {
             setImageDrawable(HeaderGridDrawable(context))
         }
 
-        val eventTypeLogo = rootView.findViewById<ImageView>(R.id.event_type_logo).apply {
+        rootView.findViewById<ImageView>(R.id.event_type_logo).apply {
             setImageDrawable(eventTitleBackground)
         }
 
-        val titleView = rootView.findViewById<TextView>(R.id.event_title)
-                .apply {
-                    text = eventTitle
-                }
-        val descriptionView = rootView.findViewById<TextView>(R.id.event_content_description)
-                .apply {
-                    text = eventDescription
-                }
+        rootView.findViewById<TextView>(R.id.event_title).apply {
+            text = eventTitle
+        }
+        rootView.findViewById<TextView>(R.id.event_content_description).apply {
+            text = eventDescription
+        }
 
         val viewSessions = rootView.findViewById<Button>(R.id.event_view_sessions)
         if (filteredEventsUri != null) {
@@ -80,9 +76,9 @@ class EventView @JvmOverloads constructor(
 
         val viewMap = rootView.findViewById<Button>(R.id.event_view_map)
         if (mapUri != null) {
-            viewMap.setOnClickListener(OnClickListener {
+            viewMap.setOnClickListener {
                 onViewMapClicked(this@EventView, mapUri)
-            })
+            }
         } else {
             viewMap.visibility = View.GONE
         }

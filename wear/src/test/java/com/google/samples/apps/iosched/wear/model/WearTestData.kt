@@ -21,7 +21,6 @@ import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.test.data.TestData
 
-
 object TestDataSource : ConferenceDataSource {
     override fun getRemoteConferenceData(): ConferenceData? {
         return TestData.conferenceData

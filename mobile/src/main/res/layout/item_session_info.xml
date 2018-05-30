@@ -21,9 +21,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewModel" />
+
         <variable
             name="tagViewPool"
             type="androidx.recyclerview.widget.RecyclerView.RecycledViewPool" />
@@ -68,10 +70,10 @@
             android:layout_marginEnd="@dimen/event_logo_end_margin"
             android:layout_marginTop="@dimen/event_logo_top_margin"
             android:importantForAccessibility="no"
-            app:eventType="@{viewModel.session.type}"
-            app:goneUnless="@{viewModel.hasPhotoOrVideo}"
             app:layout_constraintEnd_toEndOf="@+id/detail_image"
-            app:layout_constraintTop_toTopOf="@+id/detail_image" />
+            app:layout_constraintTop_toTopOf="@+id/detail_image"
+            app:eventType="@{viewModel.session.type}"
+            app:goneUnless="@{viewModel.hasPhotoOrVideo}" />
 
         <!-- Play button, shown if there is a recording available -->
         <ImageButton
@@ -169,13 +171,13 @@
             android:layout_marginTop="@dimen/spacing_micro"
             android:text="@{viewModel.session.room.name}"
             android:textColor="?android:textColorPrimary"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toTopOf="@id/session_detail_level_barrier"
             app:layout_constraintEnd_toStartOf="@id/session_detail_recorded"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintBottom_toTopOf="@id/session_detail_level_barrier"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/session_detail_time"
-            app:layout_constrainedWidth="true"
             tools:text="Session Location" />
 
         <ImageView
@@ -215,9 +217,9 @@
             android:id="@+id/session_detail_countdown_timer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/session_detail_recorded"
-            app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:sessionStartCountdown="@{viewModel.timeUntilStart}"
             tools:text="5 minutes" />
 

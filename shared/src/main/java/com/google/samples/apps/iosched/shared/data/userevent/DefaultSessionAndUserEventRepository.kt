@@ -46,8 +46,8 @@ import javax.inject.Singleton
  */
 @Singleton
 open class DefaultSessionAndUserEventRepository @Inject constructor(
-        private val userEventDataSource: UserEventDataSource,
-        private val sessionRepository: SessionRepository
+    private val userEventDataSource: UserEventDataSource,
+    private val sessionRepository: SessionRepository
 ) : SessionAndUserEventRepository {
 
     private val sessionsByDayResult = MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>()
@@ -56,9 +56,9 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
     // stop observing when done.
     private var observableUserEvent: LiveData<UserEventResult>? = null
 
-    override fun getObservableUserEvents(userId: String?):
-            LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
-
+    override fun getObservableUserEvents(
+        userId: String?
+    ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
         // If there is no logged-in user, return the map with null UserEvents
         if (userId == null) {
             Timber.d("EventRepository: No user logged in, returning sessions without user events.")
@@ -68,7 +68,9 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                 LoadUserSessionsByDayUseCaseResult(
                     userSessionsPerDay = userSessionsPerDay,
                     userMessage = null,
-                    userSessionCount = allSessions.size))
+                    userSessionCount = allSessions.size
+                )
+            )
             return sessionsByDayResult
         }
         // Observes the user events and merges them with session data.
@@ -94,15 +96,18 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                     val userEventsMessageSession = allSessions.firstOrNull {
                         it.id == userEvents.userEventsMessage?.sessionId
                     }
-                    sessionsByDayResult.postValue(Result.Success(
-                        LoadUserSessionsByDayUseCaseResult(
-                            userSessionsPerDay = mapUserDataAndSessions(
-                                userEvents, allSessions),
-                            userMessage = userEvents.userEventsMessage,
-                            userMessageSession = userEventsMessageSession,
-                            userSessionCount = allSessions.size)
-                    ))
-
+                    sessionsByDayResult.postValue(
+                        Result.Success(
+                            LoadUserSessionsByDayUseCaseResult(
+                                userSessionsPerDay = mapUserDataAndSessions(
+                                    userEvents, allSessions
+                                ),
+                                userMessage = userEvents.userEventsMessage,
+                                userMessageSession = userEventsMessageSession,
+                                userSessionCount = allSessions.size
+                            )
+                        )
+                    )
                 } catch (e: Exception) {
                     sessionsByDayResult.postValue(Result.Error(e))
                 }
@@ -112,8 +117,8 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
     }
 
     override fun getObservableUserEvent(
-            userId: String?,
-            eventId: SessionId
+        userId: String?,
+        eventId: SessionId
     ): LiveData<Result<LoadUserSessionUseCaseResult>> {
         val sessionResult = MediatorLiveData<Result<LoadUserSessionUseCaseResult>>()
 
@@ -121,11 +126,14 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         if (userId == null) {
             Timber.d("EventRepository: No user logged in, returning session without user event.")
             val session = sessionRepository.getSession(eventId)
-            sessionResult.postValue(Result.Success(
+            sessionResult.postValue(
+                Result.Success(
                     LoadUserSessionUseCaseResult(
-                            userSession = UserSession(session, createDefaultUserEvent(session)),
-                            userMessage = null)
-            ))
+                        userSession = UserSession(session, createDefaultUserEvent(session)),
+                        userMessage = null
+                    )
+                )
+            )
             return sessionResult
         }
 
@@ -142,14 +150,18 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                     val event = sessionRepository.getSession(eventId)
 
                     // Merges session with user data and emits the result
-                    val userSession = UserSession(event,
-                        userEventResult?.userEvent ?: createDefaultUserEvent(event))
-                    sessionResult.postValue(Result.Success(
+                    val userSession = UserSession(
+                        event,
+                        userEventResult?.userEvent ?: createDefaultUserEvent(event)
+                    )
+                    sessionResult.postValue(
+                        Result.Success(
                             LoadUserSessionUseCaseResult(
-                                    userSession = userSession,
-                                    userMessage = userEventResult?.userEventMessage
+                                userSession = userSession,
+                                userMessage = userEventResult?.userEventMessage
                             )
-                    ))
+                        )
+                    )
                 } catch (e: Exception) {
                     sessionResult.postValue(Result.Error(e))
                 }
@@ -163,18 +175,19 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         return userEventDataSource.getUserEvents(userId ?: "")
     }
 
-    override fun starEvent(userId: String, userEvent: UserEvent):
-            LiveData<Result<StarUpdatedStatus>> {
+    override fun starEvent(
+        userId: String,
+        userEvent: UserEvent
+    ): LiveData<Result<StarUpdatedStatus>> {
         return userEventDataSource.starEvent(userId, userEvent)
     }
 
     override fun changeReservation(
-            userId: String,
-            sessionId: SessionId,
-            action: ReservationRequestAction
+        userId: String,
+        sessionId: SessionId,
+        action: ReservationRequestAction
     ): LiveData<Result<ReservationRequestAction>> {
-
-        val sessions = sessionRepository.getSessions().associateBy {it.id}
+        val sessions = sessionRepository.getSessions().associateBy { it.id }
         val userEvents = getUserEvents(userId)
         val session = sessionRepository.getSession(sessionId)
         val overlappingId = findOverlappingReservationId(session, action, sessions, userEvents)
@@ -183,37 +196,48 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
             // SwapAction is needed.
             val result = MutableLiveData<Result<ReservationRequestAction>>()
             val overlappingSession = sessionRepository.getSession(overlappingId)
-            Timber.d("""User is trying to reserve a session that overlaps with the
-                |session id: $overlappingId, title: ${overlappingSession.title}""".trimMargin())
-            result.postValue(Result.Success(SwapAction(
-                    SwapRequestParameters(userId,
+            Timber.d(
+                """User is trying to reserve a session that overlaps with the
+                |session id: $overlappingId, title: ${overlappingSession.title}""".trimMargin()
+            )
+            result.postValue(
+                Result.Success(
+                    SwapAction(
+                        SwapRequestParameters(
+                            userId,
                             fromId = overlappingId,
                             fromTitle = overlappingSession.title,
                             toId = sessionId,
-                            toTitle = session.title))))
+                            toTitle = session.title
+                        )
+                    )
+                )
+            )
             return result
         }
         return userEventDataSource.requestReservation(userId, session, action)
     }
 
-    override fun swapReservation(userId: String,
-                                 fromId: SessionId,
-                                 toId: SessionId
+    override fun swapReservation(
+        userId: String,
+        fromId: SessionId,
+        toId: SessionId
     ): LiveData<Result<SwapRequestAction>> {
         val toSession = sessionRepository.getSession(toId)
         val fromSession = sessionRepository.getSession(fromId)
         return userEventDataSource.swapReservation(userId, fromSession, toSession)
     }
 
-    private fun findOverlappingReservationId(session: Session,
-                                             action: ReservationRequestAction,
-                                             sessions: Map<String, Session>,
-                                             userEvents: List<UserEvent>
+    private fun findOverlappingReservationId(
+        session: Session,
+        action: ReservationRequestAction,
+        sessions: Map<String, Session>,
+        userEvents: List<UserEvent>
     ): String? {
         if (action !is RequestAction) return null
         val overlappingUserEvent = userEvents.find {
-            sessions[it.id]?.isOverlapping(session) == true
-                    && (it.isReserved() || it.isWaitlisted())
+            sessions[it.id]?.isOverlapping(session) == true &&
+                (it.isReserved() || it.isWaitlisted())
         }
         return overlappingUserEvent?.id
     }
@@ -227,17 +251,16 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
      */
     @WorkerThread
     private fun mapUserDataAndSessions(
-            userData: UserEventsResult?,
-            allSessions: List<Session>
+        userData: UserEventsResult?,
+        allSessions: List<Session>
     ): Map<ConferenceDay, List<UserSession>> {
 
         // If there is no logged-in user, return the map with null UserEvents
         if (userData == null) {
             return ConferenceDays.map { day ->
                 day to allSessions
-                        .filter { day.contains(it) }
-                        .map { session -> UserSession(session, createDefaultUserEvent(session)) }
-
+                    .filter { day.contains(it) }
+                    .map { session -> UserSession(session, createDefaultUserEvent(session)) }
             }.toMap()
         }
 
@@ -253,11 +276,11 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
         return ConferenceDays.map { day ->
             day to allUserSessions
-                    .filter { day.contains(it.session) }
-                    .map { userSession ->
-                        UserSession(userSession.session, userSession.userEvent)
-                    }
-                    .sortedBy { it.session.startTime }
+                .filter { day.contains(it.session) }
+                .map { userSession ->
+                    UserSession(userSession.session, userSession.userEvent)
+                }
+                .sortedBy { it.session.startTime }
         }.toMap()
     }
 
@@ -269,20 +292,28 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
 interface SessionAndUserEventRepository {
 
-    fun getObservableUserEvents(userId: String?):
-            LiveData<Result<LoadUserSessionsByDayUseCaseResult>>
+    fun getObservableUserEvents(
+        userId: String?
+    ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>>
 
-    fun getObservableUserEvent(userId: String?, eventId: SessionId):
-            LiveData<Result<LoadUserSessionUseCaseResult>>
+    fun getObservableUserEvent(
+        userId: String?,
+        eventId: SessionId
+    ): LiveData<Result<LoadUserSessionUseCaseResult>>
 
     fun getUserEvents(userId: String?): List<UserEvent>
 
     fun changeReservation(
-            userId: String, sessionId: SessionId, action: ReservationRequestAction
+        userId: String,
+        sessionId: SessionId,
+        action: ReservationRequestAction
     ): LiveData<Result<ReservationRequestAction>>
 
-    fun swapReservation(userId: String, fromId: SessionId, toId: SessionId):
-            LiveData<Result<SwapRequestAction>>
+    fun swapReservation(
+        userId: String,
+        fromId: SessionId,
+        toId: SessionId
+    ): LiveData<Result<SwapRequestAction>>
 
     fun starEvent(userId: String, userEvent: UserEvent): LiveData<Result<StarUpdatedStatus>>
 

@@ -16,16 +16,16 @@
 
 package com.google.samples.apps.iosched.shared.domain.tags
 
+import com.google.samples.apps.iosched.model.Tag
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.domain.UseCase
-import com.google.samples.apps.iosched.model.Tag
 import javax.inject.Inject
 
 /**
  * Loads tags from a repository. Sub classes should manipulate the tags' order for their use case.
  */
-open class LoadTagsUseCase @Inject constructor(private val repository: TagRepository)
-    : UseCase<Unit, List<Tag>>() {
+open class LoadTagsUseCase @Inject constructor(private val repository: TagRepository) :
+    UseCase<Unit, List<Tag>>() {
 
     override fun execute(parameters: Unit) = repository.getTags()
 }

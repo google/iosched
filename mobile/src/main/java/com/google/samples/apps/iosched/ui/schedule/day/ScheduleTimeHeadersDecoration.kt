@@ -20,14 +20,13 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.Typeface.BOLD
-import androidx.core.content.res.ResourcesCompat
-import androidx.recyclerview.widget.RecyclerView
 import android.text.Layout.Alignment.ALIGN_CENTER
 import android.text.SpannableStringBuilder
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.StyleSpan
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.res.getColorOrThrow
 import androidx.core.content.res.getDimensionOrThrow
 import androidx.core.content.res.getDimensionPixelSizeOrThrow
@@ -36,6 +35,7 @@ import androidx.core.graphics.withTranslation
 import androidx.core.text.inSpans
 import androidx.core.view.get
 import androidx.core.view.isEmpty
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import androidx.recyclerview.widget.RecyclerView.State
 import com.google.samples.apps.iosched.R
@@ -84,7 +84,7 @@ class ScheduleTimeHeadersDecoration(
         paddingTop = attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_android_paddingTop)
         hourMinTextSize = attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_hourMinTextSize)
         meridiemTextSize =
-                attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_meridiemTextSize)
+            attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_meridiemTextSize)
         attrs.recycle()
     }
 

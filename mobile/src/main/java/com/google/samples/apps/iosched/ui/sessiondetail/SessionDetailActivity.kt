@@ -29,7 +29,7 @@ import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
 import dagger.android.support.DaggerAppCompatActivity
 import timber.log.Timber
-import java.util.*
+import java.util.UUID
 import javax.inject.Inject
 
 class SessionDetailActivity : DaggerAppCompatActivity() {
@@ -51,13 +51,16 @@ class SessionDetailActivity : DaggerAppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if( resultCode == Activity.RESULT_CANCELED ) {
+        if (resultCode == Activity.RESULT_CANCELED) {
             Timber.d("An activity returned RESULT_CANCELED")
             val response = IdpResponse.fromResultIntent(data)
             response?.error?.let {
-                snackbarMessageManager.addMessage(SnackbarMessage(
+                snackbarMessageManager.addMessage(
+                    SnackbarMessage(
                         messageId = FirebaseAuthErrorCodeConverter.convert(it.errorCode),
-                        requestChangeId = UUID.randomUUID().toString()))
+                        requestChangeId = UUID.randomUUID().toString()
+                    )
+                )
             }
         }
     }

@@ -18,6 +18,9 @@ package com.google.samples.apps.iosched.shared.domain.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventResult
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
@@ -28,15 +31,12 @@ import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus.STARRED
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus.UNSTARRED
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
-import com.google.samples.apps.iosched.model.userdata.UserEvent
-import com.google.samples.apps.iosched.model.Session
-import com.google.samples.apps.iosched.model.SessionId
-import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.test.data.TestData
 
 class TestUserEventDataSource(
-        private val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData(),
-        private val userEventResult: MutableLiveData<UserEventResult> = MutableLiveData()
+    private val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData(),
+    private val userEventResult: MutableLiveData<UserEventResult> = MutableLiveData()
 ) : UserEventDataSource {
 
     override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {
@@ -45,40 +45,51 @@ class TestUserEventDataSource(
     }
 
     override fun getObservableUserEvent(
-            userId: String,
-            eventId: SessionId
+        userId: String,
+        eventId: SessionId
     ): LiveData<UserEventResult> {
         userEventResult.postValue(UserEventResult(TestData.userEvents[0]))
         return userEventResult
     }
 
-    override fun starEvent(userId: String, userEvent: UserEvent):
-            LiveData<Result<StarUpdatedStatus>> {
-
+    override fun starEvent(
+        userId: String,
+        userEvent: UserEvent
+    ): LiveData<Result<StarUpdatedStatus>> {
         val result = MutableLiveData<Result<StarUpdatedStatus>>()
-        result.postValue(Result.Success(
-                if (userEvent.isStarred) STARRED else UNSTARRED))
+        result.postValue(
+            Result.Success(
+                if (userEvent.isStarred) STARRED else UNSTARRED
+            )
+        )
         return result
     }
 
     override fun requestReservation(
-            userId: String, session: Session, action: ReservationRequestAction
+        userId: String,
+        session: Session,
+        action: ReservationRequestAction
     ): LiveData<Result<ReservationRequestAction>> {
-
         val result = MutableLiveData<Result<ReservationRequestAction>>()
-        result.postValue(Result.Success(
-                if (action is RequestAction) RequestAction() else CancelAction()))
+        result.postValue(
+            Result.Success(
+                if (action is RequestAction) RequestAction() else CancelAction()
+            )
+        )
         return result
     }
 
     override fun getUserEvents(userId: String): List<UserEvent> = TestData.userEvents
 
-    override fun swapReservation(userId: String, fromSession: Session, toSession: Session):
-            LiveData<Result<SwapRequestAction>> {
+    override fun swapReservation(
+        userId: String,
+        fromSession: Session,
+        toSession: Session
+    ): LiveData<Result<SwapRequestAction>> {
         val result = MutableLiveData<Result<SwapRequestAction>>()
         result.postValue(Result.Success(SwapRequestAction()))
         return result
     }
 
-    override fun clearSingleEventSubscriptions() { }
+    override fun clearSingleEventSubscriptions() {}
 }

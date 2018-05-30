@@ -17,13 +17,13 @@
 package com.google.samples.apps.iosched.ui.schedule.day
 
 import android.content.Context
-import androidx.databinding.BindingAdapter
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.TextView
+import androidx.databinding.BindingAdapter
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.model.Room
+import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.ui.reservation.ReservationTextView
 import com.google.samples.apps.iosched.ui.reservation.ReservationViewState
@@ -46,7 +46,7 @@ fun sessionLengthLocation(
     alwaysShowDate: Boolean,
     room: Room,
     timeZoneId: ZoneId?
-    ) {
+) {
     val finalTimeZoneId = timeZoneId ?: ZoneId.systemDefault()
     val localStartTime = TimeUtils.zonedTime(startTime, finalTimeZoneId)
     val localEndTime = TimeUtils.zonedTime(endTime, finalTimeZoneId)

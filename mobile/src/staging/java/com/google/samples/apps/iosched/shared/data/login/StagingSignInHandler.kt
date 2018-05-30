@@ -32,7 +32,7 @@ import timber.log.Timber
  * A [SignInHandler] that signs a [StagingAuthenticatedUser] in and out, used to simulate an
  * authentication backend for hermetic development and testing.
  */
-class StagingSignInHandler(val user: StagingAuthenticatedUser): SignInHandler {
+class StagingSignInHandler(val user: StagingAuthenticatedUser) : SignInHandler {
 
     override fun makeSignInIntent(): Intent? {
         Timber.d("staging makeSignInIntent called")
@@ -77,11 +77,10 @@ class StagingAuthenticatedUser(val context: Context) {
         signedIn = false
         currentUserResult.postValue(Result.Success(stagingSignedOutFirebaseUser))
     }
-
 }
 
 class StagingLoggedOutFirebaseUserInfo(
-        _context: Context
+    _context: Context
 ) : StagingAuthenticatedUserInfo(_context) {
 
     override fun isSignedIn(): Boolean = false
@@ -92,4 +91,3 @@ class StagingLoggedOutFirebaseUserInfo(
 
     override fun isRegistrationDataReady(): Boolean = true
 }
-

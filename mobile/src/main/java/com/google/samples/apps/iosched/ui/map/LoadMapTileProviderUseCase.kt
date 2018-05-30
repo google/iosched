@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 class LoadMapTileProviderUseCase @Inject constructor(
     private val context: Context
-): UseCase<Int, TileProvider>() {
+) : UseCase<Int, TileProvider>() {
 
     companion object {
         private const val DPI_SCALE_1X = 160f

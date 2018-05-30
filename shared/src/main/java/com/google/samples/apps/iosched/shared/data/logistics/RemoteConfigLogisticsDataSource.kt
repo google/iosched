@@ -22,7 +22,7 @@ import com.google.samples.apps.iosched.shared.BuildConfig
 import javax.inject.Inject
 
 class RemoteConfigLogisticsDataSource @Inject constructor(
-        val firebaseRemoteConfig: FirebaseRemoteConfig
+    val firebaseRemoteConfig: FirebaseRemoteConfig
 ) : LogisticsDataSource {
 
     override fun getWifiInfo(): ConferenceWifiInfo {

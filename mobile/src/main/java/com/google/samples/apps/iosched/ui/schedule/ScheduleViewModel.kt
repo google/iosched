@@ -16,15 +16,15 @@
 
 package com.google.samples.apps.iosched.ui.schedule
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.annotation.StringRes
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
@@ -323,7 +323,8 @@ class ScheduleViewModel @Inject constructor(
         })
         _sessionTimeDataDay1.addSource(loadSessionsResult, {
             val userSessions =
-                (it as? Result.Success)?.data?.userSessionsPerDay?.get(ConferenceDays[0]) ?: return@addSource
+                (it as? Result.Success)?.data?.userSessionsPerDay?.get(ConferenceDays[0])
+                    ?: return@addSource
             _sessionTimeDataDay1.value = _sessionTimeDataDay1.value?.apply {
                 list = userSessions
             } ?: SessionTimeData(list = userSessions)
@@ -336,7 +337,8 @@ class ScheduleViewModel @Inject constructor(
         })
         _sessionTimeDataDay2.addSource(loadSessionsResult, {
             val userSessions =
-                (it as? Result.Success)?.data?.userSessionsPerDay?.get(ConferenceDays[1]) ?: return@addSource
+                (it as? Result.Success)?.data?.userSessionsPerDay?.get(ConferenceDays[1])
+                    ?: return@addSource
             _sessionTimeDataDay2.value = _sessionTimeDataDay2.value?.apply {
                 list = userSessions
             } ?: SessionTimeData(list = userSessions)
@@ -349,7 +351,8 @@ class ScheduleViewModel @Inject constructor(
         })
         _sessionTimeDataDay3.addSource(loadSessionsResult, {
             val userSessions =
-                (it as? Result.Success)?.data?.userSessionsPerDay?.get(ConferenceDays[2]) ?: return@addSource
+                (it as? Result.Success)?.data?.userSessionsPerDay?.get(ConferenceDays[2])
+                    ?: return@addSource
             _sessionTimeDataDay3.value = _sessionTimeDataDay3.value?.apply {
                 list = userSessions
             } ?: SessionTimeData(list = userSessions)
@@ -374,8 +377,7 @@ class ScheduleViewModel @Inject constructor(
     /**
      * Called from each schedule day fragment to load data.
      */
-    fun getSessionTimeDataForDay(day: Int):
-            LiveData<SessionTimeData> = when (day) {
+    fun getSessionTimeDataForDay(day: Int): LiveData<SessionTimeData> = when (day) {
         0 -> sessionTimeDataDay1
         1 -> sessionTimeDataDay2
         2 -> sessionTimeDataDay3

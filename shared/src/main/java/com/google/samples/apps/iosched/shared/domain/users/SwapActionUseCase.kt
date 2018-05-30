@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.shared.domain.users
 
+import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
-import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.result.Result
 import timber.log.Timber
 import javax.inject.Inject
@@ -28,21 +28,20 @@ import javax.inject.Inject
  * Sends a request to replace reservations.
  */
 open class SwapActionUseCase @Inject constructor(
-        private val repository: SessionAndUserEventRepository
+    private val repository: SessionAndUserEventRepository
 ) : MediatorUseCase<SwapRequestParameters, SwapRequestAction>() {
 
     override fun execute(parameters: SwapRequestParameters) {
 
         DefaultScheduler.execute {
             try {
-                val (userId, sessionId , _, toId) = parameters
+                val (userId, sessionId, _, toId) = parameters
                 val updateResult = repository.swapReservation(userId, sessionId, toId)
 
                 result.removeSource(updateResult)
                 result.addSource(updateResult, {
                     result.postValue(updateResult.value)
                 })
-
             } catch (e: Exception) {
                 Timber.d("Exception in Swapping reservations")
                 result.postValue(Result.Error(e))
@@ -54,10 +53,12 @@ open class SwapActionUseCase @Inject constructor(
 /**
  * Parameters required to process the swap reservations request.
  */
-data class SwapRequestParameters(val userId: String,
-                                 val fromId: SessionId,
-                                 val fromTitle: String,
-                                 val toId: SessionId,
-                                 val toTitle: String)
+data class SwapRequestParameters(
+    val userId: String,
+    val fromId: SessionId,
+    val fromTitle: String,
+    val toId: SessionId,
+    val toTitle: String
+)
 
 class SwapRequestAction

@@ -14,11 +14,12 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="session"
             type="com.google.samples.apps.iosched.model.Session" />
@@ -34,11 +35,11 @@
 
     <!-- TODO: Convert to ConstraintLayout. -->
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/sessionLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/sessionLinearLayout"
         android:onClick="@{() -> eventListener.openSessionDetail(session.id)}"
+        android:orientation="horizontal"
         android:padding="@dimen/list_item_padding">
 
         <ImageView
@@ -47,7 +48,7 @@
             android:layout_height="@dimen/session_icon_and_row_dimensions"
             android:layout_marginEnd="@dimen/session_icon_padding"
             android:contentDescription="@string/item_session_image_view_time_icon_content_description"
-            app:sessionStart="@{session.startTime}"/>
+            app:sessionStart="@{session.startTime}" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -62,7 +63,7 @@
                 android:singleLine="true"
                 android:text="@{session.title}"
                 android:textAppearance="@style/TextAppearance.IOSched.SessionTitle"
-                tools:text="Title"/>
+                tools:text="Title" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -73,11 +74,11 @@
                     android:id="@+id/locationAndLengthTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="Location and Room"
                     android:textAppearance="@style/TextAppearance.IOSched.ListSecondary"
-                    app:sessionStart="@{session.startTime}"
                     app:sessionEnd="@{session.endTime}"
-                    app:sessionRoom="@{session.room.name}"/>
+                    app:sessionRoom="@{session.room.name}"
+                    app:sessionStart="@{session.startTime}"
+                    tools:text="Location and Room" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

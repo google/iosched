@@ -23,4 +23,5 @@ import com.google.samples.apps.iosched.model.Session
  */
 data class UserSession(
     val session: Session,
-    val userEvent: UserEvent)
+    val userEvent: UserEvent
+)

@@ -37,16 +37,16 @@
             android:id="@+id/keyline"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintGuide_begin="@dimen/session_keyline"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/session_keyline" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/keyline"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:agendaColor="@{agenda.color}"
             app:agendaStrokeColor="@{agenda.strokeColor}"
             app:agendaStrokeWidth="@{@dimen/agenda_item_stroke}" />
@@ -55,9 +55,9 @@
             android:id="@+id/icon"
             android:layout_width="@dimen/agenda_icon_width"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/keyline"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:agendaIcon="@{agenda.type}" />
 
         <TextView
@@ -66,24 +66,24 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginTop="@dimen/agenda_block_padding_vert"
-            app:layout_constraintStart_toEndOf="@id/icon"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:text="@{agenda.title}"
-            android:textAppearance="@style/TextAppearance.IOSched.AgendaTitle" />
+            android:textAppearance="@style/TextAppearance.IOSched.AgendaTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/icon"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/duration"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/agenda_title"
-            app:layout_constraintTop_toBottomOf="@id/agenda_title"
-            app:layout_constraintEnd_toEndOf="@id/agenda_title"
             android:paddingBottom="@dimen/agenda_block_padding_vert"
             android:textAppearance="@style/TextAppearance.IOSched.ListSecondary"
-            app:startTime="@{agenda.startTime}"
+            app:layout_constraintEnd_toEndOf="@id/agenda_title"
+            app:layout_constraintStart_toStartOf="@id/agenda_title"
+            app:layout_constraintTop_toBottomOf="@id/agenda_title"
             app:endTime="@{agenda.endTime}"
-            app:timeZoneId="@{timeZoneId}"/>
+            app:startTime="@{agenda.startTime}"
+            app:timeZoneId="@{timeZoneId}" />
 
     </merge>
 

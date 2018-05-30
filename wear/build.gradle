@@ -72,8 +72,12 @@ repositories {
     // - Other dependencies
     maven { url "${rootProject.projectDir}/../iosched-prebuilts/m2repository" }
     // - Support Libraries, etc
-    maven { url "${rootProject.projectDir}/../../../prebuilts/fullsdk/linux/extras/support/m2repository" }
-    maven { url "${rootProject.projectDir}/../../../prebuilts/fullsdk/linux/extras/android/m2repository" }
+    maven {
+        url "${rootProject.projectDir}/../../../prebuilts/fullsdk/linux/extras/support/m2repository"
+    }
+    maven {
+        url "${rootProject.projectDir}/../../../prebuilts/fullsdk/linux/extras/android/m2repository"
+    }
 }
 
 dependencies {

@@ -19,7 +19,7 @@
     <changeBounds>
         <arcMotion />
     </changeBounds>
-    <changeTransform/>
-    <changeClipBounds/>
-    <changeImageTransform/>
+    <changeTransform />
+    <changeClipBounds />
+    <changeImageTransform />
 </transitionSet>

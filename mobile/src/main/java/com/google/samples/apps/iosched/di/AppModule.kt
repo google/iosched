@@ -55,7 +55,7 @@ class AppModule {
     @Provides
     fun providesClipboardManager(context: Context): ClipboardManager =
         context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE)
-                as ClipboardManager
+            as ClipboardManager
 
     @Singleton
     @Provides
@@ -64,5 +64,4 @@ class AppModule {
         signInDelegate: SignInViewModelDelegate,
         preferenceStorage: PreferenceStorage
     ): AnalyticsHelper = FirebaseAnalyticsHelper(context, signInDelegate, preferenceStorage)
-
 }

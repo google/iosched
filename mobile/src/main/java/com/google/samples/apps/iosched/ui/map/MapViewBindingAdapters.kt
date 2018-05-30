@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.ui.map
 
-import androidx.databinding.BindingAdapter
+import android.view.View
 import androidx.annotation.DimenRes
 import androidx.annotation.RawRes
-import android.view.View
+import androidx.databinding.BindingAdapter
 import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLngBounds

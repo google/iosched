@@ -19,12 +19,11 @@ package com.google.samples.apps.iosched.tv.ui.search
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.shared.util.setValueIfNew
 import javax.inject.Inject
 

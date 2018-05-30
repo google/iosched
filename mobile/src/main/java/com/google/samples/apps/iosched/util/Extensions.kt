@@ -118,7 +118,7 @@ fun String.unwrapQuotes(): String {
     if (formattedConfigString.endsWith("\"")) {
         if (formattedConfigString.length > 1) {
             formattedConfigString =
-                    formattedConfigString.substring(0, formattedConfigString.length - 1)
+                formattedConfigString.substring(0, formattedConfigString.length - 1)
         } else {
             formattedConfigString = ""
         }

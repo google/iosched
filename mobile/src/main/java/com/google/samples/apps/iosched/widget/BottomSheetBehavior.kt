@@ -84,9 +84,9 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
         @JvmStatic
         fun from(view: View): BottomSheetBehavior<*> {
             val lp = view.layoutParams as? CoordinatorLayout.LayoutParams
-                    ?: throw IllegalArgumentException("view is not a child of CoordinatorLayout")
+                ?: throw IllegalArgumentException("view is not a child of CoordinatorLayout")
             return lp.behavior as? BottomSheetBehavior
-                    ?: throw IllegalArgumentException("view not associated with this behavior")
+                ?: throw IllegalArgumentException("view not associated with this behavior")
         }
     }
 
@@ -125,10 +125,10 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
             }
             if (viewRef == null) {
                 // Child is not laid out yet. Set our state and let onLayoutChild() handle it later.
-                if (value == STATE_COLLAPSED
-                    || value == STATE_EXPANDED
-                    || value == STATE_HALF_EXPANDED
-                    || (isHideable && value == STATE_HIDDEN)
+                if (value == STATE_COLLAPSED ||
+                    value == STATE_EXPANDED ||
+                    value == STATE_HALF_EXPANDED ||
+                    (isHideable && value == STATE_HIDDEN)
                 ) {
                     _state = value
                 }
@@ -261,9 +261,9 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
         }
         isHideable = a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_hideable, false)
         isFitToContents =
-                a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_fitToContents, true)
+            a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_fitToContents, true)
         skipCollapsed =
-                a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_skipCollapsed, false)
+            a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_skipCollapsed, false)
         a.recycle()
         val configuration = ViewConfiguration.get(context)
         minimumVelocity = configuration.scaledMinimumFlingVelocity
@@ -427,10 +427,10 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
             }
         }
 
-        return acceptTouches
-                // CoordinatorLayout can call us before the view is laid out. >_<
-                && ::dragHelper.isInitialized
-                && dragHelper.shouldInterceptTouchEvent(event)
+        return acceptTouches &&
+            // CoordinatorLayout can call us before the view is laid out. >_<
+            ::dragHelper.isInitialized &&
+            dragHelper.shouldInterceptTouchEvent(event)
     }
 
     override fun onTouchEvent(
@@ -464,9 +464,9 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
             dragHelper.processTouchEvent(event)
         }
 
-        if (acceptTouches
-            && action == MotionEvent.ACTION_MOVE
-            && exceedsTouchSlop(initialTouchY, lastTouchY)
+        if (acceptTouches &&
+            action == MotionEvent.ACTION_MOVE &&
+            exceedsTouchSlop(initialTouchY, lastTouchY)
         ) {
             // Manually capture the sheet since nothing beneath us is scrolling.
             dragHelper.captureChildView(child, event.getPointerId(event.actionIndex))
@@ -494,9 +494,9 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
         type: Int
     ): Boolean {
         nestedScrolled = false
-        if (isDraggable
-            && viewRef?.get() == directTargetChild
-            && (axes and ViewCompat.SCROLL_AXIS_VERTICAL) != 0
+        if (isDraggable &&
+            viewRef?.get() == directTargetChild &&
+            (axes and ViewCompat.SCROLL_AXIS_VERTICAL) != 0
         ) {
             // Scrolling view is a descendent of the sheet and scrolling vertically.
             // Let's follow along!
@@ -576,12 +576,11 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
         velocityX: Float,
         velocityY: Float
     ): Boolean {
-        return isDraggable
-                && target == nestedScrollingChildRef?.get()
-                && (state != STATE_EXPANDED
-                || super.onNestedPreFling(
-            coordinatorLayout, child, target, velocityX, velocityY
-        ))
+        return isDraggable &&
+            target == nestedScrollingChildRef?.get() &&
+            (state != STATE_EXPANDED || super.onNestedPreFling(
+                coordinatorLayout, child, target, velocityX, velocityY
+            ))
     }
 
     private fun clearNestedScroll() {

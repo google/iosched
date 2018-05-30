@@ -33,7 +33,6 @@ class RemoveReservationViewModel @Inject constructor(
     private val reservationActionUseCase: ReservationActionUseCase
 ) : ViewModel(), RemoveReservationListener {
 
-
     var userId: String? = null
 
     var sessionId: String? = null
@@ -59,7 +58,8 @@ class RemoveReservationViewModel @Inject constructor(
             return
         }
         reservationActionUseCase.execute(
-                ReservationRequestParameters(immutableUserId, immutableSessionId, CancelAction()))
+            ReservationRequestParameters(immutableUserId, immutableSessionId, CancelAction())
+        )
     }
 
     override fun onCancelClicked() {

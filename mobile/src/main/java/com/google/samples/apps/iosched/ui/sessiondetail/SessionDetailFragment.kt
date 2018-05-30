@@ -35,12 +35,12 @@ import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSessionDetailBinding
-import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
-import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.model.Room
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.SpeakerId
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.map.MapActivity
@@ -161,18 +161,18 @@ class SessionDetailFragment : DaggerFragment() {
         })
 
         val snackbarPreferenceViewModel: SnackbarPreferenceViewModel =
-                activityViewModelProvider(viewModelFactory)
+            activityViewModelProvider(viewModelFactory)
         setUpSnackbar(
-                sessionDetailViewModel.snackBarMessage,
-                binding.snackbar,
-                snackbarMessageManager,
-                actionClickListener = {
-                    snackbarPreferenceViewModel.onStopClicked()
-                }
+            sessionDetailViewModel.snackBarMessage,
+            binding.snackbar,
+            snackbarMessageManager,
+            actionClickListener = {
+                snackbarPreferenceViewModel.onStopClicked()
+            }
         )
 
         sessionDetailViewModel.errorMessage.observe(this, EventObserver { errorMsg ->
-            //TODO: Change once there's a way to show errors to the user
+            // TODO: Change once there's a way to show errors to the user
             Toast.makeText(this.context, errorMsg, Toast.LENGTH_LONG).show()
         })
 
@@ -194,9 +194,11 @@ class SessionDetailFragment : DaggerFragment() {
 
         sessionDetailViewModel.navigateToSpeakerDetail.observe(this, EventObserver { speakerId ->
             requireActivity().run {
-                val sharedElement = findSpeakerHeadshot(binding.sessionDetailRecyclerView, speakerId)
+                val sharedElement =
+                    findSpeakerHeadshot(binding.sessionDetailRecyclerView, speakerId)
                 val options = ActivityOptions.makeSceneTransitionAnimation(
-                    this, sharedElement, getString(R.string.speaker_headshot_transition))
+                    this, sharedElement, getString(R.string.speaker_headshot_transition)
+                )
                 startActivity(SpeakerActivity.starterIntent(this, speakerId), options.toBundle())
             }
         })
@@ -221,7 +223,8 @@ class SessionDetailFragment : DaggerFragment() {
 
         // Observing the changes from Fragment because data binding doesn't work with menu items.
         val menu = requireActivity().findViewById<BottomAppBar>(
-                R.id.session_detail_bottom_app_bar).menu
+            R.id.session_detail_bottom_app_bar
+        ).menu
         val starMenu = menu.findItem(R.id.menu_item_star)
         sessionDetailViewModel.shouldShowStarInBottomNav.observe(this, Observer {
             it?.let {
@@ -276,12 +279,14 @@ class SessionDetailFragment : DaggerFragment() {
     }
 
     private fun openSwapReservationDialog(
-            activity: FragmentActivity,
-            parameters: SwapRequestParameters
+        activity: FragmentActivity,
+        parameters: SwapRequestParameters
     ) {
         val dialog = SwapReservationDialogFragment.newInstance(parameters)
-        dialog.show(activity.supportFragmentManager,
-                SwapReservationDialogFragment.DIALOG_SWAP_RESERVATION)
+        dialog.show(
+            activity.supportFragmentManager,
+            SwapReservationDialogFragment.DIALOG_SWAP_RESERVATION
+        )
     }
 
     private fun findSpeakerHeadshot(speakers: ViewGroup, speakerId: SpeakerId): View {

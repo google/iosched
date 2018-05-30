@@ -44,7 +44,7 @@ private const val NAV_DRAWER_STATE_FRAGMENT_SETTINGS = 2
  * WearableNavigationDrawerView.
  */
 class MainActivity : DaggerAppCompatActivity(), AmbientModeSupport.AmbientCallbackProvider,
-        SharedPreferences.OnSharedPreferenceChangeListener {
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
     private lateinit var navigationDrawerAdapter: NavigationDrawerAdapter
 
@@ -120,8 +120,8 @@ class MainActivity : DaggerAppCompatActivity(), AmbientModeSupport.AmbientCallba
     }
 
     private inner class NavigationDrawerAdapter :
-            WearableNavigationDrawerView.WearableNavigationDrawerAdapter(),
-            WearableNavigationDrawerView.OnItemSelectedListener {
+        WearableNavigationDrawerView.WearableNavigationDrawerAdapter(),
+        WearableNavigationDrawerView.OnItemSelectedListener {
 
         private var currentNavigationItemPosition = -1
         private val activity = this@MainActivity
@@ -142,15 +142,18 @@ class MainActivity : DaggerAppCompatActivity(), AmbientModeSupport.AmbientCallba
             when (pos) {
                 NAV_DRAWER_STATE_FRAGMENT_SCHEDULE ->
                     ContextCompat.getDrawable(
-                            activity, R.drawable.ic_nav_schedule)
+                        activity, R.drawable.ic_nav_schedule
+                    )
 
                 NAV_DRAWER_STATE_FRAGMENT_SIGN_IN_OR_OUT ->
                     ContextCompat.getDrawable(
-                            activity, R.drawable.ic_nav_account_circle)
+                        activity, R.drawable.ic_nav_account_circle
+                    )
 
                 NAV_DRAWER_STATE_FRAGMENT_SETTINGS ->
                     ContextCompat.getDrawable(
-                            activity, R.drawable.ic_nav_info)
+                        activity, R.drawable.ic_nav_info
+                    )
 
                 else -> null
             }
@@ -167,7 +170,7 @@ class MainActivity : DaggerAppCompatActivity(), AmbientModeSupport.AmbientCallba
                 NAV_DRAWER_STATE_FRAGMENT_SIGN_IN_OR_OUT -> SignInOrOutFragment()
                 NAV_DRAWER_STATE_FRAGMENT_SETTINGS -> SettingsFragment()
                 else -> throw
-                    IllegalStateException("Invalid nav position selected $selectedItemPos")
+                IllegalStateException("Invalid nav position selected $selectedItemPos")
             }
 
             supportFragmentManager.inTransaction {

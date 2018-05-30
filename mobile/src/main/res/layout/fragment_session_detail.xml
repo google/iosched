@@ -21,6 +21,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewModel" />
@@ -37,11 +38,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/spacing_normal"
-            android:scrollbars="vertical"
-            android:paddingBottom="?actionBarSize"
             android:clipToPadding="false"
-            app:layoutManager="LinearLayoutManager"
-            app:hasFixedSize="@{true}" />
+            android:paddingBottom="?actionBarSize"
+            android:scrollbars="vertical"
+            app:hasFixedSize="@{true}"
+            app:layoutManager="LinearLayoutManager" />
 
         <ImageButton
             android:id="@+id/up"
@@ -89,8 +90,8 @@
             android:layout_width="@dimen/snackbar_width"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|start"
-            android:layout_marginEnd="@dimen/snackbar_margin_end_fab"
             android:layout_marginBottom="@dimen/snackbar_margin_bottom_bab"
+            android:layout_marginEnd="@dimen/snackbar_margin_end_fab"
             android:visibility="gone" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

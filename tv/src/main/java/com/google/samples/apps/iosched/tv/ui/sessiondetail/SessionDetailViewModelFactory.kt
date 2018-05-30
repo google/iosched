@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.tv.ui.sessiondetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 
@@ -26,7 +25,7 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUse
  * Creates [SessionDetailViewModel]s, used with the [android.arch.lifecycle.ViewModelProviders].
  */
 class SessionDetailViewModelFactory(
-        private val sessionRepository: DefaultSessionAndUserEventRepository
+    private val sessionRepository: DefaultSessionAndUserEventRepository
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")

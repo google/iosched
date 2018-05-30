@@ -62,9 +62,9 @@ enum class ReservationViewState(
     companion object {
         fun fromUserEvent(userEvent: UserEvent?, unavailable: Boolean): ReservationViewState {
             return when {
-                // Order is significant e.g. a pending cancellation is also reserved.
-                userEvent?.isReservationPending() == true
-                        || userEvent?.isCancelPending() == true -> {
+                // Order is significant, e.g. a pending cancellation is also reserved.
+                userEvent?.isReservationPending() == true ||
+                    userEvent?.isCancelPending() == true -> {
                     // Treat both pending reservations & cancellations the same. This is important
                     // as the icon animations all expect to do through the same pending state.
                     RESERVATION_PENDING

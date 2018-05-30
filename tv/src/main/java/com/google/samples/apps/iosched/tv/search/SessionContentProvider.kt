@@ -25,8 +25,8 @@ import android.database.MatrixCursor
 import android.media.Rating
 import android.net.Uri
 import android.provider.BaseColumns
-import com.google.samples.apps.iosched.shared.domain.search.SearchUseCase
 import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.shared.domain.search.SearchUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.tv.TvApplication
 import timber.log.Timber
@@ -49,23 +49,23 @@ class SessionContentProvider : ContentProvider() {
     private lateinit var mUriMatcher: UriMatcher
 
     private val queryProjection = arrayOf(
-            BaseColumns._ID,
-            SearchManager.SUGGEST_COLUMN_TEXT_1, // Session name
-            SearchManager.SUGGEST_COLUMN_TEXT_2, // Session Description
-            SearchManager.SUGGEST_COLUMN_RESULT_CARD_IMAGE, // Session Icon
-            SearchManager.SUGGEST_COLUMN_CONTENT_TYPE,
-            SearchManager.SUGGEST_COLUMN_IS_LIVE,
-            SearchManager.SUGGEST_COLUMN_VIDEO_WIDTH,
-            SearchManager.SUGGEST_COLUMN_VIDEO_HEIGHT,
-            SearchManager.SUGGEST_COLUMN_AUDIO_CHANNEL_CONFIG, // "2.0"?
-            SearchManager.SUGGEST_COLUMN_PURCHASE_PRICE, // Free!
-            SearchManager.SUGGEST_COLUMN_RENTAL_PRICE,
-            SearchManager.SUGGEST_COLUMN_RATING_STYLE, // TODO: gather this from feedback?
-            SearchManager.SUGGEST_COLUMN_RATING_SCORE, // TODO: gather this from feedback?
-            SearchManager.SUGGEST_COLUMN_PRODUCTION_YEAR,
-            SearchManager.SUGGEST_COLUMN_DURATION,
-            SearchManager.SUGGEST_COLUMN_INTENT_ACTION, // "GLOBALSEARCH"
-            SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID
+        BaseColumns._ID,
+        SearchManager.SUGGEST_COLUMN_TEXT_1, // Session name
+        SearchManager.SUGGEST_COLUMN_TEXT_2, // Session Description
+        SearchManager.SUGGEST_COLUMN_RESULT_CARD_IMAGE, // Session Icon
+        SearchManager.SUGGEST_COLUMN_CONTENT_TYPE,
+        SearchManager.SUGGEST_COLUMN_IS_LIVE,
+        SearchManager.SUGGEST_COLUMN_VIDEO_WIDTH,
+        SearchManager.SUGGEST_COLUMN_VIDEO_HEIGHT,
+        SearchManager.SUGGEST_COLUMN_AUDIO_CHANNEL_CONFIG, // "2.0"?
+        SearchManager.SUGGEST_COLUMN_PURCHASE_PRICE, // Free!
+        SearchManager.SUGGEST_COLUMN_RENTAL_PRICE,
+        SearchManager.SUGGEST_COLUMN_RATING_STYLE, // TODO: gather this from feedback?
+        SearchManager.SUGGEST_COLUMN_RATING_SCORE, // TODO: gather this from feedback?
+        SearchManager.SUGGEST_COLUMN_PRODUCTION_YEAR,
+        SearchManager.SUGGEST_COLUMN_DURATION,
+        SearchManager.SUGGEST_COLUMN_INTENT_ACTION, // "GLOBALSEARCH"
+        SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID
     )
 
     override fun onCreate(): Boolean {
@@ -78,12 +78,12 @@ class SessionContentProvider : ContentProvider() {
     private fun buildUriMatcher(): UriMatcher {
         val uriMatcher = UriMatcher(UriMatcher.NO_MATCH)
         uriMatcher.addURI(
-                AUTHORITY, "/search/" + SearchManager.SUGGEST_URI_PATH_QUERY, SEARCH_SUGGEST
+            AUTHORITY, "/search/" + SearchManager.SUGGEST_URI_PATH_QUERY, SEARCH_SUGGEST
         )
         uriMatcher.addURI(
-                AUTHORITY,
-                "/search/" + SearchManager.SUGGEST_URI_PATH_QUERY + "/*",
-                SEARCH_SUGGEST
+            AUTHORITY,
+            "/search/" + SearchManager.SUGGEST_URI_PATH_QUERY + "/*",
+            SEARCH_SUGGEST
         )
         return uriMatcher
     }
@@ -143,23 +143,23 @@ class SessionContentProvider : ContentProvider() {
 
     private fun convertMovieIntoRow(session: Session): Array<Any> {
         return arrayOf(
-                session.id,
-                session.title,
-                session.abstract,
-                session.photoUrl ?: "",
-                "video/mp4", // TODO: get the content type of the videos.
-                session.isLive(),
-                0,// TODO: get video width
-                0,// TODO: get video height
-                "2.0", // TODO: get audio channel configuration
-                "Free",
-                "Free",
-                Rating.RATING_NONE,
-                0f,
-                session.year,
-                session.duration,
-                "GLOBALSEARCH",
-                session.id
+            session.id,
+            session.title,
+            session.abstract,
+            session.photoUrl ?: "",
+            "video/mp4", // TODO: get the content type of the videos.
+            session.isLive(),
+            0, // TODO: get video width
+            0, // TODO: get video height
+            "2.0", // TODO: get audio channel configuration
+            "Free",
+            "Free",
+            Rating.RATING_NONE,
+            0f,
+            session.year,
+            session.duration,
+            "GLOBALSEARCH",
+            session.id
         )
     }
 

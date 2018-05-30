@@ -31,9 +31,9 @@ import java.lang.reflect.Type
 class SessionDeserializer : JsonDeserializer<SessionTemp> {
 
     override fun deserialize(
-            json: JsonElement?,
-            typeOfT: Type?,
-            context: JsonDeserializationContext?
+        json: JsonElement?,
+        typeOfT: Type?,
+        context: JsonDeserializationContext?
     ): SessionTemp {
         val obj = json?.asJsonObject!!
 
@@ -45,22 +45,24 @@ class SessionDeserializer : JsonDeserializer<SessionTemp> {
 
         @Suppress("UNNECESSARY_SAFE_CALL") // obj.get can return null
         return SessionTemp(
-                id = obj.get("id").asString,
-                sessionUrl = getUrlFromId(obj.get("id").asString),
-                title = obj.get("title").asString,
-                startTime = ZonedDateTime.ofInstant(
-                        Instant.ofEpochMilli(obj.get("startTimestamp").asLong), ZoneOffset.UTC),
-                endTime = ZonedDateTime.ofInstant(
-                        Instant.ofEpochMilli(obj.get("endTimestamp").asLong), ZoneOffset.UTC),
-                abstract = obj.get("description").asString,
-                photoUrl = obj.get("photoUrl")?.asString,
-                liveStreamUrl = "TODO: Set livestream URL", // TODO Set or remove this (b/77292964)
-                isLivestream = obj.get("livestream").asBoolean,
-                speakers = speakers.toSet(),
-                tagNames = tagNames.toList(),
-                relatedSessions = relatedSessions.toSet(),
-                youTubeUrl = obj.get("youtubeUrl")?.asString ?: "",
-                room = obj.get("room").asString
+            id = obj.get("id").asString,
+            sessionUrl = getUrlFromId(obj.get("id").asString),
+            title = obj.get("title").asString,
+            startTime = ZonedDateTime.ofInstant(
+                Instant.ofEpochMilli(obj.get("startTimestamp").asLong), ZoneOffset.UTC
+            ),
+            endTime = ZonedDateTime.ofInstant(
+                Instant.ofEpochMilli(obj.get("endTimestamp").asLong), ZoneOffset.UTC
+            ),
+            abstract = obj.get("description").asString,
+            photoUrl = obj.get("photoUrl")?.asString,
+            liveStreamUrl = "TODO: Set livestream URL", // TODO Set or remove this (b/77292964)
+            isLivestream = obj.get("livestream").asBoolean,
+            speakers = speakers.toSet(),
+            tagNames = tagNames.toList(),
+            relatedSessions = relatedSessions.toSet(),
+            youTubeUrl = obj.get("youtubeUrl")?.asString ?: "",
+            room = obj.get("room").asString
         )
     }
 

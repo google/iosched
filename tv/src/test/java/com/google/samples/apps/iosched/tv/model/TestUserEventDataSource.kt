@@ -39,25 +39,32 @@ object TestUserEventDataSource : UserEventDataSource {
     }
 
     override fun getObservableUserEvent(
-            userId: String,
-            eventId: SessionId
+        userId: String,
+        eventId: SessionId
     ): LiveData<UserEventResult> {
         val result = MutableLiveData<UserEventResult>()
         result.postValue(UserEventResult(TestData.userEvents[0]))
         return result
     }
 
-    override fun starEvent(userId: String, userEvent: UserEvent):
-            LiveData<Result<StarUpdatedStatus>> {
+    override fun starEvent(
+        userId: String,
+        userEvent: UserEvent
+    ): LiveData<Result<StarUpdatedStatus>> {
         val result = MutableLiveData<Result<StarUpdatedStatus>>()
-        result.postValue(Result.Success(
+        result.postValue(
+            Result.Success(
                 if (userEvent.isStarred) StarUpdatedStatus.STARRED
-                else StarUpdatedStatus.UNSTARRED))
+                else StarUpdatedStatus.UNSTARRED
+            )
+        )
         return result
     }
 
     override fun requestReservation(
-            userId: String, session: Session, action: ReservationRequestAction
+        userId: String,
+        session: Session,
+        action: ReservationRequestAction
     ): LiveData<Result<ReservationRequestAction>> {
         TODO("not implemented")
     }
@@ -66,9 +73,13 @@ object TestUserEventDataSource : UserEventDataSource {
         return TestData.userEvents
     }
 
-    override fun swapReservation(userId: String, fromSession: Session, toSession: Session):
-            LiveData<Result<SwapRequestAction>> {
+    override fun swapReservation(
+        userId: String,
+        fromSession: Session,
+        toSession: Session
+    ): LiveData<Result<SwapRequestAction>> {
         TODO("not implemented")
     }
-    override fun clearSingleEventSubscriptions() { }
+
+    override fun clearSingleEventSubscriptions() {}
 }

@@ -38,5 +38,4 @@ class SetPreferencesRule : TestWatcher() {
             notificationsPreferenceShown = true
         }
     }
-
 }

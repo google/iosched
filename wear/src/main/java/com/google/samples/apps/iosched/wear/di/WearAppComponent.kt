@@ -32,12 +32,14 @@ import javax.inject.Singleton
  * generation and location of subcomponents.
  */
 @Singleton
-@Component(modules = [
-    AndroidSupportInjectionModule::class,
-    WearAppModule::class,
-    WearActivityBindingModule::class,
-    ViewModelModule::class,
-    SharedModule::class])
+@Component(
+    modules = [
+        AndroidSupportInjectionModule::class,
+        WearAppModule::class,
+        WearActivityBindingModule::class,
+        ViewModelModule::class,
+        SharedModule::class]
+)
 interface WearAppComponent : AndroidInjector<WearApplication> {
     @Component.Builder
     abstract class Builder : AndroidInjector.Builder<WearApplication>()

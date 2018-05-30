@@ -37,7 +37,7 @@ internal abstract class ReservationModule {
     @ChildFragmentScoped
     @ContributesAndroidInjector
     internal abstract fun contributeRemoveReservationDialogFragment():
-            RemoveReservationDialogFragment
+        RemoveReservationDialogFragment
 
     /**
      * Generates an [AndroidInjector] for the [SwapReservationDialogFragment].
@@ -45,7 +45,7 @@ internal abstract class ReservationModule {
     @ChildFragmentScoped
     @ContributesAndroidInjector
     internal abstract fun contributeSwapReservationDialogFragment():
-            SwapReservationDialogFragment
+        SwapReservationDialogFragment
 
     /**
      * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we

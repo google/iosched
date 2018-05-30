@@ -38,13 +38,13 @@ import org.threeten.bp.ZonedDateTime
 object TestData {
 
     val CONFERENCE_DAY1_START = "2018-05-08T07:00:00-07:00"
-    val CONFERENCE_DAY1_END = "2018-05-08T22:00:01-07:00";
+    val CONFERENCE_DAY1_END = "2018-05-08T22:00:01-07:00"
     val CONFERENCE_DAY2_END = "2018-05-09T22:00:01-07:00"
     val CONFERENCE_DAY2_START = "2018-05-09T08:00:00-07:00"
     val CONFERENCE_DAY3_END = "2018-05-10T22:00:00-07:00"
     val CONFERENCE_DAY3_START = "2018-05-10T08:00:00-07:00"
 
-    val TestConferenceDays = listOf<ConferenceDay>(
+    val TestConferenceDays = listOf(
         ConferenceDay(
             ZonedDateTime.parse(CONFERENCE_DAY1_START),
             ZonedDateTime.parse(CONFERENCE_DAY1_END)
@@ -100,36 +100,51 @@ object TestData {
 
     val room = Room(id = "1", name = "Tent 1")
 
-    val session0 = Session(id = "0", title = "Session 0", abstract = "This session is awesome",
-        startTime = TestConferenceDays[0].start, endTime = TestConferenceDays[0].end, isLivestream = false,
+    val session0 = Session(
+        id = "0", title = "Session 0", abstract = "This session is awesome",
+        startTime = TestConferenceDays[0].start, endTime = TestConferenceDays[0].end,
+        isLivestream = false,
         room = room, sessionUrl = "", liveStreamUrl = "", youTubeUrl = "", photoUrl = "",
         tags = listOf(androidTag, webTag, sessionsTag), displayTags = listOf(androidTag, webTag),
-        speakers = setOf(speaker1), relatedSessions = emptySet())
+        speakers = setOf(speaker1), relatedSessions = emptySet()
+    )
 
-    val session1 = Session(id = "1", title = "Session 1", abstract = "",
-        startTime = TestConferenceDays[0].start, endTime = TestConferenceDays[0].end, isLivestream = false,
+    val session1 = Session(
+        id = "1", title = "Session 1", abstract = "",
+        startTime = TestConferenceDays[0].start, endTime = TestConferenceDays[0].end,
+        isLivestream = false,
         room = room, sessionUrl = "", liveStreamUrl = "", youTubeUrl = "", photoUrl = "",
         tags = listOf(androidTag, webTag, codelabsTag), displayTags = listOf(androidTag, webTag),
-        speakers = setOf(speaker2), relatedSessions = emptySet())
+        speakers = setOf(speaker2), relatedSessions = emptySet()
+    )
 
-    val session2 = Session(id = "2", title = "Session 2", abstract = "",
-        startTime = TestConferenceDays[1].start, endTime = TestConferenceDays[1].end, isLivestream = false,
+    val session2 = Session(
+        id = "2", title = "Session 2", abstract = "",
+        startTime = TestConferenceDays[1].start, endTime = TestConferenceDays[1].end,
+        isLivestream = false,
         room = room, sessionUrl = "", liveStreamUrl = "", youTubeUrl = "", photoUrl = "",
         tags = listOf(androidTag, sessionsTag, beginnerTag), displayTags = listOf(androidTag),
-        speakers = setOf(speaker3), relatedSessions = emptySet())
+        speakers = setOf(speaker3), relatedSessions = emptySet()
+    )
 
-    val session3 = Session(id = "3", title = "Session 3", abstract = "",
-        startTime = TestConferenceDays[2].start, endTime = TestConferenceDays[2].end, isLivestream = false,
+    val session3 = Session(
+        id = "3", title = "Session 3", abstract = "",
+        startTime = TestConferenceDays[2].start, endTime = TestConferenceDays[2].end,
+        isLivestream = false,
         room = room, sessionUrl = "", liveStreamUrl = "", youTubeUrl = "", photoUrl = "",
         tags = listOf(webTag, sessionsTag, intermediateTag), displayTags = listOf(webTag),
-        speakers = setOf(speaker1, speaker2), relatedSessions = emptySet())
+        speakers = setOf(speaker1, speaker2), relatedSessions = emptySet()
+    )
 
-    val sessionWithYoutubeUrl = Session(id = "4", title = "Session 4", abstract = "",
-        startTime = TestConferenceDays[2].start.plusMinutes(1), endTime = TestConferenceDays[2].end, isLivestream = true,
+    val sessionWithYoutubeUrl = Session(
+        id = "4", title = "Session 4", abstract = "",
+        startTime = TestConferenceDays[2].start.plusMinutes(1), endTime = TestConferenceDays[2].end,
+        isLivestream = true,
         room = room, sessionUrl = "", liveStreamUrl = "",
         youTubeUrl = "\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\"", photoUrl = "",
         tags = listOf(webTag, advancedTag), displayTags = listOf(webTag),
-        speakers = setOf(speaker1), relatedSessions = emptySet())
+        speakers = setOf(speaker1), relatedSessions = emptySet()
+    )
 
     val sessionsList = listOf(session0, session1, session2, session3, sessionWithYoutubeUrl)
 
@@ -138,50 +153,61 @@ object TestData {
     val sessionsMap = mapOf(
         TestConferenceDays[0] to listOf(session0, session1),
         TestConferenceDays[1] to listOf(session2),
-        TestConferenceDays[2] to listOf(session3, sessionWithYoutubeUrl))
-
+        TestConferenceDays[2] to listOf(session3, sessionWithYoutubeUrl)
+    )
 
     val block1 = Block(
         title = "Keynote",
         type = "keynote",
         color = 0xffff00ff.toInt(),
         startTime = TestConferenceDays[0].start,
-        endTime = TestConferenceDays[0].start.plusHours(1L))
+        endTime = TestConferenceDays[0].start.plusHours(1L)
+    )
 
     val block2 = Block(
         title = "Breakfast",
         type = "meal",
         color = 0xffff00ff.toInt(),
         startTime = TestConferenceDays[0].start.plusHours(1L),
-        endTime = TestConferenceDays[0].start.plusHours(2L))
+        endTime = TestConferenceDays[0].start.plusHours(2L)
+    )
 
     val agenda = listOf(block1, block2)
 
-    private val userEvent0 = UserEvent(sessionIDs[0], isStarred = false,
+    private val userEvent0 = UserEvent(
+        sessionIDs[0], isStarred = false,
         isReviewed = false,
         reservationStatus = UserEvent.ReservationStatus.RESERVED,
         reservationRequestResult = ReservationRequestResult(
-            RESERVE_SUCCEEDED, "123", System.currentTimeMillis())
+            RESERVE_SUCCEEDED, "123", System.currentTimeMillis()
+        )
     )
-    private val userEvent1 = UserEvent(sessionIDs[1], isStarred = true,
+    private val userEvent1 = UserEvent(
+        sessionIDs[1], isStarred = true,
         isReviewed = true,
         reservationStatus = UserEvent.ReservationStatus.WAITLISTED,
         reservationRequestResult = ReservationRequestResult(
-            RESERVE_WAITLISTED, "123", System.currentTimeMillis())
+            RESERVE_WAITLISTED, "123", System.currentTimeMillis()
+        )
     )
-    private val userEvent2 = UserEvent(sessionIDs[2], isStarred = true,
+    private val userEvent2 = UserEvent(
+        sessionIDs[2], isStarred = true,
         isReviewed = false,
         reservationStatus = UserEvent.ReservationStatus.NONE,
         reservationRequestResult = ReservationRequestResult(
-            RESERVE_DENIED_CUTOFF, "123", System.currentTimeMillis())
+            RESERVE_DENIED_CUTOFF, "123", System.currentTimeMillis()
+        )
     )
-    private val userEvent3 = UserEvent(sessionIDs[3], isStarred = false,
+    private val userEvent3 = UserEvent(
+        sessionIDs[3], isStarred = false,
         isReviewed = true,
         reservationStatus = UserEvent.ReservationStatus.NONE,
         reservationRequestResult = ReservationRequestResult(
-            RESERVE_DENIED_UNKNOWN, "123", System.currentTimeMillis())
+            RESERVE_DENIED_UNKNOWN, "123", System.currentTimeMillis()
+        )
     )
-    private val userEvent4 = UserEvent(sessionIDs[4], isStarred = false,
+    private val userEvent4 = UserEvent(
+        sessionIDs[4], isStarred = false,
         isReviewed = true,
         reservationRequest = null
     )
@@ -194,7 +220,8 @@ object TestData {
     val userSessionMap = mapOf(
         TestConferenceDays[0] to listOf(userSession0, userSession1),
         TestConferenceDays[1] to listOf(userSession2),
-        TestConferenceDays[2] to listOf(userSession3, userSession4))
+        TestConferenceDays[2] to listOf(userSession3, userSession4)
+    )
     val userEvents = listOf(userEvent0, userEvent1, userEvent2, userEvent3, userEvent4)
 
     // endregion Declarations

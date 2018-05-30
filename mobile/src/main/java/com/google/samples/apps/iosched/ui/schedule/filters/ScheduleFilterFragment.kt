@@ -104,7 +104,7 @@ class ScheduleFilterFragment : DaggerFragment() {
             adapter = filterAdapter
             setHasFixedSize(true)
             (layoutManager as GridLayoutManager).spanSizeLookup =
-                    ScheduleFilterSpanSizeLookup(filterAdapter)
+                ScheduleFilterSpanSizeLookup(filterAdapter)
             addOnScrollListener(object : OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     binding.filtersHeaderShadow.isActivated = recyclerView.canScrollVertically(-1)

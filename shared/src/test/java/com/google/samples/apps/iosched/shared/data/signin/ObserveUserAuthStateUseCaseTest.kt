@@ -19,12 +19,12 @@ package com.google.samples.apps.iosched.shared.data.signin
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.never
@@ -35,7 +35,6 @@ import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsEqual.equalTo
 import org.junit.Rule
 import org.junit.Test
-
 
 const val TEST_USER_ID = "testuser"
 
@@ -54,11 +53,11 @@ class ObserveUserAuthStateUseCaseTest {
         val topicSubscriber = mock<TopicSubscriber> {}
 
         val subject = createObserveUserAuthStateUseCase(
-                isAnonymous = false,
-                isRegistered = true,
-                isSuccess = true,
-                userId = TEST_USER_ID,
-                topicSubscriber = topicSubscriber
+            isAnonymous = false,
+            isRegistered = true,
+            isSuccess = true,
+            userId = TEST_USER_ID,
+            topicSubscriber = topicSubscriber
         )
 
         // Start the listeners
@@ -67,16 +66,16 @@ class ObserveUserAuthStateUseCaseTest {
         val value = LiveDataTestUtil.getValue(subject.observe()) as Result.Success
 
         assertThat(
-                value.data.getUid(),
-                `is`(equalTo(TEST_USER_ID))
+            value.data.getUid(),
+            `is`(equalTo(TEST_USER_ID))
         )
         assertThat(
-                value.data.isSignedIn(),
-                `is`(equalTo(true))
+            value.data.isSignedIn(),
+            `is`(equalTo(true))
         )
         assertThat(
-                value.data.isRegistered(),
-                `is`(equalTo(true))
+            value.data.isRegistered(),
+            `is`(equalTo(true))
         )
 
         verify(topicSubscriber).subscribeToAttendeeUpdates()
@@ -88,11 +87,11 @@ class ObserveUserAuthStateUseCaseTest {
         val topicSubscriber = mock<TopicSubscriber> {}
 
         val subject = createObserveUserAuthStateUseCase(
-                isAnonymous = false,
-                isRegistered = false,
-                isSuccess = true,
-                userId = TEST_USER_ID,
-                topicSubscriber = topicSubscriber
+            isAnonymous = false,
+            isRegistered = false,
+            isSuccess = true,
+            userId = TEST_USER_ID,
+            topicSubscriber = topicSubscriber
         )
 
         // Start the listeners
@@ -101,16 +100,16 @@ class ObserveUserAuthStateUseCaseTest {
         val value = LiveDataTestUtil.getValue(subject.observe()) as Result.Success
 
         assertThat(
-                value.data.getUid(),
-                `is`(equalTo(TEST_USER_ID))
+            value.data.getUid(),
+            `is`(equalTo(TEST_USER_ID))
         )
         assertThat(
-                value.data.isSignedIn(),
-                `is`(equalTo(true))
+            value.data.isSignedIn(),
+            `is`(equalTo(true))
         )
         assertThat(
-                value.data.isRegistered(),
-                `is`(equalTo(false))
+            value.data.isRegistered(),
+            `is`(equalTo(false))
         )
         verify(topicSubscriber, never()).subscribeToAttendeeUpdates()
         verify(topicSubscriber, never()).unsubscribeFromAttendeeUpdates()
@@ -121,11 +120,11 @@ class ObserveUserAuthStateUseCaseTest {
         val topicSubscriber = mock<TopicSubscriber> {}
 
         val subject = createObserveUserAuthStateUseCase(
-                isAnonymous = false,
-                isRegistered = true,
-                isSuccess = false,
-                userId = TEST_USER_ID,
-                topicSubscriber = topicSubscriber
+            isAnonymous = false,
+            isRegistered = true,
+            isSuccess = false,
+            userId = TEST_USER_ID,
+            topicSubscriber = topicSubscriber
         )
 
         // Start the listeners
@@ -134,8 +133,8 @@ class ObserveUserAuthStateUseCaseTest {
         val value = LiveDataTestUtil.getValue(subject.observe())
 
         assertThat(
-                value,
-                `is`(instanceOf(Result.Error::class.java))
+            value,
+            `is`(instanceOf(Result.Error::class.java))
         )
         verify(topicSubscriber, never()).subscribeToAttendeeUpdates()
         verify(topicSubscriber, never()).unsubscribeFromAttendeeUpdates()
@@ -147,11 +146,11 @@ class ObserveUserAuthStateUseCaseTest {
         val topicSubscriber = mock<TopicSubscriber> {}
 
         val subject = createObserveUserAuthStateUseCase(
-                isAnonymous = true,
-                isRegistered = false,
-                isSuccess = true,
-                userId = TEST_USER_ID,
-                topicSubscriber = topicSubscriber
+            isAnonymous = true,
+            isRegistered = false,
+            isSuccess = true,
+            userId = TEST_USER_ID,
+            topicSubscriber = topicSubscriber
         )
 
         // Start the listeners
@@ -160,16 +159,16 @@ class ObserveUserAuthStateUseCaseTest {
         val value = LiveDataTestUtil.getValue(subject.observe()) as Result.Success
 
         assertThat(
-                value.data.getUid(),
-                `is`(equalTo(TEST_USER_ID))
+            value.data.getUid(),
+            `is`(equalTo(TEST_USER_ID))
         )
         assertThat(
-                value.data.isSignedIn(),
-                `is`(equalTo(false))
+            value.data.isSignedIn(),
+            `is`(equalTo(false))
         )
         assertThat(
-                value.data.isRegistered(),
-                `is`(equalTo(false))
+            value.data.isRegistered(),
+            `is`(equalTo(false))
         )
 
         verify(topicSubscriber).unsubscribeFromAttendeeUpdates()
@@ -177,19 +176,21 @@ class ObserveUserAuthStateUseCaseTest {
     }
 
     private fun createObserveUserAuthStateUseCase(
-            isAnonymous: Boolean,
-            isRegistered: Boolean,
-            isSuccess: Boolean,
-            userId: String,
-            topicSubscriber: TopicSubscriber = mock {}
+        isAnonymous: Boolean,
+        isRegistered: Boolean,
+        isSuccess: Boolean,
+        userId: String,
+        topicSubscriber: TopicSubscriber = mock {}
     ): ObserveUserAuthStateUseCase {
         val authStateUserDataSource = FakeAuthStateUserDataSource(
-                isAnonymous, isSuccess, userId)
+            isAnonymous, isSuccess, userId
+        )
 
         val registeredUserDataSource = FakeRegisteredUserDataSource(isRegistered)
 
         val subject = ObserveUserAuthStateUseCase(
-                registeredUserDataSource, authStateUserDataSource, topicSubscriber)
+            registeredUserDataSource, authStateUserDataSource, topicSubscriber
+        )
         return subject
     }
 }
@@ -206,14 +207,14 @@ class FakeRegisteredUserDataSource(val isRegistered: Boolean) : RegisteredUserDa
     }
 
     override fun setAnonymousValue() {
-        //Noop
+        // Noop
     }
 }
 
 class FakeAuthStateUserDataSource(
-        private val isAnonymous: Boolean,
-        private val successFirebaseUser: Boolean,
-        private val userId: String?
+    private val isAnonymous: Boolean,
+    private val successFirebaseUser: Boolean,
+    private val userId: String?
 ) : AuthStateUserDataSource {
 
     private val _userId = MutableLiveData<String?>()
@@ -240,7 +241,6 @@ class FakeAuthStateUserDataSource(
     }
 
     override fun clearListener() {
-        //No-op
+        // Noop
     }
-
 }

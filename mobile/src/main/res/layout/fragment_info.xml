@@ -24,24 +24,24 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
+            style="@style/Widget.AppBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Widget.AppBar">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
                 android:gravity="center"
-                app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
                 android:text="@string/title_info"
-                android:textAppearance="@style/TextAppearance.IOSched.ToolbarTitle" />
+                android:textAppearance="@style/TextAppearance.IOSched.ToolbarTitle"
+                app:layout_scrollFlags="scroll|snap|exitUntilCollapsed" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
+                style="@style/Widget.IOSched.Tabs"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                style="@style/Widget.IOSched.Tabs" />
+                android:layout_height="?actionBarSize" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

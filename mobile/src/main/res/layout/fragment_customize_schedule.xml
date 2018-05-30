@@ -17,8 +17,8 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.onboarding.CustomizeScheduleFragment">
@@ -41,48 +41,48 @@
         android:id="@+id/customize"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:fitsSystemWindows="true"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
         android:layout_marginBottom="@dimen/margin_normal"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        android:fitsSystemWindows="true"
+        android:importantForAccessibility="no"
         app:layout_constraintBottom_toTopOf="@id/build_schedule"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="spread_inside"
-        app:srcCompat="@drawable/customize_schedule"
-        android:importantForAccessibility="no" />
+        app:srcCompat="@drawable/customize_schedule" />
 
     <TextView
         android:id="@+id/build_schedule"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@id/customize"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        app:layout_constraintBottom_toTopOf="@id/benefits"
-        android:textAppearance="@style/TextAppearance.IOSched.H1"
+        android:text="@string/onboarding_build_schedule"
         android:textAlignment="center"
-        android:text="@string/onboarding_build_schedule" />
+        android:textAppearance="@style/TextAppearance.IOSched.H1"
+        app:layout_constraintBottom_toTopOf="@id/benefits"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/customize" />
 
     <TextView
         android:id="@+id/benefits"
+        style="@style/Widget.IOSched.OnboardingDeck"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_normal"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@id/build_schedule"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        app:layout_constraintBottom_toTopOf="@id/spacer"
         android:text="@string/onboarding_build_sched_benefits"
-        style="@style/Widget.IOSched.OnboardingDeck" />
+        app:layout_constraintBottom_toTopOf="@id/spacer"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/build_schedule" />
 
     <Space
         android:id="@+id/spacer"
         android:layout_width="0dp"
         android:layout_height="@dimen/onboarding_actions_height"
         android:layout_marginTop="32dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/benefits"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/benefits" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

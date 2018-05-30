@@ -25,7 +25,7 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
  * Creates [SessionPlayerViewModel]s, used with the [android.arch.lifecycle.ViewModelProviders].
  */
 class SessionPlayerViewModelFactory(
-        private val sessionRepository: SessionRepository
+    private val sessionRepository: SessionRepository
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")

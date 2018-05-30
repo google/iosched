@@ -16,12 +16,12 @@
 
 package com.google.samples.apps.iosched.ui.schedule.agenda
 
-import androidx.databinding.BindingAdapter
 import android.graphics.drawable.GradientDrawable
-import androidx.appcompat.content.res.AppCompatResources
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.databinding.BindingAdapter
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.ZoneId
@@ -59,7 +59,9 @@ fun agendaIcon(imageView: ImageView, type: String) {
 
 @BindingAdapter(value = ["startTime", "endTime", "timeZoneId"], requireAll = true)
 fun agendaDuration(
-    textView: TextView, startTime: ZonedDateTime, endTime: ZonedDateTime,
+    textView: TextView,
+    startTime: ZonedDateTime,
+    endTime: ZonedDateTime,
     timeZoneId: ZoneId
 ) {
     textView.text = textView.context.getString(
