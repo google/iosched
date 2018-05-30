@@ -19,7 +19,7 @@ package com.google.samples.apps.iosched.model
 /**
  * Describes a venue associated with the conference.
  */
-data class Room (
+data class Room(
     /**
      * Unique string identifying this room.
      */

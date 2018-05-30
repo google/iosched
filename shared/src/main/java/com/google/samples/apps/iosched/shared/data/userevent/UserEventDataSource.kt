@@ -17,12 +17,12 @@
 package com.google.samples.apps.iosched.shared.data.userevent
 
 import androidx.lifecycle.LiveData
+import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
-import com.google.samples.apps.iosched.model.userdata.UserEvent
-import com.google.samples.apps.iosched.model.Session
-import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.result.Result
 
 interface UserEventDataSource {
@@ -40,22 +40,29 @@ interface UserEventDataSource {
      * @param userEvent the [UserEvent], which isStarred is going to be the updated status
      * @return the LiveData that represents the status of the star operation.
      */
-    fun starEvent(userId: String, userEvent: UserEvent):
-            LiveData<Result<StarUpdatedStatus>>
+    fun starEvent(userId: String, userEvent: UserEvent): LiveData<Result<StarUpdatedStatus>>
 
-    fun requestReservation(userId: String, session: Session, action: ReservationRequestAction):
-            LiveData<Result<ReservationRequestAction>>
+    fun requestReservation(
+        userId: String,
+        session: Session,
+        action: ReservationRequestAction
+    ): LiveData<Result<ReservationRequestAction>>
 
-    fun swapReservation(userId: String, fromSession: Session, toSession: Session):
-            LiveData<Result<SwapRequestAction>>
+    fun swapReservation(
+        userId: String,
+        fromSession: Session,
+        toSession: Session
+    ): LiveData<Result<SwapRequestAction>>
 
     fun clearSingleEventSubscriptions()
 }
 
 data class UserEventsResult(
     val userEvents: List<UserEvent>,
-    val userEventsMessage: UserEventMessage? = null)
+    val userEventsMessage: UserEventMessage? = null
+)
 
 data class UserEventResult(
     val userEvent: UserEvent?,
-    val userEventMessage: UserEventMessage? = null)
+    val userEventMessage: UserEventMessage? = null
+)

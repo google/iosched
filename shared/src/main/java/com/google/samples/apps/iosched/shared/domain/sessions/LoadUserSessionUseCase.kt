@@ -17,17 +17,17 @@
 package com.google.samples.apps.iosched.shared.domain.sessions
 
 import androidx.lifecycle.LiveData
+import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
-import com.google.samples.apps.iosched.model.SessionId
-import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import javax.inject.Inject
 
 open class LoadUserSessionUseCase @Inject constructor(
-        private val userEventRepository: DefaultSessionAndUserEventRepository
+    private val userEventRepository: DefaultSessionAndUserEventRepository
 ) : MediatorUseCase<Pair<String?, SessionId>, LoadUserSessionUseCaseResult>() {
 
     private var userSession: LiveData<Result<LoadUserSessionUseCaseResult>>? = null
@@ -47,8 +47,8 @@ open class LoadUserSessionUseCase @Inject constructor(
                 when (it) {
                     is Result.Success -> {
                         val useCaseResult = LoadUserSessionUseCaseResult(
-                                userSession = it.data.userSession,
-                                userMessage = it.data.userMessage
+                            userSession = it.data.userSession,
+                            userMessage = it.data.userMessage
                         )
                         result.postValue(Result.Success(useCaseResult))
                     }
@@ -78,5 +78,5 @@ data class LoadUserSessionUseCaseResult(
     val userSession: UserSession,
 
     /** A message to show to the user with important changes like reservation confirmations */
-        val userMessage: UserEventMessage? = null
+    val userMessage: UserEventMessage? = null
 )

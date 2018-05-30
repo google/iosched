@@ -45,7 +45,8 @@ class RemoveReservationDialogFragment : CustomDimDialogFragment(), HasSupportFra
         private const val SESSION_ID_KEY = "session_id"
         private const val SESSION_TITLE_KEY = "session_title"
 
-        fun newInstance(parameters: RemoveReservationDialogParameters
+        fun newInstance(
+            parameters: RemoveReservationDialogParameters
         ): RemoveReservationDialogFragment {
             val bundle = Bundle().apply {
                 putString(USER_ID_KEY, parameters.userId)
@@ -95,7 +96,7 @@ class RemoveReservationDialogFragment : CustomDimDialogFragment(), HasSupportFra
     }
 }
 
-data class RemoveReservationDialogParameters (
+data class RemoveReservationDialogParameters(
     val userId: String,
     val sessionId: SessionId,
     val sessionTitle: String

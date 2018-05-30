@@ -23,8 +23,8 @@ import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
-import com.google.samples.apps.iosched.tv.model.TestDataRepository
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.tv.model.TestDataRepository
 import com.google.samples.apps.iosched.tv.model.TestUserEventDataSource
 import com.google.samples.apps.iosched.tv.util.SyncTaskExecutorRule
 import org.junit.Assert.assertEquals
@@ -46,21 +46,23 @@ class SessionDetailViewModelTest {
     private lateinit var viewModel: SessionDetailViewModel
     private val testSession = TestData.session0
 
-    @Before fun setup() {
+    @Before
+    fun setup() {
         viewModel = SessionDetailViewModel(createUseCase())
         viewModel.loadSessionById(testSession.id)
     }
 
     // TODO add tests for snackbarmessage, errormessage (see ScheduleViewModelTest examples)
-    @Test fun testDataIsLoaded_observablesUpdated() {
+    @Test
+    fun testDataIsLoaded_observablesUpdated() {
         assertEquals(testSession, LiveDataTestUtil.getValue(viewModel.session))
     }
 
-   private fun createUseCase(): LoadUserSessionUseCase {
+    private fun createUseCase(): LoadUserSessionUseCase {
         return LoadUserSessionUseCase(
-                DefaultSessionAndUserEventRepository(
-                        TestUserEventDataSource, DefaultSessionRepository(TestDataRepository)
-                )
+            DefaultSessionAndUserEventRepository(
+                TestUserEventDataSource, DefaultSessionRepository(TestDataRepository)
+            )
         )
     }
 }

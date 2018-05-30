@@ -22,7 +22,7 @@ import com.google.samples.apps.iosched.shared.BuildConfig
 /**
  * Loads bootstrap data file from resources and parses it.
  */
-object BootstrapConferenceDataSource : ConferenceDataSource{
+object BootstrapConferenceDataSource : ConferenceDataSource {
     override fun getRemoteConferenceData(): ConferenceData? {
         throw Exception("Bootstrap data source doesn't have remote data")
     }
@@ -34,7 +34,7 @@ object BootstrapConferenceDataSource : ConferenceDataSource{
     fun loadAndParseBootstrapData(): ConferenceData {
 
         val conferenceDataStream = this.javaClass.classLoader
-                .getResource(BuildConfig.BOOTSTRAP_CONF_DATA_FILENAME).openStream()
+            .getResource(BuildConfig.BOOTSTRAP_CONF_DATA_FILENAME).openStream()
 
         return ConferenceDataJsonParser.parseConferenceData(conferenceDataStream)
     }

@@ -40,8 +40,8 @@ fun sessionDurationAndLocation(
     room: String
 ) {
     textView.text = textView.context.getString(
-            R.string.session_duration_location,
-            durationAndLocationString(textView.context, Duration.between(startTime, endTime)), room
+        R.string.session_duration_location,
+        durationAndLocationString(textView.context, Duration.between(startTime, endTime)), room
     )
 }
 
@@ -65,14 +65,14 @@ fun sessionTimeIcon(
 
 private fun findTimeResource(context: Context, startTime: ZonedDateTime): Int {
 
-    val hour = if(startTime.hour > 12) {
+    val hour = if (startTime.hour > 12) {
         startTime.hour - 12
     } else {
         startTime.hour
     }
 
     // TODO: Verify start times are only in 00 and 30 offline plus add all 30 assets.
-    val minute = if(startTime.minute == 30) {
+    val minute = if (startTime.minute == 30) {
         startTime.minute
     } else {
         0
@@ -96,8 +96,8 @@ private fun properTimeResourceName(hour: String, minute: String): String {
     }
 }
 
-private fun Int.convertToHourString():String =
-    when(this) {
+private fun Int.convertToHourString(): String =
+    when (this) {
         1 -> "one"
         2 -> "two"
         3 -> "three"
@@ -113,7 +113,7 @@ private fun Int.convertToHourString():String =
         else -> ""
     }
 
-private fun Int.convertToMinuteString():String =
+private fun Int.convertToMinuteString(): String =
     when (this) {
         30 -> "thirty"
         else -> ""

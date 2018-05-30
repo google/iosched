@@ -28,17 +28,21 @@ class ReservationRequestResultTest {
     @Test
     fun getIfPresent_nutNull() {
         val presentName =
-                ReservationRequestResult.ReservationRequestStatus.RESERVE_SUCCEEDED.toString()
+            ReservationRequestResult.ReservationRequestStatus.RESERVE_SUCCEEDED.toString()
 
-        assertThat(ReservationRequestResult.ReservationRequestStatus.getIfPresent(presentName),
-                `is`(notNullValue()))
+        assertThat(
+            ReservationRequestResult.ReservationRequestStatus.getIfPresent(presentName),
+            `is`(notNullValue())
+        )
     }
 
     @Test
     fun getIfPresent_notPresent_returnsNull() {
         val notPresentName = "not present"
 
-        assertThat(ReservationRequestResult.ReservationRequestStatus.getIfPresent(notPresentName),
-                `is`(nullValue()))
+        assertThat(
+            ReservationRequestResult.ReservationRequestStatus.getIfPresent(notPresentName),
+            `is`(nullValue())
+        )
     }
 }

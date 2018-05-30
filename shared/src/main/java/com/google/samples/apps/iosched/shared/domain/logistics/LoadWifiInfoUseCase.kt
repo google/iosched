@@ -16,9 +16,9 @@
 
 package com.google.samples.apps.iosched.shared.domain.logistics
 
+import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
 import com.google.samples.apps.iosched.shared.domain.UseCase
-import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 import javax.inject.Inject
 import javax.inject.Singleton
 

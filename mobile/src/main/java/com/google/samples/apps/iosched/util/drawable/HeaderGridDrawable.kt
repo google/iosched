@@ -96,5 +96,4 @@ class HeaderGridDrawable(context: Context) : Drawable() {
     override fun setColorFilter(colorFilter: ColorFilter?) {
         paint.colorFilter = colorFilter
     }
-
 }

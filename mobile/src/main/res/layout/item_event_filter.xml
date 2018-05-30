@@ -40,14 +40,14 @@
             android:id="@+id/filter_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_micro"
             android:layout_marginBottom="@dimen/spacing_micro"
+            android:layout_marginTop="@dimen/spacing_micro"
             android:checked="@{eventFilter.isChecked}"
             app:color="@{eventFilter.getColor()}"
             app:eventFilter="@{eventFilter}"
             app:eventFilterText="@{eventFilter}"
-            app:viewModel="@{viewModel}"
-            app:selectedTextColor="@{eventFilter.getSelectedTextColor()}" />
+            app:selectedTextColor="@{eventFilter.getSelectedTextColor()}"
+            app:viewModel="@{viewModel}" />
 
     </FrameLayout>
 

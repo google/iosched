@@ -56,7 +56,6 @@ class ConferenceDataService : DaggerJobService() {
         }
         // Returning true to indicate we're not done yet (execution still running in the background)
         return true
-
     }
 
     override fun onStopJob(params: JobParameters?): Boolean {

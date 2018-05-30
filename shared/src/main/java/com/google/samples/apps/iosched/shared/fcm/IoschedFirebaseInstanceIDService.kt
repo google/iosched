@@ -30,6 +30,6 @@ class IoschedFirebaseInstanceIDService : DaggerFirebaseInstanceIdService() {
 
         Timber.d("Token refresh! $token") // STOPSHIP: Remove this
 
-        //TODO: Update token in Firestore
+        // TODO: Update token in Firestore
     }
 }

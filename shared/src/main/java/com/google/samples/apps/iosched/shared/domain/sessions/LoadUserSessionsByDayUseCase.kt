@@ -16,9 +16,9 @@
 
 package com.google.samples.apps.iosched.shared.domain.sessions
 
-import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase

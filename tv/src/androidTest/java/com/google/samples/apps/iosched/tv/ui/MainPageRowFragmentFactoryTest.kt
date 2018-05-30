@@ -18,17 +18,17 @@
 
 package com.google.samples.apps.iosched.tv.ui
 
-import androidx.test.filters.SmallTest
-import androidx.test.runner.AndroidJUnit4
 import androidx.leanback.widget.HeaderItem
 import androidx.leanback.widget.Row
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
-import com.google.samples.apps.iosched.shared.util.getEnum
+import androidx.test.filters.SmallTest
+import androidx.test.runner.AndroidJUnit4
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.tv.ui.schedule.ScheduleFragment
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsEqual.equalTo
 import org.hamcrest.core.IsInstanceOf.instanceOf
-import org.junit.Assert.*
+import org.junit.Assert.assertThat
+import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -47,13 +47,13 @@ class MainPageRowFragmentFactoryTest {
     @Test
     fun createFragment_withConferenceDay() {
         val expectedDay = ConferenceDays.first()
-        val row = Row(HeaderItem(expectedDay.ordinal.toLong(), expectedDay.name))
+        val row = Row(HeaderItem(expectedDay.start.toEpochSecond(), "Day 1"))
 
         val fragment = mainPageRowFragmentFactory.createFragment(row)
 
-        val actualDay = fragment.arguments
-                ?.getEnum<ConferenceDay>(ScheduleFragment.ARG_CONFERENCE_DAY)
-        assertThat(actualDay, `is`(equalTo(expectedDay)))
+        val actualDay = requireNotNull(fragment.arguments)
+            .getInt(ScheduleFragment.ARG_CONFERENCE_DAY)
+        assertThat(ConferenceDays[actualDay], `is`(equalTo(expectedDay)))
     }
 
     @Test
@@ -78,5 +78,4 @@ class MainPageRowFragmentFactoryTest {
             assertThat(exception, instanceOf(IllegalArgumentException::class.java))
         }
     }
-
 }

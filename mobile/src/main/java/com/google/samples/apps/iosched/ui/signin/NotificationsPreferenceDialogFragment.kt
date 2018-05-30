@@ -39,7 +39,7 @@ import javax.inject.Inject
  * Dialog that asks the user notifications preference.
  */
 class NotificationsPreferenceDialogFragment : CustomDimDialogFragment(),
-        HasSupportFragmentInjector {
+    HasSupportFragmentInjector {
 
     @Inject
     lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>

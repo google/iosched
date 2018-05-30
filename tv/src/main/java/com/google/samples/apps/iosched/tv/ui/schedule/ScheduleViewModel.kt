@@ -74,12 +74,12 @@ class ScheduleViewModel(loadSessionsByDayUseCase: LoadUserSessionsByDayUseCase) 
     }
 
     private fun groupSessionsByTimeSlot(
-            result: MutableLiveData<Result<LoadUserSessionsByDayUseCaseResult>>,
-            day: ConferenceDay
+        result: MutableLiveData<Result<LoadUserSessionsByDayUseCaseResult>>,
+        day: ConferenceDay
     ): LiveData<Map<String, List<UserSession>>> {
         return result.map {
             val sessions = (it as? Result.Success)?.data?.userSessionsPerDay?.get(day)
-                    ?: emptyList()
+                ?: emptyList()
 
             // Groups sessions by formatted header string.
             sessions.groupBy({ TimeUtils.timeString(it.session.startTime, it.session.endTime) })
@@ -93,13 +93,12 @@ class ScheduleViewModel(loadSessionsByDayUseCase: LoadUserSessionsByDayUseCase) 
     }
 
     fun getSessionsGroupedByTimeForDay(
-            day: ConferenceDay
+        day: ConferenceDay
     ): LiveData<Map<String, List<UserSession>>> =
-            when (day) {
-                ConferenceDays[0] -> day1Sessions
-                ConferenceDays[1] -> day2Sessions
-                ConferenceDays[2] -> day3Sessions
-                else -> throw Exception("Day not found")
-            }
+        when (day) {
+            ConferenceDays[0] -> day1Sessions
+            ConferenceDays[1] -> day2Sessions
+            ConferenceDays[2] -> day3Sessions
+            else -> throw Exception("Day not found")
+        }
 }
-

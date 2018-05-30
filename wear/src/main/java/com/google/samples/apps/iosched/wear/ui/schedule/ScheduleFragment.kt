@@ -16,20 +16,20 @@
 
 package com.google.samples.apps.iosched.wear.ui.schedule
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.wear.R
 import com.google.samples.apps.iosched.wear.ui.WearableFragment
 import com.google.samples.apps.iosched.wear.ui.sessiondetail.SessionDetailActivity
-import kotlinx.android.synthetic.main.fragment_schedule.*
+import kotlinx.android.synthetic.main.fragment_schedule.wearableRecyclerView
 import javax.inject.Inject
 
 /**
@@ -86,7 +86,7 @@ class ScheduleFragment : WearableFragment() {
 
         // Show an error message
         viewModel.errorMessage.observe(this, EventObserver { errorMsg ->
-            //TODO: Change once there's a way to show errors to the user
+            // TODO: Change once there's a way to show errors to the user
             Toast.makeText(this.context, errorMsg, Toast.LENGTH_LONG).show()
         })
     }

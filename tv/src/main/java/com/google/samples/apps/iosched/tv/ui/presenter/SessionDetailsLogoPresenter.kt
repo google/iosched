@@ -16,17 +16,17 @@
 
 package com.google.samples.apps.iosched.tv.ui.presenter
 
-import androidx.leanback.widget.DetailsOverviewLogoPresenter
-import androidx.leanback.widget.DetailsOverviewRow
-import androidx.leanback.widget.FullWidthDetailsOverviewRowPresenter
-import androidx.leanback.widget.Presenter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.leanback.widget.DetailsOverviewLogoPresenter
+import androidx.leanback.widget.DetailsOverviewRow
+import androidx.leanback.widget.FullWidthDetailsOverviewRowPresenter
+import androidx.leanback.widget.Presenter
 import com.google.samples.apps.iosched.tv.R
-import com.google.samples.apps.iosched.tv.ui.sessiondetail.SessionDetailFragment
 import com.google.samples.apps.iosched.tv.ui.schedule.ScheduleFragment
+import com.google.samples.apps.iosched.tv.ui.sessiondetail.SessionDetailFragment
 
 /**
  * Displays a logo image next to the actions. This class is also responsible for transitioning the
@@ -47,7 +47,7 @@ class SessionDetailsLogoPresenter : DetailsOverviewLogoPresenter() {
 
     override fun onCreateViewHolder(parent: ViewGroup): Presenter.ViewHolder {
         val imageView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.lb_fullwidth_details_overview_logo, parent, false) as ImageView
+            .inflate(R.layout.lb_fullwidth_details_overview_logo, parent, false) as ImageView
 
         val res = parent.resources
         val width = res.getDimensionPixelSize(R.dimen.detail_thumb_width)

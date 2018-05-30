@@ -20,6 +20,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.google.samples.apps.iosched.wear.ui.sessiondetail.SessionDetailViewModel" />
@@ -42,15 +43,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="18dp"
                 android:gravity="center"
+                android:paddingLeft="@dimen/sesssion_details_horizontal_padding"
+                android:paddingRight="@dimen/sesssion_details_horizontal_padding"
                 android:text="@{viewModel.session.title}"
                 android:textAppearance="@style/TextAppearance.IOSched.SessionDetailTitle"
                 app:layout_constraintBottom_toTopOf="@+id/roomTextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Title"
-                android:paddingLeft="@dimen/sesssion_details_horizontal_padding"
-                android:paddingRight="@dimen/sesssion_details_horizontal_padding"/>
+                tools:text="Title" />
 
             <TextView
                 android:id="@+id/timeTextView"

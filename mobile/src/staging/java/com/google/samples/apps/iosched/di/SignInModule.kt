@@ -37,19 +37,18 @@ internal class SignInModule {
 
     @Singleton
     @Provides
-    fun provideRegisteredUserDataSource(context: Context) : RegisteredUserDataSource {
+    fun provideRegisteredUserDataSource(context: Context): RegisteredUserDataSource {
         return StagingRegisteredUserDataSource(true)
     }
 
     @Singleton
     @Provides
-    fun provideAuthStateUserDataSource(context: Context) : AuthStateUserDataSource {
+    fun provideAuthStateUserDataSource(context: Context): AuthStateUserDataSource {
         return StagingAuthStateUserDataSource(
-                isRegistered = true,
-                isSignedIn = true,
-                context = context,
-                userId = "StagingTest"
+            isRegistered = true,
+            isSignedIn = true,
+            context = context,
+            userId = "StagingTest"
         )
     }
-
 }

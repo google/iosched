@@ -16,10 +16,10 @@
 package com.google.samples.apps.iosched.ui
 
 import android.app.Activity
-import androidx.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.firebase.ui.auth.IdpResponse
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.consume
@@ -81,25 +81,28 @@ class MainActivity : DaggerAppCompatActivity() {
         } else {
             // Find the current fragment
             currentFragment =
-                    supportFragmentManager.findFragmentById(FRAGMENT_ID) as? MainNavigationFragment
-                    ?: throw IllegalStateException("Activity recreated, but no fragment found!")
+                supportFragmentManager.findFragmentById(FRAGMENT_ID) as? MainNavigationFragment
+                ?: throw IllegalStateException("Activity recreated, but no fragment found!")
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if( resultCode == Activity.RESULT_CANCELED ) {
+        if (resultCode == Activity.RESULT_CANCELED) {
             Timber.d("An activity returned RESULT_CANCELED")
             val response = IdpResponse.fromResultIntent(data)
             response?.error?.let {
-                snackbarMessageManager.addMessage(SnackbarMessage(
+                snackbarMessageManager.addMessage(
+                    SnackbarMessage(
                         messageId = FirebaseAuthErrorCodeConverter.convert(it.errorCode),
-                        requestChangeId = UUID.randomUUID().toString()))
+                        requestChangeId = UUID.randomUUID().toString()
+                    )
+                )
             }
         }
     }
 
-    private fun <F> replaceFragment(fragment: F) where F: Fragment, F: MainNavigationFragment {
+    private fun <F> replaceFragment(fragment: F) where F : Fragment, F : MainNavigationFragment {
         supportFragmentManager.inTransaction {
             currentFragment = fragment
             replace(FRAGMENT_ID, fragment)

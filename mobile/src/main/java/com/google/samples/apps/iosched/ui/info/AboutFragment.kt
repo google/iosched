@@ -81,7 +81,8 @@ private fun Context.isChromeCustomTabsSupported(): Boolean {
 class AboutFragment : DaggerFragment() {
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return FragmentInfoAboutBinding.inflate(inflater, container, false).root

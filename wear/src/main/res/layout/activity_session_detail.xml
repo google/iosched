@@ -16,24 +16,24 @@
   -->
 
 <LinearLayout
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?colorPrimary"
     android:orientation="vertical"
-    tools:context=".ui.sessiondetail.SessionDetailActivity"
-    tools:deviceIds="wear"
     android:paddingLeft="@dimen/session_detail_activity_horizontal_padding"
-    android:paddingRight="@dimen/session_detail_activity_horizontal_padding" >
+    android:paddingRight="@dimen/session_detail_activity_horizontal_padding"
+    tools:context=".ui.sessiondetail.SessionDetailActivity"
+    tools:deviceIds="wear">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/schedule_icon_image_view_content_description"
         android:paddingTop="@dimen/image_header_padding_top"
-        android:src="@drawable/ic_nav_schedule"
-        android:contentDescription="@string/schedule_icon_image_view_content_description" />
+        android:src="@drawable/ic_nav_schedule" />
 
     <FrameLayout
         android:id="@+id/session_detail_container"

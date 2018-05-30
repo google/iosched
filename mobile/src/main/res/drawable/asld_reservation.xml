@@ -49,33 +49,33 @@
         android:drawable="@drawable/ic_reservable" />
 
     <transition
+        android:drawable="@drawable/avd_reservable_to_pending"
         android:fromId="@id/reservable"
-        android:toId="@id/reservation_pending"
-        android:drawable="@drawable/avd_reservable_to_pending" />
+        android:toId="@id/reservation_pending" />
 
     <transition
+        android:drawable="@drawable/avd_pending_to_reservable"
         android:fromId="@id/reservation_pending"
-        android:toId="@id/reservable"
-        android:drawable="@drawable/avd_pending_to_reservable" />
+        android:toId="@id/reservable" />
 
     <transition
+        android:drawable="@drawable/avd_pending_to_reserved"
         android:fromId="@id/reservation_pending"
-        android:toId="@id/reserved"
-        android:drawable="@drawable/avd_pending_to_reserved" />
+        android:toId="@id/reserved" />
 
     <transition
+        android:drawable="@drawable/avd_reserved_to_pending"
         android:fromId="@id/reserved"
-        android:toId="@id/reservation_pending"
-        android:drawable="@drawable/avd_reserved_to_pending" />
+        android:toId="@id/reservation_pending" />
 
     <transition
+        android:drawable="@drawable/avd_pending_to_waitlisted"
         android:fromId="@id/reservation_pending"
-        android:toId="@id/wait_listed"
-        android:drawable="@drawable/avd_pending_to_waitlisted" />
+        android:toId="@id/wait_listed" />
 
     <transition
+        android:drawable="@drawable/avd_waitlisted_to_pending"
         android:fromId="@id/wait_listed"
-        android:toId="@id/reservation_pending"
-        android:drawable="@drawable/avd_waitlisted_to_pending" />
+        android:toId="@id/reservation_pending" />
 
 </animated-selector>

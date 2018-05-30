@@ -71,7 +71,7 @@ class SharedModule {
     @Singleton
     @Provides
     fun provideSessionRepository(
-            conferenceDataRepository: ConferenceDataRepository
+        conferenceDataRepository: ConferenceDataRepository
     ): SessionRepository {
         return DefaultSessionRepository(conferenceDataRepository)
     }
@@ -85,8 +85,8 @@ class SharedModule {
     @Singleton
     @Provides
     fun provideSessionAndUserEventRepository(
-            userEventDataSource: UserEventDataSource,
-            sessionRepository: SessionRepository
+        userEventDataSource: UserEventDataSource,
+        sessionRepository: SessionRepository
     ): SessionAndUserEventRepository {
         return DefaultSessionAndUserEventRepository(userEventDataSource, sessionRepository)
     }
@@ -100,7 +100,7 @@ class SharedModule {
     @Singleton
     @Provides
     fun provideLogisticsRepository(
-            logisticsDataSource: LogisticsDataSource
+        logisticsDataSource: LogisticsDataSource
     ): LogisticsRepository {
         return LogisticsRepository(logisticsDataSource)
     }
@@ -118,4 +118,3 @@ class SharedModule {
         return DefaultTimeProvider
     }
 }
-

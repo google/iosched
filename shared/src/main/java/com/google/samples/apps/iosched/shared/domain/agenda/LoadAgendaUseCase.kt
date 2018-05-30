@@ -16,9 +16,9 @@
 
 package com.google.samples.apps.iosched.shared.domain.agenda
 
+import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.domain.UseCase
-import com.google.samples.apps.iosched.model.Block
 import javax.inject.Inject
 
 open class LoadAgendaUseCase @Inject constructor(

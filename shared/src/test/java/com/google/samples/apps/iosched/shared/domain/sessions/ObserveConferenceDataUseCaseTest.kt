@@ -49,7 +49,8 @@ class ObserveConferenceDataUseCaseTest {
 
         assertThat(
             value,
-            `is`(nullValue()))
+            `is`(nullValue())
+        )
 
         repo.refreshCacheWithRemoteConferenceData()
 

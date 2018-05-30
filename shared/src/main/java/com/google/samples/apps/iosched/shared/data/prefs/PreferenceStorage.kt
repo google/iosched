@@ -62,20 +62,17 @@ class SharedPreferenceStorage @Inject constructor(context: Context) :
         prefs.registerOnSharedPreferenceChangeListener(changeListener)
     }
 
-    override var onboardingCompleted
-            by BooleanPreference(prefs, PREF_ONBOARDING, false)
+    override var onboardingCompleted by BooleanPreference(prefs, PREF_ONBOARDING, false)
 
-    override var scheduleUiHintsShown: Boolean
-            by BooleanPreference(prefs, PREF_SCHED_UI_HINTS_SHOWN, false)
+    override var scheduleUiHintsShown by BooleanPreference(prefs, PREF_SCHED_UI_HINTS_SHOWN, false)
 
     override var notificationsPreferenceShown
-            by BooleanPreference(prefs, PREF_NOTIFICATIONS_SHOWN, false)
+        by BooleanPreference(prefs, PREF_NOTIFICATIONS_SHOWN, false)
 
     override var preferToReceiveNotifications
-            by BooleanPreference(prefs, PREF_RECEIVE_NOTIFICATIONS, true)
+        by BooleanPreference(prefs, PREF_RECEIVE_NOTIFICATIONS, true)
 
-    override var snackbarIsStopped: Boolean
-            by BooleanPreference(prefs, PREF_SNACKBAR_IS_STOPPED, false)
+    override var snackbarIsStopped by BooleanPreference(prefs, PREF_SNACKBAR_IS_STOPPED, false)
 
     override var observableSnackbarIsStopped: LiveData<Boolean>
         get() {
@@ -84,14 +81,12 @@ class SharedPreferenceStorage @Inject constructor(context: Context) :
         }
         set(value) = throw IllegalAccessException("This property can't be changed")
 
-    override var sendUsageStatistics: Boolean
-        by BooleanPreference(prefs, PREF_SEND_USAGE_STATISTICS, true)
+    override var sendUsageStatistics by BooleanPreference(prefs, PREF_SEND_USAGE_STATISTICS, true)
 
-    override var preferConferenceTimeZone: Boolean
+    override var preferConferenceTimeZone
         by BooleanPreference(prefs, PREF_CONFERENCE_TIME_ZONE, true)
 
-    override var selectedFilters: String?
-        by StringPreference(prefs, PREF_SELECTED_FILTERS, null)
+    override var selectedFilters by StringPreference(prefs, PREF_SELECTED_FILTERS, null)
 
     companion object {
         const val PREFS_NAME = "iosched"
@@ -107,7 +102,6 @@ class SharedPreferenceStorage @Inject constructor(context: Context) :
 
     fun registerOnPreferenceChangeListener(listener: OnSharedPreferenceChangeListener) {
         prefs.registerOnSharedPreferenceChangeListener(listener)
-
     }
 }
 
@@ -134,7 +128,7 @@ class StringPreference(
 ) : ReadWriteProperty<Any, String?> {
 
     @WorkerThread
-    override fun getValue(thisRef: Any, property: KProperty<*>): String {
+    override fun getValue(thisRef: Any, property: KProperty<*>): String? {
         return preferences.getString(name, defaultValue)
     }
 

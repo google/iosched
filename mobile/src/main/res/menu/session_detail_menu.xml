@@ -15,8 +15,8 @@
   ~ limitations under the License.
   -->
 
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="AlwaysShowAction,AppCompatResource">
     <!-- TODO re-enable AppCompatResource check when it works with androidx. b/80097706 -->

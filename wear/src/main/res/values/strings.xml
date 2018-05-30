@@ -21,7 +21,6 @@
     <string name="settings" translation_description="The title of the app settings screen.">Settings</string>
 
 
-
     <!-- TODO: move to wear/mobile to shared -->
     <string name="session_duration_location" translatable="false">%1s / %2s</string>
 
@@ -38,7 +37,7 @@
     <string name="a11y_login" translatable="false">TODO: a11y content description for login action</string>
     <string name="a11y_logout" translatable="false">TODO: a11y content description for logout action</string>
 
-    <string name="schedule_icon_image_view_content_description"  translatable="false">Schedule Icon</string>
-    <string name="item_session_image_view_time_icon_content_description"  translatable="true">Icon of the start time.</string>
+    <string name="schedule_icon_image_view_content_description" translatable="false">Schedule Icon</string>
+    <string name="item_session_image_view_time_icon_content_description" translatable="true">Icon of the start time.</string>
 
 </resources>

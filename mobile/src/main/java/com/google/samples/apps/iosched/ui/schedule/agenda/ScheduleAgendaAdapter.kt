@@ -16,13 +16,13 @@
 
 package com.google.samples.apps.iosched.ui.schedule.agenda
 
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.google.samples.apps.iosched.BR
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Block
@@ -62,9 +62,9 @@ class AgendaViewHolder(
 
 object BlockDiff : DiffUtil.ItemCallback<Block>() {
     override fun areItemsTheSame(oldItem: Block, newItem: Block): Boolean {
-        return oldItem.title == newItem.title
-                && oldItem.startTime == newItem.startTime
-                && oldItem.endTime == newItem.endTime
+        return oldItem.title == newItem.title &&
+            oldItem.startTime == newItem.startTime &&
+            oldItem.endTime == newItem.endTime
     }
 
     override fun areContentsTheSame(oldItem: Block, newItem: Block) = oldItem == newItem

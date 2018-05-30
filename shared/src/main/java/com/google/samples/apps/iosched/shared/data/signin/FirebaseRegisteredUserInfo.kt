@@ -24,8 +24,8 @@ import com.google.firebase.auth.UserInfo
  * Delegates [AuthenticatedUserInfo] calls to a [FirebaseUser] to be used in production.
  */
 class FirebaseRegisteredUserInfo(
-        private val basicUserInfo: AuthenticatedUserInfoBasic?,
-        private val isRegistered: Boolean?
+    private val basicUserInfo: AuthenticatedUserInfoBasic?,
+    private val isRegistered: Boolean?
 ) : AuthenticatedUserInfo {
 
     override fun isRegistered(): Boolean = isRegistered ?: false
@@ -55,11 +55,10 @@ class FirebaseRegisteredUserInfo(
     override fun getCreationTimestamp(): Long? = basicUserInfo?.getCreationTimestamp()
 
     override fun isRegistrationDataReady(): Boolean = isRegistered != null
-
 }
 
 open class FirebaseUserInfo(
-        private val firebaseUser: FirebaseUser?
+    private val firebaseUser: FirebaseUser?
 ) : AuthenticatedUserInfoBasic {
 
     override fun isSignedIn(): Boolean = firebaseUser != null

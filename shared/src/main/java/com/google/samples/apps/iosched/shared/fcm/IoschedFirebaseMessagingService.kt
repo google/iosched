@@ -45,17 +45,18 @@ class IoschedFirebaseMessagingService : DaggerFirebaseMessagingService() {
     private fun scheduleFetchEventData() {
         val serviceComponent = ComponentName(this, ConferenceDataService::class.java)
         val builder = JobInfo.Builder(ConferenceDataService.JOB_ID, serviceComponent)
-                .setMinimumLatency(MINIMUM_LATENCY) // wait at least
-                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED) // Unmetered if possible
-                .setOverrideDeadline(OVERRIDE_DEADLINE) // run by deadline if conditions not met
+            .setMinimumLatency(MINIMUM_LATENCY) // wait at least
+            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED) // Unmetered if possible
+            .setOverrideDeadline(OVERRIDE_DEADLINE) // run by deadline if conditions not met
 
         val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
 
         val result = jobScheduler.schedule(builder.build())
 
         if (result == RESULT_FAILURE) {
-            Timber.e("Invalid param supplied to JobScheduler when starting " +
-                    "ConferenceDataService job.")
+            Timber.e(
+                "Invalid param supplied to JobScheduler when starting ConferenceDataService job."
+            )
         } else if (result == RESULT_SUCCESS) {
             Timber.i("ConferenceDataService job scheduled..")
         }

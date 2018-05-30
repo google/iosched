@@ -17,8 +17,8 @@
 package com.google.samples.apps.iosched.tv.ui.search
 
 import android.os.Bundle
-import androidx.fragment.app.FragmentActivity
 import androidx.core.content.IntentCompat.EXTRA_START_PLAYBACK
+import androidx.fragment.app.FragmentActivity
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.tv.TvApplication
@@ -64,14 +64,14 @@ class SearchableActivity : FragmentActivity() {
         Timber.d("Should start playback? ${if (startPlayback) "yes" else "no"}")
 
         viewModel.session.observe(this, EventObserver { session ->
-                val intent = if (startPlayback) {
-                    SessionPlayerActivity.createIntent(context = this, sessionId = session.id)
-                } else {
-                    SessionDetailActivity.createIntent(context = this, sessionId = session.id)
-                }
-                startActivity(intent)
-                finish()
-            })
+            val intent = if (startPlayback) {
+                SessionPlayerActivity.createIntent(context = this, sessionId = session.id)
+            } else {
+                SessionDetailActivity.createIntent(context = this, sessionId = session.id)
+            }
+            startActivity(intent)
+            finish()
+        })
         viewModel.loadSessionById(id)
     }
 }

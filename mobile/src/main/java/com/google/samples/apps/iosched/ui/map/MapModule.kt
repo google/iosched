@@ -25,7 +25,6 @@ import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 
-
 /**
  * Module where classes needed to create the [MapFragment] are defined.
  */

@@ -19,24 +19,22 @@ package com.google.samples.apps.iosched.ui
 import com.google.samples.apps.iosched.model.Session
 
 data class SnackbarMessage(
-        /** Resource string ID of the message to show */
-        val messageId: Int,
+    /** Resource string ID of the message to show */
+    val messageId: Int,
 
-        /** Optional resource string ID for the action (example: "Got it!") */
-        val actionId: Int? = null,
+    /** Optional resource string ID for the action (example: "Got it!") */
+    val actionId: Int? = null,
 
-        /** Set to true for a Snackbar with long duration  */
-        val longDuration: Boolean = false,
+    /** Set to true for a Snackbar with long duration  */
+    val longDuration: Boolean = false,
 
-        /** Optional change ID to avoid repetition of messages */
-        val requestChangeId: String? = null,
+    /** Optional change ID to avoid repetition of messages */
+    val requestChangeId: String? = null,
 
-        /** Optional session */
-        val session: Session? = null
-
+    /** Optional session */
+    val session: Session? = null
 ) {
-        override fun toString(): String {
-            return "Session: ${session?.id}, ${session?.title?.take(30)}. " +
-                    "Change: $requestChangeId "
-        }
+    override fun toString(): String {
+        return "Session: ${session?.id}, ${session?.title?.take(30)}. Change: $requestChangeId "
+    }
 }

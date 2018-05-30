@@ -77,5 +77,6 @@ internal abstract class ScheduleModule {
     @IntoMap
     @ViewModelKey(ScheduleUiHintsDialogViewModel::class)
     abstract fun bindScheduleUiHintsDialogViewModel(
-            viewModel: ScheduleUiHintsDialogViewModel): ViewModel
+        viewModel: ScheduleUiHintsDialogViewModel
+    ): ViewModel
 }

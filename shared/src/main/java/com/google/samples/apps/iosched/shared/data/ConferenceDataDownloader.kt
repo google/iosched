@@ -30,13 +30,12 @@ import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
 import java.io.IOException
 
-
 /**
  * Downloads session data.
  */
 class ConferenceDataDownloader(
-        private val context: Context,
-        private val bootstrapVersion: String
+    private val context: Context,
+    private val bootstrapVersion: String
 ) {
 
     // TODO(jalc): Provide this, only one client should exist
@@ -51,10 +50,10 @@ class ConferenceDataDownloader(
         val cache = Cache(cacheDir, cacheSize)
 
         OkHttpClient.Builder()
-                .protocols(protocols)
-                .cache(cache)
-                .addInterceptor(logInterceptor)
-                .build()
+            .protocols(protocols)
+            .cache(cache)
+            .addInterceptor(logInterceptor)
+            .build()
     }
 
     @Throws(IOException::class)
@@ -66,18 +65,18 @@ class ConferenceDataDownloader(
         Timber.d("Download started from: $url")
 
         val httpBuilder = HttpUrl.parse(url)?.newBuilder()
-                ?: throw IllegalArgumentException("Malformed Session data URL")
+            ?: throw IllegalArgumentException("Malformed Session data URL")
         httpBuilder.addQueryParameter("bootstrapVersion", bootstrapVersion)
 
         val request = Request.Builder()
-                .url(httpBuilder.build())
-                .cacheControl(CacheControl.FORCE_NETWORK) // TODO(jalc): Needed?
-                .build()
+            .url(httpBuilder.build())
+            .cacheControl(CacheControl.FORCE_NETWORK) // TODO(jalc): Needed?
+            .build()
 
         // Blocking call
         val response = client.newCall(request).execute()
 
-        //TODO Delete cache somehow
+        // TODO Delete cache somehow
 
         Timber.d("Downloaded bytes: ${response.body()?.contentLength() ?: 0}")
 
@@ -91,13 +90,13 @@ class ConferenceDataDownloader(
         Timber.d("Fetching cached file for url: $url")
 
         val httpBuilder = HttpUrl.parse(url)?.newBuilder()
-                ?: throw IllegalArgumentException("Malformed Session data URL")
+            ?: throw IllegalArgumentException("Malformed Session data URL")
         httpBuilder.addQueryParameter("bootstrapVersion", bootstrapVersion)
 
         val request = Request.Builder()
-                .url(httpBuilder.build())
-                .cacheControl(CacheControl.FORCE_CACHE)
-                .build()
+            .url(httpBuilder.build())
+            .cacheControl(CacheControl.FORCE_CACHE)
+            .build()
 
         // Blocking call
         val response = client.newCall(request).execute()
@@ -107,7 +106,5 @@ class ConferenceDataDownloader(
             return null
         }
         return response ?: throw IOException("Network error")
-
-
     }
 }

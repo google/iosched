@@ -27,7 +27,7 @@ import javax.inject.Inject
  * Saves the FCM ID tokens in Firestore.
  */
 class FcmTokenUpdater @Inject constructor(
-        val firestore: FirebaseFirestore
+    val firestore: FirebaseFirestore
 ) {
 
     fun updateTokenForUser(userId: String) {
@@ -41,31 +41,33 @@ class FcmTokenUpdater @Inject constructor(
         // Write token to /users/<userId>/fcmTokens/<token[0..TOKEN_ID_LENGTH]/
 
         val tokenInfo = mapOf(
-                LAST_VISIT_KEY to FieldValue.serverTimestamp(),
-                TOKEN_ID_KEY to token)
-
-        firestore
-                .collection(Companion.USERS_COLLECTION)
-                .document(userId)
-                .collection(FCM_IDS_COLLECTION)
-                .document(token.take(TOKEN_ID_LENGTH))
-                .set(tokenInfo, SetOptions.merge()).addOnCompleteListener( {
-                    if (it.isSuccessful) {
-                        Timber.d("FCM ID token successfully uploaded for user $userId\"")
-                    } else {
-                        Timber.e("FCM ID token: Error uploading for user $userId")
-                    }
-                })
-
-        // Write server timestamp to /users/<userId>/lastUsage
-
-        val lastUsage = mapOf(
-            USER_LAST_USAGE_KEY to FieldValue.serverTimestamp())
+            LAST_VISIT_KEY to FieldValue.serverTimestamp(),
+            TOKEN_ID_KEY to token
+        )
 
         firestore
             .collection(Companion.USERS_COLLECTION)
             .document(userId)
-            .set(lastUsage, SetOptions.merge()).addOnCompleteListener( {
+            .collection(FCM_IDS_COLLECTION)
+            .document(token.take(TOKEN_ID_LENGTH))
+            .set(tokenInfo, SetOptions.merge()).addOnCompleteListener({
+                if (it.isSuccessful) {
+                    Timber.d("FCM ID token successfully uploaded for user $userId\"")
+                } else {
+                    Timber.e("FCM ID token: Error uploading for user $userId")
+                }
+            })
+
+        // Write server timestamp to /users/<userId>/lastUsage
+
+        val lastUsage = mapOf(
+            USER_LAST_USAGE_KEY to FieldValue.serverTimestamp()
+        )
+
+        firestore
+            .collection(Companion.USERS_COLLECTION)
+            .document(userId)
+            .set(lastUsage, SetOptions.merge()).addOnCompleteListener({
                 if (it.isSuccessful) {
                     Timber.d("Last usage timestamp successfully uploaded for user $userId\"")
                 } else {

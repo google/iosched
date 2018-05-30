@@ -40,10 +40,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:swipeRefreshColors="@{@intArray/swipe_refresh}"
+            app:enabled="@{!viewModel.isAgendaPage}"
             app:onRefreshListener="@{() -> viewModel.onSwipeRefresh()}"
             app:refreshing="@{viewModel.swipeRefreshing}"
-            app:enabled="@{!viewModel.isAgendaPage}">
+            app:swipeRefreshColors="@{@intArray/swipe_refresh}">
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewpager"
@@ -99,10 +99,10 @@
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
             android:layout_marginBottom="4dp"
-            app:behavior_hideable="true"
-            app:behavior_skipCollapsed="true"
-            app:behavior_peekHeight="@dimen/bottom_sheet_peek_height"
             app:layout_behavior="com.google.samples.apps.iosched.widget.BottomSheetBehavior"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="@dimen/bottom_sheet_peek_height"
+            app:behavior_skipCollapsed="true"
             tools:layout="@layout/fragment_schedule_filter" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

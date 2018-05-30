@@ -17,11 +17,11 @@
 package com.google.samples.apps.iosched.tv.ui.presenter
 
 import android.graphics.drawable.Drawable
+import android.view.ViewGroup
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.content.ContextCompat
 import androidx.leanback.widget.ImageCardView
 import androidx.leanback.widget.Presenter
-import androidx.core.content.ContextCompat
-import androidx.appcompat.view.ContextThemeWrapper
-import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
@@ -65,7 +65,7 @@ class SessionPresenter : Presenter() {
                 }
             })
 
-        if( session.isLive() ) {
+        if (session.isLive()) {
             cardView.badgeImage = ContextCompat.getDrawable(context, R.drawable.ic_livestreamed)
         }
     }

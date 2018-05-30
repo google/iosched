@@ -26,7 +26,7 @@ import timber.log.Timber
 object FirebaseAuthErrorCodeConverter {
 
     fun convert(code: Int): Int {
-        return when(code) {
+        return when (code) {
             ErrorCodes.NO_NETWORK -> {
                 Timber.d("FirebaseAuth error: no_network")
                 R.string.firebase_auth_no_network_connection

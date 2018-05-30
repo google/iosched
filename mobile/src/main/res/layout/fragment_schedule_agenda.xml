@@ -35,8 +35,8 @@
         android:paddingTop="@dimen/spacing_normal"
         android:scrollbars="vertical"
         app:agendaItems="@{viewModel.agenda}"
-        app:timeZoneId="@{viewModel.timeZoneId}"
         app:layoutManager="LinearLayoutManager"
+        app:timeZoneId="@{viewModel.timeZoneId}"
         tools:ignore="UnusedAttribute" />
 
 </layout>

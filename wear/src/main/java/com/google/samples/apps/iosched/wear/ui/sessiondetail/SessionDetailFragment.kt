@@ -16,13 +16,13 @@
 
 package com.google.samples.apps.iosched.wear.ui.sessiondetail
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.samples.apps.iosched.wear.databinding.FragmentSessionDetailBinding
+import androidx.lifecycle.ViewModelProvider
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.wear.databinding.FragmentSessionDetailBinding
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -42,7 +42,8 @@ class SessionDetailFragment : DaggerFragment() {
 
         sessionDetailViewModel = viewModelProvider(viewModelFactory)
         sessionDetailViewModel.loadSessionById(
-                requireNotNull(arguments).getString(EXTRA_SESSION_ID))
+            requireNotNull(arguments).getString(EXTRA_SESSION_ID)
+        )
 
         val binding = FragmentSessionDetailBinding.inflate(inflater, container, false).apply {
             viewModel = sessionDetailViewModel

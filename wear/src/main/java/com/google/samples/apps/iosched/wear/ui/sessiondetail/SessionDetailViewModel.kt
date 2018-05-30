@@ -19,9 +19,9 @@ package com.google.samples.apps.iosched.wear.ui.sessiondetail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
+import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
-import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.map
 import javax.inject.Inject
@@ -43,7 +43,7 @@ class SessionDetailViewModel @Inject constructor(
         loadUserSessionResult = loadUserSessionUseCase.observe()
         session = loadUserSessionResult.map { (it as? Result.Success)?.data?.userSession?.session }
 
-        //TODO: Deal with error SessionNotFoundException
+        // TODO: Deal with error SessionNotFoundException
     }
 
     // TODO (jewalker): Sync with Ben

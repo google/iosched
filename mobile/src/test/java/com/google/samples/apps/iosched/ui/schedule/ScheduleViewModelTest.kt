@@ -18,10 +18,10 @@
 
 package com.google.samples.apps.iosched.ui.schedule
 
+import android.net.Uri
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import android.net.Uri
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.Block
@@ -261,7 +261,7 @@ class ScheduleViewModelTest {
         assertThat(message?.messageId, `is`(equalTo(R.string.event_starred)))
         assertThat(message?.actionId, `is`(equalTo(R.string.dont_show)))
 
-        //TODO: check changes in data source
+        // TODO: check changes in data source
     }
 
     @Test
@@ -470,7 +470,8 @@ class ScheduleViewModelTest {
             refreshConferenceDataUseCase = RefreshConferenceDataUseCase(
                 ConferenceDataRepository(
                     remoteDataSource = remoteDataSource,
-                    boostrapDataSource = TestDataSource)
+                    boostrapDataSource = TestDataSource
+                )
             )
         )
 
@@ -488,7 +489,8 @@ class ScheduleViewModelTest {
     fun newDataFromConfRepo_scheduleUpdated() {
         val repo = ConferenceDataRepository(
             remoteDataSource = TestConfDataSourceSession0(),
-            boostrapDataSource = BootstrapDataSourceSession3())
+            boostrapDataSource = BootstrapDataSourceSession3()
+        )
 
         val loadUserSessionsByDayUseCase = createTestLoadUserSessionsByDayUseCase(
             conferenceDataRepo = repo
@@ -509,7 +511,8 @@ class ScheduleViewModelTest {
 
         assertThat(
             newValue?.list?.first()?.session,
-            `is`(IsEqual.equalTo(TestData.session0)))
+            `is`(IsEqual.equalTo(TestData.session0))
+        )
     }
 
     private fun createScheduleViewModel(
@@ -633,7 +636,6 @@ class FakeObserveUserAuthStateUseCase(
 class FakeScheduleUiHintsShownUseCase : ScheduleUiHintsShownUseCase(
     preferenceStorage = FakePreferenceStorage()
 )
-
 
 class TestConfDataSourceSession0 : ConferenceDataSource {
     override fun getRemoteConferenceData(): ConferenceData? {

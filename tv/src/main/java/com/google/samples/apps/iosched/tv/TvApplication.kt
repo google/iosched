@@ -67,9 +67,9 @@ class TvApplication : Application() {
      */
     val appComponent: TvAppComponent by lazy {
         DaggerTvAppComponent.builder()
-                .tvAppModule(TvAppModule(context = this))
-                .sharedModule(SharedModule())
-                .build()
+            .tvAppModule(TvAppModule(context = this))
+            .sharedModule(SharedModule())
+            .build()
     }
 
     val scheduleComponent: TvScheduleComponent by lazy {
@@ -89,5 +89,5 @@ class TvApplication : Application() {
     }
 }
 
-fun Fragment.app() : TvApplication = context?.applicationContext as TvApplication
-fun FragmentActivity.app() : TvApplication = applicationContext as TvApplication
+fun Fragment.app(): TvApplication = context?.applicationContext as TvApplication
+fun FragmentActivity.app(): TvApplication = applicationContext as TvApplication

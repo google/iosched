@@ -16,17 +16,16 @@
 
 package com.google.samples.apps.iosched.ui.reservation
 
-import androidx.databinding.BindingAdapter
 import android.widget.TextView
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
+import androidx.databinding.BindingAdapter
 import com.google.samples.apps.iosched.R
-
 
 @BindingAdapter("fromTitle", "toTitle", requireAll = true)
 fun makeSessionTitlesBold(textView: TextView, fromTitle: String, toTitle: String) {
     var text: CharSequence =
-            textView.context.getString(R.string.swap_reservation_content, fromTitle, toTitle)
+        textView.context.getString(R.string.swap_reservation_content, fromTitle, toTitle)
     text = makeTextBold(text, fromTitle)
     textView.text = makeTextBold(text, toTitle)
 }
@@ -34,7 +33,7 @@ fun makeSessionTitlesBold(textView: TextView, fromTitle: String, toTitle: String
 @BindingAdapter("sessionTitle", requireAll = true)
 fun makeSessionTitleBold(textView: TextView, sessionTitle: String) {
     val text: CharSequence =
-            textView.context.getString(R.string.remove_reservation_content, sessionTitle)
+        textView.context.getString(R.string.remove_reservation_content, sessionTitle)
     textView.text = makeTextBold(text, sessionTitle)
 }
 

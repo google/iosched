@@ -16,10 +16,11 @@
 
 package com.google.samples.apps.iosched.tv.ui.sessiondetail
 
-import androidx.lifecycle.Observer
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.leanback.app.DetailsSupportFragment
 import androidx.leanback.widget.Action
 import androidx.leanback.widget.ArrayObjectAdapter
@@ -32,8 +33,7 @@ import androidx.leanback.widget.HeaderItem
 import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
 import androidx.leanback.widget.OnActionClickedListener
-import androidx.core.content.ContextCompat
-import android.widget.Toast
+import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
@@ -93,7 +93,7 @@ class SessionDetailFragment : DetailsSupportFragment() {
 
                         actionsAdapter = createSessionActions(it)
                         detailsPresenter.onActionClickedListener =
-                                SessionDetailsOnActionClickedListener(requireContext(), it)
+                            SessionDetailsOnActionClickedListener(requireContext(), it)
 
                         _adapter.add(this)
                         updateSpeakers(it)
@@ -118,12 +118,12 @@ class SessionDetailFragment : DetailsSupportFragment() {
                 ContextCompat.getDrawable(requireContext(), R.drawable.ic_livestreamed)
             )
         }
-        //TODO: add conditionally based on user's prefs.
+        // TODO: add conditionally based on user's prefs.
         actions += Action(
             ACTION_STAR,
             resources.getString(R.string.session_detail_star),
             null,
-            //TODO: change icon based on user state.
+            // TODO: change icon based on user state.
             ContextCompat.getDrawable(requireContext(), R.drawable.ic_star_border)
         )
         return actions.toArrayObjectAdapter()
@@ -200,7 +200,8 @@ class SessionDetailFragment : DetailsSupportFragment() {
  * Handles selected actions from the detail's presenter.
  */
 private class SessionDetailsOnActionClickedListener(
-    private val context: Context, private val session: Session
+    private val context: Context,
+    private val session: Session
 ) : OnActionClickedListener {
 
     override fun onActionClicked(action: Action) {

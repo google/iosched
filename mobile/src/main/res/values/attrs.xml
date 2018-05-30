@@ -60,8 +60,8 @@
     </declare-styleable>
 
     <declare-styleable name="ReserveButton">
-        <attr name="state_reservable"/>
-        <attr name="state_reserved"/>
+        <attr name="state_reservable" />
+        <attr name="state_reserved" />
         <attr name="state_reservation_disabled" />
         <attr name="state_wait_list_available" />
         <attr name="state_wait_listed" />
@@ -78,8 +78,8 @@
     </declare-styleable>
 
     <declare-styleable name="CollapsibleCard">
-        <attr name="cardTitle" format="string"/>
-        <attr name="cardDescription" format="string"/>
+        <attr name="cardTitle" format="string" />
+        <attr name="cardDescription" format="string" />
     </declare-styleable>
 
     <declare-styleable name="EventFilterView">

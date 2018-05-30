@@ -34,16 +34,16 @@ object AuthenticatedUserRegistration {
         logInterceptor.level = HttpLoggingInterceptor.Level.BASIC
 
         OkHttpClient.Builder()
-                .addInterceptor(logInterceptor)
-                .build()
+            .addInterceptor(logInterceptor)
+            .build()
     }
 
     fun callRegistrationEndpoint(token: String) {
         DefaultScheduler.execute {
             val request = Request.Builder()
-                    .header("Authorization", "Bearer " + token)
-                    .url(BuildConfig.REGISTRATION_ENDPOINT_URL)
-                    .build()
+                .header("Authorization", "Bearer " + token)
+                .url(BuildConfig.REGISTRATION_ENDPOINT_URL)
+                .build()
 
             // Blocking call
             val response = try {

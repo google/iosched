@@ -41,12 +41,14 @@ class SessionPlayerModelTest {
     private lateinit var viewModel: SessionPlayerViewModel
     private val testSession = TestData.session0
 
-    @Before fun setup() {
+    @Before
+    fun setup() {
         viewModel = SessionPlayerViewModel(createUseCase())
         viewModel.loadSessionById(testSession.id)
     }
 
-    @Test fun testDataIsLoaded_observablesUpdated() {
+    @Test
+    fun testDataIsLoaded_observablesUpdated() {
         assertEquals(testSession, LiveDataTestUtil.getValue(viewModel.session)?.peekContent())
     }
 

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 package com.google.samples.apps.iosched.shared.di
 
 import com.google.samples.apps.iosched.shared.data.job.ConferenceDataService

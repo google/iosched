@@ -17,8 +17,8 @@
 
 <inset
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:insetTop="@dimen/spacing_normal"
-    android:insetBottom="@dimen/spacing_normal">
+    android:insetBottom="@dimen/spacing_normal"
+    android:insetTop="@dimen/spacing_normal">
     <ripple android:color="?android:colorControlHighlight">
         <item
             android:id="@android:id/mask">

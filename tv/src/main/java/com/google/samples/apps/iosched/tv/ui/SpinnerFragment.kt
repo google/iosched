@@ -17,13 +17,13 @@
 package com.google.samples.apps.iosched.tv.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ProgressBar
+import androidx.fragment.app.Fragment
 import com.google.samples.apps.iosched.tv.R
 
 /**
@@ -50,9 +50,10 @@ import com.google.samples.apps.iosched.tv.R
 class SpinnerFragment : Fragment() {
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         val context = inflater.context
         val progressBar = ProgressBar(context)

@@ -20,20 +20,22 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="speaker"
-            type="com.google.samples.apps.iosched.model.Speaker"/>
+            type="com.google.samples.apps.iosched.model.Speaker" />
+
         <variable
             name="eventListener"
-            type="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailEventListener"/>
+            type="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailEventListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
-        android:paddingVertical="@dimen/spacing_normal"
-        android:onClick="@{() -> eventListener.onSpeakerClicked(speaker.id)}">
+        android:onClick="@{() -> eventListener.onSpeakerClicked(speaker.id)}"
+        android:paddingVertical="@dimen/spacing_normal">
 
         <ImageView
             android:id="@+id/speaker_item_headshot"
@@ -50,14 +52,14 @@
             android:id="@+id/speaker_item_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_marginStart="@dimen/margin_normal"
             android:text="@{speaker.name}"
+            android:textAppearance="@style/TextAppearance.IOSched.SpeakerTitle"
+            app:layout_constraintBottom_toTopOf="@id/speaker_item_company"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/speaker_item_headshot"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/speaker_item_company"
-            android:textAppearance="@style/TextAppearance.IOSched.SpeakerTitle"
             tools:text="Speaker Name" />
 
         <TextView
@@ -67,12 +69,12 @@
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginTop="@dimen/spacing_micro"
             android:text="@{speaker.company}"
+            android:textColor="?android:textColorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/speaker_item_name"
             app:layout_constraintTop_toBottomOf="@id/speaker_item_name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:goneUnless="@{speaker.hasCompany}"
-            android:textColor="?android:textColorPrimary"
             tools:text="Speaker Company" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

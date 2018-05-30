@@ -48,14 +48,15 @@ object FakeConferenceDataSource : ConferenceDataSource {
         var lastFirstSession: Session? = null
         // Rename the first sessions of each day
         ConferenceDays.forEachIndexed { index, day ->
-            val firstSessionIndex = sessions
-                .indexOfFirst { it.startTime >= day.start && it.endTime <= day.end}
+            val firstSessionIndex =
+                sessions.indexOfFirst { it.startTime >= day.start && it.endTime <= day.end }
             val firstSession = sessions[firstSessionIndex]
 
             sessions.removeAt(firstSessionIndex)
             sessions.add(
                 firstSessionIndex,
-                firstSession.copy(title = "First session day ${index + 1}"))
+                firstSession.copy(title = "First session day ${index + 1}")
+            )
             lastFirstSession = firstSession
         }
 
@@ -65,10 +66,11 @@ object FakeConferenceDataSource : ConferenceDataSource {
 
         // Give a known ID to an arbitrary session (the second session with tags and speakers)
         val secondSession = sessions
-            .filter { it.startTime >= ConferenceDays.first().start
-                && it.endTime <= ConferenceDays.last().end
-                && it.speakers.isNotEmpty()
-                && it.tags.isNotEmpty()
+            .filter {
+                it.startTime >= ConferenceDays.first().start &&
+                    it.endTime <= ConferenceDays.last().end &&
+                    it.speakers.isNotEmpty() &&
+                    it.tags.isNotEmpty()
             }[1]
         val secondSessionIndex = sessions.indexOf(secondSession)
 
@@ -79,20 +81,23 @@ object FakeConferenceDataSource : ConferenceDataSource {
         val newTag = Tag(
             name = FAKE_SESSION_TAG_NAME, id = "FAKE_TAG", tag = "topic_staging",
             color = "#39C79D".toColorInt(), fontColor = "#202124".toColorInt(), category = "topic",
-            orderInCategory = 13)
+            orderInCategory = 13
+        )
 
         tags.add(newTag)
 
         sessions.removeAt(secondSessionIndex)
-        sessions.add(secondSessionIndex, secondSession
-            .copy(
+        sessions.add(
+            secondSessionIndex,
+            secondSession.copy(
                 id = FAKE_SESSION_ID,
                 title = FAKE_SESSION_NAME,
                 relatedSessions = setOf(lastFirstSession!!.id),
                 speakers = setOf(speaker.copy(name = FAKE_SESSION_SPEAKER_NAME)),
                 tags = listOf(newTag),
                 displayTags = listOf(newTag)
-                ))
+            )
+        )
 
         // Return the new data replacing the modified properties only.
         return data.copy(sessions = sessions, speakers = speakers.toList(), tags = tags)

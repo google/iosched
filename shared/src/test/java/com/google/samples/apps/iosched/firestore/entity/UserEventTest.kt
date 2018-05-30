@@ -29,17 +29,21 @@ import org.junit.Test
 
 class UserEventTest {
 
-    private fun createTestEvent(isStarred: Boolean = false,
-                                status: ReservationStatus = NONE,
-                                requestResult: ReservationRequestResult? = null): UserEvent {
+    private fun createTestEvent(
+        isStarred: Boolean = false,
+        status: ReservationStatus = NONE,
+        requestResult: ReservationRequestResult? = null
+    ): UserEvent {
         return TestData.userEvents[0].copy(
             isStarred = isStarred,
-                reservationStatus = status,
-                reservationRequestResult = requestResult)
+            reservationStatus = status,
+            reservationRequestResult = requestResult
+        )
     }
 
-    private fun createRequestResult(requestStatus: ReservationRequestStatus):
-        ReservationRequestResult {
+    private fun createRequestResult(
+        requestStatus: ReservationRequestStatus
+    ): ReservationRequestResult {
         return ReservationRequestResult(requestStatus, requestId = "dummy", timestamp = -1)
     }
 
@@ -63,18 +67,24 @@ class UserEventTest {
 
     @Test
     fun changedBySwap_isLastRequestResultBySwap() {
-        val reservedUserEvent = createTestEvent(status = RESERVED,
-                requestResult = createRequestResult(ReservationRequestStatus.SWAP_SUCCEEDED))
+        val reservedUserEvent = createTestEvent(
+            status = RESERVED,
+            requestResult = createRequestResult(ReservationRequestStatus.SWAP_SUCCEEDED)
+        )
         assertTrue(reservedUserEvent.isLastRequestResultBySwap())
 
-        val noneUserEvent = createTestEvent(status = NONE,
-                requestResult = createRequestResult(ReservationRequestStatus.SWAP_SUCCEEDED))
+        val noneUserEvent = createTestEvent(
+            status = NONE,
+            requestResult = createRequestResult(ReservationRequestStatus.SWAP_SUCCEEDED)
+        )
         assertTrue(noneUserEvent.isLastRequestResultBySwap())
 
-        val waitlistedUserEvent = createTestEvent(status = WAITLISTED,
-                requestResult = createRequestResult(ReservationRequestStatus.SWAP_WAITLISTED))
+        val waitlistedUserEvent = createTestEvent(
+            status = WAITLISTED,
+            requestResult = createRequestResult(ReservationRequestStatus.SWAP_WAITLISTED)
+        )
         assertTrue(waitlistedUserEvent.isLastRequestResultBySwap())
     }
 
-    //TODO: Add tests for isReserved, isWaitlisted, etc.
+    // TODO: Add tests for isReserved, isWaitlisted, etc.
 }

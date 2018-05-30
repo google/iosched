@@ -16,8 +16,8 @@
 
 package com.google.samples.apps.iosched.ui.map
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import android.content.Context
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.android.gms.maps.model.LatLng
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
@@ -45,9 +45,11 @@ class MapViewModelTest {
             LoadGeoJsonFeaturesUseCase(mock(Context::class.java)),
             FakeAnalyticsHelper()
         )
-        assertTrue(viewModel.conferenceLocationBounds.contains(
-            // conference center
-            LatLng(37.425842,-122.079933)
-        ))
+        assertTrue(
+            viewModel.conferenceLocationBounds.contains(
+                // conference center
+                LatLng(37.425842, -122.079933)
+            )
+        )
     }
 }

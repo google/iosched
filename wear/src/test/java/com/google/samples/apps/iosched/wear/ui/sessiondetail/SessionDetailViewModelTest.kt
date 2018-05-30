@@ -67,7 +67,8 @@ class SessionDetailViewModelTest {
     ): LoadUserSessionUseCase {
         val sessionRepository = DefaultSessionRepository(TestDataRepository)
         val userEventRepository = DefaultSessionAndUserEventRepository(
-                userEventDataSource, sessionRepository)
+            userEventDataSource, sessionRepository
+        )
         return LoadUserSessionUseCase(userEventRepository)
     }
 }

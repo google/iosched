@@ -19,17 +19,17 @@ package com.google.samples.apps.iosched.shared.domain.users
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
-import com.google.samples.apps.iosched.model.userdata.UserEvent
-import com.google.samples.apps.iosched.model.SessionId
-import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.test.data.TestData
 import org.junit.Assert
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -48,17 +48,19 @@ class ReservationActionUseCaseTest {
     @get:Rule
     var syncExecutorRule = SyncExecutorRule()
 
-
     @Test
     fun sessionIsRequestedSuccessfully() {
         val useCase = ReservationActionUseCase(TestUserEventRepository)
 
         val resultLiveData = useCase.observe()
 
-        useCase.execute(ReservationRequestParameters(
+        useCase.execute(
+            ReservationRequestParameters(
                 "userTest",
                 TestData.session0.id,
-                RequestAction()))
+                RequestAction()
+            )
+        )
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
         Assert.assertEquals(result, Result.Success(RequestAction()))
@@ -70,14 +72,16 @@ class ReservationActionUseCaseTest {
 
         val resultLiveData = useCase.observe()
 
-        useCase.execute(ReservationRequestParameters(
+        useCase.execute(
+            ReservationRequestParameters(
                 "userTest", TestData.session0.id,
-                CancelAction()))
+                CancelAction()
+            )
+        )
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
         Assert.assertEquals(result, Result.Success(CancelAction()))
     }
-
 
     @Test
     fun requestFails() {
@@ -85,9 +89,12 @@ class ReservationActionUseCaseTest {
 
         val resultLiveData = useCase.observe()
 
-        useCase.execute(ReservationRequestParameters(
+        useCase.execute(
+            ReservationRequestParameters(
                 "userTest", TestData.session0.id,
-                CancelAction()))
+                CancelAction()
+            )
+        )
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
         assertTrue(result is Result.Error)
@@ -95,30 +102,37 @@ class ReservationActionUseCaseTest {
 }
 
 object TestUserEventRepository : SessionAndUserEventRepository {
-    override fun getObservableUserEvents(userId: String?
+    override fun getObservableUserEvents(
+        userId: String?
     ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
         TODO("not implemented")
     }
 
     override fun getObservableUserEvent(
-            userId: String?,
-            eventId: SessionId
+        userId: String?,
+        eventId: SessionId
     ): LiveData<Result<LoadUserSessionUseCaseResult>> {
         TODO("not implemented")
     }
 
-    override fun starEvent(userId: String, userEvent: UserEvent):
-            LiveData<Result<StarUpdatedStatus>> {
+    override fun starEvent(
+        userId: String,
+        userEvent: UserEvent
+    ): LiveData<Result<StarUpdatedStatus>> {
         TODO("not implemented")
     }
 
     override fun changeReservation(
-            userId: String, sessionId: SessionId, action: ReservationRequestAction
+        userId: String,
+        sessionId: SessionId,
+        action: ReservationRequestAction
     ): LiveData<Result<ReservationRequestAction>> {
-
         val result = MutableLiveData<Result<ReservationRequestAction>>()
-        result.postValue(Result.Success(
-                if (action is RequestAction) RequestAction() else CancelAction()))
+        result.postValue(
+            Result.Success(
+                if (action is RequestAction) RequestAction() else CancelAction()
+            )
+        )
         return result
     }
 
@@ -134,31 +148,35 @@ object TestUserEventRepository : SessionAndUserEventRepository {
         TODO("not implemented")
     }
 
-    override fun clearSingleEventSubscriptions() { }
+    override fun clearSingleEventSubscriptions() {}
 }
 
 object FailingUserEventRepository : SessionAndUserEventRepository {
-    override fun getObservableUserEvents(userId: String?
+    override fun getObservableUserEvents(
+        userId: String?
     ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
         TODO("not implemented")
     }
 
     override fun getObservableUserEvent(
-            userId: String?,
-            eventId: SessionId
+        userId: String?,
+        eventId: SessionId
     ): LiveData<Result<LoadUserSessionUseCaseResult>> {
         TODO("not implemented")
     }
 
-    override fun starEvent(userId: String, userEvent: UserEvent):
-            LiveData<Result<StarUpdatedStatus>> {
+    override fun starEvent(
+        userId: String,
+        userEvent: UserEvent
+    ): LiveData<Result<StarUpdatedStatus>> {
         TODO("not implemented")
     }
 
-    override fun changeReservation(userId: String,
-                                   sessionId: SessionId,
-                                   action: ReservationRequestAction):
-            LiveData<Result<ReservationRequestAction>> {
+    override fun changeReservation(
+        userId: String,
+        sessionId: SessionId,
+        action: ReservationRequestAction
+    ): LiveData<Result<ReservationRequestAction>> {
         throw Exception("Test")
     }
 
@@ -166,9 +184,13 @@ object FailingUserEventRepository : SessionAndUserEventRepository {
         TODO("not implemented")
     }
 
-    override fun swapReservation(userId: String, fromId: SessionId, toId: SessionId):
-            LiveData<Result<SwapRequestAction>> {
+    override fun swapReservation(
+        userId: String,
+        fromId: SessionId,
+        toId: SessionId
+    ): LiveData<Result<SwapRequestAction>> {
         TODO("not implemented")
     }
-    override fun clearSingleEventSubscriptions() { }
+
+    override fun clearSingleEventSubscriptions() {}
 }

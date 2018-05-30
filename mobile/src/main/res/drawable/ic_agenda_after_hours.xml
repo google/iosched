@@ -23,6 +23,6 @@
     android:viewportHeight="24"
     android:tint="?android:textColorPrimary">
     <path
-        android:pathData="M 9 2 C 7.95 2 6.95 2.16 6 2.46 C 10.06 3.73 13 7.52 13 12 C 13 16.48 10.06 20.27 6 21.54 C 6.95 21.84 7.95 22 9 22 C 14.52 22 19 17.52 19 12 C 19 6.48 14.52 2 9 2 Z"
-        android:fillColor="#fff" />
+        android:fillColor="#fff"
+        android:pathData="M 9 2 C 7.95 2 6.95 2.16 6 2.46 C 10.06 3.73 13 7.52 13 12 C 13 16.48 10.06 20.27 6 21.54 C 6.95 21.84 7.95 22 9 22 C 14.52 22 19 17.52 19 12 C 19 6.48 14.52 2 9 2 Z" />
 </vector>

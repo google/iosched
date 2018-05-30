@@ -142,9 +142,10 @@ class SessionDetailViewModelTest {
             on { now() }.doReturn(now)
         }
         val viewModel = createSessionDetailViewModel(
-                reservationActionUseCase = reservationActionUseCaseMock,
-                signInViewModelPlugin = signInDelegate,
-                timeProvider = mockTime)
+            reservationActionUseCase = reservationActionUseCaseMock,
+            signInViewModelPlugin = signInDelegate,
+            timeProvider = mockTime
+        )
         val testUid = "testUid"
         // Kick off the viewmodel by loading a user.
         signInDelegate.loadUser(testUid)
@@ -155,8 +156,11 @@ class SessionDetailViewModelTest {
 
         viewModel.onReservationClicked()
 
-        verify(reservationActionUseCaseMock).execute(ReservationRequestParameters(testUid,
-            TestData.session3.id, RequestAction()))
+        verify(reservationActionUseCaseMock).execute(
+            ReservationRequestParameters(
+                testUid, TestData.session3.id, RequestAction()
+            )
+        )
     }
 
     @Test
@@ -171,8 +175,10 @@ class SessionDetailViewModelTest {
 
         val event: Event<SnackbarMessage>? = LiveDataTestUtil.getValue(viewModel.snackBarMessage)
         // TODO change with actual resource used
-        Assert.assertThat(event?.getContentIfNotHandled()?.messageId,
-                `is`(not(equalTo(R.string.reservation_request_succeeded))))
+        Assert.assertThat(
+            event?.getContentIfNotHandled()?.messageId,
+            `is`(not(equalTo(R.string.reservation_request_succeeded)))
+        )
 
         // Then the sign in dialog should ne shown
         val signInEvent = LiveDataTestUtil.getValue(viewModel.navigateToSignInDialogAction)
@@ -194,8 +200,10 @@ class SessionDetailViewModelTest {
         viewModel.onReservationClicked()
 
         val event: Event<SnackbarMessage>? = LiveDataTestUtil.getValue(viewModel.snackBarMessage)
-        Assert.assertThat(event?.getContentIfNotHandled()?.messageId,
-                `is`(equalTo(R.string.no_network_connection)))
+        Assert.assertThat(
+            event?.getContentIfNotHandled()?.messageId,
+            `is`(equalTo(R.string.no_network_connection))
+        )
     }
 
     @Test
@@ -208,8 +216,9 @@ class SessionDetailViewModelTest {
             on { now() }.doReturn(now)
         }
         val viewModel = createSessionDetailViewModel(
-                signInViewModelPlugin = signInDelegate,
-                timeProvider = mockTime)
+            signInViewModelPlugin = signInDelegate,
+            timeProvider = mockTime
+        )
         viewModel.setSessionId(TestData.session1.id)
         val testUid = "testUid"
         // Kick off the viewmodel by loading a user.
@@ -222,11 +231,18 @@ class SessionDetailViewModelTest {
         viewModel.onReservationClicked()
 
         val parameters = LiveDataTestUtil.getValue(
-            viewModel.navigateToRemoveReservationDialogAction)
+            viewModel.navigateToRemoveReservationDialogAction
+        )
             ?.getContentIfNotHandled()
-        assertThat(parameters, `is`(RemoveReservationDialogParameters(testUid,
-            TestData.session1.id,
-            TestData.session1.title)))
+        assertThat(
+            parameters, `is`(
+                RemoveReservationDialogParameters(
+                    testUid,
+                    TestData.session1.id,
+                    TestData.session1.title
+                )
+            )
+        )
     }
 
     @Test
@@ -347,7 +363,7 @@ class SessionDetailViewModelTest {
         return SessionDetailViewModel(
             signInViewModelPlugin, loadUserSessionUseCase, loadRelatedSessionsUseCase,
             starEventUseCase, reservationActionUseCase, getTimeZoneUseCase, snackbarMessageManager,
-                timeProvider, networkUtils, analyticsHelper
+            timeProvider, networkUtils, analyticsHelper
         )
     }
 

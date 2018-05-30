@@ -32,7 +32,7 @@ import javax.inject.Inject
  * current user is registered in the event or not as an attendee.
  */
 class FirestoreRegisteredUserDataSource @Inject constructor(
-        val firestore: FirebaseFirestore
+    val firestore: FirebaseFirestore
 ) : RegisteredUserDataSource {
 
     companion object {
@@ -67,30 +67,31 @@ class FirestoreRegisteredUserDataSource @Inject constructor(
         result.postValue(null) // Reset result
 
         // Watch the document:
-        val registeredChangedListener = {
-            snapshot: DocumentSnapshot?, _: FirebaseFirestoreException? ->
-            DefaultScheduler.execute {
-                if (snapshot == null || !snapshot.exists()) {
-                    // When the account signs in for the first time, the document doesn't exist
-                    Timber.d("Document for snapshot $userId doesn't exist")
-                    result.postValue(Result.Success(false))
-                    return@execute
-                }
-                val isRegistered: Boolean? = snapshot.get(REGISTERED_KEY) as? Boolean
-                // Only emit a value if it's a new value or a value change.
-                if (result.value == null
-                        || (result.value as? Result.Success)?.data != isRegistered) {
-                    Timber.d("Received registered flag: $isRegistered")
-                    result.postValue(Result.Success(isRegistered))
+        val registeredChangedListener =
+            { snapshot: DocumentSnapshot?, _: FirebaseFirestoreException? ->
+                DefaultScheduler.execute {
+                    if (snapshot == null || !snapshot.exists()) {
+                        // When the account signs in for the first time, the document doesn't exist
+                        Timber.d("Document for snapshot $userId doesn't exist")
+                        result.postValue(Result.Success(false))
+                        return@execute
+                    }
+                    val isRegistered: Boolean? = snapshot.get(REGISTERED_KEY) as? Boolean
+                    // Only emit a value if it's a new value or a value change.
+                    if (result.value == null ||
+                        (result.value as? Result.Success)?.data != isRegistered
+                    ) {
+                        Timber.d("Received registered flag: $isRegistered")
+                        result.postValue(Result.Success(isRegistered))
+                    }
                 }
             }
-        }
         registeredChangedListenerSubscription = firestore.collection(USERS_COLLECTION)
-                .document(userId).addSnapshotListener(registeredChangedListener)
+            .document(userId).addSnapshotListener(registeredChangedListener)
         lastUserId = userId
     }
 
-    override fun observeResult() : LiveData<Result<Boolean?>?> {
+    override fun observeResult(): LiveData<Result<Boolean?>?> {
         return result
     }
 

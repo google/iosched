@@ -72,8 +72,8 @@ data class UserEvent(
         if (reservationRequest != null && reservationRequestResult == null) return true
 
         // If request and result exist they need to have different IDs to be pending.
-        return reservationRequest != null
-                && reservationRequest.requestId != reservationRequestResult?.requestId
+        return reservationRequest != null &&
+            reservationRequest.requestId != reservationRequestResult?.requestId
     }
 
     fun isReserved(): Boolean {
@@ -116,7 +116,6 @@ data class UserEvent(
             SWAP_SUCCEEDED -> null
             SWAP_WAITLISTED -> null
             else -> reservationRequestResult.requestResult
-
         }
     }
 
@@ -145,21 +144,21 @@ data class UserEvent(
     }
 
     fun isReservationPending(): Boolean {
-        return (reservationStatus == ReservationStatus.NONE || reservationStatus == null)
-                && isPending()
-                && reservationRequest?.action == RESERVE_REQUESTED
+        return (reservationStatus == ReservationStatus.NONE || reservationStatus == null) &&
+            isPending() &&
+            reservationRequest?.action == RESERVE_REQUESTED
     }
 
     fun isCancelPending(): Boolean {
-        return reservationStatus != ReservationStatus.NONE
-                && isPending()
-                && reservationRequest?.action == CANCEL_REQUESTED
+        return reservationStatus != ReservationStatus.NONE &&
+            isPending() &&
+            reservationRequest?.action == CANCEL_REQUESTED
     }
 
     fun isLastRequestResultBySwap(): Boolean {
         val r = reservationRequestResult?.requestResult ?: return false
         return r == SWAP_SUCCEEDED || r == SWAP_WAITLISTED || r == SWAP_DENIED_CLASH ||
-                r == SWAP_DENIED_CUTOFF || r == SWAP_DENIED_UNKNOWN
+            r == SWAP_DENIED_CUTOFF || r == SWAP_DENIED_UNKNOWN
     }
 
     /**

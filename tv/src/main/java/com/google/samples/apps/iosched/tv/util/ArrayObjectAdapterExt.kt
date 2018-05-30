@@ -33,7 +33,7 @@ fun <T> Collection<T>.toArrayObjectAdapter(): ArrayObjectAdapter {
 }
 
 fun <T> Collection<T>.toArrayObjectAdapter(
-        presenter: Presenter
+    presenter: Presenter
 ): ArrayObjectAdapter {
     val adapter = ArrayObjectAdapter(presenter)
     return copyIntoArrayObjectAdapter(adapter)

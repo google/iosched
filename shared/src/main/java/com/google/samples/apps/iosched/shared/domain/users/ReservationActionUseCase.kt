@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.shared.domain.users
 
+import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
-import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.result.Result
 import timber.log.Timber
 import javax.inject.Inject
@@ -28,7 +28,7 @@ import javax.inject.Inject
  * Sends a request to reserve or cancel a reservation for a session.
  */
 open class ReservationActionUseCase @Inject constructor(
-        private val repository: SessionAndUserEventRepository
+    private val repository: SessionAndUserEventRepository
 ) : MediatorUseCase<ReservationRequestParameters, ReservationRequestAction>() {
 
     override fun execute(parameters: ReservationRequestParameters) {
@@ -42,7 +42,6 @@ open class ReservationActionUseCase @Inject constructor(
                 result.addSource(updateResult, {
                     result.postValue(updateResult.value)
                 })
-
             } catch (e: Exception) {
                 Timber.d("Exception changing reservation")
                 result.postValue(Result.Error(e))
@@ -52,15 +51,17 @@ open class ReservationActionUseCase @Inject constructor(
 }
 
 data class ReservationRequestParameters(
-        val userId: String,
-        val sessionId: SessionId,
-        val action: ReservationRequestAction)
+    val userId: String,
+    val sessionId: SessionId,
+    val action: ReservationRequestAction
+)
 
 sealed class ReservationRequestAction {
     class RequestAction : ReservationRequestAction() {
         override fun equals(other: Any?): Boolean {
             return other is RequestAction
         }
+
         // This class isn't intended to be used as a key of a collection. Overriding this to remove
         // the lint warning
         @Suppress("redundant")
@@ -73,6 +74,7 @@ sealed class ReservationRequestAction {
         override fun equals(other: Any?): Boolean {
             return other is CancelAction
         }
+
         // This class isn't intended to be used as a key of a collection. Overriding this to remove
         // the lint warning
         @Suppress("redundant")

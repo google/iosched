@@ -16,8 +16,8 @@
 
 package com.google.samples.apps.iosched.wear.ui.sessiondetail
 
-import androidx.databinding.BindingAdapter
 import android.widget.TextView
+import androidx.databinding.BindingAdapter
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.ZonedDateTime
 
@@ -27,10 +27,9 @@ fun timeString(
     sessionDetailStartTime: ZonedDateTime?,
     sessionDetailEndTime: ZonedDateTime?
 ) {
-    view.text =
-            if (sessionDetailStartTime == null || sessionDetailEndTime == null) {
-                ""
-            } else {
-                TimeUtils.timeString(sessionDetailStartTime, sessionDetailEndTime)
-            }
+    view.text = if (sessionDetailStartTime == null || sessionDetailEndTime == null) {
+        ""
+    } else {
+        TimeUtils.timeString(sessionDetailStartTime, sessionDetailEndTime)
+    }
 }

@@ -17,10 +17,10 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_start"
@@ -38,24 +38,24 @@
 
     <TextView
         android:id="@+id/session_detail_title"
+        style="@style/IODetailsTitleStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        app:layout_constraintVertical_bias="1"
-        android:paddingTop="@dimen/margin_normal"
         android:paddingBottom="@dimen/margin_normal"
-        tools:text="Session Title"
-        style="@style/IODetailsTitleStyle" />
+        android:paddingTop="@dimen/margin_normal"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintVertical_bias="1"
+        tools:text="Session Title" />
 
     <TextView
         android:id="@+id/session_detail_time"
-        android:layout_width="0dp"
         style="@style/IODetailsSubtitleStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
         app:layout_constraintTop_toBottomOf="@id/session_detail_title"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
         tools:text="Tue, May 9, 8:00-9:00 am" />
 
     <TextView
@@ -75,25 +75,25 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_normal"
         android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@id/guideline_end"
+        app:layout_constraintStart_toEndOf="@id/session_detail_room"
+        app:layout_constraintTop_toBottomOf="@id/session_detail_time"
         app:flexDirection="row"
         app:flexWrap="wrap"
         app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
-        app:layout_constraintStart_toEndOf="@id/session_detail_room"
-        app:layout_constraintTop_toBottomOf="@id/session_detail_time"
-        app:layout_constraintEnd_toStartOf="@id/guideline_end"
         tools:listItem="@layout/item_session_tag" />
 
     <TextView
         android:id="@+id/session_detail_description"
-        android:layout_width="match_parent"
         style="@style/IODetailsBodyStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@id/tags"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
         android:layout_marginTop="@dimen/margin_normal"
         android:paddingTop="@dimen/spacing_normal"
         android:textColor="?android:textColorPrimary"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/tags"
         tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus et mauris blandit, porttitor leo sit amet, tincidunt tellus. Proin at rutrum risus. Sed volutpat tellus  " />
 
 

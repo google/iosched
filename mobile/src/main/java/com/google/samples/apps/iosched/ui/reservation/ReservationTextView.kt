@@ -17,8 +17,8 @@
 package com.google.samples.apps.iosched.ui.reservation
 
 import android.content.Context
-import androidx.appcompat.widget.AppCompatTextView
 import android.util.AttributeSet
+import androidx.appcompat.widget.AppCompatTextView
 import com.google.samples.apps.iosched.R
 
 /**

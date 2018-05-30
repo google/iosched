@@ -16,15 +16,15 @@
 
 package com.google.samples.apps.iosched.shared.schedule
 
-import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.model.Tag
+import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.TestData.androidTag
 import com.google.samples.apps.iosched.test.data.TestData.codelabsTag
 import com.google.samples.apps.iosched.test.data.TestData.session0
 import com.google.samples.apps.iosched.test.data.TestData.sessionsTag
 import com.google.samples.apps.iosched.test.data.TestData.webTag
-import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.test.util.FakePreferenceStorage
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
@@ -41,7 +41,7 @@ import org.junit.Test
 class UserSessionMatcherTest {
 
     private val testJson = "{\"showPinnedEventsOnly\":true,\"tagsAndCategories\":[{\"id\":\"1\"," +
-            "\"category\":\"topic\"},{\"id\":\"3\",\"category\":\"topic\"}]}"
+        "\"category\":\"topic\"},{\"id\":\"3\",\"category\":\"topic\"}]}"
 
     private var sessionMatcher = UserSessionMatcher()
 

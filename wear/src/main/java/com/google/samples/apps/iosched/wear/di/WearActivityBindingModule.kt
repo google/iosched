@@ -41,11 +41,11 @@ abstract class WearActivityBindingModule {
 
     @ActivityScoped
     @ContributesAndroidInjector(
-            modules = [
-                ScheduleModule::class,
-                SettingsModule::class,
-                SignInOrOutModule::class
-            ]
+        modules = [
+            ScheduleModule::class,
+            SettingsModule::class,
+            SignInOrOutModule::class
+        ]
     )
     internal abstract fun mainActivity(): MainActivity
 

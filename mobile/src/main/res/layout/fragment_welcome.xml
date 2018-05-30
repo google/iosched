@@ -17,8 +17,8 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.onboarding.WelcomeFragment">
@@ -41,14 +41,14 @@
         android:id="@+id/logo"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        app:layout_constraintBottom_toTopOf="@id/welcome"
-        app:layout_constraintVertical_chainStyle="spread_inside"
-        android:padding="@dimen/onboarding_animation_padding"
         android:fitsSystemWindows="true"
         android:importantForAccessibility="no"
+        android:padding="@dimen/onboarding_animation_padding"
+        app:layout_constraintBottom_toTopOf="@id/welcome"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside"
         app:lottie_fileName="anim/io18_logo.json"
         app:lottie_loop="true" />
 
@@ -56,34 +56,34 @@
         android:id="@+id/welcome"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@id/logo"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        app:layout_constraintBottom_toTopOf="@id/date_location"
-        android:textAppearance="@style/TextAppearance.IOSched.H1"
+        android:text="@string/onboarding_welcome_to_google_i_o"
         android:textAlignment="center"
-        android:text="@string/onboarding_welcome_to_google_i_o" />
+        android:textAppearance="@style/TextAppearance.IOSched.H1"
+        app:layout_constraintBottom_toTopOf="@id/date_location"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/logo" />
 
     <TextView
         android:id="@+id/date_location"
+        style="@style/Widget.IOSched.OnboardingDeck"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_normal"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@id/welcome"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        app:layout_constraintBottom_toTopOf="@id/spacer"
         android:text="@string/onboarding_date_location"
-        style="@style/Widget.IOSched.OnboardingDeck" />
+        app:layout_constraintBottom_toTopOf="@id/spacer"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/welcome" />
 
     <Space
         android:id="@+id/spacer"
         android:layout_width="0dp"
         android:layout_height="@dimen/onboarding_actions_height"
         android:layout_marginTop="32dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/date_location"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/date_location" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

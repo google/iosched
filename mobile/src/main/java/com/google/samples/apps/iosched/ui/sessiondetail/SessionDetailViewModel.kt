@@ -21,11 +21,11 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.model.userdata.UserEvent
-import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.SpeakerId
+import com.google.samples.apps.iosched.model.userdata.UserEvent
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
@@ -140,7 +140,7 @@ class SessionDetailViewModel @Inject constructor(
         get() = _navigateToSwapReservationDialogAction
 
     private val _navigateToSessionAction = MutableLiveData<Event<SessionId>>()
-    val navigateToSessionAction : LiveData<Event<SessionId>>
+    val navigateToSessionAction: LiveData<Event<SessionId>>
         get() = _navigateToSessionAction
 
     private val _navigateToSpeakerDetail = MutableLiveData<Event<SpeakerId>>()
@@ -250,8 +250,8 @@ class SessionDetailViewModel @Inject constructor(
         }
 
         // Updates periodically with a special [IntervalLiveData]
-        timeUntilStart = DefaultIntervalMapper.mapAtInterval(session, TEN_SECONDS) { currentSession ->
-            currentSession?.startTime?.let { startTime ->
+        timeUntilStart = DefaultIntervalMapper.mapAtInterval(session, TEN_SECONDS) { session ->
+            session?.startTime?.let { startTime ->
                 val duration = Duration.between(timeProvider.now(), startTime)
                 val minutes = duration.toMinutes()
                 when (minutes) {
@@ -262,18 +262,17 @@ class SessionDetailViewModel @Inject constructor(
         }
 
         isReservationDisabled =
-                DefaultIntervalMapper.mapAtInterval(session, SIXTY_SECONDS) { currentSession ->
-                    currentSession?.startTime?.let { startTime ->
-                        // Only allow reservations if the sessions starts more than an hour from now
-                        Duration.between(timeProvider.now(), startTime).toMinutes() <= 60
-                    }
+            DefaultIntervalMapper.mapAtInterval(session, SIXTY_SECONDS) { session ->
+                session?.startTime?.let { startTime ->
+                    // Only allow reservations if the sessions starts more than an hour from now
+                    Duration.between(timeProvider.now(), startTime).toMinutes() <= 60
                 }
+            }
 
         /* Wiring dependencies for stars and reservation. */
 
-        // Show an error message if a star request fails
         _snackBarMessage.addSource(starEventUseCase.observe()) { result ->
-            // Show a snackbar message on error.
+            // Show an error message if a star request fails
             if (result is Result.Error) {
                 _snackBarMessage.postValue(Event(SnackbarMessage(R.string.event_star_error)))
             }
@@ -294,11 +293,9 @@ class SessionDetailViewModel @Inject constructor(
         }
         // Show a message with the result of a reservation
         _snackBarMessage.addSource(loadUserSessionUseCase.observe()) {
-
             if (it is Result.Success) {
                 it.data.userMessage?.type?.stringRes()?.let { messageId ->
-                    // There is a message to display:
-
+                    // There is a message to display
                     snackbarMessageManager.addMessage(
                         SnackbarMessage(
                             messageId = messageId,
@@ -392,10 +389,14 @@ class SessionDetailViewModel @Inject constructor(
     override fun onReservationClicked() {
         if (!networkUtils.hasNetworkConnection()) {
             Timber.d("No network connection, ignoring reserve click.")
-            _snackBarMessage.postValue(Event(SnackbarMessage(
-                    messageId = R.string.no_network_connection,
-                    requestChangeId = UUID.randomUUID().toString()
-            )))
+            _snackBarMessage.postValue(
+                Event(
+                    SnackbarMessage(
+                        messageId = R.string.no_network_connection,
+                        requestChangeId = UUID.randomUUID().toString()
+                    )
+                )
+            )
             return
         }
         if (!isSignedIn()) {
@@ -410,10 +411,10 @@ class SessionDetailViewModel @Inject constructor(
 
         val userId = getUserId() ?: return
 
-        if (userEventSnapshot.isReserved()
-            || userEventSnapshot.isWaitlisted()
-            || userEventSnapshot.isCancelPending() // Just in case
-            || userEventSnapshot.isReservationPending()
+        if (userEventSnapshot.isReserved() ||
+            userEventSnapshot.isWaitlisted() ||
+            userEventSnapshot.isReservationPending() ||
+            userEventSnapshot.isCancelPending() // Just in case
         ) {
             if (isReservationDisabledSnapshot) {
                 _snackBarMessage.postValue(
@@ -421,7 +422,9 @@ class SessionDetailViewModel @Inject constructor(
                         SnackbarMessage(R.string.cancellation_denied_cutoff, longDuration = true)
                     )
                 )
-                analyticsHelper.logUiEvent(sessionSnapshot.title, AnalyticsActions.RES_CANCEL_FAILED)
+                analyticsHelper.logUiEvent(
+                    sessionSnapshot.title, AnalyticsActions.RES_CANCEL_FAILED
+                )
             } else {
                 // Open the dialog to confirm if the user really wants to remove their reservation
                 _navigateToRemoveReservationDialogAction.value = Event(
@@ -502,7 +505,7 @@ class SessionDetailViewModel @Inject constructor(
     /**
      * Returns the current session ID or null if not available.
      */
-    private fun getSessionId() : SessionId? {
+    private fun getSessionId(): SessionId? {
         return sessionId.value
     }
 

@@ -19,7 +19,7 @@ package com.google.samples.apps.iosched.test.util.fakes
 import android.app.Activity
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 
-class FakeAnalyticsHelper: AnalyticsHelper {
+class FakeAnalyticsHelper : AnalyticsHelper {
     override fun sendScreenView(screenName: String, activity: Activity) {}
 
     override fun logUiEvent(itemId: String, action: String) {}

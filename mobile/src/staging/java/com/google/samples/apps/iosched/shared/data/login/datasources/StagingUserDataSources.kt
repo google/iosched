@@ -46,7 +46,7 @@ class StagingRegisteredUserDataSource(val isRegistered: Boolean) : RegisteredUse
     }
 
     override fun setAnonymousValue() {
-        //Noop
+        // Noop
     }
 }
 
@@ -56,10 +56,10 @@ class StagingRegisteredUserDataSource(val isRegistered: Boolean) : RegisteredUse
  * @see [LoginModule]
  */
 open class StagingAuthenticatedUserInfo(
-        val context: Context,
-        val registered: Boolean = true,
-        val signedIn: Boolean = true,
-        val userId: String? = "StagingUser"
+    val context: Context,
+    val registered: Boolean = true,
+    val signedIn: Boolean = true,
+    val userId: String? = "StagingUser"
 
 ) : AuthenticatedUserInfo {
 
@@ -86,11 +86,11 @@ open class StagingAuthenticatedUserInfo(
     override fun getPhotoUrl(): Uri? {
         val resources = context.getResources()
         val uri = Uri.Builder()
-                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
-                .authority(resources.getResourcePackageName(R.drawable.staging_user_profile))
-                .appendPath(resources.getResourceTypeName(R.drawable.staging_user_profile))
-                .appendPath(resources.getResourceEntryName(R.drawable.staging_user_profile))
-                .build()
+            .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+            .authority(resources.getResourcePackageName(R.drawable.staging_user_profile))
+            .appendPath(resources.getResourceTypeName(R.drawable.staging_user_profile))
+            .appendPath(resources.getResourceEntryName(R.drawable.staging_user_profile))
+            .build()
         return uri
     }
 
@@ -107,10 +107,10 @@ open class StagingAuthenticatedUserInfo(
  * @see LoginModule
  */
 class StagingAuthStateUserDataSource(
-        val isSignedIn: Boolean,
-        val isRegistered: Boolean,
-        val userId: String?,
-        val context: Context
+    val isSignedIn: Boolean,
+    val isRegistered: Boolean,
+    val userId: String?,
+    val context: Context
 ) : AuthStateUserDataSource {
 
     val _userId = MutableLiveData<String?>()
@@ -118,14 +118,14 @@ class StagingAuthStateUserDataSource(
     val _firebaseUser = MutableLiveData<Result<AuthenticatedUserInfoBasic?>>()
 
     val user = StagingAuthenticatedUserInfo(
-            registered = isRegistered,
-            signedIn = isSignedIn, context = context)
+        registered = isRegistered,
+        signedIn = isSignedIn, context = context
+    )
 
     override fun startListening() {
         _userId.postValue(userId)
 
         _firebaseUser.postValue(Result.Success(user))
-
     }
 
     override fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfoBasic?>> {
@@ -133,7 +133,6 @@ class StagingAuthStateUserDataSource(
     }
 
     override fun clearListener() {
-        //No-op
+        // Noop
     }
-
 }

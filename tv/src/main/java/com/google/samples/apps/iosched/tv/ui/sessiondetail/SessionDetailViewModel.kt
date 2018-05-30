@@ -18,10 +18,10 @@ package com.google.samples.apps.iosched.tv.ui.sessiondetail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.map
 import javax.inject.Inject
@@ -30,8 +30,8 @@ import javax.inject.Inject
  * Loads [Session] data and exposes it to the session detail view.
  */
 class SessionDetailViewModel @Inject constructor(
-        private val loadUserSessionUseCase: LoadUserSessionUseCase
-): ViewModel() {
+    private val loadUserSessionUseCase: LoadUserSessionUseCase
+) : ViewModel() {
 
     private val loadUserSessionResult: LiveData<Result<LoadUserSessionUseCaseResult>>
     val session: LiveData<Session?>
@@ -43,7 +43,7 @@ class SessionDetailViewModel @Inject constructor(
         loadUserSessionResult = loadUserSessionUseCase.observe()
         session = loadUserSessionResult.map { (it as? Result.Success)?.data?.userSession?.session }
 
-        //TODO: Deal with error SessionNotFoundException
+        // TODO: Deal with error SessionNotFoundException
     }
 
     // TODO-76284 fix this

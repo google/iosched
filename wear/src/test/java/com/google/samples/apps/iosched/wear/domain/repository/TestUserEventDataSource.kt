@@ -66,24 +66,26 @@ class TestUserEventDataSource(
         session: Session,
         action: ReservationRequestAction
     ): LiveData<Result<ReservationRequestAction>> {
-
         val result = MutableLiveData<Result<ReservationRequestAction>>()
-        result.postValue(Result.Success(
-                if (action is RequestAction) RequestAction() else CancelAction()))
+        result.postValue(
+            Result.Success(
+                if (action is RequestAction) RequestAction() else CancelAction()
+            )
+        )
         return result
     }
 
     override fun getUserEvents(userId: String) = TestData.userEvents
 
     override fun swapReservation(
-            userId: String,
-            fromSession: Session,
-            toSession: Session
+        userId: String,
+        fromSession: Session,
+        toSession: Session
     ): LiveData<Result<SwapRequestAction>> {
         val result = MutableLiveData<Result<SwapRequestAction>>()
         result.postValue(Result.Success(SwapRequestAction()))
         return result
     }
 
-    override fun clearSingleEventSubscriptions() { }
+    override fun clearSingleEventSubscriptions() {}
 }

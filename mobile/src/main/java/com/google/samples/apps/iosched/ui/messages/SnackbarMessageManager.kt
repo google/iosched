@@ -16,8 +16,8 @@
 
 package com.google.samples.apps.iosched.ui.messages
 
-import androidx.lifecycle.MutableLiveData
 import androidx.annotation.VisibleForTesting
+import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.result.Event
@@ -39,7 +39,8 @@ import javax.inject.Singleton
  */
 @Singleton
 open class SnackbarMessageManager @Inject constructor(
-        private val preferenceStorage: PreferenceStorage) {
+    private val preferenceStorage: PreferenceStorage
+) {
     companion object {
         // Keep a fixed number of old items
         @VisibleForTesting
@@ -56,8 +57,7 @@ open class SnackbarMessageManager @Inject constructor(
         }
         // If the new message is about the same change as a pending one, keep the new one. (rare)
         val sameRequestId = messages.filter {
-            it.peekContent().requestChangeId == msg.requestChangeId
-                    && !it.hasBeenHandled
+            it.peekContent().requestChangeId == msg.requestChangeId && !it.hasBeenHandled
         }
         if (sameRequestId.isNotEmpty()) {
             messages.removeAll(sameRequestId)
@@ -65,8 +65,8 @@ open class SnackbarMessageManager @Inject constructor(
 
         // If the new message is about a change that was already notified, ignore it.
         val alreadyHandledWithSameId = messages.filter {
-            it.peekContent().requestChangeId == msg.requestChangeId
-                    && it.hasBeenHandled }
+            it.peekContent().requestChangeId == msg.requestChangeId && it.hasBeenHandled
+        }
 
         // Only add the message if it hasn't been handled before
         if (alreadyHandledWithSameId.isEmpty()) {
@@ -90,6 +90,6 @@ open class SnackbarMessageManager @Inject constructor(
 
     private fun isSnackbarShouldBeIgnored(msg: SnackbarMessage): Boolean {
         return preferenceStorage.observableSnackbarIsStopped.value == true &&
-                msg.actionId == R.string.dont_show
+            msg.actionId == R.string.dont_show
     }
 }

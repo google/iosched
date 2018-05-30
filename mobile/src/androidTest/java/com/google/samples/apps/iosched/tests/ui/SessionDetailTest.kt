@@ -58,16 +58,16 @@ import org.junit.runner.RunWith
 class SessionDetailTest {
 
     @get:Rule
-    var activityRule = object: ActivityTestRule<SessionDetailActivity>(
-        SessionDetailActivity::class.java) {
-
-        override fun getActivityIntent(): Intent {
-            // Open the developer keynote
-            return SessionDetailActivity.starterIntent(
-                InstrumentationRegistry.getTargetContext(),
-                FakeConferenceDataSource.FAKE_SESSION_ID)
+    var activityRule =
+        object : ActivityTestRule<SessionDetailActivity>(SessionDetailActivity::class.java) {
+            override fun getActivityIntent(): Intent {
+                // Open the developer keynote
+                return SessionDetailActivity.starterIntent(
+                    InstrumentationRegistry.getTargetContext(),
+                    FakeConferenceDataSource.FAKE_SESSION_ID
+                )
+            }
         }
-    }
 
     // Executes tasks in a synchronous [TaskScheduler]
     @get:Rule
@@ -88,9 +88,11 @@ class SessionDetailTest {
             .perform(RecyclerViewActions.scrollToPosition<SessionDetailViewHolder>(2))
 
         // Check that the speaker name is displayed
-        onView(allOf(
-            withId(R.id.speaker_item_name),
-            withText(FakeConferenceDataSource.FAKE_SESSION_SPEAKER_NAME))
+        onView(
+            allOf(
+                withId(R.id.speaker_item_name),
+                withText(FakeConferenceDataSource.FAKE_SESSION_SPEAKER_NAME)
+            )
         ).check(matches(isDisplayed()))
 
         // Scroll down to the related events

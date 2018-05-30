@@ -31,48 +31,62 @@ import org.threeten.bp.ZonedDateTime
 /**
  * Unit tests for [Session].
  */
-class SessionTest{
+class SessionTest {
 
     @Test
     fun testIsOverlapping_bothHaveSameTime() {
-        testIsOverlapping(eventStart = 1000L, eventEnd = 2000L,
-                sessionStart = 1000L, sessionEnd = 2000L, expected = true)
+        testIsOverlapping(
+            eventStart = 1000L, eventEnd = 2000L,
+            sessionStart = 1000L, sessionEnd = 2000L, expected = true
+        )
     }
 
     @Test
     fun testIsOverlapping_sessionEndInTheMiddle() {
-        testIsOverlapping(eventStart = 1000L, eventEnd = 2000L,
-                sessionStart = 500L, sessionEnd = 1500L, expected = true)
+        testIsOverlapping(
+            eventStart = 1000L, eventEnd = 2000L,
+            sessionStart = 500L, sessionEnd = 1500L, expected = true
+        )
     }
 
     @Test
     fun testIsOverlapping_sessionStartsBeforeAndEndsAfter() {
-        testIsOverlapping(eventStart = 1000L, eventEnd = 2000L,
-                sessionStart = 500L, sessionEnd = 2500L, expected = true)
+        testIsOverlapping(
+            eventStart = 1000L, eventEnd = 2000L,
+            sessionStart = 500L, sessionEnd = 2500L, expected = true
+        )
     }
 
     @Test
     fun testIsOverlapping_sessionStartsInTheMiddle() {
-        testIsOverlapping(eventStart = 1000L, eventEnd = 2000L,
-                sessionStart = 1500, sessionEnd = 2500, expected = true)
+        testIsOverlapping(
+            eventStart = 1000L, eventEnd = 2000L,
+            sessionStart = 1500, sessionEnd = 2500, expected = true
+        )
     }
 
     @Test
     fun testIsOverlapping_sessionIsWithinSession() {
-        testIsOverlapping(eventStart = 1000L, eventEnd = 2000L,
-                sessionStart = 1200L, sessionEnd = 1700L, expected = true)
+        testIsOverlapping(
+            eventStart = 1000L, eventEnd = 2000L,
+            sessionStart = 1200L, sessionEnd = 1700L, expected = true
+        )
     }
 
     @Test
     fun testIsNotOverlapping_sessionStartsFromSessionEnds() {
-        testIsOverlapping(eventStart = 1000L, eventEnd = 2000L,
-                sessionStart = 2000L, sessionEnd = 3000L, expected = false)
+        testIsOverlapping(
+            eventStart = 1000L, eventEnd = 2000L,
+            sessionStart = 2000L, sessionEnd = 3000L, expected = false
+        )
     }
 
     @Test
     fun testIsNotOverlapping_sessionStartsAfterSessionEnds() {
-        testIsOverlapping(eventStart = 1000L, eventEnd = 2000L,
-                sessionStart = 3000L, sessionEnd = 4000L, expected = false)
+        testIsOverlapping(
+            eventStart = 1000L, eventEnd = 2000L,
+            sessionStart = 3000L, sessionEnd = 4000L, expected = false
+        )
     }
 
     @Test
@@ -91,20 +105,25 @@ class SessionTest{
         assertThat(session.type, `is`(UNKNOWN))
     }
 
-    private fun testIsOverlapping(eventStart: Long,
-                                  eventEnd: Long,
-                                  sessionStart: Long,
-                                  sessionEnd: Long,
-                                  expected: Boolean) {
+    private fun testIsOverlapping(
+        eventStart: Long,
+        eventEnd: Long,
+        sessionStart: Long,
+        sessionEnd: Long,
+        expected: Boolean
+    ) {
         val baseSession = TestData.session0.copy(
-                startTime = toZonedTime(eventStart), endTime = toZonedTime(eventEnd))
+            startTime = toZonedTime(eventStart), endTime = toZonedTime(eventEnd)
+        )
         val session = TestData.session0.copy(
-                startTime = toZonedTime(sessionStart), endTime = toZonedTime(sessionEnd))
+            startTime = toZonedTime(sessionStart), endTime = toZonedTime(sessionEnd)
+        )
         assertThat(baseSession.isOverlapping(session), Is.`is`(expected))
     }
 
     private fun toZonedTime(sessionStart: Long): ZonedDateTime {
         return ZonedDateTime.ofInstant(
-                Instant.ofEpochMilli(sessionStart), ZoneId.of(ZoneId.SHORT_IDS["JST"]))
+            Instant.ofEpochMilli(sessionStart), ZoneId.of(ZoneId.SHORT_IDS["JST"])
+        )
     }
 }

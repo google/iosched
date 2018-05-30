@@ -16,14 +16,14 @@
 
 package com.google.samples.apps.iosched.ui.schedule.day
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.samples.apps.iosched.databinding.ItemSessionBinding
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.ui.schedule.ScheduleEventListener

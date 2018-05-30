@@ -42,10 +42,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/watch_live"
         app:layout_constraintEnd_toEndOf="@+id/guideline_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_start"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/watch_live"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/watch_live"

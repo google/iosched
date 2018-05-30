@@ -24,7 +24,7 @@ import com.google.firebase.auth.UserInfo
  *
  * @see [FirebaseRegisteredUserInfo]
  */
-interface AuthenticatedUserInfo: AuthenticatedUserInfoBasic, AuthenticatedUserInfoRegistered
+interface AuthenticatedUserInfo : AuthenticatedUserInfoBasic, AuthenticatedUserInfoRegistered
 
 /**
  * Basic user info.

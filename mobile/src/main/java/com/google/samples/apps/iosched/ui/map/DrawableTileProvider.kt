@@ -72,7 +72,7 @@ class DrawableTileProvider(
 
     override fun getTile(x: Int, y: Int, zoom: Int): Tile {
         val tileGenerator = pool.acquire()
-                ?: TileGenerator(tileSize, scale, baseMatrix, picture)
+            ?: TileGenerator(tileSize, scale, baseMatrix, picture)
         val data = tileGenerator.getTileImageData(x, y, zoom)
         if (!pool.release(tileGenerator)) {
             // Not returned to pool

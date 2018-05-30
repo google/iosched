@@ -23,7 +23,6 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
-
 /**
  * Element in the presentation layer that interacts with the Auth provider (Firebase in this case).
  *
@@ -52,13 +51,12 @@ class DefaultSignInHandler : SignInHandler {
 
         // this is mutable because FirebaseUI requires it be mutable
         val providers = mutableListOf(
-                AuthUI.IdpConfig.GoogleBuilder().setSignInOptions(
-                        GoogleSignInOptions.Builder()
-                                .requestId()
-                                .requestEmail()
-                                .build()
-                )
-                        .build()
+            AuthUI.IdpConfig.GoogleBuilder().setSignInOptions(
+                GoogleSignInOptions.Builder()
+                    .requestId()
+                    .requestEmail()
+                    .build()
+            ).build()
         )
 
         return AuthUI.getInstance()

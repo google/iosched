@@ -59,19 +59,24 @@ class ScheduleViewModelTest {
 
         // Check that data was loaded correctly
         val day1Result = LiveDataTestUtil.getValue(
-            viewModel.getSessionsGroupedByTimeForDay(ConferenceDays[0]))
+            viewModel.getSessionsGroupedByTimeForDay(ConferenceDays[0])
+        )
         val day2Result = LiveDataTestUtil.getValue(
-            viewModel.getSessionsGroupedByTimeForDay(ConferenceDays[1]))
+            viewModel.getSessionsGroupedByTimeForDay(ConferenceDays[1])
+        )
         val day3Result = LiveDataTestUtil.getValue(
-            viewModel.getSessionsGroupedByTimeForDay(ConferenceDays[2]))
+            viewModel.getSessionsGroupedByTimeForDay(ConferenceDays[2])
+        )
 
         assertThat(day1Result?.size, `is`(equalTo(1)))
         assertThat(day2Result?.size, `is`(equalTo(1)))
         assertThat(day3Result?.size, `is`(equalTo(2)))
 
-        assertThat("Once sessions are loaded, isLoading should be false",
-                LiveDataTestUtil.getValue(viewModel.isLoading),
-                `is`(false))
+        assertThat(
+            "Once sessions are loaded, isLoading should be false",
+            LiveDataTestUtil.getValue(viewModel.isLoading),
+            `is`(false)
+        )
     }
 
     @Test
@@ -90,7 +95,9 @@ class ScheduleViewModelTest {
     private fun createUseCase(): LoadUserSessionsByDayUseCase {
         return LoadUserSessionsByDayUseCase(
             DefaultSessionAndUserEventRepository(
-                TestUserEventDataSource, DefaultSessionRepository(TestDataRepository)))
+                TestUserEventDataSource, DefaultSessionRepository(TestDataRepository)
+            )
+        )
     }
 
     /**
@@ -99,8 +106,8 @@ class ScheduleViewModelTest {
     private fun createSessionsExceptionUseCase(): LoadUserSessionsByDayUseCase {
         val sessionRepository = DefaultSessionRepository(TestDataRepository)
         val userEventRepository = DefaultSessionAndUserEventRepository(
-            TestUserEventDataSource, sessionRepository)
-
+            TestUserEventDataSource, sessionRepository
+        )
 
         return object : LoadUserSessionsByDayUseCase(userEventRepository) {
             override fun execute(parameters: LoadUserSessionsByDayUseCaseParameters) {
@@ -109,4 +116,3 @@ class ScheduleViewModelTest {
         }
     }
 }
-

@@ -37,9 +37,9 @@ import javax.inject.Singleton
  */
 @Singleton
 open class ObserveUserAuthStateUseCase @Inject constructor(
-        registeredUserDataSource: RegisteredUserDataSource,
-        private val authStateUserDataSource: AuthStateUserDataSource,
-        private val topicSubscriber: TopicSubscriber
+    registeredUserDataSource: RegisteredUserDataSource,
+    private val authStateUserDataSource: AuthStateUserDataSource,
+    private val topicSubscriber: TopicSubscriber
 ) : MediatorUseCase<Any, AuthenticatedUserInfo>() {
 
     private val currentFirebaseUserObservable = authStateUserDataSource.getBasicUserInfo()
@@ -95,8 +95,11 @@ open class ObserveUserAuthStateUseCase @Inject constructor(
                 subscribeToRegisteredTopic()
             }
 
-            result.postValue(Result.Success(
-                    FirebaseRegisteredUserInfo(currentFirebaseUser.data, isRegisteredValue)))
+            result.postValue(
+                Result.Success(
+                    FirebaseRegisteredUserInfo(currentFirebaseUser.data, isRegisteredValue)
+                )
+            )
         } else {
             Timber.e("There was a registration error.")
             result.postValue(Result.Error(Exception("Registration error")))

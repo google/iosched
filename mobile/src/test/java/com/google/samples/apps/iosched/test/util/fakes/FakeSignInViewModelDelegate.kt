@@ -16,8 +16,8 @@
 
 package com.google.samples.apps.iosched.test.util.fakes
 
-import androidx.lifecycle.MutableLiveData
 import android.net.Uri
+import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
@@ -47,7 +47,6 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
 
     override fun isRegistered(): Boolean = injectIsSignedIn
 
-
     override fun emitSignInRequest() {
         signInRequestsEmitted++
     }
@@ -56,7 +55,7 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
         signOutRequestsEmitted++
     }
 
-    override fun getUserId() : String? {
+    override fun getUserId(): String? {
         val user = currentFirebaseUser.value
         return (user as? Result.Success)?.data?.getUid()
     }

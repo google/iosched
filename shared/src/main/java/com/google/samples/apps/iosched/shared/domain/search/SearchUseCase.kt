@@ -16,9 +16,9 @@
 
 package com.google.samples.apps.iosched.shared.domain.search
 
+import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.domain.UseCase
-import com.google.samples.apps.iosched.model.Session
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -36,9 +36,9 @@ class SearchUseCase @Inject constructor(
         val query = parameters.toLowerCase()
         return repository.getSessions()
             .filter { session ->
-                session.title.toLowerCase().contains(query)
-                        || session.abstract.toLowerCase().contains(query)
-                        || session.tags.any { tag -> query.contains(tag.name.toLowerCase()) }
+                session.title.toLowerCase().contains(query) ||
+                    session.abstract.toLowerCase().contains(query) ||
+                    session.tags.any { tag -> query.contains(tag.name.toLowerCase()) }
             }
     }
 }

@@ -56,8 +56,9 @@ class RemoveReservationViewModelTest {
         val reservationActionUseCaseMock = mock<ReservationActionUseCase> {}
         val viewModel = createRemoveReservationViewModel(reservationActionUseCaseMock)
         val testUid = "testUid"
-        val parameters = ReservationRequestParameters(testUid,
-                TestData.session1.id, CancelAction())
+        val parameters = ReservationRequestParameters(
+            testUid, TestData.session1.id, CancelAction()
+        )
         viewModel.userId = testUid
         viewModel.sessionId = TestData.session1.id
 
@@ -65,7 +66,7 @@ class RemoveReservationViewModelTest {
 
         verify(reservationActionUseCaseMock).execute(parameters)
         val dismissDialogEvent: Event<Boolean>? =
-                LiveDataTestUtil.getValue(viewModel.dismissDialogAction)
+            LiveDataTestUtil.getValue(viewModel.dismissDialogAction)
         assertThat(dismissDialogEvent?.getContentIfNotHandled(), `is`(true))
     }
 
@@ -76,7 +77,7 @@ class RemoveReservationViewModelTest {
         viewModel.onCancelClicked()
 
         val dismissDialogEvent: Event<Boolean>? =
-                LiveDataTestUtil.getValue(viewModel.dismissDialogAction)
+            LiveDataTestUtil.getValue(viewModel.dismissDialogAction)
         assertThat(dismissDialogEvent?.getContentIfNotHandled(), `is`(true))
     }
 
@@ -86,8 +87,11 @@ class RemoveReservationViewModelTest {
         return RemoveReservationViewModel(reservationActionUseCase)
     }
 
-    private fun createReservationActionUseCase() = object: ReservationActionUseCase(
+    private fun createReservationActionUseCase(): ReservationActionUseCase {
+        return object : ReservationActionUseCase(
             DefaultSessionAndUserEventRepository(
-                    TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository))) {}
+                TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
+            )
+        ) {}
+    }
 }
-

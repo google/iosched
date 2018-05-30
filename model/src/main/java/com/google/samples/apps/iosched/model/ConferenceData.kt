@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.model
 
-
 /**
  * Contains schedule data with the UI models.
  */

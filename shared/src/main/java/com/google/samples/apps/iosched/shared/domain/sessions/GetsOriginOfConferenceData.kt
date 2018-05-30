@@ -25,7 +25,7 @@ import javax.inject.Inject
  * Gets offline sessions from the repository.
  */
 open class GetsOriginOfConferenceData @Inject constructor(
-        private val repository: ConferenceDataRepository
+    private val repository: ConferenceDataRepository
 ) : UseCase<Unit, UpdateSource>() {
 
     override fun execute(parameters: Unit): UpdateSource {

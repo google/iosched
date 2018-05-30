@@ -19,9 +19,9 @@
 package com.google.samples.apps.iosched.ui.onboarding
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompleteActionUseCase
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify

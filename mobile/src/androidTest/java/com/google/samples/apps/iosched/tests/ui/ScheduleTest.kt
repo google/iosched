@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.tests.ui
 
-
 import android.provider.Settings
 import android.view.View
 import androidx.test.InstrumentationRegistry
@@ -52,7 +51,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 /**
  * Basic Espresso tests for the schedule screen.
  */
@@ -79,7 +77,8 @@ class ScheduleTest {
     @Before
     fun disableBottomSheetAnimations() {
         val behavior = BottomSheetBehavior.from(
-            activityRule.activity.findViewById<View>(R.id.filter_sheet))
+            activityRule.activity.findViewById<View>(R.id.filter_sheet)
+        )
         behavior.isAnimationDisabled = true
     }
 
@@ -105,10 +104,13 @@ class ScheduleTest {
         onView(allOf(withId(R.id.recyclerview), hasFocus()))
             .perform(RecyclerViewActions.actionOnItemAtPosition<SessionViewHolder>(0, click()))
 
-        onView(allOf(
-            withId(R.id.session_detail_with_video_title),
-            withText("First session day 1")))
-                .check(matches(isDisplayed()))
+        onView(
+            allOf(
+                withId(R.id.session_detail_with_video_title),
+                withText("First session day 1")
+            )
+        )
+            .check(matches(isDisplayed()))
     }
 
     /**
@@ -127,18 +129,23 @@ class ScheduleTest {
 
         // Scroll to the filter
         onView(allOf(withId(R.id.recyclerview), withParent(withId(R.id.filter_sheet))))
-                .perform(RecyclerViewActions.scrollTo<ScheduleFilterAdapter.FilterViewHolder>(
-                        hasDescendant(withContentDescription(uncheckedFilterContentDesc))))
+            .perform(
+                RecyclerViewActions.scrollTo<ScheduleFilterAdapter.FilterViewHolder>(
+                    hasDescendant(withContentDescription(uncheckedFilterContentDesc))
+                )
+            )
 
         onView(withContentDescription(uncheckedFilterContentDesc))
             .check(matches(isDisplayed()))
             .perform(click())
 
         // Check that the filter is enabled
-        onView(allOf(
-            withId(R.id.filter_label),
-            withContentDescription(checkedFilterContentDesc),
-            not(withParent(withId(R.id.filter_description_tags))))
+        onView(
+            allOf(
+                withId(R.id.filter_label),
+                withContentDescription(checkedFilterContentDesc),
+                not(withParent(withId(R.id.filter_description_tags)))
+            )
         )
             .check(matches(isDisplayed()))
             .perform(click())
@@ -166,10 +173,12 @@ class ScheduleTest {
         // Clear
         onView(withId(R.id.clear_filters_shortcut)).perform(click())
 
-        onView(allOf(
-            withId(R.id.filter_label),
-            withContentDescription(getActiveFilterContDesc(filter)),
-            withParent(withId(R.id.filter_description_tags)))
+        onView(
+            allOf(
+                withId(R.id.filter_label),
+                withContentDescription(getActiveFilterContDesc(filter)),
+                withParent(withId(R.id.filter_description_tags))
+            )
         ).check(matches(not(isCompletelyDisplayed())))
     }
 
@@ -182,12 +191,15 @@ class ScheduleTest {
             resources.getString(R.string.a11y_filter_not_applied, filter)
 
         onView(allOf(withId(R.id.recyclerview), withParent(withId(R.id.filter_sheet))))
-                .check(matches(isDisplayed()))
+            .check(matches(isDisplayed()))
 
         // Scroll to the filter
         onView(allOf(withId(R.id.recyclerview), withParent(withId(R.id.filter_sheet))))
-                .perform(RecyclerViewActions.scrollTo<ScheduleFilterAdapter.FilterViewHolder>(
-                        hasDescendant(withContentDescription(uncheckedFilterContentDesc))))
+            .perform(
+                RecyclerViewActions.scrollTo<ScheduleFilterAdapter.FilterViewHolder>(
+                    hasDescendant(withContentDescription(uncheckedFilterContentDesc))
+                )
+            )
 
         // Click on the filter
         onView(withContentDescription(uncheckedFilterContentDesc))
@@ -205,13 +217,16 @@ class ScheduleTest {
 
     private fun checkAnimationsDisabled() {
         val scale = Settings.Global.getFloat(
-                InstrumentationRegistry.getTargetContext().contentResolver,
-                Settings.Global.ANIMATOR_DURATION_SCALE,
-                1f)
+            InstrumentationRegistry.getTargetContext().contentResolver,
+            Settings.Global.ANIMATOR_DURATION_SCALE,
+            1f
+        )
 
         if (scale > 0) {
-            throw Exception("Device must have animations disabled. " +
-                    "Developer options -> Animator duration scale")
+            throw Exception(
+                "Device must have animations disabled. " +
+                    "Developer options -> Animator duration scale"
+            )
         }
     }
 }

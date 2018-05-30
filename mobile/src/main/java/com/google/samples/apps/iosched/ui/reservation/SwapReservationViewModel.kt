@@ -32,7 +32,6 @@ class SwapReservationViewModel @Inject constructor(
     private val swapActionUseCase: SwapActionUseCase
 ) : ViewModel(), SwapReservationListener {
 
-
     var userId: String? = null
 
     var fromId: String? = null
@@ -61,17 +60,20 @@ class SwapReservationViewModel @Inject constructor(
         val immutableToTitle = toId
         // The user should be logged in at this point.
         if (immutableUserId == null || immutableFromId == null ||
-                immutableFromTitle == null || immutableToId == null || immutableToTitle == null) {
+            immutableFromTitle == null || immutableToId == null || immutableToTitle == null
+        ) {
             Timber.e("Tried to replace reservations with a null user or IDs")
             return
         }
         swapActionUseCase.execute(
-                SwapRequestParameters(
-                        immutableUserId,
-                        immutableFromId,
-                        immutableFromTitle,
-                        immutableToId,
-                        immutableToTitle))
+            SwapRequestParameters(
+                immutableUserId,
+                immutableFromId,
+                immutableFromTitle,
+                immutableToId,
+                immutableToTitle
+            )
+        )
     }
 
     override fun onCancelClicked() {

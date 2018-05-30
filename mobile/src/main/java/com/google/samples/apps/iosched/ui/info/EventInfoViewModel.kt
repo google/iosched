@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.ui.info
 
+import android.net.wifi.WifiConfiguration
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.net.wifi.WifiConfiguration
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
@@ -86,13 +86,13 @@ class EventInfoViewModel @Inject constructor(
                 preSharedKey = password
             })
         }
-        val snackbarMessage =
-            if (success)
-                SnackbarMessage(R.string.wifi_install_success)
-            else
-                SnackbarMessage(
-                    messageId = R.string.wifi_install_clipboard_message, longDuration = true
-                )
+        val snackbarMessage = if (success) {
+            SnackbarMessage(R.string.wifi_install_success)
+        } else {
+            SnackbarMessage(
+                messageId = R.string.wifi_install_clipboard_message, longDuration = true
+            )
+        }
 
         _snackbarMessage.postValue(Event(snackbarMessage))
         analyticsHelper.logUiEvent("Events", AnalyticsActions.WIFI_CONNECT)
@@ -102,8 +102,8 @@ class EventInfoViewModel @Inject constructor(
         if (isRegistered) {
             // Show scavenger hunt to attendees during the conference
             val now = ZonedDateTime.now()
-            return now.isAfter(ConferenceDays.first().start)
-                && now.isBefore(ConferenceDays.last().end)
+            return now.isAfter(ConferenceDays.first().start) &&
+                now.isBefore(ConferenceDays.last().end)
         } else {
             return false
         }

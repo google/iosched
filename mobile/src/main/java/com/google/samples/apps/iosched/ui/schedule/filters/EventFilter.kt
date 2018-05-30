@@ -16,9 +16,9 @@
 
 package com.google.samples.apps.iosched.ui.schedule.filters
 
-import androidx.databinding.ObservableBoolean
 import android.graphics.Color
 import androidx.annotation.StringRes
+import androidx.databinding.ObservableBoolean
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Tag
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.EventFilterCategory.NONE
@@ -45,16 +45,18 @@ sealed class EventFilter(isChecked: Boolean) {
 
     /** Return a string resource to display, or 0 to use the value of [getText]. */
     open fun getTextResId(): Int = 0
+
     /** Return a string to display when [getTextResId] returns 0. */
     open fun getText(): String = ""
 
     /** Return a short string resource to display, or 0 to use the value of [getShortText]. */
     open fun getShortTextResId(): Int = 0
+
     /** Return a short string string to display when [getShortTextResId] returns 0. */
     open fun getShortText(): String = ""
 
     /** Filter for user's starred and reserved events. */
-    class MyEventsFilter(isChecked: Boolean): EventFilter(isChecked) {
+    class MyEventsFilter(isChecked: Boolean) : EventFilter(isChecked) {
 
         override fun getFilterCategory(): EventFilterCategory = NONE
 

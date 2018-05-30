@@ -20,6 +20,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="com.google.samples.apps.iosched.R" />
     </data>
 
@@ -42,8 +43,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_normal"
                 android:text="@string/faq_label"
-                app:websiteLink="@{@string/faq_url}"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:websiteLink="@{@string/faq_url}" />
 
             <Button
                 android:id="@+id/terms_of_service"
@@ -51,8 +52,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_tos"
-                app:websiteLink="@{@string/tos_url}"
-                app:layout_constraintTop_toBottomOf="@+id/faq_link" />
+                app:layout_constraintTop_toBottomOf="@+id/faq_link"
+                app:websiteLink="@{@string/tos_url}" />
 
             <Button
                 android:id="@+id/privacy_policy"
@@ -60,8 +61,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_privacy_policy"
-                app:websiteLink="@{@string/privacy_policy_url}"
-                app:layout_constraintTop_toBottomOf="@id/terms_of_service" />
+                app:layout_constraintTop_toBottomOf="@id/terms_of_service"
+                app:websiteLink="@{@string/privacy_policy_url}" />
 
             <Button
                 android:id="@+id/open_source_license"
@@ -69,9 +70,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_oss_licenses"
+                app:layout_constraintTop_toBottomOf="@id/privacy_policy"
                 app:dialogTitle="@{@string/settings_oss_licenses}"
-                app:fileLink="@{@string/oss_file}"
-                app:layout_constraintTop_toBottomOf="@id/privacy_policy" />
+                app:fileLink="@{@string/oss_file}" />
 
             <TextView
                 android:id="@+id/version_build_number"
@@ -84,11 +85,11 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_normal"
                 android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/margin_normal"
                 android:contentDescription="@string/built_with_material_content_description"
-                android:src="@drawable/built_with_material"
                 android:scaleType="fitStart"
+                android:src="@drawable/built_with_material"
                 app:layout_constraintTop_toBottomOf="@+id/version_build_number" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

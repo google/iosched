@@ -79,9 +79,9 @@
             android:checked="@{userSession.userEvent.isStarred}"
             android:contentDescription="@string/a11y_star"
             android:onClick="@{() -> eventListener.onStarClicked(userSession)}"
+            android:src="@drawable/asld_star_event"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/asld_star_event" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.samples.apps.iosched.ui.reservation.ReservationTextView
             android:id="@+id/reservation_status"
@@ -108,10 +108,10 @@
             android:layout_marginEnd="14dp"
             android:importantForAccessibility="no"
             android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@id/tags_barrier"
             app:layout_constraintEnd_toStartOf="@id/length_location"
             app:layout_constraintStart_toEndOf="@id/keyline"
             app:layout_constraintTop_toBottomOf="@id/reservation_status"
-            app:layout_constraintBottom_toTopOf="@id/tags_barrier"
             app:goneUnless="@{userSession.session.isLivestream}"
             app:srcCompat="@drawable/ic_livestreamed" />
 
@@ -120,14 +120,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.IOSched.ListSecondary"
+            app:layout_constraintBottom_toTopOf="@id/tags_barrier"
             app:layout_constraintEnd_toEndOf="@id/title"
             app:layout_constraintStart_toEndOf="@id/livestream_icon"
             app:layout_constraintTop_toBottomOf="@id/reservation_status"
-            app:layout_constraintBottom_toTopOf="@id/tags_barrier"
+            app:alwaysShowDate="@{alwaysShowDate}"
             app:sessionEnd="@{userSession.session.endTime}"
             app:sessionRoom="@{userSession.session.room}"
             app:sessionStart="@{userSession.session.startTime}"
-            app:alwaysShowDate="@{alwaysShowDate}"
             app:timeZoneId="@{timeZoneId}"
             tools:text="1 hour / Amphitheatre" />
 

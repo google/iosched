@@ -18,12 +18,12 @@ package com.google.samples.apps.iosched.widget.transition
 import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.content.Context
-import androidx.annotation.Keep
 import android.transition.Transition
 import android.transition.TransitionValues
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.Keep
 
 /**
  * A [Transition] which animates the rotation of a [View].
@@ -31,12 +31,10 @@ import android.view.ViewGroup
 class Rotate : Transition {
 
     @Keep
-    constructor() : super() {
-    }
+    constructor() : super()
 
     @Keep
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-    }
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
     override fun getTransitionProperties(): Array<String> {
         return TRANSITION_PROPERTIES
@@ -50,8 +48,11 @@ class Rotate : Transition {
         captureValues(transitionValues)
     }
 
-    override fun createAnimator(sceneRoot: ViewGroup, startValues: TransitionValues?,
-            endValues: TransitionValues?): Animator? {
+    override fun createAnimator(
+        sceneRoot: ViewGroup,
+        startValues: TransitionValues?,
+        endValues: TransitionValues?
+    ): Animator? {
         if (startValues == null || endValues == null) return null
 
         val startRotation = startValues.values[PROP_ROTATION] as Float
@@ -73,7 +74,7 @@ class Rotate : Transition {
 
     companion object {
 
-        private val PROP_ROTATION = "iosched:rotate:rotation"
+        private const val PROP_ROTATION = "iosched:rotate:rotation"
         private val TRANSITION_PROPERTIES = arrayOf(PROP_ROTATION)
     }
 }
