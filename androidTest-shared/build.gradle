@@ -25,7 +25,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
 }
@@ -34,7 +34,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlinVersion"
 
     // Architecture Components
-    implementation "android.arch.lifecycle:extensions:$rootProject.lifecycleVersion"
-    implementation "android.arch.lifecycle:livedata:$rootProject.lifecycleVersion"
-    implementation "android.arch.lifecycle:viewmodel:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$rootProject.lifecycleVersion"
 }

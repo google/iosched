@@ -61,7 +61,7 @@
             app:agendaIcon="@{agenda.type}" />
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/agenda_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_normal"
@@ -76,9 +76,9 @@
             android:id="@+id/duration"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/title"
-            app:layout_constraintTop_toBottomOf="@id/title"
-            app:layout_constraintEnd_toEndOf="@id/title"
+            app:layout_constraintStart_toStartOf="@id/agenda_title"
+            app:layout_constraintTop_toBottomOf="@id/agenda_title"
+            app:layout_constraintEnd_toEndOf="@id/agenda_title"
             android:paddingBottom="@dimen/agenda_block_padding_vert"
             android:textAppearance="@style/TextAppearance.IOSched.ListSecondary"
             app:startTime="@{agenda.startTime}"
