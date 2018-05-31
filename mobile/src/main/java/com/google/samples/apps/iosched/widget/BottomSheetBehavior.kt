@@ -28,6 +28,7 @@ import android.view.View
 import android.view.ViewConfiguration
 import android.view.ViewGroup
 import androidx.annotation.IntDef
+import androidx.annotation.VisibleForTesting
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior
 import androidx.core.view.ViewCompat
@@ -203,6 +204,10 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
 
     /** Whether the bottom sheet should skip collapsed state after being expanded once. */
     var skipCollapsed = false
+
+    /** Whether animations should be disabled, to be used from UI tests. */
+    @VisibleForTesting
+    var isAnimationDisabled = false
 
     /** Whether or not to use automatic peek height */
     private var peekHeightAuto = false
@@ -694,6 +699,11 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
             }
             state == STATE_HIDDEN && isHideable -> top = parentHeight
             else -> throw IllegalArgumentException("Invalid state: " + state)
+        }
+
+        if (isAnimationDisabled) {
+            // Prevent animations
+            ViewCompat.offsetTopAndBottom(child, top - child.top)
         }
 
         if (dragHelper.smoothSlideViewTo(child, child.left, top)) {

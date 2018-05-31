@@ -16,11 +16,10 @@
 
 package com.google.samples.apps.iosched.shared.di
 
-import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.FakeLogisticsDataSource
-import com.google.samples.apps.iosched.shared.data.OfflineConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsDataSource
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
@@ -50,14 +49,14 @@ class SharedModule {
     @Provides
     @Named("remoteConfDatasource")
     fun provideConferenceDataSource(): ConferenceDataSource {
-        return OfflineConferenceDataSource()
+        return FakeConferenceDataSource
     }
 
     @Singleton
     @Provides
     @Named("bootstrapConfDataSource")
     fun provideBootstrapRemoteSessionDataSource(): ConferenceDataSource {
-        return BootstrapConferenceDataSource
+        return FakeConferenceDataSource
     }
 
     @Singleton

@@ -26,8 +26,6 @@ import android.graphics.Paint.Style.STROKE
 import android.graphics.drawable.Drawable
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.M
-import androidx.annotation.ColorInt
-import androidx.core.graphics.ColorUtils
 import android.text.Layout.Alignment.ALIGN_NORMAL
 import android.text.StaticLayout
 import android.text.TextPaint
@@ -36,11 +34,13 @@ import android.view.View
 import android.view.ViewOutlineProvider
 import android.view.animation.AnimationUtils
 import android.widget.Checkable
+import androidx.annotation.ColorInt
 import androidx.core.animation.doOnEnd
 import androidx.core.content.res.getColorOrThrow
 import androidx.core.content.res.getDimensionOrThrow
 import androidx.core.content.res.getDimensionPixelSizeOrThrow
 import androidx.core.content.res.getDrawableOrThrow
+import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.withScale
 import androidx.core.graphics.withTranslation
 import com.google.samples.apps.iosched.R
@@ -249,7 +249,10 @@ class EventFilterView @JvmOverloads constructor(
         touchFeedback.draw(canvas)
     }
 
-    fun animateChecked(checked: Boolean) {
+    /**
+     * Starts the animation to enable/disable a filter and invokes a function when done.
+     */
+    fun animateCheckedAndInvoke(checked: Boolean, onEnd: (() -> Unit)?) {
         val newProgress = if (checked) 1f else 0f
         if (newProgress != progress) {
             progressAnimator?.cancel()
@@ -259,6 +262,7 @@ class EventFilterView @JvmOverloads constructor(
                 }
                 doOnEnd {
                     progress = newProgress
+                    onEnd?.invoke()
                 }
                 interpolator = interp
                 duration = if (checked) SELECTING_DURATION else DESELECTING_DURATION
@@ -310,7 +314,7 @@ class EventFilterView @JvmOverloads constructor(
     }
 
     companion object {
-        const val SELECTING_DURATION = 350L
-        const val DESELECTING_DURATION = 200L
+        private const val SELECTING_DURATION = 350L
+        private const val DESELECTING_DURATION = 200L
     }
 }

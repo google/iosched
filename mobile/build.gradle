@@ -102,6 +102,8 @@ android {
     lintOptions {
         disable "InvalidPackage", "MissingTranslation"
     }
+
+    testBuildType "staging"
 }
 
 dependencies {
@@ -150,7 +152,9 @@ dependencies {
 
     // Instrumentation tests
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$rootProject.espressoVersion"
     androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
+    androidTestImplementation "androidx.test:rules:$rootProject.rulesVersion"
 
     // Local unit tests
     testImplementation "junit:junit:$rootProject.junitVersion"
