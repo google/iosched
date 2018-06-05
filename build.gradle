@@ -38,7 +38,7 @@ buildscript {
         targetWearSdkVersion = 27
 
         // App dependencies
-        androidGradlePluginVersion = '3.2.0-alpha15'
+        androidGradlePluginVersion = '3.2.0-alpha16'
         appcompatVersion = '1.0.0-alpha1'
         browserVersion = '1.0.0-alpha1'
         constraintLayoutVersion = '1.1.0'
