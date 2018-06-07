@@ -27,15 +27,15 @@ buildscript {
         versionCodeMobile = versionCodeBase + 3
 
         // SDK and tools
-        compileSdkVersion = 'android-P'
+        compileSdkVersion = 28
         minSdkVersion = 21
         minTvSdkVersion = 21 // TV was introduced with Lollipop, min SDK should be 21.
-        targetSdkVersion = 27
+        targetSdkVersion = 28
 
         // At this time, there isn't a device (or emulator) that supports 27.
-        compileWearSdkVersion = 'android-P'
+        compileWearSdkVersion = 28
         minWearSdkVersion = 23
-        targetWearSdkVersion = 27
+        targetWearSdkVersion = 28
 
         // App dependencies
         androidGradlePluginVersion = '3.2.0-alpha16'
