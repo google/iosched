@@ -16,14 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.schedule.filters
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.databinding.BindingAdapter
-import androidx.databinding.ObservableFloat
 import android.os.Bundle
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -32,14 +25,18 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.core.view.doOnLayout
 import androidx.core.view.forEach
-import androidx.core.view.postDelayed
+import androidx.databinding.BindingAdapter
+import androidx.databinding.ObservableFloat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleFilterBinding
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
-import com.google.samples.apps.iosched.ui.schedule.filters.EventFilterView.Companion.DESELECTING_DURATION
-import com.google.samples.apps.iosched.ui.schedule.filters.EventFilterView.Companion.SELECTING_DURATION
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_COLLAPSED
@@ -203,12 +200,7 @@ fun setClickListenerForFilter(
             viewModel.onSignInRequired()
         } else {
             val checked = !filter.isChecked
-            filter.animateChecked(checked)
-
-            // Delay actually applying the toggle until the animation has run
-            filter.postDelayed(
-                delayInMillis = if (checked) SELECTING_DURATION else DESELECTING_DURATION
-            ) {
+            filter.animateCheckedAndInvoke(checked) {
                 viewModel.toggleFilter(eventFilter, checked)
             }
         }
@@ -230,13 +222,12 @@ fun setResetFiltersClickListener(
             if (outer is ViewGroup) {
                 outer.forEach { view ->
                     if (view is EventFilterView && view.isChecked) {
-                        view.animateChecked(false)
+                        view.animateCheckedAndInvoke(false) {
+                            listener.onClick(reset)
+                        }
                     }
                 }
             }
-        }
-        reset.postDelayed(DESELECTING_DURATION) {
-            listener.onClick(reset)
         }
     }
 }
