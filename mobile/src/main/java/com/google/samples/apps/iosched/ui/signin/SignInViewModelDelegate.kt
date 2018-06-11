@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.ui.signin
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import android.net.Uri
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
@@ -104,7 +105,7 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
     override val performSignInEvent = MutableLiveData<Event<SignInEvent>>()
     override val currentFirebaseUser: LiveData<Result<AuthenticatedUserInfo>?>
     override val currentUserImageUri: LiveData<Uri?>
-    override val shouldShowNotificationsPrefAction: LiveData<Event<Boolean>>
+    override val shouldShowNotificationsPrefAction = MediatorLiveData<Event<Boolean>>()
 
     private val _isRegistered: LiveData<Boolean>
     private val _isSignedIn: LiveData<Boolean>
@@ -124,24 +125,32 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
 
         observeUserAuthStateUseCase.execute(Any())
 
-        notificationsPrefIsShownUseCase(Unit, notificationsPrefIsShown)
+        shouldShowNotificationsPrefAction.addSource(notificationsPrefIsShown) {
+            showNotificationPref()
+        }
 
-        // TODO: For some reasons, currentFirebaseUser is updated twice when an user signs in.
-        //       this variable is to prevent the notifications preference dialog from being shown
-        //       twice
-        var isSignedInPrevious = false
-        shouldShowNotificationsPrefAction = _isSignedIn.map {
-            val result = (notificationsPrefIsShown.value as? Success)?.data == false &&
-                        isSignedIn() &&
-                        isSignedInPrevious != it
-            isSignedInPrevious = it
-            Event(result)
+        shouldShowNotificationsPrefAction.addSource(_isSignedIn) {
+            // Refresh the preferences
+            notificationsPrefIsShown.value = null
+            notificationsPrefIsShownUseCase(Unit, notificationsPrefIsShown)
         }
     }
 
+    fun showNotificationPref() {
+        val result = (notificationsPrefIsShown.value as? Success)?.data == false &&
+            isSignedIn()
+        // Only show the notification if the preference is not set and
+        // the event hasn't been handled already.
+        if (result &&
+            (shouldShowNotificationsPrefAction.value == null
+                || shouldShowNotificationsPrefAction.value?.hasBeenHandled == false)
+        ){
+            shouldShowNotificationsPrefAction.value = Event(true)
+        }
+    }
 
     override fun emitSignInRequest() {
-        // Refresh the notificationsPrefIsShown because it's used to judge if the
+        // Refresh the notificationsPrefIsShown because it's used to indicate if the
         // notifications preference dialog should be shown
         notificationsPrefIsShownUseCase(Unit, notificationsPrefIsShown)
 

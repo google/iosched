@@ -26,7 +26,6 @@ import javax.inject.Inject
 /**
  * Downloads and parses conference data.
  */
-//TODO(jalc): pass bootstrap version
 class NetworkConferenceDataSource @Inject constructor(
         val context: Context,
         private val networkUtils: NetworkUtils
