@@ -30,11 +30,7 @@
 -dontwarn retrofit2.Call
 
 # Databinding CardViewBindingAdapter
--dontwarn android.support.v7.widget.CardView
-
-# For 'wear' module
--dontwarn android.support.v4.**
--dontwarn org.threeten.bp.**
+-dontwarn androidx.cardview.widget.CardView
 
 -keep class com.google.samples.apps.iosched.model.** {
     *;

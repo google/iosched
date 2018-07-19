@@ -166,6 +166,10 @@ dependencies {
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
     stagingImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
+
+    // Solve conflicts with gson. DataBinding is using an old version.
+    implementation "com.google.code.gson:gson:$gsonVersion"
+
 }
 
 apply plugin: 'com.google.gms.google-services'
