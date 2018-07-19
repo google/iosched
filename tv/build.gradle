@@ -117,6 +117,13 @@ dependencies {
     // Local unit tests
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
+
+    // Solve conflicts with gson. DataBinding is using an old version.
+    implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
+
+    // Solve conflicts with okhttp. Firestore is using an old version.
+    implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttpVersion"
+
 }
 
 apply plugin: 'com.google.gms.google-services'
