@@ -142,7 +142,7 @@ public class RegistrationStatusService extends Service {
 
         // Get Firebase token and wait for operation to complete
         final CountDownLatch latch = new CountDownLatch(1);
-        Task<GetTokenResult> task = fbUser.getToken(false);
+        Task<GetTokenResult> task = fbUser.getIdToken(false);
         task.addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
             @Override
             public void onComplete(@NonNull Task<GetTokenResult> task) {

@@ -21,7 +21,6 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.ForbiddenException;
 import com.google.api.server.spi.response.InternalServerErrorException;
-import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.urlfetch.FetchOptions;
 import com.google.appengine.api.urlfetch.HTTPMethod;
 import com.google.appengine.api.urlfetch.HTTPRequest;
@@ -38,7 +37,9 @@ import com.google.firebase.tasks.Tasks;
 import com.google.samples.apps.iosched.server.FirebaseWrapper;
 import com.google.samples.apps.iosched.server.schedule.Config;
 import com.google.samples.apps.iosched.server.userdata.Ids;
-import com.sun.org.apache.xpath.internal.operations.Bool;
+
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -46,8 +47,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
+
 import javax.servlet.ServletContext;
-import org.json.JSONObject;
 
 /**
  * A servlet that proxies registration requests to the events server. Returns whether the current

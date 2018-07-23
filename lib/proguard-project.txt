@@ -148,3 +148,8 @@
 -keep class com.google.samples.apps.iosched.welcome.AnnouncementFragment {
     public static *;
 }
+
+-dontwarn com.google.analytics.**
+-dontwarn com.google.android.gms.**
+-dontwarn com.airbnb.lottie.**
+-dontwarn com.google.firebase.**

@@ -34,9 +34,6 @@ repositories {
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
-
-    publishNonDefault true
 
     defaultConfig {
         versionCode = Integer.valueOf("" + appVersionCode).intValue()
@@ -115,7 +112,7 @@ android {
         buildConfigField("float", "MAP_DEFAULTCAMERA_TILT", "${map_defaultcamera_tilt}")
         buildConfigField("float", "MAP_VENUECAMERA_ZOOM", "${map_venuecamera_zoom}")
         buildConfigField("float[]", "MAP_FLOORPLAN_MAPPING", "{${map_floorplan_nw}," +
-                "${map_floorplan_ne}, ${map_floorplan_se}}" )
+                "${map_floorplan_ne}, ${map_floorplan_se}}")
     }
 
     signingConfigs {
@@ -131,6 +128,7 @@ android {
         // Gradle.
     }
 
+    flavorDimensions "default"
     productFlavors {
         // Use this flavor to run automated tests.
         targetSdk22 {
@@ -210,128 +208,108 @@ android {
     }
 }
 
-// TODO Remove once https://b.android.com/162285 is resolved.
-configurations {
-    normalDebugCompile
-    normalQualityassuranceCompile
-    normalReleaseCompile
-
-    targetSdk22DebugCompile
-    targetSdk22QualityassuranceCompile
-    targetSdk22ReleaseCompile
-
-    mapEditorDebugCompile
-    mapEditorQualityassuranceCompile
-    mapEditorReleaseCompile
-}
-
 dependencies {
     // Backend server
-    compile project(path: ':server', configuration: 'android-endpoints')
+    implementation project(path: ':server', configuration: 'android-endpoints')
 
-    compile ('com.google.api-client:google-api-client:1.22.0') {
+    implementation('com.google.api-client:google-api-client:1.22.0') {
         // Dependency org.apache.httpcomponents:httpclient:4.0.1
         // conflicts with the internal version provided by Android.
-        exclude group: 'org.apache.httpcomponents', module:'httpclient'
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
 
-    compile ('com.google.api-client:google-api-client-android:1.22.0') {
+    implementation('com.google.api-client:google-api-client-android:1.22.0') {
         // Dependency org.apache.httpcomponents:httpclient:4.0.1
         // conflicts with the internal version provided by Android.
-        exclude group: 'org.apache.httpcomponents', module:'httpclient'
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
 
     // Google Play services split client libs.
-    compile "com.google.android.gms:play-services-analytics:${google_play_services_client_library_version}"
-    compile "com.google.android.gms:play-services-auth:${google_play_services_client_library_version}"
-    compile "com.google.android.gms:play-services-maps:${google_play_services_client_library_version}"
-    compile "com.google.android.gms:play-services-plus:${google_play_services_client_library_version}"
+    implementation "com.google.android.gms:play-services-analytics:16.0.1"
+    implementation "com.google.android.gms:play-services-auth:15.0.1"
+    implementation "com.google.android.gms:play-services-maps:15.0.1"
+    implementation "com.google.android.gms:play-services-plus:15.0.1"
 
     // Android support libraries.
-    compile "com.android.support:appcompat-v7:${android_support_lib_version}"
-    compile "com.android.support:cardview-v7:${android_support_lib_version}"
-    compile "com.android.support:support-v13:${android_support_lib_version}"
-    compile "com.android.support:recyclerview-v7:${android_support_lib_version}"
-    compile "com.android.support:preference-v7:${android_support_lib_version}"
-    compile "com.android.support:transition:${android_support_lib_version}"
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation "com.android.support:appcompat-v7:${android_support_lib_version}"
+    implementation "com.android.support:cardview-v7:${android_support_lib_version}"
+    implementation "com.android.support:support-v13:${android_support_lib_version}"
+    implementation "com.android.support:recyclerview-v7:${android_support_lib_version}"
+    implementation "com.android.support:preference-v7:${android_support_lib_version}"
+    implementation "com.android.support:support-v4:${android_support_lib_version}"
+    implementation "com.android.support:transition:${android_support_lib_version}"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     // Use a local build of the design lib to pick up some fixes.
     // See third_party/material-components-android
-    compile(name: 'design-release-32b1f74', ext: 'aar')
+    implementation(name: 'design-release-32b1f74', ext: 'aar')
 
     // JSON utility library.
-    compile 'com.google.code.gson:gson:2.8.0'
+    implementation 'com.google.code.gson:gson:2.8.4'
 
     // YouTube client library
-    compile files('../third_party/youtube/libs/YouTubeAndroidPlayerApi.jar')
+    implementation files('../third_party/youtube/libs/YouTubeAndroidPlayerApi.jar')
 
     // Glide library, used to handle asynchronous loading and caching of images.
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+    implementation ('com.github.bumptech.glide:glide:3.7.0') {
+        exclude group: 'com.android.support'
+    }
 
-    compile files('../third_party/disklrucache/libs/disklrucache-2.0.2.jar')
-    compile files('../third_party/basic-http-client/libs/basic-http-client-android-0.88.jar')
+    implementation files('../third_party/disklrucache/libs/disklrucache-2.0.2.jar')
+    implementation files('../third_party/basic-http-client/libs/basic-http-client-android-0.88.jar')
     // SVG processor for the Conference Map overlay.
-    compile(name: 'svg-android-2.0.7-20150515.214425-1', ext: 'jar')
+    implementation(name: 'svg-android-2.0.7-20150515.214425-1', ext: 'jar')
 
-    compile(name: 'StickyHeaders-release', ext: 'aar')
+    implementation(name: 'StickyHeaders-release', ext: 'aar')
 
     // Google Maps Android API utility library
-    compile('com.google.maps.android:android-maps-utils:0.4+') {
+    implementation('com.google.maps.android:android-maps-utils:0.5+') {
         exclude group: "com.google.android.gms"
     }
 
-    compile 'com.google.android:flexbox:0.2.6'
+    implementation 'com.google.android:flexbox:0.2.6'
 
     // Added to resolve conflicts between the app build and the test build. The app build resolves
     // the jsr305 dependency to version 1.3.9, but in the test build the espresso-core dependency
     // resolves jsr305 to 2.0.1. Declaring a compile dependency on jsr305 2.0.1 will ensure 2.0.1 or
     // greater is used for both app and test builds.
-    compile 'com.google.code.findbugs:jsr305:2.0.1'
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
-    compile ('uk.co.chrisjenx:calligraphy:2.2.0') {
+    implementation('uk.co.chrisjenx:calligraphy:2.2.0') {
         exclude group: 'com.android.support:design'
     }
-    compile 'com.airbnb.android:lottie:2.0.0-beta4'
+    implementation 'com.airbnb.android:lottie:2.5.5'
 
     // Firebase libraries
-    compile "com.google.firebase:firebase-core:${google_play_services_client_library_version}"
-    compile "com.google.firebase:firebase-messaging:${google_play_services_client_library_version}"
-    compile "com.google.firebase:firebase-appindexing:${google_play_services_client_library_version}"
-    compile "com.google.firebase:firebase-database:${google_play_services_client_library_version}"
-    compile "com.google.firebase:firebase-config:${google_play_services_client_library_version}"
-    compile "com.google.firebase:firebase-auth:${google_play_services_client_library_version}"
-    compile "com.google.firebase:firebase-config:${google_play_services_client_library_version}"
-    compile "com.google.firebase:firebase-crash:${google_play_services_client_library_version}"
+    implementation "com.google.firebase:firebase-core:16.0.1"
+    implementation "com.google.firebase:firebase-messaging:17.1.0"
+    implementation "com.google.firebase:firebase-appindexing:16.0.1"
+    implementation "com.google.firebase:firebase-database:16.0.1"
+    implementation "com.google.firebase:firebase-config:16.0.0"
+    implementation "com.google.firebase:firebase-auth:16.0.2"
+    implementation "com.google.firebase:firebase-crash:16.0.1"
 
-    compile "org.apache.commons:commons-lang3:3.5"
+    implementation "org.apache.commons:commons-lang3:3.5"
 
-    normalDebugCompile "com.squareup.leakcanary:leakcanary-android:${leak_canary_version}"
-    normalQualityassuranceCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leak_canary_version}"
-    normalReleaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leak_canary_version}"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:${leak_canary_version}"
+    qualityassuranceImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${leak_canary_version}"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${leak_canary_version}"
 
-    mapEditorDebugCompile "com.squareup.leakcanary:leakcanary-android:${leak_canary_version}"
-    mapEditorQualityassuranceCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leak_canary_version}"
-    mapEditorReleaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leak_canary_version}"
-
-    targetSdk22DebugCompile "com.squareup.leakcanary:leakcanary-android:${leak_canary_version}"
-    targetSdk22QualityassuranceCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leak_canary_version}"
-    targetSdk22ReleaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leak_canary_version}"
-
-    androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
-    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
     // Resolve conflicts between main and test APK:
-    androidTestCompile "com.android.support:support-annotations:${android_support_lib_version}"
-    androidTestCompile "com.android.support:recyclerview-v7:${android_support_lib_version}"
-    androidTestCompile "com.android.support:design:${android_support_lib_version}"
+    androidTestImplementation "com.android.support:support-annotations:${android_support_lib_version}"
+    androidTestImplementation "com.android.support:recyclerview-v7:${android_support_lib_version}"
+    androidTestImplementation "com.android.support:support-v4:${android_support_lib_version}"
+    androidTestImplementation "com.android.support:design:${android_support_lib_version}"
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.hamcrest:hamcrest-core:1.3'
-    testCompile 'org.mockito:mockito-core:1.10.8'
-    testCompile 'org.powermock:powermock-api-mockito:1.6.4'
-    testCompile 'org.powermock:powermock-module-junit4-rule-agent:1.6.4'
-    testCompile 'org.powermock:powermock-module-junit4-rule:1.6.4'
-    testCompile 'org.powermock:powermock-module-junit4:1.6.4'
-    testCompile 'org.json:json:20090211'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.hamcrest:hamcrest-core:1.3'
+    testImplementation 'org.mockito:mockito-core:1.10.19'
+    testImplementation 'org.powermock:powermock-api-mockito:1.6.4'
+    testImplementation 'org.powermock:powermock-module-junit4-rule-agent:1.6.4'
+    testImplementation 'org.powermock:powermock-module-junit4-rule:1.6.4'
+    testImplementation 'org.powermock:powermock-module-junit4:1.6.4'
+    testImplementation 'org.json:json:20160212'
 }
