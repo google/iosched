@@ -297,7 +297,7 @@
 
         <provider
             android:name="com.google.samples.apps.iosched.provider.ScheduleProvider"
-            android:authorities="com.google.samples.apps.iosched"
+            android:authorities="${applicationId}"
             android:exported="true"
             android:label="@string/app_name"
             android:syncable="true"

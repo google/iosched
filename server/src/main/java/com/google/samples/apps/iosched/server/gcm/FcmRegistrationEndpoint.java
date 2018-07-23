@@ -16,9 +16,6 @@
 
 package com.google.samples.apps.iosched.server.gcm;
 
-import static com.googlecode.objectify.ObjectifyService.ofy;
-
-import com.google.api.client.repackaged.com.google.common.base.Strings;
 import com.google.api.server.spi.auth.common.User;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -28,10 +25,13 @@ import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.ForbiddenException;
 import com.google.api.server.spi.response.UnauthorizedException;
+import com.google.common.base.Strings;
 import com.google.samples.apps.iosched.server.gcm.db.DeviceStore;
 import com.google.samples.apps.iosched.server.gcm.db.models.Device;
 import com.google.samples.apps.iosched.server.userdata.Ids;
 import com.googlecode.objectify.NotFoundException;
+
+import static com.googlecode.objectify.ObjectifyService.ofy;
 
 /**
  * Endpoint for registering and un-registering devices with FCM tokens.

@@ -18,8 +18,8 @@ import android.app.Activity;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
-import com.google.maps.android.geojson.GeoJsonFeature;
-import com.google.maps.android.geojson.GeoJsonPointStyle;
+import com.google.maps.android.data.geojson.GeoJsonFeature;
+import com.google.maps.android.data.geojson.GeoJsonPointStyle;
 
 /**
  * Extension of {@link MapFragment} that contains an option to make all markers draggable and log

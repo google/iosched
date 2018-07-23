@@ -34,7 +34,6 @@ repositories {
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         proguardFiles getDefaultProguardFile('proguard-android.txt'), file('proguard-project.txt')
@@ -70,6 +69,8 @@ android {
             // Defined in :lib
         }
     }
+
+    flavorDimensions "default"
 
     buildTypes {
         debug {
@@ -116,34 +117,16 @@ android {
     }
 }
 
-// TODO Remove once https://b.android.com/162285 is resolved.
-configurations {
-    normalDebugCompile
-    normalQualityassuranceCompile
-    normalReleaseCompile
-
-    targetSdk22DebugCompile
-    targetSdk22QualityassuranceCompile
-    targetSdk22ReleaseCompile
-
-    mapEditorDebugCompile
-    mapEditorQualityassuranceCompile
-    mapEditorReleaseCompile
+configurations.all {
+    resolutionStrategy {
+        force "com.android.support:support-v4:${android_support_lib_version}"
+        force "com.google.firebase:firebase-core:16.0.1"
+        force "com.google.firebase:firebase-iid:16.2.0"
+    }
 }
 
 dependencies {
-    normalDebugCompile project(path: ':lib', configuration: 'normalDebug')
-    normalQualityassuranceCompile project(path: ':lib',
-            configuration: 'normalQualityassurance')
-    normalReleaseCompile project(path: ':lib', configuration: 'normalRelease')
-    mapEditorDebugCompile project(path: ':lib', configuration: 'mapEditorDebug')
-    mapEditorQualityassuranceCompile project(path: ':lib',
-            configuration: 'mapEditorQualityassurance')
-    mapEditorReleaseCompile project(path: ':lib', configuration: 'mapEditorRelease')
-    targetSdk22DebugCompile project(path: ':lib', configuration: 'targetSdk22Debug')
-    targetSdk22QualityassuranceCompile project(path: ':lib',
-            configuration: 'targetSdk22Qualityassurance')
-    targetSdk22ReleaseCompile project(path: ':lib', configuration: 'targetSdk22Release')
+    implementation project(path: ':lib')
 }
 
 apply plugin: 'com.google.gms.google-services'
