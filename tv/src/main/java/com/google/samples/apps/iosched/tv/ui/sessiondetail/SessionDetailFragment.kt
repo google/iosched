@@ -53,7 +53,7 @@ import com.google.samples.apps.iosched.tv.util.toArrayObjectAdapter
 import javax.inject.Inject
 
 private const val ACTION_WATCH = 1L
-private const val ACTION_STAR = 2L
+//private const val ACTION_STAR = 2L
 
 /**
  * Displays the details for a [Session].
@@ -90,20 +90,20 @@ class SessionDetailFragment : DetailsSupportFragment() {
             session?.let {
                 if (detailsOverviewRow == null) {
                     detailsOverviewRow = DetailsOverviewRow(it).apply {
-
                         actionsAdapter = createSessionActions(it)
                         detailsPresenter.onActionClickedListener =
-                            SessionDetailsOnActionClickedListener(requireContext(), it)
+                                SessionDetailsOnActionClickedListener(requireContext(), it)
 
                         _adapter.add(this)
-                        updateSpeakers(it)
-                        _adapter.add(speakerListRow)
+                        if (it.speakers.isNotEmpty()) {
+                            updateSpeakers(it)
+                            _adapter.add(speakerListRow)
+                        }
                     }
                 } else {
                     detailsOverviewRow?.item = it
                     updateSpeakers(it)
                 }
-                updateLogoImage(it)
             }
         })
     }
@@ -119,34 +119,14 @@ class SessionDetailFragment : DetailsSupportFragment() {
             )
         }
         // TODO: add conditionally based on user's prefs.
-        actions += Action(
-            ACTION_STAR,
-            resources.getString(R.string.session_detail_star),
-            null,
-            // TODO: change icon based on user state.
-            ContextCompat.getDrawable(requireContext(), R.drawable.ic_star_border)
-        )
+//        actions += Action(
+//            ACTION_STAR,
+//            resources.getString(R.string.session_detail_star),
+//            null,
+//            // TODO: change icon based on user state.
+//            ContextCompat.getDrawable(requireContext(), R.drawable.ic_star_border)
+//        )
         return actions.toArrayObjectAdapter()
-    }
-
-    private fun updateLogoImage(session: Session) {
-        val options = RequestOptions()
-            .error(R.drawable.default_background)
-            .dontAnimate()
-
-        Glide.with(requireContext())
-            .asBitmap()
-            .load(session.photoUrl)
-            .apply(options)
-            .into(object : SimpleTarget<Bitmap>() {
-                override fun onResourceReady(
-                    resource: Bitmap,
-                    transition: Transition<in Bitmap>?
-                ) {
-                    detailsOverviewRow?.setImageBitmap(requireContext(), resource)
-                    startEntranceTransition()
-                }
-            })
     }
 
     private fun updateSpeakers(session: Session) {
@@ -166,13 +146,6 @@ class SessionDetailFragment : DetailsSupportFragment() {
     private fun setupAdapter() {
         val context = requireContext()
 
-        // Use helper to handle transitions of the logo image.
-        val transitionHelper = FullWidthDetailsOverviewSharedElementHelper()
-        transitionHelper.setSharedElementEnterTransition(
-            activity,
-            getString(R.string.shared_element_logo_name)
-        )
-
         // Set detail background and style.
         detailsPresenter = FullWidthDetailsOverviewRowPresenter(
             DetailsDescriptionPresenter(),
@@ -180,10 +153,6 @@ class SessionDetailFragment : DetailsSupportFragment() {
         ).apply {
             backgroundColor = context.getThemeColor(R.attr.colorPrimaryDark, R.color.indigo_dark)
             initialState = FullWidthDetailsOverviewRowPresenter.STATE_SMALL
-            // Prepare transition from the grid view.
-            setListener(transitionHelper)
-            isParticipatingEntranceTransition = false
-            prepareEntranceTransition()
         }
 
         presenterSelector = ClassPresenterSelector().apply {

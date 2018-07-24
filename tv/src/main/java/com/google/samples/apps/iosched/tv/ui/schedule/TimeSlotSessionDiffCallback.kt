@@ -44,10 +44,14 @@ class TimeSlotSessionDiffCallback : DiffCallback<ListRow>() {
         }
 
         for (i in 0 until oldAdapter.size()) {
-            val oldSession = oldAdapter.get(i) as Session
-            val newSession = newAdapter.get(i) as Session
+            if (oldAdapter.get(i) is Session && newAdapter.get(i) is Session) {
+                val oldSession = oldAdapter.get(i) as Session
+                val newSession = newAdapter.get(i) as Session
 
-            if (!TextUtils.equals(oldSession.id, newSession.id)) {
+                if (!TextUtils.equals(oldSession.id, newSession.id)) {
+                    return false
+                }
+            } else {
                 return false
             }
         }
