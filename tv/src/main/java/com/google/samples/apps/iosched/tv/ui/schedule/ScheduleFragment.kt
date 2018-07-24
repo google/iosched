@@ -16,15 +16,11 @@
 
 package com.google.samples.apps.iosched.tv.ui.schedule
 
-import android.app.Activity
-import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.app.ActivityOptionsCompat
-import androidx.leanback.app.BackgroundManager
 import androidx.leanback.app.RowsSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.HeaderItem
@@ -69,17 +65,19 @@ class ScheduleFragment : RowsSupportFragment() {
 
     private val spinnerFragment = SpinnerFragment()
 
-    private lateinit var backgroundManager: BackgroundManager
     private lateinit var defaultBackground: Drawable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app().scheduleComponent.inject(scheduleFragment = this)
 
+        val color = requireActivity().getThemeColor(R.attr.colorPrimaryDark, R.color.indigo_dark)
+        defaultBackground = ColorDrawable(color)
+
         adapter = rowsAdapter
 
         fragmentManager?.inTransaction {
-            add(R.id.main_frame, spinnerFragment)
+            replace(R.id.main_frame, spinnerFragment, TAG_LOADING_FRAGMENT)
         }
 
         viewModel = activityViewModelProvider(viewModelFactory)
@@ -91,17 +89,11 @@ class ScheduleFragment : RowsSupportFragment() {
 
                 val cardView = itemViewHolder.view as ImageCardView
 
-                val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    requireActivity(),
-                    cardView.mainImageView,
-                    getString(R.string.shared_element_logo_name)
-                ).toBundle()
-
                 val context = cardView.context
                 val intent =
                     SessionDetailActivity.createIntent(context = context, sessionId = item.id)
 
-                startActivity(intent, bundle)
+                startActivity(intent)
             }
         }
     }
@@ -130,27 +122,6 @@ class ScheduleFragment : RowsSupportFragment() {
                 Toast.makeText(this.context, message, Toast.LENGTH_LONG).show()
             }
         })
-    }
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        prepareBackgroundManager(requireActivity())
-    }
-
-    override fun onResume() {
-        super.onResume()
-        backgroundManager.drawable = defaultBackground
-    }
-
-    private fun prepareBackgroundManager(activity: Activity) {
-        backgroundManager = BackgroundManager.getInstance(activity)
-        if (!backgroundManager.isAttached) {
-            backgroundManager.attach(activity.window)
-        }
-        // Use the darker primary color for the background to contrast with the headers.
-        val color = activity.getThemeColor(R.attr.colorPrimaryDark, R.color.indigo_dark)
-        defaultBackground = ColorDrawable(color)
-        backgroundManager.drawable = defaultBackground
     }
 
     private fun createNoSessionRow(): ListRow {
@@ -206,6 +177,7 @@ class ScheduleFragment : RowsSupportFragment() {
     companion object {
 
         const val ARG_CONFERENCE_DAY = "com.google.samples.apps.iosched.tv.ARG_CONFERENCE_DAY"
+        const val TAG_LOADING_FRAGMENT = "tag_loading_fragment"
 
         fun newInstance(day: Int): ScheduleFragment {
             val args = Bundle().apply {

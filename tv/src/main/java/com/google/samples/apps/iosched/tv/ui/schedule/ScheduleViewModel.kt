@@ -39,7 +39,7 @@ class ScheduleViewModel(loadSessionsByDayUseCase: LoadUserSessionsByDayUseCase) 
     private var userSessionMatcher = UserSessionMatcher()
 
     // TODO: Remove it once the FirebaseUser is available when the app is launched
-    val tempUser = "user1"
+    val tempUser = null
 
     val isLoading: LiveData<Boolean>
 
@@ -82,7 +82,14 @@ class ScheduleViewModel(loadSessionsByDayUseCase: LoadUserSessionsByDayUseCase) 
                 ?: emptyList()
 
             // Groups sessions by formatted header string.
-            sessions.groupBy({ TimeUtils.timeString(it.session.startTime, it.session.endTime) })
+            // TODO: grab time zone from preferences
+            val finalTimeZoneId = TimeUtils.CONFERENCE_TIMEZONE
+            sessions.groupBy({
+                val localStartTime = TimeUtils.zonedTime(it.session.startTime, finalTimeZoneId)
+                val localEndTime = TimeUtils.zonedTime(it.session.endTime, finalTimeZoneId)
+
+                TimeUtils.timeString(localStartTime, localEndTime)
+            })
         }
     }
 
