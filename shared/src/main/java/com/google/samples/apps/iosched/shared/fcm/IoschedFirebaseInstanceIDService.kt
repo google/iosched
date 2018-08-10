@@ -28,8 +28,6 @@ class IoschedFirebaseInstanceIDService : DaggerFirebaseInstanceIdService() {
         super.onTokenRefresh()
         val token = FirebaseInstanceId.getInstance().token
 
-        Timber.d("Token refresh! $token") // STOPSHIP: Remove this
-
         // TODO: Update token in Firestore
     }
 }
