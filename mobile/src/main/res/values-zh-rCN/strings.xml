@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="title_schedule">日程安排</string>
+    <string name="title_map">地图</string>
+    <string name="filters">过滤条件</string>
+    <string name="category_heading_tracks">主题</string>
+    <string name="category_heading_types">类型</string>
+    <string name="clear_all">全部清除</string>
+    <string name="reset">重置</string>
+    <plurals name="filter_event_count">
+        <item quantity="one">%1$d 个活动</item>
+        <item quantity="other">%1$d 个活动</item>
+    </plurals>
+    <string name="agenda">日程</string>
+    <string name="event_starred">已将活动添加到您的加星标项</string>
+    <string name="event_unstarred">活动已从已加星标的项中移除</string>
+    <string name="event_star_error">向已加星标的项添加活动时出错</string>
+    <string name="reservation_error">更改预约时出错。请等待之前的请求完成，或稍后再试。</string>
+    <string name="reservation_request_succeeded">已提交预约请求。</string>
+    <string name="reservation_cancel_succeeded">已取消预约：&lt;b&gt;%s&lt;/b&gt;。</string>
+    <string name="reservation_new">已为您预约&lt;b&gt;%s&lt;/b&gt;的席位。</string>
+    <string name="reservation_replaced">活动已更换。</string>
+    <string name="waitlist_new">您已进入候补名单。</string>
+    <string name="waitlist_cancel_succeeded">已从候补名单中移除。</string>
+    <string name="got_it">知道了</string>
+    <string name="dont_show">不显示</string>
+    <string name="reservation_denied_cutoff">预约被拒：与开始时间相隔太近。</string>
+    <string name="reservation_denied_clash">预约被拒：与另一项预约冲突</string>
+    <string name="reservation_denied_unknown">预约被拒：未知错误。</string>
+    <string name="cancellation_denied_cutoff">取消请求被拒：与开始时间相隔太近。</string>
+    <string name="cancellation_denied_unknown">取消请求被拒：未知错误。</string>
+    <string name="schedule_filters_empty">您今天没有已加星标或预约的活动。</string>
+    <string name="reservation_reservable">预约席位</string>
+    <string name="reservation_reserved">已预约</string>
+    <string name="reservation_waitlisted">已进入候补名单</string>
+    <string name="reservation_waitlist_available">进入候补名单</string>
+    <string name="reservation_disabled">无法预约</string>
+    <string name="schedule_hint_title">自定义日程安排</string>
+    <string name="schedule_hint_view_only_your_events">只查看您的活动</string>
+    <string name="schedule_hint_star_event">添加到您已加星标的活动中</string>
+    <string name="schedule_hint_reserve_session_seat">预约会议席位</string>
+    <string name="schedule_hint_star_event_content_description">为活动加注星标的图片</string>
+    <string name="schedule_hint_reserve_session_seat_content_description">预约会议席位的图片</string>
+    <string name="rate_session">为会议评分</string>
+    <string name="menu_item_session_location">会议位置</string>
+    <string name="menu_item_session_star">为会议加注星标</string>
+    <string name="session_detail_speakers_header">演讲者</string>
+    <string name="session_detail_related_header">相关活动</string>
+    <string name="a11y_collapse_filters_sheet">收起过滤条件表格</string>
+    <string name="a11y_clear_tag_filters">清除过滤条件</string>
+    <string name="a11y_revert_pinned">显示所有会议</string>
+    <string name="a11y_reservation_available">预约活动</string>
+    <string name="a11y_reservation_working">正在预约活动</string>
+    <string name="a11y_reservation_reserved">已成功预约活动</string>
+    <string name="a11y_reservation_disabled">无法预约</string>
+    <string name="a11y_reservation_wait_list_available">进入活动候补名单</string>
+    <string name="a11y_reservation_wait_listed">在活动的候补名单中</string>
+    <string name="a11y_reservation_pending">预约待处理</string>
+    <string name="a11y_starred">活动已添加书签</string>
+    <string name="a11y_unstarred">活动未添加书签</string>
+    <string name="a11y_star">加注星标</string>
+    <string name="a11y_play">播放视频</string>
+    <string name="dialog_sign_in_title">登录即可自定义您的日程安排</string>
+    <string name="dialog_sign_in_content">登录即可保存活动、预约席位并为会议评分（如果是会议参加者）。系统将通过您的帐号同步在应用和网站中执行的操作。</string>
+    <string name="not_now">以后再说</string>
+    <string name="sign_in">登录</string>
+    <string name="dialog_sign_out_title">要退出帐号吗？</string>
+    <string name="dialog_sign_out_content">所有已保存的活动、席位预约和会议评分（如果是会议参加者）都会持续同步到您的帐号中。</string>
+    <string name="sign_out">退出帐号</string>
+    <string name="remove_reservation_title">要移除预约项目吗？</string>
+    <string name="remove_reservation_content">您即将放弃“%1$s”的预约席位。如果您决定不预约席位，但仍想参加会议，我们的所有会议都会保留部分无需预约的座位：座位有限，先到现场者先得。</string>
+    <string name="cancel">取消</string>
+    <string name="remove">移除</string>
+    <string name="swap_reservation_title">要更换预约项目吗？</string>
+    <string name="swap_reservation_content">您已经有“%1$s”的预约席位/候补资格？每个时间段只能有一项预约。要改为预约“%2$s”吗？</string>
+    <string name="swap">更换</string>
+    <string name="notifications_preference_dialog_title">I/O 大会通知</string>
+    <string name="notifications_preference_dialog_content">想要接收有关 I/O 大会的通知吗？我们会向您发送会议开始时间、会后活动、会议录像等相关信息。您可以随时在“信息”&gt;“设置”下更改此设置。</string>
+    <string name="no">否</string>
+    <string name="yes">是</string>
+    <plurals name="duration_hours">
+        <item quantity="one">%s 小时</item>
+        <item quantity="other">%s 小时</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%s 分钟</item>
+        <item quantity="other">%s 分钟</item>
+    </plurals>
+    <string name="menu_item_share_session">分享会议</string>
+    <string name="share_text_session_detail">访问 #io18 %2$s，了解“%1$s”</string>
+    <string name="intent_chooser_session_detail">分享</string>
+    <string name="onboarding_get_started">开始使用</string>
+    <string name="onboarding_welcome_to_google_i_o">欢迎来到 Google I/O 大会</string>
+    <string name="onboarding_date_location">2018 年 5 月 8 日至 10 日，加利福尼亚州山景城</string>
+    <string name="onboarding_build_schedule">创建自己的日程安排</string>
+    <string name="onboarding_build_sched_benefits">如果您是与会人员，可定制您的专属 I/O 大会体验并预订座位</string>
+    <string name="onboarding_watch_live">观看 I/O 大会直播</string>
+    <string name="onboarding_join_online">在线加入我们。我们将直播主题演讲和大部分会议内容。</string>
+    <string name="onboarding_label_days">天</string>
+    <string name="onboarding_label_hours">小时</string>
+    <string name="onboarding_label_mins">分</string>
+    <string name="onboarding_label_seconds">秒</string>
+    <plurals name="session_starting_in">
+        <item quantity="one">会议将在 %1$s 分钟后开始</item>
+        <item quantity="other">会议将在 %1$s 分钟后开始</item>
+    </plurals>
+    <string name="expanded">已展开</string>
+    <string name="collapsed">已收起</string>
+    <string name="info_title">信息</string>
+    <string name="event_title">活动</string>
+    <string name="travel_title">出行信息</string>
+    <string name="settings_title">设置</string>
+    <string name="travel_directions_title">行车路线</string>
+    <string name="travel_shuttle_title">班车服务（推荐）</string>
+    <string name="travel_carpool_parking_title">停车和拼车</string>
+    <string name="travel_ride_sharing_title">拼车应用</string>
+    <string name="travel_public_transportation_title">公共交通</string>
+    <string name="travel_biking_title">骑车</string>
+    <string name="travel_directions_description">在 <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google 地图</a>或 <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a> 上查找前往 1 Amphitheatre Pkwy, Mountain View, CA 94043 的路线</string>
+    <string name="travel_shuttle_description">所有 Google I/O 大会参加者都可以免费搭乘从 Google 推荐的所有酒店出发的活动班车。旧金山及半岛沿线的其他一些地点也提供限定的服务。您必须出示自己的 Google I/O 大会确认电子邮件或会议徽章才能搭乘任何 Google I/O 大会活动班车。\n\n每个接送点都可使用 ADA 无障碍交通工具。如有 ADA 方面的需求或需要特别协助，请在您的注册表单上指明，规划团队会直接与您联系。</string>
+    <string name="travel_carpool_parking_description">停车位非常有限，只有沿 Shoreline Boulevard 的 Shoreline Amphitheatre 对面有 Google I/O 大会指定停车位。Amphitheatre Parkway 和 Charleston Road 沿线均没有活动专用停车位。如果您打算驾车前来，建议您与其他参加者拼车，因为我们的首选停车位仅供乘载人数达到两人或两人以上的车辆停靠。</string>
+    <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\nWaze Carpool 是由司机和乘客组成的可信社区，可以帮助您以经济实惠的价格快速前往 Google I/O 大会会场，为您的行程增添趣味。如果您打算自己开车，可以在到达旧金山湾区时打开 <a href="http://Waze.com/get">Waze</a>。如果您想搭车，可以在到达湾区之前安装 <a href="http://Waze.com/carpool">Waze Carpool</a>。敬请在未来几周返回这里，查看专为 Google I/O 大会参加者提供的拼车折扣代码。\n\n<b>Lyft Line</b>\n从 Google Play 下载 Lyft 应用，并使用 Lyft Line 与相同路线的其他人拼车以减少行程费用。\n<b>折扣代码</b>：Googleio18\n该代码在 2018 年 5 月 8 日到 10 日期间有效，可在通过 Lyft Line 拼车时使用。每次行程最多可兑换 10 美元，每天最多可供 250 名用户使用。乘车或下车点必须是 Shoreline Amphitheatre。</string>
+    <string name="travel_public_transportation_description">没有直达 Google I/O 大会会场的公交线路。敬请关注 Google I/O 大会活动班车的确切站点。</string>
+    <string name="travel_biking_description">Shoreline Amphitheatre 的 A 停车场将提供免费的自行车存放服务。Silicon Valley Bicycle Coalition 每天将从早上 7 点开始为您的自行车提供安全的代客停车服务，直到当天活动结束。骑自行车者可通过两条便利的路线前往 Shoreline Amphitheatre：一条是 Stevens Creek Trail，另一条是 Permanente Creek Trail。请查看 Google 地图，以获取最佳骑车路线和方向。\n\n湾区今年的骑车上班日 (Bike to Work Day) 定为 5 月 10 日（星期四），届时海岸线附近将有数千人骑自行车参与节日活动，整个地区将设置数百个补给站。如需了解详情，请访问 Silicon Valley Bike to Work Day 网站。</string>
+    <string name="view_sessions_text">查看会议</string>
+    <string name="view_codelabs_text">查看代码实验室</string>
+    <string name="view_events_text">查看活动</string>
+    <string name="view_map_text">查看地图</string>
+    <string name="wifi_network_label">Wi-Fi 网络：</string>
+    <string name="wifi_password_label">密码：</string>
+    <string name="wifi_install_success">Wi-Fi 网络已保存</string>
+    <string name="wifi_install_error_message">抱歉，无法保存 Wi-Fi 网络</string>
+    <string name="event_sessions_title">会议</string>
+    <string name="event_sandbox_title">沙盒</string>
+    <string name="event_codelabs_title">代码实验室</string>
+    <string name="event_officehours_title">交流时间和应用评价</string>
+    <string name="event_afterhours_title">会后活动</string>
+    <string name="event_meals_title">用餐</string>
+    <string name="event_sandbox_description">这些专用空间用于通过互动式演示、物理装置等方式探索、学习及试用我们的最新产品和平台。</string>
+    <string name="event_codelabs_description">利用可直接编程的自助服务终端获取实践经验。在这里，您可以借助自定进度的教程和全面的资源来学习最新、最优秀的 Google 技术，也可以携带自己的机器并将成果带回家。如果您遇到困难，Google 员工将随时为您提供有用的建议并提供指导。</string>
+    <string name="event_officehours_description">在“交流时间”，您将有机会与 Google 专家面对面交谈，询问所有技术问题；在“应用评价”时段，您将有机会为自己的特定应用相关项目获取建议和提示。</string>
+    <string name="event_afterhours_description">我们会在前两天会议结束后提供美食佳饮，欢迎留在海岸线与我们同乐。在第一个晚上，我们将在沙盒空间举办派对活动；在第二个晚上，我们将在 Shoreline Amphitheatre 举办一场独家音乐会。</string>
+    <string name="wifi_header">Wi-Fi</string>
+    <string name="event_types_header">活动类型</string>
+    <string name="settings_time_zone_label">活动时间为太平洋时区 (UTC-8) 的时间</string>
+    <string name="settings_send_anonymous_usage_statistics">发送匿名使用情况统计信息</string>
+    <string name="settings_tos">服务条款</string>
+    <string name="settings_privacy_policy">隐私权政策</string>
+    <string name="settings_oss_licenses">开放源代码许可</string>
+    <string name="settings_version_label">版本：%1$s，内部版本号：%2$s</string>
+    <string name="built_with_material_content_description">使用 Material Components 开发。</string>
+    <string name="day1">第 1 天</string>
+    <string name="day2">第 2 天</string>
+    <string name="day3">第 3 天</string>
+    <string name="day1_date">5 月 8 日</string>
+    <string name="day2_date">5 月 9 日</string>
+    <string name="day3_date">5 月 10 日</string>
+</resources>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <dimen name="margin_normal">16dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_large">32dp</dimen>
+    <dimen name="spacing_normal">8dp</dimen>
+    <dimen name="spacing_micro">4dp</dimen>
+
+    <dimen name="divider">1dp</dimen>
+    <item name="text_line_spacing" format="float" type="dimen">1.2</item>
+
+    <dimen name="speaker_headshot_size">40dp</dimen>
+    <dimen name="speaker_large_headshot_size">112dp</dimen>
+    <dimen name="session_keyline">64dp</dimen>
+
+    <dimen name="time_header_hour_text_size">24sp</dimen>
+    <dimen name="time_header_hour_min_text_size">20sp</dimen>
+    <dimen name="time_header_meridiem_text_size">12sp</dimen>
+    <dimen name="time_header_padding_top">4dp</dimen>
+
+    <dimen name="agenda_item_stroke">2dp</dimen>
+    <dimen name="agenda_block_padding_vert">12dp</dimen>
+    <dimen name="agenda_icon_width">56dp</dimen>
+
+    <dimen name="onboarding_actions_height">112dp</dimen>
+    <dimen name="onboarding_margins">48dp</dimen>
+    <dimen name="onboarding_animation_padding">40dp</dimen>
+
+    <dimen name="a11y_min_touch_target">48dp</dimen>
+
+    <dimen name="app_bar_height">200dp</dimen>
+    <dimen name="bottom_navigation_height">56dp</dimen>
+    <dimen name="bottom_sheet_elevation">8dp</dimen>
+    <dimen name="bottom_sheet_corner_radius">16dp</dimen>
+    <dimen name="bottom_sheet_peek_height">@dimen/a11y_min_touch_target</dimen>
+    <dimen name="schedule_page_padding_bottom">56dp</dimen> <!-- bottom_sheet_peek_height + 8dp -->
+
+    <dimen name="dialog_rounded_corner">8dp</dimen>
+    <dimen name="dialog_vertical_margin">32dp</dimen>
+    <dimen name="dialog_horizontal_margin">32dp</dimen>
+    <dimen name="dialog_elevation">24dp</dimen>
+    <dimen name="padding_borderless_button">16dp</dimen>
+
+    <dimen name="event_logo_end_margin">48dp</dimen>
+    <dimen name="event_logo_top_margin">32dp</dimen>
+    <dimen name="info_event_buttons_margin">40dp</dimen>
+
+    <dimen name="countdown_height">300dp</dimen>
+
+    <dimen name="snackbar_width">@dimen/match_parent</dimen>
+    <dimen name="snackbar_margin_end_fab">0dp</dimen>
+    <dimen name="snackbar_margin_bottom_fab">72dp</dimen>
+    <dimen name="snackbar_margin_bottom_bab">84dp</dimen>
+
+    <!-- per android.view.ViewGroup.LayoutParams -->
+    <item name="match_parent" format="integer" type="dimen">-1</item>
+    <item name="wrap_content" format="integer" type="dimen">-2</item>
+
+</resources>

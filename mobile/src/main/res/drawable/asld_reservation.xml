@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<animated-selector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/reserved"
+        android:drawable="@drawable/ic_reserved"
+        app:state_reserved="true" />
+
+    <item
+        android:id="@+id/wait_listed"
+        android:drawable="@drawable/ic_waitlisted"
+        app:state_wait_listed="true" />
+
+    <item
+        android:id="@+id/wait_list_available"
+        android:drawable="@drawable/ic_waitlist_available"
+        app:state_wait_list_available="true" />
+
+    <item
+        android:id="@+id/reservation_pending"
+        android:drawable="@drawable/ic_reservation_pending"
+        app:state_reservation_pending="true" />
+
+    <item
+        android:id="@+id/reservation_disabled"
+        android:drawable="@drawable/ic_reservation_disabled"
+        app:state_reservation_disabled="true" />
+
+    <item
+        android:id="@+id/reservable"
+        android:drawable="@drawable/ic_reservable" />
+
+    <transition
+        android:drawable="@drawable/avd_reservable_to_pending"
+        android:fromId="@id/reservable"
+        android:toId="@id/reservation_pending" />
+
+    <transition
+        android:drawable="@drawable/avd_pending_to_reservable"
+        android:fromId="@id/reservation_pending"
+        android:toId="@id/reservable" />
+
+    <transition
+        android:drawable="@drawable/avd_pending_to_reserved"
+        android:fromId="@id/reservation_pending"
+        android:toId="@id/reserved" />
+
+    <transition
+        android:drawable="@drawable/avd_reserved_to_pending"
+        android:fromId="@id/reserved"
+        android:toId="@id/reservation_pending" />
+
+    <transition
+        android:drawable="@drawable/avd_pending_to_waitlisted"
+        android:fromId="@id/reservation_pending"
+        android:toId="@id/wait_listed" />
+
+    <transition
+        android:drawable="@drawable/avd_waitlisted_to_pending"
+        android:fromId="@id/wait_listed"
+        android:toId="@id/reservation_pending" />
+
+</animated-selector>

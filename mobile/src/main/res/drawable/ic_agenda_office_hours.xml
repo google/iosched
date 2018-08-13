@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="?android:textColorPrimary">
+    <path
+        android:fillColor="#fff"
+        android:pathData="M 16.5 12 C 17.9 12 19 10.9 19 9.5 C 19 8.1 17.9 7 16.5 7 C 15.1 7 14 8.1 14 9.5 C 14 10.9 15.1 12 16.5 12 Z M 9 11 C 10.7 11 12 9.7 12 8 C 12 6.3 10.7 5 9 5 C 7.3 5 6 6.3 6 8 C 6 9.7 7.3 11 9 11 Z M 16.5 14 C 14.7 14 11 14.9 11 16.8 L 11 19 L 22 19 L 22 16.8 C 22 14.9 18.3 14 16.5 14 Z M 9 13 C 6.7 13 2 14.2 2 16.5 L 2 19 L 9 19 L 9 16.8 C 9 15.9 9.3 14.5 11.4 13.3 C 10.5 13.1 9.7 13 9 13 Z" />
+</vector>

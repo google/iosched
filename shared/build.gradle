@@ -1,0 +1,138 @@
+/*
+ * Copyright 2018 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+    defaultConfig {
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "CONFERENCE_TIMEZONE", "\"${conference_timezone}\""
+        buildConfigField "String", "CONFERENCE_DAY1_START", "\"${conference_day1_start}\""
+        buildConfigField "String", "CONFERENCE_DAY1_END", "\"${conference_day1_end}\""
+        buildConfigField "String", "CONFERENCE_DAY2_START", "\"${conference_day2_start}\""
+        buildConfigField "String", "CONFERENCE_DAY2_END", "\"${conference_day2_end}\""
+        buildConfigField "String", "CONFERENCE_DAY3_START", "\"${conference_day3_start}\""
+        buildConfigField "String", "CONFERENCE_DAY3_END", "\"${conference_day3_end}\""
+
+        buildConfigField "String",
+                "BOOTSTRAP_CONF_DATA_FILENAME",
+                "\"${bootstrap_conference_data_filename}\""
+
+        buildConfigField "String",
+                "CONFERENCE_WIFI_OFFERING_START",
+                "\"${conference_wifi_offering_start}\""
+
+        consumerProguardFiles 'consumer-proguard-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            buildConfigField "String", "REGISTRATION_ENDPOINT_URL", "\"https://events-d07ac.appspot.com/_ah/api/registration/v1/register\""
+            buildConfigField "String", "CONFERENCE_DATA_URL", "\"https://firebasestorage.googleapis.com/v0/b/io2018-festivus-prod/o/sessions.json?alt=media&token=89140adf-e228-45a5-9ae3-8ed01547166a\""
+        }
+        debug {
+            buildConfigField "String", "REGISTRATION_ENDPOINT_URL", "\"https://events-dev-62d2e.appspot.com/_ah/api/registration/v1/register\""
+            buildConfigField "String", "CONFERENCE_DATA_URL", "\"https://firebasestorage.googleapis.com/v0/b/io2018-festivus/o/sessions.json?alt=media&token=019af2ec-9fd1-408e-9b86-891e4f66e674\""
+        }
+        staging {
+            initWith debug
+
+            // Specifies a sorted list of fallback build types that the
+            // plugin should try to use when a dependency does not include a
+            // "staging" build type.
+            // Used with :test-shared, which doesn't have a staging variant.
+            matchingFallbacks = ['debug']
+        }
+    }
+
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
+    // debug and release variants share the same source dir
+    sourceSets {
+        debug.java.srcDir 'src/debugRelease/java'
+        release.java.srcDir 'src/debugRelease/java'
+    }
+}
+
+dependencies {
+    api project(":model")
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation project(':test-shared')
+    testImplementation project(':androidTest-shared')
+
+    // Architecture Components
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$rootProject.lifecycleVersion"
+
+    // Maps
+    api("com.google.maps.android:android-maps-utils:$rootProject.googleMapUtilsVersion") {
+        exclude group: "com.google.android.gms"
+    }
+    api "com.google.android.gms:play-services-maps:$rootProject.googlePlayServicesMapsVersion"
+
+    // Utils
+    api "com.jakewharton.timber:timber:$rootProject.timberVersion"
+    implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
+    implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
+
+    // OkHttp
+    implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpVersion"
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlinVersion"
+
+    // Dagger
+    implementation "com.google.dagger:dagger-android:$rootProject.dagger"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.dagger"
+    kapt "com.google.dagger:dagger-compiler:$rootProject.dagger"
+    kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
+
+    // Firebase
+    api "com.google.firebase:firebase-auth:$rootProject.firebaseAuthVersion"
+    api "com.google.firebase:firebase-config:$rootProject.firebaseConfigVersion"
+    api "com.google.firebase:firebase-core:$rootProject.firebaseCoreVersion"
+    api "com.google.firebase:firebase-firestore:$rootProject.firebaseFirestoreVersion"
+    api "com.google.firebase:firebase-messaging:$rootProject.firebaseMessagingVersion"
+
+    // ThreeTenBP for the shared module only. Date and time API for Java.
+    testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"
+    compileOnly "org.threeten:threetenbp:$rootProject.threetenbpVersion:no-tzdb"
+
+    // Unit tests
+    testImplementation "junit:junit:$rootProject.junitVersion"
+    testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
+    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    testImplementation "com.nhaarman:mockito-kotlin:$rootProject.mockitoKotlinVersion"
+
+    // unit tests livedata
+    testImplementation "androidx.arch.core:core-testing:$rootProject.lifecycleVersion"
+}
+
+apply plugin: 'com.google.gms.google-services'

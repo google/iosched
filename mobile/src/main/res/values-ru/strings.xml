@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="title_schedule">Расписание</string>
+    <string name="title_map">Схема места проведения</string>
+    <string name="filters">Фильтры</string>
+    <string name="category_heading_tracks">Темы</string>
+    <string name="category_heading_types">Типы</string>
+    <string name="clear_all">Удалить все</string>
+    <string name="reset">Сбросить</string>
+    <plurals name="filter_event_count">
+        <item quantity="one">%1$d мероприятие</item>
+        <item quantity="few">%1$d мероприятия</item>
+        <item quantity="many">%1$d мероприятий</item>
+        <item quantity="other">%1$d мероприятия</item>
+    </plurals>
+    <string name="agenda">Расписание</string>
+    <string name="event_starred">Мероприятие добавлено в ваше расписание</string>
+    <string name="event_unstarred">Мероприятие удалено из вашего расписания.</string>
+    <string name="event_star_error">Не удалось добавить мероприятие в расписание.</string>
+    <string name="reservation_error">Не удалось изменить бронирование. Дождитесь подтверждения предыдущих запросов или повторите попытку позже.</string>
+    <string name="reservation_request_succeeded">Запрос на бронирование места отправлен.</string>
+    <string name="reservation_cancel_succeeded">Бронирование места на сессии \"&lt;b&gt;%s&lt;/b&gt;\" отменено.</string>
+    <string name="reservation_new">Место на сессии \"&lt;b&gt;%s&lt;/b&gt;\" забронировано.</string>
+    <string name="reservation_replaced">Мероприятие заменено.</string>
+    <string name="waitlist_new">Вы добавлены в список ожидания.</string>
+    <string name="waitlist_cancel_succeeded">Вы удалены из списка ожидания.</string>
+    <string name="got_it">ОК</string>
+    <string name="dont_show">Не показывать</string>
+    <string name="reservation_denied_cutoff">Запрос на бронирование отклонен, так как до сессии осталось слишком мало времени.</string>
+    <string name="reservation_denied_clash">Запрос на бронирование отклонен, так как в вашем расписании уже есть мероприятие на указанное время.</string>
+    <string name="reservation_denied_unknown">Запрос на бронирование отклонен из-за неизвестной ошибки.</string>
+    <string name="cancellation_denied_cutoff">Запрос на отмену бронирования отклонен, так как до сессии осталось слишком мало времени.</string>
+    <string name="cancellation_denied_unknown">Запрос на отмену бронирования отклонен из-за неизвестной ошибки.</string>
+    <string name="schedule_filters_empty">Сегодня у вас нет сохраненных мероприятий и сессий, на которые вы забронировали место.</string>
+    <string name="reservation_reservable">Забронировать место</string>
+    <string name="reservation_reserved">Место забронировано</string>
+    <string name="reservation_waitlisted">В списке ожидания</string>
+    <string name="reservation_waitlist_available">Отправить запрос на добавление в список ожидания</string>
+    <string name="reservation_disabled">Бронирование недоступно</string>
+    <string name="schedule_hint_title">Составьте свое расписание</string>
+    <string name="schedule_hint_view_only_your_events">Показать только сохраненные мероприятия</string>
+    <string name="schedule_hint_star_event">Добавить в расписание</string>
+    <string name="schedule_hint_reserve_session_seat">Забронировать место на сессии</string>
+    <string name="schedule_hint_star_event_content_description">Значок для добавления мероприятия в расписание</string>
+    <string name="schedule_hint_reserve_session_seat_content_description">Значок для бронирования места на сессии</string>
+    <string name="rate_session">Оценить сессию</string>
+    <string name="menu_item_session_location">Место проведения сессии</string>
+    <string name="menu_item_session_star">Добавить сессию в расписание</string>
+    <string name="session_detail_speakers_header">Выступающие</string>
+    <string name="session_detail_related_header">Похожие мероприятия</string>
+    <string name="a11y_collapse_filters_sheet">Свернуть список фильтров</string>
+    <string name="a11y_clear_tag_filters">Удалить фильтры</string>
+    <string name="a11y_revert_pinned">Показать все сессии</string>
+    <string name="a11y_reservation_available">Забронировать место на мероприятии</string>
+    <string name="a11y_reservation_working">Запрос на бронирование обрабатывается…</string>
+    <string name="a11y_reservation_reserved">Место забронировано</string>
+    <string name="a11y_reservation_disabled">Бронирование недоступно</string>
+    <string name="a11y_reservation_wait_list_available">Отправить запрос на добавление в список ожидания</string>
+    <string name="a11y_reservation_wait_listed">Запрос на добавление в список ожидания отправлен</string>
+    <string name="a11y_reservation_pending">Запрос на бронирование рассматривается</string>
+    <string name="a11y_starred">Мероприятие добавлено в закладки</string>
+    <string name="a11y_unstarred">Мероприятие не добавлено в закладки</string>
+    <string name="a11y_star">Добавить в расписание или удалить из него</string>
+    <string name="a11y_play">Посмотреть видео</string>
+    <string name="dialog_sign_in_title">Войдите в аккаунт</string>
+    <string name="dialog_sign_in_content">Тогда вы сможете добавлять мероприятия в свое расписание, бронировать места и оценивать сессии. Сведения обо всех действиях, которые вы выполните в аккаунте, будут доступны как в приложении, так и на сайте.</string>
+    <string name="not_now">Не сейчас</string>
+    <string name="sign_in">Войти</string>
+    <string name="dialog_sign_out_title">Выйти из аккаунта?</string>
+    <string name="dialog_sign_out_content">Данные о ваших оценках, добавленных в расписание мероприятиях и забронированных местах будут сохранены.</string>
+    <string name="sign_out">Выйти</string>
+    <string name="remove_reservation_title">Отменить бронирование?</string>
+    <string name="remove_reservation_content">Если вы сделаете это, занять место на сессии \"%1$s\" можно будет только в порядке живой очереди.</string>
+    <string name="cancel">Отменить</string>
+    <string name="remove">Удалить</string>
+    <string name="swap_reservation_title">Заменить бронирование?</string>
+    <string name="swap_reservation_content">Ранее вы уже забронировали место на сессии \"%1$s\", которая будет проходить в то же время, что и сессия \"%2$s\". Если вы подадите заявку на участие в последнем мероприятии, предыдущая броня будет снята.</string>
+    <string name="swap">Заменить</string>
+    <string name="notifications_preference_dialog_title">Уведомления о фестивале</string>
+    <string name="notifications_preference_dialog_content">Если вы включите уведомления, мы будем сообщать вам о начале сессий и появлении записей с них, а также о развлекательных мероприятиях и других важных новостях фестиваля. Изменить параметры уведомлений можно будет в любое время в разделе \"Информация\" в настройках.</string>
+    <string name="no">Нет</string>
+    <string name="yes">Да</string>
+    <plurals name="duration_hours">
+        <item quantity="one">%s час</item>
+        <item quantity="few">%s часа</item>
+        <item quantity="many">%s часов</item>
+        <item quantity="other">%s часа</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%s минута</item>
+        <item quantity="few">%s минуты</item>
+        <item quantity="many">%s минут</item>
+        <item quantity="other">%s минуты</item>
+    </plurals>
+    <string name="menu_item_share_session">Поделиться сессией</string>
+    <string name="share_text_session_detail">Узнайте о сессии \"%1$s\" на фестивале #io18 %2$s</string>
+    <string name="intent_chooser_session_detail">Поделиться</string>
+    <string name="onboarding_get_started">Начать</string>
+    <string name="onboarding_welcome_to_google_i_o">Добро пожаловать на фестиваль Google I/O</string>
+    <string name="onboarding_date_location">8–10 мая 2018 г.,\nМаунтин-Вью, Калифорния</string>
+    <string name="onboarding_build_schedule">Составьте свое расписание</string>
+    <string name="onboarding_build_sched_benefits">Выберите, чем хотите заняться на фестивале I/O и забронируйте места на интересных вам сессиях.</string>
+    <string name="onboarding_watch_live">Прямая трансляция фестиваля I/O</string>
+    <string name="onboarding_join_online">Присоединяйтесь к нам через Интернет: мы будем транслировать ключевые моменты выступлений и большинство сессий.</string>
+    <string name="onboarding_label_days">д.</string>
+    <string name="onboarding_label_hours">ч.</string>
+    <string name="onboarding_label_mins">м.</string>
+    <string name="onboarding_label_seconds">с.</string>
+    <plurals name="session_starting_in">
+        <item quantity="one">Сессия начнется через %1$s минуту</item>
+        <item quantity="few">Сессия начнется через %1$s минуты</item>
+        <item quantity="many">Сессия начнется через %1$s минут</item>
+        <item quantity="other">Сессия начнется через %1$s минуты</item>
+    </plurals>
+    <string name="expanded">Развернуто</string>
+    <string name="collapsed">Свернуто</string>
+    <string name="info_title">Информация</string>
+    <string name="event_title">Мероприятие</string>
+    <string name="travel_title">Полезные сведения</string>
+    <string name="settings_title">Настройки</string>
+    <string name="travel_directions_title">Схема проезда</string>
+    <string name="travel_shuttle_title">Трансфер (рекомендуется)</string>
+    <string name="travel_carpool_parking_title">Карпулинг и парковка</string>
+    <string name="travel_ride_sharing_title">Райдшеринг</string>
+    <string name="travel_public_transportation_title">Общественный транспорт</string>
+    <string name="travel_biking_title">Велосипеды</string>
+    <string name="travel_directions_description">Фестиваль будет проходить по адресу 1 Amphitheatre Parkway, Mountain View, CA 94043, США. Информацию о том, как добраться, можно посмотреть в <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Картах</a> или приложении <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a>.</string>
+    <string name="travel_shuttle_description">Бесплатный трансфер на фестиваль Google I/O будет предоставлен тем его участникам, которые остановятся в рекомендованных отелях, а также тем, кто проживает в Сан-Франциско и других крупных городах полуострова. Воспользоваться трансфером можно только после предъявления значка участника Google I/O.\n\nЕсли вам необходимы особая помощь или транспортное средство для перевозки людей с ограниченными возможностями, укажите это в форме регистрации. Наши специалисты по планированию мероприятий свяжутся с вами напрямую.</string>
+    <string name="travel_carpool_parking_description">Поскольку количество парковочных мест ограничено, а большинство из них отведено для автомобилей с двумя или более пассажирами, рекомендуем вам найти попутчиков среди других участников фестиваля. Оставлять автомобили можно только на специальных местах вдоль бульвара Shoreline Boulevard, на противоположной стороне от здания Shoreline Amphitheatre. Вдоль аллеи Amphitheatre Parkway и улицы Charleston Road парковаться нельзя.</string>
+    <string name="travel_ride_sharing_description"><b>Приложение Waze Carpool</b>\nБлагодаря этому сервису добраться до места проведения фестиваля значительно проще. Для водителей предусмотрено приложение <a href="http://Waze.com/get">Waze</a>, а для тех, кто ищет попутчиков, – <a href="http://Waze.com/carpool">Waze Carpool</a>. Для участников фестиваля предусмотрены промокоды. Подробнее о них мы расскажем позже.\n\n<b>Сервис Lyft Line</b>\nПриложение Lyft – отличный способ найти попутчиков и сэкономить на плате за проезд.\n<b>Промокод для скидки:</b> Googleio18\nКод можно применять с 8 по 10 мая 2018 года только при поездках с пунктом отправления или назначения в Shoreline Amphitheatre. Стоимость поездки не должна превышать 10 долларов США. Воспользоваться промокодом могут не более 250 человек в день.</string>
+    <string name="travel_public_transportation_description">Прямых маршрутов до места проведения фестиваля нет, поэтому будет организован трансфер. Подробнее о нем мы сообщим позже. Следите за новостями!</string>
+    <string name="travel_biking_description">Велосипедисты могут добраться до амфитеатра по одной из двух дорожек: Stevens Creek Trail или Permanente Creek Trail. Посмотреть, где они расположены, можно в сервисе \"Google Карты\". В зоне A у здания Shoreline Amphitheatre расположена бесплатная велопарковка. Кроме того, ежедневно с 7 часов утра и до окончания мероприятий будет работать пункт парковки от организации Silicon Valley Bicycle Coalition.\n\n10 мая в Области залива Сан-Франциско состоится акция \"На работу на велосипеде\". В ней примут участие сотни велосипедистов. На маршруте будут организованы пункты питания. С подробной информацией можно ознакомиться на сайте мероприятия.</string>
+    <string name="view_sessions_text">Показать сессии</string>
+    <string name="view_codelabs_text">Показать занятия в формате Codelab</string>
+    <string name="view_events_text">Показать все мероприятия</string>
+    <string name="view_map_text">Показать карту</string>
+    <string name="wifi_network_label">Название сети Wi-Fi:</string>
+    <string name="wifi_password_label">Пароль:</string>
+    <string name="wifi_install_success">Сеть Wi-Fi сохранена.</string>
+    <string name="wifi_install_error_message">Не удалось сохранить сеть Wi-Fi.</string>
+    <string name="event_sessions_title">Сеансы</string>
+    <string name="event_sandbox_title">Тестирования</string>
+    <string name="event_codelabs_title">Мероприятия в формате Codelab</string>
+    <string name="event_officehours_title">Персональные консультации</string>
+    <string name="event_afterhours_title">Развлекательные мероприятия</string>
+    <string name="event_meals_title">Питание</string>
+    <string name="event_sandbox_description">В специально оборудованных для этого помещениях мы покажем, как работают наши новейшие технологические достижения.</string>
+    <string name="event_codelabs_description">Вы сможете самостоятельно протестировать наши новейшие разработки используя готовые коды, а если потребуется, обратиться за помощью к нашим специалистам.</string>
+    <string name="event_officehours_description">Вы сможете обсудить со специалистами Google технические аспекты создания приложений, узнать авторитетное мнение о своих проектах и получить советы о том, как их улучшить.</string>
+    <string name="event_afterhours_description">Для участников фестиваля предусмотрена развлекательная программа. В первый день вы сможете посетить вечеринку в пространстве для тестирования, а во второй – концерт в здании амфитеатра.</string>
+    <string name="wifi_header">Сведения о Wi-Fi</string>
+    <string name="event_types_header">Типы мероприятий</string>
+    <string name="settings_time_zone_label">Тихоокеанский часовой пояс (UTC-8)</string>
+    <string name="settings_send_anonymous_usage_statistics">Отправлять анонимную статистику использования</string>
+    <string name="settings_tos">Условия использования</string>
+    <string name="settings_privacy_policy">Политика конфиденциальности</string>
+    <string name="settings_oss_licenses">Посмотреть лицензии ПО с открытым исходным кодом</string>
+    <string name="settings_version_label">Версия %1$s, сборка %2$s</string>
+    <string name="built_with_material_content_description">В приложении использованы элементы Material Design.</string>
+    <string name="day1">День 1</string>
+    <string name="day2">День 2</string>
+    <string name="day3">День 3</string>
+    <string name="day1_date">8 мая</string>
+    <string name="day2_date">9 мая</string>
+    <string name="day3_date">10 мая</string>
+</resources>

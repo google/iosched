@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="playstore_title">Google I/O 2018</string>
+    <string name="playstore_tagline">Официальное приложение Google I/O 2018 – ваш гид по мероприятиям фестиваля.</string>
+    <string name="playstore_description">Приложение Google I/O 2018 – ваш гид по фестивалю. В нем собраны сведения о встречах и их онлайн-трансляциях. Вы сможете:\n\n• следить за расписанием мероприятий и информацией о них;\n• добавлять мероприятия в расписание;\n• получать уведомления о начале мероприятий;\n• синхронизировать расписание на сайте со своими устройствами;\n• ориентироваться на площадке фестиваля по векторной карте;\n• включить уведомления, например о графике мероприятий, расписании транспорта и развлекательной программе.\n\nДля посетителей фестиваля предусмотрены бонусы:\n• доступ к сети Wi-Fi по заранее настроенной конфигурации;\n• возможность бронировать места.\n\nИсходный код приложения станет доступен по завершении фестиваля.</string>
+    <string name="playstore_change">Добавлены сведения о фестивале Google I/O 2018 года.\n• Есть возможность заранее забронировать билеты на интересующие вас мероприятия.\n• Можно ознакомиться с информацией о фестивале и месте его проведения, узнать как туда добраться, а также найти ответы на часто задаваемые вопросы.</string>
+    <string name="playstore_required_permissions">Необходимые разрешения</string>
+    <string name="playstore_optional_permissions">Дополнительные разрешения</string>
+    <string name="playstore_permission_location_information">Чтобы мы могли создать для вас карту, откройте приложению доступ к местоположению.</string>
+</resources>

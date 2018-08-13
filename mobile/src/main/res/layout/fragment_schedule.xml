@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel" />
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            layout="@layout/include_schedule_appbar"
+            app:viewModel="@{viewModel}" />
+
+        <com.google.samples.apps.iosched.widget.CustomSwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:enabled="@{!viewModel.isAgendaPage}"
+            app:onRefreshListener="@{() -> viewModel.onSwipeRefresh()}"
+            app:refreshing="@{viewModel.swipeRefreshing}"
+            app:swipeRefreshColors="@{@intArray/swipe_refresh}">
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:pageMargin="@{@dimen/spacing_normal}"
+                app:pageMarginDrawable="@{@drawable/page_margin}" />
+
+        </com.google.samples.apps.iosched.widget.CustomSwipeRefreshLayout>
+
+        <!-- TODO(b/72711711): Provide a better loading indicator -->
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/light_grey"
+            app:goneUnless="@{viewModel.isLoading}" />
+
+        <!-- A custom snackbar implementation for more control over positioning i.e. above the
+             FAB, to control its entry/exit animation. -->
+        <com.google.samples.apps.iosched.widget.FadingSnackbar
+            android:id="@+id/snackbar"
+            android:layout_width="@dimen/snackbar_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_marginBottom="@dimen/snackbar_margin_bottom_fab"
+            android:layout_marginEnd="@dimen/snackbar_margin_end_fab"
+            android:visibility="gone" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/filter_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/margin_normal"
+            android:contentDescription="@string/filters"
+            app:fabSize="auto"
+            app:hoveredFocusedTranslationZ="0dp"
+            app:pressedTranslationZ="0dp"
+            app:srcCompat="@drawable/ic_filter" />
+
+        <!--
+          ~ We use a margin to prevent the status bar from drawing over the shadow when the sheet
+          ~ expands. However, marginTop pushes the sheet down from it's peekHeight when collapsed.
+          ~ Using marginBottom achieves the desired effect.
+          -->
+        <fragment
+            android:id="@+id/filter_sheet"
+            android:name="com.google.samples.apps.iosched.ui.schedule.filters.ScheduleFilterFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="4dp"
+            app:layout_behavior="com.google.samples.apps.iosched.widget.BottomSheetBehavior"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="@dimen/bottom_sheet_peek_height"
+            app:behavior_skipCollapsed="true"
+            tools:layout="@layout/fragment_schedule_filter" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

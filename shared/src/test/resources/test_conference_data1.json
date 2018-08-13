@@ -1,0 +1,224 @@
+{
+  "version": 42,
+  "blocks": [
+    {
+      "title": "Breakfast",
+      "type": "meal",
+      "color": "#31E7B6",
+      "start": "2018-05-08T07:00-07:00",
+      "end": "2018-05-08T09:30-07:00"
+    },
+    {
+      "title": "Badge pick-up",
+      "type": "badge",
+      "color": "#E6E6E6",
+      "start": "2018-05-08T07:00-07:00",
+      "end": "2018-05-08T19:00-07:00"
+    },
+    {
+      "title": "Keynote",
+      "type": "keynote",
+      "color": "#FCD230",
+      "start": "2018-05-08T10:00-07:00",
+      "end": "2018-05-08T11:30-07:00"
+    }
+  ],
+  "map": [
+    {
+      "markers": {
+        "0": [
+          {
+            "id": "19b9264a-35c9-e511-ab0e-00155d5066d7",
+            "lat": 37.42563,
+            "lng": -122.079707,
+            "title": "Stage 1 - Hercules",
+            "type": "SESSION"
+          },
+          {
+            "id": "Stage 1",
+            "lat": 37.425622,
+            "lng": -122.0796999,
+            "title": "1 - Hercules",
+            "type": "LABEL"
+          }
+        ]
+      },
+      "tiles": {
+        "0": {
+          "filename": "floor0-2016-2.svg",
+          "url": ""
+        }
+      }
+    }
+  ],
+  "rooms": [
+    {
+      "id": "040f4750-2bf0-459b-9db2-e36b418ad7f5",
+      "capacity": 0,
+      "name": "Amphitheatre",
+      "filter": true
+    },
+    {
+      "id": "c82507f9-e904-49e3-a1ce-9b95a97e816d",
+      "capacity": 0,
+      "name": "Codelabs building",
+      "filter": false
+    }
+  ],
+  "sessions": [
+    {
+      "id": "03d28d6f-c417-4c1a-a0ab-e4aa5c72ad90",
+      "title": "[Session] Build real consumer devices with Android Things",
+      "description": "This talk will walk through the journey of building consumer devices like Smart Displays using Android Things, how platform features were ramped up to support product needs, and the vision to help OEM partners reduce time to market by leveraging Android Things.",
+      "type": "Sessions",
+      "contentLevels": [
+        "Intermediate"
+      ],
+      "tagNames": [
+        "topic_iot",
+        "type_sessions",
+        "level_intermediate"
+      ],
+      "startTimestamp": 1525890600000,
+      "endTimestamp": 1525894200000,
+      "livestream": true,
+      "youtubeUrl": "https://www.youtube.com/watch?v=Y2VF8tmLFHw",
+      "room": "9c37194e-fe72-4218-8e23-fd296eed747f",
+      "speakers": [
+        "0cf3da88-0678-4089-ab4f-04a501306214",
+        "d602581b-fd9a-4a1d-89f1-9d3d6ab0ca9b"
+      ],
+      "relatedSessions": [
+        "832f04cc-f4da-48bd-bd8f-8d6532fe4af7",
+        "49734f51-eb79-42e3-a148-e508db973bf0"
+      ]
+    },
+    {
+      "id": "040f4750-2bf0-459b-9db2-e36b418ad7f5",
+      "title": "[Session] Google Cloud Platform on a shoestring budget",
+      "description": "Sometimes you make technical decisions for performance. Sometimes you make them for simplicity, or even for \"coolness.\" And sometimes, you need to make decisions based on costs. This session throws out all other considerations and shows you how to accomplish the most common cloud tasks as cost-effectively as possible. If you're looking to store data, stream media, and secure your content on a showstring budget, this is the talk for you.",
+      "type": "Sessions",
+      "contentLevels": [
+        "Intermediate"
+      ],
+      "tagNames": [
+        "type_sessions",
+        "level_intermediate",
+        "topic_cloud"
+      ],
+      "startTimestamp": 1525966200000,
+      "endTimestamp": 1525969800000,
+      "livestream": true,
+      "youtubeUrl": "https://www.youtube.com/watch?v=Y2VF8tmLFHw",
+      "room": "040f4750-2bf0-459b-9db2-e36b418ad7f5",
+      "speakers": [
+        "c15067ba-9b7e-41af-96f2-02ff159db7c7"
+      ],
+      "relatedSessions": [
+        "10f0eaac-a040-45b2-b37c-b7c96d170592",
+        "b133aafb-c75e-44aa-9ee3-ddc3859e3e8c",
+        "fe21204a-8956-48b9-9a60-e42eb4607756"
+      ]
+    },
+    {
+      "id": "086cd75d-8f7a-45d7-99bb-69dd3709535a",
+      "title": "[Session] Code beautiful UI with Flutter and Material Design",
+      "description": "To stand out, apps need to have smooth, motion-rich, customized designs. Watch beautiful UIs come to life in record time with Flutter and the latest evolution of Material Design. Learn how Flutter’s layout and stateful hot reload can make UI development intuitive and fast, how to go beyond stock widgets to deliver customized interfaces, and how to add motion and animation for delightful user experiences. Best part: do this all with a single codebase that produces native apps on iOS and Android.",
+      "type": "Sessions",
+      "contentLevels": [
+        "Beginner",
+        "Intermediate"
+      ],
+      "tagNames": [
+        "topic_flutter",
+        "topic_design",
+        "level_beginner",
+        "type_sessions",
+        "level_intermediate"
+      ],
+      "startTimestamp": 1525879800000,
+      "endTimestamp": 1525883400000,
+      "livestream": true,
+      "youtubeUrl": "https://www.youtube.com/watch?v=Y2VF8tmLFHw",
+      "room": "3570bda2-0bc3-4b3b-a7c7-8514f8026ab3",
+      "speakers": [
+        "9ccd454d-1718-47c0-a543-67303a59df4b",
+        "7c4b4e96-d521-4952-b2f2-363c2095db35"
+      ],
+      "relatedSessions": [
+        "94f05260-0dfd-4867-8d04-399e96595035",
+        "dab2bf45-6e44-4605-a997-9d446f95ef38"
+      ]
+    }
+  ],
+  "speakers": {
+    "c15067ba-9b7e-41af-96f2-02ff159db7c7": {
+      "id": "c15067ba-9b7e-41af-96f2-02ff159db7c7",
+      "name": "",
+      "bio": "",
+      "company": "",
+      "thumbnailUrl": "",
+      "socialLinks": {
+        "github": "",
+        "website": "",
+        "twitter": "",
+        "linkedin": ""
+      }
+    },
+    "63e61007-fe4e-44a9-b7bd-5238fae42bbf": {
+      "id": "63e61007-fe4e-44a9-b7bd-5238fae42bbf",
+      "name": "",
+      "bio": "",
+      "company": "",
+      "thumbnailUrl": "",
+      "socialLinks": {
+        "github": "",
+        "website": "",
+        "twitter": "",
+        "linkedin": ""
+      }
+    },
+    "2d300b5f-0352-4e25-a4f8-8ae1fc6a0b9d": {
+      "id": "2d300b5f-0352-4e25-a4f8-8ae1fc6a0b9d",
+      "name": "",
+      "bio": "",
+      "company": "",
+      "thumbnailUrl": "",
+      "socialLinks": {
+        "github": "",
+        "website": "",
+        "twitter": "",
+        "linkedin": ""
+      }
+    }
+  },
+  "tags": [
+    {
+      "id": "0a87138f-6cf7-4a47-a749-0dafd0c84e9c",
+      "name": "Cloud",
+      "order_in_category": 0,
+      "category": "topic",
+      "tag": "topic_cloud",
+      "color": "#4768FD",
+      "fontColor": "#FFFFFF"
+    },
+    {
+      "id": "061c48b8-5655-4eb3-ae63-f3a535e74b26",
+      "name": "Ads",
+      "order_in_category": 0,
+      "category": "topic",
+      "tag": "topic_ads",
+      "color": "#574DDD",
+      "fontColor": "#FFFFFF"
+    },
+    {
+      "id": "920863b7-3ebb-498d-bb59-33e63244664f",
+      "name": "Flutter",
+      "order_in_category": 0,
+      "category": "topic",
+      "tag": "topic_flutter",
+      "color": "#31E7B6",
+      "fontColor": "#202124"
+    }
+  ]
+}

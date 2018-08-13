@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <string name="title_schedule" translation_description="The title for the schedule screen where user can see their schedule for Google I/O.">Schedule</string>
+    <string name="title_map" translation_description="The title for the map screen where user can see the map of the venue.">Map</string>
+    <string name="title_info" translation_description="The title for the info screen where user can see various information, such as FAQ and travel info.">Info</string>
+
+    <!-- Schedule -->
+    <string name="filters" translation_description="The label for the button to filter sessions by their topics, room, and so on.">Filters</string>
+    <string name="category_heading_tracks" translation_description="Label in the filters panel above session topics (Android, Cloud, etc.)">Topics</string>
+    <string name="category_heading_types" translation_description="Label in the filters panel above event types (Sessions, Codelabs, etc.)">Types</string>
+    <string name="clear_all" translation_description="The label for the button to clear all the filter conditions.">Clear all</string>
+    <string name="reset" translation_description="The label for the button to reset the filter conditions.">Reset</string>
+    <string name="pinned_events_filter_description" translation_description="Message shown when the user toggles the switch to see their pinned events.">Showing only starred and reserved events</string>
+    <plurals name="filter_event_count" translation_description="A label showing how many events match the current filters">
+        <item quantity="one">%1$d Event</item>
+        <item quantity="other">%1$d Events</item>
+    </plurals>
+    <string name="starred_and_reserved">Your starred and reserved events</string>
+    <string name="starred_and_reserved_short">Starred &amp; reserved</string>
+
+    <string name="session_duration_location" translatable="false">%1s / %2s</string>
+    <string name="session_date_duration_location" translatable="false">%1s / %2s / %3s</string>
+    <string name="agenda" translation_description="The title for the agenda screen where user can see all the sessions they plan to attend.">Agenda</string>
+    <string name="agenda_duration" translatable="false">%1$s – %2$s</string>
+    <string name="event_starred" translation_description="The message shown when user adds an event to their schedule.">Event added to your starred items</string>
+    <string name="event_unstarred" translation_description="The message shown when user removes an event from their schedule.">Event removed from starred items</string>
+    <string name="event_star_error" translation_description="The message shown for an error when user tries to add an event.">Error adding event to starred items</string>
+    <string name="reservation_error" translation_description="The message shown for an error when user is trying to reserve a session attendance.">Error making changes to reservation. Wait for previous requests to finish or try again later.</string>
+    <string name="reservation_request_succeeded" translation_description="The message shown when user tries to reserve a seat for a session.">Reservation requested.</string>
+    <string name="reservation_cancel_succeeded" translation_description="The message shown when user has canceled their reservation for a session.">Reservation canceled: \"&lt;b>%s&lt;/b>.\"</string>
+    <string name="reservation_new" translation_description="The message shown when user's reservation is confirmed by the system.">Your seat has been reserved for \"&lt;b>%s&lt;/b>\".</string>
+    <string name="reservation_replaced" translation_description="The message shown when user has chosen to replace a reservation for another and it is confirmed by the system.">Event replaced.</string>
+    <string name="waitlist_new" translation_description="The message shown when user is added to the waitlist of a session reservation.">You have been waitlisted.</string>
+    <string name="waitlist_cancel_succeeded" translation_description="The message shown when user has canceled their reservation and was waitlisted for a session.">Removed from waitlist.</string>
+    <string name="got_it" translation_description="The label for dismissing a information messages.">Got it</string>
+    <string name="dont_show" translation_description="The label for opting out of in-app notification messages.">Don\'t show</string>
+    <string name="reservation_denied_cutoff" translation_description="The message shown when user's reservation is denied because the session starts too soon">Reservation denied: too close to start time.</string>
+    <string name="reservation_denied_clash" translation_description="The message shown when user's reservation is denied because they have reserved another event at that time">Reservation denied: clash with another reservation</string>
+    <string name="reservation_denied_unknown" translation_description="The message shown when user's reservation is denied because of an unknown error">Reservation denied: unknown error.</string>
+    <string name="cancellation_denied_cutoff" translation_description="The message shown when user is trying to cancel a reservation but it's denied because the session starts too soon">Cancellation denied: too close to start time.</string>
+    <string name="cancellation_denied_unknown" translation_description="The message shown when user is trying to cancel a reservation but it's denied because of an unknown error">Cancellation denied: unknown error.</string>
+
+    <string name="schedule_filters_empty" translation_description="The message shown when a schedule page is empty because no events match the current filters.">No events today match your current filters.</string>
+
+    <string name="reservation_reservable" translation_description="Label shown on events for which the user can request to reserve a seat.">Reserve seat</string>
+    <string name="reservation_reserved" translation_description="Label shown on events for which the user has reserved a seat.">Reserved</string>
+    <string name="reservation_waitlisted" translation_description="Label shown on events for which the user is on the waitlist.">Waitlisted</string>
+    <string name="reservation_waitlist_available" translation_description="Label shown on events for which the user can join the waitlist.">Join waitlist</string>
+    <string name="reservation_disabled" translation_description="Label shown on events for which the user cannot request a seat.">Reservations unavailable</string>
+    <string name="reservation_pending" translation_description="Label shown on events for which a reservation request is pending.">Reservation pending</string>
+
+    <!-- Schedule UI hints -->
+    <string name="schedule_hint_title" translation_description="The title of the schedule hint dialog.">Customize your schedule</string>
+    <string name="schedule_hint_view_only_your_events" translation_description="The schedule hint for the switch that toggles if the attendee wants to see their pinned events.">View only your events</string>
+    <string name="schedule_hint_star_event" translation_description="The schedule hint for the icon to star an event.">Add to your starred events</string>
+    <string name="schedule_hint_reserve_session_seat" translation_description="The schedule hint for the icon to reserve a session.">Reserve a session seat</string>
+    <string name="schedule_hint_star_event_content_description" translation_description="The content description for the icon to star an event.">An image to star an event</string>
+    <string name="schedule_hint_reserve_session_seat_content_description" translation_description="The content description for the icon to reserve a session.">An image to reserve a session seat</string>
+
+    <!-- Session Detail -->
+    <string name="rate_session" translation_description="The label for the button to rate the session by 5 stars">Rate Session</string>
+    <string name="menu_item_session_location" translation_description="The label for the location of the session.">Session location</string>
+    <string name="menu_item_session_star" translation_description="The label for starring of the session.">Star session</string>
+    <string name="session_detail_header_aspect" translatable="false">H,16:9</string>
+    <string name="session_detail_speakers_header" translation_descriptions="The label for the session speakers.">Speakers</string>
+    <string name="session_detail_related_header" translation_description="The label for the events related to this session.">Related Events</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_collapse_filters_sheet" translation_description="Description of a button to lower the filters sheet.">Lower filters sheet</string>
+    <string name="a11y_clear_tag_filters" translation_description="Description of a button to remove all current tag filters.">Clear filters</string>
+    <string name="a11y_filter_applied" translation_description="Alternative text when an event filter is applies">%1s filter applied</string>
+    <string name="a11y_filter_not_applied" translation_description="Alternative text when an event filter is not applies">%1s filter not applied</string>
+
+    <string name="a11y_pinned" translation_description="Description of a button that's used to show only starred and reserved events.">Only starred and reserved events</string>
+    <string name="a11y_revert_pinned" translation_description="Description of a button to revert the switch that shows only starred and reserved events.">Show all sessions</string>
+
+    <string name="a11y_reservation_available" translation_description="Alternative text for the button letting the user reserve a seat for a given event.">Reserve event</string>
+    <string name="a11y_reservation_working" translation_description="Alternative text for the event reservation button whilst it is working on processing a reservation.">Working to reserve event</string>
+    <string name="a11y_reservation_reserved" translation_description="Alternative text for the event reservation button when the user has reserved a seat.">Event reserved</string>
+    <string name="a11y_reservation_disabled" translation_description="Alternative text for the event reservation button when reservation is not available.">Reservation not available</string>
+    <string name="a11y_reservation_wait_list_available" translation_description="Alternative text for the event reservation button when the user can join a wait list.">Join wait list for event</string>
+    <string name="a11y_reservation_wait_listed" translation_description="Alternative text for the event reservation button when the user is on a wait list for the event.">On wait list for event</string>
+    <string name="a11y_reservation_pending" translation_description="Alternative text for the event reservation button when the user's reservation is pending.">Reservation pending</string>
+    <string name="a11y_starred" translation_description="Alternative text for the event bookmark button when the event has been bookmarked.">Event bookmarked</string>
+    <string name="a11y_unstarred" translation_description="Alternative text for the event bookmark button when the event has not been bookmarked.">Event not bookmarked</string>
+    <string name="a11y_star" translation_description="Alternate text for a button used for starring or unstarring events">Star</string>
+    <string name="a11y_play" translation_description="Alternate text for a button used to play a video">Play video</string>
+
+    <!-- Sign in dialog -->
+    <string name="dialog_sign_in_title" translation_description="The title of the dialog. When the user needs to sign in.">Sign in to customize your schedule</string>
+    <string name="dialog_sign_in_content" translation_description="The content of the dialog. When the user needs to sign in.">Sign in to save events, reserve seats and rate sessions (if an attendee). Actions will be synced from your account across app and site.</string>
+    <string name="not_now" translation_description="The description of a button that the user doesn't want to sign in.">Not now</string>
+    <string name="sign_in" translation_description="The description of a button to sign in.">Sign in</string>
+    <string name="firebase_auth_no_network_connection" translation_description="Snackbar message when there is no network connectivity.">No internet connection</string>
+    <string name="firebase_auth_unknown_error" translation_description="Snackbar message when Firebase Auth has an unknown error.">Unknown error</string>
+
+    <!-- Sign out dialog -->
+    <string name="dialog_sign_out_title" translation_description="The title of the dialog. Used to confirm that the user wants to sign out.">Sign out?</string>
+    <string name="dialog_sign_out_content" translation_description="The content of the dialog. Used to confirm that the user wants to sign out.">All saved events, seat reservations and session ratings (if an attendee) remain synced to your account.</string>
+    <string name="sign_out" translation_description="The description of a button to sign out.">Sign out</string>
+
+    <!-- Cancel reservation dialog -->
+    <string name="remove_reservation_title" translation_description="The title of the dialog when the user is about to remove their reservation.">Remove reservation?</string>
+    <string name="remove_reservation_content" translation_description="The content of the dialog when the user is about to cancel their reservation.">You\'re about to give up your seat for \"%1$s\". If you decide not to reserve a seat but still want to attend, all sessions will have a portion of seats available first come, first serve onsite.</string>
+    <string name="cancel" translation_description="The label of the button to keep the seat.">Cancel</string>
+    <string name="remove" translation_description="The label of the button to release the seat.">Remove</string>
+
+    <!-- Swap reservations dialog -->
+    <string name="swap_reservation_title" translation_description="The title of the dialog when the user is about to change their reservation from one session to another.">Swap reservation?</string>
+    <string name="swap_reservation_content" translation_description="The content of the dialog when the user is about to change their reservation from one session to another.">You already have a reservation/waitlist for \"%1$s\". Only one reservation per time block is allowed. Would you like to swap for \"%2$s\"?</string>
+    <string name="swap" translation_description="The label of the button to swap the reservation with another.">Swap</string>
+
+    <!-- Notifications preference dialog -->
+    <string name="notifications_preference_dialog_title" translation_description="The title of the dialog for the notifications preference">I/O Notifications</string>
+    <string name="notifications_preference_dialog_content" translation_description="The content of the dialog for the notifications preference">Would you like to receive notifications about I/O? We\'ll send you information about session start times, after hours events, session recordings, and more. You can change this setting under \"Info > Settings\" at any time.</string>
+    <string name="no" translation_description="Negative answer to the question \'Would you like to receive notification?\'">No</string>
+    <string name="yes" translation_description="Positive answer to the question \'Would you like to receive notification?\'">Yes</string>
+
+    <plurals name="duration_hours">
+        <item quantity="one" translation_description="Unit for duration of time by hours. Singular.">%s hour</item>
+        <item quantity="other" translation_description="Unit for duration of time by hours. Plural.">%s hours</item>
+    </plurals>
+
+    <plurals name="duration_minutes">
+        <item quantity="one" translation_description="Unit for duration of time by minutes. Singular.">%s minute</item>
+        <item quantity="other" translation_description="Unit for duration of time by minutes. Plural.">%s minutes</item>
+    </plurals>
+
+    <!--Strings for sharing session-->
+    <string name="menu_item_share_session" translation_description="The label for the button to share this session on SNS, etc.">Share session</string>
+    <string name="share_text_session_detail" translation_description="The default message to be used when user is sharing an I/O session on SNS, etc.">Check out \'%1$s\' at #io18 %2$s</string>
+    <string name="intent_chooser_session_detail" translation_description="The label for share screen where user can tell people about an I/O session on SNS, etc.">Share</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_get_started" translation_description="The label for the button to start using the app.">Get started</string>
+    <string name="onboarding_welcome_to_google_i_o" translation_description="The welcome message shown at the onboarding screen of the app.">Welcome to Google I/O</string>
+    <string name="onboarding_date_location" translation_description="The date and the place of Google I/O 2018.">May 8–10,\n2018 Mountain View, CA</string>
+    <string name="onboarding_build_schedule" translation_description="The explanation title of the feature where user can choose which sessions to attend.">Build your own schedule</string>
+    <string name="onboarding_build_sched_benefits" translation_description="The explanation of the feature where user can choose which sessions to attend.">Build your custom I/O experience and reserve seats if you\'re an attendee</string>
+    <string name="onboarding_watch_live" translation_description="The explanation title of the feature where user can watch I/O sessions by live stream.">Watch I/O Live</string>
+    <string name="onboarding_join_online" translation_description="The explanation of the feature where user can watch I/O sessions by live stream.">Join us online. We\'ll be streaming the keynotes and most sessions live.</string>
+    <string name="onboarding_label_days" translation_description="The label for the display of the number of days until the conference starts">D</string>
+    <string name="onboarding_label_hours" translation_description="The label for the display of the number of hours until the conference starts">H</string>
+    <string name="onboarding_label_mins" translation_description="The label for the display of the number of minutes until the conference starts">M</string>
+    <string name="onboarding_label_seconds" translation_description="The label for the display of the number of seconds until the conference starts">S</string>
+
+    <plurals name="session_starting_in" translation_description="A countdown timer for a session starting, e.g. 'Session starting in 5 minutes'. Will always be minutes">
+        <item quantity="one">Session starting in %1$s minute</item>
+        <item quantity="other">Session starting in %1$s minutes</item>
+    </plurals>
+
+    <string name="expanded" translation_description="The label used on a button when a view is in an expanded state.">Expanded</string>
+    <string name="collapsed" translation_description="The label used on a button when a view is in an collapsed state.">Collapsed</string>
+
+    <!-- Info pages - TODO: update with 2018 copy and set translatable="true". -->
+    <string name="info_title" translation_description="The title for the info screen where user can see various information, such as FAQ and travel info.">Info</string>
+    <string name="event_title" translation_description="The title for the tab that shows interesting events, such as sessions and office hours.">Event</string>
+    <string name="travel_title" translation_description="The title for the tab that shows travel information, such as carpool and bus schedules.">Travel</string>
+    <string name="faq_title" translation_description="The title for the tab that shows FAQ.">FAQ</string>
+    <string name="settings_title" translation_description="Title for the tab that shows all the settings of this app.">Settings</string>
+    <string name="about_title" translation_description="Title for the 'About' tab that shows miscellaneous info.">About</string>
+
+    <string name="faq_url" translatable="false">https://events.google.com/io/faq/</string>
+    <string name="tos_url" translatable="false">https://policies.google.com/terms</string>
+    <string name="privacy_policy_url" translatable="false">https://policies.google.com/privacy</string>
+    <string name="oss_file" translatable="false">file:///android_asset/licenses.html</string>
+
+    <string name="travel_directions_title" translation_description="Header label for driving directions details.">Driving Directions</string>
+    <string name="travel_shuttle_title" translation_description="Header label for shuttle service details.">Shuttle Service (Recommended)</string>
+    <string name="travel_carpool_parking_title" translation_description="Header label for parking and carpooling details.">Parking &amp; Carpooling</string>
+    <string name="travel_ride_sharing_title" translation_description="Header label for ride sharing app details (i.e. Lyft Line, Waze Carpool).">Ride Sharing</string>
+    <string name="travel_public_transportation_title" translation_description="Header label for public transportation details.">Public Transportation</string>
+    <string name="travel_biking_title" translation_description="Header label for bicycling details">Biking</string>
+
+    <string name="travel_directions_description" translation_description="Instructions on how to find directions to the conference.">Find directions on <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> or <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a> to 1 Amphitheatre Pkwy, Mountain View, CA 94043</string>
+    <string name="travel_shuttle_description" translation_description="Shuttle service instructions.">Event shuttles will be provided at no charge to all Google I/O attendees from all Google-recommended hotels. There is also select service from San Francisco and other locations along the Peninsula. You must show your Google I/O confirmation email or conference badge to board all Google I/O event shuttles.\n\nEach pick-up location can support accessible vehicles. Please indicate on your registration form if you have any special assistance requirements, and the planning team will follow up with you directly.</string>
+    <string name="travel_carpool_parking_description" translation_description="Carpool and parking instructions.">Parking is very limited and available only in Google I/O designated lots located across from Shoreline Amphitheatre along Shoreline Boulevard. There is no event parking along Amphitheatre Parkway or Charleston Road. If you plan to drive, we recommend carpooling with other attendees as preferred parking spaces will be available for cars containing two or more people.</string>
+    <string name="travel_ride_sharing_description" translation_description="Ride sharing app instructions and discounts."><b>Waze Carpool</b>\nWaze Carpool is a trusted community of drivers and riders that is available to make your Google I/O commute fun, fast and affordable. Driving? Open <a href="http://Waze.com/get">Waze</a> when you get to the Bay Area. Looking for a ride? Install <a href="http://Waze.com/carpool">Waze Carpool</a> before you arrive. Check back here in the coming weeks for carpool discount codes exclusive to Google I/O attendees.\n\n<b>Lyft Line</b>\nDownload the Lyft app from Google Play and use Lyft Line to share a ride for less with others going the same way.\n<b>Discount code</b>: Googleio18\nThis code is valid from May 8–10, 2018 for shared rides with Lyft Line. It’s redeemable for up to $10 per trip and for up to 250 users per day. Rides must begin or end at Shoreline Amphitheatre.</string>
+    <string name="travel_public_transportation_description" translation_description="Public transportation instructions.">Public transit doesn’t go directly to Google I/O. Stay tuned for the exact transportation locations serviced by Google I/O event shuttles.</string>
+    <string name="travel_biking_description" translation_description="Bicycle instructions.">Complimentary bike parking will be available at Shoreline Amphitheatre in Parking Lot A. The Silicon Valley Bicycle Coalition will provide secure valet parking for your bicycle from 7am until the event ends each day. There are two trails, Stevens Creek Trail and Permanente Creek Trail, that are convenient for bike riders heading to Shoreline Amphitheatre. Check Google Maps for the best bike routes and directions.\n\nThe Bay Area Bike to Work Day is scheduled on Thursday, May 10th. There will be thousands of cyclists participating near Shoreline and there are hundreds of energizer stations throughout the area. Please check out the Silicon Valley Bike to Work Day website for more information.</string>
+
+    <string name="view_sessions_text" translation_description="Link label for viewing all sessions in schedule.">View Sessions</string>
+    <string name="view_codelabs_text" translation_description="Link label for viewing all codelabs.">View Codelabs</string>
+    <string name="view_events_text" translation_description="Link label for viewing all events.">View Events</string>
+    <string name="view_map_text" translation_description="Link label for viewing events.">View Map</string>
+    <string name="wifi_network_label" translation_description="Label for wifi network name.">Wifi network:</string>
+    <string name="wifi_password_label" translation_description="Label for wifi network password">Password:</string>
+    <string name="wifi_install_success" translation_description="Snackbar message when wifi network is successfully saved.">Wifi network saved</string>
+    <string name="wifi_install_error_message" translation_description="Snackbar message when saving wifi network fails.">Sorry, unable to save wifi network</string>
+    <string name="wifi_install_clipboard_message" translation_description="WiFi install failed, so tell the user we saved the password to the clipboard.">Unable to save wifi network.\nSaved password to clipboard instead.</string>
+    <string name="event_sessions_title" translation_description="Header label for general information on &quot;sessions&quot;.">Sessions</string>
+    <string name="event_sandbox_title" translation_description="Header label for general &quot;sandbox&quot; description.">Sandbox</string>
+    <string name="event_codelabs_title" translation_description="Header label for general information on &quot;codelabs&quot;.">Codelabs</string>
+    <string name="event_officehours_title" translation_description="Header label for general information on &quot;office hours and app reviews&quot;.">Office Hours &amp; App Reviews</string>
+    <string name="event_afterhours_title" translation_description="Header label for general information on &quot;after hours&quot;">After Hours</string>
+    <string name="event_meals_title" translation_description="Header label for general information on &quot;meals&quot;">Meals</string>
+    <string name="event_sessions_description" translation_description="General information on sessions">Starting in April, in-person attendees can reserve seats for Sessions in advance of the event on the I/O website and also via the I/O mobile app (note: a portion of Session seats will be exempt from reservations and available first-come, first-served onsite). Attendance at Codelabs, App Reviews, and Office Hours is on a first-come, first-served basis onsite.</string>
+    <string name="event_sandbox_description" translation_description="General information on sandboxes.">Dedicated spaces to explore, learn, and play with our latest products and platforms via interactive demos, physical installations, and more.</string>
+    <string name="event_codelabs_description" translation_description="General information on codelabs.">Get hands-on experience in our ready-to-code kiosks. Here, you’ll have everything you need to learn about the latest and greatest Google technologies via self-paced tutorials, or bring your own machine and take your work home with you. Google staff will be on hand for helpful advice and to provide direction if you get stuck.</string>
+    <string name="event_officehours_description" translation_description="General information on office hours and app reviews.">Office Hours are your chance to meet one-on-one with Google experts to ask all your technical questions, and App Reviews will give you the opportunity to receive advice and tips on your specific app-related projects.</string>
+    <string name="event_afterhours_description" translation_description="General information on after hours.">After Sessions end for the day, stick around Shoreline for two evenings of food, drinks, and fun. On the first night, the party will take over the Sandbox space, and on the second night, we\'ll have an exclusive concert in the Amphitheatre.</string>
+    <string name="event_meals_description" translation_description="General information on meals.">Attendees are offered complimentary breakfast, lunch, and snacks on all three days of the conference. Dinner will also be available on Day 1 and 2 during the After Hours events.</string>
+    <string name="wifi_header" translation_description="Header label for wifi information.">Wifi</string>
+    <string name="related_apps_header" translation_description="Header label for related apps.">Related Apps</string>
+    <string name="event_types_header" translation_description="Header label for information on the different event types.">Event Types</string>
+    <string name="general_header" translation_description="Header label for general info.">General</string>
+    <string name="agreements_header" translation_description="Header label for links to TOS, privacy policy, OSS licenses.">Agreements</string>
+
+    <!--Info pages - Strings ready to translate-->
+    <string name="settings_time_zone_label" translate_description="Set time zone in app to PST.">Events in Pacific Time Zone (UTC-8)</string>
+    <string name="settings_enable_notifications" translate_description="Turn on notifications.">Enable notifications</string>
+    <string name="settings_send_anonymous_usage_statistics" translation_description="Enable sending usage statistics.">Send anonymous usage statistics</string>
+    <string name="settings_tos" translation_description="Open link to terms of service.">Terms of service</string>
+    <string name="settings_privacy_policy" translation_description="Open link to privacy policy.">Privacy policy</string>
+    <string name="settings_oss_licenses" translation_description="Open link to open source licenses.">Open sources licenses</string>
+    <string name="settings_version_label" translation_description="Version and build numbers.">Version %1$s, build %2$s</string>
+    <string name="faq_label" translation_description="Label for link to FAQ on website.">FAQ</string>
+    <string name="built_with_material_content_description" translation_description="The app was built with Material Components.">Built with Material Components.</string>
+    <string name="tap_to_join_network" translation_description="Tap to join Wifi network.">(tap to join network)</string>
+
+    <string name="scavenger_hunt_description" translation_description="Text explaining the scavenger hunt happening at I/O.">Join the I/O Android Things Scavenger Hunt!</string>
+    <string name="scavenger_hunt_description2" translation_description="Text explaining the scavenger hunt happening at I/O.">(Hint: There might be an Android Things Developer Kit in your future.)</string>
+    <string name="assistant_app_description" translation_description="Text explaining the I/O 18 app for Google Assistant.">Use the I/O 18 Action on Google Assistant.</string>
+    <string name="assistant_app_description2" translation_description="Text explaining the I/O 18 app for Google Assistant.">Just say \"Hey Google, talk to Google I/O 18\"!</string>
+
+    <!-- Day labels for schedule -->
+    <string name="day1" translation_description="Label for the first day of the conference">Day 1</string>
+    <string name="day2" translation_description="Label for the second day of the conference">Day 2</string>
+    <string name="day3" translation_description="Label for the third day of the conference">Day 3</string>
+    <string name="day1_date" translation_description="Actual date of the first day of the conference">May 8</string>
+    <string name="day2_date" translation_description="Actual date of the second day of the conference">May 9</string>
+    <string name="day3_date" translation_description="Actual date of the third day of the conference">May 10</string>
+
+    <!-- Speaker -->
+    <string name="speaker_link_website" translation_description="The label for a link to a speaker's Website">Website</string>
+    <string name="speaker_link_twitter" translation_description="The label for a link to a speaker's Twitter profile">Twitter</string>
+    <string name="speaker_link_github" translation_description="The label for a link to a speaker's GitHub profile">GitHub</string>
+    <string name="speaker_link_linkedin" translation_description="The label for a link to a speaker's LinkedIn profile">LinkedIn</string>
+    <!-- \u0020 is breakable whitespace - whitespace characters at start/end of string res are trimmed. -->
+    <string name="speaker_link_separator" translatable="false">\u0020/\u0020</string>
+    <string name="speaker_events_subhead" translation_description="The heading for a list of events a speaker is associated with">Events</string>
+    <string name="speaker_headshot_transition" translatable="false">speaker_headshot</string>
+
+    <string name="no_network_connection" translation_description="Snackbar message when there is not network connection">No internet connection.</string>
+
+    <string name="navigate_up" translation-description="Arrow at the top left of the screen for navigation">Navigate up</string>
+
+</resources>

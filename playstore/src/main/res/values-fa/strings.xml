@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="playstore_title">Google I/O 2018</string>
+    <string name="playstore_tagline">دستیار شما برای پیمایش I/O، چه به‌صورت حضوری شرکت داشته باشید چه از راه دور.</string>
+    <string name="playstore_description">برنامه رسمی کنفرانس Google I/O 2018، دستیار شما برای پیمایش کنفرانس است، چه به‌طور حضوری شرکت کنید چه از راه دور. با این برنامه می‌توانید این موارد را انجام دهید:\n\n• کاوش زمان‌بندی کنفرانس و دریافت جزئیات موضوعات و سخنران‌ها\n• ذخیره رویدادها را در «زمان‌بندی»، زمان‌بندی شخصی‌ شما\n• دریافت یادآوری پیش از شروع رویدادهایی که در «زمان‌بندی» ذخیره کرده‌اید\n• همگام‌سازی زمان‌بندی سفارشی‌ بین وب‌سایت I/O و همه دستگاه‌هایتان\n• استفاده از نقشه بُرداری کنفرانس به‌عنوان راهنما\n• دریافت اعلان‌های مهم مربوط به رویدادها، زمان‌بندی، سفر، موارد پس از ساعات کاری، موارد ضبط‌شده جلسات و غیره\n\nویژه شرکت‌کنندگان حضوری:\n• بهره‌مندی از پیکربندی WiFi تسهیل‌شده پیش از رویداد\n• رزرو صندلی جلوتر از زمان‌بندی\n\nکد منبع برنامه کمی پس از I/O دردسترس قرار می‌گیرد.</string>
+    <string name="playstore_change">به‌روزرسانی‌شده برای Google I/O 2018‏\n• رزرو صندلی برای رویدادها جلوتر از زما‌ن‌بندی\n• مطالعه اطلاعات مهم درباره «رویداد»، جزئیات «سفر» و سوالات متداول.</string>
+    <string name="playstore_required_permissions">مجوزهای لازم</string>
+    <string name="playstore_optional_permissions">مجوزهای اختیاری</string>
+    <string name="playstore_permission_location_information">اطلاعات مکان: برای نشان دادن نقشه محل برگزاری در اطراف مکان کاربر نیاز است.</string>
+</resources>

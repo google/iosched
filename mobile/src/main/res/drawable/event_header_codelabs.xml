@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <path
+        android:fillColor="#1CE8B5"
+        android:pathData="M50.5,10.5m-10.5,0a10.5,10.5 0,1 1,21 0a10.5,10.5 0,1 1,-21 0" />
+    <path
+        android:pathData="M50.5,89.5m-8.5,0a8.5,8.5 0,1 1,17 0a8.5,8.5 0,1 1,-17 0"
+        android:strokeColor="#4768FD"
+        android:strokeWidth="4" />
+    <path
+        android:fillColor="#1CE8B5"
+        android:pathData="M10.5,21a10.5,10.5 0,1 0,0 -21,10.5 10.5,0 0,0 0,21z" />
+    <path
+        android:pathData="M10.5,98a8.5,8.5 0,1 0,0 -17,8.5 8.5,0 0,0 0,17z"
+        android:strokeColor="#4768FD"
+        android:strokeWidth="4" />
+    <path
+        android:fillColor="#4768FD"
+        android:pathData="M10.5,61a10.5,10.5 0,1 0,0 -21,10.5 10.5,0 0,0 0,21z" />
+    <path
+        android:pathData="M89.5,59a8.5,8.5 0,1 0,0 -17,8.5 8.5,0 0,0 0,17zM50.5,59a8.5,8.5 0,1 0,0 -17,8.5 8.5,0 0,0 0,17z"
+        android:strokeColor="#4768FD"
+        android:strokeWidth="4" />
+    <path
+        android:fillColor="#1CE8B5"
+        android:pathData="M89.5,10.5m-10.5,0a10.5,10.5 0,1 1,21 0a10.5,10.5 0,1 1,-21 0" />
+    <path
+        android:pathData="M89.5,10.5m-9.5,0a9.5,9.5 0,1 1,19 0a9.5,9.5 0,1 1,-19 0"
+        android:strokeColor="#1CE8B5"
+        android:strokeWidth="2" />
+    <path
+        android:pathData="M89.5,89.5m-8.5,0a8.5,8.5 0,1 1,17 0a8.5,8.5 0,1 1,-17 0"
+        android:strokeColor="#4768FD"
+        android:strokeWidth="4" />
+</vector>

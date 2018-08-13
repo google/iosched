@@ -1,0 +1,31 @@
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M20,0a20,20 0 1,1 0,40a20,20 0 1,1 0,-40" />
+    <path
+        android:fillColor="#F17030"
+        android:pathData="M20,0a20,20 0 1,1 0,40a20,20 0 1,1 0,-40M20,2a18,18 0 0,0 0,36a18,18 0 0,0 0,-36" />
+    <path
+        android:fillColor="#202124"
+        android:pathData="m22.48,15.38c0,-1.26 -0.96,-2.26 -2.57,-2.26c-1.61,0 -2.56,0.98 -2.57,2.26c0,1.27 0.91,2.36 2.57,2.33c1.65,-0.03 2.58,-1.07 2.57,-2.33zM22.98,22.72c0,-1.35 -1.15,-2.64 -3.07,-2.64c-1.93,0 -3.07,1.29 -3.07,2.64c0,1.35 1.1,2.62 3.07,2.64c1.97,0.02 3.07,-1.29 3.07,-2.64zM14.17,22.91c0,-2.03 1.18,-3.23 2.59,-4v-0.144c-1.15,-0.77 -2.02,-1.9 -2.04,-3.46c-0.02,-1.56 1.13,-4.64 5.18,-4.63c4.05,0 5.17,3.07 5.18,4.63c0.01,1.57 -1.01,2.74 -2.04,3.46v0.144c1.39,0.78 2.59,2 2.59,4 0,2 -1.64,4.95 -5.74,4.94 -4.1,0 -5.74,-2.92 -5.74,-4.94z" />
+</vector>

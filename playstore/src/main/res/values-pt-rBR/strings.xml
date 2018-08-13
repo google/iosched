@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="playstore_title">Google I/O 2018</string>
+    <string name="playstore_tagline">Seu copiloto para navegar pelo I/O, seja pessoal ou remotamente.</string>
+    <string name="playstore_description">O aplicativo oficial do Google I/O 2018 é seu copiloto para navegar pela conferência, seja pessoal ou remotamente. Com ele, você pode:\n\n• explorar a programação da conferência, com detalhes sobre assuntos e apresentadores;\n• salvar eventos em \"Programação\", sua programação personalizada;\n• receber lembretes sobre o início de eventos que você salvou na \"Programação\";\n• sincronizar sua programação personalizada entre todos os seus dispositivos e o site do I/O;\n• guiar-se com o mapa baseado em vetores da conferência;\n• optar por receber informações importantes sobre o evento, a programação, a viagem, as sessões após o evento, as gravações de sessões e muito mais;\n\nExclusivo para quem participar pessoalmente:\n• aproveitar a configuração pré-evento da rede Wi-Fi;\n• reservar assentos antecipadamente.\n\nO código-fonte do aplicativo será disponibilizado logo após o I/O.</string>
+    <string name="playstore_change">Atualizado para o Google I/O 2018\n• Reserve assentos em eventos antecipadamente\n• Leia informações importantes sobre o evento, detalhes da viagem e perguntas frequentes.</string>
+    <string name="playstore_required_permissions">Permissões necessárias</string>
+    <string name="playstore_optional_permissions">Permissões opcionais</string>
+    <string name="playstore_permission_location_information">Informações de local: permissão necessária para mostrar o mapa do local próximo ao usuário.</string>
+</resources>

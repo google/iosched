@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2018 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:scrollbarStyle="insideOverlay"
+    android:scrollbars="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@drawable/list_divider"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/margin_normal"
+        android:showDividers="middle">
+
+        <com.google.samples.apps.iosched.widget.CollapsibleCard
+            android:id="@+id/directions_parking_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardDescription="@string/travel_directions_description"
+            app:cardTitle="@string/travel_directions_title" />
+
+        <com.google.samples.apps.iosched.widget.CollapsibleCard
+            android:id="@+id/shuttle_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardDescription="@string/travel_shuttle_description"
+            app:cardTitle="@string/travel_shuttle_title" />
+
+        <com.google.samples.apps.iosched.widget.CollapsibleCard
+            android:id="@+id/public_transportation_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardDescription="@string/travel_public_transportation_description"
+            app:cardTitle="@string/travel_public_transportation_title" />
+
+        <com.google.samples.apps.iosched.widget.CollapsibleCard
+            android:id="@+id/biking_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardDescription="@string/travel_biking_description"
+            app:cardTitle="@string/travel_biking_title" />
+
+        <com.google.samples.apps.iosched.widget.CollapsibleCard
+            android:id="@+id/ride_sharing_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardDescription="@string/travel_ride_sharing_description"
+            app:cardTitle="@string/travel_ride_sharing_title" />
+
+        <com.google.samples.apps.iosched.widget.CollapsibleCard
+            android:id="@+id/carpooling_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardDescription="@string/travel_carpool_parking_description"
+            app:cardTitle="@string/travel_carpool_parking_title" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:importantForAccessibility="no"
+            android:src="@drawable/info_transport_footer" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

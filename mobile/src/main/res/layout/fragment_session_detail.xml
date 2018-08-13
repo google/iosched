@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout_session_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="MergeRootFrame">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/session_detail_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:clipToPadding="false"
+            android:paddingBottom="?actionBarSize"
+            android:scrollbars="vertical"
+            app:hasFixedSize="@{true}"
+            app:layoutManager="LinearLayoutManager" />
+
+        <ImageButton
+            android:id="@+id/up"
+            android:layout_width="?actionBarSize"
+            android:layout_height="?actionBarSize"
+            android:layout_gravity="start|top"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/navigate_up"
+            app:srcCompat="@drawable/ic_arrow_back" />
+
+        <!-- Workaround for b/72034805 — BAB shadow can't extend beyond bounds nor concave shape -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bab_fake_shadow" />
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/session_detail_bottom_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_gravity="bottom"
+            android:elevation="6dp"
+            app:contentInsetStart="@dimen/margin_normal"
+            app:fabAlignmentMode="end" />
+
+        <com.google.samples.apps.iosched.ui.reservation.StarReserveFab
+            android:id="@+id/session_detail_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_anchor="@id/session_detail_bottom_app_bar"
+            app:backgroundTint="@color/white"
+            app:eventListener="@{viewModel}"
+            app:isRegistered="@{viewModel.observeRegisteredUser}"
+            app:isReservable="@{viewModel.session.isReservable}"
+            app:isReservationDisabled="@{viewModel.isReservationDisabled}"
+            app:isSignedIn="@{viewModel.observeSignedInUser}"
+            app:userEvent="@{viewModel.userEvent}" />
+
+        <!-- A custom snackbar implementation for more control over positioning i.e. above the FAB,
+             and to control its entry/exit animation. -->
+        <com.google.samples.apps.iosched.widget.FadingSnackbar
+            android:id="@+id/snackbar"
+            android:layout_width="@dimen/snackbar_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_marginBottom="@dimen/snackbar_margin_bottom_bab"
+            android:layout_marginEnd="@dimen/snackbar_margin_end_fab"
+            android:visibility="gone" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

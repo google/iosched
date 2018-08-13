@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="title_schedule">زمان‌بندی</string>
+    <string name="title_map">نقشه</string>
+    <string name="filters">فیلترها</string>
+    <string name="category_heading_tracks">موضوعات</string>
+    <string name="category_heading_types">انواع</string>
+    <string name="clear_all">پاک‌کردن همه</string>
+    <string name="reset">بازنشانی</string>
+    <plurals name="filter_event_count">
+        <item quantity="one">%1$d رویداد</item>
+        <item quantity="other">%1$d رویداد</item>
+    </plurals>
+    <string name="agenda">برنامه</string>
+    <string name="event_starred">رویداد به موارد ستاره‌دار اضافه شد</string>
+    <string name="event_unstarred">رویداد از موارد ستاره‌دار برداشته شد</string>
+    <string name="event_star_error">خطا هنگام اضافه‌کردن رویداد به موارد ستاره‌دار</string>
+    <string name="reservation_error">خطا هنگام ایجاد تغییر در رزرو. منتظر بمانید تا درخواست‌های قبلی تکمیل شود یا بعداً دوباره امتحان کنید.</string>
+    <string name="reservation_request_succeeded">رزرو درخواست شد.</string>
+    <string name="reservation_cancel_succeeded">رزرو لغو شد: «&lt;b&gt;%s&lt;/b&gt;.»</string>
+    <string name="reservation_new">صندلی‌تان برای «&lt;b&gt;%s&lt;/b&gt;» رزرو شد.</string>
+    <string name="reservation_replaced">رویداد جایگزین شد.</string>
+    <string name="waitlist_new">در فهرست انتظار قرار گرفتید.</string>
+    <string name="waitlist_cancel_succeeded">از فهرست انتظار برداشته شدید.</string>
+    <string name="got_it">متوجه شدم</string>
+    <string name="dont_show">نشان داده نشود</string>
+    <string name="reservation_denied_cutoff">رزرو رد شد: فاصله زمانی بسیار کم تا زمان شروع.</string>
+    <string name="reservation_denied_clash">رزرو رد شد: تداخل با رزروی دیگر</string>
+    <string name="reservation_denied_unknown">رزرو رد شد: خطای ناشناس.</string>
+    <string name="cancellation_denied_cutoff">لغو رد شد: فاصله زمانی بسیار کم تا زمان شروع.</string>
+    <string name="cancellation_denied_unknown">لغو رد شد: خطای ناشناس.</string>
+    <string name="schedule_filters_empty">هیچ رویداد ستاره‌دار یا رزرو‌شده‌ای برای امروز ندارید.</string>
+    <string name="reservation_reservable">رزرو صندلی</string>
+    <string name="reservation_reserved">رزرو شد</string>
+    <string name="reservation_waitlisted">در فهرست انتظار قرار گرفت</string>
+    <string name="reservation_waitlist_available">پیوستن به فهرست انتظار</string>
+    <string name="reservation_disabled">رزرو در دسترس نیست</string>
+    <string name="schedule_hint_title">سفارشی‌ساختن زمان‌بندی</string>
+    <string name="schedule_hint_view_only_your_events">فقط مشاهده رویدادها</string>
+    <string name="schedule_hint_star_event">اضافه‌کردن به رویدادهای ستاره‌دار</string>
+    <string name="schedule_hint_reserve_session_seat">رزروکردن صندلی جلسه</string>
+    <string name="schedule_hint_star_event_content_description">تصویری برای ستاره‌دارکردن رویداد</string>
+    <string name="schedule_hint_reserve_session_seat_content_description">تصویری برای رزروکردن صندلی جلسه</string>
+    <string name="rate_session">رتبه‌بندی جلسه</string>
+    <string name="menu_item_session_location">موقعیت مکانی جلسه</string>
+    <string name="menu_item_session_star">ستاره‌دارکردن جلسه</string>
+    <string name="session_detail_speakers_header">بلندگو</string>
+    <string name="session_detail_related_header">رویدادهای مرتبط</string>
+    <string name="a11y_collapse_filters_sheet">پایین‌آوردن برگه فیلترها</string>
+    <string name="a11y_clear_tag_filters">پاک‌کردن فیلترها</string>
+    <string name="a11y_revert_pinned">نمایش همه جلسات</string>
+    <string name="a11y_reservation_available">رزرو رویداد</string>
+    <string name="a11y_reservation_working">در‌حال رزروکردن رویداد</string>
+    <string name="a11y_reservation_reserved">رویداد رزرو شد</string>
+    <string name="a11y_reservation_disabled">رزروکردن دردسترس نیست</string>
+    <string name="a11y_reservation_wait_list_available">به فهرست انتظار رویداد بپیوندید</string>
+    <string name="a11y_reservation_wait_listed">در فهرست انتظار رویداد</string>
+    <string name="a11y_reservation_pending">رزرو درحالت انتظار</string>
+    <string name="a11y_starred">رویداد نشانک‌گذاری شد</string>
+    <string name="a11y_unstarred">رویداد نشانک‌گذاری نشد</string>
+    <string name="a11y_star">ستاره</string>
+    <string name="a11y_play">پخش ویدیو</string>
+    <string name="dialog_sign_in_title">برای سفارشی‌ساختن زمان‌بندی‌تان وارد سیستم شوید</string>
+    <string name="dialog_sign_in_content">برای ذخیره‌کردن رویدادها، رزروکردن صندلی و رتبه‌بندی جلسات (اگر شرکت‌کننده هستید)، وارد سیستم شوید.</string>
+    <string name="not_now">الآن نه</string>
+    <string name="sign_in">ورود به سیستم</string>
+    <string name="dialog_sign_out_title">از سیستم خارج می‌شوید؟</string>
+    <string name="dialog_sign_out_content">همه رویدادهای ذخیره‌شده، صندلی‌های رزرو‌شده و جلسات رتبه‌بندی‌شده (اگر شرکت‌کننده هستید)، با حسابتان هم‌گام باقی می‌ماند.</string>
+    <string name="sign_out">خروج از سیستم</string>
+    <string name="remove_reservation_title">رزرو حذف شود؟</string>
+    <string name="remove_reservation_content">درحال واگذارکردن صندلی‌تان در «%1$s» هستید. اگر تصمیم ندارید صندلی رزرو کنید اما همچنان می‌خواهید شرکت کنید، بخشی از صندلی‌های همه جلسات به‌ترتیب ورود شرکت‌کنندگان، درمحل دردسترس خواهد بود.</string>
+    <string name="cancel">لغو</string>
+    <string name="remove">حذف</string>
+    <string name="swap_reservation_title">رزرو تعویض شود؟</string>
+    <string name="swap_reservation_content">از قبل برای «%1$s» رزرو کرده‌اید/در فهرست انتظار قرار دارید؟. فقط یک رزرو به‌ازای هر بخش زمانی ممکن است. می‌خواهید با «%2$s» تعویض کنید؟</string>
+    <string name="swap">تعویض</string>
+    <string name="notifications_preference_dialog_title">اعلان I/O</string>
+    <string name="notifications_preference_dialog_content">می‌خواهید اعلان‌های مربوط به I/O را دریافت کنید؟ اطلاعات مربوط به زمان شروع جلسه، رویدادهای پس از ساعات کاری، موارد ضبط‌شده جلسات و غیره را برایتان ارسال می‌کنیم. هرزمان خواستید می‌توانید این تنظیمات را در «اطلاعات &gt; تنظیمات» تغییر دهید.</string>
+    <string name="no">نه</string>
+    <string name="yes">بله</string>
+    <plurals name="duration_hours">
+        <item quantity="one">%s ساعت</item>
+        <item quantity="other">%s ساعت</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%s دقیقه</item>
+        <item quantity="other">%s دقیقه</item>
+    </plurals>
+    <string name="menu_item_share_session">هم‌رسانی جلسه</string>
+    <string name="share_text_session_detail">«%1$s» را در #io18 %2$s بررسی کنید</string>
+    <string name="intent_chooser_session_detail">هم‌رسانی</string>
+    <string name="onboarding_get_started">شروع به کار</string>
+    <string name="onboarding_welcome_to_google_i_o">به Google I/O خوش‌آمدید</string>
+    <string name="onboarding_date_location">۸ تا ۱۰ مه،\n‏۲۰۱۸ ‏ماونتین ویو، کالیفرنیا</string>
+    <string name="onboarding_build_schedule">زمان‌بندی خودتان را ایجاد کنید</string>
+    <string name="onboarding_build_sched_benefits">تجربه سفارشی I/O خودتان را ایجاد کنید و اگر شرکت‌کننده هستید صندلی رزرو کنید</string>
+    <string name="onboarding_watch_live">I/O را به‌طور زنده تماشا کنید</string>
+    <string name="onboarding_join_online">به‌صورت آنلاین به ما بپیوندید. مطالب اصلی و اکثر جلسات پخش جریانی مستقیم دارند.</string>
+    <string name="onboarding_label_days">روز</string>
+    <string name="onboarding_label_hours">ساعت</string>
+    <string name="onboarding_label_mins">دقیقه</string>
+    <string name="onboarding_label_seconds">ثانیه</string>
+    <plurals name="session_starting_in">
+        <item quantity="one">جلسه ظرف %1$s دقیقه شروع می‌شود</item>
+        <item quantity="other">جلسه ظرف %1$s دقیقه شروع می‌شود</item>
+    </plurals>
+    <string name="expanded">بزرگ‌شده</string>
+    <string name="collapsed">کوچک‌شده</string>
+    <string name="info_title">اطلاعات</string>
+    <string name="event_title">رویداد</string>
+    <string name="travel_title">سفر</string>
+    <string name="settings_title">تنظیمات</string>
+    <string name="travel_directions_title">مسیرهای رانندگی</string>
+    <string name="travel_shuttle_title">سرویس رفت‌وبرگشت (توصیه‌شده)</string>
+    <string name="travel_carpool_parking_title">پارکینگ و سواری اشتراکی</string>
+    <string name="travel_ride_sharing_title">هم‌سفری</string>
+    <string name="travel_public_transportation_title">حمل‌ونقل عمومی</string>
+    <string name="travel_biking_title">دوچرخه‌سواری</string>
+    <string name="travel_directions_description">یافتن مسیرهای رفتن به 1 Amphitheatre Pkwy، Mountain View، CA 94043 در <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> یا <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a></string>
+    <string name="travel_shuttle_description">سرویس رفت‌وبرگشت رویدادها از همه هتل‌هایی که Google توصیه کرده است، بدون هیچ هزینه‌ای به همه شرکت‌کنندگان Google I/O ارائه می‌شود. همچنین سرویس‌های ویژه‌ای از سانفرانسیسکو و سایر مکان‌هایی که در مسیر شبه‌جزیره قرار دارد، ارائه می‌شود. برای سوارشدن به سرویس‌های رفت‌وبرگشت Google I/O باید رایانامه تأیید Google I/O یا نشان کنفرانس را نشان دهید.\n\nامکان درخواست خودروی دسترس‌پذیر با صندلی چرخ‌دار ADA در همه مکان‌های سوارشدن وجود دارد. لطفاً اگر نیاز به ADA یا هرگونه کمک خاصی دارید، در فرم ثبت‌نامتان ذکر کنید تا تیم برنامه‌ریزی برای پیگیری به‌طور مستقیم با شما تماس بگیرد.</string>
+    <string name="travel_carpool_parking_description">تعداد پارکینگ‌ها بسیار محدود بوده و فقط در مکان‌های تعیین‌شده توسط Google I/O از Shoreline Amphitheatre در امتداد Shoreline Boulevard دردسترس است. هیچ پارکینگی برای این رویداد در مسیر Amphitheatre Parkway یا Charleston Road وجود ندارد. اگر می‌خواهید با خودرو به این رویداد بروید، توصیه می‌کنیم که از سواری اشتراکی با سایر شرکت‌کنندگان استفاده کنید چون فضاهای ویژه‌ای برای پارک‌کردن خودروهایی که دو سرنشین یا بیشتر دارد درنظرگرفته شده است.</string>
+    <string name="travel_ride_sharing_description"><b>Waze Carpool</b>‏\n‏Waze Carpool انجمنی از رانندگان و مسافران معتمد است که می‌تواند رفت‌و‌آمد به Google I/O را مفرح، سریع و مقرون به‌صرفه کند. رانندگی می‌کنید؟ هنگامی که به Bay Area رسیدید، <a href="http://Waze.com/get">Waze</a> را باز کنید. به‌دنبال سواری می‌گردید؟ پیش از رسیدن، <a href="http://Waze.com/carpool">Waze Carpool</a> را نصب کنید. طی هفته‌های آینده، برای دریافت کدهای تخفیف سواری اشتراکی مختص شرکت‌کنندگان Google I/O، به اینجا سر بزنید.\n\n‏<b>Lyft Line</b>‏\n برنامه Lyft را از Google Play بارگیری کنید و از Lyft Line برای به‌اشتراک‌گذاشتن سواری با سایر افرادی که با شما هم‌مسیر هستند استفاده کرده و هزینه کمتری پرداخت کنید. \n<b>کد تخفیف</b>: Googleio18\nاین کد از ۸ تا ۱۰ مه ۲۰۱۸ برای سواری‌های اشتراکی ازطریق Lyft Line معتبر است. تا حداکثر ۱۰ دلار برای هر سفر و حداکثر برای ۲۵۰ کاربر در روز قابل‌استفاده است. مسیر حرکت باید از Shoreline Amphitheatre شروع شده یا به آن ختم شود.</string>
+    <string name="travel_public_transportation_description">حمل‌و‌نقل عمومی مستقیماً به Google I/O نمی‌رود. برای اطلاع از مکان‌های دقیق حمل‌ونقل که توسط سرویس‌های رفت‌و‌برگشت رویداد Google I/O ارائه می‌شود، با ما درارتباط باشید.</string>
+    <string name="travel_biking_description">پارکینگ رایگان برای دوچرخه در پارکینگ A در Shoreline Amphitheatre دردسترس خواهد بود. Silicon Valley Bicycle Coalition از ساعت ۷ صبح تا پایان رویداد در هر روز، خدمات پارکینگ وله امن برای دوچرخه ارايه می‌دهد. دو مسیر Stevens Creek Trail و Permanente Creek Trail برای دوچرخه‌سوارانی که به‌سمت Shoreline Amphitheatre می‌روند، مناسب است. برای اطلاع از بهترین مسیرها و راه‌های دوچرخه‌سواری به Google Maps مراجعه کنید.\n\n‏ Bike to Work Day در Bay Area برای روز پنج‌شنبه ۱۰ مه زمان‌بندی شده است. در آن روز هزاران دوچرخه‌سوار در نزدیکی Shoreline حضور خواهند داشت و صدها ایستگاه تجدید قوا در سراسر مسیر قرار خواهد گرفت. لطفاً برای کسب اطلاعات بیشتر به وب‌سایت Silicon Valley Bike to Work Day مراجعه کنید.</string>
+    <string name="view_sessions_text">مشاهده جلسات</string>
+    <string name="view_codelabs_text">مشاهده Codelabs</string>
+    <string name="view_events_text">مشاهده رویدادها</string>
+    <string name="view_map_text">مشاهده نقشه</string>
+    <string name="wifi_network_label">شبکه‌ Wi-Fi:</string>
+    <string name="wifi_password_label">گذرواژه:</string>
+    <string name="wifi_install_success">شبکه Wifi ذخیره شد</string>
+    <string name="wifi_install_error_message">متأسفیم، ذخیره شبکه Wifi امکان‌پذیر نیست</string>
+    <string name="event_sessions_title">جلسات</string>
+    <string name="event_sandbox_title">جعبه ایمنی</string>
+    <string name="event_codelabs_title">Codelabs</string>
+    <string name="event_officehours_title">ساعت اداری و بازبینی برنامه</string>
+    <string name="event_afterhours_title">پس از ساعات کاری</string>
+    <string name="event_meals_title">غذا</string>
+    <string name="event_sandbox_description">فضای ویژه برای کاوش، یادگیری و بازی با جدیدترین محصولات و پلتفورم‌های ما ازطریق برنامه‌های نمایشی تعاملی، نصب فیزیکی و غیره.</string>
+    <string name="event_codelabs_description">در کیوسک‌های آماده به کدگذاری ما، تجربه عملی کسب کنید. در اینجا هرچه که برای آشنایی با جدیدترین و بهترین فناوری‌های Google نیاز دارید ازطریق آموزش‌های خودگام در اختیارتان قرار می‌گیرد، یا می‌توانید دستگاه خودتان را بیاورید و کار را به منزل ببرید. کارکنان Google آماده ارائه راهنمایی‌های مفید هستند و اگر دچار مشکل شدید شما را راهنمایی خواهند کرد.</string>
+    <string name="event_officehours_description">ساعات اداری فرصتی برای ملاقات رو در رو با کارشناسان Google و مطرح کردن همه سؤالات فنی شما است، و «بازبینی برنامه» نیز فرصتی است که ازطریق آن می‌توانید درخصوص پروژه‌های خاص مربوط به برنامه‌ خود، مشاوره و راهنمایی دریافت کنید.</string>
+    <string name="event_afterhours_description">پس از پایان «جلسات»، دو شب برای صرف غذا و نوشیدنی و سرگرمی در Shoreline حضور داشته باشید. در شب اول، مهمانی در فضای Sandbox برگزار می‌شود و در شب دوم، در «آمفی‌تئاتر» کنسرت انحصاری خواهیم داشت.</string>
+    <string name="wifi_header">Wifi</string>
+    <string name="event_types_header">انواع رویداد</string>
+    <string name="settings_time_zone_label">زمان رویدادها به منطقه زمانی Pacific ‏(UTC-8)</string>
+    <string name="settings_send_anonymous_usage_statistics">ارسال آمار کاربرد به‌طور ناشناس</string>
+    <string name="settings_tos">شرایط و ضوابط</string>
+    <string name="settings_privacy_policy">خط‌مشی حریم خصوصی</string>
+    <string name="settings_oss_licenses">مجوز‌های منبع‌آزاد</string>
+    <string name="settings_version_label">نسخه %1$s، ساخت %2$s</string>
+    <string name="built_with_material_content_description">ساخته‌شده با Material Components.</string>
+    <string name="day1">روز اول</string>
+    <string name="day2">روز دوم</string>
+    <string name="day3">روز سوم</string>
+    <string name="day1_date">۸ مه</string>
+    <string name="day2_date">۹ مه</string>
+    <string name="day3_date">۱۰ مه</string>
+</resources>

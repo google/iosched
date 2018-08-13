@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector
+            android:width="24dp"
+            android:height="24dp"
+            android:viewportWidth="24"
+            android:viewportHeight="24">
+            <path
+                android:name="stroked_hour_glass"
+                android:pathData="M 12.075 19.67 L 16 19.67 C 16 18.477 16 17.283 16 16.09 L 14.125 14.21 C 13.5 13.583 12.875 12.957 12.25 12.33 C 12.875 11.707 13.5 11.083 14.125 10.46 L 16 8.59 L 16 6.795 C 16 6.197 16 5.598 16 5 L 8 5 C 8 5.598 8 6.197 8 6.795 L 8 8.59 C 9.25 9.837 10.5 11.083 11.75 12.33 C 11.125 12.955 10.5 13.58 9.875 14.205 L 8 16.08 C 8 17.277 8 18.473 8 19.67 L 12.075 19.67"
+                android:strokeColor="?android:textColorTertiary"
+                android:strokeWidth="2" />
+            <path
+                android:name="progress"
+                android:pathData="M 12.075 19.67 L 16 19.67 C 16 18.477 16 17.283 16 16.09 L 14.125 14.21 C 13.5 13.583 12.875 12.957 12.25 12.33 C 12.875 11.707 13.5 11.083 14.125 10.46 L 16 8.59 L 16 6.795 C 16 6.197 16 5.598 16 5 L 8 5 C 8 5.598 8 6.197 8 6.795 L 8 8.59 C 9.25 9.837 10.5 11.083 11.75 12.33 C 11.125 12.955 10.5 13.58 9.875 14.205 L 8 16.08 C 8 17.277 8 18.473 8 19.67 L 12.075 19.67"
+                android:strokeAlpha="0"
+                android:strokeColor="?colorControlNormal"
+                android:strokeWidth="2"
+                android:trimPathEnd="0.03"
+                android:trimPathOffset="0"
+                android:trimPathStart="0" />
+            <group>
+                <clip-path
+                    android:name="filled_mask"
+                    android:pathData="M 0 4 L 24 4 L 24 21 L 0 21 Z" />
+                <path
+                    android:fillColor="?colorPrimary"
+                    android:pathData="M 7 4 L 7 9 L 10.33 12.33 L 7 15.67 L 7 20.67 L 17 20.67 L 17 15.68 L 13.67 12.33 L 17 9.01 L 17 4 Z" />
+            </group>
+        </vector>
+    </aapt:attr>
+    <target android:name="filled_mask">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="250"
+                android:interpolator="@android:interpolator/fast_out_linear_in"
+                android:propertyName="pathData"
+                android:valueFrom="M 0 4 L 24 4 L 24 21 L 0 21 Z"
+                android:valueTo="M 0 21 L 24 21 L 24 21 L 0 21 Z"
+                android:valueType="pathType" />
+        </aapt:attr>
+    </target>
+    <target android:name="progress">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:duration="500"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="strokeAlpha"
+                    android:valueFrom="0"
+                    android:valueTo="1" />
+                <objectAnimator
+                    android:duration="1333"
+                    android:propertyName="trimPathStart"
+                    android:repeatCount="-1"
+                    android:valueFrom="0"
+                    android:valueTo="0.75"
+                    android:valueType="floatType">
+                    <aapt:attr name="android:interpolator">
+                        <pathInterpolator
+                            android:pathData="L0.5,0 C 0.7,0 0.6,1 1,1" />
+                    </aapt:attr>
+                </objectAnimator>
+                <objectAnimator
+                    android:duration="1333"
+                    android:propertyName="trimPathEnd"
+                    android:repeatCount="-1"
+                    android:valueFrom="0.03"
+                    android:valueTo="0.78"
+                    android:valueType="floatType">
+                    <aapt:attr name="android:interpolator">
+                        <pathInterpolator
+                            android:pathData="C0.2,0 0.1,1 0.5,0.96 C 0.96666666666,0.96 0.99333333333,1 1,1" />
+                    </aapt:attr>
+                </objectAnimator>
+                <objectAnimator
+                    android:duration="1333"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="trimPathOffset"
+                    android:repeatCount="-1"
+                    android:valueFrom="0"
+                    android:valueTo="0.25"
+                    android:valueType="floatType" />
+            </set>
+        </aapt:attr>
+    </target>
+</animated-vector>

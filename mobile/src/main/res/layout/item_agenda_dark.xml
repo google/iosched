@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!-- Alternative layout, identical to @layout/item_agenda_light except for a dark theme specified on
+     the root view group so contents uses a dark theme. -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="timeZoneId"
+            type="org.threeten.bp.ZoneId" />
+
+        <variable
+            name="agenda"
+            type="com.google.samples.apps.iosched.model.Block" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:paddingEnd="@dimen/margin_normal"
+        android:paddingVertical="@dimen/spacing_micro"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        tools:ignore="RtlSymmetry,UnusedAttribute">
+
+        <include
+            layout="@layout/include_agenda_contents"
+            app:agenda="@{agenda}"
+            app:timeZoneId="@{timeZoneId}" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

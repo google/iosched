@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="playstore_title">Google I/O 2018</string>
+    <string name="playstore_tagline">ผู้ช่วยในการนำทางไปยัง I/O ไม่ว่าคุณจะมาด้วยตนเองหรือเข้าร่วมจากระยะไกล</string>
+    <string name="playstore_description">แอปการประชุม Google I/O 2018 อย่างเป็นทางการเป็นผู้ช่วยในการนำทางไปยังการประชุม ไม่ว่าคุณจะมาด้วยตนเองหรือเข้าร่วมจากระยะไกล คุณทำสิ่งต่อไปนี้ได้ผ่านแอปนี้\n\n• ดูกำหนดการประชุมพร้อมรายละเอียดของหัวข้อและผู้บรรยาย\n• บันทึกกิจกรรมไปยังกำหนดการ ซึ่งเป็นกำหนดการที่ปรับให้เหมาะกับคุณ\n• รับการแจ้งเตือนก่อนกิจกรรมที่คุณบันทึกไว้ในกำหนดการจะเริ่มขึ้น\n• ซิงค์กำหนดการที่กำหนดเองผ่านอุปกรณ์ทั้งหมดของคุณและเว็บไซต์ I/O\n• นำทางตนเองโดยใช้แผนที่การประชุมที่ใช้เวกเตอร์\n• เลือกรับการแจ้งเตือนสำคัญเกี่ยวกับกิจกรรม กำหนดการ การเดินทาง กิจกรรมหลังเซสชัน การบันทึกเซสชัน และอื่นๆ\n\nพิเศษสำหรับผู้เข้าร่วมงานในสถานที่จริง:\n• ใช้ประโยชน์จากการกำหนดค่า Wi-Fi ที่ได้รับความช่วยเหลือก่อนวันงาน\n• จองที่นั่งก่อนที่กิจกรรมจะเริ่มขึ้น\n\nซอร์สโค้ดสำหรับแอปจะมีให้ใช้งานเร็วๆ นี้หลังจาก I/O</string>
+    <string name="playstore_change">อัปเดตสำหรับ Google I/O 2018\n• จองที่นั่งก่อนกิจกรรมจะเริ่มขึ้น\n• อ่านข้อมูลสำคัญเกี่ยวกับกิจกรรม รายละเอียดการเดินทาง และคำถามที่พบบ่อย</string>
+    <string name="playstore_required_permissions">สิทธิ์ที่จำเป็น</string>
+    <string name="playstore_optional_permissions">สิทธิ์ที่ไม่บังคับ</string>
+    <string name="playstore_permission_location_information">ข้อมูลตำแหน่งที่ตั้ง: จำเป็นต้องใช้ในการแสดงแผนที่รอบๆ ตำแหน่งที่ตั้งของผู้ใช้</string>
+</resources>

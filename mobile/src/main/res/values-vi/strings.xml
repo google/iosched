@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="title_schedule">Lịch biểu</string>
+    <string name="title_map">Bản đồ</string>
+    <string name="filters">Bộ lọc</string>
+    <string name="category_heading_tracks">Chủ đề</string>
+    <string name="category_heading_types">Loại</string>
+    <string name="clear_all">Xóa tất cả</string>
+    <string name="reset">Đặt lại</string>
+    <plurals name="filter_event_count">
+        <item quantity="one">%1$d Sự kiện</item>
+        <item quantity="other">%1$d Sự kiện</item>
+    </plurals>
+    <string name="agenda">Lịch trình sự kiện</string>
+    <string name="event_starred">Đã thêm sự kiện vào các mục có gắn dấu sao của bạn</string>
+    <string name="event_unstarred">Đã xóa sự kiện khỏi các mục được gắn dấu sao</string>
+    <string name="event_star_error">Xảy ra lỗi khi thêm sự kiện vào các mục được gắn dấu sao</string>
+    <string name="reservation_error">Xảy ra lỗi khi thay đổi đặt chỗ. Vui lòng đợi cho đến khi các yêu cầu trước đó kết thúc hoặc thử lại sau.</string>
+    <string name="reservation_request_succeeded">Đã yêu cầu đặt chỗ.</string>
+    <string name="reservation_cancel_succeeded">Đã hủy đặt chỗ: \"&lt;b&gt;%s&lt;/b&gt;.\"</string>
+    <string name="reservation_new">Bạn đã đặt chỗ tại \"&lt;b&gt;%s&lt;/b&gt;\".</string>
+    <string name="reservation_replaced">Đã thay đổi sự kiện.</string>
+    <string name="waitlist_new">Bạn đã được ghi tên trong danh sách chờ đặt chỗ.</string>
+    <string name="waitlist_cancel_succeeded">Đã xóa khỏi danh sách chờ đặt chỗ.</string>
+    <string name="got_it">OK</string>
+    <string name="dont_show">Không hiển thị</string>
+    <string name="reservation_denied_cutoff">Đặt chỗ bị từ chối: quá sát thời gian bắt đầu.</string>
+    <string name="reservation_denied_clash">Đặt chỗ bị từ chối: xung đột với một đặt chỗ khác</string>
+    <string name="reservation_denied_unknown">Đặt chỗ bị từ chối: lỗi không xác định.</string>
+    <string name="cancellation_denied_cutoff">Từ chối hủy: quá sát thời gian bắt đầu.</string>
+    <string name="cancellation_denied_unknown">Từ chối hủy: lỗi không xác định.</string>
+    <string name="schedule_filters_empty">Hôm nay bạn chưa gắn sao hay đặt chỗ cho sự kiện nào.</string>
+    <string name="reservation_reservable">Đặt chỗ</string>
+    <string name="reservation_reserved">Đã đặt chỗ</string>
+    <string name="reservation_waitlisted">Được đưa vào danh sách chờ đặt chỗ</string>
+    <string name="reservation_waitlist_available">Tham gia danh sách chờ</string>
+    <string name="reservation_disabled">Không thể đặt chỗ</string>
+    <string name="schedule_hint_title">Tùy chỉnh lịch biểu của bạn</string>
+    <string name="schedule_hint_view_only_your_events">Chỉ hiển thị các sự kiện của bạn</string>
+    <string name="schedule_hint_star_event">Thêm vào mục các sự kiện được gắn dấu sao của bạn</string>
+    <string name="schedule_hint_reserve_session_seat">Đặt trước một chỗ</string>
+    <string name="schedule_hint_star_event_content_description">HÌnh ảnh để gắn sao sự kiện</string>
+    <string name="schedule_hint_reserve_session_seat_content_description">Hình ảnh để đặt chỗ</string>
+    <string name="rate_session">Đánh giá phiên hội thảo</string>
+    <string name="menu_item_session_location">Địa điểm diễn ra phiên hội thảo</string>
+    <string name="menu_item_session_star">Bắt đầu phiên</string>
+    <string name="session_detail_speakers_header">Diễn giả</string>
+    <string name="session_detail_related_header">Các sự kiện liên quan</string>
+    <string name="a11y_collapse_filters_sheet">Hạ thấp bảng bộ lọc</string>
+    <string name="a11y_clear_tag_filters">Xóa bộ lọc</string>
+    <string name="a11y_revert_pinned">Hiển thị tất cả các phiên</string>
+    <string name="a11y_reservation_available">Đặt chỗ tại sự kiện</string>
+    <string name="a11y_reservation_working">Đang xử lý đặt chỗ tại sự kiện</string>
+    <string name="a11y_reservation_reserved">Đã đặt chỗ tại sự kiện</string>
+    <string name="a11y_reservation_disabled">Không thể đặt chỗ</string>
+    <string name="a11y_reservation_wait_list_available">Tham gia danh sách chờ đặt chỗ tại sự kiện</string>
+    <string name="a11y_reservation_wait_listed">Trên danh sách chờ đặt chỗ tại sự kiện</string>
+    <string name="a11y_reservation_pending">Đang chờ xử lý đặt chỗ</string>
+    <string name="a11y_starred">Đã đánh dấu sự kiện</string>
+    <string name="a11y_unstarred">Chưa đánh dấu sự kiện</string>
+    <string name="a11y_star">Ngôi sao</string>
+    <string name="a11y_play">Phát video</string>
+    <string name="dialog_sign_in_title">Đăng nhập để tùy chỉnh lịch biểu của bạn</string>
+    <string name="dialog_sign_in_content">Đăng nhập để lưu các sự kiện, đặt chỗ và xếp hạng các phiên sự kiện (nếu tham dự). Các thao tác sẽ được đồng bộ từ tài khoản của bạn trên cả ứng dụng và trang web.</string>
+    <string name="not_now">Để sau</string>
+    <string name="sign_in">Đăng nhập</string>
+    <string name="dialog_sign_out_title">Đăng xuất?</string>
+    <string name="dialog_sign_out_content">Tất cả sự kiện đã lưu, đặt chỗ và xếp hạng phiên sự kiện (nếu tham dự) vẫn được đồng bộ hóa với tài khoản của bạn.</string>
+    <string name="sign_out">Đăng xuất</string>
+    <string name="remove_reservation_title">Xóa yêu cầu đặt chỗ</string>
+    <string name="remove_reservation_content">Bạn sắp từ bỏ đặt chỗ tại \"%1$s\". Nếu bạn quyết định không đặt chỗ nhưng vẫn muốn tham dự, tất cả các phiên sự kiện sẽ có một số chỗ ngồi dành cho những người đến sớm.</string>
+    <string name="cancel">Hủy</string>
+    <string name="remove">Xóa</string>
+    <string name="swap_reservation_title">Thay đổi đặt chỗ?</string>
+    <string name="swap_reservation_content">Bạn đã đặt chỗ/đã có tên trong danh sách chờ đặt chỗ tại \"%1$s\". Mỗi lần chỉ được một đặt chỗ. Bạn có muốn thay đổi sang đặt chỗ tại \"%2$s\"?</string>
+    <string name="swap">Hoán đổi</string>
+    <string name="notifications_preference_dialog_title">Thông báo I/O</string>
+    <string name="notifications_preference_dialog_content">Bạn muốn nhận thông báo về I/O? Chúng tôi sẽ gửi thông tin cho bạn về thời gian bắt đầu phiên sự kiện, những sự kiện hậu kỳ, ghi hình sự kiện, v.v. Bạn có thể thay đổi mục cài đặt tại \"Thông tin &gt; Cài đặt\" bất kỳ lúc nào.</string>
+    <string name="no">Không</string>
+    <string name="yes">Có</string>
+    <plurals name="duration_hours">
+        <item quantity="one">%s giờ</item>
+        <item quantity="other">%s giờ</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%s phút</item>
+        <item quantity="other">%s phút</item>
+    </plurals>
+    <string name="menu_item_share_session">Chia sẻ về phiên hội thảo</string>
+    <string name="share_text_session_detail">Hãy đến tham gia hội thảo \"%1$s\" tại #io18 %2$s</string>
+    <string name="intent_chooser_session_detail">Chia sẻ</string>
+    <string name="onboarding_get_started">Bắt đầu</string>
+    <string name="onboarding_welcome_to_google_i_o">Chào mừng bạn đến với Google I/O</string>
+    <string name="onboarding_date_location">8-10 tháng 5\nnăm 2018 Mountain View, CA</string>
+    <string name="onboarding_build_schedule">Tạo lịch sự kiện của riêng bạn</string>
+    <string name="onboarding_build_sched_benefits">Bạn có thể thiết kế trải nghiệm I/O dành riêng cho mình và đặt trước chỗ ngồi nếu là người tham gia sự kiện</string>
+    <string name="onboarding_watch_live">Theo dõi I/O trực tiếp</string>
+    <string name="onboarding_join_online">Hãy tham gia cùng chúng tôi trên mạng. Chúng tôi sẽ phát trực tiếp các phần thuyết trình chính và hầu hết các phiên hội thảo.</string>
+    <string name="onboarding_label_days">Ngày</string>
+    <string name="onboarding_label_hours">Giờ</string>
+    <string name="onboarding_label_mins">Phút</string>
+    <string name="onboarding_label_seconds">Giây</string>
+    <plurals name="session_starting_in">
+        <item quantity="one">Phiên sự kiện sẽ bắt đầu trong %1$s phút nữa</item>
+        <item quantity="other">Phiên sự kiện sẽ bắt đầu trong %1$s phút nữa</item>
+    </plurals>
+    <string name="expanded">Đã mở rộng</string>
+    <string name="collapsed">Đã thu gọn</string>
+    <string name="info_title">Thông tin</string>
+    <string name="event_title">Sự kiện</string>
+    <string name="travel_title">Thông tin di chuyển</string>
+    <string name="settings_title">Cài đặt</string>
+    <string name="travel_directions_title">Chỉ đường lái xe</string>
+    <string name="travel_shuttle_title">Dịch vụ đưa đón (đề xuất)</string>
+    <string name="travel_carpool_parking_title">Đỗ xe và Đi chung xe</string>
+    <string name="travel_ride_sharing_title">Chia sẻ chuyến đi</string>
+    <string name="travel_public_transportation_title">Giao thông công cộng</string>
+    <string name="travel_biking_title">Đi xe đạp</string>
+    <string name="travel_directions_description">Tìm đường đến số 1 Amphitheatre Pkwy, Mountain View, CA 94043 trên <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> hoặc <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a></string>
+    <string name="travel_shuttle_description">Sẽ có dịch vụ đưa đón miễn phí đến sự kiện dành cho tất cả những người tham dự Google I/O từ những khách sạn do Google đề xuất. Cũng có dịch vụ tùy chọn từ San Francisco đến những khu vực khác dọc Bán đảo. Bạn phải xuất trình email xác nhận của Google I/O hoặc thẻ hội nghị để lên các phương tiện đưa đón đến sự kiện của Google I/O.\n\nMỗi vị trí đón khách đều có phương tiện trợ giúp đặc biệt dành cho người khuyết tật theo Ðạo luật người khuyết tật Hoa Kỳ (ADA). Vui lòng ghi rõ trên phiếu đăng ký nếu bạn có bất kỳ yêu cầu hỗ trợ đặc biệt nào hoặc yêu cầu theo ADA và bộ phận kế hoạch sẽ trực tiếp hỗ trợ bạn.</string>
+    <string name="travel_carpool_parking_description">Chỗ đỗ xe rất hạn chế và chỉ có tại khu vực dành riêng cho Google I/O từ Nhà hát vòm Shoreline (Shoreline Amphitheatre) dọc theo Đại lộ Shoreline (Shoreline Boulevard). Dọc theo Đại lộ Amphitheatre (Amphitheatre Parkway) hoặc Đường Charleston (Charleston Road) không có chỗ đỗ xe dành riêng cho sự kiện. Nếu bạn dự định lái xe, chúng tôi khuyên bạn đi chung xe với những người tham dự khác vì khu vực đỗ xe của sự kiện chỉ dành cho những ô tô chở từ hai người trở lên.</string>
+    <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\nWaze Carpool là một cộng đồng lái xe và người đi chung xe đáng tin cậy có thể khiến hành trình của bạn đến Google I/O trở nên vui vẻ, nhanh chóng và tiết kiệm. Bạn lái xe ư? Hãy mở <a href="http://Waze.com/get">Waze</a> khi bạn đến Vùng Vịnh (Bay Area). Bạn muốn đi nhờ xe ư? Hãy cài đặt <a href="http://Waze.com/carpool">Waze Carpool</a> trước khi đến. Trong mấy tuần sắp tới, vui lòng vào đây để xem mã giảm giá đi chung xe dành riêng cho những người tham dự Google I/O.\n\n<b>Lyft Line</b>\nTải ứng dụng Lyft xuống từ Google Play và sử dụng Lyft Line để chia sẻ chuyến đi với những người khác có cùng hành trình nhằm tiết kiệm chi phí.\n<b>Mã giảm giá</b>: Googleio18\nĐây là mã có hiệu lực từ ngày 8 đến ngày 10 tháng 5 năm 2018 dành cho những người đi chung xe sử dụng Lyft Line. Mỗi chuyến đi có thể được giảm tới $10 và mỗi ngày tối đa 250 người có thể sử dụng mã này. Người đi chung xe phải có điểm xuất phát hoặc điểm đến là Nhà hát vòm Shoreline (Shoreline Amphitheatre).</string>
+    <string name="travel_public_transportation_description">Không có phương tiện công cộng đi thẳng tới Google I/O. Hãy chú ý theo dõi vị trí chính xác của các dịch vụ đưa đón đến sự kiện của Google I/O.</string>
+    <string name="travel_biking_description">Có khu vực giữ xe đạp miễn phí tại Nhà hát vòm Shoreline (Shoreline Amphitheatre) ở Bãi đỗ xe A. Hàng ngày Hiệp hội Xe đạp Thung lũng Silicon (Silicon Valley Bicycle Coalition) sẽ cung cấp khu vực trông giữ xe đạp an toàn từ 7 giờ sáng đến khi sự kiện kết thúc. Có hai tuyến đường tiện lợi để người đi xe đạp tới thẳng Nhà hát vòm Shoreline (Shoreline Amphitheatre) là Stevens Creek và Permanente Creek Trail. Hãy kiểm tra Google Maps để tìm tuyến đường và hướng đi tiện lợi nhất cho người đi xe đạp.\n\nTổ chức Ngày Đạp xe đi làm Vùng Vinh (Bay Area Bike to Work Day) lên kế hoạch đạp xe vào ngày thứ Năm, 10 tháng 5. Sẽ có hàng nghìn người đi xe đạp tham gia gần Shoreline và khu vực này có hàng trăm trạm nghỉ chân. Vui lòng truy cập trang web của Tổ chức Ngày Đạp xe đi làm của Thung lũng Silicon (Silicon Valley Bike to Work Day) để biết thêm thông tin chi tiết.</string>
+    <string name="view_sessions_text">Xem các phiên sự kiện</string>
+    <string name="view_codelabs_text">Xem các phòng thí nghiệm lập trình</string>
+    <string name="view_events_text">Xem sự kiện</string>
+    <string name="view_map_text">Xem bản đồ</string>
+    <string name="wifi_network_label">Mạng Wi-Fi</string>
+    <string name="wifi_password_label">Mật khẩu:</string>
+    <string name="wifi_install_success">Đã lưu mạng wifi</string>
+    <string name="wifi_install_error_message">Rất tiếc, không thể lưu mạng wifi</string>
+    <string name="event_sessions_title">Số phiên</string>
+    <string name="event_sandbox_title">Hộp cát</string>
+    <string name="event_codelabs_title">Phòng thí nghiệm lập trình</string>
+    <string name="event_officehours_title">Giờ làm việc và Đánh giá ứng dụng</string>
+    <string name="event_afterhours_title">Sau giờ làm việc</string>
+    <string name="event_meals_title">Bữa ăn</string>
+    <string name="event_sandbox_description">Không gian thiết kế dành riêng để khám phá, tìm hiểu và chơi thử các sản phẩm và nền tảng mới nhất của chúng tôi thông qua các bản demo tương tác, cài đặt vật lý và nhiều hơn thế nữa.</string>
+    <string name="event_codelabs_description">Trải nghiệm thực tế tại các quầy sẵn sàng lập mã của chúng tôi. Tại đây, bạn sẽ có mọi thứ cần thiết để tìm hiểu về các công nghệ mới nhất và tuyệt vời nhất của Google thông qua các hướng dẫn tự phát hoặc mang theo máy của riêng bạn và mang công việc về nhà với bạn. Nhân viên của Google sẽ có mặt sẵn sàng cung cấp những lời khuyên hữu ích và chỉ dẫn nếu bạn gặp khó khăn.</string>
+    <string name="event_officehours_description">Giờ làm việc là cơ hội bạn có thể gặp mặt trực tiếp các chuyên gia của Google để đặt những câu hỏi kỹ thuật và Đánh giá ứng dụng sẽ cho bạn có hội nhận được lời khuyên và tư vấn cho các dự án liên quan đến ứng dụng cụ thể của bạn.</string>
+    <string name="event_afterhours_description">Sau khi kết thúc Phiên sự kiện trong ngày, hãy lưu lại Shoreline hai đêm để thưởng thức ẩm thực và vui vẻ. Vào đêm đầu tiên, bữa tiệc sẽ được tổ chức trên không gian Hộp cát và vào đêm thứ hai, chúng tôi sẽ tổ chức một buổi hòa nhạc độc đáo tại Nhà hát vòm.</string>
+    <string name="wifi_header">Wi-Fi</string>
+    <string name="event_types_header">Loại sự kiện</string>
+    <string name="settings_time_zone_label">Sự kiện ở múi giờ chuẩn Thái Bình Dương (UTC-8)</string>
+    <string name="settings_send_anonymous_usage_statistics">Gửi số liệu thống kê sử dụng ẩn danh</string>
+    <string name="settings_tos">Điều khoản dịch vụ</string>
+    <string name="settings_privacy_policy">Chính sách bảo mật</string>
+    <string name="settings_oss_licenses">Giấy phép mã nguồn mở</string>
+    <string name="settings_version_label">Phiên bản %1$s, bản dựng %2$s</string>
+    <string name="built_with_material_content_description">Được dựng với các Thành phần quan trọng.</string>
+    <string name="day1">Ngày 1</string>
+    <string name="day2">Ngày 2</string>
+    <string name="day3">Ngày 3</string>
+    <string name="day1_date">Ngày 8/5</string>
+    <string name="day2_date">Ngày 9/5</string>
+    <string name="day3_date">Ngày 10/5</string>
+</resources>

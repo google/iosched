@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.google.samples.apps.iosched.ui.info.SettingsViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/settings_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbars="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/settings_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--TODO: make button ripple the entire width of row for switches-->
+            <Switch
+                android:id="@+id/settings_time_zone"
+                style="@style/TextAppearance.IOSched.SettingsSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:checked="@{viewModel.preferConferenceTimeZone}"
+                android:onCheckedChanged="@{(view, checked) -> viewModel.toggleTimeZone(checked)}"
+                android:text="@string/settings_time_zone_label"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Switch
+                android:id="@+id/settings_enable_notifications"
+                style="@style/TextAppearance.IOSched.SettingsSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="@{viewModel.enableNotifications}"
+                android:onCheckedChanged="@{(view, checked) -> viewModel.toggleEnableNotifications(checked)}"
+                android:text="@string/settings_enable_notifications"
+                app:layout_constraintTop_toBottomOf="@+id/settings_time_zone" />
+
+            <Switch
+                android:id="@+id/settings_send_anonymous_usage_statistics"
+                style="@style/TextAppearance.IOSched.SettingsSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="@{viewModel.sendUsageStatistics}"
+                android:onCheckedChanged="@{(view, checked) -> viewModel.toggleSendUsageStatistics(checked)}"
+                android:text="@string/settings_send_anonymous_usage_statistics"
+                app:layout_constraintTop_toBottomOf="@+id/settings_enable_notifications" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</layout>

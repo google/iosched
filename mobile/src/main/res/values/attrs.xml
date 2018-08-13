@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <!-- Reservation states -->
+    <!-- Event is reservable; user has no reservation status-->
+    <attr name="state_reservable" format="boolean" />
+    <!-- Event is not reservable -->
+    <attr name="state_reservation_disabled" format="boolean" />
+    <!-- Event is reservable; user can join wait list -->
+    <attr name="state_wait_list_available" format="boolean" />
+    <!-- Reservation request is pending for this event -->
+    <attr name="state_reservation_pending" format="boolean" />
+    <!-- User has reserved a seat for the event -->
+    <attr name="state_reserved" format="boolean" />
+    <!-- User is on the wait list for the event -->
+    <attr name="state_wait_listed" format="boolean" />
+
+    <attr name="sessionListKeyline" format="dimension" />
+
+    <attr name="eventFilterViewStyle" format="reference" />
+
+    <declare-styleable name="TimeHeader">
+        <attr name="android:width" />
+        <attr name="android:paddingTop" />
+        <attr name="android:textColor" />
+        <attr name="android:fontFamily" />
+        <attr name="hourTextSize" format="dimension" />
+        <attr name="hourMinTextSize" format="dimension" />
+        <attr name="meridiemTextSize" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="DateHeader">
+        <attr name="android:width" />
+        <attr name="android:paddingTop" />
+        <attr name="android:textColor" />
+        <attr name="android:fontFamily" />
+        <attr name="dateTextSize" format="dimension" />
+        <attr name="dayTextSize" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="HeaderGridDrawable">
+        <attr name="android:color" />
+        <attr name="gridSize" format="dimension" />
+        <attr name="gridStrokeWidth" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="ReserveButton">
+        <attr name="state_reservable" />
+        <attr name="state_reserved" />
+        <attr name="state_reservation_disabled" />
+        <attr name="state_wait_list_available" />
+        <attr name="state_wait_listed" />
+        <attr name="state_reservation_pending" />
+    </declare-styleable>
+
+    <declare-styleable name="EventView">
+        <attr name="eventTitle" format="string" />
+        <attr name="eventDescription" format="string" />
+        <attr name="filteredEventsLinkUri" format="string" />
+        <attr name="mapLinkUri" format="string" />
+        <attr name="codelabsUri" format="string" />
+        <attr name="eventTypeLogo" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CollapsibleCard">
+        <attr name="cardTitle" format="string" />
+        <attr name="cardDescription" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="EventFilterView">
+        <attr name="android:checked" />
+        <attr name="android:text" />
+        <attr name="android:textColor" />
+        <attr name="android:textSize" />
+        <attr name="android:color" />
+        <attr name="android:padding" />
+        <attr name="android:strokeColor" />
+        <attr name="outlineWidth" format="dimension" />
+        <attr name="clearIcon" format="reference" />
+        <attr name="foreground" format="reference" />
+        <attr name="showIcons" format="boolean" />
+    </declare-styleable>
+</resources>

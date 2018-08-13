@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="playstore_title" translation_description="The title of the app on Play Store. Max 50 characters.">Google I/O 2018</string>
+    <string name="playstore_tagline" translation_description="Short description on the Play Store. Max 80 characters">Your co-pilot to navigate I/O, whether you\'re attending in-person or remotely.</string>
+    <string name="playstore_description" translation_description="Description on the Play Store. Max 4000 characters">The official Google I/O 2018 conference app is your co-pilot to navigate the conference, whether you\'re attending in-person or remotely. With the app, you can:\n\n• Explore the conference schedule, with details on topics and speakers\n• Save events to Schedule, your personalized schedule\n• Get reminders before events you\'ve saved in Schedule start\n• Sync your custom schedule between all of your devices and the I/O website\n• Guide yourself using the vector-based conference map\n• Opt-in to receive important notifications about the event, schedule, travel, after hours, session recordings and more\n\nExclusive for onsite attendees:\n• Take advantage of facilitated pre-event WiFi configuration\n• Reserve seats for events ahead of schedule\n\nSource code for the app will be available soon after I/O.</string>
+    <string name="playstore_change" translation_description="What's new text on the Play Store. Max 500 characters">Updated for Google I/O 2018\n• Reserve seats for events ahead of schedule\n• Read important information about the Event, Travel details, and FAQ.</string>
+    <string name="playstore_required_permissions" translation_description="Header label on Play Store for the list of required permissions">Required permissions</string>
+    <string name="playstore_optional_permissions" translation_description="Header label on Play Store for the list of option permissions">Optional permissions</string>
+    <string name="playstore_permission_location_information" translation_description="Explanation on the Play Store about why we need permission for location information">Location information: Needed for showing the venue map around the user\'s location.</string>
+</resources>

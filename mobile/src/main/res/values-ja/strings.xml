@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="title_schedule">スケジュール</string>
+    <string name="title_map">地図</string>
+    <string name="filters">フィルタ</string>
+    <string name="category_heading_tracks">トピック</string>
+    <string name="category_heading_types">種類</string>
+    <string name="clear_all">すべてクリア</string>
+    <string name="reset">リセット</string>
+    <plurals name="filter_event_count">
+        <item quantity="one">%1$d 件のイベント</item>
+        <item quantity="other">%1$d 件のイベント</item>
+    </plurals>
+    <string name="agenda">予定リスト</string>
+    <string name="event_starred">スター付きアイテムにイベントを追加しました</string>
+    <string name="event_unstarred">スター付きアイテムから削除されたイベント</string>
+    <string name="event_star_error">スター付きアイテムにイベントを追加する際にエラーが発生しました</string>
+    <string name="reservation_error">予約を変更する際にエラーが発生しました。前のリクエストが完了するのを待つか、しばらくしてからもう一度お試しください。</string>
+    <string name="reservation_request_succeeded">予約をリクエストしました。</string>
+    <string name="reservation_cancel_succeeded">予約をキャンセルしました: 「&lt;b&gt;%s&lt;/b&gt;」</string>
+    <string name="reservation_new">「&lt;b&gt;%s&lt;/b&gt;」の座席が予約されました。</string>
+    <string name="reservation_replaced">イベントが置き換えられました。</string>
+    <string name="waitlist_new">ウェイティング リストに登録されました。</string>
+    <string name="waitlist_cancel_succeeded">ウェイティング リストから削除されました。</string>
+    <string name="got_it">OK</string>
+    <string name="dont_show">表示しない</string>
+    <string name="reservation_denied_cutoff">予約が拒否されました: 開始時間に近すぎます。</string>
+    <string name="reservation_denied_clash">予約が拒否されました: 別の予約と競合しています。</string>
+    <string name="reservation_denied_unknown">予約が拒否されました: 不明なエラー。</string>
+    <string name="cancellation_denied_cutoff">キャンセルが拒否されました: 開始時間に近すぎます。</string>
+    <string name="cancellation_denied_unknown">キャンセルが拒否されました: 不明なエラー。</string>
+    <string name="schedule_filters_empty">スター付きまたは予約済みの本日のイベントはありません。</string>
+    <string name="reservation_reservable">座席を予約</string>
+    <string name="reservation_reserved">予約済み</string>
+    <string name="reservation_waitlisted">ウェイティング リストに登録済み</string>
+    <string name="reservation_waitlist_available">ウェイティング リストに加わる</string>
+    <string name="reservation_disabled">予約できません</string>
+    <string name="schedule_hint_title">スケジュールをカスタマイズしましょう</string>
+    <string name="schedule_hint_view_only_your_events">自分のイベントのみを表示</string>
+    <string name="schedule_hint_star_event">スター付きイベントに追加</string>
+    <string name="schedule_hint_reserve_session_seat">セッションの座席を予約しましょう</string>
+    <string name="schedule_hint_star_event_content_description">イベントにスターを付ける画像</string>
+    <string name="schedule_hint_reserve_session_seat_content_description">セッションの座席を予約する画像</string>
+    <string name="rate_session">セッションを評価</string>
+    <string name="menu_item_session_location">セッションの場所</string>
+    <string name="menu_item_session_star">セッションにスターを付ける</string>
+    <string name="session_detail_speakers_header">スピーカー</string>
+    <string name="session_detail_related_header">関連イベント</string>
+    <string name="a11y_collapse_filters_sheet">フィルタシートを下げる</string>
+    <string name="a11y_clear_tag_filters">フィルタをクリア</string>
+    <string name="a11y_revert_pinned">すべてのセッションを表示</string>
+    <string name="a11y_reservation_available">イベントを予約</string>
+    <string name="a11y_reservation_working">イベント予約の処理中</string>
+    <string name="a11y_reservation_reserved">予約済みイベント</string>
+    <string name="a11y_reservation_disabled">予約できません</string>
+    <string name="a11y_reservation_wait_list_available">イベントのウェイティング リストに登録する</string>
+    <string name="a11y_reservation_wait_listed">イベントのウェイティング リストに登録中</string>
+    <string name="a11y_reservation_pending">予約保留中</string>
+    <string name="a11y_starred">ブックマークしたイベント</string>
+    <string name="a11y_unstarred">ブックマークされていないイベント</string>
+    <string name="a11y_star">スターを付ける</string>
+    <string name="a11y_play">動画を再生</string>
+    <string name="dialog_sign_in_title">ログインしてスケジュールをカスタマイズ</string>
+    <string name="dialog_sign_in_content">イベントの保存、座席の予約、セッションの評価（出席者の場合）を行うには、ログインしてください。アカウントでの操作はアプリとサイトの間で同期されます。</string>
+    <string name="not_now">後で</string>
+    <string name="sign_in">ログイン</string>
+    <string name="dialog_sign_out_title">ログアウトしますか？</string>
+    <string name="dialog_sign_out_content">保存したイベント、座席の予約、セッションの評価（出席者の場合）は、すべてアカウントに同期されたままとなります。</string>
+    <string name="sign_out">ログアウト</string>
+    <string name="remove_reservation_title">予約を削除しますか？</string>
+    <string name="remove_reservation_content">「%1$s」の座席をキャンセルします。座席を予約しないで参加を希望する方向けに、先着順でご利用いただける座席をすべてのセッションで一部ご用意しています。</string>
+    <string name="cancel">キャンセル</string>
+    <string name="remove">削除</string>
+    <string name="swap_reservation_title">予約を入れ替えますか？</string>
+    <string name="swap_reservation_content">すでに「%1$s」を予約しているか、ウェイティング リストに登録されています。予約できるのは、時間ブロックごとに 1 セッションのみです。「%2$s」に予約を入れ替えますか？</string>
+    <string name="swap">入れ替え</string>
+    <string name="notifications_preference_dialog_title">I/O の通知</string>
+    <string name="notifications_preference_dialog_content">I/O に関する通知を受け取りますか？セッションの開始時間、時間外イベント、セッションの録画などに関する情報をお送りいたします。この設定は、[情報] &gt; [設定] でいつでも変更できます。</string>
+    <string name="no">いいえ</string>
+    <string name="yes">はい</string>
+    <plurals name="duration_hours">
+        <item quantity="one">%s時間</item>
+        <item quantity="other">%s時間</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%s分</item>
+        <item quantity="other">%s分</item>
+    </plurals>
+    <string name="menu_item_share_session">セッションを共有</string>
+    <string name="share_text_session_detail">#io18 %2$s で「%1$s」をご確認ください</string>
+    <string name="intent_chooser_session_detail">共有</string>
+    <string name="onboarding_get_started">使ってみる</string>
+    <string name="onboarding_welcome_to_google_i_o">Google I/O へようこそ</string>
+    <string name="onboarding_date_location">2018 年 5 月 8～10 日、\nカリフォルニア州マウンテンビューで開催</string>
+    <string name="onboarding_build_schedule">自分用のスケジュールを組みましょう</string>
+    <string name="onboarding_build_sched_benefits">自分に合う I/O イベントを選び、参加する場合は座席を予約します</string>
+    <string name="onboarding_watch_live">I/O のライブ配信を見る</string>
+    <string name="onboarding_join_online">オンラインでご参加いただけます。基調講演や大部分のセッションをライブ配信する予定です。</string>
+    <string name="onboarding_label_days">日</string>
+    <string name="onboarding_label_hours">時間</string>
+    <string name="onboarding_label_mins">分</string>
+    <string name="onboarding_label_seconds">秒</string>
+    <plurals name="session_starting_in">
+        <item quantity="one">あと %1$s 分でセッションが始まります</item>
+        <item quantity="other">あと %1$s 分でセッションが始まります</item>
+    </plurals>
+    <string name="expanded">展開済み</string>
+    <string name="collapsed">折りたたみ済み</string>
+    <string name="info_title">情報</string>
+    <string name="event_title">イベント</string>
+    <string name="travel_title">交通手段</string>
+    <string name="settings_title">設定</string>
+    <string name="travel_directions_title">運転ルート</string>
+    <string name="travel_shuttle_title">シャトル サービス（推奨）</string>
+    <string name="travel_carpool_parking_title">駐車場と相乗り</string>
+    <string name="travel_ride_sharing_title">カー シェアリング</string>
+    <string name="travel_public_transportation_title">公共交通機関</string>
+    <string name="travel_biking_title">サイクリング</string>
+    <string name="travel_directions_description"><a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google マップ</a>または <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a> で 1 Amphitheatre Pkwy, Mountain View, CA 94043 までの経路を見つける</string>
+    <string name="travel_shuttle_description">Google が推奨するすべてのホテルからお越しのすべての Google I/O 参加者向けに、無料でご利用いただけるイベント用シャトル便をご用意しております。また、サンフランシスコとサンフランシスコ半島沿いの各地点を出発点とする限定サービスもございます。Google I/O イベントへのシャトル便のご利用時には、毎回 Google I/O の確認メールまたはカンファレンス バッジをご提示ください。\n\n各乗車場所では障がいを持つアメリカ人法（ADA）対応の乗り物をご利用いただけます。ADA 関連などの特別な支援が必要である場合は、登録フォームでお知らせいただければプランニング チームが直接フォローいたします。</string>
+    <string name="travel_carpool_parking_description">駐車スペースには限りがあり、またご利用いただけるのは Shoreline Boulevard 沿いの Shoreline Amphitheatre から先にある Google I/O 指定の区画に限られています。Amphitheatre Parkway や Charleston Road 沿いにはイベント用の駐車場はございません。駐車スペースは 2 人乗り以上の車両優先とさせていただきますので、お車でお越しの場合は他の参加者との相乗りをおすすめします。</string>
+    <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\nWaze Carpool は、Google I/O での移動を快適、迅速かつ低料金にするためにご利用いただける、車を運転する人と相乗り客向けの信頼できるコミュニティです。お車でいらっしゃる場合は、湾岸地帯に到着した時点で <a href="http://Waze.com/get">Waze</a> を開いてください。相乗りできる車を探す場合は、到着前に <a href="http://Waze.com/carpool">Waze Carpool</a> をインストールしておいてください。Google I/O の参加者限定の相乗り割引コードについては、次週以降こちらで再度確認してください。\n\n<b>Lyft Line</b>\nGoogle Play から Lyft アプリをダウンロードして使用すると、同じ方面に移動する他の方と相乗りして費用を抑えることができます。\n<b>割引コード</b>: Googleio18\nこのコードの有効期間は 2018 年 5 月 8～10 日で、Lyft Line を使用した相乗りが対象です。1 回の移動につき $10 まで割引され、1 日 250 名までご利用いただけます。相乗りの出発地または目的地は Shoreline Amphitheatre である必要があります。</string>
+    <string name="travel_public_transportation_description">公共交通機関で Google I/O の会場まで直接移動することはできません。Google I/O イベントへのシャトル便として提供される交通機関の正確な位置については、別途お知らせいたしますのでもうしばらくお待ちください。</string>
+    <string name="travel_biking_description">Shoreline Amphitheatre の駐車場 A では、無料の駐輪場をご利用いただけます。毎日午前 7 時からイベント終了まで、Silicon Valley Bicycle Coalition が安全な駐輪サービスを提供いたします。Shoreline Amphitheatre まで自転車で移動する方は、Stevens Creek Trail と Permanente Creek Trail の 2 本の自転車道を利用されると便利です。自転車での最適な移動経路は、Google マップでご確認ください。\n\n5 月 10 日木曜日には、Bay Area Bike to Work Day の開催が予定されています。Shoreline 近郊では何千名ものサイクリストが参加する見込みで、地域全体で数百か所に Energizer Station が設置されます。詳しくは、Silicon Valley Bike to Work Day のウェブサイトをご覧ください。</string>
+    <string name="view_sessions_text">セッションを表示</string>
+    <string name="view_codelabs_text">Codelab を表示</string>
+    <string name="view_events_text">イベントを表示</string>
+    <string name="view_map_text">地図を表示</string>
+    <string name="wifi_network_label">Wi-Fi ネットワーク:</string>
+    <string name="wifi_password_label">パスワード:</string>
+    <string name="wifi_install_success">Wi-Fi ネットワークを保存しました</string>
+    <string name="wifi_install_error_message">Wi-Fi ネットワークを保存できません</string>
+    <string name="event_sessions_title">セッション</string>
+    <string name="event_sandbox_title">サンドボックス</string>
+    <string name="event_codelabs_title">Codelab</string>
+    <string name="event_officehours_title">オフィスアワーとアプリレビュー</string>
+    <string name="event_afterhours_title">時間外イベント</string>
+    <string name="event_meals_title">お食事</string>
+    <string name="event_sandbox_description">インタラクティブなデモや物理的な設備で、Google の最新の製品やプラットフォームを探索、学習、実演するための専用スペースです。</string>
+    <string name="event_codelabs_description">コーディング対応のキオスクで実際に体験することができます。会場には、自分のペースで進められるチュートリアルを通して Google の最先端テクノロジーを学習するために必要なすべてが用意されており、ご自身のマシンを持ち込んで課題を自宅に持ち帰ることもできます。現地の Google のスタッフが、アドバイスやお困りの場合のご案内をいたします。</string>
+    <string name="event_officehours_description">オフィスアワーは、Google の専門家に一対一で技術的な質問をすることができる機会です。アプリレビューでは、特定のアプリ関連のプロジェクトに関するアドバイスとヒントを受けることができます。</string>
+    <string name="event_afterhours_description">日中のセッションの終了後に、Shoreline 周辺でお食事やお飲み物などをお楽しみいただけるイベントを 2 日間ご用意しています。初日の夜にはサンドボックス スペースでパーティが行われます。2 日目の夜は Amphitheatre で参加者限定のコンサートを開催いたします。</string>
+    <string name="wifi_header">Wi-Fi</string>
+    <string name="event_types_header">イベントの種類</string>
+    <string name="settings_time_zone_label">太平洋標準時（UTC-8）でのイベント</string>
+    <string name="settings_send_anonymous_usage_statistics">使用状況を匿名で送信</string>
+    <string name="settings_tos">利用規約</string>
+    <string name="settings_privacy_policy">プライバシー ポリシー</string>
+    <string name="settings_oss_licenses">オープンソース ライセンス</string>
+    <string name="settings_version_label">バージョン %1$s、ビルド %2$s</string>
+    <string name="built_with_material_content_description">このアプリは Material Components で構築されています。</string>
+    <string name="day1">1 日目</string>
+    <string name="day2">2 日目</string>
+    <string name="day3">3 日目</string>
+    <string name="day1_date">5月8日</string>
+    <string name="day2_date">5月9日</string>
+    <string name="day3_date">5月10日</string>
+</resources>

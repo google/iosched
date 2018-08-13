@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="playstore_title">Google I/O 2018</string>
+    <string name="playstore_tagline">Tu copiloto para explorar el evento I/O, ya sea en persona o de forma remota.</string>
+    <string name="playstore_description">La app oficial de la conferencia Google I/O 2018 es tu copiloto para explorar la conferencia, ya sea que asistas en persona o de forma remota. Con la app puedes:\n\n• Explorar todo el programa de la conferencia, con detalles sobre temas y oradores\n• Guardar eventos en Schedule, tu programa personalizado\n• Recibir recordatorios antes de que comiencen los eventos que guardaste en Schedule\n• Sincronizar tu programa personalizado entre todos tus dispositivos y el sitio web de I/O\n• Orientarte con el mapa de la conferencia basado en vectores\n• Habilitar recibir notificaciones importantes sobre el evento, el programa, los viajes, las actividades después de las sesiones, las grabaciones de las sesiones y mucho más\n\nExclusivo para los asistentes presenciales:\n• Aprovechar la configuración facilitada de Wi-Fi antes de los eventos\n• Reservar puestos para los eventos antes de su realización\n\nEl código fuente para la app estará disponible poco después de la conferencia I/O.</string>
+    <string name="playstore_change">Actualizado para Google I/O 2018\n• Reserva puestos con anticipación para los eventos.\n• Lee información importante sobre el evento, información sobre el viaje y preguntas frecuentes.</string>
+    <string name="playstore_required_permissions">Permisos necesarios</string>
+    <string name="playstore_optional_permissions">Permisos opcionales</string>
+    <string name="playstore_permission_location_information">Información de la ubicación: Se necesita para mostrar el mapa del evento en la ubicación del usuario.</string>
+</resources>

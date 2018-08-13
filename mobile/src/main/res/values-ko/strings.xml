@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="title_schedule">일정</string>
+    <string name="title_map">지도</string>
+    <string name="filters">필터</string>
+    <string name="category_heading_tracks">주제</string>
+    <string name="category_heading_types">유형</string>
+    <string name="clear_all">모두 삭제</string>
+    <string name="reset">재설정</string>
+    <plurals name="filter_event_count">
+        <item quantity="one">이벤트 %1$d개</item>
+        <item quantity="other">이벤트 %1$d개</item>
+    </plurals>
+    <string name="agenda">일정목록</string>
+    <string name="event_starred">별표 표시한 항목에 이벤트를 추가했습니다.</string>
+    <string name="event_unstarred">별표 표시한 항목에서 이벤트를 삭제했습니다.</string>
+    <string name="event_star_error">별표 표시된 항목에 이벤트를 추가하는 중에 오류가 발생했습니다.</string>
+    <string name="reservation_error">예약을 변경하는 중에 오류가 발생했습니다. 이전 요청이 완료될 때까지 기다리거나 나중에 다시 시도해 주세요.</string>
+    <string name="reservation_request_succeeded">예약을 요청했습니다.</string>
+    <string name="reservation_cancel_succeeded">\'&lt;b&gt;%s&lt;/b&gt;\' 예약을 취소했습니다.</string>
+    <string name="reservation_new">\'&lt;b&gt;%s&lt;/b&gt;\'의 좌석을 예약했습니다.</string>
+    <string name="reservation_replaced">이벤트를 교체했습니다.</string>
+    <string name="waitlist_new">대기자 명단에 등록했습니다.</string>
+    <string name="waitlist_cancel_succeeded">대기자 명단에서 삭제했습니다.</string>
+    <string name="got_it">확인</string>
+    <string name="dont_show">표시 안함</string>
+    <string name="reservation_denied_cutoff">예약 거부됨: 시작 시간과 너무 가깝습니다.</string>
+    <string name="reservation_denied_clash">예약 거부됨: 다른 예약과 충돌합니다.</string>
+    <string name="reservation_denied_unknown">예약 거부됨: 알 수 없는 오류가 발생했습니다.</string>
+    <string name="cancellation_denied_cutoff">취소 거부됨: 시작 시간과 너무 가깝습니다.</string>
+    <string name="cancellation_denied_unknown">취소 거부됨: 알 수 없는 오류가 발생했습니다.</string>
+    <string name="schedule_filters_empty">오늘은 별표 표시하거나 예약한 이벤트가 없습니다.</string>
+    <string name="reservation_reservable">좌석 예약</string>
+    <string name="reservation_reserved">예약됨</string>
+    <string name="reservation_waitlisted">대기자 명단에 등록됨</string>
+    <string name="reservation_waitlist_available">대기자 명단에 등록</string>
+    <string name="reservation_disabled">예약 불가</string>
+    <string name="schedule_hint_title">일정 맞춤설정</string>
+    <string name="schedule_hint_view_only_your_events">내 이벤트만 보기</string>
+    <string name="schedule_hint_star_event">별표 표시한 이벤트에 추가</string>
+    <string name="schedule_hint_reserve_session_seat">세션 좌석 예약</string>
+    <string name="schedule_hint_star_event_content_description">이벤트 별표 표시 이미지</string>
+    <string name="schedule_hint_reserve_session_seat_content_description">세션 좌석 예약 이미지</string>
+    <string name="rate_session">세션 평가</string>
+    <string name="menu_item_session_location">세션 위치</string>
+    <string name="menu_item_session_star">세션 별표 표시</string>
+    <string name="session_detail_speakers_header">발표자</string>
+    <string name="session_detail_related_header">관련 이벤트</string>
+    <string name="a11y_collapse_filters_sheet">필터 시트 내리기</string>
+    <string name="a11y_clear_tag_filters">필터 지우기</string>
+    <string name="a11y_revert_pinned">모든 세션 표시</string>
+    <string name="a11y_reservation_available">이벤트 예약</string>
+    <string name="a11y_reservation_working">이벤트 예약 작업 중</string>
+    <string name="a11y_reservation_reserved">이벤트 예약됨</string>
+    <string name="a11y_reservation_disabled">예약 불가</string>
+    <string name="a11y_reservation_wait_list_available">이벤트 대기자 명단 등록</string>
+    <string name="a11y_reservation_wait_listed">이벤트 대기자 명단에 등록됨</string>
+    <string name="a11y_reservation_pending">예약 대기 중</string>
+    <string name="a11y_starred">북마크에 이벤트 추가함</string>
+    <string name="a11y_unstarred">이벤트가 북마크에 추가되지 않음</string>
+    <string name="a11y_star">별표</string>
+    <string name="a11y_play">동영상 재생</string>
+    <string name="dialog_sign_in_title">로그인하여 일정 맞춤설정</string>
+    <string name="dialog_sign_in_content">이벤트를 저장하고, 좌석을 예약하고, 참석한 세션을 평가하려면 로그인하세요. 관련 작업이 앱과 사이트에서 계정과 동기화됩니다.</string>
+    <string name="not_now">나중에</string>
+    <string name="sign_in">로그인</string>
+    <string name="dialog_sign_out_title">로그아웃하시겠습니까?</string>
+    <string name="dialog_sign_out_content">모든 저장된 이벤트, 좌석 예약, 참석한 세션 평가가 계정에 동기화된 상태로 유지됩니다.</string>
+    <string name="sign_out">로그아웃</string>
+    <string name="remove_reservation_title">예약을 삭제하시겠습니까?</string>
+    <string name="remove_reservation_content">\'%1$s\' 좌석 예약을 취소합니다. 좌석을 예약하지 않기로 했지만 참석하고 싶은 경우 모든 세션에 준비된 선착순 좌석을 이용하면 됩니다.</string>
+    <string name="cancel">취소</string>
+    <string name="remove">삭제</string>
+    <string name="swap_reservation_title">예약을 바꾸시겠습니까?</string>
+    <string name="swap_reservation_content">이미 \'%1$s\'에 대한 예약이 있거나 대기자 명단에 등록했습니다. 시간표 단위당 예약 하나만 허용됩니다. \'%2$s\' 예약을 바꾸시겠습니까?</string>
+    <string name="swap">바꾸기</string>
+    <string name="notifications_preference_dialog_title">I/O 알림</string>
+    <string name="notifications_preference_dialog_content">I/O에 대한 알림을 받고 싶으신가요? 세션 시작 시간, 공식 일정 후 이벤트, 세션 녹화 등에 대한 정보를 보내드립니다. 언제든지 \'정보 &gt; 설정\'에서 알림 설정을 변경할 수 있습니다.</string>
+    <string name="no">아니요</string>
+    <string name="yes">예</string>
+    <plurals name="duration_hours">
+        <item quantity="one">%s시간</item>
+        <item quantity="other">%s시간</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%s분</item>
+        <item quantity="other">%s분</item>
+    </plurals>
+    <string name="menu_item_share_session">세션 공유</string>
+    <string name="share_text_session_detail">#io18 %2$s에서 \'%1$s\' 확인해 보기</string>
+    <string name="intent_chooser_session_detail">공유</string>
+    <string name="onboarding_get_started">시작하기</string>
+    <string name="onboarding_welcome_to_google_i_o">Google I/O에 오신 것을 환영합니다.</string>
+    <string name="onboarding_date_location">2018년 5월 8~10일,\nMountain View, CA</string>
+    <string name="onboarding_build_schedule">내 일정 만들기</string>
+    <string name="onboarding_build_sched_benefits">맞춤 I/O 경험을 만들고 참석자인 경우 좌석을 예약합니다.</string>
+    <string name="onboarding_watch_live">I/O 실시간 스트림 보기</string>
+    <string name="onboarding_join_online">온라인으로 참여해 보세요. 기조 연설 및 대부분의 세션이 실시간으로 스트리밍됩니다.</string>
+    <string name="onboarding_label_days">일</string>
+    <string name="onboarding_label_hours">시간</string>
+    <string name="onboarding_label_mins">분</string>
+    <string name="onboarding_label_seconds">초</string>
+    <plurals name="session_starting_in">
+        <item quantity="one">%1$s분 후 세션 시작</item>
+        <item quantity="other">%1$s분 후 세션 시작</item>
+    </plurals>
+    <string name="expanded">펼침</string>
+    <string name="collapsed">접힘</string>
+    <string name="info_title">정보</string>
+    <string name="event_title">이벤트</string>
+    <string name="travel_title">이동 정보</string>
+    <string name="settings_title">설정</string>
+    <string name="travel_directions_title">운전 경로</string>
+    <string name="travel_shuttle_title">셔틀 서비스(권장)</string>
+    <string name="travel_carpool_parking_title">주차 및 카풀</string>
+    <string name="travel_ride_sharing_title">합승</string>
+    <string name="travel_public_transportation_title">대중교통</string>
+    <string name="travel_biking_title">자전거</string>
+    <string name="travel_directions_description"><a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google 지도</a>나 <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a>에서 \'1 Amphitheatre Pkwy, Mountain View, CA 94043\'으로 길을 찾으세요.</string>
+    <string name="travel_shuttle_description">모든 Google I/O 참석자에게 모든 Google 추천 호텔에서 출발하는 이벤트 셔틀이 무료로 제공됩니다. 샌프란시스코 및 페닌슐라 지역 주변의 기타 위치에서도 일부 서비스가 제공됩니다. 모든 Google I/O 이벤트 셔틀에 탑승하려면 Google I/O 확인 이메일이나 컨퍼런스 배지를 제시해야 합니다.\n\n각 탑승 위치에 휠체어로 이용 가능한 차량이 준비될 수 있습니다. 휠체어나 특별 지원 요구사항이 있는 경우 등록 양식에 기재해 주시면 I/O 기획팀에서 직접 연락을 드립니다.</string>
+    <string name="travel_carpool_parking_description">주차 장소가 매우 한정되어 있으며 쇼어라인 대로를 따라 쇼어라인 원형극장 주변에 있는 Google I/O 전용 주차장에만 주차할 수 있습니다. 앰피시어터 파크웨이나 찰스턴 로드에는 이벤트 주차장이 없습니다. 직접 운전할 예정인 경우 2명 이상이 탑승한 차량은 우대 주차 공간을 이용할 수 있으므로 다른 참석자와 카풀을 하시는 것이 좋습니다.</string>
+    <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\nWaze Carpool은 신뢰할 수 있는 운전자 및 탑승자 커뮤니티로서, 재미있고 빠르고 저렴하게 Google I/O 장소로 올 수 있습니다. 운전자인 경우 베이 지역에 도착하면 <a href="http://Waze.com/get">Waze</a>를 여세요. 탑승자인 경우 도착하기 전에 <a href="http://Waze.com/carpool">Waze Carpool</a>을 설치하세요. 몇 주 후에 이 페이지를 다시 방문하여 Google I/O 참석자 전용의 카풀 할인 코드를 확인하세요.\n\n<b>Lyft Line</b>\nGoogle Play에서 Lyft 앱을 다운로드하고 Lyft Line을 사용하여 방향이 같은 다른 사람과 저렴한 비용으로 합승해 보세요.\n<b>할인 코드</b>: Googleio18\n이 코드는 2018년 5월 8일에서 10일 사이에 Lyft Line으로 합승하는 경우에 유효합니다. 일일 최대 250명의 사용자가 탑승당 최대 10달러를 사용할 수 있습니다. 쇼어라인 원형극장에서 탑승하거나 하차해야 합니다.</string>
+    <string name="travel_public_transportation_description">Google I/O 장소로 바로 오는 대중교통 수단은 없습니다. Google I/O 이벤트 셔틀이 운행되는 정확한 대중교통 위치는 안내를 기다려 주세요.</string>
+    <string name="travel_biking_description">쇼어라인 원형극장의 A 주차장에 무료로 자전거를 주차할 수 있습니다. 실리콘 밸리 자전거 연대가 매일 오전 7시부터 이벤트가 끝날 때까지 자전거를 안전하게 대신 주차해 드립니다. 자전거를 타고 쇼어라인 원형극장으로 오는 경우 스티븐스 크릭 트레일과 퍼머넌트 크릭 트레일 등 2가지 자전거 길을 이용하면 편리합니다. 최적의 자전거 경로를 확인하고 길을 찾으려면 Google 지도를 확인하세요.\n\n5월 10일 목요일에는 베이 지역 자전거 출근 이벤트가 열립니다. 쇼어라인 인근에서 수천 명이 함께 자전거를 타고 지역 전체에 수백 개의 음료대가 준비됩니다. 자세한 내용은 Silicon Valley Bike to Work Day 웹사이트를 확인하세요.</string>
+    <string name="view_sessions_text">세션 보기</string>
+    <string name="view_codelabs_text">Codelab 보기</string>
+    <string name="view_events_text">이벤트 보기</string>
+    <string name="view_map_text">지도 보기</string>
+    <string name="wifi_network_label">Wi-Fi 네트워크:</string>
+    <string name="wifi_password_label">비밀번호:</string>
+    <string name="wifi_install_success">Wi-Fi 네트워크를 저장했습니다.</string>
+    <string name="wifi_install_error_message">죄송합니다. Wi-Fi 네트워크를 저장할 수 없습니다.</string>
+    <string name="event_sessions_title">세션</string>
+    <string name="event_sandbox_title">샌드박스</string>
+    <string name="event_codelabs_title">Codelab</string>
+    <string name="event_officehours_title">실무자와의 만남 및 앱 리뷰</string>
+    <string name="event_afterhours_title">공식 일정 후 이벤트</string>
+    <string name="event_meals_title">식사</string>
+    <string name="event_sandbox_description">대화형 데모, 실제 설치 등을 통해 Google의 최신 제품과 플랫폼을 살펴보고 알아보고 직접 사용해 볼 수 있는 전용 공간입니다.</string>
+    <string name="event_codelabs_description">바로 코딩할 수 있는 키오스크에서 실습해 보세요. 여기에서 자습형 가이드를 통해 높은 수준의 최신 Google 기술에 대해 알아보는 데 필요한 모든 도구를 제공하며, 직접 컴퓨터를 가져와서 실습하고 작업 결과를 가져갈 수도 있습니다. 현장에서 Google 직원이 유용한 조언을 드리고 실습 중에 막히는 부분이 있으면 방향을 제시해 드립니다.</string>
+    <string name="event_officehours_description">실무자와의 만남 시간을 통해 Google 전문가와 1:1로 만나서 기술적인 질문을 할 수 있으며, 앱 리뷰 시간을 통해 구체적인 앱 관련 프로젝트에 대한 조언을 받고 팁을 얻을 수 있습니다.</string>
+    <string name="event_afterhours_description">이틀 동안 세션 종료 후에 쇼어라인에 남아서 음식, 음료, 재미가 함께 하는 저녁을 즐겨 보세요. 첫날 저녁에는 샌드박스 공간에서 파티가 열리고, 둘째 날 저녁에는 원형극장에서 독점 콘서트가 열립니다.</string>
+    <string name="wifi_header">Wi-Fi</string>
+    <string name="event_types_header">이벤트 유형</string>
+    <string name="settings_time_zone_label">태평양 표준시 시간대 기준의 이벤트(UTC-8)</string>
+    <string name="settings_send_anonymous_usage_statistics">익명 사용 통계 보내기</string>
+    <string name="settings_tos">서비스 약관</string>
+    <string name="settings_privacy_policy">개인정보처리방침</string>
+    <string name="settings_oss_licenses">오픈소스 라이선스</string>
+    <string name="settings_version_label">버전 %1$s, 빌드 %2$s</string>
+    <string name="built_with_material_content_description">Material Components로 제작되었습니다.</string>
+    <string name="day1">1일차</string>
+    <string name="day2">2일차</string>
+    <string name="day3">3일차</string>
+    <string name="day1_date">5월 8일</string>
+    <string name="day2_date">5월 9일</string>
+    <string name="day3_date">5월 10일</string>
+</resources>

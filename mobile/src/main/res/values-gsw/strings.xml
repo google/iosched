@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="title_schedule">Planen</string>
+    <string name="title_map">Karte</string>
+    <string name="filters">Filter</string>
+    <string name="category_heading_tracks">Themen</string>
+    <string name="category_heading_types">Art der Veranstaltung</string>
+    <string name="clear_all">Alle löschen</string>
+    <string name="reset">Zurücksetzen</string>
+    <plurals name="filter_event_count">
+        <item quantity="one">%1$d Veranstaltung</item>
+        <item quantity="other">%1$d Veranstaltungen</item>
+    </plurals>
+    <string name="agenda">Terminübersicht</string>
+    <string name="event_starred">Veranstaltung wurde Ihren markierten Elementen hinzugefügt</string>
+    <string name="event_unstarred">Veranstaltung aus markierten Elementen entfernt</string>
+    <string name="event_star_error">Fehler beim Hinzufügen der Veranstaltung zu markierten Elementen</string>
+    <string name="reservation_error">Fehler beim Ändern der Reservierung. Warten Sie, bis vorangegangene Anfragen abgeschlossen sind oder versuchen Sie es später noch einmal.</string>
+    <string name="reservation_request_succeeded">Reservierung angefragt.</string>
+    <string name="reservation_cancel_succeeded">Reservierung storniert: \"&lt;b&gt;%s&lt;/b&gt;.\"</string>
+    <string name="reservation_new">Ihr Platz für \"&lt;b&gt;%s&lt;/b&gt;\" ist reserviert.</string>
+    <string name="reservation_replaced">Veranstaltung getauscht.</string>
+    <string name="waitlist_new">Sie stehen auf der Warteliste.</string>
+    <string name="waitlist_cancel_succeeded">Von Warteliste entfernt.</string>
+    <string name="got_it">OK</string>
+    <string name="dont_show">Nicht anzeigen</string>
+    <string name="reservation_denied_cutoff">Reservierung abgelehnt: zu kurz vor Startzeit.</string>
+    <string name="reservation_denied_clash">Reservierung abgelehnt: Überschneidung mit anderer Reservierung.</string>
+    <string name="reservation_denied_unknown">Reservierung abgelehnt: unbekannter Fehler.</string>
+    <string name="cancellation_denied_cutoff">Stornierung abgelehnt: zu kurz vor Startzeit.</string>
+    <string name="cancellation_denied_unknown">Stornierung abgelehnt: unbekannter Fehler.</string>
+    <string name="schedule_filters_empty">Für heute sind keine markierten oder reservierten Veranstaltungen vorhanden.</string>
+    <string name="reservation_reservable">Platz reservieren</string>
+    <string name="reservation_reserved">Reserviert</string>
+    <string name="reservation_waitlisted">Auf der Warteliste</string>
+    <string name="reservation_waitlist_available">Auf Warteliste setzen</string>
+    <string name="reservation_disabled">Keine Reservierungen verfügbar</string>
+    <string name="schedule_hint_title">Terminplan anpassen</string>
+    <string name="schedule_hint_view_only_your_events">Nur eigene Veranstaltungen anzeigen</string>
+    <string name="schedule_hint_star_event">Zu markierten Veranstaltungen hinzufügen</string>
+    <string name="schedule_hint_reserve_session_seat">Platz für Sitzung reservieren</string>
+    <string name="schedule_hint_star_event_content_description">Bild zum Markieren einer Veranstaltung</string>
+    <string name="schedule_hint_reserve_session_seat_content_description">Bild zum Reservieren eines Platzes für Sitzungen</string>
+    <string name="rate_session">Sitzung bewerten</string>
+    <string name="menu_item_session_location">Sitzungsstandort</string>
+    <string name="menu_item_session_star">Sitzung markieren</string>
+    <string name="session_detail_speakers_header">Referenten</string>
+    <string name="session_detail_related_header">Ähnliche Veranstaltungen</string>
+    <string name="a11y_collapse_filters_sheet">Filtertabelle minimieren</string>
+    <string name="a11y_clear_tag_filters">Filter löschen</string>
+    <string name="a11y_revert_pinned">Alle Sitzungen anzeigen</string>
+    <string name="a11y_reservation_available">Platz für Veranstaltung reservieren</string>
+    <string name="a11y_reservation_working">Reservierung wird vorgenommen</string>
+    <string name="a11y_reservation_reserved">Platz für Veranstaltung reserviert</string>
+    <string name="a11y_reservation_disabled">Reservierung nicht verfügbar</string>
+    <string name="a11y_reservation_wait_list_available">Auf Warteliste für Veranstaltung setzen</string>
+    <string name="a11y_reservation_wait_listed">Auf Warteliste für Veranstaltung gesetzt</string>
+    <string name="a11y_reservation_pending">Reservierung ausstehend</string>
+    <string name="a11y_starred">Veranstaltung als Lesezeichen gespeichert</string>
+    <string name="a11y_unstarred">Veranstaltung nicht als Lesezeichen gespeichert</string>
+    <string name="a11y_star">Markieren</string>
+    <string name="a11y_play">Video abspielen</string>
+    <string name="dialog_sign_in_title">Melden Sie sich an, um Ihren Terminplan anzupassen</string>
+    <string name="dialog_sign_in_content">Melden Sie sich an, um Veranstaltungen zu speichern, Plätze zu reservieren und Sitzungen zu bewerten (als Teilnehmer). Die Aktionen mit Ihrem Konto werden in der App und auf der Website synchronisiert.</string>
+    <string name="not_now">Später</string>
+    <string name="sign_in">Anmelden</string>
+    <string name="dialog_sign_out_title">Abmelden?</string>
+    <string name="dialog_sign_out_content">Alle gespeicherten Veranstaltungen, Platzreservierungen und Sitzungsbewertungen (von Teilnehmern) werden in Ihrem Konto synchronisiert.</string>
+    <string name="sign_out">Abmelden</string>
+    <string name="remove_reservation_title">Reservierung entfernen?</string>
+    <string name="remove_reservation_content">Sie sind dabei, Ihren Platz für \"%1$s\" zu stornieren. Wenn Sie Ihre Reservierung stornieren, aber kurzfristig doch noch teilnehmen möchten: Bei allen Sitzungen wird eine bestimmte Anzahl von Plätzen direkt vor Ort an die ersten eintreffenden Interessenten vergeben.</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="remove">Entfernen</string>
+    <string name="swap_reservation_title">Reservierung tauschen?</string>
+    <string name="swap_reservation_content">Sie haben bereits eine Reservierung bzw. stehen auf der Warteliste für \"%1$s\". Es ist nur eine Reservierung pro Zeitblock zulässig. Möchten Sie den Tausch gegen \"%2$s\" vornehmen?</string>
+    <string name="swap">Tauschen</string>
+    <string name="notifications_preference_dialog_title">I/O-Benachrichtigungen</string>
+    <string name="notifications_preference_dialog_content">Möchten Sie Benachrichtigungen zu I/O erhalten? Dann senden wir Ihnen Informationen zu Anfangszeiten von Sitzungen, Rahmenprogramm, Sitzungsaufzeichnungen und vieles mehr. Diese Einstellung können Sie unter \"Info &gt; Settings\" (Informationen &gt; Einstellungen) jederzeit ändern.</string>
+    <string name="no">Nein</string>
+    <string name="yes">Ja</string>
+    <plurals name="duration_hours">
+        <item quantity="one">%s  Stunde</item>
+        <item quantity="other">%s Stunden</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%s Minute</item>
+        <item quantity="other">%s Minuten</item>
+    </plurals>
+    <string name="menu_item_share_session">Sitzung teilen</string>
+    <string name="share_text_session_detail">%1$s bei #io18 %2$s ansehen</string>
+    <string name="intent_chooser_session_detail">Teilen</string>
+    <string name="onboarding_get_started">Jetzt starten</string>
+    <string name="onboarding_welcome_to_google_i_o">Willkommen bei Google I/O</string>
+    <string name="onboarding_date_location">8.–10. Mai,\n2018 Mountain View, CA, USA</string>
+    <string name="onboarding_build_schedule">Eigenen Zeitplan einrichten</string>
+    <string name="onboarding_build_sched_benefits">Richten Sie Ihren eigenen I/O-Bereich ein und reservieren Sie sich als Teilnehmer einen Platz</string>
+    <string name="onboarding_watch_live">I/O live ansehen</string>
+    <string name="onboarding_join_online">Jetzt online dabei sein. Wir übertragen die Keynotes und einen Großteil der Sitzungen live.</string>
+    <string name="onboarding_label_days">D</string>
+    <string name="onboarding_label_hours">H</string>
+    <string name="onboarding_label_mins">M</string>
+    <string name="onboarding_label_seconds">S</string>
+    <plurals name="session_starting_in">
+        <item quantity="one">Sitzung beginnt in %1$s Minute</item>
+        <item quantity="other">Sitzung beginnt in %1$s Minuten</item>
+    </plurals>
+    <string name="expanded">Maximiert</string>
+    <string name="collapsed">Minimiert</string>
+    <string name="info_title">Info</string>
+    <string name="event_title">Veranstaltung</string>
+    <string name="travel_title">Reisen</string>
+    <string name="settings_title">Einstellungen</string>
+    <string name="travel_directions_title">Routenplaner</string>
+    <string name="travel_shuttle_title">Shuttleservice (empfohlen)</string>
+    <string name="travel_carpool_parking_title">Parken und Fahrgemeinschaften</string>
+    <string name="travel_ride_sharing_title">Mitfahrportale</string>
+    <string name="travel_public_transportation_title">Öffentliche Verkehrsmittel</string>
+    <string name="travel_biking_title">Mit dem Fahrrad</string>
+    <string name="travel_directions_description">Die Wegbeschreibung zu 1 Amphitheatre Pkwy, Mountain View, CA 94043 finden Sie auf <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> oder <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a></string>
+    <string name="travel_shuttle_description">Teilnehmer der Google I/O können von allen Hotels aus, die Google empfiehlt, einen kostenlosen Shuttleservice zur Veranstaltung nutzen. Außerdem wird dieser Service von ausgewählten Standorten in San Francisco und anderen Orten auf der Halbinsel angeboten. Zeigen Sie beim Einsteigen in ein Google I/O-Shuttle bitte die Google I/O-Bestätigungs-E-Mail oder das Ansteckschild der Konferenz vor.\n\nDer Einsatz von barrierefreien Fahrzeugen ist an jedem Abholort möglich. Geben Sie bitte auf Ihrem Registrierungsformular an, ob Sie besondere Unterstützung benötigen. Das Planungsteam wird sich dann mit Ihnen in Verbindung setzen.</string>
+    <string name="travel_carpool_parking_description">Parkplätze sind nur sehr begrenzt vorhanden und befinden sich ausschließlich auf den für die Google I/O ausgewiesenen Flächen gegenüber dem Shoreline Amphitheatre entlang dem Shoreline Boulevard. Auf dem Amphitheatre Parkway oder der Charleston Road gibt es keine Parkplätze für die Veranstaltung. Wenn Sie mit dem Auto anreisen möchten, empfehlen wir, dass Sie mit anderen Teilnehmern Fahrgemeinschaften bilden, da die bevorzugten Parkplätze für Autos mit mindestens zwei Insassen reserviert sind.</string>
+    <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\nWaze Carpool ist eine vertrauenswürdige Community von Fahrern und Mitfahrern, die es Ihnen ermöglicht, bequem, schnell und kostengünstig zur Google I/O zu pendeln. Sie möchten fahren? Öffnen Sie <a href="http://Waze.com/get">Waze</a>, sobald Sie in der Bay Area ankommen. Sie suchen eine Mitfahrgelegenheit? Installieren Sie vor Ihrer Ankunft <a href="http://Waze.com/carpool">Waze Carpool</a>. In den kommenden Wochen finden Sie hier Carpool-Rabattcodes exklusiv für Teilnehmer der Google I/O.\n\n<b>Lyft Line</b>\nLaden Sie die App Lyft von Google Play herunter und nutzen Sie Lyft Line, um mit anderen, die denselben Weg haben, kostengünstig ein Auto zu teilen.\n<b>Rabattcode</b>: Googleio18\nDieser Code ist vom 8. bis 10. Mai 2018 für Fahrgemeinschaften mit Lyft Line gültig. Er kann pro Strecke gegen bis zu 10 $ und von bis zu 250 Nutzern pro Tag eingelöst werden. Die Fahrten müssen am Shoreline Amphitheatre beginnen oder enden.</string>
+    <string name="travel_public_transportation_description">Der öffentliche Nahverkehr reicht nicht bis direkt zur Google I/O. Informieren Sie sich über die Haltestellen der Shuttles zur Google I/O.</string>
+    <string name="travel_biking_description">Am Shoreline Amphitheatre auf Parkplatz A stehen kostenlose Fahrradstellplätze zur Verfügung. Die Silicon Valley Bicycle Coalition bietet täglich von 7 Uhr bis zum Ende der Veranstaltung einen sicheren Parkdienst an. Es gibt zwei Radwege, den Stevens Creek Trail und den Permanente Creek Trail, über die Radfahrer das Shoreline bequem erreichen können. Die besten Radwege und -routen finden Sie auf Google Maps.\n\nAm 10. Mai findet der \"Bay Area Bike to Work Day\" statt. In der unmittelbaren Umgebung des Shoreline Amphitheatre werden dann Tausende teilnehmende Radfahrer unterwegs sein und es wird in der Gegend Hunderte Verpflegungsstationen geben. Weitere Informationen dazu finden Sie auf der Website von Silicon Valley Bike to Work Day.</string>
+    <string name="view_sessions_text">Sitzungen anzeigen</string>
+    <string name="view_codelabs_text">Codelabs anzeigen</string>
+    <string name="view_events_text">Veranstaltungen anzeigen</string>
+    <string name="view_map_text">Karte anzeigen</string>
+    <string name="wifi_network_label">WLAN:</string>
+    <string name="wifi_password_label">Passwort:</string>
+    <string name="wifi_install_success">WLAN gespeichert</string>
+    <string name="wifi_install_error_message">WLAN konnte nicht gespeichert werden</string>
+    <string name="event_sessions_title">Sitzungen</string>
+    <string name="event_sandbox_title">Sandbox</string>
+    <string name="event_codelabs_title">Codelabs</string>
+    <string name="event_officehours_title">Geschäftszeiten und App-Rezensionen</string>
+    <string name="event_afterhours_title">Rahmenprogramm</string>
+    <string name="event_meals_title">Verpflegung</string>
+    <string name="event_sandbox_description">Spezielle Bereiche zum Erkunden, Lernen und spielerischen Experimentieren mit unseren neuesten Produkten und Plattformen – anhand von interaktiven Demos, physischen Installationen und vielem mehr.</string>
+    <string name="event_codelabs_description">Sammeln Sie an unseren Programmierständen praktische Erfahrungen. Hier finden Sie alles, was Sie brauchen, um mithilfe von Onlinekursen zum Selbststudium die neuesten und besten Google-Technologien kennenzulernen – oder bringen Sie Ihren eigenen Rechner mit und nehmen Sie sich Arbeit mit nach Hause. Die anwesenden Mitarbeiter von Google geben Ihnen gern nützliche Tipps und helfen Ihnen, wenn Sie mal nicht weiterkommen.</string>
+    <string name="event_officehours_description">Im Rahmen der Office Hours haben Sie Gelegenheit, Experten von Google all Ihre technischen Fragen persönlich zu stellen, und bei den App Reviews erhalten Sie Beratung und Tipps zu Ihren spezifischen anwendungsbezogenen Projekten.</string>
+    <string name="event_afterhours_description">An zwei Abenden findet nach dem Ende der Sitzungen in der Nähe des Shoreline ein Rahmenprogramm mit Essen, Getränken und Unterhaltung statt. Am ersten Abend gibt es eine Party in den Räumen von Sandbox und am zweiten veranstalten wir ein exklusives Konzert im Amphitheatre.</string>
+    <string name="wifi_header">WLAN</string>
+    <string name="event_types_header">Veranstaltungsarten</string>
+    <string name="settings_time_zone_label">Veranstaltungen in der Zeitzone \"Pacific Standard Time\" (UTC-8)</string>
+    <string name="settings_send_anonymous_usage_statistics">Anonyme Nutzungsstatistiken senden</string>
+    <string name="settings_tos">Nutzungsbedingungen</string>
+    <string name="settings_privacy_policy">Datenschutzerklärung</string>
+    <string name="settings_oss_licenses">Open-Source-Lizenzen</string>
+    <string name="settings_version_label">Version %1$s, Build %2$s</string>
+    <string name="built_with_material_content_description">Erstellt mit Material Components.</string>
+    <string name="day1">Tag 1</string>
+    <string name="day2">Tag 2</string>
+    <string name="day3">Tag 3</string>
+    <string name="day1_date">8. Mai</string>
+    <string name="day2_date">9. Mai</string>
+    <string name="day3_date">10. Mai</string>
+</resources>

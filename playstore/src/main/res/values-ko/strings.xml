@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="playstore_title">Google I/O 2018</string>
+    <string name="playstore_tagline">직접 참석하거나 온라인으로 참여 시 이 앱으로 I/O를 둘러볼 수 있습니다.</string>
+    <string name="playstore_description">공식 Google I/O 2018 컨퍼런스 앱을 사용하면 직접 참석하거나 온라인으로 참여 시 컨퍼런스를 둘러볼 수 있습니다. 앱으로 다음을 할 수 있습니다.\n\n• 주제 및 발표자에 대한 세부정보와 함께 컨퍼런스 일정 탐색\n• 맞춤 일정 메뉴인 Schedule에 이벤트 저장\n• Schedule에 저장한 이벤트가 시작되기 전에 알림 수신\n• 모든 기기와 I/O 웹사이트 간에 맞춤 일정 동기화\n• 벡터 기반의 컨퍼런스 지도로 길 찾기\n• 이벤트, 일정, 이동 정보, 공식 일정 후 이벤트, 세션 녹화 등에 대한 중요한 알림 수신 설정\n\n직접 참석하는 경우에 제공되는 전용 기능은 다음과 같습니다.\n• 미리 준비된 이벤트 Wi-Fi 구성 이용\n• 일정보다 앞서 이벤트 좌석 예약\n\nI/O가 끝난 후에 곧 앱의 소스 코드가 제공됩니다.</string>
+    <string name="playstore_change">Google I/O 2018에 맞게 업데이트되었습니다.\n• 일정보다 앞서 이벤트 좌석 예약\n• 이벤트, 이동 정보, FAQ에 대한 중요 정보 읽기</string>
+    <string name="playstore_required_permissions">필수 권한</string>
+    <string name="playstore_optional_permissions">선택 권한</string>
+    <string name="playstore_permission_location_information">위치 정보: 사용자 위치 주변의 이벤트 장소 지도를 표시하는 데 필요합니다.</string>
+</resources>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="title_schedule">الجدول الزمني</string>
+    <string name="title_map">الخريطة</string>
+    <string name="filters">فلاتر</string>
+    <string name="category_heading_tracks">المواضيع</string>
+    <string name="category_heading_types">أنواع الحدث</string>
+    <string name="clear_all">إزالة كل الشروط</string>
+    <string name="reset">إعادة ضبط</string>
+    <plurals name="filter_event_count">
+        <item quantity="one"> حدث (%1$d)</item>
+        <item quantity="zero"> %1$d حدث</item>
+        <item quantity="two"> حدثان (%1$d)</item>
+        <item quantity="few">%1$d أحداث</item>
+        <item quantity="many">%1$d حدثًا</item>
+        <item quantity="other">%1$d حدث</item>
+    </plurals>
+    <string name="agenda">جدول الأعمال</string>
+    <string name="event_starred">تمّت إضافة الحدث إلى العناصر المميّزة بنجمة.</string>
+    <string name="event_unstarred">تمّت إزالة الحدث من العناصر المميّزة بنجمة.</string>
+    <string name="event_star_error">حدث خطأ أثناء إضافة الحدث إلى العناصر المميّزة بنجمة.</string>
+    <string name="reservation_error">حدث خطأ أثناء تغيير الحجز، لذلك يُرجى الانتظار حتى إتمام الطلبات السابقة أو المحاولة لاحقًا.</string>
+    <string name="reservation_request_succeeded">تمّ طلب الحجز.</string>
+    <string name="reservation_cancel_succeeded">تمّ إلغاء الحجز: \"&lt;b&gt;%s&lt;/b&gt;\".</string>
+    <string name="reservation_new">تمّ حجز المقعد لـ \"&lt;b&gt;%s&lt;/b&gt;\".</string>
+    <string name="reservation_replaced">تمّ استبدال الحجز.</string>
+    <string name="waitlist_new">تمّت إضافتك إلى قائمة الانتظار.</string>
+    <string name="waitlist_cancel_succeeded">تمّت إزالتك من قائمة الانتظار.</string>
+    <string name="got_it">حسنًا</string>
+    <string name="dont_show">عدم العرض</string>
+    <string name="reservation_denied_cutoff">تمّ رفض الحجز لأنّ وقت بدء الجلسة قريب جدًا.</string>
+    <string name="reservation_denied_clash">تمّ رفض الحجز بسبب تضارب موعده مع حجز آخر.</string>
+    <string name="reservation_denied_unknown">تمّ رفض الحجز بسبب خطأ غير معروف.</string>
+    <string name="cancellation_denied_cutoff">تمّ رفض إلغاء الحجز لأنّ وقت بدء الجلسة قريب جدًا.</string>
+    <string name="cancellation_denied_unknown">تمّ رفض إلغاء الحجز بسبب خطأ غير معروف.</string>
+    <string name="schedule_filters_empty">لا تتوفّر اليوم أيّ أحداث محجوزة أو مميّزة بنجمة.</string>
+    <string name="reservation_reservable">حجز مِقعد</string>
+    <string name="reservation_reserved">تمّ الحجز.</string>
+    <string name="reservation_waitlisted">تمّت إضافتك إلى قائمة الانتظار.</string>
+    <string name="reservation_waitlist_available">الانضمام إلى قائمة الانتظار</string>
+    <string name="reservation_disabled">الحجوزات غير متاحة.</string>
+    <string name="schedule_hint_title">تخصيص الجدول الزمني</string>
+    <string name="schedule_hint_view_only_your_events">عرض الأحداث التي تسجّلت فيها فقط</string>
+    <string name="schedule_hint_star_event">إضافة الحدث إلى الأحداث المميّزة بنجمة</string>
+    <string name="schedule_hint_reserve_session_seat">حجز مِقعد للجلسة</string>
+    <string name="schedule_hint_star_event_content_description">صورة لتمييز أيّ حدث بنجمة</string>
+    <string name="schedule_hint_reserve_session_seat_content_description">صورة لحجز مِقعد للجلسة</string>
+    <string name="rate_session">تقييم الجلسة</string>
+    <string name="menu_item_session_location">موقع الجلسة</string>
+    <string name="menu_item_session_star">تمييز الجلسة بنجمة</string>
+    <string name="session_detail_speakers_header">مكبّرات الصوت</string>
+    <string name="session_detail_related_header">الأحداث ذات الصلة</string>
+    <string name="a11y_collapse_filters_sheet">طيّ ورقة الفلاتر</string>
+    <string name="a11y_clear_tag_filters">مسح الفلاتر</string>
+    <string name="a11y_revert_pinned">عرض كلّ الجلسات</string>
+    <string name="a11y_reservation_available">حجز مِقعد</string>
+    <string name="a11y_reservation_working">جارٍ حجز مِقعد</string>
+    <string name="a11y_reservation_reserved">تمّ حجز مِقعد في الحدث</string>
+    <string name="a11y_reservation_disabled">الحجز غير متاح</string>
+    <string name="a11y_reservation_wait_list_available">الانضمام إلى قائمة الانتظار للحدث</string>
+    <string name="a11y_reservation_wait_listed">على قائمة الانتظار للحدث</string>
+    <string name="a11y_reservation_pending">الحجز في الانتظار</string>
+    <string name="a11y_starred">تمّ وضع إشارة مرجعية على الحدث.</string>
+    <string name="a11y_unstarred">لم يتمّ وضع إشارة مرجعية على الحدث.</string>
+    <string name="a11y_star">نجمة</string>
+    <string name="a11y_play">تشغيل الفيديو</string>
+    <string name="dialog_sign_in_title">تسجيل الدخول لتخصيص الجدول الزمني</string>
+    <string name="dialog_sign_in_content">يُرجى تسجيل الدخول لحفظ الأحداث، وحجز المقاعد، وتقييم الجلسات (إذا كنت ضيفًا). وستتمّ مزامنة الإجراءات التي يتمّ إجراؤها في حسابك على التطبيق والموقع الإلكتروني.</string>
+    <string name="not_now">في وقت لاحق</string>
+    <string name="sign_in">تسجيل الدخول</string>
+    <string name="dialog_sign_out_title">هل تريد الخروج؟</string>
+    <string name="dialog_sign_out_content">ستبقى كلّ الأحداث وحجوزات المقاعد وتقييمات الجلسات المحفوظة (إذا كنت ضيفًا) متزامنة على حسابك.</string>
+    <string name="sign_out">الخروج</string>
+    <string name="remove_reservation_title">هل تودّ إزالة الحجز؟</string>
+    <string name="remove_reservation_content">إنّك على وشك إلغاء حجزك في \"%1$s\". إذا أردت المشاركة في الجلسة بدون حجز مقعد، يتبقّى عدد من المقاعد المتاحة في كلّ الجلسات والأولوية حسب الأسبقيّة.</string>
+    <string name="cancel">إلغاء</string>
+    <string name="remove">إزالة</string>
+    <string name="swap_reservation_title">هل تودّ تبديل الحجز؟</string>
+    <string name="swap_reservation_content">هل سبق أن حجزت مقعدًا أو تمّت إضافتك إلى قائمة الانتظار للمشاركة في \"%1$s\"؟. يمكنك إجراء حجز واحد فقط لكلّ جلسة. هل تريد تبديل حجزك بـ \"%2$s\"؟</string>
+    <string name="swap">تبديل</string>
+    <string name="notifications_preference_dialog_title">إشعارات I/O</string>
+    <string name="notifications_preference_dialog_content">هل تريد تلقّي إشعارات حول I/O؟ سنرسل إليك معلومات عن وقت بدء الجلسات، والأحداث التي تليها، والتسجيلات وغيرها. يمكنك تغيير هذا الإعداد ضمن \"المعلومات &gt; الإعدادات\" في أيّ وقت.</string>
+    <string name="no">لا</string>
+    <string name="yes">نعم</string>
+    <plurals name="duration_hours">
+        <item quantity="one">ساعة واحدة (%s)</item>
+        <item quantity="zero">%s ساعة</item>
+        <item quantity="two">ساعتان (%s)</item>
+        <item quantity="few">%s ساعات</item>
+        <item quantity="many">%s ساعة</item>
+        <item quantity="other">%s ساعة</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">دقيقة واحدة (%s)</item>
+        <item quantity="zero">%s دقيقة</item>
+        <item quantity="two">دقيقتان (%s)</item>
+        <item quantity="few">%s دقائق</item>
+        <item quantity="many">%s دقيقة</item>
+        <item quantity="other">%s دقيقة</item>
+    </plurals>
+    <string name="menu_item_share_session">مشاركة الجلسة</string>
+    <string name="share_text_session_detail">يُرجى الاطّلاع على \"%1$s\" على العنوان #io18 %2$s.</string>
+    <string name="intent_chooser_session_detail">مشاركة</string>
+    <string name="onboarding_get_started">البدء</string>
+    <string name="onboarding_welcome_to_google_i_o">أهلاً بك في Google I/O</string>
+    <string name="onboarding_date_location">من 8 إلى 10 أيار (مايو)، \n2018 Mountain View, CA</string>
+    <string name="onboarding_build_schedule">إنشاء جدول زمني خاص بك</string>
+    <string name="onboarding_build_sched_benefits">يمكنك إنشاء تجربة I/O مخصّصة وحجز مقاعد إذا كنت من الحضور.</string>
+    <string name="onboarding_watch_live">مشاهدة I/O مباشرةً</string>
+    <string name="onboarding_join_online">ندعوك للانضمام إلينا حيث نبثّ الأفكار الرئيسية ومعظم الجلسات مباشرةً على الإنترنت.</string>
+    <string name="onboarding_label_days">يوم</string>
+    <string name="onboarding_label_hours">س</string>
+    <string name="onboarding_label_mins">د</string>
+    <string name="onboarding_label_seconds">ث</string>
+    <plurals name="session_starting_in">
+        <item quantity="one">ستبدأ الجلسة بعد دقيقة (%1$s).</item>
+        <item quantity="zero">ستبدأ الجلسة بعد (%1$s) دقيقة.</item>
+        <item quantity="two">ستبدأ الجلسة بعد دقيقتين (%1$s).</item>
+        <item quantity="few">ستبدأ الجلسة بعد %1$s دقائق.</item>
+        <item quantity="many">ستبدأ الجلسة بعد %1$s دقيقة.</item>
+        <item quantity="other">ستبدأ الجلسة بعد %1$s دقيقة.</item>
+    </plurals>
+    <string name="expanded">طريقة عرض موسّعة</string>
+    <string name="collapsed">طريقة عرض مصغّرة</string>
+    <string name="info_title">معلومات</string>
+    <string name="event_title">الحدث</string>
+    <string name="travel_title">السفر</string>
+    <string name="settings_title">الإعدادات</string>
+    <string name="travel_directions_title">اتّجاهات القيادة</string>
+    <string name="travel_shuttle_title">خدمة النقل ذهابًا وإيابًا في الحافلة (مُقترَحة)</string>
+    <string name="travel_carpool_parking_title">مواقف السيارات ومشاركة رحلة السيارة</string>
+    <string name="travel_ride_sharing_title">مشاركة الرحلة</string>
+    <string name="travel_public_transportation_title">وسائل النقل العام</string>
+    <string name="travel_biking_title">ركوب الدرّاجات</string>
+    <string name="travel_directions_description">البحث عن الاتّجاهات على <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">خرائط Google</a> أو <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a> للتوجّه إلى 1 Amphitheatre Pkwy ،Mountain View ،CA 94043</string>
+    <string name="travel_shuttle_description">سيتمّ نقل ضيوف حدث Google I/O في حافلات مجّانًا من كلّ الفنادق المُقترحة من Google. وتتوفّر خدمة نقل اختيارية من سان فرانسيسكو ومواقع جغرافيّة أخرى ضمن شبه جزيرة سان فرانسيسكو. يجب إظهار بريد التحقّق الإلكتروني أو شارة مؤتمر Google I/O لركوب حافلات حدث Google I/O ‏.\n\n في كلّ موقع التقاء، تتوفّر حافلة مجهّزة لذوي الاحتياجات الخاصّة. يُرجى الإشارة في استمارة التسجيل إذا كنتَ من ذوي الاحتياجات الخاصّة وسيتواصل معك فريق التخطيط مباشرةً.</string>
+    <string name="travel_carpool_parking_description">إنّ عدد المواقف محدود جدًا وهي تتوفّر فقط في الأماكن المخصّصة لمؤتمر Google I/O من المدرّج الروماني في شورلاين وصولًا إلى جادّة شورلاين. لا تتوفّر مواقف في طريق منتزه المدرّج الروماني أو طريق شارلستون. إذا أردت القيادة لتصل إلى المكان، ننصحك بمشاركة رحلة السيارة مع الضيوف الآخرين لأنّ أفضلية مساحات الوقوف ستعود للسيارات التي تنقل راكبَيْن أو أكثر.</string>
+    <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\n‏ إنّ Waze Carpool هو منتدى موثوق من السائقين المتاحين لجعل رحلتك إلى مؤتمر Google I/O مسليّة وسريعة وذات تكلفة معقولة. هل ستقود سيّارتك؟ يُرجى فتح <a href="http://Waze.com/get">Waze</a> عند وصولك إلى منطقة الخليج. هل تريد أن يوصِلك شخص ما؟ يُرجى تثبيت <a href="http://Waze.com/carpool">Waze Carpool</a> قبل وصولك. يمكنك الاطّلاع في الأسابيع القادمة على توفّر رموز خصم لمشاركة رحلات السيارة الحصريّة لضيوف مؤتمر Google I/O.‏\n\n<b>Lyft Line</b>\nيمكنك تنزيل تطبيق Lyft من Google Play واستخدام Lyft Line لمشاركة الرحلة مع أشخاص آخرين إلى نفس المكان بسعر أقلّ.\n<b>رمز الخصم</b>: إنّ رمز Googleio18\n صالح لمشاركة الرحلات على Lyft Line من 8 إلى 10 أيّار (مايو) 2018. ويمكنك استرداد قيمة ما يصل إلى 10$ عن كلّ رحلة ولما يصل إلى 250 مستخدمًا عن كلّ يوم. يجب أن تبدأ الرحلات من أو تصل إلى مدرّج شورلاين.</string>
+    <string name="travel_public_transportation_description">لا تتوجّه وسائل النقل العام مباشرةً إلى مؤتمر Google I/O. يمكنك متابعة أخبارنا لمعرفة المواقع المحدّدة لوسائل النقل المخصّصة لحدث Google I/O.</string>
+    <string name="travel_biking_description">سيتوفّر موقف مجّاني للدرّاجات في مدرّج شورلاين في موقف السيارات A. سيتولّى \"ائتلاف الدرّاجات في سيليكون فالي\" خدمة ركن الدرّاجات بشكلٍ آمن من الساعة 7 صباحًا وحتى انتهاء الحدث. يمكن أن يسلك راكبو الدرّاجات المتوجّهون إلى مدرّج شورلاين طريقَين هما: طريق ستيفنز كريك وطريق بيرمانينت كريك. يُرجى الاطّلاع على \"خرائط Google\" للتحقّق من أفضل الطرقات المناسبة لقيادة للدرّاجات والاتّجاهات.\n\nإنّ حدث Bay Area Bike to Work Day سيُعقد يوم الخميس في 10 أيّار (مايو). سيشارك العديد من راكبي الدرّاجات بالقرب من شورلاين وسيتوفّر العديد من محطات تزويد الطاقة في المنطقة. يُرجى الاطّلاع على موقع Silicon Valley Bike to Work Day الإلكتروني للمزيد من المعلومات.</string>
+    <string name="view_sessions_text">عرض الجلسات</string>
+    <string name="view_codelabs_text">عرض Codelabs</string>
+    <string name="view_events_text">عرض الأحداث</string>
+    <string name="view_map_text">عرض الخريطة</string>
+    <string name="wifi_network_label">اسم شبكة Wi-Fi:</string>
+    <string name="wifi_password_label">كلمة المرور:</string>
+    <string name="wifi_install_success">تمّ حفظ شبكة Wi-Fi.</string>
+    <string name="wifi_install_error_message">تعذّر حفظ شبكة Wi-Fi.</string>
+    <string name="event_sessions_title">الجلسات</string>
+    <string name="event_sandbox_title">وَضْع الحماية</string>
+    <string name="event_codelabs_title">Codelabs</string>
+    <string name="event_officehours_title">ساعات العمل وتقييمات التطبيق</string>
+    <string name="event_afterhours_title">أحداث ما بعد المؤتمر</string>
+    <string name="event_meals_title">الوجبات</string>
+    <string name="event_sandbox_description">مساحات مخصّصة للاستكشاف والتعلّم واللعب باستخدام أحدث المنتجات والمنصّات عبر عروض توضيحية تفاعلية وأجهزة فعلية وغيرها.</string>
+    <string name="event_codelabs_description">يمكنك تجربة \"الأكشاك الجاهزة للترميز\" للاطّلاع على مزيد من المعلومات عن آخر تقنيات Google المدهشة عبر برامج تعليمية تتحكّم بمستوى سرعتها، أو يمكنك جلب جهازك وإنجاز عملك في المنزل. وسيكون فريق عمل Google متوفّرًا لتقديم النصائح المفيدة والإرشادات إذا واجهت أيّ صعوبات.</string>
+    <string name="event_officehours_description">يمكنك أن تتعرّف على خبراء Google شخصيًّا ضمن ساعات العمل ليجيبوا عن أسئلتك التقنية. وتمكنّك تقييمات التطبيق من الحصول على نصائح بشأن مشاريعك المحدّدة لأيّ تطبيق.</string>
+    <string name="event_afterhours_description">بعد انتهاء \"الجلسات\"، يُرجى البقاء في شورلاين لِلَيْلَتَيْن يتمّ فيهما تقديم الطعام والشراب والتسلية. سنقيم حفلة في الليلة الأولى في مساحة Sandbox، وفي الليلة الثانية سنقيم حفلة حصريّة في المدرّج.</string>
+    <string name="wifi_header">Wi-Fi</string>
+    <string name="event_types_header">أنواع الأحداث</string>
+    <string name="settings_time_zone_label">تجري الأحداث بتوقيت المحيط الهادئ (UTC-8).</string>
+    <string name="settings_send_anonymous_usage_statistics">إرسال إحصاءات الاستخدام المجهولة المصدر</string>
+    <string name="settings_tos">بنود الخدمة</string>
+    <string name="settings_privacy_policy">سياسة الخصوصية</string>
+    <string name="settings_oss_licenses">تراخيص البرامج المفتوحة المصدر</string>
+    <string name="settings_version_label">الإصدار %1$s، النسخة %2$s</string>
+    <string name="built_with_material_content_description">تمّ إنشاء التطبيق عبر Material Components.</string>
+    <string name="day1">اليوم الأول</string>
+    <string name="day2">اليوم الثاني</string>
+    <string name="day3">اليوم الثالث</string>
+    <string name="day1_date">8 أيّار (مايو)</string>
+    <string name="day2_date">9 أيّار (مايو)</string>
+    <string name="day3_date">10 أيّار (مايو)</string>
+</resources>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.google.samples.apps.iosched.ui.speaker.SpeakerViewModel" />
+
+        <variable
+            name="headshotLoadListener"
+            type="com.google.samples.apps.iosched.ui.speaker.ImageLoadListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/spacing_normal">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/margin_normal" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/margin_normal" />
+
+        <ImageView
+            android:id="@+id/header_grid"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="@string/session_detail_header_aspect"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:headerImage="@{null}" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_title_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.65" />
+
+        <ImageView
+            android:id="@+id/speaker_grid_image"
+            android:layout_width="@dimen/speaker_large_headshot_size"
+            android:layout_height="@dimen/speaker_large_headshot_size"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="24dp"
+            android:transitionName="@string/speaker_headshot_transition"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="@id/header_grid"
+            app:layout_constraintTop_toTopOf="@id/header_grid"
+            app:listener="@{headshotLoadListener}"
+            app:speakerImage="@{viewModel.speaker}" />
+
+        <TextView
+            android:id="@+id/speaker_name"
+            style="@style/Widget.IOSched.SessionDetailTitle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingBottom="@dimen/margin_normal"
+            android:paddingTop="72dp"
+            android:text="@{viewModel.speaker.name}"
+            app:layout_constraintBottom_toBottomOf="@id/header_grid"
+            app:layout_constraintEnd_toEndOf="@id/guideline_title_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toTopOf="@id/header_grid"
+            tools:text="Nick Butcher" />
+
+        <Space
+            android:id="@+id/spacer"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            app:layout_constraintTop_toBottomOf="@id/header_grid" />
+
+        <TextView
+            android:id="@+id/speaker_links"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/margin_normal"
+            android:textAppearance="@style/TextAppearance.IOSched.Links"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/spacer"
+            app:githubUrl="@{viewModel.speaker.githubUrl}"
+            app:linkedInUrl="@{viewModel.speaker.linkedInUrl}"
+            app:twitterUrl="@{viewModel.speaker.twitterUrl}"
+            app:websiteUrl="@{viewModel.speaker.websiteUrl}"
+            tools:text="Twitter / GitHub" />
+
+        <TextView
+            android:id="@+id/speaker_bio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.speaker.abstract}"
+            android:textColor="?android:textColorPrimary"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/speaker_links"
+            tools:text="Pixel puppeteer" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
