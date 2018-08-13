@@ -100,7 +100,7 @@ enhanced functionality provided by
 [Android Ktx extensions](https://developer.android.com/kotlin/ktx).
 
 
-#Copyright
+# Copyright
 
     Copyright 2014 Google Inc. All rights reserved.
 
