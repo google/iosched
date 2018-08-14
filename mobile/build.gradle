@@ -170,6 +170,9 @@ dependencies {
     // Solve conflicts with gson. DataBinding is using an old version.
     implementation "com.google.code.gson:gson:$gsonVersion"
 
+    // Solve conflicts with okio
+    implementation "com.squareup.okio:okio:$rootProject.okioVersion"
+
 }
 
 apply plugin: 'com.google.gms.google-services'
