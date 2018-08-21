@@ -24,11 +24,11 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.iosched.ui.speaker.SpeakerViewModel" />
+            type="com.google.samples.apps.adssched.ui.speaker.SpeakerViewModel" />
 
         <variable
             name="headshotLoadListener"
-            type="com.google.samples.apps.iosched.ui.speaker.ImageLoadListener" />
+            type="com.google.samples.apps.adssched.ui.speaker.ImageLoadListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -82,7 +82,7 @@
 
         <TextView
             android:id="@+id/speaker_name"
-            style="@style/Widget.IOSched.SessionDetailTitle"
+            style="@style/Widget.ADSSched.SessionDetailTitle"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:paddingBottom="@dimen/margin_normal"
@@ -105,7 +105,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/margin_normal"
-            android:textAppearance="@style/TextAppearance.IOSched.Links"
+            android:textAppearance="@style/TextAppearance.ADSSched.Links"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/spacer"

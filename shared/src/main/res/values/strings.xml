@@ -16,5 +16,5 @@
   -->
 
 <resources>
-    <string name="app_name" translatable="false">Google I/O</string>
+    <string name="app_name" translatable="false">Android Dev Summit</string>
 </resources>

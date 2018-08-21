@@ -83,7 +83,7 @@ buildscript {
             url 'https://maven.fabric.io/public'
         }
         // Android Build Server
-        maven { url '../iosched-prebuilts/m2repository' }
+        maven { url '../adssched-prebuilts/m2repository' }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$androidGradlePluginVersion"
@@ -103,9 +103,9 @@ allprojects {
 
         // For Android Build Server
         // - Material Design Components
-        maven { url "${rootProject.projectDir}/../iosched-prebuilts/repository" }
+        maven { url "${rootProject.projectDir}/../adssched-prebuilts/repository" }
         // - Other dependencies
-        maven { url "${rootProject.projectDir}/../iosched-prebuilts/m2repository" }
+        maven { url "${rootProject.projectDir}/../adssched-prebuilts/m2repository" }
         // - Support Libraries, etc
         maven {
             url "${rootProject.projectDir}/../../../prebuilts/fullsdk/linux/extras/support/m2repository"

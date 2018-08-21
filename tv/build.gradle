@@ -24,7 +24,7 @@ android {
     compileSdkVersion rootProject.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.google.samples.apps.iosched.tv"
+        applicationId "com.google.samples.apps.adssched.tv"
         minSdkVersion rootProject.minTvSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode rootProject.versionCodeTv

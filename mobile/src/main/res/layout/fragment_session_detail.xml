@@ -24,7 +24,7 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewModel" />
+            type="com.google.samples.apps.adssched.ui.sessiondetail.SessionDetailViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -70,7 +70,7 @@
             app:contentInsetStart="@dimen/margin_normal"
             app:fabAlignmentMode="end" />
 
-        <com.google.samples.apps.iosched.ui.reservation.StarReserveFab
+        <com.google.samples.apps.adssched.ui.reservation.StarReserveFab
             android:id="@+id/session_detail_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
 
         <!-- A custom snackbar implementation for more control over positioning i.e. above the FAB,
              and to control its entry/exit animation. -->
-        <com.google.samples.apps.iosched.widget.FadingSnackbar
+        <com.google.samples.apps.adssched.widget.FadingSnackbar
             android:id="@+id/snackbar"
             android:layout_width="@dimen/snackbar_width"
             android:layout_height="wrap_content"

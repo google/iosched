@@ -17,7 +17,7 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Widget.IOSched.Dialog"
+    style="@style/Widget.ADSSched.Dialog"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -29,7 +29,7 @@
         android:layout_marginTop="@dimen/margin_large"
         android:paddingHorizontal="@dimen/margin_large"
         android:text="@string/notifications_preference_dialog_title"
-        android:textAppearance="@style/TextAppearance.IOSched.DialogTitle" />
+        android:textAppearance="@style/TextAppearance.ADSSched.DialogTitle" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
         android:layout_marginTop="@dimen/spacing_normal"
         android:paddingHorizontal="@dimen/margin_large"
         android:text="@string/notifications_preference_dialog_content"
-        android:textAppearance="@style/TextAppearance.IOSched.DialogContent" />
+        android:textAppearance="@style/TextAppearance.ADSSched.DialogContent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,7 +48,7 @@
 
         <Button
             android:id="@+id/notifications_pref_button_no"
-            style="@style/Widget.IOSched.BorderlessButton"
+            style="@style/Widget.ADSSched.BorderlessButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_normal"
@@ -58,7 +58,7 @@
 
         <Button
             android:id="@+id/notifications_pref_button_yes"
-            style="@style/Widget.IOSched.RaisedButton"
+            style="@style/Widget.ADSSched.RaisedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_normal"

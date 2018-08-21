@@ -24,7 +24,7 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewModel" />
+            type="com.google.samples.apps.adssched.ui.sessiondetail.SessionDetailViewModel" />
 
         <variable
             name="tagViewPool"
@@ -118,7 +118,7 @@
         <!-- Title on header: only shown if there isn't a photo header or video. -->
         <TextView
             android:id="@+id/session_detail_title"
-            style="@style/Widget.IOSched.SessionDetailTitle"
+            style="@style/Widget.ADSSched.SessionDetailTitle"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:paddingBottom="@dimen/margin_normal"
@@ -140,7 +140,7 @@
         <!-- Title below header: shown if there is a photo header or video. -->
         <TextView
             android:id="@+id/session_detail_with_video_title"
-            style="@style/Widget.IOSched.SessionDetailTitle"
+            style="@style/Widget.ADSSched.SessionDetailTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/margin_normal"

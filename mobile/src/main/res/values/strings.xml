@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <string name="title_schedule" translation_description="The title for the schedule screen where user can see their schedule for Google I/O.">Schedule</string>
+    <string name="title_schedule" translation_description="The title for the schedule screen where user can see their schedule for the Android Dev Summit.">Schedule</string>
     <string name="title_map" translation_description="The title for the map screen where user can see the map of the venue.">Map</string>
     <string name="title_info" translation_description="The title for the info screen where user can see various information, such as FAQ and travel info.">Info</string>
 
@@ -127,8 +127,8 @@
     <string name="swap" translation_description="The label of the button to swap the reservation with another.">Swap</string>
 
     <!-- Notifications preference dialog -->
-    <string name="notifications_preference_dialog_title" translation_description="The title of the dialog for the notifications preference">I/O Notifications</string>
-    <string name="notifications_preference_dialog_content" translation_description="The content of the dialog for the notifications preference">Would you like to receive notifications about I/O? We\'ll send you information about session start times, after hours events, session recordings, and more. You can change this setting under \"Info > Settings\" at any time.</string>
+    <string name="notifications_preference_dialog_title" translation_description="The title of the dialog for the notifications preference">Android Dev Summit Notifications</string>
+    <string name="notifications_preference_dialog_content" translation_description="The content of the dialog for the notifications preference">Would you like to receive notifications about the Android Dev Summit? We\'ll send you information about session start times, after hours events, session recordings, and more. You can change this setting under \"Info > Settings\" at any time.</string>
     <string name="no" translation_description="Negative answer to the question \'Would you like to receive notification?\'">No</string>
     <string name="yes" translation_description="Positive answer to the question \'Would you like to receive notification?\'">Yes</string>
 
@@ -144,17 +144,17 @@
 
     <!--Strings for sharing session-->
     <string name="menu_item_share_session" translation_description="The label for the button to share this session on SNS, etc.">Share session</string>
-    <string name="share_text_session_detail" translation_description="The default message to be used when user is sharing an I/O session on SNS, etc.">Check out \'%1$s\' at #io18 %2$s</string>
-    <string name="intent_chooser_session_detail" translation_description="The label for share screen where user can tell people about an I/O session on SNS, etc.">Share</string>
+    <string name="share_text_session_detail" translation_description="The default message to be used when user is sharing an Android Dev Summit session on SNS, etc.">Check out \'%1$s\' at #io18 %2$s</string>
+    <string name="intent_chooser_session_detail" translation_description="The label for share screen where user can tell people about an Android Dev Summit session on SNS, etc.">Share</string>
 
     <!-- Onboarding -->
     <string name="onboarding_get_started" translation_description="The label for the button to start using the app.">Get started</string>
-    <string name="onboarding_welcome_to_google_i_o" translation_description="The welcome message shown at the onboarding screen of the app.">Welcome to Google I/O</string>
-    <string name="onboarding_date_location" translation_description="The date and the place of Google I/O 2018.">May 8–10,\n2018 Mountain View, CA</string>
+    <string name="onboarding_welcome_to_google_i_o" translation_description="The welcome message shown at the onboarding screen of the app.">Welcome to the Android Dev Summit</string>
+    <string name="onboarding_date_location" translation_description="The date and the place of Android Dev Summit 2018.">May 7–8,\n2018 Mountain View, CA</string>
     <string name="onboarding_build_schedule" translation_description="The explanation title of the feature where user can choose which sessions to attend.">Build your own schedule</string>
-    <string name="onboarding_build_sched_benefits" translation_description="The explanation of the feature where user can choose which sessions to attend.">Build your custom I/O experience and reserve seats if you\'re an attendee</string>
-    <string name="onboarding_watch_live" translation_description="The explanation title of the feature where user can watch I/O sessions by live stream.">Watch I/O Live</string>
-    <string name="onboarding_join_online" translation_description="The explanation of the feature where user can watch I/O sessions by live stream.">Join us online. We\'ll be streaming the keynotes and most sessions live.</string>
+    <string name="onboarding_build_sched_benefits" translation_description="The explanation of the feature where user can choose which sessions to attend.">Build your custom Android Dev Summit experience and reserve seats if you\'re an attendee</string>
+    <string name="onboarding_watch_live" translation_description="The explanation title of the feature where user can watch the Android Dev Summit sessions by live stream.">Watch Android Dev Summit Live</string>
+    <string name="onboarding_join_online" translation_description="The explanation of the feature where user can watch Android Dev Summit sessions by live stream.">Join us online. We\'ll be streaming the keynotes and most sessions live.</string>
     <string name="onboarding_label_days" translation_description="The label for the display of the number of days until the conference starts">D</string>
     <string name="onboarding_label_hours" translation_description="The label for the display of the number of hours until the conference starts">H</string>
     <string name="onboarding_label_mins" translation_description="The label for the display of the number of minutes until the conference starts">M</string>
@@ -189,7 +189,7 @@
     <string name="travel_biking_title" translation_description="Header label for bicycling details">Biking</string>
 
     <string name="travel_directions_description" translation_description="Instructions on how to find directions to the conference.">Find directions on <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> or <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a> to 1 Amphitheatre Pkwy, Mountain View, CA 94043</string>
-    <string name="travel_shuttle_description" translation_description="Shuttle service instructions.">Event shuttles will be provided at no charge to all Google I/O attendees from all Google-recommended hotels. There is also select service from San Francisco and other locations along the Peninsula. You must show your Google I/O confirmation email or conference badge to board all Google I/O event shuttles.\n\nEach pick-up location can support accessible vehicles. Please indicate on your registration form if you have any special assistance requirements, and the planning team will follow up with you directly.</string>
+    <string name="travel_shuttle_description" translation_description="Shuttle service instructions.">Event shuttles will be provided at no charge to all Android Dev Summit attendees from all Google-recommended hotels. There is also select service from San Francisco and other locations along the Peninsula. You must show your Google I/O confirmation email or conference badge to board all Google I/O event shuttles.\n\nEach pick-up location can support accessible vehicles. Please indicate on your registration form if you have any special assistance requirements, and the planning team will follow up with you directly.</string>
     <string name="travel_carpool_parking_description" translation_description="Carpool and parking instructions.">Parking is very limited and available only in Google I/O designated lots located across from Shoreline Amphitheatre along Shoreline Boulevard. There is no event parking along Amphitheatre Parkway or Charleston Road. If you plan to drive, we recommend carpooling with other attendees as preferred parking spaces will be available for cars containing two or more people.</string>
     <string name="travel_ride_sharing_description" translation_description="Ride sharing app instructions and discounts."><b>Waze Carpool</b>\nWaze Carpool is a trusted community of drivers and riders that is available to make your Google I/O commute fun, fast and affordable. Driving? Open <a href="http://Waze.com/get">Waze</a> when you get to the Bay Area. Looking for a ride? Install <a href="http://Waze.com/carpool">Waze Carpool</a> before you arrive. Check back here in the coming weeks for carpool discount codes exclusive to Google I/O attendees.\n\n<b>Lyft Line</b>\nDownload the Lyft app from Google Play and use Lyft Line to share a ride for less with others going the same way.\n<b>Discount code</b>: Googleio18\nThis code is valid from May 8–10, 2018 for shared rides with Lyft Line. It’s redeemable for up to $10 per trip and for up to 250 users per day. Rides must begin or end at Shoreline Amphitheatre.</string>
     <string name="travel_public_transportation_description" translation_description="Public transportation instructions.">Public transit doesn’t go directly to Google I/O. Stay tuned for the exact transportation locations serviced by Google I/O event shuttles.</string>

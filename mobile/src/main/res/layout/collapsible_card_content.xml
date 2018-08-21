@@ -45,7 +45,7 @@
                 android:paddingEnd="@dimen/margin_normal"
                 android:paddingStart="@dimen/margin_normal"
                 android:paddingTop="@dimen/spacing_micro"
-                android:textAppearance="@style/TextAppearance.IOSched.CollapsibleCard"
+                android:textAppearance="@style/TextAppearance.ADSSched.CollapsibleCard"
                 tools:text="@string/travel_shuttle_title" />
 
             <ImageView
@@ -62,7 +62,7 @@
 
         </RelativeLayout>
 
-        <com.google.samples.apps.iosched.widget.HtmlTextView
+        <com.google.samples.apps.adssched.widget.HtmlTextView
             android:id="@+id/card_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

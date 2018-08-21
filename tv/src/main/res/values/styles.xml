@@ -60,18 +60,18 @@
         <item name="android:fontFamily">@font/google_sans</item>
     </style>
 
-    <style name="IOSchedTag">
+    <style name="ADSSchedTag">
         <item name="android:drawablePadding">@dimen/spacing_micro</item>
         <item name="android:drawableStart">@drawable/tag_dot</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textAppearance">@style/IOSchedTagTextAppearance</item>
+        <item name="android:textAppearance">@style/ADSSchedTagTextAppearance</item>
     </style>
 
-    <style name="IOSchedListSecondary" parent="@style/Widget.Leanback.DetailsDescriptionBodyStyle">
+    <style name="ADSSchedListSecondary" parent="@style/Widget.Leanback.DetailsDescriptionBodyStyle">
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
-    <style name="IOSchedTagTextAppearance" parent="@style/IOSchedListSecondary">
+    <style name="ADSSchedTagTextAppearance" parent="@style/ADSSchedListSecondary">
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textSize">12sp</item>
 

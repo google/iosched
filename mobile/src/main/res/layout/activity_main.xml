@@ -21,7 +21,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.google.samples.apps.iosched.ui.MainActivity">
+    tools:context="com.google.samples.apps.adssched.ui.MainActivity">
 
     <FrameLayout
         android:id="@+id/fragment_container"
@@ -34,7 +34,7 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation"
-        style="@style/Widget.IOSched.BottomNav"
+        style="@style/Widget.ADSSched.BottomNav"
         android:layout_width="0dp"
         android:layout_height="@dimen/bottom_navigation_height"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,7 +43,7 @@
         app:layout_insetEdge="bottom"
         app:menu="@menu/navigation" />
 
-    <com.google.samples.apps.iosched.widget.FadingSnackbar
+    <com.google.samples.apps.adssched.widget.FadingSnackbar
         android:id="@+id/snackbar"
         android:layout_width="@dimen/snackbar_width"
         android:layout_height="wrap_content"

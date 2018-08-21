@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:text="@string/onboarding_build_schedule"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.IOSched.H1"
+        android:textAppearance="@style/TextAppearance.ADSSched.H1"
         app:layout_constraintBottom_toTopOf="@id/benefits"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -65,7 +65,7 @@
 
     <TextView
         android:id="@+id/benefits"
-        style="@style/Widget.IOSched.OnboardingDeck"
+        style="@style/Widget.ADSSched.OnboardingDeck"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_normal"

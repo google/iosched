@@ -17,7 +17,7 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/Widget.IOSched.Dialog"
+    style="@style/Widget.ADSSched.Dialog"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_large"
         android:text="@string/schedule_hint_title"
-        android:textAppearance="@style/TextAppearance.IOSched.DialogTitle"
+        android:textAppearance="@style/TextAppearance.ADSSched.DialogTitle"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@id/schedule_hint_imageview_star_event"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,7 +73,7 @@
         android:layout_marginStart="@dimen/margin_normal"
         android:layout_marginTop="@dimen/margin_large"
         android:text="@string/schedule_hint_star_event"
-        android:textAppearance="@style/TextAppearance.IOSched.DialogContent"
+        android:textAppearance="@style/TextAppearance.ADSSched.DialogContent"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@+id/schedule_hint_textview_reserve_seat"
         app:layout_constraintEnd_toEndOf="@+id/schedule_hint_guideline_end_text"
@@ -99,7 +99,7 @@
         android:layout_marginStart="@dimen/margin_normal"
         android:layout_marginTop="@dimen/margin_normal"
         android:text="@string/schedule_hint_reserve_session_seat"
-        android:textAppearance="@style/TextAppearance.IOSched.DialogContent"
+        android:textAppearance="@style/TextAppearance.ADSSched.DialogContent"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="@+id/schedule_hint_guideline_end_text"
         app:layout_constraintHorizontal_bias="0"
@@ -108,7 +108,7 @@
 
     <Button
         android:id="@+id/schedule_hint_button_dismiss"
-        style="@style/Widget.IOSched.BorderlessButton"
+        style="@style/Widget.ADSSched.BorderlessButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_normal"

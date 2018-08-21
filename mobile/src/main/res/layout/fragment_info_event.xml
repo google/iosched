@@ -23,7 +23,7 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.iosched.ui.info.EventInfoViewModel" />
+            type="com.google.samples.apps.adssched.ui.info.EventInfoViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -64,7 +64,7 @@
                     android:layout_marginStart="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_normal"
                     android:text="@string/wifi_header"
-                    android:textAppearance="@style/TextAppearance.IOSched.Subhead"
+                    android:textAppearance="@style/TextAppearance.ADSSched.Subhead"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -130,7 +130,7 @@
                     android:layout_marginStart="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_large"
                     android:text="@string/related_apps_header"
-                    android:textAppearance="@style/TextAppearance.IOSched.Subhead"
+                    android:textAppearance="@style/TextAppearance.ADSSched.Subhead"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/wifi_password_value" />
 
@@ -156,7 +156,7 @@
 
                     <TextView
                         android:id="@+id/scavenger_hunt_description"
-                        style="@style/TextAppearance.IOSched.InfoEventDescription.AppCallout"
+                        style="@style/TextAppearance.ADSSched.InfoEventDescription.AppCallout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/margin_normal"
@@ -167,7 +167,7 @@
 
                     <TextView
                         android:id="@+id/scavenger_hunt_description2"
-                        style="@style/TextAppearance.IOSched.InfoEventDescription"
+                        style="@style/TextAppearance.ADSSched.InfoEventDescription"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/margin_normal"
@@ -201,7 +201,7 @@
 
                     <TextView
                         android:id="@+id/assistant_app_description"
-                        style="@style/TextAppearance.IOSched.InfoEventDescription.AppCallout"
+                        style="@style/TextAppearance.ADSSched.InfoEventDescription.AppCallout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/margin_normal"
@@ -212,7 +212,7 @@
 
                     <TextView
                         android:id="@+id/assistant_app_description2"
-                        style="@style/TextAppearance.IOSched.InfoEventDescription"
+                        style="@style/TextAppearance.ADSSched.InfoEventDescription"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/margin_normal"
@@ -231,11 +231,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_large"
                     android:text="@string/event_types_header"
-                    android:textAppearance="@style/TextAppearance.IOSched.Subhead"
+                    android:textAppearance="@style/TextAppearance.ADSSched.Subhead"
                     app:layout_constraintStart_toStartOf="@+id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@+id/assistant_app" />
 
-                <com.google.samples.apps.iosched.widget.EventView
+                <com.google.samples.apps.adssched.widget.EventView
                     android:id="@+id/event_sessions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -246,7 +246,7 @@
                     app:eventTitle="@string/event_sessions_title"
                     app:eventTypeLogo="@drawable/event_header_sessions" />
 
-                <com.google.samples.apps.iosched.widget.EventView
+                <com.google.samples.apps.adssched.widget.EventView
                     android:id="@+id/event_sandbox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -256,7 +256,7 @@
                     app:eventTitle="@string/event_sandbox_title"
                     app:eventTypeLogo="@drawable/event_header_sandbox" />
 
-                <com.google.samples.apps.iosched.widget.EventView
+                <com.google.samples.apps.adssched.widget.EventView
                     android:id="@+id/event_codelabs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -266,7 +266,7 @@
                     app:eventTitle="@string/event_codelabs_title"
                     app:eventTypeLogo="@drawable/event_header_codelabs" />
 
-                <com.google.samples.apps.iosched.widget.EventView
+                <com.google.samples.apps.adssched.widget.EventView
                     android:id="@+id/event_officehours"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -276,7 +276,7 @@
                     app:eventTitle="@string/event_officehours_title"
                     app:eventTypeLogo="@drawable/event_header_office_hours" />
 
-                <com.google.samples.apps.iosched.widget.EventView
+                <com.google.samples.apps.adssched.widget.EventView
                     android:id="@+id/event_afterhours"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -286,7 +286,7 @@
                     app:eventTitle="@string/event_afterhours_title"
                     app:eventTypeLogo="@drawable/event_header_afterhours" />
 
-                <com.google.samples.apps.iosched.widget.EventView
+                <com.google.samples.apps.adssched.widget.EventView
                     android:id="@+id/event_meals"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -296,7 +296,7 @@
                     app:eventTitle="@string/event_meals_title"
                     app:eventTypeLogo="@drawable/event_header_meals" />
 
-                <com.google.samples.apps.iosched.widget.CountdownView
+                <com.google.samples.apps.adssched.widget.CountdownView
                     android:layout_width="0dp"
                     android:layout_height="@dimen/countdown_height"
                     android:layout_marginEnd="@dimen/onboarding_margins"

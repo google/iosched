@@ -21,7 +21,7 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.iosched.ui.info.SettingsViewModel" />
+            type="com.google.samples.apps.adssched.ui.info.SettingsViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -39,7 +39,7 @@
             <!--TODO: make button ripple the entire width of row for switches-->
             <Switch
                 android:id="@+id/settings_time_zone"
-                style="@style/TextAppearance.IOSched.SettingsSwitch"
+                style="@style/TextAppearance.ADSSched.SettingsSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_normal"
@@ -51,7 +51,7 @@
 
             <Switch
                 android:id="@+id/settings_enable_notifications"
-                style="@style/TextAppearance.IOSched.SettingsSwitch"
+                style="@style/TextAppearance.ADSSched.SettingsSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checked="@{viewModel.enableNotifications}"
@@ -61,7 +61,7 @@
 
             <Switch
                 android:id="@+id/settings_send_anonymous_usage_statistics"
-                style="@style/TextAppearance.IOSched.SettingsSwitch"
+                style="@style/TextAppearance.ADSSched.SettingsSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checked="@{viewModel.sendUsageStatistics}"

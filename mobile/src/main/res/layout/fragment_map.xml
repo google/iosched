@@ -21,11 +21,11 @@
 
     <data>
 
-        <import type="com.google.samples.apps.iosched.R" />
+        <import type="com.google.samples.apps.adssched.R" />
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.iosched.ui.map.MapViewModel" />
+            type="com.google.samples.apps.adssched.ui.map.MapViewModel" />
 
     </data>
 
@@ -49,7 +49,7 @@
                 android:gravity="center"
                 android:minHeight="?actionBarSize"
                 android:text="@string/title_map"
-                android:textAppearance="@style/TextAppearance.IOSched.ToolbarTitle" />
+                android:textAppearance="@style/TextAppearance.ADSSched.ToolbarTitle" />
 
         </FrameLayout>
 
@@ -81,7 +81,7 @@
             android:layout_marginBottom="60dp"
             android:background="@drawable/filters_sheet_background"
             android:elevation="@dimen/bottom_sheet_elevation"
-            app:layout_behavior="com.google.samples.apps.iosched.widget.BottomSheetBehavior"
+            app:layout_behavior="com.google.samples.apps.adssched.widget.BottomSheetBehavior"
             app:behavior_hideable="true"
             app:behavior_peekHeight="@dimen/bottom_sheet_peek_height"
             app:bottomSheetState="@{viewModel.bottomSheetStateEvent}">
@@ -158,7 +158,7 @@
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:lines="1"
-                android:textAppearance="@style/TextAppearance.IOSched.Map.InfoTitle"
+                android:textAppearance="@style/TextAppearance.ADSSched.Map.InfoTitle"
                 app:layout_constraintEnd_toStartOf="@id/expand_icon"
                 app:layout_constraintStart_toEndOf="@id/marker_icon"
                 tools:text="Community Lounge" />

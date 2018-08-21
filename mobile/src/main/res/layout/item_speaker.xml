@@ -23,11 +23,11 @@
 
         <variable
             name="speaker"
-            type="com.google.samples.apps.iosched.model.Speaker" />
+            type="com.google.samples.apps.adssched.model.Speaker" />
 
         <variable
             name="eventListener"
-            type="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailEventListener" />
+            type="com.google.samples.apps.adssched.ui.sessiondetail.SessionDetailEventListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -55,7 +55,7 @@
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginStart="@dimen/margin_normal"
             android:text="@{speaker.name}"
-            android:textAppearance="@style/TextAppearance.IOSched.SpeakerTitle"
+            android:textAppearance="@style/TextAppearance.ADSSched.SpeakerTitle"
             app:layout_constraintBottom_toTopOf="@id/speaker_item_company"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/speaker_item_headshot"

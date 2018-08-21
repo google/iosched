@@ -22,12 +22,12 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.iosched.ui.reservation.RemoveReservationViewModel" />
+            type="com.google.samples.apps.adssched.ui.reservation.RemoveReservationViewModel" />
 
     </data>
 
     <LinearLayout
-        style="@style/Widget.IOSched.Dialog"
+        style="@style/Widget.ADSSched.Dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -39,7 +39,7 @@
             android:layout_marginTop="@dimen/margin_large"
             android:paddingHorizontal="@dimen/margin_large"
             android:text="@string/remove_reservation_title"
-            android:textAppearance="@style/TextAppearance.IOSched.DialogTitle" />
+            android:textAppearance="@style/TextAppearance.ADSSched.DialogTitle" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
             android:layout_marginBottom="@dimen/margin_normal"
             android:layout_marginTop="@dimen/spacing_normal"
             android:paddingHorizontal="@dimen/margin_large"
-            android:textAppearance="@style/TextAppearance.IOSched.DialogContent"
+            android:textAppearance="@style/TextAppearance.ADSSched.DialogContent"
             app:sessionTitle="@{viewModel.sessionTitle}" />
 
         <LinearLayout
@@ -58,7 +58,7 @@
             android:orientation="horizontal">
 
             <Button
-                style="@style/Widget.IOSched.BorderlessButton"
+                style="@style/Widget.ADSSched.BorderlessButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_normal"
@@ -69,7 +69,7 @@
                 android:text="@string/cancel" />
 
             <Button
-                style="@style/Widget.IOSched.RaisedButton"
+                style="@style/Widget.ADSSched.RaisedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_normal"

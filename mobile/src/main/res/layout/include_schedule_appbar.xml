@@ -21,7 +21,7 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel" />
+            type="com.google.samples.apps.adssched.ui.schedule.ScheduleViewModel" />
 
     </data>
 
@@ -58,7 +58,7 @@
                 android:gravity="center"
                 android:minHeight="?actionBarSize"
                 android:text="@string/title_schedule"
-                android:textAppearance="@style/TextAppearance.IOSched.ToolbarTitle" />
+                android:textAppearance="@style/TextAppearance.ADSSched.ToolbarTitle" />
 
         </FrameLayout>
 

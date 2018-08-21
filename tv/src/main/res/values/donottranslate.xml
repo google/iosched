@@ -15,5 +15,5 @@
   -->
 <resources>
     <!-- Contains strings that should not be translated such as constants and non-UI strings -->
-    <string name="search_authority">com.google.samples.apps.iosched.tv</string>
+    <string name="search_authority">com.google.samples.apps.adssched.tv</string>
 </resources>
