@@ -58,7 +58,6 @@ import com.google.samples.apps.adssched.ui.schedule.filters.EventFilter.MyEvents
 import com.google.samples.apps.adssched.ui.schedule.filters.EventFilter.TagFilter
 import com.google.samples.apps.adssched.ui.schedule.filters.LoadEventFiltersUseCase
 import com.google.samples.apps.adssched.ui.sessioncommon.EventActions
-import com.google.samples.apps.adssched.ui.sessioncommon.stringRes
 import com.google.samples.apps.adssched.ui.signin.SignInViewModelDelegate
 import org.threeten.bp.ZoneId
 import timber.log.Timber
@@ -259,24 +258,6 @@ class ScheduleViewModel @Inject constructor(
                         )
                     )
                 )
-            }
-        }
-
-        // Show a message with the result of a reservation
-        _snackBarMessage.addSource(loadUserSessionsByDayUseCase.observe()) {
-            if (it is Result.Success) {
-                it.data.userMessage?.type?.stringRes()?.let { messageId ->
-                    // There is a message to display:
-
-                    snackbarMessageManager.addMessage(
-                        SnackbarMessage(
-                            messageId = messageId,
-                            longDuration = true,
-                            session = it.data.userMessageSession,
-                            requestChangeId = it.data.userMessage?.changeRequestId
-                        )
-                    )
-                }
             }
         }
 

@@ -19,7 +19,6 @@ package com.google.samples.apps.adssched.shared.data.userevent
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.adssched.model.ConferenceDay
 import com.google.samples.apps.adssched.model.Session
 import com.google.samples.apps.adssched.model.SessionId
@@ -29,12 +28,7 @@ import com.google.samples.apps.adssched.shared.data.session.SessionRepository
 import com.google.samples.apps.adssched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.adssched.shared.domain.sessions.LoadUserSessionUseCaseResult
 import com.google.samples.apps.adssched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
-import com.google.samples.apps.adssched.shared.domain.users.ReservationRequestAction
-import com.google.samples.apps.adssched.shared.domain.users.ReservationRequestAction.RequestAction
-import com.google.samples.apps.adssched.shared.domain.users.ReservationRequestAction.SwapAction
 import com.google.samples.apps.adssched.shared.domain.users.StarUpdatedStatus
-import com.google.samples.apps.adssched.shared.domain.users.SwapRequestAction
-import com.google.samples.apps.adssched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.adssched.shared.result.Result
 import com.google.samples.apps.adssched.shared.util.TimeUtils.ConferenceDays
 import timber.log.Timber
@@ -67,7 +61,6 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
             sessionsByDayResult.value = Result.Success(
                 LoadUserSessionsByDayUseCaseResult(
                     userSessionsPerDay = userSessionsPerDay,
-                    userMessage = null,
                     userSessionCount = allSessions.size
                 )
             )
@@ -92,18 +85,12 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                     // Get the sessions, synchronously
                     val allSessions = sessionRepository.getSessions()
 
-                    // Merges sessions with user data and emits the result
-                    val userEventsMessageSession = allSessions.firstOrNull {
-                        it.id == userEvents.userEventsMessage?.sessionId
-                    }
                     sessionsByDayResult.postValue(
                         Result.Success(
                             LoadUserSessionsByDayUseCaseResult(
                                 userSessionsPerDay = mapUserDataAndSessions(
                                     userEvents, allSessions
                                 ),
-                                userMessage = userEvents.userEventsMessage,
-                                userMessageSession = userEventsMessageSession,
                                 userSessionCount = allSessions.size
                             )
                         )
@@ -129,8 +116,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
             sessionResult.postValue(
                 Result.Success(
                     LoadUserSessionUseCaseResult(
-                        userSession = UserSession(session, createDefaultUserEvent(session)),
-                        userMessage = null
+                        userSession = UserSession(session, createDefaultUserEvent(session))
                     )
                 )
             )
@@ -157,8 +143,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                     sessionResult.postValue(
                         Result.Success(
                             LoadUserSessionUseCaseResult(
-                                userSession = userSession,
-                                userMessage = userEventResult?.userEventMessage
+                                userSession = userSession
                             )
                         )
                     )
@@ -180,66 +165,6 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         userEvent: UserEvent
     ): LiveData<Result<StarUpdatedStatus>> {
         return userEventDataSource.starEvent(userId, userEvent)
-    }
-
-    override fun changeReservation(
-        userId: String,
-        sessionId: SessionId,
-        action: ReservationRequestAction
-    ): LiveData<Result<ReservationRequestAction>> {
-        val sessions = sessionRepository.getSessions().associateBy { it.id }
-        val userEvents = getUserEvents(userId)
-        val session = sessionRepository.getSession(sessionId)
-        val overlappingId = findOverlappingReservationId(session, action, sessions, userEvents)
-        if (overlappingId != null) {
-            // If there is already an overlapping reservation, return the result as
-            // SwapAction is needed.
-            val result = MutableLiveData<Result<ReservationRequestAction>>()
-            val overlappingSession = sessionRepository.getSession(overlappingId)
-            Timber.d(
-                """User is trying to reserve a session that overlaps with the
-                |session id: $overlappingId, title: ${overlappingSession.title}""".trimMargin()
-            )
-            result.postValue(
-                Result.Success(
-                    SwapAction(
-                        SwapRequestParameters(
-                            userId,
-                            fromId = overlappingId,
-                            fromTitle = overlappingSession.title,
-                            toId = sessionId,
-                            toTitle = session.title
-                        )
-                    )
-                )
-            )
-            return result
-        }
-        return userEventDataSource.requestReservation(userId, session, action)
-    }
-
-    override fun swapReservation(
-        userId: String,
-        fromId: SessionId,
-        toId: SessionId
-    ): LiveData<Result<SwapRequestAction>> {
-        val toSession = sessionRepository.getSession(toId)
-        val fromSession = sessionRepository.getSession(fromId)
-        return userEventDataSource.swapReservation(userId, fromSession, toSession)
-    }
-
-    private fun findOverlappingReservationId(
-        session: Session,
-        action: ReservationRequestAction,
-        sessions: Map<String, Session>,
-        userEvents: List<UserEvent>
-    ): String? {
-        if (action !is RequestAction) return null
-        val overlappingUserEvent = userEvents.find {
-            sessions[it.id]?.isOverlapping(session) == true &&
-                (it.isReserved() || it.isWaitlisted())
-        }
-        return overlappingUserEvent?.id
     }
 
     private fun createDefaultUserEvent(session: Session): UserEvent {
@@ -264,7 +189,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
             }.toMap()
         }
 
-        val (userEvents, _) = userData
+        val userEvents = userData.userEvents
 
         val eventIdToUserEvent: Map<String, UserEvent?> = userEvents.map { it.id to it }.toMap()
         val allUserSessions = allSessions.map {
@@ -302,18 +227,6 @@ interface SessionAndUserEventRepository {
     ): LiveData<Result<LoadUserSessionUseCaseResult>>
 
     fun getUserEvents(userId: String?): List<UserEvent>
-
-    fun changeReservation(
-        userId: String,
-        sessionId: SessionId,
-        action: ReservationRequestAction
-    ): LiveData<Result<ReservationRequestAction>>
-
-    fun swapReservation(
-        userId: String,
-        fromId: SessionId,
-        toId: SessionId
-    ): LiveData<Result<SwapRequestAction>>
 
     fun starEvent(userId: String, userEvent: UserEvent): LiveData<Result<StarUpdatedStatus>>
 

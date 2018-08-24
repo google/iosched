@@ -17,10 +17,8 @@
 package com.google.samples.apps.adssched.shared.domain.sessions
 
 import com.google.samples.apps.adssched.model.ConferenceDay
-import com.google.samples.apps.adssched.model.Session
 import com.google.samples.apps.adssched.model.userdata.UserSession
 import com.google.samples.apps.adssched.shared.data.userevent.DefaultSessionAndUserEventRepository
-import com.google.samples.apps.adssched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.adssched.shared.domain.MediatorUseCase
 import com.google.samples.apps.adssched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.adssched.shared.result.Result
@@ -61,8 +59,6 @@ open class LoadUserSessionsByDayUseCase @Inject constructor(
 
                         val usecaseResult = LoadUserSessionsByDayUseCaseResult(
                             userSessionsPerDay = userSessions,
-                            userMessage = it.data.userMessage,
-                            userMessageSession = it.data.userMessageSession,
                             userSessionCount = userSessions.values.map { it.size }.sum(),
                             firstUnfinishedSession = findFirstUnfinishedSession(
                                 userSessions, parameters.now
@@ -121,12 +117,6 @@ data class LoadUserSessionsByDayUseCaseParameters(
 data class LoadUserSessionsByDayUseCaseResult(
 
     val userSessionsPerDay: Map<ConferenceDay, List<UserSession>>,
-
-    /** A message to show to the user with important changes like reservation confirmations */
-    val userMessage: UserEventMessage? = null,
-
-    /** The session the user message is about, if any. */
-    val userMessageSession: Session? = null,
 
     /** The total number of sessions. */
     val userSessionCount: Int,

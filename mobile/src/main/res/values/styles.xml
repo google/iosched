@@ -19,8 +19,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/indigo</item>
-        <item name="colorAccent">@color/indigo</item>
+        <item name="colorPrimary">@color/orange</item>
+        <item name="colorAccent">@color/orange</item>
         <item name="colorControlActivated">?colorPrimary</item>
         <item name="toolbarStyle">@style/Widget.Toolbar</item>
         <item name="tabStyle">@style/Widget.ADSSched.Tabs</item>
@@ -28,7 +28,7 @@
         <item name="android:windowBackground">@color/white</item>
         <item name="android:statusBarColor">@color/status_bar</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-        <item name="android:navigationBarColor">@color/indigo_dark</item>
+        <item name="android:navigationBarColor">@color/orange</item>
         <item name="android:textColorTertiary">@color/text_color_tertiary</item>
         <item name="sessionListKeyline">@dimen/session_keyline</item>
         <item name="eventFilterViewStyle">@style/Widget.ADSSched.EventFilters</item>
@@ -113,7 +113,7 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="TextAppearance.ADSSched.BottomNavigationView" parent="@style/TextAppearance.MaterialComponents.BottomNavigationView.Colored">
+    <style name="TextAppearance.ADSSched.BottomNavigationView" parent="@style/Widget.MaterialComponents.BottomNavigationView.Colored">
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textColor">@color/bottom_nav_item</item>
     </style>

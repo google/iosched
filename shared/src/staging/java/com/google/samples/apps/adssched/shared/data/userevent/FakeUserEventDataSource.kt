@@ -18,17 +18,10 @@ package com.google.samples.apps.adssched.shared.data.userevent
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.samples.apps.adssched.model.Session
 import com.google.samples.apps.adssched.model.SessionId
-import com.google.samples.apps.adssched.model.reservations.ReservationRequestResult
-import com.google.samples.apps.adssched.model.reservations.ReservationRequestResult.ReservationRequestStatus.RESERVE_SUCCEEDED
 import com.google.samples.apps.adssched.model.userdata.UserEvent
 import com.google.samples.apps.adssched.shared.data.BootstrapConferenceDataSource
-import com.google.samples.apps.adssched.shared.domain.users.ReservationRequestAction
-import com.google.samples.apps.adssched.shared.domain.users.ReservationRequestAction.CancelAction
-import com.google.samples.apps.adssched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.adssched.shared.domain.users.StarUpdatedStatus
-import com.google.samples.apps.adssched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.adssched.shared.result.Result
 
 /**
@@ -41,16 +34,11 @@ object FakeUserEventDataSource : UserEventDataSource {
 
     init {
         conferenceData.sessions.forEachIndexed { i, session ->
-            val reservation = ReservationRequestResult(
-                RESERVE_SUCCEEDED, "123",
-                System.currentTimeMillis()
-            )
             if (i in 1..50) {
                 userEvents.add(
                     UserEvent(
                         session.id,
-                        isStarred = i % 2 == 0,
-                        reservationRequestResult = reservation
+                        isStarred = i % 2 == 0
                     )
                 )
             }
@@ -86,33 +74,8 @@ object FakeUserEventDataSource : UserEventDataSource {
         return result
     }
 
-    override fun requestReservation(
-        userId: String,
-        session: Session,
-        action: ReservationRequestAction
-    ): LiveData<Result<ReservationRequestAction>> {
-        val result = MutableLiveData<Result<ReservationRequestAction>>()
-        result.postValue(
-            Result.Success(
-                if (action is RequestAction) RequestAction()
-                else CancelAction()
-            )
-        )
-        return result
-    }
-
     override fun getUserEvents(userId: String): List<UserEvent> {
         return userEvents
-    }
-
-    override fun swapReservation(
-        userId: String,
-        fromSession: Session,
-        toSession: Session
-    ): LiveData<Result<SwapRequestAction>> {
-        val result = MutableLiveData<Result<SwapRequestAction>>()
-        result.postValue(Result.Success(SwapRequestAction()))
-        return result
     }
 
     override fun clearSingleEventSubscriptions() {}

@@ -23,11 +23,6 @@ import com.google.samples.apps.adssched.model.Room
 import com.google.samples.apps.adssched.model.Session
 import com.google.samples.apps.adssched.model.Speaker
 import com.google.samples.apps.adssched.model.Tag
-import com.google.samples.apps.adssched.model.reservations.ReservationRequestResult
-import com.google.samples.apps.adssched.model.reservations.ReservationRequestResult.ReservationRequestStatus.RESERVE_DENIED_CUTOFF
-import com.google.samples.apps.adssched.model.reservations.ReservationRequestResult.ReservationRequestStatus.RESERVE_DENIED_UNKNOWN
-import com.google.samples.apps.adssched.model.reservations.ReservationRequestResult.ReservationRequestStatus.RESERVE_SUCCEEDED
-import com.google.samples.apps.adssched.model.reservations.ReservationRequestResult.ReservationRequestStatus.RESERVE_WAITLISTED
 import com.google.samples.apps.adssched.model.userdata.UserEvent
 import com.google.samples.apps.adssched.model.userdata.UserSession
 import org.threeten.bp.ZonedDateTime
@@ -176,40 +171,23 @@ object TestData {
 
     private val userEvent0 = UserEvent(
         sessionIDs[0], isStarred = false,
-        isReviewed = false,
-        reservationStatus = UserEvent.ReservationStatus.RESERVED,
-        reservationRequestResult = ReservationRequestResult(
-            RESERVE_SUCCEEDED, "123", System.currentTimeMillis()
-        )
+        isReviewed = false
     )
     private val userEvent1 = UserEvent(
         sessionIDs[1], isStarred = true,
-        isReviewed = true,
-        reservationStatus = UserEvent.ReservationStatus.WAITLISTED,
-        reservationRequestResult = ReservationRequestResult(
-            RESERVE_WAITLISTED, "123", System.currentTimeMillis()
-        )
+        isReviewed = true
     )
     private val userEvent2 = UserEvent(
         sessionIDs[2], isStarred = true,
-        isReviewed = false,
-        reservationStatus = UserEvent.ReservationStatus.NONE,
-        reservationRequestResult = ReservationRequestResult(
-            RESERVE_DENIED_CUTOFF, "123", System.currentTimeMillis()
-        )
+        isReviewed = false
     )
     private val userEvent3 = UserEvent(
         sessionIDs[3], isStarred = false,
-        isReviewed = true,
-        reservationStatus = UserEvent.ReservationStatus.NONE,
-        reservationRequestResult = ReservationRequestResult(
-            RESERVE_DENIED_UNKNOWN, "123", System.currentTimeMillis()
-        )
+        isReviewed = true
     )
     private val userEvent4 = UserEvent(
         sessionIDs[4], isStarred = false,
-        isReviewed = true,
-        reservationRequest = null
+        isReviewed = true
     )
     val userSession0 = UserSession(session0, userEvent0)
     val userSession1 = UserSession(session1, userEvent1)

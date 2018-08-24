@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.adssched.model
 
-import com.google.samples.apps.adssched.model.SessionType.SESSION
 import org.threeten.bp.ZonedDateTime
 
 typealias SessionId = String
@@ -141,11 +140,6 @@ data class Session(
     fun levelTag(): Tag? {
         return tags.firstOrNull { it.category == Tag.CATEGORY_LEVEL }
     }
-
-    /**
-     * Whether this event is reservable, based upon [type].
-     */
-    fun isReservable() = type == SESSION
 
     fun isOverlapping(session: Session): Boolean {
         return this.startTime < session.endTime && this.endTime > session.startTime

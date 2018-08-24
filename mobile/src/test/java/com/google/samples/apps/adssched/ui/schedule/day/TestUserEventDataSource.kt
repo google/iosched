@@ -18,18 +18,13 @@ package com.google.samples.apps.adssched.ui.schedule.day
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.samples.apps.adssched.model.Session
 import com.google.samples.apps.adssched.model.userdata.UserEvent
 import com.google.samples.apps.adssched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.adssched.shared.data.userevent.UserEventResult
 import com.google.samples.apps.adssched.shared.data.userevent.UserEventsResult
-import com.google.samples.apps.adssched.shared.domain.users.ReservationRequestAction
-import com.google.samples.apps.adssched.shared.domain.users.ReservationRequestAction.CancelAction
-import com.google.samples.apps.adssched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.adssched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.adssched.shared.domain.users.StarUpdatedStatus.STARRED
 import com.google.samples.apps.adssched.shared.domain.users.StarUpdatedStatus.UNSTARRED
-import com.google.samples.apps.adssched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.adssched.shared.result.Result
 import com.google.samples.apps.adssched.test.data.TestData
 
@@ -65,31 +60,7 @@ class TestUserEventDataSource(
         return result
     }
 
-    override fun requestReservation(
-        userId: String,
-        session: Session,
-        action: ReservationRequestAction
-    ): LiveData<Result<ReservationRequestAction>> {
-        val result = MutableLiveData<Result<ReservationRequestAction>>()
-        result.postValue(
-            Result.Success(
-                if (action is RequestAction) RequestAction() else CancelAction()
-            )
-        )
-        return result
-    }
-
     override fun getUserEvents(userId: String): List<UserEvent> = TestData.userEvents
-
-    override fun swapReservation(
-        userId: String,
-        fromSession: Session,
-        toSession: Session
-    ): LiveData<Result<SwapRequestAction>> {
-        val result = MutableLiveData<Result<SwapRequestAction>>()
-        result.postValue(Result.Success(SwapRequestAction()))
-        return result
-    }
 
     override fun clearSingleEventSubscriptions() {}
 }

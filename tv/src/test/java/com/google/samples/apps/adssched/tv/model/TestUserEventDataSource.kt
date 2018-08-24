@@ -18,15 +18,12 @@ package com.google.samples.apps.adssched.tv.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.samples.apps.adssched.model.Session
 import com.google.samples.apps.adssched.model.SessionId
 import com.google.samples.apps.adssched.model.userdata.UserEvent
 import com.google.samples.apps.adssched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.adssched.shared.data.userevent.UserEventResult
 import com.google.samples.apps.adssched.shared.data.userevent.UserEventsResult
-import com.google.samples.apps.adssched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.adssched.shared.domain.users.StarUpdatedStatus
-import com.google.samples.apps.adssched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.adssched.shared.result.Result
 import com.google.samples.apps.adssched.test.data.TestData
 
@@ -61,24 +58,8 @@ object TestUserEventDataSource : UserEventDataSource {
         return result
     }
 
-    override fun requestReservation(
-        userId: String,
-        session: Session,
-        action: ReservationRequestAction
-    ): LiveData<Result<ReservationRequestAction>> {
-        TODO("not implemented")
-    }
-
     override fun getUserEvents(userId: String): List<UserEvent> {
         return TestData.userEvents
-    }
-
-    override fun swapReservation(
-        userId: String,
-        fromSession: Session,
-        toSession: Session
-    ): LiveData<Result<SwapRequestAction>> {
-        TODO("not implemented")
     }
 
     override fun clearSingleEventSubscriptions() {}

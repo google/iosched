@@ -24,8 +24,6 @@ import com.google.samples.apps.adssched.model.SessionId
 import com.google.samples.apps.adssched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.adssched.shared.data.session.SessionRepository
 import com.google.samples.apps.adssched.shared.data.userevent.DefaultSessionAndUserEventRepository
-import com.google.samples.apps.adssched.shared.data.userevent.UserEventMessage
-import com.google.samples.apps.adssched.shared.data.userevent.UserEventMessageChangeType
 import com.google.samples.apps.adssched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.adssched.shared.domain.repository.TestUserEventDataSource
 import com.google.samples.apps.adssched.shared.model.TestDataRepository
@@ -94,9 +92,6 @@ class LoadUserSessionsByDayUseCaseTest {
 
         userEventsResult.postValue(
             UserEventsResult(
-                userEventsMessage = UserEventMessage(
-                    UserEventMessageChangeType.CHANGES_IN_RESERVATIONS
-                ),
                 userEvents = TestData.userEvents
             )
         )
@@ -107,11 +102,6 @@ class LoadUserSessionsByDayUseCaseTest {
         assertThat(
             TestData.userSessionMap,
             `is`(equalTo(result.data.userSessionsPerDay))
-        )
-
-        assertThat(
-            UserEventMessage(UserEventMessageChangeType.CHANGES_IN_RESERVATIONS),
-            `is`(equalTo(result.data.userMessage))
         )
     }
 

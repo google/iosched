@@ -40,16 +40,11 @@ import com.google.samples.apps.adssched.model.SessionId
 import com.google.samples.apps.adssched.model.SpeakerId
 import com.google.samples.apps.adssched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.adssched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.adssched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.adssched.shared.result.EventObserver
 import com.google.samples.apps.adssched.shared.util.activityViewModelProvider
 import com.google.samples.apps.adssched.ui.map.MapActivity
 import com.google.samples.apps.adssched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.adssched.ui.prefs.SnackbarPreferenceViewModel
-import com.google.samples.apps.adssched.ui.reservation.RemoveReservationDialogFragment
-import com.google.samples.apps.adssched.ui.reservation.RemoveReservationDialogFragment.Companion.DIALOG_REMOVE_RESERVATION
-import com.google.samples.apps.adssched.ui.reservation.RemoveReservationDialogParameters
-import com.google.samples.apps.adssched.ui.reservation.SwapReservationDialogFragment
 import com.google.samples.apps.adssched.ui.setUpSnackbar
 import com.google.samples.apps.adssched.ui.signin.NotificationsPreferenceDialogFragment
 import com.google.samples.apps.adssched.ui.signin.NotificationsPreferenceDialogFragment.Companion.DIALOG_NOTIFICATIONS_PREFERENCE
@@ -179,12 +174,6 @@ class SessionDetailFragment : DaggerFragment() {
         sessionDetailViewModel.navigateToSignInDialogAction.observe(this, EventObserver {
             openSignInDialog(requireActivity())
         })
-        sessionDetailViewModel.navigateToRemoveReservationDialogAction.observe(this, EventObserver {
-            openRemoveReservationDialog(requireActivity(), it)
-        })
-        sessionDetailViewModel.navigateToSwapReservationDialogAction.observe(this, EventObserver {
-            openSwapReservationDialog(requireActivity(), it)
-        })
 
         sessionDetailViewModel.shouldShowNotificationsPrefAction.observe(this, EventObserver {
             if (it) {
@@ -268,25 +257,6 @@ class SessionDetailFragment : DaggerFragment() {
     private fun openNotificationsPreferenceDialog() {
         val dialog = NotificationsPreferenceDialogFragment()
         dialog.show(requireActivity().supportFragmentManager, DIALOG_NOTIFICATIONS_PREFERENCE)
-    }
-
-    private fun openRemoveReservationDialog(
-        activity: FragmentActivity,
-        parameters: RemoveReservationDialogParameters
-    ) {
-        val dialog = RemoveReservationDialogFragment.newInstance(parameters)
-        dialog.show(activity.supportFragmentManager, DIALOG_REMOVE_RESERVATION)
-    }
-
-    private fun openSwapReservationDialog(
-        activity: FragmentActivity,
-        parameters: SwapRequestParameters
-    ) {
-        val dialog = SwapReservationDialogFragment.newInstance(parameters)
-        dialog.show(
-            activity.supportFragmentManager,
-            SwapReservationDialogFragment.DIALOG_SWAP_RESERVATION
-        )
     }
 
     private fun findSpeakerHeadshot(speakers: ViewGroup, speakerId: SpeakerId): View {

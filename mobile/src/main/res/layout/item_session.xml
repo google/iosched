@@ -83,24 +83,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.samples.apps.adssched.ui.reservation.ReservationTextView
-            android:id="@+id/reservation_status"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_micro"
-            android:drawablePadding="@dimen/spacing_normal"
-            android:gravity="center_vertical"
-            android:textAppearance="@style/TextAppearance.ADSSched.ReservationStatus"
-            app:layout_constraintEnd_toEndOf="@id/title"
-            app:layout_constraintStart_toEndOf="@id/keyline"
-            app:layout_constraintTop_toBottomOf="@id/title"
-            app:isReservable="@{userSession.session.isReservable}"
-            app:reservationStatus="@{userSession.userEvent}"
-            app:showReservations="@{showReservations}"
-            tools:drawableStart="@drawable/ic_reserved"
-            tools:text="Reserved"
-            tools:visibility="visible" />
-
         <ImageView
             android:id="@+id/livestream_icon"
             android:layout_width="18dp"
@@ -111,7 +93,7 @@
             app:layout_constraintBottom_toTopOf="@id/tags_barrier"
             app:layout_constraintEnd_toStartOf="@id/length_location"
             app:layout_constraintStart_toEndOf="@id/keyline"
-            app:layout_constraintTop_toBottomOf="@id/reservation_status"
+            app:layout_constraintTop_toBottomOf="@id/title"
             app:goneUnless="@{userSession.session.isLivestream}"
             app:srcCompat="@drawable/ic_livestreamed" />
 
@@ -123,7 +105,7 @@
             app:layout_constraintBottom_toTopOf="@id/tags_barrier"
             app:layout_constraintEnd_toEndOf="@id/title"
             app:layout_constraintStart_toEndOf="@id/livestream_icon"
-            app:layout_constraintTop_toBottomOf="@id/reservation_status"
+            app:layout_constraintTop_toBottomOf="@id/bookmark_session"
             app:alwaysShowDate="@{alwaysShowDate}"
             app:sessionEnd="@{userSession.session.endTime}"
             app:sessionRoom="@{userSession.session.room}"

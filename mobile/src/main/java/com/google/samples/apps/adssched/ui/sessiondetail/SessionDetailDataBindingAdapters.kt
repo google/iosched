@@ -36,8 +36,6 @@ import com.google.samples.apps.adssched.model.SessionType.SESSION
 import com.google.samples.apps.adssched.model.SessionType.UNKNOWN
 import com.google.samples.apps.adssched.model.userdata.UserEvent
 import com.google.samples.apps.adssched.shared.util.TimeUtils
-import com.google.samples.apps.adssched.ui.reservation.ReservationViewState
-import com.google.samples.apps.adssched.ui.reservation.ReservationViewState.RESERVABLE
 import com.google.samples.apps.adssched.ui.reservation.StarReserveFab
 import com.google.samples.apps.adssched.util.drawable.HeaderGridDrawable
 import org.threeten.bp.Duration
@@ -122,9 +120,6 @@ fun sessionStartCountdown(view: TextView, timeUntilStart: Duration?) {
 @BindingAdapter(
     "userEvent",
     "isSignedIn",
-    "isRegistered",
-    "isReservable",
-    "isReservationDisabled",
     "eventListener",
     requireAll = true
 )
@@ -132,26 +127,12 @@ fun assignFab(
     fab: StarReserveFab,
     userEvent: UserEvent?,
     isSignedIn: Boolean,
-    isRegistered: Boolean,
-    isReservable: Boolean,
-    isReservationDisabled: Boolean,
     eventListener: SessionDetailEventListener
 ) {
     when {
         !isSignedIn -> {
-            if (isReservable) {
-                fab.reservationStatus = RESERVABLE
-            } else {
-                fab.isChecked = false
-            }
+            fab.isChecked = false
             fab.setOnClickListener { eventListener.onLoginClicked() }
-        }
-        isRegistered && isReservable -> {
-            fab.reservationStatus = ReservationViewState.fromUserEvent(
-                userEvent,
-                isReservationDisabled
-            )
-            fab.setOnClickListener { eventListener.onReservationClicked() }
         }
         else -> {
             fab.isChecked = userEvent?.isStarred == true

@@ -17,16 +17,11 @@
 package com.google.samples.apps.adssched.ui.schedule.day
 
 import android.content.Context
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.google.samples.apps.adssched.R
 import com.google.samples.apps.adssched.model.Room
-import com.google.samples.apps.adssched.model.userdata.UserEvent
 import com.google.samples.apps.adssched.shared.util.TimeUtils
-import com.google.samples.apps.adssched.ui.reservation.ReservationTextView
-import com.google.samples.apps.adssched.ui.reservation.ReservationViewState
 import org.threeten.bp.Duration
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
@@ -93,29 +88,5 @@ private fun durationString(context: Context, duration: Duration): String {
     } else {
         val minutes = duration.toMinutes()
         context.resources.getQuantityString(R.plurals.duration_minutes, minutes.toInt(), minutes)
-    }
-}
-
-@BindingAdapter(
-    "reservationStatus",
-    "showReservations",
-    "isReservable",
-    requireAll = true
-)
-fun setReservationStatus(
-    textView: ReservationTextView,
-    userEvent: UserEvent?,
-    showReservations: Boolean,
-    isReservable: Boolean
-) {
-    when (isReservable && showReservations) {
-        true -> {
-            val reservationUnavailable = false // TODO determine this condition
-            textView.status = ReservationViewState.fromUserEvent(userEvent, reservationUnavailable)
-            textView.visibility = VISIBLE
-        }
-        false -> {
-            textView.visibility = GONE
-        }
     }
 }

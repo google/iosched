@@ -17,12 +17,9 @@
 package com.google.samples.apps.adssched.shared.data.userevent
 
 import androidx.lifecycle.LiveData
-import com.google.samples.apps.adssched.model.Session
 import com.google.samples.apps.adssched.model.SessionId
 import com.google.samples.apps.adssched.model.userdata.UserEvent
-import com.google.samples.apps.adssched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.adssched.shared.domain.users.StarUpdatedStatus
-import com.google.samples.apps.adssched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.adssched.shared.result.Result
 
 interface UserEventDataSource {
@@ -42,27 +39,13 @@ interface UserEventDataSource {
      */
     fun starEvent(userId: String, userEvent: UserEvent): LiveData<Result<StarUpdatedStatus>>
 
-    fun requestReservation(
-        userId: String,
-        session: Session,
-        action: ReservationRequestAction
-    ): LiveData<Result<ReservationRequestAction>>
-
-    fun swapReservation(
-        userId: String,
-        fromSession: Session,
-        toSession: Session
-    ): LiveData<Result<SwapRequestAction>>
-
     fun clearSingleEventSubscriptions()
 }
 
 data class UserEventsResult(
-    val userEvents: List<UserEvent>,
-    val userEventsMessage: UserEventMessage? = null
+    val userEvents: List<UserEvent>
 )
 
 data class UserEventResult(
-    val userEvent: UserEvent?,
-    val userEventMessage: UserEventMessage? = null
+    val userEvent: UserEvent?
 )

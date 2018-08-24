@@ -19,8 +19,6 @@
 package com.google.samples.apps.adssched.ui.sessiondetail
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MediatorLiveData
-import com.google.samples.apps.adssched.R
 import com.google.samples.apps.adssched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.adssched.model.Session
 import com.google.samples.apps.adssched.model.TestDataRepository
@@ -31,11 +29,7 @@ import com.google.samples.apps.adssched.shared.data.userevent.UserEventDataSourc
 import com.google.samples.apps.adssched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.adssched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.adssched.shared.domain.settings.GetTimeZoneUseCase
-import com.google.samples.apps.adssched.shared.domain.users.ReservationActionUseCase
-import com.google.samples.apps.adssched.shared.domain.users.ReservationRequestAction.RequestAction
-import com.google.samples.apps.adssched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.adssched.shared.domain.users.StarEventUseCase
-import com.google.samples.apps.adssched.shared.result.Event
 import com.google.samples.apps.adssched.shared.time.DefaultTimeProvider
 import com.google.samples.apps.adssched.shared.time.TimeProvider
 import com.google.samples.apps.adssched.shared.util.NetworkUtils
@@ -49,21 +43,13 @@ import com.google.samples.apps.adssched.test.util.fakes.FakeSignInViewModelDeleg
 import com.google.samples.apps.adssched.test.util.fakes.FakeStarEventUseCase
 import com.google.samples.apps.adssched.test.util.time.FakeIntervalMapperRule
 import com.google.samples.apps.adssched.test.util.time.FixedTimeExecutorRule
-import com.google.samples.apps.adssched.ui.SnackbarMessage
 import com.google.samples.apps.adssched.ui.messages.SnackbarMessageManager
-import com.google.samples.apps.adssched.ui.reservation.RemoveReservationDialogParameters
 import com.google.samples.apps.adssched.ui.schedule.day.TestUserEventDataSource
 import com.google.samples.apps.adssched.ui.signin.SignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.CoreMatchers.not
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -126,122 +112,6 @@ class SessionDetailViewModelTest {
         assertEquals(
             TestData.sessionWithYoutubeUrl.youTubeUrl,
             LiveDataTestUtil.getValue(vm.navigateToYouTubeAction)?.peekContent()
-        )
-    }
-
-    @Test
-    fun testReserveEvent() {
-        val reservationActionUseCaseMock = mock<ReservationActionUseCase> {
-            on { observe() }.doReturn(MediatorLiveData())
-        }
-        val signInDelegate = FakeSignInViewModelDelegate()
-        // The session isn't reservable from one hour before the session.
-        // So making now as two hours before
-        val now = TestData.session0.startTime.minusHours(2).toInstant()
-        val mockTime = mock<TimeProvider> {
-            on { now() }.doReturn(now)
-        }
-        val viewModel = createSessionDetailViewModel(
-            reservationActionUseCase = reservationActionUseCaseMock,
-            signInViewModelPlugin = signInDelegate,
-            timeProvider = mockTime
-        )
-        val testUid = "testUid"
-        // Kick off the viewmodel by loading a user.
-        signInDelegate.loadUser(testUid)
-        viewModel.setSessionId(TestData.session3.id)
-        LiveDataTestUtil.getValue(viewModel.session)
-        LiveDataTestUtil.getValue(viewModel.userEvent)
-        LiveDataTestUtil.getValue(viewModel.isReservationDisabled)
-
-        viewModel.onReservationClicked()
-
-        verify(reservationActionUseCaseMock).execute(
-            ReservationRequestParameters(
-                testUid, TestData.session3.id, RequestAction()
-            )
-        )
-    }
-
-    @Test
-    fun testReserveEvent_notLoggedIn() {
-        // Create test use cases with test data
-        val signInDelegate = FakeSignInViewModelDelegate()
-        signInDelegate.injectIsSignedIn = false
-
-        val viewModel = createSessionDetailViewModel(signInViewModelPlugin = signInDelegate)
-
-        viewModel.onReservationClicked()
-
-        val event: Event<SnackbarMessage>? = LiveDataTestUtil.getValue(viewModel.snackBarMessage)
-        // TODO change with actual resource used
-        Assert.assertThat(
-            event?.getContentIfNotHandled()?.messageId,
-            `is`(not(equalTo(R.string.reservation_request_succeeded)))
-        )
-
-        // Then the sign in dialog should ne shown
-        val signInEvent = LiveDataTestUtil.getValue(viewModel.navigateToSignInDialogAction)
-        Assert.assertNotNull(signInEvent?.getContentIfNotHandled())
-    }
-
-    @Test
-    fun testReserveEvent_noInternet() {
-        // Create test use cases with test data
-        val signInDelegate = FakeSignInViewModelDelegate()
-        signInDelegate.injectIsSignedIn = false
-
-        val networkUtils: NetworkUtils = mock {
-            on { hasNetworkConnection() }.doReturn(false)
-        }
-
-        val viewModel = createSessionDetailViewModel(networkUtils = networkUtils)
-
-        viewModel.onReservationClicked()
-
-        val event: Event<SnackbarMessage>? = LiveDataTestUtil.getValue(viewModel.snackBarMessage)
-        Assert.assertThat(
-            event?.getContentIfNotHandled()?.messageId,
-            `is`(equalTo(R.string.no_network_connection))
-        )
-    }
-
-    @Test
-    fun testCancelEvent() {
-        val signInDelegate = FakeSignInViewModelDelegate()
-        // The session isn't reservable from one hour before the session.
-        // So making now as two hours before
-        val now = TestData.session0.startTime.minusHours(2).toInstant()
-        val mockTime = mock<TimeProvider> {
-            on { now() }.doReturn(now)
-        }
-        val viewModel = createSessionDetailViewModel(
-            signInViewModelPlugin = signInDelegate,
-            timeProvider = mockTime
-        )
-        viewModel.setSessionId(TestData.session1.id)
-        val testUid = "testUid"
-        // Kick off the viewmodel by loading a user.
-        signInDelegate.loadUser(testUid)
-        viewModel.setSessionId(TestData.session1.id)
-        LiveDataTestUtil.getValue(viewModel.session)
-        LiveDataTestUtil.getValue(viewModel.userEvent)
-        LiveDataTestUtil.getValue(viewModel.isReservationDisabled)
-
-        viewModel.onReservationClicked()
-
-        val parameters = LiveDataTestUtil.getValue(
-            viewModel.navigateToRemoveReservationDialogAction
-        )
-            ?.getContentIfNotHandled()
-        assertThat(
-            parameters, `is`(
-                RemoveReservationDialogParameters(
-                    testUid,
-                    TestData.session1.id,
-                    TestData.session1.title
-                )
-            )
         )
     }
 
@@ -351,7 +221,6 @@ class SessionDetailViewModelTest {
         loadUserSessionUseCase: LoadUserSessionUseCase = createTestLoadUserSessionUseCase(),
         loadRelatedSessionsUseCase: LoadUserSessionsUseCase =
             createTestLoadUserSessionsUseCase(),
-        reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase(),
         starEventUseCase: StarEventUseCase = FakeStarEventUseCase(),
         getTimeZoneUseCase: GetTimeZoneUseCase = createGetTimeZoneUseCase(),
         snackbarMessageManager: SnackbarMessageManager =
@@ -362,7 +231,7 @@ class SessionDetailViewModelTest {
     ): SessionDetailViewModel {
         return SessionDetailViewModel(
             signInViewModelPlugin, loadUserSessionUseCase, loadRelatedSessionsUseCase,
-            starEventUseCase, reservationActionUseCase, getTimeZoneUseCase, snackbarMessageManager,
+            starEventUseCase, getTimeZoneUseCase, snackbarMessageManager,
             timeProvider, networkUtils, analyticsHelper
         )
     }
@@ -401,12 +270,6 @@ class SessionDetailViewModelTest {
         )
         return LoadUserSessionsUseCase(userEventRepository)
     }
-
-    private fun createReservationActionUseCase() = object : ReservationActionUseCase(
-        DefaultSessionAndUserEventRepository(
-            TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
-        )
-    ) {}
 
     private fun createGetTimeZoneUseCase() =
         object : GetTimeZoneUseCase(FakePreferenceStorage()) {}

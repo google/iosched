@@ -20,7 +20,6 @@ import androidx.lifecycle.LiveData
 import com.google.samples.apps.adssched.model.SessionId
 import com.google.samples.apps.adssched.model.userdata.UserSession
 import com.google.samples.apps.adssched.shared.data.userevent.DefaultSessionAndUserEventRepository
-import com.google.samples.apps.adssched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.adssched.shared.domain.MediatorUseCase
 import com.google.samples.apps.adssched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.adssched.shared.result.Result
@@ -47,8 +46,7 @@ open class LoadUserSessionUseCase @Inject constructor(
                 when (it) {
                     is Result.Success -> {
                         val useCaseResult = LoadUserSessionUseCaseResult(
-                            userSession = it.data.userSession,
-                            userMessage = it.data.userMessage
+                            userSession = it.data.userSession
                         )
                         result.postValue(Result.Success(useCaseResult))
                     }
@@ -75,8 +73,5 @@ open class LoadUserSessionUseCase @Inject constructor(
 }
 
 data class LoadUserSessionUseCaseResult(
-    val userSession: UserSession,
-
-    /** A message to show to the user with important changes like reservation confirmations */
-    val userMessage: UserEventMessage? = null
+    val userSession: UserSession
 )

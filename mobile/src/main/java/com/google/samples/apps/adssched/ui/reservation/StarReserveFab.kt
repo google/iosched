@@ -22,7 +22,6 @@ import android.widget.Checkable
 import androidx.annotation.DrawableRes
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.samples.apps.adssched.R
-import com.google.samples.apps.adssched.ui.reservation.StarReserveFabMode.RESERVE
 import com.google.samples.apps.adssched.ui.reservation.StarReserveFabMode.STAR
 
 /**
@@ -35,7 +34,7 @@ class StarReserveFab(
     attrs: AttributeSet
 ) : FloatingActionButton(context, attrs), Checkable {
 
-    private var mode = RESERVE
+    private var mode = STAR
 
     private var _checked = false
         set(value) {
@@ -45,17 +44,6 @@ class StarReserveFab(
                 mode = STAR
                 val contentDescRes = if (value) R.string.a11y_starred else R.string.a11y_unstarred
                 contentDescription = context.getString(contentDescRes)
-                refreshDrawableState()
-            }
-        }
-
-    var reservationStatus = ReservationViewState.RESERVATION_DISABLED
-        set(value) {
-            if (value != field || mode != RESERVE) {
-                field = value
-                currentDrawable = R.drawable.asld_reservation
-                mode = RESERVE
-                contentDescription = context.getString(value.contentDescription)
                 refreshDrawableState()
             }
         }
@@ -80,7 +68,7 @@ class StarReserveFab(
     }
 
     override fun onCreateDrawableState(extraSpace: Int): IntArray {
-        if (!isShowingStar() && !isShowingReservation()) {
+        if (!isShowingStar()) {
             return super.onCreateDrawableState(extraSpace)
         }
 
@@ -90,14 +78,9 @@ class StarReserveFab(
                 val state = if (_checked) stateChecked else stateUnchecked
                 mergeDrawableStates(drawableState, state)
             }
-            isShowingReservation() -> {
-                mergeDrawableStates(drawableState, reservationStatus.state)
-            }
         }
         return drawableState
     }
-
-    private fun isShowingReservation() = currentDrawable == R.drawable.asld_reservation
 
     private fun isShowingStar() = currentDrawable == R.drawable.asld_star_event
 
@@ -111,6 +94,5 @@ class StarReserveFab(
  * Enum of the mutually exclusive modes [StarReserveFab] can be in.
  */
 private enum class StarReserveFabMode {
-    STAR,
-    RESERVE
+    STAR
 }

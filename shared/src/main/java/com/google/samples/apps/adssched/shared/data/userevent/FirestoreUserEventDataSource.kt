@@ -20,25 +20,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
-import com.google.samples.apps.adssched.model.Session
 import com.google.samples.apps.adssched.model.SessionId
 import com.google.samples.apps.adssched.model.userdata.UserEvent
 import com.google.samples.apps.adssched.shared.domain.internal.DefaultScheduler
-import com.google.samples.apps.adssched.shared.domain.users.ReservationRequestAction
-import com.google.samples.apps.adssched.shared.domain.users.ReservationRequestAction.CancelAction
-import com.google.samples.apps.adssched.shared.domain.users.ReservationRequestAction.RequestAction
-import com.google.samples.apps.adssched.shared.domain.users.ReservationRequestAction.SwapAction
 import com.google.samples.apps.adssched.shared.domain.users.StarUpdatedStatus
-import com.google.samples.apps.adssched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.adssched.shared.result.Result
 import timber.log.Timber
-import java.util.UUID
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -56,36 +48,10 @@ class FirestoreUserEventDataSource @Inject constructor(
          */
         private const val USERS_COLLECTION = "users"
         private const val EVENTS_COLLECTION = "events"
-        private const val QUEUE_COLLECTION = "queue"
         internal const val ID = "id"
         internal const val START_TIME = "startTime"
         internal const val END_TIME = "endTime"
         internal const val IS_STARRED = "isStarred"
-
-        internal const val RESERVATION_REQUEST_KEY = "reservationRequest"
-
-        private const val RESERVE_REQ_ACTION = "RESERVE_REQUESTED"
-        private const val RESERVE_CANCEL_ACTION = "CANCEL_REQUESTED"
-
-        internal const val RESERVATION_REQUEST_ACTION_KEY = "action"
-        internal const val RESERVATION_REQUEST_REQUEST_ID_KEY = "requestId"
-        private const val RESERVATION_REQUEST_TIMESTAMP_KEY = "timestamp"
-
-        private const val REQUEST_QUEUE_ACTION_KEY = "action"
-        private const val REQUEST_QUEUE_SESSION_KEY = "sessionId"
-        private const val REQUEST_QUEUE_REQUEST_ID_KEY = "requestId"
-        private const val REQUEST_QUEUE_ACTION_RESERVE = "RESERVE"
-        private const val REQUEST_QUEUE_ACTION_CANCEL = "CANCEL"
-        private const val REQUEST_QUEUE_ACTION_SWAP = "SWAP"
-        private const val SWAP_QUEUE_RESERVE_SESSION_ID_KEY = "reserveSessionId"
-        private const val SWAP_QUEUE_CANCEL_SESSION_ID_KEY = "cancelSessionId"
-
-        internal const val RESERVATION_RESULT_KEY = "reservationResult"
-        internal const val RESERVATION_RESULT_TIME_KEY = "timestamp"
-        internal const val RESERVATION_RESULT_RESULT_KEY = "requestResult"
-        internal const val RESERVATION_RESULT_REQ_ID_KEY = "requestId"
-
-        internal const val RESERVATION_STATUS_KEY = "reservationStatus"
     }
 
     // Null if the listener is not yet added
@@ -148,10 +114,8 @@ class FirestoreUserEventDataSource @Inject constructor(
                     Timber.d("Events changes detected: ${snapshot.documentChanges.size}")
 
                     // Generate important user messages, like new reservations, if any.
-                    val userMessage = generateReservationChangeMsg(snapshot, result.value)
                     val userEventsResult = UserEventsResult(
-                        userEvents = snapshot.documents.map { parseUserEvent(it) },
-                        userEventsMessage = userMessage
+                        userEvents = snapshot.documents.map { parseUserEvent(it) }
                     )
                     result.postValue(userEventsResult)
                 }
@@ -184,17 +148,6 @@ class FirestoreUserEventDataSource @Inject constructor(
                 DefaultScheduler.execute {
                     Timber.d("Event changes detected on session: $sessionId")
 
-                    // If oldValue doesn't exist, it's the first run so don't generate messages.
-                    val userMessage = result.value?.userEvent?.let { oldValue: UserEvent ->
-
-                        // Generate message if the reservation changed
-                        if (snapshot.exists()) {
-                            getUserMessageFromChange(oldValue, snapshot, sessionId)
-                        } else {
-                            null
-                        }
-                    }
-
                     val userEvent = if (snapshot.exists()) {
                         parseUserEvent(snapshot)
                     } else {
@@ -202,8 +155,7 @@ class FirestoreUserEventDataSource @Inject constructor(
                     }
 
                     val userEventResult = UserEventResult(
-                        userEvent = userEvent,
-                        userEventMessage = userMessage
+                        userEvent = userEvent
                     )
                     result.postValue(userEventResult)
                 }
@@ -246,7 +198,7 @@ class FirestoreUserEventDataSource @Inject constructor(
         firestore.collection(USERS_COLLECTION)
             .document(userId)
             .collection(EVENTS_COLLECTION)
-            .document(userEvent.id).set(data, SetOptions.merge()).addOnCompleteListener({
+            .document(userEvent.id).set(data, SetOptions.merge()).addOnCompleteListener {
                 if (it.isSuccessful) {
                     result.postValue(
                         Result.Success(
@@ -261,172 +213,7 @@ class FirestoreUserEventDataSource @Inject constructor(
                         )
                     )
                 }
-            })
+            }
         return result
     }
-
-    /**
-     * Requests a reservation for an event.
-     *
-     * This method makes two write operations at once.
-     *
-     * @return a LiveData indicating whether the request was successful (not whether the event
-     * was reserved)
-     */
-    override fun requestReservation(
-        userId: String,
-        session: Session,
-        action: ReservationRequestAction
-    ): LiveData<Result<ReservationRequestAction>> {
-
-        val result = MutableLiveData<Result<ReservationRequestAction>>()
-
-        val logCancelOrReservation = if (action is CancelAction) "Cancel" else "Request"
-
-        Timber.d("Requesting $logCancelOrReservation for session ${session.id}")
-
-        // Get a new write batch. This is a lightweight transaction.
-        val batch = firestore.batch()
-
-        val newRandomRequestId = UUID.randomUUID().toString()
-
-        // Write #1: Mark this session as reserved. This is for clients to track.
-        val userSession = firestore.collection(USERS_COLLECTION)
-            .document(userId)
-            .collection(EVENTS_COLLECTION)
-            .document(session.id)
-
-        val reservationRequest = mapOf(
-            RESERVATION_REQUEST_ACTION_KEY to getReservationRequestedEventAction(action),
-            RESERVATION_REQUEST_REQUEST_ID_KEY to newRandomRequestId,
-            RESERVATION_REQUEST_TIMESTAMP_KEY to FieldValue.serverTimestamp()
-        )
-
-        val userSessionData = mapOf(
-            ID to session.id,
-            RESERVATION_REQUEST_KEY to reservationRequest
-        )
-
-        batch.set(userSession, userSessionData, SetOptions.merge())
-
-        // Write #2: Send a request to the server. The result will appear in the UserSession. A
-        // success in this reservation only means that the request was accepted. Even offline, this
-        // request will succeed.
-        val newRequest = firestore
-            .collection(QUEUE_COLLECTION)
-            .document(userId)
-
-        val queueReservationRequest = mapOf(
-            REQUEST_QUEUE_ACTION_KEY to getReservationRequestedQueueAction(action),
-            REQUEST_QUEUE_SESSION_KEY to session.id,
-            REQUEST_QUEUE_REQUEST_ID_KEY to newRandomRequestId
-        )
-
-        batch.set(newRequest, queueReservationRequest)
-
-        // Commit write batch
-
-        batch.commit().addOnSuccessListener {
-            Timber.d("$logCancelOrReservation request for session ${session.id} succeeded")
-            result.postValue(Result.Success(action))
-        }.addOnFailureListener {
-            Timber.e(it, "$logCancelOrReservation request for session ${session.id} failed")
-            result.postValue(Result.Error(it))
-        }
-
-        return result
-    }
-
-    override fun swapReservation(
-        userId: String,
-        fromSession: Session,
-        toSession: Session
-    ): LiveData<Result<SwapRequestAction>> {
-        val result = MutableLiveData<Result<SwapRequestAction>>()
-
-        Timber.d("Swapping reservations from: ${fromSession.id} to: ${toSession.id}")
-
-        // Get a new write batch. This is a lightweight transaction.
-        val batch = firestore.batch()
-
-        val newRandomRequestId = UUID.randomUUID().toString()
-        val serverTimestamp = FieldValue.serverTimestamp()
-
-        // Write #1: Mark the toSession as reserved. This is for clients to track.
-        val toUserSession = firestore.collection(USERS_COLLECTION)
-            .document(userId)
-            .collection(EVENTS_COLLECTION)
-            .document(toSession.id)
-        val toSwapRequest = mapOf(
-            RESERVATION_REQUEST_ACTION_KEY to RESERVE_REQ_ACTION,
-            RESERVATION_REQUEST_REQUEST_ID_KEY to newRandomRequestId,
-            RESERVATION_REQUEST_TIMESTAMP_KEY to serverTimestamp
-        )
-        val userSessionData = mapOf(
-            ID to toSession.id,
-            RESERVATION_REQUEST_KEY to toSwapRequest
-        )
-        batch.set(toUserSession, userSessionData, SetOptions.merge())
-
-        // Write #2: Mark the fromSession as canceled. This is for clients to track.
-        val fromUserSession = firestore.collection(USERS_COLLECTION)
-            .document(userId)
-            .collection(EVENTS_COLLECTION)
-            .document(fromSession.id)
-        val fromSwapRequest = mapOf(
-            RESERVATION_REQUEST_ACTION_KEY to RESERVE_CANCEL_ACTION,
-            RESERVATION_REQUEST_REQUEST_ID_KEY to newRandomRequestId,
-            RESERVATION_REQUEST_TIMESTAMP_KEY to serverTimestamp
-        )
-        val fromUserSessionData = mapOf(
-            ID to fromSession.id,
-            RESERVATION_REQUEST_KEY to fromSwapRequest
-        )
-        batch.set(fromUserSession, fromUserSessionData, SetOptions.merge())
-
-        // Write #3: Send a request to the server. The result will appear in the both UserSessions
-        // (from and to). success in this reservation only means that the request was accepted.
-        // Even offline, this request will succeed.
-        val newRequest = firestore
-            .collection(QUEUE_COLLECTION)
-            .document(userId)
-
-        val queueSwapRequest = mapOf(
-            REQUEST_QUEUE_ACTION_KEY to REQUEST_QUEUE_ACTION_SWAP,
-            SWAP_QUEUE_RESERVE_SESSION_ID_KEY to toSession.id,
-            SWAP_QUEUE_CANCEL_SESSION_ID_KEY to fromSession.id,
-            REQUEST_QUEUE_REQUEST_ID_KEY to newRandomRequestId
-        )
-
-        batch.set(newRequest, queueSwapRequest)
-
-        // Commit write batch
-        batch.commit().addOnSuccessListener {
-            Timber.d(
-                "Queueing the swap request from: ${fromSession.id} to: ${toSession.id} succeeded"
-            )
-            result.postValue(Result.Success(SwapRequestAction()))
-        }.addOnFailureListener {
-            Timber.d("Queueing the swap request from: ${fromSession.id} to: ${toSession.id} failed")
-            result.postValue(Result.Error(it))
-        }
-
-        return result
-    }
-
-    private fun getReservationRequestedEventAction(action: ReservationRequestAction): String =
-        when (action) {
-            is RequestAction -> RESERVE_REQ_ACTION
-            is CancelAction -> RESERVE_CANCEL_ACTION
-            // This should not happen because there is a dedicated method for the swap request
-            is SwapAction -> throw IllegalStateException()
-        }
-
-    private fun getReservationRequestedQueueAction(action: ReservationRequestAction) =
-        when (action) {
-            is RequestAction -> REQUEST_QUEUE_ACTION_RESERVE
-            is CancelAction -> REQUEST_QUEUE_ACTION_CANCEL
-            // This should not happen because there is a dedicated method for the swap request
-            is SwapAction -> throw IllegalStateException()
-        }
 }

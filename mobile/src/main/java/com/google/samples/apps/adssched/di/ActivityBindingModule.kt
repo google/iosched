@@ -25,7 +25,6 @@ import com.google.samples.apps.adssched.ui.map.MapModule
 import com.google.samples.apps.adssched.ui.onboarding.OnboardingActivity
 import com.google.samples.apps.adssched.ui.onboarding.OnboardingModule
 import com.google.samples.apps.adssched.ui.prefs.PreferenceModule
-import com.google.samples.apps.adssched.ui.reservation.ReservationModule
 import com.google.samples.apps.adssched.ui.schedule.ScheduleModule
 import com.google.samples.apps.adssched.ui.sessioncommon.EventActionsViewModelDelegateModule
 import com.google.samples.apps.adssched.ui.sessiondetail.SessionDetailActivity
@@ -63,7 +62,6 @@ abstract class ActivityBindingModule {
             MapModule::class,
             InfoModule::class,
             SignInDialogModule::class,
-            ReservationModule::class,
             PreferenceModule::class
         ]
     )
@@ -74,7 +72,6 @@ abstract class ActivityBindingModule {
         modules = [
             SessionDetailModule::class,
             SignInDialogModule::class,
-            ReservationModule::class,
             PreferenceModule::class
         ]
     )
