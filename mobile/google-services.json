@@ -1,25 +1,21 @@
 {
   "project_info": {
-    "project_number": "447780894619",
-    "firebase_url": "https://events-dev-62d2e.firebaseio.com",
-    "project_id": "events-dev-62d2e",
-    "storage_bucket": "events-dev-62d2e.appspot.com"
+    "project_number": "894444600101",
+    "firebase_url": "https://adssched.firebaseio.com",
+    "project_id": "adssched",
+    "storage_bucket": "adssched.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:447780894619:android:66c485c6a5187053",
+        "mobilesdk_app_id": "1:894444600101:android:eba55c07d75f00e5",
         "android_client_info": {
           "package_name": "com.google.samples.apps.adssched"
         }
       },
       "oauth_client": [
         {
-          "client_id": "447780894619-an6s48nvj18f25v4nc5te03q2c4g9dqf.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "447780894619-u3o7j05aqv0u0mb0nmu7btseg1csrrlg.apps.googleusercontent.com",
+          "client_id": "894444600101-mroqi89bekk3nmsgmgjihq7l6mhai8in.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.google.samples.apps.adssched",
@@ -27,13 +23,13 @@
           }
         },
         {
-          "client_id": "447780894619-tbe57ou9oflnoic5scbc8mj8tnnj9o2r.apps.googleusercontent.com",
+          "client_id": "894444600101-9edl7k09hovnvub0nn6l92bipb5qbtt8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC_LbkKaCrAaBJSBp7DbDZgwLLR3BYUJV0"
+          "current_key": "AIzaSyAPmIJsY-WepEQk2fGKPMEyL-sTv9Lne84"
         }
       ],
       "services": {
@@ -44,15 +40,8 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "447780894619-an6s48nvj18f25v4nc5te03q2c4g9dqf.apps.googleusercontent.com",
+              "client_id": "894444600101-9edl7k09hovnvub0nn6l92bipb5qbtt8.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "447780894619-c9ovo169ue58khaq7pmj9pvvkbmjt6l2.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.google.adssched.dev"
-              }
             }
           ]
         },
