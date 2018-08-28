@@ -34,9 +34,8 @@ import com.google.samples.apps.adssched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.adssched.shared.data.ConferenceDataSource
 import com.google.samples.apps.adssched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.adssched.shared.data.session.agenda.AgendaRepository
-import com.google.samples.apps.adssched.shared.data.signin.AuthenticatedUserInfoBasic
+import com.google.samples.apps.adssched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.adssched.shared.data.signin.datasources.AuthStateUserDataSource
-import com.google.samples.apps.adssched.shared.data.signin.datasources.RegisteredUserDataSource
 import com.google.samples.apps.adssched.shared.data.tag.TagRepository
 import com.google.samples.apps.adssched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.adssched.shared.data.userevent.UserEventDataSource
@@ -169,7 +168,7 @@ class ScheduleViewModelTest {
     @Test
     fun loggedInUser_setsProfileContentDescription() {
         // Given a mock firebase user
-        val mockUser = mock<AuthenticatedUserInfoBasic> {
+        val mockUser = mock<AuthenticatedUserInfo> {
             on { getUid() }.doReturn("123")
             on { getPhotoUrl() }.doReturn(mock<Uri> {})
             on { isSignedIn() }.doReturn(true)
@@ -178,8 +177,7 @@ class ScheduleViewModelTest {
         // Create ViewModel
         val observableFirebaseUserUseCase =
             FakeObserveUserAuthStateUseCase(
-                user = Result.Success(mockUser),
-                isRegistered = Result.Success(false)
+                    user = Result.Success(mockUser)
             )
         val signInViewModelComponent = FirebaseSignInViewModelDelegate(
             observableFirebaseUserUseCase,
@@ -201,8 +199,7 @@ class ScheduleViewModelTest {
         // Create ViewModel
         val observableFirebaseUserUseCase =
             FakeObserveUserAuthStateUseCase(
-                user = Result.Success(noFirebaseUser),
-                isRegistered = Result.Success(false)
+                    user = Result.Success(noFirebaseUser)
             )
         val signInViewModelComponent = FirebaseSignInViewModelDelegate(
             observableFirebaseUserUseCase,
@@ -222,8 +219,7 @@ class ScheduleViewModelTest {
         // Create ViewModel
         val observableFirebaseUserUseCase =
             FakeObserveUserAuthStateUseCase(
-                user = errorLoadingFirebaseUser,
-                isRegistered = Result.Success(false)
+                    user = errorLoadingFirebaseUser
             )
         val signInViewModelComponent = FirebaseSignInViewModelDelegate(
             observableFirebaseUserUseCase,
@@ -447,36 +443,20 @@ class ScheduleViewModelTest {
         object : GetTimeZoneUseCase(FakePreferenceStorage()) {}
 }
 
-class TestRegisteredUserDataSource(private val isRegistered: Result<Boolean?>) :
-    RegisteredUserDataSource {
-    override fun listenToUserChanges(userId: String) {}
-
-    override fun observeResult(): LiveData<Result<Boolean?>?> {
-        return MutableLiveData<Result<Boolean?>?>().apply { value = isRegistered }
-    }
-
-    override fun setAnonymousValue() {}
-}
-
 class TestAuthStateUserDataSource(
-    private val user: Result<AuthenticatedUserInfoBasic?>?
+    private val user: Result<AuthenticatedUserInfo?>?
 ) : AuthStateUserDataSource {
     override fun startListening() {}
 
-    override fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfoBasic?>> =
-        MutableLiveData<Result<AuthenticatedUserInfoBasic?>>().apply { value = user }
+    override fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfo?>> =
+        MutableLiveData<Result<AuthenticatedUserInfo?>>().apply { value = user }
 
     override fun clearListener() {}
 }
 
 class FakeObserveUserAuthStateUseCase(
-    user: Result<AuthenticatedUserInfoBasic?>?,
-    isRegistered: Result<Boolean?>
-) : ObserveUserAuthStateUseCase(
-    TestRegisteredUserDataSource(isRegistered),
-    TestAuthStateUserDataSource(user),
-    mock {}
-)
+        user: Result<AuthenticatedUserInfo?>?
+) : ObserveUserAuthStateUseCase(TestAuthStateUserDataSource(user))
 
 class FakeScheduleUiHintsShownUseCase : ScheduleUiHintsShownUseCase(
     preferenceStorage = FakePreferenceStorage()

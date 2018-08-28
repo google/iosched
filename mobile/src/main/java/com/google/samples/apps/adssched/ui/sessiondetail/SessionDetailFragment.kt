@@ -32,7 +32,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
-import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.samples.apps.adssched.R
 import com.google.samples.apps.adssched.databinding.FragmentSessionDetailBinding
 import com.google.samples.apps.adssched.model.Room
@@ -97,8 +96,6 @@ class SessionDetailFragment : DaggerFragment() {
                         .setText(shareString)
                         .setChooserTitle(R.string.intent_chooser_session_detail)
                         .startChooser()
-                } else if (item.itemId == R.id.menu_item_star) {
-                    viewModel?.onStarClicked()
                 } else if (item.itemId == R.id.menu_item_map) {
                     val roomId = room?.id
                     if (roomId != null) {
@@ -209,30 +206,6 @@ class SessionDetailFragment : DaggerFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        // Observing the changes from Fragment because data binding doesn't work with menu items.
-        val menu = requireActivity().findViewById<BottomAppBar>(
-            R.id.session_detail_bottom_app_bar
-        ).menu
-        val starMenu = menu.findItem(R.id.menu_item_star)
-        sessionDetailViewModel.shouldShowStarInBottomNav.observe(this, Observer {
-            it?.let {
-                if (it) {
-                    starMenu.setVisible(true)
-                } else {
-                    starMenu.setVisible(false)
-                }
-            }
-        })
-        sessionDetailViewModel.userEvent.observe(this, Observer {
-            it?.let {
-                if (it.isStarred) {
-                    starMenu.setIcon(R.drawable.ic_star)
-                } else {
-                    starMenu.setIcon(R.drawable.ic_star_border)
-                }
-            }
-        })
 
         var titleUpdated = false
         sessionDetailViewModel.session.observe(this, Observer {

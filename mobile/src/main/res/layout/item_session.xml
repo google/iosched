@@ -32,10 +32,6 @@
             type="com.google.samples.apps.adssched.ui.sessioncommon.EventActions" />
 
         <variable
-            name="showReservations"
-            type="LiveData&lt;Boolean&gt;" />
-
-        <variable
             name="alwaysShowDate"
             type="Boolean" />
 

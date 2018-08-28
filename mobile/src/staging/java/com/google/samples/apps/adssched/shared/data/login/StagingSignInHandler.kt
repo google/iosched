@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.adssched.shared.data.login
 
-import androidx.lifecycle.MutableLiveData
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.adssched.shared.data.login.datasources.StagingAuthenticatedUserInfo
 import com.google.samples.apps.adssched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.adssched.shared.result.Result
@@ -85,9 +85,5 @@ class StagingLoggedOutFirebaseUserInfo(
 
     override fun isSignedIn(): Boolean = false
 
-    override fun isRegistered(): Boolean = false
-
     override fun getPhotoUrl(): Uri? = null
-
-    override fun isRegistrationDataReady(): Boolean = true
 }

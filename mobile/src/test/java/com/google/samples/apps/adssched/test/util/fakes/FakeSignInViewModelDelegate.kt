@@ -41,12 +41,6 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
 
     override fun observeSignedInUser() = TODO("Not implemented")
 
-    override fun observeRegisteredUser() = MutableLiveData<Boolean>().apply {
-        value = injectIsSignedIn
-    }
-
-    override fun isRegistered(): Boolean = injectIsSignedIn
-
     override fun emitSignInRequest() {
         signInRequestsEmitted++
     }
@@ -65,7 +59,6 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
             on { getUid() }.doReturn(id)
             on { getPhotoUrl() }.doReturn(mock<Uri> {})
             on { isSignedIn() }.doReturn(true)
-            on { isRegistrationDataReady() }.doReturn(true)
         }
         currentFirebaseUser.postValue(Result.Success(mockUser))
     }

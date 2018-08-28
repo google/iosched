@@ -82,11 +82,7 @@ interface SignInViewModelDelegate {
 
     fun observeSignedInUser(): LiveData<Boolean>
 
-    fun observeRegisteredUser(): LiveData<Boolean>
-
     fun isSignedIn(): Boolean
-
-    fun isRegistered(): Boolean
 
     /**
      * Returns the current user ID or null if not available.
@@ -107,7 +103,6 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
     override val currentUserImageUri: LiveData<Uri?>
     override val shouldShowNotificationsPrefAction = MediatorLiveData<Event<Boolean>>()
 
-    private val _isRegistered: LiveData<Boolean>
     private val _isSignedIn: LiveData<Boolean>
 
     private val notificationsPrefIsShown = MutableLiveData<Result<Boolean>>()
@@ -120,8 +115,6 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
         }
 
         _isSignedIn = currentFirebaseUser.map { isSignedIn() }
-
-        _isRegistered = currentFirebaseUser.map { isRegistered() }
 
         observeUserAuthStateUseCase.execute(Any())
 
@@ -162,16 +155,8 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
         return (currentFirebaseUser.value as? Result.Success)?.data?.isSignedIn() == true
     }
 
-    override fun isRegistered(): Boolean {
-        return (currentFirebaseUser.value as? Result.Success)?.data?.isRegistered() == true
-    }
-
     override fun observeSignedInUser(): LiveData<Boolean> {
         return _isSignedIn
-    }
-
-    override fun observeRegisteredUser(): LiveData<Boolean> {
-        return _isRegistered
     }
 
     override fun getUserId(): String? {

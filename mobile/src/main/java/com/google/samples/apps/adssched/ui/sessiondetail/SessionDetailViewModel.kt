@@ -115,9 +115,6 @@ class SessionDetailViewModel @Inject constructor(
     val hasSpeakers: LiveData<Boolean>
     val hasRelated: LiveData<Boolean>
     val timeUntilStart: LiveData<Duration?>
-    val isReservationDisabled: LiveData<Boolean>
-    private val _shouldShowStarInBottomNav = MediatorLiveData<Boolean>()
-    val shouldShowStarInBottomNav: LiveData<Boolean> = _shouldShowStarInBottomNav
 
     private val sessionId = MutableLiveData<SessionId?>()
 
@@ -157,13 +154,6 @@ class SessionDetailViewModel @Inject constructor(
             (loadUserSessionResult.value as? Result.Success)?.data?.userSession?.session?.let {
                 _session.value = it
             }
-        }
-
-        _shouldShowStarInBottomNav.addSource(session) {
-            _shouldShowStarInBottomNav.value = showStarInBottomNav()
-        }
-        _shouldShowStarInBottomNav.addSource(observeRegisteredUser()) {
-            _shouldShowStarInBottomNav.value = showStarInBottomNav()
         }
 
         // If there's a new result with data, update the UserEvent
@@ -243,14 +233,6 @@ class SessionDetailViewModel @Inject constructor(
             }
         }
 
-        isReservationDisabled =
-            DefaultIntervalMapper.mapAtInterval(session, SIXTY_SECONDS) { session ->
-                session?.startTime?.let { startTime ->
-                    // Only allow reservations if the sessions starts more than an hour from now
-                    Duration.between(timeProvider.now(), startTime).toMinutes() <= 60
-                }
-            }
-
         /* Wiring dependencies for stars and reservation. */
 
         _snackBarMessage.addSource(starEventUseCase.observe()) { result ->
@@ -267,13 +249,7 @@ class SessionDetailViewModel @Inject constructor(
             Timber.d("No user information available yet, not refreshing")
             return
         }
-        val registrationDataReady =
-            (currentFirebaseUser.value as? Result.Success)?.data?.isRegistrationDataReady()
-        if (registrationDataReady == false) {
-            // No registration information provided by [SignInViewModelDelegate] yet.
-            Timber.d("No registration information yet, not refreshing")
-            return
-        }
+
         getSessionId()?.let {
             Timber.d("Refreshing data with session ID $it and user ${getUserId()}")
             loadUserSessionUseCase.execute(getUserId() to it)
@@ -330,33 +306,6 @@ class SessionDetailViewModel @Inject constructor(
                 )
             )
         }
-    }
-
-    override fun onReservationClicked() {
-        if (!networkUtils.hasNetworkConnection()) {
-            Timber.d("No network connection, ignoring reserve click.")
-            _snackBarMessage.postValue(
-                Event(
-                    SnackbarMessage(
-                        messageId = R.string.no_network_connection,
-                        requestChangeId = UUID.randomUUID().toString()
-                    )
-                )
-            )
-            return
-        }
-        if (!isSignedIn()) {
-            Timber.d("Showing Sign-in dialog after reserve click")
-            _navigateToSignInDialogAction.value = Event(Unit)
-            return
-        }
-
-        val userEventSnapshot = userEvent.value ?: return
-        val sessionSnapshot = session.value ?: return
-        val isReservationDisabledSnapshot = isReservationDisabled.value ?: return
-
-        val userId = getUserId() ?: return
-
     }
 
     override fun onLoginClicked() {
@@ -418,15 +367,9 @@ class SessionDetailViewModel @Inject constructor(
     private fun requireSession(): Session {
         return session.value ?: throw IllegalStateException("Session should not be null")
     }
-
-    private fun showStarInBottomNav(): Boolean {
-        return observeRegisteredUser().value == true
-    }
 }
 
 interface SessionDetailEventListener {
-
-    fun onReservationClicked()
 
     fun onStarClicked()
 

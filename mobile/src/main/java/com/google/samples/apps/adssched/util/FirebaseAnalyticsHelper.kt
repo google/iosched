@@ -83,11 +83,6 @@ class FirebaseAnalyticsHelper(
             setUserSignedIn(signedIn == true)
             Timber.d("Updated user signed in to $signedIn")
         }
-
-        signInViewModelDelegate.observeRegisteredUser().observeForever { registered ->
-            setUserRegistered(registered == true)
-            Timber.d("Updated user registered to $registered")
-        }
     }
 
     override fun sendScreenView(screenName: String, activity: Activity) {
@@ -115,11 +110,6 @@ class FirebaseAnalyticsHelper(
     override fun setUserSignedIn(isSignedIn: Boolean) {
         // todo(alexlucas) : Set up user properties in both dev and prod
         firebaseAnalytics.setUserProperty(UPROP_USER_SIGNED_IN, isSignedIn.toString())
-    }
-
-    override fun setUserRegistered(isRegistered: Boolean) {
-        // todo(alexlucas) : Set up user properties in both dev and prod
-        firebaseAnalytics.setUserProperty(UPROP_USER_REGISTERED, isRegistered.toString())
     }
 
     /**

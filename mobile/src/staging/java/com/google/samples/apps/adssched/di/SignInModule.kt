@@ -20,9 +20,7 @@ import android.content.Context
 import com.google.samples.apps.adssched.shared.data.login.StagingAuthenticatedUser
 import com.google.samples.apps.adssched.shared.data.login.StagingSignInHandler
 import com.google.samples.apps.adssched.shared.data.login.datasources.StagingAuthStateUserDataSource
-import com.google.samples.apps.adssched.shared.data.login.datasources.StagingRegisteredUserDataSource
 import com.google.samples.apps.adssched.shared.data.signin.datasources.AuthStateUserDataSource
-import com.google.samples.apps.adssched.shared.data.signin.datasources.RegisteredUserDataSource
 import com.google.samples.apps.adssched.util.signin.SignInHandler
 import dagger.Module
 import dagger.Provides
@@ -33,12 +31,6 @@ internal class SignInModule {
     @Provides
     fun provideSignInHandler(context: Context): SignInHandler {
         return StagingSignInHandler(StagingAuthenticatedUser(context))
-    }
-
-    @Singleton
-    @Provides
-    fun provideRegisteredUserDataSource(context: Context): RegisteredUserDataSource {
-        return StagingRegisteredUserDataSource(true)
     }
 
     @Singleton

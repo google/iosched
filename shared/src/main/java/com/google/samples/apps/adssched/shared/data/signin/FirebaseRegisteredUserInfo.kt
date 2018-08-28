@@ -20,46 +20,9 @@ import android.net.Uri
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserInfo
 
-/**
- * Delegates [AuthenticatedUserInfo] calls to a [FirebaseUser] to be used in production.
- */
-class FirebaseRegisteredUserInfo(
-    private val basicUserInfo: AuthenticatedUserInfoBasic?,
-    private val isRegistered: Boolean?
-) : AuthenticatedUserInfo {
-
-    override fun isRegistered(): Boolean = isRegistered ?: false
-
-    override fun isSignedIn(): Boolean = basicUserInfo?.isSignedIn() == true
-
-    override fun getEmail(): String? = basicUserInfo?.getEmail()
-
-    override fun getProviderData(): MutableList<out UserInfo>? = basicUserInfo?.getProviderData()
-
-    override fun isAnonymous(): Boolean? = basicUserInfo?.isAnonymous()
-
-    override fun getPhoneNumber(): String? = basicUserInfo?.getPhoneNumber()
-
-    override fun getUid(): String? = basicUserInfo?.getUid()
-
-    override fun isEmailVerified(): Boolean? = basicUserInfo?.isEmailVerified()
-
-    override fun getDisplayName(): String? = basicUserInfo?.getDisplayName()
-
-    override fun getPhotoUrl(): Uri? = basicUserInfo?.getPhotoUrl()
-
-    override fun getProviderId(): String? = basicUserInfo?.getProviderId()
-
-    override fun getLastSignInTimestamp(): Long? = basicUserInfo?.getLastSignInTimestamp()
-
-    override fun getCreationTimestamp(): Long? = basicUserInfo?.getCreationTimestamp()
-
-    override fun isRegistrationDataReady(): Boolean = isRegistered != null
-}
-
 open class FirebaseUserInfo(
     private val firebaseUser: FirebaseUser?
-) : AuthenticatedUserInfoBasic {
+) : AuthenticatedUserInfo {
 
     override fun isSignedIn(): Boolean = firebaseUser != null
 

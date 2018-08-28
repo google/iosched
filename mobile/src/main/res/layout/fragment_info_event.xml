@@ -135,52 +135,6 @@
                     app:layout_constraintTop_toBottomOf="@id/wifi_password_value" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/scavenger_hunt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:background="?selectableItemBackground"
-                    android:onClick="@{() -> viewModel.onClickScavengerHunt()}"
-                    android:paddingVertical="@dimen/spacing_normal"
-                    app:layout_constraintTop_toBottomOf="@+id/related_apps_header"
-                    app:goneUnless="@{viewModel.showScavengerHunt}">
-
-                    <ImageView
-                        android:id="@+id/scavenger_hunt_logo"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:importantForAccessibility="no"
-                        android:src="@drawable/ic_logo_scavenger_hunt"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <TextView
-                        android:id="@+id/scavenger_hunt_description"
-                        style="@style/TextAppearance.ADSSched.InfoEventDescription.AppCallout"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_normal"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:text="@string/scavenger_hunt_description"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/scavenger_hunt_logo" />
-
-                    <TextView
-                        android:id="@+id/scavenger_hunt_description2"
-                        style="@style/TextAppearance.ADSSched.InfoEventDescription"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_normal"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:layout_marginTop="@dimen/spacing_micro"
-                        android:text="@string/scavenger_hunt_description2"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/scavenger_hunt_logo"
-                        app:layout_constraintTop_toBottomOf="@id/scavenger_hunt_description" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/assistant_app"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -188,7 +142,8 @@
                     android:background="?selectableItemBackground"
                     android:onClick="@{() -> viewModel.onClickAssistantApp()}"
                     android:paddingVertical="@dimen/spacing_normal"
-                    app:layout_constraintTop_toBottomOf="@+id/scavenger_hunt">
+                    app:layout_constraintTop_toBottomOf="@+id/related_apps_header"
+                    tools:layout_editor_absoluteY="259dp">
 
                     <ImageView
                         android:id="@+id/assistant_app_logo"

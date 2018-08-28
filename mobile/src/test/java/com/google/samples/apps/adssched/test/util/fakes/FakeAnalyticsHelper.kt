@@ -25,6 +25,4 @@ class FakeAnalyticsHelper : AnalyticsHelper {
     override fun logUiEvent(itemId: String, action: String) {}
 
     override fun setUserSignedIn(isSignedIn: Boolean) {}
-
-    override fun setUserRegistered(isRegistered: Boolean) {}
 }

@@ -20,7 +20,6 @@ import android.net.Uri
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.adssched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.adssched.shared.data.signin.AuthenticatedUserInfo
-import com.google.samples.apps.adssched.shared.data.signin.AuthenticatedUserInfoBasic
 import com.google.samples.apps.adssched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.adssched.shared.result.Result
 import com.google.samples.apps.adssched.test.util.SyncTaskExecutorRule
@@ -49,18 +48,17 @@ class FirebaseSignInViewModelDelegateTest {
     fun testSignedOut() {
         val subject = FirebaseSignInViewModelDelegate(
             FakeObserveUserAuthStateUseCase(
-                user = Result.Success(null),
-                isRegistered = Result.Success(false)
+                    user = Result.Success(null)
             ),
             createNotificationsPrefIsShownUseCase()
         )
 
         val currentFirebaseUser = LiveDataTestUtil.getValue(
             subject.currentFirebaseUser
-        ) as Result.Success<AuthenticatedUserInfo>
+        ) as Result.Success<AuthenticatedUserInfo>?
         assertEquals(
             null,
-            currentFirebaseUser.data.getUid()
+            currentFirebaseUser?.data?.getUid()
         )
         assertEquals(
             null,
@@ -72,15 +70,14 @@ class FirebaseSignInViewModelDelegateTest {
     @Test
     fun testSignedInRegistered() {
 
-        val user = mock<AuthenticatedUserInfoBasic> {
+        val user = mock<AuthenticatedUserInfo> {
             on { getUid() }.doReturn("123")
             on { getPhotoUrl() }.doReturn(mock<Uri> {})
             on { isSignedIn() }.doReturn(true)
         }
         val subject = FirebaseSignInViewModelDelegate(
             FakeObserveUserAuthStateUseCase(
-                user = Result.Success(user),
-                isRegistered = Result.Success(true)
+                    user = Result.Success(user)
             ),
             createNotificationsPrefIsShownUseCase()
         )
@@ -94,21 +91,19 @@ class FirebaseSignInViewModelDelegateTest {
             LiveDataTestUtil.getValue(subject.currentUserImageUri)
         )
         assertTrue(subject.isSignedIn())
-        assertTrue(subject.isRegistered())
     }
 
     @Test
     fun testSignedInNotRegistered() {
 
-        val user = mock<AuthenticatedUserInfoBasic> {
+        val user = mock<AuthenticatedUserInfo> {
             on { getUid() }.doReturn("123")
             on { getPhotoUrl() }.doReturn(mock<Uri> {})
             on { isSignedIn() }.doReturn(true)
         }
         val subject = FirebaseSignInViewModelDelegate(
             FakeObserveUserAuthStateUseCase(
-                user = Result.Success(user),
-                isRegistered = Result.Success(false)
+                    user = Result.Success(user)
             ),
             createNotificationsPrefIsShownUseCase()
         )
@@ -122,15 +117,13 @@ class FirebaseSignInViewModelDelegateTest {
             LiveDataTestUtil.getValue(subject.currentUserImageUri)
         )
         assertTrue(subject.isSignedIn())
-        assertFalse(subject.isRegistered())
     }
 
     @Test
     fun testPostSignIn() {
         val subject = FirebaseSignInViewModelDelegate(
             FakeObserveUserAuthStateUseCase(
-                user = Result.Success(null),
-                isRegistered = Result.Success(false)
+                    user = Result.Success(null)
             ),
             createNotificationsPrefIsShownUseCase()
         )
@@ -148,8 +141,7 @@ class FirebaseSignInViewModelDelegateTest {
     fun testPostSignOut() {
         val subject = FirebaseSignInViewModelDelegate(
             FakeObserveUserAuthStateUseCase(
-                user = Result.Success(null),
-                isRegistered = Result.Success(false)
+                    user = Result.Success(null)
             ),
             createNotificationsPrefIsShownUseCase()
         )

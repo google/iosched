@@ -21,14 +21,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.adssched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.adssched.shared.data.signin.datasources.AuthStateUserDataSource
-import com.google.samples.apps.adssched.shared.data.signin.datasources.RegisteredUserDataSource
 import com.google.samples.apps.adssched.shared.domain.auth.ObserveUserAuthStateUseCase
-import com.google.samples.apps.adssched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.adssched.shared.result.Result
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.never
-import com.nhaarman.mockito_kotlin.verify
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.instanceOf
 import org.hamcrest.core.Is.`is`
@@ -48,16 +44,12 @@ class ObserveUserAuthStateUseCaseTest {
     val instantTaskExecutor = InstantTaskExecutorRule()
 
     @Test
-    fun userSuccessRegistered() {
-
-        val topicSubscriber = mock<TopicSubscriber> {}
+    fun userSuccess() {
 
         val subject = createObserveUserAuthStateUseCase(
             isAnonymous = false,
-            isRegistered = true,
             isSuccess = true,
-            userId = TEST_USER_ID,
-            topicSubscriber = topicSubscriber
+            userId = TEST_USER_ID
         )
 
         // Start the listeners
@@ -73,58 +65,14 @@ class ObserveUserAuthStateUseCaseTest {
             value.data.isSignedIn(),
             `is`(equalTo(true))
         )
-        assertThat(
-            value.data.isRegistered(),
-            `is`(equalTo(true))
-        )
-
-        verify(topicSubscriber).subscribeToAttendeeUpdates()
-        verify(topicSubscriber, never()).unsubscribeFromAttendeeUpdates()
     }
 
     @Test
-    fun userSuccessNotRegistered() {
-        val topicSubscriber = mock<TopicSubscriber> {}
-
+    fun userError() {
         val subject = createObserveUserAuthStateUseCase(
             isAnonymous = false,
-            isRegistered = false,
-            isSuccess = true,
-            userId = TEST_USER_ID,
-            topicSubscriber = topicSubscriber
-        )
-
-        // Start the listeners
-        subject.execute(Any())
-
-        val value = LiveDataTestUtil.getValue(subject.observe()) as Result.Success
-
-        assertThat(
-            value.data.getUid(),
-            `is`(equalTo(TEST_USER_ID))
-        )
-        assertThat(
-            value.data.isSignedIn(),
-            `is`(equalTo(true))
-        )
-        assertThat(
-            value.data.isRegistered(),
-            `is`(equalTo(false))
-        )
-        verify(topicSubscriber, never()).subscribeToAttendeeUpdates()
-        verify(topicSubscriber, never()).unsubscribeFromAttendeeUpdates()
-    }
-
-    @Test
-    fun userErrorNotRegistered() {
-        val topicSubscriber = mock<TopicSubscriber> {}
-
-        val subject = createObserveUserAuthStateUseCase(
-            isAnonymous = false,
-            isRegistered = true,
             isSuccess = false,
-            userId = TEST_USER_ID,
-            topicSubscriber = topicSubscriber
+            userId = TEST_USER_ID
         )
 
         // Start the listeners
@@ -136,21 +84,14 @@ class ObserveUserAuthStateUseCaseTest {
             value,
             `is`(instanceOf(Result.Error::class.java))
         )
-        verify(topicSubscriber, never()).subscribeToAttendeeUpdates()
-        verify(topicSubscriber, never()).unsubscribeFromAttendeeUpdates()
     }
 
     @Test
     fun userLogsOut() {
-
-        val topicSubscriber = mock<TopicSubscriber> {}
-
         val subject = createObserveUserAuthStateUseCase(
             isAnonymous = true,
-            isRegistered = false,
             isSuccess = true,
-            userId = TEST_USER_ID,
-            topicSubscriber = topicSubscriber
+            userId = TEST_USER_ID
         )
 
         // Start the listeners
@@ -166,50 +107,22 @@ class ObserveUserAuthStateUseCaseTest {
             value.data.isSignedIn(),
             `is`(equalTo(false))
         )
-        assertThat(
-            value.data.isRegistered(),
-            `is`(equalTo(false))
-        )
-
-        verify(topicSubscriber).unsubscribeFromAttendeeUpdates()
-        verify(topicSubscriber, never()).subscribeToAttendeeUpdates()
     }
 
     private fun createObserveUserAuthStateUseCase(
         isAnonymous: Boolean,
-        isRegistered: Boolean,
         isSuccess: Boolean,
-        userId: String,
-        topicSubscriber: TopicSubscriber = mock {}
+        userId: String
     ): ObserveUserAuthStateUseCase {
         val authStateUserDataSource = FakeAuthStateUserDataSource(
             isAnonymous, isSuccess, userId
         )
 
-        val registeredUserDataSource = FakeRegisteredUserDataSource(isRegistered)
-
-        val subject = ObserveUserAuthStateUseCase(
-            registeredUserDataSource, authStateUserDataSource, topicSubscriber
-        )
+        val subject = ObserveUserAuthStateUseCase(authStateUserDataSource)
         return subject
     }
 }
 
-class FakeRegisteredUserDataSource(val isRegistered: Boolean) : RegisteredUserDataSource {
-    val result = MutableLiveData<Result<Boolean?>?>()
-
-    override fun listenToUserChanges(userId: String) {
-        result.postValue(Result.Success(isRegistered))
-    }
-
-    override fun observeResult(): LiveData<Result<Boolean?>?> {
-        return result
-    }
-
-    override fun setAnonymousValue() {
-        // Noop
-    }
-}
 
 class FakeAuthStateUserDataSource(
     private val isAnonymous: Boolean,
@@ -219,13 +132,13 @@ class FakeAuthStateUserDataSource(
 
     private val _userId = MutableLiveData<String?>()
 
-    private val _firebaseUser = MutableLiveData<Result<AuthenticatedUserInfoBasic?>>()
+    private val _firebaseUser = MutableLiveData<Result<AuthenticatedUserInfo?>>()
 
     override fun startListening() {
         _userId.postValue(userId)
 
         if (successFirebaseUser) {
-            val mockUser = mock<AuthenticatedUserInfoBasic> {
+            val mockUser = mock<AuthenticatedUserInfo> {
                 on { isAnonymous() }.doReturn(isAnonymous)
                 on { getUid() }.doReturn(TEST_USER_ID)
                 on { isSignedIn() }.doReturn(!isAnonymous)
@@ -236,7 +149,7 @@ class FakeAuthStateUserDataSource(
         }
     }
 
-    override fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfoBasic?>> {
+    override fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfo?>> {
         return _firebaseUser
     }
 

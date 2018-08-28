@@ -61,7 +61,7 @@ import com.google.samples.apps.adssched.ui.sessioncommon.EventActions
 import com.google.samples.apps.adssched.ui.signin.SignInViewModelDelegate
 import org.threeten.bp.ZoneId
 import timber.log.Timber
-import java.util.*
+import java.util.UUID
 import javax.inject.Inject
 
 /**
@@ -161,8 +161,6 @@ class ScheduleViewModel @Inject constructor(
 
     val profileContentDesc: LiveData<Int>
         get() = _profileContentDesc
-
-    val showReservations: LiveData<Boolean>
 
     private val _navigateToSignInDialogAction = MutableLiveData<Event<Unit>>()
     val navigateToSignInDialogAction: LiveData<Event<Unit>>
@@ -265,11 +263,6 @@ class ScheduleViewModel @Inject constructor(
         loadSessionsResult.addSource(currentFirebaseUser) {
             Timber.d("Loading user session with user ${(it as? Result.Success)?.data?.getUid()}")
             refreshUserSessions()
-        }
-
-        // Show reservation button if not logged in or (logged in && registered)
-        showReservations = currentFirebaseUser.map {
-            isRegistered() || !isSignedIn()
         }
 
         scheduleUiHintsShownUseCase(Unit, scheduleUiHintsShownResult)

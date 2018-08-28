@@ -17,7 +17,7 @@
 package com.google.samples.apps.adssched.shared.data.signin.datasources
 
 import androidx.lifecycle.LiveData
-import com.google.samples.apps.adssched.shared.data.signin.AuthenticatedUserInfoBasic
+import com.google.samples.apps.adssched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.adssched.shared.result.Result
 
 /**
@@ -32,9 +32,9 @@ interface AuthStateUserDataSource {
     fun startListening()
 
     /**
-     * Returns an observable of the [AuthenticatedUserInfoBasic].
+     * Returns an observable of the [AuthenticatedUserInfo].
      */
-    fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfoBasic?>>
+    fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfo?>>
 
     /**
      * Call this method to clear listeners to avoid leaks.

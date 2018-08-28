@@ -24,7 +24,8 @@
 
     <item
         android:id="@+id/unstarred"
-        android:drawable="@drawable/ic_star_border" />
+        android:drawable="@drawable/ic_star_border"
+        android:state_checked="false" />
 
     <transition
         android:drawable="@drawable/avd_star_event"
