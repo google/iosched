@@ -36,8 +36,8 @@ import com.google.samples.apps.adssched.model.SessionType.SESSION
 import com.google.samples.apps.adssched.model.SessionType.UNKNOWN
 import com.google.samples.apps.adssched.model.userdata.UserEvent
 import com.google.samples.apps.adssched.shared.util.TimeUtils
-import com.google.samples.apps.adssched.ui.reservation.StarReserveFab
 import com.google.samples.apps.adssched.util.drawable.HeaderGridDrawable
+import com.google.samples.apps.adssched.widget.CheckableFab
 import org.threeten.bp.Duration
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
@@ -124,19 +124,16 @@ fun sessionStartCountdown(view: TextView, timeUntilStart: Duration?) {
     requireAll = true
 )
 fun assignFab(
-    fab: StarReserveFab,
+    fab: CheckableFab,
     userEvent: UserEvent?,
     isSignedIn: Boolean,
     eventListener: SessionDetailEventListener
 ) {
-    when {
-        !isSignedIn -> {
-            fab.isChecked = false
-            fab.setOnClickListener { eventListener.onLoginClicked() }
-        }
-        else -> {
-            fab.isChecked = userEvent?.isStarred == true
-            fab.setOnClickListener { eventListener.onStarClicked() }
-        }
+    if (!isSignedIn) {
+        fab.isChecked = false
+        fab.setOnClickListener { eventListener.onLoginClicked() }
+    } else {
+        fab.isChecked = userEvent?.isStarred == true
+        fab.setOnClickListener { eventListener.onStarClicked() }
     }
 }

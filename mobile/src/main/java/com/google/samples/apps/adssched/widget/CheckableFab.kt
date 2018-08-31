@@ -14,62 +14,62 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.adssched.ui.reservation
+package com.google.samples.apps.adssched.widget
 
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.Checkable
-import androidx.annotation.DrawableRes
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.samples.apps.adssched.R
 
 /**
- * An extension to the [FloatingActionButton] supporting multiple custom states.
- *
- * TODO: star not showing up
+ * An extension to the [FloatingActionButton] that supports checkable states.
  */
-class StarReserveFab(
+class CheckableFab @JvmOverloads constructor(
     context: Context,
-    attrs: AttributeSet
-) : FloatingActionButton(context, attrs), Checkable {
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : FloatingActionButton(context, attrs, defStyleAttr), Checkable {
 
+    /** Content description when the view is checked. */
+    var contentDescriptionChecked: CharSequence? = null
 
-    private var _checked = false
+    /** Content description when the view is unchecked. */
+    var contentDescriptionUnchecked: CharSequence? = null
+
+    private var _checked: Boolean = false
         set(value) {
             if (field != value) {
                 field = value
-                currentDrawable = R.drawable.asld_star_event
-                val contentDescRes = if (value) R.string.a11y_starred else R.string.a11y_unstarred
-                contentDescription = context.getString(contentDescRes)
+                contentDescription =
+                    if (value) contentDescriptionChecked else contentDescriptionUnchecked
                 refreshDrawableState()
             }
         }
 
-    @DrawableRes
-    private var currentDrawable = R.drawable.asld_star_event
-        set(value) {
-            if (field != value) {
-                field = value
-                setImageResource(value)
-            }
-        }
-
-    override fun isChecked() = _checked
-
-    override fun setChecked(checked: Boolean) {
-        _checked = checked
+    init {
+        val a = context.obtainStyledAttributes(attrs, R.styleable.CheckableFab, defStyleAttr, 0)
+        contentDescriptionChecked = a.getString(R.styleable.CheckableFab_contentDescriptionChecked)
+        contentDescriptionUnchecked =
+            a.getString(R.styleable.CheckableFab_contentDescriptionUnchecked)
+        _checked = a.getBoolean(R.styleable.CheckableFab_android_checked, false)
+        a.recycle()
     }
+
+    override fun isChecked(): Boolean = _checked
 
     override fun toggle() {
         _checked = !_checked
     }
 
+    override fun setChecked(checked: Boolean) {
+        _checked = checked
+    }
+
     override fun onCreateDrawableState(extraSpace: Int): IntArray {
         val drawableState = super.onCreateDrawableState(extraSpace + 1)
-
         val state = if (_checked) stateChecked else stateUnchecked
         mergeDrawableStates(drawableState, state)
-
         return drawableState
     }
 

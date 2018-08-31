@@ -95,4 +95,13 @@
         <attr name="foreground" format="reference" />
         <attr name="showIcons" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="CheckableFab">
+        <!-- Content description when the Fab is checked -->
+        <attr name="contentDescriptionChecked" format="string" />
+        <!-- Content description when the Fab is unchecked -->
+        <attr name="contentDescriptionUnchecked" format="string" />
+
+        <attr name="android:checked" />
+    </declare-styleable>
 </resources>
