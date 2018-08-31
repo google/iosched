@@ -16,39 +16,16 @@
 
 package com.google.samples.apps.adssched.shared.data.login.datasources
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.UserInfo
 import com.google.samples.apps.adssched.shared.R
 import com.google.samples.apps.adssched.shared.data.signin.AuthenticatedUserInfo
-import com.google.samples.apps.adssched.shared.data.signin.AuthenticatedUserInfoBasic
 import com.google.samples.apps.adssched.shared.data.signin.datasources.AuthStateUserDataSource
-import com.google.samples.apps.adssched.shared.data.signin.datasources.RegisteredUserDataSource
 import com.google.samples.apps.adssched.shared.result.Result
-
-/**
- * A configurable [RegisteredUserDataSource] used for staging.
- *
- * @see LoginModule
- */
-class StagingRegisteredUserDataSource(val isRegistered: Boolean) : RegisteredUserDataSource {
-    val result = MutableLiveData<Result<Boolean?>?>()
-
-    override fun listenToUserChanges(userId: String) {
-        result.postValue(Result.Success(isRegistered))
-    }
-
-    override fun observeResult(): LiveData<Result<Boolean?>?> {
-        return result
-    }
-
-    override fun setAnonymousValue() {
-        // Noop
-    }
-}
 
 /**
  * A configurable [AuthenticatedUserInfo] used for staging.
@@ -64,10 +41,6 @@ open class StagingAuthenticatedUserInfo(
 ) : AuthenticatedUserInfo {
 
     override fun isSignedIn(): Boolean = signedIn
-
-    override fun isRegistered(): Boolean = registered
-
-    override fun isRegistrationDataReady(): Boolean = true
 
     override fun getEmail(): String? = TODO("Not implemented")
 
@@ -115,7 +88,7 @@ class StagingAuthStateUserDataSource(
 
     val _userId = MutableLiveData<String?>()
 
-    val _firebaseUser = MutableLiveData<Result<AuthenticatedUserInfoBasic?>>()
+    val _firebaseUser = MutableLiveData<Result<AuthenticatedUserInfo?>>()
 
     val user = StagingAuthenticatedUserInfo(
         registered = isRegistered,
@@ -128,7 +101,7 @@ class StagingAuthStateUserDataSource(
         _firebaseUser.postValue(Result.Success(user))
     }
 
-    override fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfoBasic?>> {
+    override fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfo?>> {
         return _firebaseUser
     }
 

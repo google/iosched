@@ -20,16 +20,9 @@ import android.net.Uri
 import com.google.firebase.auth.UserInfo
 
 /**
- * Interface to decouple the user info from Firebase.
- *
- * @see [FirebaseRegisteredUserInfo]
- */
-interface AuthenticatedUserInfo : AuthenticatedUserInfoBasic, AuthenticatedUserInfoRegistered
-
-/**
  * Basic user info.
  */
-interface AuthenticatedUserInfoBasic {
+interface AuthenticatedUserInfo {
 
     fun isSignedIn(): Boolean
 
@@ -54,14 +47,4 @@ interface AuthenticatedUserInfoBasic {
     fun getPhotoUrl(): Uri?
 
     fun getProviderId(): String?
-}
-
-/**
- * Extra information about the auth and registration state of the user.
- */
-interface AuthenticatedUserInfoRegistered {
-
-    fun isRegistered(): Boolean
-
-    fun isRegistrationDataReady(): Boolean
 }

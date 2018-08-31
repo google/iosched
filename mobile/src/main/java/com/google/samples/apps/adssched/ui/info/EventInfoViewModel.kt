@@ -57,8 +57,6 @@ class EventInfoViewModel @Inject constructor(
     val snackBarMessage: LiveData<Event<SnackbarMessage>>
         get() = _snackbarMessage
 
-    val showScavengerHunt: LiveData<Boolean>
-
     private val _openUrlEvent = MutableLiveData<Event<String>>()
     val openUrlEvent: LiveData<Event<String>>
         get() = _openUrlEvent
@@ -70,9 +68,6 @@ class EventInfoViewModel @Inject constructor(
         }
         wifiPassword = _wifiConfig.map {
             (it as? Result.Success)?.data?.password
-        }
-        showScavengerHunt = signInViewModelDelegate.observeRegisteredUser().map {
-            checkShowScavengerHunt(it)
         }
     }
 

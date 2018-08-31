@@ -96,7 +96,6 @@ class ScheduleDayFragment : DaggerFragment() {
         adapter = ScheduleDayAdapter(
             viewModel,
             tagViewPool,
-            viewModel.showReservations,
             viewModel.timeZoneId,
             this
         )

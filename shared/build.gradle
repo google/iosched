@@ -50,11 +50,9 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            buildConfigField "String", "REGISTRATION_ENDPOINT_URL", "\"https://events-d07ac.appspot.com/_ah/api/registration/v1/register\""
             buildConfigField "String", "CONFERENCE_DATA_URL", "\"TODO\""
         }
         debug {
-            buildConfigField "String", "REGISTRATION_ENDPOINT_URL", "\"https://events-dev-62d2e.appspot.com/_ah/api/registration/v1/register\""
             buildConfigField "String", "CONFERENCE_DATA_URL", "\"https://firebasestorage.googleapis.com/v0/b/adssched.appspot.com/o/conference_data_2018.json?alt=media&token=fa468c83-899e-44a4-817f-c26aa0e4d708\""
         }
         staging {

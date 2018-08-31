@@ -33,7 +33,6 @@ import org.threeten.bp.ZoneId
 class ScheduleDayAdapter(
     private val eventListener: ScheduleEventListener,
     private val tagViewPool: RecycledViewPool,
-    private val showReservations: LiveData<Boolean>,
     private val timeZoneId: LiveData<ZoneId>,
     private val lifecycleOwner: LifecycleOwner
 ) : ListAdapter<UserSession, SessionViewHolder>(SessionDiff) {
@@ -51,7 +50,7 @@ class ScheduleDayAdapter(
                 }
             }
         return SessionViewHolder(
-            binding, eventListener, showReservations, timeZoneId, lifecycleOwner
+            binding, eventListener, timeZoneId, lifecycleOwner
         )
     }
 
@@ -63,7 +62,6 @@ class ScheduleDayAdapter(
 class SessionViewHolder(
     private val binding: ItemSessionBinding,
     private val eventListener: ScheduleEventListener,
-    private val showReservations: LiveData<Boolean>,
     private val timeZoneId: LiveData<ZoneId>,
     private val lifecycleOwner: LifecycleOwner
 ) : ViewHolder(binding.root) {
@@ -71,7 +69,6 @@ class SessionViewHolder(
     fun bind(userSession: UserSession) {
         binding.userSession = userSession
         binding.eventListener = eventListener
-        binding.showReservations = showReservations
         binding.timeZoneId = timeZoneId
         binding.setLifecycleOwner(lifecycleOwner)
         binding.executePendingBindings()

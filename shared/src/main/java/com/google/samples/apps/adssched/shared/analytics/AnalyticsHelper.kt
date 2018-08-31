@@ -28,9 +28,6 @@ interface AnalyticsHelper {
 
     /** Set the user signed in property */
     fun setUserSignedIn(isSignedIn: Boolean)
-
-    /** Set the user registered property */
-    fun setUserRegistered(isRegistered: Boolean)
 }
 
 /** Actions that should be used when sending analytics events */
@@ -40,10 +37,6 @@ object AnalyticsActions {
     const val CLICK = "Clicked"
     const val FEEDBACK = "Provided Feedback"
     const val ADD_EVENT = "Added Event"
-    const val RESERVE = "Reserved"
-    const val RESERVE_FAILED = "Reserved (Failed)"
-    const val RES_CANCEL_FAILED = "Reservation Cancellation (Failed)"
-    const val RES_CANCEL = "Reservation Cancellation"
 
     const val UPDATE_FILTERS = "Updated Filters"
     const val MAP_MARKER_SELECT = "Selected Map Marker"

@@ -18,12 +18,9 @@ package com.google.samples.apps.adssched.shared.data.signin.datasources
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GetTokenResult
-import com.google.samples.apps.adssched.shared.data.signin.AuthenticatedUserInfoBasic
-import com.google.samples.apps.adssched.shared.data.signin.AuthenticatedUserRegistration
+import com.google.samples.apps.adssched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.adssched.shared.data.signin.FirebaseUserInfo
 import com.google.samples.apps.adssched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.adssched.shared.fcm.FcmTokenUpdater
@@ -37,14 +34,8 @@ import javax.inject.Inject
  * When a [FirebaseUser] is available, it
  *  * Posts it to the user observable
  *  * Fetches the ID token
- *  * Uses the ID token to trigger the registration point
  *  * Stores the FCM ID Token in Firestore
  *  * Posts the user ID to the observable
- *
- * This data source doesn't find if a user is registered or not (is an attendee). Once the
- * registration point is called, the server will generate a field in the user document, which
- * is observed by [RegisteredUserDataSource] in its implementation
- * [FirestoreRegisteredUserDataSource].
  */
 class FirebaseAuthStateUserDataSource @Inject constructor(
     val firebase: FirebaseAuth,
@@ -52,11 +43,11 @@ class FirebaseAuthStateUserDataSource @Inject constructor(
 ) : AuthStateUserDataSource {
 
     private val currentFirebaseUserObservable =
-        MutableLiveData<Result<AuthenticatedUserInfoBasic?>>()
+        MutableLiveData<Result<AuthenticatedUserInfo?>>()
 
     private var isAlreadyListening = false
 
-    // Listener that saves the [FirebaseUser], fetches the ID token, calls the registration point
+    // Listener that saves the [FirebaseUser], fetches the ID token
     // and updates the user ID observable.
     private val authStateListener: ((FirebaseAuth) -> Unit) = { auth ->
         DefaultScheduler.execute {
@@ -69,21 +60,6 @@ class FirebaseAuthStateUserDataSource @Inject constructor(
             )
 
             auth.currentUser?.let { currentUser ->
-
-                // Get the ID token (force refresh)
-                val tokenTask = currentUser.getIdToken(true)
-                try {
-                    // Do this synchronously
-                    val await: GetTokenResult = Tasks.await(tokenTask)
-                    await.token?.let {
-                        // Call registration point to generate a result in Firestore
-                        Timber.d("User authenticated, hitting registration endpoint")
-                        AuthenticatedUserRegistration.callRegistrationEndpoint(it)
-                    }
-                } catch (e: Exception) {
-                    Timber.e(e)
-                    return@let
-                }
                 // Save the FCM ID token in firestore
                 tokenUpdater.updateTokenForUser(currentUser.uid)
             }
@@ -97,7 +73,7 @@ class FirebaseAuthStateUserDataSource @Inject constructor(
         }
     }
 
-    override fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfoBasic?>> {
+    override fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfo?>> {
         return currentFirebaseUserObservable
     }
 

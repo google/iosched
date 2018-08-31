@@ -20,8 +20,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.samples.apps.adssched.shared.data.signin.datasources.AuthStateUserDataSource
 import com.google.samples.apps.adssched.shared.data.signin.datasources.FirebaseAuthStateUserDataSource
-import com.google.samples.apps.adssched.shared.data.signin.datasources.FirestoreRegisteredUserDataSource
-import com.google.samples.apps.adssched.shared.data.signin.datasources.RegisteredUserDataSource
 import com.google.samples.apps.adssched.shared.fcm.FcmTokenUpdater
 import com.google.samples.apps.adssched.util.signin.DefaultSignInHandler
 import com.google.samples.apps.adssched.util.signin.SignInHandler
@@ -33,12 +31,6 @@ import javax.inject.Singleton
 internal class SignInModule {
     @Provides
     fun provideSignInHandler(): SignInHandler = DefaultSignInHandler()
-
-    @Singleton
-    @Provides
-    fun provideRegisteredUserDataSource(firestore: FirebaseFirestore): RegisteredUserDataSource {
-        return FirestoreRegisteredUserDataSource(firestore)
-    }
 
     @Singleton
     @Provides
