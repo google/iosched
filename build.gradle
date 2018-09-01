@@ -33,11 +33,11 @@ buildscript {
 
         // App dependencies
         androidGradlePluginVersion = '3.2.0-beta04'
-        appcompatVersion = '1.0.0-beta01'
+        appcompatVersion = '1.0.0-rc02'
         browserVersion = '1.0.0-beta01'
-        constraintLayoutVersion = '1.1.2'
-        crashlyticsVersion = '2.9.4'
-        dagger = "2.16"
+        constraintLayoutVersion = '1.1.3'
+        crashlyticsVersion = '2.9.5'
+        daggerVersion = "2.16"
         dataBindingCompilerVersion = '3.0.1'
         espressoVersion = '3.1.0-alpha1'
         fabricVersion = '1.25.4'
@@ -48,7 +48,7 @@ buildscript {
         firebaseMessagingVersion = '17.1.0'
         firebaseUiVersion = "3.3.1"
         flexboxVersion = "0.3.2"
-        glideVersion = "4.6.1"
+        glideVersion = "4.8.0"
         googleMapUtilsVersion = "0.5"
         googlePlayServicesMapsVersion = '15.0.1'
         googleServicesVersion = "3.2.0"
@@ -56,11 +56,11 @@ buildscript {
         hamcrestVersion = '1.3'
         junitVersion = '4.12'
         kotlinVersion = '1.2.50'
-        ktxVersion = "1.0.0-beta01"
+        ktxVersion = "1.0.0-rc02"
         leakCanaryVersion = "1.5.4"
-        leanbackVersion = '1.0.0-beta01'
+        leanbackVersion = '1.0.0-rc02'
         legacySupportVersion = '1.0.0-alpha1'
-        lifecycleVersion = '2.0.0-beta01'
+        lifecycleVersion = '2.0.0-rc01'
         lottieVersion = "2.5.1"
         materialVersion = '1.0.0-beta01'
         mockitoVersion = "2.8.9"
@@ -69,10 +69,10 @@ buildscript {
         pageIndicatorVersion = "1.3.0"
         rulesVersion = '1.1.0-alpha1'
         runnerVersion = '1.1.0-alpha1'
-        threetenabpVersion = "1.0.5"
+        threetenabpVersion = "1.1.0"
         threetenbpVersion = "1.3.6"
         timberVersion = "4.7.0"
-        tvproviderVersion = '1.0.0-beta01'
+        tvproviderVersion = '1.0.0-rc02'
     }
 
     repositories {
