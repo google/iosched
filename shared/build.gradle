@@ -118,6 +118,8 @@ dependencies {
     api "com.google.firebase:firebase-core:$rootProject.firebaseCoreVersion"
     api "com.google.firebase:firebase-firestore:$rootProject.firebaseFirestoreVersion"
     api "com.google.firebase:firebase-messaging:$rootProject.firebaseMessagingVersion"
+    // Has to be replaced to avoid compile / runtime conflicts between okhttp and firestore
+    api "com.squareup.okio:okio:$rootProject.okioVersion"
 
     // ThreeTenBP for the shared module only. Date and time API for Java.
     testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"
