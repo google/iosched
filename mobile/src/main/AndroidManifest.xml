@@ -15,7 +15,9 @@
   ~ limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.google.samples.apps.adssched">
+    package="com.google.samples.apps.adssched"
+    android:targetSandboxVersion="2">
+    <!-- targetSandBoxVersion="2" is a requirement for instant apps. -->
 
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />

@@ -79,6 +79,17 @@ android {
             matchingFallbacks = ['debug']
         }
     }
+
+    flavorDimensions "servingType"
+
+    productFlavors {
+        installed {
+            dimension "servingType"
+        }
+        instant {
+            dimension "servingType"
+        }
+    }
     dataBinding {
         enabled true
     }

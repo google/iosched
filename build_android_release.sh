@@ -14,8 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+OUTPUTS=$DIR/mobile/build/outputs
 
 export ANDROID_HOME="$(cd $DIR/../../../prebuilts/fullsdk/linux && pwd )"
 
@@ -28,22 +28,34 @@ $DIR/gradlew clean assemble ${GRADLE_PARAMS}
 BUILD_RESULT=$?
 
 # Debug
-[ ! -d $DIST_DIR/debug ] && mkdir $DIST_DIR/debug
-cp $DIR/mobile/build/outputs/apk/debug/mobile-debug.apk $DIST_DIR/debug/
-cp $DIR/tv/build/outputs/apk/debug/tv-debug.apk $DIST_DIR/debug/
-cp $DIR/wear/build/outputs/apk/debug/wear-debug.apk $DIST_DIR/debug/
+cp $OUTPUTS/apk/installed/debug/mobile-installed-debug.apk $DIST_DIR/mobile_installed_debug.apk
 
 # Staging
-[ ! -d $DIST_DIR/staging ] && mkdir $DIST_DIR/staging
-cp $DIR/mobile/build/outputs/apk/staging/mobile-staging.apk $DIST_DIR/staging/
-cp $DIR/tv/build/outputs/apk/staging/tv-staging.apk $DIST_DIR/staging/
+cp $OUTPUTS/apk/installed/staging/mobile-installed-staging.apk $DIST_DIR/mobile_installed_staging.apk
 
 # Release
-[ ! -d $DIST_DIR/release ] && mkdir $DIST_DIR/release
-cp $DIR/mobile/build/outputs/apk/release/mobile-release-unsigned.apk $DIST_DIR/release/mobile-release.apk
-cp $DIR/tv/build/outputs/apk/release/tv-release-unsigned.apk $DIST_DIR/release/tv-release.apk
-cp $DIR/wear/build/outputs/apk/release/wear-release-unsigned.apk $DIST_DIR/release/wear-release.apk
-cp $DIR/mobile/build/outputs/mapping/release/mapping.txt $DIST_DIR/release/mobile-mapping.txt
-cp $DIR/tv/build/outputs/mapping/release/mapping.txt $DIST_DIR/release/tv-mapping.txt
+cp $OUTPUTS/apk/installed/release/mobile-installed-release-unsigned.apk $DIST_DIR/mobile_installed_release.apk
+cp $OUTPUTS/mapping/installed/release/mapping.txt $DIST_DIR/mobile_installed_release_apk_mapping.txt
+
+# Build App Bundles
+# Don't clean here, otherwise all apks are gone.
+$DIR/gradlew bundle ${GRADLE_PARAMS}
+
+# Debug
+cp $OUTPUTS/bundle/instantDebug/mobile.aab $DIST_DIR/mobile_instant_debug.aab
+cp $OUTPUTS/bundle/installedDebug/mobile.aab $DIST_DIR/mobile_installed_debug.aab
+
+# Staging
+cp $OUTPUTS/bundle/instantStaging/mobile.aab $DIST_DIR/mobile_instant_staging.aab
+cp $OUTPUTS/bundle/installedStaging/mobile.aab $DIST_DIR/mobile_installed_staging.aab
+
+# Release
+cp $OUTPUTS/bundle/instantRelease/mobile.aab $DIST_DIR/mobile_instant_release.aab
+cp $OUTPUTS/mapping/instant/release/mapping.txt $DIST_DIR/mobile_instant_relase_aab_mapping.txt
+
+cp $OUTPUTS/bundle/installedRelease/mobile.aab $DIST_DIR/mobile_installed_release.aab
+cp $OUTPUTS/mapping/installed/release/mapping.txt $DIST_DIR/mobile_installed_aab_mapping.txt
+
+BUILD_RESULT=$?
 
 exit $BUILD_RESULT
