@@ -20,8 +20,8 @@
 buildscript {
     ext {
         // App version
-        versionName = '6.1.2' // X.Y.Z; X = Major, Y = minor, Z = Patch level
-        versionCodeBase = 61020 // XYZZM; M = Module (tv, mobile)
+        versionName = '1.0.0' // X.Y.Z; X = Major, Y = minor, Z = Patch level
+        versionCodeBase = 10000 // XYZZM; M = Module (tv, mobile)
         versionCodeTv = versionCodeBase + 2 // Not used at the moment
         versionCodeMobile = versionCodeBase + 3
 
@@ -31,7 +31,7 @@ buildscript {
         targetSdkVersion = 28
 
         // App dependencies
-        androidGradlePluginVersion = '3.2.0-rc02'
+        androidGradlePluginVersion = '3.2.0-rc03'
         appcompatVersion = '1.0.0-beta01'
         browserVersion = '1.0.0-beta01'
         constraintLayoutVersion = '1.1.2'
