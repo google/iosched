@@ -68,7 +68,7 @@
                     android:propertyName="strokeColor"
                     android:startOffset="100"
                     android:valueFrom="#747474"
-                    android:valueTo="@color/indigo"
+                    android:valueTo="@color/google_blue"
                     android:valueType="colorType" />
             </set>
         </aapt:attr>

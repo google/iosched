@@ -19,9 +19,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/indigo</item>
-        <item name="colorPrimaryDark">@color/indigo_dark</item>
-        <item name="colorAccent">@color/indigo</item>
+        <item name="colorPrimary">@color/google_blue</item>
+        <item name="colorAccent">@color/android_green</item>
     </style>
 
 </resources>

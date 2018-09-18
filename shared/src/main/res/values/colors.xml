@@ -17,15 +17,16 @@
 
 <resources>
     <!-- primary palette -->
-    <color name="indigo">#4768fd</color>
-    <color name="indigo_dark">#3c54fe</color>
-    <color name="teal">#31e7b6</color>
-    <color name="light_blue">#27e5fd</color>
-    <color name="yellow">#fcd230</color>
-    <color name="orange">#ff6c00</color>
     <color name="white">#fff</color>
     <color name="grey_800">#424242</color>
     <color name="grey_600">#747474</color>
     <color name="spacer_grey">#e0e0e0</color>
     <color name="white_90">#e6ffffff</color>
+    <color name="android_green">#76c451</color>
+    <color name="android_green_dark">#5d9145</color>
+    <color name="google_blue_light">#6da1f0</color>
+    <color name="google_blue">#4688f1</color>
+    <color name="ads_yellow">#fdc93e</color>
+    <color name="ads_gray">#9e9e9e</color>
+    <color name="ads_light_gray">#ededed</color>
 </resources>

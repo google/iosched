@@ -22,14 +22,14 @@
     <color name="default_tag_color">#999</color>
     <color name="highlight_light">#33ffffff</color> <!-- 20% white -->
     <color name="scrim">#33000000</color> <!-- 20% black -->
-    <color name="indigo_transparent">#e54768fd</color> <!-- 90% indigo -->
+    <color name="google_blue_transparent">#e54688f1</color> <!-- 90% blue -->
     <color name="dark_gray">#ff808080</color>
 
     <integer-array name="swipe_refresh">
-        <item>@color/indigo</item>
-        <item>@color/teal</item>
-        <item>@color/light_blue</item>
-        <item>@color/yellow</item>
-        <item>@color/orange</item>
+        <item>@color/google_blue</item>
+        <item>@color/ads_yellow</item>
+        <item>@color/ads_gray</item>
+        <item>@color/android_green</item>
+        <item>@color/android_green_dark</item>
     </integer-array>
 </resources>
