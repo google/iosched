@@ -19,13 +19,13 @@
 ---
 status:       PUBLISHED
 technologies: [Android]
-categories:   [Getting Started, Jetpack]
+categories:   [Android TV, Jetpack]
 languages:    [Kotlin]
-solutions:    [Mobile]
+solutions:    [Mobile, TV]
 
 github:       google/iosched
 
-level:        INTERMEDIATE
+level:        ADVANCED
 
 icon:         icon.png
 
