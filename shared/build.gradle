@@ -93,6 +93,9 @@ dependencies {
     implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
     implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
 
+    // Google Play Instant
+    api "com.google.android.instantapps:instantapps:$rootProject.aiaVersion"
+
     // OkHttp
     implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttpVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpVersion"

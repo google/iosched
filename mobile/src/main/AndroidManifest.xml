@@ -14,8 +14,12 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
+
+<!-- ATTENTION: Needs to duplicate entire manifest to instant due to manifest merging issues. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.google.samples.apps.adssched">
+    package="com.google.samples.apps.adssched"
+    android:targetSandboxVersion="2">
+    <!-- targetSandBoxVersion="2" is a requirement for instant apps. -->
 
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -30,7 +34,18 @@
 
         <activity
             android:name=".ui.LauncherActivity"
-            android:theme="@style/AppTheme.Launcher" />
+            android:theme="@style/AppTheme.Launcher">
+            <!-- URL handling and instant app auto-verification. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="developer.android.com" />
+                <data android:path="/dev-summit" />
+            </intent-filter>
+         </activity>
 
         <activity
             android:name=".ui.MainActivity"
@@ -61,6 +76,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
+
+        <meta-data
+            android:name="default-url"
+            android:value="https://developer.android.com/dev-summit" />
 
         <meta-data
             android:name="preloaded_fonts"
