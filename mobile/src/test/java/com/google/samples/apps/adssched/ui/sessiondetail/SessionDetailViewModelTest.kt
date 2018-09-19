@@ -49,6 +49,7 @@ import com.google.samples.apps.adssched.ui.signin.SignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
@@ -87,9 +88,9 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun testDataIsNotLoaded_authNotReady() {
+    fun testAnonymous_dataReady() {
         // Even with a session ID set, data is null if no user is available
-        assertEquals(null, LiveDataTestUtil.getValue(viewModel.session))
+        assertNotEquals(null, LiveDataTestUtil.getValue(viewModel.session))
     }
 
     @Test

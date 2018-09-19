@@ -244,12 +244,6 @@ class SessionDetailViewModel @Inject constructor(
     }
 
     private fun refreshUserSession() {
-        if (currentFirebaseUser.value == null) {
-            // No user information provided by [SignInViewModelDelegate] yet.
-            Timber.d("No user information available yet, not refreshing")
-            return
-        }
-
         getSessionId()?.let {
             Timber.d("Refreshing data with session ID $it and user ${getUserId()}")
             loadUserSessionUseCase.execute(getUserId() to it)
