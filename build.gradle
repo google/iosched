@@ -56,7 +56,6 @@ buildscript {
         junitVersion = '4.12'
         kotlinVersion = '1.2.61'
         ktxVersion = "1.0.0-beta01"
-        leakCanaryVersion = "1.5.4"
         legacySupportVersion = '1.0.0-alpha1'
         lifecycleVersion = '2.0.0-beta01'
         lottieVersion = "2.5.1"

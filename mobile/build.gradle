@@ -118,11 +118,10 @@ android {
 }
 
 dependencies {
-    implementation project(":shared")
+    implementation project(':shared')
     testImplementation project(':test-shared')
     testImplementation project(':androidTest-shared')
-
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     // UI
     implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
@@ -152,7 +151,6 @@ dependencies {
     implementation "com.firebaseui:firebase-ui-auth:$rootProject.firebaseUiVersion"
     implementation "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
 
-    // Utils
     // Date and time API for Java.
     api "com.jakewharton.threetenabp:threetenabp:$rootProject.threetenabpVersion"
     testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"
@@ -173,14 +171,8 @@ dependencies {
     testImplementation "com.nhaarman:mockito-kotlin:$rootProject.mockitoKotlinVersion"
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
 
-    // Leak Canary
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
-    stagingImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
-
     // Solve conflicts with gson. DataBinding is using an old version.
     implementation "com.google.code.gson:gson:$gsonVersion"
-
 }
 
 apply plugin: 'com.google.gms.google-services'
