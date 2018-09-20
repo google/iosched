@@ -60,7 +60,7 @@ sealed class EventFilter(isChecked: Boolean) {
 
         override fun getFilterCategory(): EventFilterCategory = NONE
 
-        override fun getColor(): Int = Color.parseColor("#4768fd") // @color/indigo
+        override fun getColor(): Int = Color.parseColor("#4688f1") // @color/google_blue
 
         override fun getSelectedTextColor(): Int = Color.WHITE
 

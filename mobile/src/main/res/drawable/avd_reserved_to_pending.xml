@@ -73,7 +73,7 @@
                     android:interpolator="@android:anim/linear_interpolator"
                     android:propertyName="strokeColor"
                     android:startOffset="50"
-                    android:valueFrom="@color/indigo"
+                    android:valueFrom="@color/google_blue"
                     android:valueTo="#dadce0"
                     android:valueType="colorType" />
             </set>

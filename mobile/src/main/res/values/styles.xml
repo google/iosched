@@ -19,8 +19,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/orange</item>
-        <item name="colorAccent">@color/orange</item>
+        <item name="colorPrimary">@color/google_blue</item>
+        <item name="colorAccent">@color/android_green</item>
         <item name="colorControlActivated">?colorPrimary</item>
         <item name="toolbarStyle">@style/Widget.Toolbar</item>
         <item name="tabStyle">@style/Widget.ADSSched.Tabs</item>
@@ -28,7 +28,7 @@
         <item name="android:windowBackground">@color/white</item>
         <item name="android:statusBarColor">@color/status_bar</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-        <item name="android:navigationBarColor">@color/orange</item>
+        <item name="android:navigationBarColor">@color/google_blue_light</item>
         <item name="android:textColorTertiary">@color/text_color_tertiary</item>
         <item name="sessionListKeyline">@dimen/session_keyline</item>
         <item name="eventFilterViewStyle">@style/Widget.ADSSched.EventFilters</item>
@@ -161,7 +161,7 @@
     </style>
 
     <style name="TextAppearance.ADSSched.FadingSnackbarAction" parent="@style/TextAppearance.AppCompat.Button">
-        <item name="android:textColor">@color/teal</item>
+        <item name="android:textColor">@color/android_green</item>
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textAllCaps">false</item>
@@ -341,7 +341,7 @@
     </style>
 
     <style name="Theme.ADSSched.Dialog" parent="@style/Theme.MaterialComponents.Light.Dialog">
-        <item name="colorPrimary">@color/indigo</item>
+        <item name="colorPrimary">@color/google_blue</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:textViewStyle">@style/Widget.ADSSched.TextView</item>
