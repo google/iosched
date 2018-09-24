@@ -20,6 +20,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.iid.FirebaseInstanceId
+import com.google.samples.apps.adssched.shared.domain.internal.DefaultScheduler
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -45,18 +46,22 @@ class FcmTokenUpdater @Inject constructor(
             TOKEN_ID_KEY to token
         )
 
-        firestore
-            .collection(Companion.USERS_COLLECTION)
-            .document(userId)
-            .collection(FCM_IDS_COLLECTION)
-            .document(token.take(TOKEN_ID_LENGTH))
-            .set(tokenInfo, SetOptions.merge()).addOnCompleteListener {
-                if (it.isSuccessful) {
-                    Timber.d("FCM ID token successfully uploaded for user $userId\"")
-                } else {
-                    Timber.e("FCM ID token: Error uploading for user $userId")
-                }
-            }
+        // All Firestore operations are started from the main thread
+        // to avoid concurrency issues.
+        DefaultScheduler.postToMainThread {
+            firestore
+                    .collection(Companion.USERS_COLLECTION)
+                    .document(userId)
+                    .collection(FCM_IDS_COLLECTION)
+                    .document(token.take(TOKEN_ID_LENGTH))
+                    .set(tokenInfo, SetOptions.merge()).addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            Timber.d("FCM ID token successfully uploaded for user $userId\"")
+                        } else {
+                            Timber.e("FCM ID token: Error uploading for user $userId")
+                        }
+                    }
+        }
     }
 
     companion object {
