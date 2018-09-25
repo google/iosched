@@ -17,7 +17,6 @@
 
 <resources>
     <string name="title_schedule" translation_description="The title for the schedule screen where user can see their schedule for the Android Dev Summit.">Schedule</string>
-    <string name="title_map" translation_description="The title for the map screen where user can see the map of the venue.">Map</string>
     <string name="title_info" translation_description="The title for the info screen where user can see various information, such as FAQ and travel info.">Info</string>
 
     <!-- Schedule -->
@@ -198,7 +197,6 @@
     <string name="view_sessions_text" translation_description="Link label for viewing all sessions in schedule.">View Sessions</string>
     <string name="view_codelabs_text" translation_description="Link label for viewing all codelabs.">View Codelabs</string>
     <string name="view_events_text" translation_description="Link label for viewing all events.">View Events</string>
-    <string name="view_map_text" translation_description="Link label for viewing events.">View Map</string>
     <string name="wifi_network_label" translation_description="Label for wifi network name.">Wifi network:</string>
     <string name="wifi_password_label" translation_description="Label for wifi network password">Password:</string>
     <string name="wifi_install_success" translation_description="Snackbar message when wifi network is successfully saved.">Wifi network saved</string>

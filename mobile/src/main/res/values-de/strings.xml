@@ -16,7 +16,6 @@
 -->
 <resources>
     <string name="title_schedule">Planen</string>
-    <string name="title_map">Karte</string>
     <string name="filters">Filter</string>
     <string name="category_heading_tracks">Themen</string>
     <string name="category_heading_types">Art der Veranstaltung</string>
@@ -140,7 +139,6 @@
     <string name="view_sessions_text">Sitzungen anzeigen</string>
     <string name="view_codelabs_text">Codelabs anzeigen</string>
     <string name="view_events_text">Veranstaltungen anzeigen</string>
-    <string name="view_map_text">Karte anzeigen</string>
     <string name="wifi_network_label">WLAN:</string>
     <string name="wifi_password_label">Passwort:</string>
     <string name="wifi_install_success">WLAN gespeichert</string>

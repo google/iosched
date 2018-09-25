@@ -88,12 +88,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata:$rootProject.lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$rootProject.lifecycleVersion"
 
-    // Maps
-    api("com.google.maps.android:android-maps-utils:$rootProject.googleMapUtilsVersion") {
-        exclude group: "com.google.android.gms"
-    }
-    api "com.google.android.gms:play-services-maps:$rootProject.googlePlayServicesMapsVersion"
-
     // Utils
     api "com.jakewharton.timber:timber:$rootProject.timberVersion"
     implementation "com.google.code.gson:gson:$rootProject.gsonVersion"

@@ -20,8 +20,6 @@ import com.google.samples.apps.adssched.ui.LaunchModule
 import com.google.samples.apps.adssched.ui.LauncherActivity
 import com.google.samples.apps.adssched.ui.MainActivity
 import com.google.samples.apps.adssched.ui.info.InfoModule
-import com.google.samples.apps.adssched.ui.map.MapActivity
-import com.google.samples.apps.adssched.ui.map.MapModule
 import com.google.samples.apps.adssched.ui.onboarding.OnboardingActivity
 import com.google.samples.apps.adssched.ui.onboarding.OnboardingModule
 import com.google.samples.apps.adssched.ui.prefs.PreferenceModule
@@ -59,7 +57,6 @@ abstract class ActivityBindingModule {
     @ContributesAndroidInjector(
         modules = [
             ScheduleModule::class,
-            MapModule::class,
             InfoModule::class,
             SignInDialogModule::class,
             PreferenceModule::class
@@ -87,13 +84,4 @@ abstract class ActivityBindingModule {
         ]
     )
     internal abstract fun speakerActivity(): SpeakerActivity
-
-    @ActivityScoped
-    @ContributesAndroidInjector(
-        modules = [
-            MapModule::class,
-            PreferenceModule::class
-        ]
-    )
-    internal abstract fun mapActivity(): MapActivity
 }

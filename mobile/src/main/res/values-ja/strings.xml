@@ -16,7 +16,6 @@
 -->
 <resources>
     <string name="title_schedule">スケジュール</string>
-    <string name="title_map">地図</string>
     <string name="filters">フィルタ</string>
     <string name="category_heading_tracks">トピック</string>
     <string name="category_heading_types">種類</string>
@@ -140,7 +139,6 @@
     <string name="view_sessions_text">セッションを表示</string>
     <string name="view_codelabs_text">Codelab を表示</string>
     <string name="view_events_text">イベントを表示</string>
-    <string name="view_map_text">地図を表示</string>
     <string name="wifi_network_label">Wi-Fi ネットワーク:</string>
     <string name="wifi_password_label">パスワード:</string>
     <string name="wifi_install_success">Wi-Fi ネットワークを保存しました</string>

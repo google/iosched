@@ -16,7 +16,6 @@
 -->
 <resources>
     <string name="title_schedule">Orari</string>
-    <string name="title_map">Mappa</string>
     <string name="filters">Filtri</string>
     <string name="category_heading_tracks">Argomenti</string>
     <string name="category_heading_types">Tipi</string>
@@ -140,7 +139,6 @@
     <string name="view_sessions_text">Visualizza le sessioni</string>
     <string name="view_codelabs_text">Visualizza i codelab</string>
     <string name="view_events_text">Visualizza gli eventi</string>
-    <string name="view_map_text">Visualizza mappa</string>
     <string name="wifi_network_label">Rete Wi-Fi:</string>
     <string name="wifi_password_label">Password:</string>
     <string name="wifi_install_success">Rete Wi-Fi salvata</string>

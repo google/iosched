@@ -26,7 +26,6 @@ import com.google.samples.apps.adssched.shared.util.consume
 import com.google.samples.apps.adssched.shared.util.inTransaction
 import com.google.samples.apps.adssched.shared.util.viewModelProvider
 import com.google.samples.apps.adssched.ui.info.InfoFragment
-import com.google.samples.apps.adssched.ui.map.MapFragment
 import com.google.samples.apps.adssched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.adssched.ui.schedule.ScheduleFragment
 import com.google.samples.apps.adssched.ui.schedule.ScheduleViewModel
@@ -59,11 +58,6 @@ class MainActivity : DaggerAppCompatActivity() {
         navigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.navigation_schedule -> consume { replaceFragment(ScheduleFragment()) }
-                R.id.navigation_map -> consume {
-                    // Scroll to current event next time the schedule is opened.
-                    scheduleViewModel.userHasInteracted = false
-                    replaceFragment(MapFragment())
-                }
                 R.id.navigation_info -> consume {
                     // Scroll to current event next time the schedule is opened.
                     scheduleViewModel.userHasInteracted = false
@@ -77,7 +71,13 @@ class MainActivity : DaggerAppCompatActivity() {
 
         if (savedInstanceState == null) {
             // Show Schedule on first creation
-            navigation.selectedItemId = R.id.navigation_schedule
+            if (navigation.selectedItemId == R.id.navigation_schedule) {
+                // We need to add the fragment ourselves.
+                replaceFragment(ScheduleFragment())
+            } else {
+                // This will replace the current fragemnt.
+                navigation.selectedItemId = R.id.navigation_schedule
+            }
         } else {
             // Find the current fragment
             currentFragment =

@@ -72,7 +72,6 @@
         <attr name="eventTitle" format="string" />
         <attr name="eventDescription" format="string" />
         <attr name="filteredEventsLinkUri" format="string" />
-        <attr name="mapLinkUri" format="string" />
         <attr name="codelabsUri" format="string" />
         <attr name="eventTypeLogo" format="reference" />
     </declare-styleable>

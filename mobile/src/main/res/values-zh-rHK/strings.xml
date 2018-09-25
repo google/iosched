@@ -16,7 +16,6 @@
 -->
 <resources>
     <string name="title_schedule">時間表</string>
-    <string name="title_map">地圖</string>
     <string name="filters">篩選器</string>
     <string name="category_heading_tracks">主題</string>
     <string name="category_heading_types">類型</string>
@@ -140,7 +139,6 @@
     <string name="view_sessions_text">查看活動時間表</string>
     <string name="view_codelabs_text">查看 Codelab</string>
     <string name="view_events_text">查看活動</string>
-    <string name="view_map_text">查看地圖</string>
     <string name="wifi_network_label">Wi-Fi 網路：</string>
     <string name="wifi_password_label">密碼：</string>
     <string name="wifi_install_success">已儲存 Wi-Fi 網路</string>

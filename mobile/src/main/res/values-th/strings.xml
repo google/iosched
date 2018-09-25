@@ -16,7 +16,6 @@
 -->
 <resources>
     <string name="title_schedule">กำหนดการ</string>
-    <string name="title_map">แผนที่</string>
     <string name="filters">ตัวกรอง</string>
     <string name="category_heading_tracks">หัวข้อ</string>
     <string name="category_heading_types">ประเภท</string>
@@ -140,7 +139,6 @@
     <string name="view_sessions_text">ดูเซสชัน</string>
     <string name="view_codelabs_text">ดู Codelabs</string>
     <string name="view_events_text">ดูกิจกรรม</string>
-    <string name="view_map_text">ดูแผนที่</string>
     <string name="wifi_network_label">เครือข่าย WiFi</string>
     <string name="wifi_password_label">รหัสผ่าน</string>
     <string name="wifi_install_success">บันทึกเครือข่าย WiFi แล้ว</string>

@@ -16,7 +16,6 @@
 -->
 <resources>
     <string name="title_schedule">Lịch biểu</string>
-    <string name="title_map">Bản đồ</string>
     <string name="filters">Bộ lọc</string>
     <string name="category_heading_tracks">Chủ đề</string>
     <string name="category_heading_types">Loại</string>
@@ -140,7 +139,6 @@
     <string name="view_sessions_text">Xem các phiên sự kiện</string>
     <string name="view_codelabs_text">Xem các phòng thí nghiệm lập trình</string>
     <string name="view_events_text">Xem sự kiện</string>
-    <string name="view_map_text">Xem bản đồ</string>
     <string name="wifi_network_label">Mạng Wi-Fi</string>
     <string name="wifi_password_label">Mật khẩu:</string>
     <string name="wifi_install_success">Đã lưu mạng wifi</string>

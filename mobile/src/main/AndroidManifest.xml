@@ -50,10 +50,6 @@
             android:parentActivityName=".ui.MainActivity"
             android:theme="@style/AppTheme.Speaker" />
 
-        <activity
-            android:name=".ui.map.MapActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-
         <!-- This activity alias lets us change the main entry point without breaking launcher
              shortcuts. DO NOT change its android:name attribute. -->
         <activity-alias
@@ -73,10 +69,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
