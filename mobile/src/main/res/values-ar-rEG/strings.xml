@@ -16,7 +16,6 @@
 -->
 <resources>
     <string name="title_schedule">الجدول الزمني</string>
-    <string name="title_map">الخريطة</string>
     <string name="filters">فلاتر</string>
     <string name="category_heading_tracks">المواضيع</string>
     <string name="category_heading_types">أنواع الحدث</string>
@@ -156,7 +155,6 @@
     <string name="view_sessions_text">عرض الجلسات</string>
     <string name="view_codelabs_text">عرض Codelabs</string>
     <string name="view_events_text">عرض الأحداث</string>
-    <string name="view_map_text">عرض الخريطة</string>
     <string name="wifi_network_label">اسم شبكة Wi-Fi:</string>
     <string name="wifi_password_label">كلمة المرور:</string>
     <string name="wifi_install_success">تمّ حفظ شبكة Wi-Fi.</string>

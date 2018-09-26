@@ -41,7 +41,6 @@ import com.google.samples.apps.adssched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.adssched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.adssched.shared.result.EventObserver
 import com.google.samples.apps.adssched.shared.util.activityViewModelProvider
-import com.google.samples.apps.adssched.ui.map.MapActivity
 import com.google.samples.apps.adssched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.adssched.ui.prefs.SnackbarPreferenceViewModel
 import com.google.samples.apps.adssched.ui.setUpSnackbar
@@ -96,11 +95,6 @@ class SessionDetailFragment : DaggerFragment() {
                         .setText(shareString)
                         .setChooserTitle(R.string.intent_chooser_session_detail)
                         .startChooser()
-                } else if (item.itemId == R.id.menu_item_map) {
-                    val roomId = room?.id
-                    if (roomId != null) {
-                        startActivity(MapActivity.starterIntent(requireContext(), roomId))
-                    }
                 }
                 true
             }

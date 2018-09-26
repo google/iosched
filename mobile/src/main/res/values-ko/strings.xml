@@ -16,7 +16,6 @@
 -->
 <resources>
     <string name="title_schedule">일정</string>
-    <string name="title_map">지도</string>
     <string name="filters">필터</string>
     <string name="category_heading_tracks">주제</string>
     <string name="category_heading_types">유형</string>
@@ -140,7 +139,6 @@
     <string name="view_sessions_text">세션 보기</string>
     <string name="view_codelabs_text">Codelab 보기</string>
     <string name="view_events_text">이벤트 보기</string>
-    <string name="view_map_text">지도 보기</string>
     <string name="wifi_network_label">Wi-Fi 네트워크:</string>
     <string name="wifi_password_label">비밀번호:</string>
     <string name="wifi_install_success">Wi-Fi 네트워크를 저장했습니다.</string>

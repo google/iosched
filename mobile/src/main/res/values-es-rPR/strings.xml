@@ -16,7 +16,6 @@
 -->
 <resources>
     <string name="title_schedule">Programa</string>
-    <string name="title_map">Mapa</string>
     <string name="filters">Filtrar</string>
     <string name="category_heading_tracks">Temas</string>
     <string name="category_heading_types">Tipos</string>
@@ -140,7 +139,6 @@
     <string name="view_sessions_text">Ver sesiones</string>
     <string name="view_codelabs_text">Ver laboratorios de código</string>
     <string name="view_events_text">Ver los eventos</string>
-    <string name="view_map_text">Ver mapa</string>
     <string name="wifi_network_label">Red Wi-Fi:</string>
     <string name="wifi_password_label">Contraseña:</string>
     <string name="wifi_install_success">Se guardó la red Wi-Fi</string>

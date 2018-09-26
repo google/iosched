@@ -34,7 +34,6 @@ class EventView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     var onViewSessionsClicked: (view: View, uri: String) -> Unit = { _, _ -> Unit }
-    var onViewMapClicked: (view: View, uri: String) -> Unit = { _, _ -> Unit }
     var onViewCodelabsClicked: (view: View, uri: String) -> Unit = { _, _ -> Unit }
 
     init {
@@ -42,7 +41,6 @@ class EventView @JvmOverloads constructor(
         val eventTitle = arr.getString(R.styleable.EventView_eventTitle)
         val eventDescription = arr.getString(R.styleable.EventView_eventDescription)
         val eventTitleBackground = arr.getDrawable(R.styleable.EventView_eventTypeLogo)
-        val mapUri = arr.getString(R.styleable.EventView_mapLinkUri)
         val codelabsUri = arr.getString(R.styleable.EventView_codelabsUri)
         val filteredEventsUri = arr.getString(R.styleable.EventView_filteredEventsLinkUri)
         arr.recycle()
@@ -74,17 +72,8 @@ class EventView @JvmOverloads constructor(
             viewSessions.visibility = View.GONE
         }
 
-        val viewMap = rootView.findViewById<Button>(R.id.event_view_map)
-        if (mapUri != null) {
-            viewMap.setOnClickListener {
-                onViewMapClicked(this@EventView, mapUri)
-            }
-        } else {
-            viewMap.visibility = View.GONE
-        }
-
         val viewCodelabs = rootView.findViewById<Button>(R.id.event_view_codelabs)
-        if (mapUri != null) {
+        if (codelabsUri != null) {
             viewCodelabs.setOnClickListener {
                 onViewCodelabsClicked(this@EventView, codelabsUri)
             }

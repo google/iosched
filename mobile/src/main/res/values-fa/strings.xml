@@ -16,7 +16,6 @@
 -->
 <resources>
     <string name="title_schedule">زمان‌بندی</string>
-    <string name="title_map">نقشه</string>
     <string name="filters">فیلترها</string>
     <string name="category_heading_tracks">موضوعات</string>
     <string name="category_heading_types">انواع</string>
@@ -140,7 +139,6 @@
     <string name="view_sessions_text">مشاهده جلسات</string>
     <string name="view_codelabs_text">مشاهده Codelabs</string>
     <string name="view_events_text">مشاهده رویدادها</string>
-    <string name="view_map_text">مشاهده نقشه</string>
     <string name="wifi_network_label">شبکه‌ Wi-Fi:</string>
     <string name="wifi_password_label">گذرواژه:</string>
     <string name="wifi_install_success">شبکه Wifi ذخیره شد</string>
