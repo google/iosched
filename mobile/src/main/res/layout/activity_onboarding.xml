@@ -14,11 +14,92 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.onboarding.OnboardingActivity" />
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.google.samples.apps.adssched.ui.onboarding.OnboardingViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteY="8dp">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/onboarding_margins" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/onboarding_margins" />
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fitsSystemWindows="true"
+            android:importantForAccessibility="no"
+            android:padding="@dimen/onboarding_animation_padding"
+            android:src="@drawable/ic_launcher_foreground"
+            app:layout_constraintBottom_toTopOf="@id/welcome"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread" />
+
+        <TextView
+            android:id="@+id/welcome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/onboarding_welcome_to_google_i_o"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.ADSSched.H1"
+            app:layout_constraintBottom_toTopOf="@id/date_location"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/logo" />
+
+        <TextView
+            android:id="@+id/date_location"
+            style="@style/Widget.ADSSched.OnboardingDeck"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:text="@string/onboarding_date_location"
+            app:layout_constraintBottom_toTopOf="@+id/get_started"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/welcome" />
+
+        <Button
+            android:id="@+id/get_started"
+            style="@style/Widget.ADSSched.RaisedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="119dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="24dp"
+            android:onClick="@{() -> viewModel.getStartedClick()}"
+            android:text="@string/onboarding_get_started"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/date_location" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

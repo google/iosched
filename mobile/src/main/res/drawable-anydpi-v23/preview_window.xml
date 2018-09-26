@@ -20,7 +20,7 @@
     <item android:drawable="@color/white" />
 
     <item
-        android:drawable="@drawable/io_logo"
+        android:drawable="@drawable/ic_androiddevsummit_icon_grey"
         android:gravity="center" />
 
 </layer-list>

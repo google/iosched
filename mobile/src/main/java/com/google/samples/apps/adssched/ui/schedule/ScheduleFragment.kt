@@ -124,11 +124,6 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         scheduleViewModel.navigateToSignOutDialogAction.observe(this, EventObserver {
             openSignOutDialog()
         })
-        scheduleViewModel.scheduleUiHintsShown.observe(this, EventObserver {
-            if (!it) {
-                openScheduleUiHintsDialog()
-            }
-        })
         scheduleViewModel.shouldShowNotificationsPrefAction.observe(this, EventObserver {
             if (it) {
                 openNotificationsPreferenceDialog()
@@ -259,11 +254,6 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     private fun openSignOutDialog() {
         val dialog = SignOutDialogFragment()
         dialog.show(requireActivity().supportFragmentManager, DIALOG_CONFIRM_SIGN_OUT)
-    }
-
-    private fun openScheduleUiHintsDialog() {
-        val dialog = ScheduleUiHintsDialogFragment()
-        dialog.show(requireActivity().supportFragmentManager, DIALOG_SCHEDULE_HINTS)
     }
 
     private fun openNotificationsPreferenceDialog() {

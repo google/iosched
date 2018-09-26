@@ -251,17 +251,6 @@
                     app:eventTitle="@string/event_meals_title"
                     app:eventTypeLogo="@drawable/event_header_meals" />
 
-                <com.google.samples.apps.adssched.widget.CountdownView
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/countdown_height"
-                    android:layout_marginEnd="@dimen/onboarding_margins"
-                    android:layout_marginStart="@dimen/onboarding_margins"
-                    android:importantForAccessibility="no"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/event_meals"
-                    app:countdownVisibility="@{true}" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>

@@ -40,7 +40,7 @@
 
     <dimen name="onboarding_actions_height">112dp</dimen>
     <dimen name="onboarding_margins">48dp</dimen>
-    <dimen name="onboarding_animation_padding">40dp</dimen>
+    <dimen name="onboarding_animation_padding">8dp</dimen>
 
     <dimen name="a11y_min_touch_target">48dp</dimen>
 

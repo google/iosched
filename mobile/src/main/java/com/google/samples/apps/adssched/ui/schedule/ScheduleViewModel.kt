@@ -33,7 +33,6 @@ import com.google.samples.apps.adssched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.adssched.shared.domain.invoke
 import com.google.samples.apps.adssched.shared.domain.prefs.LoadSelectedFiltersUseCase
 import com.google.samples.apps.adssched.shared.domain.prefs.SaveSelectedFiltersUseCase
-import com.google.samples.apps.adssched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.adssched.shared.domain.sessions.EventLocation
 import com.google.samples.apps.adssched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.adssched.shared.domain.sessions.LoadUserSessionsByDayUseCaseParameters
@@ -75,7 +74,6 @@ class ScheduleViewModel @Inject constructor(
     loadEventFiltersUseCase: LoadEventFiltersUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
     private val starEventUseCase: StarEventUseCase,
-    scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase,
     topicSubscriber: TopicSubscriber,
     private val snackbarMessageManager: SnackbarMessageManager,
     private val getTimeZoneUseCase: GetTimeZoneUseCase,
@@ -171,8 +169,6 @@ class ScheduleViewModel @Inject constructor(
         get() = _navigateToSignOutDialogAction
 
     private val scheduleUiHintsShownResult = MutableLiveData<Result<Boolean>>()
-    /** Indicates if the UI hints for the schedule have been shown */
-    val scheduleUiHintsShown: LiveData<Event<Boolean>>
 
     // Flags used to indicate if the "scroll to now" feature has been used already.
     var userHasInteracted = false
@@ -215,16 +211,16 @@ class ScheduleViewModel @Inject constructor(
 
         isLoading = loadSessionsResult.map { it == Result.Loading }
 
-        _errorMessage.addSource(loadSessionsResult, { result ->
+        _errorMessage.addSource(loadSessionsResult) { result ->
             if (result is Result.Error) {
                 _errorMessage.value = Event(content = result.exception.message ?: "Error")
             }
-        })
-        _errorMessage.addSource(loadEventFiltersResult, { result ->
+        }
+        _errorMessage.addSource(loadEventFiltersResult) { result ->
             if (result is Result.Error) {
                 _errorMessage.value = Event(content = result.exception.message ?: "Error")
             }
-        })
+        }
 
         agenda = loadAgendaResult.map {
             (it as? Result.Success)?.data ?: emptyList()
@@ -263,11 +259,6 @@ class ScheduleViewModel @Inject constructor(
         loadSessionsResult.addSource(currentFirebaseUser) {
             Timber.d("Loading user session with user ${(it as? Result.Success)?.data?.getUid()}")
             refreshUserSessions()
-        }
-
-        scheduleUiHintsShownUseCase(Unit, scheduleUiHintsShownResult)
-        scheduleUiHintsShown = scheduleUiHintsShownResult.map {
-            Event((it as? Result.Success)?.data == true)
         }
 
         val showInConferenceTimeZone = preferConferenceTimeZoneResult.map {

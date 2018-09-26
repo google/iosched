@@ -44,7 +44,6 @@ import com.google.samples.apps.adssched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.adssched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.adssched.shared.domain.prefs.LoadSelectedFiltersUseCase
 import com.google.samples.apps.adssched.shared.domain.prefs.SaveSelectedFiltersUseCase
-import com.google.samples.apps.adssched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.adssched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.adssched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.adssched.shared.domain.settings.GetTimeZoneUseCase
@@ -296,14 +295,6 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun scheduleHints_notShown_on_launch() {
-        val viewModel = createScheduleViewModel()
-
-        val event = LiveDataTestUtil.getValue(viewModel.scheduleUiHintsShown)
-        assertEquals(event?.getContentIfNotHandled(), false)
-    }
-
-    @Test
     fun swipeRefresh_refreshesRemoteConfData() {
         // Given a view model with a mocked remote data source
         val remoteDataSource = mock<ConferenceDataSource> {}
@@ -366,8 +357,6 @@ class ScheduleViewModelTest {
         snackbarMessageManager: SnackbarMessageManager = SnackbarMessageManager(
             FakePreferenceStorage()
         ),
-        scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase =
-            FakeScheduleUiHintsShownUseCase(),
         getTimeZoneUseCase: GetTimeZoneUseCase = createGetTimeZoneUseCase(),
         topicSubscriber: TopicSubscriber = mock {},
         refreshConferenceDataUseCase: RefreshConferenceDataUseCase =
@@ -386,7 +375,6 @@ class ScheduleViewModelTest {
             loadEventFiltersUseCase = loadTagsUseCase,
             signInViewModelDelegate = signInViewModelDelegate,
             starEventUseCase = starEventUseCase,
-            scheduleUiHintsShownUseCase = scheduleUiHintsShownUseCase,
             topicSubscriber = topicSubscriber,
             snackbarMessageManager = snackbarMessageManager,
             getTimeZoneUseCase = getTimeZoneUseCase,
@@ -457,10 +445,6 @@ class TestAuthStateUserDataSource(
 class FakeObserveUserAuthStateUseCase(
         user: Result<AuthenticatedUserInfo?>?
 ) : ObserveUserAuthStateUseCase(TestAuthStateUserDataSource(user))
-
-class FakeScheduleUiHintsShownUseCase : ScheduleUiHintsShownUseCase(
-    preferenceStorage = FakePreferenceStorage()
-)
 
 class TestConfDataSourceSession0 : ConferenceDataSource {
     override fun getRemoteConferenceData(): ConferenceData? {

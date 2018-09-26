@@ -64,14 +64,6 @@
     <string name="reservation_disabled" translation_description="Label shown on events for which the user cannot request a seat.">Reservations unavailable</string>
     <string name="reservation_pending" translation_description="Label shown on events for which a reservation request is pending.">Reservation pending</string>
 
-    <!-- Schedule UI hints -->
-    <string name="schedule_hint_title" translation_description="The title of the schedule hint dialog.">Customize your schedule</string>
-    <string name="schedule_hint_view_only_your_events" translation_description="The schedule hint for the switch that toggles if the attendee wants to see their pinned events.">View only your events</string>
-    <string name="schedule_hint_star_event" translation_description="The schedule hint for the icon to star an event.">Add to your starred events</string>
-    <string name="schedule_hint_reserve_session_seat" translation_description="The schedule hint for the icon to reserve a session.">Reserve a session seat</string>
-    <string name="schedule_hint_star_event_content_description" translation_description="The content description for the icon to star an event.">An image to star an event</string>
-    <string name="schedule_hint_reserve_session_seat_content_description" translation_description="The content description for the icon to reserve a session.">An image to reserve a session seat</string>
-
     <!-- Session Detail -->
     <string name="rate_session" translation_description="The label for the button to rate the session by 5 stars">Rate Session</string>
     <string name="menu_item_session_location" translation_description="The label for the location of the session.">Session location</string>
@@ -149,7 +141,7 @@
     <!-- Onboarding -->
     <string name="onboarding_get_started" translation_description="The label for the button to start using the app.">Get started</string>
     <string name="onboarding_welcome_to_google_i_o" translation_description="The welcome message shown at the onboarding screen of the app.">Welcome to the Android Dev Summit</string>
-    <string name="onboarding_date_location" translation_description="The date and the place of Android Dev Summit 2018.">May 7–8,\n2018 Mountain View, CA</string>
+    <string name="onboarding_date_location" translation_description="The date and the place of Android Dev Summit 2018.">November 7–8, 2018\nMountain View, CA</string>
     <string name="onboarding_build_schedule" translation_description="The explanation title of the feature where user can choose which sessions to attend.">Build your own schedule</string>
     <string name="onboarding_build_sched_benefits" translation_description="The explanation of the feature where user can choose which sessions to attend.">Build your custom Android Dev Summit experience and reserve seats if you\'re an attendee</string>
     <string name="onboarding_watch_live" translation_description="The explanation title of the feature where user can watch the Android Dev Summit sessions by live stream.">Watch Android Dev Summit Live</string>

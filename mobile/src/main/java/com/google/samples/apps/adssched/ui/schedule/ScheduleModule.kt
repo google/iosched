@@ -17,7 +17,6 @@
 package com.google.samples.apps.adssched.ui.schedule
 
 import androidx.lifecycle.ViewModel
-import com.google.samples.apps.adssched.shared.di.ChildFragmentScoped
 import com.google.samples.apps.adssched.shared.di.FragmentScoped
 import com.google.samples.apps.adssched.shared.di.ViewModelKey
 import com.google.samples.apps.adssched.ui.schedule.filters.ScheduleFilterFragment
@@ -52,13 +51,6 @@ internal abstract class ScheduleModule {
     @FragmentScoped
     @ContributesAndroidInjector
     internal abstract fun contributeScheduleFilterFragment(): ScheduleFilterFragment
-
-    /**
-     * Generates an [AndroidInjector] for the [ScheduleUiHintsDialogFragment].
-     */
-    @ChildFragmentScoped
-    @ContributesAndroidInjector
-    internal abstract fun contributeScheduleUiHintsDialogFragment(): ScheduleUiHintsDialogFragment
 
     /**
      * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
