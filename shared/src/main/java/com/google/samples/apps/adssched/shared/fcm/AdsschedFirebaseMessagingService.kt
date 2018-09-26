@@ -67,9 +67,9 @@ class AdsschedFirebaseMessagingService : DaggerFirebaseMessagingService() {
         private const val TRIGGER_EVENT_DATA_SYNC_key = "action"
 
         // Some latency to avoid load spikes
-        private val MINIMUM_LATENCY = TimeUnit.SECONDS.toSeconds(5)
+        private val MINIMUM_LATENCY = TimeUnit.SECONDS.toMillis(5)
 
         // Job scheduled to run only with Wi-Fi but with a deadline
-        private val OVERRIDE_DEADLINE = TimeUnit.SECONDS.toMinutes(15)
+        private val OVERRIDE_DEADLINE = TimeUnit.MINUTES.toMillis(15)
     }
 }
