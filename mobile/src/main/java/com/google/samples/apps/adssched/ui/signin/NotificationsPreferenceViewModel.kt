@@ -16,9 +16,12 @@
 
 package com.google.samples.apps.adssched.ui.signin
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.adssched.shared.domain.prefs.NotificationsPrefSaveActionUseCase
 import com.google.samples.apps.adssched.shared.domain.prefs.NotificationsPrefShownActionUseCase
+import com.google.samples.apps.adssched.shared.result.Event
 import javax.inject.Inject
 
 /**
@@ -29,12 +32,26 @@ class NotificationsPreferenceViewModel @Inject constructor(
     private val notificationsPrefSaveActionUseCase: NotificationsPrefSaveActionUseCase
 ) : ViewModel() {
 
+    private val _installAppEvent = MutableLiveData<Event<Unit>>()
+    private val _dismissEvent = MutableLiveData<Event<Unit>>()
+
+    val installAppEvent: LiveData<Event<Unit>>
+        get() = _installAppEvent
+
+    val dismissDialogEvent: LiveData<Event<Unit>>
+        get() = _dismissEvent
+
     fun onYesClicked() {
         notificationsPrefSaveActionUseCase(true)
+        _dismissEvent.value = Event(Unit)
     }
 
+    fun onInstallClicked() {
+        _installAppEvent.value = Event(Unit)
+    }
     fun onNoClicked() {
         notificationsPrefSaveActionUseCase(false)
+        _dismissEvent.value = Event(Unit)
     }
 
     fun onDismissed() {

@@ -119,7 +119,8 @@
 
     <!-- Notifications preference dialog -->
     <string name="notifications_preference_dialog_title" translation_description="The title of the dialog for the notifications preference">Android Dev Summit Notifications</string>
-    <string name="notifications_preference_dialog_content" translation_description="The content of the dialog for the notifications preference">Would you like to receive notifications about the Android Dev Summit? We\'ll send you information about session start times, after hours events, session recordings, and more. You can change this setting under \"Info > Settings\" at any time.</string>
+    <string name="notifications_preference_dialog_content" translation_description="The content of the dialog for the notifications preference">Would you like to be notified when your starred events are about to start? You can change this setting under \"Info > Settings\" at any time.</string>
+    <string name="notifications_preference_dialog_content_instant" translation_description="The content of the dialog for the notifications preference to show if the user is using the Instant App">If you would like to be notified when your starred events are about to start, you will need to install the app.</string>
     <string name="no" translation_description="Negative answer to the question \'Would you like to receive notification?\'">No</string>
     <string name="yes" translation_description="Positive answer to the question \'Would you like to receive notification?\'">Yes</string>
 
@@ -250,5 +251,6 @@
     <string name="no_network_connection" translation_description="Snackbar message when there is not network connection">No internet connection.</string>
 
     <string name="navigate_up" translation-description="Arrow at the top left of the screen for navigation">Navigate up</string>
+    <string name="installApp">Install App</string>
 
 </resources>

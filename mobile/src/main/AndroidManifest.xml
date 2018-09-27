@@ -44,6 +44,9 @@
                 <data android:scheme="https" />
                 <data android:host="developer.android.com" />
                 <data android:path="/dev-summit" />
+                <data android:path="/dev-summit/" />
+                <data android:path="/dev-summit/schedule" />
+                <data android:path="/dev-summit/schedule/" />
             </intent-filter>
          </activity>
 

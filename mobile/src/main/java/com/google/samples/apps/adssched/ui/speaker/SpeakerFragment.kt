@@ -32,12 +32,12 @@ import com.google.samples.apps.adssched.model.SpeakerId
 import com.google.samples.apps.adssched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.adssched.shared.result.EventObserver
 import com.google.samples.apps.adssched.shared.util.viewModelProvider
+import com.google.samples.apps.adssched.ui.dialogs.SignInDialogDispatcher
 import com.google.samples.apps.adssched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.adssched.ui.prefs.SnackbarPreferenceViewModel
 import com.google.samples.apps.adssched.ui.sessiondetail.PushUpScrollListener
 import com.google.samples.apps.adssched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.adssched.ui.setUpSnackbar
-import com.google.samples.apps.adssched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.adssched.util.postponeEnterTransition
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -59,6 +59,8 @@ class SpeakerFragment : DaggerFragment() {
     lateinit var tagRecycledViewPool: RecycledViewPool
 
     private lateinit var speakerViewModel: SpeakerViewModel
+
+    @Inject lateinit var signInDialogDispatcher: SignInDialogDispatcher
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -87,11 +89,7 @@ class SpeakerFragment : DaggerFragment() {
         })
 
         speakerViewModel.navigateToSignInDialogAction.observe(this, EventObserver {
-            val dialog = SignInDialogFragment()
-            dialog.show(
-                requireActivity().supportFragmentManager,
-                SignInDialogFragment.DIALOG_NEED_TO_SIGN_IN
-            )
+            signInDialogDispatcher.openSignInDialog(requireActivity())
         })
 
         val snackbarPrefViewModel: SnackbarPreferenceViewModel = viewModelProvider(viewModelFactory)

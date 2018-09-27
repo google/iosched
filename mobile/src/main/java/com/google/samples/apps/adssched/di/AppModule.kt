@@ -19,12 +19,14 @@ package com.google.samples.apps.adssched.di
 import android.content.ClipboardManager
 import android.content.Context
 import android.net.wifi.WifiManager
+import com.google.android.gms.common.wrappers.InstantApps
 import com.google.samples.apps.adssched.MainApplication
 import com.google.samples.apps.adssched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.adssched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.adssched.shared.data.prefs.SharedPreferenceStorage
 import com.google.samples.apps.adssched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.adssched.util.FirebaseAnalyticsHelper
+import com.google.samples.apps.adssched.util.wifi.WifiInstaller
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -49,8 +51,24 @@ class AppModule {
         SharedPreferenceStorage(context)
 
     @Provides
-    fun providesWifiManager(context: Context): WifiManager =
-        context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+    fun providesWifiInstaller(
+        context: Context,
+        wifiManager: WifiManager?,
+        clipboardManager: ClipboardManager
+    ): WifiInstaller? {
+        if (InstantApps.isInstantApp(context) || wifiManager == null) {
+            return null
+        }
+        return WifiInstaller(wifiManager, clipboardManager)
+    }
+
+    @Provides
+    fun providesWifiManager(context: Context): WifiManager? {
+        if (InstantApps.isInstantApp(context)) {
+            return null
+        }
+        return context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+    }
 
     @Provides
     fun providesClipboardManager(context: Context): ClipboardManager =

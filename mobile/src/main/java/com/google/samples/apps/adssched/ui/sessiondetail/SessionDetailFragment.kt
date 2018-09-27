@@ -28,7 +28,6 @@ import androidx.core.app.ShareCompat
 import androidx.core.net.toUri
 import androidx.core.view.doOnLayout
 import androidx.core.view.forEach
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
@@ -41,13 +40,12 @@ import com.google.samples.apps.adssched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.adssched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.adssched.shared.result.EventObserver
 import com.google.samples.apps.adssched.shared.util.activityViewModelProvider
+import com.google.samples.apps.adssched.ui.dialogs.SignInDialogDispatcher
 import com.google.samples.apps.adssched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.adssched.ui.prefs.SnackbarPreferenceViewModel
 import com.google.samples.apps.adssched.ui.setUpSnackbar
 import com.google.samples.apps.adssched.ui.signin.NotificationsPreferenceDialogFragment
 import com.google.samples.apps.adssched.ui.signin.NotificationsPreferenceDialogFragment.Companion.DIALOG_NOTIFICATIONS_PREFERENCE
-import com.google.samples.apps.adssched.ui.signin.SignInDialogFragment
-import com.google.samples.apps.adssched.ui.signin.SignInDialogFragment.Companion.DIALOG_NEED_TO_SIGN_IN
 import com.google.samples.apps.adssched.ui.speaker.SpeakerActivity
 import dagger.android.support.DaggerFragment
 import timber.log.Timber
@@ -65,6 +63,8 @@ class SessionDetailFragment : DaggerFragment() {
     private lateinit var sessionDetailViewModel: SessionDetailViewModel
 
     @Inject lateinit var analyticsHelper: AnalyticsHelper
+
+    @Inject lateinit var signInDialogDispatcher: SignInDialogDispatcher
 
     @Inject
     @field:Named("tagViewPool")
@@ -163,7 +163,7 @@ class SessionDetailFragment : DaggerFragment() {
         })
 
         sessionDetailViewModel.navigateToSignInDialogAction.observe(this, EventObserver {
-            openSignInDialog(requireActivity())
+            signInDialogDispatcher.openSignInDialog(requireActivity())
         })
 
         sessionDetailViewModel.shouldShowNotificationsPrefAction.observe(this, EventObserver {
@@ -214,11 +214,6 @@ class SessionDetailFragment : DaggerFragment() {
     private fun openYoutubeUrl(youtubeUrl: String) {
         analyticsHelper.logUiEvent(sessionTitle, AnalyticsActions.YOUTUBE_LINK)
         startActivity(Intent(Intent.ACTION_VIEW, youtubeUrl.toUri()))
-    }
-
-    private fun openSignInDialog(activity: FragmentActivity) {
-        val dialog = SignInDialogFragment()
-        dialog.show(activity.supportFragmentManager, DIALOG_NEED_TO_SIGN_IN)
     }
 
     private fun openNotificationsPreferenceDialog() {

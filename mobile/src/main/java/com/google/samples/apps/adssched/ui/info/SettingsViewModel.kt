@@ -25,6 +25,7 @@ import com.google.samples.apps.adssched.shared.domain.settings.GetNotificationsS
 import com.google.samples.apps.adssched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.adssched.shared.domain.settings.SetAnalyticsSettingUseCase
 import com.google.samples.apps.adssched.shared.domain.settings.SetTimeZoneUseCase
+import com.google.samples.apps.adssched.shared.result.Event
 import com.google.samples.apps.adssched.shared.result.Result
 import com.google.samples.apps.adssched.shared.result.Result.Success
 import com.google.samples.apps.adssched.shared.util.map
@@ -51,6 +52,11 @@ class SettingsViewModel @Inject constructor(
     private val sendUsageStatisticsResult = MutableLiveData<Result<Boolean>>()
     val sendUsageStatistics: LiveData<Boolean>
 
+    // Notifications sign in
+    private val _showSignIn = MutableLiveData<Event<Unit>>()
+    val showSignIn: LiveData<Event<Unit>>
+        get() = _showSignIn
+
     init {
         getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
         preferConferenceTimeZone = preferConferenceTimeZoneResult.map {
@@ -76,7 +82,11 @@ class SettingsViewModel @Inject constructor(
         setAnalyticsSettingUseCase(checked, sendUsageStatisticsResult)
     }
 
-    fun toggleEnableNotifications(checked: Boolean) {
+    fun toggleEnableNotifications(checked: Boolean, isInstantApp: Boolean) {
+        if (isInstantApp) {
+            _showSignIn.value = Event(Unit)
+            return
+        }
         notificationsPrefSaveActionUseCase(checked, enableNotificationsResult)
     }
 }

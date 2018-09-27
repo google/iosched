@@ -40,15 +40,13 @@ import com.google.samples.apps.adssched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.adssched.shared.util.activityViewModelProvider
 import com.google.samples.apps.adssched.shared.util.viewModelProvider
 import com.google.samples.apps.adssched.ui.MainNavigationFragment
+import com.google.samples.apps.adssched.ui.dialogs.NotificationsPreferencesDialogDispatcher
+import com.google.samples.apps.adssched.ui.dialogs.SignInDialogDispatcher
 import com.google.samples.apps.adssched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.adssched.ui.prefs.SnackbarPreferenceViewModel
 import com.google.samples.apps.adssched.ui.schedule.day.ScheduleDayFragment
 import com.google.samples.apps.adssched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.adssched.ui.setUpSnackbar
-import com.google.samples.apps.adssched.ui.signin.NotificationsPreferenceDialogFragment
-import com.google.samples.apps.adssched.ui.signin.NotificationsPreferenceDialogFragment.Companion.DIALOG_NOTIFICATIONS_PREFERENCE
-import com.google.samples.apps.adssched.ui.signin.SignInDialogFragment
-import com.google.samples.apps.adssched.ui.signin.SignOutDialogFragment
 import com.google.samples.apps.adssched.util.fabVisibility
 import com.google.samples.apps.adssched.widget.BottomSheetBehavior
 import com.google.samples.apps.adssched.widget.BottomSheetBehavior.BottomSheetCallback
@@ -66,9 +64,6 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
 
     companion object {
         private val COUNT = ConferenceDays.size
-        private const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
-        private const val DIALOG_CONFIRM_SIGN_OUT = "dialog_confirm_sign_out"
-        private const val DIALOG_SCHEDULE_HINTS = "dialog_schedule_hints"
     }
 
     @Inject lateinit var analyticsHelper: AnalyticsHelper
@@ -84,6 +79,9 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     private lateinit var viewPager: ViewPager
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
     private lateinit var snackbar: FadingSnackbar
+
+    @Inject lateinit var signInDialogDispatcher: SignInDialogDispatcher
+    @Inject lateinit var notificationsDialogDispatcher: NotificationsPreferencesDialogDispatcher
 
     // Stores the labels of the viewpager to avoid unnecessary recreation
     private var labelsForDays: List<Int>? = null
@@ -120,11 +118,11 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         })
 
         scheduleViewModel.navigateToSignOutDialogAction.observe(this, EventObserver {
-            openSignOutDialog()
+            signInDialogDispatcher.openSignOutDialog(requireActivity())
         })
         scheduleViewModel.shouldShowNotificationsPrefAction.observe(this, EventObserver {
             if (it) {
-                openNotificationsPreferenceDialog()
+                notificationsDialogDispatcher.startDialog(requireActivity())
             }
         })
         scheduleViewModel.hasAnyFilters.observe(this, Observer {
@@ -239,18 +237,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     }
 
     private fun openSignInDialog() {
-        val dialog = SignInDialogFragment()
-        dialog.show(requireActivity().supportFragmentManager, DIALOG_NEED_TO_SIGN_IN)
-    }
-
-    private fun openSignOutDialog() {
-        val dialog = SignOutDialogFragment()
-        dialog.show(requireActivity().supportFragmentManager, DIALOG_CONFIRM_SIGN_OUT)
-    }
-
-    private fun openNotificationsPreferenceDialog() {
-        val dialog = NotificationsPreferenceDialogFragment()
-        dialog.show(requireActivity().supportFragmentManager, DIALOG_NOTIFICATIONS_PREFERENCE)
+        signInDialogDispatcher.openSignInDialog(requireActivity())
     }
 
     override fun onStart() {

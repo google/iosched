@@ -76,7 +76,7 @@
                     android:text="@string/wifi_network_label"
                     android:textColor="?android:textColorPrimary"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/wifi_header" />
+                    app:layout_constraintTop_toBottomOf="@+id/wifi_header"/>
 
                 <TextView
                     android:id="@+id/wifi_password_label"
@@ -86,7 +86,7 @@
                     android:text="@string/wifi_password_label"
                     android:textColor="?android:textColorPrimary"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/wifi_network_label" />
+                    app:layout_constraintTop_toBottomOf="@+id/wifi_network_label" />
 
                 <androidx.constraintlayout.widget.Barrier
                     android:id="@+id/wifi_label_barrier"
@@ -102,9 +102,9 @@
                     android:layout_marginStart="@dimen/margin_normal"
                     android:text="@{viewModel.wifiSsid}"
                     android:textColor="?android:textColorPrimary"
-                    app:layout_constraintBaseline_toBaselineOf="@id/wifi_network_label"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/wifi_network_label"
                     app:layout_constraintEnd_toStartOf="@id/guideline_end"
-                    app:layout_constraintStart_toEndOf="@id/wifi_label_barrier"
+                    app:layout_constraintStart_toEndOf="@+id/wifi_label_barrier"
                     tools:text="IO2018" />
 
                 <TextView
@@ -124,63 +124,6 @@
                     tools:text="whatislove" />
 
                 <TextView
-                    android:id="@+id/related_apps_header"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_normal"
-                    android:layout_marginTop="@dimen/margin_large"
-                    android:text="@string/related_apps_header"
-                    android:textAppearance="@style/TextAppearance.ADSSched.Subhead"
-                    app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/wifi_password_value" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/assistant_app"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:background="?selectableItemBackground"
-                    android:onClick="@{() -> viewModel.onClickAssistantApp()}"
-                    android:paddingVertical="@dimen/spacing_normal"
-                    app:layout_constraintTop_toBottomOf="@+id/related_apps_header"
-                    tools:layout_editor_absoluteY="259dp">
-
-                    <ImageView
-                        android:id="@+id/assistant_app_logo"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:importantForAccessibility="no"
-                        android:src="@drawable/ic_logo_assistant"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <TextView
-                        android:id="@+id/assistant_app_description"
-                        style="@style/TextAppearance.ADSSched.InfoEventDescription.AppCallout"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_normal"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:text="@string/assistant_app_description"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/assistant_app_logo" />
-
-                    <TextView
-                        android:id="@+id/assistant_app_description2"
-                        style="@style/TextAppearance.ADSSched.InfoEventDescription"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_normal"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:layout_marginTop="@dimen/spacing_micro"
-                        android:text="@string/assistant_app_description2"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/assistant_app_logo"
-                        app:layout_constraintTop_toBottomOf="@id/assistant_app_description" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <TextView
                     android:id="@+id/event_types_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -188,7 +131,7 @@
                     android:text="@string/event_types_header"
                     android:textAppearance="@style/TextAppearance.ADSSched.Subhead"
                     app:layout_constraintStart_toStartOf="@+id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@+id/assistant_app" />
+                    app:layout_constraintTop_toBottomOf="@+id/wifi_password_label" />
 
                 <com.google.samples.apps.adssched.widget.EventView
                     android:id="@+id/event_sessions"

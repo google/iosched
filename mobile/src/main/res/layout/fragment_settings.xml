@@ -22,6 +22,12 @@
         <variable
             name="viewModel"
             type="com.google.samples.apps.adssched.ui.info.SettingsViewModel" />
+
+        <variable
+            name="isInstantApp"
+            type="Boolean" />
+
+        <import type="android.widget.Switch" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -55,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checked="@{viewModel.enableNotifications}"
-                android:onCheckedChanged="@{(view, checked) -> viewModel.toggleEnableNotifications(checked)}"
+                android:onClick="@{(view) -> viewModel.toggleEnableNotifications(((Switch)view).isChecked, isInstantApp)}"
                 android:text="@string/settings_enable_notifications"
                 app:layout_constraintTop_toBottomOf="@+id/settings_time_zone" />
 

@@ -33,26 +33,7 @@ class FcmTopicSubscriber : TopicSubscriber {
         }
     }
 
-    override fun subscribeToAttendeeUpdates() {
-        Timber.d("Subscribing to FCM registered topic")
-        try {
-            FirebaseMessaging.getInstance().subscribeToTopic(REGISTERED_USER_TOPIC_KEY)
-        } catch (e: Exception) {
-            Timber.e(e, "Error subscribing to registered topic")
-        }
-    }
-
-    override fun unsubscribeFromAttendeeUpdates() {
-        Timber.d("Unsubscribing from FCM registered topic")
-        try {
-            FirebaseMessaging.getInstance().unsubscribeFromTopic(REGISTERED_USER_TOPIC_KEY)
-        } catch (e: Exception) {
-            Timber.e(e, "Error unsubscribing from registered topic")
-        }
-    }
-
     companion object {
-        private const val CONFERENCE_DATA_UPDATE_TOPIC_KEY = "CONFERENCE_DATA_SYNC_2018"
-        private const val REGISTERED_USER_TOPIC_KEY = "REGISTERED_2018"
+        private const val CONFERENCE_DATA_UPDATE_TOPIC_KEY = "ADSSCHED_DATA_SYNC_2018"
     }
 }

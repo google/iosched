@@ -85,7 +85,6 @@ class SignInDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInject
     }
 
     companion object {
-        const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
         const val SIGN_IN_ACTIVITY_REQUEST_CODE = 42
     }
 }

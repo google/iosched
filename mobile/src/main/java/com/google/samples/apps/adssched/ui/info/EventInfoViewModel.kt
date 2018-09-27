@@ -27,27 +27,18 @@ import com.google.samples.apps.adssched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.adssched.shared.domain.logistics.LoadWifiInfoUseCase
 import com.google.samples.apps.adssched.shared.result.Event
 import com.google.samples.apps.adssched.shared.result.Result
-import com.google.samples.apps.adssched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.adssched.shared.util.map
 import com.google.samples.apps.adssched.ui.SnackbarMessage
 import com.google.samples.apps.adssched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.adssched.util.wifi.WifiInstaller
-import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 
 class EventInfoViewModel @Inject constructor(
     loadWifiInfoUseCase: LoadWifiInfoUseCase,
-    private val wifiInstaller: WifiInstaller,
+    private val wifiInstaller: WifiInstaller?,
     signInViewModelDelegate: SignInViewModelDelegate,
     private val analyticsHelper: AnalyticsHelper
 ) : ViewModel() {
-
-    companion object {
-        private const val SCAVENGER_HUNT_URL =
-            "https://androidthings.withgoogle.com/iosearch"
-        private const val ASSISTANT_APP_URL =
-            "https://assistant.google.com/services/a/uid/000000449633043c"
-    }
 
     private val _wifiConfig = MutableLiveData<Result<ConferenceWifiInfo>>()
     val wifiSsid: LiveData<String?>
@@ -75,7 +66,7 @@ class EventInfoViewModel @Inject constructor(
         val ssid = wifiSsid.value
         val password = wifiPassword.value
         var success = false
-        if (ssid != null && password != null) {
+        if (ssid != null && password != null && wifiInstaller != null) {
             success = wifiInstaller.installConferenceWifi(WifiConfiguration().apply {
                 SSID = ssid
                 preSharedKey = password
@@ -91,26 +82,5 @@ class EventInfoViewModel @Inject constructor(
 
         _snackbarMessage.postValue(Event(snackbarMessage))
         analyticsHelper.logUiEvent("Events", AnalyticsActions.WIFI_CONNECT)
-    }
-
-    private fun checkShowScavengerHunt(isRegistered: Boolean): Boolean {
-        if (isRegistered) {
-            // Show scavenger hunt to attendees during the conference
-            val now = ZonedDateTime.now()
-            return now.isAfter(ConferenceDays.first().start) &&
-                now.isBefore(ConferenceDays.last().end)
-        } else {
-            return false
-        }
-    }
-
-    fun onClickScavengerHunt() {
-        _openUrlEvent.value = Event(SCAVENGER_HUNT_URL)
-        analyticsHelper.logUiEvent("Scavenger Hunt", AnalyticsActions.CLICK)
-    }
-
-    fun onClickAssistantApp() {
-        _openUrlEvent.value = Event(ASSISTANT_APP_URL)
-        analyticsHelper.logUiEvent("Assistant App", AnalyticsActions.CLICK)
     }
 }

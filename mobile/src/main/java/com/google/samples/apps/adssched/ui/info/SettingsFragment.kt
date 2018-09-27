@@ -21,23 +21,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.common.wrappers.InstantApps
 import com.google.samples.apps.adssched.databinding.FragmentSettingsBinding
+import com.google.samples.apps.adssched.shared.result.EventObserver
 import com.google.samples.apps.adssched.shared.util.viewModelProvider
+import com.google.samples.apps.adssched.ui.dialogs.NotificationsPreferencesDialogDispatcher
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 class SettingsFragment : DaggerFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
+    @Inject lateinit var notificationDialogDispatcher: NotificationsPreferencesDialogDispatcher
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val viewModel: SettingsViewModel = viewModelProvider(viewModelFactory)
         val binding = FragmentSettingsBinding.inflate(inflater, container, false).apply {
-            viewModel = viewModelProvider(viewModelFactory)
+            this.viewModel = viewModel
+            this.isInstantApp = InstantApps.isInstantApp(requireContext())
             setLifecycleOwner(this@SettingsFragment)
         }
+        viewModel.showSignIn.observe(this, EventObserver {
+            notificationDialogDispatcher.startDialog(requireActivity())
+        })
         return binding.root
     }
 }

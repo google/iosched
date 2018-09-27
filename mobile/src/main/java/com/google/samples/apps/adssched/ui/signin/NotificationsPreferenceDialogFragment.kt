@@ -24,19 +24,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.common.wrappers.InstantApps
 import com.google.samples.apps.adssched.R
+import com.google.samples.apps.adssched.databinding.DialogNotificationsPreferenceBinding
+import com.google.samples.apps.adssched.shared.result.EventObserver
 import com.google.samples.apps.adssched.shared.util.viewModelProvider
+import com.google.samples.apps.adssched.ui.dialogs.InstallAppStoreLauncher
 import com.google.samples.apps.adssched.widget.CustomDimDialogFragment
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
-import kotlinx.android.synthetic.main.dialog_notifications_preference.notifications_pref_button_no
-import kotlinx.android.synthetic.main.dialog_notifications_preference.notifications_pref_button_yes
 import javax.inject.Inject
 
 /**
- * Dialog that asks the user notifications preference.
+ * Dialog that asks for the user's notifications preference.
  */
 class NotificationsPreferenceDialogFragment : CustomDimDialogFragment(),
     HasSupportFragmentInjector {
@@ -46,6 +48,9 @@ class NotificationsPreferenceDialogFragment : CustomDimDialogFragment(),
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var installAppStoreLauncher: InstallAppStoreLauncher
 
     private lateinit var viewModel: NotificationsPreferenceViewModel
 
@@ -63,26 +68,39 @@ class NotificationsPreferenceDialogFragment : CustomDimDialogFragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.dialog_notifications_preference, container, false)
+        val isInstantApp = InstantApps.isInstantApp(requireContext())
+
+        viewModel = viewModelProvider(viewModelFactory)
+        val binding = DialogNotificationsPreferenceBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
+
+        // The dialog for the instant app is slightly different
+        if (isInstantApp) {
+            binding.dialogContent.text =
+                    resources.getString(R.string.notifications_preference_dialog_content_instant)
+            binding.notificationsPrefButtonYes.visibility = View.GONE
+            binding.notificationsInstalledButton.visibility = View.VISIBLE
+        }
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = viewModelProvider(viewModelFactory)
 
-        notifications_pref_button_no.setOnClickListener {
-            viewModel.onNoClicked()
+        viewModel.installAppEvent.observe(this, EventObserver {
+            installAppStoreLauncher.showDialog(requireActivity())
+        })
+        viewModel.dismissDialogEvent.observe(this, EventObserver {
             dismiss()
-        }
-        notifications_pref_button_yes.setOnClickListener {
-            viewModel.onYesClicked()
-            dismiss()
-        }
+        })
     }
 
     override fun onDismiss(dialog: DialogInterface?) {
         super.onDismiss(dialog)
-        viewModel.onDismissed()
+        val isInstantApp = InstantApps.isInstantApp(requireContext())
+        if (!isInstantApp) {
+            viewModel.onDismissed()
+        }
     }
 
     companion object {
