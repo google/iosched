@@ -19,6 +19,7 @@ import com.google.samples.apps.adssched.shared.di.ActivityScoped
 import com.google.samples.apps.adssched.ui.LaunchModule
 import com.google.samples.apps.adssched.ui.LauncherActivity
 import com.google.samples.apps.adssched.ui.MainActivity
+import com.google.samples.apps.adssched.ui.agenda.AgendaModule
 import com.google.samples.apps.adssched.ui.info.InfoModule
 import com.google.samples.apps.adssched.ui.onboarding.OnboardingActivity
 import com.google.samples.apps.adssched.ui.onboarding.OnboardingModule
@@ -57,6 +58,7 @@ abstract class ActivityBindingModule {
     @ContributesAndroidInjector(
         modules = [
             ScheduleModule::class,
+            AgendaModule::class,
             InfoModule::class,
             SignInDialogModule::class,
             PreferenceModule::class

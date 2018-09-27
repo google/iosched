@@ -17,7 +17,6 @@
 package com.google.samples.apps.adssched.ui.schedule
 
 import com.google.samples.apps.adssched.shared.di.ChildFragmentScoped
-import com.google.samples.apps.adssched.ui.schedule.agenda.ScheduleAgendaFragment
 import com.google.samples.apps.adssched.ui.schedule.day.ScheduleDayFragment
 import dagger.Module
 import dagger.android.AndroidInjector
@@ -35,11 +34,4 @@ internal abstract class ScheduleChildFragmentsModule {
     @ChildFragmentScoped
     @ContributesAndroidInjector
     internal abstract fun contributeScheduleDayFragment(): ScheduleDayFragment
-
-    /**
-     * Generates an [AndroidInjector] for the [ScheduleAgendaFragment].
-     */
-    @ChildFragmentScoped
-    @ContributesAndroidInjector
-    internal abstract fun contributeScheduleAgendaFragment(): ScheduleAgendaFragment
 }

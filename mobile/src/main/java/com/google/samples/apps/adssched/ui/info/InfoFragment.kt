@@ -86,7 +86,6 @@ class InfoFragment : DaggerFragment(), MainNavigationFragment {
     }
 
     companion object {
-        fun newInstance() = InfoFragment()
 
         private val TAG: String = InfoFragment::class.java.simpleName
         private val INFO_TITLES = arrayOf(

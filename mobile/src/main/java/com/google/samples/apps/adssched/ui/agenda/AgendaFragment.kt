@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.adssched.ui.schedule.agenda
+package com.google.samples.apps.adssched.ui.agenda
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,13 +26,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.samples.apps.adssched.databinding.FragmentScheduleAgendaBinding
 import com.google.samples.apps.adssched.model.Block
 import com.google.samples.apps.adssched.shared.util.activityViewModelProvider
+import com.google.samples.apps.adssched.ui.MainNavigationFragment
 import com.google.samples.apps.adssched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.adssched.util.clearDecorations
 import dagger.android.support.DaggerFragment
 import org.threeten.bp.ZoneId
 import javax.inject.Inject
 
-class ScheduleAgendaFragment : DaggerFragment() {
+class AgendaFragment : DaggerFragment(), MainNavigationFragment {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -45,7 +46,7 @@ class ScheduleAgendaFragment : DaggerFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentScheduleAgendaBinding.inflate(inflater, container, false).apply {
-            setLifecycleOwner(this@ScheduleAgendaFragment)
+            setLifecycleOwner(this@AgendaFragment)
         }
         return binding.root
     }
@@ -60,9 +61,9 @@ class ScheduleAgendaFragment : DaggerFragment() {
 @BindingAdapter(value = ["agendaItems", "timeZoneId"])
 fun agendaItems(recyclerView: RecyclerView, list: List<Block>?, timeZoneId: ZoneId?) {
     if (recyclerView.adapter == null) {
-        recyclerView.adapter = ScheduleAgendaAdapter()
+        recyclerView.adapter = AgendaAdapter()
     }
-    val adapter = (recyclerView.adapter as ScheduleAgendaAdapter).apply {
+    (recyclerView.adapter as AgendaAdapter).apply {
         this.submitList(list ?: emptyList())
         this.timeZoneId = timeZoneId ?: ZoneId.systemDefault()
     }
@@ -71,7 +72,7 @@ fun agendaItems(recyclerView: RecyclerView, list: List<Block>?, timeZoneId: Zone
     recyclerView.clearDecorations()
     if (list != null && list.isNotEmpty()) {
         recyclerView.addItemDecoration(
-            ScheduleAgendaHeadersDecoration(recyclerView.context, list)
+            AgendaHeadersDecoration(recyclerView.context, list)
         )
     }
 }

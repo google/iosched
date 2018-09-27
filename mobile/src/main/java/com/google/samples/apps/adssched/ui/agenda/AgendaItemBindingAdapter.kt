@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.adssched.ui.schedule.agenda
+package com.google.samples.apps.adssched.ui.agenda
 
 import android.graphics.drawable.GradientDrawable
 import android.view.View

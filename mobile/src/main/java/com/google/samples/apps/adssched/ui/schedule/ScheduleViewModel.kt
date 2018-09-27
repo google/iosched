@@ -126,11 +126,6 @@ class ScheduleViewModel @Inject constructor(
     val isAgendaPage: LiveData<Boolean>
         get() = _isAgendaPage
 
-    private var _transientUiStateVar = TransientUiState(false, false)
-    private val _transientUiState = MutableLiveData<TransientUiState>()
-    val transientUiState: LiveData<TransientUiState>
-        get() = _transientUiState
-
     private val loadSessionsResult: MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>
     private val loadAgendaResult = MutableLiveData<Result<List<Block>>>()
     private val loadEventFiltersResult = MediatorLiveData<Result<List<EventFilter>>>()
@@ -405,7 +400,6 @@ class ScheduleViewModel @Inject constructor(
         val hasAnyFilters = userSessionMatcher.hasAnyFilters()
         _hasAnyFilters.value = hasAnyFilters
         _selectedFilters.value = cachedEventFilters.filter { it.isChecked.get() }
-        setTransientUiState(_transientUiStateVar.copy(hasAnyFilters = hasAnyFilters))
     }
 
     fun onSwipeRefresh() {
@@ -476,19 +470,6 @@ class ScheduleViewModel @Inject constructor(
             )
         }
     }
-
-    fun setIsAgendaPage(isAgendaPage: Boolean) {
-        if (_isAgendaPage.value != isAgendaPage) {
-            _isAgendaPage.value = isAgendaPage
-            setTransientUiState(_transientUiStateVar.copy(isAgendaPage = isAgendaPage))
-        }
-    }
-
-    private fun setTransientUiState(state: TransientUiState) {
-        _transientUiStateVar = state
-        _transientUiState.value = state
-    }
-
     fun initializeTimeZone() {
         getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
     }

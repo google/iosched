@@ -41,6 +41,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_insetEdge="bottom"
+        app:labelVisibilityMode="labeled"
         app:menu="@menu/navigation" />
 
     <com.google.samples.apps.adssched.widget.FadingSnackbar

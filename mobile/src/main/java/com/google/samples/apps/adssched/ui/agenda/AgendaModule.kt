@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.adssched.ui.schedule.agenda
+package com.google.samples.apps.adssched.ui.agenda
 
-import com.google.samples.apps.adssched.model.Block
-import org.threeten.bp.ZonedDateTime
+import com.google.samples.apps.adssched.shared.di.ChildFragmentScoped
+import dagger.Module
+import dagger.android.AndroidInjector
+import dagger.android.ContributesAndroidInjector
 
-/**
- * Find the first block of each day (rounded down to nearest day) and return pairs of
- * index to start time. Assumes that [agendaItems] are sorted by ascending start time.
- */
-fun indexAgendaHeaders(agendaItems: List<Block>): List<Pair<Int, ZonedDateTime>> {
-    return agendaItems
-        .mapIndexed { index, block -> index to block.startTime }
-        .distinctBy { it.second.dayOfMonth }
+@Module
+internal abstract class AgendaModule {
+
+    /**
+     * Generates an [AndroidInjector] for the [AgendaFragment].
+     */
+    @ChildFragmentScoped
+    @ContributesAndroidInjector
+    internal abstract fun contributeAgendaFragment(): AgendaFragment
 }

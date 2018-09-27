@@ -42,7 +42,6 @@ import com.google.samples.apps.adssched.shared.util.viewModelProvider
 import com.google.samples.apps.adssched.ui.MainNavigationFragment
 import com.google.samples.apps.adssched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.adssched.ui.prefs.SnackbarPreferenceViewModel
-import com.google.samples.apps.adssched.ui.schedule.agenda.ScheduleAgendaFragment
 import com.google.samples.apps.adssched.ui.schedule.day.ScheduleDayFragment
 import com.google.samples.apps.adssched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.adssched.ui.setUpSnackbar
@@ -66,8 +65,7 @@ import javax.inject.Inject
 class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
 
     companion object {
-        private val COUNT = ConferenceDays.size + 1 // Agenda
-        private val AGENDA_POSITION = COUNT - 1
+        private val COUNT = ConferenceDays.size
         private const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
         private const val DIALOG_CONFIRM_SIGN_OUT = "dialog_confirm_sign_out"
         private const val DIALOG_SCHEDULE_HINTS = "dialog_schedule_hints"
@@ -129,7 +127,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
                 openNotificationsPreferenceDialog()
             }
         })
-        scheduleViewModel.transientUiState.observe(this, Observer {
+        scheduleViewModel.hasAnyFilters.observe(this, Observer {
             updateFiltersUi(it ?: return@Observer)
         })
 
@@ -165,7 +163,6 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
 
         viewPager.addOnPageChangeListener(object : SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
-                scheduleViewModel.setIsAgendaPage(position == AGENDA_POSITION)
                 logAnalyticsPageView(position)
             }
         })
@@ -193,15 +190,10 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
                 labelsForDays = it
             }
         })
-
-        if (savedInstanceState == null) {
-            scheduleViewModel.setIsAgendaPage(false)
-        }
     }
 
-    private fun updateFiltersUi(uiState: TransientUiState) {
-        val showFab = !uiState.isAgendaPage && !uiState.hasAnyFilters
-        val hideable = uiState.isAgendaPage || !uiState.hasAnyFilters
+    private fun updateFiltersUi(hasAnyFilters: Boolean) {
+        val showFab = !hasAnyFilters
 
         fabVisibility(filtersFab, showFab)
         // Set snackbar position depending whether fab/filters show.
@@ -214,9 +206,9 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
                 }
             )
         }
-        bottomSheetBehavior.isHideable = hideable
-        bottomSheetBehavior.skipCollapsed = !uiState.hasAnyFilters
-        if (hideable && bottomSheetBehavior.state == STATE_COLLAPSED) {
+        bottomSheetBehavior.isHideable = showFab
+        bottomSheetBehavior.skipCollapsed = showFab
+        if (showFab && bottomSheetBehavior.state == STATE_COLLAPSED) {
             bottomSheetBehavior.state = STATE_HIDDEN
         }
     }
@@ -267,8 +259,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     }
 
     private fun logAnalyticsPageView(position: Int) {
-        val page = if (position == AGENDA_POSITION) "agenda" else "Day ${position + 1}"
-        analyticsHelper.sendScreenView("Schedule - $page", requireActivity())
+        analyticsHelper.sendScreenView("Schedule - Day ${position + 1}", requireActivity())
     }
 
     /**
@@ -279,18 +270,8 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
 
         override fun getCount() = COUNT
 
-        override fun getItem(position: Int): Fragment {
-            return when (position) {
-                AGENDA_POSITION -> ScheduleAgendaFragment()
-                else -> ScheduleDayFragment.newInstance(position)
-            }
-        }
+        override fun getItem(position: Int): Fragment = ScheduleDayFragment.newInstance(position)
 
-        override fun getPageTitle(position: Int): CharSequence {
-            return when (position) {
-                AGENDA_POSITION -> getString(R.string.agenda)
-                else -> getString(labelsForDays[position])
-            }
-        }
+        override fun getPageTitle(position: Int): CharSequence = getString(labelsForDays[position])
     }
 }

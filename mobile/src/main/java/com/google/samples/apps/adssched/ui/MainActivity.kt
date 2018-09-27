@@ -25,6 +25,7 @@ import com.google.samples.apps.adssched.R
 import com.google.samples.apps.adssched.shared.util.consume
 import com.google.samples.apps.adssched.shared.util.inTransaction
 import com.google.samples.apps.adssched.shared.util.viewModelProvider
+import com.google.samples.apps.adssched.ui.agenda.AgendaFragment
 import com.google.samples.apps.adssched.ui.info.InfoFragment
 import com.google.samples.apps.adssched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.adssched.ui.schedule.ScheduleFragment
@@ -62,6 +63,11 @@ class MainActivity : DaggerAppCompatActivity() {
                     // Scroll to current event next time the schedule is opened.
                     scheduleViewModel.userHasInteracted = false
                     replaceFragment(InfoFragment())
+                }
+                R.id.navigation_agenda -> consume {
+                    // Scroll to current event next time the schedule is opened.
+                    scheduleViewModel.userHasInteracted = false
+                    replaceFragment(AgendaFragment())
                 }
                 else -> false
             }

@@ -18,6 +18,7 @@
 <resources>
     <string name="title_schedule" translation_description="The title for the schedule screen where user can see their schedule for the Android Dev Summit.">Schedule</string>
     <string name="title_info" translation_description="The title for the info screen where user can see various information, such as FAQ and travel info.">Info</string>
+    <string name="title_agenda" translation_description="The title for the agenda screen where user can see all the sessions they plan to attend.">Agenda</string>
 
     <!-- Schedule -->
     <string name="filters" translation_description="The label for the button to filter sessions by their topics, room, and so on.">Filters</string>
@@ -35,7 +36,6 @@
 
     <string name="session_duration_location" translatable="false">%1s / %2s</string>
     <string name="session_date_duration_location" translatable="false">%1s / %2s / %3s</string>
-    <string name="agenda" translation_description="The title for the agenda screen where user can see all the sessions they plan to attend.">Agenda</string>
     <string name="agenda_duration" translatable="false">%1$s – %2$s</string>
     <string name="event_starred" translation_description="The message shown when user adds an event to their schedule.">Event added to your starred items</string>
     <string name="event_unstarred" translation_description="The message shown when user removes an event from their schedule.">Event removed from starred items</string>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.adssched.ui.schedule.agenda
+package com.google.samples.apps.adssched.ui.agenda
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -28,7 +28,7 @@ import com.google.samples.apps.adssched.R
 import com.google.samples.apps.adssched.model.Block
 import org.threeten.bp.ZoneId
 
-class ScheduleAgendaAdapter(var timeZoneId: ZoneId = ZoneId.systemDefault()) :
+class AgendaAdapter(var timeZoneId: ZoneId = ZoneId.systemDefault()) :
     ListAdapter<Block, AgendaViewHolder>(BlockDiff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AgendaViewHolder {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.adssched.ui.schedule.agenda
+package com.google.samples.apps.adssched.ui.agenda
 
 import android.content.Context
 import android.graphics.Canvas
@@ -49,7 +49,7 @@ import org.threeten.bp.format.DateTimeFormatter
  * A [RecyclerView.ItemDecoration] which draws sticky headers marking the days in a given list of
  * [Block]s. It also inserts gaps between days.
  */
-class ScheduleAgendaHeadersDecoration(
+class AgendaHeadersDecoration(
     context: Context,
     blocks: List<Block>
 ) : ItemDecoration() {
