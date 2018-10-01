@@ -50,7 +50,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            buildConfigField "String", "CONFERENCE_DATA_URL", "\"https://firebasestorage.googleapis.com/v0/b/adssched.appspot.com/o/conference_data_2018.json?alt=media&token=fa468c83-899e-44a4-817f-c26aa0e4d708\""
+            buildConfigField "String", "CONFERENCE_DATA_URL", "\"https://firebasestorage.googleapis.com/v0/b/adssched-prod.appspot.com/o/conference_data_2018.json?alt=media&token=c87ae443-fa67-44df-a884-65fa14727f55\""
         }
         debug {
             buildConfigField "String", "CONFERENCE_DATA_URL", "\"https://firebasestorage.googleapis.com/v0/b/adssched.appspot.com/o/conference_data_2018.json?alt=media&token=fa468c83-899e-44a4-817f-c26aa0e4d708\""

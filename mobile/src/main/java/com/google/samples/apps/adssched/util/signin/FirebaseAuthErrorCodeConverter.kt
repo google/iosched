@@ -28,23 +28,23 @@ object FirebaseAuthErrorCodeConverter {
     fun convert(code: Int): Int {
         return when (code) {
             ErrorCodes.NO_NETWORK -> {
-                Timber.d("FirebaseAuth error: no_network")
+                Timber.e("FirebaseAuth error: no_network")
                 R.string.firebase_auth_no_network_connection
             }
             ErrorCodes.DEVELOPER_ERROR -> {
-                Timber.w("FirebaseAuth error: developer_error")
+                Timber.e("FirebaseAuth error: developer_error")
                 R.string.firebase_auth_unknown_error
             }
             ErrorCodes.PLAY_SERVICES_UPDATE_CANCELLED -> {
-                Timber.d("FirebaseAuth error: play_services_update_cancelled")
+                Timber.e("FirebaseAuth error: play_services_update_cancelled")
                 R.string.firebase_auth_unknown_error
             }
             ErrorCodes.PROVIDER_ERROR -> {
-                Timber.w("FirebaseAuth error: provider_error")
+                Timber.e("FirebaseAuth error: provider_error")
                 R.string.firebase_auth_unknown_error
             }
             else -> {
-                Timber.w("FirebaseAuth error: unknown_error")
+                Timber.e("FirebaseAuth error: unknown_error")
                 R.string.firebase_auth_unknown_error
             }
         }
