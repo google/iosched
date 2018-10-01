@@ -24,3 +24,6 @@
 -keep public class * extends java.lang.Exception
 -keep class com.crashlytics.** { *; }
 -dontwarn com.crashlytics.**
+
+# https://github.com/firebase/FirebaseUI-Android/issues/1429
+-keep class com.firebase.ui.auth.** { * ; }
