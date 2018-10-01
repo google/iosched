@@ -26,7 +26,6 @@ android {
         applicationId "com.google.samples.apps.adssched"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode rootProject.versionCodeMobile
         versionName rootProject.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -59,9 +58,11 @@ android {
     productFlavors {
         installed {
             dimension "servingType"
+            versionCode rootProject.versionCodeMobile
         }
         instant {
             dimension "servingType"
+            versionCode rootProject.versionCodeInstant
         }
     }
     dataBinding {

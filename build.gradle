@@ -22,6 +22,7 @@ buildscript {
         // App version
         versionName = '1.1.0' // X.Y.Z; X = Major, Y = minor, Z = Patch level
         versionCodeBase = 11000 // XYZZM; M = Module (tv, mobile)
+        versionCodeInstant = versionCodeBase + 1
         versionCodeTv = versionCodeBase + 2 // Not used at the moment
         versionCodeMobile = versionCodeBase + 3
 
