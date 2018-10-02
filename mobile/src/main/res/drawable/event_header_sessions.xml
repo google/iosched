@@ -18,18 +18,20 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="100dp"
     android:height="100dp"
-    android:viewportWidth="94"
-    android:viewportHeight="94">
+    android:viewportWidth="30"
+    android:viewportHeight="30">
+    <!--Circle-->
     <path
-        android:fillColor="#5565FD"
-        android:pathData="M77.5,24a6.5,6.5 0,1 1,0 -13,6.5 6.5,0 0,1 0,13zM47.5,24a6.5,6.5 0,1 1,0 -13,6.5 6.5,0 0,1 0,13zM17.5,54a6.5,6.5 0,1 1,0 -13,6.5 6.5,0 0,1 0,13zM17.5,24a6.5,6.5 0,1 1,0 -13,6.5 6.5,0 0,1 0,13z" />
+        android:fillColor="@color/ads_light_blue"
+        android:pathData="m 20,15 a 5,5 0 0 5 -5,5 5,5 0 0 5 -5,-5 5,5 0 0 5 5,-5 5,5 0 0 5 5,5 z" />
+    <!--Square-->
     <path
-        android:pathData="M62,32L62,3v29h30,-30v30L32,62L32,32h30v30L32,62v30,-30L2,62h30L32,32L2,32h30L32,2v30h30zM62,62h30,-30v31,-31z"
-        android:strokeColor="#31E7B6"
-        android:strokeWidth="4" />
+        android:fillColor="@color/ads_light_green"
+        android:pathData="M20,0,30,0,30,10,20,10,20,0" />
+
+    <!--Cheese-->
     <path
-        android:pathData="M2,2H92V92H2z"
-        android:strokeColor="#31E7B6"
-        android:strokeLineJoin="round"
-        android:strokeWidth="4" />
+        android:fillColor="@color/ads_lighter_green"
+        android:pathData="m 30,20 h -10 c 0,0 0,-10 10,-10 z" />
+
 </vector>
