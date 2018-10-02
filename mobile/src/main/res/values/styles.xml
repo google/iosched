@@ -20,7 +20,7 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/google_blue</item>
-        <item name="colorAccent">@color/android_green</item>
+        <item name="colorAccent">@color/android_green_dark</item>
         <item name="colorControlActivated">?colorPrimary</item>
         <item name="toolbarStyle">@style/Widget.Toolbar</item>
         <item name="tabStyle">@style/Widget.ADSSched.Tabs</item>
