@@ -18,17 +18,20 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="100dp"
     android:height="100dp"
-    android:viewportWidth="100"
-    android:viewportHeight="100">
+    android:viewportWidth="30"
+    android:viewportHeight="30">
+    <!--Circle-->
     <path
-        android:pathData="M50,90a40,40 0,1 0,0 -80"
-        android:strokeColor="#FCD230"
-        android:strokeWidth="20" />
+        android:fillColor="@color/android_green"
+        android:pathData="m 20,5 a 5,5 0 0 5 -5,5 5,5 0 0 5 -5,-5 5,5 0 0 5 5,-5 5,5 0 0 5 5,5 z" />
+    <!--Square-->
     <path
-        android:pathData="M50,90a40,40 0,1 1,0 -80"
-        android:strokeColor="#4768FD"
-        android:strokeWidth="20" />
+        android:fillColor="@color/android_green_dark"
+        android:pathData="M10,10,20,10,20,20,10,20,10,10" />
+    <!--Cheese-->
     <path
-        android:fillColor="#FF6C00"
-        android:pathData="M49.5,21a10.5,10.5 0,1 1,0 -21,10.5 10.5,0 0,1 0,21zM49.5,100a10.5,10.5 0,1 1,0 -21,10.5 10.5,0 0,1 0,21z" />
+        android:fillColor="@color/ads_blue"
+        android:pathData="m 30,20 h -10 c 0,0 0,-10 10,-10 z" />
+
+
 </vector>

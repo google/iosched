@@ -18,28 +18,20 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="100dp"
     android:height="100dp"
-    android:viewportWidth="100"
-    android:viewportHeight="100">
+    android:viewportWidth="30"
+    android:viewportHeight="30">
+    <!--Circle-->
     <path
-        android:pathData="M63,10L10.5,62.5"
-        android:strokeColor="#FF6C00"
-        android:strokeLineCap="round"
-        android:strokeWidth="20" />
+        android:fillColor="@color/ads_orange"
+        android:pathData="m 20,5 a 5,5 0 0 5 -5,5 5,5 0 0 5 -5,-5 5,5 0 0 5 5,-5 5,5 0 0 5 5,5 z" />
+    <!--Square-->
     <path
-        android:pathData="M89.5,38.5L38,90"
-        android:strokeColor="#31E7B6"
-        android:strokeLineCap="round"
-        android:strokeWidth="20" />
+        android:fillColor="@color/ads_blue"
+        android:pathData="M10,10,20,10,20,20,10,20,10,10" />
+    <!--Cheese-->
     <path
-        android:fillColor="#31E7B6"
-        android:pathData="M20,10a10,10 0,1 1,-20 0,10 10,0 0,1 20,0" />
-    <path
-        android:fillColor="#4768FD"
-        android:pathData="M20,63a10,10 0,1 1,-20 0,10 10,0 0,1 20,0" />
-    <path
-        android:fillColor="#FF6C00"
-        android:pathData="M100,90a10,10 0,1 1,-20 0,10 10,0 0,1 20,0" />
-    <path
-        android:fillColor="#FCD230"
-        android:pathData="M100,38a10,10 0,1 1,-20 0,10 10,0 0,1 20,0" />
+        android:fillColor="@color/ads_yellow"
+        android:pathData="m 30,20 h -10 c 0,0 0,-10 10,-10 z" />
+
+
 </vector>

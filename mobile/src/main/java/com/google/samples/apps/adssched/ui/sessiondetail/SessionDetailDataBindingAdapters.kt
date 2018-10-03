@@ -20,8 +20,8 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.databinding.BindingAdapter
-import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.samples.apps.adssched.R
@@ -36,7 +36,6 @@ import com.google.samples.apps.adssched.model.SessionType.SESSION
 import com.google.samples.apps.adssched.model.SessionType.UNKNOWN
 import com.google.samples.apps.adssched.model.userdata.UserEvent
 import com.google.samples.apps.adssched.shared.util.TimeUtils
-import com.google.samples.apps.adssched.util.drawable.HeaderGridDrawable
 import com.google.samples.apps.adssched.widget.CheckableFab
 import org.threeten.bp.Duration
 import org.threeten.bp.ZoneId
@@ -45,13 +44,15 @@ import org.threeten.bp.ZonedDateTime
 @Suppress("unused")
 @BindingAdapter("headerImage")
 fun headerImage(imageView: ImageView, photoUrl: String?) {
+    val placeholder =
+        AppCompatResources.getDrawable(imageView.context, R.drawable.generic_placeholder)
     if (!photoUrl.isNullOrEmpty()) {
         Glide.with(imageView)
             .load(photoUrl)
-            .apply(RequestOptions().placeholder(HeaderGridDrawable(imageView.context)))
+            .apply(RequestOptions().placeholder(placeholder))
             .into(imageView)
     } else {
-        imageView.setImageDrawable(HeaderGridDrawable(imageView.context))
+        imageView.setImageDrawable(placeholder)
     }
 }
 
@@ -68,20 +69,13 @@ fun headerLogoImage(imageView: ImageView, eventType: SessionType?) {
         UNKNOWN -> R.drawable.event_header_sessions
         else -> R.drawable.event_header_sessions
     }
-    imageView.setImageDrawable(imageView.context.getDrawable(resId))
+    imageView.setImageResource(resId)
 }
 
 @Suppress("unused")
-@BindingAdapter("eventHeaderAnim")
-fun eventHeaderAnim(lottieView: LottieAnimationView, session: Session?) {
-    val anim = when (session?.type) {
-        AFTER_HOURS -> "anim/event_details_after_hours.json"
-        CODELAB -> "anim/event_details_codelabs.json"
-        OFFICE_HOURS -> "anim/event_details_office_hours.json"
-        SANDBOX -> "anim/event_details_sandbox.json"
-        else -> "anim/event_details_session.json" // default to session anim
-    }
-    lottieView.setAnimation(anim)
+@BindingAdapter("eventHeaderImage")
+fun eventHeaderAnim(imageView: ImageView, session: Session?) {
+    return headerLogoImage(imageView, session?.type)
 }
 
 @Suppress("unused")

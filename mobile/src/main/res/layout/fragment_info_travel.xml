@@ -74,11 +74,11 @@
             app:cardDescription="@string/travel_carpool_parking_description"
             app:cardTitle="@string/travel_carpool_parking_title" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:importantForAccessibility="no"
-            android:src="@drawable/info_transport_footer" />
+        <!--TODO<ImageView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:importantForAccessibility="no"-->
+            <!--android:src="@drawable/info_transport_footer" />-->
 
     </LinearLayout>
 

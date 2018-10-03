@@ -25,7 +25,6 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.samples.apps.adssched.R
-import com.google.samples.apps.adssched.util.drawable.HeaderGridDrawable
 
 class EventView @JvmOverloads constructor(
     context: Context,
@@ -49,7 +48,7 @@ class EventView @JvmOverloads constructor(
             .inflate(R.layout.info_event_content_card_view, this, true)
 
         rootView.findViewById<ImageView>(R.id.grid).apply {
-            setImageDrawable(HeaderGridDrawable(context))
+            setImageResource(R.drawable.generic_placeholder)
         }
 
         rootView.findViewById<ImageView>(R.id.event_type_logo).apply {

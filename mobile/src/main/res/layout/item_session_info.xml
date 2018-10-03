@@ -99,7 +99,7 @@
             app:layout_constraintGuide_percent="0.65" />
 
         <!-- Header animation, shown only if there isn't a photo or video -->
-        <com.airbnb.lottie.LottieAnimationView
+        <ImageView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="24dp"
@@ -110,10 +110,9 @@
             app:layout_constraintStart_toEndOf="@id/guideline_title_end"
             app:layout_constraintTop_toTopOf="@id/detail_image"
             app:layout_constraintVertical_bias="0"
-            app:eventHeaderAnim="@{viewModel.session}"
+            app:eventHeaderImage="@{viewModel.session}"
             app:goneUnless="@{!viewModel.hasPhotoOrVideo}"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true" />
+/>
 
         <!-- Title on header: only shown if there isn't a photo header or video. -->
         <TextView

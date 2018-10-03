@@ -253,12 +253,6 @@
         <item name="android:textAlignment">center</item>
     </style>
 
-    <style name="Widget.ADSSched.HeaderGrid">
-        <item name="android:color">@color/light_grey</item>
-        <item name="gridSize">8dp</item>
-        <item name="gridStrokeWidth">1dp</item>
-    </style>
-
     <style name="Widget.ADSSched.TextView" parent="@android:style/Widget.Material.TextView">
         <item name="android:textAppearance">@style/TextAppearance.ADSSched.Body</item>
         <item name="android:lineSpacingMultiplier">@dimen/text_line_spacing</item>
