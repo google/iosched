@@ -21,6 +21,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
+import com.google.android.instantapps.InstantApps
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
@@ -57,6 +58,10 @@ class FirebaseAnalyticsHelper(
     private val FA_CONTENT_TYPE_SCREENVIEW = "screen"
     private val FA_KEY_UI_ACTION = "ui_action"
     private val FA_CONTENT_TYPE_UI_EVENT = "ui event"
+    private val FA_DEPLOYMENT_TYPE = "app_type"
+
+    private val STATUS_INSTALLED = "installed"
+    private val STATUS_INSTANT = "instant"
 
     private var analyticsEnabled: Boolean = false
         set(enabled) {
@@ -72,11 +77,15 @@ class FirebaseAnalyticsHelper(
     init {
         firebaseAnalytics = FirebaseAnalytics.getInstance(context)
 
+        val isInstant = InstantApps.isInstantApp(context)
+        val deploymentType = if (isInstant) STATUS_INSTANT else STATUS_INSTALLED
+        firebaseAnalytics.setUserProperty(FA_DEPLOYMENT_TYPE, deploymentType)
+
         DefaultScheduler.execute { // Prevent access to preferences on main thread
             analyticsEnabled = preferenceStorage.sendUsageStatistics
         }
 
-        Timber.d("Analytics initialized")
+        Timber.d("Analytics initialized, $FA_DEPLOYMENT_TYPE: $deploymentType")
 
         // The listener will initialize Analytics when the TOS is signed, or enable/disable
         // Analytics based on the "anonymous data collection" setting.
