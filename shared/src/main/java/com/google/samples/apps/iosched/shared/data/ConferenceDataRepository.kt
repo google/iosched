@@ -19,6 +19,8 @@ package com.google.samples.apps.iosched.shared.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.ConferenceData
+import com.google.samples.apps.iosched.model.ConferenceDay
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Named
@@ -90,10 +92,8 @@ open class ConferenceDataRepository @Inject constructor(
     }
 
     private fun getCacheOrBootstrapData(): ConferenceData {
-        var conferenceData: ConferenceData?
-
         // First, try the local cache:
-        conferenceData = remoteDataSource.getOfflineConferenceData()
+        var conferenceData: ConferenceData? = remoteDataSource.getOfflineConferenceData()
 
         // Cache success!
         if (conferenceData != null) {
@@ -106,4 +106,6 @@ open class ConferenceDataRepository @Inject constructor(
         latestUpdateSource = UpdateSource.BOOTSTRAP
         return conferenceData
     }
+
+    open fun getConferenceDays(): List<ConferenceDay> = TimeUtils.ConferenceDays
 }

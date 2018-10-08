@@ -39,7 +39,7 @@ import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAct
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.SwapAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
-import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
+import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
@@ -72,7 +72,7 @@ class SessionDetailViewModel @Inject constructor(
     private val signInViewModelDelegate: SignInViewModelDelegate,
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val loadRelatedSessionUseCase: LoadUserSessionsUseCase,
-    private val starEventUseCase: StarEventUseCase,
+    private val starEventUseCase: StarEventAndNotifyUseCase,
     private val reservationActionUseCase: ReservationActionUseCase,
     private val getTimeZoneUseCase: GetTimeZoneUseCase,
     private val snackbarMessageManager: SnackbarMessageManager,
@@ -247,11 +247,11 @@ class SessionDetailViewModel @Inject constructor(
         }
 
         hasSpeakers = session.map { currentSession ->
-            currentSession?.speakers?.isNotEmpty() ?: false
+            currentSession.speakers.isNotEmpty()
         }
 
         hasRelated = session.map { currentSession ->
-            currentSession?.relatedSessions?.isNotEmpty() ?: false
+            currentSession.relatedSessions.isNotEmpty()
         }
 
         // Updates periodically with a special [IntervalLiveData]
@@ -354,35 +354,10 @@ class SessionDetailViewModel @Inject constructor(
     }
 
     override fun onStarClicked() {
+
         val userEventSnapshot = userEvent.value ?: return
-        val newIsStarredState = !userEventSnapshot.isStarred
-
-        // Update the snackbar message optimistically.
-        val stringResId = if (newIsStarredState) {
-            val sessionTitle = session.value?.title
-            if (sessionTitle != null) {
-                analyticsHelper.logUiEvent(sessionTitle, AnalyticsActions.STARRED)
-            }
-            R.string.event_starred
-        } else {
-            R.string.event_unstarred
-        }
-        snackbarMessageManager.addMessage(
-            SnackbarMessage(
-                messageId = stringResId,
-                actionId = R.string.dont_show,
-                requestChangeId = UUID.randomUUID().toString()
-            )
-        )
-
-        getUserId()?.let {
-            starEventUseCase.execute(
-                StarEventParameter(
-                    it,
-                    userEventSnapshot.copy(isStarred = newIsStarredState)
-                )
-            )
-        }
+        val sessionSnapshot = session.value ?: return
+        onStarClicked(UserSession(sessionSnapshot, userEventSnapshot))
     }
 
     override fun onReservationClicked() {
@@ -491,7 +466,8 @@ class SessionDetailViewModel @Inject constructor(
             starEventUseCase.execute(
                 StarEventParameter(
                     it,
-                    userSession.userEvent.copy(isStarred = newIsStarredState)
+                    userSession.copy(
+                        userEvent = userSession.userEvent.copy(isStarred = newIsStarredState))
                 )
             )
         }

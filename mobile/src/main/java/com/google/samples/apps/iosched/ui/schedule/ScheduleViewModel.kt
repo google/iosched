@@ -31,13 +31,13 @@ import com.google.samples.apps.iosched.shared.domain.prefs.LoadSelectedFiltersUs
 import com.google.samples.apps.iosched.shared.domain.prefs.SaveSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ConferenceDayIndexer
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsParameters
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsParameters
 import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsResult
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
+import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
-import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
@@ -69,7 +69,7 @@ class ScheduleViewModel @Inject constructor(
     private val loadFilteredUserSessionsUseCase: LoadFilteredUserSessionsUseCase,
     loadEventFiltersUseCase: LoadEventFiltersUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
-    private val starEventUseCase: StarEventUseCase,
+    private val starEventUseCase: StarEventAndNotifyUseCase,
     scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase,
     topicSubscriber: TopicSubscriber,
     private val snackbarMessageManager: SnackbarMessageManager,
@@ -212,12 +212,12 @@ class ScheduleViewModel @Inject constructor(
         _snackBarMessage.addSource(starEventUseCase.observe()) {
             if (it is Result.Error) {
                 _snackBarMessage.postValue(
-                    Event(
-                        SnackbarMessage(
-                            messageId = R.string.event_star_error,
-                            longDuration = true
+                        Event(
+                                SnackbarMessage(
+                                        messageId = R.string.event_star_error,
+                                        longDuration = true
+                                )
                         )
-                    )
                 )
             }
         }
@@ -228,12 +228,12 @@ class ScheduleViewModel @Inject constructor(
                 it.data.userMessage?.type?.stringRes()?.let { messageId ->
                     // There is a message to display:
                     snackbarMessageManager.addMessage(
-                        SnackbarMessage(
-                            messageId = messageId,
-                            longDuration = true,
-                            session = it.data.userMessageSession,
-                            requestChangeId = it.data.userMessage?.changeRequestId
-                        )
+                            SnackbarMessage(
+                                    messageId = messageId,
+                                    longDuration = true,
+                                    session = it.data.userMessageSession,
+                                    requestChangeId = it.data.userMessage?.changeRequestId
+                            )
                     )
                 }
             }
@@ -270,15 +270,15 @@ class ScheduleViewModel @Inject constructor(
 
         _scheduleUiData.addSource(timeZoneId) {
             _scheduleUiData.value = _scheduleUiData.value?.copy(
-                timeZoneId = it
+                    timeZoneId = it
             ) ?: ScheduleUiData(timeZoneId = it)
         }
         _scheduleUiData.addSource(loadSessionsResult) {
             val data = (it as? Result.Success)?.data ?: return@addSource
             dayIndexer = data.dayIndexer
             _scheduleUiData.value = _scheduleUiData.value?.copy(
-                list = data.userSessions,
-                dayIndexer = data.dayIndexer
+                    list = data.userSessions,
+                    dayIndexer = data.dayIndexer
             ) ?: ScheduleUiData(list = data.userSessions, dayIndexer = data.dayIndexer)
         }
 
@@ -299,7 +299,7 @@ class ScheduleViewModel @Inject constructor(
         _scrollToEvent.addSource(loadSessionsResult) { result ->
             if (!userHasInteracted) {
                 val index =
-                    (result as? Success)?.data?.firstUnfinishedSessionIndex ?: return@addSource
+                        (result as? Success)?.data?.firstUnfinishedSessionIndex ?: return@addSource
                 if (index != -1) {
                     _scrollToEvent.value = Event(ScheduleScrollEvent(index))
                 }
@@ -411,7 +411,8 @@ class ScheduleViewModel @Inject constructor(
             starEventUseCase.execute(
                 StarEventParameter(
                     it,
-                    userSession.userEvent.copy(isStarred = newIsStarredState)
+                    userSession.copy(
+                        userEvent = userSession.userEvent.copy(isStarred = newIsStarredState))
                 )
             )
         }

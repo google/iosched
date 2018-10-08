@@ -34,7 +34,7 @@ import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
-import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
+import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
 import com.google.samples.apps.iosched.shared.time.TimeProvider
@@ -353,7 +353,7 @@ class SessionDetailViewModelTest {
         loadRelatedSessionsUseCase: LoadUserSessionsUseCase =
             createTestLoadUserSessionsUseCase(),
         reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase(),
-        starEventUseCase: StarEventUseCase = FakeStarEventUseCase(),
+        starEventUseCase: StarEventAndNotifyUseCase = FakeStarEventUseCase(),
         getTimeZoneUseCase: GetTimeZoneUseCase = createGetTimeZoneUseCase(),
         snackbarMessageManager: SnackbarMessageManager =
             SnackbarMessageManager(FakePreferenceStorage()),
@@ -388,7 +388,8 @@ class SessionDetailViewModelTest {
     ): LoadUserSessionUseCase {
         val sessionRepository = DefaultSessionRepository(TestDataRepository)
         val userEventRepository = DefaultSessionAndUserEventRepository(
-            userEventDataSource, sessionRepository
+            userEventDataSource,
+            sessionRepository
         )
         return LoadUserSessionUseCase(userEventRepository)
     }
@@ -398,7 +399,8 @@ class SessionDetailViewModelTest {
     ): LoadUserSessionsUseCase {
         val sessionRepository = DefaultSessionRepository(TestDataRepository)
         val userEventRepository = DefaultSessionAndUserEventRepository(
-            userEventDataSource, sessionRepository
+            userEventDataSource,
+            sessionRepository
         )
         return LoadUserSessionsUseCase(userEventRepository)
     }

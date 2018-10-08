@@ -20,6 +20,7 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
@@ -61,16 +62,17 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         if (userId == null) {
             DefaultScheduler.execute {
                 Timber.d(
-                    "EventRepository: No user logged in, returning sessions without user events."
+                        """EventRepository: No user logged in,
+                            |returning sessions without user events.""".trimMargin()
                 )
                 val allSessions = sessionRepository.getSessions()
                 val userSessions = mergeUserDataAndSessions(null, allSessions)
                 sessionsResult.postValue(
-                    Result.Success(
-                        ObservableUserEvents(
-                            userSessions = userSessions
+                        Result.Success(
+                                ObservableUserEvents(
+                                        userSessions = userSessions
+                                )
                         )
-                    )
                 )
             }
             return sessionsResult
@@ -178,6 +180,16 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         return userEventDataSource.getUserEvents(userId ?: "")
     }
 
+    override fun getUserSession(userId: String, sessionId: SessionId): UserSession {
+        val session = sessionRepository.getSession(sessionId)
+        val userEvent = userEventDataSource.getUserEvent(userId, sessionId)
+                ?: throw Exception("UserEvent not found")
+
+        return UserSession(
+                session = session,
+                userEvent = userEvent
+        )
+    }
     override fun starEvent(
         userId: String,
         userEvent: UserEvent
@@ -280,6 +292,8 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         // The UserEvent data source can stop observing user data
         userEventDataSource.clearSingleEventSubscriptions()
     }
+
+    override fun getConferenceDays(): List<ConferenceDay> = sessionRepository.getConferenceDays()
 }
 
 interface SessionAndUserEventRepository {
@@ -317,6 +331,10 @@ interface SessionAndUserEventRepository {
     ): LiveData<Result<FeedbackUpdatedStatus>>
 
     fun clearSingleEventSubscriptions()
+
+    fun getConferenceDays(): List<ConferenceDay>
+
+    fun getUserSession(userId: String, sessionId: SessionId): UserSession
 }
 
 data class ObservableUserEvents(

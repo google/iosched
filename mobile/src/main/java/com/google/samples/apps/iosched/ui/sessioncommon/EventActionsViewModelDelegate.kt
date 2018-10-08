@@ -23,7 +23,7 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
-import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
+import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
@@ -44,7 +44,7 @@ interface EventActionsViewModelDelegate : EventActions {
 
 class DefaultEventActionsViewModelDelegate @Inject constructor(
     signInViewModelDelegate: SignInViewModelDelegate,
-    private val starEventUseCase: StarEventUseCase,
+    private val starEventUseCase: StarEventAndNotifyUseCase,
     private val snackbarMessageManager: SnackbarMessageManager
 ) : EventActionsViewModelDelegate, SignInViewModelDelegate by signInViewModelDelegate {
 
@@ -89,7 +89,8 @@ class DefaultEventActionsViewModelDelegate @Inject constructor(
         getUserId()?.let {
             starEventUseCase.execute(
                 StarEventParameter(
-                    it, userSession.userEvent.copy(isStarred = newIsStarredState)
+                    it, userSession.copy(
+                        userEvent = userSession.userEvent.copy(isStarred = newIsStarredState))
                 )
             )
         }
