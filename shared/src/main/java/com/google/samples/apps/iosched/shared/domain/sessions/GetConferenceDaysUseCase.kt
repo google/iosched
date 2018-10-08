@@ -14,25 +14,16 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.model
+package com.google.samples.apps.iosched.shared.domain.sessions
 
-import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
-import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
-import com.google.samples.apps.iosched.test.data.TestData
+import javax.inject.Inject
 
-object TestDataSource : ConferenceDataSource {
-    override fun getRemoteConferenceData(): ConferenceData? {
-        return TestData.conferenceData
+class GetConferenceDaysUseCase @Inject constructor(
+    private val conferenceDataRepository: ConferenceDataRepository
+) {
+    operator fun invoke(): List<ConferenceDay> {
+        return conferenceDataRepository.getConferenceDays()
     }
-
-    override fun getOfflineConferenceData(): ConferenceData? {
-        return TestData.conferenceData
-    }
-}
-
-/** ConferenceDataRepository for tests */
-object TestDataRepository : ConferenceDataRepository(TestDataSource, TestDataSource) {
-    override fun getConferenceDays(): List<ConferenceDay> = TestData.TestConferenceDays
 }

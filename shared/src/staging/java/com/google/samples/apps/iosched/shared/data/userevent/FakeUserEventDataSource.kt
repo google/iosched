@@ -125,5 +125,9 @@ object FakeUserEventDataSource : UserEventDataSource {
         return result
     }
 
+    override fun getUserEvent(userId: String, eventId: SessionId): UserEvent? {
+        return userEvents.firstOrNull { it.id == eventId }
+    }
+
     override fun clearSingleEventSubscriptions() {}
 }

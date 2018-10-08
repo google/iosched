@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.shared.domain.sessions
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
@@ -227,6 +228,10 @@ object FailingSessionRepository : SessionRepository {
     }
 
     override fun getSession(eventId: SessionId): Session {
+        throw Exception("test")
+    }
+
+    override fun getConferenceDays(): List<ConferenceDay> {
         throw Exception("test")
     }
 }

@@ -102,4 +102,8 @@ class TestUserEventDataSource(
     }
 
     override fun clearSingleEventSubscriptions() {}
+
+    override fun getUserEvent(userId: String, eventId: SessionId): UserEvent? {
+        throw NotImplementedError()
+    }
 }

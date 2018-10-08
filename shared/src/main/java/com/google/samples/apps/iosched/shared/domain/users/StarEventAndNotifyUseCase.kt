@@ -16,19 +16,21 @@
 
 package com.google.samples.apps.iosched.shared.domain.users
 
-import com.google.samples.apps.iosched.model.userdata.UserEvent
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.StarNotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.result.Result
 import javax.inject.Inject
 
-open class StarEventUseCase @Inject constructor(
-    private val repository: SessionAndUserEventRepository
+open class StarEventAndNotifyUseCase @Inject constructor(
+    private val repository: SessionAndUserEventRepository,
+    private val starNotificationAlarmUpdater: StarNotificationAlarmUpdater
 ) : MediatorUseCase<StarEventParameter, StarUpdatedStatus>() {
 
     override fun execute(parameters: StarEventParameter) {
         val updateResult = try {
-            repository.starEvent(parameters.userId, parameters.userEvent)
+            repository.starEvent(parameters.userId, parameters.userSession.userEvent)
         } catch (e: Exception) {
             result.postValue(Result.Error(e))
             return
@@ -36,6 +38,10 @@ open class StarEventUseCase @Inject constructor(
         // Avoid duplicating sources and trigger an update on the LiveData from the base class.
         result.removeSource(updateResult)
         result.addSource(updateResult) {
+            starNotificationAlarmUpdater.updateSession(
+                parameters.userSession.session,
+                parameters.userSession.userEvent.isStarred
+            )
             result.postValue(updateResult.value)
         }
     }
@@ -43,7 +49,7 @@ open class StarEventUseCase @Inject constructor(
 
 data class StarEventParameter(
     val userId: String,
-    val userEvent: UserEvent
+    val userSession: UserSession
 )
 
 enum class StarUpdatedStatus {
