@@ -33,25 +33,22 @@ import com.google.samples.apps.adssched.shared.domain.sessions.LoadUserSessionUs
 import com.google.samples.apps.adssched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.adssched.shared.domain.sessions.LoadUserSessionsUseCaseResult
 import com.google.samples.apps.adssched.shared.domain.settings.GetTimeZoneUseCase
+import com.google.samples.apps.adssched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.adssched.shared.domain.users.StarEventParameter
-import com.google.samples.apps.adssched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.adssched.shared.result.Event
 import com.google.samples.apps.adssched.shared.result.Result
 import com.google.samples.apps.adssched.shared.time.TimeProvider
-import com.google.samples.apps.adssched.shared.util.NetworkUtils
 import com.google.samples.apps.adssched.shared.util.SetIntervalLiveData.DefaultIntervalMapper
 import com.google.samples.apps.adssched.shared.util.TimeUtils
 import com.google.samples.apps.adssched.shared.util.map
 import com.google.samples.apps.adssched.shared.util.setValueIfNew
 import com.google.samples.apps.adssched.ui.SnackbarMessage
-import com.google.samples.apps.adssched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.adssched.ui.sessioncommon.EventActions
 import com.google.samples.apps.adssched.ui.signin.SignInViewModelDelegate
 import org.threeten.bp.Duration
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
-import java.util.UUID
 import javax.inject.Inject
 
 private const val TEN_SECONDS = 10_000L
@@ -64,11 +61,9 @@ class SessionDetailViewModel @Inject constructor(
     private val signInViewModelDelegate: SignInViewModelDelegate,
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val loadRelatedSessionUseCase: LoadUserSessionsUseCase,
-    private val starEventUseCase: StarEventUseCase,
-    private val getTimeZoneUseCase: GetTimeZoneUseCase,
-    private val snackbarMessageManager: SnackbarMessageManager,
+    private val starEventUseCase: StarEventAndNotifyUseCase,
+    getTimeZoneUseCase: GetTimeZoneUseCase,
     timeProvider: TimeProvider,
-    private val networkUtils: NetworkUtils,
     private val analyticsHelper: AnalyticsHelper
 ) : ViewModel(), SessionDetailEventListener, EventActions,
     SignInViewModelDelegate by signInViewModelDelegate {
@@ -214,11 +209,11 @@ class SessionDetailViewModel @Inject constructor(
         }
 
         hasSpeakers = session.map { currentSession ->
-            currentSession?.speakers?.isNotEmpty() ?: false
+            currentSession.speakers.isNotEmpty()
         }
 
         hasRelated = session.map { currentSession ->
-            currentSession?.relatedSessions?.isNotEmpty() ?: false
+            currentSession.relatedSessions.isNotEmpty()
         }
 
         // Updates periodically with a special [IntervalLiveData]
@@ -271,35 +266,10 @@ class SessionDetailViewModel @Inject constructor(
     }
 
     override fun onStarClicked() {
+
         val userEventSnapshot = userEvent.value ?: return
-        val newIsStarredState = !userEventSnapshot.isStarred
-
-        // Update the snackbar message optimistically.
-        val stringResId = if (newIsStarredState) {
-            val sessionTitle = session.value?.title
-            if (sessionTitle != null) {
-                analyticsHelper.logUiEvent(sessionTitle, AnalyticsActions.STARRED)
-            }
-            R.string.event_starred
-        } else {
-            R.string.event_unstarred
-        }
-        snackbarMessageManager.addMessage(
-            SnackbarMessage(
-                messageId = stringResId,
-                actionId = R.string.dont_show,
-                requestChangeId = UUID.randomUUID().toString()
-            )
-        )
-
-        getUserId()?.let {
-            starEventUseCase.execute(
-                StarEventParameter(
-                    it,
-                    userEventSnapshot.copy(isStarred = newIsStarredState)
-                )
-            )
-        }
+        val sessionSnapshot = session.value ?: return
+        onStarClicked(UserSession(sessionSnapshot, userEventSnapshot))
     }
 
     override fun onLoginClicked() {
@@ -341,7 +311,8 @@ class SessionDetailViewModel @Inject constructor(
             starEventUseCase.execute(
                 StarEventParameter(
                     it,
-                    userSession.userEvent.copy(isStarred = newIsStarredState)
+                    userSession.copy(
+                        userEvent = userSession.userEvent.copy(isStarred = newIsStarredState))
                 )
             )
         }

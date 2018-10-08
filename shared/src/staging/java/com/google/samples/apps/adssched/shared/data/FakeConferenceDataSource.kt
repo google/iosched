@@ -21,6 +21,9 @@ import com.google.samples.apps.adssched.model.ConferenceData
 import com.google.samples.apps.adssched.model.Session
 import com.google.samples.apps.adssched.model.Tag
 import com.google.samples.apps.adssched.shared.util.TimeUtils.ConferenceDays
+import org.threeten.bp.Duration
+import org.threeten.bp.ZonedDateTime
+import timber.log.Timber
 
 /**
  * ConferenceDataSource data source that never touches the network.
@@ -39,17 +42,19 @@ object FakeConferenceDataSource : ConferenceDataSource {
     }
 
     private fun transformDataForStaging(data: ConferenceData): ConferenceData {
-        val sessions = data.sessions.toMutableList()
+        val sessions = moveAllSessionsToToday(data.sessions.toMutableList())
         val speakers = data.speakers.toMutableSet()
         val tags = data.tags.toMutableList()
 
-        sessions.sortBy { it.startTime }
-
         var lastFirstSession: Session? = null
         // Rename the first sessions of each day
-        ConferenceDays.forEachIndexed { index, day ->
+        ConferenceDays.forEachIndexed daysForEach@{ index, day ->
             val firstSessionIndex =
                 sessions.indexOfFirst { it.startTime >= day.start && it.endTime <= day.end }
+            if (firstSessionIndex == -1) {
+                Timber.e("Some sessions are set outside of the conference days")
+                return@daysForEach
+            }
             val firstSession = sessions[firstSessionIndex]
 
             sessions.removeAt(firstSessionIndex)
@@ -65,13 +70,12 @@ object FakeConferenceDataSource : ConferenceDataSource {
         }
 
         // Give a known ID to an arbitrary session (the second session with tags and speakers)
-        val secondSession = sessions
-            .filter {
-                it.startTime >= ConferenceDays.first().start &&
-                    it.endTime <= ConferenceDays.last().end &&
-                    it.speakers.isNotEmpty() &&
-                    it.tags.isNotEmpty()
-            }[1]
+        val sessionsInRange = sessions
+                .filter {
+                    it.startTime >= ConferenceDays.first().start &&
+                            it.endTime <= ConferenceDays.last().end
+                }
+        val secondSession = sessionsInRange[1]
         val secondSessionIndex = sessions.indexOf(secondSession)
 
         // ...also, change its title, id, speaker, related sessions and tags
@@ -98,13 +102,51 @@ object FakeConferenceDataSource : ConferenceDataSource {
                 displayTags = listOf(newTag)
             )
         )
+        addSessionForAlarmsTesting(sessions, secondSession)
 
         // Return the new data replacing the modified properties only.
         return data.copy(sessions = sessions, speakers = speakers.toList(), tags = tags)
+    }
+
+    private fun addSessionForAlarmsTesting(
+        sessions: MutableList<Session>,
+        exampleSession: Session
+    ) {
+
+        val timeIn5Minutes = ZonedDateTime.now().plusMinutes(5).plusSeconds(10)
+
+        sessions.add(
+            exampleSession.copy(
+                id = ALARM_SESSION_ID,
+                title = "Fake session that starts in 5:10 minutes",
+                relatedSessions = emptySet(),
+                startTime = timeIn5Minutes,
+                endTime = timeIn5Minutes.plusMinutes(30)
+            )
+        )
+    }
+
+    private fun moveAllSessionsToToday(sessions: MutableList<Session>): MutableList<Session> {
+        val conferenceStart = ConferenceDays.first().start
+
+        sessions.sortBy { it.startTime }
+
+        val firstSessionStartTime = sessions.first().startTime
+
+        val result = mutableListOf<Session>()
+
+        sessions.forEach { session ->
+            val delta = Duration.between(firstSessionStartTime, session.startTime)
+            val duration = Duration.between(session.startTime, session.endTime)
+            result.add(session.copy(startTime = conferenceStart + delta,
+                    endTime = conferenceStart + delta + duration))
+        }
+        return result
     }
 
     const val FAKE_SESSION_NAME = "Second session on day 1"
     const val FAKE_SESSION_ID = "FAKE_SESSION_ID"
     const val FAKE_SESSION_TAG_NAME = "Staging tag"
     const val FAKE_SESSION_SPEAKER_NAME = "Dr. Staging"
+    const val ALARM_SESSION_ID = "abcdefg"
 }

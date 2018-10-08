@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.adssched.ui.sessioncommon
 
-import com.google.samples.apps.adssched.shared.domain.users.StarEventUseCase
+import com.google.samples.apps.adssched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.adssched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.adssched.ui.signin.SignInViewModelDelegate
 import dagger.Module
@@ -31,7 +31,7 @@ internal class EventActionsViewModelDelegateModule {
     @Provides
     fun provideEventActionsViewModelDelegate(
         signInViewModelDelegate: SignInViewModelDelegate,
-        starEventUseCase: StarEventUseCase,
+        starEventUseCase: StarEventAndNotifyUseCase,
         snackbarMessageManager: SnackbarMessageManager
     ): EventActionsViewModelDelegate {
         return DefaultEventActionsViewModelDelegate(

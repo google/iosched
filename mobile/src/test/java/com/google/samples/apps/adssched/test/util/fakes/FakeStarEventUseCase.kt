@@ -19,11 +19,14 @@ package com.google.samples.apps.adssched.test.util.fakes
 import com.google.samples.apps.adssched.model.TestDataRepository
 import com.google.samples.apps.adssched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.adssched.shared.data.userevent.DefaultSessionAndUserEventRepository
-import com.google.samples.apps.adssched.shared.domain.users.StarEventUseCase
+import com.google.samples.apps.adssched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.adssched.ui.schedule.day.TestUserEventDataSource
+import com.nhaarman.mockito_kotlin.mock
 
-class FakeStarEventUseCase : StarEventUseCase(
+class FakeStarEventUseCase : StarEventAndNotifyUseCase(
     DefaultSessionAndUserEventRepository(
-        TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
-    )
+        TestUserEventDataSource(),
+        DefaultSessionRepository(TestDataRepository)
+    ),
+    mock {}
 )

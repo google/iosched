@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.adssched.shared.data.userevent
 
+import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Tasks
@@ -90,6 +91,7 @@ class FirestoreUserEventDataSource @Inject constructor(
         return resultSingleEvent
     }
 
+    @MainThread // Firestore limitation b/116784117
     override fun getUserEvents(userId: String): List<UserEvent> {
         if (userId.isEmpty()) {
             return emptyList()
@@ -100,6 +102,19 @@ class FirestoreUserEventDataSource @Inject constructor(
             .collection(EVENTS_COLLECTION).get()
         val snapshot = Tasks.await(task, 20, TimeUnit.SECONDS)
         return snapshot.documents.map { parseUserEvent(it) }
+    }
+
+    override fun getUserEvent(userId: String, eventId: SessionId): UserEvent? {
+        if (userId.isEmpty()) {
+            return null
+        }
+
+        val task = firestore.collection(USERS_COLLECTION)
+                .document(userId)
+                .collection(EVENTS_COLLECTION)
+                .document(eventId).get()
+        val snapshot = Tasks.await(task, 20, TimeUnit.SECONDS)
+        return parseUserEvent(snapshot)
     }
 
     private fun registerListenerForEvents(
@@ -129,9 +144,9 @@ class FirestoreUserEventDataSource @Inject constructor(
         // Set a value in case there are no changes to the data on start
         // This needs to be set to avoid that the upper layer LiveData detects the old data as a
         // new data.
-        // When addSource was called in DefaultSessionAndUserEventRepository#getObservableUserEvents,
+        // When addSource was called in DefaultSessionAndUserEventRepository#getObservableUserEvents
         // the old data was considered as a new data even though it's for another user's data
-        result.value = null
+        result.postValue(null)
         eventsChangedListenerSubscription = eventsCollection.addSnapshotListener(eventsListener)
     }
 

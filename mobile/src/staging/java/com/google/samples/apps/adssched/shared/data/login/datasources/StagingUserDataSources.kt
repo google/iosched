@@ -25,6 +25,7 @@ import com.google.firebase.auth.UserInfo
 import com.google.samples.apps.adssched.shared.R
 import com.google.samples.apps.adssched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.adssched.shared.data.signin.datasources.AuthStateUserDataSource
+import com.google.samples.apps.adssched.shared.domain.sessions.NotificationAlarmUpdater
 import com.google.samples.apps.adssched.shared.result.Result
 
 /**
@@ -83,7 +84,8 @@ class StagingAuthStateUserDataSource(
     val isSignedIn: Boolean,
     val isRegistered: Boolean,
     val userId: String?,
-    val context: Context
+    val context: Context,
+    val notificationAlarmUpdater: NotificationAlarmUpdater
 ) : AuthStateUserDataSource {
 
     val _userId = MutableLiveData<String?>()
@@ -99,6 +101,10 @@ class StagingAuthStateUserDataSource(
         _userId.postValue(userId)
 
         _firebaseUser.postValue(Result.Success(user))
+
+        userId?.let {
+            notificationAlarmUpdater.updateAll(userId)
+        }
     }
 
     override fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfo?>> {

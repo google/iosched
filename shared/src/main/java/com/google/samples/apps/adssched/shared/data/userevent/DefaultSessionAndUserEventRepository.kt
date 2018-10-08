@@ -30,7 +30,6 @@ import com.google.samples.apps.adssched.shared.domain.sessions.LoadUserSessionUs
 import com.google.samples.apps.adssched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.adssched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.adssched.shared.result.Result
-import com.google.samples.apps.adssched.shared.util.TimeUtils.ConferenceDays
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -80,9 +79,8 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         sessionsByDayResult.addSource(observableUserEvents) { userEvents ->
             DefaultScheduler.execute {
                 try {
-                    // Not update the result when userEvents is null, otherwise the count of the
-                    // filtered result in the use case is going to be 0, that results blur when
-                    // the pinned item switch is toggled.
+                    // Don't update the result when userEvents is null, otherwise the count of the
+                    // filtered results in the use case is going to be 0.
                     userEvents ?: return@execute
 
                     Timber.d(
@@ -168,6 +166,17 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         return userEventDataSource.getUserEvents(userId ?: "")
     }
 
+    override fun getUserSession(userId: String, sessionId: SessionId): UserSession {
+        val session = sessionRepository.getSession(sessionId)
+        val userEvent = userEventDataSource.getUserEvent(userId, sessionId)
+                ?: throw Exception("UserEvent not found")
+
+        return UserSession(
+                session = session,
+                userEvent = userEvent
+        )
+    }
+
     override fun starEvent(
         userId: String,
         userEvent: UserEvent
@@ -188,9 +197,10 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         allSessions: List<Session>
     ): Map<ConferenceDay, List<UserSession>> {
 
+        val conferenceDays = sessionRepository.getConferenceDays()
         // If there is no logged-in user, return the map with null UserEvents
         if (userData == null) {
-            return ConferenceDays.map { day ->
+            return conferenceDays.map { day ->
                 day to allSessions
                     .filter { day.contains(it) }
                     .map { session -> UserSession(session, createDefaultUserEvent(session)) }
@@ -199,15 +209,9 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
         val userEvents = userData.userEvents
 
-        val eventIdToUserEvent: Map<String, UserEvent?> = userEvents.map { it.id to it }.toMap()
-        val allUserSessions = allSessions.map {
-            UserSession(
-                it,
-                eventIdToUserEvent[it.id] ?: createDefaultUserEvent(it)
-            )
-        }
+        val allUserSessions = mergeUserEventsAndSessions(userEvents, allSessions)
 
-        return ConferenceDays.map { day ->
+        return conferenceDays.map { day ->
             day to allUserSessions
                 .filter { day.contains(it.session) }
                 .map { userSession ->
@@ -217,10 +221,25 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         }.toMap()
     }
 
+    private fun mergeUserEventsAndSessions(
+            userEvents: List<UserEvent>,
+            allSessions: List<Session>
+    ): List<UserSession> {
+        val eventIdToUserEvent: Map<String, UserEvent?> = userEvents.map { it.id to it }.toMap()
+        return allSessions.map {
+            UserSession(
+                    it,
+                    eventIdToUserEvent[it.id] ?: createDefaultUserEvent(it)
+            )
+        }
+    }
+
     override fun clearSingleEventSubscriptions() {
         // The UserEvent data source can stop observing user data
         userEventDataSource.clearSingleEventSubscriptions()
     }
+
+    override fun getConferenceDays(): List<ConferenceDay> = sessionRepository.getConferenceDays()
 }
 
 interface SessionAndUserEventRepository {
@@ -236,7 +255,11 @@ interface SessionAndUserEventRepository {
 
     fun getUserEvents(userId: String?): List<UserEvent>
 
+    fun getUserSession(userId: String, sessionId: SessionId): UserSession
+
     fun starEvent(userId: String, userEvent: UserEvent): LiveData<Result<StarUpdatedStatus>>
 
     fun clearSingleEventSubscriptions()
+
+    fun getConferenceDays(): List<ConferenceDay>
 }

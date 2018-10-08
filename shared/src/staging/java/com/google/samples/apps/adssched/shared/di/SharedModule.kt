@@ -88,7 +88,10 @@ class SharedModule {
         userEventDataSource: UserEventDataSource,
         sessionRepository: SessionRepository
     ): SessionAndUserEventRepository {
-        return DefaultSessionAndUserEventRepository(userEventDataSource, sessionRepository)
+        return DefaultSessionAndUserEventRepository(
+            userEventDataSource,
+            sessionRepository
+        )
     }
 
     @Singleton

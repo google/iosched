@@ -20,7 +20,9 @@ import android.content.Context
 import com.google.samples.apps.adssched.shared.data.login.StagingAuthenticatedUser
 import com.google.samples.apps.adssched.shared.data.login.StagingSignInHandler
 import com.google.samples.apps.adssched.shared.data.login.datasources.StagingAuthStateUserDataSource
+import com.google.samples.apps.adssched.shared.data.signin.datasources.AuthIdDataSource
 import com.google.samples.apps.adssched.shared.data.signin.datasources.AuthStateUserDataSource
+import com.google.samples.apps.adssched.shared.domain.sessions.NotificationAlarmUpdater
 import com.google.samples.apps.adssched.util.signin.SignInHandler
 import dagger.Module
 import dagger.Provides
@@ -35,12 +37,25 @@ internal class SignInModule {
 
     @Singleton
     @Provides
-    fun provideAuthStateUserDataSource(context: Context): AuthStateUserDataSource {
+    fun provideAuthStateUserDataSource(
+        context: Context,
+        notificationAlarmUpdater: NotificationAlarmUpdater
+    ): AuthStateUserDataSource {
         return StagingAuthStateUserDataSource(
             isRegistered = true,
             isSignedIn = true,
             context = context,
-            userId = "StagingTest"
+            userId = "StagingTest",
+            notificationAlarmUpdater = notificationAlarmUpdater
         )
+    }
+
+    @Singleton
+    @Provides
+    fun providesAuthIdDataSource(
+    ): AuthIdDataSource {
+        return object: AuthIdDataSource {
+            override fun getUserId() = "StagingTest"
+        }
     }
 }
