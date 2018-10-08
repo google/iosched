@@ -48,6 +48,9 @@
                 <data android:path="/dev-summit/schedule" />
                 <data android:path="/dev-summit/schedule/" />
             </intent-filter>
+            <meta-data
+                android:name="default-url"
+                android:value="https://developer.android.com/dev-summit" />
          </activity>
 
         <activity
@@ -79,10 +82,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-
-        <meta-data
-            android:name="default-url"
-            android:value="https://developer.android.com/dev-summit" />
 
         <meta-data
             android:name="preloaded_fonts"
