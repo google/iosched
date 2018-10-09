@@ -111,8 +111,7 @@
             app:layout_constraintTop_toTopOf="@id/detail_image"
             app:layout_constraintVertical_bias="0"
             app:eventHeaderImage="@{viewModel.session}"
-            app:goneUnless="@{!viewModel.hasPhotoOrVideo}"
-/>
+            app:goneUnless="@{!viewModel.hasPhotoOrVideo}" />
 
         <!-- Title on header: only shown if there isn't a photo header or video. -->
         <TextView
@@ -161,7 +160,7 @@
             app:sessionDetailEndTime="@{viewModel.session.endTime}"
             app:sessionDetailStartTime="@{viewModel.session.startTime}"
             app:timeZoneId="@{viewModel.timeZoneId}"
-            tools:text="Session Time" />
+            tools:text="Tue, May 8, 2:00 - 3:00 PM" />
 
         <TextView
             android:id="@+id/session_detail_room"
@@ -177,7 +176,7 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/session_detail_time"
-            tools:text="Session Location" />
+            tools:text="Stage 8" />
 
         <ImageView
             android:id="@+id/session_detail_recorded"
@@ -216,11 +215,13 @@
             android:id="@+id/session_detail_countdown_timer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_micro"
+            android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/session_detail_recorded"
+            app:layout_constraintTop_toBottomOf="@id/session_detail_level"
             app:sessionStartCountdown="@{viewModel.timeUntilStart}"
-            tools:text="5 minutes" />
+            tools:text="Starts in 5 minutes" />
 
         <TextView
             android:id="@+id/session_detail_description"
@@ -231,7 +232,7 @@
             android:text="@{viewModel.session.abstract}"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/session_detail_level"
+            app:layout_constraintTop_toBottomOf="@id/session_detail_countdown_timer"
             tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus et mauris blandit, porttitor leo sit amet, tincidunt tellus. Proin at rutrum risus. Sed volutpat tellus  " />
 
         <androidx.recyclerview.widget.RecyclerView

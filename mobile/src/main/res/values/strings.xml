@@ -153,8 +153,8 @@
     <string name="onboarding_label_seconds" translation_description="The label for the display of the number of seconds until the conference starts">S</string>
 
     <plurals name="session_starting_in" translation_description="A countdown timer for a session starting, e.g. 'Session starting in 5 minutes'. Will always be minutes">
-        <item quantity="one">Session starting in %1$s minute</item>
-        <item quantity="other">Session starting in %1$s minutes</item>
+        <item quantity="one">Starts in %1$s minute</item>
+        <item quantity="other">Starts in %1$s minutes</item>
     </plurals>
 
     <string name="expanded" translation_description="The label used on a button when a view is in an expanded state.">Expanded</string>
