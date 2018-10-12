@@ -64,9 +64,9 @@ sealed class EventFilter(isChecked: Boolean) {
 
         override fun getSelectedTextColor(): Int = Color.WHITE
 
-        override fun getTextResId(): Int = R.string.starred_and_reserved
+        override fun getTextResId(): Int = R.string.starred_events
 
-        override fun getShortTextResId(): Int = R.string.starred_and_reserved_short
+        override fun getShortTextResId(): Int = R.string.starred_events_short
 
         override fun equals(other: Any?): Boolean = other is MyEventsFilter
     }

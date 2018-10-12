@@ -26,13 +26,13 @@
     <string name="category_heading_types" translation_description="Label in the filters panel above event types (Sessions, Codelabs, etc.)">Types</string>
     <string name="clear_all" translation_description="The label for the button to clear all the filter conditions.">Clear all</string>
     <string name="reset" translation_description="The label for the button to reset the filter conditions.">Reset</string>
-    <string name="pinned_events_filter_description" translation_description="Message shown when the user toggles the switch to see their pinned events.">Showing only starred and reserved events</string>
+    <string name="pinned_events_filter_description" translation_description="Message shown when the user toggles the switch to see their pinned events.">Showing only starred events</string>
     <plurals name="filter_event_count" translation_description="A label showing how many events match the current filters">
         <item quantity="one">%1$d Event</item>
         <item quantity="other">%1$d Events</item>
     </plurals>
-    <string name="starred_and_reserved">Your starred and reserved events</string>
-    <string name="starred_and_reserved_short">Starred &amp; reserved</string>
+    <string name="starred_events">Your starred events</string>
+    <string name="starred_events_short">Starred</string>
 
     <string name="session_duration_location" translatable="false">%1s / %2s</string>
     <string name="session_date_duration_location" translatable="false">%1s / %2s / %3s</string>
@@ -78,7 +78,7 @@
     <string name="a11y_filter_applied" translation_description="Alternative text when an event filter is applies">%1s filter applied</string>
     <string name="a11y_filter_not_applied" translation_description="Alternative text when an event filter is not applies">%1s filter not applied</string>
 
-    <string name="a11y_pinned" translation_description="Description of a button that's used to show only starred and reserved events.">Only starred and reserved events</string>
+    <string name="a11y_pinned" translation_description="Description of a button that's used to show only starred events.">Only starred events</string>
     <string name="a11y_revert_pinned" translation_description="Description of a button to revert the switch that shows only starred and reserved events.">Show all sessions</string>
 
     <string name="a11y_reservation_available" translation_description="Alternative text for the button letting the user reserve a seat for a given event.">Reserve event</string>
