@@ -54,10 +54,10 @@ class SessionDeserializer : JsonDeserializer<SessionTemp> {
             endTime = ZonedDateTime.ofInstant(
                 Instant.ofEpochMilli(obj.get("endTimestamp").asLong), ZoneOffset.UTC
             ),
-            abstract = obj.get("description").asString,
-            photoUrl = obj.get("photoUrl")?.asString,
+            abstract = obj.get("description")?.asString ?: "",
+            photoUrl = obj.get("photoUrl")?.asString ?: "",
             liveStreamUrl = "TODO: Set livestream URL", // TODO Set or remove this (b/77292964)
-            isLivestream = obj.get("livestream").asBoolean,
+            isLivestream = obj.get("livestream")?.asBoolean ?: false,
             speakers = speakers.toSet(),
             tagNames = tagNames.toList(),
             relatedSessions = relatedSessions.toSet(),
