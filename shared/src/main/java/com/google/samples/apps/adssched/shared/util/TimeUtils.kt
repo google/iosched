@@ -35,10 +35,6 @@ object TimeUtils {
         ConferenceDay(
             ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY2_START),
             ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY2_END)
-        ),
-        ConferenceDay(
-            ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY3_START),
-            ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY3_END)
         )
     )
 
