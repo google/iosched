@@ -60,20 +60,27 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
     override fun getObservableUserEvents(
         userId: String?
     ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
+
         // If there is no logged-in user, return the map with null UserEvents
         if (userId == null) {
-            Timber.d("EventRepository: No user logged in, returning sessions without user events.")
-            val allSessions = sessionRepository.getSessions()
-            val userSessionsPerDay = mapUserDataAndSessions(null, allSessions)
-            sessionsByDayResult.value = Result.Success(
-                LoadUserSessionsByDayUseCaseResult(
-                    userSessionsPerDay = userSessionsPerDay,
-                    userMessage = null,
-                    userSessionCount = allSessions.size
+            DefaultScheduler.execute {
+                Timber.d(
+                    "EventRepository: No user logged in, returning sessions without user events."
                 )
-            )
+                val allSessions = sessionRepository.getSessions()
+                val userSessionsPerDay = mapUserDataAndSessions(null, allSessions)
+                sessionsByDayResult.postValue(
+                    Result.Success(
+                        LoadUserSessionsByDayUseCaseResult(
+                            userSessionsPerDay = userSessionsPerDay,
+                            userSessionCount = allSessions.size
+                        )
+                    )
+                )
+            }
             return sessionsByDayResult
         }
+
         // Observes the user events and merges them with session data.
         val observableUserEvents = userEventDataSource.getObservableUserEvents(userId)
         sessionsByDayResult.removeSource(observableUserEvents)

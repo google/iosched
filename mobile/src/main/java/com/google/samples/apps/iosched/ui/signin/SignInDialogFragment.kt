@@ -47,9 +47,9 @@ class SignInDialogFragment : DaggerAppCompatDialogFragment() {
             if (request.peekContent() == RequestSignIn) {
                 request.getContentIfNotHandled()
                 activity?.let {
-                    signInHandler.makeSignInIntent()?.let {
+                    signInHandler.makeSignInIntent().observe(this, Observer {
                         startActivityForResult(it, REQUEST_CODE_SIGN_IN)
-                    }
+                    })
                 }
             }
         })

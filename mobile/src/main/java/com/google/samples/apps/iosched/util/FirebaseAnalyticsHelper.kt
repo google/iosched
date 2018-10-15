@@ -26,6 +26,7 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
+import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import timber.log.Timber
 
@@ -71,7 +72,9 @@ class FirebaseAnalyticsHelper(
     init {
         firebaseAnalytics = FirebaseAnalytics.getInstance(context)
 
-        analyticsEnabled = preferenceStorage.sendUsageStatistics
+        DefaultScheduler.execute { // Prevent access to preferences on main thread
+            analyticsEnabled = preferenceStorage.sendUsageStatistics
+        }
 
         Timber.d("Analytics initialized")
 
@@ -141,7 +144,9 @@ class FirebaseAnalyticsHelper(
             }
         }
 
-        SharedPreferenceStorage(context).registerOnPreferenceChangeListener(listener)
+        DefaultScheduler.execute { // Prevent access to preferences on main thread
+            SharedPreferenceStorage(context).registerOnPreferenceChangeListener(listener)
+        }
         prefListener = listener
         Timber.d("Preference Change Listener has been set up.")
     }

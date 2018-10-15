@@ -37,13 +37,11 @@ class SignInViewModel @Inject constructor(
     fun onSignIn() {
         Timber.d("Sign in requested")
         emitSignInRequest()
-        _dismissDialogAction.value = Event(Unit)
     }
 
     fun onSignOut() {
         Timber.d("Sign out requested")
         emitSignOutRequest()
-        _dismissDialogAction.value = Event(Unit)
     }
 
     fun onCancel() {
