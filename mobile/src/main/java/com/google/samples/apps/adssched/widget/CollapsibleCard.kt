@@ -21,6 +21,7 @@ import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.M
 import android.os.Parcel
 import android.os.Parcelable
+import android.text.Html
 import android.transition.Transition
 import android.transition.TransitionInflater
 import android.transition.TransitionManager
@@ -42,12 +43,12 @@ class CollapsibleCard @JvmOverloads constructor(
 
     private var expanded = false
     private val cardTitleView: TextView
-    private val cardDescriptionView: HtmlTextView
+    private val cardDescriptionView: TextView
     private val expandIcon: ImageView
     private val titleContainer: View
     private val toggle: Transition
     private val root: View
-    private val cardTitle: String
+    private val cardTitle: String?
 
     init {
         val arr = context.obtainStyledAttributes(attrs, R.styleable.CollapsibleCard, 0, 0)
@@ -62,8 +63,9 @@ class CollapsibleCard @JvmOverloads constructor(
             text = cardTitle
         }
         setTitleContentDescription(cardTitle)
-        cardDescriptionView = root.findViewById<HtmlTextView>(R.id.card_description).apply {
-            text = cardDescription
+        cardDescriptionView = root.findViewById<TextView>(R.id.card_description).apply {
+            @Suppress("DEPRECATION") // Min API 21
+            text = Html.fromHtml(cardDescription)
         }
         expandIcon = root.findViewById(R.id.expand_icon)
         if (SDK_INT < M) {

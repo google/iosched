@@ -22,7 +22,10 @@ import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withClassName
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
@@ -30,6 +33,8 @@ import com.google.samples.apps.adssched.R
 import com.google.samples.apps.adssched.tests.SetPreferencesRule
 import com.google.samples.apps.adssched.tests.SyncTaskExecutorRule
 import com.google.samples.apps.adssched.ui.MainActivity
+import org.hamcrest.CoreMatchers.allOf
+import org.hamcrest.CoreMatchers.endsWith
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -63,12 +68,15 @@ class InfoTest {
     fun info_basicViewsDisplayed() {
         onView(withText(resources.getString(R.string.wifi_header))).check(matches(isDisplayed()))
         // Travel tab
-        onView(withText(resources.getString(R.string.travel_title))).perform(click())
+        onView(allOf(
+            withParent(withClassName(endsWith("TabView"))),
+            withText(resources.getString(R.string.travel_title))))
+            .perform(click())
         onView(withText(resources.getString(R.string.travel_directions_title)))
             .check(matches(isDisplayed()))
         // About tab
         onView(withText(resources.getString(R.string.about_title))).perform(click())
-        onView(withText(resources.getString(R.string.faq_title))).check(matches(isDisplayed()))
+        onView(withContentDescription(R.string.faq_label)).check(matches(isDisplayed()))
         // Setting tab
         onView(withText(resources.getString(R.string.settings_title))).perform(click())
         onView(withText(resources.getString(R.string.settings_enable_notifications)))

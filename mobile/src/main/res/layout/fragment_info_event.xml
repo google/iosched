@@ -144,42 +144,44 @@
                     app:eventTitle="@string/event_sessions_title"
                     app:eventTypeLogo="@drawable/event_header_sessions" />
 
-                <com.google.samples.apps.adssched.widget.EventView
-                    android:id="@+id/event_sandbox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/event_sessions"
-                    app:eventDescription="@string/event_sandbox_description"
-                    app:eventTitle="@string/event_sandbox_title"
-                    app:eventTypeLogo="@drawable/event_header_sandbox" />
+                <!--TODO: Marketing to confirm. -->
+                <!--<com.google.samples.apps.adssched.widget.EventView-->
+                    <!--android:id="@+id/event_sandbox"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--app:layout_constraintStart_toStartOf="parent"-->
+                    <!--app:layout_constraintTop_toBottomOf="@+id/event_sessions"-->
+                    <!--app:eventDescription="@string/event_sandbox_description"-->
+                    <!--app:eventTitle="@string/event_sandbox_title"-->
+                    <!--app:eventTypeLogo="@drawable/event_header_sandbox" />-->
 
                 <com.google.samples.apps.adssched.widget.EventView
                     android:id="@+id/event_codelabs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/event_sandbox"
+                    app:layout_constraintTop_toBottomOf="@+id/event_sessions"
                     app:eventDescription="@string/event_codelabs_description"
                     app:eventTitle="@string/event_codelabs_title"
                     app:eventTypeLogo="@drawable/event_header_codelabs" />
 
-                <com.google.samples.apps.adssched.widget.EventView
-                    android:id="@+id/event_officehours"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/event_codelabs"
-                    app:eventDescription="@string/event_officehours_description"
-                    app:eventTitle="@string/event_officehours_title"
-                    app:eventTypeLogo="@drawable/event_header_office_hours" />
+                <!--TODO: Marketing to confirm. -->
+                <!--<com.google.samples.apps.adssched.widget.EventView-->
+                    <!--android:id="@+id/event_officehours"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--app:layout_constraintStart_toStartOf="parent"-->
+                    <!--app:layout_constraintTop_toBottomOf="@+id/event_codelabs"-->
+                    <!--app:eventDescription="@string/event_officehours_description"-->
+                    <!--app:eventTitle="@string/event_officehours_title"-->
+                    <!--app:eventTypeLogo="@drawable/event_header_office_hours" />-->
 
                 <com.google.samples.apps.adssched.widget.EventView
                     android:id="@+id/event_afterhours"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/event_officehours"
+                    app:layout_constraintTop_toBottomOf="@+id/event_codelabs"
                     app:eventDescription="@string/event_afterhours_description"
                     app:eventTitle="@string/event_afterhours_title"
                     app:eventTypeLogo="@drawable/event_header_afterhours" />

@@ -60,15 +60,7 @@ class EventFragment : DaggerFragment() {
         // TODO: launch filtered schedule
         // TODO: launch map
         // TODO: launch codelabs
-        binding.eventSandbox.apply {
-            onViewSessionsClicked = { _, _ -> Unit }
-            onViewCodelabsClicked = { _, _ -> Unit }
-        }
         binding.eventCodelabs.apply {
-            onViewSessionsClicked = { _, _ -> Unit }
-            onViewCodelabsClicked = { _, _ -> Unit }
-        }
-        binding.eventOfficehours.apply {
             onViewSessionsClicked = { _, _ -> Unit }
             onViewCodelabsClicked = { _, _ -> Unit }
         }
