@@ -53,7 +53,13 @@ interface PreferenceStorage {
 @Singleton
 class SharedPreferenceStorage @Inject constructor(context: Context) : PreferenceStorage {
 
-    private val prefs = context.applicationContext.getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+    private val prefs: Lazy<SharedPreferences> = lazy { // Lazy to prevent IO access to main thread.
+        context.applicationContext.getSharedPreferences(
+            PREFS_NAME, MODE_PRIVATE
+        ).apply {
+            registerOnSharedPreferenceChangeListener(changeListener)
+        }
+    }
 
     private val observableShowSnackbarResult = MutableLiveData<Boolean>()
     private val observableSelectedThemeResult = MutableLiveData<String>()
@@ -63,10 +69,6 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
             PREF_SNACKBAR_IS_STOPPED -> observableShowSnackbarResult.value = snackbarIsStopped
             PREF_DARK_MODE_ENABLED -> observableSelectedThemeResult.value = selectedTheme
         }
-    }
-
-    init {
-        prefs.registerOnSharedPreferenceChangeListener(changeListener)
     }
 
     override var onboardingCompleted by BooleanPreference(prefs, PREF_ONBOARDING, false)
@@ -120,38 +122,38 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
     }
 
     fun registerOnPreferenceChangeListener(listener: OnSharedPreferenceChangeListener) {
-        prefs.registerOnSharedPreferenceChangeListener(listener)
+        prefs.value.registerOnSharedPreferenceChangeListener(listener)
     }
 }
 
 class BooleanPreference(
-    private val preferences: SharedPreferences,
+    private val preferences: Lazy<SharedPreferences>,
     private val name: String,
     private val defaultValue: Boolean
 ) : ReadWriteProperty<Any, Boolean> {
 
     @WorkerThread
     override fun getValue(thisRef: Any, property: KProperty<*>): Boolean {
-        return preferences.getBoolean(name, defaultValue)
+        return preferences.value.getBoolean(name, defaultValue)
     }
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) {
-        preferences.edit { putBoolean(name, value) }
+        preferences.value.edit { putBoolean(name, value) }
     }
 }
 
 class StringPreference(
-    private val preferences: SharedPreferences,
+    private val preferences: Lazy<SharedPreferences>,
     private val name: String,
     private val defaultValue: String?
 ) : ReadWriteProperty<Any, String?> {
 
     @WorkerThread
     override fun getValue(thisRef: Any, property: KProperty<*>): String? {
-        return preferences.getString(name, defaultValue)
+        return preferences.value.getString(name, defaultValue)
     }
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: String?) {
-        preferences.edit { putString(name, value) }
+        preferences.value.edit { putString(name, value) }
     }
 }

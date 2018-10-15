@@ -16,10 +16,11 @@
 
 package com.google.samples.apps.iosched.shared.data.login
 
-import androidx.lifecycle.MutableLiveData
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.login.datasources.StagingAuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.result.Result
@@ -34,10 +35,10 @@ import timber.log.Timber
  */
 class StagingSignInHandler(val user: StagingAuthenticatedUser) : SignInHandler {
 
-    override fun makeSignInIntent(): Intent? {
+    override fun makeSignInIntent(): LiveData<Intent?> {
         Timber.d("staging makeSignInIntent called")
         user.signIn()
-        return null
+        return MutableLiveData()
     }
 
     override fun signIn(resultCode: Int, data: Intent?, onComplete: (SignInResult) -> Unit) {
