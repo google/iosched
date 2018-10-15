@@ -27,6 +27,7 @@ import com.google.samples.apps.adssched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.adssched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.adssched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.adssched.shared.data.prefs.SharedPreferenceStorage
+import com.google.samples.apps.adssched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.adssched.ui.signin.SignInViewModelDelegate
 import timber.log.Timber
 
@@ -82,7 +83,9 @@ class FirebaseAnalyticsHelper(
         val deploymentType = if (isInstant) STATUS_INSTANT else STATUS_INSTALLED
         firebaseAnalytics.setUserProperty(FA_DEPLOYMENT_TYPE, deploymentType)
 
-        analyticsEnabled = preferenceStorage.sendUsageStatistics
+        DefaultScheduler.execute { // Prevent access to preferences on main thread
+            analyticsEnabled = preferenceStorage.sendUsageStatistics
+        }
 
         Timber.d("Analytics initialized, $FA_DEPLOYMENT_TYPE: $deploymentType")
 
@@ -142,7 +145,9 @@ class FirebaseAnalyticsHelper(
             }
         }
 
-        SharedPreferenceStorage(context).registerOnPreferenceChangeListener(listener)
+        DefaultScheduler.execute {  // Prevent access to preferences on main thread
+            SharedPreferenceStorage(context).registerOnPreferenceChangeListener(listener)
+        }
         prefListener = listener
         Timber.d("Preference Change Listener has been set up.")
     }
