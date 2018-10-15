@@ -24,6 +24,8 @@ import com.google.samples.apps.adssched.MainApplication
 import com.google.samples.apps.adssched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.adssched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.adssched.shared.data.prefs.SharedPreferenceStorage
+import com.google.samples.apps.adssched.shared.data.session.agenda.AgendaRepository
+import com.google.samples.apps.adssched.shared.data.session.agenda.DefaultAgendaRepository
 import com.google.samples.apps.adssched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.adssched.util.FirebaseAnalyticsHelper
 import com.google.samples.apps.adssched.util.wifi.WifiInstaller
@@ -82,4 +84,8 @@ class AppModule {
         signInDelegate: SignInViewModelDelegate,
         preferenceStorage: PreferenceStorage
     ): AnalyticsHelper = FirebaseAnalyticsHelper(context, signInDelegate, preferenceStorage)
+
+    @Singleton
+    @Provides
+    fun provideAgendaRepository(): AgendaRepository = DefaultAgendaRepository()
 }

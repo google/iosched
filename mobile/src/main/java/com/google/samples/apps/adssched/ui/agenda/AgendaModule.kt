@@ -16,10 +16,14 @@
 
 package com.google.samples.apps.adssched.ui.agenda
 
+import androidx.lifecycle.ViewModel
 import com.google.samples.apps.adssched.shared.di.ChildFragmentScoped
+import com.google.samples.apps.adssched.shared.di.ViewModelKey
+import dagger.Binds
 import dagger.Module
 import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
+import dagger.multibindings.IntoMap
 
 @Module
 internal abstract class AgendaModule {
@@ -30,4 +34,13 @@ internal abstract class AgendaModule {
     @ChildFragmentScoped
     @ContributesAndroidInjector
     internal abstract fun contributeAgendaFragment(): AgendaFragment
+
+    /**
+     * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
+     * want to get a [AgendaViewModel] class.
+     */
+    @Binds
+    @IntoMap
+    @ViewModelKey(AgendaViewModel::class)
+    abstract fun bindAgendaViewModel(viewModel: AgendaViewModel): ViewModel
 }

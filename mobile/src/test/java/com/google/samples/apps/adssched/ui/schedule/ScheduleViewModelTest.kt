@@ -24,7 +24,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.adssched.R
 import com.google.samples.apps.adssched.androidtest.util.LiveDataTestUtil
-import com.google.samples.apps.adssched.model.Block
 import com.google.samples.apps.adssched.model.ConferenceData
 import com.google.samples.apps.adssched.model.TestDataRepository
 import com.google.samples.apps.adssched.model.TestDataSource
@@ -32,14 +31,12 @@ import com.google.samples.apps.adssched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.adssched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.adssched.shared.data.ConferenceDataSource
 import com.google.samples.apps.adssched.shared.data.session.DefaultSessionRepository
-import com.google.samples.apps.adssched.shared.data.session.agenda.AgendaRepository
 import com.google.samples.apps.adssched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.adssched.shared.data.signin.datasources.AuthStateUserDataSource
 import com.google.samples.apps.adssched.shared.data.tag.TagRepository
 import com.google.samples.apps.adssched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.adssched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.adssched.shared.domain.RefreshConferenceDataUseCase
-import com.google.samples.apps.adssched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.adssched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.adssched.shared.domain.prefs.LoadSelectedFiltersUseCase
 import com.google.samples.apps.adssched.shared.domain.prefs.SaveSelectedFiltersUseCase
@@ -348,7 +345,6 @@ class ScheduleViewModelTest {
     private fun createScheduleViewModel(
         loadSessionsUseCase: LoadUserSessionsByDayUseCase =
             createTestLoadUserSessionsByDayUseCase(),
-        loadAgendaUseCase: LoadAgendaUseCase = createAgendaExceptionUseCase(),
         loadTagsUseCase: LoadEventFiltersUseCase = createEventFiltersExceptionUseCase(),
         signInViewModelDelegate: SignInViewModelDelegate = createSignInViewModelDelegate(),
         starEventUseCase: StarEventUseCase = createStarEventUseCase(),
@@ -369,7 +365,6 @@ class ScheduleViewModelTest {
     ): ScheduleViewModel {
         return ScheduleViewModel(
             loadUserSessionsByDayUseCase = loadSessionsUseCase,
-            loadAgendaUseCase = loadAgendaUseCase,
             loadEventFiltersUseCase = loadTagsUseCase,
             signInViewModelDelegate = signInViewModelDelegate,
             starEventUseCase = starEventUseCase,
@@ -405,17 +400,6 @@ class ScheduleViewModelTest {
     private fun createEventFiltersExceptionUseCase(): LoadEventFiltersUseCase {
         return object : LoadEventFiltersUseCase(TagRepository(TestDataRepository)) {
             override fun execute(parameters: UserSessionMatcher): List<EventFilter> {
-                throw Exception("Testing exception")
-            }
-        }
-    }
-
-    /**
-     * Creates a use case that throws an exception.
-     */
-    private fun createAgendaExceptionUseCase(): LoadAgendaUseCase {
-        return object : LoadAgendaUseCase(AgendaRepository()) {
-            override fun execute(parameters: Unit): List<Block> {
                 throw Exception("Testing exception")
             }
         }

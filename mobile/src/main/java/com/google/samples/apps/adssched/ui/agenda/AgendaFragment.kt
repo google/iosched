@@ -23,11 +23,10 @@ import android.view.ViewGroup
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.google.samples.apps.adssched.databinding.FragmentScheduleAgendaBinding
+import com.google.samples.apps.adssched.databinding.FragmentAgendaBinding
 import com.google.samples.apps.adssched.model.Block
 import com.google.samples.apps.adssched.shared.util.activityViewModelProvider
 import com.google.samples.apps.adssched.ui.MainNavigationFragment
-import com.google.samples.apps.adssched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.adssched.util.clearDecorations
 import dagger.android.support.DaggerFragment
 import org.threeten.bp.ZoneId
@@ -37,15 +36,15 @@ class AgendaFragment : DaggerFragment(), MainNavigationFragment {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: ScheduleViewModel
-    private lateinit var binding: FragmentScheduleAgendaBinding
+    private lateinit var viewModel: AgendaViewModel
+    private lateinit var binding: FragmentAgendaBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentScheduleAgendaBinding.inflate(inflater, container, false).apply {
+        binding = FragmentAgendaBinding.inflate(inflater, container, false).apply {
             setLifecycleOwner(this@AgendaFragment)
         }
         return binding.root
@@ -55,6 +54,11 @@ class AgendaFragment : DaggerFragment(), MainNavigationFragment {
         super.onActivityCreated(savedInstanceState)
         viewModel = activityViewModelProvider(viewModelFactory)
         binding.viewModel = viewModel
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.initializeTimeZone()
     }
 }
 

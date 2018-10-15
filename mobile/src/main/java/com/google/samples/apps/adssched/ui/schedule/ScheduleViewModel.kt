@@ -22,15 +22,12 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.adssched.R
-import com.google.samples.apps.adssched.model.Block
 import com.google.samples.apps.adssched.model.SessionId
 import com.google.samples.apps.adssched.model.userdata.UserSession
 import com.google.samples.apps.adssched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.adssched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.adssched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.adssched.shared.domain.RefreshConferenceDataUseCase
-import com.google.samples.apps.adssched.shared.domain.agenda.LoadAgendaUseCase
-import com.google.samples.apps.adssched.shared.domain.invoke
 import com.google.samples.apps.adssched.shared.domain.prefs.LoadSelectedFiltersUseCase
 import com.google.samples.apps.adssched.shared.domain.prefs.SaveSelectedFiltersUseCase
 import com.google.samples.apps.adssched.shared.domain.sessions.EventLocation
@@ -70,7 +67,6 @@ import javax.inject.Inject
  */
 class ScheduleViewModel @Inject constructor(
     private val loadUserSessionsByDayUseCase: LoadUserSessionsByDayUseCase,
-    loadAgendaUseCase: LoadAgendaUseCase,
     loadEventFiltersUseCase: LoadEventFiltersUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
     private val starEventUseCase: StarEventUseCase,
@@ -122,18 +118,12 @@ class ScheduleViewModel @Inject constructor(
     private val _hasAnyFilters = MutableLiveData<Boolean>()
     val hasAnyFilters: LiveData<Boolean>
         get() = _hasAnyFilters
-    private val _isAgendaPage = MutableLiveData<Boolean>()
-    val isAgendaPage: LiveData<Boolean>
-        get() = _isAgendaPage
 
     private val loadSessionsResult: MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>
-    private val loadAgendaResult = MutableLiveData<Result<List<Block>>>()
     private val loadEventFiltersResult = MediatorLiveData<Result<List<EventFilter>>>()
     private val swipeRefreshResult = MutableLiveData<Result<Boolean>>()
 
     val eventCount: LiveData<Int>
-
-    val agenda: LiveData<List<Block>>
 
     /** LiveData for Actions and Events **/
 
@@ -198,8 +188,6 @@ class ScheduleViewModel @Inject constructor(
             refreshUserSessions()
         }
 
-        loadAgendaUseCase(loadAgendaResult)
-
         eventCount = loadSessionsResult.map {
             (it as? Result.Success)?.data?.userSessionCount ?: 0
         }
@@ -216,11 +204,6 @@ class ScheduleViewModel @Inject constructor(
                 _errorMessage.value = Event(content = result.exception.message ?: "Error")
             }
         }
-
-        agenda = loadAgendaResult.map {
-            (it as? Result.Success)?.data ?: emptyList()
-        }
-        // TODO handle agenda errors
 
         eventFilters = loadEventFiltersResult.map {
             if (it is Success) {
@@ -484,8 +467,3 @@ interface ScheduleEventListener : EventActions {
     /** Called from the UI to remove all filters. */
     fun clearFilters()
 }
-
-data class TransientUiState(
-    val isAgendaPage: Boolean,
-    val hasAnyFilters: Boolean
-)

@@ -23,7 +23,7 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.adssched.ui.schedule.ScheduleViewModel" />
+            type="com.google.samples.apps.adssched.ui.agenda.AgendaViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -51,7 +51,7 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/schedule_page_padding_bottom"
+            android:paddingBottom="@dimen/spacing_normal"
             android:paddingTop="@dimen/spacing_normal"
             android:scrollbars="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"

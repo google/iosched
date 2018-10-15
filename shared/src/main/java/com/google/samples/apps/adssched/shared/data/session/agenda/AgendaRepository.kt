@@ -18,14 +18,15 @@ package com.google.samples.apps.adssched.shared.data.session.agenda
 
 import com.google.samples.apps.adssched.model.Block
 import org.threeten.bp.ZonedDateTime
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Single point of access to agenda data for the presentation layer.
  */
-@Singleton
-open class AgendaRepository @Inject constructor() {
+interface AgendaRepository {
+    fun getAgenda(): List<Block>
+}
+
+class DefaultAgendaRepository : AgendaRepository {
 
     companion object {
         private const val LABEL_REGISTRATION = "Registration"
@@ -168,5 +169,5 @@ open class AgendaRepository @Inject constructor() {
         )
     }
 
-    fun getAgenda(): List<Block> = blocks
+    override fun getAgenda(): List<Block> = blocks
 }
