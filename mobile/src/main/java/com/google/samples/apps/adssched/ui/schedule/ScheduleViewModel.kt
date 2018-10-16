@@ -115,7 +115,7 @@ class ScheduleViewModel @Inject constructor(
     private val _selectedFilters = MutableLiveData<List<EventFilter>>()
     val selectedFilters: LiveData<List<EventFilter>>
         get() = _selectedFilters
-    private val _hasAnyFilters = MutableLiveData<Boolean>()
+    private val _hasAnyFilters = MutableLiveData<Boolean>().apply { value = false }
     val hasAnyFilters: LiveData<Boolean>
         get() = _hasAnyFilters
 
