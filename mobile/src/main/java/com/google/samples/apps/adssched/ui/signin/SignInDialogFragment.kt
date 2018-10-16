@@ -22,6 +22,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.samples.apps.adssched.databinding.DialogSignInBinding
 import com.google.samples.apps.adssched.shared.result.EventObserver
@@ -70,11 +71,12 @@ class SignInDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInject
             viewModel = signInViewModel
         }
 
-        signInViewModel.performSignInEvent.observe(this, EventObserver { signInRequest ->
-            if (signInRequest == RequestSignIn) {
-                signInHandler.makeSignInIntent()?.let {
+        signInViewModel.performSignInEvent.observe(requireActivity(), EventObserver { request ->
+            if (request == RequestSignIn) {
+                signInHandler.makeSignInIntent().observe(requireActivity(), Observer {
                     startActivityForResult(it, SIGN_IN_ACTIVITY_REQUEST_CODE)
-                }
+                    dismiss()
+                })
             }
         })
 

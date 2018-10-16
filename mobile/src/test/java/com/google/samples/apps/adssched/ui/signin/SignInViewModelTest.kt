@@ -46,10 +46,6 @@ class SignInViewModelTest {
 
         // Then a sign out request is emitted
         assertEquals(1, signInViewModelDelegate.signOutRequestsEmitted)
-
-        // And the dialog is dismissed
-        val dismissEvent = LiveDataTestUtil.getValue(viewModel.dismissDialogAction)
-        assertNotNull(dismissEvent?.getContentIfNotHandled())
     }
 
     @Test
@@ -65,10 +61,6 @@ class SignInViewModelTest {
 
         // Then a sign out request is emitted
         assertEquals(1, signInViewModelDelegate.signInRequestsEmitted)
-
-        // And the dialog is dismissed
-        val dismissEvent = LiveDataTestUtil.getValue(viewModel.dismissDialogAction)
-        assertNotNull(dismissEvent?.getContentIfNotHandled())
     }
 
     @Test
