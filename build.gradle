@@ -42,11 +42,11 @@ buildscript {
         dataBindingCompilerVersion = '3.0.1'
         espressoVersion = '3.1.0-alpha1'
         fabricVersion = '1.25.4'
-        firebaseAuthVersion = '16.0.2'
-        firebaseConfigVersion = '16.0.0'
-        firebaseCoreVersion = '16.0.1'
-        firebaseFirestoreVersion = '17.0.3'
-        firebaseMessagingVersion = '17.1.0'
+        firebaseAuthVersion = '16.0.4'
+        firebaseConfigVersion = '16.0.1'
+        firebaseCoreVersion = '16.0.4'
+        firebaseFirestoreVersion = '17.1.1'
+        firebaseMessagingVersion = '17.3.3'
         firebaseUiVersion = "3.3.1"
         flexboxVersion = "0.3.2"
         glideVersion = "4.6.1"
@@ -55,20 +55,19 @@ buildscript {
         hamcrestVersion = '1.3'
         junitVersion = '4.12'
         kotlinVersion = '1.2.61'
-        ktxVersion = "1.0.0-beta01"
+        ktxVersion = "1.0.0"
         legacySupportVersion = '1.0.0-alpha1'
-        lifecycleVersion = '2.0.0-beta01'
+        lifecycleVersion = '2.0.0'
         materialVersion = '1.0.0-rc01'
         mockitoVersion = "2.8.9"
         mockitoKotlinVersion = "1.5.0"
         okhttpVersion = "3.10.0"
         okioVersion = '1.14.0'
-        pageIndicatorVersion = "1.3.0"
         rulesVersion = '1.1.0-alpha1'
         runnerVersion = '1.1.0-alpha1'
         threetenabpVersion = "1.0.5"
         threetenbpVersion = "1.3.6"
-        timberVersion = "4.7.0"
+        timberVersion = "4.7.1"
     }
 
     repositories {

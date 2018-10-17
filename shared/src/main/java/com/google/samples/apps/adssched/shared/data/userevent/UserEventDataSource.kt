@@ -28,7 +28,9 @@ interface UserEventDataSource {
 
     fun getObservableUserEvent(userId: String, eventId: SessionId): LiveData<UserEventResult>
 
-    fun getUserEvents(userId: String): List<UserEvent>
+    fun getUserEvents(userId: String) : List<UserEvent>
+
+    fun getUserEvent(userId: String, eventId: SessionId): UserEvent?
 
     /**
      * Toggle the isStarred status for an event.

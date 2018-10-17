@@ -17,6 +17,7 @@
 package com.google.samples.apps.adssched.di
 
 import com.google.samples.apps.adssched.MainApplication
+import com.google.samples.apps.adssched.shared.di.BroadcastReceiverBindingModule
 import com.google.samples.apps.adssched.shared.di.ServiceBindingModule
 import com.google.samples.apps.adssched.shared.di.SharedModule
 import com.google.samples.apps.adssched.shared.di.ViewModelModule
@@ -39,6 +40,7 @@ import javax.inject.Singleton
         AndroidSupportInjectionModule::class,
         AppModule::class,
         ActivityBindingModule::class,
+        BroadcastReceiverBindingModule::class,
         ViewModelModule::class,
         ServiceBindingModule::class,
         SharedModule::class,

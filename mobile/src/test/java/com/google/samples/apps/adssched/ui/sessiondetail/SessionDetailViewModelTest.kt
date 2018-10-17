@@ -29,7 +29,7 @@ import com.google.samples.apps.adssched.shared.data.userevent.UserEventDataSourc
 import com.google.samples.apps.adssched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.adssched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.adssched.shared.domain.settings.GetTimeZoneUseCase
-import com.google.samples.apps.adssched.shared.domain.users.StarEventUseCase
+import com.google.samples.apps.adssched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.adssched.shared.time.DefaultTimeProvider
 import com.google.samples.apps.adssched.shared.time.TimeProvider
 import com.google.samples.apps.adssched.shared.util.NetworkUtils
@@ -222,7 +222,7 @@ class SessionDetailViewModelTest {
         loadUserSessionUseCase: LoadUserSessionUseCase = createTestLoadUserSessionUseCase(),
         loadRelatedSessionsUseCase: LoadUserSessionsUseCase =
             createTestLoadUserSessionsUseCase(),
-        starEventUseCase: StarEventUseCase = FakeStarEventUseCase(),
+        starEventUseCase: StarEventAndNotifyUseCase = FakeStarEventUseCase(),
         getTimeZoneUseCase: GetTimeZoneUseCase = createGetTimeZoneUseCase(),
         snackbarMessageManager: SnackbarMessageManager =
             SnackbarMessageManager(FakePreferenceStorage()),
@@ -232,8 +232,7 @@ class SessionDetailViewModelTest {
     ): SessionDetailViewModel {
         return SessionDetailViewModel(
             signInViewModelPlugin, loadUserSessionUseCase, loadRelatedSessionsUseCase,
-            starEventUseCase, getTimeZoneUseCase, snackbarMessageManager,
-            timeProvider, networkUtils, analyticsHelper
+            starEventUseCase, getTimeZoneUseCase, timeProvider, analyticsHelper
         )
     }
 
@@ -257,7 +256,8 @@ class SessionDetailViewModelTest {
     ): LoadUserSessionUseCase {
         val sessionRepository = DefaultSessionRepository(TestDataRepository)
         val userEventRepository = DefaultSessionAndUserEventRepository(
-            userEventDataSource, sessionRepository
+            userEventDataSource,
+            sessionRepository
         )
         return LoadUserSessionUseCase(userEventRepository)
     }
@@ -267,7 +267,8 @@ class SessionDetailViewModelTest {
     ): LoadUserSessionsUseCase {
         val sessionRepository = DefaultSessionRepository(TestDataRepository)
         val userEventRepository = DefaultSessionAndUserEventRepository(
-            userEventDataSource, sessionRepository
+            userEventDataSource,
+            sessionRepository
         )
         return LoadUserSessionsUseCase(userEventRepository)
     }

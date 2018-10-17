@@ -95,7 +95,8 @@ class SpeakerViewModelTest {
         loadSpeakerUseCase: LoadSpeakerUseCase = LoadSpeakerUseCase(TestDataRepository),
         loadSpeakerSessionsUseCase: LoadUserSessionsUseCase = LoadUserSessionsUseCase(
             DefaultSessionAndUserEventRepository(
-                TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
+                TestUserEventDataSource(),
+                DefaultSessionRepository(TestDataRepository)
             )
         ),
         signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate().apply {

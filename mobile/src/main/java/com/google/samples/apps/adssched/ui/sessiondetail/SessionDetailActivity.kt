@@ -23,6 +23,7 @@ import android.os.Bundle
 import com.firebase.ui.auth.IdpResponse
 import com.google.samples.apps.adssched.R
 import com.google.samples.apps.adssched.model.SessionId
+import com.google.samples.apps.adssched.shared.notifications.AlarmBroadcastReceiver.Companion.QUERY_SESSION_ID
 import com.google.samples.apps.adssched.shared.util.inTransaction
 import com.google.samples.apps.adssched.ui.SnackbarMessage
 import com.google.samples.apps.adssched.ui.messages.SnackbarMessageManager
@@ -41,10 +42,15 @@ class SessionDetailActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_session_detail)
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.inTransaction {
-                val sessionId = intent.getStringExtra(EXTRA_SESSION_ID)
-                add(R.id.session_detail_container, SessionDetailFragment.newInstance(sessionId))
+        val sessionId = getSessionId(intent)
+        if (sessionId == null) {
+            Timber.e("Session ID not specified")
+            finish()
+        } else {
+            if (savedInstanceState == null) {
+                supportFragmentManager.inTransaction {
+                    add(R.id.session_detail_container, SessionDetailFragment.newInstance(sessionId))
+                }
             }
         }
     }
@@ -63,6 +69,11 @@ class SessionDetailActivity : DaggerAppCompatActivity() {
                 )
             }
         }
+    }
+
+    private fun getSessionId(intent: Intent): String? {
+        return intent.data?.getQueryParameter(QUERY_SESSION_ID) // for adssched://sessions/{id}
+                ?: intent.getStringExtra(EXTRA_SESSION_ID)
     }
 
     companion object {

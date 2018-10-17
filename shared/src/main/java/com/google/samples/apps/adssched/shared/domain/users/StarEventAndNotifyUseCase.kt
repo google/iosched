@@ -16,34 +16,40 @@
 
 package com.google.samples.apps.adssched.shared.domain.users
 
-import com.google.samples.apps.adssched.model.userdata.UserEvent
+import com.google.samples.apps.adssched.model.userdata.UserSession
 import com.google.samples.apps.adssched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.adssched.shared.domain.MediatorUseCase
+import com.google.samples.apps.adssched.shared.domain.sessions.StarNotificationAlarmUpdater
 import com.google.samples.apps.adssched.shared.result.Result
 import javax.inject.Inject
 
-open class StarEventUseCase @Inject constructor(
-    private val repository: SessionAndUserEventRepository
+open class StarEventAndNotifyUseCase @Inject constructor(
+    private val repository: SessionAndUserEventRepository,
+    private val starNotificationAlarmUpdater: StarNotificationAlarmUpdater
 ) : MediatorUseCase<StarEventParameter, StarUpdatedStatus>() {
 
     override fun execute(parameters: StarEventParameter) {
         val updateResult = try {
-            repository.starEvent(parameters.userId, parameters.userEvent)
+            repository.starEvent(parameters.userId, parameters.userSession.userEvent)
         } catch (e: Exception) {
             result.postValue(Result.Error(e))
             return
         }
         // Avoid duplicating sources and trigger an update on the LiveData from the base class.
         result.removeSource(updateResult)
-        result.addSource(updateResult, {
+        result.addSource(updateResult) {
+            starNotificationAlarmUpdater.updateSession(
+                parameters.userSession.session,
+                parameters.userSession.userEvent.isStarred
+            )
             result.postValue(updateResult.value)
-        })
+        }
     }
 }
 
 data class StarEventParameter(
     val userId: String,
-    val userEvent: UserEvent
+    val userSession: UserSession
 )
 
 enum class StarUpdatedStatus {

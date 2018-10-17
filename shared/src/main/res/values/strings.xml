@@ -17,4 +17,6 @@
 
 <resources>
     <string name="app_name" translatable="false">Android Dev Summit</string>
+    <string name="session_notifications" translation_description="Title for notification channel that upcoming talk notifications will be sent to.">Upcoming session notifications</string>
+    <string name="starting_soon" translation_description="displayed as subtext of session title">Session is starting soon!</string>
 </resources>

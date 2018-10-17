@@ -20,7 +20,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.adssched.model.SessionId
 import com.google.samples.apps.adssched.model.userdata.UserEvent
-import com.google.samples.apps.adssched.shared.data.BootstrapConferenceDataSource
+import com.google.samples.apps.adssched.shared.data.FakeConferenceDataSource
+import com.google.samples.apps.adssched.shared.data.FakeConferenceDataSource.ALARM_SESSION_ID
 import com.google.samples.apps.adssched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.adssched.shared.result.Result
 
@@ -28,8 +29,7 @@ import com.google.samples.apps.adssched.shared.result.Result
  * Returns data loaded from a local JSON file for development and testing.
  */
 object FakeUserEventDataSource : UserEventDataSource {
-
-    private val conferenceData = BootstrapConferenceDataSource.getOfflineConferenceData()!!
+    private val conferenceData = FakeConferenceDataSource.getOfflineConferenceData()!!
     private val userEvents = ArrayList<UserEvent>()
 
     init {
@@ -42,6 +42,14 @@ object FakeUserEventDataSource : UserEventDataSource {
                     )
                 )
             }
+        }
+        conferenceData.sessions.find { it.id == ALARM_SESSION_ID }?.let { session ->
+            userEvents.add(
+                UserEvent(
+                    session.id,
+                    isStarred = true
+                )
+            )
         }
     }
 
@@ -76,6 +84,10 @@ object FakeUserEventDataSource : UserEventDataSource {
 
     override fun getUserEvents(userId: String): List<UserEvent> {
         return userEvents
+    }
+
+    override fun getUserEvent(userId: String, eventId: SessionId): UserEvent? {
+        return userEvents.firstOrNull { it.id == eventId }
     }
 
     override fun clearSingleEventSubscriptions() {}

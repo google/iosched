@@ -31,13 +31,14 @@ import com.google.samples.apps.adssched.shared.domain.RefreshConferenceDataUseCa
 import com.google.samples.apps.adssched.shared.domain.prefs.LoadSelectedFiltersUseCase
 import com.google.samples.apps.adssched.shared.domain.prefs.SaveSelectedFiltersUseCase
 import com.google.samples.apps.adssched.shared.domain.sessions.EventLocation
+import com.google.samples.apps.adssched.shared.domain.sessions.GetConferenceDaysUseCase
 import com.google.samples.apps.adssched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.adssched.shared.domain.sessions.LoadUserSessionsByDayUseCaseParameters
 import com.google.samples.apps.adssched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.adssched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.adssched.shared.domain.settings.GetTimeZoneUseCase
+import com.google.samples.apps.adssched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.adssched.shared.domain.users.StarEventParameter
-import com.google.samples.apps.adssched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.adssched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.adssched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.adssched.shared.result.Event
@@ -45,7 +46,6 @@ import com.google.samples.apps.adssched.shared.result.Result
 import com.google.samples.apps.adssched.shared.result.Result.Success
 import com.google.samples.apps.adssched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.adssched.shared.util.TimeUtils
-import com.google.samples.apps.adssched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.adssched.shared.util.map
 import com.google.samples.apps.adssched.ui.SnackbarMessage
 import com.google.samples.apps.adssched.ui.messages.SnackbarMessageManager
@@ -67,9 +67,10 @@ import javax.inject.Inject
  */
 class ScheduleViewModel @Inject constructor(
     private val loadUserSessionsByDayUseCase: LoadUserSessionsByDayUseCase,
+    private val getConferenceDaysUseCase: GetConferenceDaysUseCase,
     loadEventFiltersUseCase: LoadEventFiltersUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
-    private val starEventUseCase: StarEventUseCase,
+    private val starEventUseCase: StarEventAndNotifyUseCase,
     topicSubscriber: TopicSubscriber,
     private val snackbarMessageManager: SnackbarMessageManager,
     private val getTimeZoneUseCase: GetTimeZoneUseCase,
@@ -98,15 +99,9 @@ class ScheduleViewModel @Inject constructor(
     val labelsForDays: LiveData<List<Int>>
     val timeZoneId: LiveData<ZoneId>
 
-    private val _sessionTimeDataDay1 = MediatorLiveData<SessionTimeData>()
-    private val sessionTimeDataDay1: LiveData<SessionTimeData>
-        get() = _sessionTimeDataDay1
-    private val _sessionTimeDataDay2 = MediatorLiveData<SessionTimeData>()
-    private val sessionTimeDataDay2: LiveData<SessionTimeData>
-        get() = _sessionTimeDataDay2
-    private val _sessionTimeDataDay3 = MediatorLiveData<SessionTimeData>()
-    private val sessionTimeDataDay3: LiveData<SessionTimeData>
-        get() = _sessionTimeDataDay3
+    private val sessionTimeDataDay = getConferenceDaysUseCase().map {
+        MediatorLiveData<SessionTimeData>()
+    }
 
     // Cached list of TagFilters returned by the use case. Only Result.Success modifies it.
     private var cachedEventFilters = emptyList<EventFilter>()
@@ -253,54 +248,30 @@ class ScheduleViewModel @Inject constructor(
 
         labelsForDays = showInConferenceTimeZone.map { inConferenceTimeZone ->
             if (TimeUtils.physicallyInConferenceTimeZone() || inConferenceTimeZone) {
-                return@map listOf(R.string.day1_date, R.string.day2_date, R.string.day3_date)
+                return@map listOf(R.string.day1_date, R.string.day2_date)
             } else {
-                return@map listOf(R.string.day1, R.string.day2, R.string.day3)
+                return@map listOf(R.string.day1, R.string.day2)
             }
         }
 
-        _sessionTimeDataDay1.addSource(timeZoneId, {
-            _sessionTimeDataDay1.value = _sessionTimeDataDay1.value?.apply {
-                timeZoneId = it
-            } ?: SessionTimeData(timeZoneId = it)
-        })
-        _sessionTimeDataDay1.addSource(loadSessionsResult, {
-            val userSessions =
-                (it as? Result.Success)?.data?.userSessionsPerDay?.get(ConferenceDays[0])
-                    ?: return@addSource
-            _sessionTimeDataDay1.value = _sessionTimeDataDay1.value?.apply {
-                list = userSessions
-            } ?: SessionTimeData(list = userSessions)
-        })
+        // Session data observes the time zone and the repository.
+        sessionTimeDataDay.forEachIndexed { index, sessionTimeDataDay ->
+            sessionTimeDataDay.addSource(timeZoneId) {
+                sessionTimeDataDay.value = sessionTimeDataDay.value?.apply {
+                    timeZoneId = it
+                } ?: SessionTimeData(timeZoneId = it)
+            }
 
-        _sessionTimeDataDay2.addSource(timeZoneId, {
-            _sessionTimeDataDay2.value = _sessionTimeDataDay2.value?.apply {
-                timeZoneId = it
-            } ?: SessionTimeData(timeZoneId = it)
-        })
-        _sessionTimeDataDay2.addSource(loadSessionsResult, {
-            val userSessions =
-                (it as? Result.Success)?.data?.userSessionsPerDay?.get(ConferenceDays[1])
-                    ?: return@addSource
-            _sessionTimeDataDay2.value = _sessionTimeDataDay2.value?.apply {
-                list = userSessions
-            } ?: SessionTimeData(list = userSessions)
-        })
-
-        _sessionTimeDataDay3.addSource(timeZoneId, {
-            _sessionTimeDataDay3.value = _sessionTimeDataDay3.value?.apply {
-                timeZoneId = it
-            } ?: SessionTimeData(timeZoneId = it)
-        })
-        _sessionTimeDataDay3.addSource(loadSessionsResult, {
-            val userSessions =
-                (it as? Result.Success)?.data?.userSessionsPerDay?.get(ConferenceDays[2])
-                    ?: return@addSource
-            _sessionTimeDataDay3.value = _sessionTimeDataDay3.value?.apply {
-                list = userSessions
-            } ?: SessionTimeData(list = userSessions)
-        })
-
+            sessionTimeDataDay.addSource(loadSessionsResult) {
+                val userSessions =
+                    (it as? Result.Success)?.data?.userSessionsPerDay
+                        ?.get(getConferenceDaysUseCase()[index])
+                            ?: return@addSource
+                sessionTimeDataDay.value = sessionTimeDataDay.value?.apply {
+                    list = userSessions
+                } ?: SessionTimeData(list = userSessions)
+            }
+        }
         swipeRefreshing = swipeRefreshResult.map {
             // Whenever refresh finishes, stop the indicator, whatever the result
             false
@@ -320,11 +291,8 @@ class ScheduleViewModel @Inject constructor(
     /**
      * Called from each schedule day fragment to load data.
      */
-    fun getSessionTimeDataForDay(day: Int): LiveData<SessionTimeData> = when (day) {
-        0 -> sessionTimeDataDay1
-        1 -> sessionTimeDataDay2
-        2 -> sessionTimeDataDay3
-        else -> {
+    fun getSessionTimeDataForDay(day: Int): LiveData<SessionTimeData> {
+        return sessionTimeDataDay.getOrElse(day) {
             val exception = Exception("Invalid day: $day")
             Timber.e(exception)
             throw exception
@@ -448,7 +416,8 @@ class ScheduleViewModel @Inject constructor(
             starEventUseCase.execute(
                 StarEventParameter(
                     it,
-                    userSession.userEvent.copy(isStarred = newIsStarredState)
+                    userSession.copy(
+                        userEvent = userSession.userEvent.copy(isStarred = newIsStarredState))
                 )
             )
         }

@@ -48,4 +48,8 @@ object TestDataSource : ConferenceDataSource {
 }
 
 /** ConferenceDataRepository for tests */
-object TestDataRepository : ConferenceDataRepository(TestDataSource, TestDataSource)
+object TestDataRepository : ConferenceDataRepository(TestDataSource, TestDataSource) {
+    override fun getConferenceDays(): List<ConferenceDay> {
+        return TestData.TestConferenceDays
+    }
+}

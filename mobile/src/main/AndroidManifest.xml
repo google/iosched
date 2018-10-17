@@ -64,7 +64,17 @@
         <activity
             android:name=".ui.sessiondetail.SessionDetailActivity"
             android:parentActivityName=".ui.MainActivity"
-            android:theme="@style/AppTheme.SessionDetails" />
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.SessionDetails">
+
+            <intent-filter android:label="Session detail">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <!-- Accepts URIs that begin with "adssched://sessionId” -->
+                <data android:scheme="adssched"
+                    android:host="sessions" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.speaker.SpeakerActivity"

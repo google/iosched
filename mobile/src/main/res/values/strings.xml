@@ -306,10 +306,8 @@
     <!-- Day labels for schedule -->
     <string name="day1" translation_description="Label for the first day of the conference">Day 1</string>
     <string name="day2" translation_description="Label for the second day of the conference">Day 2</string>
-    <string name="day3" translation_description="Label for the third day of the conference">Day 3</string>
-    <string name="day1_date" translation_description="Actual date of the first day of the conference">May 8</string>
-    <string name="day2_date" translation_description="Actual date of the second day of the conference">May 9</string>
-    <string name="day3_date" translation_description="Actual date of the third day of the conference">May 10</string>
+    <string name="day1_date" translation_description="Actual date of the first day of the conference">Nov 7</string>
+    <string name="day2_date" translation_description="Actual date of the second day of the conference">Nov 8</string>
 
     <!-- Speaker -->
     <string name="speaker_link_website" translation_description="The label for a link to a speaker's Website">Website</string>

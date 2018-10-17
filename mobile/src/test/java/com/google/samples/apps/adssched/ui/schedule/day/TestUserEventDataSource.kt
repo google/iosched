@@ -18,6 +18,7 @@ package com.google.samples.apps.adssched.ui.schedule.day
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.samples.apps.adssched.model.SessionId
 import com.google.samples.apps.adssched.model.userdata.UserEvent
 import com.google.samples.apps.adssched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.adssched.shared.data.userevent.UserEventResult
@@ -63,4 +64,8 @@ class TestUserEventDataSource(
     override fun getUserEvents(userId: String): List<UserEvent> = TestData.userEvents
 
     override fun clearSingleEventSubscriptions() {}
+
+    override fun getUserEvent(userId: String, eventId: SessionId): UserEvent? {
+        TODO("not implemented")
+    }
 }

@@ -72,7 +72,7 @@ class SharedPreferenceStorage @Inject constructor(context: Context) :
         by BooleanPreference(prefs, PREF_NOTIFICATIONS_SHOWN, false)
 
     override var preferToReceiveNotifications
-        by BooleanPreference(prefs, PREF_RECEIVE_NOTIFICATIONS, true)
+        by BooleanPreference(prefs, PREF_RECEIVE_NOTIFICATIONS, false)
 
     override var snackbarIsStopped by BooleanPreference(prefs, PREF_SNACKBAR_IS_STOPPED, false)
 
