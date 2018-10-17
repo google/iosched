@@ -22,6 +22,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.samples.apps.adssched.databinding.DialogSignOutBinding
 import com.google.samples.apps.adssched.shared.domain.internal.DefaultScheduler
@@ -71,8 +72,9 @@ class SignOutDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInjec
             viewModel = signOutViewModel
         }
 
-        signOutViewModel.performSignInEvent.observe(this, EventObserver { request ->
-            if (request == RequestSignOut) {
+        signOutViewModel.performSignInEvent.observe(this, Observer { request ->
+            if (request.peekContent() == RequestSignOut) {
+                request.getContentIfNotHandled()
                 context?.let {
                     DefaultScheduler.execute {
                         signInHandler.signOut(it) {

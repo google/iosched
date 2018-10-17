@@ -71,12 +71,16 @@ class SignInDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInject
             viewModel = signInViewModel
         }
 
-        signInViewModel.performSignInEvent.observe(requireActivity(), EventObserver { request ->
-            if (request == RequestSignIn) {
-                signInHandler.makeSignInIntent().observe(requireActivity(), Observer {
-                    startActivityForResult(it, SIGN_IN_ACTIVITY_REQUEST_CODE)
-                    dismiss()
-                })
+        signInViewModel.performSignInEvent.observe(this, Observer { request ->
+            if (request.peekContent() == RequestSignIn) {
+                request.getContentIfNotHandled()
+                activity?.let {
+                    signInHandler.makeSignInIntent().observe(this, Observer {
+                        startActivityForResult(it, SIGN_IN_ACTIVITY_REQUEST_CODE)
+                        dismiss()
+                    })
+                }
+
             }
         })
 
