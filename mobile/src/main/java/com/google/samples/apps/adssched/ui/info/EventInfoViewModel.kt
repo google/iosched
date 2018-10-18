@@ -52,6 +52,11 @@ class EventInfoViewModel @Inject constructor(
     val openUrlEvent: LiveData<Event<String>>
         get() = _openUrlEvent
 
+    // TODO: Enable when final
+    private val _showWifi = MutableLiveData<Boolean>().apply { value = false }
+    val showWifi: LiveData<Boolean>
+        get() = _showWifi
+
     init {
         loadWifiInfoUseCase(Unit, _wifiConfig)
         wifiSsid = _wifiConfig.map {
