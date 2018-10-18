@@ -113,13 +113,9 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="TextAppearance.ADSSched.BottomNavigationView" parent="@style/Widget.MaterialComponents.BottomNavigationView.Colored">
+    <style name="TextAppearance.ADSSched.BottomNavigationView" parent="@style/TextAppearance.MaterialComponents.Caption">
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textColor">@color/bottom_nav_item</item>
-    </style>
-
-    <style name="TextAppearance.ADSSched.BottomNavigationView.Active">
-        <item name="android:textStyle">bold</item>
         <item name="android:textSize">14sp</item>
     </style>
 
@@ -162,9 +158,9 @@
 
     <style name="Widget.ADSSched.BottomNav" parent="@style/Widget.MaterialComponents.BottomNavigationView.Colored">
         <item name="itemIconTint">@color/bottom_nav_item</item>
-        <item name="itemTextAppearanceActive">@style/TextAppearance.ADSSched.BottomNavigationView.Active</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.ADSSched.BottomNavigationView</item>
         <item name="itemTextAppearanceInactive">@style/TextAppearance.ADSSched.BottomNavigationView</item>
-        <item name="labelVisibilityMode">selected</item>
+        <item name="labelVisibilityMode">labeled</item>
         <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Dark</item>
     </style>
 
