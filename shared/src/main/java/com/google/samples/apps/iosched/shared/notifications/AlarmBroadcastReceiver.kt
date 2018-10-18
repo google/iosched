@@ -44,6 +44,7 @@ import com.google.samples.apps.iosched.shared.result.Result.Success
 import dagger.android.DaggerBroadcastReceiver
 import org.threeten.bp.Instant
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -159,8 +160,9 @@ class AlarmBroadcastReceiver : DaggerBroadcastReceiver() {
         val notification = NotificationCompat.Builder(context, ALARM_BROADCAST_CHANNEL_ID)
             .setContentTitle(session.title)
             .setContentText(context.getString(R.string.starting_soon))
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_notif_session_starting)
             .setContentIntent(resultPendingIntent)
+            .setTimeoutAfter(TimeUnit.MINUTES.toMillis(10)) // Backup (cancelled with receiver)
             .setAutoCancel(true)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .build()
