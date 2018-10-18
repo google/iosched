@@ -48,6 +48,7 @@ object FakeConferenceDataSource : ConferenceDataSource {
 
         var lastFirstSession: Session? = null
         // Rename the first sessions of each day
+
         ConferenceDays.forEachIndexed daysForEach@{ index, day ->
             val firstSessionIndex =
                 sessions.indexOfFirst { it.startTime >= day.start && it.endTime <= day.end }
