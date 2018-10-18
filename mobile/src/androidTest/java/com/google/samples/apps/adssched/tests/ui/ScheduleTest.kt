@@ -36,7 +36,6 @@ import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
 import com.google.samples.apps.adssched.R
 import com.google.samples.apps.adssched.shared.data.FakeConferenceDataSource
-import com.google.samples.apps.adssched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.adssched.tests.FixedTimeRule
 import com.google.samples.apps.adssched.tests.SetPreferencesRule
 import com.google.samples.apps.adssched.tests.SyncTaskExecutorRule
@@ -85,9 +84,13 @@ class ScheduleTest {
     @Test
     fun allDays_areClicked_showsSessions() {
         // Each of the days should be displayed
-        ConferenceDays.forEachIndexed { i, conferenceDay ->
-            val dayTitle = conferenceDay.formatMonthDay()
+        getDayTitles().forEachIndexed { i, dayTitle ->
             onView(withText(dayTitle)).perform(click())
+            onView(allOf(withId(R.id.recyclerview), hasFocus()))
+                .perform(RecyclerViewActions.scrollTo<SessionViewHolder>(
+                    hasDescendant(withText("First session day ${i + 1}"))
+                )
+            )
             onView(withText("First session day ${i + 1}"))
                 .check(matches(isDisplayed()))
         }
@@ -100,8 +103,8 @@ class ScheduleTest {
 
         onView(
             allOf(
-                withId(R.id.session_detail_with_video_title),
-                withText("First session day 1")
+                withText("First session day 1"),
+                isDisplayed() // There are two views with the text, only one is displayed.
             )
         )
             .check(matches(isDisplayed()))
@@ -220,6 +223,15 @@ class ScheduleTest {
             throw Exception(
                 "Device must have animations disabled. " +
                     "Developer options -> Animator duration scale"
+            )
+        }
+    }
+
+    private fun getDayTitles(): List<String>{
+        return InstrumentationRegistry.getTargetContext().let { context ->
+            listOf(
+                context.getString(R.string.day1_date),
+                context.getString(R.string.day2_date)
             )
         }
     }

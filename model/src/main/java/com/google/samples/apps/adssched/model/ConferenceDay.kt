@@ -20,7 +20,7 @@ import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import java.util.Locale
 
-private const val formatPattern = "MMMM d"
+private const val formatPattern = "MMM d"
 
 val FORMATTER_MONTH_DAY: DateTimeFormatter =
     DateTimeFormatter.ofPattern(formatPattern, Locale.getDefault())
