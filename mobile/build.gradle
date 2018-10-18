@@ -29,6 +29,8 @@ android {
         versionName rootProject.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+        vectorDrawables.useSupportLibrary true
+
         manifestPlaceholders = [crashlyticsEnabled: true]
 
     }
