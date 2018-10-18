@@ -66,7 +66,8 @@ class InfoTest {
 
     @Test
     fun info_basicViewsDisplayed() {
-        onView(withText(resources.getString(R.string.wifi_header))).check(matches(isDisplayed()))
+        onView(withText(resources.getString(R.string.event_types_header)))
+            .check(matches(isDisplayed()))
         // Travel tab
         onView(allOf(
             withParent(withClassName(endsWith("TabView"))),

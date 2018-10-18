@@ -25,10 +25,12 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
+import com.google.samples.apps.adssched.R
 import com.google.samples.apps.adssched.R.id
 import com.google.samples.apps.adssched.tests.SetPreferencesRule
 import com.google.samples.apps.adssched.tests.SyncTaskExecutorRule
 import com.google.samples.apps.adssched.ui.MainActivity
+import org.hamcrest.CoreMatchers.allOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -60,6 +62,7 @@ class AgendaTest {
 
     @Test
     fun showsAgenda() {
-        onView(withText("Breakfast")).check(matches(isDisplayed()))
+        onView(allOf(withText("Agenda"), withId(R.id.title)))
+            .check(matches(isDisplayed()))
     }
 }
