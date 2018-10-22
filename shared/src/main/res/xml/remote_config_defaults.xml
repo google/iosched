@@ -17,10 +17,10 @@
 <defaultsMap>
     <entry>
         <key>wifi_ssid</key>
-        <value>io2018</value>
+        <value>androiddevsummit</value>
     </entry>
     <entry>
         <key>wifi_password</key>
-        <value>makegoodthings</value>
+        <value>androiddevsummit</value>
     </entry>
 </defaultsMap>
