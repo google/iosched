@@ -13,12 +13,15 @@
     ],
     "sessions": [
         {
-            "description": "",
+            "description": "The keynote kicks off on November 7 at 10AM PST, where you'll hear directly from Dave Burke and others on the present and future of Android development.",
             "endTimestamp": 1541617200000,
             "id": "9417b6a8-7c52-53d0-9301-0ddb2e265f12",
             "relatedSessions": [],
             "room": "3ec7bc89-46a6-5480-8c16-98b4e639cf98",
-            "speakers": [],
+            "speakers": [
+                "93f5c555-015c-5f52-b7e6-71a9eb5f2514",
+                "709c6371-7802-5b4a-895c-8530095ae50f"
+            ],
             "startTimestamp": 1541613600000,
             "tagNames": [
                 "topic_keynote"
@@ -34,8 +37,7 @@
             "room": "3ec7bc89-46a6-5480-8c16-98b4e639cf98",
             "speakers": [
                 "558bc577-8151-5918-b68f-98b360a60e39",
-                "2dd4dd15-0fd4-5db1-84c7-e4af7b598995",
-                "ec759db2-c261-5f4c-bd65-4dcd6b1aefe1"
+                "2dd4dd15-0fd4-5db1-84c7-e4af7b598995"
             ],
             "startTimestamp": 1541618100000,
             "tagNames": [
@@ -192,11 +194,13 @@
             "relatedSessions": [],
             "room": "3ec7bc89-46a6-5480-8c16-98b4e639cf98",
             "speakers": [
-                "ea5c51ed-63ec-5692-b046-29ace083cd75"
+                "ea5c51ed-63ec-5692-b046-29ace083cd75",
+                "684f3caa-f8d3-5545-a920-178f54396ecb"
             ],
             "startTimestamp": 1541623200000,
             "tagNames": [
                 "topic_google_play",
+                "topic_platform",
                 "type_lightning_talk"
             ],
             "title": "Best Practices for Building Privacy-Friendly Apps",
@@ -232,7 +236,8 @@
             ],
             "startTimestamp": 1541621520000,
             "tagNames": [
-                "topic_other",
+                "topic_wear",
+                "topic_accessibility",
                 "type_lightning_talk"
             ],
             "title": "Kotlin + Watch Faces",
@@ -262,7 +267,7 @@
             "relatedSessions": [],
             "room": "31156ab0-45fa-54d9-a99e-1606ae89a213",
             "speakers": [
-                "282ccd67-3719-5d1d-8db3-0e22b84d8607"
+                "c9ec39bf-1a53-5ea4-9453-91d227744571"
             ],
             "startTimestamp": 1541622360000,
             "tagNames": [
@@ -316,8 +321,7 @@
             "speakers": [
                 "a4c0ee9f-b261-56c7-82ff-7d44d0b9119a",
                 "63485279-3bdc-5184-9105-b242597db93f",
-                "ba76b3ce-9b1a-58bd-81b6-03c645712f74",
-                "3b9e0980-0072-5c93-9d36-69f86ba07add"
+                "ba76b3ce-9b1a-58bd-81b6-03c645712f74"
             ],
             "startTimestamp": 1541628000000,
             "tagNames": [
@@ -360,6 +364,7 @@
             ],
             "startTimestamp": 1541631000000,
             "tagNames": [
+                "topic_auto",
                 "topic_platform",
                 "type_session"
             ],
@@ -373,13 +378,13 @@
             "relatedSessions": [],
             "room": "3ec7bc89-46a6-5480-8c16-98b4e639cf98",
             "speakers": [
-                "63cac32a-c6a8-5168-8223-9520b438522b",
-                "5fe0c024-0e6d-54b0-ab58-6ee0095f7f21"
+                "63cac32a-c6a8-5168-8223-9520b438522b"
             ],
             "startTimestamp": 1541632200000,
             "tagNames": [
                 "topic_platform",
                 "topic_jetpack",
+                "topic_chrome_os",
                 "type_session"
             ],
             "title": "Developing for Android & Large Screens",
@@ -406,7 +411,7 @@
         {
             "description": "Based on our experience with 3rd party developers that are integrating with Slices, the presentation shares best practices for implementing Android Slices to be effectively presented on Search, and demonstrates Slices UI for a few verticals - code + demos + slides.",
             "endTimestamp": 1541633400000,
-            "id": "d545d3fa-b289-537a-9fb0-b44b4ca2d7d4",
+            "id": "4ae489d7-7c97-577e-a3c4-0bb6fbc3dd95",
             "relatedSessions": [],
             "room": "31156ab0-45fa-54d9-a99e-1606ae89a213",
             "speakers": [
@@ -419,26 +424,27 @@
                 "topic_jetpack",
                 "type_session"
             ],
-            "title": "Best Practices to Create Android Slices",
+            "title": "Android Slices Best Practices",
             "type": "Session"
         },
         {
             "description": "Join the Gradle engineering team in Android Studio as they walk through a list of best practices to optimize build speed with Gradle.",
             "endTimestamp": 1541637600000,
-            "id": "bcf788a1-235e-5a1d-891f-5b6e3bf10f42",
+            "id": "72a3c1ba-0777-51d9-ae63-a9a64be185a6",
             "relatedSessions": [],
             "room": "3ec7bc89-46a6-5480-8c16-98b4e639cf98",
             "speakers": [
-                "6ddd4d39-d796-531f-b92c-53b522708412",
                 "d013dc47-8334-5112-a410-4d50852de904",
-                "c86f2bc1-461e-561b-acf5-4035dca4be83"
+                "6ddd4d39-d796-531f-b92c-53b522708412",
+                "9856284a-2f69-5357-a836-cc8c4877b905",
+                "9e13dfde-79b9-54f3-af34-4b6a74b5bcc3"
             ],
             "startTimestamp": 1541635200000,
             "tagNames": [
                 "topic_studio",
                 "type_session"
             ],
-            "title": "Gradle Build Best Practices",
+            "title": "What's New With The Android Gradle Plugin",
             "type": "Session"
         },
         {
@@ -452,6 +458,7 @@
             ],
             "startTimestamp": 1541635200000,
             "tagNames": [
+                "topic_tv",
                 "topic_platform",
                 "topic_jetpack",
                 "type_session"
@@ -466,9 +473,8 @@
             "relatedSessions": [],
             "room": "3ec7bc89-46a6-5480-8c16-98b4e639cf98",
             "speakers": [
-                "687edff2-ef0d-50d5-93e0-1ca18b8033d9",
-                "b6e9dd4e-e601-5866-891a-536d9e598561",
-                "cf8b8a10-7329-59c9-83fa-1f3b141a2f75"
+                "cf8b8a10-7329-59c9-83fa-1f3b141a2f75",
+                "5e59b748-c72d-546d-abbe-ed96d9c5b9c9"
             ],
             "startTimestamp": 1541638200000,
             "tagNames": [
@@ -498,20 +504,20 @@
             "type": "Session"
         },
         {
-            "description": "This talk shows how developers can get the best out of ML Kit, looking at patterns and anti-patterns of using the APIs. It covers the Base APIs launched at I/O (Text Recognition, Image Labeling, Barcode Scanning, Face Detection) and new APIs coming in the future (Smart Reply, Face Contour, Language Detection, Translate).",
+            "description": "This talk shows how developers can get the best out of ML Kit, providing various tips of using the APIs. It covers the Base APIs launched at I/O (Text Recognition, Image Labeling, Barcode Scanning, Face Detection) as well as the Custom Model API.",
             "endTimestamp": 1541642400000,
-            "id": "a68aca11-4a82-5890-8ef6-c3894b434cec",
+            "id": "e99f3dc9-6b37-5d70-947f-cd2e95a3a5b9",
             "relatedSessions": [],
             "room": "3ec7bc89-46a6-5480-8c16-98b4e639cf98",
             "speakers": [
-                "626606d6-e904-5bda-a6fe-9c1fd268eca6"
+                "b1320582-48a3-5c15-9f1e-cc5ac9628ae8"
             ],
             "startTimestamp": 1541641200000,
             "tagNames": [
                 "topic_other",
                 "type_session"
             ],
-            "title": "Getting the Best of On-Device ML Across Android and iOS",
+            "title": "Getting the Best of On-Device ML with ML Kit",
             "type": "Session"
         },
         {
@@ -576,9 +582,7 @@
             "id": "c82ef717-44b0-5276-aff3-9ffba963b69b",
             "relatedSessions": [],
             "room": "3ec7bc89-46a6-5480-8c16-98b4e639cf98",
-            "speakers": [
-                "9d0689f0-ec2e-526b-a96b-a4026bb02648"
-            ],
+            "speakers": [],
             "startTimestamp": 1541698200000,
             "tagNames": [
                 "topic_other",
@@ -666,7 +670,7 @@
             "room": "31156ab0-45fa-54d9-a99e-1606ae89a213",
             "speakers": [
                 "48c64d80-7323-5a72-b121-9a493b234138",
-                "0df8e25b-d5b3-5ebb-8c00-c6c1a121cf9d"
+                "c80b68cd-91ac-5c0d-82f9-5db8859fbbd8"
             ],
             "startTimestamp": 1541702400000,
             "tagNames": [
@@ -692,6 +696,9 @@
                 "topic_accessibility",
                 "topic_studio",
                 "topic_google_play",
+                "topic_auto",
+                "topic_wear",
+                "topic_tv",
                 "type_fireside_chat"
             ],
             "title": "Android Fireside Chat",
@@ -740,7 +747,6 @@
             "relatedSessions": [],
             "room": "31156ab0-45fa-54d9-a99e-1606ae89a213",
             "speakers": [
-                "383af953-e55b-578e-ae30-22def23c99be",
                 "ebfbabd0-2781-5454-8b9b-4cabc93a8869",
                 "800ccd13-9c82-5b28-b51b-ce5bd384e63d"
             ],
@@ -817,6 +823,7 @@
             "tagNames": [
                 "topic_jetpack",
                 "topic_accessibility",
+                "topic_material",
                 "type_session"
             ],
             "title": "Re-stitching Plaid with Kotlin",
@@ -834,7 +841,7 @@
             ],
             "startTimestamp": 1541717100000,
             "tagNames": [
-                "topic_other",
+                "topic_material",
                 "type_session"
             ],
             "title": "The Components of Material Design",
@@ -980,11 +987,6 @@
             "id": "22eb3ebf-1124-5c39-b609-cf79d5e8fd81",
             "name": "Rasekh Rifaat"
         },
-        "282ccd67-3719-5d1d-8db3-0e22b84d8607": {
-            "bio": "",
-            "id": "282ccd67-3719-5d1d-8db3-0e22b84d8607",
-            "name": "Iliyan Malchev"
-        },
         "2bac9e1e-e6b4-54c2-9bee-d79d122fe078": {
             "bio": "",
             "id": "2bac9e1e-e6b4-54c2-9bee-d79d122fe078",
@@ -1014,16 +1016,6 @@
             "bio": "",
             "id": "35e1b029-5b7c-5212-9374-7b1934d4fb15",
             "name": "Nate Fischer"
-        },
-        "383af953-e55b-578e-ae30-22def23c99be": {
-            "bio": "",
-            "id": "383af953-e55b-578e-ae30-22def23c99be",
-            "name": "Huan Ren"
-        },
-        "3b9e0980-0072-5c93-9d36-69f86ba07add": {
-            "bio": "",
-            "id": "3b9e0980-0072-5c93-9d36-69f86ba07add",
-            "name": "John Ayres"
         },
         "3e6de01e-83f1-5f3f-85d2-5b9531f43966": {
             "bio": "",
@@ -1070,15 +1062,15 @@
             "id": "558bc577-8151-5918-b68f-98b360a60e39",
             "name": "Jose Alc\u00e9rreca"
         },
+        "5e59b748-c72d-546d-abbe-ed96d9c5b9c9": {
+            "bio": "",
+            "id": "5e59b748-c72d-546d-abbe-ed96d9c5b9c9",
+            "name": "Chris Sinco"
+        },
         "5fe0c024-0e6d-54b0-ab58-6ee0095f7f21": {
             "bio": "",
             "id": "5fe0c024-0e6d-54b0-ab58-6ee0095f7f21",
             "name": "Emilie Roberts"
-        },
-        "626606d6-e904-5bda-a6fe-9c1fd268eca6": {
-            "bio": "",
-            "id": "626606d6-e904-5bda-a6fe-9c1fd268eca6",
-            "name": "Pannag Sanketi"
         },
         "63485279-3bdc-5184-9105-b242597db93f": {
             "bio": "",
@@ -1094,6 +1086,11 @@
             "bio": "",
             "id": "65ed632e-dfe3-559a-a318-5930dd33468e",
             "name": "Naheed Vora"
+        },
+        "684f3caa-f8d3-5545-a920-178f54396ecb": {
+            "bio": "",
+            "id": "684f3caa-f8d3-5545-a920-178f54396ecb",
+            "name": "Seb Grubb"
         },
         "687edff2-ef0d-50d5-93e0-1ca18b8033d9": {
             "bio": "",
@@ -1129,6 +1126,11 @@
             "bio": "",
             "id": "6ddd4d39-d796-531f-b92c-53b522708412",
             "name": "Leo Sei"
+        },
+        "709c6371-7802-5b4a-895c-8530095ae50f": {
+            "bio": "",
+            "id": "709c6371-7802-5b4a-895c-8530095ae50f",
+            "name": "Stephanie Cuthbertson"
         },
         "73b50c2f-591f-5391-a370-5608658ebb12": {
             "bio": "",
@@ -1195,15 +1197,25 @@
             "id": "934cfe4c-728a-503b-86af-1d2f72f2853a",
             "name": "Gautham Sajith"
         },
+        "93f5c555-015c-5f52-b7e6-71a9eb5f2514": {
+            "bio": "",
+            "id": "93f5c555-015c-5f52-b7e6-71a9eb5f2514",
+            "name": "Dave Burke"
+        },
+        "9856284a-2f69-5357-a836-cc8c4877b905": {
+            "bio": "",
+            "id": "9856284a-2f69-5357-a836-cc8c4877b905",
+            "name": "Chris Warrington"
+        },
         "9b9cfc2e-7f4a-5f52-b4ce-003b45614b4c": {
             "bio": "",
             "id": "9b9cfc2e-7f4a-5f52-b4ce-003b45614b4c",
             "name": "Tim Murray"
         },
-        "9d0689f0-ec2e-526b-a96b-a4026bb02648": {
+        "9e13dfde-79b9-54f3-af34-4b6a74b5bcc3": {
             "bio": "",
-            "id": "9d0689f0-ec2e-526b-a96b-a4026bb02648",
-            "name": "To Be Announced"
+            "id": "9e13dfde-79b9-54f3-af34-4b6a74b5bcc3",
+            "name": "Izabela Orlowska"
         },
         "a0c318cc-6785-5449-bb93-d29ee014fd55": {
             "bio": "",
@@ -1224,6 +1236,11 @@
             "bio": "",
             "id": "afbad98a-58f3-548a-bca7-9e7be3d3080a",
             "name": "Kodlee Yin"
+        },
+        "b1320582-48a3-5c15-9f1e-cc5ac9628ae8": {
+            "bio": "",
+            "id": "b1320582-48a3-5c15-9f1e-cc5ac9628ae8",
+            "name": "Dong Chen"
         },
         "b6e9dd4e-e601-5866-891a-536d9e598561": {
             "bio": "",
@@ -1250,20 +1267,25 @@
             "id": "c35b80f3-f5de-5558-afd9-b7c5725926fd",
             "name": "Jingyu Shi"
         },
+        "c80b68cd-91ac-5c0d-82f9-5db8859fbbd8": {
+            "bio": "",
+            "id": "c80b68cd-91ac-5c0d-82f9-5db8859fbbd8",
+            "name": "Riccardo Govoni"
+        },
         "c813e298-645c-5a62-ba58-4221c20762b2": {
             "bio": "",
             "id": "c813e298-645c-5a62-ba58-4221c20762b2",
             "name": "Artur Tsurkan"
         },
-        "c86f2bc1-461e-561b-acf5-4035dca4be83": {
-            "bio": "",
-            "id": "c86f2bc1-461e-561b-acf5-4035dca4be83",
-            "name": "Xavier Ducrohet"
-        },
         "c8de2f07-a9b4-54ce-a283-0e8a34c9e5bc": {
             "bio": "",
             "id": "c8de2f07-a9b4-54ce-a283-0e8a34c9e5bc",
             "name": "Elliot Hughes"
+        },
+        "c9ec39bf-1a53-5ea4-9453-91d227744571": {
+            "bio": "",
+            "id": "c9ec39bf-1a53-5ea4-9453-91d227744571",
+            "name": "Hung-ying Tyan"
         },
         "cf8b8a10-7329-59c9-83fa-1f3b141a2f75": {
             "bio": "",
@@ -1299,11 +1321,6 @@
             "bio": "",
             "id": "ebfbabd0-2781-5454-8b9b-4cabc93a8869",
             "name": "Frank Yang"
-        },
-        "ec759db2-c261-5f4c-bd65-4dcd6b1aefe1": {
-            "bio": "",
-            "id": "ec759db2-c261-5f4c-bd65-4dcd6b1aefe1",
-            "name": "Sergey Vasilinetc"
         },
         "f0dffe04-3cfc-516c-a90a-09d41762de64": {
             "bio": "",
@@ -1368,7 +1385,7 @@
         {
             "category": "topic",
             "color": "#94C27E",
-            "fontColor": "#202124",
+            "fontColor": "#FFFFFF",
             "id": "b4e34828-0116-5b0e-9a95-e366979de8a1",
             "name": "Jetpack",
             "order_in_category": 2,
@@ -1385,8 +1402,8 @@
         },
         {
             "category": "topic",
-            "color": "#FDC93E",
-            "fontColor": "#202124",
+            "color": "#FF7E00",
+            "fontColor": "#FFFFFF",
             "id": "1602af24-46f8-5659-ab56-482d60047a3e",
             "name": "Platform",
             "order_in_category": 4,
@@ -1394,12 +1411,57 @@
         },
         {
             "category": "topic",
-            "color": "#FF7E00",
+            "color": "#FDC93E",
             "fontColor": "#202124",
-            "id": "f2fc220e-2629-5628-b8d1-82987c2fa070",
-            "name": "Studio",
+            "id": "d1f91120-48c3-5495-9605-a2dcd3d6ff18",
+            "name": "Android Studio",
             "order_in_category": 5,
             "tag": "topic_studio"
+        },
+        {
+            "category": "topic",
+            "color": "#FAA44F",
+            "fontColor": "#202124",
+            "id": "f7ac02bb-6f79-5905-afdb-5e4b6b7e3ddc",
+            "name": "Wear OS",
+            "order_in_category": 5,
+            "tag": "topic_wear"
+        },
+        {
+            "category": "topic",
+            "color": "#9BDD7C",
+            "fontColor": "#202124",
+            "id": "7198c6c5-ecc0-5edf-b03f-9a7fd90f5b45",
+            "name": "Chrome OS",
+            "order_in_category": 5,
+            "tag": "topic_chrome_os"
+        },
+        {
+            "category": "topic",
+            "color": "#C3E3B4",
+            "fontColor": "#202124",
+            "id": "21c49274-8aaa-50d2-8dd4-cc4c54506def",
+            "name": "Android Auto",
+            "order_in_category": 5,
+            "tag": "topic_auto"
+        },
+        {
+            "category": "topic",
+            "color": "#73BBF5",
+            "fontColor": "#202124",
+            "id": "93fc5a41-b825-5527-a80c-e6a0e8635b37",
+            "name": "Android TV",
+            "order_in_category": 5,
+            "tag": "topic_tv"
+        },
+        {
+            "category": "topic",
+            "color": "#2196F3",
+            "fontColor": "#202124",
+            "id": "81da4222-83da-572f-8f25-9b0b02974685",
+            "name": "Material Design",
+            "order_in_category": 5,
+            "tag": "topic_material"
         },
         {
             "category": "topic",
