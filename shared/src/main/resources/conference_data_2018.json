@@ -1375,56 +1375,56 @@
         },
         {
             "category": "topic",
-            "color": "#A7D7FE",
+            "color": "#cce9c2",
             "fontColor": "#202124",
             "id": "bc1340e2-d2f8-570b-8982-83f6a4d5d824",
             "name": "Google Play",
-            "order_in_category": 1,
+            "order_in_category": 5,
             "tag": "topic_google_play"
-        },
-        {
-            "category": "topic",
-            "color": "#94C27E",
-            "fontColor": "#FFFFFF",
-            "id": "b4e34828-0116-5b0e-9a95-e366979de8a1",
-            "name": "Jetpack",
-            "order_in_category": 2,
-            "tag": "topic_jetpack"
-        },
-        {
-            "category": "topic",
-            "color": "#D7FAC7",
-            "fontColor": "#202124",
-            "id": "efd3c281-11fb-53af-8002-3f7482febeee",
-            "name": "Kotlin",
-            "order_in_category": 3,
-            "tag": "topic_accessibility"
-        },
-        {
-            "category": "topic",
-            "color": "#FF7E00",
-            "fontColor": "#FFFFFF",
-            "id": "1602af24-46f8-5659-ab56-482d60047a3e",
-            "name": "Platform",
-            "order_in_category": 4,
-            "tag": "topic_platform"
         },
         {
             "category": "topic",
             "color": "#FDC93E",
             "fontColor": "#202124",
-            "id": "d1f91120-48c3-5495-9605-a2dcd3d6ff18",
-            "name": "Android Studio",
-            "order_in_category": 5,
-            "tag": "topic_studio"
+            "id": "b4e34828-0116-5b0e-9a95-e366979de8a1",
+            "name": "Jetpack",
+            "order_in_category": 6,
+            "tag": "topic_jetpack"
+        },
+        {
+            "category": "topic",
+            "color": "#FFEAB3",
+            "fontColor": "#202124",
+            "id": "efd3c281-11fb-53af-8002-3f7482febeee",
+            "name": "Kotlin",
+            "order_in_category": 7,
+            "tag": "topic_accessibility"
         },
         {
             "category": "topic",
             "color": "#FAA44F",
             "fontColor": "#202124",
+            "id": "1602af24-46f8-5659-ab56-482d60047a3e",
+            "name": "Platform",
+            "order_in_category": 10,
+            "tag": "topic_platform"
+        },
+        {
+            "category": "topic",
+            "color": "#A7D7FE",
+            "fontColor": "#202124",
+            "id": "d1f91120-48c3-5495-9605-a2dcd3d6ff18",
+            "name": "Android Studio",
+            "order_in_category": 2,
+            "tag": "topic_studio"
+        },
+        {
+            "category": "topic",
+            "color": "#FFCF9F",
+            "fontColor": "#202124",
             "id": "f7ac02bb-6f79-5905-afdb-5e4b6b7e3ddc",
             "name": "Wear OS",
-            "order_in_category": 5,
+            "order_in_category": 10,
             "tag": "topic_wear"
         },
         {
@@ -1433,43 +1433,43 @@
             "fontColor": "#202124",
             "id": "7198c6c5-ecc0-5edf-b03f-9a7fd90f5b45",
             "name": "Chrome OS",
-            "order_in_category": 5,
+            "order_in_category": 4,
             "tag": "topic_chrome_os"
-        },
-        {
-            "category": "topic",
-            "color": "#C3E3B4",
-            "fontColor": "#202124",
-            "id": "21c49274-8aaa-50d2-8dd4-cc4c54506def",
-            "name": "Android Auto",
-            "order_in_category": 5,
-            "tag": "topic_auto"
         },
         {
             "category": "topic",
             "color": "#73BBF5",
             "fontColor": "#202124",
+            "id": "21c49274-8aaa-50d2-8dd4-cc4c54506def",
+            "name": "Android Auto",
+            "order_in_category": 1,
+            "tag": "topic_auto"
+        },
+        {
+            "category": "topic",
+            "color": "#60A83E",
+            "fontColor": "#FFFFFF",
             "id": "93fc5a41-b825-5527-a80c-e6a0e8635b37",
             "name": "Android TV",
-            "order_in_category": 5,
+            "order_in_category": 3,
             "tag": "topic_tv"
         },
         {
             "category": "topic",
-            "color": "#2196F3",
+            "color": "#FF7E00",
             "fontColor": "#202124",
             "id": "81da4222-83da-572f-8f25-9b0b02974685",
             "name": "Material Design",
-            "order_in_category": 5,
+            "order_in_category": 8,
             "tag": "topic_material"
         },
         {
             "category": "topic",
-            "color": "#FFCF9F",
+            "color": "#CC99FF",
             "fontColor": "#202124",
             "id": "72ed0d12-f77a-5805-9f00-d479d0aa918a",
             "name": "Other",
-            "order_in_category": 6,
+            "order_in_category": 11,
             "tag": "topic_other"
         },
         {
@@ -1487,7 +1487,7 @@
             "fontColor": "#202124",
             "id": "0125fb41-bdb5-5000-bdc9-aa566192c1a7",
             "name": "Lightning Talk",
-            "order_in_category": 0,
+            "order_in_category": 2,
             "tag": "type_lightning_talk"
         },
         {
@@ -1496,7 +1496,7 @@
             "fontColor": "#202124",
             "id": "f22d813a-6d84-57bb-add6-f9120e4f4faf",
             "name": "Fireside Chat",
-            "order_in_category": 0,
+            "order_in_category": 1,
             "tag": "type_fireside_chat"
         }
     ]
