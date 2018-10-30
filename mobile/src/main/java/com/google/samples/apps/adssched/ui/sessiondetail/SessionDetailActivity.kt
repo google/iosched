@@ -82,6 +82,8 @@ class SessionDetailActivity : DaggerAppCompatActivity() {
         fun starterIntent(context: Context, sessionId: SessionId): Intent {
             return Intent(context, SessionDetailActivity::class.java).apply {
                 putExtra(EXTRA_SESSION_ID, sessionId)
+                // Add this flag to avoid big back stacks
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             }
         }
     }

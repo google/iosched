@@ -64,7 +64,6 @@
         <activity
             android:name=".ui.sessiondetail.SessionDetailActivity"
             android:parentActivityName=".ui.MainActivity"
-            android:launchMode="singleTask"
             android:theme="@style/AppTheme.SessionDetails">
 
             <intent-filter android:label="Session detail">
