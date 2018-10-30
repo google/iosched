@@ -95,7 +95,7 @@
 
     <!-- Sign in dialog -->
     <string name="dialog_sign_in_title" translation_description="The title of the dialog. When the user needs to sign in.">Sign in to customize your schedule</string>
-    <string name="dialog_sign_in_content" translation_description="The content of the dialog. When the user needs to sign in.">Sign in to save events, reserve seats and rate sessions (if an attendee). Actions will be synced from your account across app and site.</string>
+    <string name="dialog_sign_in_content" translation_description="The content of the dialog. When the user needs to sign in.">Sign in to save sessions and build your custom schedule. Saved sessions will be synced from your account across devices.</string>
     <string name="not_now" translation_description="The description of a button that the user doesn't want to sign in.">Not now</string>
     <string name="sign_in" translation_description="The description of a button to sign in.">Sign in</string>
     <string name="firebase_auth_no_network_connection" translation_description="Snackbar message when there is no network connectivity.">No internet connection</string>
@@ -103,7 +103,7 @@
 
     <!-- Sign out dialog -->
     <string name="dialog_sign_out_title" translation_description="The title of the dialog. Used to confirm that the user wants to sign out.">Sign out?</string>
-    <string name="dialog_sign_out_content" translation_description="The content of the dialog. Used to confirm that the user wants to sign out.">All saved events, seat reservations and session ratings (if an attendee) remain synced to your account.</string>
+    <string name="dialog_sign_out_content" translation_description="The content of the dialog. Used to confirm that the user wants to sign out.">All saved events remain synced to your account.</string>
     <string name="sign_out" translation_description="The description of a button to sign out.">Sign out</string>
 
     <!-- Cancel reservation dialog -->
@@ -144,7 +144,7 @@
     <string name="onboarding_welcome_to_google_i_o" translation_description="The welcome message shown at the onboarding screen of the app.">Welcome to the Android Dev Summit</string>
     <string name="onboarding_date_location" translation_description="The date and the place of Android Dev Summit 2018.">November 7–8, 2018\nMountain View, CA</string>
     <string name="onboarding_build_schedule" translation_description="The explanation title of the feature where user can choose which sessions to attend.">Build your own schedule</string>
-    <string name="onboarding_build_sched_benefits" translation_description="The explanation of the feature where user can choose which sessions to attend.">Build your custom Android Dev Summit experience and reserve seats if you\'re an attendee</string>
+    <string name="onboarding_build_sched_benefits" translation_description="The explanation of the feature where user can choose which sessions to attend.">Build your custom Android Dev Summit experience</string>
     <string name="onboarding_watch_live" translation_description="The explanation title of the feature where user can watch the Android Dev Summit sessions by live stream.">Watch Android Dev Summit Live</string>
     <string name="onboarding_join_online" translation_description="The explanation of the feature where user can watch Android Dev Summit sessions by live stream.">Join us online. We\'ll be streaming the keynotes and most sessions live.</string>
     <string name="onboarding_label_days" translation_description="The label for the display of the number of days until the conference starts">D</string>
