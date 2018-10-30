@@ -25,6 +25,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.NavUtils
 import androidx.core.app.ShareCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.net.toUri
 import androidx.core.view.doOnLayout
 import androidx.core.view.forEach
@@ -54,7 +55,6 @@ import javax.inject.Named
 
 class SessionDetailFragment : DaggerFragment() {
 
-    private var shareString = ""
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -87,17 +87,6 @@ class SessionDetailFragment : DaggerFragment() {
         val binding = FragmentSessionDetailBinding.inflate(inflater, container, false).apply {
             viewModel = sessionDetailViewModel
             setLifecycleOwner(this@SessionDetailFragment)
-            sessionDetailBottomAppBar.inflateMenu(R.menu.session_detail_menu)
-            sessionDetailBottomAppBar.setOnMenuItemClickListener { item ->
-                if (item.itemId == R.id.menu_item_share) {
-                    ShareCompat.IntentBuilder.from(activity)
-                        .setType("text/plain")
-                        .setText(shareString)
-                        .setChooserTitle(R.string.intent_chooser_session_detail)
-                        .startChooser()
-                }
-                true
-            }
             up.setOnClickListener {
                 NavUtils.navigateUpFromSameTask(requireActivity())
             }
@@ -131,11 +120,6 @@ class SessionDetailFragment : DaggerFragment() {
 
         sessionDetailViewModel.session.observe(this, Observer {
             room = it?.room
-            shareString = if (it == null) {
-                ""
-            } else {
-                getString(R.string.share_text_session_detail, it.title, it.sessionUrl)
-            }
         })
 
         sessionDetailViewModel.navigateToYouTubeAction.observe(this, EventObserver { youtubeUrl ->

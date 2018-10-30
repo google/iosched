@@ -53,28 +53,13 @@
             android:contentDescription="@string/navigate_up"
             app:srcCompat="@drawable/ic_arrow_back" />
 
-        <!-- Workaround for b/72034805 — BAB shadow can't extend beyond bounds nor concave shape -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/bab_fake_shadow" />
-
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/session_detail_bottom_app_bar"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:layout_gravity="bottom"
-            android:elevation="6dp"
-            app:contentInsetStart="@dimen/margin_normal"
-            app:fabAlignmentMode="end" />
-
         <com.google.samples.apps.adssched.widget.CheckableFab
             android:id="@+id/session_detail_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_anchor="@id/session_detail_bottom_app_bar"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/padding_borderless_button"
+            app:layout_anchorGravity="bottom|end"
             app:backgroundTint="@color/white"
             app:contentDescriptionChecked="@string/a11y_starred"
             app:contentDescriptionUnchecked="@string/a11y_unstarred"
