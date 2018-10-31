@@ -64,11 +64,11 @@
                     android:layout_marginStart="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_normal"
                     android:text="@string/wifi_header"
-                    app:goneUnless="@{viewModel.showWifi}"
-                    android:visibility="gone"
                     android:textAppearance="@style/TextAppearance.ADSSched.Subhead"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:goneUnless="@{viewModel.showWifi}" />
 
                 <TextView
                     android:id="@+id/wifi_network_label"
@@ -76,11 +76,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_normal"
                     android:text="@string/wifi_network_label"
-                    app:goneUnless="@{viewModel.showWifi}"
-                    android:visibility="gone"
                     android:textColor="?android:textColorPrimary"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@+id/wifi_header"/>
+                    app:layout_constraintTop_toBottomOf="@+id/wifi_header"
+                    app:goneUnless="@{viewModel.showWifi}" />
 
                 <TextView
                     android:id="@+id/wifi_password_label"
@@ -88,11 +88,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_small"
                     android:text="@string/wifi_password_label"
-                    app:goneUnless="@{viewModel.showWifi}"
-                    android:visibility="gone"
                     android:textColor="?android:textColorPrimary"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@+id/wifi_network_label" />
+                    app:layout_constraintTop_toBottomOf="@+id/wifi_network_label"
+                    app:goneUnless="@{viewModel.showWifi}" />
 
                 <androidx.constraintlayout.widget.Barrier
                     android:id="@+id/wifi_label_barrier"
@@ -107,12 +107,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_normal"
                     android:text="@{viewModel.wifiSsid}"
-                    app:goneUnless="@{viewModel.showWifi}"
-                    android:visibility="gone"
                     android:textColor="?android:textColorPrimary"
+                    android:visibility="gone"
                     app:layout_constraintBaseline_toBaselineOf="@+id/wifi_network_label"
                     app:layout_constraintEnd_toStartOf="@id/guideline_end"
                     app:layout_constraintStart_toEndOf="@+id/wifi_label_barrier"
+                    app:goneUnless="@{viewModel.showWifi}"
                     tools:text="IO2018" />
 
                 <TextView
@@ -123,14 +123,14 @@
                     android:background="@drawable/inset_borderless_btn"
                     android:gravity="center_vertical"
                     android:minHeight="@dimen/a11y_min_touch_target"
-                    app:goneUnless="@{viewModel.showWifi}"
-                    android:visibility="gone"
                     android:onClick="@{() -> viewModel.onWifiConnect()}"
                     android:text="@{viewModel.wifiPassword.concat(` ` + @string/tap_to_join_network)}"
                     android:textColor="@color/google_blue"
+                    android:visibility="gone"
                     app:layout_constraintBaseline_toBaselineOf="@id/wifi_password_label"
                     app:layout_constraintEnd_toStartOf="@id/guideline_end"
                     app:layout_constraintStart_toEndOf="@id/wifi_label_barrier"
+                    app:goneUnless="@{viewModel.showWifi}"
                     tools:text="whatislove" />
 
                 <TextView
@@ -154,46 +154,44 @@
                     app:eventTitle="@string/event_sessions_title"
                     app:eventTypeLogo="@drawable/event_header_sessions" />
 
-                <!--TODO: Marketing to confirm. -->
-                <!--<com.google.samples.apps.adssched.widget.EventView-->
-                    <!--android:id="@+id/event_sandbox"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--app:layout_constraintStart_toStartOf="parent"-->
-                    <!--app:layout_constraintTop_toBottomOf="@+id/event_sessions"-->
-                    <!--app:eventDescription="@string/event_sandbox_description"-->
-                    <!--app:eventTitle="@string/event_sandbox_title"-->
-                    <!--app:eventTypeLogo="@drawable/event_header_sandbox" />-->
+                <com.google.samples.apps.adssched.widget.EventView
+                    android:id="@+id/event_lightning"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/event_sessions"
+                    app:eventDescription="@string/event_lightning_description"
+                    app:eventTitle="@string/event_lightning_title"
+                    app:eventTypeLogo="@drawable/event_header_sandbox" />
 
                 <com.google.samples.apps.adssched.widget.EventView
                     android:id="@+id/event_codelabs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/event_sessions"
+                    app:layout_constraintTop_toBottomOf="@+id/event_lightning"
                     app:eventDescription="@string/event_codelabs_description"
                     app:eventTitle="@string/event_codelabs_title"
                     app:eventTypeLogo="@drawable/event_header_codelabs" />
 
-                <!--TODO: Marketing to confirm. -->
-                <!--<com.google.samples.apps.adssched.widget.EventView-->
-                    <!--android:id="@+id/event_officehours"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--app:layout_constraintStart_toStartOf="parent"-->
-                    <!--app:layout_constraintTop_toBottomOf="@+id/event_codelabs"-->
-                    <!--app:eventDescription="@string/event_officehours_description"-->
-                    <!--app:eventTitle="@string/event_officehours_title"-->
-                    <!--app:eventTypeLogo="@drawable/event_header_office_hours" />-->
-
                 <com.google.samples.apps.adssched.widget.EventView
-                    android:id="@+id/event_afterhours"
+                    android:id="@+id/event_officehours"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/event_codelabs"
-                    app:eventDescription="@string/event_afterhours_description"
-                    app:eventTitle="@string/event_afterhours_title"
+                    app:eventDescription="@string/event_officehours_description"
+                    app:eventTitle="@string/event_officehours_title"
+                    app:eventTypeLogo="@drawable/event_header_office_hours" />
+
+                <com.google.samples.apps.adssched.widget.EventView
+                    android:id="@+id/event_fireside"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/event_officehours"
+                    app:eventDescription="@string/event_fireside_description"
+                    app:eventTitle="@string/event_fireside_title"
                     app:eventTypeLogo="@drawable/event_header_afterhours" />
 
                 <com.google.samples.apps.adssched.widget.EventView
@@ -201,7 +199,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/event_afterhours"
+                    app:layout_constraintTop_toBottomOf="@+id/event_fireside"
                     app:eventDescription="@string/event_meals_description"
                     app:eventTitle="@string/event_meals_title"
                     app:eventTypeLogo="@drawable/event_header_meals" />
