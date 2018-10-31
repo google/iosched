@@ -90,6 +90,12 @@ class MainActivity : DaggerAppCompatActivity() {
                 supportFragmentManager.findFragmentById(FRAGMENT_ID) as? MainNavigationFragment
                 ?: throw IllegalStateException("Activity recreated, but no fragment found!")
         }
+
+        // Refresh conference data on launch
+        if (savedInstanceState == null) {
+            Timber.d("Refreshing conference data on launch")
+            scheduleViewModel.onSwipeRefresh()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
