@@ -52,6 +52,7 @@
 
     <style name="AppTheme.SessionDetails" parent="AppTheme.LightNav">
         <item name="sessionListKeyline">@dimen/margin_normal</item>
+        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">@color/light_grey</item>
     </style>
 
     <style name="AppTheme.Speaker" parent="AppTheme.LightNav">

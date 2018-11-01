@@ -37,9 +37,8 @@
             android:id="@+id/session_detail_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_normal"
             android:clipToPadding="false"
-            android:paddingBottom="?actionBarSize"
             android:scrollbars="vertical"
             app:hasFixedSize="@{true}"
             app:layoutManager="LinearLayoutManager" />
@@ -75,7 +74,7 @@
             android:layout_width="@dimen/snackbar_width"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|start"
-            android:layout_marginBottom="@dimen/snackbar_margin_bottom_bab"
+            android:layout_marginBottom="@dimen/snackbar_margin_bottom_fab"
             android:layout_marginEnd="@dimen/snackbar_margin_end_fab"
             android:visibility="gone" />
 
