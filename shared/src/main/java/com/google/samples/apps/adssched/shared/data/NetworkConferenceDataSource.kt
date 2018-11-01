@@ -39,7 +39,7 @@ class NetworkConferenceDataSource @Inject constructor(
 
         Timber.d("Trying to download data from network")
         val responseSource = try {
-            ConferenceDataDownloader(context, "1").fetch() // TODO(jalc): pass bootstrap version
+            ConferenceDataDownloader(context, "1").fetch()
         } catch (e: IOException) {
             Timber.e(e)
             throw e
