@@ -34,7 +34,29 @@
 
         <activity
             android:name=".ui.LauncherActivity"
-            android:theme="@style/AppTheme.Launcher" />
+            android:theme="@style/AppTheme.Launcher">
+            <!-- This will have to be placed wherever the activity-alias is pointing to. -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- URL handling and instant app auto-verification. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="events.google.com" />
+                <data android:path="/io" />
+                <data android:path="/io/" />
+                <data android:path="/io/schedule" />
+                <data android:path="/io/schedule/" />
+            </intent-filter>
+            <meta-data
+                android:name="default-url"
+                android:value="https://events.google.com/io" />
+         </activity>
 
         <activity
             android:name=".ui.MainActivity"
