@@ -1,10 +1,19 @@
-Android Dev Summit app
+Android Dev Summit app (ADSSched)
 ======================
-TODO
+The Android Dev Summit app (adssched) is a fork of the Google I/O app (iosched) and was used as the official conference app for the Android Dev Summit in November 2018, held in Mountain View, California.
+
+Read IOSched's [README](https://github.com/google/iosched) for a general description of the features and architecture.
+
+# Differences with IOSched
+- Added an Instant App flavor.
+- Added Notifications.
+- No reservations feature. The only user data stored on Firestore is the list of starred sessions and FCM tokens.
+- No map tab. Replaced by the Agenda that was moved from the Schedule.
+
 
 # Copyright
 
-    Copyright 2014 Google Inc. All rights reserved.
+    Copyright 2018 Google Inc. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
