@@ -84,7 +84,7 @@ class EventView @JvmOverloads constructor(
         }
 
         val viewCodelabs = rootView.findViewById<Button>(R.id.event_view_codelabs)
-        if (mapUri != null) {
+        if (codelabsUri != null) {
             viewCodelabs.setOnClickListener {
                 onViewCodelabsClicked(this@EventView, codelabsUri)
             }
