@@ -59,7 +59,7 @@
     <string name="rate_session">Valuta sessione</string>
     <string name="menu_item_session_location">Località sessione</string>
     <string name="menu_item_session_star">Aggiungi sessione a speciali</string>
-    <string name="session_detail_speakers_header">Altoparlanti</string>
+    <string name="session_detail_speakers_header">Speaker</string>
     <string name="session_detail_related_header">Eventi correlati</string>
     <string name="a11y_collapse_filters_sheet">Abbassa foglio dei filtri</string>
     <string name="a11y_clear_tag_filters">Cancella filtri</string>
