@@ -20,23 +20,23 @@ jobs:
       - run:
           name: Build debug APK and release APK
           command: |
-            ./gradlew :app:assembleDebug
-            ./gradlew :app:assembleDebugAndroidTest
+            ./gradlew assembleDebug
+            ./gradlew assembleInstalledStagingAndroidTest
       - persist_to_workspace:
           root: .
           paths:
-            - ./*/app/build
-run_unit:
-  docker:
-    - image: circleci/android:api-28-alpha  # gcloud is baked into this image
-  working_directory: ~/project
-  steps:
-    - attach_workspace:
-        at: .
-    - run:
-        name: Unit tests
-        command: |
-          ./gradlew test
+            - ./*/mobile/build
+  run_unit_tests:
+    docker:
+      - image: circleci/android:api-28-alpha  # gcloud is baked into this image
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Unit tests
+          command: |
+            ./gradlew test
 
   run_ftl:
     docker:
@@ -51,8 +51,8 @@ run_unit:
           command: |
             BUILD_DIR=build_${CIRCLE_BUILD_NUM}
             sudo gcloud firebase test android run \
-              --app app/build/outputs/apk/debug/app-debug.apk \
-              --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
+              --app mobile/build/outputs/apk/installed/staging/mobile-installed-staging.apk \
+              --test mobile/build/outputs/apk/androidTest/installed/staging/mobile-installed-staging-androidTest.apk \
               --results-bucket cloud-test-${GOOGLE_PROJECT_ID}-iosched \
               --results-dir=${BUILD_DIR}
       - run:
@@ -70,7 +70,9 @@ workflows:
   build_and_test:
     jobs:
       - build_and_setup
-      - run_unit
+      - run_unit_tests:
+          requires:
+            - build_and_setup
       - run_ftl:
           requires:
             - build_and_setup
