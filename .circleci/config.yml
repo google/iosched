@@ -20,7 +20,7 @@ jobs:
       - run:
           name: Build debug APK
           command: |
-            ./gradlew assembleDebug
+            ./gradlew assembleInstalledStaging
       - run:
           name: Build AndroidTest APK
           command: |
