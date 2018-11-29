@@ -18,25 +18,21 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Build debug APK and release APK
+          name: Build debug APK
           command: |
             ./gradlew assembleDebug
-            ./gradlew assembleInstalledStagingAndroidTest
+      - run:
+          name: Build AndroidTest APK
+          command: |
+          ./gradlew assembleInstalledStagingAndroidTest
+      - run:
+          name: Run unit tests
+          command: |
+            ./gradlew test
       - persist_to_workspace:
           root: .
           paths:
             - ./mobile/build
-  run_unit_tests:
-    docker:
-      - image: circleci/android:api-28-alpha  # gcloud is baked into this image
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: Unit tests
-          command: |
-            ./gradlew test
 
   run_ftl:
     docker:
@@ -70,9 +66,6 @@ workflows:
   build_and_test:
     jobs:
       - build_and_setup
-      - run_unit_tests:
-          requires:
-            - build_and_setup
       - run_ftl:
           requires:
             - build_and_setup
