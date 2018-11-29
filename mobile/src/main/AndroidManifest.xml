@@ -35,6 +35,11 @@
         <activity
             android:name=".ui.LauncherActivity"
             android:theme="@style/AppTheme.Launcher">
+            <!-- This will have to be placed wherever the activity-alias is linking to. -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             <!-- URL handling and instant app auto-verification. -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
