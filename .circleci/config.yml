@@ -24,7 +24,7 @@ jobs:
       - run:
           name: Build AndroidTest APK
           command: |
-          ./gradlew assembleInstalledStagingAndroidTest
+            ./gradlew assembleInstalledStagingAndroidTest
       - run:
           name: Run unit tests
           command: |
