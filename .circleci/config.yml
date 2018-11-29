@@ -25,7 +25,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - ./*/mobile/build
+            - ./mobile/build
   run_unit_tests:
     docker:
       - image: circleci/android:api-28-alpha  # gcloud is baked into this image
