@@ -22,11 +22,11 @@ import androidx.test.InstrumentationRegistry
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.hasFocus
-import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -164,6 +164,7 @@ class ScheduleTest {
     @Test
     fun filters_clearFilters() {
         // Apply the filter that will show the session
+
         val filter = FakeConferenceDataSource.FAKE_SESSION_TAG_NAME
         applyFilter(filter)
 
@@ -176,7 +177,7 @@ class ScheduleTest {
                 withContentDescription(getActiveFilterContDesc(filter)),
                 withParent(withId(R.id.filter_description_tags))
             )
-        ).check(matches(not(isCompletelyDisplayed())))
+        ).check(doesNotExist())
     }
 
     private fun applyFilter(filter: String) {
