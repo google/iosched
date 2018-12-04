@@ -1,5 +1,14 @@
 version: 2
 
+config_android: &config_android
+  docker:
+    - image: circleci/android:api-28-alpha
+  working_directory: ~/project
+  environment:
+    JAVA_TOOL_OPTIONS: "-Xmx1024m"
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false"
+    TERM: dumb
+
 setup_ftl: &setup_ftl
   - run:
       name: Authorize gcloud and set config defaults
@@ -10,40 +19,40 @@ setup_ftl: &setup_ftl
 
 jobs:
   build_and_setup:
-    docker:
-      - image: circleci/android:api-28-alpha  # gcloud is baked into this image
-    working_directory: ~/project
-    environment:
-      JVM_OPTS: -Xmx3200m
+    <<: *config_android
     steps:
       - checkout
       - run:
-          name: Build debug APK
+          name: Build test and lint
           command: |
-            ./gradlew assembleInstalledStaging
+            ./gradlew assembleInstalledStaging ./gradlew assembleInstalledStagingAndroidTest :app:testInstalledDebugUnitTest :app:testInstalledReleaseUnitTest :app:lintInstalledDebug
       - run:
-          name: Build AndroidTest APK
+          name: Save test results
           command: |
-            ./gradlew assembleInstalledStagingAndroidTest
-      - run:
-          name: Run unit tests
-          command: |
-            ./gradlew test
+            mkdir -p ~/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/junit/ \;
+          when: always          
+      - store_test_results:
+          path: ~/junit
+      - store_artifacts:
+          path: ~/junit
+          destination: tests
+      - store_artifacts:
+          path: ./app/build/reports
+          destination: reports/
       - persist_to_workspace:
           root: .
           paths:
-            - ./mobile/build
+            - ./app/build
 
   run_ftl:
-    docker:
-      - image: circleci/android:api-28-alpha  # gcloud is baked into this image
-    working_directory: ~/project
+    <<: *config_android
     steps:
       - attach_workspace:
           at: .
       - <<: *setup_ftl
       - run:
-          name: Test BasicSample with Firebase Test Lab
+          name: Test with Firebase Test Lab
           command: |
             BUILD_DIR=build_${CIRCLE_BUILD_NUM}
             sudo gcloud firebase test android run \
