@@ -34,14 +34,12 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.tests.FixedTimeRule
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
 import com.google.samples.apps.iosched.tests.SyncTaskExecutorRule
-import com.google.samples.apps.iosched.ui.MainActivity
 import com.google.samples.apps.iosched.ui.schedule.day.SessionViewHolder
 import com.google.samples.apps.iosched.ui.schedule.filters.ScheduleFilterAdapter
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
@@ -59,7 +57,7 @@ import org.junit.runner.RunWith
 class ScheduleTest {
 
     @get:Rule
-    var activityRule = ActivityTestRule<MainActivity>(MainActivity::class.java)
+    var activityRule = MainActivityTestRule(R.id.navigation_schedule)
 
     // Executes tasks in a synchronous [TaskScheduler]
     @get:Rule
