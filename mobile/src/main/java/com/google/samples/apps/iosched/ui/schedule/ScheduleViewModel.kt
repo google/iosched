@@ -21,14 +21,11 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
-import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
-import com.google.samples.apps.iosched.shared.domain.invoke
 import com.google.samples.apps.iosched.shared.domain.prefs.LoadSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.SaveSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
@@ -70,7 +67,6 @@ import javax.inject.Inject
  */
 class ScheduleViewModel @Inject constructor(
     private val loadUserSessionsByDayUseCase: LoadUserSessionsByDayUseCase,
-    loadAgendaUseCase: LoadAgendaUseCase,
     loadEventFiltersUseCase: LoadEventFiltersUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
     private val starEventUseCase: StarEventUseCase,
@@ -122,26 +118,15 @@ class ScheduleViewModel @Inject constructor(
     private val _selectedFilters = MutableLiveData<List<EventFilter>>()
     val selectedFilters: LiveData<List<EventFilter>>
         get() = _selectedFilters
-    private val _hasAnyFilters = MutableLiveData<Boolean>()
+    private val _hasAnyFilters = MutableLiveData<Boolean>().apply { value = false }
     val hasAnyFilters: LiveData<Boolean>
         get() = _hasAnyFilters
-    private val _isAgendaPage = MutableLiveData<Boolean>()
-    val isAgendaPage: LiveData<Boolean>
-        get() = _isAgendaPage
-
-    private var _transientUiStateVar = TransientUiState(false, false)
-    private val _transientUiState = MutableLiveData<TransientUiState>()
-    val transientUiState: LiveData<TransientUiState>
-        get() = _transientUiState
 
     private val loadSessionsResult: MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>
-    private val loadAgendaResult = MutableLiveData<Result<List<Block>>>()
     private val loadEventFiltersResult = MediatorLiveData<Result<List<EventFilter>>>()
     private val swipeRefreshResult = MutableLiveData<Result<Boolean>>()
 
     val eventCount: LiveData<Int>
-
-    val agenda: LiveData<List<Block>>
 
     /** LiveData for Actions and Events **/
 
@@ -204,8 +189,6 @@ class ScheduleViewModel @Inject constructor(
             refreshUserSessions()
         }
 
-        loadAgendaUseCase(loadAgendaResult)
-
         eventCount = loadSessionsResult.map {
             (it as? Result.Success)?.data?.userSessionCount ?: 0
         }
@@ -222,11 +205,6 @@ class ScheduleViewModel @Inject constructor(
                 _errorMessage.value = Event(content = result.exception.message ?: "Error")
             }
         })
-
-        agenda = loadAgendaResult.map {
-            (it as? Result.Success)?.data ?: emptyList()
-        }
-        // TODO handle agenda errors
 
         eventFilters = loadEventFiltersResult.map {
             if (it is Success) {
@@ -430,7 +408,6 @@ class ScheduleViewModel @Inject constructor(
         val hasAnyFilters = userSessionMatcher.hasAnyFilters()
         _hasAnyFilters.value = hasAnyFilters
         _selectedFilters.value = cachedEventFilters.filter { it.isChecked.get() }
-        setTransientUiState(_transientUiStateVar.copy(hasAnyFilters = hasAnyFilters))
     }
 
     fun onSwipeRefresh() {
@@ -485,18 +462,6 @@ class ScheduleViewModel @Inject constructor(
         }
     }
 
-    fun setIsAgendaPage(isAgendaPage: Boolean) {
-        if (_isAgendaPage.value != isAgendaPage) {
-            _isAgendaPage.value = isAgendaPage
-            setTransientUiState(_transientUiStateVar.copy(isAgendaPage = isAgendaPage))
-        }
-    }
-
-    private fun setTransientUiState(state: TransientUiState) {
-        _transientUiStateVar = state
-        _transientUiState.value = state
-    }
-
     fun initializeTimeZone() {
         getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
     }
@@ -511,8 +476,3 @@ interface ScheduleEventListener : EventActions {
     /** Called from the UI to remove all filters. */
     fun clearFilters()
 }
-
-data class TransientUiState(
-    val isAgendaPage: Boolean,
-    val hasAnyFilters: Boolean
-)

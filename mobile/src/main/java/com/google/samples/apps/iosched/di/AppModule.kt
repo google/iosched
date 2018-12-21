@@ -23,6 +23,8 @@ import com.google.samples.apps.iosched.MainApplication
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
+import com.google.samples.apps.iosched.shared.data.agenda.AgendaRepository
+import com.google.samples.apps.iosched.shared.data.agenda.DefaultAgendaRepository
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.FirebaseAnalyticsHelper
 import dagger.Module
@@ -64,4 +66,8 @@ class AppModule {
         signInDelegate: SignInViewModelDelegate,
         preferenceStorage: PreferenceStorage
     ): AnalyticsHelper = FirebaseAnalyticsHelper(context, signInDelegate, preferenceStorage)
+
+    @Singleton
+    @Provides
+    fun provideAgendaRepository(): AgendaRepository = DefaultAgendaRepository()
 }

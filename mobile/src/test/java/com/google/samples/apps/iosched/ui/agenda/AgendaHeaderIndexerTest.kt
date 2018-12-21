@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.schedule.agenda
+package com.google.samples.apps.iosched.ui.agenda
 
 import com.google.samples.apps.iosched.test.data.TestData
 import org.junit.Assert.assertEquals

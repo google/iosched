@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.session.agenda
+package com.google.samples.apps.iosched.shared.data.agenda
 
 import com.google.samples.apps.iosched.model.Block
 import org.threeten.bp.ZonedDateTime
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Single point of access to agenda data for the presentation layer.
  */
-@Singleton
-open class AgendaRepository @Inject constructor() {
+interface AgendaRepository {
+    fun getAgenda(): List<Block>
+}
+
+class DefaultAgendaRepository : AgendaRepository {
     private val blocks by lazy {
         listOf(
             Block(
@@ -257,5 +258,5 @@ open class AgendaRepository @Inject constructor() {
         )
     }
 
-    fun getAgenda(): List<Block> = blocks
+    override fun getAgenda(): List<Block> = blocks
 }

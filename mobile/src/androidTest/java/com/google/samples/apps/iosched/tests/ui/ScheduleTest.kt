@@ -82,12 +82,6 @@ class ScheduleTest {
     }
 
     @Test
-    fun clickOnAgenda_showsAgenda() {
-        onView(withText(R.string.agenda)).perform(click())
-        onView(withText("Breakfast")).check(matches(isDisplayed()))
-    }
-
-    @Test
     fun allDays_areClicked_showsSessions() {
         // Each of the days should be displayed
         ConferenceDays.forEachIndexed { i, conferenceDay ->

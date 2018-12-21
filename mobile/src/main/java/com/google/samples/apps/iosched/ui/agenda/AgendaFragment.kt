@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.schedule.agenda
+package com.google.samples.apps.iosched.ui.agenda
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,37 +23,36 @@ import android.view.ViewGroup
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.google.samples.apps.iosched.databinding.FragmentScheduleAgendaBinding
+import com.google.samples.apps.iosched.databinding.FragmentAgendaBinding
 import com.google.samples.apps.iosched.model.Block
-import com.google.samples.apps.iosched.shared.util.parentViewModelProvider
-import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
+import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.util.clearDecorations
 import dagger.android.support.DaggerFragment
 import org.threeten.bp.ZoneId
 import javax.inject.Inject
 
-class ScheduleAgendaFragment : DaggerFragment() {
+class AgendaFragment : DaggerFragment(), MainNavigationFragment {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: ScheduleViewModel
-    private lateinit var binding: FragmentScheduleAgendaBinding
+    private lateinit var viewModel: AgendaViewModel
+    private lateinit var binding: FragmentAgendaBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentScheduleAgendaBinding.inflate(inflater, container, false).apply {
-            setLifecycleOwner(this@ScheduleAgendaFragment)
+        binding = FragmentAgendaBinding.inflate(inflater, container, false).apply {
+            setLifecycleOwner(this@AgendaFragment)
         }
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        // ViewModel is scoped to the parent fragment.
-        viewModel = parentViewModelProvider(viewModelFactory)
+        viewModel = viewModelProvider(viewModelFactory)
         binding.viewModel = viewModel
     }
 }
@@ -61,9 +60,9 @@ class ScheduleAgendaFragment : DaggerFragment() {
 @BindingAdapter(value = ["agendaItems", "timeZoneId"])
 fun agendaItems(recyclerView: RecyclerView, list: List<Block>?, timeZoneId: ZoneId?) {
     if (recyclerView.adapter == null) {
-        recyclerView.adapter = ScheduleAgendaAdapter()
+        recyclerView.adapter = AgendaAdapter()
     }
-    val adapter = (recyclerView.adapter as ScheduleAgendaAdapter).apply {
+    val adapter = (recyclerView.adapter as AgendaAdapter).apply {
         this.submitList(list ?: emptyList())
         this.timeZoneId = timeZoneId ?: ZoneId.systemDefault()
     }
@@ -71,8 +70,6 @@ fun agendaItems(recyclerView: RecyclerView, list: List<Block>?, timeZoneId: Zone
     // Recreate the decoration used for the sticky date headers
     recyclerView.clearDecorations()
     if (list != null && list.isNotEmpty()) {
-        recyclerView.addItemDecoration(
-            ScheduleAgendaHeadersDecoration(recyclerView.context, list)
-        )
+        recyclerView.addItemDecoration(AgendaHeadersDecoration(recyclerView.context, list))
     }
 }
