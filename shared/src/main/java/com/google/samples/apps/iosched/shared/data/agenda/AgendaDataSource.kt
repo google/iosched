@@ -14,17 +14,10 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.schedule.agenda
+package com.google.samples.apps.iosched.shared.data.agenda
 
 import com.google.samples.apps.iosched.model.Block
-import org.threeten.bp.ZonedDateTime
 
-/**
- * Find the first block of each day (rounded down to nearest day) and return pairs of
- * index to start time. Assumes that [agendaItems] are sorted by ascending start time.
- */
-fun indexAgendaHeaders(agendaItems: List<Block>): List<Pair<Int, ZonedDateTime>> {
-    return agendaItems
-        .mapIndexed { index, block -> index to block.startTime }
-        .distinctBy { it.second.dayOfMonth }
+interface AgendaDataSource {
+    fun getAgenda(): List<Block>
 }

@@ -38,9 +38,16 @@
             app:contentDescription="@string/title_map" />
 
         <item
+            android:id="@+id/navigation_agenda"
+            android:icon="@drawable/ic_nav_agenda"
+            android:title="@string/agenda"
+            app:contentDescription="@string/agenda" />
+
+        <item
             android:id="@+id/navigation_settings"
             android:icon="@drawable/ic_nav_settings"
             android:title="@string/settings_title"
             app:contentDescription="@string/settings_title" />
+
     </group>
 </menu>

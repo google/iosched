@@ -33,6 +33,7 @@ import com.google.samples.apps.iosched.databinding.NavigationHeaderBinding
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.ui.agenda.AgendaFragment
 import com.google.samples.apps.iosched.ui.info.InfoFragment
 import com.google.samples.apps.iosched.ui.map.MapFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
@@ -178,6 +179,7 @@ class MainActivity : DaggerAppCompatActivity(), DrawerListener {
             R.id.navigation_schedule -> replaceFragment(ScheduleFragment())
             R.id.navigation_map -> replaceFragment(MapFragment())
             R.id.navigation_info -> replaceFragment(InfoFragment())
+            R.id.navigation_agenda -> replaceFragment(AgendaFragment())
             R.id.navigation_settings -> replaceFragment(SettingsFragment())
             else -> return // not a valid nav ID
         }
