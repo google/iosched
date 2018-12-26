@@ -16,28 +16,23 @@
 
 package com.google.samples.apps.iosched.ui.reservation
 
-import android.content.Context
+import android.app.Dialog
+import android.content.res.Resources
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.google.samples.apps.iosched.databinding.DialogRemoveReservationBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
-import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
-import com.google.samples.apps.iosched.widget.CustomDimDialogFragment
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.AndroidSupportInjection
-import dagger.android.support.HasSupportFragmentInjector
+import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
+import com.google.samples.apps.iosched.util.makeBold
+import dagger.android.support.DaggerAppCompatDialogFragment
 import javax.inject.Inject
 
 /**
- * Dialog that confirms the user that if the user really wants to cancel their reservation
+ * Dialog that confirms the user really wants to cancel their reservation
  */
-class RemoveReservationDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInjector {
+class RemoveReservationDialogFragment : DaggerAppCompatDialogFragment() {
 
     companion object {
         const val DIALOG_REMOVE_RESERVATION = "dialog_remove_reservation"
@@ -58,41 +53,33 @@ class RemoveReservationDialogFragment : CustomDimDialogFragment(), HasSupportFra
     }
 
     @Inject
-    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var reservationActionUseCase: ReservationActionUseCase
 
-    private lateinit var removeViewModel: RemoveReservationViewModel
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val context = requireContext()
+        val args = requireNotNull(arguments)
+        val userId = requireNotNull(args.getString(USER_ID_KEY))
+        val sessionId = requireNotNull(args.getString(SESSION_ID_KEY))
+        val sessionTitle = requireNotNull(args.getString(SESSION_TITLE_KEY))
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
-        return fragmentInjector
+        return MaterialAlertDialogBuilder(context)
+            .setTitle(R.string.remove_reservation_title)
+            .setMessage(formatRemoveReservationMessage(context.resources, sessionTitle))
+            .setNegativeButton(R.string.cancel, null)
+            .setPositiveButton(R.string.remove) { _, _ ->
+                reservationActionUseCase.execute(
+                    ReservationRequestParameters(userId, sessionId, CancelAction())
+                )
+            }
+            .create()
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        AndroidSupportInjection.inject(this)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        removeViewModel = viewModelProvider(viewModelFactory)
-
-        requireNotNull(arguments).run {
-            removeViewModel.userId = getString(USER_ID_KEY)
-            removeViewModel.sessionId = getString(SESSION_ID_KEY)
-            removeViewModel.sessionTitle = getString(SESSION_TITLE_KEY)
-        }
-
-        val binding = DialogRemoveReservationBinding.inflate(inflater, container, false).apply {
-            viewModel = removeViewModel
-        }
-        removeViewModel.dismissDialogAction.observe(this, EventObserver {
-            dismiss()
-        })
-        return binding.root
+    private fun formatRemoveReservationMessage(
+        res: Resources,
+        sessionTitle: String
+    ): CharSequence {
+        val text = res.getString(R.string.remove_reservation_content, sessionTitle)
+        return text.makeBold(sessionTitle)
     }
 }
 

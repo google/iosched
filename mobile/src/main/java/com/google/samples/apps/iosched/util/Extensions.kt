@@ -18,8 +18,13 @@ package com.google.samples.apps.iosched.util
 
 import android.app.Activity
 import android.content.res.Resources
+import android.graphics.Typeface
 import android.net.wifi.WifiConfiguration
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.Spanned
 import android.text.StaticLayout
+import android.text.style.StyleSpan
 import android.util.TypedValue
 import android.view.View
 import androidx.annotation.DimenRes
@@ -124,4 +129,19 @@ fun String.unwrapQuotes(): String {
         }
     }
     return formattedConfigString
+}
+
+/** Make the first instance of [boldText] in a CharSequece bold. */
+fun CharSequence.makeBold(boldText: String): CharSequence {
+    val start = indexOf(boldText)
+    val end = start + boldText.length
+    val span = StyleSpan(Typeface.BOLD)
+    return if (this is Spannable) {
+        setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        this
+    } else {
+        SpannableString(this).apply {
+            setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+    }
 }

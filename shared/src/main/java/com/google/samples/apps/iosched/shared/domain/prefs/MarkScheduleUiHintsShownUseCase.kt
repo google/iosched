@@ -23,10 +23,10 @@ import javax.inject.Inject
 /**
  * Use case when the schedule UI hints are shown
  */
-open class ScheduleUiHintsShowActionUseCase @Inject constructor(
+open class MarkScheduleUiHintsShownUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage
-) : UseCase<Boolean, Unit>() {
-    override fun execute(parameters: Boolean) {
-        preferenceStorage.scheduleUiHintsShown = parameters
+) : UseCase<Unit, Unit>() {
+    override fun execute(parameters: Unit) {
+        preferenceStorage.scheduleUiHintsShown = true
     }
 }

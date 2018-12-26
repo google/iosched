@@ -18,7 +18,8 @@ package com.google.samples.apps.iosched.ui.schedule
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
-import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShowActionUseCase
+import com.google.samples.apps.iosched.shared.domain.invoke
+import com.google.samples.apps.iosched.shared.domain.prefs.MarkScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
@@ -28,7 +29,7 @@ import org.junit.Test
 /**
  * Unit tests for the [ScheduleUiHintsDialogViewModel].
  */
-class ScheduleUiHintsDialogViewModelTest {
+class MarkScheduleUiHintsShownUseCaseTest {
 
     // Executes tasks in the Architecture Components in the same thread
     @get:Rule
@@ -41,11 +42,9 @@ class ScheduleUiHintsDialogViewModelTest {
     @Test
     fun dismissed_navigateUiHintsShowAction() {
         val mockPrefs = mock<PreferenceStorage> {}
-        val useCase = ScheduleUiHintsShowActionUseCase(mockPrefs)
-        val viewModel = ScheduleUiHintsDialogViewModel(useCase)
+        val useCase = MarkScheduleUiHintsShownUseCase(mockPrefs)
 
-        viewModel.onDismissed()
-
+        useCase.invoke()
         verify(mockPrefs).scheduleUiHintsShown = true
     }
 }
