@@ -68,15 +68,4 @@ internal abstract class ScheduleModule {
     @IntoMap
     @ViewModelKey(ScheduleViewModel::class)
     abstract fun bindScheduleViewModel(viewModel: ScheduleViewModel): ViewModel
-
-    /**
-     * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
-     * want to get a [ScheduleUiHintsDialogViewModel] class.
-     */
-    @Binds
-    @IntoMap
-    @ViewModelKey(ScheduleUiHintsDialogViewModel::class)
-    abstract fun bindScheduleUiHintsDialogViewModel(
-        viewModel: ScheduleUiHintsDialogViewModel
-    ): ViewModel
 }

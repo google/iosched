@@ -62,7 +62,7 @@ buildscript {
         legacySupportVersion = '1.0.0'
         lifecycleVersion = '2.0.0'
         lottieVersion = "2.5.1"
-        materialVersion = '1.0.0'
+        materialVersion = '1.1.0-alpha02'
         mockitoVersion = "2.8.9"
         mockitoKotlinVersion = "1.5.0"
         okhttpVersion = "3.10.0"

@@ -39,9 +39,9 @@ open class SwapActionUseCase @Inject constructor(
                 val updateResult = repository.swapReservation(userId, sessionId, toId)
 
                 result.removeSource(updateResult)
-                result.addSource(updateResult, {
+                result.addSource(updateResult) {
                     result.postValue(updateResult.value)
-                })
+                }
             } catch (e: Exception) {
                 Timber.d("Exception in Swapping reservations")
                 result.postValue(Result.Error(e))

@@ -16,14 +16,10 @@
 
 package com.google.samples.apps.iosched.ui.reservation
 
-import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.di.ChildFragmentScoped
-import com.google.samples.apps.iosched.shared.di.ViewModelKey
-import dagger.Binds
 import dagger.Module
 import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
-import dagger.multibindings.IntoMap
 
 /**
  * Module that provides classes needed for reservations.
@@ -46,22 +42,4 @@ internal abstract class ReservationModule {
     @ContributesAndroidInjector
     internal abstract fun contributeSwapReservationDialogFragment():
         SwapReservationDialogFragment
-
-    /**
-     * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
-     * want to get a [RemoveReservationViewModel] class.
-     */
-    @Binds
-    @IntoMap
-    @ViewModelKey(RemoveReservationViewModel::class)
-    abstract fun bindRemoveReservationViewModel(viewModel: RemoveReservationViewModel): ViewModel
-
-    /**
-     * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
-     * want to get a [SwapReservationViewModel] class.
-     */
-    @Binds
-    @IntoMap
-    @ViewModelKey(SwapReservationViewModel::class)
-    abstract fun bindSwapReservationViewModel(viewModel: SwapReservationViewModel): ViewModel
 }

@@ -39,9 +39,9 @@ open class ReservationActionUseCase @Inject constructor(
                 val updateResult = repository.changeReservation(userId, sessionId, action)
 
                 result.removeSource(updateResult)
-                result.addSource(updateResult, {
+                result.addSource(updateResult) {
                     result.postValue(updateResult.value)
-                })
+                }
             } catch (e: Exception) {
                 Timber.d("Exception changing reservation")
                 result.postValue(Result.Error(e))
