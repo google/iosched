@@ -52,7 +52,7 @@ import com.google.samples.apps.iosched.test.util.time.FixedTimeExecutorRule
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
-import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
+import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock

@@ -20,15 +20,14 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.users.FeedbackUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
@@ -37,7 +36,6 @@ import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -51,7 +49,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
     private val sessionRepository: SessionRepository
 ) : SessionAndUserEventRepository {
 
-    private val sessionsByDayResult = MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>()
+    private val sessionsResult = MediatorLiveData<Result<LoadFilteredUserSessionsResult>>()
 
     // Keep a reference to the observable for a single event (from the details screen) so we can
     // stop observing when done.
@@ -59,8 +57,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
     override fun getObservableUserEvents(
         userId: String?
-    ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
-
+    ): LiveData<Result<LoadFilteredUserSessionsResult>> {
         // If there is no logged-in user, return the map with null UserEvents
         if (userId == null) {
             DefaultScheduler.execute {
@@ -68,23 +65,22 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                     "EventRepository: No user logged in, returning sessions without user events."
                 )
                 val allSessions = sessionRepository.getSessions()
-                val userSessionsPerDay = mapUserDataAndSessions(null, allSessions)
-                sessionsByDayResult.postValue(
+                val userSessions = mergeUserDataAndSessions(null, allSessions)
+                sessionsResult.postValue(
                     Result.Success(
-                        LoadUserSessionsByDayUseCaseResult(
-                            userSessionsPerDay = userSessionsPerDay,
-                            userSessionCount = allSessions.size
+                        LoadFilteredUserSessionsResult(
+                            userSessions = userSessions
                         )
                     )
                 )
             }
-            return sessionsByDayResult
+            return sessionsResult
         }
 
         // Observes the user events and merges them with session data.
         val observableUserEvents = userEventDataSource.getObservableUserEvents(userId)
-        sessionsByDayResult.removeSource(observableUserEvents)
-        sessionsByDayResult.addSource(observableUserEvents) { userEvents ->
+        sessionsResult.removeSource(observableUserEvents)
+        sessionsResult.addSource(observableUserEvents) { userEvents ->
             DefaultScheduler.execute {
                 try {
                     // Not update the result when userEvents is null, otherwise the count of the
@@ -99,29 +95,27 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
                     // Get the sessions, synchronously
                     val allSessions = sessionRepository.getSessions()
+                    val userSessions = mergeUserDataAndSessions(userEvents, allSessions)
 
-                    // Merges sessions with user data and emits the result
+                    // TODO(b/122306429) expose user events messages separately
                     val userEventsMessageSession = allSessions.firstOrNull {
                         it.id == userEvents.userEventsMessage?.sessionId
                     }
-                    sessionsByDayResult.postValue(
+                    sessionsResult.postValue(
                         Result.Success(
-                            LoadUserSessionsByDayUseCaseResult(
-                                userSessionsPerDay = mapUserDataAndSessions(
-                                    userEvents, allSessions
-                                ),
+                            LoadFilteredUserSessionsResult(
+                                userSessions = userSessions,
                                 userMessage = userEvents.userEventsMessage,
-                                userMessageSession = userEventsMessageSession,
-                                userSessionCount = allSessions.size
+                                userMessageSession = userEventsMessageSession
                             )
                         )
                     )
                 } catch (e: Exception) {
-                    sessionsByDayResult.postValue(Result.Error(e))
+                    sessionsResult.postValue(Result.Error(e))
                 }
             }
         }
-        return sessionsByDayResult
+        return sessionsResult
     }
 
     override fun getObservableUserEvent(
@@ -267,38 +261,20 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
      * Merges user data with sessions.
      */
     @WorkerThread
-    private fun mapUserDataAndSessions(
+    private fun mergeUserDataAndSessions(
         userData: UserEventsResult?,
         allSessions: List<Session>
-    ): Map<ConferenceDay, List<UserSession>> {
-
+    ): List<UserSession> {
         // If there is no logged-in user, return the map with null UserEvents
         if (userData == null) {
-            return ConferenceDays.map { day ->
-                day to allSessions
-                    .filter { day.contains(it) }
-                    .map { session -> UserSession(session, createDefaultUserEvent(session)) }
-            }.toMap()
+            return allSessions.map { UserSession(it, createDefaultUserEvent(it)) }
         }
 
         val (userEvents, _) = userData
-
-        val eventIdToUserEvent: Map<String, UserEvent?> = userEvents.map { it.id to it }.toMap()
-        val allUserSessions = allSessions.map {
-            UserSession(
-                it,
-                eventIdToUserEvent[it.id] ?: createDefaultUserEvent(it)
-            )
+        val eventIdToUserEvent = userEvents.associateBy { it.id }
+        return allSessions.map {
+            UserSession(it, eventIdToUserEvent[it.id] ?: createDefaultUserEvent(it))
         }
-
-        return ConferenceDays.map { day ->
-            day to allUserSessions
-                .filter { day.contains(it.session) }
-                .map { userSession ->
-                    UserSession(userSession.session, userSession.userEvent)
-                }
-                .sortedBy { it.session.startTime }
-        }.toMap()
     }
 
     override fun clearSingleEventSubscriptions() {
@@ -309,10 +285,12 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
 interface SessionAndUserEventRepository {
 
+    // TODO(b/122112739): Repository should not have source dependency on UseCase result
     fun getObservableUserEvents(
         userId: String?
-    ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>>
+    ): LiveData<Result<LoadFilteredUserSessionsResult>>
 
+    // TODO(b/122112739): Repository should not have source dependency on UseCase result
     fun getObservableUserEvent(
         userId: String?,
         eventId: SessionId

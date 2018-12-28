@@ -209,11 +209,10 @@ class FirestoreUserEventDataSource @Inject constructor(
             .collection(EVENTS_COLLECTION)
 
         eventsChangedListenerSubscription?.remove() // Remove in case userId changes.
-        // Set a value in case there are no changes to the data on start
-        // This needs to be set to avoid that the upper layer LiveData detects the old data as a
-        // new data.
-        // When addSource was called in DefaultSessionAndUserEventRepository#getObservableUserEvents,
-        // the old data was considered as a new data even though it's for another user's data
+        // Set a value in case there are no changes to the data on start. This needs to be set to
+        // avoid that the upper layer LiveData detects the old data as a new data. I.e., when
+        // addSource was called in DefaultSessionAndUserEventRepository#getObservableUserEvents,
+        // the old data was considered as a new data even though it's for another user's data.
         result.value = null
         eventsChangedListenerSubscription = eventsCollection.addSnapshotListener(eventsListener)
     }

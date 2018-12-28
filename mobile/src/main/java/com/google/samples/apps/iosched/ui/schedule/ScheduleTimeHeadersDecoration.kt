@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.schedule.day
+package com.google.samples.apps.iosched.ui.schedule
 
 import android.content.Context
 import android.graphics.Canvas

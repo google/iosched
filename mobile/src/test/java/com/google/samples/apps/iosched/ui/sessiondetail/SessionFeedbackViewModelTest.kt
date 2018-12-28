@@ -30,7 +30,7 @@ import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.time.FakeIntervalMapperRule
 import com.google.samples.apps.iosched.test.util.time.FixedTimeExecutorRule
-import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
+import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock

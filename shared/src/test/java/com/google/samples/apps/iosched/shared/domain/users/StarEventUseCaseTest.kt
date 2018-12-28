@@ -26,8 +26,8 @@ import com.google.samples.apps.iosched.shared.data.session.DefaultSessionReposit
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
@@ -98,7 +98,7 @@ val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepositor
 
     override fun getObservableUserEvents(
         userId: String?
-    ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
+    ): LiveData<Result<LoadFilteredUserSessionsResult>> {
         throw NotImplementedError()
     }
 

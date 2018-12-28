@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.schedule.day
+package com.google.samples.apps.iosched.ui.schedule
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -26,11 +26,10 @@ import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.samples.apps.iosched.databinding.ItemSessionBinding
 import com.google.samples.apps.iosched.model.userdata.UserSession
-import com.google.samples.apps.iosched.ui.schedule.ScheduleEventListener
 import com.google.samples.apps.iosched.widget.UnscrollableFlexboxLayoutManager
 import org.threeten.bp.ZoneId
 
-class ScheduleDayAdapter(
+class ScheduleAdapter(
     private val eventListener: ScheduleEventListener,
     private val tagViewPool: RecycledViewPool,
     private val showReservations: LiveData<Boolean>,
@@ -39,17 +38,18 @@ class ScheduleDayAdapter(
 ) : ListAdapter<UserSession, SessionViewHolder>(SessionDiff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SessionViewHolder {
-        val binding =
-            ItemSessionBinding.inflate(LayoutInflater.from(parent.context), parent, false).apply {
-                tags.apply {
-                    setRecycledViewPool(tagViewPool)
-                    // Use a customized FlexboxLayoutManager so that swiping the tags are doesn't
-                    // trigger pull to refresh behavior.
-                    layoutManager = UnscrollableFlexboxLayoutManager(parent.context).apply {
-                        recycleChildrenOnDetach = true
-                    }
+        val binding = ItemSessionBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        ).apply {
+            tags.apply {
+                setRecycledViewPool(tagViewPool)
+                // Use a customized FlexboxLayoutManager so that swiping the tags are doesn't
+                // trigger pull to refresh behavior.
+                layoutManager = UnscrollableFlexboxLayoutManager(parent.context).apply {
+                    recycleChildrenOnDetach = true
                 }
             }
+        }
         return SessionViewHolder(
             binding, eventListener, showReservations, timeZoneId, lifecycleOwner
         )
@@ -79,12 +79,8 @@ class SessionViewHolder(
 }
 
 object SessionDiff : DiffUtil.ItemCallback<UserSession>() {
-    override fun areItemsTheSame(
-        oldItem: UserSession,
-        newItem: UserSession
-    ): Boolean {
-        // We don't have to compare the #userEvent because the id of #session and #userEvent
-        // should match
+    override fun areItemsTheSame(oldItem: UserSession, newItem: UserSession): Boolean {
+        // We don't have to compare the userEvent id because it matches the session id.
         return oldItem.session.id == newItem.session.id
     }
 

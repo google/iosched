@@ -20,34 +20,34 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.doOnNextLayout
 import androidx.core.view.updateLayoutParams
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.viewpager.widget.ViewPager
-import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.tabs.TabLayout
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
-import com.google.samples.apps.iosched.ui.schedule.day.ScheduleDayFragment
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment.Companion.DIALOG_NOTIFICATIONS_PREFERENCE
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
+import com.google.samples.apps.iosched.util.clearDecorations
+import com.google.samples.apps.iosched.util.executeAfter
 import com.google.samples.apps.iosched.util.fabVisibility
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
@@ -56,6 +56,7 @@ import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STAT
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_HIDDEN
 import com.google.samples.apps.iosched.widget.FadingSnackbar
 import javax.inject.Inject
+import javax.inject.Named
 
 /**
  * The Schedule page of the top-level Activity.
@@ -63,7 +64,6 @@ import javax.inject.Inject
 class ScheduleFragment : MainNavigationFragment() {
 
     companion object {
-        private val COUNT = ConferenceDays.size
         private const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
         private const val DIALOG_CONFIRM_SIGN_OUT = "dialog_confirm_sign_out"
         private const val DIALOG_SCHEDULE_HINTS = "dialog_schedule_hints"
@@ -73,18 +73,22 @@ class ScheduleFragment : MainNavigationFragment() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var scheduleViewModel: ScheduleViewModel
-    private lateinit var coordinatorLayout: CoordinatorLayout
+    @Inject
+    @field:Named("tagViewPool")
+    lateinit var tagViewPool: RecycledViewPool
 
     @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
 
+    private lateinit var scheduleViewModel: ScheduleViewModel
+
     private lateinit var filtersFab: FloatingActionButton
-    private lateinit var viewPager: ViewPager
+    private lateinit var recyclerView: RecyclerView
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
     private lateinit var snackbar: FadingSnackbar
 
-    // Stores the labels of the viewpager to avoid unnecessary recreation
-    private var labelsForDays: List<Int>? = null
+    private lateinit var adapter: ScheduleAdapter
+
+    private lateinit var binding: FragmentScheduleBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -93,22 +97,86 @@ class ScheduleFragment : MainNavigationFragment() {
     ): View? {
         // ViewModel shared with child fragments.
         scheduleViewModel = viewModelProvider(viewModelFactory)
-        val binding = FragmentScheduleBinding.inflate(inflater, container, false).apply {
+        binding = FragmentScheduleBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = this@ScheduleFragment.scheduleViewModel
         }
 
-        coordinatorLayout = binding.coordinatorLayout
         filtersFab = binding.filterFab
         snackbar = binding.snackbar
-        viewPager = binding.viewpager
-        // We can't lookup bottomSheetBehavior here since it's on a <fragment> tag
+        recyclerView = binding.recyclerview
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        // Snackbar configuration
         val snackbarPrefViewModel: SnackbarPreferenceViewModel = viewModelProvider(viewModelFactory)
         setUpSnackbar(scheduleViewModel.snackBarMessage, snackbar, snackbarMessageManager,
             actionClickListener = {
                 snackbarPrefViewModel.onStopClicked()
-            })
+            }
+        )
+
+        // Filters sheet configuration
+        // This view is not in the Binding class because it's in an included layout.
+        val appbar: View = view.findViewById(R.id.appbar)
+        bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.filter_sheet))
+        filtersFab.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetCallback {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                val a11yState = if (newState == STATE_EXPANDED) {
+                    View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
+                } else {
+                    View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
+                }
+                recyclerView.importantForAccessibility = a11yState
+                appbar.importantForAccessibility = a11yState
+            }
+        })
+
+        // Session list configuration
+        adapter = ScheduleAdapter(
+            scheduleViewModel,
+            tagViewPool,
+            scheduleViewModel.showReservations,
+            scheduleViewModel.timeZoneId,
+            this
+        )
+        recyclerView.apply {
+            adapter = this@ScheduleFragment.adapter
+            (layoutManager as LinearLayoutManager).recycleChildrenOnDetach = true
+            (itemAnimator as DefaultItemAnimator).run {
+                supportsChangeAnimations = false
+                addDuration = 160L
+                moveDuration = 160L
+                changeDuration = 160L
+                removeDuration = 120L
+            }
+        }
+
+        // TODO(b/124072759) UI affordance to jump to start of each day
+
+        // Start observing ViewModels
+        scheduleViewModel.sessionTimeData.observe(this, Observer {
+            it ?: return@Observer
+            initializeList(it)
+        })
+
+        // During conference, scroll to current event.
+        scheduleViewModel.currentEvent.observe(this, Observer { index ->
+            if (index > -1 && !scheduleViewModel.userHasInteracted) {
+                recyclerView.run {
+                    post {
+                        (layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
+                            index,
+                            resources.getDimensionPixelSize(R.dimen.margin_normal)
+                        )
+                    }
+                }
+            }
+        })
 
         scheduleViewModel.navigateToSessionAction.observe(this, EventObserver { sessionId ->
             openSessionDetail(sessionId)
@@ -135,66 +203,43 @@ class ScheduleFragment : MainNavigationFragment() {
             updateFiltersUi(it ?: return@Observer)
         })
 
+        // Show an error message
+        scheduleViewModel.errorMessage.observe(this, EventObserver { errorMsg ->
+            // TODO: Change once there's a way to show errors to the user
+            Toast.makeText(this.context, errorMsg, Toast.LENGTH_LONG).show()
+        })
+
         if (savedInstanceState == null) {
             // VM outlives the UI, so reset this flag when a new Schedule page is shown
             scheduleViewModel.userHasInteracted = false
         }
-        scheduleViewModel.currentEvent.observe(this, Observer { eventLocation ->
-            if (!scheduleViewModel.userHasInteracted) {
-                if (eventLocation != null) {
-                    // switch to the current day
-                    binding.viewpager.run {
-                        post {
-                            // this will trigger onPageChanged and log the page view
-                            currentItem = eventLocation.day
-                        }
-                    }
-                } else {
-                    // Showing the default page. Log it.
-                    logAnalyticsPageView(binding.viewpager.currentItem)
-                }
-            }
-        })
-        return binding.root
+        analyticsHelper.sendScreenView("Schedule", requireActivity())
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewPager.offscreenPageLimit = COUNT - 1
+    private fun initializeList(sessionTimeData: SessionTimeData) {
+        // Require the list and timeZoneId to be loaded.
+        val list = sessionTimeData.list ?: return
+        val timeZoneId = sessionTimeData.timeZoneId ?: return
+        adapter.submitList(list)
 
-        val appbar: View = view.findViewById(R.id.appbar)
-        val tabs: TabLayout = view.findViewById(R.id.tabs)
-        tabs.setupWithViewPager(viewPager)
-
-        viewPager.addOnPageChangeListener(object : SimpleOnPageChangeListener() {
-            override fun onPageSelected(position: Int) {
-                logAnalyticsPageView(position)
-            }
-        })
-
-        bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.filter_sheet))
-        filtersFab.setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-        }
-        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetCallback {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                val a11yState = if (newState == STATE_EXPANDED) {
-                    View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
-                } else {
-                    View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
+        binding.recyclerview.run {
+            // we want this to run after diffing
+            doOnNextLayout { view ->
+                // Recreate the decoration used for the sticky time headers
+                clearDecorations()
+                if (list.isNotEmpty()) {
+                    addItemDecoration(
+                        ScheduleTimeHeadersDecoration(
+                            view.context, list.map { it.session }, timeZoneId
+                        )
+                    )
                 }
-                viewPager.importantForAccessibility = a11yState
-                appbar.importantForAccessibility = a11yState
             }
-        })
+        }
 
-        scheduleViewModel.labelsForDays.observe(this, Observer<List<Int>> {
-            it ?: return@Observer
-            if (it != labelsForDays) { // Avoid unnecessary recreation.
-                viewPager.adapter = ScheduleAdapter(childFragmentManager, it)
-                labelsForDays = it
-            }
-        })
+        binding.executeAfter {
+            isEmpty = list.isEmpty()
+        }
     }
 
     private fun updateFiltersUi(hasAnyFilters: Boolean) {
@@ -266,26 +311,5 @@ class ScheduleFragment : MainNavigationFragment() {
     override fun onStart() {
         super.onStart()
         scheduleViewModel.initializeTimeZone()
-    }
-
-    private fun logAnalyticsPageView(position: Int) {
-        analyticsHelper.sendScreenView("Schedule - Day ${position + 1}", requireActivity())
-    }
-
-    /**
-     * Adapter that builds a page for each conference day.
-     */
-    inner class ScheduleAdapter(fm: FragmentManager, private val labelsForDays: List<Int>) :
-        FragmentPagerAdapter(fm) {
-
-        override fun getCount() = COUNT
-
-        override fun getItem(position: Int): Fragment {
-            return ScheduleDayFragment.newInstance(position)
-        }
-
-        override fun getPageTitle(position: Int): CharSequence {
-            return getString(labelsForDays[position])
-        }
     }
 }
