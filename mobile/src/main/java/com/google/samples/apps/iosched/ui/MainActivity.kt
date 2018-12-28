@@ -37,6 +37,7 @@ import com.google.samples.apps.iosched.ui.info.InfoFragment
 import com.google.samples.apps.iosched.ui.map.MapFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.ScheduleFragment
+import com.google.samples.apps.iosched.ui.settings.SettingsFragment
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
@@ -177,6 +178,7 @@ class MainActivity : DaggerAppCompatActivity(), DrawerListener {
             R.id.navigation_schedule -> replaceFragment(ScheduleFragment())
             R.id.navigation_map -> replaceFragment(MapFragment())
             R.id.navigation_info -> replaceFragment(InfoFragment())
+            R.id.navigation_settings -> replaceFragment(SettingsFragment())
             else -> return // not a valid nav ID
         }
         currentNavId = navId

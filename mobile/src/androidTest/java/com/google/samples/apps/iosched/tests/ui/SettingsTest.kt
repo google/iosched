@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,26 +19,27 @@ package com.google.samples.apps.iosched.tests.ui
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
 import com.google.samples.apps.iosched.tests.SyncTaskExecutorRule
+import org.hamcrest.CoreMatchers.allOf
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
- * Espresso tests for the Info screen, covering main use case.
+ * Espresso tests for Settings screen
  */
 @RunWith(AndroidJUnit4::class)
-class InfoTest {
+class SettingsTest {
 
     @get:Rule
-    var activityRule = MainActivityTestRule(R.id.navigation_info)
+    var activityRule = MainActivityTestRule(R.id.navigation_settings)
 
     // Executes tasks in a synchronous [TaskScheduler]
     @get:Rule
@@ -51,11 +52,21 @@ class InfoTest {
     private val resources = ApplicationProvider.getApplicationContext<Context>().resources
 
     @Test
-    fun info_basicViewsDisplayed() {
-        onView(withText(resources.getString(R.string.wifi_header))).check(matches(isDisplayed()))
-        // Travel tab
-        onView(withText(resources.getString(R.string.travel_title))).perform(click())
-        onView(withText(resources.getString(R.string.travel_directions_title)))
+    fun settings_basicViewsDisplayed() {
+        // Setting title
+        onView(allOf(withText(resources.getString(R.string.settings_title)), withId(R.id.title)))
+            .check(matches(isDisplayed()))
+        // Preference toggle
+        onView(withText(resources.getString(R.string.settings_enable_notifications)))
+            .check(matches(isDisplayed()))
+        // About label
+        onView(withText(resources.getString(R.string.about_title)))
+            .check(matches(isDisplayed()))
+        // FAQ link
+        onView(withText(resources.getString(R.string.faq_title)))
+            .check(matches(isDisplayed()))
+        // Version
+        onView(withText(resources.getString(R.string.version_name)))
             .check(matches(isDisplayed()))
     }
 }

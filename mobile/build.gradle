@@ -50,6 +50,8 @@ android {
         resValue "dimen", "map_camera_zoom", "${map_default_camera_zoom}"
         resValue "dimen", "map_viewport_min_zoom", "${map_viewport_min_zoom}"
 
+        resValue "string", "version_name", "Version ${rootProject.versionName}"
+
         manifestPlaceholders = [crashlyticsEnabled: true]
 
     }
