@@ -36,5 +36,11 @@
             android:icon="@drawable/ic_nav_map"
             android:title="@string/title_map"
             app:contentDescription="@string/title_map" />
+
+        <item
+            android:id="@+id/navigation_settings"
+            android:icon="@drawable/ic_nav_settings"
+            android:title="@string/settings_title"
+            app:contentDescription="@string/settings_title" />
     </group>
 </menu>

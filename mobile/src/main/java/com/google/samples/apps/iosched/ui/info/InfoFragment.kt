@@ -91,15 +91,11 @@ class InfoFragment : DaggerFragment(), MainNavigationFragment {
         private val TAG: String = InfoFragment::class.java.simpleName
         private val INFO_TITLES = arrayOf(
             R.string.event_title,
-            R.string.travel_title,
-            R.string.about_title,
-            R.string.settings_title
+            R.string.travel_title
         )
         private val INFO_PAGES = arrayOf(
             { EventFragment() },
-            { TravelFragment() },
-            { AboutFragment() },
-            { SettingsFragment() }
+            { TravelFragment() }
         )
     }
 }

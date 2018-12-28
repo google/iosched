@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.info
+package com.google.samples.apps.iosched.ui.settings
 
 import android.app.AlertDialog
 import android.content.Context
@@ -27,14 +27,34 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.widget.Button
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.browser.customtabs.CustomTabsService
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.ViewModelProvider
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.databinding.FragmentInfoAboutBinding
+import com.google.samples.apps.iosched.databinding.FragmentSettingsBinding
+import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
-const val SERVICE_ACTION = "android.support.customtabs.action.CustomTabsService"
-const val CHROME_PACKAGE = "com.android.chrome"
+class SettingsFragment : DaggerFragment(), MainNavigationFragment {
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val binding = FragmentSettingsBinding.inflate(inflater, container, false).apply {
+            viewModel = viewModelProvider(viewModelFactory)
+            setLifecycleOwner(this@SettingsFragment)
+        }
+        return binding.root
+    }
+}
+
+private const val CHROME_PACKAGE = "com.android.chrome"
 
 @BindingAdapter("websiteLink")
 fun websiteLink(
@@ -72,19 +92,8 @@ fun createDialogForFile(button: Button, dialogTitle: String, fileLink: String) {
 }
 
 private fun Context.isChromeCustomTabsSupported(): Boolean {
-    val serviceIntent = Intent(SERVICE_ACTION)
+    val serviceIntent = Intent(CustomTabsService.ACTION_CUSTOM_TABS_CONNECTION)
     serviceIntent.setPackage(CHROME_PACKAGE)
     val resolveInfos = packageManager.queryIntentServices(serviceIntent, 0)
     return !(resolveInfos == null || resolveInfos.isEmpty())
-}
-
-class AboutFragment : DaggerFragment() {
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return FragmentInfoAboutBinding.inflate(inflater, container, false).root
-    }
 }

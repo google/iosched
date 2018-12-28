@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.info
+package com.google.samples.apps.iosched.ui.settings
 
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.di.FragmentScoped
@@ -26,23 +26,23 @@ import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 
 /**
- * Module where classes needed to create the [InfoFragment] are defined.
+ * Module where classes needed to create the [SettingsFragment] are defined.
  */
 @Module
-internal abstract class InfoModule {
+internal abstract class SettingsModule {
     /**
-     * Generates an [AndroidInjector] for the [InfoFragment].
+     * Generates an [AndroidInjector] for the [SettingsFragment].
      */
     @FragmentScoped
-    @ContributesAndroidInjector(modules = [InfoFragmentsModule::class])
-    internal abstract fun contributeInfoFragment(): InfoFragment
+    @ContributesAndroidInjector
+    internal abstract fun contributeSettingsFragment(): SettingsFragment
 
     /**
      * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
-     * want to get a [EventInfoViewModel] class.
+     * want to get a [SettingsViewModel] class.
      */
     @Binds
     @IntoMap
-    @ViewModelKey(EventInfoViewModel::class)
-    abstract fun bindEventInfoFragmentViewModel(viewModel: EventInfoViewModel): ViewModel
+    @ViewModelKey(SettingsViewModel::class)
+    abstract fun bindSettingsFragmentViewModel(viewModel: SettingsViewModel): ViewModel
 }
