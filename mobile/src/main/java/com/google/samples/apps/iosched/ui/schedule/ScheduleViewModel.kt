@@ -29,10 +29,9 @@ import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCas
 import com.google.samples.apps.iosched.shared.domain.prefs.LoadSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.SaveSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.EventLocation
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseParameters
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsParameters
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsResult
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
@@ -44,7 +43,6 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
@@ -66,7 +64,7 @@ import javax.inject.Inject
  * create the object, so defining a [@Provides] method for this class won't be needed.
  */
 class ScheduleViewModel @Inject constructor(
-    private val loadUserSessionsByDayUseCase: LoadUserSessionsByDayUseCase,
+    private val loadFilteredUserSessionsUseCase: LoadFilteredUserSessionsUseCase,
     loadEventFiltersUseCase: LoadEventFiltersUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
     private val starEventUseCase: StarEventUseCase,
@@ -93,23 +91,11 @@ class ScheduleViewModel @Inject constructor(
 
     private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
 
-    /**
-     * Gets the label to display for each conference date. When using time zones other than the
-     * conference zone, conference days and calendar dates may not align. To minimize confusion,
-     * we show actual dates when using conference zone time; otherwise, we show the day number.
-     */
-    val labelsForDays: LiveData<List<Int>>
     val timeZoneId: LiveData<ZoneId>
 
-    private val _sessionTimeDataDay1 = MediatorLiveData<SessionTimeData>()
-    private val sessionTimeDataDay1: LiveData<SessionTimeData>
-        get() = _sessionTimeDataDay1
-    private val _sessionTimeDataDay2 = MediatorLiveData<SessionTimeData>()
-    private val sessionTimeDataDay2: LiveData<SessionTimeData>
-        get() = _sessionTimeDataDay2
-    private val _sessionTimeDataDay3 = MediatorLiveData<SessionTimeData>()
-    private val sessionTimeDataDay3: LiveData<SessionTimeData>
-        get() = _sessionTimeDataDay3
+    private val _sessionTimeData = MediatorLiveData<SessionTimeData>()
+    val sessionTimeData: LiveData<SessionTimeData>
+        get() = _sessionTimeData
 
     // Cached list of TagFilters returned by the use case. Only Result.Success modifies it.
     private var cachedEventFilters = emptyList<EventFilter>()
@@ -122,7 +108,7 @@ class ScheduleViewModel @Inject constructor(
     val hasAnyFilters: LiveData<Boolean>
         get() = _hasAnyFilters
 
-    private val loadSessionsResult: MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>
+    private val loadSessionsResult: MediatorLiveData<Result<LoadFilteredUserSessionsResult>>
     private val loadEventFiltersResult = MediatorLiveData<Result<List<EventFilter>>>()
     private val swipeRefreshResult = MutableLiveData<Result<Boolean>>()
 
@@ -160,11 +146,11 @@ class ScheduleViewModel @Inject constructor(
     var userHasInteracted = false
 
     // The currently happening event
-    val currentEvent: LiveData<EventLocation?>
+    val currentEvent: LiveData<Int>
 
     init {
         // Load sessions and tags and store the result in `LiveData`s
-        loadSessionsResult = loadUserSessionsByDayUseCase.observe()
+        loadSessionsResult = loadFilteredUserSessionsUseCase.observe()
 
         val conferenceDataAvailable = observeConferenceDataUseCase.observe()
 
@@ -195,16 +181,16 @@ class ScheduleViewModel @Inject constructor(
 
         isLoading = loadSessionsResult.map { it == Result.Loading }
 
-        _errorMessage.addSource(loadSessionsResult, { result ->
+        _errorMessage.addSource(loadSessionsResult) { result ->
             if (result is Result.Error) {
                 _errorMessage.value = Event(content = result.exception.message ?: "Error")
             }
-        })
-        _errorMessage.addSource(loadEventFiltersResult, { result ->
+        }
+        _errorMessage.addSource(loadEventFiltersResult) { result ->
             if (result is Result.Error) {
                 _errorMessage.value = Event(content = result.exception.message ?: "Error")
             }
-        })
+        }
 
         eventFilters = loadEventFiltersResult.map {
             if (it is Success) {
@@ -231,7 +217,7 @@ class ScheduleViewModel @Inject constructor(
         }
 
         // Show a message with the result of a reservation
-        _snackBarMessage.addSource(loadUserSessionsByDayUseCase.observe()) {
+        _snackBarMessage.addSource(loadFilteredUserSessionsUseCase.observe()) {
             if (it is Result.Success) {
                 it.data.userMessage?.type?.stringRes()?.let { messageId ->
                     // There is a message to display:
@@ -276,55 +262,17 @@ class ScheduleViewModel @Inject constructor(
             }
         }
 
-        labelsForDays = showInConferenceTimeZone.map { inConferenceTimeZone ->
-            if (TimeUtils.physicallyInConferenceTimeZone() || inConferenceTimeZone) {
-                return@map listOf(R.string.day1_date, R.string.day2_date, R.string.day3_date)
-            } else {
-                return@map listOf(R.string.day1, R.string.day2, R.string.day3)
-            }
+        _sessionTimeData.addSource(timeZoneId) {
+            _sessionTimeData.value = _sessionTimeData.value?.apply {
+                timeZoneId = it
+            } ?: SessionTimeData(timeZoneId = it)
         }
-
-        _sessionTimeDataDay1.addSource(timeZoneId, {
-            _sessionTimeDataDay1.value = _sessionTimeDataDay1.value?.apply {
-                timeZoneId = it
-            } ?: SessionTimeData(timeZoneId = it)
-        })
-        _sessionTimeDataDay1.addSource(loadSessionsResult, {
-            val userSessions =
-                (it as? Result.Success)?.data?.userSessionsPerDay?.get(ConferenceDays[0])
-                    ?: return@addSource
-            _sessionTimeDataDay1.value = _sessionTimeDataDay1.value?.apply {
+        _sessionTimeData.addSource(loadSessionsResult) {
+            val userSessions = (it as? Result.Success)?.data?.userSessions ?: return@addSource
+            _sessionTimeData.value = _sessionTimeData.value?.apply {
                 list = userSessions
             } ?: SessionTimeData(list = userSessions)
-        })
-
-        _sessionTimeDataDay2.addSource(timeZoneId, {
-            _sessionTimeDataDay2.value = _sessionTimeDataDay2.value?.apply {
-                timeZoneId = it
-            } ?: SessionTimeData(timeZoneId = it)
-        })
-        _sessionTimeDataDay2.addSource(loadSessionsResult, {
-            val userSessions =
-                (it as? Result.Success)?.data?.userSessionsPerDay?.get(ConferenceDays[1])
-                    ?: return@addSource
-            _sessionTimeDataDay2.value = _sessionTimeDataDay2.value?.apply {
-                list = userSessions
-            } ?: SessionTimeData(list = userSessions)
-        })
-
-        _sessionTimeDataDay3.addSource(timeZoneId, {
-            _sessionTimeDataDay3.value = _sessionTimeDataDay3.value?.apply {
-                timeZoneId = it
-            } ?: SessionTimeData(timeZoneId = it)
-        })
-        _sessionTimeDataDay3.addSource(loadSessionsResult, {
-            val userSessions =
-                (it as? Result.Success)?.data?.userSessionsPerDay?.get(ConferenceDays[2])
-                    ?: return@addSource
-            _sessionTimeDataDay3.value = _sessionTimeDataDay3.value?.apply {
-                list = userSessions
-            } ?: SessionTimeData(list = userSessions)
-        })
+        }
 
         swipeRefreshing = swipeRefreshResult.map {
             // Whenever refresh finishes, stop the indicator, whatever the result
@@ -338,21 +286,7 @@ class ScheduleViewModel @Inject constructor(
         observeConferenceDataUseCase.execute(Any())
 
         currentEvent = loadSessionsResult.map { result ->
-            (result as? Success)?.data?.firstUnfinishedSession
-        }
-    }
-
-    /**
-     * Called from each schedule day fragment to load data.
-     */
-    fun getSessionTimeDataForDay(day: Int): LiveData<SessionTimeData> = when (day) {
-        0 -> sessionTimeDataDay1
-        1 -> sessionTimeDataDay2
-        2 -> sessionTimeDataDay3
-        else -> {
-            val exception = Exception("Invalid day: $day")
-            Timber.e(exception)
-            throw exception
+            (result as? Success)?.data?.firstUnfinishedSessionIndex ?: -1
         }
     }
 
@@ -420,8 +354,8 @@ class ScheduleViewModel @Inject constructor(
 
     private fun refreshUserSessions() {
         Timber.d("ViewModel refreshing user sessions")
-        loadUserSessionsByDayUseCase.execute(
-            LoadUserSessionsByDayUseCaseParameters(userSessionMatcher, getUserId())
+        loadFilteredUserSessionsUseCase.execute(
+            LoadFilteredUserSessionsParameters(userSessionMatcher, getUserId())
         )
     }
 

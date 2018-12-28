@@ -40,7 +40,7 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.tests.FixedTimeRule
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
 import com.google.samples.apps.iosched.tests.SyncTaskExecutorRule
-import com.google.samples.apps.iosched.ui.schedule.day.SessionViewHolder
+import com.google.samples.apps.iosched.ui.schedule.SessionViewHolder
 import com.google.samples.apps.iosched.ui.schedule.filters.ScheduleFilterAdapter
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import org.hamcrest.CoreMatchers.not

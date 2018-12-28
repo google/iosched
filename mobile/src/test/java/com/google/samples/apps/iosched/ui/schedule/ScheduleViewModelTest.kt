@@ -45,7 +45,7 @@ import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUs
 import com.google.samples.apps.iosched.shared.domain.prefs.LoadSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.SaveSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
@@ -61,7 +61,6 @@ import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelega
 import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
-import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter
 import com.google.samples.apps.iosched.ui.schedule.filters.LoadEventFiltersUseCase
 import com.google.samples.apps.iosched.ui.signin.FirebaseSignInViewModelDelegate
@@ -97,7 +96,7 @@ class ScheduleViewModelTest {
     @Test
     fun testDataIsLoaded_ObservablesUpdated() { // TODO: Very slow test (1s)
         // Create test use cases with test data
-        val loadSessionsUseCase = LoadUserSessionsByDayUseCase(
+        val loadSessionsUseCase = LoadFilteredUserSessionsUseCase(
             DefaultSessionAndUserEventRepository(
                 TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
             )
@@ -107,7 +106,7 @@ class ScheduleViewModelTest {
 
         // Create ViewModel with the use cases
         val viewModel = createScheduleViewModel(
-            loadSessionsUseCase = loadSessionsUseCase,
+            loadFilteredSessionsUseCase = loadSessionsUseCase,
             loadTagsUseCase = loadTagsUseCase,
             signInViewModelDelegate = signInDelegate
         )
@@ -116,17 +115,14 @@ class ScheduleViewModelTest {
         signInDelegate.loadUser("test")
 
         // Observe viewmodel to load sessions
-        viewModel.getSessionTimeDataForDay(0).observeForever {}
+        viewModel.sessionTimeData.observeForever {}
 
         // Check that data were loaded correctly
         // Sessions
-        TestData.TestConferenceDays.forEachIndexed { index, day ->
-
-            assertEquals(
-                TestData.userSessionMap[day],
-                LiveDataTestUtil.getValue(viewModel.getSessionTimeDataForDay(index))?.list
-            )
-        }
+        assertEquals(
+            TestData.userSessionList,
+            LiveDataTestUtil.getValue(viewModel.sessionTimeData)?.list
+        )
         assertFalse(LiveDataTestUtil.getValue(viewModel.isLoading)!!)
         // Tags
         val loadedFilters = LiveDataTestUtil.getValue(viewModel.eventFilters)
@@ -209,7 +205,7 @@ class ScheduleViewModelTest {
         val signInDelegate = FakeSignInViewModelDelegate()
         val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
         val viewModel = createScheduleViewModel(
-            loadSessionsUseCase = loadSessionsUseCase,
+            loadFilteredSessionsUseCase = loadSessionsUseCase,
             signInViewModelDelegate = signInDelegate,
             snackbarMessageManager = snackbarMessageManager
         )
@@ -218,7 +214,7 @@ class ScheduleViewModelTest {
         signInDelegate.loadUser("test")
 
         // Observe viewmodel to load sessions
-        viewModel.getSessionTimeDataForDay(0).observeForever {}
+        viewModel.sessionTimeData.observeForever {}
 
         // Observe snackbar so messages are received
         viewModel.snackBarMessage.observeForever { }
@@ -250,7 +246,7 @@ class ScheduleViewModelTest {
         val signInDelegate = FakeSignInViewModelDelegate()
         val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
         val viewModel = createScheduleViewModel(
-            loadSessionsUseCase = loadSessionsUseCase,
+            loadFilteredSessionsUseCase = loadSessionsUseCase,
             signInViewModelDelegate = signInDelegate,
             snackbarMessageManager = snackbarMessageManager
         )
@@ -259,7 +255,7 @@ class ScheduleViewModelTest {
         signInDelegate.loadUser("test")
 
         // Observe viewmodel to load sessions
-        viewModel.getSessionTimeDataForDay(0).observeForever {}
+        viewModel.sessionTimeData.observeForever {}
 
         // Observe snackbar so messages are received
         viewModel.snackBarMessage.observeForever { }
@@ -274,7 +270,6 @@ class ScheduleViewModelTest {
 
         val waitlistMessage: Event<SnackbarMessage>? =
             LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
-
         assertThat(
             waitlistMessage?.getContentIfNotHandled()?.messageId,
             `is`(equalTo(R.string.waitlist_new))
@@ -392,18 +387,18 @@ class ScheduleViewModelTest {
             conferenceDataRepo = repo
         )
         val viewModel = createScheduleViewModel(
-            loadSessionsUseCase = loadUserSessionsByDayUseCase,
+            loadFilteredSessionsUseCase = loadUserSessionsByDayUseCase,
             observeConferenceDataUseCase = ObserveConferenceDataUseCase(repo)
         )
 
         // Observe viewmodel to load sessions
-        viewModel.getSessionTimeDataForDay(0).observeForever {}
+        viewModel.sessionTimeData.observeForever {}
 
         // Trigger a refresh on the repo
         repo.refreshCacheWithRemoteConferenceData()
 
         // The new value should be present
-        val newValue = LiveDataTestUtil.getValue(viewModel.getSessionTimeDataForDay(0))
+        val newValue = LiveDataTestUtil.getValue(viewModel.sessionTimeData)
 
         assertThat(
             newValue?.list?.first()?.session,
@@ -412,7 +407,7 @@ class ScheduleViewModelTest {
     }
 
     private fun createScheduleViewModel(
-        loadSessionsUseCase: LoadUserSessionsByDayUseCase =
+        loadFilteredSessionsUseCase: LoadFilteredUserSessionsUseCase =
             createTestLoadUserSessionsByDayUseCase(),
         loadTagsUseCase: LoadEventFiltersUseCase = createEventFiltersExceptionUseCase(),
         signInViewModelDelegate: SignInViewModelDelegate = createSignInViewModelDelegate(),
@@ -435,7 +430,7 @@ class ScheduleViewModelTest {
         analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper()
     ): ScheduleViewModel {
         return ScheduleViewModel(
-            loadUserSessionsByDayUseCase = loadSessionsUseCase,
+            loadFilteredUserSessionsUseCase = loadFilteredSessionsUseCase,
             loadEventFiltersUseCase = loadTagsUseCase,
             signInViewModelDelegate = signInViewModelDelegate,
             starEventUseCase = starEventUseCase,
@@ -452,18 +447,18 @@ class ScheduleViewModelTest {
     }
 
     /**
-     * Creates a test [LoadUserSessionsByDayUseCase].
+     * Creates a test [LoadFilteredUserSessionsUseCase].
      */
     private fun createTestLoadUserSessionsByDayUseCase(
         userEventDataSource: UserEventDataSource = TestUserEventDataSource(),
         conferenceDataRepo: ConferenceDataRepository = TestDataRepository
-    ): LoadUserSessionsByDayUseCase {
+    ): LoadFilteredUserSessionsUseCase {
         val sessionRepository = DefaultSessionRepository(conferenceDataRepo)
         val userEventRepository = DefaultSessionAndUserEventRepository(
             userEventDataSource, sessionRepository
         )
 
-        return LoadUserSessionsByDayUseCase(userEventRepository)
+        return LoadFilteredUserSessionsUseCase(userEventRepository)
     }
 
     /**

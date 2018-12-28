@@ -37,12 +37,12 @@ import org.threeten.bp.ZonedDateTime
  */
 object TestData {
 
-    val CONFERENCE_DAY1_START = "2018-05-08T07:00:00-07:00"
-    val CONFERENCE_DAY1_END = "2018-05-08T22:00:01-07:00"
-    val CONFERENCE_DAY2_END = "2018-05-09T22:00:01-07:00"
-    val CONFERENCE_DAY2_START = "2018-05-09T08:00:00-07:00"
-    val CONFERENCE_DAY3_END = "2018-05-10T22:00:00-07:00"
-    val CONFERENCE_DAY3_START = "2018-05-10T08:00:00-07:00"
+    private const val CONFERENCE_DAY1_START = "2018-05-08T07:00:00-07:00"
+    private const val CONFERENCE_DAY1_END = "2018-05-08T22:00:01-07:00"
+    private const val CONFERENCE_DAY2_END = "2018-05-09T22:00:01-07:00"
+    private const val CONFERENCE_DAY2_START = "2018-05-09T08:00:00-07:00"
+    private const val CONFERENCE_DAY3_END = "2018-05-10T22:00:00-07:00"
+    private const val CONFERENCE_DAY3_START = "2018-05-10T08:00:00-07:00"
 
     val TestConferenceDays = listOf(
         ConferenceDay(
@@ -225,11 +225,14 @@ object TestData {
     val userSession3 = UserSession(session3, userEvent3)
     val userSession4 = UserSession(sessionWithYoutubeUrl, userEvent4)
 
-    val userSessionMap = mapOf(
-        TestConferenceDays[0] to listOf(userSession0, userSession1),
-        TestConferenceDays[1] to listOf(userSession2),
-        TestConferenceDays[2] to listOf(userSession3, userSession4)
+    val userSessionList = listOf(
+        userSession0,
+        userSession1,
+        userSession2,
+        userSession3,
+        userSession4
     )
+
     val userEvents = listOf(userEvent0, userEvent1, userEvent2, userEvent3, userEvent4)
 
     // endregion Declarations

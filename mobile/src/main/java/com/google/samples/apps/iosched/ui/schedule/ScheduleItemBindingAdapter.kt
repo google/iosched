@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.schedule.day
+package com.google.samples.apps.iosched.ui.schedule
 
 import android.content.Context
 import android.view.View.GONE
@@ -68,7 +68,8 @@ fun sessionLengthLocation(
         // Example: "1 hour / Stage2||Hydra"
         textView.context.getString(
             R.string.session_duration_location,
-            durationString(textView.context, Duration.between(startTime, endTime)), room.name
+            durationString(textView.context, Duration.between(startTime, endTime)),
+            room.name
         )
     }
     // For accessibility, always use the full date time; without this, sticky headers will confuse

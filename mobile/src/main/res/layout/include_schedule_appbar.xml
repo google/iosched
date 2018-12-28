@@ -35,15 +35,11 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            app:layout_scrollFlags="scroll|snap"
             app:navigationContentDescription="@string/a11y_show_navigation"
             app:navigationIcon="@drawable/ic_menu"
             app:title="@string/title_schedule" />
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize" />
+        <!-- TODO(b/124072759) UI affordance to jump to start of each day -->
 
     </com.google.android.material.appbar.AppBarLayout>
 </layout>

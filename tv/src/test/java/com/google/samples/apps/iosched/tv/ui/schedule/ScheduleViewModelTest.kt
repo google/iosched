@@ -22,8 +22,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseParameters
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsParameters
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.tv.model.TestDataRepository
@@ -92,8 +92,8 @@ class ScheduleViewModelTest {
     /**
      * Creates a use case that will return the provided list of sessions.
      */
-    private fun createUseCase(): LoadUserSessionsByDayUseCase {
-        return LoadUserSessionsByDayUseCase(
+    private fun createUseCase(): LoadFilteredUserSessionsUseCase {
+        return LoadFilteredUserSessionsUseCase(
             DefaultSessionAndUserEventRepository(
                 TestUserEventDataSource, DefaultSessionRepository(TestDataRepository)
             )
@@ -103,14 +103,14 @@ class ScheduleViewModelTest {
     /**
      * Creates a use case that throws an exception.
      */
-    private fun createSessionsExceptionUseCase(): LoadUserSessionsByDayUseCase {
+    private fun createSessionsExceptionUseCase(): LoadFilteredUserSessionsUseCase {
         val sessionRepository = DefaultSessionRepository(TestDataRepository)
         val userEventRepository = DefaultSessionAndUserEventRepository(
             TestUserEventDataSource, sessionRepository
         )
 
-        return object : LoadUserSessionsByDayUseCase(userEventRepository) {
-            override fun execute(parameters: LoadUserSessionsByDayUseCaseParameters) {
+        return object : LoadFilteredUserSessionsUseCase(userEventRepository) {
+            override fun execute(parameters: LoadFilteredUserSessionsParameters) {
                 result.postValue(Result.Error(Exception("Testing exception")))
             }
         }

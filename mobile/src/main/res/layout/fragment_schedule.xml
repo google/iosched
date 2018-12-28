@@ -25,6 +25,9 @@
             name="viewModel"
             type="com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel" />
 
+        <variable
+            name="isEmpty"
+            type="boolean" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -44,12 +47,39 @@
             app:refreshing="@{viewModel.swipeRefreshing}"
             app:swipeRefreshColors="@{@intArray/swipe_refresh}">
 
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/viewpager"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:pageMargin="@{@dimen/spacing_normal}"
-                app:pageMarginDrawable="@{@drawable/page_margin}" />
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/schedule_page_padding_bottom"
+                    android:paddingTop="@dimen/spacing_normal"
+                    android:scrollbars="vertical"
+                    app:layoutManager="LinearLayoutManager"
+                    tools:ignore="UnusedAttribute" />
+
+                <TextView
+                    android:id="@+id/empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/schedule_page_padding_bottom"
+                    android:layout_marginHorizontal="@dimen/margin_large"
+                    android:drawablePadding="@dimen/spacing_normal"
+                    android:drawableTop="@drawable/io_logo"
+                    android:gravity="center"
+                    android:text="@string/schedule_filters_empty"
+                    app:goneUnless="@{isEmpty &amp;&amp; !viewModel.isLoading}"
+                    tools:targetApi="o"
+                    tools:text="@string/schedule_filters_empty"
+                    tools:visibility="visible" />
+
+            </FrameLayout>
 
         </com.google.samples.apps.iosched.widget.CustomSwipeRefreshLayout>
 

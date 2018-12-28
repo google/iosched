@@ -40,7 +40,6 @@ internal abstract class ScheduleModule {
     @FragmentScoped
     @ContributesAndroidInjector(
         modules = [
-            ScheduleChildFragmentsModule::class,
             SessionViewPoolModule::class
         ]
     )

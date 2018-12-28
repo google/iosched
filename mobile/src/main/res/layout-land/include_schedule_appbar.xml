@@ -37,15 +37,9 @@
             android:layout_height="?actionBarSize"
             app:navigationContentDescription="@string/a11y_show_navigation"
             app:navigationIcon="@drawable/ic_menu"
-            app:title="@string/title_schedule"
-            app:titleMarginEnd="@dimen/margin_large">
+            app:title="@string/title_schedule" />
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="wrap_content"
-                android:layout_height="?actionBarSize"
-                android:layout_gravity="center" />
-        </androidx.appcompat.widget.Toolbar>
+        <!-- TODO(b/124072759) UI affordance to jump to start of each day -->
 
     </com.google.android.material.appbar.AppBarLayout>
 </layout>

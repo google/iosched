@@ -21,9 +21,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.userdata.UserSession
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseParameters
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsParameters
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsResult
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils
@@ -33,7 +33,9 @@ import com.google.samples.apps.iosched.shared.util.map
 /**
  * Loads sessions data and exposes each day's sessions to the view.
  */
-class ScheduleViewModel(loadSessionsByDayUseCase: LoadUserSessionsByDayUseCase) : ViewModel() {
+class ScheduleViewModel(
+    loadFilteredSessionsUseCase: LoadFilteredUserSessionsUseCase
+) : ViewModel() {
 
     // The current UserSessionMatcher, used to filter the events that are shown
     private var userSessionMatcher = UserSessionMatcher()
@@ -46,7 +48,7 @@ class ScheduleViewModel(loadSessionsByDayUseCase: LoadUserSessionsByDayUseCase) 
     val errorMessage: LiveData<String>
     private val errorMessageShown = MutableLiveData<Boolean>()
 
-    private val loadSessionsResult: LiveData<Result<LoadUserSessionsByDayUseCaseResult>>
+    private val loadSessionsResult: LiveData<Result<LoadFilteredUserSessionsResult>>
 
     // Each day is represented by a map of time slot labels to a list of sessions.
     private val day1Sessions: LiveData<Map<String, List<UserSession>>>
@@ -55,9 +57,9 @@ class ScheduleViewModel(loadSessionsByDayUseCase: LoadUserSessionsByDayUseCase) 
 
     init {
         // Load sessions and tags and store the result in `LiveData`s
-        loadSessionsResult = loadSessionsByDayUseCase.observe()
-        loadSessionsByDayUseCase.execute(
-            LoadUserSessionsByDayUseCaseParameters(userSessionMatcher, tempUser)
+        loadSessionsResult = loadFilteredSessionsUseCase.observe()
+        loadFilteredSessionsUseCase.execute(
+            LoadFilteredUserSessionsParameters(userSessionMatcher, tempUser)
         )
 
         // Map LiveData results from UseCase to each day's individual LiveData
@@ -74,22 +76,23 @@ class ScheduleViewModel(loadSessionsByDayUseCase: LoadUserSessionsByDayUseCase) 
     }
 
     private fun groupSessionsByTimeSlot(
-        result: MutableLiveData<Result<LoadUserSessionsByDayUseCaseResult>>,
+        observable: MutableLiveData<Result<LoadFilteredUserSessionsResult>>,
         day: ConferenceDay
     ): LiveData<Map<String, List<UserSession>>> {
-        return result.map {
-            val sessions = (it as? Result.Success)?.data?.userSessionsPerDay?.get(day)
-                ?: emptyList()
+        return observable.map { result ->
+            val sessions = (result as? Result.Success)?.data?.userSessions ?: emptyList()
 
             // Groups sessions by formatted header string.
             // TODO: grab time zone from preferences
-            val finalTimeZoneId = TimeUtils.CONFERENCE_TIMEZONE
-            sessions.groupBy({
-                val localStartTime = TimeUtils.zonedTime(it.session.startTime, finalTimeZoneId)
-                val localEndTime = TimeUtils.zonedTime(it.session.endTime, finalTimeZoneId)
+            val timeZoneId = TimeUtils.CONFERENCE_TIMEZONE
+            sessions
+                .filter { day.contains(it.session) }
+                .groupBy {
+                    val localStartTime = TimeUtils.zonedTime(it.session.startTime, timeZoneId)
+                    val localEndTime = TimeUtils.zonedTime(it.session.endTime, timeZoneId)
 
-                TimeUtils.timeString(localStartTime, localEndTime)
-            })
+                    TimeUtils.timeString(localStartTime, localEndTime)
+                }
         }
     }
 
