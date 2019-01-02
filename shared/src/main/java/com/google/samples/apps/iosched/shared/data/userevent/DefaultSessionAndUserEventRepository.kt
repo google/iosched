@@ -26,7 +26,6 @@ import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.users.FeedbackUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
@@ -49,7 +48,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
     private val sessionRepository: SessionRepository
 ) : SessionAndUserEventRepository {
 
-    private val sessionsResult = MediatorLiveData<Result<LoadFilteredUserSessionsResult>>()
+    private val sessionsResult = MediatorLiveData<Result<ObservableUserEvents>>()
 
     // Keep a reference to the observable for a single event (from the details screen) so we can
     // stop observing when done.
@@ -57,7 +56,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
     override fun getObservableUserEvents(
         userId: String?
-    ): LiveData<Result<LoadFilteredUserSessionsResult>> {
+    ): LiveData<Result<ObservableUserEvents>> {
         // If there is no logged-in user, return the map with null UserEvents
         if (userId == null) {
             DefaultScheduler.execute {
@@ -68,7 +67,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                 val userSessions = mergeUserDataAndSessions(null, allSessions)
                 sessionsResult.postValue(
                     Result.Success(
-                        LoadFilteredUserSessionsResult(
+                        ObservableUserEvents(
                             userSessions = userSessions
                         )
                     )
@@ -103,7 +102,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                     }
                     sessionsResult.postValue(
                         Result.Success(
-                            LoadFilteredUserSessionsResult(
+                            ObservableUserEvents(
                                 userSessions = userSessions,
                                 userMessage = userEvents.userEventsMessage,
                                 userMessageSession = userEventsMessageSession
@@ -288,7 +287,7 @@ interface SessionAndUserEventRepository {
     // TODO(b/122112739): Repository should not have source dependency on UseCase result
     fun getObservableUserEvents(
         userId: String?
-    ): LiveData<Result<LoadFilteredUserSessionsResult>>
+    ): LiveData<Result<ObservableUserEvents>>
 
     // TODO(b/122112739): Repository should not have source dependency on UseCase result
     fun getObservableUserEvent(
@@ -319,3 +318,13 @@ interface SessionAndUserEventRepository {
 
     fun clearSingleEventSubscriptions()
 }
+
+data class ObservableUserEvents(
+    val userSessions: List<UserSession>,
+
+    /** A message to show to the user with important changes like reservation confirmations */
+    val userMessage: UserEventMessage? = null,
+
+    /** The session the user message is about, if any. */
+    val userMessageSession: Session? = null
+)

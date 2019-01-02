@@ -250,7 +250,6 @@
 
     <style name="Widget.IOSched.TimeHeaders">
         <item name="android:width">@dimen/session_keyline</item>
-        <item name="android:paddingTop">@dimen/time_header_padding_top</item>
         <item name="android:textColor">?colorPrimary</item>
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="hourTextSize">@dimen/time_header_hour_text_size</item>
@@ -265,6 +264,11 @@
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="dateTextSize">@dimen/time_header_hour_text_size</item>
         <item name="dayTextSize">@dimen/time_header_meridiem_text_size</item>
+    </style>
+
+    <style name="Widget.IOSched.DayIndicatorDecoration">
+        <item name="android:color">?colorAccent</item>
+        <item name="android:inset">8dp</item>
     </style>
 
     <style name="Widget.IOSched.RaisedButton" parent="@style/Widget.AppCompat.Button.Colored">

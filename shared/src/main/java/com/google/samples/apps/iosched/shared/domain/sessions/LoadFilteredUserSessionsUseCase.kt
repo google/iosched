@@ -65,7 +65,8 @@ open class LoadFilteredUserSessionsUseCase @Inject constructor(
                             userSessionCount = filteredSessions.size,
                             firstUnfinishedSessionIndex = findFirstUnfinishedSession(
                                 filteredSessions, parameters.now
-                            )
+                            ),
+                            dayIndexer = buildConferenceDayIndexer(filteredSessions)
                         )
                         result.postValue(Result.Success(usecaseResult))
                     }
@@ -89,6 +90,22 @@ open class LoadFilteredUserSessionsUseCase @Inject constructor(
             return userSessions.indexOfFirst { it.session.endTime.isAfter(now) }
         }
         return -1
+    }
+
+    /**
+     * Finds indices in [sessions] where each ConferenceDay begins. This method assumes [sessions]
+     * is sorted by start time.
+     */
+    private fun buildConferenceDayIndexer(sessions: List<UserSession>): ConferenceDayIndexer {
+        val mapping = ConferenceDays
+            .associateWith { day ->
+                sessions.indexOfFirst {
+                    day.contains(it.session)
+                }
+            }
+            .filterValues { it >= 0 } // exclude days with no matching sessions
+
+        return ConferenceDayIndexer(mapping)
     }
 }
 
@@ -114,5 +131,7 @@ data class LoadFilteredUserSessionsResult(
     val userSessionCount: Int = userSessions.size,
 
     /** The location of the first session which has not finished. */
-    val firstUnfinishedSessionIndex: Int = -1
+    val firstUnfinishedSessionIndex: Int = -1,
+
+    val dayIndexer: ConferenceDayIndexer
 )

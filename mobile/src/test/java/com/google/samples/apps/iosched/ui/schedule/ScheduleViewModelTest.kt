@@ -115,13 +115,13 @@ class ScheduleViewModelTest {
         signInDelegate.loadUser("test")
 
         // Observe viewmodel to load sessions
-        viewModel.sessionTimeData.observeForever {}
+        viewModel.scheduleUiData.observeForever {}
 
         // Check that data were loaded correctly
         // Sessions
         assertEquals(
             TestData.userSessionList,
-            LiveDataTestUtil.getValue(viewModel.sessionTimeData)?.list
+            LiveDataTestUtil.getValue(viewModel.scheduleUiData)?.list
         )
         assertFalse(LiveDataTestUtil.getValue(viewModel.isLoading)!!)
         // Tags
@@ -214,7 +214,7 @@ class ScheduleViewModelTest {
         signInDelegate.loadUser("test")
 
         // Observe viewmodel to load sessions
-        viewModel.sessionTimeData.observeForever {}
+        viewModel.scheduleUiData.observeForever {}
 
         // Observe snackbar so messages are received
         viewModel.snackBarMessage.observeForever { }
@@ -255,7 +255,7 @@ class ScheduleViewModelTest {
         signInDelegate.loadUser("test")
 
         // Observe viewmodel to load sessions
-        viewModel.sessionTimeData.observeForever {}
+        viewModel.scheduleUiData.observeForever {}
 
         // Observe snackbar so messages are received
         viewModel.snackBarMessage.observeForever { }
@@ -392,13 +392,13 @@ class ScheduleViewModelTest {
         )
 
         // Observe viewmodel to load sessions
-        viewModel.sessionTimeData.observeForever {}
+        viewModel.scheduleUiData.observeForever {}
 
         // Trigger a refresh on the repo
         repo.refreshCacheWithRemoteConferenceData()
 
         // The new value should be present
-        val newValue = LiveDataTestUtil.getValue(viewModel.sessionTimeData)
+        val newValue = LiveDataTestUtil.getValue(viewModel.scheduleUiData)
 
         assertThat(
             newValue?.list?.first()?.session,

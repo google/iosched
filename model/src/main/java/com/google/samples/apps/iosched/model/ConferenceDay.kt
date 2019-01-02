@@ -25,8 +25,21 @@ private const val formatPattern = "MMMM d"
 val FORMATTER_MONTH_DAY: DateTimeFormatter =
     DateTimeFormatter.ofPattern(formatPattern, Locale.getDefault())
 
-data class ConferenceDay(val start: ZonedDateTime, val end: ZonedDateTime) {
+data class ConferenceDay(
+    val start: ZonedDateTime,
+    val end: ZonedDateTime,
+    val ordinal: Int
+) {
     fun contains(session: Session) = start <= session.startTime && end >= session.endTime
 
     fun formatMonthDay(): String = FORMATTER_MONTH_DAY.format(start)
+
+    // TODO(b/123019750) it would be better if we could use string resources
+    fun getIndicatorLabel(isInConferenceTimeZone: Boolean): String {
+        return if (isInConferenceTimeZone) {
+            start.dayOfMonth.toString()
+        } else {
+            ordinal.toString()
+        }
+    }
 }

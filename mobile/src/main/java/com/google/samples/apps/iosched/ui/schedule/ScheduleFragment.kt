@@ -29,13 +29,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
+import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.domain.sessions.ConferenceDayIndexer
 import com.google.samples.apps.iosched.shared.result.EventObserver
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
@@ -54,7 +59,9 @@ import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCal
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_COLLAPSED
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_EXPANDED
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_HIDDEN
+import com.google.samples.apps.iosched.widget.BubbleDecoration
 import com.google.samples.apps.iosched.widget.FadingSnackbar
+import com.google.samples.apps.iosched.widget.JumpSmoothScroller
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -82,11 +89,19 @@ class ScheduleFragment : MainNavigationFragment() {
     private lateinit var scheduleViewModel: ScheduleViewModel
 
     private lateinit var filtersFab: FloatingActionButton
-    private lateinit var recyclerView: RecyclerView
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
     private lateinit var snackbar: FadingSnackbar
 
-    private lateinit var adapter: ScheduleAdapter
+    private lateinit var scheduleRecyclerView: RecyclerView
+    private lateinit var scheduleAdapter: ScheduleAdapter
+    private lateinit var scheduleScroller: JumpSmoothScroller
+
+    private lateinit var dayIndicatorRecyclerView: RecyclerView
+    private lateinit var dayIndicatorAdapter: DayIndicatorAdapter
+    private lateinit var dayIndicatorItemDecoration: BubbleDecoration
+
+    private lateinit var dayIndexer: ConferenceDayIndexer
+    private var cachedBubbleRange: IntRange? = null
 
     private lateinit var binding: FragmentScheduleBinding
 
@@ -104,7 +119,8 @@ class ScheduleFragment : MainNavigationFragment() {
 
         filtersFab = binding.filterFab
         snackbar = binding.snackbar
-        recyclerView = binding.recyclerview
+        scheduleRecyclerView = binding.recyclerview
+        dayIndicatorRecyclerView = binding.includeScheduleAppbar.dayIndicators
         return binding.root
     }
 
@@ -119,8 +135,6 @@ class ScheduleFragment : MainNavigationFragment() {
         )
 
         // Filters sheet configuration
-        // This view is not in the Binding class because it's in an included layout.
-        val appbar: View = view.findViewById(R.id.appbar)
         bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.filter_sheet))
         filtersFab.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -132,22 +146,21 @@ class ScheduleFragment : MainNavigationFragment() {
                 } else {
                     View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
                 }
-                recyclerView.importantForAccessibility = a11yState
-                appbar.importantForAccessibility = a11yState
+                scheduleRecyclerView.importantForAccessibility = a11yState
+                binding.includeScheduleAppbar.appbar.importantForAccessibility = a11yState
             }
         })
 
         // Session list configuration
-        adapter = ScheduleAdapter(
+        scheduleAdapter = ScheduleAdapter(
             scheduleViewModel,
             tagViewPool,
             scheduleViewModel.showReservations,
             scheduleViewModel.timeZoneId,
             this
         )
-        recyclerView.apply {
-            adapter = this@ScheduleFragment.adapter
-            (layoutManager as LinearLayoutManager).recycleChildrenOnDetach = true
+        scheduleRecyclerView.apply {
+            adapter = scheduleAdapter
             (itemAnimator as DefaultItemAnimator).run {
                 supportsChangeAnimations = false
                 addDuration = 160L
@@ -155,25 +168,42 @@ class ScheduleFragment : MainNavigationFragment() {
                 changeDuration = 160L
                 removeDuration = 120L
             }
-        }
 
-        // TODO(b/124072759) UI affordance to jump to start of each day
+            addOnScrollListener(object : OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    onScheduleScrolled()
+                }
+            })
+        }
+        scheduleScroller = JumpSmoothScroller(view.context)
+
+        dayIndicatorItemDecoration = BubbleDecoration(view.context)
+        dayIndicatorRecyclerView.addItemDecoration(dayIndicatorItemDecoration)
+
+        dayIndicatorAdapter = DayIndicatorAdapter(scheduleViewModel, viewLifecycleOwner)
+        dayIndicatorRecyclerView.adapter = dayIndicatorAdapter
+        scheduleViewModel.dayIndicatorsLabel.observe(this, Observer {
+            binding.includeScheduleAppbar.dayIndicatorsLabel.setText(it)
+        })
 
         // Start observing ViewModels
-        scheduleViewModel.sessionTimeData.observe(this, Observer {
+        scheduleViewModel.scheduleUiData.observe(this, Observer {
             it ?: return@Observer
-            initializeList(it)
+            updateScheduleUi(it)
         })
 
         // During conference, scroll to current event.
-        scheduleViewModel.currentEvent.observe(this, Observer { index ->
-            if (index > -1 && !scheduleViewModel.userHasInteracted) {
-                recyclerView.run {
+        scheduleViewModel.scrollToEvent.observe(this, EventObserver { scrollEvent ->
+            if (scrollEvent.targetPosition != -1) {
+                scheduleRecyclerView.run {
                     post {
-                        (layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
-                            index,
-                            resources.getDimensionPixelSize(R.dimen.margin_normal)
-                        )
+                        val lm = layoutManager as LinearLayoutManager
+                        if (scrollEvent.smoothScroll) {
+                            scheduleScroller.targetPosition = scrollEvent.targetPosition
+                            lm.startSmoothScroll(scheduleScroller)
+                        } else {
+                            lm.scrollToPositionWithOffset(scrollEvent.targetPosition, 0)
+                        }
                     }
                 }
             }
@@ -217,13 +247,24 @@ class ScheduleFragment : MainNavigationFragment() {
         analyticsHelper.sendScreenView("Schedule", requireActivity())
     }
 
-    private fun initializeList(sessionTimeData: SessionTimeData) {
-        // Require the list and timeZoneId to be loaded.
-        val list = sessionTimeData.list ?: return
-        val timeZoneId = sessionTimeData.timeZoneId ?: return
-        adapter.submitList(list)
+    private fun updateScheduleUi(scheduleUiData: ScheduleUiData) {
+        // Require everything to be loaded.
+        val list = scheduleUiData.list ?: return
+        val timeZoneId = scheduleUiData.timeZoneId ?: return
+        val indexer = scheduleUiData.dayIndexer ?: return
 
-        binding.recyclerview.run {
+        dayIndexer = indexer
+        // Prevent building new indicators until we get scroll information.
+        cachedBubbleRange = null
+        if (indexer.days.isEmpty()) {
+            // Special case: the results are empty, so we won't get valid scroll information.
+            // Set a bogus range to and rebuild the day indicators.
+            cachedBubbleRange = -1..-1
+            rebuildDayIndicators()
+        }
+
+        scheduleAdapter.submitList(list)
+        scheduleRecyclerView.run {
             // we want this to run after diffing
             doOnNextLayout { view ->
                 // Recreate the decoration used for the sticky time headers
@@ -235,12 +276,31 @@ class ScheduleFragment : MainNavigationFragment() {
                         )
                     )
                 }
+
+                onScheduleScrolled()
             }
         }
 
         binding.executeAfter {
             isEmpty = list.isEmpty()
         }
+    }
+
+    private fun rebuildDayIndicators() {
+        // cachedBubbleRange will get set once we have scroll information, so wait until then.
+        val bubbleRange = cachedBubbleRange ?: return
+        val indicators = if (dayIndexer.days.isEmpty()) {
+            TimeUtils.ConferenceDays.map { day: ConferenceDay ->
+                DayIndicator(day = day, enabled = false)
+            }
+        } else {
+            dayIndexer.days.mapIndexed { index: Int, day: ConferenceDay ->
+                DayIndicator(day = day, checked = index in bubbleRange)
+            }
+        }
+
+        dayIndicatorAdapter.submitList(indicators)
+        dayIndicatorItemDecoration.bubbleRange = bubbleRange
     }
 
     private fun updateFiltersUi(hasAnyFilters: Boolean) {
@@ -261,6 +321,24 @@ class ScheduleFragment : MainNavigationFragment() {
         bottomSheetBehavior.skipCollapsed = showFab
         if (showFab && bottomSheetBehavior.state == STATE_COLLAPSED) {
             bottomSheetBehavior.state = STATE_HIDDEN
+        }
+    }
+
+    private fun onScheduleScrolled() {
+        val layoutManager = (scheduleRecyclerView.layoutManager) as LinearLayoutManager
+        val first = layoutManager.findFirstVisibleItemPosition()
+        val last = layoutManager.findLastVisibleItemPosition()
+        if (first < 0 || last < 0) {
+            // When the list is empty, we get -1 for the positions.
+            return
+        }
+
+        val firstDay = dayIndexer.dayForPosition(first)
+        val lastDay = dayIndexer.dayForPosition(last)
+        val highlightRange = dayIndexer.days.indexOf(firstDay)..dayIndexer.days.indexOf(lastDay)
+        if (highlightRange != cachedBubbleRange) {
+            cachedBubbleRange = highlightRange
+            rebuildDayIndicators()
         }
     }
 
@@ -307,10 +385,5 @@ class ScheduleFragment : MainNavigationFragment() {
     private fun openNotificationsPreferenceDialog() {
         val dialog = NotificationsPreferenceDialogFragment()
         dialog.show(requireActivity().supportFragmentManager, DIALOG_NOTIFICATIONS_PREFERENCE)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        scheduleViewModel.initializeTimeZone()
     }
 }

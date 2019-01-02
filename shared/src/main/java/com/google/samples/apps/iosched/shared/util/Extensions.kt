@@ -28,6 +28,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
+import androidx.core.os.ParcelCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -130,11 +131,11 @@ fun <T : Enum<T>> Bundle.putEnum(key: String, value: T) = putString(key, value.n
 /** Read an enum value from a Bundle */
 inline fun <reified T : Enum<T>> Bundle.getEnum(key: String): T = enumValueOf(getString(key))
 
-/** Write a boolean to a Parcel (copied from Parcel, where this is @hidden). */
-fun Parcel.writeBoolean(value: Boolean) = writeInt(if (value) 1 else 0)
+/** Write a boolean to a Parcel. */
+fun Parcel.writeBoolean(value: Boolean) = ParcelCompat.writeBoolean(this, value)
 
-/** Read a boolean from a Parcel (copied from Parcel, where this is @hidden). */
-fun Parcel.readBoolean() = readInt() != 0
+/** Read a boolean from a Parcel. */
+fun Parcel.readBoolean() = ParcelCompat.readBoolean(this)
 
 // endregion
 // region LiveData

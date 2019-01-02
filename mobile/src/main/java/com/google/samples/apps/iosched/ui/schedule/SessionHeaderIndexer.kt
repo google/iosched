@@ -20,6 +20,7 @@ import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
+import org.threeten.bp.temporal.ChronoUnit
 
 /**
  * Find the first session at each start time (rounded down to nearest minute) and return pairs of
@@ -31,5 +32,5 @@ fun indexSessionHeaders(sessions: List<Session>, zoneId: ZoneId): List<Pair<Int,
         .mapIndexed { index, session ->
             index to TimeUtils.zonedTime(session.startTime, zoneId)
         }
-        .distinctBy { it.second.hour to it.second.minute }
+        .distinctBy { it.second.truncatedTo(ChronoUnit.MINUTES) }
 }
