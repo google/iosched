@@ -34,7 +34,6 @@ import org.threeten.bp.ZonedDateTime
 @BindingAdapter(
     "sessionStart",
     "sessionEnd",
-    "alwaysShowDate",
     "sessionRoom",
     "timeZoneId",
     requireAll = true
@@ -43,18 +42,12 @@ fun sessionLengthLocation(
     textView: TextView,
     startTime: ZonedDateTime,
     endTime: ZonedDateTime,
-    alwaysShowDate: Boolean,
     room: Room,
-    timeZoneId: ZoneId?
+    timeZoneId: ZoneId
 ) {
-    val finalTimeZoneId = timeZoneId ?: ZoneId.systemDefault()
-    val localStartTime = TimeUtils.zonedTime(startTime, finalTimeZoneId)
-    val localEndTime = TimeUtils.zonedTime(endTime, finalTimeZoneId)
-    textView.text = if (alwaysShowDate) {
-        // In places where sessions are shown without day/time labels, show the full date & time
-        // (respecting timezone) plus location. Example: "Wed, May 9, 9 – 10 am / Stage 1"
-        fullDateTime(localStartTime, localEndTime, textView, room)
-    } else if (finalTimeZoneId != TimeUtils.CONFERENCE_TIMEZONE) {
+    val localStartTime = TimeUtils.zonedTime(startTime, timeZoneId)
+    val localEndTime = TimeUtils.zonedTime(endTime, timeZoneId)
+    textView.text = if (!TimeUtils.isConferenceTimeZone(timeZoneId)) {
         // Show the local time, the duration, and the abbreviated room name.
         // Example: "Tue, May 8 / 1 hour / Stage 1"
         textView.context.getString(
@@ -65,7 +58,7 @@ fun sessionLengthLocation(
         )
     } else {
         // Assume user is at the conference and show the duration and the full room name
-        // Example: "1 hour / Stage2||Hydra"
+        // Example: "1 hour / Stage2 / Hydra"
         textView.context.getString(
             R.string.session_duration_location,
             durationString(textView.context, Duration.between(startTime, endTime)),

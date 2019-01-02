@@ -25,20 +25,23 @@ import org.threeten.bp.format.DateTimeFormatter
 
 object TimeUtils {
 
-    val CONFERENCE_TIMEZONE = ZoneId.of(BuildConfig.CONFERENCE_TIMEZONE)
+    val CONFERENCE_TIMEZONE: ZoneId = ZoneId.of(BuildConfig.CONFERENCE_TIMEZONE)
 
     val ConferenceDays = listOf(
         ConferenceDay(
             ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_START),
-            ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_END)
+            ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_END),
+            1
         ),
         ConferenceDay(
             ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY2_START),
-            ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY2_END)
+            ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY2_END),
+            2
         ),
         ConferenceDay(
             ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY3_START),
-            ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY3_END)
+            ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY3_END),
+            3
         )
     )
 
@@ -61,8 +64,8 @@ object TimeUtils {
         return ZonedDateTime.ofInstant(time.toInstant(), zoneId)
     }
 
-    fun physicallyInConferenceTimeZone(): Boolean {
-        return ZoneId.systemDefault() == CONFERENCE_TIMEZONE
+    fun isConferenceTimeZone(zoneId: ZoneId = ZoneId.systemDefault()): Boolean {
+        return zoneId == CONFERENCE_TIMEZONE
     }
 
     fun abbreviatedTimeString(startTime: ZonedDateTime): String {

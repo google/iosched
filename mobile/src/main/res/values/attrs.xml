@@ -98,4 +98,9 @@
         <attr name="foreground" format="reference" />
         <attr name="showIcons" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="DayIndicatorDecoration">
+        <attr name="android:color" />
+        <attr name="android:inset" />
+    </declare-styleable>
 </resources>

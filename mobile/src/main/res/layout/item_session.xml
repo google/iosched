@@ -36,10 +36,6 @@
             type="LiveData&lt;Boolean&gt;" />
 
         <variable
-            name="alwaysShowDate"
-            type="Boolean" />
-
-        <variable
             name="timeZoneId"
             type="LiveData&lt;org.threeten.bp.ZoneId&gt;" />
     </data>
@@ -124,7 +120,6 @@
             app:layout_constraintEnd_toEndOf="@id/title"
             app:layout_constraintStart_toEndOf="@id/livestream_icon"
             app:layout_constraintTop_toBottomOf="@id/reservation_status"
-            app:alwaysShowDate="@{alwaysShowDate}"
             app:sessionEnd="@{userSession.session.endTime}"
             app:sessionRoom="@{userSession.session.room}"
             app:sessionStart="@{userSession.session.startTime}"
@@ -149,6 +144,8 @@
             app:layout_constraintStart_toEndOf="@id/keyline"
             app:layout_constraintTop_toBottomOf="@id/tags_barrier"
             app:sessionTags="@{userSession.session.displayTags}"
+            tools:itemCount="3"
+            tools:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/item_session_tag" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

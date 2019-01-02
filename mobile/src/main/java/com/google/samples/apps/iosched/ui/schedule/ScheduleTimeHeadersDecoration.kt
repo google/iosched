@@ -81,7 +81,7 @@ class ScheduleTimeHeadersDecoration(
             }
         }
         width = attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_android_width)
-        paddingTop = attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_android_paddingTop)
+        paddingTop = attrs.getDimensionPixelSize(R.styleable.TimeHeader_android_paddingTop, 0)
         hourMinTextSize = attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_hourMinTextSize)
         meridiemTextSize =
             attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_meridiemTextSize)
@@ -144,10 +144,10 @@ class ScheduleTimeHeadersDecoration(
         // Look back over headers to see if a prior item should be drawn sticky.
         for (headerPos in timeSlots.keys.reversed()) {
             if (headerPos < earliestFoundHeaderPos) {
-                timeSlots[headerPos]?.let {
-                    val top = (prevHeaderTop - it.height).coerceAtMost(paddingTop)
+                timeSlots[headerPos]?.let { layout ->
+                    val top = (prevHeaderTop - layout.height).coerceAtMost(paddingTop)
                     c.withTranslation(y = top.toFloat()) {
-                        it.draw(c)
+                        layout.draw(c)
                     }
                 }
                 break
