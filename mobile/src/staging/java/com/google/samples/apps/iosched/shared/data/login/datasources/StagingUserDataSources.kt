@@ -16,11 +16,11 @@
 
 package com.google.samples.apps.iosched.shared.data.login.datasources
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.UserInfo
 import com.google.samples.apps.iosched.shared.R
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
@@ -69,7 +69,7 @@ open class StagingAuthenticatedUserInfo(
 
     override fun isRegistrationDataReady(): Boolean = true
 
-    override fun getEmail(): String? = TODO("Not implemented")
+    override fun getEmail(): String? = "staginguser@example.com"
 
     override fun getProviderData(): MutableList<out UserInfo> = TODO("Not implemented")
 
@@ -81,7 +81,7 @@ open class StagingAuthenticatedUserInfo(
 
     override fun isEmailVerified(): Boolean = TODO("Not implemented")
 
-    override fun getDisplayName(): String? = TODO("Not implemented")
+    override fun getDisplayName(): String? = "Staging User"
 
     override fun getPhotoUrl(): Uri? {
         val resources = context.getResources()

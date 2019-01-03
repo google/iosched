@@ -52,7 +52,7 @@ interface SignInViewModelDelegate {
     /**
      * Live updated value of the current firebase user
      */
-    val currentFirebaseUser: LiveData<Result<AuthenticatedUserInfo>?>
+    val currentUserInfo: LiveData<AuthenticatedUserInfo?>
 
     /**
      * Live updated value of the current firebase users image url
@@ -103,7 +103,7 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
 ) : SignInViewModelDelegate {
 
     override val performSignInEvent = MutableLiveData<Event<SignInEvent>>()
-    override val currentFirebaseUser: LiveData<Result<AuthenticatedUserInfo>?>
+    override val currentUserInfo: LiveData<AuthenticatedUserInfo?>
     override val currentUserImageUri: LiveData<Uri?>
     override val shouldShowNotificationsPrefAction = MediatorLiveData<Event<Boolean>>()
 
@@ -113,15 +113,17 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
     private val notificationsPrefIsShown = MutableLiveData<Result<Boolean>>()
 
     init {
-        currentFirebaseUser = observeUserAuthStateUseCase.observe()
-
-        currentUserImageUri = currentFirebaseUser.map { result: Result<AuthenticatedUserInfo?>? ->
-            (result as? Result.Success)?.data?.getPhotoUrl()
+        currentUserInfo = observeUserAuthStateUseCase.observe().map { result ->
+            (result as? Success)?.data
         }
 
-        _isSignedIn = currentFirebaseUser.map { isSignedIn() }
+        currentUserImageUri = currentUserInfo.map { user ->
+            user?.getPhotoUrl()
+        }
 
-        _isRegistered = currentFirebaseUser.map { isRegistered() }
+        _isSignedIn = currentUserInfo.map { isSignedIn() }
+
+        _isRegistered = currentUserInfo.map { isRegistered() }
 
         observeUserAuthStateUseCase.execute(Any())
 
@@ -159,11 +161,11 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
     }
 
     override fun isSignedIn(): Boolean {
-        return (currentFirebaseUser.value as? Result.Success)?.data?.isSignedIn() == true
+        return currentUserInfo.value?.isSignedIn() == true
     }
 
     override fun isRegistered(): Boolean {
-        return (currentFirebaseUser.value as? Result.Success)?.data?.isRegistered() == true
+        return currentUserInfo.value?.isRegistered() == true
     }
 
     override fun observeSignedInUser(): LiveData<Boolean> {
@@ -175,7 +177,6 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
     }
 
     override fun getUserId(): String? {
-        val user = currentFirebaseUser.value
-        return (user as? Result.Success)?.data?.getUid()
+        return currentUserInfo.value?.getUid()
     }
 }

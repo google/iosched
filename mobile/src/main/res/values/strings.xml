@@ -102,7 +102,12 @@
     <string name="a11y_star" translation_description="Alternate text for a button used for starring or unstarring events">Star</string>
     <string name="a11y_play" translation_description="Alternate text for a button used to play a video">Play video</string>
 
-    <!-- Sign in dialog -->
+    <!-- Sign in / Sign out -->
+    <string name="welcome" translation_description="Text shown instead of the user's name when the user is not signed in.">Welcome!</string>
+    <string name="sign_in_hint" translation_description="Text shown instead of the user's email when the user is not signed in.">Tap to sign in</string>
+    <string name="a11y_signed_in_content_description" translation_description="Description of the account header when the user is signed in.">Signed in as %s.</string>
+    <string name="a11y_signed_out_content_description" translation_description="Description of the account header when the user is not signed in.">Tap to sign in.</string>
+
     <string name="dialog_sign_in_title" translation_description="The title of the dialog. When the user needs to sign in.">Sign in to customize your schedule</string>
     <string name="dialog_sign_in_content" translation_description="The content of the dialog. When the user needs to sign in.">Sign in to save events, reserve seats and rate sessions (if an attendee). Actions will be synced from your account across app and site.</string>
     <string name="not_now" translation_description="The description of a button that the user doesn't want to sign in.">Not now</string>
@@ -110,7 +115,6 @@
     <string name="firebase_auth_no_network_connection" translation_description="Snackbar message when there is no network connectivity.">No internet connection</string>
     <string name="firebase_auth_unknown_error" translation_description="Snackbar message when Firebase Auth has an unknown error.">Unknown error</string>
 
-    <!-- Sign out dialog -->
     <string name="dialog_sign_out_title" translation_description="The title of the dialog. Used to confirm that the user wants to sign out.">Sign out?</string>
     <string name="dialog_sign_out_content" translation_description="The content of the dialog. Used to confirm that the user wants to sign out.">All saved events, seat reservations and session ratings (if an attendee) remain synced to your account.</string>
     <string name="sign_out" translation_description="The description of a button to sign out.">Sign out</string>
@@ -262,5 +266,4 @@
     <string name="no_network_connection" translation_description="Snackbar message when there is not network connection">No internet connection.</string>
 
     <string name="navigate_up" translation-description="Arrow at the top left of the screen for navigation">Navigate up</string>
-
 </resources>

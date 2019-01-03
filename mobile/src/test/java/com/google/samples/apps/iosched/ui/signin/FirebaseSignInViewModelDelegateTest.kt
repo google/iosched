@@ -19,7 +19,6 @@ package com.google.samples.apps.iosched.ui.signin
 import android.net.Uri
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
-import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfoBasic
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.iosched.shared.result.Result
@@ -55,12 +54,10 @@ class FirebaseSignInViewModelDelegateTest {
             createNotificationsPrefIsShownUseCase()
         )
 
-        val currentFirebaseUser = LiveDataTestUtil.getValue(
-            subject.currentFirebaseUser
-        ) as Result.Success<AuthenticatedUserInfo>
+        val currentFirebaseUser = LiveDataTestUtil.getValue(subject.currentUserInfo)
         assertEquals(
             null,
-            currentFirebaseUser.data.getUid()
+            currentFirebaseUser?.getUid()
         )
         assertEquals(
             null,
@@ -87,7 +84,7 @@ class FirebaseSignInViewModelDelegateTest {
 
         assertEquals(
             user.getUid(),
-            (LiveDataTestUtil.getValue(subject.currentFirebaseUser) as Result.Success).data.getUid()
+            LiveDataTestUtil.getValue(subject.currentUserInfo)?.getUid()
         )
         assertEquals(
             user.getPhotoUrl(),
@@ -115,7 +112,7 @@ class FirebaseSignInViewModelDelegateTest {
 
         assertEquals(
             user.getUid(),
-            (LiveDataTestUtil.getValue(subject.currentFirebaseUser) as Result.Success).data.getUid()
+            LiveDataTestUtil.getValue(subject.currentUserInfo)?.getUid()
         )
         assertEquals(
             user.getPhotoUrl(),

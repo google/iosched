@@ -40,7 +40,7 @@ interface SignInHandler {
 /**
  * Implementation of [SignInHandler] that interacts with Firebase Auth.
  */
-class DefaultSignInHandler : SignInHandler {
+class FirebaseAuthSignInHandler : SignInHandler {
 
     /**
      * Request a sign in intent.

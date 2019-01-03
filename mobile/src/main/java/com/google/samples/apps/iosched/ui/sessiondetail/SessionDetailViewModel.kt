@@ -160,7 +160,7 @@ class SessionDetailViewModel @Inject constructor(
         /* Wire observable dependencies */
 
         // If the user changes, load new data for them
-        _userEvent.addSource(currentFirebaseUser) {
+        _userEvent.addSource(currentUserInfo) {
             Timber.d("CurrentFirebaseUser changed, refreshing")
             refreshUserSession()
         }
@@ -319,8 +319,7 @@ class SessionDetailViewModel @Inject constructor(
     }
 
     private fun refreshUserSession() {
-        val registrationDataReady =
-            (currentFirebaseUser.value as? Result.Success)?.data?.isRegistrationDataReady()
+        val registrationDataReady = currentUserInfo.value?.isRegistrationDataReady()
         if (registrationDataReady == false) {
             // No registration information provided by [SignInViewModelDelegate] yet.
             Timber.d("No registration information yet, not refreshing")

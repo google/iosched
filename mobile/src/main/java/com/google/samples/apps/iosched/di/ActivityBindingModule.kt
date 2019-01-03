@@ -20,6 +20,7 @@ import com.google.samples.apps.iosched.shared.di.ActivityScoped
 import com.google.samples.apps.iosched.ui.LaunchModule
 import com.google.samples.apps.iosched.ui.LauncherActivity
 import com.google.samples.apps.iosched.ui.MainActivity
+import com.google.samples.apps.iosched.ui.MainActivityModule
 import com.google.samples.apps.iosched.ui.info.InfoModule
 import com.google.samples.apps.iosched.ui.map.MapActivity
 import com.google.samples.apps.iosched.ui.map.MapModule
@@ -60,6 +61,7 @@ abstract class ActivityBindingModule {
     @ActivityScoped
     @ContributesAndroidInjector(
         modules = [
+            MainActivityModule::class,
             ScheduleModule::class,
             MapModule::class,
             InfoModule::class,

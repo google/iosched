@@ -23,7 +23,7 @@ import com.google.samples.apps.iosched.shared.data.signin.datasources.FirebaseAu
 import com.google.samples.apps.iosched.shared.data.signin.datasources.FirestoreRegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.fcm.FcmTokenUpdater
-import com.google.samples.apps.iosched.util.signin.DefaultSignInHandler
+import com.google.samples.apps.iosched.util.signin.FirebaseAuthSignInHandler
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import dagger.Module
 import dagger.Provides
@@ -32,7 +32,7 @@ import javax.inject.Singleton
 @Module
 internal class SignInModule {
     @Provides
-    fun provideSignInHandler(): SignInHandler = DefaultSignInHandler()
+    fun provideSignInHandler(): SignInHandler = FirebaseAuthSignInHandler()
 
     @Singleton
     @Provides

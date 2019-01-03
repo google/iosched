@@ -50,11 +50,12 @@ import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFra
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment.Companion.DIALOG_REMOVE_RESERVATION
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
 import com.google.samples.apps.iosched.ui.reservation.SwapReservationDialogFragment
+import com.google.samples.apps.iosched.ui.reservation.SwapReservationDialogFragment.Companion.DIALOG_SWAP_RESERVATION
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment.Companion.DIALOG_NOTIFICATIONS_PREFERENCE
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
-import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment.Companion.DIALOG_NEED_TO_SIGN_IN
+import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment.Companion.DIALOG_SIGN_IN
 import com.google.samples.apps.iosched.ui.speaker.SpeakerActivity
 import dagger.android.support.DaggerFragment
 import timber.log.Timber
@@ -79,7 +80,7 @@ class SessionDetailFragment : DaggerFragment() {
 
     private var room: Room? = null
 
-    lateinit var sessionTitle: String
+    private lateinit var sessionTitle: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -223,8 +224,8 @@ class SessionDetailFragment : DaggerFragment() {
             R.id.session_detail_bottom_app_bar
         ).menu
         val starMenu = menu.findItem(R.id.menu_item_star)
-        sessionDetailViewModel.shouldShowStarInBottomNav.observe(this, Observer {
-            it?.let {
+        sessionDetailViewModel.shouldShowStarInBottomNav.observe(this, Observer { showStar ->
+            showStar?.let {
                 if (it) {
                     starMenu.setVisible(true)
                 } else {
@@ -232,8 +233,8 @@ class SessionDetailFragment : DaggerFragment() {
                 }
             }
         })
-        sessionDetailViewModel.userEvent.observe(this, Observer {
-            it?.let {
+        sessionDetailViewModel.userEvent.observe(this, Observer { userEvent ->
+            userEvent?.let {
                 if (it.isStarred) {
                     starMenu.setIcon(R.drawable.ic_star)
                 } else {
@@ -258,32 +259,28 @@ class SessionDetailFragment : DaggerFragment() {
     }
 
     private fun openSignInDialog(activity: FragmentActivity) {
-        val dialog = SignInDialogFragment()
-        dialog.show(activity.supportFragmentManager, DIALOG_NEED_TO_SIGN_IN)
+        SignInDialogFragment().show(activity.supportFragmentManager, DIALOG_SIGN_IN)
     }
 
     private fun openNotificationsPreferenceDialog() {
-        val dialog = NotificationsPreferenceDialogFragment()
-        dialog.show(requireActivity().supportFragmentManager, DIALOG_NOTIFICATIONS_PREFERENCE)
+        NotificationsPreferenceDialogFragment()
+            .show(requireActivity().supportFragmentManager, DIALOG_NOTIFICATIONS_PREFERENCE)
     }
 
     private fun openRemoveReservationDialog(
         activity: FragmentActivity,
         parameters: RemoveReservationDialogParameters
     ) {
-        val dialog = RemoveReservationDialogFragment.newInstance(parameters)
-        dialog.show(activity.supportFragmentManager, DIALOG_REMOVE_RESERVATION)
+        RemoveReservationDialogFragment.newInstance(parameters)
+            .show(activity.supportFragmentManager, DIALOG_REMOVE_RESERVATION)
     }
 
     private fun openSwapReservationDialog(
         activity: FragmentActivity,
         parameters: SwapRequestParameters
     ) {
-        val dialog = SwapReservationDialogFragment.newInstance(parameters)
-        dialog.show(
-            activity.supportFragmentManager,
-            SwapReservationDialogFragment.DIALOG_SWAP_RESERVATION
-        )
+        SwapReservationDialogFragment.newInstance(parameters)
+            .show(activity.supportFragmentManager, DIALOG_SWAP_RESERVATION)
     }
 
     private fun findSpeakerHeadshot(speakers: ViewGroup, speakerId: SpeakerId): View {

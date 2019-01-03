@@ -14,8 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -36,26 +35,11 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/margin_normal">
 
-            <!-- TODO Replace the placeholder with the actual asset -->
-            <ImageView
-                android:id="@+id/profile_button"
-                android:layout_width="@dimen/a11y_min_touch_target"
-                android:layout_height="@dimen/a11y_min_touch_target"
-                android:layout_gravity="center_vertical|start"
-                android:contentDescription="@{context.getString(viewModel.profileContentDesc)}"
-                android:foreground="?selectableItemBackground"
-                android:onClick="@{() -> viewModel.onProfileClicked()}"
-                android:padding="@dimen/spacing_normal"
-                app:clipToCircle="@{true}"
-                app:imageUri="@{viewModel.currentUserImageUri}"
-                app:placeholder="@{@drawable/ic_account_circle}" />
-
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="wrap_content"
                 android:layout_height="?actionBarSize"
                 android:layout_gravity="center" />
-
         </FrameLayout>
 
     </com.google.android.material.appbar.AppBarLayout>

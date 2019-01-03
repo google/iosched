@@ -31,13 +31,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <!-- Note: navigation header is added at runtime because it uses DataBinding. -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation"
         android:layout_width="@dimen/nav_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/navigation_header"
         app:menu="@menu/navigation" />
 
     <com.google.samples.apps.iosched.widget.FadingSnackbar
