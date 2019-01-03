@@ -91,7 +91,7 @@ class SpeakerFragment : DaggerFragment() {
             val dialog = SignInDialogFragment()
             dialog.show(
                 requireActivity().supportFragmentManager,
-                SignInDialogFragment.DIALOG_NEED_TO_SIGN_IN
+                SignInDialogFragment.DIALOG_SIGN_IN
             )
         })
 

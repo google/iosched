@@ -18,7 +18,6 @@
 
 package com.google.samples.apps.iosched.ui.schedule
 
-import android.net.Uri
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -63,9 +62,7 @@ import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
-import com.google.samples.apps.iosched.test.util.fakes.FakeThemedActivityDelegate
 import com.google.samples.apps.iosched.ui.SnackbarMessage
-import com.google.samples.apps.iosched.ui.ThemedActivityDelegate
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter
@@ -137,106 +134,6 @@ class ScheduleViewModelTest {
         // Tags
         val loadedFilters = LiveDataTestUtil.getValue(viewModel.eventFilters)
         assertTrue(loadedFilters?.containsAll(MobileTestData.tagFiltersList) ?: false)
-    }
-
-    @Test
-    fun profileClicked_whileLoggedIn_showsSignOutDialog() {
-        // Given a ViewModel with a signed in user
-        val signInViewModelDelegate = createSignInViewModelDelegate().apply {
-            injectIsSignedIn = true
-        }
-        val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelDelegate)
-
-        // When profile is clicked
-        viewModel.onProfileClicked()
-
-        // Then the sign out dialog should be shown
-        val signOutEvent = LiveDataTestUtil.getValue(viewModel.navigateToSignOutDialogAction)
-        assertNotNull(signOutEvent?.getContentIfNotHandled())
-    }
-
-    @Test
-    fun profileClicked_whileLoggedOut_showsSignInDialog() {
-        // Given a ViewModel with no signed in user
-        val signInViewModelDelegate = createSignInViewModelDelegate().apply {
-            injectIsSignedIn = false
-        }
-        val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelDelegate)
-
-        // When profile is clicked
-        viewModel.onProfileClicked()
-
-        // Then the sign in dialog should ne shown
-        val signInEvent = LiveDataTestUtil.getValue(viewModel.navigateToSignInDialogAction)
-        assertNotNull(signInEvent?.getContentIfNotHandled())
-    }
-
-    @Test
-    fun loggedInUser_setsProfileContentDescription() {
-        // Given a mock firebase user
-        val mockUser = mock<AuthenticatedUserInfoBasic> {
-            on { getUid() }.doReturn("123")
-            on { getPhotoUrl() }.doReturn(mock<Uri> {})
-            on { isSignedIn() }.doReturn(true)
-        }
-
-        // Create ViewModel
-        val observableFirebaseUserUseCase =
-            FakeObserveUserAuthStateUseCase(
-                user = Result.Success(mockUser),
-                isRegistered = Result.Success(false)
-            )
-        val signInViewModelComponent = FirebaseSignInViewModelDelegate(
-            observableFirebaseUserUseCase,
-            mock {})
-        val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
-
-        // Check that the expected content description is set
-        assertEquals(
-            R.string.sign_out,
-            LiveDataTestUtil.getValue(viewModel.profileContentDesc)
-        )
-    }
-
-    @Test
-    fun noLoggedInUser_setsProfileContentDescription() {
-        // Given no firebase user
-        val noFirebaseUser = null
-
-        // Create ViewModel
-        val observableFirebaseUserUseCase =
-            FakeObserveUserAuthStateUseCase(
-                user = Result.Success(noFirebaseUser),
-                isRegistered = Result.Success(false)
-            )
-        val signInViewModelComponent = FirebaseSignInViewModelDelegate(
-            observableFirebaseUserUseCase,
-            mock {})
-
-        val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
-
-        // Check that the expected content description is set
-        assertEquals(R.string.sign_in, LiveDataTestUtil.getValue(viewModel.profileContentDesc))
-    }
-
-    @Test
-    fun errorLoggingIn_setsProfileContentDescription() {
-        // Given no firebase user
-        val errorLoadingFirebaseUser = Result.Error(Exception())
-
-        // Create ViewModel
-        val observableFirebaseUserUseCase =
-            FakeObserveUserAuthStateUseCase(
-                user = errorLoadingFirebaseUser,
-                isRegistered = Result.Success(false)
-            )
-        val signInViewModelComponent = FirebaseSignInViewModelDelegate(
-            observableFirebaseUserUseCase,
-            mock {})
-        val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
-
-        // Check that the expected content description is set
-        assertEquals(R.string.sign_in, LiveDataTestUtil.getValue(viewModel.profileContentDesc))
     }
 
     @Test
@@ -539,8 +436,7 @@ class ScheduleViewModelTest {
             LoadSelectedFiltersUseCase(FakePreferenceStorage()),
         saveSelectedFiltersUseCase: SaveSelectedFiltersUseCase =
             SaveSelectedFiltersUseCase(FakePreferenceStorage()),
-        analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper(),
-        themedActivityDelegate: ThemedActivityDelegate = FakeThemedActivityDelegate()
+        analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper()
     ): ScheduleViewModel {
         return ScheduleViewModel(
             loadUserSessionsByDayUseCase = loadSessionsUseCase,
@@ -556,8 +452,7 @@ class ScheduleViewModelTest {
             observeConferenceDataUseCase = observeConferenceDataUseCase,
             loadSelectedFiltersUseCase = loadSelectedFiltersUseCase,
             saveSelectedFiltersUseCase = saveSelectedFiltersUseCase,
-            analyticsHelper = analyticsHelper,
-            themedActivityDelegate = themedActivityDelegate
+            analyticsHelper = analyticsHelper
         )
     }
 

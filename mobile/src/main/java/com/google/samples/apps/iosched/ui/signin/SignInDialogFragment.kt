@@ -48,8 +48,7 @@ class SignInDialogFragment : DaggerAppCompatDialogFragment() {
                 request.getContentIfNotHandled()
                 activity?.let {
                     signInHandler.makeSignInIntent()?.let {
-                        startActivityForResult(it, SIGN_IN_ACTIVITY_REQUEST_CODE)
-                        dismiss()
+                        startActivityForResult(it, REQUEST_CODE_SIGN_IN)
                     }
                 }
             }
@@ -66,7 +65,7 @@ class SignInDialogFragment : DaggerAppCompatDialogFragment() {
     }
 
     companion object {
-        const val DIALOG_NEED_TO_SIGN_IN = "dialog_sign_in"
-        const val SIGN_IN_ACTIVITY_REQUEST_CODE = 42
+        const val DIALOG_SIGN_IN = "dialog_sign_in"
+        const val REQUEST_CODE_SIGN_IN = 42
     }
 }

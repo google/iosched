@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.ui.schedule
 
-import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -27,7 +26,6 @@ import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.invoke
@@ -52,7 +50,6 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
-import com.google.samples.apps.iosched.ui.ThemedActivityDelegate
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
@@ -85,10 +82,10 @@ class ScheduleViewModel @Inject constructor(
     observeConferenceDataUseCase: ObserveConferenceDataUseCase,
     loadSelectedFiltersUseCase: LoadSelectedFiltersUseCase,
     private val saveSelectedFiltersUseCase: SaveSelectedFiltersUseCase,
-    private val analyticsHelper: AnalyticsHelper,
-    themedActivityDelegate: ThemedActivityDelegate
-) : ViewModel(), ScheduleEventListener, SignInViewModelDelegate by signInViewModelDelegate,
-    ThemedActivityDelegate by themedActivityDelegate {
+    private val analyticsHelper: AnalyticsHelper
+) : ViewModel(),
+    ScheduleEventListener,
+    SignInViewModelDelegate by signInViewModelDelegate {
 
     val isLoading: LiveData<Boolean>
 
@@ -159,12 +156,6 @@ class ScheduleViewModel @Inject constructor(
     private val _snackBarMessage = MediatorLiveData<Event<SnackbarMessage>>()
     val snackBarMessage: LiveData<Event<SnackbarMessage>>
         get() = _snackBarMessage
-
-    /** Resource id of the profile button's content description; changes based on sign in state**/
-    private val _profileContentDesc = MediatorLiveData<Int>().apply { value = R.string.sign_in }
-
-    val profileContentDesc: LiveData<Int>
-        get() = _profileContentDesc
 
     val showReservations: LiveData<Boolean>
 
@@ -246,10 +237,6 @@ class ScheduleViewModel @Inject constructor(
             cachedEventFilters
         }
 
-        _profileContentDesc.addSource(currentFirebaseUser) {
-            _profileContentDesc.value = getProfileContentDescription(it)
-        }
-
         // Show an error message if a star request fails
         _snackBarMessage.addSource(starEventUseCase.observe()) { it: Result<StarUpdatedStatus>? ->
             // Show a snackbar message on error.
@@ -284,13 +271,13 @@ class ScheduleViewModel @Inject constructor(
         }
 
         // Refresh the list of user sessions if the user is updated.
-        loadSessionsResult.addSource(currentFirebaseUser) {
-            Timber.d("Loading user session with user ${(it as? Result.Success)?.data?.getUid()}")
+        loadSessionsResult.addSource(currentUserInfo) {
+            Timber.d("Loading user session with user ${it?.getUid()}")
             refreshUserSessions()
         }
 
         // Show reservation button if not logged in or (logged in && registered)
-        showReservations = currentFirebaseUser.map {
+        showReservations = currentUserInfo.map {
             isRegistered() || !isSignedIn()
         }
 
@@ -450,25 +437,8 @@ class ScheduleViewModel @Inject constructor(
         refreshConferenceDataUseCase(Any(), swipeRefreshResult)
     }
 
-    fun onProfileClicked() {
-        if (isSignedIn()) {
-            _navigateToSignOutDialogAction.value = Event(Unit)
-        } else {
-            _navigateToSignInDialogAction.value = Event(Unit)
-        }
-    }
-
     fun onSignInRequired() {
         _navigateToSignInDialogAction.value = Event(Unit)
-    }
-
-    @StringRes
-    private fun getProfileContentDescription(userResult: Result<AuthenticatedUserInfo>?): Int {
-        return if (userResult is Success && userResult.data.isSignedIn()) {
-            R.string.sign_out
-        } else {
-            R.string.sign_in
-        }
     }
 
     private fun refreshUserSessions() {

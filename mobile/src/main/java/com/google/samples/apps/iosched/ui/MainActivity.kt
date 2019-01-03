@@ -29,13 +29,16 @@ import androidx.lifecycle.ViewModelProvider
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.databinding.NavigationHeaderBinding
+import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.info.InfoFragment
 import com.google.samples.apps.iosched.ui.map.MapFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.ScheduleFragment
-import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
+import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
+import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
 import com.google.samples.apps.iosched.util.updateForTheme
 import dagger.android.support.DaggerAppCompatActivity
@@ -51,6 +54,9 @@ class MainActivity : DaggerAppCompatActivity(), DrawerListener {
 
         private const val FRAGMENT_ID = R.id.fragment_container
         private const val NAV_ID_NONE = -1
+
+        private const val DIALOG_SIGN_IN = "dialog_sign_in"
+        private const val DIALOG_SIGN_OUT = "dialog_sign_out"
     }
 
     @Inject
@@ -60,7 +66,9 @@ class MainActivity : DaggerAppCompatActivity(), DrawerListener {
 
     private lateinit var currentFragment: MainNavigationFragment
 
-    private lateinit var scheduleViewModel: ScheduleViewModel
+    private lateinit var viewModel: MainActivityViewModel
+
+    private lateinit var navHeaderBinding: NavigationHeaderBinding
 
     private lateinit var drawer: DrawerLayout
     private lateinit var navigation: NavigationView
@@ -71,10 +79,9 @@ class MainActivity : DaggerAppCompatActivity(), DrawerListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // This VM instance is shared between activity and fragments, as it's scoped to MainActivity
-        scheduleViewModel = viewModelProvider(viewModelFactory)
+        viewModel = viewModelProvider(viewModelFactory)
         // Update for Dark Mode straight away
-        updateForTheme(scheduleViewModel.currentTheme)
+        updateForTheme(viewModel.currentTheme)
 
         setContentView(R.layout.activity_main)
         drawer = findViewById(R.id.drawer)
@@ -86,6 +93,12 @@ class MainActivity : DaggerAppCompatActivity(), DrawerListener {
             navigateWhenDrawerClosed(it.itemId)
             true
         }
+
+        navHeaderBinding = NavigationHeaderBinding.inflate(layoutInflater).apply {
+            viewModel = this@MainActivity.viewModel
+            setLifecycleOwner(this@MainActivity)
+        }
+        navigation.addHeaderView(navHeaderBinding.root)
 
         if (savedInstanceState == null) {
             // default to showing Schedule
@@ -99,7 +112,15 @@ class MainActivity : DaggerAppCompatActivity(), DrawerListener {
                 ?: throw IllegalStateException("Activity recreated, but no fragment found!")
         }
 
-        scheduleViewModel.theme.observe(this, Observer(::updateForTheme))
+        viewModel.theme.observe(this, Observer(::updateForTheme))
+
+        viewModel.navigateToSignInDialogAction.observe(this, EventObserver {
+            openSignInDialog()
+        })
+
+        viewModel.navigateToSignOutDialogAction.observe(this, EventObserver {
+            openSignOutDialog()
+        })
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
@@ -154,16 +175,8 @@ class MainActivity : DaggerAppCompatActivity(), DrawerListener {
         when (navId) {
             currentNavId -> return // user tapped the current item
             R.id.navigation_schedule -> replaceFragment(ScheduleFragment())
-            R.id.navigation_map -> {
-                // Scroll to current event next time the schedule is opened.
-                scheduleViewModel.userHasInteracted = false
-                replaceFragment(MapFragment())
-            }
-            R.id.navigation_info -> {
-                // Scroll to current event next time the schedule is opened.
-                scheduleViewModel.userHasInteracted = false
-                replaceFragment(InfoFragment())
-            }
+            R.id.navigation_map -> replaceFragment(MapFragment())
+            R.id.navigation_info -> replaceFragment(InfoFragment())
             else -> return // not a valid nav ID
         }
         currentNavId = navId
@@ -174,6 +187,14 @@ class MainActivity : DaggerAppCompatActivity(), DrawerListener {
             currentFragment = fragment
             replace(FRAGMENT_ID, fragment)
         }
+    }
+
+    private fun openSignInDialog() {
+        SignInDialogFragment().show(supportFragmentManager, DIALOG_SIGN_IN)
+    }
+
+    private fun openSignOutDialog() {
+        SignOutDialogFragment().show(supportFragmentManager, DIALOG_SIGN_OUT)
     }
 
     // -- DrawerListener overrides

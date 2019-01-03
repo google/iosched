@@ -25,7 +25,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.samples.apps.iosched.databinding.FragmentScheduleAgendaBinding
 import com.google.samples.apps.iosched.model.Block
-import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
+import com.google.samples.apps.iosched.shared.util.parentViewModelProvider
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.util.clearDecorations
 import dagger.android.support.DaggerFragment
@@ -52,7 +52,8 @@ class ScheduleAgendaFragment : DaggerFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = activityViewModelProvider(viewModelFactory)
+        // ViewModel is scoped to the parent fragment.
+        viewModel = parentViewModelProvider(viewModelFactory)
         binding.viewModel = viewModel
     }
 }

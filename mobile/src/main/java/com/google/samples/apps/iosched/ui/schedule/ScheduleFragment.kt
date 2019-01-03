@@ -37,7 +37,6 @@ import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
-import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
@@ -95,7 +94,8 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        scheduleViewModel = activityViewModelProvider(viewModelFactory)
+        // ViewModel shared with child fragments.
+        scheduleViewModel = viewModelProvider(viewModelFactory)
         val binding = FragmentScheduleBinding.inflate(inflater, container, false).apply {
             setLifecycleOwner(this@ScheduleFragment)
             viewModel = this@ScheduleFragment.scheduleViewModel
