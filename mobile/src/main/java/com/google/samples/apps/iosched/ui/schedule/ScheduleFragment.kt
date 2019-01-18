@@ -55,13 +55,12 @@ import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STAT
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_EXPANDED
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_HIDDEN
 import com.google.samples.apps.iosched.widget.FadingSnackbar
-import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 /**
  * The Schedule page of the top-level Activity.
  */
-class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
+class ScheduleFragment : MainNavigationFragment() {
 
     companion object {
         private val COUNT = ConferenceDays.size
@@ -160,6 +159,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewPager.offscreenPageLimit = COUNT - 1
 
         val appbar: View = view.findViewById(R.id.appbar)

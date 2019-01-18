@@ -34,24 +34,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
             style="@style/Widget.AppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorSurface">
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:minHeight="?actionBarSize"
-                android:text="@string/title_map"
-                android:textAppearance="@style/TextAppearance.IOSched.ToolbarTitle" />
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                app:title="@string/title_map"
+                tools:navigationIcon="@drawable/ic_menu" />
 
-        </FrameLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/map"

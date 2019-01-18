@@ -36,13 +36,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/title"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                android:gravity="center"
-                android:text="@string/agenda"
-                android:textAppearance="@style/TextAppearance.IOSched.ToolbarTitle" />
+                app:navigationContentDescription="@string/a11y_show_navigation"
+                app:navigationIcon="@drawable/ic_menu"
+                app:title="@string/agenda" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

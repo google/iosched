@@ -21,22 +21,23 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.Marker
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentMapBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
-import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class MapFragment : DaggerFragment(), MainNavigationFragment, OnMarkerClickListener {
+class MapFragment : MainNavigationFragment(), OnMarkerClickListener {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var analyticsHelper: AnalyticsHelper
@@ -132,6 +133,18 @@ class MapFragment : DaggerFragment(), MainNavigationFragment, OnMarkerClickListe
         })
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // This Fragment can appear in a standalone activity, so set up the toolbar accordingly.
+        if (navigationHost != null) {
+            val toolbar: Toolbar = view.findViewById(R.id.toolbar) ?: return
+            toolbar.apply {
+                setNavigationIcon(R.drawable.ic_menu)
+                setNavigationContentDescription(R.string.a11y_show_navigation)
+            }
+        }
     }
 
     private fun updateInfoSheet(markerInfo: MarkerInfo) {

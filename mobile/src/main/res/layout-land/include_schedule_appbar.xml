@@ -14,7 +14,8 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -30,17 +31,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <FrameLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/margin_normal">
+            android:layout_height="?actionBarSize"
+            app:navigationContentDescription="@string/a11y_show_navigation"
+            app:navigationIcon="@drawable/ic_menu"
+            app:title="@string/title_schedule"
+            app:titleMarginEnd="@dimen/margin_large">
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="wrap_content"
                 android:layout_height="?actionBarSize"
                 android:layout_gravity="center" />
-        </FrameLayout>
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 </layout>
