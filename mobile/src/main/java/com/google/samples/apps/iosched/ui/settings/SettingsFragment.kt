@@ -35,10 +35,9 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSettingsBinding
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
-import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class SettingsFragment : DaggerFragment(), MainNavigationFragment {
+class SettingsFragment : MainNavigationFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override fun onCreateView(

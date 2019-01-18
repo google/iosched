@@ -23,7 +23,6 @@ import android.view.View
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.firebase.ui.auth.IdpResponse
@@ -48,7 +47,7 @@ import timber.log.Timber
 import java.util.UUID
 import javax.inject.Inject
 
-class MainActivity : DaggerAppCompatActivity(), DrawerListener {
+class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
 
     companion object {
         /** Key for an int extra defining the initial navigation target. */
@@ -186,7 +185,7 @@ class MainActivity : DaggerAppCompatActivity(), DrawerListener {
         currentNavId = navId
     }
 
-    private fun <F> replaceFragment(fragment: F) where F : Fragment, F : MainNavigationFragment {
+    private fun replaceFragment(fragment: MainNavigationFragment) {
         supportFragmentManager.inTransaction {
             currentFragment = fragment
             replace(FRAGMENT_ID, fragment)
@@ -199,6 +198,12 @@ class MainActivity : DaggerAppCompatActivity(), DrawerListener {
 
     private fun openSignOutDialog() {
         SignOutDialogFragment().show(supportFragmentManager, DIALOG_SIGN_OUT)
+    }
+
+    // -- NavigationHost overrides
+
+    override fun showNavigation() {
+        drawer.openDrawer(GravityCompat.START)
     }
 
     // -- DrawerListener overrides

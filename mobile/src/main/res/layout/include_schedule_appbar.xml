@@ -31,23 +31,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <FrameLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/margin_normal"
-            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:minHeight="?actionBarSize"
-                android:text="@string/title_schedule"
-                android:textAppearance="@style/TextAppearance.IOSched.ToolbarTitle" />
-
-        </FrameLayout>
+            android:layout_height="?actionBarSize"
+            app:layout_scrollFlags="scroll|snap"
+            app:navigationContentDescription="@string/a11y_show_navigation"
+            app:navigationIcon="@drawable/ic_menu"
+            app:title="@string/title_schedule" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"

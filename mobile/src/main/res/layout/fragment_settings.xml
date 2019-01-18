@@ -35,13 +35,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/title"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                android:gravity="center"
-                android:text="@string/settings_title"
-                android:textAppearance="@style/TextAppearance.IOSched.ToolbarTitle" />
+                app:navigationContentDescription="@string/a11y_show_navigation"
+                app:navigationIcon="@drawable/ic_menu"
+                app:title="@string/settings_title" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -108,9 +108,9 @@
                     style="@style/Widget.IOSched.AboutHeading"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_large"
                     android:layout_marginBottom="@dimen/margin_normal"
-                    android:text="@string/about_title"/>
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:text="@string/about_title" />
 
                 <Button
                     android:id="@+id/faq_link"
@@ -158,8 +158,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_normal"
-                    android:paddingHorizontal="@dimen/margin_normal"
                     android:contentDescription="@string/built_with_material_content_description"
+                    android:paddingHorizontal="@dimen/margin_normal"
                     android:scaleType="fitStart"
                     android:src="@drawable/built_with_material" />
 
