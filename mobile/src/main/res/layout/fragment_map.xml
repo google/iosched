@@ -161,6 +161,7 @@
                 android:textAppearance="@style/TextAppearance.IOSched.Map.InfoTitle"
                 app:layout_constraintEnd_toStartOf="@id/expand_icon"
                 app:layout_constraintStart_toEndOf="@id/marker_icon"
+                app:layout_constraintTop_toTopOf="@id/bottom_sheet"
                 tools:text="Community Lounge" />
 
             <!--
@@ -176,6 +177,7 @@
                 android:alpha="0"
                 android:background="@drawable/filters_sheet_header_shadow"
                 android:stateListAnimator="@animator/active_alpha"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/guide_peek_height" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

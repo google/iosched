@@ -43,6 +43,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/margin_normal"
         android:paddingTop="@dimen/margin_normal"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
         app:layout_constraintVertical_bias="1"
