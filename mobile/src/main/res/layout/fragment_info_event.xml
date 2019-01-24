@@ -152,6 +152,7 @@
                         android:layout_marginStart="@dimen/margin_normal"
                         android:importantForAccessibility="no"
                         android:src="@drawable/ic_logo_scavenger_hunt"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 
                     <TextView
@@ -162,6 +163,7 @@
                         android:layout_marginEnd="@dimen/margin_normal"
                         android:layout_marginStart="@dimen/margin_normal"
                         android:text="@string/scavenger_hunt_description"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/scavenger_hunt_logo" />
 
@@ -197,6 +199,7 @@
                         android:layout_marginStart="@dimen/margin_normal"
                         android:importantForAccessibility="no"
                         android:src="@drawable/ic_logo_assistant"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 
                     <TextView
@@ -207,6 +210,7 @@
                         android:layout_marginEnd="@dimen/margin_normal"
                         android:layout_marginStart="@dimen/margin_normal"
                         android:text="@string/assistant_app_description"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/assistant_app_logo" />
 
