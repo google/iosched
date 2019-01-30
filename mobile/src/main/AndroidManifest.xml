@@ -28,6 +28,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- Required for apps targeting API 28 and above and using Google Maps. -->
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+
         <activity
             android:name=".ui.LauncherActivity"
             android:theme="@style/AppTheme.Launcher" />
