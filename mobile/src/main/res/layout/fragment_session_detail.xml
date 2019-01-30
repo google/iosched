@@ -66,7 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:layout_gravity="bottom"
-            android:elevation="6dp"
+            app:elevation="6dp"
             app:contentInsetStart="@dimen/margin_normal"
             app:fabAlignmentMode="end" />
 
