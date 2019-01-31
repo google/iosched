@@ -86,9 +86,6 @@ class SessionDetailFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        // TODO: Scoping the VM to the activity because of bug
-        // https://issuetracker.google.com/issues/74139250 (fixed in Supportlib 28.0.0-alpha1)
         sessionDetailViewModel = activityViewModelProvider(viewModelFactory)
 
         val binding = FragmentSessionDetailBinding.inflate(inflater, container, false).apply {

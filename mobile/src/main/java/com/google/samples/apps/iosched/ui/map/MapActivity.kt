@@ -20,14 +20,21 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.inTransaction
+import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.util.updateForTheme
 import dagger.android.support.DaggerAppCompatActivity
+import javax.inject.Inject
 
 /** Shell activity hosting a [MapFragment] */
 class MapActivity : DaggerAppCompatActivity() {
 
     private lateinit var fragment: MapFragment
+
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
     companion object {
         const val EXTRA_FEATURE_ID = "extra.FEATURE_ID"
@@ -42,6 +49,10 @@ class MapActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val viewModel: MapViewModel = viewModelProvider(viewModelFactory)
+        updateForTheme(viewModel.currentTheme)
+
         setContentView(R.layout.activity_map)
 
         if (savedInstanceState == null) {
@@ -57,6 +68,8 @@ class MapActivity : DaggerAppCompatActivity() {
         } else {
             fragment = supportFragmentManager.findFragmentById(FRAGMENT_ID) as MapFragment
         }
+
+        viewModel.theme.observe(this, Observer(::updateForTheme))
     }
 
     override fun onBackPressed() {

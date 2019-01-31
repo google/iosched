@@ -28,9 +28,12 @@ import android.text.style.StyleSpan
 import android.util.TypedValue
 import android.view.View
 import androidx.annotation.DimenRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.postDelayed
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ViewDataBinding
+import com.google.samples.apps.iosched.model.Theme
 
 fun ObservableBoolean.hasSameValue(other: ObservableBoolean) = get() == other.get()
 
@@ -144,4 +147,10 @@ fun CharSequence.makeBold(boldText: String): CharSequence {
             setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
     }
+}
+
+fun AppCompatActivity.updateForTheme(theme: Theme) = when (theme) {
+    Theme.DARK -> delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+    Theme.LIGHT -> delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+    Theme.SYSTEM -> delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 }

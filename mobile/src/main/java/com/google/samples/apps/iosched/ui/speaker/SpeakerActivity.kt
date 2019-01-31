@@ -19,17 +19,28 @@ package com.google.samples.apps.iosched.ui.speaker
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.shared.util.inTransaction
+import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.util.updateForTheme
 import dagger.android.support.DaggerAppCompatActivity
+import javax.inject.Inject
 
 internal const val SPEAKER_ID = "speaker_id"
 
 class SpeakerActivity : DaggerAppCompatActivity() {
 
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val viewModel: SpeakerViewModel = viewModelProvider(viewModelFactory)
+        updateForTheme(viewModel.currentTheme)
+
         setContentView(R.layout.activity_speaker)
 
         if (savedInstanceState == null) {
@@ -38,6 +49,8 @@ class SpeakerActivity : DaggerAppCompatActivity() {
                 add(R.id.container, SpeakerFragment.newInstance(speakerId))
             }
         }
+
+        viewModel.theme.observe(this, Observer(::updateForTheme))
     }
 
     companion object {

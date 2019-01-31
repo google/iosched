@@ -31,6 +31,7 @@ import com.google.samples.apps.iosched.databinding.FragmentSpeakerBinding
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.EventObserver
+import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
@@ -65,7 +66,7 @@ class SpeakerFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        speakerViewModel = viewModelProvider(viewModelFactory)
+        speakerViewModel = activityViewModelProvider(viewModelFactory)
         speakerViewModel.setSpeakerId(requireNotNull(arguments).getString(SPEAKER_ID))
 
         // Delay the Activity enter transition until speaker image has loaded

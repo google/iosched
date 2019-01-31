@@ -47,9 +47,11 @@ import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
+import com.google.samples.apps.iosched.test.util.fakes.FakeThemedActivityDelegate
 import com.google.samples.apps.iosched.test.util.time.FakeIntervalMapperRule
 import com.google.samples.apps.iosched.test.util.time.FixedTimeExecutorRule
 import com.google.samples.apps.iosched.ui.SnackbarMessage
+import com.google.samples.apps.iosched.ui.ThemedActivityDelegate
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
@@ -358,12 +360,13 @@ class SessionDetailViewModelTest {
             SnackbarMessageManager(FakePreferenceStorage()),
         networkUtils: NetworkUtils = mockNetworkUtils,
         timeProvider: TimeProvider = DefaultTimeProvider,
-        analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper()
+        analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper(),
+        themedActivityDelegate: ThemedActivityDelegate = FakeThemedActivityDelegate()
     ): SessionDetailViewModel {
         return SessionDetailViewModel(
             signInViewModelPlugin, loadUserSessionUseCase, loadRelatedSessionsUseCase,
             starEventUseCase, reservationActionUseCase, getTimeZoneUseCase, snackbarMessageManager,
-            timeProvider, networkUtils, analyticsHelper
+            timeProvider, networkUtils, analyticsHelper, themedActivityDelegate
         )
     }
 
