@@ -17,19 +17,20 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/google_blue</item>
         <item name="colorAccent">@color/android_green_dark</item>
         <item name="colorControlActivated">?colorPrimary</item>
         <item name="toolbarStyle">@style/Widget.Toolbar</item>
         <item name="tabStyle">@style/Widget.IOSched.Tabs</item>
+
         <item name="android:textViewStyle">@style/Widget.IOSched.TextView</item>
-        <item name="android:windowBackground">@color/white</item>
         <item name="android:statusBarColor">@color/status_bar</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:navigationBarColor">@color/google_blue_light</item>
         <item name="android:textColorTertiary">@color/text_color_tertiary</item>
+
         <item name="sessionListKeyline">@dimen/session_keyline</item>
         <item name="eventFilterViewStyle">@style/Widget.IOSched.EventFilters</item>
 
@@ -105,7 +106,7 @@
 
     <style name="Widget.AppBar" parent="@style/Widget.Design.AppBarLayout">
         <item name="popupTheme">@style/AppTheme.PopupTheme</item>
-        <item name="android:background">@color/white</item>
+        <item name="android:background">?attr/colorSurface</item>
         <item name="android:elevation">8dp</item>
         <item name="android:orientation">vertical</item>
     </style>

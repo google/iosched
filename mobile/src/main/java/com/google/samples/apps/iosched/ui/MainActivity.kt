@@ -20,6 +20,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -31,6 +32,7 @@ import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
+import com.google.samples.apps.iosched.util.updateForTheme
 import dagger.android.support.DaggerAppCompatActivity
 import timber.log.Timber
 import java.util.UUID
@@ -56,17 +58,17 @@ class MainActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        if (savedInstanceState == null) {
-            setupBottomNavigationBar()
-        } // Else, need to wait for onRestoreInstanceState
-
         // This VM instance is shared between activity and fragments, as it's scoped to MainActivity
         val scheduleViewModel: ScheduleViewModel = viewModelProvider(viewModelFactory)
+        scheduleViewModel.theme.observe(this, Observer {
+            updateForTheme(it)
+        })
+
+        setContentView(R.layout.activity_main)
 
         // Refresh conference data on launch
         if (savedInstanceState == null) {
+            setupBottomNavigationBar() // otherwise this happens in onRestoreInstanceState
             Timber.d("Refreshing conference data on launch")
             scheduleViewModel.onSwipeRefresh()
         }

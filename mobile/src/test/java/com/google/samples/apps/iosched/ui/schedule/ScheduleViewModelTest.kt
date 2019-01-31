@@ -58,7 +58,9 @@ import com.google.samples.apps.iosched.test.util.fakes.FakeAppDatabase
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
+import com.google.samples.apps.iosched.test.util.fakes.FakeThemedActivityDelegate
 import com.google.samples.apps.iosched.ui.SnackbarMessage
+import com.google.samples.apps.iosched.ui.ThemedActivityDelegate
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter
@@ -399,7 +401,8 @@ class ScheduleViewModelTest {
             LoadSelectedFiltersUseCase(FakePreferenceStorage(), coroutineRule.testDispatcher),
         saveSelectedFiltersUseCase: SaveSelectedFiltersUseCase =
             SaveSelectedFiltersUseCase(FakePreferenceStorage(), coroutineRule.testDispatcher),
-        analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper()
+        analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper(),
+        themedActivityDelegate: ThemedActivityDelegate = FakeThemedActivityDelegate()
     ): ScheduleViewModel {
 
         val testUseEventDataSource = TestUserEventDataSource()
@@ -417,7 +420,8 @@ class ScheduleViewModelTest {
             observeConferenceDataUseCase = observeConferenceDataUseCase,
             loadSelectedFiltersUseCase = loadSelectedFiltersUseCase,
             saveSelectedFiltersUseCase = saveSelectedFiltersUseCase,
-            analyticsHelper = analyticsHelper
+            analyticsHelper = analyticsHelper,
+            themedActivityDelegate = themedActivityDelegate
         )
     }
 

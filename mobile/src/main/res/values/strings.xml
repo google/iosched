@@ -298,6 +298,8 @@
     <string name="settings_privacy_policy" translation_description="Open link to privacy policy.">Privacy policy</string>
     <string name="settings_oss_licenses" translation_description="Open link to open source licenses.">Open sources licenses</string>
     <string name="settings_version_label" translation_description="Version and build numbers.">Version %1$s, build %2$s</string>
+    <string name="settings_dark_mode" translation_description="Whether the app should be a dark theme.">Enable dark theme</string>
+
     <string name="faq_label" translation_description="Label for link to FAQ on website.">FAQ</string>
     <string name="built_with_material_content_description" translation_description="The app was built with Material Components.">Built with Material Components.</string>
     <string name="tap_to_join_network" translation_description="Tap to join Wifi network.">(tap to join network)</string>

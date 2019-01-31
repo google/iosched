@@ -16,9 +16,9 @@
 
 package com.google.samples.apps.iosched.test.util.fakes
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 class FakePreferenceStorage(
     override var onboardingCompleted: Boolean = false,
@@ -26,9 +26,9 @@ class FakePreferenceStorage(
     override var notificationsPreferenceShown: Boolean = false,
     override var preferToReceiveNotifications: Boolean = false,
     override var snackbarIsStopped: Boolean = false,
-    override var observableSnackbarIsStopped: LiveData<Boolean> =
-        MutableLiveData(),
     override var preferConferenceTimeZone: Boolean = true,
     override var sendUsageStatistics: Boolean = false,
-    override var selectedFilters: String? = null
+    override var selectedFilters: String? = null,
+    override var selectedTheme: String? = null,
+    override var observableSelectedTheme: Flow<String?> = flowOf(null)
 ) : PreferenceStorage

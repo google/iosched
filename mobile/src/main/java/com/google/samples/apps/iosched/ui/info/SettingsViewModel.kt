@@ -19,15 +19,20 @@ package com.google.samples.apps.iosched.ui.info
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
+import com.google.samples.apps.iosched.model.Theme
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefSaveActionUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetAnalyticsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetNotificationsSettingUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetAnalyticsSettingUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.SetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.data
+import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.result.updateOnSuccess
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,7 +43,9 @@ class SettingsViewModel @Inject constructor(
     val notificationsPrefSaveActionUseCase: NotificationsPrefSaveActionUseCase,
     getNotificationsSettingUseCase: GetNotificationsSettingUseCase,
     val setAnalyticsSettingUseCase: SetAnalyticsSettingUseCase,
-    getAnalyticsSettingUseCase: GetAnalyticsSettingUseCase
+    getAnalyticsSettingUseCase: GetAnalyticsSettingUseCase,
+    val setThemeUseCase: SetThemeUseCase,
+    getThemeUseCase: GetThemeUseCase
 ) : ViewModel() {
 
     // Time Zone setting
@@ -61,6 +68,10 @@ class SettingsViewModel @Inject constructor(
     val showSignIn: LiveData<Event<Unit>>
         get() = _showSignIn
 
+    // Theme setting
+    private val _darkMode = MutableLiveData<Theme>()
+    val darkMode: LiveData<Boolean> = _darkMode.map { it == Theme.DARK }
+
     init {
         // Executing use cases in parallel
         viewModelScope.launch {
@@ -71,6 +82,9 @@ class SettingsViewModel @Inject constructor(
         }
         viewModelScope.launch {
             enableNotificationsResult.value = getNotificationsSettingUseCase(Unit).data ?: false
+        }
+        viewModelScope.launch {
+            _darkMode.value = getThemeUseCase(Unit).successOr(Theme.SYSTEM)
         }
     }
 
@@ -93,6 +107,13 @@ class SettingsViewModel @Inject constructor(
         }
         viewModelScope.launch {
             notificationsPrefSaveActionUseCase(checked).updateOnSuccess(enableNotificationsResult)
+        }
+    }
+
+    fun toggleDarkMode(checked: Boolean) {
+        viewModelScope.launch {
+            setThemeUseCase(if (checked) Theme.DARK else Theme.LIGHT)
+                .updateOnSuccess(_darkMode)
         }
     }
 }

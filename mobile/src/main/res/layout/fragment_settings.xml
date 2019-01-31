@@ -43,17 +43,30 @@
             android:layout_height="match_parent">
 
             <!--TODO: make button ripple the entire width of row for switches-->
+
             <Switch
-                android:id="@+id/settings_time_zone"
+                android:id="@+id/settings_dark_mode"
                 style="@style/TextAppearance.IOSched.SettingsSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_normal"
+                android:checked="@{viewModel.darkMode}"
+                android:onCheckedChanged="@{(view, checked) -> viewModel.toggleDarkMode(checked)}"
+                android:text="@string/settings_dark_mode"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Switch
+                android:id="@+id/settings_time_zone"
+                style="@style/TextAppearance.IOSched.SettingsSwitch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:checked="@{viewModel.preferConferenceTimeZone}"
                 android:onCheckedChanged="@{(view, checked) -> viewModel.toggleTimeZone(checked)}"
                 android:text="@string/settings_time_zone_label"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/settings_dark_mode" />
 
             <Switch
                 android:id="@+id/settings_enable_notifications"

@@ -49,6 +49,7 @@ import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
+import com.google.samples.apps.iosched.ui.ThemedActivityDelegate
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
@@ -84,8 +85,10 @@ class ScheduleViewModel @Inject constructor(
     observeConferenceDataUseCase: ObserveConferenceDataUseCase,
     loadSelectedFiltersUseCase: LoadSelectedFiltersUseCase,
     private val saveSelectedFiltersUseCase: SaveSelectedFiltersUseCase,
-    private val analyticsHelper: AnalyticsHelper
-) : ViewModel(), ScheduleEventListener, SignInViewModelDelegate by signInViewModelDelegate {
+    private val analyticsHelper: AnalyticsHelper,
+    themedActivityDelegate: ThemedActivityDelegate
+) : ViewModel(), ScheduleEventListener, SignInViewModelDelegate by signInViewModelDelegate,
+    ThemedActivityDelegate by themedActivityDelegate {
 
     // Keeps track of the coroutine that listens for user sessions
     private var loadUserSessionsJob: Job? = null

@@ -22,9 +22,14 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import androidx.annotation.WorkerThread
 import androidx.core.content.edit
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import com.google.samples.apps.iosched.model.Theme
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -37,17 +42,26 @@ interface PreferenceStorage {
     var notificationsPreferenceShown: Boolean
     var preferToReceiveNotifications: Boolean
     var snackbarIsStopped: Boolean
-    var observableSnackbarIsStopped: LiveData<Boolean>
     var sendUsageStatistics: Boolean
     var preferConferenceTimeZone: Boolean
     var selectedFilters: String?
+    var selectedTheme: String?
+    var observableSelectedTheme: Flow<String?>
 }
 
 /**
  * [PreferenceStorage] impl backed by [android.content.SharedPreferences].
  */
-class SharedPreferenceStorage @Inject constructor(context: Context) :
-    PreferenceStorage {
+@Singleton
+@ExperimentalCoroutinesApi
+@FlowPreview
+class SharedPreferenceStorage @Inject constructor(context: Context) : PreferenceStorage {
+
+    private val selectedThemeChannel: ConflatedBroadcastChannel<String?> by lazy {
+        ConflatedBroadcastChannel<String?>().also { channel ->
+            channel.offer(selectedTheme)
+        }
+    }
 
     private val prefs: Lazy<SharedPreferences> = lazy { // Lazy to prevent IO access to main thread.
         context.applicationContext.getSharedPreferences(
@@ -57,10 +71,9 @@ class SharedPreferenceStorage @Inject constructor(context: Context) :
         }
     }
 
-    private val observableShowSnackbarResult = MutableLiveData<Boolean>()
     private val changeListener = OnSharedPreferenceChangeListener { _, key ->
-        if (key == PREF_SNACKBAR_IS_STOPPED) {
-            observableShowSnackbarResult.value = snackbarIsStopped
+        when (key) {
+            PREF_DARK_MODE_ENABLED -> selectedThemeChannel.offer(selectedTheme)
         }
     }
 
@@ -76,19 +89,20 @@ class SharedPreferenceStorage @Inject constructor(context: Context) :
 
     override var snackbarIsStopped by BooleanPreference(prefs, PREF_SNACKBAR_IS_STOPPED, false)
 
-    override var observableSnackbarIsStopped: LiveData<Boolean>
-        get() {
-            observableShowSnackbarResult.value = snackbarIsStopped
-            return observableShowSnackbarResult
-        }
-        set(value) = throw IllegalAccessException("This property can't be changed")
-
     override var sendUsageStatistics by BooleanPreference(prefs, PREF_SEND_USAGE_STATISTICS, true)
 
     override var preferConferenceTimeZone
         by BooleanPreference(prefs, PREF_CONFERENCE_TIME_ZONE, true)
 
     override var selectedFilters by StringPreference(prefs, PREF_SELECTED_FILTERS, null)
+
+    override var selectedTheme by StringPreference(
+        prefs, PREF_DARK_MODE_ENABLED, Theme.SYSTEM.storageKey
+    )
+
+    override var observableSelectedTheme: Flow<String?>
+        get() = selectedThemeChannel.asFlow()
+        set(_) = throw IllegalAccessException("This property can't be changed")
 
     companion object {
         const val PREFS_NAME = "adssched"
@@ -100,6 +114,7 @@ class SharedPreferenceStorage @Inject constructor(context: Context) :
         const val PREF_SEND_USAGE_STATISTICS = "pref_send_usage_statistics"
         const val PREF_CONFERENCE_TIME_ZONE = "pref_conference_time_zone"
         const val PREF_SELECTED_FILTERS = "pref_selected_filters"
+        const val PREF_DARK_MODE_ENABLED = "pref_dark_mode"
     }
 
     fun registerOnPreferenceChangeListener(listener: OnSharedPreferenceChangeListener) {

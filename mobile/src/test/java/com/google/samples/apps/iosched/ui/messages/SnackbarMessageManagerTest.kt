@@ -17,15 +17,12 @@
 package com.google.samples.apps.iosched.ui.messages
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.ui.SnackbarMessage
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.mock
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.nullValue
 import org.hamcrest.core.Is.`is`
@@ -120,11 +117,8 @@ class SnackbarMessageManagerTest {
 
     @Test
     fun addOneMessage_snackbarIsStopped_actionDontShow() {
-        val mockSnackbarIsStopped = mock<LiveData<Boolean>> {
-            on { value }.doReturn(true)
-        }
         val snackbarMessageManager = SnackbarMessageManager(
-            FakePreferenceStorage(observableSnackbarIsStopped = mockSnackbarIsStopped)
+            FakePreferenceStorage().apply { snackbarIsStopped = true }
         )
         snackbarMessageManager.addMessage((msg1.copy(actionId = R.string.dont_show)))
 
@@ -134,11 +128,8 @@ class SnackbarMessageManagerTest {
 
     @Test
     fun addOneMessage_snackbarAppears_actionNotDontShow() {
-        val mockSnackbarIsStopped = mock<LiveData<Boolean>> {
-            on { value }.doReturn(true)
-        }
         val snackbarMessageManager = SnackbarMessageManager(
-            FakePreferenceStorage(observableSnackbarIsStopped = mockSnackbarIsStopped)
+            FakePreferenceStorage().apply { snackbarIsStopped = true }
         )
         snackbarMessageManager.addMessage(msg1)
 

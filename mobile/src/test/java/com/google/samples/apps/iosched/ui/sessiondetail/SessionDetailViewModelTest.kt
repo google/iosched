@@ -279,8 +279,13 @@ class SessionDetailViewModelTest {
             createObserveConferenceDataUseCase()
     ): SessionDetailViewModel {
         return SessionDetailViewModel(
-            signInViewModelPlugin, loadUserSessionUseCase, loadRelatedSessionsUseCase,
-            starEventUseCase, observeConferenceDataUseCase, getTimeZoneUseCase, timeProvider,
+            signInViewModelPlugin,
+            loadUserSessionUseCase,
+            loadRelatedSessionsUseCase,
+            starEventUseCase,
+            observeConferenceDataUseCase,
+            getTimeZoneUseCase,
+            timeProvider,
             analyticsHelper
         )
     }

@@ -52,7 +52,7 @@ open class SnackbarMessageManager @Inject constructor(
     private val result = MutableLiveData<Event<SnackbarMessage>>()
 
     fun addMessage(msg: SnackbarMessage) {
-        if (isSnackbarShouldBeIgnored(msg)) {
+        if (shouldSnackbarBeIgnored(msg)) {
             return
         }
         // If the new message is about the same change as a pending one, keep the new one. (rare)
@@ -88,8 +88,7 @@ open class SnackbarMessageManager @Inject constructor(
         return result
     }
 
-    private fun isSnackbarShouldBeIgnored(msg: SnackbarMessage): Boolean {
-        return preferenceStorage.observableSnackbarIsStopped.value == true &&
-            msg.actionId == R.string.dont_show
+    private fun shouldSnackbarBeIgnored(msg: SnackbarMessage): Boolean {
+        return preferenceStorage.snackbarIsStopped && msg.actionId == R.string.dont_show
     }
 }

@@ -25,10 +25,13 @@ import android.util.TypedValue
 import android.view.View
 import android.view.View.OnAttachStateChangeListener
 import androidx.annotation.DimenRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ViewDataBinding
+import com.google.samples.apps.iosched.model.Theme
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
@@ -205,3 +208,9 @@ data class ViewPaddingState(
     val start: Int,
     val end: Int
 )
+
+fun AppCompatActivity.updateForTheme(theme: Theme) = when (theme) {
+    Theme.DARK -> delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+    Theme.LIGHT -> delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+    Theme.SYSTEM -> delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+}
