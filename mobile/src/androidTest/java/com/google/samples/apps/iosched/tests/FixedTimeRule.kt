@@ -43,7 +43,7 @@ class FixedTimeRule(
 /**
  * Fix the TimeProvider to a fixed time
  */
-class FixedTimeProvider(var instant: Instant) : TimeProvider {
+class FixedTimeProvider(private var instant: Instant) : TimeProvider {
     constructor(timeInMilis: Long) : this(Instant.ofEpochMilli(timeInMilis))
 
     override fun now(): Instant {

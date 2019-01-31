@@ -16,9 +16,10 @@
 
 package com.google.samples.apps.iosched.tests.ui
 
+import android.content.Context
 import android.provider.Settings
 import android.view.View
-import androidx.test.InstrumentationRegistry
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
@@ -32,8 +33,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
@@ -72,7 +73,7 @@ class ScheduleTest {
     @get:Rule
     var preferencesRule = SetPreferencesRule()
 
-    private val resources = InstrumentationRegistry.getTargetContext().resources
+    private val resources = ApplicationProvider.getApplicationContext<Context>().resources
 
     @Before
     fun disableBottomSheetAnimations() {
@@ -217,7 +218,7 @@ class ScheduleTest {
 
     private fun checkAnimationsDisabled() {
         val scale = Settings.Global.getFloat(
-            InstrumentationRegistry.getTargetContext().contentResolver,
+            ApplicationProvider.getApplicationContext<Context>().contentResolver,
             Settings.Global.ANIMATOR_DURATION_SCALE,
             1f
         )

@@ -72,6 +72,8 @@ android {
         debug.java.srcDir 'src/debugRelease/java'
         release.java.srcDir 'src/debugRelease/java'
     }
+
+    testBuildType "staging"
 }
 
 dependencies {
@@ -90,7 +92,7 @@ dependencies {
     // Architecture Components
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
     kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleVersion"
-    testImplementation "androidx.arch.core:core-testing:$rootProject.lifecycleVersion"
+    testImplementation "androidx.arch.core:core-testing:$rootProject.archTestingVersion"
 
     // Dagger
     implementation "com.google.dagger:dagger-android:$rootProject.dagger"
@@ -116,7 +118,10 @@ dependencies {
 
     // Instrumentation tests
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$rootProject.espressoVersion"
+    androidTestImplementation "androidx.test.ext:junit:$rootProject.testExtVersion"
     androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
+    androidTestImplementation "androidx.test:rules:$rootProject.rulesVersion"
 
     // Local unit tests
     testImplementation "junit:junit:$rootProject.junitVersion"

@@ -16,15 +16,16 @@
 
 package com.google.samples.apps.iosched.tests.ui
 
-import androidx.test.InstrumentationRegistry
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
 import com.google.samples.apps.iosched.tests.SyncTaskExecutorRule
@@ -52,7 +53,7 @@ class MapTest {
     @get:Rule
     var preferencesRule = SetPreferencesRule()
 
-    private val resources = InstrumentationRegistry.getTargetContext().resources
+    private val resources = ApplicationProvider.getApplicationContext<Context>().resources
 
     @Before
     fun goToMapScreen() {
