@@ -20,8 +20,8 @@ package com.google.samples.apps.iosched.tv.ui
 
 import androidx.leanback.widget.HeaderItem
 import androidx.leanback.widget.Row
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import androidx.test.runner.AndroidJUnit4
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.tv.ui.schedule.ScheduleFragment
 import org.hamcrest.core.Is.`is`

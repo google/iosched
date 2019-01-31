@@ -132,7 +132,7 @@ dependencies {
     testImplementation "com.nhaarman:mockito-kotlin:$rootProject.mockitoKotlinVersion"
 
     // unit tests livedata
-    testImplementation "androidx.arch.core:core-testing:$rootProject.lifecycleVersion"
+    testImplementation "androidx.arch.core:core-testing:$rootProject.archTestingVersion"
 }
 
 apply plugin: 'com.google.gms.google-services'
