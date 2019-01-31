@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.tv.ui.sessiondetail
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -28,16 +27,11 @@ import androidx.leanback.widget.ClassPresenterSelector
 import androidx.leanback.widget.DetailsOverviewRow
 import androidx.leanback.widget.DiffCallback
 import androidx.leanback.widget.FullWidthDetailsOverviewRowPresenter
-import androidx.leanback.widget.FullWidthDetailsOverviewSharedElementHelper
 import androidx.leanback.widget.HeaderItem
 import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
 import androidx.leanback.widget.OnActionClickedListener
 import androidx.lifecycle.Observer
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.Speaker
 import com.google.samples.apps.iosched.shared.util.SpeakerUtils
@@ -53,7 +47,7 @@ import com.google.samples.apps.iosched.tv.util.toArrayObjectAdapter
 import javax.inject.Inject
 
 private const val ACTION_WATCH = 1L
-//private const val ACTION_STAR = 2L
+// private const val ACTION_STAR = 2L
 
 /**
  * Displays the details for a [Session].
