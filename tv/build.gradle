@@ -51,6 +51,7 @@ android {
             matchingFallbacks = ['debug']
         }
 
+
         debug {
             manifestPlaceholders = [crashlyticsEnabled: false]
         }
@@ -60,6 +61,9 @@ android {
     }
 
     lintOptions {
+        // Running lint over the debug variant is enough
+        checkReleaseBuilds false
+
         disable "InvalidPackage", "MissingTranslation"
     }
 

@@ -39,7 +39,7 @@ class NotificationsPreferenceDialogFragment : DaggerAppCompatDialogFragment() {
         return MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.notifications_preference_dialog_title)
             .setMessage(R.string.notifications_preference_dialog_content)
-            .setNegativeButton(R.string.no) { _, _ ->  notificationsPrefSaveActionUseCase(false) }
+            .setNegativeButton(R.string.no) { _, _ -> notificationsPrefSaveActionUseCase(false) }
             .setPositiveButton(R.string.yes) { _, _ -> notificationsPrefSaveActionUseCase(true) }
             .setOnDismissListener { notificationsPrefShownActionUseCase(true) }
             .create()

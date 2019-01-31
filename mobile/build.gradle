@@ -100,6 +100,9 @@ android {
     }
 
     lintOptions {
+        // Running lint over the debug variant is enough
+        checkReleaseBuilds false
+
         disable "InvalidPackage", "MissingTranslation"
     }
 

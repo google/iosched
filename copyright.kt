@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright $YEAR Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,3 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.fcm
-
-import com.google.firebase.iid.FirebaseInstanceId
-
-/**
- * Service that receives new FCM ID Tokens.
- */
-class IoschedFirebaseInstanceIDService : DaggerFirebaseInstanceIdService() {
-    override fun onTokenRefresh() {
-        super.onTokenRefresh()
-        val token = FirebaseInstanceId.getInstance().token
-
-        // TODO: Update token in Firestore
-    }
-}

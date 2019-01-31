@@ -25,7 +25,6 @@ import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignOut
 import com.google.samples.apps.iosched.util.signin.SignInHandler
-import dagger.android.AndroidInjector
 import dagger.android.support.DaggerAppCompatDialogFragment
 import javax.inject.Inject
 
