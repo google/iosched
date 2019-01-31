@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.tests
 
-import androidx.test.InstrumentationRegistry
+import androidx.test.core.app.ApplicationProvider
 import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
@@ -29,7 +29,7 @@ class SetPreferencesRule : TestWatcher() {
 
     override fun starting(description: Description?) {
         super.starting(description)
-        SharedPreferenceStorage(InstrumentationRegistry.getTargetContext()).apply {
+        SharedPreferenceStorage(ApplicationProvider.getApplicationContext()).apply {
             onboardingCompleted = true
             scheduleUiHintsShown = true
             preferConferenceTimeZone = true
