@@ -24,7 +24,9 @@ import androidx.annotation.WorkerThread
 import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.samples.apps.iosched.model.Theme
 import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -41,20 +43,25 @@ interface PreferenceStorage {
     var sendUsageStatistics: Boolean
     var preferConferenceTimeZone: Boolean
     var selectedFilters: String?
+    var selectedTheme: String?
+    var observableSelectedTheme: LiveData<String>
 }
 
 /**
  * [PreferenceStorage] impl backed by [android.content.SharedPreferences].
  */
-class SharedPreferenceStorage @Inject constructor(context: Context) :
-    PreferenceStorage {
+@Singleton
+class SharedPreferenceStorage @Inject constructor(context: Context) : PreferenceStorage {
 
     private val prefs = context.applicationContext.getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
 
     private val observableShowSnackbarResult = MutableLiveData<Boolean>()
+    private val observableSelectedThemeResult = MutableLiveData<String>()
+
     private val changeListener = OnSharedPreferenceChangeListener { _, key ->
-        if (key == PREF_SNACKBAR_IS_STOPPED) {
-            observableShowSnackbarResult.value = snackbarIsStopped
+        when (key) {
+            PREF_SNACKBAR_IS_STOPPED -> observableShowSnackbarResult.value = snackbarIsStopped
+            PREF_DARK_MODE_ENABLED -> observableSelectedThemeResult.value = selectedTheme
         }
     }
 
@@ -88,6 +95,17 @@ class SharedPreferenceStorage @Inject constructor(context: Context) :
 
     override var selectedFilters by StringPreference(prefs, PREF_SELECTED_FILTERS, null)
 
+    override var selectedTheme by StringPreference(
+        prefs, PREF_DARK_MODE_ENABLED, Theme.SYSTEM.storageKey
+    )
+
+    override var observableSelectedTheme: LiveData<String>
+        get() {
+            observableSelectedThemeResult.value = selectedTheme
+            return observableSelectedThemeResult
+        }
+        set(_) = throw IllegalAccessException("This property can't be changed")
+
     companion object {
         const val PREFS_NAME = "iosched"
         const val PREF_ONBOARDING = "pref_onboarding"
@@ -98,6 +116,7 @@ class SharedPreferenceStorage @Inject constructor(context: Context) :
         const val PREF_SEND_USAGE_STATISTICS = "pref_send_usage_statistics"
         const val PREF_CONFERENCE_TIME_ZONE = "pref_conference_time_zone"
         const val PREF_SELECTED_FILTERS = "pref_selected_filters"
+        const val PREF_DARK_MODE_ENABLED = "pref_dark_mode"
     }
 
     fun registerOnPreferenceChangeListener(listener: OnSharedPreferenceChangeListener) {

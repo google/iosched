@@ -36,14 +36,16 @@ import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.ui.ThemedActivityDelegate
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import javax.inject.Inject
 
 class MapViewModel @Inject constructor(
     loadMapTileProviderUseCase: LoadMapTileProviderUseCase,
     private val loadGeoJsonFeaturesUseCase: LoadGeoJsonFeaturesUseCase,
-    private val analyticsHelper: AnalyticsHelper
-) : ViewModel() {
+    private val analyticsHelper: AnalyticsHelper,
+    themedActivityDelegate: ThemedActivityDelegate
+) : ViewModel(), ThemedActivityDelegate by themedActivityDelegate {
 
     /**
      * Area covered by the venue. Determines the viewport of the map.

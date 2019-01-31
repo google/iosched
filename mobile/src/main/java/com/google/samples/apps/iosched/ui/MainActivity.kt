@@ -24,6 +24,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
@@ -36,6 +37,7 @@ import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.ScheduleFragment
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
+import com.google.samples.apps.iosched.util.updateForTheme
 import dagger.android.support.DaggerAppCompatActivity
 import timber.log.Timber
 import java.util.UUID
@@ -68,12 +70,15 @@ class MainActivity : DaggerAppCompatActivity(), DrawerListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        drawer = findViewById(R.id.drawer)
-        navigation = findViewById(R.id.navigation)
 
         // This VM instance is shared between activity and fragments, as it's scoped to MainActivity
         scheduleViewModel = viewModelProvider(viewModelFactory)
+        // Update for Dark Mode straight away
+        updateForTheme(scheduleViewModel.currentTheme)
+
+        setContentView(R.layout.activity_main)
+        drawer = findViewById(R.id.drawer)
+        navigation = findViewById(R.id.navigation)
 
         drawer.addDrawerListener(this)
         navigation.setNavigationItemSelectedListener {
@@ -93,6 +98,8 @@ class MainActivity : DaggerAppCompatActivity(), DrawerListener {
                 supportFragmentManager.findFragmentById(FRAGMENT_ID) as? MainNavigationFragment
                 ?: throw IllegalStateException("Activity recreated, but no fragment found!")
         }
+
+        scheduleViewModel.theme.observe(this, Observer(::updateForTheme))
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {

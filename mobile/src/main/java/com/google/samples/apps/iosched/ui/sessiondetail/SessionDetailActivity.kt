@@ -20,13 +20,17 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.firebase.ui.auth.IdpResponse
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.util.inTransaction
+import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
+import com.google.samples.apps.iosched.util.updateForTheme
 import dagger.android.support.DaggerAppCompatActivity
 import timber.log.Timber
 import java.util.UUID
@@ -37,8 +41,14 @@ class SessionDetailActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var snackbarMessageManager: SnackbarMessageManager
 
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val viewModel: SessionDetailViewModel = viewModelProvider(viewModelFactory)
+        updateForTheme(viewModel.currentTheme)
+
         setContentView(R.layout.activity_session_detail)
 
         if (savedInstanceState == null) {
@@ -47,6 +57,8 @@ class SessionDetailActivity : DaggerAppCompatActivity() {
                 add(R.id.session_detail_container, SessionDetailFragment.newInstance(sessionId))
             }
         }
+
+        viewModel.theme.observe(this, Observer(::updateForTheme))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
