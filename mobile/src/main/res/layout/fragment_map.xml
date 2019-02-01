@@ -102,7 +102,7 @@
               -->
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/description_scrollview"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:minHeight="1px"
                 android:paddingTop="@dimen/bottom_sheet_peek_height"
@@ -119,10 +119,12 @@
 
             <View
                 android:id="@+id/clickable"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="?selectableItemBackground"
                 app:layout_constraintBottom_toBottomOf="@id/guide_peek_height"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
