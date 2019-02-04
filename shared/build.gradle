@@ -49,7 +49,6 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
             buildConfigField "String", "REGISTRATION_ENDPOINT_URL", "\"https://events-d07ac.appspot.com/_ah/api/registration/v1/register\""
             buildConfigField "String", "CONFERENCE_DATA_URL", "\"https://firebasestorage.googleapis.com/v0/b/io2018-festivus-prod/o/sessions.json?alt=media&token=89140adf-e228-45a5-9ae3-8ed01547166a\""
         }
