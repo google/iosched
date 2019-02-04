@@ -1,0 +1,44 @@
+version: 2
+jobs:
+  build-and-test:
+    working_directory: ~/code
+    docker:
+      - image: ccistaging/android:api-27
+    environment:
+          TZ: "/usr/share/zoneinfo/Europe/Zagreb"
+    resource_class: medium+
+    steps:
+      - checkout
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+      - run:
+          name: Run Android Lint
+          command: ./gradlew lintDebug -PpreDexEnable=false -PdisablePreDex --console=plain
+      - run:
+          name: Run Unit Tests
+          command: ./gradlew testDebugUnitTest -PpreDexEnable=false -PdisablePreDex --console=plain
+      - store_artifacts:
+          path: app/build/reports
+          destination: reports
+      - store_artifacts:
+          path: app/build/outputs
+          destination: outputs
+      - store_test_results:
+          path: app/build/test-results
+
+workflows:
+  version: 2
+
+  build_and_deploy:
+    jobs:
+      - build-and-test:
+          filters:
+            tags:
+              only: /.*/
