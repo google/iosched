@@ -1,0 +1,24 @@
+
+primary:
+    steps:
+    - activate-ssh-key@4.0.3:
+        run_if: ''
+    - git-clone@4.0.11: {}
+    - cache-pull@2.0.1: {}
+    - script@1.1.5:
+        title: Do anything with Script step
+    - install-missing-android-tools@2.2.0:
+        inputs:
+        - gradlew_path: "$PROJECT_LOCATION/gradlew"
+    - android-lint@0.9.4:
+        inputs:
+        - project_location: "$PROJECT_LOCATION"
+        - module: "$MODULE"
+        - variant: "$TEST_VARIANT"
+    - android-unit-test@0.9.3:
+        inputs:
+        - project_location: "$PROJECT_LOCATION"
+        - module: "$MODULE"
+        - variant: "$TEST_VARIANT"
+    - deploy-to-bitrise-io@1.3.15: {}
+    - cache-push@2.0.5: {}
