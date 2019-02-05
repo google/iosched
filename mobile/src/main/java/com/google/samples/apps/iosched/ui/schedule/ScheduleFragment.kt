@@ -22,7 +22,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.doOnNextLayout
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -32,7 +31,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
 import com.google.samples.apps.iosched.model.ConferenceDay
@@ -262,19 +260,19 @@ class ScheduleFragment : MainNavigationFragment() {
 
         scheduleAdapter.submitList(list)
         scheduleRecyclerView.run {
-            // we want this to run after diffing
-            doOnNextLayout { view ->
-                // Recreate the decoration used for the sticky time headers
-                clearDecorations()
-                if (list.isNotEmpty()) {
-                    addItemDecoration(
-                        ScheduleTimeHeadersDecoration(
-                            view.context, list.map { it.session }, timeZoneId
-                        )
+            // Recreate the decoration used for the sticky time headers
+            clearDecorations()
+            if (list.isNotEmpty()) {
+                addItemDecoration(
+                    ScheduleTimeHeadersDecoration(
+                        context, list.map { it.session }, timeZoneId
                     )
-                }
-
-                onScheduleScrolled()
+                )
+                addItemDecoration(
+                    DaySeparatorItemDecoration(
+                        context, indexer, timeZoneId
+                    )
+                )
             }
         }
 

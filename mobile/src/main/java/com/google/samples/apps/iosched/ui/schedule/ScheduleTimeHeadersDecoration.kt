@@ -26,6 +26,7 @@ import android.text.StaticLayout
 import android.text.TextPaint
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.StyleSpan
+import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.res.getColorOrThrow
 import androidx.core.content.res.getDimensionOrThrow
@@ -33,7 +34,6 @@ import androidx.core.content.res.getDimensionPixelSizeOrThrow
 import androidx.core.content.res.getResourceIdOrThrow
 import androidx.core.graphics.withTranslation
 import androidx.core.text.inSpans
-import androidx.core.view.get
 import androidx.core.view.isEmpty
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
@@ -103,14 +103,13 @@ class ScheduleTimeHeadersDecoration(
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: State) {
         if (timeSlots.isEmpty() || parent.isEmpty()) return
 
-        var earliestFoundHeaderPos = -1
-        var prevHeaderTop = Int.MAX_VALUE
-
-        // Loop over each attached view looking for header items.
-        // Loop backwards as a lower header can push another higher one upward.
+        var earliestPosition = Int.MAX_VALUE
+        var previousHeaderPosition = -1
+        var previousHasHeader = false
+        var earliestChild: View? = null
         for (i in parent.childCount - 1 downTo 0) {
-            val view = parent.getChildAt(i)
-            if (view == null) {
+            val child = parent.getChildAt(i)
+            if (child == null) {
                 // This should not be null, but observed null at times.
                 // Guard against it to avoid crash and log the state.
                 Timber.w(
@@ -119,39 +118,64 @@ class ScheduleTimeHeadersDecoration(
                 )
                 continue
             }
-            val viewTop = view.top + view.translationY.toInt()
-            if (view.bottom > 0 && viewTop < parent.height) {
-                val position = parent.getChildAdapterPosition(view)
-                timeSlots[position]?.let { layout ->
-                    paint.alpha = (view.alpha * 255).toInt()
-                    val top = (viewTop + paddingTop)
-                        .coerceAtLeast(paddingTop)
-                        .coerceAtMost(prevHeaderTop - layout.height)
-                    c.withTranslation(y = top.toFloat()) {
-                        layout.draw(c)
-                    }
-                    earliestFoundHeaderPos = position
-                    prevHeaderTop = viewTop
-                }
+
+            if (child.y > parent.height || (child.y + child.height) < 0) {
+                // Can't see this child
+                continue
+            }
+
+            val position = parent.getChildAdapterPosition(child)
+            if (position < 0) {
+                continue
+            }
+            if (position < earliestPosition) {
+                earliestPosition = position
+                earliestChild = child
+            }
+
+            val header = timeSlots[position]
+            if (header != null) {
+                drawHeader(c, child, header, child.alpha, previousHasHeader)
+                previousHeaderPosition = position
+                previousHasHeader = true
+            } else {
+                previousHasHeader = false
             }
         }
 
-        // If no headers found, ensure header of the first shown item is drawn.
-        if (earliestFoundHeaderPos < 0) {
-            earliestFoundHeaderPos = parent.getChildAdapterPosition(parent[0]) + 1
+        if (earliestChild != null && earliestPosition != previousHeaderPosition) {
+            // This child needs a sicky header
+            val stickyHeader = findHeaderBeforePosition(earliestPosition) ?: return
+            previousHasHeader = previousHeaderPosition - earliestPosition == 1
+            drawHeader(c, earliestChild, stickyHeader, 1f, previousHasHeader)
         }
+    }
 
-        // Look back over headers to see if a prior item should be drawn sticky.
+    private fun findHeaderBeforePosition(position: Int): StaticLayout? {
         for (headerPos in timeSlots.keys.reversed()) {
-            if (headerPos < earliestFoundHeaderPos) {
-                timeSlots[headerPos]?.let { layout ->
-                    val top = (prevHeaderTop - layout.height).coerceAtMost(paddingTop)
-                    c.withTranslation(y = top.toFloat()) {
-                        layout.draw(c)
-                    }
-                }
-                break
+            if (headerPos < position) {
+                return timeSlots[headerPos]
             }
+        }
+        return null
+    }
+
+    private fun drawHeader(
+        canvas: Canvas,
+        child: View,
+        header: StaticLayout,
+        headerAlpha: Float,
+        previousHasHeader: Boolean
+    ) {
+        val childTop = child.y.toInt()
+        val childBottom = childTop + child.height
+        var top = childTop.coerceAtLeast(paddingTop)
+        if (previousHasHeader) {
+            top = top.coerceAtMost(childBottom - header.height - paddingTop)
+        }
+        paint.alpha = (headerAlpha * 255).toInt()
+        canvas.withTranslation(y = top.toFloat()) {
+            header.draw(canvas)
         }
     }
 
