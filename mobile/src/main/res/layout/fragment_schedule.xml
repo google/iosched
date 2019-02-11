@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:indeterminate="true"
-            android:indeterminateTint="@color/light_grey"
+            android:indeterminateTint="?attr/colorControlLight"
             app:goneUnless="@{viewModel.isLoading}" />
 
         <!-- A custom snackbar implementation for more control over positioning i.e. above the
@@ -81,7 +81,6 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/margin_normal"
             android:contentDescription="@string/filters"
-            app:fabSize="auto"
             app:hoveredFocusedTranslationZ="0dp"
             app:pressedTranslationZ="0dp"
             app:srcCompat="@drawable/ic_filter" />

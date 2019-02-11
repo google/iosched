@@ -60,7 +60,7 @@
             <Switch
                 android:id="@+id/settings_time_zone"
                 style="@style/TextAppearance.IOSched.SettingsSwitch"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checked="@{viewModel.preferConferenceTimeZone}"
                 android:onCheckedChanged="@{(view, checked) -> viewModel.toggleTimeZone(checked)}"

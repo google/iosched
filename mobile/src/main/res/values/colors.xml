@@ -17,14 +17,12 @@
 
 <resources>
     <color name="status_bar">#202124</color>
-    <color name="text_color_tertiary">#dadce0</color>
-    <color name="light_grey">#e6e6e6</color>
-    <color name="very_light_grey">#f9f9f9</color>
     <color name="default_tag_color">#999</color>
     <color name="highlight_light">#33ffffff</color> <!-- 20% white -->
     <color name="scrim">#33000000</color> <!-- 20% black -->
-    <color name="google_blue_transparent">#e54688f1</color> <!-- 90% blue -->
-    <color name="dark_gray">#ff808080</color>
+
+    <!-- Same value as textColorPrimary disabled -->
+    <color name="color_control_light">#39000000</color>
 
     <color name="transparent">#0fff</color>
 

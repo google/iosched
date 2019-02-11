@@ -32,7 +32,6 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
-            style="@style/Widget.AppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

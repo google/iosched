@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,5 +16,5 @@
   -->
 
 <resources>
-    <color name="status_bar">@color/white</color>
+    <bool name="use_light_status">true</bool>
 </resources>

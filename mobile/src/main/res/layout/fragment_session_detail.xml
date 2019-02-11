@@ -59,12 +59,13 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/padding_borderless_button"
             app:layout_anchorGravity="bottom|end"
-            app:backgroundTint="@color/white"
+            app:backgroundTint="?attr/colorSurface"
             app:contentDescriptionChecked="@string/a11y_starred"
             app:contentDescriptionUnchecked="@string/a11y_unstarred"
             app:eventListener="@{viewModel}"
             app:isSignedIn="@{viewModel.observeSignedInUser}"
             app:srcCompat="@drawable/asld_star_event"
+            app:tint="?attr/colorOnSurface"
             app:userEvent="@{viewModel.userEvent}" />
 
         <!-- A custom snackbar implementation for more control over positioning i.e. above the FAB,

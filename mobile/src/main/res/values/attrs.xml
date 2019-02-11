@@ -34,6 +34,8 @@
 
     <attr name="eventFilterViewStyle" format="reference" />
 
+    <attr name="colorControlLight" format="reference" />
+
     <declare-styleable name="TimeHeader">
         <attr name="android:width" />
         <attr name="android:paddingTop" />

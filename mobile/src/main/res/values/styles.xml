@@ -22,14 +22,17 @@
         <item name="colorPrimary">@color/google_blue</item>
         <item name="colorAccent">@color/android_green_dark</item>
         <item name="colorControlActivated">?colorPrimary</item>
-        <item name="toolbarStyle">@style/Widget.Toolbar</item>
+        <item name="colorControlLight">@color/color_control_light</item>
+
+        <item name="appBarLayoutStyle">@style/Widget.IOSched.AppBar</item>
+        <item name="bottomNavigationStyle">@style/Widget.IOSched.BottomNav</item>
+        <item name="toolbarStyle">@style/Widget.IOSched.Toolbar</item>
         <item name="tabStyle">@style/Widget.IOSched.Tabs</item>
 
         <item name="android:textViewStyle">@style/Widget.IOSched.TextView</item>
         <item name="android:statusBarColor">@color/status_bar</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/use_light_status</item>
         <item name="android:navigationBarColor">@color/google_blue_light</item>
-        <item name="android:textColorTertiary">@color/text_color_tertiary</item>
 
         <item name="sessionListKeyline">@dimen/session_keyline</item>
         <item name="eventFilterViewStyle">@style/Widget.IOSched.EventFilters</item>
@@ -51,16 +54,6 @@
     <style name="AppTheme.Onboarding" parent="AppTheme.LightNav">
         <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
-    </style>
-
-    <style name="AppTheme.SessionDetails" parent="AppTheme.LightNav">
-        <item name="sessionListKeyline">@dimen/margin_normal</item>
-        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">@color/light_grey</item>
-    </style>
-
-    <style name="AppTheme.Speaker" parent="AppTheme.LightNav">
-        <item name="android:windowSharedElementEnterTransition">@transition/speaker_shared_enter</item>
-        <item name="sessionListKeyline">@dimen/margin_normal</item>
     </style>
 
     <style name="AppTheme.PopupTheme" parent="ThemeOverlay.MaterialComponents.Light" />
@@ -104,18 +97,6 @@
         <item name="android:paddingTop">@dimen/margin_small</item>
     </style>
 
-    <style name="Widget.AppBar" parent="@style/Widget.Design.AppBarLayout">
-        <item name="popupTheme">@style/AppTheme.PopupTheme</item>
-        <item name="android:background">?attr/colorSurface</item>
-        <item name="android:elevation">8dp</item>
-        <item name="android:orientation">vertical</item>
-    </style>
-
-    <style name="Widget.Toolbar" parent="Widget.AppCompat.Toolbar">
-        <item name="titleTextAppearance">@style/TextAppearance.IOSched.ToolbarTitle</item>
-        <item name="popupTheme">@style/AppTheme.PopupTheme</item>
-    </style>
-
     <style name="TextAppearance.IOSched.Body" parent="@style/TextAppearance.AppCompat.Body1">
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
@@ -151,14 +132,13 @@
 
     <style name="TextAppearance.IOSched.Tab" parent="@style/TextAppearance.Design.Tab">
         <item name="android:fontFamily">@font/google_sans</item>
-        <item name="android:textColor">@color/tab_text</item>
         <item name="android:textStyle">bold</item>
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="TextAppearance.IOSched.BottomNavigationView" parent="@style/TextAppearance.MaterialComponents.Caption">
+    <style name="TextAppearance.IOSched.BottomNav" parent="TextAppearance.MaterialComponents.Caption">
         <item name="android:fontFamily">@font/google_sans</item>
-        <item name="android:textColor">@color/bottom_nav_item</item>
+        <item name="fontFamily">@font/google_sans</item>
         <item name="android:textSize">14sp</item>
     </style>
 
@@ -199,17 +179,26 @@
 
     <style name="Widget.IOSched" parent="@android:style/Widget" />
 
-    <style name="Widget.IOSched.BottomNav" parent="@style/Widget.MaterialComponents.BottomNavigationView.Colored">
-        <item name="itemIconTint">@color/bottom_nav_item</item>
-        <item name="itemTextAppearanceActive">@style/TextAppearance.IOSched.BottomNavigationView</item>
-        <item name="itemTextAppearanceInactive">@style/TextAppearance.IOSched.BottomNavigationView</item>
+    <style name="Widget.IOSched.BottomNav" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemTextAppearanceActive">@style/TextAppearance.IOSched.BottomNav</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.IOSched.BottomNav</item>
         <item name="labelVisibilityMode">labeled</item>
-        <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Dark</item>
+    </style>
+
+    <style name="Widget.IOSched.AppBar" parent="Widget.MaterialComponents.AppBarLayout.Surface">
+        <item name="android:elevation">8dp</item>
+    </style>
+
+    <style name="Widget.IOSched.Toolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="popupTheme">@style/AppTheme.PopupTheme</item>
+        <item name="titleTextAppearance">@style/TextAppearance.IOSched.ToolbarTitle</item>
     </style>
 
     <style name="Widget.IOSched.Tabs" parent="@style/Widget.MaterialComponents.TabLayout">
+        <item name="android:background">@null</item>
         <item name="tabTextAppearance">@style/TextAppearance.IOSched.Tab</item>
         <item name="tabIndicator">@drawable/tab_indicator</item>
+        <item name="tabUnboundedRipple">false</item>
     </style>
 
     <style name="Widget.IOSched.Tag">
@@ -315,12 +304,11 @@
     <style name="TextAppearance.IOSched.InfoEventTitle" parent="@style/TextAppearance.AppCompat.Title">
         <item name="android:textSize">24sp</item>
         <item name="android:fontFamily">@font/google_sans</item>
-        <item name="android:textColor">@color/grey_800</item>
     </style>
 
     <style name="TextAppearance.IOSched.InfoEventDescription" parent="@style/TextAppearance.AppCompat.Body1">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/grey_800</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
         <item name="android:lineSpacingExtra">8sp</item>
     </style>
 
@@ -332,7 +320,7 @@
         <item name="android:background">?selectableItemBackground</item>
         <item name="android:padding">@dimen/margin_normal</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/grey_800</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
     </style>
 
     <style name="TextAppearance.IOSched.AboutButtons" parent="@style/TextAppearance.MaterialComponents.Button">

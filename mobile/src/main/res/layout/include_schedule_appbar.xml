@@ -27,7 +27,6 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
-        style="@style/Widget.AppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -35,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/margin_normal"
-            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed|enterAlways">
+            app:layout_scrollFlags="scroll|snap|enterAlways">
 
             <ImageView
                 android:id="@+id/profile_button"
