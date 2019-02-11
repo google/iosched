@@ -38,8 +38,6 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/navigation_header"
-        app:itemIconTint="@color/nav_item"
-        app:itemTextColor="@color/nav_item"
         app:menu="@menu/navigation" />
 
     <com.google.samples.apps.iosched.widget.FadingSnackbar

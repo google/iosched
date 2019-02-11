@@ -22,14 +22,15 @@
         <item name="colorPrimary">@color/indigo</item>
         <item name="colorAccent">@color/indigo</item>
         <item name="colorControlActivated">?colorPrimary</item>
+        <item name="colorControlLight">@color/color_control_light</item>
+
         <item name="toolbarStyle">@style/Widget.Toolbar</item>
         <item name="tabStyle">@style/Widget.IOSched.Tabs</item>
 
         <item name="android:textViewStyle">@style/Widget.IOSched.TextView</item>
         <item name="android:statusBarColor">@color/status_bar</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/use_light_status</item>
         <item name="android:navigationBarColor">@color/indigo_dark</item>
-        <item name="android:textColorTertiary">@color/text_color_tertiary</item>
 
         <item name="sessionListKeyline">@dimen/session_keyline</item>
         <item name="eventFilterViewStyle">@style/Widget.IOSched.EventFilters</item>
@@ -151,19 +152,8 @@
 
     <style name="TextAppearance.IOSched.Tab" parent="@style/TextAppearance.Design.Tab">
         <item name="android:fontFamily">@font/google_sans</item>
-        <item name="android:textColor">@color/tab_text</item>
         <item name="android:textStyle">bold</item>
         <item name="textAllCaps">false</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.BottomNavigationView" parent="@style/TextAppearance.AppCompat.Caption">
-        <item name="android:fontFamily">@font/google_sans</item>
-        <item name="android:textColor">@color/bottom_nav_item</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.BottomNavigationView.Active">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="TextAppearance.IOSched.H1" parent="@style/TextAppearance.AppCompat.Headline">
@@ -217,14 +207,6 @@
     </style>
 
     <style name="Widget.IOSched" parent="@android:style/Widget" />
-
-    <style name="Widget.IOSched.BottomNav" parent="@style/Widget.MaterialComponents.BottomNavigationView.Colored">
-        <item name="itemIconTint">@color/bottom_nav_item</item>
-        <item name="itemTextAppearanceActive">@style/TextAppearance.IOSched.BottomNavigationView.Active</item>
-        <item name="itemTextAppearanceInactive">@style/TextAppearance.IOSched.BottomNavigationView</item>
-        <item name="labelVisibilityMode">selected</item>
-        <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Dark</item>
-    </style>
 
     <style name="Widget.IOSched.Tabs" parent="@style/Widget.MaterialComponents.TabLayout">
         <item name="tabTextAppearance">@style/TextAppearance.IOSched.Tab</item>
@@ -308,7 +290,7 @@
     </style>
 
     <style name="Widget.IOSched.HeaderGrid">
-        <item name="android:color">@color/light_grey</item>
+        <item name="android:color">?attr/colorControlLight</item>
         <item name="gridSize">8dp</item>
         <item name="gridStrokeWidth">1dp</item>
     </style>
@@ -336,12 +318,11 @@
     <style name="TextAppearance.IOSched.InfoEventTitle" parent="@style/TextAppearance.AppCompat.Title">
         <item name="android:textSize">24sp</item>
         <item name="android:fontFamily">@font/google_sans</item>
-        <item name="android:textColor">@color/grey_800</item>
     </style>
 
     <style name="TextAppearance.IOSched.InfoEventDescription" parent="@style/TextAppearance.AppCompat.Body1">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/grey_800</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
         <item name="android:lineSpacingExtra">8sp</item>
     </style>
 
@@ -353,7 +334,7 @@
         <item name="android:background">?selectableItemBackground</item>
         <item name="android:padding">@dimen/margin_normal</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/grey_800</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
     </style>
 
     <style name="TextAppearance.IOSched.AboutButtons" parent="@style/TextAppearance.MaterialComponents.Button">

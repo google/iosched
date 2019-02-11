@@ -39,7 +39,7 @@
             style="@style/Widget.AppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white_90">
+            android:background="?attr/colorSurface">
 
             <TextView
                 android:id="@+id/title"
@@ -80,6 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="60dp"
             android:background="@drawable/filters_sheet_background"
+            android:backgroundTint="?attr/colorSurface"
             android:elevation="@dimen/bottom_sheet_elevation"
             app:layout_behavior="com.google.samples.apps.iosched.widget.BottomSheetBehavior"
             app:behavior_hideable="true"

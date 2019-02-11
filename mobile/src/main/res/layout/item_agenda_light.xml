@@ -37,6 +37,7 @@
         android:background="?selectableItemBackground"
         android:paddingEnd="@dimen/margin_normal"
         android:paddingVertical="@dimen/spacing_micro"
+        android:theme="@style/ThemeOverlay.AppCompat.Light"
         tools:ignore="RtlSymmetry,UnusedAttribute">
 
         <include
