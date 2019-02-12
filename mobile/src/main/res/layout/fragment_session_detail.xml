@@ -75,12 +75,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_anchor="@id/session_detail_bottom_app_bar"
-            app:backgroundTint="@color/white"
+            app:backgroundTint="?attr/colorSurface"
             app:eventListener="@{viewModel}"
             app:isRegistered="@{viewModel.observeRegisteredUser}"
             app:isReservable="@{viewModel.session.isReservable}"
             app:isReservationDisabled="@{viewModel.isReservationDisabled}"
             app:isSignedIn="@{viewModel.observeSignedInUser}"
+            app:tint="?attr/colorOnSurface"
             app:userEvent="@{viewModel.userEvent}" />
 
         <!-- A custom snackbar implementation for more control over positioning i.e. above the FAB,
