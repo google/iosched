@@ -29,6 +29,7 @@ import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
+import com.google.samples.apps.iosched.ui.theme.ThemeViewModel
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
 import com.google.samples.apps.iosched.util.updateForTheme
 import dagger.android.support.DaggerAppCompatActivity
@@ -46,7 +47,7 @@ class SessionDetailActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val viewModel: SessionDetailViewModel = viewModelProvider(viewModelFactory)
+        val viewModel: ThemeViewModel = viewModelProvider(viewModelFactory)
         updateForTheme(viewModel.currentTheme)
 
         setContentView(R.layout.activity_session_detail)

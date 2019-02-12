@@ -25,6 +25,7 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.ui.theme.ThemeViewModel
 import com.google.samples.apps.iosched.util.updateForTheme
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
@@ -38,7 +39,7 @@ class SpeakerActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val viewModel: SpeakerViewModel = viewModelProvider(viewModelFactory)
+        val viewModel: ThemeViewModel = viewModelProvider(viewModelFactory)
         updateForTheme(viewModel.currentTheme)
 
         setContentView(R.layout.activity_speaker)

@@ -31,7 +31,6 @@ import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCase
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCaseResult
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.map
-import com.google.samples.apps.iosched.ui.ThemedActivityDelegate
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import javax.inject.Inject
@@ -44,12 +43,10 @@ class SpeakerViewModel @Inject constructor(
     private val loadSpeakerSessionsUseCase: LoadUserSessionsUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
     private val eventActionsViewModelDelegate: EventActionsViewModelDelegate,
-    private val analyticsHelper: AnalyticsHelper,
-    themeDelegate: ThemedActivityDelegate
+    private val analyticsHelper: AnalyticsHelper
 ) : ViewModel(),
     SignInViewModelDelegate by signInViewModelDelegate,
-    EventActionsViewModelDelegate by eventActionsViewModelDelegate,
-    ThemedActivityDelegate by themeDelegate {
+    EventActionsViewModelDelegate by eventActionsViewModelDelegate {
 
     private val loadSpeakerUseCaseResult = MutableLiveData<Result<LoadSpeakerUseCaseResult>>()
 

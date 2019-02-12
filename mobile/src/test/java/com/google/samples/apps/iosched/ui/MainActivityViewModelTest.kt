@@ -22,6 +22,7 @@ import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeThemedActivityDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.notNullValue
 import org.junit.Assert.assertThat

@@ -43,6 +43,7 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
+import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.map.MapActivity
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
@@ -87,7 +88,7 @@ class SessionDetailFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        sessionDetailViewModel = activityViewModelProvider(viewModelFactory)
+        sessionDetailViewModel = viewModelProvider(viewModelFactory)
 
         val binding = FragmentSessionDetailBinding.inflate(inflater, container, false).apply {
             viewModel = sessionDetailViewModel
