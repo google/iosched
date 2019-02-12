@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.test.util.fakes
+package com.google.samples.apps.iosched.ui.theme
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.model.Theme
-import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
+import androidx.lifecycle.ViewModel
+import javax.inject.Inject
 
-class FakeThemedActivityDelegate(
-    override val theme: LiveData<Theme> = MutableLiveData(),
-    override val currentTheme: Theme = Theme.SYSTEM
-) : ThemedActivityDelegate
+/**
+ * Thin ViewModel for themed Activities that don't have another ViewModel to use with
+ * [ThemedActivityDelegate].
+ */
+class ThemeViewModel @Inject constructor(
+    themedActivityDelegate: ThemedActivityDelegate
+) : ViewModel(), ThemedActivityDelegate by themedActivityDelegate

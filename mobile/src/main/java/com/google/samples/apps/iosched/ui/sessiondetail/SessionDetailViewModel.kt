@@ -49,7 +49,6 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.shared.util.setValueIfNew
 import com.google.samples.apps.iosched.ui.SnackbarMessage
-import com.google.samples.apps.iosched.ui.ThemedActivityDelegate
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
@@ -78,11 +77,9 @@ class SessionDetailViewModel @Inject constructor(
     private val snackbarMessageManager: SnackbarMessageManager,
     timeProvider: TimeProvider,
     private val networkUtils: NetworkUtils,
-    private val analyticsHelper: AnalyticsHelper,
-    themeDelegate: ThemedActivityDelegate
+    private val analyticsHelper: AnalyticsHelper
 ) : ViewModel(), SessionDetailEventListener, EventActions,
-    SignInViewModelDelegate by signInViewModelDelegate,
-    ThemedActivityDelegate by themeDelegate {
+    SignInViewModelDelegate by signInViewModelDelegate {
 
     private val loadUserSessionResult: MediatorLiveData<Result<LoadUserSessionUseCaseResult>>
 

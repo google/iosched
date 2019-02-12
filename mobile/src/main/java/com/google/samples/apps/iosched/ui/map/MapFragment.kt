@@ -29,7 +29,7 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.Marker
 import com.google.samples.apps.iosched.databinding.FragmentMapBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
+import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
@@ -75,7 +75,7 @@ class MapFragment : DaggerFragment(), MainNavigationFragment, OnMarkerClickListe
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = activityViewModelProvider(viewModelFactory)
+        viewModel = viewModelProvider(viewModelFactory)
         binding = FragmentMapBinding.inflate(inflater, container, false).apply {
             setLifecycleOwner(this@MapFragment)
             viewModel = this@MapFragment.viewModel

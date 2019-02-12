@@ -14,17 +14,26 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui
+package com.google.samples.apps.iosched.ui.theme
 
+import androidx.lifecycle.ViewModel
+import com.google.samples.apps.iosched.shared.di.ViewModelKey
 import dagger.Binds
 import dagger.Module
+import dagger.multibindings.IntoMap
 import javax.inject.Singleton
 
 @Module
 abstract class ThemedActivityDelegateModule {
+
     @Singleton
     @Binds
     abstract fun provideThemedActivityDelegate(
         impl: ThemedActivityDelegateImpl
     ): ThemedActivityDelegate
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ThemeViewModel::class)
+    abstract fun provideThemeViewModel(viewModel: ThemeViewModel): ViewModel
 }

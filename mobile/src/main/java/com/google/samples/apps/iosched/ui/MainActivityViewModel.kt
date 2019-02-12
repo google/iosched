@@ -21,6 +21,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
 import javax.inject.Inject
 
 class MainActivityViewModel @Inject constructor(

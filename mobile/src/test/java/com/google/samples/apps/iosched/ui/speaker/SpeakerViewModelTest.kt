@@ -31,8 +31,6 @@ import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakeEventActionsViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
-import com.google.samples.apps.iosched.test.util.fakes.FakeThemedActivityDelegate
-import com.google.samples.apps.iosched.ui.ThemedActivityDelegate
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
@@ -104,16 +102,14 @@ class SpeakerViewModelTest {
             loadUser("123")
         },
         eventActionsDelegate: EventActionsViewModelDelegate = FakeEventActionsViewModelDelegate(),
-        analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper(),
-        themedActivityDelegate: ThemedActivityDelegate = FakeThemedActivityDelegate()
+        analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper()
     ): SpeakerViewModel {
         return SpeakerViewModel(
             loadSpeakerUseCase,
             loadSpeakerSessionsUseCase,
             signInViewModelDelegate,
             eventActionsDelegate,
-            analyticsHelper,
-            themedActivityDelegate
+            analyticsHelper
         )
     }
 }

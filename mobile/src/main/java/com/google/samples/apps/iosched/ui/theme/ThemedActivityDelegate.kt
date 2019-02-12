@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui
+package com.google.samples.apps.iosched.ui.theme
 
 import androidx.lifecycle.LiveData
 import com.google.samples.apps.iosched.model.Theme
