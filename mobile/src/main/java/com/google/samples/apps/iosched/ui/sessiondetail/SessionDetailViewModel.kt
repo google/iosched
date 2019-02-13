@@ -319,11 +319,6 @@ class SessionDetailViewModel @Inject constructor(
     }
 
     private fun refreshUserSession() {
-        if (currentFirebaseUser.value == null) {
-            // No user information provided by [SignInViewModelDelegate] yet.
-            Timber.d("No user information available yet, not refreshing")
-            return
-        }
         val registrationDataReady =
             (currentFirebaseUser.value as? Result.Success)?.data?.isRegistrationDataReady()
         if (registrationDataReady == false) {
