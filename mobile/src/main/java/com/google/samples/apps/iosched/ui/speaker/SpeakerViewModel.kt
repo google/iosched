@@ -99,13 +99,6 @@ class SpeakerViewModel @Inject constructor(
         loadSpeakerUseCase(id, loadSpeakerUseCaseResult)
     }
 
-    /**
-     * Clear subscriptions that might be leaked or that will not be used in the future.
-     */
-    override fun onCleared() {
-        loadSpeakerSessionsUseCase.onCleared()
-    }
-
     override fun onStarClicked(userSession: UserSession) {
         eventActionsViewModelDelegate.onStarClicked(userSession)
 

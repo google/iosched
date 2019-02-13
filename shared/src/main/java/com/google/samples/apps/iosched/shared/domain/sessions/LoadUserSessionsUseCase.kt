@@ -58,11 +58,6 @@ open class LoadUserSessionsUseCase @Inject constructor(
             }
         }
     }
-
-    fun onCleared() {
-        // This use case is no longer going to be used so remove subscriptions
-        userEventRepository.clearSingleEventSubscriptions()
-    }
 }
 
 data class LoadUserSessionsUseCaseResult(val userSessions: List<UserSession>)
