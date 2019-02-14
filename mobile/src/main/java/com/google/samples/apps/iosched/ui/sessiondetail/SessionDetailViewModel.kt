@@ -117,7 +117,7 @@ class SessionDetailViewModel @Inject constructor(
     val relatedUserSessions: LiveData<List<UserSession>>
         get() = _relatedUserSessions
 
-    val showRateButton: LiveData<Boolean>
+    val showFeedbackButton: LiveData<Boolean>
     val hasPhotoOrVideo: LiveData<Boolean>
     val isPlayable: LiveData<Boolean>
     val hasSpeakers: LiveData<Boolean>
@@ -146,6 +146,10 @@ class SessionDetailViewModel @Inject constructor(
     private val _navigateToSpeakerDetail = MutableLiveData<Event<SpeakerId>>()
     val navigateToSpeakerDetail: LiveData<Event<SpeakerId>>
         get() = _navigateToSpeakerDetail
+
+    private val _navigateToSessionFeedbackAction = MutableLiveData<Event<SessionId>>()
+    val navigateToSessionFeedbackAction: LiveData<Event<SessionId>>
+        get() = _navigateToSessionFeedbackAction
 
     init {
         loadUserSessionResult = loadUserSessionUseCase.observe()
@@ -235,10 +239,8 @@ class SessionDetailViewModel @Inject constructor(
             currentSession?.hasVideo() == true
         }
 
-        showRateButton = sessionTimeRelativeState.map { currentState ->
-            // TODO: uncomment when rate session logic is hooked up
-            // currentState == TimeUtils.SessionRelativeTimeState.AFTER
-            false
+        showFeedbackButton = sessionTimeRelativeState.map { currentState ->
+            currentState == TimeUtils.SessionRelativeTimeState.AFTER
         }
 
         hasSpeakers = session.map { currentSession ->
@@ -496,6 +498,13 @@ class SessionDetailViewModel @Inject constructor(
         _navigateToSpeakerDetail.postValue(Event(speakerId))
     }
 
+    override fun onFeedbackClicked() {
+        val sessionId = getSessionId()
+        if (sessionId != null) {
+            _navigateToSessionFeedbackAction.postValue(Event(sessionId))
+        }
+    }
+
     /**
      * Returns the current session ID or null if not available.
      */
@@ -521,4 +530,6 @@ interface SessionDetailEventListener {
     fun onLoginClicked()
 
     fun onSpeakerClicked(speakerId: SpeakerId)
+
+    fun onFeedbackClicked()
 }

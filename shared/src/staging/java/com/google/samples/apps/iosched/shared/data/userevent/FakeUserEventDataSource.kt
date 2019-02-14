@@ -27,6 +27,7 @@ import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
+import com.google.samples.apps.iosched.shared.domain.users.FeedbackUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.result.Result
@@ -83,6 +84,15 @@ object FakeUserEventDataSource : UserEventDataSource {
                 else StarUpdatedStatus.UNSTARRED
             )
         )
+        return result
+    }
+
+    override fun submitFeedback(
+        userId: String,
+        userEvent: UserEvent
+    ): LiveData<Result<FeedbackUpdatedStatus>> {
+        val result = MutableLiveData<Result<FeedbackUpdatedStatus>>()
+        result.postValue(Result.Success(FeedbackUpdatedStatus.UPDATED))
         return result
     }
 
