@@ -202,6 +202,11 @@ class SessionDetailFragment : DaggerFragment() {
             }
         })
 
+        sessionDetailViewModel.navigateToSessionFeedbackAction.observe(this, EventObserver {
+            SessionFeedbackFragment.createInstance(it)
+                .show(fragmentManager, FRAGMENT_SESSION_FEEDBACK)
+        })
+
         return binding.root
     }
 
@@ -295,6 +300,8 @@ class SessionDetailFragment : DaggerFragment() {
     }
 
     companion object {
+        private const val FRAGMENT_SESSION_FEEDBACK = "feedback"
+
         private const val EXTRA_SESSION_ID = "SESSION_ID"
 
         fun newInstance(sessionId: SessionId): SessionDetailFragment {

@@ -81,6 +81,23 @@
     <string name="session_detail_speakers_header" translation_descriptions="The label for the session speakers.">Speakers</string>
     <string name="session_detail_related_header" translation_description="The label for the events related to this session.">Related Events</string>
 
+    <!-- Session Feedback -->
+    <string name="feedback_submit" translation_description="The label for the button to submit feedback to a session">Submit</string>
+    <string name="feedback_q1_text" translation_description="A question for session feedback (Q1)">How would you rate the overall quality of the Session?</string>
+    <string name="feedback_q2_text" translation_description="A question for session feedback (Q2)">How would you describe the content of the Session based on your expectations/session description?</string>
+    <string name="feedback_q3_text" translation_description="A question for session feedback (Q3)">How relevant was the Session to your projects?</string>
+    <string name="feedback_q4_text" translation_description="A question for session feedback (q4)">How would you rate the speaker(s)?</string>
+
+    <string name="feedback_q1_label_start" translation_description="The label of negative answer for a session feedback question (Q1)">Very basic</string>
+    <string name="feedback_q2_label_start" translation_description="The label of negative answer for a session feedback question (Q2)">Poor</string>
+    <string name="feedback_q3_label_start" translation_description="The label of negative answer for a session feedback question (Q3)">Not very</string>
+    <string name="feedback_q4_label_start" translation_description="The label of negative answer for a session feedback question (Q4)">Underwhelming</string>
+
+    <string name="feedback_q1_label_end" translation_description="The label of positive answer for a session feedback question (Q1)">Very advanced</string>
+    <string name="feedback_q2_label_end" translation_description="The label of positive answer for a session feedback question (Q2)">Outstanding</string>
+    <string name="feedback_q3_label_end" translation_description="The label of positive answer for a session feedback question (Q3)">Extremely</string>
+    <string name="feedback_q4_label_end" translation_description="The label of positive answer for a session feedback question (Q4)">Outstanding</string>
+
     <!-- Accessibility -->
     <string name="a11y_collapse_filters_sheet" translation_description="Description of a button to lower the filters sheet.">Lower filters sheet</string>
     <string name="a11y_clear_tag_filters" translation_description="Description of a button to remove all current tag filters.">Clear filters</string>

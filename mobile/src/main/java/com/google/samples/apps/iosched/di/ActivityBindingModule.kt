@@ -34,6 +34,7 @@ import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDel
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailModule
 import com.google.samples.apps.iosched.ui.settings.SettingsModule
+import com.google.samples.apps.iosched.ui.sessiondetail.SessionFeedbackModule
 import com.google.samples.apps.iosched.ui.signin.SignInDialogModule
 import com.google.samples.apps.iosched.ui.speaker.SpeakerActivity
 import com.google.samples.apps.iosched.ui.speaker.SpeakerModule
@@ -80,6 +81,7 @@ abstract class ActivityBindingModule {
     @ContributesAndroidInjector(
         modules = [
             SessionDetailModule::class,
+            SessionFeedbackModule::class,
             SignInDialogModule::class,
             ReservationModule::class,
             PreferenceModule::class

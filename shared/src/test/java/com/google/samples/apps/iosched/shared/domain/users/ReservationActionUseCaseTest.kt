@@ -122,6 +122,13 @@ object TestUserEventRepository : SessionAndUserEventRepository {
         TODO("not implemented")
     }
 
+    override fun submitFeedback(
+        userId: String,
+        userEvent: UserEvent
+    ): LiveData<Result<FeedbackUpdatedStatus>> {
+        TODO("not implemented")
+    }
+
     override fun changeReservation(
         userId: String,
         sessionId: SessionId,
@@ -169,6 +176,13 @@ object FailingUserEventRepository : SessionAndUserEventRepository {
         userId: String,
         userEvent: UserEvent
     ): LiveData<Result<StarUpdatedStatus>> {
+        TODO("not implemented")
+    }
+
+    override fun submitFeedback(
+        userId: String,
+        userEvent: UserEvent
+    ): LiveData<Result<FeedbackUpdatedStatus>> {
         TODO("not implemented")
     }
 

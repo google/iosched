@@ -30,6 +30,7 @@ import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.domain.users.FeedbackUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
@@ -61,6 +62,7 @@ class FirestoreUserEventDataSource @Inject constructor(
         internal const val START_TIME = "startTime"
         internal const val END_TIME = "endTime"
         internal const val IS_STARRED = "isStarred"
+        internal const val FEEDBACK = "feedback"
 
         internal const val RESERVATION_REQUEST_KEY = "reservationRequest"
 
@@ -262,6 +264,34 @@ class FirestoreUserEventDataSource @Inject constructor(
                     )
                 }
             })
+        return result
+    }
+
+    override fun submitFeedback(
+        userId: String,
+        userEvent: UserEvent
+    ): LiveData<Result<FeedbackUpdatedStatus>> {
+        val result = MutableLiveData<Result<FeedbackUpdatedStatus>>()
+
+        val data = mapOf(
+            ID to userEvent.id,
+            FEEDBACK to userEvent.feedback.map { (key, rating) ->
+                key to rating.toString()
+            }.toMap()
+        )
+
+        firestore.collection(USERS_COLLECTION)
+            .document(userId)
+            .collection(EVENTS_COLLECTION)
+            .document(userEvent.id).set(data, SetOptions.merge()).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    result.postValue(Result.Success(FeedbackUpdatedStatus.UPDATED))
+                } else {
+                    result.postValue(
+                        Result.Error(task.exception ?: RuntimeException("Error updating feedback."))
+                    )
+                }
+            }
         return result
     }
 
