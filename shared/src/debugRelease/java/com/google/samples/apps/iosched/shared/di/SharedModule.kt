@@ -27,6 +27,8 @@ import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.NetworkConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.app.AppConfigDataSource
+import com.google.samples.apps.iosched.shared.data.app.RemoteAppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsDataSource
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
 import com.google.samples.apps.iosched.shared.data.logistics.RemoteConfigLogisticsDataSource
@@ -145,6 +147,12 @@ class SharedModule {
         logisticsDataSource: LogisticsDataSource
     ): LogisticsRepository {
         return LogisticsRepository(logisticsDataSource)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAppConfigDataSource(remoteConfig: FirebaseRemoteConfig): AppConfigDataSource {
+        return RemoteAppConfigDataSource(remoteConfig)
     }
 
     @Singleton
