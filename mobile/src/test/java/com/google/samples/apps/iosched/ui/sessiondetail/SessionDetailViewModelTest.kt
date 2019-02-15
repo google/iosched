@@ -64,6 +64,7 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.not
 import org.junit.Assert
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertThat
 import org.junit.Before
@@ -103,9 +104,9 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun testDataIsNotLoaded_authNotReady() {
+    fun testAnonymous_dataReady() {
         // Even with a session ID set, data is null if no user is available
-        assertEquals(null, LiveDataTestUtil.getValue(viewModel.session))
+        assertNotEquals(null, LiveDataTestUtil.getValue(viewModel.session))
     }
 
     @Test
