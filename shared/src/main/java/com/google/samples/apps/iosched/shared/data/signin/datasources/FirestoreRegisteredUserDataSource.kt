@@ -22,6 +22,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.samples.apps.iosched.shared.data.document2019
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.result.Result
 import timber.log.Timber
@@ -86,8 +87,11 @@ class FirestoreRegisteredUserDataSource @Inject constructor(
                     }
                 }
             }
-        registeredChangedListenerSubscription = firestore.collection(USERS_COLLECTION)
-            .document(userId).addSnapshotListener(registeredChangedListener)
+        registeredChangedListenerSubscription = firestore
+            .document2019()
+            .collection(USERS_COLLECTION)
+            .document(userId)
+            .addSnapshotListener(registeredChangedListener)
         lastUserId = userId
     }
 

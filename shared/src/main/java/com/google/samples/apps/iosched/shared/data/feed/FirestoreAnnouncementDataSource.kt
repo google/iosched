@@ -25,6 +25,7 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.model.feed.Announcement
+import com.google.samples.apps.iosched.shared.data.document2019
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.ColorUtils
 import org.threeten.bp.Instant
@@ -78,7 +79,10 @@ class FirestoreAnnouncementDataSource @Inject constructor(
             }
 
         // Only load items marked as active.
-        val collection = firestore.collection(FEED_COLLECTION).whereEqualTo(ACTIVE, true)
+        val collection = firestore
+            .document2019()
+            .collection(FEED_COLLECTION)
+            .whereEqualTo(ACTIVE, true)
         feedChangedListenerSubscription?.remove()
         feedChangedListenerSubscription = collection.addSnapshotListener(eventsListener)
     }
@@ -89,7 +93,7 @@ class FirestoreAnnouncementDataSource @Inject constructor(
         feedChangedListenerSubscription?.remove()
     }
 
-    fun parseFeedItem(snapshot: DocumentSnapshot): Announcement {
+    private fun parseFeedItem(snapshot: DocumentSnapshot): Announcement {
 
         return Announcement(
             id = snapshot.id,
@@ -115,7 +119,6 @@ class FirestoreAnnouncementDataSource @Inject constructor(
          * Firestore constants.
          */
         private const val FEED_COLLECTION = "feed"
-        private const val ID = "id"
         private const val ACTIVE = "active"
         private const val CATEGORY = "category"
         private const val COLOR = "color"
