@@ -29,6 +29,7 @@ import com.google.firebase.firestore.SetOptions
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
+import com.google.samples.apps.iosched.shared.data.document2019
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.domain.users.FeedbackUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
@@ -59,8 +60,6 @@ class FirestoreUserEventDataSource @Inject constructor(
         private const val EVENTS_COLLECTION = "events"
         private const val QUEUE_COLLECTION = "queue"
         internal const val ID = "id"
-        internal const val START_TIME = "startTime"
-        internal const val END_TIME = "endTime"
         internal const val IS_STARRED = "isStarred"
         internal const val FEEDBACK = "feedback"
 
@@ -156,7 +155,9 @@ class FirestoreUserEventDataSource @Inject constructor(
                 }
             }
 
-            val eventDocument = firestore.collection(USERS_COLLECTION)
+            val eventDocument = firestore
+                .document2019()
+                .collection(USERS_COLLECTION)
                 .document(userId)
                 .collection(EVENTS_COLLECTION)
                 .document(eventId)
@@ -176,7 +177,9 @@ class FirestoreUserEventDataSource @Inject constructor(
             return emptyList()
         }
 
-        val task = firestore.collection(USERS_COLLECTION)
+        val task = firestore
+            .document2019()
+            .collection(USERS_COLLECTION)
             .document(userId)
             .collection(EVENTS_COLLECTION).get()
         val snapshot = Tasks.await(task, 20, TimeUnit.SECONDS)
@@ -204,7 +207,9 @@ class FirestoreUserEventDataSource @Inject constructor(
                 }
             }
 
-        val eventsCollection = firestore.collection(USERS_COLLECTION)
+        val eventsCollection = firestore
+            .document2019()
+            .collection(USERS_COLLECTION)
             .document(userId)
             .collection(EVENTS_COLLECTION)
 
@@ -239,10 +244,12 @@ class FirestoreUserEventDataSource @Inject constructor(
             IS_STARRED to userEvent.isStarred
         )
 
-        firestore.collection(USERS_COLLECTION)
+        firestore
+            .document2019()
+            .collection(USERS_COLLECTION)
             .document(userId)
             .collection(EVENTS_COLLECTION)
-            .document(userEvent.id).set(data, SetOptions.merge()).addOnCompleteListener({
+            .document(userEvent.id).set(data, SetOptions.merge()).addOnCompleteListener {
                 if (it.isSuccessful) {
                     result.postValue(
                         Result.Success(
@@ -257,7 +264,7 @@ class FirestoreUserEventDataSource @Inject constructor(
                         )
                     )
                 }
-            })
+            }
         return result
     }
 
@@ -274,7 +281,9 @@ class FirestoreUserEventDataSource @Inject constructor(
             }.toMap()
         )
 
-        firestore.collection(USERS_COLLECTION)
+        firestore
+            .document2019()
+            .collection(USERS_COLLECTION)
             .document(userId)
             .collection(EVENTS_COLLECTION)
             .document(userEvent.id).set(data, SetOptions.merge()).addOnCompleteListener { task ->
@@ -315,7 +324,9 @@ class FirestoreUserEventDataSource @Inject constructor(
         val newRandomRequestId = UUID.randomUUID().toString()
 
         // Write #1: Mark this session as reserved. This is for clients to track.
-        val userSession = firestore.collection(USERS_COLLECTION)
+        val userSession = firestore
+            .document2019()
+            .collection(USERS_COLLECTION)
             .document(userId)
             .collection(EVENTS_COLLECTION)
             .document(session.id)
@@ -337,6 +348,7 @@ class FirestoreUserEventDataSource @Inject constructor(
         // success in this reservation only means that the request was accepted. Even offline, this
         // request will succeed.
         val newRequest = firestore
+            .document2019()
             .collection(QUEUE_COLLECTION)
             .document(userId)
 
@@ -377,7 +389,9 @@ class FirestoreUserEventDataSource @Inject constructor(
         val serverTimestamp = FieldValue.serverTimestamp()
 
         // Write #1: Mark the toSession as reserved. This is for clients to track.
-        val toUserSession = firestore.collection(USERS_COLLECTION)
+        val toUserSession = firestore
+            .document2019()
+            .collection(USERS_COLLECTION)
             .document(userId)
             .collection(EVENTS_COLLECTION)
             .document(toSession.id)
@@ -393,7 +407,9 @@ class FirestoreUserEventDataSource @Inject constructor(
         batch.set(toUserSession, userSessionData, SetOptions.merge())
 
         // Write #2: Mark the fromSession as canceled. This is for clients to track.
-        val fromUserSession = firestore.collection(USERS_COLLECTION)
+        val fromUserSession = firestore
+            .document2019()
+            .collection(USERS_COLLECTION)
             .document(userId)
             .collection(EVENTS_COLLECTION)
             .document(fromSession.id)
@@ -412,6 +428,7 @@ class FirestoreUserEventDataSource @Inject constructor(
         // (from and to). success in this reservation only means that the request was accepted.
         // Even offline, this request will succeed.
         val newRequest = firestore
+            .document2019()
             .collection(QUEUE_COLLECTION)
             .document(userId)
 
