@@ -125,7 +125,9 @@ subprojects {
     spotless {
         kotlin {
             target "**/*.kt"
-            ktlint("0.29.0")
+            ktlint("0.29.0").userData([
+                    'max_line_length': '100',
+            ])
             licenseHeaderFile project.rootProject.file('copyright.kt')
         }
     }

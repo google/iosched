@@ -24,5 +24,7 @@ import javax.inject.Singleton
 abstract class ThemedActivityDelegateModule {
     @Singleton
     @Binds
-    abstract fun provideThemedActivityDelegate(impl: ThemedActivityDelegateImpl): ThemedActivityDelegate
+    abstract fun provideThemedActivityDelegate(
+        impl: ThemedActivityDelegateImpl
+    ): ThemedActivityDelegate
 }

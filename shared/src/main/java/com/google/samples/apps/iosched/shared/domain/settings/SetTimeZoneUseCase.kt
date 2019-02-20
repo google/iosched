@@ -20,9 +20,9 @@ import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
 
-open class SetTimeZoneUseCase @Inject constructor(private val preferenceStorage: PreferenceStorage) :
-    UseCase<Boolean, Boolean>() {
-
+open class SetTimeZoneUseCase @Inject constructor(
+    private val preferenceStorage: PreferenceStorage
+) : UseCase<Boolean, Boolean>() {
     override fun execute(parameters: Boolean): Boolean {
         preferenceStorage.preferConferenceTimeZone = parameters
         return preferenceStorage.preferConferenceTimeZone

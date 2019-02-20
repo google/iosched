@@ -34,7 +34,8 @@ class HtmlTextView @JvmOverloads constructor(
      */
     override fun onTouchEvent(event: MotionEvent): Boolean {
         val action = event.action
-        if ((action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_DOWN) && text is Spanned) {
+        if ((action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_DOWN) &&
+            text is Spanned) {
             var x = event.x.toInt()
             var y = event.y.toInt()
 
