@@ -22,7 +22,7 @@
     <string name="day1" translation_description="Label for the first day of the conference. Please make this as short as possible.">Day 1</string>
     <string name="day2" translation_description="Label for the second day of the conference. Please make this as short as possible.">Day 2</string>
     <string name="day3" translation_description="Label for the third day of the conference. Please make this as short as possible.">Day 3</string>
-    <string name="day1_date" translation_description="Actual date of the first day of the conference. Please make this as short as possible.">May 8</string>
-    <string name="day2_date" translation_description="Actual date of the second day of the conference. Please make this as short as possible.">May 9</string>
-    <string name="day3_date" translation_description="Actual date of the third day of the conference. Please make this as short as possible.">May 10</string>
+    <string name="day1_date" translation_description="Actual date of the first day of the conference. Please make this as short as possible.">May 7</string>
+    <string name="day2_date" translation_description="Actual date of the second day of the conference. Please make this as short as possible.">May 8</string>
+    <string name="day3_date" translation_description="Actual date of the third day of the conference. Please make this as short as possible.">May 9</string>
 </resources>

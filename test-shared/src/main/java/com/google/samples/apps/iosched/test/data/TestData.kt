@@ -38,12 +38,12 @@ import org.threeten.bp.ZonedDateTime
  */
 object TestData {
 
-    private const val CONFERENCE_DAY1_START = "2018-05-08T07:00:00-07:00"
-    private const val CONFERENCE_DAY1_END = "2018-05-08T22:00:01-07:00"
-    private const val CONFERENCE_DAY2_END = "2018-05-09T22:00:01-07:00"
-    private const val CONFERENCE_DAY2_START = "2018-05-09T08:00:00-07:00"
-    private const val CONFERENCE_DAY3_END = "2018-05-10T22:00:00-07:00"
-    private const val CONFERENCE_DAY3_START = "2018-05-10T08:00:00-07:00"
+    private const val CONFERENCE_DAY1_START = "2019-05-07T07:00:00-07:00"
+    private const val CONFERENCE_DAY1_END = "2019-05-07T22:00:01-07:00"
+    private const val CONFERENCE_DAY2_END = "2019-05-08T22:00:01-07:00"
+    private const val CONFERENCE_DAY2_START = "2019-05-08T08:00:00-07:00"
+    private const val CONFERENCE_DAY3_END = "2019-05-09T22:00:00-07:00"
+    private const val CONFERENCE_DAY3_START = "2019-05-09T08:00:00-07:00"
 
     val TestConferenceDays = listOf(
         ConferenceDay(
