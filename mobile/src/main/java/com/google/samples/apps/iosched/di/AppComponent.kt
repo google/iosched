@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.di
 
 import com.google.samples.apps.iosched.MainApplication
+import com.google.samples.apps.iosched.shared.di.FeatureFlagsModule
 import com.google.samples.apps.iosched.shared.di.ServiceBindingModule
 import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.di.ViewModelModule
@@ -43,6 +44,7 @@ import javax.inject.Singleton
         ViewModelModule::class,
         ServiceBindingModule::class,
         SharedModule::class,
+        FeatureFlagsModule::class,
         SignInModule::class,
         SignInViewModelDelegateModule::class,
         ThemedActivityDelegateModule::class
