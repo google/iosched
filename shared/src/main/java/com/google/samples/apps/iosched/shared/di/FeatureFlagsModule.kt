@@ -14,11 +14,20 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.app
+package com.google.samples.apps.iosched.shared.di
 
-import androidx.lifecycle.LiveData
+import com.google.samples.apps.iosched.shared.data.app.AppConfigDataSource
+import dagger.Module
+import dagger.Provides
+import javax.inject.Singleton
 
-interface AppConfigDataSource {
-    fun getStringLiveData(key: String): LiveData<String>
-    fun isFeature1Enabled(): Boolean
+@Module
+class FeatureFlagsModule {
+    // Placeholder feature flag provider
+    @Provides
+    @Singleton
+    @Feature1Flag
+    fun provideFeature1Flag(appConfig: AppConfigDataSource): Boolean {
+        return appConfig.isFeature1Enabled()
+    }
 }

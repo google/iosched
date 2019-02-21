@@ -19,7 +19,9 @@ package com.google.samples.apps.iosched.shared.di
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.FakeAppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.FakeLogisticsDataSource
+import com.google.samples.apps.iosched.shared.data.app.AppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsDataSource
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
@@ -109,6 +111,12 @@ class SharedModule {
     @Provides
     fun provideLogisticsDataSource(): LogisticsDataSource {
         return FakeLogisticsDataSource()
+    }
+
+    @Singleton
+    @Provides
+    fun provideAppConfigDataSource(): AppConfigDataSource {
+        return FakeAppConfigDataSource()
     }
 
     @Singleton

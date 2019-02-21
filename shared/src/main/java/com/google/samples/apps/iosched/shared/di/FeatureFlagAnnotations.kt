@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.app
+package com.google.samples.apps.iosched.shared.di
 
-import androidx.lifecycle.LiveData
+import javax.inject.Qualifier
 
-interface AppConfigDataSource {
-    fun getStringLiveData(key: String): LiveData<String>
-    fun isFeature1Enabled(): Boolean
-}
+/** Contains the dagger qualifiers for the feature flags to be used across iosched  */
+// Placeholder feature flag qualifier
+@Qualifier
+@Target(
+    AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER,
+    AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.FIELD
+)
+annotation class Feature1Flag
