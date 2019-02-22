@@ -32,7 +32,7 @@ buildscript {
         targetSdkVersion = 28
 
         // App dependencies
-        androidGradlePluginVersion = '3.3.1'
+        androidGradlePluginVersion = '3.3.0'
         appcompatVersion = '1.0.2'
         archTestingVersion = '2.0.0'
         browserVersion = '1.0.0'
