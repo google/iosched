@@ -150,7 +150,9 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         sessionResult.removeSource(newObservableUserEvent) // Avoid multiple subscriptions
         sessionResult.value = null // Prevent old data from being emitted
         sessionResult.addSource(newObservableUserEvent) { userEventResult ->
-
+            if (userEventResult?.userEvent == null) {
+                return@addSource
+            }
             DefaultScheduler.execute {
                 try {
                     Timber.d("EventRepository: Received user event changes")
@@ -160,13 +162,13 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                     // Merges session with user data and emits the result
                     val userSession = UserSession(
                         event,
-                        userEventResult?.userEvent ?: createDefaultUserEvent(event)
+                        userEventResult.userEvent
                     )
                     sessionResult.postValue(
                         Result.Success(
                             LoadUserSessionUseCaseResult(
                                 userSession = userSession,
-                                userMessage = userEventResult?.userEventMessage
+                                userMessage = userEventResult.userEventMessage
                             )
                         )
                     )

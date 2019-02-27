@@ -27,6 +27,9 @@ import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.test.data.TestData
 import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.hasKey
+import org.hamcrest.Matchers.hasSize
+import org.hamcrest.Matchers.instanceOf
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsInstanceOf
 import org.junit.Assert.assertThat
@@ -79,6 +82,28 @@ class DefaultSessionAndUserEventRepositoryTest {
 
         // Session info gets merged too
         assertThat(sessionsFirstDay?.get(0)?.session, `is`(equalTo(TestData.session0)))
+    }
+
+    @Test
+    fun observableUserEvent() {
+        val repository = DefaultSessionAndUserEventRepository(
+            userEventDataSource = TestUserEventDataSource(),
+            sessionRepository = DefaultSessionRepository(TestDataRepository)
+        )
+        val userEvent = LiveDataTestUtil.getValue(repository.getObservableUserEvent("user", "2"))
+
+        assertThat(userEvent, `is`(instanceOf(Result.Success::class.java)))
+
+        (userEvent as Result.Success).data.userSession.let { userSession ->
+            assertThat(userSession.session.id, `is`(equalTo("2")))
+            assertThat(userSession.userEvent.isStarred, `is`(true))
+            assertThat(userSession.userEvent.isReviewed, `is`(false))
+            assertThat(userSession.userEvent.feedback.keys, hasSize(2))
+            assertThat(userSession.userEvent.feedback, hasKey("q1"))
+            assertThat(userSession.userEvent.feedback["q1"], `is`(equalTo(1)))
+            assertThat(userSession.userEvent.feedback, hasKey("q2"))
+            assertThat(userSession.userEvent.feedback["q2"], `is`(equalTo(2)))
+        }
     }
 
     // TODO: Test error cases

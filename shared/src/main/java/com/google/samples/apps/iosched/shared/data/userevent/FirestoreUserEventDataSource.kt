@@ -92,11 +92,9 @@ class FirestoreUserEventDataSource @Inject constructor(
 
     // Null if the listener is not yet added
     private var eventsChangedListenerSubscription: ListenerRegistration? = null
-    private var eventChangedListenerSubscription: ListenerRegistration? = null
 
     // Observable events
     private val resultEvents = MutableLiveData<UserEventsResult>()
-    private val resultSingleEvent = MutableLiveData<UserEventResult>()
 
     /**
      * Asynchronous method to get the user events.
@@ -119,11 +117,58 @@ class FirestoreUserEventDataSource @Inject constructor(
         eventId: SessionId
     ): LiveData<UserEventResult> {
         if (userId.isEmpty()) {
-            resultSingleEvent.postValue(UserEventResult(userEvent = null))
-            return resultSingleEvent
+            return MutableLiveData<UserEventResult>().apply {
+                UserEventResult(userEvent = null)
+            }
         }
-        registerListenerForSingleEvent(eventId, userId)
-        return resultSingleEvent
+        return object : LiveData<UserEventResult>() {
+            private var subscription: ListenerRegistration? = null
+
+            private val singleEventListener: (DocumentSnapshot?, FirebaseFirestoreException?)
+            -> Unit = listener@{ snapshot, _ ->
+                snapshot ?: return@listener
+
+                DefaultScheduler.execute {
+                    Timber.d("Event changes detected on session: $eventId")
+
+                    // If oldValue doesn't exist, it's the first run so don't generate messages.
+                    val userMessage = value?.userEvent?.let { oldValue: UserEvent ->
+
+                        // Generate message if the reservation changed
+                        if (snapshot.exists()) {
+                            getUserMessageFromChange(oldValue, snapshot, eventId)
+                        } else {
+                            null
+                        }
+                    }
+
+                    val userEvent = if (snapshot.exists()) {
+                        parseUserEvent(snapshot)
+                    } else {
+                        UserEvent(id = eventId)
+                    }
+
+                    val userEventResult = UserEventResult(
+                        userEvent = userEvent,
+                        userEventMessage = userMessage
+                    )
+                    postValue(userEventResult)
+                }
+            }
+
+            val eventDocument = firestore.collection(USERS_COLLECTION)
+                .document(userId)
+                .collection(EVENTS_COLLECTION)
+                .document(eventId)
+
+            override fun onActive() {
+                subscription = eventDocument.addSnapshotListener(singleEventListener)
+            }
+
+            override fun onInactive() {
+                subscription?.remove()
+            }
+        }
     }
 
     override fun getUserEvents(userId: String): List<UserEvent> {
@@ -173,58 +218,8 @@ class FirestoreUserEventDataSource @Inject constructor(
         eventsChangedListenerSubscription = eventsCollection.addSnapshotListener(eventsListener)
     }
 
-    private fun registerListenerForSingleEvent(
-        sessionId: SessionId,
-        userId: String
-    ) {
-        val result = resultSingleEvent
-
-        val singleEventListener: (DocumentSnapshot?, FirebaseFirestoreException?) -> Unit =
-            listener@{ snapshot, _ ->
-                snapshot ?: return@listener
-
-                DefaultScheduler.execute {
-                    Timber.d("Event changes detected on session: $sessionId")
-
-                    // If oldValue doesn't exist, it's the first run so don't generate messages.
-                    val userMessage = result.value?.userEvent?.let { oldValue: UserEvent ->
-
-                        // Generate message if the reservation changed
-                        if (snapshot.exists()) {
-                            getUserMessageFromChange(oldValue, snapshot, sessionId)
-                        } else {
-                            null
-                        }
-                    }
-
-                    val userEvent = if (snapshot.exists()) {
-                        parseUserEvent(snapshot)
-                    } else {
-                        null
-                    }
-
-                    val userEventResult = UserEventResult(
-                        userEvent = userEvent,
-                        userEventMessage = userMessage
-                    )
-                    result.postValue(userEventResult)
-                }
-            }
-
-        val eventDocument = firestore.collection(USERS_COLLECTION)
-            .document(userId)
-            .collection(EVENTS_COLLECTION)
-            .document(sessionId)
-
-        eventChangedListenerSubscription?.remove() // Remove in case userId changes.
-        resultSingleEvent.value = null
-        eventChangedListenerSubscription = eventDocument.addSnapshotListener(singleEventListener)
-    }
-
     override fun clearSingleEventSubscriptions() {
         Timber.d("Firestore Event data source: Clearing subscriptions")
-        resultSingleEvent.value = null
-        eventChangedListenerSubscription?.remove() // Remove to avoid leaks
     }
 
     /** Firestore writes **/

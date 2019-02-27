@@ -49,7 +49,7 @@ class TestUserEventDataSource(
         userId: String,
         eventId: SessionId
     ): LiveData<UserEventResult> {
-        userEventResult.postValue(UserEventResult(TestData.userEvents[0]))
+        userEventResult.postValue(UserEventResult(TestData.userEvents.find { it.id == eventId }))
         return userEventResult
     }
 
