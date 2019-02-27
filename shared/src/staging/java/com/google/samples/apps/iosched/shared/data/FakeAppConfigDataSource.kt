@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.app
+package com.google.samples.apps.iosched.shared.data
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.google.samples.apps.iosched.shared.data.app.AppConfigDataSource
 
-interface AppConfigDataSource {
-    fun getStringLiveData(key: String): LiveData<String>
-    fun isFeature1Enabled(): Boolean
+class FakeAppConfigDataSource : AppConfigDataSource {
+    override fun getStringLiveData(key: String): LiveData<String> = MutableLiveData()
+    override fun isFeature1Enabled(): Boolean = false
 }
