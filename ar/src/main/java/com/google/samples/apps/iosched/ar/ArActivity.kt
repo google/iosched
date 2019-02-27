@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,4 +14,20 @@
  * limitations under the License.
  */
 
-include ':mobile', ':tv', ':shared', ':test-shared', ':model', ':androidTest-shared', 'ar'
+package com.google.samples.apps.iosched.ar
+
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.google.ar.web.webview.ArWebView
+
+class ArActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val arWebView = ArWebView(this)
+        setContentView(arWebView)
+
+        // TODO: Load the actual AR feature
+        arWebView.loadUrl("https://www.google.com")
+    }
+}
