@@ -89,6 +89,13 @@ val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepositor
         return result
     }
 
+    override fun submitFeedback(
+        userId: String,
+        userEvent: UserEvent
+    ): LiveData<Result<FeedbackUpdatedStatus>> {
+        throw NotImplementedError()
+    }
+
     override fun getObservableUserEvents(
         userId: String?
     ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {

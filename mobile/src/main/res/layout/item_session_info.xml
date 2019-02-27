@@ -251,14 +251,14 @@
             app:sessionTags="@{viewModel.session.displayTags}" />
 
         <Button
-            android:id="@+id/session_detail_rate_button"
+            android:id="@+id/session_detail_feedback_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_normal"
             android:text="@string/rate_session"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/tags"
-            app:goneUnless="@{viewModel.showRateButton}"
+            app:goneUnless="@{viewModel.showFeedbackButton}"
             tools:text="Rate Session" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

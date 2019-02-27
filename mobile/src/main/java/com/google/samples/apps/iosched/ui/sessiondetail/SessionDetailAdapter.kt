@@ -94,6 +94,9 @@ class SessionDetailAdapter(
                 tagViewPool = tagRecycledViewPool
                 setLifecycleOwner(lifecycleOwner)
                 executePendingBindings()
+                sessionDetailFeedbackButton.setOnClickListener {
+                    sessionDetailViewModel.onFeedbackClicked()
+                }
             }
             is SpeakerViewHolder -> holder.binding.apply {
                 val presenter = differ.currentList[position] as Speaker
