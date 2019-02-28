@@ -26,7 +26,6 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.TileOverlayOptions
 import com.google.android.gms.maps.model.TileProvider
-import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.util.getFloat
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
@@ -38,14 +37,6 @@ fun mapStyle(mapView: MapView, @RawRes resId: Int) {
             map.setMapStyle(MapStyleOptions.loadRawResourceStyle(mapView.context, resId))
         }
     }
-}
-
-/**
- * Adds list of markers to the GoogleMap.
- */
-@BindingAdapter("mapMarkers")
-fun mapMarkers(mapView: MapView, geoJsonLayer: GeoJsonLayer?) {
-    geoJsonLayer?.addLayerToMap()
 }
 
 /**

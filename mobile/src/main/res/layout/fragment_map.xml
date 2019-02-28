@@ -62,7 +62,6 @@
             app:isIndoorEnabled="@{false}"
             app:isMapToolbarEnabled="@{false}"
             app:mapCenter="@{viewModel.mapCenterEvent}"
-            app:mapMarkers="@{viewModel.geoJsonLayer}"
             app:mapMinZoom="@{R.dimen.map_viewport_min_zoom}"
             app:mapStyle="@{R.raw.maps_style}"
             app:mapTileProvider="@{viewModel.tileProvider}"

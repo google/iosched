@@ -32,14 +32,13 @@ import java.util.Locale
 fun processGeoJsonLayer(layer: GeoJsonLayer, context: Context) {
     val iconGenerator = getLabelIconGenerator(context)
     layer.features.forEach { feature ->
-        val id = feature.getProperty("id")
         val icon = feature.getProperty("icon")
         val title = feature.getProperty("title")
 
         val drawableRes = getDrawableResourceForIcon(context, icon)
         feature.pointStyle = when {
-            drawableRes != 0 -> createIconMarker(context, drawableRes, title, id)
-            title != null -> createLabelMarker(iconGenerator, title, id) // Fall back to title
+            drawableRes != 0 -> createIconMarker(context, drawableRes, title)
+            title != null -> createLabelMarker(iconGenerator, title) // Fall back to title
             else -> GeoJsonPointStyle() // no styling
         }
     }
@@ -71,16 +70,12 @@ fun getDrawableResourceForIcon(context: Context, iconType: String?): Int {
 /** Creates a GeoJsonPointStyle for a label. */
 private fun createLabelMarker(
     iconGenerator: IconGenerator,
-    title: String,
-    id: String
+    title: String
 ): GeoJsonPointStyle {
     val icon = BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon(title))
-    // Note: We add the ID as the snippet since there's no other way to store metaata in the marker
-    // and we need to look it up later when the user clicks on the marker.
     return GeoJsonPointStyle().apply {
         setAnchor(.5f, .5f)
         setTitle(title)
-        snippet = id
         setIcon(icon)
         isVisible = true
     }
@@ -93,17 +88,13 @@ private fun createLabelMarker(
 private fun createIconMarker(
     context: Context,
     drawableRes: Int,
-    title: String,
-    id: String
+    title: String
 ): GeoJsonPointStyle {
     val bitmap = drawableToBitmap(context, drawableRes)
     val icon = BitmapDescriptorFactory.fromBitmap(bitmap)
-    // Note: We add the ID as the snippet since there's no other way to store metaata in the marker
-    // and we need to look it up later when the user clicks on the marker.
     return GeoJsonPointStyle().apply {
         setAnchor(0.5f, 1f)
         setTitle(title)
-        snippet = id
         setIcon(icon)
         isVisible = true
     }
