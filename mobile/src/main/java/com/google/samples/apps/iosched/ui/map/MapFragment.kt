@@ -30,10 +30,9 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.model.Marker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentMapBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
@@ -43,7 +42,7 @@ import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import javax.inject.Inject
 
-class MapFragment : MainNavigationFragment(), OnMarkerClickListener {
+class MapFragment : MainNavigationFragment() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var analyticsHelper: AnalyticsHelper
@@ -136,6 +135,10 @@ class MapFragment : MainNavigationFragment(), OnMarkerClickListener {
             .setOnScrollChangeListener { v: NestedScrollView, _: Int, _: Int, _: Int, _: Int ->
                 binding.sheetHeaderShadow.isActivated = v.canScrollVertically(-1)
             }
+
+        viewModel.geoJsonLayer.observe(this, Observer {
+            updateMarkers(it ?: return@Observer)
+        })
 
         viewModel.selectedMarkerInfo.observe(this, Observer {
             updateInfoSheet(it ?: return@Observer)
@@ -244,21 +247,18 @@ class MapFragment : MainNavigationFragment(), OnMarkerClickListener {
             viewModel.onMapReady(it)
 
             it?.apply {
-                setOnMarkerClickListener(this@MapFragment)
                 setOnMapClickListener { viewModel.onMapClick() }
                 enableMyLocation(false)
             }
         }
     }
 
-    override fun onMarkerClick(marker: Marker): Boolean {
-        // This is a hack. We set the geojson feature ID as the snippet since there is no other way
-        // to add metadata and we need to look up the feature again by ID.
-        val id = marker.snippet ?: return false
-        // Marker IDs can be comma-separated list of rooms. Uses the first ID if there's a comma,
-        // or the whole ID if there is no comma.
-        viewModel.requestHighlightFeature(id.split(",")[0])
-        return true
+    private fun updateMarkers(geoJsonLayer: GeoJsonLayer) {
+        geoJsonLayer.addLayerToMap()
+        geoJsonLayer.setOnFeatureClickListener { feature ->
+            // Feature ID can be a comma-separated list. In that case use only the first ID.
+            viewModel.requestHighlightFeature(feature.id.split(",")[0])
+        }
     }
 
     private fun requestLocationPermission() {

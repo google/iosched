@@ -41,14 +41,13 @@ class LoadGeoJsonFeaturesUseCase @Inject constructor(
     override fun execute(parameters: LoadGeoJsonParams): GeoJsonData {
         val layer = GeoJsonLayer(parameters.first, parameters.second, context)
         processGeoJsonLayer(layer, context)
-        layer.isLayerOnMap
         return GeoJsonData(layer, buildFeatureMap(layer))
     }
 
     private fun buildFeatureMap(layer: GeoJsonLayer): Map<String, GeoJsonFeature> {
         val featureMap: MutableMap<String, GeoJsonFeature> = mutableMapOf()
         layer.features.forEach {
-            val id = it.getProperty("id")
+            val id = it.id
             if (!TextUtils.isEmpty(id)) {
                 // Marker can map to multiple room IDs
                 for (part in id.split(",")) {
