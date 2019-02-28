@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.ui.signin
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
@@ -41,8 +42,11 @@ class NotificationsPreferenceDialogFragment : DaggerAppCompatDialogFragment() {
             .setMessage(R.string.notifications_preference_dialog_content)
             .setNegativeButton(R.string.no) { _, _ -> notificationsPrefSaveActionUseCase(false) }
             .setPositiveButton(R.string.yes) { _, _ -> notificationsPrefSaveActionUseCase(true) }
-            .setOnDismissListener { notificationsPrefShownActionUseCase(true) }
             .create()
+    }
+
+    override fun onDismiss(dialog: DialogInterface?) {
+        notificationsPrefShownActionUseCase(true)
     }
 
     companion object {

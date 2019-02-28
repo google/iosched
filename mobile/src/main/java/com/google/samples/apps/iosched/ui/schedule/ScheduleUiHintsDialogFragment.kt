@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.ui.schedule
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
@@ -38,9 +39,10 @@ class ScheduleUiHintsDialogFragment : DaggerAppCompatDialogFragment() {
             .setTitle(R.string.schedule_hint_title)
             .setView(R.layout.dialog_schedule_hints)
             .setPositiveButton(R.string.got_it, null)
-            .setOnDismissListener {
-                markScheduleUiHintsShownUseCase()
-            }
             .create()
+    }
+
+    override fun onDismiss(dialog: DialogInterface?) {
+        markScheduleUiHintsShownUseCase()
     }
 }
