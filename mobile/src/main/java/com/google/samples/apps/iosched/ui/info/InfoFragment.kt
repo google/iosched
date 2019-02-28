@@ -27,10 +27,9 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentInfoBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
-import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class InfoFragment : DaggerFragment(), MainNavigationFragment {
+class InfoFragment : MainNavigationFragment() {
 
     @Inject lateinit var analyticsHelper: AnalyticsHelper
 

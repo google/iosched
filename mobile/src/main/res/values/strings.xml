@@ -99,6 +99,8 @@
     <string name="feedback_q4_label_end" translation_description="The label of positive answer for a session feedback question (Q4)">Outstanding</string>
 
     <!-- Accessibility -->
+    <string name="a11y_show_navigation" translation_description="Description of the menu button shown on top-level screens.">Show navigation menu</string>
+
     <string name="a11y_collapse_filters_sheet" translation_description="Description of a button to lower the filters sheet.">Lower filters sheet</string>
     <string name="a11y_clear_tag_filters" translation_description="Description of a button to remove all current tag filters.">Clear filters</string>
     <string name="a11y_filter_applied" translation_description="Alternative text when an event filter is applies">%1s filter applied</string>

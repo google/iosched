@@ -28,11 +28,10 @@ import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.util.clearDecorations
-import dagger.android.support.DaggerFragment
 import org.threeten.bp.ZoneId
 import javax.inject.Inject
 
-class AgendaFragment : DaggerFragment(), MainNavigationFragment {
+class AgendaFragment : MainNavigationFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
