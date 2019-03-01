@@ -47,7 +47,7 @@ class SettingsFragment : MainNavigationFragment() {
     ): View? {
         val binding = FragmentSettingsBinding.inflate(inflater, container, false).apply {
             viewModel = viewModelProvider(viewModelFactory)
-            setLifecycleOwner(this@SettingsFragment)
+            lifecycleOwner = viewLifecycleOwner
         }
         return binding.root
     }

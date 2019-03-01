@@ -79,13 +79,13 @@ class SpeakerAdapter(
             is SpeakerInfoViewHolder -> holder.binding.apply {
                 viewModel = speakerViewModel
                 headshotLoadListener = imageLoadListener
-                setLifecycleOwner(lifecycleOwner)
+                lifecycleOwner = this@SpeakerAdapter.lifecycleOwner
                 executePendingBindings()
             }
             is SpeakerSessionViewHolder -> holder.binding.apply {
                 userSession = differ.currentList[position] as UserSession
                 eventListener = speakerViewModel
-                setLifecycleOwner(lifecycleOwner)
+                lifecycleOwner = this@SpeakerAdapter.lifecycleOwner
                 executePendingBindings()
             }
             is HeaderViewHolder -> Unit // no-op

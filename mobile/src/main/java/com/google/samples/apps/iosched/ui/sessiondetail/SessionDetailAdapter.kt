@@ -92,7 +92,7 @@ class SessionDetailAdapter(
             is SessionInfoViewHolder -> holder.binding.apply {
                 viewModel = sessionDetailViewModel
                 tagViewPool = tagRecycledViewPool
-                setLifecycleOwner(lifecycleOwner)
+                lifecycleOwner = this@SessionDetailAdapter.lifecycleOwner
                 executePendingBindings()
                 sessionDetailFeedbackButton.setOnClickListener {
                     sessionDetailViewModel.onFeedbackClicked()
@@ -102,14 +102,14 @@ class SessionDetailAdapter(
                 val presenter = differ.currentList[position] as Speaker
                 speaker = presenter
                 eventListener = sessionDetailViewModel
-                setLifecycleOwner(lifecycleOwner)
+                lifecycleOwner = this@SessionDetailAdapter.lifecycleOwner
                 root.setTag(R.id.tag_speaker_id, presenter.id) // Used to identify clicked view
                 executePendingBindings()
             }
             is RelatedViewHolder -> holder.binding.apply {
                 userSession = differ.currentList[position] as UserSession
                 eventListener = sessionDetailViewModel
-                setLifecycleOwner(lifecycleOwner)
+                lifecycleOwner = this@SessionDetailAdapter.lifecycleOwner
                 executePendingBindings()
             }
             is HeaderViewHolder -> Unit // no-op

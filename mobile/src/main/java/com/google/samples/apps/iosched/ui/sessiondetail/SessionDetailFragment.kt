@@ -92,7 +92,7 @@ class SessionDetailFragment : DaggerFragment() {
 
         val binding = FragmentSessionDetailBinding.inflate(inflater, container, false).apply {
             viewModel = sessionDetailViewModel
-            setLifecycleOwner(this@SessionDetailFragment)
+            lifecycleOwner = viewLifecycleOwner
             sessionDetailBottomAppBar.inflateMenu(R.menu.session_detail_menu)
             sessionDetailBottomAppBar.setOnMenuItemClickListener { item ->
                 if (item.itemId == R.id.menu_item_share) {
@@ -116,7 +116,11 @@ class SessionDetailFragment : DaggerFragment() {
             }
         }
 
-        val detailsAdapter = SessionDetailAdapter(this, sessionDetailViewModel, tagRecycledViewPool)
+        val detailsAdapter = SessionDetailAdapter(
+            viewLifecycleOwner,
+            sessionDetailViewModel,
+            tagRecycledViewPool
+        )
         binding.sessionDetailRecyclerView.run {
             adapter = detailsAdapter
             itemAnimator?.run {

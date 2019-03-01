@@ -86,7 +86,7 @@ class ScheduleDayFragment : DaggerFragment() {
         // ViewModel is scoped to the parent fragment.
         viewModel = parentViewModelProvider(viewModelFactory)
         binding = FragmentScheduleDayBinding.inflate(inflater, container, false).apply {
-            setLifecycleOwner(this@ScheduleDayFragment)
+            lifecycleOwner = viewLifecycleOwner
             viewModel = this@ScheduleDayFragment.viewModel
         }
         return binding.root
@@ -98,7 +98,7 @@ class ScheduleDayFragment : DaggerFragment() {
             tagViewPool,
             viewModel.showReservations,
             viewModel.timeZoneId,
-            this
+            viewLifecycleOwner
         )
 
         binding.recyclerview.apply {

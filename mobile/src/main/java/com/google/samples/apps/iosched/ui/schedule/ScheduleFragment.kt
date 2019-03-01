@@ -94,7 +94,7 @@ class ScheduleFragment : MainNavigationFragment() {
         // ViewModel shared with child fragments.
         scheduleViewModel = viewModelProvider(viewModelFactory)
         val binding = FragmentScheduleBinding.inflate(inflater, container, false).apply {
-            setLifecycleOwner(this@ScheduleFragment)
+            lifecycleOwner = viewLifecycleOwner
             viewModel = this@ScheduleFragment.scheduleViewModel
         }
 

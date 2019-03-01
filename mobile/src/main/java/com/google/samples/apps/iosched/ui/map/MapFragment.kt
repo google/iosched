@@ -78,7 +78,7 @@ class MapFragment : MainNavigationFragment(), OnMarkerClickListener {
     ): View? {
         viewModel = viewModelProvider(viewModelFactory)
         binding = FragmentMapBinding.inflate(inflater, container, false).apply {
-            setLifecycleOwner(this@MapFragment)
+            lifecycleOwner = viewLifecycleOwner
             viewModel = this@MapFragment.viewModel
         }
 

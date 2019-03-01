@@ -71,7 +71,7 @@ class OnboardingFragment : DaggerFragment() {
 
         binding = FragmentOnboardingBinding.inflate(inflater, container, false).apply {
             viewModel = onboardingViewModel
-            setLifecycleOwner(this@OnboardingFragment)
+            lifecycleOwner = viewLifecycleOwner
             pager.adapter = OnboardingAdapter(childFragmentManager)
             pagerPager = ViewPagerPager(pager)
             // If user touches pager then stop auto advance
