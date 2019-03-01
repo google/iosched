@@ -41,7 +41,7 @@ class InfoFragment : MainNavigationFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentInfoBinding.inflate(inflater, container, false).apply {
-            setLifecycleOwner(this@InfoFragment)
+            lifecycleOwner = viewLifecycleOwner
         }
         return binding.root
     }

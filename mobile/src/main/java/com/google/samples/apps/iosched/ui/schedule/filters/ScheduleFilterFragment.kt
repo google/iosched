@@ -83,7 +83,7 @@ class ScheduleFilterFragment : DaggerFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentScheduleFilterBinding.inflate(inflater, container, false).apply {
-            setLifecycleOwner(this@ScheduleFilterFragment)
+            lifecycleOwner = viewLifecycleOwner
             headerAlpha = this@ScheduleFilterFragment.headerAlpha
             descriptionAlpha = this@ScheduleFilterFragment.descriptionAlpha
         }

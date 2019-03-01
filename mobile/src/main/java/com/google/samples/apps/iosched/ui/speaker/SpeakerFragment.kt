@@ -72,7 +72,7 @@ class SpeakerFragment : DaggerFragment() {
         activity?.postponeEnterTransition(500L)
 
         val binding = FragmentSpeakerBinding.inflate(inflater, container, false).apply {
-            setLifecycleOwner(this@SpeakerFragment)
+            lifecycleOwner = viewLifecycleOwner
             viewModel = speakerViewModel
         }
         // If speaker does not have a profile image to load, we need to resume
@@ -113,8 +113,12 @@ class SpeakerFragment : DaggerFragment() {
                 activity?.startPostponedEnterTransition()
             }
         }
-        val speakerAdapter =
-            SpeakerAdapter(this, speakerViewModel, headshotLoadListener, tagRecycledViewPool)
+        val speakerAdapter = SpeakerAdapter(
+            viewLifecycleOwner,
+            speakerViewModel,
+            headshotLoadListener,
+            tagRecycledViewPool
+        )
         binding.speakerDetailRecyclerView.run {
             adapter = speakerAdapter
             itemAnimator?.run {
