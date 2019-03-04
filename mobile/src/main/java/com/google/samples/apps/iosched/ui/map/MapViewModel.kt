@@ -32,18 +32,25 @@ import com.google.samples.apps.iosched.BuildConfig
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.domain.prefs.MyLocationOptedInUseCase
+import com.google.samples.apps.iosched.shared.domain.prefs.OptIntoMyLocationUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.google.samples.apps.iosched.util.combine
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import javax.inject.Inject
 
 class MapViewModel @Inject constructor(
     loadMapTileProviderUseCase: LoadMapTileProviderUseCase,
     private val loadGeoJsonFeaturesUseCase: LoadGeoJsonFeaturesUseCase,
-    private val analyticsHelper: AnalyticsHelper
-) : ViewModel() {
+    private val analyticsHelper: AnalyticsHelper,
+    private val signInViewModelDelegate: SignInViewModelDelegate,
+    private val optIntoMyLocationUseCase: OptIntoMyLocationUseCase,
+    myLocationOptedInUseCase: MyLocationOptedInUseCase
+) : ViewModel(), SignInViewModelDelegate by signInViewModelDelegate {
 
     /**
      * Area covered by the venue. Determines the viewport of the map.
@@ -84,21 +91,39 @@ class MapViewModel @Inject constructor(
     val selectedMarkerInfo: LiveData<MarkerInfo>
         get() = _selectedMarkerInfo
 
+    private val myLocationOptedIn = MutableLiveData<Result<Boolean>>()
+
+    val showMyLocationOption = currentUserInfo.combine(myLocationOptedIn) { info, optedIn ->
+        // Show the button to enable "My Location" when the user is an on-site attendee and he/she
+        // is not opted into the feature yet.
+        info != null &&
+            optedIn != null &&
+            info.isRegistered() &&
+            optedIn is Success &&
+            !optedIn.data
+    }
+
     init {
         loadMapTileProviderUseCase(R.drawable.map_tile, tileProviderResult)
         tileProvider = tileProviderResult.map { result ->
             (result as? Success)?.data
         }
 
-        _geoJsonLayer.addSource(loadGeoJsonResult, { result ->
+        myLocationOptedInUseCase(Unit, myLocationOptedIn)
+
+        _geoJsonLayer.addSource(loadGeoJsonResult) { result ->
             if (result is Success) {
                 hasLoadedFeatures = true
                 setMapFeatures(result.data.featureMap)
                 _geoJsonLayer.value = result.data.geoJsonLayer
             }
-        })
+        }
 
         _bottomSheetStateEvent.value = Event(BottomSheetBehavior.STATE_HIDDEN)
+    }
+
+    fun optIntoMyLocation(optIn: Boolean = true) {
+        optIntoMyLocationUseCase(optIn, myLocationOptedIn)
     }
 
     fun onMapReady(googleMap: GoogleMap) {

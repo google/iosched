@@ -25,6 +25,7 @@ class FakePreferenceStorage(
     override var scheduleUiHintsShown: Boolean = false,
     override var notificationsPreferenceShown: Boolean = false,
     override var preferToReceiveNotifications: Boolean = false,
+    override var myLocationOptedIn: Boolean = false,
     override var snackbarIsStopped: Boolean = false,
     override var observableSnackbarIsStopped: LiveData<Boolean> = MutableLiveData(),
     override var preferConferenceTimeZone: Boolean = true,
