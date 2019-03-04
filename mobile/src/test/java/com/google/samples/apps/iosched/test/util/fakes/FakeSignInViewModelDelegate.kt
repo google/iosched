@@ -33,6 +33,7 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
     override val shouldShowNotificationsPrefAction = MutableLiveData<Event<Boolean>>()
 
     var injectIsSignedIn = true
+    var injectIsRegistered = false
     var signInRequestsEmitted = 0
     var signOutRequestsEmitted = 0
 
@@ -44,7 +45,7 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
         value = injectIsSignedIn
     }
 
-    override fun isRegistered(): Boolean = injectIsSignedIn
+    override fun isRegistered(): Boolean = injectIsRegistered
 
     override fun emitSignInRequest() {
         signInRequestsEmitted++
@@ -63,6 +64,7 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
             on { getUid() }.doReturn(id)
             on { getPhotoUrl() }.doReturn(mock<Uri> {})
             on { isSignedIn() }.doReturn(true)
+            on { this@on.isRegistered() }.doReturn(injectIsRegistered)
             on { isRegistrationDataReady() }.doReturn(true)
         }
         currentUserInfo.postValue(mockUser)

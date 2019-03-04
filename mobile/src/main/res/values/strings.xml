@@ -170,6 +170,10 @@
     <string name="share_text_session_detail" translation_description="The default message to be used when user is sharing an I/O session on SNS, etc.">Check out \'%1$s\' at #io18 %2$s</string>
     <string name="intent_chooser_session_detail" translation_description="The label for share screen where user can tell people about an I/O session on SNS, etc.">Share</string>
 
+    <!-- Map -->
+    <string name="enable_my_location" translation_description="The label for the button to enable the blue dot indicating the user's location on the map">Enable my location</string>
+    <string name="my_location_rationale" translation_description="Explanation about the location permission">The app needs location permission to show your location on the map.</string>
+
     <!-- Onboarding -->
     <string name="onboarding_get_started" translation_description="The label for the button to start using the app.">Get started</string>
     <string name="onboarding_welcome_to_google_i_o" translation_description="The welcome message shown at the onboarding screen of the app.">Welcome to Google I/O</string>
