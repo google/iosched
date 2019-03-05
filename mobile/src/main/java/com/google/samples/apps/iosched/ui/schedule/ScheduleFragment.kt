@@ -109,6 +109,7 @@ class ScheduleFragment : MainNavigationFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         // Snackbar configuration
         val snackbarPrefViewModel: SnackbarPreferenceViewModel = viewModelProvider(viewModelFactory)
         setUpSnackbar(scheduleViewModel.snackBarMessage, snackbar, snackbarMessageManager,
