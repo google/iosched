@@ -16,18 +16,24 @@
 
 package com.google.samples.apps.iosched.ui.map
 
+import android.Manifest
+import android.app.Dialog
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.Marker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentMapBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
@@ -50,10 +56,13 @@ class MapFragment : MainNavigationFragment(), OnMarkerClickListener {
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
 
     companion object {
-        val TAG: String = MapFragment::class.java.simpleName
+        private const val FRAGMENT_MY_LOCATION_RATIONALE = "my_location_rationale"
+
         private const val MAPVIEW_BUNDLE_KEY = "MapViewBundleKey"
 
         private const val ARG_FEATURE_ID = "arg.FEATURE_ID"
+
+        private const val REQUEST_LOCATION_PERMISSION = 1
 
         fun newInstance(featureId: String): MapFragment {
             return MapFragment().apply {
@@ -140,9 +149,23 @@ class MapFragment : MainNavigationFragment(), OnMarkerClickListener {
         // This Fragment can appear in a standalone activity, so set up the toolbar accordingly.
         if (navigationHost != null) {
             val toolbar: Toolbar = view.findViewById(R.id.toolbar) ?: return
-            toolbar.apply {
+            toolbar.run {
                 setNavigationIcon(R.drawable.ic_menu)
                 setNavigationContentDescription(R.string.a11y_show_navigation)
+                inflateMenu(R.menu.map_menu)
+                menu.findItem(R.id.action_my_location)?.let { item ->
+                    viewModel.showMyLocationOption.observe(viewLifecycleOwner, Observer { option ->
+                        item.isVisible = (option == true)
+                    })
+                }
+                setOnMenuItemClickListener { item ->
+                    if (item.itemId == R.id.action_my_location) {
+                        enableMyLocation(true)
+                        true
+                    } else {
+                        false
+                    }
+                }
             }
         }
     }
@@ -223,7 +246,7 @@ class MapFragment : MainNavigationFragment(), OnMarkerClickListener {
             it?.apply {
                 setOnMarkerClickListener(this@MapFragment)
                 setOnMapClickListener { viewModel.onMapClick() }
-                // TODO: if user has enabled location permission, enable that on map.
+                enableMyLocation(false)
             }
         }
     }
@@ -236,5 +259,66 @@ class MapFragment : MainNavigationFragment(), OnMarkerClickListener {
         // or the whole ID if there is no comma.
         viewModel.requestHighlightFeature(id.split(",")[0])
         return true
+    }
+
+    private fun requestLocationPermission() {
+        val context = context ?: return
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) ==
+            PackageManager.PERMISSION_GRANTED) {
+            return
+        }
+        if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+            MyLocationRationaleFragment()
+                .show(childFragmentManager, FRAGMENT_MY_LOCATION_RATIONALE)
+            return
+        }
+        requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            REQUEST_LOCATION_PERMISSION)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == REQUEST_LOCATION_PERMISSION) {
+            if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                enableMyLocation()
+            } else {
+                MyLocationRationaleFragment()
+                    .show(childFragmentManager, FRAGMENT_MY_LOCATION_RATIONALE)
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
+    }
+
+    private fun enableMyLocation(requestPermission: Boolean = false) {
+        val context = context ?: return
+        when {
+            ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED -> {
+                mapView.getMapAsync {
+                    it.isMyLocationEnabled = true
+                }
+                viewModel.optIntoMyLocation()
+            }
+            requestPermission -> requestLocationPermission()
+            else -> viewModel.optIntoMyLocation(false)
+        }
+    }
+
+    class MyLocationRationaleFragment : DialogFragment() {
+        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+            return MaterialAlertDialogBuilder(context)
+                .setMessage(R.string.my_location_rationale)
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    parentFragment!!.requestPermissions(
+                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                        REQUEST_LOCATION_PERMISSION)
+                }
+                .setNegativeButton(android.R.string.cancel, null) // Give up
+                .create()
+        }
     }
 }

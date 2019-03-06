@@ -38,6 +38,7 @@ interface PreferenceStorage {
     var scheduleUiHintsShown: Boolean
     var notificationsPreferenceShown: Boolean
     var preferToReceiveNotifications: Boolean
+    var myLocationOptedIn: Boolean
     var snackbarIsStopped: Boolean
     var observableSnackbarIsStopped: LiveData<Boolean>
     var sendUsageStatistics: Boolean
@@ -81,6 +82,9 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
     override var preferToReceiveNotifications
         by BooleanPreference(prefs, PREF_RECEIVE_NOTIFICATIONS, true)
 
+    override var myLocationOptedIn: Boolean
+        by BooleanPreference(prefs, PREF_MY_LOCATION_OPTED_IN, false)
+
     override var snackbarIsStopped by BooleanPreference(prefs, PREF_SNACKBAR_IS_STOPPED, false)
 
     override var observableSnackbarIsStopped: LiveData<Boolean>
@@ -114,6 +118,7 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
         const val PREF_SCHED_UI_HINTS_SHOWN = "pref_sched_ui_hints_shown"
         const val PREF_NOTIFICATIONS_SHOWN = "pref_notifications_shown"
         const val PREF_RECEIVE_NOTIFICATIONS = "pref_receive_notifications"
+        const val PREF_MY_LOCATION_OPTED_IN = "pref_my_location_opted_in"
         const val PREF_SNACKBAR_IS_STOPPED = "pref_snackbar_is_stopped"
         const val PREF_SEND_USAGE_STATISTICS = "pref_send_usage_statistics"
         const val PREF_CONFERENCE_TIME_ZONE = "pref_conference_time_zone"

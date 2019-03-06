@@ -33,6 +33,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.postDelayed
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import com.google.samples.apps.iosched.model.Theme
 
 fun ObservableBoolean.hasSameValue(other: ObservableBoolean) = get() == other.get()
@@ -153,4 +155,28 @@ fun AppCompatActivity.updateForTheme(theme: Theme) = when (theme) {
     Theme.DARK -> delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES)
     Theme.LIGHT -> delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO)
     Theme.SYSTEM -> delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+}
+
+/**
+ * Combines this [LiveData] with another [LiveData] using the specified [combiner] and returns the
+ * result as a [LiveData].
+ */
+fun <A, B, Result> LiveData<A>.combine(
+    other: LiveData<B>,
+    combiner: (A, B) -> Result
+): LiveData<Result> {
+    val result = MediatorLiveData<Result>()
+    result.addSource(this) { a ->
+        val b = other.value
+        if (b != null) {
+            result.postValue(combiner(a, b))
+        }
+    }
+    result.addSource(other) { b ->
+        val a = this@combine.value
+        if (a != null) {
+            result.postValue(combiner(a, b))
+        }
+    }
+    return result
 }
