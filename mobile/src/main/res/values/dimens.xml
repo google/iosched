@@ -27,14 +27,6 @@
     <dimen name="feed_card_corner_radius">8dp</dimen>
     <item name="text_line_spacing" format="float" type="dimen">1.2</item>
 
-    <!-- For day indicator recyclerview on schedule. We don't want to use wrap_content because when
-         the number of indicators grows, the item animation can get cut off. We also don't want to
-         use match_parent because that will steal space from other toolbar elements. Since we know
-         there are only 3 conference days, we'll just use the indicator size x3.
-    -->
-    <dimen name="day_indicator_container_width">144dp</dimen>
-    <dimen name="day_indicator_size">@dimen/a11y_min_touch_target</dimen>
-
     <dimen name="speaker_headshot_size">40dp</dimen>
     <dimen name="speaker_large_headshot_size">112dp</dimen>
     <dimen name="session_keyline">64dp</dimen>

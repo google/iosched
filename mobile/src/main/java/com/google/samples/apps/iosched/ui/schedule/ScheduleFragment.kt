@@ -182,9 +182,6 @@ class ScheduleFragment : MainNavigationFragment() {
 
         dayIndicatorAdapter = DayIndicatorAdapter(scheduleViewModel, viewLifecycleOwner)
         dayIndicatorRecyclerView.adapter = dayIndicatorAdapter
-        scheduleViewModel.dayIndicatorsLabel.observe(this, Observer {
-            binding.includeScheduleAppbar.dayIndicatorsLabel.setText(it)
-        })
 
         // Start observing ViewModels
         scheduleViewModel.scheduleUiData.observe(this, Observer {

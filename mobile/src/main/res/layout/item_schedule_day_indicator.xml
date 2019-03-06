@@ -33,8 +33,9 @@
 
     <CheckedTextView
         android:id="@android:id/title"
-        android:layout_width="@dimen/day_indicator_size"
-        android:layout_height="@dimen/day_indicator_size"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/a11y_min_touch_target"
+        android:minWidth="@dimen/a11y_min_touch_target"
         android:background="?selectableItemBackgroundBorderless"
         android:checked="@{indicator.checked}"
         android:enabled="@{indicator.enabled}"
@@ -43,7 +44,9 @@
         android:textAlignment="center"
         android:textAppearance="?textAppearanceBody1"
         android:textColor="@color/schedule_day_indicator_text"
-        app:inConferenceTimeZone="@{viewModel.showInConferenceTimeZone}"
+        android:paddingLeft="@dimen/spacing_normal"
+        android:paddingRight="@dimen/spacing_normal"
+        app:inConferenceTimeZone="@{viewModel.isConferenceTimeZone}"
         app:indicatorText="@{indicator}"
         tools:checked="@sample/day_indicator.json/indicators/checked"
         tools:text="@sample/day_indicator.json/indicators/label" />
