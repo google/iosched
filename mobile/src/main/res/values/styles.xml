@@ -272,7 +272,7 @@
 
     <style name="Widget.IOSched.DayIndicatorDecoration">
         <item name="android:color">?colorAccent</item>
-        <item name="android:inset">8dp</item>
+        <item name="insetVertical">8dp</item>
     </style>
 
     <style name="Widget.IOSched.RaisedButton" parent="@style/Widget.AppCompat.Button.Colored">

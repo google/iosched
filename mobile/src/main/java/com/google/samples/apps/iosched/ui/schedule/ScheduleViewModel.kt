@@ -42,6 +42,7 @@ import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
+import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
@@ -91,15 +92,7 @@ class ScheduleViewModel @Inject constructor(
     private val loadSelectedFiltersResult = MutableLiveData<Result<Unit>>()
 
     private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
-    val showInConferenceTimeZone: LiveData<Boolean>
-
-    /**
-     * The label to display in front of the conference day indicators above the Schedule content.
-     * In time zones other than the conference time zone, conference days and calendar dates may not
-     * align. To minimize confusion, we show actual dates when using the conference time zone only;
-     * otherwise we show the day number.
-     */
-    val dayIndicatorsLabel: LiveData<Int>
+    val isConferenceTimeZone: LiveData<Boolean>
     val timeZoneId: LiveData<ZoneId>
 
     private lateinit var dayIndexer: ConferenceDayIndexer
@@ -262,24 +255,17 @@ class ScheduleViewModel @Inject constructor(
             Event((it as? Result.Success)?.data == true)
         }
 
-        showInConferenceTimeZone = preferConferenceTimeZoneResult.map {
-            (it as? Result.Success<Boolean>)?.data ?: true
-        }
-
-        timeZoneId = showInConferenceTimeZone.map { inConferenceTimeZone ->
-            if (inConferenceTimeZone) {
+        timeZoneId = preferConferenceTimeZoneResult.map {
+            val preferConferenceTimeZone = it.successOr(true)
+            if (preferConferenceTimeZone) {
                 TimeUtils.CONFERENCE_TIMEZONE
             } else {
                 ZoneId.systemDefault()
             }
         }
 
-        dayIndicatorsLabel = showInConferenceTimeZone.map { inConferenceTimeZone ->
-            return@map if (inConferenceTimeZone || TimeUtils.isConferenceTimeZone()) {
-                R.string.day_indicators_label_date
-            } else {
-                R.string.day_indicators_label_ordinal
-            }
+        isConferenceTimeZone = timeZoneId.map { zoneId ->
+            TimeUtils.isConferenceTimeZone(zoneId)
         }
 
         _scheduleUiData.addSource(timeZoneId) {

@@ -42,7 +42,8 @@ class BubbleDecoration(context: Context) : ItemDecoration() {
         style = FILL
     }
 
-    private val inset: Float
+    private val insetHorizontal: Float
+    private val insetVertical: Float
 
     private val currentRect = RectF()
     private val previousRect = RectF()
@@ -66,7 +67,8 @@ class BubbleDecoration(context: Context) : ItemDecoration() {
             R.styleable.DayIndicatorDecoration
         )
         paint.color = attrs.getColor(R.styleable.DayIndicatorDecoration_android_color, 0)
-        inset = attrs.getDimension(R.styleable.DayIndicatorDecoration_android_inset, 0f)
+        insetHorizontal = attrs.getDimension(R.styleable.DayIndicatorDecoration_insetHorizontal, 0f)
+        insetVertical = attrs.getDimension(R.styleable.DayIndicatorDecoration_insetVertical, 0f)
         attrs.recycle()
     }
 
@@ -155,7 +157,7 @@ class BubbleDecoration(context: Context) : ItemDecoration() {
         }
 
         outRectF.set(minLeft, minTop, maxRight, maxBottom)
-        outRectF.inset(inset, inset)
+        outRectF.inset(insetHorizontal, insetVertical)
     }
 
     private fun startAnimatorIfNeeded(initial: RectF, target: RectF, parent: RecyclerView) {

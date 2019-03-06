@@ -41,16 +41,9 @@
             app:title="@string/title_schedule"
             app:titleMarginEnd="@dimen/margin_large">
 
-            <TextView
-                android:id="@+id/day_indicators_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceBody1"
-                tools:text="@string/day_indicators_label_date" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/day_indicators"
-                android:layout_width="@dimen/day_indicator_container_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layoutManager="LinearLayoutManager"
