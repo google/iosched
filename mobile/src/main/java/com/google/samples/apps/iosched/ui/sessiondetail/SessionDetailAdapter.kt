@@ -109,6 +109,7 @@ class SessionDetailAdapter(
             is RelatedViewHolder -> holder.binding.apply {
                 userSession = differ.currentList[position] as UserSession
                 eventListener = sessionDetailViewModel
+                timeZoneId = sessionDetailViewModel.timeZoneId
                 lifecycleOwner = this@SessionDetailAdapter.lifecycleOwner
                 executePendingBindings()
             }

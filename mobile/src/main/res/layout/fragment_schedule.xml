@@ -36,6 +36,7 @@
         android:layout_height="match_parent">
 
         <include
+            android:id="@+id/include_schedule_appbar"
             layout="@layout/include_schedule_appbar"
             app:viewModel="@{viewModel}" />
 
@@ -60,8 +61,7 @@
                     android:paddingBottom="@dimen/schedule_page_padding_bottom"
                     android:paddingTop="@dimen/spacing_normal"
                     android:scrollbars="vertical"
-                    app:layoutManager="LinearLayoutManager"
-                    tools:ignore="UnusedAttribute" />
+                    app:layoutManager="LinearLayoutManager" />
 
                 <TextView
                     android:id="@+id/empty"

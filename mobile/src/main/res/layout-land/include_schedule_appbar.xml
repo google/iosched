@@ -15,7 +15,8 @@
   ~ limitations under the License.
   -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -37,9 +38,25 @@
             android:layout_height="?actionBarSize"
             app:navigationContentDescription="@string/a11y_show_navigation"
             app:navigationIcon="@drawable/ic_menu"
-            app:title="@string/title_schedule" />
+            app:title="@string/title_schedule"
+            app:titleMarginEnd="@dimen/margin_large">
 
-        <!-- TODO(b/124072759) UI affordance to jump to start of each day -->
+            <TextView
+                android:id="@+id/day_indicators_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?textAppearanceBody1"
+                tools:text="@string/day_indicators_label_date" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/day_indicators"
+                android:layout_width="@dimen/day_indicator_container_width"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="LinearLayoutManager"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_schedule_day_indicator" />
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 </layout>

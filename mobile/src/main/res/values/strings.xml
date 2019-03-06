@@ -275,6 +275,8 @@
     <string name="day1_date" translation_description="Actual date of the first day of the conference">May 8</string>
     <string name="day2_date" translation_description="Actual date of the second day of the conference">May 9</string>
     <string name="day3_date" translation_description="Actual date of the third day of the conference">May 10</string>
+    <string name="day_indicators_label_date" translation_description="Label in front of conference day indicators above schedule content when using conference time zone">May:</string>
+    <string name="day_indicators_label_ordinal" translation_description="Label in front of conference day indicators above schedule content when using another time zone">Day:</string>
 
     <!-- Speaker -->
     <string name="speaker_link_website" translation_description="The label for a link to a speaker's Website">Website</string>

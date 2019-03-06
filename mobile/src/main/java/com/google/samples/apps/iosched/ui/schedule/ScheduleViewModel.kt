@@ -21,6 +21,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
@@ -29,6 +30,7 @@ import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCas
 import com.google.samples.apps.iosched.shared.domain.prefs.LoadSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.SaveSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.ConferenceDayIndexer
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsParameters
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
@@ -36,7 +38,6 @@ import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceD
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
-import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
@@ -90,12 +91,22 @@ class ScheduleViewModel @Inject constructor(
     private val loadSelectedFiltersResult = MutableLiveData<Result<Unit>>()
 
     private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
+    val showInConferenceTimeZone: LiveData<Boolean>
 
+    /**
+     * The label to display in front of the conference day indicators above the Schedule content.
+     * In time zones other than the conference time zone, conference days and calendar dates may not
+     * align. To minimize confusion, we show actual dates when using the conference time zone only;
+     * otherwise we show the day number.
+     */
+    val dayIndicatorsLabel: LiveData<Int>
     val timeZoneId: LiveData<ZoneId>
 
-    private val _sessionTimeData = MediatorLiveData<SessionTimeData>()
-    val sessionTimeData: LiveData<SessionTimeData>
-        get() = _sessionTimeData
+    private lateinit var dayIndexer: ConferenceDayIndexer
+
+    private val _scheduleUiData = MediatorLiveData<ScheduleUiData>()
+    val scheduleUiData: LiveData<ScheduleUiData>
+        get() = _scheduleUiData
 
     // Cached list of TagFilters returned by the use case. Only Result.Success modifies it.
     private var cachedEventFilters = emptyList<EventFilter>()
@@ -145,8 +156,11 @@ class ScheduleViewModel @Inject constructor(
     // Flags used to indicate if the "scroll to now" feature has been used already.
     var userHasInteracted = false
 
-    // The currently happening event
-    val currentEvent: LiveData<Int>
+    // LiveData describing which item to scroll to automatically. We use an Event because on
+    // rotation RecyclerView takes care of restoring its scroll position.
+    private val _scrollToEvent = MediatorLiveData<Event<ScheduleScrollEvent>>()
+    val scrollToEvent: LiveData<Event<ScheduleScrollEvent>>
+        get() = _scrollToEvent
 
     init {
         // Load sessions and tags and store the result in `LiveData`s
@@ -202,8 +216,7 @@ class ScheduleViewModel @Inject constructor(
         }
 
         // Show an error message if a star request fails
-        _snackBarMessage.addSource(starEventUseCase.observe()) { it: Result<StarUpdatedStatus>? ->
-            // Show a snackbar message on error.
+        _snackBarMessage.addSource(starEventUseCase.observe()) {
             if (it is Result.Error) {
                 _snackBarMessage.postValue(
                     Event(
@@ -221,7 +234,6 @@ class ScheduleViewModel @Inject constructor(
             if (it is Result.Success) {
                 it.data.userMessage?.type?.stringRes()?.let { messageId ->
                     // There is a message to display:
-
                     snackbarMessageManager.addMessage(
                         SnackbarMessage(
                             messageId = messageId,
@@ -250,7 +262,7 @@ class ScheduleViewModel @Inject constructor(
             Event((it as? Result.Success)?.data == true)
         }
 
-        val showInConferenceTimeZone = preferConferenceTimeZoneResult.map {
+        showInConferenceTimeZone = preferConferenceTimeZoneResult.map {
             (it as? Result.Success<Boolean>)?.data ?: true
         }
 
@@ -262,16 +274,26 @@ class ScheduleViewModel @Inject constructor(
             }
         }
 
-        _sessionTimeData.addSource(timeZoneId) {
-            _sessionTimeData.value = _sessionTimeData.value?.apply {
-                timeZoneId = it
-            } ?: SessionTimeData(timeZoneId = it)
+        dayIndicatorsLabel = showInConferenceTimeZone.map { inConferenceTimeZone ->
+            return@map if (inConferenceTimeZone || TimeUtils.isConferenceTimeZone()) {
+                R.string.day_indicators_label_date
+            } else {
+                R.string.day_indicators_label_ordinal
+            }
         }
-        _sessionTimeData.addSource(loadSessionsResult) {
-            val userSessions = (it as? Result.Success)?.data?.userSessions ?: return@addSource
-            _sessionTimeData.value = _sessionTimeData.value?.apply {
-                list = userSessions
-            } ?: SessionTimeData(list = userSessions)
+
+        _scheduleUiData.addSource(timeZoneId) {
+            _scheduleUiData.value = _scheduleUiData.value?.copy(
+                timeZoneId = it
+            ) ?: ScheduleUiData(timeZoneId = it)
+        }
+        _scheduleUiData.addSource(loadSessionsResult) {
+            val data = (it as? Result.Success)?.data ?: return@addSource
+            dayIndexer = data.dayIndexer
+            _scheduleUiData.value = _scheduleUiData.value?.copy(
+                list = data.userSessions,
+                dayIndexer = data.dayIndexer
+            ) ?: ScheduleUiData(list = data.userSessions, dayIndexer = data.dayIndexer)
         }
 
         swipeRefreshing = swipeRefreshResult.map {
@@ -279,14 +301,23 @@ class ScheduleViewModel @Inject constructor(
             false
         }
 
+        // Load time zone preference
+        getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
+
         // Subscribe user to schedule updates
         topicSubscriber.subscribeToScheduleUpdates()
 
         // Observe updates in conference data
         observeConferenceDataUseCase.execute(Any())
 
-        currentEvent = loadSessionsResult.map { result ->
-            (result as? Success)?.data?.firstUnfinishedSessionIndex ?: -1
+        _scrollToEvent.addSource(loadSessionsResult) { result ->
+            if (!userHasInteracted) {
+                val index =
+                    (result as? Success)?.data?.firstUnfinishedSessionIndex ?: return@addSource
+                if (index != -1) {
+                    _scrollToEvent.value = Event(ScheduleScrollEvent(index))
+                }
+            }
         }
     }
 
@@ -396,12 +427,20 @@ class ScheduleViewModel @Inject constructor(
         }
     }
 
-    fun initializeTimeZone() {
-        getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
+    fun scrollToStartOfDay(day: ConferenceDay) {
+        val index = dayIndexer.positionForDay(day)
+        // We don't check userHasInteracted because the user explicitly requested this scroll.
+        _scrollToEvent.value = Event(ScheduleScrollEvent(index, true))
     }
 }
 
-data class SessionTimeData(var list: List<UserSession>? = null, var timeZoneId: ZoneId? = null)
+data class ScheduleUiData(
+    val list: List<UserSession>? = null,
+    val timeZoneId: ZoneId? = null,
+    val dayIndexer: ConferenceDayIndexer? = null
+)
+
+data class ScheduleScrollEvent(val targetPosition: Int, val smoothScroll: Boolean = false)
 
 interface ScheduleEventListener : EventActions {
     /** Called from the UI to enable or disable a particular filter. */
