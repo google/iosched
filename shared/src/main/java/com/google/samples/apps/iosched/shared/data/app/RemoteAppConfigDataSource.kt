@@ -56,11 +56,15 @@ class RemoteAppConfigDataSource @Inject constructor(
         }
     }
 
+    override fun isFeedEnabled(): Boolean =
+        firebaseRemoteConfig.getBoolean(FEED_FEATURE_KEY)
+
     companion object {
         // Placeholder keys
         const val WELCOME_TILE_KEY = "welcome_title"
         const val WELCOME_SUBTITLE_KEY = "welcome_subtitle"
 
         const val FEATURE_1_KEY = "feature_1"
+        const val FEED_FEATURE_KEY = "enable_feed"
     }
 }

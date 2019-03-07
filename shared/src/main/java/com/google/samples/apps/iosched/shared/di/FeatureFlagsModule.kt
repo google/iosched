@@ -30,4 +30,11 @@ class FeatureFlagsModule {
     fun provideFeature1Flag(appConfig: AppConfigDataSource): Boolean {
         return appConfig.isFeature1Enabled()
     }
+
+    @Provides
+    @Singleton
+    @FeedFeatureFlag
+    fun provideFeedFeatureFlag(appConfig: AppConfigDataSource): Boolean {
+        return appConfig.isFeedEnabled()
+    }
 }

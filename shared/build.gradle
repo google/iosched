@@ -89,6 +89,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata:$rootProject.lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$rootProject.lifecycleVersion"
 
+
     // Maps
     api("com.google.maps.android:android-maps-utils:$rootProject.googleMapUtilsVersion") {
         exclude group: "com.google.android.gms"
@@ -131,6 +132,8 @@ dependencies {
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation "com.nhaarman:mockito-kotlin:$rootProject.mockitoKotlinVersion"
+    testImplementation "androidx.arch.core:core-testing:$rootProject.lifecycleVersion"
+
 
     // unit tests livedata
     testImplementation "androidx.arch.core:core-testing:$rootProject.archTestingVersion"

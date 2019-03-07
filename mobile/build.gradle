@@ -129,6 +129,7 @@ dependencies {
 
     // UI
     implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
+    implementation "androidx.cardview:cardview:$rootProject.cardviewVersion"
     implementation "androidx.browser:browser:$rootProject.browserVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
     implementation "com.google.android.material:material:$rootProject.materialVersion"
