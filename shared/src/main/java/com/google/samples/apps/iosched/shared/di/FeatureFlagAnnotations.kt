@@ -33,3 +33,11 @@ annotation class Feature1Flag
     AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.FIELD
 )
 annotation class FeedFeatureFlag
+
+// Whether or not the Map feature is enabled
+@Qualifier
+@Target(
+    AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER,
+    AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.FIELD
+)
+annotation class MapFeatureEnabledFlag

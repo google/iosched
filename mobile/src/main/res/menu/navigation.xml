@@ -24,7 +24,6 @@
             android:id="@+id/navigation_feed"
             android:icon="@drawable/ic_nav_feed"
             android:title="@string/title_feed"
-            android:visible="false"
             app:contentDescription="@string/title_feed" />
 
         <item

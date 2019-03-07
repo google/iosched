@@ -37,4 +37,11 @@ class FeatureFlagsModule {
     fun provideFeedFeatureFlag(appConfig: AppConfigDataSource): Boolean {
         return appConfig.isFeedEnabled()
     }
+
+    // Whather or not the Map feature is enabled
+    @Provides
+    @MapFeatureEnabledFlag
+    fun provideMapFeatureEnabledFlag(appConfig: AppConfigDataSource): Boolean {
+        return appConfig.isMapFeatureEnabled()
+    }
 }

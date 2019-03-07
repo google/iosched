@@ -30,6 +30,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.NavigationHeaderBinding
 import com.google.samples.apps.iosched.shared.di.FeedFeatureFlag
+import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
@@ -66,21 +67,25 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
     lateinit var snackbarMessageManager: SnackbarMessageManager
 
     @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
     @FeedFeatureFlag
     @JvmField
     var feedFeatureEnabled: Boolean = false
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private lateinit var currentFragment: MainNavigationFragment
+    @Inject
+    @JvmField
+    @MapFeatureEnabledFlag
+    var isMapEnabled: Boolean = false
 
     private lateinit var viewModel: MainActivityViewModel
 
-    private lateinit var navHeaderBinding: NavigationHeaderBinding
-
     private lateinit var drawer: DrawerLayout
     private lateinit var navigation: NavigationView
+    private lateinit var navHeaderBinding: NavigationHeaderBinding
 
+    private lateinit var currentFragment: MainNavigationFragment
     private var currentNavId = NAV_ID_NONE
     private var pendingNavId = NAV_ID_NONE
 
@@ -93,20 +98,24 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
 
         setContentView(R.layout.activity_main)
         drawer = findViewById(R.id.drawer)
-        navigation = findViewById(R.id.navigation)
-
         drawer.addDrawerListener(this)
-        navigation.setNavigationItemSelectedListener {
-            closeDrawer()
-            navigateWhenDrawerClosed(it.itemId)
-            true
-        }
 
         navHeaderBinding = NavigationHeaderBinding.inflate(layoutInflater).apply {
             viewModel = this@MainActivity.viewModel
             setLifecycleOwner(this@MainActivity)
         }
-        navigation.addHeaderView(navHeaderBinding.root)
+        navigation = findViewById(R.id.navigation)
+        navigation.apply {
+            addHeaderView(navHeaderBinding.root)
+
+            menu.findItem(R.id.navigation_map).isVisible = isMapEnabled
+            menu.findItem(R.id.navigation_feed).isVisible = feedFeatureEnabled
+            setNavigationItemSelectedListener {
+                closeDrawer()
+                navigateWhenDrawerClosed(it.itemId)
+                true
+            }
+        }
 
         if (savedInstanceState == null) {
             // default to showing Schedule
@@ -129,12 +138,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
         viewModel.navigateToSignOutDialogAction.observe(this, EventObserver {
             openSignOutDialog()
         })
-
-        if (feedFeatureEnabled) {
-            navigation.apply {
-                menu.findItem(R.id.navigation_feed).isVisible = true
-            }
-        }
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {

@@ -40,6 +40,7 @@ import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
@@ -79,6 +80,11 @@ class SessionDetailFragment : DaggerFragment() {
     @field:Named("tagViewPool")
     lateinit var tagRecycledViewPool: RecycledViewPool
 
+    @Inject
+    @JvmField
+    @MapFeatureEnabledFlag
+    var isMapEnabled: Boolean = false
+
     private var room: Room? = null
 
     private lateinit var sessionTitle: String
@@ -93,23 +99,27 @@ class SessionDetailFragment : DaggerFragment() {
         val binding = FragmentSessionDetailBinding.inflate(inflater, container, false).apply {
             viewModel = sessionDetailViewModel
             lifecycleOwner = viewLifecycleOwner
-            sessionDetailBottomAppBar.inflateMenu(R.menu.session_detail_menu)
-            sessionDetailBottomAppBar.setOnMenuItemClickListener { item ->
-                if (item.itemId == R.id.menu_item_share) {
-                    ShareCompat.IntentBuilder.from(activity)
-                        .setType("text/plain")
-                        .setText(shareString)
-                        .setChooserTitle(R.string.intent_chooser_session_detail)
-                        .startChooser()
-                } else if (item.itemId == R.id.menu_item_star) {
-                    viewModel?.onStarClicked()
-                } else if (item.itemId == R.id.menu_item_map) {
-                    val roomId = room?.id
-                    if (roomId != null) {
-                        startActivity(MapActivity.starterIntent(requireContext(), roomId))
+
+            sessionDetailBottomAppBar.run {
+                inflateMenu(R.menu.session_detail_menu)
+                menu.findItem(R.id.menu_item_map)?.isVisible = isMapEnabled
+                setOnMenuItemClickListener { item ->
+                    if (item.itemId == R.id.menu_item_share) {
+                        ShareCompat.IntentBuilder.from(activity)
+                            .setType("text/plain")
+                            .setText(shareString)
+                            .setChooserTitle(R.string.intent_chooser_session_detail)
+                            .startChooser()
+                    } else if (item.itemId == R.id.menu_item_star) {
+                        viewModel?.onStarClicked()
+                    } else if (item.itemId == R.id.menu_item_map) {
+                        val roomId = room?.id
+                        if (roomId != null) {
+                            startActivity(MapActivity.starterIntent(requireContext(), roomId))
+                        }
                     }
+                    true
                 }
-                true
             }
             up.setOnClickListener {
                 NavUtils.navigateUpFromSameTask(requireActivity())
