@@ -23,4 +23,8 @@
         <key>wifi_password</key>
         <value>makegoodthings</value>
     </entry>
+    <entry>
+        <key>map_enabled</key>
+        <value>false</value>
+    </entry>
 </defaultsMap>
