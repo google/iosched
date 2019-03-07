@@ -18,6 +18,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'io.fabric'
 
 android {
@@ -141,6 +142,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
     kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleVersion"
     testImplementation "androidx.arch.core:core-testing:$rootProject.archTestingVersion"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
 
     // Dagger
     implementation "com.google.dagger:dagger-android:$rootProject.dagger"
