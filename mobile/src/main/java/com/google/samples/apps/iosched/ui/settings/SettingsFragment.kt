@@ -33,6 +33,7 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.ViewModelProvider
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSettingsBinding
+import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import javax.inject.Inject
@@ -40,15 +41,23 @@ import javax.inject.Inject
 class SettingsFragment : MainNavigationFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
+    private lateinit var viewModel: SettingsViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentSettingsBinding.inflate(inflater, container, false).apply {
-            viewModel = viewModelProvider(viewModelFactory)
-            lifecycleOwner = viewLifecycleOwner
-        }
+        viewModel = viewModelProvider(viewModelFactory)
+
+        viewModel.navigateToThemeSelector.observe(this, EventObserver {
+            ThemeSettingDialogFragment.newInstance()
+                    .show(fragmentManager, null)
+        })
+
+        val binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 }

@@ -22,12 +22,14 @@ import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.model.Theme
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefSaveActionUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetAnalyticsSettingUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetAvailableThemesUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetNotificationsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetAnalyticsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetTimeZoneUseCase
+import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.util.map
@@ -41,7 +43,8 @@ class SettingsViewModel @Inject constructor(
     val setAnalyticsSettingUseCase: SetAnalyticsSettingUseCase,
     getAnalyticsSettingUseCase: GetAnalyticsSettingUseCase,
     val setThemeUseCase: SetThemeUseCase,
-    getThemeUseCase: GetThemeUseCase
+    getThemeUseCase: GetThemeUseCase,
+    getAvailableThemesUseCase: GetAvailableThemesUseCase
 ) : ViewModel() {
 
     // Time Zone setting
@@ -57,8 +60,16 @@ class SettingsViewModel @Inject constructor(
     val sendUsageStatistics: LiveData<Boolean>
 
     // Theme setting
-    private val darkModeResult = MutableLiveData<Result<Theme>>()
-    val darkMode: LiveData<Boolean>
+    private val themeResult = MutableLiveData<Result<Theme>>()
+    val theme: LiveData<Theme>
+
+    // Theme setting
+    private val availableThemesResult = MutableLiveData<Result<List<Theme>>>()
+    val availableThemes: LiveData<List<Theme>>
+
+    private val _navigateToThemeSelector = MutableLiveData<Event<Unit>>()
+    val navigateToThemeSelector: LiveData<Event<Unit>>
+        get() = _navigateToThemeSelector
 
     init {
         getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
@@ -76,9 +87,14 @@ class SettingsViewModel @Inject constructor(
             (it as? Success<Boolean>)?.data ?: false
         }
 
-        getThemeUseCase(Unit, darkModeResult)
-        darkMode = darkModeResult.map {
-            (it as? Success<Theme>)?.data == Theme.DARK
+        getThemeUseCase(Unit, themeResult)
+        theme = themeResult.map {
+            (it as? Success<Theme>)?.data ?: Theme.SYSTEM
+        }
+
+        getAvailableThemesUseCase(Unit, availableThemesResult)
+        availableThemes = availableThemesResult.map {
+            (it as? Success<List<Theme>>)?.data ?: emptyList()
         }
     }
 
@@ -94,7 +110,11 @@ class SettingsViewModel @Inject constructor(
         notificationsPrefSaveActionUseCase(checked, enableNotificationsResult)
     }
 
-    fun toggleDarkMode(checked: Boolean) {
-        setThemeUseCase(if (checked) Theme.DARK else Theme.LIGHT, darkModeResult)
+    fun setTheme(theme: Theme) {
+        setThemeUseCase(theme)
+    }
+
+    fun onThemeSettingClicked() {
+        _navigateToThemeSelector.value = Event(Unit)
     }
 }

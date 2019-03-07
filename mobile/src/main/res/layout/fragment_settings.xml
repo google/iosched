@@ -61,17 +61,19 @@
                 android:paddingVertical="@dimen/margin_normal"
                 tools:targetApi="o">
 
-                <!-- AppCompat/MaterialComponents layout inflators don't automatically handle
-                     Switch widgets. See https://material.io/develop/android/components/switch/ -->
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/settings_dark_mode"
-                    style="@style/Widget.IOSched.SettingsSwitch"
+                <TextView
+                    android:id="@+id/settings_choose_theme"
+                    style="@style/Widget.IOSched.Settings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:checked="@{viewModel.darkMode}"
-                    android:onCheckedChanged="@{(view, checked) -> viewModel.toggleDarkMode(checked)}"
-                    android:text="@string/settings_dark_mode" />
+                    android:gravity="center_vertical"
+                    android:focusable="true"
+                    android:onClick="@{(view) -> viewModel.onThemeSettingClicked()}"
+                    android:text="@string/settings_theme_title"
+                    android:textAppearance="?attr/textAppearanceBody2" />
 
+                <!-- AppCompat/MaterialComponents layout inflators don't automatically handle
+                     Switch widgets. See https://material.io/develop/android/components/switch/ -->
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/settings_time_zone"
                     style="@style/Widget.IOSched.SettingsSwitch"
