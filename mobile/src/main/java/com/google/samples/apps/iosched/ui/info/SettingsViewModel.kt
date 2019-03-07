@@ -19,11 +19,11 @@ package com.google.samples.apps.iosched.ui.info
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.model.Theme
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefSaveActionUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetAnalyticsSettingUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetAvailableThemesUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetNotificationsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
@@ -45,7 +45,8 @@ class SettingsViewModel @Inject constructor(
     val setAnalyticsSettingUseCase: SetAnalyticsSettingUseCase,
     getAnalyticsSettingUseCase: GetAnalyticsSettingUseCase,
     val setThemeUseCase: SetThemeUseCase,
-    getThemeUseCase: GetThemeUseCase
+    getThemeUseCase: GetThemeUseCase,
+    getAvailableThemesUseCase: GetAvailableThemesUseCase
 ) : ViewModel() {
 
     // Time Zone setting
@@ -69,8 +70,18 @@ class SettingsViewModel @Inject constructor(
         get() = _showSignIn
 
     // Theme setting
-    private val _darkMode = MutableLiveData<Theme>()
-    val darkMode: LiveData<Boolean> = _darkMode.map { it == Theme.DARK }
+    private val _theme = MutableLiveData<Theme>()
+    val theme: LiveData<Theme>
+        get() = _theme
+
+    // Available themes
+    private val _availableThemes = MutableLiveData<List<Theme>>()
+    val availableThemes: LiveData<List<Theme>>
+        get() = _availableThemes
+
+    private val _navigateToThemeSelector = MutableLiveData<Event<Unit>>()
+    val navigateToThemeSelector: LiveData<Event<Unit>>
+        get() = _navigateToThemeSelector
 
     init {
         // Executing use cases in parallel
@@ -84,7 +95,10 @@ class SettingsViewModel @Inject constructor(
             enableNotificationsResult.value = getNotificationsSettingUseCase(Unit).data ?: false
         }
         viewModelScope.launch {
-            _darkMode.value = getThemeUseCase(Unit).successOr(Theme.SYSTEM)
+            _theme.value = getThemeUseCase(Unit).successOr(Theme.SYSTEM)
+        }
+        viewModelScope.launch {
+            _availableThemes.value = getAvailableThemesUseCase(Unit).successOr(emptyList())
         }
     }
 
@@ -110,10 +124,13 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun toggleDarkMode(checked: Boolean) {
+    fun setTheme(theme: Theme) {
         viewModelScope.launch {
-            setThemeUseCase(if (checked) Theme.DARK else Theme.LIGHT)
-                .updateOnSuccess(_darkMode)
+            setThemeUseCase(theme)
         }
+    }
+
+    fun onThemeSettingClicked() {
+        _navigateToThemeSelector.value = Event(Unit)
     }
 }

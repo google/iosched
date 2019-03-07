@@ -39,14 +39,17 @@ class SettingsFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val viewModel: SettingsViewModel = viewModelProvider(viewModelFactory)
+        val settingsViewModel: SettingsViewModel = viewModelProvider(viewModelFactory)
         val binding = FragmentSettingsBinding.inflate(inflater, container, false).apply {
-            this.viewModel = viewModel
-            this.isInstantApp = InstantApps.isInstantApp(requireContext())
-            setLifecycleOwner(this@SettingsFragment)
+            viewModel = settingsViewModel
+            isInstantApp = InstantApps.isInstantApp(requireContext())
+            lifecycleOwner = viewLifecycleOwner
         }
-        viewModel.showSignIn.observe(this, EventObserver {
+        settingsViewModel.showSignIn.observe(this, EventObserver {
             notificationDialogDispatcher.startDialog(requireActivity())
+        })
+        settingsViewModel.navigateToThemeSelector.observe(this, EventObserver {
+            ThemeSettingDialogFragment.newInstance().show(requireFragmentManager(), null)
         })
         return binding.root
     }

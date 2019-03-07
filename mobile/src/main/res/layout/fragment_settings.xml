@@ -44,16 +44,16 @@
 
             <!--TODO: make button ripple the entire width of row for switches-->
 
-            <Switch
-                android:id="@+id/settings_dark_mode"
-                style="@style/TextAppearance.IOSched.SettingsSwitch"
+            <TextView
+                android:id="@+id/settings_choose_theme"
+                style="@style/Widget.IOSched.Settings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:checked="@{viewModel.darkMode}"
-                android:onCheckedChanged="@{(view, checked) -> viewModel.toggleDarkMode(checked)}"
-                android:text="@string/settings_dark_mode"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="center_vertical"
+                android:focusable="true"
+                android:onClick="@{() -> viewModel.onThemeSettingClicked()}"
+                android:text="@string/settings_theme_title"
+                android:textAppearance="?attr/textAppearanceBody2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -66,7 +66,7 @@
                 android:onCheckedChanged="@{(view, checked) -> viewModel.toggleTimeZone(checked)}"
                 android:text="@string/settings_time_zone_label"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/settings_dark_mode" />
+                app:layout_constraintTop_toBottomOf="@id/settings_choose_theme" />
 
             <Switch
                 android:id="@+id/settings_enable_notifications"

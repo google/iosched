@@ -316,11 +316,16 @@
         <item name="android:textColor">?android:textColorLink</item>
     </style>
 
-    <style name="TextAppearance.IOSched.SettingsSwitch" parent="@style/TextAppearance.AppCompat.Body1">
+    <style name="TextAppearance.IOSched.SettingsSwitch" parent="@style/Widget.AppCompat.CompoundButton.Switch">
         <item name="android:background">?selectableItemBackground</item>
+        <item name="android:minHeight">?android:attr/listPreferredItemHeightSmall</item>
         <item name="android:padding">@dimen/margin_normal</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">?android:attr/textColorSecondary</item>
+    </style>
+
+    <style name="Widget.IOSched.Settings" parent="android:Widget">
+        <item name="android:background">?selectableItemBackground</item>
+        <item name="android:minHeight">?android:attr/listPreferredItemHeightSmall</item>
+        <item name="android:padding">@dimen/margin_normal</item>
     </style>
 
     <style name="TextAppearance.IOSched.AboutButtons" parent="@style/TextAppearance.MaterialComponents.Button">

@@ -54,4 +54,11 @@ internal abstract class InfoModule {
     @IntoMap
     @ViewModelKey(EventInfoViewModel::class)
     abstract fun bindEventInfoFragmentViewModel(viewModel: EventInfoViewModel): ViewModel
+
+    /**
+     * Generates an [AndroidInjector] for the [ThemeSettingDialogFragment].
+     */
+    @FragmentScoped
+    @ContributesAndroidInjector
+    internal abstract fun contributeThemeSettingFragment(): ThemeSettingDialogFragment
 }

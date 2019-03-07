@@ -17,10 +17,12 @@
 package com.google.samples.apps.iosched.ui.settings
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.TestDataRepository
+import com.google.samples.apps.iosched.model.Theme
+import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefSaveActionUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetAnalyticsSettingUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetAvailableThemesUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetNotificationsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
@@ -53,22 +55,19 @@ class SettingsViewModelTest {
     var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun `toggle dark mode`() = coroutineRule.runBlockingTest {
-        val viewModel = createSettingsViewModel()
-        // Initially false
-        assertEquals(false, LiveDataTestUtil.getValue(viewModel.darkMode))
+    fun `set theme updates current theme`() = coroutineRule.runBlockingTest {
+        val storage = FakePreferenceStorage()
+        val viewModel = createSettingsViewModel(storage)
 
-        // Toggle once
-        viewModel.toggleDarkMode(true)
-        assertEquals(true, LiveDataTestUtil.getValue(viewModel.darkMode))
-
-        // Toggle back
-        viewModel.toggleDarkMode(false)
-        assertEquals(false, LiveDataTestUtil.getValue(viewModel.darkMode))
+        for (theme in Theme.values()) {
+            viewModel.setTheme(theme)
+            assertEquals(theme.storageKey, storage.selectedTheme)
+        }
     }
 
-    private fun createSettingsViewModel(): SettingsViewModel {
-        val storage = FakePreferenceStorage()
+    private fun createSettingsViewModel(
+        storage: PreferenceStorage = FakePreferenceStorage()
+    ): SettingsViewModel {
         return SettingsViewModel(
             SetTimeZoneUseCase(storage, TestDataRepository, coroutineRule.testDispatcher),
             GetTimeZoneUseCase(storage, coroutineRule.testDispatcher),
@@ -77,7 +76,8 @@ class SettingsViewModelTest {
             SetAnalyticsSettingUseCase(storage, coroutineRule.testDispatcher),
             GetAnalyticsSettingUseCase(storage, coroutineRule.testDispatcher),
             SetThemeUseCase(storage, coroutineRule.testDispatcher),
-            GetThemeUseCase(storage, coroutineRule.testDispatcher)
+            GetThemeUseCase(storage, coroutineRule.testDispatcher),
+            GetAvailableThemesUseCase(coroutineRule.testDispatcher)
         )
     }
 }
