@@ -23,4 +23,5 @@ import com.google.samples.apps.iosched.shared.data.app.AppConfigDataSource
 class FakeAppConfigDataSource : AppConfigDataSource {
     override fun getStringLiveData(key: String): LiveData<String> = MutableLiveData()
     override fun isFeature1Enabled(): Boolean = false
+    override fun isFeedEnabled(): Boolean = false
 }

@@ -26,3 +26,10 @@ import javax.inject.Qualifier
     AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.FIELD
 )
 annotation class Feature1Flag
+
+@Qualifier
+@Target(
+    AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER,
+    AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.FIELD
+)
+annotation class FeedFeatureFlag

@@ -29,6 +29,10 @@ import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.NetworkConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.app.AppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.app.RemoteAppConfigDataSource
+import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
+import com.google.samples.apps.iosched.shared.data.feed.FeedDataSource
+import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
+import com.google.samples.apps.iosched.shared.data.feed.FirestoreFeedDataSource
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsDataSource
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
 import com.google.samples.apps.iosched.shared.data.logistics.RemoteConfigLogisticsDataSource
@@ -80,6 +84,18 @@ class SharedModule {
         @Named("bootstrapConfDataSource") boostrapDataSource: ConferenceDataSource
     ): ConferenceDataRepository {
         return ConferenceDataRepository(remoteDataSource, boostrapDataSource)
+    }
+
+    @Singleton
+    @Provides
+    fun provideFeedDataSource(firestore: FirebaseFirestore): FeedDataSource {
+        return FirestoreFeedDataSource(firestore)
+    }
+
+    @Singleton
+    @Provides
+    fun provideFeedRepository(dataSource: FeedDataSource): FeedRepository {
+        return DefaultFeedRepository(dataSource)
     }
 
     @Singleton

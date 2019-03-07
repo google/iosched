@@ -29,10 +29,12 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.NavigationHeaderBinding
+import com.google.samples.apps.iosched.shared.di.FeedFeatureFlag
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.agenda.AgendaFragment
+import com.google.samples.apps.iosched.ui.feed.FeedFragment
 import com.google.samples.apps.iosched.ui.info.InfoFragment
 import com.google.samples.apps.iosched.ui.map.MapFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
@@ -62,6 +64,11 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
 
     @Inject
     lateinit var snackbarMessageManager: SnackbarMessageManager
+
+    @Inject
+    @FeedFeatureFlag
+    @JvmField
+    var feedFeatureEnabled: Boolean = false
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -122,6 +129,12 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
         viewModel.navigateToSignOutDialogAction.observe(this, EventObserver {
             openSignOutDialog()
         })
+
+        if (feedFeatureEnabled) {
+            navigation.apply {
+                menu.findItem(R.id.navigation_feed).isVisible = true
+            }
+        }
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
@@ -175,6 +188,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
     private fun navigateTo(navId: Int) {
         when (navId) {
             currentNavId -> return // user tapped the current item
+            R.id.navigation_feed -> replaceFragment(FeedFragment())
             R.id.navigation_schedule -> replaceFragment(ScheduleFragment())
             R.id.navigation_map -> replaceFragment(MapFragment())
             R.id.navigation_info -> replaceFragment(InfoFragment())
