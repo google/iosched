@@ -36,7 +36,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            app:layout_scrollFlags="scroll|snap"
+            app:layout_scrollFlags="scroll|snap|enterAlways"
             app:navigationContentDescription="@string/a11y_show_navigation"
             app:navigationIcon="@drawable/ic_menu"
             app:title="@string/title_schedule" />
