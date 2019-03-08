@@ -164,10 +164,4 @@
     <string name="settings_oss_licenses">Giấy phép mã nguồn mở</string>
     <string name="settings_version_label">Phiên bản %1$s, bản dựng %2$s</string>
     <string name="built_with_material_content_description">Được dựng với các Thành phần quan trọng.</string>
-    <string name="day1">Ngày 1</string>
-    <string name="day2">Ngày 2</string>
-    <string name="day3">Ngày 3</string>
-    <string name="day1_date">Ngày 8/5</string>
-    <string name="day2_date">Ngày 9/5</string>
-    <string name="day3_date">Ngày 10/5</string>
 </resources>

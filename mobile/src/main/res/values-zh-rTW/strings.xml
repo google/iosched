@@ -164,10 +164,4 @@
     <string name="settings_oss_licenses">開放原始碼授權</string>
     <string name="settings_version_label">版本：%1$s，組建版號：%2$s</string>
     <string name="built_with_material_content_description">使用 Material Components 技術打造。</string>
-    <string name="day1">第 1 天</string>
-    <string name="day2">第 2 天</string>
-    <string name="day3">第 3 天</string>
-    <string name="day1_date">5 月 8 日</string>
-    <string name="day2_date">5 月 9 日</string>
-    <string name="day3_date">5 月 10 日</string>
 </resources>

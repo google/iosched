@@ -164,10 +164,4 @@
     <string name="settings_oss_licenses">مجوز‌های منبع‌آزاد</string>
     <string name="settings_version_label">نسخه %1$s، ساخت %2$s</string>
     <string name="built_with_material_content_description">ساخته‌شده با Material Components.</string>
-    <string name="day1">روز اول</string>
-    <string name="day2">روز دوم</string>
-    <string name="day3">روز سوم</string>
-    <string name="day1_date">۸ مه</string>
-    <string name="day2_date">۹ مه</string>
-    <string name="day3_date">۱۰ مه</string>
 </resources>

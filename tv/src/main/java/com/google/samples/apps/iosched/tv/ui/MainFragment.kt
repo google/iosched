@@ -23,6 +23,7 @@ import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.HeaderItem
 import androidx.leanback.widget.ListRowPresenter
 import androidx.leanback.widget.PageRow
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.shared.util.getThemeColor
 import com.google.samples.apps.iosched.tv.R
@@ -54,7 +55,7 @@ class MainFragment : BrowseSupportFragment() {
         val days = ConferenceDays
         days.forEachIndexed { index, day ->
 
-            val displayDate = day.formatMonthDay()
+            val displayDate = getString(TimeUtils.getLabelResForDay(day))
 
             val headerItem = HeaderItem(index.toLong(), displayDate)
             val pageRow = PageRow(headerItem)

@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.samples.apps.iosched.databinding.ItemScheduleDayIndicatorBinding
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.util.executeAfter
 
 class DayIndicatorAdapter(
@@ -37,7 +38,7 @@ class DayIndicatorAdapter(
     }
 
     override fun getItemId(position: Int): Long {
-        return getItem(position).day.ordinal.toLong()
+        return getItem(position).day.start.toEpochSecond()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayIndicatorViewHolder {
@@ -80,5 +81,5 @@ fun setIndicatorText(
     dayIndicator: DayIndicator,
     inConferenceTimeZone: Boolean
 ) {
-    view.text = dayIndicator.day.getIndicatorLabel(inConferenceTimeZone)
+    view.setText(TimeUtils.getLabelResForDay(dayIndicator.day, inConferenceTimeZone))
 }

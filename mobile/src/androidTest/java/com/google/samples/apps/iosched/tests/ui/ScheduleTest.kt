@@ -36,6 +36,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.tests.FixedTimeRule
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
@@ -85,7 +86,7 @@ class ScheduleTest {
     fun allDays_areClicked_showsSessions() {
         // Each of the days should be displayed
         ConferenceDays.forEachIndexed { i, conferenceDay ->
-            val dayTitle = conferenceDay.formatMonthDay()
+            val dayTitle = resources.getString(TimeUtils.getLabelResForDay(conferenceDay))
             onView(withText(dayTitle)).perform(click())
             onView(withText("First session day ${i + 1}"))
                 .check(matches(isDisplayed()))
