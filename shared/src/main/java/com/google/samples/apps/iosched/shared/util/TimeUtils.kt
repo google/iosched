@@ -18,9 +18,11 @@ package com.google.samples.apps.iosched.shared.util
 
 import android.content.Context
 import android.text.format.DateUtils
+import androidx.annotation.StringRes
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.shared.BuildConfig
+import com.google.samples.apps.iosched.shared.R
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
@@ -33,18 +35,15 @@ object TimeUtils {
     val ConferenceDays = listOf(
         ConferenceDay(
             ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_START),
-            ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_END),
-            1
+            ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_END)
         ),
         ConferenceDay(
             ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY2_START),
-            ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY2_END),
-            2
+            ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY2_END)
         ),
         ConferenceDay(
             ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY3_START),
-            ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY3_END),
-            3
+            ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY3_END)
         )
     )
 
@@ -60,6 +59,19 @@ object TimeUtils {
             currentTime < session.startTime -> SessionRelativeTimeState.BEFORE
             currentTime > session.endTime -> SessionRelativeTimeState.AFTER
             else -> SessionRelativeTimeState.DURING
+        }
+    }
+
+    /**
+     * Returns a string resource to use for the label of this day.
+     */
+    @StringRes
+    fun getLabelResForDay(day: ConferenceDay, inConferenceTimeZone: Boolean = true): Int {
+        return when (day) {
+            ConferenceDays[0] -> if (inConferenceTimeZone) R.string.day1_date else R.string.day1
+            ConferenceDays[1] -> if (inConferenceTimeZone) R.string.day2_date else R.string.day2
+            ConferenceDays[2] -> if (inConferenceTimeZone) R.string.day3_date else R.string.day3
+            else -> throw IllegalArgumentException("Unknown ConferenceDay")
         }
     }
 

@@ -276,12 +276,6 @@
     <string name="assistant_app_description2" translation_description="Text explaining the I/O 18 app for Google Assistant.">Just say \"Hey Google, talk to Google I/O 18\"!</string>
 
     <!-- Day labels for schedule -->
-    <string name="day1" translation_description="Label for the first day of the conference">Day 1</string>
-    <string name="day2" translation_description="Label for the second day of the conference">Day 2</string>
-    <string name="day3" translation_description="Label for the third day of the conference">Day 3</string>
-    <string name="day1_date" translation_description="Actual date of the first day of the conference">May 8</string>
-    <string name="day2_date" translation_description="Actual date of the second day of the conference">May 9</string>
-    <string name="day3_date" translation_description="Actual date of the third day of the conference">May 10</string>
     <string name="day_indicators_label_date" translation_description="Label in front of conference day indicators above schedule content when using conference time zone">May:</string>
     <string name="day_indicators_label_ordinal" translation_description="Label in front of conference day indicators above schedule content when using another time zone">Day:</string>
 
