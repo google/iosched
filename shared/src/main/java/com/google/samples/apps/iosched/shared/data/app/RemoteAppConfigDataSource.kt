@@ -20,6 +20,7 @@ import android.content.res.Resources.NotFoundException
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class RemoteAppConfigDataSource @Inject constructor(
@@ -35,7 +36,7 @@ class RemoteAppConfigDataSource @Inject constructor(
         firebaseRemoteConfig
             .activateFetched() // updating the remote config with the last fetched values
         updateStrings()
-        firebaseRemoteConfig.fetch().addOnCompleteListener { task ->
+        firebaseRemoteConfig.fetch(TimeUnit.MINUTES.toSeconds(30)).addOnCompleteListener { task ->
             // Async
             if (task.isSuccessful) {
                 firebaseRemoteConfig.activateFetched()
