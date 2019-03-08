@@ -20,8 +20,10 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.core.view.GravityCompat
+import androidx.core.view.updatePadding
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.lifecycle.Observer
@@ -30,9 +32,9 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.NavigationHeaderBinding
-import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
 import com.google.samples.apps.iosched.shared.di.ExploreArEnabledFlag
 import com.google.samples.apps.iosched.shared.di.FeedFeatureEnabledFlag
+import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
@@ -45,6 +47,9 @@ import com.google.samples.apps.iosched.ui.schedule.ScheduleFragment
 import com.google.samples.apps.iosched.ui.settings.SettingsFragment
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
+import com.google.samples.apps.iosched.util.HeightTopWindowInsetsListener
+import com.google.samples.apps.iosched.util.NoopWindowInsetsListener
+import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
 import com.google.samples.apps.iosched.util.updateForTheme
 import dagger.android.support.DaggerAppCompatActivity
@@ -90,7 +95,10 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
 
     private lateinit var drawer: DrawerLayout
     private lateinit var navigation: NavigationView
+    private lateinit var statusScrim: View
+
     private lateinit var navHeaderBinding: NavigationHeaderBinding
+    private lateinit var content: FrameLayout
 
     private lateinit var currentFragment: MainNavigationFragment
     private var currentNavId = NAV_ID_NONE
@@ -104,9 +112,19 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
         updateForTheme(viewModel.currentTheme)
 
         setContentView(R.layout.activity_main)
-        drawer = findViewById(R.id.drawer)
 
+        drawer = findViewById(R.id.drawer)
         drawer.addDrawerListener(this)
+
+        content = findViewById(R.id.content_container)
+        content.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        // Make the content ViewGroup ignore insets so that it does not use the default padding
+        content.setOnApplyWindowInsetsListener(NoopWindowInsetsListener)
+
+        statusScrim = findViewById(R.id.status_bar_scrim)
+        statusScrim.setOnApplyWindowInsetsListener(HeightTopWindowInsetsListener)
 
         navHeaderBinding = NavigationHeaderBinding.inflate(layoutInflater).apply {
             viewModel = this@MainActivity.viewModel
@@ -125,6 +143,11 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
                 navigateWhenDrawerClosed(it.itemId)
                 true
             }
+        }
+
+        // Update the Navigation header view to pad itself down
+        navHeaderBinding.root.doOnApplyWindowInsets { v, insets, padding ->
+            v.updatePadding(top = padding.top + insets.systemWindowInsetTop)
         }
 
         if (savedInstanceState == null) {

@@ -23,6 +23,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -50,6 +51,7 @@ import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFr
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
 import com.google.samples.apps.iosched.util.clearDecorations
+import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.executeAfter
 import com.google.samples.apps.iosched.util.fabVisibility
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
@@ -148,6 +150,11 @@ class ScheduleFragment : MainNavigationFragment() {
                 binding.includeScheduleAppbar.appbar.importantForAccessibility = a11yState
             }
         })
+
+        // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
+        binding.recyclerview.doOnApplyWindowInsets { v, insets, padding ->
+            v.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)
+        }
 
         // Session list configuration
         scheduleAdapter = ScheduleAdapter(

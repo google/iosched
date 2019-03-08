@@ -23,5 +23,6 @@
     <color name="light_blue">#27e5fd</color>
     <color name="yellow">#fcd230</color>
     <color name="orange">#ff6c00</color>
-    <color name="white">#fff</color>or>
+    <color name="white">#fff</color>
+    <color name="transparent">#0fff</color>
 </resources>

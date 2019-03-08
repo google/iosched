@@ -30,31 +30,28 @@
         android:id="@+id/appbar"
         style="@style/Widget.AppBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             app:layout_scrollFlags="scroll|snap|enterAlways"
+            app:contentInsetStartWithNavigation="?attr/sessionListKeyline"
             app:navigationContentDescription="@string/a11y_show_navigation"
             app:navigationIcon="@drawable/ic_menu"
             app:title="@string/title_schedule" />
 
-        <androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            app:contentInsetStart="@dimen/margin_small">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/day_indicators"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layoutManager="LinearLayoutManager"
-                tools:itemCount="3"
-                tools:listitem="@layout/item_schedule_day_indicator" />
-        </androidx.appcompat.widget.Toolbar>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/day_indicators"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginStart="?attr/sessionListKeyline"
+            android:orientation="horizontal"
+            app:layoutManager="LinearLayoutManager"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_schedule_day_indicator" />
 
     </com.google.android.material.appbar.AppBarLayout>
 </layout>

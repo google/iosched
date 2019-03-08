@@ -15,12 +15,7 @@
   ~ limitations under the License.
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
-
-    <style name="AppTheme.LightNav" parent="AppTheme.NoActionBar">
-        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
-        <item name="android:navigationBarColor">@color/white</item>
-        <item name="android:statusBarColor">@color/highlight_light</item>
-    </style>
-
+<resources>
+    <!-- We use a light scrim on API 27+ since we use a light nav bar -->
+    <color name="nav_bar_scrim">@color/system_ui_scrim_light</color>
 </resources>

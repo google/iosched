@@ -59,8 +59,7 @@
          </activity>
 
         <activity
-            android:name=".ui.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".ui.MainActivity" />
 
         <activity
             android:name=".ui.onboarding.OnboardingActivity"
@@ -77,8 +76,7 @@
             android:theme="@style/AppTheme.Speaker" />
 
         <activity
-            android:name=".ui.map.MapActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".ui.map.MapActivity" />
 
         <!-- This activity alias lets us change the main entry point without breaking launcher
              shortcuts. DO NOT change its android:name attribute. -->

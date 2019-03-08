@@ -21,6 +21,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -34,6 +36,7 @@ import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.setUpSnackbar
+import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import kotlinx.android.synthetic.main.fragment_feed.toolbar
 import timber.log.Timber
 import javax.inject.Inject
@@ -61,6 +64,18 @@ class FeedFragment : MainNavigationFragment() {
         ).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = model
+        }
+
+        binding.root.doOnApplyWindowInsets { _, insets, _ ->
+            binding.statusBar.run {
+                layoutParams.height = insets.systemWindowInsetTop
+                isVisible = layoutParams.height > 0
+                requestLayout()
+            }
+        }
+
+        binding.recyclerView.doOnApplyWindowInsets { v, insets, padding ->
+            v.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
 
         setUpSnackbar(model.snackBarMessage, binding.snackbar, snackbarMessageManager)

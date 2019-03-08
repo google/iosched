@@ -16,15 +16,5 @@
   -->
 
 <resources>
-    <!-- 18% opacity translucent white -->
-    <color name="color_control_light">#2EFFFFFF</color>
-
-    <color name="color_primary">#8AB4F8</color>
-    <color name="color_primary_dark">#669DF6</color>
-
-    <color name="system_ui_scrim_light">#2EFFFFFF</color> <!-- 18% white -->
-    <color name="system_ui_scrim_black">#54000000</color> <!-- 33% black -->
-
-    <!-- In dark mode without light status bar we can use transparent -->
-    <color name="status_bar_scrim">@color/transparent</color>
+    <bool name="use_light_navigation">true</bool>
 </resources>
