@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.updatePadding
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -28,6 +29,7 @@ import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.util.clearDecorations
+import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import org.threeten.bp.ZoneId
 import javax.inject.Inject
 
@@ -46,6 +48,10 @@ class AgendaFragment : MainNavigationFragment() {
         binding = FragmentAgendaBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
         }
+        // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
+        binding.recyclerView.doOnApplyWindowInsets { v, insets, padding ->
+            v.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)
+        }
         return binding.root
     }
 
@@ -61,11 +67,10 @@ fun agendaItems(recyclerView: RecyclerView, list: List<Block>?, timeZoneId: Zone
     if (recyclerView.adapter == null) {
         recyclerView.adapter = AgendaAdapter()
     }
-    val adapter = (recyclerView.adapter as AgendaAdapter).apply {
+    (recyclerView.adapter as AgendaAdapter).apply {
         this.submitList(list ?: emptyList())
         this.timeZoneId = timeZoneId ?: ZoneId.systemDefault()
     }
-
     // Recreate the decoration used for the sticky date headers
     recyclerView.clearDecorations()
     if (list != null && list.isNotEmpty()) {

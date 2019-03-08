@@ -24,6 +24,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.core.view.updatePaddingRelative
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -33,6 +34,7 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.setUpSnackbar
+import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.widget.FadingSnackbar
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -54,6 +56,12 @@ class EventFragment : DaggerFragment() {
             viewModel = eventInfoViewModel
             lifecycleOwner = viewLifecycleOwner
         }
+
+        // Pad the bottom of the content so that it is above the nav bar
+        binding.content.doOnApplyWindowInsets { v, insets, padding ->
+            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+        }
+
         val snackbarLayout = requireActivity().findViewById<FadingSnackbar>(R.id.snackbar)
         setUpSnackbar(eventInfoViewModel.snackBarMessage, snackbarLayout, snackbarMessageManager)
 

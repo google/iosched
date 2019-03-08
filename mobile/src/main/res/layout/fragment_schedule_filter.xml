@@ -33,6 +33,10 @@
         <variable
             name="descriptionAlpha"
             type="androidx.databinding.ObservableFloat" />
+
+        <variable
+            name="recyclerviewAlpha"
+            type="androidx.databinding.ObservableFloat" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,7 +48,6 @@
         android:clickable="true"
         android:elevation="@dimen/bottom_sheet_elevation"
         android:focusable="true"
-        android:orientation="vertical"
         tools:ignore="Overdraw">
 
         <androidx.constraintlayout.widget.Guideline
@@ -58,6 +61,7 @@
             android:id="@+id/recyclerview"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:alpha="@{recyclerviewAlpha}"
             android:clipToPadding="false"
             android:nestedScrollingEnabled="false"
             android:orientation="vertical"

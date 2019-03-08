@@ -33,12 +33,21 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <include
             android:id="@+id/include_schedule_appbar"
             layout="@layout/include_schedule_appbar"
             app:viewModel="@{viewModel}" />
+
+        <!-- A view to draw above the AppBarLayout to mimic the status bar -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="?attr/colorSurface"
+            android:fitsSystemWindows="true"
+            app:layout_behavior="com.google.samples.apps.iosched.util.StatusBarScrimBehavior" />
 
         <com.google.samples.apps.iosched.widget.CustomSwipeRefreshLayout
             android:layout_width="match_parent"

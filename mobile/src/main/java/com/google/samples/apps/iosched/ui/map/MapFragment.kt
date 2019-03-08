@@ -17,6 +17,8 @@
 package com.google.samples.apps.iosched.ui.map
 
 import android.Manifest
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.app.Dialog
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -25,7 +27,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
@@ -38,6 +45,7 @@ import com.google.samples.apps.iosched.databinding.FragmentMapBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
+import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import org.threeten.bp.Instant
@@ -124,12 +132,57 @@ class MapFragment : MainNavigationFragment() {
                 }
                 binding.expandIcon.animate().rotationX(rotation).start()
 
+                when (newState) {
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        binding.descriptionScrollview.animate()
+                            .setDuration(150)
+                            .alpha(1f)
+                            .setListener(object : AnimatorListenerAdapter() {
+                                override fun onAnimationStart(animation: Animator) {
+                                    binding.descriptionScrollview.isVisible = true
+                                }
+                            })
+                            .start()
+                    }
+                    BottomSheetBehavior.STATE_COLLAPSED,
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.descriptionScrollview.animate()
+                            .alpha(0f)
+                            .setDuration(150)
+                            .setListener(object : AnimatorListenerAdapter() {
+                                override fun onAnimationEnd(animation: Animator) {
+                                    binding.descriptionScrollview.isInvisible = true
+                                }
+                            })
+                            .start()
+                    }
+                }
+
                 // Analytics
                 if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                     viewModel.logViewedMarkerDetails()
                 }
             }
         })
+
+        binding.root.doOnApplyWindowInsets { _, insets, _ ->
+            binding.statusBar.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                height = insets.systemWindowInsetTop
+            }
+            binding.statusBar.isVisible = true
+            binding.statusBar.requestLayout()
+
+            // Update the Map padding so that the copyright, etc is not displayed in nav bar
+            binding.map.getMapAsync {
+                it.setPadding(0, 0, 0, insets.systemWindowInsetBottom)
+            }
+        }
+
+        val originalPeekHeight = bottomSheetBehavior.peekHeight
+        binding.bottomSheet.doOnApplyWindowInsets { v, insets, _ ->
+            v.updatePadding(bottom = insets.systemWindowInsetBottom)
+            bottomSheetBehavior.peekHeight = insets.systemWindowInsetBottom + originalPeekHeight
+        }
 
         // Make the header clickable.
         binding.clickable.setOnClickListener {

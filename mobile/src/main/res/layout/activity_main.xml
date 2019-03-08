@@ -26,9 +26,30 @@
     tools:openDrawer="start">
 
     <FrameLayout
-        android:id="@+id/fragment_container"
+        android:id="@+id/content_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <View
+            android:id="@+id/status_bar_scrim"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/status_bar_scrim" />
+
+        <com.google.samples.apps.iosched.widget.FadingSnackbar
+            android:id="@+id/snackbar"
+            android:layout_width="@dimen/snackbar_width"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/snackbar_margin_end_fab"
+            android:visibility="gone" />
+
+    </FrameLayout>
 
     <!-- Note: navigation header is added at runtime because it uses DataBinding. -->
     <com.google.android.material.navigation.NavigationView
@@ -36,13 +57,7 @@
         android:layout_width="@dimen/nav_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        app:insetForeground="@color/status_bar_scrim"
         app:menu="@menu/navigation" />
-
-    <com.google.samples.apps.iosched.widget.FadingSnackbar
-        android:id="@+id/snackbar"
-        android:layout_width="@dimen/snackbar_width"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/snackbar_margin_end_fab"
-        android:visibility="gone" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

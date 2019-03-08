@@ -16,5 +16,6 @@
   -->
 
 <resources>
-    <color name="status_bar">@color/white</color>
+    <!-- We use a light scrim on API 23+ since we use a light status bar -->
+    <color name="status_bar_scrim">@color/system_ui_scrim_light</color>
 </resources>

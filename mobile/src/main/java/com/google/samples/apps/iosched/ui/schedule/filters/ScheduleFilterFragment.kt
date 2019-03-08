@@ -21,10 +21,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.view.doOnLayout
 import androidx.core.view.forEach
+import androidx.core.view.marginBottom
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePaddingRelative
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableFloat
 import androidx.lifecycle.Observer
@@ -37,6 +41,7 @@ import com.google.samples.apps.iosched.databinding.FragmentScheduleFilterBinding
 import com.google.samples.apps.iosched.shared.util.parentViewModelProvider
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
+import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_COLLAPSED
@@ -62,6 +67,13 @@ class ScheduleFilterFragment : DaggerFragment() {
         // Threshold for when normal header views reach maximum alpha. Should be a value between
         // [ALPHA_CHANGEOVER] and 1, inclusive.
         private const val ALPHA_HEADER_MAX = 0.67f
+        // Threshold for when the filter list content reach maximum alpha. Should be a value between
+        // 0 and [ALPHA_CHANGEOVER], inclusive.
+        private const val ALPHA_CONTENT_TRANSITION_END = 0.2f
+        // Threshold for when the filter list content should starting changing alpha state
+        // This should be a value between 0 and 1, coinciding with a point between the bottom
+        // sheet's collapsed (0) and expanded (1) states.
+        private const val ALPHA_CONTENT_TRANSITION_START = 0.01f
     }
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -76,6 +88,7 @@ class ScheduleFilterFragment : DaggerFragment() {
 
     private var headerAlpha = ObservableFloat(1f)
     private var descriptionAlpha = ObservableFloat(1f)
+    private var recyclerviewAlpha = ObservableFloat(1f)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -86,7 +99,14 @@ class ScheduleFilterFragment : DaggerFragment() {
             lifecycleOwner = viewLifecycleOwner
             headerAlpha = this@ScheduleFilterFragment.headerAlpha
             descriptionAlpha = this@ScheduleFilterFragment.descriptionAlpha
+            recyclerviewAlpha = this@ScheduleFilterFragment.recyclerviewAlpha
         }
+
+        // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
+        binding.recyclerview.doOnApplyWindowInsets { view, insets, padding ->
+            view.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+        }
+
         return binding.root
     }
 
@@ -113,9 +133,21 @@ class ScheduleFilterFragment : DaggerFragment() {
             })
         }
 
+        // Update the peek and margins so that it scrolls and rests within sys ui
+        val peekHeight = behavior.peekHeight
+        val marginBottom = binding.root.marginBottom
+        binding.root.doOnApplyWindowInsets { v, insets, _ ->
+            // Update the peek height so that it is above the navigation bar
+            behavior.peekHeight = insets.systemWindowInsetBottom + peekHeight
+
+            v.updateLayoutParams<MarginLayoutParams> {
+                bottomMargin = marginBottom + insets.systemWindowInsetTop
+            }
+        }
+
         behavior.addBottomSheetCallback(object : BottomSheetCallback {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                updateFilterHeadersAlpha(slideOffset)
+                updateFilterContentsAlpha(slideOffset)
             }
         })
 
@@ -137,16 +169,27 @@ class ScheduleFilterFragment : DaggerFragment() {
                 STATE_COLLAPSED -> 0f
                 else /*BottomSheetBehavior.STATE_HIDDEN*/ -> -1f
             }
-            updateFilterHeadersAlpha(slideOffset)
+            updateFilterContentsAlpha(slideOffset)
         }
     }
 
-    private fun updateFilterHeadersAlpha(slideOffset: Float) {
-        // Alpha of normal header views increases as the sheet expands, while alpha of description
-        // views increases as the sheet collapses. To prevent overlap, we use a threshold at which
-        // the views "trade places".
-        headerAlpha.set(offsetToAlpha(slideOffset, ALPHA_CHANGEOVER, ALPHA_HEADER_MAX))
-        descriptionAlpha.set(offsetToAlpha(slideOffset, ALPHA_CHANGEOVER, ALPHA_DESC_MAX))
+    private fun updateFilterContentsAlpha(slideOffset: Float) {
+        if (viewModel.hasAnyFilters.value == true) {
+            // If we have filter set, we will crossfade the header and description views.
+            // Alpha of normal header views increases as the sheet expands, while alpha of
+            // description views increases as the sheet collapses. To prevent overlap, we use
+            // a threshold at which the views "trade places".
+            headerAlpha.set(offsetToAlpha(slideOffset, ALPHA_CHANGEOVER, ALPHA_HEADER_MAX))
+            descriptionAlpha.set(offsetToAlpha(slideOffset, ALPHA_CHANGEOVER, ALPHA_DESC_MAX))
+        } else {
+            // Otherwise we just show the header view
+            headerAlpha.set(1f)
+            descriptionAlpha.set(0f)
+        }
+        // Due to the content view being visible below the navigation bar, we apply a short alpha
+        // transition
+        recyclerviewAlpha.set(offsetToAlpha(
+            slideOffset, ALPHA_CONTENT_TRANSITION_START, ALPHA_CONTENT_TRANSITION_END))
     }
 
     /**

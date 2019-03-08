@@ -17,7 +17,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
@@ -28,8 +28,11 @@
         <item name="tabStyle">@style/Widget.IOSched.Tabs</item>
         <item name="android:textViewStyle">@style/Widget.IOSched.TextView</item>
 
-        <item name="android:statusBarColor">@color/status_bar</item>
+        <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/use_light_status</item>
+
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">@bool/use_light_navigation</item>
+        <item name="android:navigationBarColor">@color/nav_bar_scrim</item>
 
         <item name="sessionListKeyline">@dimen/session_keyline</item>
         <item name="eventFilterViewStyle">@style/Widget.IOSched.EventFilters</item>
@@ -38,27 +41,20 @@
         <item name="alertDialogStyle">@style/AlertDialog.Style</item>
     </style>
 
-    <style name="AppTheme.Launcher" parent="@style/AppTheme.LightNav">
+    <style name="AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/preview_window</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.LightNav" parent="AppTheme.NoActionBar" />
-
-    <style name="AppTheme.Onboarding" parent="AppTheme.LightNav">
+    <style name="AppTheme.Onboarding">
         <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
-    <style name="AppTheme.SessionDetails" parent="AppTheme.LightNav">
+    <style name="AppTheme.SessionDetails">
         <item name="sessionListKeyline">@dimen/margin_normal</item>
     </style>
 
-    <style name="AppTheme.Speaker" parent="AppTheme.LightNav">
+    <style name="AppTheme.Speaker">
         <item name="android:windowSharedElementEnterTransition">@transition/speaker_shared_enter</item>
         <item name="sessionListKeyline">@dimen/margin_normal</item>
     </style>
@@ -105,10 +101,8 @@
     </style>
 
     <style name="Widget.AppBar" parent="@style/Widget.Design.AppBarLayout">
-        <item name="popupTheme">@style/AppTheme.PopupTheme</item>
         <item name="android:background">?attr/colorSurface</item>
         <item name="android:elevation">8dp</item>
-        <item name="android:orientation">vertical</item>
     </style>
 
     <style name="Widget.Toolbar" parent="Widget.AppCompat.Toolbar">
