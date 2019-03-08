@@ -20,8 +20,12 @@ import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.FakeAppConfigDataSource
+import com.google.samples.apps.iosched.shared.data.FakeFeedDataSource
 import com.google.samples.apps.iosched.shared.data.FakeLogisticsDataSource
 import com.google.samples.apps.iosched.shared.data.app.AppConfigDataSource
+import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
+import com.google.samples.apps.iosched.shared.data.feed.FeedDataSource
+import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsDataSource
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
@@ -124,5 +128,17 @@ class SharedModule {
     fun provideTimeProvider(): TimeProvider {
         // TODO: Make the time configurable
         return DefaultTimeProvider
+    }
+
+    @Singleton
+    @Provides
+    fun provideFeedDataSource(): FeedDataSource {
+        return FakeFeedDataSource
+    }
+
+    @Singleton
+    @Provides
+    fun provideFeedRepository(dataSource: FeedDataSource): FeedRepository {
+        return DefaultFeedRepository(dataSource)
     }
 }

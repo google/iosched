@@ -19,6 +19,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/navigation_feed"
+            android:icon="@drawable/ic_nav_feed"
+            android:title="@string/title_feed"
+            android:visible="false"
+            app:contentDescription="@string/title_feed" />
+
         <item
             android:id="@+id/navigation_info"
             android:icon="@drawable/ic_nav_info"

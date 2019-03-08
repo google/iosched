@@ -21,4 +21,5 @@ import androidx.lifecycle.LiveData
 interface AppConfigDataSource {
     fun getStringLiveData(key: String): LiveData<String>
     fun isFeature1Enabled(): Boolean
+    fun isFeedEnabled(): Boolean
 }

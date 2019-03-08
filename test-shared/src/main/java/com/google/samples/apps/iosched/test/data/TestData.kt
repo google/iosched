@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.test.data
 import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.model.ConferenceDay
+import com.google.samples.apps.iosched.model.FeedItem
 import com.google.samples.apps.iosched.model.Room
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.Speaker
@@ -247,4 +248,22 @@ object TestData {
         speakers = listOf(speaker1, speaker2, speaker3),
         version = 42
     )
+
+    val feedItem1 = FeedItem(
+        id = "0", title = "Item 1", message = "", timestamp = TestConferenceDays[0].start,
+        imageUrl = "", color = 0, category = "", priority = true, emergency = true)
+
+    val feedItem2 = FeedItem(
+        id = "1", title = "Item 2", message = "", timestamp = TestConferenceDays[0].end,
+        imageUrl = "", color = 0, category = "", priority = true, emergency = false)
+
+    val feedItem3 = FeedItem(
+        id = "2", title = "Item 3", message = "", timestamp = TestConferenceDays[1].start,
+        imageUrl = "", color = 0, category = "", priority = false, emergency = false)
+
+    val feedItem4 = FeedItem(
+        id = "3", title = "Item 4", message = "", timestamp = TestConferenceDays[1].end,
+        imageUrl = "", color = 0, category = "", priority = false, emergency = false)
+
+    val feed = listOf(feedItem1, feedItem2, feedItem3, feedItem4)
 }
