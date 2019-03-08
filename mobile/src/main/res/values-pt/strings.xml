@@ -163,5 +163,5 @@
     <string name="settings_privacy_policy">Política de Privacidade</string>
     <string name="settings_oss_licenses">Licenças de código aberto</string>
     <string name="settings_version_label">Versão %1$s, compilação %2$s</string>
-    <string name="built_with_material_content_description">Criado com Material Components.</string>
+    <string name="built_with_material_components">Criado com Material Components.</string>
 </resources>

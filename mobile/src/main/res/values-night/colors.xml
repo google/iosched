@@ -16,6 +16,10 @@
   -->
 
 <resources>
-    <!-- Same value as textColorPrimary disabled -->
-    <color name="color_control_light">#4DFFFFFF</color>
+    <!-- 18% opacity translucent white -->
+    <color name="color_control_light">#2EFFFFFF</color>
+
+    <color name="color_primary">#8AB4F8</color>
+    <color name="color_primary_dark">#669DF6</color>
+
 </resources>

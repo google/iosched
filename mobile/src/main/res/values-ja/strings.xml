@@ -163,5 +163,5 @@
     <string name="settings_privacy_policy">プライバシー ポリシー</string>
     <string name="settings_oss_licenses">オープンソース ライセンス</string>
     <string name="settings_version_label">バージョン %1$s、ビルド %2$s</string>
-    <string name="built_with_material_content_description">このアプリは Material Components で構築されています。</string>
+    <string name="built_with_material_components">このアプリは Material Components で構築されています。</string>
 </resources>

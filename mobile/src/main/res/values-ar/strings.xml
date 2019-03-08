@@ -179,5 +179,5 @@
     <string name="settings_privacy_policy">سياسة الخصوصية</string>
     <string name="settings_oss_licenses">تراخيص البرامج المفتوحة المصدر</string>
     <string name="settings_version_label">الإصدار %1$s، النسخة %2$s</string>
-    <string name="built_with_material_content_description">تمّ إنشاء التطبيق عبر Material Components.</string>
+    <string name="built_with_material_components">تمّ إنشاء التطبيق عبر Material Components.</string>
 </resources>

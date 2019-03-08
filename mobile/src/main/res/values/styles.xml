@@ -19,18 +19,17 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/indigo</item>
-        <item name="colorAccent">@color/indigo</item>
-        <item name="colorControlActivated">?colorPrimary</item>
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorSecondary">?attr/colorPrimary</item>
         <item name="colorControlLight">@color/color_control_light</item>
 
         <item name="toolbarStyle">@style/Widget.Toolbar</item>
         <item name="tabStyle">@style/Widget.IOSched.Tabs</item>
-
         <item name="android:textViewStyle">@style/Widget.IOSched.TextView</item>
+
         <item name="android:statusBarColor">@color/status_bar</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/use_light_status</item>
-        <item name="android:navigationBarColor">@color/indigo_dark</item>
 
         <item name="sessionListKeyline">@dimen/session_keyline</item>
         <item name="eventFilterViewStyle">@style/Widget.IOSched.EventFilters</item>

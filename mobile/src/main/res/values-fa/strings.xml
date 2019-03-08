@@ -163,5 +163,5 @@
     <string name="settings_privacy_policy">خط‌مشی حریم خصوصی</string>
     <string name="settings_oss_licenses">مجوز‌های منبع‌آزاد</string>
     <string name="settings_version_label">نسخه %1$s، ساخت %2$s</string>
-    <string name="built_with_material_content_description">ساخته‌شده با Material Components.</string>
+    <string name="built_with_material_components">ساخته‌شده با Material Components.</string>
 </resources>

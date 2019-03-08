@@ -75,6 +75,11 @@
     <dimen name="snackbar_margin_bottom_fab">72dp</dimen>
     <dimen name="snackbar_margin_bottom_bab">84dp</dimen>
 
+    <dimen name="nav_account_image_size">32dp</dimen>
+    <!-- Equals what NavigationView ends up using: 32dp drawable padding
+         + 24dp drawable size + 16dp listPreferredItemPaddingLeft -->
+    <dimen name="nav_account_text_keyline">60dp</dimen>
+
     <!-- per android.view.ViewGroup.LayoutParams -->
     <item name="match_parent" format="integer" type="dimen">-1</item>
     <item name="wrap_content" format="integer" type="dimen">-2</item>
