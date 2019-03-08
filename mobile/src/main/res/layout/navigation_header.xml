@@ -29,34 +29,25 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:onClick="@{() -> viewModel.onProfileClicked()}"
         app:navHeaderContentDescription="@{viewModel.currentUserInfo}">
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:contentDescription="@null"
-            android:scaleType="centerCrop"
-            app:layout_constraintDimensionRatio="16:10"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/customize_schedule" />
-
-        <!-- TODO scrim behind the text elements -->
 
         <TextView
             android:id="@+id/user_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_normal"
-            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginBottom="2dp"
+            android:layout_marginStart="@dimen/nav_account_text_keyline"
+            android:layout_marginTop="@dimen/margin_small"
             android:fontFamily="sans-serif-medium"
             android:lines="1"
-            android:textAppearance="?textAppearanceBody1"
+            android:textAppearance="?attr/textAppearanceBody1"
             app:layout_constraintBottom_toTopOf="@id/user_email"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:navHeaderTitle="@{viewModel.currentUserInfo}"
             tools:text="Guest" />
 
@@ -65,30 +56,39 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_normal"
-            android:layout_marginStart="@dimen/margin_normal"
             android:lines="1"
-            android:textAppearance="?textAppearanceBody2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            android:textAppearance="?attr/textAppearanceCaption"
+            app:layout_constraintBottom_toTopOf="@id/divider"
+            app:layout_constraintStart_toStartOf="@id/user_name"
+            app:layout_constraintTop_toBottomOf="@id/user_name"
             app:navHeaderSubtitle="@{viewModel.currentUserInfo}"
             tools:text="Tap to sign in" />
 
         <ImageView
             android:id="@+id/user_avatar"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="@dimen/nav_account_image_size"
+            android:layout_height="@dimen/nav_account_image_size"
             android:layout_gravity="center_vertical|start"
-            android:layout_marginBottom="@dimen/margin_small"
-            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_margin="@dimen/margin_small"
             android:contentDescription="@null"
-            app:layout_constraintBottom_toTopOf="@id/user_name"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/divider"
+            app:layout_constraintEnd_toStartOf="@id/user_name"
+            app:layout_constraintTop_toTopOf="parent"
             app:clipToCircle="@{true}"
             app:imageUri="@{viewModel.currentUserImageUri}"
             app:placeholder="@{@drawable/ic_default_profile_avatar}"
             tools:srcCompat="@drawable/ic_default_profile_avatar" />
 
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </layout>

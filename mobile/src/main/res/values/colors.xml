@@ -26,6 +26,9 @@
     <!-- Same value as textColorPrimary disabled -->
     <color name="color_control_light">#39000000</color>
 
+    <color name="color_primary">@color/indigo</color>
+    <color name="color_primary_dark">@color/indigo_dark</color>
+
     <integer-array name="swipe_refresh">
         <item>@color/indigo</item>
         <item>@color/teal</item>

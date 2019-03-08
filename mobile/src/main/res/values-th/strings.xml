@@ -163,5 +163,5 @@
     <string name="settings_privacy_policy">นโยบายความเป็นส่วนตัว</string>
     <string name="settings_oss_licenses">ใบอนุญาตโอเพนซอร์ส</string>
     <string name="settings_version_label">เวอร์ชัน %1$s, บิวด์ %2$s</string>
-    <string name="built_with_material_content_description">สร้างด้วย Material Components</string>
+    <string name="built_with_material_components">สร้างด้วย Material Components</string>
 </resources>

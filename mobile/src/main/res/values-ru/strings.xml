@@ -171,5 +171,5 @@
     <string name="settings_privacy_policy">Политика конфиденциальности</string>
     <string name="settings_oss_licenses">Посмотреть лицензии ПО с открытым исходным кодом</string>
     <string name="settings_version_label">Версия %1$s, сборка %2$s</string>
-    <string name="built_with_material_content_description">В приложении использованы элементы Material Design.</string>
+    <string name="built_with_material_components">В приложении использованы элементы Material Design.</string>
 </resources>

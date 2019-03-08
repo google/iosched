@@ -156,14 +156,17 @@
                     android:padding="@dimen/margin_normal"
                     android:text="@string/version_name" />
 
-                <ImageView
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginTop="@dimen/margin_normal"
-                    android:contentDescription="@string/built_with_material_content_description"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:drawableStart="@drawable/ic_logo_components"
+                    android:gravity="center"
                     android:paddingHorizontal="@dimen/margin_normal"
-                    android:scaleType="fitStart"
-                    android:src="@drawable/built_with_material" />
+                    android:text="@string/built_with_material_components"
+                    android:textAppearance="?attr/textAppearanceBody1" />
 
             </LinearLayout>
 

@@ -163,5 +163,5 @@
     <string name="settings_privacy_policy">개인정보처리방침</string>
     <string name="settings_oss_licenses">오픈소스 라이선스</string>
     <string name="settings_version_label">버전 %1$s, 빌드 %2$s</string>
-    <string name="built_with_material_content_description">Material Components로 제작되었습니다.</string>
+    <string name="built_with_material_components">Material Components로 제작되었습니다.</string>
 </resources>

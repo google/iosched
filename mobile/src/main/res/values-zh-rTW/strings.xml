@@ -163,5 +163,5 @@
     <string name="settings_privacy_policy">隱私權政策</string>
     <string name="settings_oss_licenses">開放原始碼授權</string>
     <string name="settings_version_label">版本：%1$s，組建版號：%2$s</string>
-    <string name="built_with_material_content_description">使用 Material Components 技術打造。</string>
+    <string name="built_with_material_components">使用 Material Components 技術打造。</string>
 </resources>
