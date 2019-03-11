@@ -36,6 +36,9 @@ android {
         buildConfigField "String", "CONFERENCE_DAY3_START", "\"${conference_day3_start}\""
         buildConfigField "String", "CONFERENCE_DAY3_END", "\"${conference_day3_end}\""
 
+        buildConfigField "String", "CONFERENCE_DAY1_AFTERHOURS_START", "\"${conference_day1_afterhours_start}\""
+        buildConfigField "String", "CONFERENCE_DAY2_CONCERT_START", "\"${conference_day2_concert_start}\""
+
         buildConfigField "String",
                 "BOOTSTRAP_CONF_DATA_FILENAME",
                 "\"${bootstrap_conference_data_filename}\""

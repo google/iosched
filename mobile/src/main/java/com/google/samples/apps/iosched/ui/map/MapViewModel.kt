@@ -60,6 +60,12 @@ class MapViewModel @Inject constructor(
         BuildConfig.MAP_VIEWPORT_BOUND_SE
     )
 
+    private val _mapVariant = MutableLiveData<MapVariant>()
+    val mapVariant: LiveData<MapVariant>
+        get() = _mapVariant
+
+    private var googleMap: GoogleMap? = null
+
     /**
      * True if any errors occur in fetching the data.
      */
@@ -114,8 +120,8 @@ class MapViewModel @Inject constructor(
         _geoJsonLayer.addSource(loadGeoJsonResult) { result ->
             if (result is Success) {
                 hasLoadedFeatures = true
+                setGeoJsonLayer(result.data.geoJsonLayer)
                 setMapFeatures(result.data.featureMap)
-                _geoJsonLayer.value = result.data.geoJsonLayer
             }
         }
 
@@ -126,11 +132,19 @@ class MapViewModel @Inject constructor(
         optIntoMyLocationUseCase(optIn, myLocationOptedIn)
     }
 
+    fun setMapVariant(variant: MapVariant) {
+        if (_mapVariant.value != variant) {
+            _mapVariant.value = variant
+            loadMapFeatures()
+        }
+    }
+
     fun onMapReady(googleMap: GoogleMap) {
-        loadGeoJsonFeaturesUseCase(
-            LoadGeoJsonParams(googleMap, R.raw.map_markers),
-            loadGeoJsonResult
-        )
+        if (this.googleMap != null) {
+            throw IllegalStateException("Called onMapReady but we already have a GoogleMap!")
+        }
+        this.googleMap = googleMap
+        loadMapFeatures()
     }
 
     fun onMapDestroyed() {
@@ -138,6 +152,23 @@ class MapViewModel @Inject constructor(
         hasLoadedFeatures = false
         featureLookup.clear()
         _geoJsonLayer.value = null
+        googleMap = null
+    }
+
+    private fun loadMapFeatures() {
+        val variant = _mapVariant.value ?: return
+        val googleMap = this.googleMap ?: return
+        // Load markers
+        loadGeoJsonFeaturesUseCase(
+            LoadGeoJsonParams(googleMap, variant.markersResId),
+            loadGeoJsonResult
+        )
+        // TODO change tile provider based on variant
+    }
+
+    private fun setGeoJsonLayer(layer: GeoJsonLayer) {
+        _geoJsonLayer.value?.removeLayerFromMap()
+        _geoJsonLayer.value = layer
     }
 
     private fun setMapFeatures(features: Map<String, GeoJsonFeature>) {
