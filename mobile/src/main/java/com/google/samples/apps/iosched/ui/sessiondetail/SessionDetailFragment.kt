@@ -35,7 +35,7 @@ import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSessionDetailBinding
-import com.google.samples.apps.iosched.model.Room
+import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
@@ -44,6 +44,7 @@ import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
+import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.map.MapActivity
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
@@ -85,7 +86,7 @@ class SessionDetailFragment : DaggerFragment() {
     @MapFeatureEnabledFlag
     var isMapEnabled: Boolean = false
 
-    private var room: Room? = null
+    private var session: Session? = null
 
     private lateinit var sessionTitle: String
 
@@ -113,9 +114,12 @@ class SessionDetailFragment : DaggerFragment() {
                     } else if (item.itemId == R.id.menu_item_star) {
                         viewModel?.onStarClicked()
                     } else if (item.itemId == R.id.menu_item_map) {
-                        val roomId = room?.id
-                        if (roomId != null) {
-                            startActivity(MapActivity.starterIntent(requireContext(), roomId))
+                        val roomId = session?.room?.id
+                        val startTime = session?.startTime?.toEpochMilli()
+                        if (roomId != null && startTime != null) {
+                            startActivity(
+                                MapActivity.starterIntent(requireContext(), roomId, startTime)
+                            )
                         }
                     }
                     true
@@ -157,7 +161,7 @@ class SessionDetailFragment : DaggerFragment() {
         })
 
         sessionDetailViewModel.session.observe(this, Observer {
-            room = it?.room
+            session = it
             shareString = if (it == null) {
                 ""
             } else {

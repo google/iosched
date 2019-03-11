@@ -40,6 +40,7 @@ import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
+import org.threeten.bp.Instant
 import javax.inject.Inject
 
 class MapFragment : MainNavigationFragment() {
@@ -60,13 +61,15 @@ class MapFragment : MainNavigationFragment() {
         private const val MAPVIEW_BUNDLE_KEY = "MapViewBundleKey"
 
         private const val ARG_FEATURE_ID = "arg.FEATURE_ID"
+        private const val ARG_FEATURE_START_TIME = "arg.FEATURE_START_TIME"
 
         private const val REQUEST_LOCATION_PERMISSION = 1
 
-        fun newInstance(featureId: String): MapFragment {
+        fun newInstance(featureId: String, featureStartTime: Long): MapFragment {
             return MapFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_FEATURE_ID, featureId)
+                    putLong(ARG_FEATURE_START_TIME, featureStartTime)
                 }
             }
         }
@@ -98,8 +101,14 @@ class MapFragment : MainNavigationFragment() {
         analyticsHelper.sendScreenView("Map", requireActivity())
 
         if (savedInstanceState == null) {
-            arguments?.getString(ARG_FEATURE_ID)?.let {
-                viewModel.requestHighlightFeature(it)
+            val featureId = arguments?.getString(ARG_FEATURE_ID)
+            if (featureId.isNullOrEmpty()) {
+                viewModel.setMapVariant(MapVariant.forTime())
+            } else {
+                viewModel.requestHighlightFeature(featureId)
+                // Choose map variant based on feature's time
+                val time = Instant.ofEpochMilli(arguments?.getLong(ARG_FEATURE_START_TIME) ?: 0L)
+                viewModel.setMapVariant(MapVariant.forTime(time))
             }
         }
 
