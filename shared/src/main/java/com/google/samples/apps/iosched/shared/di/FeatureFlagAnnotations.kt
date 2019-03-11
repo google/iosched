@@ -19,20 +19,19 @@ package com.google.samples.apps.iosched.shared.di
 import javax.inject.Qualifier
 
 /** Contains the dagger qualifiers for the feature flags to be used across iosched  */
-// Placeholder feature flag qualifier
 @Qualifier
 @Target(
     AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER,
     AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.FIELD
 )
-annotation class Feature1Flag
+annotation class FeedFeatureEnabledFlag
 
 @Qualifier
 @Target(
     AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER,
     AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.FIELD
 )
-annotation class FeedFeatureFlag
+annotation class ExploreArEnabledFlag
 
 // Whether or not the Map feature is enabled
 @Qualifier
