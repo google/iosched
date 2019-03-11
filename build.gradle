@@ -36,6 +36,7 @@ buildscript {
         appcompatVersion = '1.0.2'
         cardviewVersion = '1.0.0'
         archTestingVersion = '2.0.0'
+        arcoreVersion = '1.2.0'
         browserVersion = '1.0.0'
         constraintLayoutVersion = '1.1.3'
         crashlyticsVersion = '2.9.8'
@@ -117,6 +118,11 @@ allprojects {
         // - Support Libraries, etc
         maven {
             url "${rootProject.projectDir}/../../../prebuilts/fullsdk/linux/extras/support/m2repository"
+        }
+
+        flatDir {
+            dirs "libs"
+            dirs project(":ar").file("libs")
         }
     }
 }

@@ -58,7 +58,8 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources true
+            // TODO: b/120517460 shrinkResource can't be used with dynamic-feature at this moment.
+            //       Need to ensure the app size has not increased
             manifestPlaceholders = [crashlyticsEnabled: true]
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             resValue "string",
@@ -109,6 +110,14 @@ android {
     }
 
     testBuildType "staging"
+
+    // Required for AR because it includes a library built with Java 8
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
+    dynamicFeatures = [":ar"]
 }
 
 dependencies {
