@@ -33,8 +33,7 @@ class RemoteAppConfigDataSource @Inject constructor(
     )
 
     init {
-        firebaseRemoteConfig
-            .activateFetched() // updating the remote config with the last fetched values
+        firebaseRemoteConfig.activateFetched() // update active config with the last fetched values
         updateStrings()
         firebaseRemoteConfig.fetch(TimeUnit.MINUTES.toSeconds(30)).addOnCompleteListener { task ->
             // Async
@@ -45,20 +44,23 @@ class RemoteAppConfigDataSource @Inject constructor(
         }
     }
 
-    override fun getStringLiveData(key: String): LiveData<String> =
-        _attributesLiveDataMap[key] ?: throw NotFoundException("Value for $key not found")
-
-    override fun isFeature1Enabled(): Boolean =
-        firebaseRemoteConfig.getBoolean(FEATURE_1_KEY)
-
     private fun updateStrings() {
         _attributesLiveDataMap.map { (key, liveData) ->
             liveData.value = firebaseRemoteConfig.getString(key)
         }
     }
 
+    override fun getStringLiveData(key: String): LiveData<String> =
+        _attributesLiveDataMap[key] ?: throw NotFoundException("Value for $key not found")
+
+    override fun isFeature1Enabled(): Boolean =
+        firebaseRemoteConfig.getBoolean(FEATURE_1_KEY)
+
     override fun isFeedEnabled(): Boolean =
-        firebaseRemoteConfig.getBoolean(FEED_FEATURE_KEY)
+        firebaseRemoteConfig.getBoolean(FEED_FEATURE_ENABLED)
+
+    override fun isMapFeatureEnabled(): Boolean =
+        firebaseRemoteConfig.getBoolean(MAP_FEATURE_ENABLED)
 
     companion object {
         // Placeholder keys
@@ -66,6 +68,7 @@ class RemoteAppConfigDataSource @Inject constructor(
         const val WELCOME_SUBTITLE_KEY = "welcome_subtitle"
 
         const val FEATURE_1_KEY = "feature_1"
-        const val FEED_FEATURE_KEY = "enable_feed"
+        const val FEED_FEATURE_ENABLED = "feed_enabled"
+        const val MAP_FEATURE_ENABLED = "map_enabled"
     }
 }

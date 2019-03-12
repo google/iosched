@@ -181,12 +181,12 @@ class SessionDetailViewModel @Inject constructor(
             }
         }
 
-        _shouldShowStarInBottomNav.addSource(session, {
+        _shouldShowStarInBottomNav.addSource(session) {
             _shouldShowStarInBottomNav.value = showStarInBottomNav()
-        })
-        _shouldShowStarInBottomNav.addSource(observeRegisteredUser(), {
+        }
+        _shouldShowStarInBottomNav.addSource(observeRegisteredUser()) {
             _shouldShowStarInBottomNav.value = showStarInBottomNav()
-        })
+        }
 
         // If there's a new result with data, update the UserEvent
         _userEvent.addSource(loadUserSessionResult) {
@@ -310,11 +310,11 @@ class SessionDetailViewModel @Inject constructor(
             }
         }
 
-        _navigateToSwapReservationDialogAction.addSource(reservationActionUseCase.observe(), {
+        _navigateToSwapReservationDialogAction.addSource(reservationActionUseCase.observe()) {
             ((it as? Result.Success)?.data as? SwapAction)?.let {
                 _navigateToSwapReservationDialogAction.postValue(Event(it.parameters))
             }
-        })
+        }
     }
 
     private fun refreshUserSession() {
