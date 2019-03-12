@@ -25,7 +25,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.threeten.bp.ZonedDateTime
-import java.util.regex.Pattern
 
 class TimeUtilsTest {
 
@@ -61,14 +60,6 @@ class TimeUtilsTest {
             endTime = ConferenceDays.first().end.plusMinutes(1)
         )
         assertFalse(ConferenceDays.first().contains(alsoNotInDay1))
-    }
-
-    @Test
-    fun conferenceDay_formatMonthDay() {
-        val pattern = Pattern.compile("""0\d""") // zero followed by any digit
-        ConferenceDays.forEach {
-            assertFalse(pattern.matcher(it.formatMonthDay()).find())
-        }
     }
 
     @Test

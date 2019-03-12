@@ -101,6 +101,7 @@
 
     <declare-styleable name="DayIndicatorDecoration">
         <attr name="android:color" />
-        <attr name="android:inset" />
+        <attr name="insetHorizontal" format="dimension" />
+        <attr name="insetVertical" format="dimension" />
     </declare-styleable>
 </resources>

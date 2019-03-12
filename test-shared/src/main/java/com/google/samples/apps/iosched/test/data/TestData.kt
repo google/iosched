@@ -48,18 +48,15 @@ object TestData {
     val TestConferenceDays = listOf(
         ConferenceDay(
             ZonedDateTime.parse(CONFERENCE_DAY1_START),
-            ZonedDateTime.parse(CONFERENCE_DAY1_END),
-            1
+            ZonedDateTime.parse(CONFERENCE_DAY1_END)
         ),
         ConferenceDay(
             ZonedDateTime.parse(CONFERENCE_DAY2_START),
-            ZonedDateTime.parse(CONFERENCE_DAY2_END),
-            2
+            ZonedDateTime.parse(CONFERENCE_DAY2_END)
         ),
         ConferenceDay(
             ZonedDateTime.parse(CONFERENCE_DAY3_START),
-            ZonedDateTime.parse(CONFERENCE_DAY3_END),
-            3
+            ZonedDateTime.parse(CONFERENCE_DAY3_END)
         )
     )
     // region Declarations
