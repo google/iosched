@@ -20,8 +20,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.domain.feed.LoadFeedUseCase
-import com.google.samples.apps.iosched.model.FeedItem
+import com.google.samples.apps.iosched.R.string
+import com.google.samples.apps.iosched.model.feed.FeedItem
+import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.map
@@ -34,7 +35,7 @@ import javax.inject.Inject
  * create the object, so defining a [@Provides] method for this class won't be needed.
  */
 class FeedViewModel @Inject constructor(
-    private val loadFeedUseCase: LoadFeedUseCase
+    private val loadAnnouncementsUseCase: LoadAnnouncementsUseCase
 ) : ViewModel() {
 
     val errorMessage: LiveData<Event<String>>
@@ -45,12 +46,18 @@ class FeedViewModel @Inject constructor(
 
     val snackBarMessage: LiveData<Event<SnackbarMessage>>
 
-    private val loadFeedResult: MediatorLiveData<Result<List<FeedItem>>> = loadFeedUseCase.observe()
+    private val loadFeedResult: MediatorLiveData<Result<List<FeedItem>>> =
+        loadAnnouncementsUseCase.observe() as MediatorLiveData<Result<List<FeedItem>>>
 
     init {
-
         feed = loadFeedResult.map {
-            (it as? Result.Success)?.data ?: emptyList()
+            val items = (it as? Result.Success)?.data ?: emptyList()
+            arrayListOf(
+                CountdownTimer(),
+                SectionHeader(
+                    titleId = string.feed_announcement_title
+                )
+            ).plus(items)
         }
 
         isLoading = loadFeedResult.map { it == Result.Loading }
@@ -76,10 +83,10 @@ class FeedViewModel @Inject constructor(
 
     override fun onCleared() {
         // Clear subscriptions that might be leaked or that will not be used in the future.
-        loadFeedUseCase.onCleared()
+        loadAnnouncementsUseCase.onCleared()
     }
 
     fun loadFeed() {
-        loadFeedUseCase.execute(Unit)
+        loadAnnouncementsUseCase.execute(Unit)
     }
 }

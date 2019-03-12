@@ -19,20 +19,20 @@ package com.google.samples.apps.iosched.shared.domain.feed
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
-import com.google.samples.apps.iosched.model.FeedItem
+import com.google.samples.apps.iosched.model.feed.Announcement
 import com.google.samples.apps.iosched.shared.result.Result
 import javax.inject.Inject
 
 /**
  * Loads all feed items into a list.
  */
-open class LoadFeedUseCase @Inject constructor(
+open class LoadAnnouncementsUseCase @Inject constructor(
     private val repository: FeedRepository
-) : MediatorUseCase<Unit, List<FeedItem>>() {
+) : MediatorUseCase<Unit, List<Announcement>>() {
 
     override fun execute(parameters: Unit) {
         result.postValue(Result.Loading)
-        val feedObservable = repository.getObservableFeedItems()
+        val feedObservable = repository.getObservableAnnouncements()
 
         result.removeSource(feedObservable)
         result.value = null

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.model
+package com.google.samples.apps.iosched.model.feed
 
 import androidx.annotation.ColorInt
 import org.threeten.bp.ZonedDateTime
@@ -25,49 +25,20 @@ import org.threeten.bp.ZonedDateTime
  * Optionally, it can also include an image and a category with a color.
  * An item can also be marked as priority.
  */
-data class FeedItem(
-    /**
-     * Unique string identifying this item.
-     */
+data class Announcement(
     val id: String,
-
-    /**
-     * Title of this feed item.
-     */
     val title: String,
-
-    /**
-     * Message of this feed item.
-     */
     val message: String,
-
-    /**
-     * Marks this feed item as a priority.
-     */
     val priority: Boolean,
-
     /**
      * Marks this feed item as an emergency.
      */
     val emergency: Boolean,
-
-    /**
-     * Timestamp this feed item was posted at.
-     */
     val timestamp: ZonedDateTime,
-
-    /**
-     * URL of the image.
-     */
     val imageUrl: String,
-
     /**
      * Item category. Free form string.
      */
     val category: String,
-
-    /**
-     * The color associated with this item.
-     */
     @ColorInt val color: Int
-)
+) : FeedItem
