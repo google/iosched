@@ -32,7 +32,7 @@ buildscript {
         targetSdkVersion = 28
 
         // App dependencies
-        androidGradlePluginVersion = '3.3.1'
+        androidGradlePluginVersion = '3.3.2'
         appcompatVersion = '1.1.0-alpha02'
         cardviewVersion = '1.0.0'
         archTestingVersion = '2.0.0'
