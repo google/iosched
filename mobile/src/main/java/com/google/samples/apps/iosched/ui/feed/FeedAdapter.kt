@@ -16,37 +16,30 @@
 
 package com.google.samples.apps.iosched.ui.feed
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.google.samples.apps.iosched.databinding.ItemFeedBinding
-import com.google.samples.apps.iosched.model.FeedItem
+import com.google.common.collect.ImmutableMap
+import com.google.samples.apps.iosched.model.feed.FeedItem
 
-class FeedAdapter : ListAdapter<FeedItem, FeedViewHolder>(FeedItemDiff) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedViewHolder {
-        return FeedViewHolder(
-            ItemFeedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        )
+class FeedAdapter(
+    callback: DiffUtil.ItemCallback<FeedItem>,
+    val viewBinders: ImmutableMap<FeedItemClass, FeedBinder>
+) : ListAdapter<FeedItem, ViewHolder>(callback) {
+
+    private val viewTypeToBinders = viewBinders.mapKeys { it.value.getFeedItemType() }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return getViewBinder(viewType).createViewHolder(parent)
     }
 
-    override fun onBindViewHolder(holder: FeedViewHolder, position: Int) {
-        holder.bind(getItem(position))
-    }
-}
+    fun getViewBinder(viewType: Int): FeedBinder = viewTypeToBinders[viewType]!!
 
-class FeedViewHolder(private val binding: ItemFeedBinding) : ViewHolder(binding.root) {
-    fun bind(feedItem: FeedItem) {
-        binding.feedItem = feedItem
-        binding.executePendingBindings()
-    }
-}
+    override fun getItemViewType(position: Int): Int =
+        viewBinders[super.getItem(position).javaClass]!!.getFeedItemType()
 
-object FeedItemDiff : DiffUtil.ItemCallback<FeedItem>() {
-    override fun areItemsTheSame(oldItem: FeedItem, newItem: FeedItem): Boolean {
-        return oldItem.id == newItem.id
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        return getViewBinder(getItemViewType(position)).bindViewHolder(getItem(position), holder)
     }
-
-    override fun areContentsTheSame(oldItem: FeedItem, newItem: FeedItem) = oldItem == newItem
 }

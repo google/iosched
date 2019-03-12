@@ -24,7 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
-import com.google.samples.apps.iosched.model.FeedItem
+import com.google.samples.apps.iosched.model.feed.Announcement
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.ColorUtils
 import org.threeten.bp.Instant
@@ -34,48 +34,48 @@ import timber.log.Timber
 import java.util.Date
 import javax.inject.Inject
 
-interface FeedDataSource {
-    fun getObservableFeedItems(): LiveData<Result<List<FeedItem>>>
+interface AnnouncementDataSource {
+    fun getObservableAnnouncements(): LiveData<Result<List<Announcement>>>
     fun clearSubscriptions()
 }
 
 /**
  * Feed data source backed by items in a FireStore collection.
  */
-class FirestoreFeedDataSource @Inject constructor(
+class FirestoreAnnouncementDataSource @Inject constructor(
     val firestore: FirebaseFirestore
-) : FeedDataSource {
+) : AnnouncementDataSource {
     // Observable feed items
-    private val resultFeed = MutableLiveData<Result<List<FeedItem>>>()
+    private val resultFeed = MutableLiveData<Result<List<Announcement>>>()
 
-    override fun getObservableFeedItems(): LiveData<Result<List<FeedItem>>> {
+    override fun getObservableAnnouncements(): LiveData<Result<List<Announcement>>> {
         registerListenerForEvents(resultFeed)
         return resultFeed
     }
 
     private var feedChangedListenerSubscription: ListenerRegistration? = null
 
-    private fun registerListenerForEvents(result: MutableLiveData<Result<List<FeedItem>>>) {
+    private fun registerListenerForEvents(result: MutableLiveData<Result<List<Announcement>>>) {
         val eventsListener: (QuerySnapshot?, FirebaseFirestoreException?) -> Unit =
-                listener@{ snapshot, _ ->
-                    snapshot ?: return@listener
+            listener@{ snapshot, _ ->
+                snapshot ?: return@listener
 
-                    DefaultScheduler.execute {
-                        try {
-                            Timber.d("Feed items change detected: ${snapshot.documentChanges.size}")
+                DefaultScheduler.execute {
+                    try {
+                        Timber.d("Feed items change detected: ${snapshot.documentChanges.size}")
 
-                            // Parse the document into feed items and sort them.
-                            // First by priority, then timestamp.
+                        // Parse the document into feed items and sort them.
+                        // First by priority, then timestamp.
 
-                            val feedItemsResult = snapshot.documents.map { parseFeedItem(it) }
-                                    .sortedWith(compareByDescending<FeedItem> { it.priority }
-                                            .thenBy { it.timestamp })
-                            result.postValue(Result.Success(feedItemsResult))
-                        } catch (e: Exception) {
-                            result.postValue(Result.Error(e))
-                        }
+                        val feedItemsResult = snapshot.documents.map { parseFeedItem(it) }
+                            .sortedWith(compareByDescending<Announcement> { it.priority }
+                                .thenBy { it.timestamp })
+                        result.postValue(Result.Success(feedItemsResult))
+                    } catch (e: Exception) {
+                        result.postValue(Result.Error(e))
                     }
                 }
+            }
 
         // Only load items marked as active.
         val collection = firestore.collection(FEED_COLLECTION).whereEqualTo(ACTIVE, true)
@@ -89,27 +89,24 @@ class FirestoreFeedDataSource @Inject constructor(
         feedChangedListenerSubscription?.remove()
     }
 
-    fun parseFeedItem(snapshot: DocumentSnapshot): FeedItem {
+    fun parseFeedItem(snapshot: DocumentSnapshot): Announcement {
 
-        return FeedItem(id = snapshot.id,
-                title = snapshot[FirestoreFeedDataSource.TITLE] as? String
-                        ?: "",
-                category = snapshot[FirestoreFeedDataSource.CATEGORY] as? String
-                        ?: "",
-                imageUrl = snapshot[FirestoreFeedDataSource.IMAGE_URL] as? String
-                        ?: "",
-                message = snapshot[FirestoreFeedDataSource.MESSAGE] as? String
-                        ?: "",
-                timestamp = ZonedDateTime.ofInstant(Instant.ofEpochMilli(
-                        (snapshot[FirestoreFeedDataSource.TIMESTAMP] as? Date
-                                ?: Date())
-                                .time), ZoneOffset.UTC),
-                color = ColorUtils.parseHexColor(snapshot[FirestoreFeedDataSource.COLOR] as? String
-                        ?: ""),
-                priority = snapshot[FirestoreFeedDataSource.PRIORITY] as? Boolean
-                        ?: false,
-                emergency = snapshot[FirestoreFeedDataSource.EMERGENCY] as? Boolean
-                        ?: false
+        return Announcement(
+            id = snapshot.id,
+            title = snapshot[TITLE] as? String ?: "",
+            category = snapshot[CATEGORY] as? String ?: "",
+            imageUrl = snapshot[IMAGE_URL] as? String ?: "",
+            message = snapshot[MESSAGE] as? String ?: "",
+            timestamp = ZonedDateTime.ofInstant(
+                Instant.ofEpochMilli(
+                    (snapshot[TIMESTAMP] as? Date
+                        ?: Date())
+                        .time
+                ), ZoneOffset.UTC
+            ),
+            color = ColorUtils.parseHexColor(snapshot[COLOR] as? String ?: ""),
+            priority = snapshot[PRIORITY] as? Boolean ?: false,
+            emergency = snapshot[EMERGENCY] as? Boolean ?: false
         )
     }
 

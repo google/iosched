@@ -18,8 +18,8 @@ package com.google.samples.apps.iosched.ui.feed
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.shared.data.feed.FeedDataSource
-import com.google.samples.apps.iosched.model.FeedItem
+import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
+import com.google.samples.apps.iosched.model.feed.Announcement
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.setValueIfNew
 import com.google.samples.apps.iosched.test.data.TestData
@@ -27,10 +27,10 @@ import com.google.samples.apps.iosched.test.data.TestData
 /**
  * Generates dummy session data to be used in tests.
  */
-object TestFeedDataSource : FeedDataSource {
-    override fun getObservableFeedItems(): LiveData<Result<List<FeedItem>>> {
-        val data = MutableLiveData<Result<List<FeedItem>>>()
-        val items = TestData.feed
+object TestAnnouncementDataSource : AnnouncementDataSource {
+    override fun getObservableAnnouncements(): LiveData<Result<List<Announcement>>> {
+        val data = MutableLiveData<Result<List<Announcement>>>()
+        val items = TestData.announcements
         data.setValueIfNew(Result.Success(items))
 
         return data

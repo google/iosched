@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.shared.data.feed
 
 import androidx.lifecycle.LiveData
-import com.google.samples.apps.iosched.model.FeedItem
+import com.google.samples.apps.iosched.model.feed.Announcement
 import com.google.samples.apps.iosched.shared.result.Result
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -26,17 +26,17 @@ import javax.inject.Singleton
  * Single point of access to feed data for the presentation layer.
  */
 interface FeedRepository {
-    fun getObservableFeedItems(): LiveData<Result<List<FeedItem>>>
+    fun getObservableAnnouncements(): LiveData<Result<List<Announcement>>>
     fun clearSubscriptions()
 }
 
 @Singleton
 open class DefaultFeedRepository @Inject constructor(
-    private val dataSource: FeedDataSource
+    private val dataSource: AnnouncementDataSource
 ) : FeedRepository {
 
-    override fun getObservableFeedItems(): LiveData<Result<List<FeedItem>>> =
-            dataSource.getObservableFeedItems()
+    override fun getObservableAnnouncements(): LiveData<Result<List<Announcement>>> =
+            dataSource.getObservableAnnouncements()
 
     override fun clearSubscriptions() {
         dataSource.clearSubscriptions()

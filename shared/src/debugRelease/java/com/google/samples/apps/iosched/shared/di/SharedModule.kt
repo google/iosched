@@ -30,9 +30,9 @@ import com.google.samples.apps.iosched.shared.data.NetworkConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.app.AppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.app.RemoteAppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
-import com.google.samples.apps.iosched.shared.data.feed.FeedDataSource
+import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
-import com.google.samples.apps.iosched.shared.data.feed.FirestoreFeedDataSource
+import com.google.samples.apps.iosched.shared.data.feed.FirestoreAnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsDataSource
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
 import com.google.samples.apps.iosched.shared.data.logistics.RemoteConfigLogisticsDataSource
@@ -88,13 +88,13 @@ class SharedModule {
 
     @Singleton
     @Provides
-    fun provideFeedDataSource(firestore: FirebaseFirestore): FeedDataSource {
-        return FirestoreFeedDataSource(firestore)
+    fun provideAnnouncementDataSource(firestore: FirebaseFirestore): AnnouncementDataSource {
+        return FirestoreAnnouncementDataSource(firestore)
     }
 
     @Singleton
     @Provides
-    fun provideFeedRepository(dataSource: FeedDataSource): FeedRepository {
+    fun provideFeedRepository(dataSource: AnnouncementDataSource): FeedRepository {
         return DefaultFeedRepository(dataSource)
     }
 
