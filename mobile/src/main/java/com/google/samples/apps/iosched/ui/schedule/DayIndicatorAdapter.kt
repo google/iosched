@@ -60,9 +60,9 @@ class DayIndicatorViewHolder(
 
     fun bind(item: DayIndicator) {
         binding.executeAfter {
-            viewModel = scheduleViewModel
-            setLifecycleOwner(lifecycleOwner)
             indicator = item
+            viewModel = scheduleViewModel
+            lifecycleOwner = this@DayIndicatorViewHolder.lifecycleOwner
         }
     }
 }
