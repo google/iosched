@@ -274,6 +274,14 @@
         <item name="insetVertical">8dp</item>
     </style>
 
+    <style name="Widget.IOSched.DaySeparatorDecoration">
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:height">80dp</item>
+        <item name="android:textColor">?colorAccent</item>
+        <item name="android:textSize">@dimen/day_separator_text_size</item>
+        <item name="verticalBias">0.67</item>
+    </style>
+
     <style name="Widget.IOSched.RaisedButton" parent="@style/Widget.AppCompat.Button.Colored">
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textStyle">bold</item>

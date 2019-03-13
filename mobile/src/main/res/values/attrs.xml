@@ -104,4 +104,12 @@
         <attr name="insetHorizontal" format="dimension" />
         <attr name="insetVertical" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="DaySeparatorDecoration">
+        <attr name="android:height" />
+        <attr name="android:textColor" />
+        <attr name="android:textSize" />
+        <attr name="android:fontFamily" />
+        <attr name="verticalBias" format="float" />
+    </declare-styleable>
 </resources>

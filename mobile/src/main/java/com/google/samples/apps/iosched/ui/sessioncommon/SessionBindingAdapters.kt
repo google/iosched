@@ -21,6 +21,8 @@ import android.graphics.Color.TRANSPARENT
 import android.graphics.drawable.GradientDrawable
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.samples.apps.iosched.R
@@ -30,10 +32,15 @@ import org.threeten.bp.ZonedDateTime
 
 @BindingAdapter("sessionTags")
 fun sessionTags(recyclerView: RecyclerView, sessionTags: List<Tag>?) {
-    recyclerView.adapter = (recyclerView.adapter as? TagAdapter ?: TagAdapter())
-        .apply {
-            tags = sessionTags ?: emptyList()
-        }
+    if (sessionTags?.isNotEmpty() == true) {
+        recyclerView.isVisible = true
+        recyclerView.adapter = (recyclerView.adapter as? TagAdapter ?: TagAdapter())
+            .apply {
+                tags = sessionTags
+            }
+    } else {
+        recyclerView.isGone = true
+    }
 }
 
 @BindingAdapter("dateTime")
