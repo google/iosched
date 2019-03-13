@@ -23,19 +23,19 @@ import javax.inject.Singleton
 
 @Module
 class FeatureFlagsModule {
-    // Placeholder feature flag provider
+
     @Provides
     @Singleton
-    @Feature1Flag
-    fun provideFeature1Flag(appConfig: AppConfigDataSource): Boolean {
-        return appConfig.isFeature1Enabled()
+    @FeedFeatureEnabledFlag
+    fun provideEnableFeedFeatureFlag(appConfig: AppConfigDataSource): Boolean {
+        return appConfig.isFeedFeatureEnabled()
     }
 
     @Provides
     @Singleton
-    @FeedFeatureFlag
-    fun provideFeedFeatureFlag(appConfig: AppConfigDataSource): Boolean {
-        return appConfig.isFeedEnabled()
+    @ExploreArEnabledFlag
+    fun provideEnableExploreArFlag(appConfig: AppConfigDataSource): Boolean {
+        return appConfig.isExploreArFeatureEnabled()
     }
 
     // Whather or not the Map feature is enabled

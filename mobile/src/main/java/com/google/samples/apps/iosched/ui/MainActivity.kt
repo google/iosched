@@ -20,6 +20,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
@@ -29,8 +30,9 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.NavigationHeaderBinding
-import com.google.samples.apps.iosched.shared.di.FeedFeatureFlag
 import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
+import com.google.samples.apps.iosched.shared.di.ExploreArEnabledFlag
+import com.google.samples.apps.iosched.shared.di.FeedFeatureEnabledFlag
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
@@ -70,14 +72,19 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     @Inject
-    @FeedFeatureFlag
     @JvmField
+    @FeedFeatureEnabledFlag
     var feedFeatureEnabled: Boolean = false
 
     @Inject
     @JvmField
     @MapFeatureEnabledFlag
-    var isMapEnabled: Boolean = false
+    var mapFeatureEnabled: Boolean = false
+
+    @Inject
+    @JvmField
+    @ExploreArEnabledFlag
+    var exploreArFeatureEnabled: Boolean = false
 
     private lateinit var viewModel: MainActivityViewModel
 
@@ -98,18 +105,21 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
 
         setContentView(R.layout.activity_main)
         drawer = findViewById(R.id.drawer)
+
         drawer.addDrawerListener(this)
 
         navHeaderBinding = NavigationHeaderBinding.inflate(layoutInflater).apply {
             viewModel = this@MainActivity.viewModel
-            setLifecycleOwner(this@MainActivity)
+            lifecycleOwner = this@MainActivity
         }
+
         navigation = findViewById(R.id.navigation)
         navigation.apply {
             addHeaderView(navHeaderBinding.root)
 
-            menu.findItem(R.id.navigation_map).isVisible = isMapEnabled
+            menu.findItem(R.id.navigation_map).isVisible = mapFeatureEnabled
             menu.findItem(R.id.navigation_feed).isVisible = feedFeatureEnabled
+            menu.findItem(R.id.navigation_explore_ar).isVisible = exploreArFeatureEnabled
             setNavigationItemSelectedListener {
                 closeDrawer()
                 navigateWhenDrawerClosed(it.itemId)
@@ -194,6 +204,13 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
             R.id.navigation_feed -> replaceFragment(FeedFragment())
             R.id.navigation_schedule -> replaceFragment(ScheduleFragment())
             R.id.navigation_map -> replaceFragment(MapFragment())
+            R.id.navigation_explore_ar -> {
+                // TODO: Launch the ArActivity. Need to resolve the AR module is installed at this
+                // moment
+                Toast.makeText(this, "Launching AR Activity",
+                    Toast.LENGTH_SHORT).show()
+                return
+            }
             R.id.navigation_info -> replaceFragment(InfoFragment())
             R.id.navigation_agenda -> replaceFragment(AgendaFragment())
             R.id.navigation_settings -> replaceFragment(SettingsFragment())

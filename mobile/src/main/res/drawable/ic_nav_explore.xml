@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -14,25 +13,14 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<defaultsMap>
-    <entry>
-        <key>wifi_ssid</key>
-        <value>io2018</value>
-    </entry>
-    <entry>
-        <key>wifi_password</key>
-        <value>makegoodthings</value>
-    </entry>
-    <entry>
-        <key>map_enabled</key>
-        <value>false</value>
-    </entry>
-    <entry>
-        <key>feed_enabled</key>
-        <value>true</value>
-    </entry>
-    <entry>
-        <key>explore_ar_enabled</key>
-        <value>true</value>
-    </entry>
-</defaultsMap>
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24.0"
+    android:viewportHeight="24.0"
+    android:tint="#FFFFFF">
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M12,10.9c-0.61,0 -1.1,0.49 -1.1,1.1s0.49,1.1 1.1,1.1c0.61,0 1.1,-0.49 1.1,-1.1s-0.49,-1.1 -1.1,-1.1zM12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2zM14.19,14.19L6,18l3.81,-8.19L18,6l-3.81,8.19z" />
+</vector>

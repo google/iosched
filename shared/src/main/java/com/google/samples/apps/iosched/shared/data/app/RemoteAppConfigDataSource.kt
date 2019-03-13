@@ -53,22 +53,22 @@ class RemoteAppConfigDataSource @Inject constructor(
     override fun getStringLiveData(key: String): LiveData<String> =
         _attributesLiveDataMap[key] ?: throw NotFoundException("Value for $key not found")
 
-    override fun isFeature1Enabled(): Boolean =
-        firebaseRemoteConfig.getBoolean(FEATURE_1_KEY)
-
-    override fun isFeedEnabled(): Boolean =
+    override fun isFeedFeatureEnabled(): Boolean =
         firebaseRemoteConfig.getBoolean(FEED_FEATURE_ENABLED)
 
     override fun isMapFeatureEnabled(): Boolean =
         firebaseRemoteConfig.getBoolean(MAP_FEATURE_ENABLED)
+
+    override fun isExploreArFeatureEnabled(): Boolean =
+        firebaseRemoteConfig.getBoolean(EXPLORE_AR_FEATURE_ENABLED)
 
     companion object {
         // Placeholder keys
         const val WELCOME_TILE_KEY = "welcome_title"
         const val WELCOME_SUBTITLE_KEY = "welcome_subtitle"
 
-        const val FEATURE_1_KEY = "feature_1"
         const val FEED_FEATURE_ENABLED = "feed_enabled"
         const val MAP_FEATURE_ENABLED = "map_enabled"
+        const val EXPLORE_AR_FEATURE_ENABLED = "explore_ar_enabled"
     }
 }

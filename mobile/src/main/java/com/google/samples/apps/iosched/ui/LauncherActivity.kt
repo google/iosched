@@ -19,7 +19,6 @@ package com.google.samples.apps.iosched.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
-import com.google.samples.apps.iosched.shared.di.Feature1Flag
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.checkAllMatched
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
@@ -35,12 +34,6 @@ import javax.inject.Inject
 class LauncherActivity : DaggerAppCompatActivity() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    // Placeholder for feature flag
-    @Inject
-    @Feature1Flag
-    @JvmField
-    var feature1Enabled: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
