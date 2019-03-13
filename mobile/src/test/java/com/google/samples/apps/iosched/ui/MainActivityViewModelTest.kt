@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui
 
+import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
@@ -28,6 +29,7 @@ import org.hamcrest.Matchers.notNullValue
 import org.junit.Assert.assertThat
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mockito.mock
 
 class MainActivityViewModelTest {
     // Executes tasks in the Architecture Components in the same thread
@@ -44,7 +46,8 @@ class MainActivityViewModelTest {
     ): MainActivityViewModel {
         return MainActivityViewModel(
             signInViewModelDelegate = signInViewModelDelegate,
-            themedActivityDelegate = themedActivityDelegate
+            themedActivityDelegate = themedActivityDelegate,
+            context = mock(Context::class.java)
         )
     }
 
