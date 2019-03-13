@@ -16,9 +16,11 @@
 
 package com.google.samples.apps.iosched.ui
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.samples.apps.iosched.domain.ar.ArCoreAvailabilityLiveData
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
@@ -26,7 +28,8 @@ import javax.inject.Inject
 
 class MainActivityViewModel @Inject constructor(
     signInViewModelDelegate: SignInViewModelDelegate,
-    themedActivityDelegate: ThemedActivityDelegate
+    themedActivityDelegate: ThemedActivityDelegate,
+    context: Context
 ) : ViewModel(),
     SignInViewModelDelegate by signInViewModelDelegate,
     ThemedActivityDelegate by themedActivityDelegate {
@@ -38,6 +41,8 @@ class MainActivityViewModel @Inject constructor(
     private val _navigateToSignOutDialogAction = MutableLiveData<Event<Unit>>()
     val navigateToSignOutDialogAction: LiveData<Event<Unit>>
         get() = _navigateToSignOutDialogAction
+
+    val arCoreAvailability = ArCoreAvailabilityLiveData(context)
 
     fun onProfileClicked() {
         if (isSignedIn()) {
