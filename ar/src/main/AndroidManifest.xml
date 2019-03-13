@@ -25,6 +25,7 @@
     <dist:module
         dist:onDemand="false"
         dist:title="@string/feature_explore_ar">
+        <dist:fusing dist:include="true" />
     </dist:module>
 
     <application>
