@@ -67,8 +67,8 @@
 
     <style name="AlertDialog.Theme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
         <item name="android:textViewStyle">@style/Widget.IOSched.TextView</item>
-        <item name="alertDialogTitleTextStyle">@style/AlertDialog.TitleText</item>
-        <item name="alertDialogTitlePanelStyle">@style/AlertDialog.TitlePanel</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/AlertDialog.TitleText</item>
+        <item name="materialAlertDialogTitlePanelStyle">@style/AlertDialog.TitlePanel</item>
         <item name="buttonBarNegativeButtonStyle">@style/Widget.IOSched.BorderlessButton</item>
         <item name="buttonBarPositiveButtonStyle">@style/Widget.IOSched.RaisedButton</item>
         <item name="dialogPreferredPadding">24dp</item>
@@ -76,24 +76,24 @@
         <item name="textAppearanceBody1">@style/TextAppearance.AlertDialog.Message</item>
     </style>
 
-    <style name="AlertDialog.Style" parent="AlertDialog.MaterialComponents">
+    <style name="AlertDialog.Style" parent="MaterialAlertDialog.MaterialComponents">
         <item name="shapeAppearanceOverlay">@style/AlertDialog.ShapeAppearanceOverlay</item>
     </style>
 
-    <style name="AlertDialog.ShapeAppearanceOverlay" parent="ShapeAppearanceOverlay.MaterialComponents.AlertDialog">
+    <style name="AlertDialog.ShapeAppearanceOverlay" parent="ShapeAppearance.MaterialComponents.MediumComponent">
         <item name="cornerSize">@dimen/dialog_corner_radius</item>
     </style>
 
-    <style name="AlertDialog.TitleText" parent="AlertDialog.MaterialComponents.Title.Text">
+    <style name="AlertDialog.TitleText" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
         <item name="android:textAppearance">@style/TextAppearance.AlertDialog.Title</item>
     </style>
 
-    <style name="AlertDialog.TitlePanel" parent="AlertDialog.MaterialComponents.Title.Panel">
+    <style name="AlertDialog.TitlePanel" parent="MaterialAlertDialog.MaterialComponents.Title.Panel">
         <item name="android:paddingBottom">16dp</item>
         <item name="android:paddingTop">?attr/dialogPreferredPadding</item>
     </style>
 
-    <style name="TextAppearance.AlertDialog.Title" parent="AlertDialog.MaterialComponents.Title.Text">
+    <style name="TextAppearance.AlertDialog.Title" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
         <item name="android:textSize">22sp</item>
         <item name="android:fontFamily">@font/google_sans</item>
     </style>

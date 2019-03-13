@@ -52,7 +52,7 @@ class SettingsFragment : MainNavigationFragment() {
 
         viewModel.navigateToThemeSelector.observe(this, EventObserver {
             ThemeSettingDialogFragment.newInstance()
-                    .show(fragmentManager, null)
+                    .show(requireFragmentManager(), null)
         })
 
         val binding = FragmentSettingsBinding.inflate(inflater, container, false)

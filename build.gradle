@@ -33,7 +33,7 @@ buildscript {
 
         // App dependencies
         androidGradlePluginVersion = '3.3.1'
-        appcompatVersion = '1.0.2'
+        appcompatVersion = '1.1.0-alpha02'
         cardviewVersion = '1.0.0'
         archTestingVersion = '2.0.0'
         arcoreVersion = '1.2.0'
@@ -65,7 +65,7 @@ buildscript {
         legacySupportVersion = '1.0.0'
         lifecycleVersion = '2.0.0'
         lottieVersion = "2.5.1"
-        materialVersion = '1.1.0-alpha02'
+        materialVersion = '1.1.0-alpha04'
         mockitoVersion = "2.8.9"
         mockitoKotlinVersion = "1.5.0"
         okhttpVersion = "3.10.0"
