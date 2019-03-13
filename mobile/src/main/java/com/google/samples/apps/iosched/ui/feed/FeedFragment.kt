@@ -51,6 +51,7 @@ class FeedFragment : MainNavigationFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
         model = viewModelProvider(viewModelFactory)
 
         val binding = FragmentFeedBinding.inflate(
@@ -76,6 +77,7 @@ class FeedFragment : MainNavigationFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         toolbar.setTitle(R.string.title_feed)
     }
 }
