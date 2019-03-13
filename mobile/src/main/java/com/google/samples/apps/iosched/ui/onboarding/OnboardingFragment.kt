@@ -91,7 +91,7 @@ class OnboardingFragment : DaggerFragment() {
         return binding.root
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         handler.postDelayed(advancePager, INITIAL_ADVANCE_DELAY)
     }

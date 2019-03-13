@@ -218,7 +218,7 @@ class SessionDetailFragment : DaggerFragment() {
 
         sessionDetailViewModel.navigateToSessionFeedbackAction.observe(this, EventObserver {
             SessionFeedbackFragment.createInstance(it)
-                .show(fragmentManager, FRAGMENT_SESSION_FEEDBACK)
+                .show(requireFragmentManager(), FRAGMENT_SESSION_FEEDBACK)
         })
 
         return binding.root

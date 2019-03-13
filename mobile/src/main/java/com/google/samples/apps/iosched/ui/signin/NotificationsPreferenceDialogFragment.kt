@@ -45,7 +45,7 @@ class NotificationsPreferenceDialogFragment : DaggerAppCompatDialogFragment() {
             .create()
     }
 
-    override fun onDismiss(dialog: DialogInterface?) {
+    override fun onDismiss(dialog: DialogInterface) {
         notificationsPrefShownActionUseCase(true)
     }
 
