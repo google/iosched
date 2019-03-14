@@ -148,6 +148,14 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
         viewModel.navigateToSignOutDialogAction.observe(this, EventObserver {
             openSignOutDialog()
         })
+
+        viewModel.arCoreAvailability.observe(this, Observer {
+            // Hide the Explore AR menu if the device is not ARCore-certified
+            Timber.d("ArCoreAvailability = $it")
+            if (it.isUnsupported) {
+                navigation.menu.findItem(R.id.navigation_explore_ar).isVisible = false
+            }
+        })
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {

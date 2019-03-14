@@ -35,9 +35,9 @@ open class StarEventUseCase @Inject constructor(
         }
         // Avoid duplicating sources and trigger an update on the LiveData from the base class.
         result.removeSource(updateResult)
-        result.addSource(updateResult, {
+        result.addSource(updateResult) {
             result.postValue(updateResult.value)
-        })
+        }
     }
 }
 
