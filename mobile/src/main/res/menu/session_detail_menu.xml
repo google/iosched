@@ -39,4 +39,10 @@
         android:title="@string/menu_item_session_star"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/menu_item_calendar"
+        android:icon="@drawable/ic_event"
+        android:title="@string/menu_item_calendar"
+        app:showAsAction="always" />
+
 </menu>

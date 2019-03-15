@@ -150,6 +150,19 @@ data class Session(
     fun isOverlapping(session: Session): Boolean {
         return this.startTime < session.endTime && this.endTime > session.startTime
     }
+
+    /**
+     * Description of this event. Includes abstract, speakers, and live-streaming URL.
+     */
+    fun getDescription(paragraphDelimiter: String, speakerDelimiter: String): String = buildString {
+        append(abstract)
+        append(paragraphDelimiter)
+        append(speakers.joinToString(speakerDelimiter) { speaker -> speaker.name })
+        if (!liveStreamUrl.isNullOrEmpty()) {
+            append(paragraphDelimiter)
+            append(liveStreamUrl)
+        }
+    }
 }
 
 /**

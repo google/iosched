@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.ui.sessiondetail
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -100,20 +101,24 @@ class SessionDetailFragment : DaggerFragment() {
         val binding = FragmentSessionDetailBinding.inflate(inflater, container, false).apply {
             viewModel = sessionDetailViewModel
             lifecycleOwner = viewLifecycleOwner
+        }
 
-            sessionDetailBottomAppBar.run {
-                inflateMenu(R.menu.session_detail_menu)
-                menu.findItem(R.id.menu_item_map)?.isVisible = isMapEnabled
-                setOnMenuItemClickListener { item ->
-                    if (item.itemId == R.id.menu_item_share) {
+        binding.sessionDetailBottomAppBar.run {
+            inflateMenu(R.menu.session_detail_menu)
+            menu.findItem(R.id.menu_item_map)?.isVisible = isMapEnabled
+            setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.menu_item_share -> {
                         ShareCompat.IntentBuilder.from(activity)
                             .setType("text/plain")
                             .setText(shareString)
                             .setChooserTitle(R.string.intent_chooser_session_detail)
                             .startChooser()
-                    } else if (item.itemId == R.id.menu_item_star) {
-                        viewModel?.onStarClicked()
-                    } else if (item.itemId == R.id.menu_item_map) {
+                    }
+                    R.id.menu_item_star -> {
+                        sessionDetailViewModel.onStarClicked()
+                    }
+                    R.id.menu_item_map -> {
                         val roomId = session?.room?.id
                         val startTime = session?.startTime?.toEpochMilli()
                         if (roomId != null && startTime != null) {
@@ -122,12 +127,16 @@ class SessionDetailFragment : DaggerFragment() {
                             )
                         }
                     }
-                    true
+                    R.id.menu_item_calendar -> {
+                        sessionDetailViewModel.session.value?.let(::addToCalendar)
+                    }
                 }
+                true
             }
-            up.setOnClickListener {
-                NavUtils.navigateUpFromSameTask(requireActivity())
-            }
+        }
+
+        binding.up.setOnClickListener {
+            NavUtils.navigateUpFromSameTask(requireActivity())
         }
 
         val detailsAdapter = SessionDetailAdapter(
@@ -315,6 +324,28 @@ class SessionDetailFragment : DaggerFragment() {
         }
         Timber.e("Could not find view for speaker id $speakerId")
         return speakers
+    }
+
+    private fun addToCalendar(session: Session) {
+        val intent = Intent(Intent.ACTION_INSERT)
+            .setData(CalendarContract.Events.CONTENT_URI)
+            .putExtra(CalendarContract.Events.TITLE, session.title)
+            .putExtra(CalendarContract.Events.EVENT_LOCATION, session.room?.name)
+            .putExtra(CalendarContract.Events.DESCRIPTION, session.getDescription(
+                getString(R.string.paragraph_delimiter),
+                getString(R.string.speaker_delimiter)
+            ))
+            .putExtra(
+                CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                session.startTime.toEpochMilli()
+            )
+            .putExtra(
+                CalendarContract.EXTRA_EVENT_END_TIME,
+                session.endTime.toEpochMilli()
+            )
+        if (intent.resolveActivity(requireContext().packageManager) != null) {
+            startActivity(intent)
+        }
     }
 
     companion object {
