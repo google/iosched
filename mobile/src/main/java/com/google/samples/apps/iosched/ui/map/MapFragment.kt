@@ -26,6 +26,7 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
@@ -87,6 +88,8 @@ class MapFragment : MainNavigationFragment() {
         if (savedInstanceState != null) {
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY)
         }
+
+        requireActivity().addOnBackPressedCallback(this, OnBackPressedCallback { onBackPressed() })
     }
 
     override fun onCreateView(
@@ -270,14 +273,14 @@ class MapFragment : MainNavigationFragment() {
         binding.clickable.isClickable = !desc.isEmpty()
     }
 
-    override fun onBackPressed(): Boolean {
+    private fun onBackPressed(): Boolean {
         if (::bottomSheetBehavior.isInitialized &&
             bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED
         ) {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             return true
         }
-        return super.onBackPressed()
+        return false
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

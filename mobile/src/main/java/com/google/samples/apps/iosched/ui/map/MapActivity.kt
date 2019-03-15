@@ -81,10 +81,4 @@ class MapActivity : DaggerAppCompatActivity() {
 
         viewModel.theme.observe(this, Observer(::updateForTheme))
     }
-
-    override fun onBackPressed() {
-        if (!fragment.onBackPressed()) {
-            super.onBackPressed()
-        }
-    }
 }

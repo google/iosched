@@ -22,12 +22,18 @@ import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.core.view.updatePadding
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
 import com.google.samples.apps.iosched.R
@@ -36,15 +42,8 @@ import com.google.samples.apps.iosched.shared.di.ExploreArEnabledFlag
 import com.google.samples.apps.iosched.shared.di.FeedFeatureEnabledFlag
 import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
 import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
-import com.google.samples.apps.iosched.ui.agenda.AgendaFragment
-import com.google.samples.apps.iosched.ui.feed.FeedFragment
-import com.google.samples.apps.iosched.ui.info.InfoFragment
-import com.google.samples.apps.iosched.ui.map.MapFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
-import com.google.samples.apps.iosched.ui.schedule.ScheduleFragment
-import com.google.samples.apps.iosched.ui.settings.SettingsFragment
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
 import com.google.samples.apps.iosched.util.HeightTopWindowInsetsListener
@@ -63,11 +62,19 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
         /** Key for an int extra defining the initial navigation target. */
         const val EXTRA_NAVIGATION_ID = "extra.NAVIGATION_ID"
 
-        private const val FRAGMENT_ID = R.id.fragment_container
         private const val NAV_ID_NONE = -1
 
         private const val DIALOG_SIGN_IN = "dialog_sign_in"
         private const val DIALOG_SIGN_OUT = "dialog_sign_out"
+
+        private val TOP_LEVEL_DESTINATIONS = setOf(
+            R.id.navigation_feed,
+            R.id.navigation_schedule,
+            R.id.navigation_map,
+            R.id.navigation_info,
+            R.id.navigation_agenda,
+            R.id.navigation_settings
+        )
     }
 
     @Inject
@@ -93,14 +100,15 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
 
     private lateinit var viewModel: MainActivityViewModel
 
+    private lateinit var content: FrameLayout
     private lateinit var drawer: DrawerLayout
     private lateinit var navigation: NavigationView
+    private lateinit var navHeaderBinding: NavigationHeaderBinding
+    private lateinit var navController: NavController
+    private var navHostFragment: NavHostFragment? = null
+
     private lateinit var statusScrim: View
 
-    private lateinit var navHeaderBinding: NavigationHeaderBinding
-    private lateinit var content: FrameLayout
-
-    private lateinit var currentFragment: MainNavigationFragment
     private var currentNavId = NAV_ID_NONE
     private var pendingNavId = NAV_ID_NONE
 
@@ -113,9 +121,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
 
         setContentView(R.layout.activity_main)
 
-        drawer = findViewById(R.id.drawer)
-        drawer.addDrawerListener(this)
-
         content = findViewById(R.id.content_container)
         content.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
             View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
@@ -126,9 +131,20 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
         statusScrim = findViewById(R.id.status_bar_scrim)
         statusScrim.setOnApplyWindowInsetsListener(HeightTopWindowInsetsListener)
 
+        drawer = findViewById(R.id.drawer)
+        drawer.addDrawerListener(this)
+
         navHeaderBinding = NavigationHeaderBinding.inflate(layoutInflater).apply {
             viewModel = this@MainActivity.viewModel
             lifecycleOwner = this@MainActivity
+        }
+
+        navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
+
+        navController = findNavController(R.id.nav_host_fragment)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            currentNavId = destination.id
         }
 
         navigation = findViewById(R.id.navigation)
@@ -143,6 +159,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
                 navigateWhenDrawerClosed(it.itemId)
                 true
             }
+            setupWithNavController(navController)
         }
 
         // Update the Navigation header view to pad itself down
@@ -155,11 +172,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
             val initialNavId = intent.getIntExtra(EXTRA_NAVIGATION_ID, R.id.navigation_schedule)
             navigation.setCheckedItem(initialNavId) // doesn't trigger listener
             navigateTo(initialNavId)
-        } else {
-            // Find the current fragment
-            currentFragment =
-                supportFragmentManager.findFragmentById(FRAGMENT_ID) as? MainNavigationFragment
-                ?: throw IllegalStateException("Activity recreated, but no fragment found!")
         }
 
         viewModel.theme.observe(this, Observer(::updateForTheme))
@@ -179,6 +191,11 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
                 navigation.menu.findItem(R.id.navigation_explore_ar).isVisible = false
             }
         })
+    }
+
+    override fun registerToolbarWithNavigation(toolbar: Toolbar) {
+        val appBarConfiguration = AppBarConfiguration(TOP_LEVEL_DESTINATIONS, drawer)
+        toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
@@ -205,7 +222,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
     override fun onBackPressed() {
         if (drawer.isDrawerOpen(navigation)) {
             closeDrawer()
-        } else if (!currentFragment.onBackPressed()) {
+        } else {
             super.onBackPressed()
         }
     }
@@ -216,7 +233,13 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
 
     override fun onUserInteraction() {
         super.onUserInteraction()
-        currentFragment.onUserInteraction()
+        getCurrentFragment()?.onUserInteraction()
+    }
+
+    private fun getCurrentFragment(): MainNavigationFragment? {
+        return navHostFragment
+            ?.childFragmentManager
+            ?.primaryNavigationFragment as MainNavigationFragment?
     }
 
     private fun navigateWhenDrawerClosed(navId: Int) {
@@ -230,31 +253,22 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
     }
 
     private fun navigateTo(navId: Int) {
-        when (navId) {
-            currentNavId -> return // user tapped the current item
-            R.id.navigation_feed -> replaceFragment(FeedFragment())
-            R.id.navigation_schedule -> replaceFragment(ScheduleFragment())
-            R.id.navigation_map -> replaceFragment(MapFragment())
-            R.id.navigation_explore_ar -> {
-                // TODO: Launch the ArActivity. Need to resolve the AR module is installed at this
-                // moment
-                Toast.makeText(this, "Launching AR Activity",
-                    Toast.LENGTH_SHORT).show()
-                return
-            }
-            R.id.navigation_info -> replaceFragment(InfoFragment())
-            R.id.navigation_agenda -> replaceFragment(AgendaFragment())
-            R.id.navigation_settings -> replaceFragment(SettingsFragment())
-            else -> return // not a valid nav ID
+        if (navId == currentNavId) {
+            return // user tapped the current item
         }
-        currentNavId = navId
-    }
+        // Handle launching new activities, otherwise assume the destination is handled by the nav
+        // graph.
+        if (navId == R.id.navigation_explore_ar) {
+            // TODO: Launch the ArActivity. Need to resolve the AR module is installed at this
+            // moment
+            Toast.makeText(
+                this, "Launching AR Activity",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
 
-    private fun replaceFragment(fragment: MainNavigationFragment) {
-        supportFragmentManager.inTransaction {
-            currentFragment = fragment
-            replace(FRAGMENT_ID, fragment)
-        }
+        navController.navigate(navId)
     }
 
     private fun openSignInDialog() {
@@ -263,12 +277,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
 
     private fun openSignOutDialog() {
         SignOutDialogFragment().show(supportFragmentManager, DIALOG_SIGN_OUT)
-    }
-
-    // -- NavigationHost overrides
-
-    override fun showNavigation() {
-        drawer.openDrawer(GravityCompat.START)
     }
 
     // -- DrawerListener overrides
