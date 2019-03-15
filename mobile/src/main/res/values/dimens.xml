@@ -80,6 +80,8 @@
          + 24dp drawable size + 16dp listPreferredItemPaddingLeft -->
     <dimen name="nav_account_text_keyline">60dp</dimen>
 
+    <dimen name="progressbar_width">250dp</dimen>"
+
     <!-- per android.view.ViewGroup.LayoutParams -->
     <item name="match_parent" format="integer" type="dimen">-1</item>
     <item name="wrap_content" format="integer" type="dimen">-2</item>
