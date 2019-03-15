@@ -21,6 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
@@ -104,6 +105,12 @@ class ScheduleFragment : MainNavigationFragment() {
     private var cachedBubbleRange: IntRange? = null
 
     private lateinit var binding: FragmentScheduleBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        requireActivity().addOnBackPressedCallback(this, OnBackPressedCallback { onBackPressed() })
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -344,7 +351,7 @@ class ScheduleFragment : MainNavigationFragment() {
         }
     }
 
-    override fun onBackPressed(): Boolean {
+    private fun onBackPressed(): Boolean {
         if (::bottomSheetBehavior.isInitialized && bottomSheetBehavior.state == STATE_EXPANDED) {
             // collapse or hide the sheet
             if (bottomSheetBehavior.isHideable && bottomSheetBehavior.skipCollapsed) {
@@ -354,7 +361,7 @@ class ScheduleFragment : MainNavigationFragment() {
             }
             return true
         }
-        return super.onBackPressed()
+        return false
     }
 
     override fun onUserInteraction() {

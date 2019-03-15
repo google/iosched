@@ -28,22 +28,14 @@ import dagger.android.support.DaggerFragment
  */
 interface NavigationHost {
 
-    /** Called by MainNavigationFragment to show navigation UI to the user. */
-    fun showNavigation()
+    /** Called by MainNavigationFragment to setup it's toolbar with the navigation controller. */
+    fun registerToolbarWithNavigation(toolbar: Toolbar)
 }
 
 /**
  * To be implemented by main navigation destinations shown by a [NavigationHost].
  */
 interface NavigationDestination {
-
-    /**
-     * Called by the host when the Back button is pressed.
-     * @return True if the destination consumed (handled) the back press, false otherwise.
-     */
-    fun onBackPressed(): Boolean {
-        return false
-    }
 
     /** Called by the host when the user interacts with it. */
     fun onUserInteraction() {}
@@ -75,9 +67,7 @@ open class MainNavigationFragment : DaggerFragment(), NavigationDestination {
         val host = navigationHost ?: return
         val mainToolbar: Toolbar = view.findViewById(R.id.toolbar) ?: return
         mainToolbar.apply {
-            setNavigationOnClickListener {
-                host.showNavigation()
-            }
+            host.registerToolbarWithNavigation(this)
         }
     }
 }

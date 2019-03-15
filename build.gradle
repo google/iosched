@@ -69,7 +69,7 @@ buildscript {
         materialVersion = '1.1.0-alpha04-cl237931928'
         mockitoVersion = "2.8.9"
         mockitoKotlinVersion = "1.5.0"
-        navigationVersion = "2.0.0-rc02"
+        navigationVersion = "2.0.0"
         okhttpVersion = "3.10.0"
         okioVersion = '1.14.0'
         pageIndicatorVersion = "1.3.0"
