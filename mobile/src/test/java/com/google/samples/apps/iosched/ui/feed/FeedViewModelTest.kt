@@ -19,7 +19,7 @@ package com.google.samples.apps.iosched.ui.feed
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
-import com.google.samples.apps.iosched.shared.domain.feed.LoadFeedUseCase
+import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
@@ -47,8 +47,8 @@ class FeedViewModelTest {
     fun testDataIsLoaded_ObservablesUpdated() {
         // Create a test use case with test data
         val testData = TestData.feed
-        val repository = DefaultFeedRepository(TestFeedDataSource)
-        val loadFeedUseCase = LoadFeedUseCase(repository)
+        val repository = DefaultFeedRepository(TestAnnouncementDataSource)
+        val loadFeedUseCase = LoadAnnouncementsUseCase(repository)
 
         // Create ViewModel with the use case and load the feed
         val viewModel = FeedViewModel(loadFeedUseCase)
@@ -56,15 +56,18 @@ class FeedViewModelTest {
         val feedObservable = LiveDataTestUtil.getValue(viewModel.feed)
 
         // Check that data was loaded correctly
-        assertThat(feedObservable?.size, `is`(equalTo(testData.size)))
+        // Adding '+ 2' as the items will be preceeded by 1. The countdownTimer 2. Announcements header
+        assertThat(feedObservable?.size, `is`(equalTo(testData.size + 2)))
         for ((index, item) in testData.withIndex()) {
-            val actual = feedObservable?.get(index)
+            val actual = feedObservable?.get(index + 2)
             assertThat(actual, `is`(equalTo(item)))
         }
 
-        assertThat("Once feed items are loaded, isLoading should be false",
-                LiveDataTestUtil.getValue(viewModel.isLoading),
-                `is`(false))
+        assertThat(
+            "Once feed items are loaded, isLoading should be false",
+            LiveDataTestUtil.getValue(viewModel.isLoading),
+            `is`(false)
+        )
     }
 
     @Test
@@ -84,7 +87,8 @@ class FeedViewModelTest {
     /**
      * Use case that always returns an error when executed.
      */
-    object FailingUseCase : LoadFeedUseCase(DefaultFeedRepository(TestFeedDataSource)) {
+    object FailingUseCase :
+        LoadAnnouncementsUseCase(DefaultFeedRepository(TestAnnouncementDataSource)) {
         override fun execute(parameters: Unit) {
             result.postValue(Result.Error(Exception("Error!")))
         }

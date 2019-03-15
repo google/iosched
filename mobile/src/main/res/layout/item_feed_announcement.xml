@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@
 
     <data>
         <variable
-            name="feedItem"
-            type="com.google.samples.apps.iosched.model.FeedItem" />
+            name="announcement"
+            type="com.google.samples.apps.iosched.model.feed.Announcement" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -46,7 +46,7 @@
                 android:layout_marginVertical="@dimen/spacing_normal"
                 android:paddingHorizontal="@dimen/spacing_normal"
                 android:textAppearance="@style/TextAppearance.IOSched.Small"
-                app:dateTime="@{feedItem.timestamp}"
+                app:dateTime="@{announcement.timestamp}"
                 app:layout_constraintBottom_toBottomOf="@+id/category"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -59,9 +59,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/spacing_normal"
                 android:layout_marginTop="@dimen/spacing_normal"
-                android:background="@{feedItem.color}"
+                android:background="@{announcement.color}"
                 android:padding="@dimen/spacing_micro"
-                android:text="@{feedItem.category}"
+                android:text="@{announcement.category}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="AGENDA" />
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:paddingHorizontal="@dimen/spacing_normal"
-                android:text="@{feedItem.title}"
+                android:text="@{announcement.title}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/image"
@@ -86,7 +86,7 @@
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                app:imageUrl="@{feedItem.imageUrl}"
+                app:imageUrl="@{announcement.imageUrl}"
                 app:layout_constraintDimensionRatio="h,16:9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -100,7 +100,7 @@
                 android:layout_marginBottom="@dimen/spacing_normal"
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:paddingHorizontal="@dimen/spacing_normal"
-                android:text="@{feedItem.message}"
+                android:text="@{announcement.message}"
                 android:textAppearance="@style/TextAppearance.IOSched.Body"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -117,7 +117,7 @@
                 android:layout_marginEnd="@dimen/spacing_normal"
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:contentDescription="@string/feed_item_pinned_icon"
-                app:goneUnless="@{feedItem.priority}"
+                app:goneUnless="@{announcement.priority}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/message"
@@ -132,7 +132,7 @@
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:contentDescription="@string/feed_item_emergency_icon"
                 android:visibility="gone"
-                app:goneUnless="@{feedItem.emergency}"
+                app:goneUnless="@{announcement.emergency}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/priority_icon"
                 app:layout_constraintTop_toBottomOf="@+id/message"

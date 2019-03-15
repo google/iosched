@@ -25,9 +25,11 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.google.common.collect.ImmutableMap
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentFeedBinding
-import com.google.samples.apps.iosched.model.FeedItem
+import com.google.samples.apps.iosched.model.feed.Announcement
+import com.google.samples.apps.iosched.model.feed.FeedItem
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
@@ -85,7 +87,33 @@ class FeedFragment : MainNavigationFragment() {
 @BindingAdapter("feedItems")
 fun feedItems(recyclerView: RecyclerView, list: List<FeedItem>?) {
     if (recyclerView.adapter == null) {
-        recyclerView.adapter = FeedAdapter()
+        val viewBinders: ImmutableMap<FeedItemClass, FeedBinder>
+
+        val feedAnnouncementViewBinder =
+            FeedAnnouncementViewBinder(Announcement::class.java, recyclerView.context)
+        val feedAnnouncementHeaderViewBinder =
+            FeedAnnouncementHeaderViewBinder(SectionHeader::class.java, recyclerView.context)
+        val countdownTimerViewBinder =
+            CountdownTimerViewBinder(CountdownTimer::class.java, recyclerView.context)
+
+        viewBinders =
+            ImmutableMap.builder<FeedItemClass, FeedBinder>()
+                .put(
+                    feedAnnouncementViewBinder.modelClass,
+                    feedAnnouncementViewBinder as FeedBinder
+                )
+                .put(
+                    feedAnnouncementHeaderViewBinder.modelClass,
+                    feedAnnouncementHeaderViewBinder as FeedBinder
+                )
+                .put(
+                    countdownTimerViewBinder.modelClass,
+                    countdownTimerViewBinder as FeedBinder
+                )
+                .build()
+
+        recyclerView.adapter =
+            FeedAdapter(FeedDiffCallback(viewBinders = viewBinders), viewBinders = viewBinders)
     }
     (recyclerView.adapter as FeedAdapter).submitList(list ?: emptyList())
 }

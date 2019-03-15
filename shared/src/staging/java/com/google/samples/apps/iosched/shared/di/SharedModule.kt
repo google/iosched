@@ -18,13 +18,13 @@ package com.google.samples.apps.iosched.shared.di
 
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.FakeAnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.FakeAppConfigDataSource
-import com.google.samples.apps.iosched.shared.data.FakeFeedDataSource
 import com.google.samples.apps.iosched.shared.data.FakeLogisticsDataSource
 import com.google.samples.apps.iosched.shared.data.app.AppConfigDataSource
+import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
-import com.google.samples.apps.iosched.shared.data.feed.FeedDataSource
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsDataSource
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
@@ -132,13 +132,13 @@ class SharedModule {
 
     @Singleton
     @Provides
-    fun provideFeedDataSource(): FeedDataSource {
-        return FakeFeedDataSource
+    fun provideAnnouncementDataSource(): AnnouncementDataSource {
+        return FakeAnnouncementDataSource
     }
 
     @Singleton
     @Provides
-    fun provideFeedRepository(dataSource: FeedDataSource): FeedRepository {
+    fun provideFeedRepository(dataSource: AnnouncementDataSource): FeedRepository {
         return DefaultFeedRepository(dataSource)
     }
 }

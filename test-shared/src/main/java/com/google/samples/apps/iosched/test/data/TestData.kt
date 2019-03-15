@@ -19,11 +19,12 @@ package com.google.samples.apps.iosched.test.data
 import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.model.ConferenceDay
-import com.google.samples.apps.iosched.model.FeedItem
+import com.google.samples.apps.iosched.model.feed.Announcement
 import com.google.samples.apps.iosched.model.Room
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.Speaker
 import com.google.samples.apps.iosched.model.Tag
+import com.google.samples.apps.iosched.model.feed.FeedItem
 import com.google.samples.apps.iosched.model.reservations.ReservationRequestResult
 import com.google.samples.apps.iosched.model.reservations.ReservationRequestResult.ReservationRequestStatus.RESERVE_DENIED_CUTOFF
 import com.google.samples.apps.iosched.model.reservations.ReservationRequestResult.ReservationRequestStatus.RESERVE_DENIED_UNKNOWN
@@ -246,21 +247,26 @@ object TestData {
         version = 42
     )
 
-    val feedItem1 = FeedItem(
+    val feedItem1 = Announcement(
         id = "0", title = "Item 1", message = "", timestamp = TestConferenceDays[0].start,
-        imageUrl = "", color = 0, category = "", priority = true, emergency = true)
+        imageUrl = "", color = 0, category = "", priority = true, emergency = true
+    )
 
-    val feedItem2 = FeedItem(
+    val feedItem2 = Announcement(
         id = "1", title = "Item 2", message = "", timestamp = TestConferenceDays[0].end,
-        imageUrl = "", color = 0, category = "", priority = true, emergency = false)
+        imageUrl = "", color = 0, category = "", priority = true, emergency = false
+    )
 
-    val feedItem3 = FeedItem(
+    val feedItem3 = Announcement(
         id = "2", title = "Item 3", message = "", timestamp = TestConferenceDays[1].start,
-        imageUrl = "", color = 0, category = "", priority = false, emergency = false)
+        imageUrl = "", color = 0, category = "", priority = false, emergency = false
+    )
 
-    val feedItem4 = FeedItem(
+    val feedItem4 = Announcement(
         id = "3", title = "Item 4", message = "", timestamp = TestConferenceDays[1].end,
-        imageUrl = "", color = 0, category = "", priority = false, emergency = false)
+        imageUrl = "", color = 0, category = "", priority = false, emergency = false
+    )
 
-    val feed = listOf(feedItem1, feedItem2, feedItem3, feedItem4)
+    val feed = listOf<FeedItem>(feedItem1, feedItem2, feedItem3, feedItem4)
+    val announcements = listOf(feedItem1, feedItem2, feedItem3, feedItem4)
 }

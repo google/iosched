@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google LLC
+ * Copyright 2018 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,43 +14,42 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.usecases.repository
+package com.google.samples.apps.iosched.shared.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.shared.data.feed.FeedDataSource
-import com.google.samples.apps.iosched.model.FeedItem
+import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
+import com.google.samples.apps.iosched.model.feed.Announcement
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 
 /**
- * Generates dummy session data to be used in tests.
+ * Returns hardcoded data for development and testing.
  */
-object TestFeedDataSource : FeedDataSource {
-    private val feedResults: MutableLiveData<Result<List<FeedItem>>> = MutableLiveData()
-
-    override fun getObservableFeedItems(): LiveData<Result<List<FeedItem>>> {
-        feedResults.postValue(Result.Success(feedItems))
-        return feedResults
-    }
-
-    override fun clearSubscriptions() {}
-
-    private val feedItem1 = FeedItem(id = "0", title = "Item 1", message = "",
+object FakeAnnouncementDataSource : AnnouncementDataSource {
+    private val feedItem1 = Announcement(id = "0", title = "Item 1", message = "First item",
             timestamp = TimeUtils.ConferenceDays[0].start, imageUrl = "", color = 0,
-            category = "", priority = false, emergency = true)
+            category = "", priority = false, emergency = false)
 
-    private val feedItem2 = FeedItem(id = "1", title = "Item 2", message = "",
+    private val feedItem2 = Announcement(id = "1", title = "Item 2", message = "Second item",
             timestamp = TimeUtils.ConferenceDays[0].end, imageUrl = "", color = 0,
-            category = "", priority = true, emergency = false)
+            category = "", priority = true, emergency = true)
 
-    private val feedItem3 = FeedItem(id = "2", title = "Item 3", message = "",
+    private val feedItem3 = Announcement(id = "2", title = "Item 3", message = "Third item",
             timestamp = TimeUtils.ConferenceDays[1].start, imageUrl = "", color = 0,
             category = "", priority = false, emergency = false)
 
-    private val feedItem4 = FeedItem(id = "3", title = "Item 4", message = "",
+    private val feedItem4 = Announcement(id = "3", title = "Item 4", message = "Fourth item",
             timestamp = TimeUtils.ConferenceDays[1].end, imageUrl = "", color = 0,
             category = "", priority = false, emergency = false)
 
-    val feedItems = listOf(feedItem1, feedItem2, feedItem3, feedItem4)
+    private val feed = listOf(feedItem1, feedItem2, feedItem3, feedItem4)
+
+    override fun getObservableAnnouncements(): LiveData<Result<List<Announcement>>> {
+        val result = MutableLiveData<Result<List<Announcement>>>()
+        result.postValue(Result.Success(feed))
+        return result
+    }
+
+    override fun clearSubscriptions() {}
 }

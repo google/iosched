@@ -21,8 +21,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
-import com.google.samples.apps.iosched.shared.domain.feed.LoadFeedUseCase
-import com.google.samples.apps.iosched.model.FeedItem
+import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
+import com.google.samples.apps.iosched.model.feed.Announcement
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import org.junit.Assert
@@ -31,9 +31,9 @@ import org.junit.Rule
 import org.junit.Test
 
 /**
- * Unit tests for [LoadFeedUseCase]
+ * Unit tests for [LoadAnnouncementsUseCase]
  */
-class LoadFeedUseCaseTest {
+class LoadAnnouncementsUseCaseTest {
     @get:Rule
     val instantRule = InstantTaskExecutorRule()
 
@@ -42,19 +42,19 @@ class LoadFeedUseCaseTest {
 
     @Test
     fun feedItemsLoadedSuccessfully() {
-        val useCase = LoadFeedUseCase(SuccessfulFeedRepository)
+        val useCase = LoadAnnouncementsUseCase(SuccessfulFeedRepository)
 
         val resultLivedata = useCase.observe()
 
         useCase.execute(Unit)
 
         val result = LiveDataTestUtil.getValue(resultLivedata)
-        Assert.assertEquals(result, Result.Success(TestFeedDataSource.feedItems))
+        Assert.assertEquals(result, Result.Success(TestAnnouncementDataSource.feedItems))
     }
 
     @Test
     fun feedItemsLoadedUnsuccessfully() {
-        val useCase = LoadFeedUseCase(UnsuccessfulFeedRepository)
+        val useCase = LoadAnnouncementsUseCase(UnsuccessfulFeedRepository)
 
         val resultLivedata = useCase.observe()
 
@@ -68,18 +68,18 @@ class LoadFeedUseCaseTest {
 val SuccessfulFeedRepository = object : FeedRepository {
     override fun clearSubscriptions() {}
 
-    val dataSource = TestFeedDataSource
-    override fun getObservableFeedItems(): LiveData<Result<List<FeedItem>>> {
-        return dataSource.getObservableFeedItems()
+    val dataSource = TestAnnouncementDataSource
+    override fun getObservableAnnouncements(): LiveData<Result<List<Announcement>>> {
+        return dataSource.getObservableAnnouncements()
     }
 }
 
 val UnsuccessfulFeedRepository = object : FeedRepository {
     override fun clearSubscriptions() {}
 
-    private val feedResults: MutableLiveData<Result<List<FeedItem>>> = MutableLiveData()
+    private val feedResults: MutableLiveData<Result<List<Announcement>>> = MutableLiveData()
 
-    override fun getObservableFeedItems(): LiveData<Result<List<FeedItem>>> {
+    override fun getObservableAnnouncements(): LiveData<Result<List<Announcement>>> {
         feedResults.postValue(Result.Error(Exception("Error!")))
         return feedResults
     }
