@@ -22,13 +22,13 @@ package com.google.samples.apps.iosched.model
 enum class Theme(val storageKey: String) {
     LIGHT("light"),
     DARK("dark"),
-    SYSTEM("system")
+    SYSTEM("system"),
+    BATTERY_SAVER("battery_saver")
 }
 
 /**
- * Returns the matching [Theme] for the given [storageKey] value. If there is no matching [Theme],
- * the default theme, [Theme.SYSTEM] is returned.
+ * Returns the matching [Theme] for the given [storageKey] value.
  */
-fun themeFromStorageKey(storageKey: String?): Theme {
-    return Theme.values().firstOrNull { it.storageKey == storageKey } ?: Theme.SYSTEM
+fun themeFromStorageKey(storageKey: String): Theme {
+    return Theme.values().first { it.storageKey == storageKey }
 }

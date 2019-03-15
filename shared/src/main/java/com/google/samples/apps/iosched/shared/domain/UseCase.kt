@@ -27,8 +27,7 @@ import timber.log.Timber
  * Executes business logic synchronously or asynchronously using a [Scheduler].
  */
 abstract class UseCase<in P, R> {
-
-    private val taskScheduler = DefaultScheduler
+    protected var taskScheduler: Scheduler = DefaultScheduler
 
     /** Executes the use case asynchronously and places the [Result] in a MutableLiveData
      *

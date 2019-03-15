@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.util
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.res.Resources
 import android.graphics.Typeface
@@ -151,10 +152,15 @@ fun CharSequence.makeBold(boldText: String): CharSequence {
     }
 }
 
+/**
+ * Having to suppress lint. Bug raised: 128789886
+ */
+@SuppressLint("WrongConstant")
 fun AppCompatActivity.updateForTheme(theme: Theme) = when (theme) {
-    Theme.DARK -> delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-    Theme.LIGHT -> delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-    Theme.SYSTEM -> delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+    Theme.DARK -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
+    Theme.LIGHT -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
+    Theme.SYSTEM -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+    Theme.BATTERY_SAVER -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
 }
 
 /**
