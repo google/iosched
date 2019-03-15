@@ -72,8 +72,9 @@
             app:isMapToolbarEnabled="@{false}"
             app:mapCenter="@{viewModel.mapCenterEvent}"
             app:mapMinZoom="@{R.dimen.map_viewport_min_zoom}"
+            app:mapMaxZoom="@{R.dimen.map_viewport_max_zoom}"
             app:mapStyle="@{R.raw.maps_style}"
-            app:mapTileProvider="@{viewModel.tileProvider}"
+            app:mapTileProvider="@{viewModel.mapVariant}"
             app:mapViewport="@{viewModel.conferenceLocationBounds}"
             app:uiCompass="false"
             app:uiZoomControls="false" />

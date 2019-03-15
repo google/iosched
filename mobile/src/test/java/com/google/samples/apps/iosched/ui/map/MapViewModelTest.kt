@@ -53,7 +53,6 @@ class MapViewModelTest {
     fun createViewModel() {
         // Create ViewModel with the test data
         viewModel = MapViewModel(
-            LoadMapTileProviderUseCase(mock(Context::class.java)),
             LoadGeoJsonFeaturesUseCase(mock(Context::class.java)),
             FakeAnalyticsHelper(),
             signInViewModelDelegate,

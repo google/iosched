@@ -25,7 +25,6 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.TileOverlayOptions
-import com.google.android.gms.maps.model.TileProvider
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.util.getFloat
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
@@ -65,11 +64,13 @@ fun mapCenter(mapView: MapView, event: Event<CameraUpdate>?) {
 /**
  * Sets the minimum zoom level of the map (how far out the user is allowed to zoom).
  */
-@BindingAdapter("mapMinZoom")
-fun mapMinZoom(mapView: MapView, @DimenRes resId: Int) {
-    val minZoom = mapView.resources.getFloat(resId)
+@BindingAdapter("mapMinZoom", "mapMaxZoom", requireAll = true)
+fun mapZoomLevels(mapView: MapView, @DimenRes minZoomResId: Int, @DimenRes maxZoomResId: Int) {
+    val minZoom = mapView.resources.getFloat(minZoomResId)
+    val maxZoom = mapView.resources.getFloat(maxZoomResId)
     mapView.getMapAsync {
         it.setMinZoomPreference(minZoom)
+        it.setMaxZoomPreference(maxZoom)
     }
 }
 
@@ -92,8 +93,10 @@ fun isMapToolbarEnabled(mapView: MapView, isMapToolbarEnabled: Boolean?) {
 }
 
 @BindingAdapter("mapTileProvider")
-fun mapTileDrawable(mapView: MapView, tileProvider: TileProvider?) {
-    if (tileProvider != null) {
+fun mapTileProvider(mapView: MapView, mapVariant: MapVariant?) {
+    mapVariant?.run {
+        val tileProvider =
+            MapTileProvider.forDensity(mapView.resources.displayMetrics.density, mapVariant)
         mapView.getMapAsync { map ->
             map.addTileOverlay(
                 TileOverlayOptions()
