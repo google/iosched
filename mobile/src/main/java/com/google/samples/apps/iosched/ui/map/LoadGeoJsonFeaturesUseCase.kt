@@ -39,7 +39,8 @@ class LoadGeoJsonFeaturesUseCase @Inject constructor(
 ) : UseCase<LoadGeoJsonParams, GeoJsonData>() {
 
     override fun execute(parameters: LoadGeoJsonParams): GeoJsonData {
-        val layer = GeoJsonLayer(parameters.first, parameters.second, context)
+        val (googleMap, markersRes) = parameters
+        val layer = GeoJsonLayer(googleMap, markersRes, context)
         processGeoJsonLayer(layer, context)
         return GeoJsonData(layer, buildFeatureMap(layer))
     }

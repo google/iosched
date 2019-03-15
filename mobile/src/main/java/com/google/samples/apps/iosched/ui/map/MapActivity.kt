@@ -38,12 +38,20 @@ class MapActivity : DaggerAppCompatActivity() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
     companion object {
+        /** String. When map features load, the map will center and focus on this. */
         const val EXTRA_FEATURE_ID = "extra.FEATURE_ID"
+        /** Long. If [EXTRA_FEATURE_ID] is specified, pass in the feature's start time. */
+        const val EXTRA_FEATURE_START_TIME = "extra.EXTRA_FEATURE_START_TIME"
         const val FRAGMENT_ID = R.id.fragment_container
 
-        fun starterIntent(context: Context, featureId: String): Intent {
+        fun starterIntent(
+            context: Context,
+            featureId: String,
+            featureStartTime: Long
+        ): Intent {
             return Intent(context, MapActivity::class.java).apply {
                 putExtra(EXTRA_FEATURE_ID, featureId)
+                putExtra(EXTRA_FEATURE_START_TIME, featureStartTime)
             }
         }
     }
@@ -58,8 +66,9 @@ class MapActivity : DaggerAppCompatActivity() {
 
         if (savedInstanceState == null) {
             val featureId = intent.getStringExtra(EXTRA_FEATURE_ID)
+            val featureStartTime = intent.getLongExtra(EXTRA_FEATURE_START_TIME, 0L)
             fragment = if (!TextUtils.isEmpty(featureId)) {
-                MapFragment.newInstance(featureId)
+                MapFragment.newInstance(featureId, featureStartTime)
             } else {
                 MapFragment()
             }
