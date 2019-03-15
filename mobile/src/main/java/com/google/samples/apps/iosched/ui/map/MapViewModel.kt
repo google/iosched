@@ -24,12 +24,10 @@ import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.TileProvider
 import com.google.maps.android.data.geojson.GeoJsonFeature
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.data.geojson.GeoJsonPoint
 import com.google.samples.apps.iosched.BuildConfig
-import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.prefs.MyLocationOptedInUseCase
@@ -37,14 +35,13 @@ import com.google.samples.apps.iosched.shared.domain.prefs.OptIntoMyLocationUseC
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
-import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.shared.util.setValueIfNew
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.combine
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import javax.inject.Inject
 
 class MapViewModel @Inject constructor(
-    loadMapTileProviderUseCase: LoadMapTileProviderUseCase,
     private val loadGeoJsonFeaturesUseCase: LoadGeoJsonFeaturesUseCase,
     private val analyticsHelper: AnalyticsHelper,
     private val signInViewModelDelegate: SignInViewModelDelegate,
@@ -64,15 +61,10 @@ class MapViewModel @Inject constructor(
     val mapVariant: LiveData<MapVariant>
         get() = _mapVariant
 
-    private var googleMap: GoogleMap? = null
-
     /**
      * True if any errors occur in fetching the data.
      */
     val errorMessageShown = MutableLiveData<Boolean>().apply { value = false }
-
-    private val tileProviderResult = MutableLiveData<Result<TileProvider>>()
-    val tileProvider: LiveData<TileProvider?>
 
     private val _mapCenterEvent = MutableLiveData<Event<CameraUpdate>>()
     val mapCenterEvent: LiveData<Event<CameraUpdate>>
@@ -110,17 +102,12 @@ class MapViewModel @Inject constructor(
     }
 
     init {
-        loadMapTileProviderUseCase(R.drawable.map_tile, tileProviderResult)
-        tileProvider = tileProviderResult.map { result ->
-            (result as? Success)?.data
-        }
-
         myLocationOptedInUseCase(Unit, myLocationOptedIn)
 
         _geoJsonLayer.addSource(loadGeoJsonResult) { result ->
             if (result is Success) {
                 hasLoadedFeatures = true
-                setGeoJsonLayer(result.data.geoJsonLayer)
+                _geoJsonLayer.value = result.data.geoJsonLayer
                 setMapFeatures(result.data.featureMap)
             }
         }
@@ -133,18 +120,7 @@ class MapViewModel @Inject constructor(
     }
 
     fun setMapVariant(variant: MapVariant) {
-        if (_mapVariant.value != variant) {
-            _mapVariant.value = variant
-            loadMapFeatures()
-        }
-    }
-
-    fun onMapReady(googleMap: GoogleMap) {
-        if (this.googleMap != null) {
-            throw IllegalStateException("Called onMapReady but we already have a GoogleMap!")
-        }
-        this.googleMap = googleMap
-        loadMapFeatures()
+        _mapVariant.setValueIfNew(variant)
     }
 
     fun onMapDestroyed() {
@@ -152,23 +128,15 @@ class MapViewModel @Inject constructor(
         hasLoadedFeatures = false
         featureLookup.clear()
         _geoJsonLayer.value = null
-        googleMap = null
     }
 
-    private fun loadMapFeatures() {
+    fun loadMapFeatures(googleMap: GoogleMap) {
         val variant = _mapVariant.value ?: return
-        val googleMap = this.googleMap ?: return
         // Load markers
         loadGeoJsonFeaturesUseCase(
             LoadGeoJsonParams(googleMap, variant.markersResId),
             loadGeoJsonResult
         )
-        // TODO change tile provider based on variant
-    }
-
-    private fun setGeoJsonLayer(layer: GeoJsonLayer) {
-        _geoJsonLayer.value?.removeLayerFromMap()
-        _geoJsonLayer.value = layer
     }
 
     private fun setMapFeatures(features: Map<String, GeoJsonFeature>) {

@@ -26,7 +26,6 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
@@ -105,9 +104,6 @@ class MapFragment : MainNavigationFragment() {
             onCreate(mapViewBundle)
         }
 
-        initializeMap()
-        analyticsHelper.sendScreenView("Map", requireActivity())
-
         if (savedInstanceState == null) {
             val featureId = arguments?.getString(ARG_FEATURE_ID)
             if (featureId.isNullOrEmpty()) {
@@ -117,6 +113,35 @@ class MapFragment : MainNavigationFragment() {
                 // Choose map variant based on feature's time
                 val time = Instant.ofEpochMilli(arguments?.getLong(ARG_FEATURE_START_TIME) ?: 0L)
                 viewModel.setMapVariant(MapVariant.forTime(time))
+            }
+        }
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.toolbar.run {
+            inflateMenu(R.menu.map_menu)
+            menu.findItem(R.id.action_my_location)?.let { item ->
+                viewModel.showMyLocationOption.observe(viewLifecycleOwner, Observer { option ->
+                    item.isVisible = (option == true)
+                })
+            }
+            setOnMenuItemClickListener { item ->
+                if (item.itemId == R.id.action_my_location) {
+                    enableMyLocation(true)
+                    true
+                } else {
+                    false
+                }
+            }
+
+            // This Fragment can appear as either a top-level screen or in a standalone activity.
+            // Set up toolbar navigation accordingly.
+            if (navigationHost != null) {
+                setNavigationIcon(R.drawable.ic_menu)
+                setNavigationContentDescription(R.string.a11y_show_navigation)
             }
         }
 
@@ -198,6 +223,21 @@ class MapFragment : MainNavigationFragment() {
                 binding.sheetHeaderShadow.isActivated = v.canScrollVertically(-1)
             }
 
+        // Initialize MapView
+        mapView.getMapAsync { googleMap ->
+            googleMap.apply {
+                setOnMapClickListener { viewModel.onMapClick() }
+                enableMyLocation(false)
+            }
+        }
+
+        // Observe ViewModel data
+        viewModel.mapVariant.observe(this, Observer {
+            mapView.getMapAsync { googleMap ->
+                googleMap.clear()
+                viewModel.loadMapFeatures(googleMap)
+            }
+        })
         viewModel.geoJsonLayer.observe(this, Observer {
             updateMarkers(it ?: return@Observer)
         })
@@ -206,33 +246,7 @@ class MapFragment : MainNavigationFragment() {
             updateInfoSheet(it ?: return@Observer)
         })
 
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        // This Fragment can appear in a standalone activity, so set up the toolbar accordingly.
-        if (navigationHost != null) {
-            val toolbar: Toolbar = view.findViewById(R.id.toolbar) ?: return
-            toolbar.run {
-                setNavigationIcon(R.drawable.ic_menu)
-                setNavigationContentDescription(R.string.a11y_show_navigation)
-                inflateMenu(R.menu.map_menu)
-                menu.findItem(R.id.action_my_location)?.let { item ->
-                    viewModel.showMyLocationOption.observe(viewLifecycleOwner, Observer { option ->
-                        item.isVisible = (option == true)
-                    })
-                }
-                setOnMenuItemClickListener { item ->
-                    if (item.itemId == R.id.action_my_location) {
-                        enableMyLocation(true)
-                        true
-                    } else {
-                        false
-                    }
-                }
-            }
-        }
+        analyticsHelper.sendScreenView("Map", requireActivity())
     }
 
     private fun updateInfoSheet(markerInfo: MarkerInfo) {
@@ -302,17 +316,6 @@ class MapFragment : MainNavigationFragment() {
     override fun onLowMemory() {
         super.onLowMemory()
         mapView.onLowMemory()
-    }
-
-    private fun initializeMap() {
-        mapView.getMapAsync {
-            viewModel.onMapReady(it)
-
-            it?.apply {
-                setOnMapClickListener { viewModel.onMapClick() }
-                enableMyLocation(false)
-            }
-        }
     }
 
     private fun updateMarkers(geoJsonLayer: GeoJsonLayer) {

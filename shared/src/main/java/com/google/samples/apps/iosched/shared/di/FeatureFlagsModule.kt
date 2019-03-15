@@ -38,7 +38,6 @@ class FeatureFlagsModule {
         return appConfig.isExploreArFeatureEnabled()
     }
 
-    // Whather or not the Map feature is enabled
     @Provides
     @MapFeatureEnabledFlag
     fun provideMapFeatureEnabledFlag(appConfig: AppConfigDataSource): Boolean {
