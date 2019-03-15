@@ -191,6 +191,7 @@ dependencies {
     // Solve conflicts with gson. DataBinding is using an old version.
     implementation "com.google.code.gson:gson:$gsonVersion"
 
+    implementation "com.google.android.play:core:$rootProject.playCoreVersion"
     implementation "com.google.ar:core:$rootProject.arcoreVersion"
 }
 

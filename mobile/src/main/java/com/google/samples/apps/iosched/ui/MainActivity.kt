@@ -21,7 +21,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.core.view.updatePadding
@@ -38,6 +37,7 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.NavigationHeaderBinding
+import com.google.samples.apps.iosched.domain.ar.InstallOrLaunchArFeatureActivity
 import com.google.samples.apps.iosched.shared.di.ExploreArEnabledFlag
 import com.google.samples.apps.iosched.shared.di.FeedFeatureEnabledFlag
 import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
@@ -123,8 +123,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
 
         content = findViewById(R.id.content_container)
         content.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         // Make the content ViewGroup ignore insets so that it does not use the default padding
         content.setOnApplyWindowInsetsListener(NoopWindowInsetsListener)
 
@@ -259,12 +259,12 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
         // Handle launching new activities, otherwise assume the destination is handled by the nav
         // graph.
         if (navId == R.id.navigation_explore_ar) {
-            // TODO: Launch the ArActivity. Need to resolve the AR module is installed at this
-            // moment
-            Toast.makeText(
-                this, "Launching AR Activity",
-                Toast.LENGTH_SHORT
-            ).show()
+            startActivity(
+                Intent(
+                    this,
+                    InstallOrLaunchArFeatureActivity::class.java
+                )
+            )
             return
         }
 

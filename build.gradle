@@ -73,6 +73,7 @@ buildscript {
         okhttpVersion = "3.10.0"
         okioVersion = '1.14.0'
         pageIndicatorVersion = "1.3.0"
+        playCoreVersion = "1.4.0"
         rulesVersion = '1.1.1'
         runnerVersion = '1.1.1'
         testExtVersion = '1.1.0'
