@@ -15,23 +15,24 @@
   ~ limitations under the License.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
-            name="announcementHeaderText"
-            type="java.lang.String" />
+            name="sectionHeader"
+            type="com.google.samples.apps.iosched.ui.SectionHeader" />
     </data>
 
     <TextView
-        android:id="@+id/datetime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_normal"
-        android:layout_marginVertical="@dimen/spacing_normal"
-        android:text="@{announcementHeaderText}"
-        android:textAllCaps="true"
-        android:textAppearance="?attr/textAppearanceSubtitle1" />
-
+        android:gravity="start|center_vertical"
+        android:minHeight="?actionBarSize"
+        android:paddingLeft="@dimen/margin_normal"
+        android:paddingRight="@dimen/margin_normal"
+        android:textAppearance="@style/TextAppearance.IOSched.Subhead"
+        android:text="@{sectionHeader.titleId}"
+        tools:text="@string/speaker_events_subhead" />
 </layout>

@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.shared.data.feed
 
 import androidx.lifecycle.LiveData
-import com.google.samples.apps.iosched.model.feed.Announcement
+import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.shared.result.Result
 import javax.inject.Inject
 import javax.inject.Singleton

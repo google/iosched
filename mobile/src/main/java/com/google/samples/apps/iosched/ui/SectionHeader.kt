@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.model.feed
+package com.google.samples.apps.iosched.ui
 
-interface FeedItem
+import androidx.annotation.StringRes
+
+data class SectionHeader(@StringRes val titleId: Int)

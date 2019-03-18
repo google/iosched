@@ -23,6 +23,8 @@ import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
@@ -92,4 +94,14 @@ fun imageUrl(imageView: ImageView, imageUrl: String?, placeholder: Drawable?) {
 @BindingAdapter("swipeRefreshColors")
 fun setSwipeRefreshColors(swipeRefreshLayout: CustomSwipeRefreshLayout, colorResIds: IntArray) {
     swipeRefreshLayout.setColorSchemeColors(*colorResIds)
+}
+
+/** Set text on a [TextView] from a string resource. */
+@BindingAdapter("android:text")
+fun setText(view: TextView, @StringRes resId: Int) {
+    if (resId == 0) {
+        view.text = null
+    } else {
+        view.setText(resId)
+    }
 }
