@@ -16,15 +16,19 @@
 
 package com.google.samples.apps.iosched.ui.feed
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemFeedCountdownTimerBinding
 
-class CountdownTimerViewBinder(modelClass: Class<CountdownTimer>, context: Context) :
-    FeedListItemViewBinder<CountdownTimer, CountdownTimerViewHolder>(modelClass, context) {
+/** Feed item for the countdown timer. */
+data class CountdownTimer(
+    val id: String = "countdown_timer"
+)
+
+class CountdownTimerViewBinder :
+    FeedListItemViewBinder<CountdownTimer, CountdownTimerViewHolder>(CountdownTimer::class.java) {
 
     override fun createViewHolder(parent: ViewGroup): CountdownTimerViewHolder =
         CountdownTimerViewHolder(

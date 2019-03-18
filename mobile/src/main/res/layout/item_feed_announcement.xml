@@ -22,7 +22,7 @@
     <data>
         <variable
             name="announcement"
-            type="com.google.samples.apps.iosched.model.feed.Announcement" />
+            type="com.google.samples.apps.iosched.model.Announcement" />
     </data>
 
     <androidx.cardview.widget.CardView

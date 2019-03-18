@@ -259,6 +259,7 @@
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/tags"
             app:goneUnless="@{viewModel.showFeedbackButton}"
+            android:onClick="@{() -> viewModel.onFeedbackClicked()}"
             tools:text="Rate Session" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

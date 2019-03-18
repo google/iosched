@@ -22,7 +22,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
-import com.google.samples.apps.iosched.model.feed.Announcement
+import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import org.junit.Assert
