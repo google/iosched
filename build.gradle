@@ -33,7 +33,7 @@ buildscript {
 
         // App dependencies
         androidGradlePluginVersion = '3.3.2'
-        appcompatVersion = '1.1.0-alpha02'
+        appcompatVersion = '1.1.0-alpha03'
         cardviewVersion = '1.0.0'
         archTestingVersion = '2.0.0'
         arcoreVersion = '1.2.0'
