@@ -43,6 +43,7 @@ class ConferenceDataJsonParserTest {
         assertThat(data.rooms.size, Is(equalTo(2)))
         assertThat(data.speakers.size, Is(equalTo(3)))
         assertThat(data.tags.size, Is(equalTo(3)))
+        assertThat(data.codelabs.size, Is(equalTo(2)))
         assertThat(data.version, Is(equalTo(42)))
 
         /* Relations */

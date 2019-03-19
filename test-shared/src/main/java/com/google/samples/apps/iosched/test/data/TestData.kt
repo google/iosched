@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.test.data
 
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.model.Block
+import com.google.samples.apps.iosched.model.Codelab
 import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.Room
@@ -30,6 +31,7 @@ import com.google.samples.apps.iosched.model.reservations.ReservationRequestResu
 import com.google.samples.apps.iosched.model.reservations.ReservationRequestResult.ReservationRequestStatus.RESERVE_SUCCEEDED
 import com.google.samples.apps.iosched.model.reservations.ReservationRequestResult.ReservationRequestStatus.RESERVE_WAITLISTED
 import com.google.samples.apps.iosched.model.userdata.UserEvent
+import com.google.samples.apps.iosched.model.userdata.UserEvent.ReservationStatus.NONE
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import org.threeten.bp.ZonedDateTime
 
@@ -213,7 +215,7 @@ object TestData {
     private val userEvent3 = UserEvent(
         sessionIDs[3], isStarred = false,
         isReviewed = true,
-        reservationStatus = UserEvent.ReservationStatus.NONE,
+        reservationStatus = NONE,
         reservationRequestResult = ReservationRequestResult(
             RESERVE_DENIED_UNKNOWN, "123", System.currentTimeMillis()
         )
@@ -239,13 +241,26 @@ object TestData {
 
     val userEvents = listOf(userEvent0, userEvent1, userEvent2, userEvent3, userEvent4)
 
+    val codelab0 = Codelab(
+        id = "codelab0", title = "Android is Cool", description = "Make Android apps in 5 minutes!",
+        durationMinutes = 5, iconUrl = null, codelabUrl = "", tags = listOf(androidTag)
+    )
+
+    val codelab1 = Codelab(
+        id = "codelab1", title = "HTML 6", description = "Webs aren't just for spiders anymore.",
+        durationMinutes = 37, iconUrl = null, codelabUrl = "", tags = listOf(webTag)
+    )
+
+    val codelabs = listOf(codelab0, codelab1)
+
     // endregion Declarations
 
     val conferenceData = ConferenceData(
         sessions = sessionsList,
-        tags = tagsList,
-        rooms = listOf(room),
         speakers = listOf(speaker1, speaker2, speaker3),
+        rooms = listOf(room),
+        codelabs = codelabs,
+        tags = tagsList,
         version = 42
     )
 
