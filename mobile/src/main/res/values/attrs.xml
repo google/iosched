@@ -30,12 +30,16 @@
     <!-- User is on the wait list for the event -->
     <attr name="state_wait_listed" format="boolean" />
 
-    <attr name="sessionListKeyline" format="dimension" />
+    <declare-styleable name="Theme">
+        <!-- Navigation bar divider color, used by NavigationBarContentFrameLayout -->
+        <attr name="ioschedNavigationBarDividerColor" format="reference" />
 
-    <attr name="eventFilterViewStyle" format="reference" />
+        <attr name="colorControlLight" format="reference" />
 
+        <attr name="sessionListKeyline" format="dimension" />
 
-    <attr name="colorControlLight" format="reference" />
+        <attr name="eventFilterViewStyle" format="reference" />
+    </declare-styleable>
 
     <declare-styleable name="TimeHeader">
         <attr name="android:width" />
@@ -111,5 +115,10 @@
         <attr name="android:textSize" />
         <attr name="android:fontFamily" />
         <attr name="verticalBias" format="float" />
+    </declare-styleable>
+
+    <declare-styleable name="NavigationBarContentFrameLayout">
+        <attr name="navigationBarBorderColor" format="color" />
+        <attr name="navigationBarBorderSize" format="dimension" />
     </declare-styleable>
 </resources>
