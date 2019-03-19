@@ -37,6 +37,8 @@
             android:id="@+id/speaker_detail_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/margin_normal"
             android:scrollbars="vertical"
             app:hasFixedSize="@{true}"
             app:layoutManager="LinearLayoutManager" />

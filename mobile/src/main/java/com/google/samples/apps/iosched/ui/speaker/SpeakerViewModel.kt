@@ -27,12 +27,16 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCaseResult
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCase
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCaseResult
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.successOr
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import org.threeten.bp.ZoneId
 import javax.inject.Inject
 
 /**
@@ -41,6 +45,7 @@ import javax.inject.Inject
 class SpeakerViewModel @Inject constructor(
     private val loadSpeakerUseCase: LoadSpeakerUseCase,
     private val loadSpeakerSessionsUseCase: LoadUserSessionsUseCase,
+    getTimeZoneUseCase: GetTimeZoneUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
     private val eventActionsViewModelDelegate: EventActionsViewModelDelegate,
     private val analyticsHelper: AnalyticsHelper
@@ -64,6 +69,9 @@ class SpeakerViewModel @Inject constructor(
         !it?.imageUrl.isNullOrEmpty()
     }
 
+    private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
+    val timeZoneId: LiveData<ZoneId>
+
     init {
         loadSpeakerUserSessions = loadSpeakerSessionsUseCase.observe()
 
@@ -85,6 +93,15 @@ class SpeakerViewModel @Inject constructor(
         _speakerUserSessions.addSource(loadSpeakerUserSessions) {
             (loadSpeakerUserSessions.value as? Result.Success)?.data?.let {
                 _speakerUserSessions.value = it.userSessions
+            }
+        }
+
+        getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
+        timeZoneId = preferConferenceTimeZoneResult.map {
+            if (it.successOr(true)) {
+                TimeUtils.CONFERENCE_TIMEZONE
+            } else {
+                ZoneId.systemDefault()
             }
         }
     }
