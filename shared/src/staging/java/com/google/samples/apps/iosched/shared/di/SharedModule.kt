@@ -19,15 +19,12 @@ package com.google.samples.apps.iosched.shared.di
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.FakeAnnouncementDataSource
-import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.FakeAppConfigDataSource
-import com.google.samples.apps.iosched.shared.data.FakeLogisticsDataSource
-import com.google.samples.apps.iosched.shared.data.app.AppConfigDataSource
+import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
-import com.google.samples.apps.iosched.shared.data.logistics.LogisticsDataSource
-import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
@@ -101,20 +98,6 @@ class SharedModule {
     @Provides
     fun provideTopicSubscriber(): TopicSubscriber {
         return StagingTopicSubscriber()
-    }
-
-    @Singleton
-    @Provides
-    fun provideLogisticsRepository(
-        logisticsDataSource: LogisticsDataSource
-    ): LogisticsRepository {
-        return LogisticsRepository(logisticsDataSource)
-    }
-
-    @Singleton
-    @Provides
-    fun provideLogisticsDataSource(): LogisticsDataSource {
-        return FakeLogisticsDataSource()
     }
 
     @Singleton
