@@ -93,7 +93,7 @@ open class ConferenceDataRepository @Inject constructor(
 
     private fun getCacheOrBootstrapData(): ConferenceData {
         // First, try the local cache:
-        var conferenceData: ConferenceData? = remoteDataSource.getOfflineConferenceData()
+        var conferenceData = remoteDataSource.getOfflineConferenceData()
 
         // Cache success!
         if (conferenceData != null) {

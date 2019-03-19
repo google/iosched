@@ -526,9 +526,10 @@ class TestConfDataSourceSession0 : ConferenceDataSource {
 
     private val conferenceData = ConferenceData(
         sessions = listOf(TestData.session0),
-        tags = listOf(TestData.androidTag, TestData.webTag),
         speakers = listOf(TestData.speaker1),
         rooms = emptyList(),
+        codelabs = emptyList(),
+        tags = listOf(TestData.androidTag, TestData.webTag),
         version = 42
     )
 }
@@ -541,9 +542,10 @@ class BootstrapDataSourceSession3 : ConferenceDataSource {
     override fun getOfflineConferenceData(): ConferenceData? {
         return ConferenceData(
             sessions = listOf(TestData.session3),
-            tags = listOf(TestData.androidTag, TestData.webTag),
             speakers = listOf(TestData.speaker1),
             rooms = emptyList(),
+            codelabs = emptyList(),
+            tags = listOf(TestData.androidTag, TestData.webTag),
             version = 42
         )
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,19 @@
 
 package com.google.samples.apps.iosched.model
 
-/**
- * Contains schedule data with the UI models.
- */
-data class ConferenceData(
-    val sessions: List<Session>,
-    val speakers: List<Speaker>,
-    val rooms: List<Room>,
-    val codelabs: List<Codelab>,
-    val tags: List<Tag>,
-    val version: Int
+data class Codelab(
+    /** Unique ID identifying this Codelab */
+    val id: String,
+    /** Codelab title */
+    val title: String,
+    /** A short description of the codelab content */
+    val description: String,
+    /** Approximate time in minutes a user would spend doing this codelab */
+    val durationMinutes: Int,
+    /** URL for an icon to display */
+    val iconUrl: String?,
+    /** URL to access this codelab on the web */
+    val codelabUrl: String,
+    /** [Tag]s applicable to this codelab */
+    val tags: List<Tag>
 )
