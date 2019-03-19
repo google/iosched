@@ -16,6 +16,7 @@
 
 apply plugin: 'java-library'
 apply plugin: "kotlin"
+apply plugin: 'kotlin-kapt'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -23,6 +24,9 @@ dependencies {
     // ThreeTenBP for the shared module only. Date and time API for Java.
     api "org.threeten:threetenbp:$rootProject.threetenbpVersion:no-tzdb"
     implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
+    implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    kapt "androidx.room:room-compiler:$rootProject.roomVersion"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlinVersion"
 }
