@@ -25,7 +25,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.core.view.updatePadding
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -56,7 +55,7 @@ import timber.log.Timber
 import java.util.UUID
 import javax.inject.Inject
 
-class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
+class MainActivity : DaggerAppCompatActivity(), NavigationHost {
 
     companion object {
         /** Key for an int extra defining the initial navigation target. */
@@ -110,7 +109,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
     private lateinit var statusScrim: View
 
     private var currentNavId = NAV_ID_NONE
-    private var pendingNavId = NAV_ID_NONE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -132,7 +130,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
         statusScrim.setOnApplyWindowInsetsListener(HeightTopWindowInsetsListener)
 
         drawer = findViewById(R.id.drawer)
-        drawer.addDrawerListener(this)
 
         navHeaderBinding = NavigationHeaderBinding.inflate(layoutInflater).apply {
             viewModel = this@MainActivity.viewModel
@@ -153,11 +150,15 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
 
             menu.findItem(R.id.navigation_map).isVisible = mapFeatureEnabled
             menu.findItem(R.id.navigation_feed).isVisible = feedFeatureEnabled
-            menu.findItem(R.id.navigation_explore_ar).isVisible = exploreArFeatureEnabled
-            setNavigationItemSelectedListener {
-                closeDrawer()
-                navigateWhenDrawerClosed(it.itemId)
-                true
+            menu.findItem(R.id.navigation_explore_ar).apply {
+                // Handle launching new activities, otherwise assume the destination is handled
+                // by the nav graph. We want to launch a new Activity for only the AR menu
+                isVisible = exploreArFeatureEnabled
+                setOnMenuItemClickListener {
+                    openExploreAr()
+                    closeDrawer()
+                    true
+                }
             }
             setupWithNavController(navController)
         }
@@ -242,32 +243,10 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
             ?.primaryNavigationFragment as MainNavigationFragment?
     }
 
-    private fun navigateWhenDrawerClosed(navId: Int) {
-        if (drawer.isDrawerVisible(navigation)) {
-            // Replacing the fragment while the drawer is animating causes jank, so instead save the
-            // id and we'll replace it later.
-            pendingNavId = navId
-        } else {
-            navigateTo(navId)
-        }
-    }
-
     private fun navigateTo(navId: Int) {
         if (navId == currentNavId) {
             return // user tapped the current item
         }
-        // Handle launching new activities, otherwise assume the destination is handled by the nav
-        // graph.
-        if (navId == R.id.navigation_explore_ar) {
-            startActivity(
-                Intent(
-                    this,
-                    InstallOrLaunchArFeatureActivity::class.java
-                )
-            )
-            return
-        }
-
         navController.navigate(navId)
     }
 
@@ -279,18 +258,12 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
         SignOutDialogFragment().show(supportFragmentManager, DIALOG_SIGN_OUT)
     }
 
-    // -- DrawerListener overrides
-
-    override fun onDrawerClosed(drawerView: View) {
-        if (drawerView == navigation && pendingNavId != NAV_ID_NONE) {
-            navigateTo(pendingNavId)
-            pendingNavId = NAV_ID_NONE
-        }
+    private fun openExploreAr() {
+        startActivity(
+            Intent(
+                this,
+                InstallOrLaunchArFeatureActivity::class.java
+            )
+        )
     }
-
-    override fun onDrawerOpened(drawerView: View) {}
-
-    override fun onDrawerStateChanged(newState: Int) {}
-
-    override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
 }
