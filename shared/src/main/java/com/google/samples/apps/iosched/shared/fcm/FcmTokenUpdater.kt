@@ -21,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.samples.apps.iosched.shared.data.document2019
+import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -46,19 +47,23 @@ class FcmTokenUpdater @Inject constructor(
             TOKEN_ID_KEY to token
         )
 
-        firestore
-            .document2019()
-            .collection(USERS_COLLECTION)
-            .document(userId)
-            .collection(FCM_IDS_COLLECTION)
-            .document(token.take(TOKEN_ID_LENGTH))
-            .set(tokenInfo, SetOptions.merge()).addOnCompleteListener {
-                if (it.isSuccessful) {
-                    Timber.d("FCM ID token successfully uploaded for user $userId\"")
-                } else {
-                    Timber.e("FCM ID token: Error uploading for user $userId")
+        // All Firestore operations are started from the main thread
+        // to avoid concurrency issues.
+        DefaultScheduler.postToMainThread {
+            firestore
+                .document2019()
+                .collection(USERS_COLLECTION)
+                .document(userId)
+                .collection(FCM_IDS_COLLECTION)
+                .document(token.take(TOKEN_ID_LENGTH))
+                .set(tokenInfo, SetOptions.merge()).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        Timber.d("FCM ID token successfully uploaded for user $userId\"")
+                    } else {
+                        Timber.e("FCM ID token: Error uploading for user $userId")
+                    }
                 }
-            }
+        }
 
         // Write server timestamp to /users/<userId>/lastUsage
 
