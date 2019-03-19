@@ -51,6 +51,7 @@ import com.google.samples.apps.iosched.util.NoopWindowInsetsListener
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
 import com.google.samples.apps.iosched.util.updateForTheme
+import com.google.samples.apps.iosched.widget.NavigationBarContentFrameLayout
 import dagger.android.support.DaggerAppCompatActivity
 import timber.log.Timber
 import java.util.UUID
@@ -120,6 +121,24 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost, DrawerListener {
         updateForTheme(viewModel.currentTheme)
 
         setContentView(R.layout.activity_main)
+
+        val drawerContainer: NavigationBarContentFrameLayout = findViewById(R.id.drawer_container)
+        // Let's consume any
+        drawerContainer.setOnApplyWindowInsetsListener { v, insets ->
+            // Let the view draw it's navigation bar divider
+            v.onApplyWindowInsets(insets)
+
+            // Consume any horizontal insets and pad all content in. There's not much we can do
+            // with horizontal insets
+            v.updatePadding(
+                left = insets.systemWindowInsetLeft,
+                right = insets.systemWindowInsetRight
+            )
+            insets.replaceSystemWindowInsets(
+                0, insets.systemWindowInsetTop,
+                0, insets.systemWindowInsetBottom
+            )
+        }
 
         content = findViewById(R.id.content_container)
         content.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
