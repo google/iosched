@@ -38,6 +38,8 @@
         <item name="sessionListKeyline">@dimen/session_keyline</item>
         <item name="eventFilterViewStyle">@style/Widget.IOSched.EventFilters</item>
 
+        <item name="navigationViewStyle">@style/Widget.IOSched.NavigationView</item>
+
         <item name="alertDialogTheme">@style/AlertDialog.Theme</item>
         <item name="alertDialogStyle">@style/AlertDialog.Style</item>
     </style>
@@ -403,6 +405,10 @@
     <style name="Widget.IOSched.NavigationBarContentFrameLayout" parent="android:Widget.Material">
         <item name="navigationBarBorderColor">?attr/ioschedNavigationBarDividerColor</item>
         <item name="navigationBarBorderSize">1dp</item>
+    </style>
+
+    <style name="Widget.IOSched.NavigationView" parent="@style/Widget.MaterialComponents.NavigationView">
+        <item name="itemBackground">@drawable/navigation_item_background</item>
     </style>
 
 </resources>
