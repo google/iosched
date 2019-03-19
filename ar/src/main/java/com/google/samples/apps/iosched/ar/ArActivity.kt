@@ -16,18 +16,37 @@
 
 package com.google.samples.apps.iosched.ar
 
-import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.ar.core.ArCoreApk
+import com.google.ar.core.ArCoreApk.InstallStatus.INSTALLED
+import com.google.ar.core.ArCoreApk.InstallStatus.INSTALL_REQUESTED
+import com.google.ar.core.exceptions.UnavailableUserDeclinedInstallationException
 import com.google.ar.web.webview.ArWebView
 
 class ArActivity : AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val arWebView = ArWebView(this)
-        setContentView(arWebView)
+    private var userRequestedInstall = true
 
-        // TODO: Load the actual AR feature
-        arWebView.loadUrl("https://www.google.com")
+    override fun onResume() {
+        super.onResume()
+        try {
+            when (ArCoreApk.getInstance().requestInstall(this, userRequestedInstall)) {
+                INSTALLED -> {
+                    val arWebView = ArWebView(this)
+                    setContentView(arWebView)
+                    // TODO: Load the actual AR feature
+                    arWebView.loadUrl("https://www.google.com")
+                }
+                INSTALL_REQUESTED -> {
+                    userRequestedInstall = false
+                    return
+                }
+                else -> return
+            }
+        } catch (e: UnavailableUserDeclinedInstallationException) {
+            Toast.makeText(this, getString(R.string.need_to_install_ar_core), Toast.LENGTH_LONG)
+                .show()
+        }
     }
 }
