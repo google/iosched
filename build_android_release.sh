@@ -14,8 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+MOBILE_OUT=$DIR/mobile/build/outputs
+TV_OUT=$DIR/tv/build/outputs
 
 export ANDROID_HOME="$(cd $DIR/../../../prebuilts/fullsdk/linux && pwd )"
 
@@ -29,21 +30,38 @@ BUILD_RESULT=$?
 
 # Debug
 [ ! -d $DIST_DIR/debug ] && mkdir $DIST_DIR/debug
-cp $DIR/mobile/build/outputs/apk/debug/mobile-debug.apk $DIST_DIR/debug/
-cp $DIR/tv/build/outputs/apk/debug/tv-debug.apk $DIST_DIR/debug/
-cp $DIR/wear/build/outputs/apk/debug/wear-debug.apk $DIST_DIR/debug/
+cp $MOBILE_OUT/apk/debug/mobile-debug.apk $DIST_DIR/debug/
+cp $TV_OUT/apk/debug/tv-debug.apk $DIST_DIR/debug/
 
 # Staging
 [ ! -d $DIST_DIR/staging ] && mkdir $DIST_DIR/staging
-cp $DIR/mobile/build/outputs/apk/staging/mobile-staging.apk $DIST_DIR/staging/
-cp $DIR/tv/build/outputs/apk/staging/tv-staging.apk $DIST_DIR/staging/
+cp $MOBILE_OUT/apk/staging/mobile-staging.apk $DIST_DIR/staging/
+cp $TV_OUT/apk/staging/tv-staging.apk $DIST_DIR/staging/
 
 # Release
 [ ! -d $DIST_DIR/release ] && mkdir $DIST_DIR/release
-cp $DIR/mobile/build/outputs/apk/release/mobile-release-unsigned.apk $DIST_DIR/release/mobile-release.apk
-cp $DIR/tv/build/outputs/apk/release/tv-release-unsigned.apk $DIST_DIR/release/tv-release.apk
-cp $DIR/wear/build/outputs/apk/release/wear-release-unsigned.apk $DIST_DIR/release/wear-release.apk
-cp $DIR/mobile/build/outputs/mapping/release/mapping.txt $DIST_DIR/release/mobile-mapping.txt
-cp $DIR/tv/build/outputs/mapping/release/mapping.txt $DIST_DIR/release/tv-mapping.txt
+cp $MOBILE_OUT/apk/release/mobile-release-unsigned.apk $DIST_DIR/release/mobile-release.apk
+cp $MOBILE_OUT/mapping/release/mapping.txt $DIST_DIR/release/mobile-release-apk-mapping.txt
+cp $TV_OUT/apk/release/tv-release-unsigned.apk $DIST_DIR/release/tv-release.apk
+cp $TV_OUT/mapping/release/mapping.txt $DIST_DIR/release/tv-release-apk-mapping.txt
+
+# Build App Bundles
+# Don't clean here, otherwise all apks are gone.
+$DIR/gradlew bundle ${GRADLE_PARAMS}
+
+# Debug
+cp $MOBILE_OUT/bundle/debug/mobile.aab $DIST_DIR/debug/mobile-debug.aab
+cp $TV_OUT/bundle/debug/tv.aab $DIST_DIR/debug/tv-debug.aab
+
+# Staging
+cp $MOBILE_OUT/bundle/staging/mobile.aab $DIST_DIR/staging/mobile-staging.aab
+cp $TV_OUT/bundle/staging/tv.aab $DIST_DIR/staging/tv-staging.aab
+
+# Release
+cp $MOBILE_OUT/bundle/release/mobile.aab $DIST_DIR/release/mobile-release.aab
+cp $MOBILE_OUT/mapping/release/mapping.txt $DIST_DIR/release/mobile-release-aab-mapping.txt
+cp $TV_OUT/bundle/release/tv.aab $DIST_DIR/release/tv-release.aab
+cp $TV_OUT/mapping/release/mapping.txt $DIST_DIR/release/tv-release-aab-mapping.txt
+BUILD_RESULT=$?
 
 exit $BUILD_RESULT
