@@ -110,6 +110,7 @@ class SessionDetailAdapter(
                 userSession = differ.currentList[position] as UserSession
                 eventListener = sessionDetailViewModel
                 timeZoneId = sessionDetailViewModel.timeZoneId
+                alwaysShowDate = true
                 lifecycleOwner = this@SessionDetailAdapter.lifecycleOwner
                 executePendingBindings()
             }

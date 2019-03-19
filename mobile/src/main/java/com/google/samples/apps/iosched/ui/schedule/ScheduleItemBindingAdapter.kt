@@ -36,6 +36,7 @@ import org.threeten.bp.ZonedDateTime
     "sessionEnd",
     "sessionRoom",
     "timeZoneId",
+    "alwaysShowDate",
     requireAll = true
 )
 fun sessionLengthLocation(
@@ -43,11 +44,20 @@ fun sessionLengthLocation(
     startTime: ZonedDateTime,
     endTime: ZonedDateTime,
     room: Room,
-    timeZoneId: ZoneId
+    timeZoneId: ZoneId?,
+    alwaysShowDate: Boolean
 ) {
+    if (timeZoneId == null) {
+        // Race condition where this parameter (provided by a LiveData) is null when we are called.
+        return
+    }
     val localStartTime = TimeUtils.zonedTime(startTime, timeZoneId)
     val localEndTime = TimeUtils.zonedTime(endTime, timeZoneId)
-    textView.text = if (!TimeUtils.isConferenceTimeZone(timeZoneId)) {
+    textView.text = if (alwaysShowDate) {
+        // In places where sessions are shown without day/time decorations, show full date & time
+        // (respecting timezone) plus location. Example: "Wed, May 9, 9 – 10 am / Stage 1"
+        fullDateTime(localStartTime, localEndTime, textView, room)
+    } else if (!TimeUtils.isConferenceTimeZone(timeZoneId)) {
         // Show the local time, the duration, and the abbreviated room name.
         // Example: "Tue, May 8 / 1 hour / Stage 1"
         textView.context.getString(
