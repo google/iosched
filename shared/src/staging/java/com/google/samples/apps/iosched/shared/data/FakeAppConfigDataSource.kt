@@ -18,11 +18,13 @@ package com.google.samples.apps.iosched.shared.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.shared.data.app.AppConfigDataSource
+import com.google.samples.apps.iosched.model.ConferenceWifiInfo
+import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
 
 class FakeAppConfigDataSource : AppConfigDataSource {
 
     override fun getStringLiveData(key: String): LiveData<String> = MutableLiveData()
+    override fun getWifiInfo(): ConferenceWifiInfo = ConferenceWifiInfo("", "")
     override fun isFeedFeatureEnabled(): Boolean = false
     override fun isMapFeatureEnabled(): Boolean = false
     override fun isExploreArFeatureEnabled(): Boolean = true
