@@ -33,6 +33,7 @@
 
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">@bool/use_light_navigation</item>
         <item name="android:navigationBarColor">@color/nav_bar_scrim</item>
+        <item name="ioschedNavigationBarDividerColor">?attr/colorControlLight</item>
 
         <item name="sessionListKeyline">@dimen/session_keyline</item>
         <item name="eventFilterViewStyle">@style/Widget.IOSched.EventFilters</item>
@@ -391,4 +392,10 @@
         <item name="android:paddingLeft">@dimen/margin_normal</item>
         <item name="android:paddingRight">@dimen/margin_normal</item>
     </style>
+
+    <style name="Widget.IOSched.NavigationBarContentFrameLayout" parent="android:Widget.Material">
+        <item name="navigationBarBorderColor">?attr/ioschedNavigationBarDividerColor</item>
+        <item name="navigationBarBorderSize">1dp</item>
+    </style>
+
 </resources>
