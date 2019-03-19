@@ -21,6 +21,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.core.view.updatePadding
@@ -166,6 +167,13 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
         navigation = findViewById(R.id.navigation)
         navigation.apply {
             addHeaderView(navHeaderBinding.root)
+
+            // Need to inflate the CSL via AppCompatResources and set it as the tint
+            itemBackground = itemBackground?.mutate()?.apply {
+                val tint = AppCompatResources.getColorStateList(
+                        context, R.color.navigation_item_background_tint)
+                setTintList(tint)
+            }
 
             menu.findItem(R.id.navigation_map).isVisible = mapFeatureEnabled
             menu.findItem(R.id.navigation_feed).isVisible = feedFeatureEnabled
