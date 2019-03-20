@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.di
 
-import com.google.samples.apps.iosched.shared.data.app.AppConfigDataSource
+import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

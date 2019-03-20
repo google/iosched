@@ -27,15 +27,12 @@ import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.NetworkConferenceDataSource
-import com.google.samples.apps.iosched.shared.data.app.AppConfigDataSource
-import com.google.samples.apps.iosched.shared.data.app.RemoteAppConfigDataSource
-import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
+import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
+import com.google.samples.apps.iosched.shared.data.config.RemoteAppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
+import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.FirestoreAnnouncementDataSource
-import com.google.samples.apps.iosched.shared.data.logistics.LogisticsDataSource
-import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
-import com.google.samples.apps.iosched.shared.data.logistics.RemoteConfigLogisticsDataSource
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
@@ -149,20 +146,6 @@ class SharedModule {
         remoteConfig.setConfigSettings(configSettings)
         remoteConfig.setDefaults(R.xml.remote_config_defaults)
         return remoteConfig
-    }
-
-    @Singleton
-    @Provides
-    fun provideLogisticsDataSource(remoteConfig: FirebaseRemoteConfig): LogisticsDataSource {
-        return RemoteConfigLogisticsDataSource(remoteConfig)
-    }
-
-    @Singleton
-    @Provides
-    fun provideLogisticsRepository(
-        logisticsDataSource: LogisticsDataSource
-    ): LogisticsRepository {
-        return LogisticsRepository(logisticsDataSource)
     }
 
     @Singleton

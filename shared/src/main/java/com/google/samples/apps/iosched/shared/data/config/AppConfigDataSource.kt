@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.logistics
+package com.google.samples.apps.iosched.shared.data.config
 
+import androidx.lifecycle.LiveData
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
-import javax.inject.Inject
-import javax.inject.Singleton
 
-/**
- * Single point of access to user events data associated with a user for the presentation layer.
- */
-@Singleton
-open class LogisticsRepository @Inject constructor(
-    val logisticsDataSource: LogisticsDataSource
-) {
-    fun getWifiInfo(): ConferenceWifiInfo {
-        return logisticsDataSource.getWifiInfo()
-    }
+interface AppConfigDataSource {
+
+    fun getStringLiveData(key: String): LiveData<String>
+    fun getWifiInfo(): ConferenceWifiInfo
+    fun isFeedFeatureEnabled(): Boolean
+    fun isMapFeatureEnabled(): Boolean
+    fun isExploreArFeatureEnabled(): Boolean
 }
