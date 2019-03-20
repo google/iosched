@@ -85,6 +85,8 @@ class SpeakerAdapter(
             is SpeakerSessionViewHolder -> holder.binding.apply {
                 userSession = differ.currentList[position] as UserSession
                 eventListener = speakerViewModel
+                timeZoneId = speakerViewModel.timeZoneId
+                alwaysShowDate = true
                 lifecycleOwner = this@SpeakerAdapter.lifecycleOwner
                 executePendingBindings()
             }
