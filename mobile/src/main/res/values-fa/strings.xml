@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 -->
 <resources>
     <string name="title_schedule">زمان‌بندی</string>
+    <string name="title_feed">فید</string>
     <string name="title_map">نقشه</string>
     <string name="filters">فیلترها</string>
     <string name="category_heading_tracks">موضوعات</string>
@@ -61,6 +62,19 @@
     <string name="menu_item_session_star">ستاره‌دارکردن جلسه</string>
     <string name="session_detail_speakers_header">بلندگو</string>
     <string name="session_detail_related_header">رویدادهای مرتبط</string>
+    <string name="feedback_submit">ارسال</string>
+    <string name="feedback_q1_text">به کیفیت کلی «جلسه» چه رتبه‌ای می‌دهید؟</string>
+    <string name="feedback_q2_text">محتوای «جلسه» را براساس انتظاراتتان/توضیحات جلسه، چگونه توصیف می‌کنید؟</string>
+    <string name="feedback_q3_text">«جلسه» چقدر با پروژه‌هایتان مرتبط بود؟</string>
+    <string name="feedback_q4_text">به سخنران(ها) چه رتبه‌ای می‌دهید؟</string>
+    <string name="feedback_q1_label_start">بسیار ابتدایی</string>
+    <string name="feedback_q2_label_start">ضعیف</string>
+    <string name="feedback_q3_label_start">نه چندان</string>
+    <string name="feedback_q4_label_start">ناامیدکننده</string>
+    <string name="feedback_q1_label_end">بسیار پیشرفته</string>
+    <string name="feedback_q3_label_end">خیلی زیاد</string>
+    <string name="feedback_q4_label_end">عالی</string>
+    <string name="a11y_show_navigation">نمایش منوی پیمایش</string>
     <string name="a11y_collapse_filters_sheet">پایین‌آوردن برگه فیلترها</string>
     <string name="a11y_clear_tag_filters">پاک‌کردن فیلترها</string>
     <string name="a11y_revert_pinned">نمایش همه جلسات</string>
@@ -75,6 +89,10 @@
     <string name="a11y_unstarred">رویداد نشانک‌گذاری نشد</string>
     <string name="a11y_star">ستاره</string>
     <string name="a11y_play">پخش ویدیو</string>
+    <string name="welcome">خوش آمدید!</string>
+    <string name="sign_in_hint">برای ورود به سیستم ضربه بزنید</string>
+    <string name="a11y_signed_in_content_description">به‌عنوان %s به سیستم وارد شده‌اید.</string>
+    <string name="a11y_signed_out_content_description">برای وارد شدن لمس کنید.</string>
     <string name="dialog_sign_in_title">برای سفارشی‌ساختن زمان‌بندی‌تان وارد سیستم شوید</string>
     <string name="dialog_sign_in_content">برای ذخیره‌کردن رویدادها، رزروکردن صندلی و رتبه‌بندی جلسات (اگر شرکت‌کننده هستید)، وارد سیستم شوید.</string>
     <string name="not_now">الآن نه</string>
@@ -104,6 +122,8 @@
     <string name="menu_item_share_session">هم‌رسانی جلسه</string>
     <string name="share_text_session_detail">«%1$s» را در #io18 %2$s بررسی کنید</string>
     <string name="intent_chooser_session_detail">هم‌رسانی</string>
+    <string name="enable_my_location">فعال کردن مکان من</string>
+    <string name="my_location_rationale">برنامه برای نشان دادن مکان شما روی نقشه، به مجوز مکان نیاز دارد.</string>
     <string name="onboarding_get_started">شروع به کار</string>
     <string name="onboarding_welcome_to_google_i_o">به Google I/O خوش‌آمدید</string>
     <string name="onboarding_date_location">۸ تا ۱۰ مه،\n‏۲۰۱۸ ‏ماونتین ویو، کالیفرنیا</string>
@@ -127,13 +147,13 @@
     <string name="settings_title">تنظیمات</string>
     <string name="travel_directions_title">مسیرهای رانندگی</string>
     <string name="travel_shuttle_title">سرویس رفت‌وبرگشت (توصیه‌شده)</string>
-    <string name="travel_carpool_parking_title">پارکینگ و سواری اشتراکی</string>
+    <string name="travel_carpool_parking_title">پارکینگ و هم‌سفری</string>
     <string name="travel_ride_sharing_title">هم‌سفری</string>
     <string name="travel_public_transportation_title">حمل‌ونقل عمومی</string>
     <string name="travel_biking_title">دوچرخه‌سواری</string>
     <string name="travel_directions_description">یافتن مسیرهای رفتن به 1 Amphitheatre Pkwy، Mountain View، CA 94043 در <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> یا <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a></string>
-    <string name="travel_shuttle_description">سرویس رفت‌وبرگشت رویدادها از همه هتل‌هایی که Google توصیه کرده است، بدون هیچ هزینه‌ای به همه شرکت‌کنندگان Google I/O ارائه می‌شود. همچنین سرویس‌های ویژه‌ای از سانفرانسیسکو و سایر مکان‌هایی که در مسیر شبه‌جزیره قرار دارد، ارائه می‌شود. برای سوارشدن به سرویس‌های رفت‌وبرگشت Google I/O باید رایانامه تأیید Google I/O یا نشان کنفرانس را نشان دهید.\n\nامکان درخواست خودروی دسترس‌پذیر با صندلی چرخ‌دار ADA در همه مکان‌های سوارشدن وجود دارد. لطفاً اگر نیاز به ADA یا هرگونه کمک خاصی دارید، در فرم ثبت‌نامتان ذکر کنید تا تیم برنامه‌ریزی برای پیگیری به‌طور مستقیم با شما تماس بگیرد.</string>
-    <string name="travel_carpool_parking_description">تعداد پارکینگ‌ها بسیار محدود بوده و فقط در مکان‌های تعیین‌شده توسط Google I/O از Shoreline Amphitheatre در امتداد Shoreline Boulevard دردسترس است. هیچ پارکینگی برای این رویداد در مسیر Amphitheatre Parkway یا Charleston Road وجود ندارد. اگر می‌خواهید با خودرو به این رویداد بروید، توصیه می‌کنیم که از سواری اشتراکی با سایر شرکت‌کنندگان استفاده کنید چون فضاهای ویژه‌ای برای پارک‌کردن خودروهایی که دو سرنشین یا بیشتر دارد درنظرگرفته شده است.</string>
+    <string name="travel_shuttle_description">سرویس‌های رفت‌وبرگشت رویداد از همه هتل‌هایی که Google توصیه کرده است، بدون هیچ هزینه‌ای به همه شرکت‌کنندگان Google I/O ارائه می‌شود. همچنین سرویس‌های ویژه‌ای از سانفرانسیسکو و سایر مکان‌هایی که در مسیر شبه‌جزیره قرار دارد، ارائه می‌شود. برای سوارشدن به سرویس‌های رفت‌وبرگشت رویداد Google I/O باید ایمیل تأیید Google I/O یا نشان کنفرانس را نشان دهید.\n\nدر همه مکان‌های سوار شدن، از خودروهای دسترس‌پذیر پشتیبانی می‌شود. لطفاً اگر نیاز به هرگونه کمک خاصی دارید، در فرم ثبت‌نامتان ذکر کنید تا تیم برنامه‌ریزی برای پیگیری به‌طور مستقیم با شما تماس بگیرد.</string>
+    <string name="travel_carpool_parking_description">تعداد پارکینگ‌ها بسیار محدود بوده و فقط در مکان‌های تعیین‌شده توسط Google I/O از Shoreline Amphitheatre در امتداد Shoreline Boulevard دردسترس است. هیچ پارکینگی برای این رویداد در مسیر Amphitheatre Parkway یا Charleston Road وجود ندارد. اگر می‌خواهید با خودرو به این رویداد بروید، توصیه می‌کنیم که از هم‌سفری با سایر شرکت‌کنندگان استفاده کنید چون فضاهای ویژه‌ای برای پارک‌کردن خودروهایی که دو سرنشین یا بیشتر دارد درنظرگرفته شده است.</string>
     <string name="travel_ride_sharing_description"><b>Waze Carpool</b>‏\n‏Waze Carpool انجمنی از رانندگان و مسافران معتمد است که می‌تواند رفت‌و‌آمد به Google I/O را مفرح، سریع و مقرون به‌صرفه کند. رانندگی می‌کنید؟ هنگامی که به Bay Area رسیدید، <a href="http://Waze.com/get">Waze</a> را باز کنید. به‌دنبال سواری می‌گردید؟ پیش از رسیدن، <a href="http://Waze.com/carpool">Waze Carpool</a> را نصب کنید. طی هفته‌های آینده، برای دریافت کدهای تخفیف سواری اشتراکی مختص شرکت‌کنندگان Google I/O، به اینجا سر بزنید.\n\n‏<b>Lyft Line</b>‏\n برنامه Lyft را از Google Play بارگیری کنید و از Lyft Line برای به‌اشتراک‌گذاشتن سواری با سایر افرادی که با شما هم‌مسیر هستند استفاده کرده و هزینه کمتری پرداخت کنید. \n<b>کد تخفیف</b>: Googleio18\nاین کد از ۸ تا ۱۰ مه ۲۰۱۸ برای سواری‌های اشتراکی ازطریق Lyft Line معتبر است. تا حداکثر ۱۰ دلار برای هر سفر و حداکثر برای ۲۵۰ کاربر در روز قابل‌استفاده است. مسیر حرکت باید از Shoreline Amphitheatre شروع شده یا به آن ختم شود.</string>
     <string name="travel_public_transportation_description">حمل‌و‌نقل عمومی مستقیماً به Google I/O نمی‌رود. برای اطلاع از مکان‌های دقیق حمل‌ونقل که توسط سرویس‌های رفت‌و‌برگشت رویداد Google I/O ارائه می‌شود، با ما درارتباط باشید.</string>
     <string name="travel_biking_description">پارکینگ رایگان برای دوچرخه در پارکینگ A در Shoreline Amphitheatre دردسترس خواهد بود. Silicon Valley Bicycle Coalition از ساعت ۷ صبح تا پایان رویداد در هر روز، خدمات پارکینگ وله امن برای دوچرخه ارايه می‌دهد. دو مسیر Stevens Creek Trail و Permanente Creek Trail برای دوچرخه‌سوارانی که به‌سمت Shoreline Amphitheatre می‌روند، مناسب است. برای اطلاع از بهترین مسیرها و راه‌های دوچرخه‌سواری به Google Maps مراجعه کنید.\n\n‏ Bike to Work Day در Bay Area برای روز پنج‌شنبه ۱۰ مه زمان‌بندی شده است. در آن روز هزاران دوچرخه‌سوار در نزدیکی Shoreline حضور خواهند داشت و صدها ایستگاه تجدید قوا در سراسر مسیر قرار خواهد گرفت. لطفاً برای کسب اطلاعات بیشتر به وب‌سایت Silicon Valley Bike to Work Day مراجعه کنید.</string>
@@ -145,6 +165,7 @@
     <string name="wifi_password_label">گذرواژه:</string>
     <string name="wifi_install_success">شبکه Wifi ذخیره شد</string>
     <string name="wifi_install_error_message">متأسفیم، ذخیره شبکه Wifi امکان‌پذیر نیست</string>
+    <string name="wifi_install_clipboard_message">شبکه wifi ذخیره نشد.\nبه جای آن، گذرواژه در بریده‌دان ذخیره شد.</string>
     <string name="event_sessions_title">جلسات</string>
     <string name="event_sandbox_title">جعبه ایمنی</string>
     <string name="event_codelabs_title">Codelabs</string>
@@ -156,6 +177,7 @@
     <string name="event_officehours_description">ساعات اداری فرصتی برای ملاقات رو در رو با کارشناسان Google و مطرح کردن همه سؤالات فنی شما است، و «بازبینی برنامه» نیز فرصتی است که ازطریق آن می‌توانید درخصوص پروژه‌های خاص مربوط به برنامه‌ خود، مشاوره و راهنمایی دریافت کنید.</string>
     <string name="event_afterhours_description">پس از پایان «جلسات»، دو شب برای صرف غذا و نوشیدنی و سرگرمی در Shoreline حضور داشته باشید. در شب اول، مهمانی در فضای Sandbox برگزار می‌شود و در شب دوم، در «آمفی‌تئاتر» کنسرت انحصاری خواهیم داشت.</string>
     <string name="wifi_header">Wifi</string>
+    <string name="related_apps_header">برنامه‌های مرتبط</string>
     <string name="event_types_header">انواع رویداد</string>
     <string name="settings_time_zone_label">زمان رویدادها به منطقه زمانی Pacific ‏(UTC-8)</string>
     <string name="settings_send_anonymous_usage_statistics">ارسال آمار کاربرد به‌طور ناشناس</string>
@@ -164,4 +186,9 @@
     <string name="settings_oss_licenses">مجوز‌های منبع‌آزاد</string>
     <string name="settings_version_label">نسخه %1$s، ساخت %2$s</string>
     <string name="built_with_material_components">ساخته‌شده با Material Components.</string>
+    <string name="scavenger_hunt_description">به I/O Android Things Scavenger Hunt بپیوندید!</string>
+    <string name="scavenger_hunt_description2">(راهنمایی: ممکن است در آینده یک «کیت برنامه‌نویسی Android Things» وجود داشته باشد).</string>
+    <string name="assistant_app_description">از I/O 18 Action on Google Assistant استفاده کنید.</string>
+    <string name="assistant_app_description2">فقط بگویید «Hey Google, talk to Google I/O 18»!</string>
+    <string name="navigate_up">پیمایش به بالا</string>
 </resources>
