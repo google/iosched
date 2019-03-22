@@ -21,11 +21,11 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.R.string
-import com.google.samples.apps.iosched.model.feed.FeedItem
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.ui.SectionHeader
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import javax.inject.Inject
 
@@ -40,23 +40,20 @@ class FeedViewModel @Inject constructor(
 
     val errorMessage: LiveData<Event<String>>
 
-    val feed: LiveData<List<FeedItem>>
+    val feed: LiveData<List<Any>>
 
     val isLoading: LiveData<Boolean>
 
     val snackBarMessage: LiveData<Event<SnackbarMessage>>
 
-    private val loadFeedResult: MediatorLiveData<Result<List<FeedItem>>> =
-        loadAnnouncementsUseCase.observe() as MediatorLiveData<Result<List<FeedItem>>>
+    private val loadFeedResult = loadAnnouncementsUseCase.observe()
 
     init {
         feed = loadFeedResult.map {
             val items = (it as? Result.Success)?.data ?: emptyList()
             arrayListOf(
                 CountdownTimer(),
-                SectionHeader(
-                    titleId = string.feed_announcement_title
-                )
+                SectionHeader(string.feed_announcement_title)
             ).plus(items)
         }
 

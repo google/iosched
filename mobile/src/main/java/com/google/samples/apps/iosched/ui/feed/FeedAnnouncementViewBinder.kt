@@ -16,16 +16,15 @@
 
 package com.google.samples.apps.iosched.ui.feed
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.model.feed.Announcement
 import com.google.samples.apps.iosched.databinding.ItemFeedAnnouncementBinding
+import com.google.samples.apps.iosched.model.Announcement
 
-class FeedAnnouncementViewBinder(modelClass: Class<Announcement>, context: Context) :
-    FeedListItemViewBinder<Announcement, FeedAnnouncementViewHolder>(modelClass, context) {
+class FeedAnnouncementViewBinder :
+    FeedListItemViewBinder<Announcement, FeedAnnouncementViewHolder>(Announcement::class.java) {
 
     override fun createViewHolder(parent: ViewGroup): FeedAnnouncementViewHolder =
         FeedAnnouncementViewHolder(

@@ -19,12 +19,11 @@ package com.google.samples.apps.iosched.test.data
 import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.model.ConferenceDay
-import com.google.samples.apps.iosched.model.feed.Announcement
 import com.google.samples.apps.iosched.model.Room
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.Speaker
 import com.google.samples.apps.iosched.model.Tag
-import com.google.samples.apps.iosched.model.feed.FeedItem
+import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.model.reservations.ReservationRequestResult
 import com.google.samples.apps.iosched.model.reservations.ReservationRequestResult.ReservationRequestStatus.RESERVE_DENIED_CUTOFF
 import com.google.samples.apps.iosched.model.reservations.ReservationRequestResult.ReservationRequestStatus.RESERVE_DENIED_UNKNOWN
@@ -267,6 +266,6 @@ object TestData {
         imageUrl = "", color = 0, category = "", priority = false, emergency = false
     )
 
-    val feed = listOf<FeedItem>(feedItem1, feedItem2, feedItem3, feedItem4)
     val announcements = listOf(feedItem1, feedItem2, feedItem3, feedItem4)
+    val feed = announcements.toList<Any>()
 }

@@ -19,7 +19,7 @@ package com.google.samples.apps.iosched.shared.domain.feed
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
-import com.google.samples.apps.iosched.model.feed.Announcement
+import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.shared.result.Result
 import javax.inject.Inject
 

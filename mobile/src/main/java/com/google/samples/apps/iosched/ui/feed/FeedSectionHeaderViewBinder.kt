@@ -16,44 +16,41 @@
 
 package com.google.samples.apps.iosched.ui.feed
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.databinding.ItemFeedSectionHeaderBinding
+import com.google.samples.apps.iosched.databinding.ItemGenericSectionHeaderBinding
+import com.google.samples.apps.iosched.ui.SectionHeader
 
-class FeedAnnouncementHeaderViewBinder(modelClass: Class<SectionHeader>, context: Context) :
-    FeedListItemViewBinder<SectionHeader, AnnouncementViewHolder>(modelClass, context) {
+class FeedSectionHeaderViewBinder :
+    FeedListItemViewBinder<SectionHeader, SectionHeaderViewHolder>(SectionHeader::class.java) {
 
-    override fun createViewHolder(parent: ViewGroup): AnnouncementViewHolder =
-        AnnouncementViewHolder(
-            ItemFeedSectionHeaderBinding.inflate(
+    override fun createViewHolder(parent: ViewGroup): SectionHeaderViewHolder =
+        SectionHeaderViewHolder(
+            ItemGenericSectionHeaderBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
-            ),
-            context
+            )
         )
 
-    override fun bindViewHolder(model: SectionHeader, viewHolder: AnnouncementViewHolder) {
+    override fun bindViewHolder(model: SectionHeader, viewHolder: SectionHeaderViewHolder) {
         viewHolder.bind(model)
     }
 
-    override fun getFeedItemType(): Int = R.layout.item_feed_section_header
+    override fun getFeedItemType(): Int = R.layout.item_generic_section_header
 
     override fun areItemsTheSame(oldItem: SectionHeader, newItem: SectionHeader): Boolean =
         oldItem.titleId == newItem.titleId
 
-    override fun areContentsTheSame(oldItem: SectionHeader, newItem: SectionHeader) =
-        oldItem == newItem
+    // This is called if [areItemsTheSame] is true, in which case we know the contents match.
+    override fun areContentsTheSame(oldItem: SectionHeader, newItem: SectionHeader) = true
 }
 
-class AnnouncementViewHolder(
-    private val binding: ItemFeedSectionHeaderBinding,
-    val context: Context
+class SectionHeaderViewHolder(
+    private val binding: ItemGenericSectionHeaderBinding
 ) : ViewHolder(binding.root) {
 
     fun bind(model: SectionHeader) {
-        binding.announcementHeaderText = context.getString(model.titleId)
-        binding.executePendingBindings()
+        binding.sectionHeader = model
     }
 }

@@ -20,26 +20,54 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.google.common.collect.ImmutableMap
-import com.google.samples.apps.iosched.model.feed.FeedItem
+
+typealias FeedItemClass = Class<out Any>
+
+typealias FeedItemBinder = FeedListItemViewBinder<Any, ViewHolder>
 
 class FeedAdapter(
-    callback: DiffUtil.ItemCallback<FeedItem>,
-    val viewBinders: ImmutableMap<FeedItemClass, FeedBinder>
-) : ListAdapter<FeedItem, ViewHolder>(callback) {
+    private val viewBinders: Map<FeedItemClass, FeedItemBinder>
+) : ListAdapter<Any, ViewHolder>(FeedDiffCallback(viewBinders)) {
 
     private val viewTypeToBinders = viewBinders.mapKeys { it.value.getFeedItemType() }
+
+    private fun getViewBinder(viewType: Int): FeedItemBinder = viewTypeToBinders[viewType]!!
+
+    override fun getItemViewType(position: Int): Int =
+        viewBinders[super.getItem(position).javaClass]!!.getFeedItemType()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return getViewBinder(viewType).createViewHolder(parent)
     }
 
-    fun getViewBinder(viewType: Int): FeedBinder = viewTypeToBinders[viewType]!!
-
-    override fun getItemViewType(position: Int): Int =
-        viewBinders[super.getItem(position).javaClass]!!.getFeedItemType()
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         return getViewBinder(getItemViewType(position)).bindViewHolder(getItem(position), holder)
+    }
+}
+
+/** Encapsulates logic to create and bind a ViewHolder for a type of item in the Feed. */
+abstract class FeedListItemViewBinder<M, in VH : ViewHolder>(
+    val modelClass: Class<out M>
+) : DiffUtil.ItemCallback<M>() {
+
+    abstract fun createViewHolder(parent: ViewGroup): ViewHolder
+    abstract fun bindViewHolder(model: M, viewHolder: VH)
+    abstract fun getFeedItemType(): Int
+}
+
+internal class FeedDiffCallback(
+    private val viewBinders: Map<FeedItemClass, FeedItemBinder>
+) : DiffUtil.ItemCallback<Any>() {
+
+    override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
+        if (oldItem::class != newItem::class) {
+            return false
+        }
+        return viewBinders[oldItem::class.java]?.areItemsTheSame(oldItem, newItem) ?: false
+    }
+
+    override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
+        // We know the items are the same class because [areItemsTheSame] returned true
+        return viewBinders[oldItem::class.java]?.areContentsTheSame(oldItem, newItem) ?: false
     }
 }

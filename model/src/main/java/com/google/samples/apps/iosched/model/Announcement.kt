@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.model.feed
+package com.google.samples.apps.iosched.model
 
 import androidx.annotation.ColorInt
 import org.threeten.bp.ZonedDateTime
@@ -41,4 +41,4 @@ data class Announcement(
      */
     val category: String,
     @ColorInt val color: Int
-) : FeedItem
+)

@@ -18,8 +18,8 @@ package com.google.samples.apps.iosched.shared.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
-import com.google.samples.apps.iosched.model.feed.Announcement
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 
