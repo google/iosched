@@ -22,6 +22,7 @@ import com.google.samples.apps.iosched.ui.LauncherActivity
 import com.google.samples.apps.iosched.ui.MainActivity
 import com.google.samples.apps.iosched.ui.MainActivityModule
 import com.google.samples.apps.iosched.ui.agenda.AgendaModule
+import com.google.samples.apps.iosched.ui.codelabs.CodelabsModule
 import com.google.samples.apps.iosched.ui.feed.FeedModule
 import com.google.samples.apps.iosched.ui.info.InfoModule
 import com.google.samples.apps.iosched.ui.map.MapModule
@@ -63,19 +64,23 @@ abstract class ActivityBindingModule {
     @ActivityScoped
     @ContributesAndroidInjector(
         modules = [
-            FeedModule::class,
+            // activity
             MainActivityModule::class,
+            // fragments
             AgendaModule::class,
-            ScheduleModule::class,
-            MapModule::class,
+            CodelabsModule::class,
+            FeedModule::class,
             InfoModule::class,
+            MapModule::class,
+            ScheduleModule::class,
+            SessionDetailModule::class,
             SettingsModule::class,
-            SignInDialogModule::class,
+            SpeakerModule::class,
+            // other
+            PreferenceModule::class,
             ReservationModule::class,
             PreferenceModule::class,
-            SessionDetailModule::class,
             SessionFeedbackModule::class,
-            SpeakerModule::class,
             SignInDialogModule::class,
             EventActionsViewModelDelegateModule::class
         ]

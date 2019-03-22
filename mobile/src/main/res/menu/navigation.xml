@@ -41,6 +41,12 @@
             app:contentDescription="@string/agenda" />
 
         <item
+            android:id="@id/navigation_codelabs"
+            android:icon="@drawable/ic_nav_codelabs"
+            android:title="@string/event_codelabs_title"
+            app:contentDescription="@string/event_codelabs_title" />
+
+        <item
             android:id="@id/navigation_map"
             android:icon="@drawable/ic_nav_map"
             android:title="@string/title_map"

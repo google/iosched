@@ -29,7 +29,7 @@ import androidx.annotation.Keep
 /**
  * A [Transition] which animates the rotation of a [View].
  */
-class Rotate : Transition {
+class RotateX : Transition {
 
     @Keep
     constructor() : super()
@@ -64,13 +64,13 @@ class Rotate : Transition {
         // ensure the pivot is set
         view.pivotX = view.width / 2f
         view.pivotY = view.height / 2f
-        return ObjectAnimator.ofFloat(endValues.view, View.ROTATION, startRotation, endRotation)
+        return ObjectAnimator.ofFloat(view, View.ROTATION_X, startRotation, endRotation)
     }
 
     private fun captureValues(transitionValues: TransitionValues) {
         val view = transitionValues.view
         if (view == null || view.width <= 0 || view.height <= 0) return
-        transitionValues.values[PROP_ROTATION] = view.rotation
+        transitionValues.values[PROP_ROTATION] = view.rotationX
     }
 
     companion object {
