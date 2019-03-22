@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,16 +14,13 @@
   ~ limitations under the License.
   -->
 
-<transitionSet
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:interpolator="@android:interpolator/fast_out_slow_in">
-
-    <transition class="com.google.samples.apps.iosched.widget.transition.RotateX">
-        <targets>
-            <target android:targetId="@id/expand_icon" />
-        </targets>
-    </transition>
-
-    <changeBounds />
-
-</transitionSet>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="?colorControlNormal">
+    <path
+        android:fillColor="#000"
+        android:pathData="M16,6l-1.41,1.41L19.17,12l-4.58,4.59L16,18l6,-6 -6,-6zM8,18l1.41,-1.41L4.83,12l4.58,-4.59L8,6l-6,6 6,6z" />
+</vector>

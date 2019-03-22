@@ -25,19 +25,20 @@
         android:id="@id/navigation_schedule"
         android:name="com.google.samples.apps.iosched.ui.schedule.ScheduleFragment"
         android:label="@string/title_schedule"
-        tools:layout="@layout/fragment_schedule" >
+        tools:layout="@layout/fragment_schedule">
         <argument
             android:name="showPinnedEvents"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
         <argument
             android:name="showAllEvents"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
         <action
             android:id="@+id/to_session_detail"
             app:destination="@id/navigation_session_detail" />
     </fragment>
+
     <fragment
         android:id="@id/navigation_info"
         android:name="com.google.samples.apps.iosched.ui.info.InfoFragment"
@@ -49,11 +50,13 @@
         android:name="com.google.samples.apps.iosched.ui.agenda.AgendaFragment"
         android:label="@string/agenda"
         tools:layout="@layout/fragment_agenda" />
+
     <fragment
         android:id="@id/navigation_settings"
         android:name="com.google.samples.apps.iosched.ui.settings.SettingsFragment"
         android:label="@string/settings_title"
         tools:layout="@layout/fragment_settings" />
+
     <fragment
         android:id="@id/navigation_feed"
         android:name="com.google.samples.apps.iosched.ui.feed.FeedFragment"
@@ -63,11 +66,12 @@
             android:id="@+id/to_session_detail"
             app:destination="@id/navigation_session_detail" />
     </fragment>
+
     <fragment
         android:id="@id/navigation_map"
         android:name="com.google.samples.apps.iosched.ui.map.MapFragment"
         android:label="@string/title_map"
-        tools:layout="@layout/fragment_map" >
+        tools:layout="@layout/fragment_map">
         <!-- Navigation library doesn't allow nullable arguments of an enum type, so we have to use
              the enum name instead. b/129802059
         -->
@@ -88,6 +92,12 @@
     </fragment>
 
     <fragment
+        android:id="@id/navigation_codelabs"
+        android:name="com.google.samples.apps.iosched.ui.codelabs.CodelabsFragment"
+        android:label="@string/event_codelabs_title"
+        tools:layout="@layout/fragment_codelabs" />
+
+    <fragment
         android:id="@id/navigation_session_detail"
         android:name="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailFragment"
         tools:layout="@layout/fragment_session_detail">
@@ -104,6 +114,7 @@
             android:id="@+id/to_map"
             app:destination="@id/navigation_map" />
     </fragment>
+
     <fragment
         android:id="@id/navigation_speaker_detail"
         android:name="com.google.samples.apps.iosched.ui.speaker.SpeakerFragment"

@@ -312,7 +312,7 @@
 
     <string name="no_network_connection" translation_description="Snackbar message when there is not network connection">No internet connection.</string>
 
-    <string name="navigate_up" translation-description="Arrow at the top left of the screen for navigation">Navigate up</string>
+    <string name="navigate_up" translation_description="Arrow at the top left of the screen for navigation">Navigate up</string>
 
     <!-- AR -->
     <string name="error_fetch_ar_module" translation_description="Error message shown when an error happens when downloading the Augmented Reality module">An error occurred while downloading the AR module. Is your network connection working?</string>
@@ -326,4 +326,5 @@
     <string name="codelabs_website" translation_description="Text of a button that launches the Codelabs website.">Codelabs website</string>
     <string name="codelab_duration" translation_description="Text showing the approximate time in minutes that a user would spend during a codelab tutorial. Abbreviated.">Duration: %1$d min</string>
     <string name="start_codelab" translation_description="Text of a button that allows a user to start a codelab tutorial.">Start codelab</string>
+
 </resources>

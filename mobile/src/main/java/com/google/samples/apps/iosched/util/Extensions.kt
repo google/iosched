@@ -232,3 +232,16 @@ data class ViewPaddingState(
 fun WindowInsets.getTappableElementInsetsAsRect(): Rect {
     return WindowInsetsUtils.getTappableElementInsets(this)
 }
+
+/** Compatibility removeIf since it was added in API 24 */
+fun <T> MutableCollection<T>.compatRemoveIf(predicate: (T) -> Boolean): Boolean {
+    val it = iterator()
+    var removed = false
+    while (it.hasNext()) {
+        if (predicate(it.next())) {
+            it.remove()
+            removed = true
+        }
+    }
+    return removed
+}
