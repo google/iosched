@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 -->
 <resources>
     <string name="title_schedule">الجدول الزمني</string>
+    <string name="title_feed">الخلاصة</string>
     <string name="title_map">الخريطة</string>
     <string name="filters">فلاتر</string>
     <string name="category_heading_tracks">المواضيع</string>
@@ -65,6 +66,19 @@
     <string name="menu_item_session_star">تمييز الجلسة بنجمة</string>
     <string name="session_detail_speakers_header">مكبّرات الصوت</string>
     <string name="session_detail_related_header">الأحداث ذات الصلة</string>
+    <string name="feedback_submit">إرسال</string>
+    <string name="feedback_q1_text">كيف تقيّم نوعية الجلسة بشكل عام؟</string>
+    <string name="feedback_q2_text">كيف تصف محتوى الجلسة بالاستناد إلى توقعاتك/وصف الجلسة؟</string>
+    <string name="feedback_q3_text">ما مدى ارتباط موضوع الجلسة بمشاريعك؟</string>
+    <string name="feedback_q4_text">كيف تقيّم المحاضِر (المحاضِرين)؟</string>
+    <string name="feedback_q1_label_start">تقدّم معلومات للمبتدئين</string>
+    <string name="feedback_q2_label_start">سيّئة</string>
+    <string name="feedback_q3_label_start">عادية</string>
+    <string name="feedback_q4_label_start">ليست على مستوى توقّعاتي</string>
+    <string name="feedback_q1_label_end">تقدّم معلومات متقدّمة جدًا</string>
+    <string name="feedback_q3_label_end">مفيدة جدًا</string>
+    <string name="feedback_q4_label_end">رائعة</string>
+    <string name="a11y_show_navigation">عرض قائمة التنقل</string>
     <string name="a11y_collapse_filters_sheet">طيّ ورقة الفلاتر</string>
     <string name="a11y_clear_tag_filters">مسح الفلاتر</string>
     <string name="a11y_revert_pinned">عرض كلّ الجلسات</string>
@@ -79,6 +93,10 @@
     <string name="a11y_unstarred">لم يتمّ وضع إشارة مرجعية على الحدث.</string>
     <string name="a11y_star">نجمة</string>
     <string name="a11y_play">تشغيل الفيديو</string>
+    <string name="welcome">مرحبًا</string>
+    <string name="sign_in_hint">يُرجى النقر لتسجيل الدخول.</string>
+    <string name="a11y_signed_in_content_description">تم تسجيل الدخول من حساب %s.</string>
+    <string name="a11y_signed_out_content_description">يُرجى النقر لتسجيل الدخول.</string>
     <string name="dialog_sign_in_title">تسجيل الدخول لتخصيص الجدول الزمني</string>
     <string name="dialog_sign_in_content">يُرجى تسجيل الدخول لحفظ الأحداث، وحجز المقاعد، وتقييم الجلسات (إذا كنت ضيفًا). وستتمّ مزامنة الإجراءات التي يتمّ إجراؤها في حسابك على التطبيق والموقع الإلكتروني.</string>
     <string name="not_now">في وقت لاحق</string>
@@ -116,6 +134,8 @@
     <string name="menu_item_share_session">مشاركة الجلسة</string>
     <string name="share_text_session_detail">يُرجى الاطّلاع على \"%1$s\" على العنوان #io18 %2$s.</string>
     <string name="intent_chooser_session_detail">مشاركة</string>
+    <string name="enable_my_location">تفعيل الوصول إلى موقعي</string>
+    <string name="my_location_rationale">يجب منح التطبيق إذن تحديد الموقع الجغرافي ليتمكّن من عرض موقعك الجغرافي على الخريطة.</string>
     <string name="onboarding_get_started">البدء</string>
     <string name="onboarding_welcome_to_google_i_o">أهلاً بك في Google I/O</string>
     <string name="onboarding_date_location">من 8 إلى 10 أيار (مايو)، \n2018 Mountain View, CA</string>
@@ -148,7 +168,7 @@
     <string name="travel_public_transportation_title">وسائل النقل العام</string>
     <string name="travel_biking_title">ركوب الدرّاجات</string>
     <string name="travel_directions_description">البحث عن الاتّجاهات على <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">خرائط Google</a> أو <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a> للتوجّه إلى 1 Amphitheatre Pkwy ،Mountain View ،CA 94043</string>
-    <string name="travel_shuttle_description">سيتمّ نقل ضيوف حدث Google I/O في حافلات مجّانًا من كلّ الفنادق المُقترحة من Google. وتتوفّر خدمة نقل اختيارية من سان فرانسيسكو ومواقع جغرافيّة أخرى ضمن شبه جزيرة سان فرانسيسكو. يجب إظهار بريد التحقّق الإلكتروني أو شارة مؤتمر Google I/O لركوب حافلات حدث Google I/O ‏.\n\n في كلّ موقع التقاء، تتوفّر حافلة مجهّزة لذوي الاحتياجات الخاصّة. يُرجى الإشارة في استمارة التسجيل إذا كنتَ من ذوي الاحتياجات الخاصّة وسيتواصل معك فريق التخطيط مباشرةً.</string>
+    <string name="travel_shuttle_description">ستتوفّر حافلات لنقل ضيوف مؤتمر Google I/O مجّانًا من كلّ الفنادق التي اقترحتها Google. وتتوفّر خدمة نقل اختيارية من سان فرانسيسكو ومواقع أخرى ضمن شبه جزيرة سان فرانسيسكو. يجب إظهار رسالة التأكيد التي وصلتك عبر البريد الإلكتروني أو شارة مؤتمر Google I/O لركوب الحافلات المخصّصة للمؤتمر.\n\n تتوفّر حافلة مجهّزة لذوي الاحتياجات الخاصّة في كلّ موقع تجمّع. وإذا كنت من ذوي الاحتياجات الخاصّة، يُرجى الإشارة إلى ذلك في استمارة التسجيل وسيتواصل معك فريق التخطيط مباشرةً.</string>
     <string name="travel_carpool_parking_description">إنّ عدد المواقف محدود جدًا وهي تتوفّر فقط في الأماكن المخصّصة لمؤتمر Google I/O من المدرّج الروماني في شورلاين وصولًا إلى جادّة شورلاين. لا تتوفّر مواقف في طريق منتزه المدرّج الروماني أو طريق شارلستون. إذا أردت القيادة لتصل إلى المكان، ننصحك بمشاركة رحلة السيارة مع الضيوف الآخرين لأنّ أفضلية مساحات الوقوف ستعود للسيارات التي تنقل راكبَيْن أو أكثر.</string>
     <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\n‏ إنّ Waze Carpool هو منتدى موثوق من السائقين المتاحين لجعل رحلتك إلى مؤتمر Google I/O مسليّة وسريعة وذات تكلفة معقولة. هل ستقود سيّارتك؟ يُرجى فتح <a href="http://Waze.com/get">Waze</a> عند وصولك إلى منطقة الخليج. هل تريد أن يوصِلك شخص ما؟ يُرجى تثبيت <a href="http://Waze.com/carpool">Waze Carpool</a> قبل وصولك. يمكنك الاطّلاع في الأسابيع القادمة على توفّر رموز خصم لمشاركة رحلات السيارة الحصريّة لضيوف مؤتمر Google I/O.‏\n\n<b>Lyft Line</b>\nيمكنك تنزيل تطبيق Lyft من Google Play واستخدام Lyft Line لمشاركة الرحلة مع أشخاص آخرين إلى نفس المكان بسعر أقلّ.\n<b>رمز الخصم</b>: إنّ رمز Googleio18\n صالح لمشاركة الرحلات على Lyft Line من 8 إلى 10 أيّار (مايو) 2018. ويمكنك استرداد قيمة ما يصل إلى 10$ عن كلّ رحلة ولما يصل إلى 250 مستخدمًا عن كلّ يوم. يجب أن تبدأ الرحلات من أو تصل إلى مدرّج شورلاين.</string>
     <string name="travel_public_transportation_description">لا تتوجّه وسائل النقل العام مباشرةً إلى مؤتمر Google I/O. يمكنك متابعة أخبارنا لمعرفة المواقع المحدّدة لوسائل النقل المخصّصة لحدث Google I/O.</string>
@@ -161,6 +181,7 @@
     <string name="wifi_password_label">كلمة المرور:</string>
     <string name="wifi_install_success">تمّ حفظ شبكة Wi-Fi.</string>
     <string name="wifi_install_error_message">تعذّر حفظ شبكة Wi-Fi.</string>
+    <string name="wifi_install_clipboard_message">تعذّر حفظ تفاصيل شبكة Wi-Fi.‏\nوتمّ حفظ كلمة المرور في الحافظة بدلاً من ذلك.</string>
     <string name="event_sessions_title">الجلسات</string>
     <string name="event_sandbox_title">وَضْع الحماية</string>
     <string name="event_codelabs_title">Codelabs</string>
@@ -172,6 +193,7 @@
     <string name="event_officehours_description">يمكنك أن تتعرّف على خبراء Google شخصيًّا ضمن ساعات العمل ليجيبوا عن أسئلتك التقنية. وتمكنّك تقييمات التطبيق من الحصول على نصائح بشأن مشاريعك المحدّدة لأيّ تطبيق.</string>
     <string name="event_afterhours_description">بعد انتهاء \"الجلسات\"، يُرجى البقاء في شورلاين لِلَيْلَتَيْن يتمّ فيهما تقديم الطعام والشراب والتسلية. سنقيم حفلة في الليلة الأولى في مساحة Sandbox، وفي الليلة الثانية سنقيم حفلة حصريّة في المدرّج.</string>
     <string name="wifi_header">Wi-Fi</string>
+    <string name="related_apps_header">التطبيقات ذات الصلة</string>
     <string name="event_types_header">أنواع الأحداث</string>
     <string name="settings_time_zone_label">تجري الأحداث بتوقيت المحيط الهادئ (UTC-8).</string>
     <string name="settings_send_anonymous_usage_statistics">إرسال إحصاءات الاستخدام المجهولة المصدر</string>
@@ -180,4 +202,9 @@
     <string name="settings_oss_licenses">تراخيص البرامج المفتوحة المصدر</string>
     <string name="settings_version_label">الإصدار %1$s، النسخة %2$s</string>
     <string name="built_with_material_components">تمّ إنشاء التطبيق عبر Material Components.</string>
+    <string name="scavenger_hunt_description">شارِك في Scavenger Hunt من Android Things في مؤتمر I/O.</string>
+    <string name="scavenger_hunt_description2">(تلميح: قد تتوفّر لديك مجموعة أدوات مطوّري برامج Android Things في المستقبل).</string>
+    <string name="assistant_app_description">يمكنك استخدام خدمة \"المهام مع مساعد Google\" المخصّصة لمؤتمر I/O 18.</string>
+    <string name="assistant_app_description2">ما عليك سوى قول \"Hey Google, talk to Google I/O 18\".</string>
+    <string name="navigate_up">الانتقال إلى الأعلى</string>
 </resources>

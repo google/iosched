@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 -->
 <resources>
     <string name="title_schedule">Lịch biểu</string>
+    <string name="title_feed">Nguồn cấp dữ liệu</string>
     <string name="title_map">Bản đồ</string>
     <string name="filters">Bộ lọc</string>
     <string name="category_heading_tracks">Chủ đề</string>
@@ -61,6 +62,19 @@
     <string name="menu_item_session_star">Bắt đầu phiên</string>
     <string name="session_detail_speakers_header">Diễn giả</string>
     <string name="session_detail_related_header">Các sự kiện liên quan</string>
+    <string name="feedback_submit">Gửi</string>
+    <string name="feedback_q1_text">Vui lòng cho biết ý kiến đánh giá của bạn về chất lượng chung của Phiên hội thảo này.</string>
+    <string name="feedback_q2_text">Vui lòng cho biết cảm nhận của bạn về nội dung của Phiên hội thảo này dựa trên kỳ vọng của bạn hoặc thông tin mô tả của phiên hội thảo.</string>
+    <string name="feedback_q3_text">Vui lòng cho biết mức độ liên quan của Phiên hội thảo này với các dự án của bạn.</string>
+    <string name="feedback_q4_text">Vui lòng cho biết ý kiến đánh giá của bạn về (các) diễn giả.</string>
+    <string name="feedback_q1_label_start">Rất căn bản</string>
+    <string name="feedback_q2_label_start">Kém</string>
+    <string name="feedback_q3_label_start">Không quá</string>
+    <string name="feedback_q4_label_start">Đáng thất vọng</string>
+    <string name="feedback_q1_label_end">Rất tiên tiến</string>
+    <string name="feedback_q3_label_end">Cực kỳ</string>
+    <string name="feedback_q4_label_end">Vượt trội</string>
+    <string name="a11y_show_navigation">Hiển thị menu di chuyển</string>
     <string name="a11y_collapse_filters_sheet">Hạ thấp bảng bộ lọc</string>
     <string name="a11y_clear_tag_filters">Xóa bộ lọc</string>
     <string name="a11y_revert_pinned">Hiển thị tất cả các phiên</string>
@@ -75,6 +89,10 @@
     <string name="a11y_unstarred">Chưa đánh dấu sự kiện</string>
     <string name="a11y_star">Ngôi sao</string>
     <string name="a11y_play">Phát video</string>
+    <string name="welcome">Xin chào!</string>
+    <string name="sign_in_hint">Nhấn để đăng nhập</string>
+    <string name="a11y_signed_in_content_description">Đã đăng nhập bằng %s.</string>
+    <string name="a11y_signed_out_content_description">Nhấn để đăng nhập.</string>
     <string name="dialog_sign_in_title">Đăng nhập để tùy chỉnh lịch biểu của bạn</string>
     <string name="dialog_sign_in_content">Đăng nhập để lưu các sự kiện, đặt chỗ và xếp hạng các phiên sự kiện (nếu tham dự). Các thao tác sẽ được đồng bộ từ tài khoản của bạn trên cả ứng dụng và trang web.</string>
     <string name="not_now">Để sau</string>
@@ -104,6 +122,8 @@
     <string name="menu_item_share_session">Chia sẻ về phiên hội thảo</string>
     <string name="share_text_session_detail">Hãy đến tham gia hội thảo \"%1$s\" tại #io18 %2$s</string>
     <string name="intent_chooser_session_detail">Chia sẻ</string>
+    <string name="enable_my_location">Bật vị trí của tôi</string>
+    <string name="my_location_rationale">Ứng dụng này cần bạn cấp quyền truy cập vị trí để hiển thị vị trí của bạn trên bản đồ.</string>
     <string name="onboarding_get_started">Bắt đầu</string>
     <string name="onboarding_welcome_to_google_i_o">Chào mừng bạn đến với Google I/O</string>
     <string name="onboarding_date_location">8-10 tháng 5\nnăm 2018 Mountain View, CA</string>
@@ -132,7 +152,7 @@
     <string name="travel_public_transportation_title">Giao thông công cộng</string>
     <string name="travel_biking_title">Đi xe đạp</string>
     <string name="travel_directions_description">Tìm đường đến số 1 Amphitheatre Pkwy, Mountain View, CA 94043 trên <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> hoặc <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a></string>
-    <string name="travel_shuttle_description">Sẽ có dịch vụ đưa đón miễn phí đến sự kiện dành cho tất cả những người tham dự Google I/O từ những khách sạn do Google đề xuất. Cũng có dịch vụ tùy chọn từ San Francisco đến những khu vực khác dọc Bán đảo. Bạn phải xuất trình email xác nhận của Google I/O hoặc thẻ hội nghị để lên các phương tiện đưa đón đến sự kiện của Google I/O.\n\nMỗi vị trí đón khách đều có phương tiện trợ giúp đặc biệt dành cho người khuyết tật theo Ðạo luật người khuyết tật Hoa Kỳ (ADA). Vui lòng ghi rõ trên phiếu đăng ký nếu bạn có bất kỳ yêu cầu hỗ trợ đặc biệt nào hoặc yêu cầu theo ADA và bộ phận kế hoạch sẽ trực tiếp hỗ trợ bạn.</string>
+    <string name="travel_shuttle_description">Sẽ có xe đưa đón miễn phí dành cho tất cả những người tham dự sự kiện Google I/O từ những khách sạn do Google đề xuất. Cũng có dịch vụ dành riêng từ San Francisco và những vị trí khác dọc khu vực Bán đảo. Bạn phải xuất trình email xác nhận của Google I/O hoặc huy hiệu của hội nghị để lên xe đưa đón đến sự kiện Google I/O.\n\nMỗi vị trí đón khách đều có phương tiện trợ giúp dành cho người khuyết tật. Nếu bạn có bất kỳ yêu cầu hỗ trợ đặc biệt nào, vui lòng ghi rõ trên phiếu đăng ký. Sau đó, bộ phận kế hoạch sẽ trực tiếp hỗ trợ bạn.</string>
     <string name="travel_carpool_parking_description">Chỗ đỗ xe rất hạn chế và chỉ có tại khu vực dành riêng cho Google I/O từ Nhà hát vòm Shoreline (Shoreline Amphitheatre) dọc theo Đại lộ Shoreline (Shoreline Boulevard). Dọc theo Đại lộ Amphitheatre (Amphitheatre Parkway) hoặc Đường Charleston (Charleston Road) không có chỗ đỗ xe dành riêng cho sự kiện. Nếu bạn dự định lái xe, chúng tôi khuyên bạn đi chung xe với những người tham dự khác vì khu vực đỗ xe của sự kiện chỉ dành cho những ô tô chở từ hai người trở lên.</string>
     <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\nWaze Carpool là một cộng đồng lái xe và người đi chung xe đáng tin cậy có thể khiến hành trình của bạn đến Google I/O trở nên vui vẻ, nhanh chóng và tiết kiệm. Bạn lái xe ư? Hãy mở <a href="http://Waze.com/get">Waze</a> khi bạn đến Vùng Vịnh (Bay Area). Bạn muốn đi nhờ xe ư? Hãy cài đặt <a href="http://Waze.com/carpool">Waze Carpool</a> trước khi đến. Trong mấy tuần sắp tới, vui lòng vào đây để xem mã giảm giá đi chung xe dành riêng cho những người tham dự Google I/O.\n\n<b>Lyft Line</b>\nTải ứng dụng Lyft xuống từ Google Play và sử dụng Lyft Line để chia sẻ chuyến đi với những người khác có cùng hành trình nhằm tiết kiệm chi phí.\n<b>Mã giảm giá</b>: Googleio18\nĐây là mã có hiệu lực từ ngày 8 đến ngày 10 tháng 5 năm 2018 dành cho những người đi chung xe sử dụng Lyft Line. Mỗi chuyến đi có thể được giảm tới $10 và mỗi ngày tối đa 250 người có thể sử dụng mã này. Người đi chung xe phải có điểm xuất phát hoặc điểm đến là Nhà hát vòm Shoreline (Shoreline Amphitheatre).</string>
     <string name="travel_public_transportation_description">Không có phương tiện công cộng đi thẳng tới Google I/O. Hãy chú ý theo dõi vị trí chính xác của các dịch vụ đưa đón đến sự kiện của Google I/O.</string>
@@ -145,6 +165,7 @@
     <string name="wifi_password_label">Mật khẩu:</string>
     <string name="wifi_install_success">Đã lưu mạng wifi</string>
     <string name="wifi_install_error_message">Rất tiếc, không thể lưu mạng wifi</string>
+    <string name="wifi_install_clipboard_message">Không thể lưu mạng wifi.\nVì vậy, chúng tôi đã lưu mật khẩu vào khay nhớ tạm.</string>
     <string name="event_sessions_title">Số phiên</string>
     <string name="event_sandbox_title">Hộp cát</string>
     <string name="event_codelabs_title">Phòng thí nghiệm lập trình</string>
@@ -156,12 +177,18 @@
     <string name="event_officehours_description">Giờ làm việc là cơ hội bạn có thể gặp mặt trực tiếp các chuyên gia của Google để đặt những câu hỏi kỹ thuật và Đánh giá ứng dụng sẽ cho bạn có hội nhận được lời khuyên và tư vấn cho các dự án liên quan đến ứng dụng cụ thể của bạn.</string>
     <string name="event_afterhours_description">Sau khi kết thúc Phiên sự kiện trong ngày, hãy lưu lại Shoreline hai đêm để thưởng thức ẩm thực và vui vẻ. Vào đêm đầu tiên, bữa tiệc sẽ được tổ chức trên không gian Hộp cát và vào đêm thứ hai, chúng tôi sẽ tổ chức một buổi hòa nhạc độc đáo tại Nhà hát vòm.</string>
     <string name="wifi_header">Wi-Fi</string>
+    <string name="related_apps_header">Ứng dụng liên quan</string>
     <string name="event_types_header">Loại sự kiện</string>
     <string name="settings_time_zone_label">Sự kiện ở múi giờ chuẩn Thái Bình Dương (UTC-8)</string>
     <string name="settings_send_anonymous_usage_statistics">Gửi số liệu thống kê sử dụng ẩn danh</string>
     <string name="settings_tos">Điều khoản dịch vụ</string>
-    <string name="settings_privacy_policy">Chính sách bảo mật</string>
+    <string name="settings_privacy_policy">Chính sách quyền riêng tư</string>
     <string name="settings_oss_licenses">Giấy phép mã nguồn mở</string>
     <string name="settings_version_label">Phiên bản %1$s, bản dựng %2$s</string>
     <string name="built_with_material_components">Được dựng với các Thành phần quan trọng.</string>
+    <string name="scavenger_hunt_description">Cùng tham gia trò chơi Truy tìm kho báu của Android Things diễn ra tại I/O!</string>
+    <string name="scavenger_hunt_description2">(Gợi ý: Có thể có một Bộ công cụ dành cho nhà phát triển Android Things ở tương lai bạn).</string>
+    <string name="assistant_app_description">Sử dụng Hành động của I/O 18 cho Trợ lý Google.</string>
+    <string name="assistant_app_description2">Chỉ cần nói: \"Hey Google, talk to Google I/O 18\"!</string>
+    <string name="navigate_up">Di chuyển lên</string>
 </resources>
