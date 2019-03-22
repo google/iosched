@@ -13,3 +13,6 @@
 # limitations under the License.
 
 # Proguard configuration for the AR feature
+
+-keep class com.google.ar.web.** { *; }
+-dontwarn com.google.ar.web.**

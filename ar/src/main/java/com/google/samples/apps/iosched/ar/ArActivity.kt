@@ -36,7 +36,7 @@ class ArActivity : AppCompatActivity() {
                     val arWebView = ArWebView(this)
                     setContentView(arWebView)
                     // TODO: Load the actual AR feature
-                    arWebView.loadUrl("https://www.google.com")
+                    arWebView.loadUrl("https://ia-signpost-test.appspot.com")
                 }
                 INSTALL_REQUESTED -> {
                     userRequestedInstall = false
