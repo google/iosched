@@ -1,0 +1,17 @@
+{
+  "comment": "Sample map variant data for use with tools:... attributes in layouts",
+  "variants": [
+    {
+      "title": "Daytime",
+      "checked": true
+    },
+    {
+      "title": "After dark",
+      "checked": false
+    },
+    {
+      "title": "Concert",
+      "checked": false
+    }
+  ]
+}

@@ -26,11 +26,13 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import androidx.core.view.marginBottom
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePaddingRelative
 import androidx.core.widget.NestedScrollView
@@ -194,6 +196,7 @@ class MapFragment : MainNavigationFragment() {
             }
         })
 
+        val fabMargin = binding.mapModeFab.marginBottom
         binding.root.doOnApplyWindowInsets { _, insets, _ ->
             binding.statusBar.updateLayoutParams<ConstraintLayout.LayoutParams> {
                 height = insets.systemWindowInsetTop
@@ -204,6 +207,10 @@ class MapFragment : MainNavigationFragment() {
             // Update the Map padding so that the copyright, etc is not displayed in nav bar
             binding.map.getMapAsync {
                 it.setPadding(0, 0, 0, insets.systemWindowInsetBottom)
+            }
+
+            binding.mapModeFab.updateLayoutParams<MarginLayoutParams> {
+                bottomMargin = fabMargin + insets.systemWindowInsetBottom
             }
         }
 
@@ -227,6 +234,10 @@ class MapFragment : MainNavigationFragment() {
             .setOnScrollChangeListener { v: NestedScrollView, _: Int, _: Int, _: Int, _: Int ->
                 binding.sheetHeaderShadow.isActivated = v.canScrollVertically(-1)
             }
+
+        binding.mapModeFab.setOnClickListener {
+            MapVariantSelectionDialogFragment().show(childFragmentManager, "MAP_MODE_DIALOG")
+        }
 
         // Initialize MapView
         mapView.getMapAsync { googleMap ->
@@ -263,16 +274,16 @@ class MapFragment : MainNavigationFragment() {
 
         binding.markerTitle.text = markerInfo.title
 
-        val desc = Html.fromHtml(markerInfo.description ?: "")
-        val descVisibility = if (desc.isEmpty()) View.GONE else View.VISIBLE
+        val description = Html.fromHtml(markerInfo.description ?: "")
+        val hasDescription = description.isNotEmpty()
         binding.markerDescription.apply {
-            text = desc
-            visibility = descVisibility
+            text = description
+            isVisible = hasDescription
         }
 
         // Hide/disable expansion affordances when there is no description.
-        binding.expandIcon.visibility = descVisibility
-        binding.clickable.isClickable = !desc.isEmpty()
+        binding.expandIcon.isVisible = hasDescription
+        binding.clickable.isVisible = hasDescription
     }
 
     private fun onBackPressed(): Boolean {

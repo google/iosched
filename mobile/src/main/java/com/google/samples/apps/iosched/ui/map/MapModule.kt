@@ -37,6 +37,10 @@ internal abstract class MapModule {
     @ContributesAndroidInjector
     internal abstract fun contributeMapFragment(): MapFragment
 
+    @FragmentScoped
+    @ContributesAndroidInjector
+    internal abstract fun contributeMapVariantSelectionFragment(): MapVariantSelectionDialogFragment
+
     /**
      * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
      * want to get a [MapViewModel] class.

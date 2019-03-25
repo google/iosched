@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2019 Google LLC
+  ~ Copyright 2018 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,18 +15,14 @@
   ~ limitations under the License.
   -->
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_checked="true">
-        <inset android:insetRight="8dp">
-            <shape>
-                <!-- Intrinsic height may vary. Use a large radius to ensure a semicircle. -->
-                <corners
-                    android:bottomRightRadius="100dp"
-                    android:topRightRadius="100dp" />
-            </shape>
-        </inset>
-    </item>
-    <item>
-        <color android:color="@color/transparent" />
-    </item>
-</selector>
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="?colorControlNormal">
+    <path
+        android:fillColor="#fff"
+        android:pathData="M 9 2 C 7.95 2 6.95 2.16 6 2.46 C 10.06 3.73 13 7.52 13 12 C 13 16.48 10.06 20.27 6 21.54 C 6.95 21.84 7.95 22 9 22 C 14.52 22 19 17.52 19 12 C 19 6.48 14.52 2 9 2 Z" />
+</vector>

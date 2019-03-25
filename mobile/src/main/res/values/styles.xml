@@ -33,6 +33,8 @@
         <item name="android:paddingTop">?attr/dialogPreferredPadding</item>
     </style>
 
+    <!-- Text appearances -->
+
     <style name="TextAppearance.AlertDialog.Title" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
         <item name="android:textSize">22sp</item>
         <item name="android:fontFamily">@font/google_sans</item>
@@ -42,16 +44,6 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">?android:textColorSecondary</item>
         <item name="android:textAlignment">viewStart</item>
-    </style>
-
-    <style name="Widget.AppBar" parent="@style/Widget.Design.AppBarLayout">
-        <item name="android:background">?attr/colorSurface</item>
-        <item name="android:elevation">8dp</item>
-    </style>
-
-    <style name="Widget.Toolbar" parent="Widget.AppCompat.Toolbar">
-        <item name="titleTextAppearance">@style/TextAppearance.IOSched.ToolbarTitle</item>
-        <item name="popupTheme">@style/AppTheme.PopupTheme</item>
     </style>
 
     <style name="TextAppearance.IOSched.Body" parent="@style/TextAppearance.AppCompat.Body1">
@@ -149,6 +141,18 @@
         <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:textColorLink">?colorPrimary</item>
         <item name="android:fontFamily">@font/google_sans</item>
+    </style>
+
+    <!-- Widget styles -->
+
+    <style name="Widget.AppBar" parent="@style/Widget.Design.AppBarLayout">
+        <item name="android:background">?attr/colorSurface</item>
+        <item name="android:elevation">8dp</item>
+    </style>
+
+    <style name="Widget.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="titleTextAppearance">@style/TextAppearance.IOSched.ToolbarTitle</item>
+        <item name="popupTheme">@style/AppTheme.PopupTheme</item>
     </style>
 
     <style name="Widget.IOSched" parent="@android:style/Widget" />

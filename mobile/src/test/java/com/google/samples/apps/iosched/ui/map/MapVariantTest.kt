@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.ui.map
 
 import com.google.samples.apps.iosched.shared.BuildConfig
-import com.google.samples.apps.iosched.ui.map.MapVariant.AFTER_HOURS
+import com.google.samples.apps.iosched.ui.map.MapVariant.AFTER_DARK
 import com.google.samples.apps.iosched.ui.map.MapVariant.CONCERT
 import com.google.samples.apps.iosched.ui.map.MapVariant.DAY
 import org.hamcrest.MatcherAssert.assertThat
@@ -57,7 +57,7 @@ class MapVariantTest {
     fun forTime_duringAfterHours_returnsAfterHours() {
         val time = ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_AFTERHOURS_START).plusMinutes(1)
             .toInstant()
-        assertThat(MapVariant.forTime(time), `is`(equalTo(AFTER_HOURS)))
+        assertThat(MapVariant.forTime(time), `is`(equalTo(AFTER_DARK)))
     }
 
     @Test
