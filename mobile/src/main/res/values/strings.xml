@@ -126,6 +126,8 @@
     <string name="a11y_star" translation_description="Alternate text for a button used for starring or unstarring events">Star</string>
     <string name="a11y_play" translation_description="Alternate text for a button used to play a video">Play video</string>
 
+    <string name="a11y_select_map_mode" translation_description="Alternate text for a button used to select the mode on the Map.">Select map mode</string>
+
     <!-- Sign in / Sign out -->
     <string name="welcome" translation_description="Text shown instead of the user's name when the user is not signed in.">Welcome!</string>
     <string name="sign_in_hint" translation_description="Text shown instead of the user's email when the user is not signed in.">Tap to sign in</string>
@@ -188,6 +190,9 @@
     <string name="intent_chooser_session_detail" translation_description="The label for share screen where user can tell people about an I/O session on SNS, etc.">Share</string>
 
     <!-- Map -->
+    <string name="map_variant_after_dark" translation_description="Label for the map mode showing the after dark map.">After dark</string>
+    <string name="map_variant_concert" translation_description="Label for the map mode showing the concert map.">Concert</string>
+    <string name="map_variant_daytime" translation_description="Label for the map mode showing the daytime map.">Daytime</string>
     <string name="enable_my_location" translation_description="The label for the button to enable the blue dot indicating the user's location on the map">Enable my location</string>
     <string name="my_location_rationale" translation_description="Explanation about the location permission">The app needs location permission to show your location on the map.</string>
 

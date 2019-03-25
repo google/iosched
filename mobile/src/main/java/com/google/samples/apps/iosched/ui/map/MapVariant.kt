@@ -16,7 +16,10 @@
 
 package com.google.samples.apps.iosched.ui.map
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
+import androidx.annotation.StringRes
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.R.raw
 import com.google.samples.apps.iosched.shared.BuildConfig
 import org.threeten.bp.Instant
@@ -29,22 +32,30 @@ import org.threeten.bp.ZonedDateTime
 enum class MapVariant(
     val start: Instant,
     val end: Instant,
+    @StringRes val labelResId: Int,
+    @DrawableRes val iconResId: Int,
     @RawRes val markersResId: Int
 ) {
-    AFTER_HOURS(
+    AFTER_DARK(
         ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_AFTERHOURS_START).toInstant(),
         ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_END).toInstant(),
+        R.string.map_variant_after_dark,
+        R.drawable.ic_map_after_dark,
         raw.map_markers
     ),
     CONCERT(
         ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY2_CONCERT_START).toInstant(),
         ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY2_END).toInstant(),
+        R.string.map_variant_concert,
+        R.drawable.ic_map_concert,
         raw.map_markers
     ),
     // Note: must be last to facilitate [forTime]
     DAY(
         ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_START).toInstant(),
         ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY3_END).toInstant(),
+        R.string.map_variant_daytime,
+        R.drawable.ic_map_daytime,
         raw.map_markers
     );
 
