@@ -71,7 +71,7 @@ android {
     }
 
     lintOptions {
-        disable 'InvalidPackage'
+        disable 'InvalidPackage', "MissingTranslation"
     }
 
     // debug and release variants share the same source dir
