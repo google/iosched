@@ -16,6 +16,5 @@
   -->
 
 <resources>
-    <string name="feature_explore_ar" translation_description="The feature module name for exploring AR">Explore AR</string>
     <string name="need_to_install_ar_core" translation_description="The message to tell the user that they need to install the latest ARCore to launch this feature">You need to install the latest version of ARCore to proceed</string>
 </resources>

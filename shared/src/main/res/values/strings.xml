@@ -17,6 +17,7 @@
 
 <resources>
     <string name="app_name" translatable="false">Google I/O</string>
+    <string name="feature_explore_ar" translation_description="The feature module name for exploring AR">Explore AR</string>
 
     <string name="day1" translation_description="Label for the first day of the conference. Please make this as short as possible.">Day 1</string>
     <string name="day2" translation_description="Label for the second day of the conference. Please make this as short as possible.">Day 2</string>
