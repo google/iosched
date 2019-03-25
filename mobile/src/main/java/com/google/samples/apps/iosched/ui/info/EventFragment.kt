@@ -35,6 +35,7 @@ import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import com.google.samples.apps.iosched.util.getTappableElementInsetsAsRect
 import com.google.samples.apps.iosched.widget.FadingSnackbar
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -59,7 +60,8 @@ class EventFragment : DaggerFragment() {
 
         // Pad the bottom of the content so that it is above the nav bar
         binding.content.doOnApplyWindowInsets { v, insets, padding ->
-            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+            val tappableInsets = insets.getTappableElementInsetsAsRect()
+            v.updatePaddingRelative(bottom = padding.bottom + tappableInsets.bottom)
         }
 
         val snackbarLayout = requireActivity().findViewById<FadingSnackbar>(R.id.snackbar)

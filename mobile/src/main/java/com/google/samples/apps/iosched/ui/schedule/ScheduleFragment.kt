@@ -55,6 +55,7 @@ import com.google.samples.apps.iosched.util.clearDecorations
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.executeAfter
 import com.google.samples.apps.iosched.util.fabVisibility
+import com.google.samples.apps.iosched.util.getTappableElementInsetsAsRect
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_COLLAPSED
@@ -160,7 +161,8 @@ class ScheduleFragment : MainNavigationFragment() {
 
         // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
         binding.recyclerview.doOnApplyWindowInsets { v, insets, padding ->
-            v.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)
+            val tappableInsets = insets.getTappableElementInsetsAsRect()
+            v.updatePadding(bottom = padding.bottom + tappableInsets.bottom)
         }
 
         // Session list configuration

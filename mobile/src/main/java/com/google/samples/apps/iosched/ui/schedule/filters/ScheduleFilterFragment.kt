@@ -42,6 +42,7 @@ import com.google.samples.apps.iosched.shared.util.parentViewModelProvider
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import com.google.samples.apps.iosched.util.getTappableElementInsetsAsRect
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_COLLAPSED
@@ -103,8 +104,9 @@ class ScheduleFilterFragment : DaggerFragment() {
         }
 
         // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
-        binding.recyclerview.doOnApplyWindowInsets { view, insets, padding ->
-            view.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+        binding.recyclerview.doOnApplyWindowInsets { v, insets, padding ->
+            val tappableInsets = insets.getTappableElementInsetsAsRect()
+            v.updatePaddingRelative(bottom = padding.bottom + tappableInsets.bottom)
         }
 
         return binding.root
@@ -137,11 +139,12 @@ class ScheduleFilterFragment : DaggerFragment() {
         val peekHeight = behavior.peekHeight
         val marginBottom = binding.root.marginBottom
         binding.root.doOnApplyWindowInsets { v, insets, _ ->
+            val tappableInsets = insets.getTappableElementInsetsAsRect()
             // Update the peek height so that it is above the navigation bar
-            behavior.peekHeight = insets.systemWindowInsetBottom + peekHeight
+            behavior.peekHeight = tappableInsets.bottom + peekHeight
 
             v.updateLayoutParams<MarginLayoutParams> {
-                bottomMargin = marginBottom + insets.systemWindowInsetTop
+                bottomMargin = marginBottom + tappableInsets.top
             }
         }
 
