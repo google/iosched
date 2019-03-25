@@ -25,7 +25,16 @@
         android:id="@id/navigation_schedule"
         android:name="com.google.samples.apps.iosched.ui.schedule.ScheduleFragment"
         android:label="@string/title_schedule"
-        tools:layout="@layout/fragment_schedule" />
+        tools:layout="@layout/fragment_schedule" >
+        <argument
+            android:name="showPinnedEvents"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="showAllEvents"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
     <fragment
         android:id="@id/navigation_info"
         android:name="com.google.samples.apps.iosched.ui.info.InfoFragment"

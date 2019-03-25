@@ -23,16 +23,20 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.common.collect.ImmutableMap
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentFeedBinding
+import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
+import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentArgs
+import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import kotlinx.android.synthetic.main.fragment_feed.toolbar
@@ -86,7 +90,17 @@ class FeedFragment : MainNavigationFragment() {
             }
         })
 
-        model.loadFeed()
+        model.feed.observe(this, Observer {
+            showFeedItems(binding.recyclerView, it)
+        })
+
+        model.navigateToSessionAction.observe(this, EventObserver { sessionId ->
+            openSessionDetail(sessionId)
+        })
+
+        model.navigateToScheduleAction.observe(this, EventObserver { withPinnedEvents ->
+            openSchedule(withPinnedEvents)
+        })
 
         return binding.root
     }
@@ -95,30 +109,52 @@ class FeedFragment : MainNavigationFragment() {
         super.onViewCreated(view, savedInstanceState)
         toolbar.setTitle(R.string.title_feed)
     }
-}
 
-@BindingAdapter("feedItems")
-fun feedItems(recyclerView: RecyclerView, list: List<Any>?) {
-    if (recyclerView.adapter == null) {
-        val announcementViewBinder = FeedAnnouncementViewBinder()
-        val sectionHeaderViewBinder = FeedSectionHeaderViewBinder()
-        val countdownTimerViewBinder = CountdownTimerViewBinder()
-        val viewBinders = ImmutableMap.builder<FeedItemClass, FeedItemBinder>()
-            .put(
-                announcementViewBinder.modelClass,
-                announcementViewBinder as FeedItemBinder
-            )
-            .put(
-                sectionHeaderViewBinder.modelClass,
-                sectionHeaderViewBinder as FeedItemBinder
-            )
-            .put(
-                countdownTimerViewBinder.modelClass,
-                countdownTimerViewBinder as FeedItemBinder
-            )
-            .build()
-
-        recyclerView.adapter = FeedAdapter(viewBinders)
+    private fun openSessionDetail(id: SessionId) {
+        startActivity(SessionDetailActivity.starterIntent(requireContext(), id))
     }
-    (recyclerView.adapter as FeedAdapter).submitList(list ?: emptyList())
+
+    private fun openSchedule(withPinnedSessions: Boolean) {
+        if (withPinnedSessions) {
+            NavHostFragment.findNavController(this).navigate(
+                R.id.navigation_schedule,
+                ScheduleFragmentArgs(showPinnedEvents = true).toBundle()
+            )
+        } else {
+            NavHostFragment.findNavController(this).navigate(
+                R.id.navigation_schedule,
+                ScheduleFragmentArgs(showAllEvents = true).toBundle()
+            )
+        }
+    }
+
+    private fun showFeedItems(recyclerView: RecyclerView, list: List<Any>?) {
+        if (recyclerView.adapter == null) {
+            val announcementViewBinder = FeedAnnouncementViewBinder()
+            val sectionHeaderViewBinder = FeedSectionHeaderViewBinder()
+            val countdownTimerViewBinder = CountdownTimerViewBinder()
+            val sessionsViewBinder = FeedSessionsViewBinder(model)
+            val viewBinders = ImmutableMap.builder<FeedItemClass, FeedItemBinder>()
+                .put(
+                    announcementViewBinder.modelClass,
+                    announcementViewBinder as FeedItemBinder
+                )
+                .put(
+                    sectionHeaderViewBinder.modelClass,
+                    sectionHeaderViewBinder as FeedItemBinder
+                )
+                .put(
+                    countdownTimerViewBinder.modelClass,
+                    countdownTimerViewBinder as FeedItemBinder
+                )
+                .put(
+                    sessionsViewBinder.modelClass,
+                    sessionsViewBinder as FeedItemBinder
+                )
+                .build()
+
+            recyclerView.adapter = FeedAdapter(viewBinders)
+        }
+        (recyclerView.adapter as FeedAdapter).submitList(list ?: emptyList())
+    }
 }

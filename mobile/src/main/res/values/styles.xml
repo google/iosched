@@ -287,11 +287,26 @@
         <item name="android:textColor">?android:textColorLink</item>
     </style>
 
-        <style name="Widget.IOSched.Feed" parent="Widget.IOSched" />
+    <style name="Widget.IOSched.Feed" parent="Widget.IOSched" />
 
     <style name="Widget.IOSched.Feed.Title">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
+    </style>
 
+    <style name="Widget.IOSched.Feed.Session" parent="Widget.IOSched" />
+
+    <style name="Widget.IOSched.Feed.Session.Title">
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
+    </style>
+
+    <style name="Widget.IOSched.Feed.Username">
+        <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
+    </style>
+
+     <style name="Widget.IOSched.Feed.SessionsTitle">
+        <item name="android:textAppearance">?attr/textAppearanceBody2</item>
     </style>
 
     <style name="Widget.IOSched.Feed.Category">
@@ -299,6 +314,13 @@
         <item name="android:ellipsize">end</item>
         <item name="android:lines">1</item>
         <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="Widget.IOSched.Feed.Card" parent="Widget.MaterialComponents.CardView">
+        <item name="cardElevation">0dp</item>
+        <item name="strokeColor">?android:attr/colorControlHighlight</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cardCornerRadius">@dimen/feed_card_corner_radius</item>
     </style>
 
     <style name="Widget.IOSched.SettingsSwitch" parent="Widget.MaterialComponents.CompoundButton.Switch">

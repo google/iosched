@@ -307,6 +307,10 @@ class ScheduleViewModel @Inject constructor(
         }
     }
 
+    fun showPinnedEvents() {
+        toggleFilter(MyEventsFilter(true), true)
+    }
+
     override fun openEventDetail(id: SessionId) {
         _navigateToSessionAction.value = Event(id)
     }
