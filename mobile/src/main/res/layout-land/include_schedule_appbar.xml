@@ -46,7 +46,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/day_indicators"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:orientation="horizontal"
                 app:layoutManager="LinearLayoutManager"
                 tools:itemCount="3"
