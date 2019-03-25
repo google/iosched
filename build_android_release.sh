@@ -29,39 +29,36 @@ $DIR/gradlew clean assemble ${GRADLE_PARAMS}
 BUILD_RESULT=$?
 
 # Debug
-[ ! -d $DIST_DIR/debug ] && mkdir $DIST_DIR/debug
-cp $MOBILE_OUT/apk/debug/mobile-debug.apk $DIST_DIR/debug/
-cp $TV_OUT/apk/debug/tv-debug.apk $DIST_DIR/debug/
+cp $MOBILE_OUT/apk/debug/mobile-debug.apk $DIST_DIR
+cp $TV_OUT/apk/debug/tv-debug.apk $DIST_DIR
 
 # Staging
-[ ! -d $DIST_DIR/staging ] && mkdir $DIST_DIR/staging
-cp $MOBILE_OUT/apk/staging/mobile-staging.apk $DIST_DIR/staging/
-cp $TV_OUT/apk/staging/tv-staging.apk $DIST_DIR/staging/
+cp $MOBILE_OUT/apk/staging/mobile-staging.apk $DIST_DIR
+cp $TV_OUT/apk/staging/tv-staging.apk $DIST_DIR
 
 # Release
-[ ! -d $DIST_DIR/release ] && mkdir $DIST_DIR/release
-cp $MOBILE_OUT/apk/release/mobile-release-unsigned.apk $DIST_DIR/release/mobile-release.apk
-cp $MOBILE_OUT/mapping/release/mapping.txt $DIST_DIR/release/mobile-release-apk-mapping.txt
-cp $TV_OUT/apk/release/tv-release-unsigned.apk $DIST_DIR/release/tv-release.apk
-cp $TV_OUT/mapping/release/mapping.txt $DIST_DIR/release/tv-release-apk-mapping.txt
+cp $MOBILE_OUT/apk/release/mobile-release-unsigned.apk $DIST_DIR/mobile-release.apk
+cp $MOBILE_OUT/mapping/release/mapping.txt $DIST_DIR/mobile-release-apk-mapping.txt
+cp $TV_OUT/apk/release/tv-release-unsigned.apk $DIST_DIR/tv-release.apk
+cp $TV_OUT/mapping/release/mapping.txt $DIST_DIR/tv-release-apk-mapping.txt
 
 # Build App Bundles
 # Don't clean here, otherwise all apks are gone.
 $DIR/gradlew bundle ${GRADLE_PARAMS}
 
 # Debug
-cp $MOBILE_OUT/bundle/debug/mobile.aab $DIST_DIR/debug/mobile-debug.aab
-cp $TV_OUT/bundle/debug/tv.aab $DIST_DIR/debug/tv-debug.aab
+cp $MOBILE_OUT/bundle/debug/mobile.aab $DIST_DIR/mobile-debug.aab
+cp $TV_OUT/bundle/debug/tv.aab $DIST_DIR/tv-debug.aab
 
 # Staging
-cp $MOBILE_OUT/bundle/staging/mobile.aab $DIST_DIR/staging/mobile-staging.aab
-cp $TV_OUT/bundle/staging/tv.aab $DIST_DIR/staging/tv-staging.aab
+cp $MOBILE_OUT/bundle/staging/mobile.aab $DIST_DIR/mobile-staging.aab
+cp $TV_OUT/bundle/staging/tv.aab $DIST_DIR/tv-staging.aab
 
 # Release
-cp $MOBILE_OUT/bundle/release/mobile.aab $DIST_DIR/release/mobile-release.aab
-cp $MOBILE_OUT/mapping/release/mapping.txt $DIST_DIR/release/mobile-release-aab-mapping.txt
-cp $TV_OUT/bundle/release/tv.aab $DIST_DIR/release/tv-release.aab
-cp $TV_OUT/mapping/release/mapping.txt $DIST_DIR/release/tv-release-aab-mapping.txt
+cp $MOBILE_OUT/bundle/release/mobile.aab $DIST_DIR/mobile-release.aab
+cp $MOBILE_OUT/mapping/release/mapping.txt $DIST_DIR/mobile-release-aab-mapping.txt
+cp $TV_OUT/bundle/release/tv.aab $DIST_DIR/tv-release.aab
+cp $TV_OUT/mapping/release/mapping.txt $DIST_DIR/tv-release-aab-mapping.txt
 BUILD_RESULT=$?
 
 exit $BUILD_RESULT
