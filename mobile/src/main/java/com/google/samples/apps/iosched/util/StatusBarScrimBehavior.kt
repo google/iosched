@@ -22,7 +22,6 @@ import android.view.View
 import androidx.annotation.Keep
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.children
 import com.google.android.material.appbar.AppBarLayout
 
 @Keep
@@ -36,14 +35,31 @@ class StatusBarScrimBehavior(
         layoutDirection: Int
     ): Boolean {
         child.setOnApplyWindowInsetsListener(NoopWindowInsetsListener)
-
-        // Find a AppBarLayout sibling and copy it's elevation
-        val appBarLayout = parent.children.first { it is AppBarLayout }
-        (appBarLayout as? AppBarLayout)?.let {
-            child.elevation = appBarLayout.elevation
-        }
-
         // Return false so that the child is laid out by the parent
+        return false
+    }
+
+    override fun layoutDependsOn(
+        parent: CoordinatorLayout,
+        child: View,
+        dependency: View
+    ): Boolean {
+        if (dependency is AppBarLayout) {
+            // Jump the drawable state in case the elevation is animating
+            dependency.jumpDrawablesToCurrentState()
+            // Copy over the elevation value
+            child.elevation = dependency.elevation
+            return true
+        }
+        return false
+    }
+
+    override fun onDependentViewChanged(
+        parent: CoordinatorLayout,
+        child: View,
+        dependency: View
+    ): Boolean {
+        child.elevation = dependency.elevation
         return false
     }
 
