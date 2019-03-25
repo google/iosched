@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 -->
 <resources>
     <string name="title_schedule">日程安排</string>
+    <string name="title_feed">动态</string>
     <string name="title_map">地图</string>
     <string name="filters">过滤条件</string>
     <string name="category_heading_tracks">主题</string>
@@ -61,6 +62,19 @@
     <string name="menu_item_session_star">为会议加注星标</string>
     <string name="session_detail_speakers_header">演讲者</string>
     <string name="session_detail_related_header">相关活动</string>
+    <string name="feedback_submit">提交</string>
+    <string name="feedback_q1_text">您觉得这次大会的整体质量怎么样？</string>
+    <string name="feedback_q2_text">您觉得大会的内容是否符合您的期望/大会介绍？</string>
+    <string name="feedback_q3_text">大会与您的项目密切相关吗？</string>
+    <string name="feedback_q4_text">您觉得演讲人怎么样？</string>
+    <string name="feedback_q1_label_start">非常基础</string>
+    <string name="feedback_q2_label_start">很差</string>
+    <string name="feedback_q3_label_start">不太相关</string>
+    <string name="feedback_q4_label_start">讲得没什么意思</string>
+    <string name="feedback_q1_label_end">很有深度</string>
+    <string name="feedback_q3_label_end">非常相关</string>
+    <string name="feedback_q4_label_end">非常棒</string>
+    <string name="a11y_show_navigation">显示导航菜单</string>
     <string name="a11y_collapse_filters_sheet">收起过滤条件表格</string>
     <string name="a11y_clear_tag_filters">清除过滤条件</string>
     <string name="a11y_revert_pinned">显示所有会议</string>
@@ -75,6 +89,10 @@
     <string name="a11y_unstarred">活动未添加书签</string>
     <string name="a11y_star">加注星标</string>
     <string name="a11y_play">播放视频</string>
+    <string name="welcome">欢迎！</string>
+    <string name="sign_in_hint">点按即可登录</string>
+    <string name="a11y_signed_in_content_description">目前登录的帐号是 %s。</string>
+    <string name="a11y_signed_out_content_description">点按即可登录。</string>
     <string name="dialog_sign_in_title">登录即可自定义您的日程安排</string>
     <string name="dialog_sign_in_content">登录即可保存活动、预约席位并为会议评分（如果是会议参加者）。系统将通过您的帐号同步在应用和网站中执行的操作。</string>
     <string name="not_now">以后再说</string>
@@ -104,6 +122,8 @@
     <string name="menu_item_share_session">分享会议</string>
     <string name="share_text_session_detail">访问 #io18 %2$s，了解“%1$s”</string>
     <string name="intent_chooser_session_detail">分享</string>
+    <string name="enable_my_location">启用“我的位置”</string>
+    <string name="my_location_rationale">此应用需要位置权限才能在地图上显示您所在的位置。</string>
     <string name="onboarding_get_started">开始使用</string>
     <string name="onboarding_welcome_to_google_i_o">欢迎来到 Google I/O 大会</string>
     <string name="onboarding_date_location">2018 年 5 月 8 日至 10 日，加利福尼亚州山景城</string>
@@ -132,7 +152,7 @@
     <string name="travel_public_transportation_title">公共交通</string>
     <string name="travel_biking_title">骑车</string>
     <string name="travel_directions_description">在 <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google 地图</a>或 <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a> 上查找前往 1 Amphitheatre Pkwy, Mountain View, CA 94043 的路线</string>
-    <string name="travel_shuttle_description">所有 Google I/O 大会参加者都可以免费搭乘从 Google 推荐的所有酒店出发的活动班车。旧金山及半岛沿线的其他一些地点也提供限定的服务。您必须出示自己的 Google I/O 大会确认电子邮件或会议徽章才能搭乘任何 Google I/O 大会活动班车。\n\n每个接送点都可使用 ADA 无障碍交通工具。如有 ADA 方面的需求或需要特别协助，请在您的注册表单上指明，规划团队会直接与您联系。</string>
+    <string name="travel_shuttle_description">所有 Google I/O 大会参加者均可免费搭乘从 Google 推荐的所有酒店出发的活动班车。旧金山及半岛沿线的其他一些地点也提供限定的服务。您必须出示自己的 Google I/O 大会确认电子邮件或会议徽章才能搭乘任意 Google I/O 大会活动班车。\n\n每个接送点都可使用无障碍交通工具。如果需要特别协助，请在您的注册表单上指明，规划团队会直接与您联系。</string>
     <string name="travel_carpool_parking_description">停车位非常有限，只有沿 Shoreline Boulevard 的 Shoreline Amphitheatre 对面有 Google I/O 大会指定停车位。Amphitheatre Parkway 和 Charleston Road 沿线均没有活动专用停车位。如果您打算驾车前来，建议您与其他参加者拼车，因为我们的首选停车位仅供乘载人数达到两人或两人以上的车辆停靠。</string>
     <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\nWaze Carpool 是由司机和乘客组成的可信社区，可以帮助您以经济实惠的价格快速前往 Google I/O 大会会场，为您的行程增添趣味。如果您打算自己开车，可以在到达旧金山湾区时打开 <a href="http://Waze.com/get">Waze</a>。如果您想搭车，可以在到达湾区之前安装 <a href="http://Waze.com/carpool">Waze Carpool</a>。敬请在未来几周返回这里，查看专为 Google I/O 大会参加者提供的拼车折扣代码。\n\n<b>Lyft Line</b>\n从 Google Play 下载 Lyft 应用，并使用 Lyft Line 与相同路线的其他人拼车以减少行程费用。\n<b>折扣代码</b>：Googleio18\n该代码在 2018 年 5 月 8 日到 10 日期间有效，可在通过 Lyft Line 拼车时使用。每次行程最多可兑换 10 美元，每天最多可供 250 名用户使用。乘车或下车点必须是 Shoreline Amphitheatre。</string>
     <string name="travel_public_transportation_description">没有直达 Google I/O 大会会场的公交线路。敬请关注 Google I/O 大会活动班车的确切站点。</string>
@@ -145,6 +165,7 @@
     <string name="wifi_password_label">密码：</string>
     <string name="wifi_install_success">Wi-Fi 网络已保存</string>
     <string name="wifi_install_error_message">抱歉，无法保存 Wi-Fi 网络</string>
+    <string name="wifi_install_clipboard_message">无法保存 Wi-Fi 网络。\n已将密码保存到剪贴板。</string>
     <string name="event_sessions_title">会议</string>
     <string name="event_sandbox_title">沙盒</string>
     <string name="event_codelabs_title">代码实验室</string>
@@ -156,6 +177,7 @@
     <string name="event_officehours_description">在“交流时间”，您将有机会与 Google 专家面对面交谈，询问所有技术问题；在“应用评价”时段，您将有机会为自己的特定应用相关项目获取建议和提示。</string>
     <string name="event_afterhours_description">我们会在前两天会议结束后提供美食佳饮，欢迎留在海岸线与我们同乐。在第一个晚上，我们将在沙盒空间举办派对活动；在第二个晚上，我们将在 Shoreline Amphitheatre 举办一场独家音乐会。</string>
     <string name="wifi_header">Wi-Fi</string>
+    <string name="related_apps_header">相关应用</string>
     <string name="event_types_header">活动类型</string>
     <string name="settings_time_zone_label">活动时间为太平洋时区 (UTC-8) 的时间</string>
     <string name="settings_send_anonymous_usage_statistics">发送匿名使用情况统计信息</string>
@@ -164,4 +186,9 @@
     <string name="settings_oss_licenses">开放源代码许可</string>
     <string name="settings_version_label">版本：%1$s，内部版本号：%2$s</string>
     <string name="built_with_material_components">使用 Material Components 开发。</string>
+    <string name="scavenger_hunt_description">参加 I/O Android Things 寻宝游戏！</string>
+    <string name="scavenger_hunt_description2">（提示：可能会有 Android Things 开发者套件在等着您哦。）</string>
+    <string name="assistant_app_description">在 Google 助理上使用 I/O 18 Action。</string>
+    <string name="assistant_app_description2">只需说“Hey Google, talk to Google I/O 18”（Hey Google，我要跟 Google I/O 18 聊一聊）！</string>
+    <string name="navigate_up">转到上一层级</string>
 </resources>

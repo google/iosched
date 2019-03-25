@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 -->
 <resources>
     <string name="title_schedule">일정</string>
+    <string name="title_feed">피드</string>
     <string name="title_map">지도</string>
     <string name="filters">필터</string>
     <string name="category_heading_tracks">주제</string>
@@ -61,6 +62,19 @@
     <string name="menu_item_session_star">세션 별표 표시</string>
     <string name="session_detail_speakers_header">발표자</string>
     <string name="session_detail_related_header">관련 이벤트</string>
+    <string name="feedback_submit">제출</string>
+    <string name="feedback_q1_text">전반적인 세션의 품질을 평가해 주세요.</string>
+    <string name="feedback_q2_text">기대치 및 세션 설명을 기준으로 세션의 콘텐츠가 어땠는지 설명해 주세요.</string>
+    <string name="feedback_q3_text">세션이 내 프로젝트와 얼마나 관련이 있었나요?</string>
+    <string name="feedback_q4_text">발표자를 평가해 주세요.</string>
+    <string name="feedback_q1_label_start">매우 기본적인 수준</string>
+    <string name="feedback_q2_label_start">나쁨</string>
+    <string name="feedback_q3_label_start">별로 관련 없음</string>
+    <string name="feedback_q4_label_start">부족함</string>
+    <string name="feedback_q1_label_end">매우 높은 수준</string>
+    <string name="feedback_q3_label_end">매우 관련 있음</string>
+    <string name="feedback_q4_label_end">뛰어남</string>
+    <string name="a11y_show_navigation">탐색 메뉴 표시</string>
     <string name="a11y_collapse_filters_sheet">필터 시트 내리기</string>
     <string name="a11y_clear_tag_filters">필터 지우기</string>
     <string name="a11y_revert_pinned">모든 세션 표시</string>
@@ -75,6 +89,10 @@
     <string name="a11y_unstarred">이벤트가 북마크에 추가되지 않음</string>
     <string name="a11y_star">별표</string>
     <string name="a11y_play">동영상 재생</string>
+    <string name="welcome">환영합니다.</string>
+    <string name="sign_in_hint">로그인하려면 탭하세요.</string>
+    <string name="a11y_signed_in_content_description">로그인한 계정은 %s입니다.</string>
+    <string name="a11y_signed_out_content_description">로그인하려면 탭하세요.</string>
     <string name="dialog_sign_in_title">로그인하여 일정 맞춤설정</string>
     <string name="dialog_sign_in_content">이벤트를 저장하고, 좌석을 예약하고, 참석한 세션을 평가하려면 로그인하세요. 관련 작업이 앱과 사이트에서 계정과 동기화됩니다.</string>
     <string name="not_now">나중에</string>
@@ -104,6 +122,8 @@
     <string name="menu_item_share_session">세션 공유</string>
     <string name="share_text_session_detail">#io18 %2$s에서 \'%1$s\' 확인해 보기</string>
     <string name="intent_chooser_session_detail">공유</string>
+    <string name="enable_my_location">내 위치 사용</string>
+    <string name="my_location_rationale">지도에 위치를 표시하려면 앱에 위치 정보 액세스 권한이 필요합니다.</string>
     <string name="onboarding_get_started">시작하기</string>
     <string name="onboarding_welcome_to_google_i_o">Google I/O에 오신 것을 환영합니다.</string>
     <string name="onboarding_date_location">2018년 5월 8~10일,\nMountain View, CA</string>
@@ -132,7 +152,7 @@
     <string name="travel_public_transportation_title">대중교통</string>
     <string name="travel_biking_title">자전거</string>
     <string name="travel_directions_description"><a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google 지도</a>나 <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a>에서 \'1 Amphitheatre Pkwy, Mountain View, CA 94043\'으로 길을 찾으세요.</string>
-    <string name="travel_shuttle_description">모든 Google I/O 참석자에게 모든 Google 추천 호텔에서 출발하는 이벤트 셔틀이 무료로 제공됩니다. 샌프란시스코 및 페닌슐라 지역 주변의 기타 위치에서도 일부 서비스가 제공됩니다. 모든 Google I/O 이벤트 셔틀에 탑승하려면 Google I/O 확인 이메일이나 컨퍼런스 배지를 제시해야 합니다.\n\n각 탑승 위치에 휠체어로 이용 가능한 차량이 준비될 수 있습니다. 휠체어나 특별 지원 요구사항이 있는 경우 등록 양식에 기재해 주시면 I/O 기획팀에서 직접 연락을 드립니다.</string>
+    <string name="travel_shuttle_description">모든 Google I/O 참석자에게 모든 Google 추천 호텔에서 출발하는 이벤트 셔틀이 무료로 제공됩니다. 샌프란시스코 및 페닌슐라 지역 주변의 기타 위치에서도 일부 서비스가 제공됩니다. 모든 Google I/O 이벤트 셔틀에 탑승하려면 Google I/O 확인 이메일이나 컨퍼런스 배지를 제시해야 합니다.\n\n각 탑승 위치에 휠체어로 이용 가능한 차량이 준비될 수 있습니다. 특별 지원 요구사항이 있는 경우 등록 양식에 기재해 주시면 I/O 기획팀에서 직접 연락을 드립니다.</string>
     <string name="travel_carpool_parking_description">주차 장소가 매우 한정되어 있으며 쇼어라인 대로를 따라 쇼어라인 원형극장 주변에 있는 Google I/O 전용 주차장에만 주차할 수 있습니다. 앰피시어터 파크웨이나 찰스턴 로드에는 이벤트 주차장이 없습니다. 직접 운전할 예정인 경우 2명 이상이 탑승한 차량은 우대 주차 공간을 이용할 수 있으므로 다른 참석자와 카풀을 하시는 것이 좋습니다.</string>
     <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\nWaze Carpool은 신뢰할 수 있는 운전자 및 탑승자 커뮤니티로서, 재미있고 빠르고 저렴하게 Google I/O 장소로 올 수 있습니다. 운전자인 경우 베이 지역에 도착하면 <a href="http://Waze.com/get">Waze</a>를 여세요. 탑승자인 경우 도착하기 전에 <a href="http://Waze.com/carpool">Waze Carpool</a>을 설치하세요. 몇 주 후에 이 페이지를 다시 방문하여 Google I/O 참석자 전용의 카풀 할인 코드를 확인하세요.\n\n<b>Lyft Line</b>\nGoogle Play에서 Lyft 앱을 다운로드하고 Lyft Line을 사용하여 방향이 같은 다른 사람과 저렴한 비용으로 합승해 보세요.\n<b>할인 코드</b>: Googleio18\n이 코드는 2018년 5월 8일에서 10일 사이에 Lyft Line으로 합승하는 경우에 유효합니다. 일일 최대 250명의 사용자가 탑승당 최대 10달러를 사용할 수 있습니다. 쇼어라인 원형극장에서 탑승하거나 하차해야 합니다.</string>
     <string name="travel_public_transportation_description">Google I/O 장소로 바로 오는 대중교통 수단은 없습니다. Google I/O 이벤트 셔틀이 운행되는 정확한 대중교통 위치는 안내를 기다려 주세요.</string>
@@ -145,6 +165,7 @@
     <string name="wifi_password_label">비밀번호:</string>
     <string name="wifi_install_success">Wi-Fi 네트워크를 저장했습니다.</string>
     <string name="wifi_install_error_message">죄송합니다. Wi-Fi 네트워크를 저장할 수 없습니다.</string>
+    <string name="wifi_install_clipboard_message">Wi-Fi 네트워크를 저장할 수 없습니다.\n비밀번호를 클립보드로 복사했습니다.</string>
     <string name="event_sessions_title">세션</string>
     <string name="event_sandbox_title">샌드박스</string>
     <string name="event_codelabs_title">Codelab</string>
@@ -156,6 +177,7 @@
     <string name="event_officehours_description">실무자와의 만남 시간을 통해 Google 전문가와 1:1로 만나서 기술적인 질문을 할 수 있으며, 앱 리뷰 시간을 통해 구체적인 앱 관련 프로젝트에 대한 조언을 받고 팁을 얻을 수 있습니다.</string>
     <string name="event_afterhours_description">이틀 동안 세션 종료 후에 쇼어라인에 남아서 음식, 음료, 재미가 함께 하는 저녁을 즐겨 보세요. 첫날 저녁에는 샌드박스 공간에서 파티가 열리고, 둘째 날 저녁에는 원형극장에서 독점 콘서트가 열립니다.</string>
     <string name="wifi_header">Wi-Fi</string>
+    <string name="related_apps_header">관련 앱</string>
     <string name="event_types_header">이벤트 유형</string>
     <string name="settings_time_zone_label">태평양 표준시 시간대 기준의 이벤트(UTC-8)</string>
     <string name="settings_send_anonymous_usage_statistics">익명 사용 통계 보내기</string>
@@ -164,4 +186,9 @@
     <string name="settings_oss_licenses">오픈소스 라이선스</string>
     <string name="settings_version_label">버전 %1$s, 빌드 %2$s</string>
     <string name="built_with_material_components">Material Components로 제작되었습니다.</string>
+    <string name="scavenger_hunt_description">I/O Android Things 보물찾기에 참여해 보세요.</string>
+    <string name="scavenger_hunt_description2">(힌트: Android Things 개발자 키트를 받으실 수도 있습니다.)</string>
+    <string name="assistant_app_description">I/O 18 Google 어시스턴트용 Action을 사용해 보세요.</string>
+    <string name="assistant_app_description2">\"Hey Google, Google I/O에 대해 얘기하자.\"라고 말하시기만 하면 됩니다.</string>
+    <string name="navigate_up">위로 이동</string>
 </resources>

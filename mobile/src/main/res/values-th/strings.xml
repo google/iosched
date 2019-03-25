@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 -->
 <resources>
     <string name="title_schedule">กำหนดการ</string>
+    <string name="title_feed">ฟีด</string>
     <string name="title_map">แผนที่</string>
     <string name="filters">ตัวกรอง</string>
     <string name="category_heading_tracks">หัวข้อ</string>
@@ -61,6 +62,19 @@
     <string name="menu_item_session_star">ติดดาวเซสชัน</string>
     <string name="session_detail_speakers_header">ลำโพง</string>
     <string name="session_detail_related_header">กิจกรรมที่เกี่ยวข้อง</string>
+    <string name="feedback_submit">ส่ง</string>
+    <string name="feedback_q1_text">คุณจะให้คะแนนคุณภาพโดยรวมของเซสชันเท่าใด</string>
+    <string name="feedback_q2_text">คุณจะอธิบายถึงเนื้อหาของเซสชันโดยอ้างอิงตามความคาดหวัง/คำอธิบายของเซสชันอย่างไร</string>
+    <string name="feedback_q3_text">เซสชันมีความเกี่ยวข้องกับโปรเจ็กต์ของคุณอย่างไร</string>
+    <string name="feedback_q4_text">คุณจะให้คะแนนผู้บรรยายเท่าใด</string>
+    <string name="feedback_q1_label_start">ธรรมดามาก</string>
+    <string name="feedback_q2_label_start">แย่</string>
+    <string name="feedback_q3_label_start">ไม่เกี่ยวข้องมากนัก</string>
+    <string name="feedback_q4_label_start">ไม่น่าประทับใจ</string>
+    <string name="feedback_q1_label_end">เยี่ยมมาก</string>
+    <string name="feedback_q3_label_end">เกี่ยวข้องมากที่สุด</string>
+    <string name="feedback_q4_label_end">ยอดเยี่ยมมาก</string>
+    <string name="a11y_show_navigation">แสดงเมนูการนำทาง</string>
     <string name="a11y_collapse_filters_sheet">เลื่อนแถบตัวกรองลง</string>
     <string name="a11y_clear_tag_filters">ล้างตัวกรอง</string>
     <string name="a11y_revert_pinned">แสดงเซสชันทั้งหมด</string>
@@ -75,6 +89,10 @@
     <string name="a11y_unstarred">ยังไม่บุ๊กมาร์กกิจกรรม</string>
     <string name="a11y_star">ดาว</string>
     <string name="a11y_play">เล่นวิดีโอ</string>
+    <string name="welcome">ยินดีต้อนรับ</string>
+    <string name="sign_in_hint">แตะเพื่อลงชื่อเข้าใช้</string>
+    <string name="a11y_signed_in_content_description">ลงชื่อเข้าใช้ด้วย %s</string>
+    <string name="a11y_signed_out_content_description">แตะเพื่อลงชื่อเข้าใช้</string>
     <string name="dialog_sign_in_title">ลงชื่อเข้าใช้เพื่อปรับแต่งกำหนดการ</string>
     <string name="dialog_sign_in_content">ลงชื่อเข้าใช้เพื่อบันทึกกิจกรรม จองที่นั่ง และให้คะแนนเซสชัน (หากเป็นผู้เข้าร่วม) การดำเนินการจะได้รับการซิงค์จากบัญชีไปยังแอปและเว็บไซต์</string>
     <string name="not_now">ไม่ใช่ตอนนี้</string>
@@ -104,6 +122,8 @@
     <string name="menu_item_share_session">แชร์เซสชัน</string>
     <string name="share_text_session_detail">ลองดู \"%1$s\" ที่ #io18 %2$s</string>
     <string name="intent_chooser_session_detail">แชร์</string>
+    <string name="enable_my_location">เปิดใช้ตำแหน่งของฉัน</string>
+    <string name="my_location_rationale">แอปจำเป็นต้องมีสิทธิ์เข้าถึงตำแหน่งเพื่อแสดงตำแหน่งของคุณบนแผนที่</string>
     <string name="onboarding_get_started">เริ่มต้นใช้งาน</string>
     <string name="onboarding_welcome_to_google_i_o">ยินดีต้อนรับสู่ Google I/O</string>
     <string name="onboarding_date_location">วันที 8-10 พฤษภาคม\n2018 Mountain View, CA</string>
@@ -132,7 +152,7 @@
     <string name="travel_public_transportation_title">การขนส่งมวลชน</string>
     <string name="travel_biking_title">ขี่จักรยาน</string>
     <string name="travel_directions_description">ค้นหาเส้นทางใน <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> หรือ <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a> ไปยัง 1 Amphitheatre Pkwy, Mountain View, CA 94043</string>
-    <string name="travel_shuttle_description">มีรถรับส่งให้กับผู้เข้าร่วมกิจกรรม Google I/O ทุกคนจากโรงแรมที่ Google แนะนำโดยไม่มีค่าใช้จ่าย นอกจากนี้ยังมีบริการรับส่งจากซานฟรานซิสโกและสถานที่อื่นๆ ตามคาบสมุทร คุณต้องแสดงอีเมลยืนยันจาก Google I/O หรือป้ายการประชุมเพื่อขึ้นรถรับส่งของกิจกรรม Google I/O ทั้งหมด\n\nในแต่ละจุดรับส่งมีรถที่เป็นไปตามข้อกำหนด ADA โปรดระบุในแบบฟอร์มลงทะเบียนหากคุณต้องการความช่วยเหลือด้าน ADA หรือความช่วยเหลือพิเศษใดๆ และทีมวางแผนจะติดตามผลกับคุณโดยตรง</string>
+    <string name="travel_shuttle_description">มีรถรับส่งให้กับผู้เข้าร่วมกิจกรรม Google I/O ทุกคนจากโรงแรมที่ Google แนะนำโดยไม่มีค่าใช้จ่าย นอกจากนี้ยังมีบริการรับส่งจากซานฟรานซิสโกและสถานที่อื่นๆ ตามคาบสมุทร คุณต้องแสดงอีเมลยืนยันจาก Google I/O หรือป้ายการประชุมเพื่อขึ้นรถรับส่งของกิจกรรม Google I/O ทั้งหมด\n\nในแต่ละจุดรับส่งมีรถสำหรับผู้มีความบกพร่องทางร่างกาย โปรดระบุในแบบฟอร์มลงทะเบียนหากคุณต้องการความช่วยเหลือพิเศษใดๆ และทีมวางแผนจะติดตามผลกับคุณโดยตรง</string>
     <string name="travel_carpool_parking_description">ที่จอดรถมีจำนวนจำกัดและมีเฉพาะในสถานที่ที่ Google I/O กำหนดไว้ซึ่งตั้งอยู่ระหว่าง Shoreline Amphitheatre บริเวณ Shoreline Boulevard เท่านั้น ไม่มีที่จอดรถสำหรับกิจกรรมใน Amphitheatre Parkway หรือ Charleston Road หากคุณจะเดินทางด้วยรถยนต์ส่วนตัว เราแนะนำให้โดยสารร่วมกับผู้เข้าร่วมคนอื่น เนื่องจากที่จอดรถจะเปิดให้บริการสำหรับรถที่มีผู้โดยสารอย่างน้อย 2 คนขึ้นไป</string>
     <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\nWaze Carpool เป็นชุมชนของคนขับรถและผู้โดยสารที่น่าเชื่อถือ ซึ่งพร้อมให้บริการเพื่อให้การเดินทางมาที่ Google I/O เป็นเรื่องสนุก รวดเร็วและประหยัดเงิน หากคุณมีรถ ลองเปิด <a href="http://Waze.com/get">Waze</a> เมื่อคุณมาถึง Bay Area หรือหากคุณกำลังมองหาคนขับ ลองติดตั้ง <a href="http://Waze.com/carpool">Waze Carpool</a> ก่อนที่จะเดินทาง แล้วกลับมาดูที่นี่ในอีกไม่กี่สัปดาห์ข้างหน้าเพื่อรับรหัสส่วนลดสำหรับการโดยสารรถร่วมกันพิเศษสำหรับผู้เข้าร่วม Google I/O\n\n<b>Lyft Line</b>\nดาวน์โหลดแอป Lyft จาก Google Play แล้วใช้ Lyft Line เพื่อโดยสารรถร่วมกับผู้อื่นที่ไปทางเดียวกันในราคาที่ถูกลง\n<b>รหัสส่วนลด</b>: Googleio18\nรหัสนี้ใช้ได้ตั้งแต่ 8-10 พฤษภาคม 2018 สำหรับการโดยสารรถร่วมกันผ่าน Lyft Line โดยใช้แลกสิทธิ์ได้ไม่เกิน $10 ต่อการเดินทาง และไม่เกิน 250 คนในแต่ละวัน การเดินทางจะต้องเริ่มหรือสิ้นสุดที่ Shoreline Amphitheatre</string>
     <string name="travel_public_transportation_description">การขนส่งสาธารณะให้บริการไม่ถึงงาน Google I/O โปรดติดตามเพื่อดูตำแหน่งที่ให้บริการการเดินทางโดยรถรับส่งสำหรับกิจกรรม Google I/O</string>
@@ -145,6 +165,7 @@
     <string name="wifi_password_label">รหัสผ่าน</string>
     <string name="wifi_install_success">บันทึกเครือข่าย WiFi แล้ว</string>
     <string name="wifi_install_error_message">ขออภัย ระบบบันทึกเครือข่าย WiFi ไม่สำเร็จ</string>
+    <string name="wifi_install_clipboard_message">บันทึกเครือข่าย Wi-Fi ไม่ได้\nบันทึกรหัสผ่านไปยังคลิปบอร์ดแทน</string>
     <string name="event_sessions_title">เซสชัน</string>
     <string name="event_sandbox_title">แซนด์บ็อกซ์</string>
     <string name="event_codelabs_title">Codelabs</string>
@@ -156,6 +177,7 @@
     <string name="event_officehours_description">Office Hours เป็นโอกาสที่คุณจะได้พบกับผู้เชี่ยวชาญ Google ตัวต่อตัวเพื่อสอบถามปัญหาทางเทคนิคทั้งหมด ส่วน App Reviews จะเปิดโอกาสให้คุณได้รับคำแนะนำและเคล็ดลับสำหรับโครงการแอปของคุณแบบเจาะจง</string>
     <string name="event_afterhours_description">ปิดท้ายวันด้วยกิจกรรมหลังเซสชัน พักผ่อนบริเวณ Shoreline ต่อเพื่อรับประทานอาหาร เครื่องดื่ม และสัมผัสกับความสนุกอีก 2 วัน โดยคืนแรกจะมีการจัดปาร์ตี้ขึ้นบริเวณ Sandbox และคืนที่ 2 จะมีคอนเสิร์ตสุดพิเศษใน Amphitheatre</string>
     <string name="wifi_header">Wi-Fi</string>
+    <string name="related_apps_header">แอปที่เกี่ยวข้อง</string>
     <string name="event_types_header">ประเภทกิจกรรม</string>
     <string name="settings_time_zone_label">กิจกรรมในเขตเวลาแปซิฟิก (UTC-8)</string>
     <string name="settings_send_anonymous_usage_statistics">ส่งสถิติการใช้งานแบบไม่ระบุตัวตน</string>
@@ -164,4 +186,9 @@
     <string name="settings_oss_licenses">ใบอนุญาตโอเพนซอร์ส</string>
     <string name="settings_version_label">เวอร์ชัน %1$s, บิวด์ %2$s</string>
     <string name="built_with_material_components">สร้างด้วย Material Components</string>
+    <string name="scavenger_hunt_description">เข้าร่วม I/O Android Things Scavenger Hunt</string>
+    <string name="scavenger_hunt_description2">(คำใบ้: อาจมีชุด Android Things สำหรับนักพัฒนาซอฟต์แวร์ในอนาคต)</string>
+    <string name="assistant_app_description">ใช้ I/O 18 บน Action on Google Assistant</string>
+    <string name="assistant_app_description2">ลองพูดว่า \"Hey Google พูดกับ Google I/O 18\"</string>
+    <string name="navigate_up">นำทางขึ้น</string>
 </resources>

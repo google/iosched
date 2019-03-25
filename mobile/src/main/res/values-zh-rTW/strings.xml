@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 -->
 <resources>
     <string name="title_schedule">時間表</string>
+    <string name="title_feed">動態消息</string>
     <string name="title_map">地圖</string>
     <string name="filters">篩選器</string>
     <string name="category_heading_tracks">主題</string>
@@ -34,13 +35,13 @@
     <string name="reservation_request_succeeded">已提出預約申請。</string>
     <string name="reservation_cancel_succeeded">已取消預約：「&lt;b&gt;%s&lt;/b&gt;」。</string>
     <string name="reservation_new">已為你預留「&lt;b&gt;%s&lt;/b&gt;」的席位。</string>
-    <string name="reservation_replaced">已取代活動。</string>
+    <string name="reservation_replaced">已更換活動。</string>
     <string name="waitlist_new">你已排入候補名單。</string>
     <string name="waitlist_cancel_succeeded">已從候補名單中移除。</string>
     <string name="got_it">我知道了</string>
     <string name="dont_show">不顯示</string>
     <string name="reservation_denied_cutoff">預約遭拒：申請時間過於接近活動開始時間。</string>
-    <string name="reservation_denied_clash">預約遭拒：與另一個預約項目發生衝突</string>
+    <string name="reservation_denied_clash">預約遭拒：與另一個預約項目的時間發生衝突</string>
     <string name="reservation_denied_unknown">預約遭拒：發生不明錯誤。</string>
     <string name="cancellation_denied_cutoff">取消遭拒：申請時間過於接近活動開始時間。</string>
     <string name="cancellation_denied_unknown">取消遭拒：發生不明錯誤。</string>
@@ -61,11 +62,24 @@
     <string name="menu_item_session_star">將活動加上星號</string>
     <string name="session_detail_speakers_header">講者</string>
     <string name="session_detail_related_header">相關活動</string>
+    <string name="feedback_submit">提交</string>
+    <string name="feedback_q1_text">您對於這場活動的整體品質評價如何？</string>
+    <string name="feedback_q2_text">就您自身的期待/活動說明來看，您對於實際活動內容有什麼看法？</string>
+    <string name="feedback_q3_text">這場活動與您的專案相關度有多高？</string>
+    <string name="feedback_q4_text">您對講者的評價如何？</string>
+    <string name="feedback_q1_label_start">很基礎</string>
+    <string name="feedback_q2_label_start">差</string>
+    <string name="feedback_q3_label_start">不太高</string>
+    <string name="feedback_q4_label_start">有點失望</string>
+    <string name="feedback_q1_label_end">非常進階</string>
+    <string name="feedback_q3_label_end">非常高</string>
+    <string name="feedback_q4_label_end">好極了</string>
+    <string name="a11y_show_navigation">顯示導覽選單</string>
     <string name="a11y_collapse_filters_sheet">將篩選器工作表移至底部</string>
-    <string name="a11y_clear_tag_filters">清除篩選器</string>
+    <string name="a11y_clear_tag_filters">清除篩選條件</string>
     <string name="a11y_revert_pinned">顯示所有活動</string>
     <string name="a11y_reservation_available">預約活動</string>
-    <string name="a11y_reservation_working">正在嘗試預約活動</string>
+    <string name="a11y_reservation_working">正在預約活動</string>
     <string name="a11y_reservation_reserved">已預約活動</string>
     <string name="a11y_reservation_disabled">無法預約</string>
     <string name="a11y_reservation_wait_list_available">加入活動候補名單</string>
@@ -75,6 +89,10 @@
     <string name="a11y_unstarred">尚未將活動加入書籤</string>
     <string name="a11y_star">加上星號</string>
     <string name="a11y_play">播放影片</string>
+    <string name="welcome">歡迎！</string>
+    <string name="sign_in_hint">輕觸即可登入</string>
+    <string name="a11y_signed_in_content_description">目前登入的帳戶是：%s。</string>
+    <string name="a11y_signed_out_content_description">輕按即可登入。</string>
     <string name="dialog_sign_in_title">登入即可自訂你的時間表</string>
     <string name="dialog_sign_in_content">登入後即可儲存活動、預約席位及為活動評分 (參與者才能使用這項功能)。系統會在應用程式和網站上同步處理你透過帳戶執行的動作。</string>
     <string name="not_now">暫時不要</string>
@@ -104,6 +122,8 @@
     <string name="menu_item_share_session">分享講座資訊</string>
     <string name="share_text_session_detail">快來參加「%1$s」，詳情請見 #io18 %2$s</string>
     <string name="intent_chooser_session_detail">分享</string>
+    <string name="enable_my_location">啟用我的位置</string>
+    <string name="my_location_rationale">授予應用程式位置存取權後，即可在地圖上顯示您的位置。</string>
     <string name="onboarding_get_started">開始使用</string>
     <string name="onboarding_welcome_to_google_i_o">歡迎使用 Google I/O</string>
     <string name="onboarding_date_location">2018 年 5 月 8 日至 10 日，\nMountain View, CA, USA</string>
@@ -132,8 +152,8 @@
     <string name="travel_public_transportation_title">大眾運輸</string>
     <string name="travel_biking_title">騎乘自行車</string>
     <string name="travel_directions_description">請在 <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google 地圖</a>或 <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a> 中輸入以下地址：1 Amphitheatre Pkwy, Mountain View, CA 94043</string>
-    <string name="travel_shuttle_description">在 Google 推薦的所有飯店均設有活動接駁車站點，Google I/O 大會的參與者可以免費利用這項服務。舊金山和半島地區也設有部分站點，歡迎多加利用。搭乘接駁車時，請出示你收到的 Google I/O 大會確認電子郵件或會議徽章。\n\n每個上車地點皆可停放符合《美國身心障礙者權益保障法》(ADA) 規定的福祉車。如有任何關於 ADA 的需求或需要特別協助，請在報名表上註明，我們的活動規劃小組將會直接與你聯繫。</string>
-    <string name="travel_carpool_parking_description">會場周邊的停車位數量相當有限。海岸露天劇場 (Shoreline Amphitheater) 旁的海岸大道 (Shoreline Boulevard) 上才設有 Google I/O 大會的指定停車格。露天劇場大道 (Amphitheatre Parkway) 或查爾斯頓路 (Charleston Road) 沿途並沒有大會來賓專用停車格，請特別留意。我們的首選停車位僅供乘載人數超過兩人的車輛停靠，因此建議來賓盡量和其他與會者採用共乘方式前往會場。</string>
+    <string name="travel_shuttle_description">Google 推薦的所有飯店均設有活動接駁車，Google I/O 大會的參與者可以免費利用這項服務。舊金山和半島地區也設有特定停靠站，歡迎多加利用。搭乘接駁車時，請出示你收到的 Google I/O 大會確認電子郵件或大會徽章。\n\n每個上車地點皆可停放載運輪椅車輛。如果您需要任何特別協助，請在報名表上註明，我們的活動規劃小組將會直接與你聯繫。</string>
+    <string name="travel_carpool_parking_description">會場周邊的停車位數量相當有限。海岸露天劇場 (Shoreline Amphitheater) 旁的海岸大道 (Shoreline Boulevard) 上才設有 Google I/O 大會的指定停車格。露天劇場大道 (Amphitheatre Parkway) 或查爾斯頓路 (Charleston Road) 沿途並沒有大會來賓專用停車格，請特別留意。乘載人數超過兩人的車輛可優先選擇停車位，因此建議來賓盡量和其他與會者採用共乘方式前往會場。</string>
     <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\nWaze Carpool 是由駕駛與乘客組成的社群，提供值得信賴的乘車服務，能以經濟實惠的價格帶你快速前往 Google I/O 會場，途中還有機會結識其他共乘者。如果你打算自行開車，抵達灣區時，不妨開啟 <a href="http://Waze.com/get">Waze</a> 應用程式來提供共乘服務。如要與他人共乘，請在抵達灣區之前先安裝 <a href="http://Waze.com/carpool">Waze Carpool</a> 應用程式。未來幾週，別忘了回到這裡查看 Google I/O 大會參與者專屬的共乘折扣代碼。\n\n<b>Lyft Line</b>\n歡迎前往 Google Play 下載 Lyft 應用程式；使用 Lyft Line 能以較低的車資與其他同路乘客共乘車輛。\n<b>折扣代碼</b>：Googleio18\n這組代碼的有效期限為 2018 年 5 月 8 日至 10 日，可於透過 Lyft Line 共乘時使用。每趟車程最多可折抵 $10 美元的車費，每天最多可供 250 位使用者利用。請注意，搭車或下車地點必須為海岸露天劇場。</string>
     <string name="travel_public_transportation_description">大眾運輸工具並未直達 Google I/O 會場地點。請密切留意 Google I/O 大會提供的接駁車停靠站資訊。</string>
     <string name="travel_biking_description">若騎自行車前來，可以將車輛免費停放在海岸露天劇場的 A 區停車場。大會活動期間，矽谷單車聯盟 (Silicon Valley Bicycle Coalition) 每天上午 7 點到當天活動結束為止，皆為自行車騎士提供安全的代客停車服務。建議選擇史蒂文斯溪小道 (Stevens Creek Trail) 和佩曼南緹溪小道 (Permanente Creek Trail) 前往海岸露天劇場。如要取得適合自行車行駛的路線指引，請查看 Google 地圖。\n\n灣區今年的「騎自行車上班日」定於 5 月 10 日週四，屆時海岸地區會有上千名自行車騎士上路，整個地區將設置上百個補給站。詳情請瀏覽「矽谷騎自行車上班日」(Silicon Valley Bike to Work Day) 網站。</string>
@@ -145,6 +165,7 @@
     <string name="wifi_password_label">密碼：</string>
     <string name="wifi_install_success">已儲存 Wi-Fi 網路</string>
     <string name="wifi_install_error_message">很抱歉，無法儲存 Wi-Fi 網路</string>
+    <string name="wifi_install_clipboard_message">無法儲存 Wi-Fi 網路。\n請改成將密碼儲存至剪貼簿。</string>
     <string name="event_sessions_title">活動</string>
     <string name="event_sandbox_title">沙箱</string>
     <string name="event_codelabs_title">Codelab</string>
@@ -153,9 +174,10 @@
     <string name="event_meals_title">餐點</string>
     <string name="event_sandbox_description">這個專用空間提供互動示範、實體裝置操作等體驗，供你探索、學習及試用我們的最新產品和平台。</string>
     <string name="event_codelabs_description">利用我們可直接編程的資訊站獲取實作經驗。在這裡，你可以參閱自修課程和完整資訊掌握所有最新和最強大的 Google 技術，也可以自行攜帶機器前來並另行抽空實作。如果遇到瓶頸，Google 員工將隨時提供實用的建議和指引，助你解開疑惑。</string>
-    <string name="event_officehours_description">你可以在「諮詢時段」與 Google 專家面對面交流，為各種技術問題尋求解答。在「應用程式實務討論」中，你將有機會針對與應用程式有關的特定專案取得實用建議和提示。</string>
+    <string name="event_officehours_description">你可以在「諮詢時段」與 Google 專家面對面交流，為各種技術問題尋求解答。在「應用程式實務討論」中，你將有機會為自己特定的應用程式相關專案取得實用建議和提示。</string>
     <string name="event_afterhours_description">我們會在前兩天的活動結束後提供美食佳飲，歡迎繼續留在海岸地區與我們同樂。第一天晚間沙箱區將舉行熱鬧派對，第二天晚上我們將在露天劇場為與會者舉辦一場獨家音樂會。</string>
     <string name="wifi_header">Wi-Fi</string>
+    <string name="related_apps_header">相關應用程式</string>
     <string name="event_types_header">活動類型</string>
     <string name="settings_time_zone_label">太平洋時區的活動資訊 (UTC-8)</string>
     <string name="settings_send_anonymous_usage_statistics">傳送匿名使用統計資料</string>
@@ -164,4 +186,9 @@
     <string name="settings_oss_licenses">開放原始碼授權</string>
     <string name="settings_version_label">版本：%1$s，組建版號：%2$s</string>
     <string name="built_with_material_components">使用 Material Components 技術打造。</string>
+    <string name="scavenger_hunt_description">立即參加 I/O Android Things 尋寶大賽！</string>
+    <string name="scavenger_hunt_description2">(提示：未來您將有可能取得 Android Things 開發人員套件。)</string>
+    <string name="assistant_app_description">在 Google 助理上使用 2018 年 I/O 大會的應用程式動作。</string>
+    <string name="assistant_app_description2">只要說「Hey Google，連線到 2018 年 Google I/O 大會！」即可</string>
+    <string name="navigate_up">向上瀏覽</string>
 </resources>

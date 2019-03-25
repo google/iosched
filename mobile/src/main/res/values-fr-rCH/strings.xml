@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 -->
 <resources>
     <string name="title_schedule">Programmation</string>
+    <string name="title_feed">Flux</string>
     <string name="title_map">Plan</string>
     <string name="filters">Filtres</string>
     <string name="category_heading_tracks">Thèmes</string>
@@ -61,6 +62,19 @@
     <string name="menu_item_session_star">Ajouter la session aux favoris</string>
     <string name="session_detail_speakers_header">Intervenants</string>
     <string name="session_detail_related_header">Événements associés</string>
+    <string name="feedback_submit">Envoyer</string>
+    <string name="feedback_q1_text">Qu\'avez-vous pensé de la qualité globale de la session ?</string>
+    <string name="feedback_q2_text">Comment décririez-vous les contenus de la session par rapport à vos attentes/la description de la session ?</string>
+    <string name="feedback_q3_text">La session était-elle pertinente par rapport à vos projets ?</string>
+    <string name="feedback_q4_text">Comment évalueriez-vous les intervenants ?</string>
+    <string name="feedback_q1_label_start">Médiocre</string>
+    <string name="feedback_q2_label_start">Médiocres</string>
+    <string name="feedback_q3_label_start">Pas vraiment pertinente</string>
+    <string name="feedback_q4_label_start">Décevants</string>
+    <string name="feedback_q1_label_end">Exceptionnelle</string>
+    <string name="feedback_q3_label_end">Très pertinente</string>
+    <string name="feedback_q4_label_end">Exceptionnels</string>
+    <string name="a11y_show_navigation">Afficher le menu de navigation</string>
     <string name="a11y_collapse_filters_sheet">Réduire le panneau des filtres</string>
     <string name="a11y_clear_tag_filters">Effacer les filtres</string>
     <string name="a11y_revert_pinned">Afficher toutes les sessions</string>
@@ -75,6 +89,10 @@
     <string name="a11y_unstarred">Événement non ajouté aux favoris</string>
     <string name="a11y_star">Ajouter aux favoris</string>
     <string name="a11y_play">Voir la vidéo</string>
+    <string name="welcome">Bienvenue</string>
+    <string name="sign_in_hint">Appuyez ici pour vous connecter</string>
+    <string name="a11y_signed_in_content_description">Connecté en tant que %s.</string>
+    <string name="a11y_signed_out_content_description">Appuyez ici pour vous connecter.</string>
     <string name="dialog_sign_in_title">Connectez-vous pour personnaliser votre programme</string>
     <string name="dialog_sign_in_content">Connectez-vous pour enregistrer des événements, réserver des places et noter des sessions (auxquelles vous avez participé). Les actions seront synchronisées entre votre compte, l\'application et le site.</string>
     <string name="not_now">Pas maintenant</string>
@@ -104,6 +122,8 @@
     <string name="menu_item_share_session">Partager la séance</string>
     <string name="share_text_session_detail">Voir « %1$s » à #io18 %2$s</string>
     <string name="intent_chooser_session_detail">Partage</string>
+    <string name="enable_my_location">Activer la localisation</string>
+    <string name="my_location_rationale">L\'application doit disposer de l\'autorisation d\'accéder à votre position pour afficher celle-ci sur la carte.</string>
     <string name="onboarding_get_started">Commencer</string>
     <string name="onboarding_welcome_to_google_i_o">Bienvenue dans Google I/O</string>
     <string name="onboarding_date_location">Du 8 au 10 mai\n2018 Mountain View, CA</string>
@@ -132,7 +152,7 @@
     <string name="travel_public_transportation_title">Transports publics</string>
     <string name="travel_biking_title">Vélo</string>
     <string name="travel_directions_description">Utilisez <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> ou <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a> pour rechercher l\'itinéraire permettant de se rendre à l\'adresse suivante : 1 Amphitheatre Pkwy, Mountain View, CA 94043</string>
-    <string name="travel_shuttle_description">Des navettes seront proposées gratuitement à tous les participants de Google I/O depuis tous les hôtels recommandés par Google. San Francisco et d\'autres lieux de départ dans la péninsule seront également desservis. Pour monter à bord des navettes de l\'événement Google I/O, vous devrez montrer votre e-mail de confirmation ou votre badge de conférence.\n\nDes véhicules adaptés aux personnes handicapées peuvent être mis à disposition. Veuillez indiquer sur le formulaire d\'enregistrement si vous avez des besoins d\'assistance spécifiques. L\'équipe de planification entrera alors directement en contact avec vous.</string>
+    <string name="travel_shuttle_description">Des navettes seront proposées gratuitement aux participants de Google I/O depuis tous les hôtels recommandés par Google. San Francisco et d\'autres lieux de départ dans la péninsule seront également desservis. Pour monter à bord des navettes de l\'événement Google I/O, vous devrez montrer votre e-mail de confirmation ou votre badge de conférence.\n\nDes véhicules adaptés aux personnes handicapées peuvent être mis à disposition. Si vous avez des besoins d\'assistance spécifiques, veuillez l\'indiquer sur le formulaire d\'inscription. L\'équipe responsable de l\'organisation vous contactera directement.</string>
     <string name="travel_carpool_parking_description">Le stationnement est très limité et disponible uniquement dans les parkings réservés à Google I/O situés en face du Shoreline Amphitheatre sur Shoreline Boulevard. Il n\'y a pas de parking pour l\'événement sur Amphitheatre Parkway, ni sur Charleston Road. Si vous prévoyez de venir en voiture, nous vous recommandons de privilégier le covoiturage avec d\'autres participants, car des places de stationnement préférentielles seront disponibles pour les voitures contenant au moins deux personnes.</string>
     <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\nWaze Carpool est une communauté d\'utilisateurs de confiance qui rendra votre trajet jusqu\'à Google I/O agréable, rapide et économique. Vous conduisez ? Ouvrez <a href="http://Waze.com/get">Waze</a> lorsque vous arrivez dans la région de San Francisco. Vous cherchez une voiture ? Installez <a href="http://Waze.com/carpool">Waze Carpool</a> avant d\'arriver. Revenez sur cette page dans les semaines à venir pour profiter de codes de réduction exclusifs réservés aux participants de Google I/O.\n\n<b>Lyft Line</b>\nTéléchargez l\'application Lyft depuis Google Play et utilisez Lyft Line pour partager un trajet avec des personnes qui vont au même endroit que vous.\n<b>Code de réduction</b> : Googleio18\nCe code est valable du 8 au 10 mai 2018 et s\'applique aux trajets partagés avec Lyft Line. Il permet de bénéficier d\'une réduction pouvant aller jusqu\'à 10 $ par trajet et est limité à 250 utilisateurs par jour. Les trajets doivent commencer ou se terminer au Shoreline Amphitheatre.</string>
     <string name="travel_public_transportation_description">Les transports en commun ne permettent pas de se rendre directement à Google I/O. Des informations supplémentaires seront bientôt disponibles sur les lieux desservis par les navettes de Google I/O.</string>
@@ -145,6 +165,7 @@
     <string name="wifi_password_label">Mot de passe :</string>
     <string name="wifi_install_success">Réseau Wi-Fi enregistré</string>
     <string name="wifi_install_error_message">Désolé, impossible d\'enregistrer le réseau Wi-Fi</string>
+    <string name="wifi_install_clipboard_message">Impossible d\'enregistrer le réseau Wi-Fi.\nMot de passe copié dans le presse-papiers.</string>
     <string name="event_sessions_title">Sessions</string>
     <string name="event_sandbox_title">Bac à sable</string>
     <string name="event_codelabs_title">Ateliers de programmation</string>
@@ -156,6 +177,7 @@
     <string name="event_officehours_description">Les permanences vous donnent l\'occasion de rencontrer individuellement des experts de Google pour poser toutes vos questions techniques. Quant aux avis sur les applications, ils vous permettent de recevoir des conseils et des astuces sur vos projets d\'applications spécifiques.</string>
     <string name="event_afterhours_description">Une fois les sessions terminées, restez dans les parages pour profiter de deux soirées avec repas, boissons et bons moments en perspective. Lors de la première, les participants se réuniront au niveau de l\'espace de bac à sable et, lors de la seconde, un concert sera donné en exclusivité dans l\'Amphitheatre.</string>
     <string name="wifi_header">Wi-Fi</string>
+    <string name="related_apps_header">Applications associées</string>
     <string name="event_types_header">Types d\'événement</string>
     <string name="settings_time_zone_label">Événements dans le fuseau horaire du Pacifique (UTC-8)</string>
     <string name="settings_send_anonymous_usage_statistics">Envoyer des statistiques d\'utilisation anonymes</string>
@@ -164,4 +186,9 @@
     <string name="settings_oss_licenses">Licences Open Source</string>
     <string name="settings_version_label">Version %1$s, build %2$s</string>
     <string name="built_with_material_components">Créée avec Material Components.</string>
+    <string name="scavenger_hunt_description">Participez à la chasse au trésor I/O Android Things !</string>
+    <string name="scavenger_hunt_description2">(Indice : il se pourrait qu\'un kit de développement Android Things soit en jeu.)</string>
+    <string name="assistant_app_description">Utilisez l\'action I/O 18 avec l\'Assistant Google.</string>
+    <string name="assistant_app_description2">Dites \"Ok Google, parle à Google I/O 18\" !</string>
+    <string name="navigate_up">Remonter</string>
 </resources>

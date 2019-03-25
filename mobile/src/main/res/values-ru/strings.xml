@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 -->
 <resources>
     <string name="title_schedule">Расписание</string>
+    <string name="title_feed">Лента</string>
     <string name="title_map">Схема места проведения</string>
     <string name="filters">Фильтры</string>
     <string name="category_heading_tracks">Темы</string>
@@ -63,6 +64,19 @@
     <string name="menu_item_session_star">Добавить сессию в расписание</string>
     <string name="session_detail_speakers_header">Выступающие</string>
     <string name="session_detail_related_header">Похожие мероприятия</string>
+    <string name="feedback_submit">Отправить</string>
+    <string name="feedback_q1_text">Как бы Вы оценили мероприятие в целом?</string>
+    <string name="feedback_q2_text">Насколько мероприятие, которое Вы посетили, соответствовало Вашим ожиданиям и информации о нем?</string>
+    <string name="feedback_q3_text">Насколько то, что Вы узнали, поможет Вам в реализации проектов?</string>
+    <string name="feedback_q4_text">Как бы Вы оценили выступления?</string>
+    <string name="feedback_q1_label_start">Обычное</string>
+    <string name="feedback_q2_label_start">Не оправдало ожиданий</string>
+    <string name="feedback_q3_label_start">Почти не поможет</string>
+    <string name="feedback_q4_label_start">Оставляют желать лучшего</string>
+    <string name="feedback_q1_label_end">Отличное</string>
+    <string name="feedback_q3_label_end">Значительно поможет</string>
+    <string name="feedback_q4_label_end">Превзошло ожидания</string>
+    <string name="a11y_show_navigation">Показать меню навигации</string>
     <string name="a11y_collapse_filters_sheet">Свернуть список фильтров</string>
     <string name="a11y_clear_tag_filters">Удалить фильтры</string>
     <string name="a11y_revert_pinned">Показать все сессии</string>
@@ -77,6 +91,10 @@
     <string name="a11y_unstarred">Мероприятие не добавлено в закладки</string>
     <string name="a11y_star">Добавить в расписание или удалить из него</string>
     <string name="a11y_play">Посмотреть видео</string>
+    <string name="welcome">Добро пожаловать!</string>
+    <string name="sign_in_hint">Войти</string>
+    <string name="a11y_signed_in_content_description">Вы вошли в аккаунт %s.</string>
+    <string name="a11y_signed_out_content_description">Нажмите, чтобы войти.</string>
     <string name="dialog_sign_in_title">Войдите в аккаунт</string>
     <string name="dialog_sign_in_content">Тогда вы сможете добавлять мероприятия в свое расписание, бронировать места и оценивать сессии. Сведения обо всех действиях, которые вы выполните в аккаунте, будут доступны как в приложении, так и на сайте.</string>
     <string name="not_now">Не сейчас</string>
@@ -110,6 +128,8 @@
     <string name="menu_item_share_session">Поделиться сессией</string>
     <string name="share_text_session_detail">Узнайте о сессии \"%1$s\" на фестивале #io18 %2$s</string>
     <string name="intent_chooser_session_detail">Поделиться</string>
+    <string name="enable_my_location">Открыть доступ к геоданным</string>
+    <string name="my_location_rationale">Разрешите доступ к своему местоположению, чтобы мы могли показывать вам его на карте.</string>
     <string name="onboarding_get_started">Начать</string>
     <string name="onboarding_welcome_to_google_i_o">Добро пожаловать на фестиваль Google I/O</string>
     <string name="onboarding_date_location">8–10 мая 2018 г.,\nМаунтин-Вью, Калифорния</string>
@@ -140,7 +160,7 @@
     <string name="travel_public_transportation_title">Общественный транспорт</string>
     <string name="travel_biking_title">Велосипеды</string>
     <string name="travel_directions_description">Фестиваль будет проходить по адресу 1 Amphitheatre Parkway, Mountain View, CA 94043, США. Информацию о том, как добраться, можно посмотреть в <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Картах</a> или приложении <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a>.</string>
-    <string name="travel_shuttle_description">Бесплатный трансфер на фестиваль Google I/O будет предоставлен тем его участникам, которые остановятся в рекомендованных отелях, а также тем, кто проживает в Сан-Франциско и других крупных городах полуострова. Воспользоваться трансфером можно только после предъявления значка участника Google I/O.\n\nЕсли вам необходимы особая помощь или транспортное средство для перевозки людей с ограниченными возможностями, укажите это в форме регистрации. Наши специалисты по планированию мероприятий свяжутся с вами напрямую.</string>
+    <string name="travel_shuttle_description">Бесплатный трансфер на фестиваль Google I/O будет предоставлен тем его участникам, которые остановятся в рекомендованных отелях, а также тем, кто проживает в Сан-Франциско и других крупных городах полуострова. Воспользоваться трансфером можно только после предъявления значка участника Google I/O.\n\nЕсли вам необходимы особая помощь или транспортное средство для перевозки людей с ограниченными возможностями, укажите это в форме регистрации. Наши специалисты по планированию мероприятий свяжутся с вами напрямую.</string>
     <string name="travel_carpool_parking_description">Поскольку количество парковочных мест ограничено, а большинство из них отведено для автомобилей с двумя или более пассажирами, рекомендуем вам найти попутчиков среди других участников фестиваля. Оставлять автомобили можно только на специальных местах вдоль бульвара Shoreline Boulevard, на противоположной стороне от здания Shoreline Amphitheatre. Вдоль аллеи Amphitheatre Parkway и улицы Charleston Road парковаться нельзя.</string>
     <string name="travel_ride_sharing_description"><b>Приложение Waze Carpool</b>\nБлагодаря этому сервису добраться до места проведения фестиваля значительно проще. Для водителей предусмотрено приложение <a href="http://Waze.com/get">Waze</a>, а для тех, кто ищет попутчиков, – <a href="http://Waze.com/carpool">Waze Carpool</a>. Для участников фестиваля предусмотрены промокоды. Подробнее о них мы расскажем позже.\n\n<b>Сервис Lyft Line</b>\nПриложение Lyft – отличный способ найти попутчиков и сэкономить на плате за проезд.\n<b>Промокод для скидки:</b> Googleio18\nКод можно применять с 8 по 10 мая 2018 года только при поездках с пунктом отправления или назначения в Shoreline Amphitheatre. Стоимость поездки не должна превышать 10 долларов США. Воспользоваться промокодом могут не более 250 человек в день.</string>
     <string name="travel_public_transportation_description">Прямых маршрутов до места проведения фестиваля нет, поэтому будет организован трансфер. Подробнее о нем мы сообщим позже. Следите за новостями!</string>
@@ -153,6 +173,7 @@
     <string name="wifi_password_label">Пароль:</string>
     <string name="wifi_install_success">Сеть Wi-Fi сохранена.</string>
     <string name="wifi_install_error_message">Не удалось сохранить сеть Wi-Fi.</string>
+    <string name="wifi_install_clipboard_message">Не удалось сохранить сеть Wi-Fi.\nПароль от сети Wi-Fi скопирован в буфер обмена.</string>
     <string name="event_sessions_title">Сеансы</string>
     <string name="event_sandbox_title">Тестирования</string>
     <string name="event_codelabs_title">Мероприятия в формате Codelab</string>
@@ -164,6 +185,7 @@
     <string name="event_officehours_description">Вы сможете обсудить со специалистами Google технические аспекты создания приложений, узнать авторитетное мнение о своих проектах и получить советы о том, как их улучшить.</string>
     <string name="event_afterhours_description">Для участников фестиваля предусмотрена развлекательная программа. В первый день вы сможете посетить вечеринку в пространстве для тестирования, а во второй – концерт в здании амфитеатра.</string>
     <string name="wifi_header">Сведения о Wi-Fi</string>
+    <string name="related_apps_header">Похожие приложения</string>
     <string name="event_types_header">Типы мероприятий</string>
     <string name="settings_time_zone_label">Тихоокеанский часовой пояс (UTC-8)</string>
     <string name="settings_send_anonymous_usage_statistics">Отправлять анонимную статистику использования</string>
@@ -172,4 +194,9 @@
     <string name="settings_oss_licenses">Посмотреть лицензии ПО с открытым исходным кодом</string>
     <string name="settings_version_label">Версия %1$s, сборка %2$s</string>
     <string name="built_with_material_components">В приложении использованы элементы Material Design.</string>
+    <string name="scavenger_hunt_description">Примите участие в квесте и узнайте, что можно создать с помощью Android Things.</string>
+    <string name="scavenger_hunt_description2">Подсказка: вас ждет новый пакет разработчика Android Things.</string>
+    <string name="assistant_app_description">Попробуйте приложение I/O 18 для Google Ассистента.</string>
+    <string name="assistant_app_description2">Просто скажите: \"Окей, Google, открой Google I/O 18\".</string>
+    <string name="navigate_up">Перейти вверх</string>
 </resources>
