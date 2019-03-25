@@ -18,15 +18,26 @@ package com.google.samples.apps.iosched.ui.feed
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.R.string
+import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsParameters
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsResult
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SectionHeader
 import com.google.samples.apps.iosched.ui.SnackbarMessage
+import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
+import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.google.samples.apps.iosched.util.combine
 import javax.inject.Inject
 
 /**
@@ -35,8 +46,15 @@ import javax.inject.Inject
  * create the object, so defining a [@Provides] method for this class won't be needed.
  */
 class FeedViewModel @Inject constructor(
-    private val loadAnnouncementsUseCase: LoadAnnouncementsUseCase
-) : ViewModel() {
+    private val loadAnnouncementsUseCase: LoadAnnouncementsUseCase,
+    private val loadFilteredUserSessionsUseCase: LoadFilteredUserSessionsUseCase,
+    private val signInViewModelDelegate: SignInViewModelDelegate
+) : ViewModel(), FeedEventListener {
+    companion object {
+        // Show at max 10 sessions in the horizontal sessions list as user can click on
+        // View All sessions and go to schedule to view the full list
+        const val MAX_SESSIONS = 10
+    }
 
     val errorMessage: LiveData<Event<String>>
 
@@ -46,15 +64,38 @@ class FeedViewModel @Inject constructor(
 
     val snackBarMessage: LiveData<Event<SnackbarMessage>>
 
+    private val loadSessionsResult: MediatorLiveData<Result<LoadFilteredUserSessionsResult>>
+
     private val loadFeedResult = loadAnnouncementsUseCase.observe()
 
+    private val _navigateToSessionAction = MutableLiveData<Event<String>>()
+    val navigateToSessionAction: LiveData<Event<String>>
+        get() = _navigateToSessionAction
+
+    private val _navigateToScheduleAction = MutableLiveData<Event<Boolean>>()
+    val navigateToScheduleAction: LiveData<Event<Boolean>>
+        get() = _navigateToScheduleAction
+
     init {
-        feed = loadFeedResult.map {
-            val items = (it as? Result.Success)?.data ?: emptyList()
+        loadSessionsResult = loadFilteredUserSessionsUseCase.observe()
+        loadSessionsResult.addSource(signInViewModelDelegate.currentUserInfo) {
+            refreshSessions()
+        }
+        val sessionContainerLiveData = signInViewModelDelegate.currentUserInfo.combine(
+            loadSessionsResult
+        ) { userInfo, sessions -> createFeedSessionsContainer(userInfo, sessions) }
+
+        val announcements: LiveData<List<Any>> = loadFeedResult.map {
+            (it as? Result.Success)?.data ?: emptyList()
+        }
+
+        // Generate feed
+        feed = sessionContainerLiveData.combine(announcements) { sessionContainer, announcements ->
             arrayListOf(
                 CountdownTimer(),
+                sessionContainer,
                 SectionHeader(string.feed_announcement_title)
-            ).plus(items)
+            ).plus(announcements)
         }
 
         isLoading = loadFeedResult.map { it == Result.Loading }
@@ -76,6 +117,43 @@ class FeedViewModel @Inject constructor(
                     )
             }
         }
+
+        loadAnnouncementsUseCase.execute(Unit)
+    }
+
+    private fun createFeedSessionsContainer(
+        userInfo: AuthenticatedUserInfo?,
+        sessions: Result<LoadFilteredUserSessionsResult>
+    ): FeedSessions =
+        FeedSessions(
+            username = userInfo?.getDisplayName()?.split(" ")?.get(0),
+            titleId =
+            if (userInfo?.isSignedIn() == true) {
+                if (userInfo.isRegistered()) string.feed_upcoming_events
+                else string.feed_saved_events
+            } else
+                string.title_schedule,
+            actionTextId =
+            when (userInfo?.isSignedIn() == true) {
+                true -> string.feed_view_your_schedule
+                false -> string.feed_view_all_events
+            },
+            userSessions = ((sessions as? Result.Success)?.data?.userSessions ?: emptyList()).let {
+                it.subList(0, Math.min(MAX_SESSIONS, it.size))
+            }
+        )
+
+    private fun refreshSessions() {
+        val sessionMatcher = UserSessionMatcher()
+        if (signInViewModelDelegate.isSignedIn()) {
+            sessionMatcher.setShowPinnedEventsOnly(true)
+        }
+        loadFilteredUserSessionsUseCase.execute(
+            LoadFilteredUserSessionsParameters(
+                sessionMatcher,
+                signInViewModelDelegate.getUserId()
+            )
+        )
     }
 
     override fun onCleared() {
@@ -83,7 +161,19 @@ class FeedViewModel @Inject constructor(
         loadAnnouncementsUseCase.onCleared()
     }
 
-    fun loadFeed() {
-        loadAnnouncementsUseCase.execute(Unit)
+    override fun openEventDetail(id: SessionId) {
+        _navigateToSessionAction.value = Event(id)
     }
+
+    override fun openSchedule(showOnlyPinnedSessions: Boolean) {
+        _navigateToScheduleAction.value = Event(showOnlyPinnedSessions)
+    }
+
+    override fun onStarClicked(userSession: UserSession) {
+        TODO("not implemented")
+    }
+}
+
+interface FeedEventListener : EventActions {
+    fun openSchedule(showOnlyPinnedSessions: Boolean)
 }

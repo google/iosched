@@ -20,17 +20,18 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="announcement"
             type="com.google.samples.apps.iosched.model.Announcement" />
     </data>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.IOSched.Feed.Card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_normal"
-        android:elevation="@dimen/cardview_default_elevation"
-        android:paddingVertical="@dimen/margin_normal"
+        app:contentPadding="@dimen/margin_small"
         app:cardCornerRadius="@dimen/feed_card_corner_radius">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -46,10 +47,10 @@
                 android:layout_marginVertical="@dimen/spacing_normal"
                 android:paddingHorizontal="@dimen/spacing_normal"
                 android:textAppearance="@style/TextAppearance.IOSched.Small"
-                app:dateTime="@{announcement.timestamp}"
                 app:layout_constraintBottom_toBottomOf="@+id/category"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:dateTime="@{announcement.timestamp}"
                 tools:text="25 Mat 2017, 8:00am" />
 
             <TextView
@@ -86,11 +87,11 @@
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                app:imageUrl="@{announcement.imageUrl}"
                 app:layout_constraintDimensionRatio="h,16:9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/category"
+                app:imageUrl="@{announcement.imageUrl}"
                 app:srcCompat="@color/light_grey" />
 
             <TextView
@@ -117,10 +118,10 @@
                 android:layout_marginEnd="@dimen/spacing_normal"
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:contentDescription="@string/feed_item_pinned_icon"
-                app:goneUnless="@{announcement.priority}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/message"
+                app:goneUnless="@{announcement.priority}"
                 app:srcCompat="@drawable/ic_lock" />
 
             <ImageView
@@ -132,13 +133,13 @@
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:contentDescription="@string/feed_item_emergency_icon"
                 android:visibility="gone"
-                app:goneUnless="@{announcement.emergency}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/priority_icon"
                 app:layout_constraintTop_toBottomOf="@+id/message"
+                app:goneUnless="@{announcement.emergency}"
                 app:srcCompat="@drawable/ic_emergency"
                 tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

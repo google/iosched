@@ -18,11 +18,18 @@ package com.google.samples.apps.iosched.ui.feed
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
+import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
+import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
+import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
+import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.equalTo
 import org.junit.Assert.assertThat
@@ -47,19 +54,16 @@ class FeedViewModelTest {
     fun testDataIsLoaded_ObservablesUpdated() {
         // Create a test use case with test data
         val testData = TestData.feed
-        val repository = DefaultFeedRepository(TestAnnouncementDataSource)
-        val loadFeedUseCase = LoadAnnouncementsUseCase(repository)
 
         // Create ViewModel with the use case and load the feed
-        val viewModel = FeedViewModel(loadFeedUseCase)
-        viewModel.loadFeed()
+        val viewModel = createFeedViewModel()
         val feedObservable = LiveDataTestUtil.getValue(viewModel.feed)
 
         // Check that data was loaded correctly
-        // Adding '+ 2' as the items will be preceeded by 1. The countdownTimer 2. Announcements header
-        assertThat(feedObservable?.size, `is`(equalTo(testData.size + 2)))
+        // Adding '+ 3' as the items will be preceded by 1. The countdownTimer 2. Sessions 3. Announcements header
+        assertThat(feedObservable?.size, `is`(equalTo(testData.size + 3)))
         for ((index, item) in testData.withIndex()) {
-            val actual = feedObservable?.get(index + 2)
+            val actual = feedObservable?.get(index + 3)
             assertThat(actual, `is`(equalTo(item)))
         }
 
@@ -76,8 +80,7 @@ class FeedViewModelTest {
         val loadFeedUseCase = FailingUseCase
 
         // Create ViewModel with the use case
-        val viewModel = FeedViewModel(loadFeedUseCase)
-        viewModel.loadFeed()
+        val viewModel = createFeedViewModel(loadAnnouncementUseCase = loadFeedUseCase)
 
         // Verify that an error was caught
         val errorMessage = LiveDataTestUtil.getValue(viewModel.errorMessage)
@@ -92,5 +95,27 @@ class FeedViewModelTest {
         override fun execute(parameters: Unit) {
             result.postValue(Result.Error(Exception("Error!")))
         }
+    }
+
+    private fun createFeedViewModel(
+        loadFilteredSessionsUseCase: LoadFilteredUserSessionsUseCase =
+            LoadFilteredUserSessionsUseCase(
+                DefaultSessionAndUserEventRepository(
+                    TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
+                )
+            ),
+
+        signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate().apply {
+            loadUser("123")
+        },
+        loadAnnouncementUseCase: LoadAnnouncementsUseCase = LoadAnnouncementsUseCase(
+            DefaultFeedRepository(TestAnnouncementDataSource)
+        )
+    ): FeedViewModel {
+        return FeedViewModel(
+            loadAnnouncementsUseCase = loadAnnouncementUseCase,
+            loadFilteredUserSessionsUseCase = loadFilteredSessionsUseCase,
+            signInViewModelDelegate = signInViewModelDelegate
+        )
     }
 }
