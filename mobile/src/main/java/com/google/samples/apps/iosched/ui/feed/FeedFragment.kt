@@ -22,7 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.core.view.updatePadding
+import androidx.core.view.updatePaddingRelative
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -39,6 +39,7 @@ import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentArgs
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import com.google.samples.apps.iosched.util.getTappableElementInsetsAsRect
 import kotlinx.android.synthetic.main.fragment_feed.toolbar
 import timber.log.Timber
 import javax.inject.Inject
@@ -77,7 +78,8 @@ class FeedFragment : MainNavigationFragment() {
         }
 
         binding.recyclerView.doOnApplyWindowInsets { v, insets, padding ->
-            v.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)
+            val tappableInsets = insets.getTappableElementInsetsAsRect()
+            v.updatePaddingRelative(bottom = padding.bottom + tappableInsets.bottom)
         }
 
         setUpSnackbar(model.snackBarMessage, binding.snackbar, snackbarMessageManager)

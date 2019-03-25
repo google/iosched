@@ -29,6 +29,7 @@ import android.widget.Button
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.browser.customtabs.CustomTabsService
 import androidx.core.content.ContextCompat
+import androidx.core.view.updatePaddingRelative
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.ViewModelProvider
 import com.google.samples.apps.iosched.R
@@ -36,6 +37,8 @@ import com.google.samples.apps.iosched.databinding.FragmentSettingsBinding
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
+import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import com.google.samples.apps.iosched.util.getTappableElementInsetsAsRect
 import javax.inject.Inject
 
 class SettingsFragment : MainNavigationFragment() {
@@ -58,6 +61,12 @@ class SettingsFragment : MainNavigationFragment() {
         val binding = FragmentSettingsBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
+        binding.settingsScroll.doOnApplyWindowInsets { v, insets, padding ->
+            val tappableInsets = insets.getTappableElementInsetsAsRect()
+            v.updatePaddingRelative(bottom = padding.bottom + tappableInsets.bottom)
+        }
+
         return binding.root
     }
 }

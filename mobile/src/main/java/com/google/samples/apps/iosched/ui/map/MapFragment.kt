@@ -32,7 +32,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
-import androidx.core.view.updatePadding
+import androidx.core.view.updatePaddingRelative
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
@@ -46,6 +46,7 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import com.google.samples.apps.iosched.util.getTappableElementInsetsAsRect
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import org.threeten.bp.Instant
@@ -208,8 +209,9 @@ class MapFragment : MainNavigationFragment() {
 
         val originalPeekHeight = bottomSheetBehavior.peekHeight
         binding.bottomSheet.doOnApplyWindowInsets { v, insets, _ ->
-            v.updatePadding(bottom = insets.systemWindowInsetBottom)
-            bottomSheetBehavior.peekHeight = insets.systemWindowInsetBottom + originalPeekHeight
+            val tappableInsets = insets.getTappableElementInsetsAsRect()
+            v.updatePaddingRelative(bottom = tappableInsets.bottom)
+            bottomSheetBehavior.peekHeight = tappableInsets.bottom + originalPeekHeight
         }
 
         // Make the header clickable.

@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.util
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.res.Resources
+import android.graphics.Rect
 import android.graphics.Typeface
 import android.net.wifi.WifiConfiguration
 import android.text.Spannable
@@ -229,3 +230,7 @@ data class ViewPaddingState(
     val start: Int,
     val end: Int
 )
+
+fun WindowInsets.getTappableElementInsetsAsRect(): Rect {
+    return WindowInsetsUtils.getTappableElementInsets(this)
+}
