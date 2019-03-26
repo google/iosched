@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.model.SessionType
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.model.userdata.UserSession
@@ -239,8 +240,10 @@ class SessionDetailViewModel @Inject constructor(
             currentSession?.hasVideo() == true
         }
 
-        showFeedbackButton = sessionTimeRelativeState.map { currentState ->
-            currentState == TimeUtils.SessionRelativeTimeState.AFTER
+        showFeedbackButton = session.map { currentSession ->
+            currentSession.type == SessionType.SESSION &&
+                TimeUtils.getSessionState(currentSession, ZonedDateTime.now()) ==
+                TimeUtils.SessionRelativeTimeState.AFTER
         }
 
         hasSpeakers = session.map { currentSession ->
