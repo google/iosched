@@ -161,7 +161,7 @@ dependencies {
     implementation "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
 
     // Date and time API for Java.
-    api "com.jakewharton.threetenabp:threetenabp:$rootProject.threetenabpVersion"
+    implementation "com.jakewharton.threetenabp:threetenabp:$rootProject.threetenabpVersion"
     testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"
     implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
 
