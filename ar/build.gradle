@@ -26,6 +26,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-proguard-rules.pro'
     }
 
     lintOptions {
@@ -41,9 +42,10 @@ android {
 
 dependencies {
     implementation project(':mobile')
-    implementation(name:'arwebview-android', ext:'aar')
+    implementation(name:'arwebview', ext:'aar')
     implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
     implementation "com.google.ar:core:$rootProject.arcoreVersion"
+    implementation "com.google.android.gms:play-services-vision:$rootProject.googlePlayServicesVisionVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlinVersion"
 }
 
