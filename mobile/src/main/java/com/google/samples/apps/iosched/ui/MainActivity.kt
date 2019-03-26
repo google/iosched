@@ -37,6 +37,7 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.NavigationHeaderBinding
+import com.google.samples.apps.iosched.domain.ar.ArConstants
 import com.google.samples.apps.iosched.domain.ar.InstallOrLaunchArFeatureActivity
 import com.google.samples.apps.iosched.shared.di.ExploreArEnabledFlag
 import com.google.samples.apps.iosched.shared.di.FeedFeatureEnabledFlag
@@ -111,6 +112,9 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
     private lateinit var statusScrim: View
 
     private var currentNavId = NAV_ID_NONE
+
+    // For sending pinned sessions as JSON to the AR module
+    private var pinnedSessionsJson: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -219,6 +223,10 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
                 navigation.menu.findItem(R.id.navigation_explore_ar).isVisible = false
             }
         })
+        viewModel.pinnedSessionsJson.observe(this, Observer {
+            // Need to observe the pinnedSessions otherwise it's considered as inactive
+            pinnedSessionsJson = it
+        })
     }
 
     override fun registerToolbarWithNavigation(toolbar: Toolbar) {
@@ -286,11 +294,15 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
     }
 
     private fun openExploreAr() {
-        startActivity(
-            Intent(
-                this,
-                InstallOrLaunchArFeatureActivity::class.java
-            )
+        val intent = Intent(
+            this,
+            InstallOrLaunchArFeatureActivity::class.java
         )
+        pinnedSessionsJson?.let {
+            intent.putExtras(Bundle().apply {
+                putString(ArConstants.PINNED_SESSIONS_JSON_KEY, it)
+            })
+        }
+        startActivity(intent)
     }
 }

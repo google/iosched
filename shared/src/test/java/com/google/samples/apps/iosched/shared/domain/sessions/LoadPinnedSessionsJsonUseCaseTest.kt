@@ -18,8 +18,10 @@ package com.google.samples.apps.iosched.shared.domain.sessions
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.GsonBuilder
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
-import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.model.schedule.PinnedSession
+import com.google.samples.apps.iosched.model.schedule.PinnedSessionsSchedule
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
@@ -27,6 +29,8 @@ import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDat
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
+import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import com.google.samples.apps.iosched.test.data.TestData
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.Matchers.equalTo
@@ -35,9 +39,9 @@ import org.junit.Rule
 import org.junit.Test
 
 /**
- * Unit tests for [LoadPinnedSessionsUseCase]
+ * Unit tests for [LoadPinnedSessionsJsonUseCase]
  */
-class LoadPinnedSessionsUseCaseTest {
+class LoadPinnedSessionsJsonUseCaseTest {
 
     // Executes tasks in the Architecture Components in the same thread
     @get:Rule
@@ -54,7 +58,7 @@ class LoadPinnedSessionsUseCaseTest {
             TestUserEventDataSource(userEventsResult),
             DefaultSessionRepository(TestDataRepository)
         )
-        val useCase = LoadPinnedSessionsUseCase(testUserEventRepository)
+        val useCase = LoadPinnedSessionsJsonUseCase(testUserEventRepository)
         val resultLiveData = useCase.observe()
 
         // Act
@@ -62,13 +66,22 @@ class LoadPinnedSessionsUseCaseTest {
 
         // Assert
         val result = LiveDataTestUtil.getValue(resultLiveData)
-                as Result.Success<List<UserSession>>
-        assertThat(
-            result.data, `is`(
-                equalTo(
-                    listOf(TestData.userSession0, TestData.userSession1, TestData.userSession2)
-                )
-            )
+                as Result.Success<String>
+        val expected = PinnedSessionsSchedule(
+            listOf(TestData.session0, TestData.session1, TestData.session2)
+                .map {
+                    PinnedSession(
+                        name = it.title,
+                        location = it.room?.name ?: "",
+                        day = TimeUtils.abbreviatedDayForAr(it.startTime),
+                        time = TimeUtils.abbreviatedTimeForAr(it.startTime),
+                        timestamp = it.startTime.toEpochMilli(),
+                        description = it.abstract
+                    )
+                }
         )
+
+        val gson = GsonBuilder().create()
+        assertThat(result.data, `is`(equalTo(gson.toJson(expected))))
     }
 }

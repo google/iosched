@@ -19,9 +19,14 @@ package com.google.samples.apps.iosched.ui
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.model.TestDataRepository
+import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
+import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadPinnedSessionsJsonUseCase
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeThemedActivityDelegate
+import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
 import org.hamcrest.Matchers.`is`
@@ -47,6 +52,11 @@ class MainActivityViewModelTest {
         return MainActivityViewModel(
             signInViewModelDelegate = signInViewModelDelegate,
             themedActivityDelegate = themedActivityDelegate,
+            loadPinnedSessionsUseCase = LoadPinnedSessionsJsonUseCase(
+                DefaultSessionAndUserEventRepository(
+                    TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
+                )
+            ),
             context = mock(Context::class.java)
         )
     }
