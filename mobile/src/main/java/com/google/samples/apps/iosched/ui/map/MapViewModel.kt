@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.ui.map
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -35,7 +36,6 @@ import com.google.samples.apps.iosched.shared.domain.prefs.OptIntoMyLocationUseC
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
-import com.google.samples.apps.iosched.shared.util.setValueIfNew
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.combine
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
@@ -58,8 +58,7 @@ class MapViewModel @Inject constructor(
     )
 
     private val _mapVariant = MutableLiveData<MapVariant>()
-    val mapVariant: LiveData<MapVariant>
-        get() = _mapVariant
+    val mapVariant = Transformations.distinctUntilChanged(_mapVariant)
 
     /**
      * True if any errors occur in fetching the data.
@@ -82,7 +81,7 @@ class MapViewModel @Inject constructor(
 
     private val focusZoomLevel = BuildConfig.MAP_CAMERA_FOCUS_ZOOM
 
-    private val _bottomSheetStateEvent = MutableLiveData<Event<Int>>()
+    private val _bottomSheetStateEvent = MediatorLiveData<Event<Int>>()
     val bottomSheetStateEvent: LiveData<Event<Int>>
         get() = _bottomSheetStateEvent
     private val _selectedMarkerInfo = MutableLiveData<MarkerInfo>()
@@ -112,7 +111,11 @@ class MapViewModel @Inject constructor(
             }
         }
 
-        _bottomSheetStateEvent.value = Event(BottomSheetBehavior.STATE_HIDDEN)
+        // When the map variant changes, the selected feature might not be present in the new
+        // variant, so hide the feature detail.
+        _bottomSheetStateEvent.addSource(mapVariant) {
+            dismissFeatureDetails()
+        }
     }
 
     fun optIntoMyLocation(optIn: Boolean = true) {
@@ -120,7 +123,7 @@ class MapViewModel @Inject constructor(
     }
 
     fun setMapVariant(variant: MapVariant) {
-        _mapVariant.setValueIfNew(variant)
+        _mapVariant.value = variant
     }
 
     fun onMapDestroyed() {
@@ -179,8 +182,7 @@ class MapViewModel @Inject constructor(
         analyticsHelper.logUiEvent(title, AnalyticsActions.MAP_MARKER_SELECT)
     }
 
-    fun onMapClick() {
-        // Hide the bottom sheet
+    fun dismissFeatureDetails() {
         _bottomSheetStateEvent.value = Event(BottomSheetBehavior.STATE_HIDDEN)
     }
 

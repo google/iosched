@@ -17,8 +17,6 @@
 package com.google.samples.apps.iosched.ui.map
 
 import android.Manifest
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.app.Dialog
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -30,7 +28,6 @@ import android.view.ViewGroup.MarginLayoutParams
 import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.view.marginBottom
 import androidx.core.view.updateLayoutParams
@@ -49,6 +46,7 @@ import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.getTappableElementInsetsAsRect
+import com.google.samples.apps.iosched.util.slideOffsetToAlpha
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import org.threeten.bp.Instant
@@ -66,6 +64,8 @@ class MapFragment : MainNavigationFragment() {
     private lateinit var binding: FragmentMapBinding
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
 
+    private var fabBaseMarginBottom = 0
+
     companion object {
         private const val FRAGMENT_MY_LOCATION_RATIONALE = "my_location_rationale"
 
@@ -75,6 +75,15 @@ class MapFragment : MainNavigationFragment() {
         private const val ARG_FEATURE_START_TIME = "arg.FEATURE_START_TIME"
 
         private const val REQUEST_LOCATION_PERMISSION = 1
+
+        // Threshold for when the marker description reaches maximum alpha. Should be a value
+        // between 0 and 1, inclusive, coinciding with a point between the bottom sheet's
+        // collapsed (0) and expanded (1) states.
+        private const val ALPHA_TRANSITION_END = 0.5f
+        // Threshold for when the marker description reaches minimum alpha. Should be a value
+        // between 0 and 1, inclusive, coinciding with a point between the bottom sheet's
+        // collapsed (0) and expanded (1) states.
+        private const val ALPHA_TRANSITION_START = 0.1f
 
         fun newInstance(featureId: String, featureStartTime: Long): MapFragment {
             return MapFragment().apply {
@@ -127,6 +136,8 @@ class MapFragment : MainNavigationFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fabBaseMarginBottom = binding.mapModeFab.marginBottom
+
         binding.toolbar.run {
             inflateMenu(R.menu.map_menu)
             menu.findItem(R.id.action_my_location)?.let { item ->
@@ -152,7 +163,7 @@ class MapFragment : MainNavigationFragment() {
         }
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
-        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetCallback {
+        val bottomSheetCallback = object : BottomSheetCallback {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 // Orient the expand/collapse icon accordingly
                 val rotation = when (newState) {
@@ -163,40 +174,43 @@ class MapFragment : MainNavigationFragment() {
                 }
                 binding.expandIcon.animate().rotationX(rotation).start()
 
-                when (newState) {
-                    BottomSheetBehavior.STATE_EXPANDED -> {
-                        binding.descriptionScrollview.animate()
-                            .setDuration(150)
-                            .alpha(1f)
-                            .setListener(object : AnimatorListenerAdapter() {
-                                override fun onAnimationStart(animation: Animator) {
-                                    binding.descriptionScrollview.isVisible = true
-                                }
-                            })
-                            .start()
-                    }
-                    BottomSheetBehavior.STATE_COLLAPSED,
-                    BottomSheetBehavior.STATE_HIDDEN -> {
-                        binding.descriptionScrollview.animate()
-                            .alpha(0f)
-                            .setDuration(150)
-                            .setListener(object : AnimatorListenerAdapter() {
-                                override fun onAnimationEnd(animation: Animator) {
-                                    binding.descriptionScrollview.isInvisible = true
-                                }
-                            })
-                            .start()
-                    }
-                }
-
                 // Analytics
                 if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                     viewModel.logViewedMarkerDetails()
                 }
             }
-        })
 
-        val fabMargin = binding.mapModeFab.marginBottom
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                // Due to content being visible beneath the navigation bar, apply a short alpha
+                // transition
+                binding.descriptionScrollview.alpha =
+                    slideOffsetToAlpha(slideOffset, ALPHA_TRANSITION_START, ALPHA_TRANSITION_END)
+
+                if (slideOffset > 0f) {
+                    binding.mapModeFab.hide()
+                } else {
+                    binding.mapModeFab.show()
+                    // Translate FAB to make room for the peeking sheet.
+                    val ty = (bottomSheet.top - fabBaseMarginBottom - binding.mapModeFab.bottom)
+                        .coerceAtMost(0)
+                    binding.mapModeFab.translationY = ty.toFloat()
+                }
+            }
+        }
+        bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
+        // Trigger the callbacks once on layout to set the state of the sheet content & FAB.
+        binding.bottomSheet.post {
+            val state = bottomSheetBehavior.state
+            val slideOffset = when (state) {
+                BottomSheetBehavior.STATE_EXPANDED -> 1f
+                BottomSheetBehavior.STATE_COLLAPSED -> 0f
+                else -> -1f // BottomSheetBehavior.STATE_HIDDEN
+            }
+            bottomSheetCallback.onStateChanged(binding.bottomSheet, state)
+            bottomSheetCallback.onSlide(binding.bottomSheet, slideOffset)
+        }
+
+        val originalPeekHeight = bottomSheetBehavior.peekHeight
         binding.root.doOnApplyWindowInsets { _, insets, _ ->
             binding.statusBar.updateLayoutParams<ConstraintLayout.LayoutParams> {
                 height = insets.systemWindowInsetTop
@@ -210,14 +224,11 @@ class MapFragment : MainNavigationFragment() {
             }
 
             binding.mapModeFab.updateLayoutParams<MarginLayoutParams> {
-                bottomMargin = fabMargin + insets.systemWindowInsetBottom
+                bottomMargin = fabBaseMarginBottom + insets.systemWindowInsetBottom
             }
-        }
 
-        val originalPeekHeight = bottomSheetBehavior.peekHeight
-        binding.bottomSheet.doOnApplyWindowInsets { v, insets, _ ->
             val tappableInsets = insets.getTappableElementInsetsAsRect()
-            v.updatePaddingRelative(bottom = tappableInsets.bottom)
+            binding.descriptionScrollview.updatePaddingRelative(bottom = tappableInsets.bottom)
             bottomSheetBehavior.peekHeight = tappableInsets.bottom + originalPeekHeight
         }
 
@@ -242,7 +253,7 @@ class MapFragment : MainNavigationFragment() {
         // Initialize MapView
         mapView.getMapAsync { googleMap ->
             googleMap.apply {
-                setOnMapClickListener { viewModel.onMapClick() }
+                setOnMapClickListener { viewModel.dismissFeatureDetails() }
                 enableMyLocation(false)
             }
         }
