@@ -128,7 +128,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:minHeight="1px"
-                    android:visibility="invisible"
                     android:paddingTop="@dimen/bottom_sheet_peek_height"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -165,7 +164,7 @@
                 <ImageView
                     android:id="@+id/expand_icon"
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_normal"
                     android:importantForAccessibility="no"
                     android:src="@drawable/ic_expand_more"

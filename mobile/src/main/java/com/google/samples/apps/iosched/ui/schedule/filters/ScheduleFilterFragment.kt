@@ -43,6 +43,7 @@ import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.getTappableElementInsetsAsRect
+import com.google.samples.apps.iosched.util.slideOffsetToAlpha
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_COLLAPSED
@@ -182,8 +183,8 @@ class ScheduleFilterFragment : DaggerFragment() {
             // Alpha of normal header views increases as the sheet expands, while alpha of
             // description views increases as the sheet collapses. To prevent overlap, we use
             // a threshold at which the views "trade places".
-            headerAlpha.set(offsetToAlpha(slideOffset, ALPHA_CHANGEOVER, ALPHA_HEADER_MAX))
-            descriptionAlpha.set(offsetToAlpha(slideOffset, ALPHA_CHANGEOVER, ALPHA_DESC_MAX))
+            headerAlpha.set(slideOffsetToAlpha(slideOffset, ALPHA_CHANGEOVER, ALPHA_HEADER_MAX))
+            descriptionAlpha.set(slideOffsetToAlpha(slideOffset, ALPHA_CHANGEOVER, ALPHA_DESC_MAX))
         } else {
             // Otherwise we just show the header view
             headerAlpha.set(1f)
@@ -191,17 +192,8 @@ class ScheduleFilterFragment : DaggerFragment() {
         }
         // Due to the content view being visible below the navigation bar, we apply a short alpha
         // transition
-        recyclerviewAlpha.set(offsetToAlpha(
+        recyclerviewAlpha.set(slideOffsetToAlpha(
             slideOffset, ALPHA_CONTENT_TRANSITION_START, ALPHA_CONTENT_TRANSITION_END))
-    }
-
-    /**
-     * Map a slideOffset (in the range `[-1, 1]`) to an alpha value based on the desired range.
-     * For example, `offsetToAlpha(0.5, 0.25, 1) = 0.33` because 0.5 is 1/3 of the way between 0.25
-     * and 1. The result value is additionally clamped to the range `[0, 1]`.
-     */
-    private fun offsetToAlpha(value: Float, rangeMin: Float, rangeMax: Float): Float {
-        return ((value - rangeMin) / (rangeMax - rangeMin)).coerceIn(0f, 1f)
     }
 }
 

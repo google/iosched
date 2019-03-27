@@ -135,8 +135,6 @@ dependencies {
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation "com.nhaarman:mockito-kotlin:$rootProject.mockitoKotlinVersion"
-    testImplementation "androidx.arch.core:core-testing:$rootProject.lifecycleVersion"
-
 
     // unit tests livedata
     testImplementation "androidx.arch.core:core-testing:$rootProject.archTestingVersion"
