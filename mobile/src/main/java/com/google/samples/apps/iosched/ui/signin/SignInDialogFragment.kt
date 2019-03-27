@@ -17,11 +17,13 @@
 package com.google.samples.apps.iosched.ui.signin
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignIn
 import com.google.samples.apps.iosched.util.signin.SignInHandler
@@ -43,13 +45,17 @@ class SignInDialogFragment : DaggerAppCompatDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         signInViewModel = viewModelProvider(viewModelFactory)
-        signInViewModel.performSignInEvent.observe(this, Observer { request ->
-            if (request.peekContent() == RequestSignIn) {
-                request.getContentIfNotHandled()
-                activity?.let {
-                    signInHandler.makeSignInIntent().observe(this, Observer {
-                        startActivityForResult(it, REQUEST_CODE_SIGN_IN)
-                    })
+        signInViewModel.performSignInEvent.observe(this, EventObserver { request ->
+            if (request == RequestSignIn) {
+                activity?.let { activity ->
+                    val signInIntent = signInHandler.makeSignInIntent()
+                    val observer = object : Observer<Intent?> {
+                        override fun onChanged(it: Intent?) {
+                            activity.startActivityForResult(it, REQUEST_CODE_SIGN_IN)
+                            signInIntent.removeObserver(this)
+                        }
+                    }
+                    signInIntent.observeForever(observer)
                 }
             }
         })
