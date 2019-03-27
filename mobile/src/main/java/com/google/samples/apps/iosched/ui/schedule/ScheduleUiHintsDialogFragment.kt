@@ -44,5 +44,6 @@ class ScheduleUiHintsDialogFragment : DaggerAppCompatDialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface) {
         markScheduleUiHintsShownUseCase()
+        super.onDismiss(dialog)
     }
 }
