@@ -26,7 +26,7 @@ import com.google.samples.apps.iosched.util.hasSameValue
 
 sealed class EventFilter(isChecked: Boolean) {
 
-    enum class EventFilterCategory(@StringRes val resId: Int) {
+    enum class EventFilterCategory(@StringRes val labelResId: Int) {
         NONE(0),
         TOPICS(R.string.category_heading_tracks),
         EVENT_TYPES(R.string.category_heading_types)
