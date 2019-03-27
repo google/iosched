@@ -17,8 +17,10 @@
 package com.google.samples.apps.iosched.tv.di
 
 import android.content.Context
+import com.google.samples.apps.iosched.shared.data.db.AppDatabase
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 /**
  * Defines all the classes that need to be provided in the scope of the app.
@@ -30,4 +32,8 @@ class TvAppModule(private val context: Context) {
     fun provideContext(): Context {
         return context.applicationContext
     }
+
+    @Singleton
+    @Provides
+    fun providesAppDatabase(context: Context): AppDatabase = AppDatabase.buildDatabase(context)
 }

@@ -173,6 +173,9 @@ class RemoteAppConfigDataSource @Inject constructor(
     override fun isSearchScheduleFeatureEnabled(): Boolean =
         firebaseRemoteConfig.getBoolean(SEARCH_SCHEDULE_FEATURE_ENABLED)
 
+    override fun isSearchUsingRoomFeatureEnabled(): Boolean =
+        firebaseRemoteConfig.getBoolean(SEARCH_USING_ROOM_FEATURE_ENABLED)
+
     override fun isAssistantAppFeatureEnabled(): Boolean =
         firebaseRemoteConfig.getBoolean(ASSISTANT_APP_FEATURE_ENABLED)
 
@@ -242,6 +245,7 @@ class RemoteAppConfigDataSource @Inject constructor(
         const val EXPLORE_AR_FEATURE_ENABLED = "explore_ar_enabled"
         const val CODELABS_FEATURE_ENABLED = "codelabs_enabled"
         const val SEARCH_SCHEDULE_FEATURE_ENABLED = "search_schedule_enabled"
+        const val SEARCH_USING_ROOM_FEATURE_ENABLED = "search_using_room_enabled"
         const val ASSISTANT_APP_FEATURE_ENABLED = "io_assistant_app_enabled"
 
         val DEFAULT_CACHE_EXPIRY_S = TimeUnit.MINUTES.toSeconds(12)

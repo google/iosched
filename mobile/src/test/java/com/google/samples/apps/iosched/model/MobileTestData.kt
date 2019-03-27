@@ -23,6 +23,7 @@ import com.google.samples.apps.iosched.test.data.TestData.androidTag
 import com.google.samples.apps.iosched.test.data.TestData.cloudTag
 import com.google.samples.apps.iosched.test.data.TestData.sessionsTag
 import com.google.samples.apps.iosched.test.data.TestData.webTag
+import com.google.samples.apps.iosched.test.util.fakes.FakeAppDatabase
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.TagFilter
 
 /**
@@ -47,7 +48,11 @@ object TestDataSource : ConferenceDataSource {
 }
 
 /** ConferenceDataRepository for tests */
-object TestDataRepository : ConferenceDataRepository(TestDataSource, TestDataSource) {
+object TestDataRepository : ConferenceDataRepository(
+    TestDataSource,
+    TestDataSource,
+    FakeAppDatabase()
+) {
     override fun getConferenceDays(): List<ConferenceDay> {
         return TestData.TestConferenceDays
     }

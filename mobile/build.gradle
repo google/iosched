@@ -149,6 +149,9 @@ dependencies {
     testImplementation "androidx.arch.core:core-testing:$rootProject.archTestingVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+    implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    kapt "androidx.room:room-compiler:$rootProject.roomVersion"
 
     // Dagger
     implementation "com.google.dagger:dagger-android:$rootProject.dagger"
