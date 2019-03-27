@@ -49,6 +49,14 @@ annotation class CodelabsEnabledFlag
 )
 annotation class SearchScheduleEnabledFlag
 
+// Whether or not the Search feature uses Room
+@Qualifier
+@Target(
+    AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER,
+    AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.FIELD
+)
+annotation class SearchUsingRoomEnabledFlag
+
 // Whether or not the I/O app for Google Assistant callout is enabled
 @Qualifier
 @Target(

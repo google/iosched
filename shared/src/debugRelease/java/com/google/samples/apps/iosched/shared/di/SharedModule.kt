@@ -32,6 +32,7 @@ import com.google.samples.apps.iosched.shared.data.ar.ArDebugFlagEndpoint
 import com.google.samples.apps.iosched.shared.data.ar.DefaultArDebugFlagEndpoint
 import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.config.RemoteAppConfigDataSource
+import com.google.samples.apps.iosched.shared.data.db.AppDatabase
 import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
@@ -85,9 +86,10 @@ class SharedModule {
     @Provides
     fun provideConferenceDataRepository(
         @Named("remoteConfDatasource") remoteDataSource: ConferenceDataSource,
-        @Named("bootstrapConfDataSource") boostrapDataSource: ConferenceDataSource
+        @Named("bootstrapConfDataSource") boostrapDataSource: ConferenceDataSource,
+        appDatabase: AppDatabase
     ): ConferenceDataRepository {
-        return ConferenceDataRepository(remoteDataSource, boostrapDataSource)
+        return ConferenceDataRepository(remoteDataSource, boostrapDataSource, appDatabase)
     }
 
     @Singleton

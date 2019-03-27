@@ -40,6 +40,10 @@
         <value>true</value>
     </entry>
     <entry>
+        <key>search_using_room_enabled</key>
+        <value>true</value>
+    </entry>
+    <entry>
         <key>io_assistant_app_enabled</key>
         <value>false</value>
     </entry>

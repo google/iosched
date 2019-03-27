@@ -23,6 +23,8 @@ import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.di.SearchUsingRoomEnabledFlag
+import com.google.samples.apps.iosched.shared.domain.search.SearchDbUseCase
 import com.google.samples.apps.iosched.shared.domain.search.SearchUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
@@ -33,8 +35,14 @@ import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
     private val analyticsHelper: AnalyticsHelper,
-    private val loadSearchResultsUseCase: SearchUseCase
+    private val loadSearchResultsUseCase: SearchUseCase,
+    private val loadDbSearchResultsUseCase: SearchDbUseCase
 ) : ViewModel(), SearchResultActionHandler {
+
+    @Inject
+    @JvmField
+    @SearchUsingRoomEnabledFlag
+    var searchUsingRoomFeatureEnabled: Boolean = false
 
     private val _navigateToSessionAction = MutableLiveData<Event<SessionId>>()
     val navigateToSessionAction: LiveData<Event<SessionId>>
@@ -67,8 +75,13 @@ class SearchViewModel @Inject constructor(
     }
 
     fun onScheduleSearchQuerySubmitted(query: String) {
-        Timber.d("Searching for query: $query")
         analyticsHelper.logUiEvent("Query: $query", AnalyticsActions.SEARCH_QUERY_SUBMIT)
-        loadSearchResultsUseCase(query, loadSearchResults)
+        if (searchUsingRoomFeatureEnabled) {
+            Timber.d("Searching for query using Room: $query")
+            loadDbSearchResultsUseCase(query, loadSearchResults)
+        } else {
+            Timber.d("Searching for query without using Room: $query")
+            loadSearchResultsUseCase(query, loadSearchResults)
+        }
     }
 }

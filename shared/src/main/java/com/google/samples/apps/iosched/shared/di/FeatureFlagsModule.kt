@@ -50,6 +50,12 @@ class FeatureFlagsModule {
     }
 
     @Provides
+    @SearchUsingRoomEnabledFlag
+    fun provideSearchUsingRoomEnabledFlag(appConfig: AppConfigDataSource): Boolean {
+        return appConfig.isSearchUsingRoomFeatureEnabled()
+    }
+
+    @Provides
     @AssistantAppEnabledFlag
     fun provideAssistantAppEnabledFlag(appConfig: AppConfigDataSource): Boolean {
         return appConfig.isAssistantAppFeatureEnabled()
