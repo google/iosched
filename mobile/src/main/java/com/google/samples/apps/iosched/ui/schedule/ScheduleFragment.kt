@@ -252,6 +252,16 @@ class ScheduleFragment : MainNavigationFragment() {
         if (savedInstanceState == null) {
             // VM outlives the UI, so reset this flag when a new Schedule page is shown
             scheduleViewModel.userHasInteracted = false
+
+            // Process arguments to set initial filters
+            arguments?.let {
+                if (ScheduleFragmentArgs.fromBundle(it).showPinnedEvents) {
+                    scheduleViewModel.showPinnedEvents()
+                }
+                if (ScheduleFragmentArgs.fromBundle(it).showAllEvents) {
+                    scheduleViewModel.clearFilters()
+                }
+            }
         }
         analyticsHelper.sendScreenView("Schedule", requireActivity())
     }

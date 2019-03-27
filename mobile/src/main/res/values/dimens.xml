@@ -74,6 +74,7 @@
     <dimen name="snackbar_margin_end_fab">0dp</dimen>
     <dimen name="snackbar_margin_bottom_fab">72dp</dimen>
     <dimen name="snackbar_margin_bottom_bab">84dp</dimen>
+    <dimen name="feed_session_dimension">200dp</dimen>
 
     <dimen name="nav_account_image_size">32dp</dimen>
     <!-- Equals what NavigationView ends up using: 32dp drawable padding
