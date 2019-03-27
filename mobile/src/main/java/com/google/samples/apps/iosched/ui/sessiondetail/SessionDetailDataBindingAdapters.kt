@@ -27,11 +27,12 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionType
-import com.google.samples.apps.iosched.model.SessionType.AFTER_HOURS
+import com.google.samples.apps.iosched.model.SessionType.AFTER_DARK
 import com.google.samples.apps.iosched.model.SessionType.APP_REVIEW
 import com.google.samples.apps.iosched.model.SessionType.CODELAB
+import com.google.samples.apps.iosched.model.SessionType.KEYNOTE
+import com.google.samples.apps.iosched.model.SessionType.MEETUP
 import com.google.samples.apps.iosched.model.SessionType.OFFICE_HOURS
-import com.google.samples.apps.iosched.model.SessionType.SANDBOX
 import com.google.samples.apps.iosched.model.SessionType.SESSION
 import com.google.samples.apps.iosched.model.SessionType.UNKNOWN
 import com.google.samples.apps.iosched.model.userdata.UserEvent
@@ -60,14 +61,15 @@ fun headerImage(imageView: ImageView, photoUrl: String?) {
 @BindingAdapter("eventType")
 fun headerLogoImage(imageView: ImageView, eventType: SessionType?) {
     val resId = when (eventType) {
-        AFTER_HOURS -> R.drawable.event_header_afterhours
         APP_REVIEW -> R.drawable.event_header_office_hours
         CODELAB -> R.drawable.event_header_codelabs
         OFFICE_HOURS -> R.drawable.event_header_office_hours
-        SANDBOX -> R.drawable.event_header_sandbox
         SESSION -> R.drawable.event_header_sessions
         UNKNOWN -> R.drawable.event_header_sessions
-        else -> R.drawable.event_header_sessions
+        KEYNOTE -> R.drawable.event_header_sessions
+        MEETUP -> R.drawable.event_header_office_hours
+        AFTER_DARK -> R.drawable.event_header_afterhours
+        null -> return
     }
     imageView.setImageResource(resId)
 }

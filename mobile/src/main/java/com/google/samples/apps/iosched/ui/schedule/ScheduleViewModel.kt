@@ -148,6 +148,9 @@ class ScheduleViewModel @Inject constructor(
     val navigateToSignOutDialogAction: LiveData<Event<Unit>>
         get() = _navigateToSignOutDialogAction
 
+    private val _navigateToSearchAction = MutableLiveData<Event<Unit>>()
+    val navigateToSearchAction: LiveData<Event<Unit>> = _navigateToSearchAction
+
     private val scheduleUiHintsShownResult = MutableLiveData<Result<Boolean>>()
 
     // Flags used to indicate if the "scroll to now" feature has been used already.
@@ -363,6 +366,10 @@ class ScheduleViewModel @Inject constructor(
         } else {
             _navigateToSignInDialogAction.value = Event(Unit)
         }
+    }
+
+    fun onSearchClicked() {
+        _navigateToSearchAction.value = Event(Unit)
     }
 
     fun onSignInRequired() {

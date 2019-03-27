@@ -20,6 +20,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.model.ConferenceDay
+import com.google.samples.apps.iosched.shared.data.db.AppDatabase
+import com.google.samples.apps.iosched.shared.data.db.SessionFtsEntity
+import com.google.samples.apps.iosched.shared.data.db.SpeakerFtsEntity
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import java.io.IOException
 import javax.inject.Inject
@@ -34,7 +37,8 @@ import javax.inject.Singleton
 @Singleton
 open class ConferenceDataRepository @Inject constructor(
     @Named("remoteConfDatasource") private val remoteDataSource: ConferenceDataSource,
-    @Named("bootstrapConfDataSource") private val boostrapDataSource: ConferenceDataSource
+    @Named("bootstrapConfDataSource") private val boostrapDataSource: ConferenceDataSource,
+    private val appDatabase: AppDatabase
 ) {
 
     // In-memory cache of the conference data
@@ -74,6 +78,7 @@ open class ConferenceDataRepository @Inject constructor(
         // Update cache
         synchronized(loadConfDataLock) {
             conferenceDataCache = conferenceData
+            populateSearchData(conferenceData)
         }
 
         // Update meta
@@ -85,15 +90,21 @@ open class ConferenceDataRepository @Inject constructor(
 
     fun getOfflineConferenceData(): ConferenceData {
         synchronized(loadConfDataLock) {
-            val offlineData = conferenceDataCache ?: getCacheOrBootstrapData()
+            val offlineData = conferenceDataCache ?: getCacheOrBootstrapDataAndPopulateSearch()
             conferenceDataCache = offlineData
             return offlineData
         }
     }
 
+    private fun getCacheOrBootstrapDataAndPopulateSearch(): ConferenceData {
+        val conferenceData = getCacheOrBootstrapData()
+        populateSearchData(conferenceData)
+        return conferenceData
+    }
+
     private fun getCacheOrBootstrapData(): ConferenceData {
         // First, try the local cache:
-        var conferenceData: ConferenceData? = remoteDataSource.getOfflineConferenceData()
+        var conferenceData = remoteDataSource.getOfflineConferenceData()
 
         // Cache success!
         if (conferenceData != null) {
@@ -105,6 +116,26 @@ open class ConferenceDataRepository @Inject constructor(
         conferenceData = boostrapDataSource.getOfflineConferenceData()!!
         latestUpdateSource = UpdateSource.BOOTSTRAP
         return conferenceData
+    }
+
+    open fun populateSearchData(conferenceData: ConferenceData) {
+        val sessionFtsEntities = conferenceData.sessions.map { session ->
+            SessionFtsEntity(
+                sessionId = session.id,
+                title = session.title,
+                description = session.abstract,
+                speakers = session.speakers.joinToString { it.name }
+            )
+        }
+        appDatabase.sessionFtsDao().insertAll(sessionFtsEntities)
+        val speakers = conferenceData.speakers.map {
+            SpeakerFtsEntity(
+                speakerId = it.id,
+                name = it.name,
+                description = it.abstract
+            )
+        }
+        appDatabase.speakerFtsDao().insertAll(speakers)
     }
 
     open fun getConferenceDays(): List<ConferenceDay> = TimeUtils.ConferenceDays

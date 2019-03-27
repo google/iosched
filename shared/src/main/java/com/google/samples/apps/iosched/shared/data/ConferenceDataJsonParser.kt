@@ -53,10 +53,9 @@ object ConferenceDataJsonParser {
      * Adds nested objects like `session.tags` to `sessions`
      */
     private fun normalize(data: TempConferenceData): ConferenceData {
-        val sessions: MutableList<Session> = mutableListOf()
-
+        val sessions = mutableListOf<Session>()
         data.sessions.forEach { session: SessionTemp ->
-            val tags = data.tags.filter { it.tag in session.tagNames }
+            val tags = data.tags.filter { it.tagName in session.tagNames }
             val newSession = Session(
                 id = session.id,
                 startTime = session.startTime,

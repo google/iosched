@@ -18,74 +18,99 @@
 
 package com.google.samples.apps.iosched.shared.domain.search
 
-import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
+import com.google.samples.apps.iosched.shared.domain.UseCase
+import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSession
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase
+import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase.Companion.QUERY_ABSTRACT
+import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase.Companion.QUERY_EMPTY
+import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase.Companion.QUERY_QUESTION
+import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase.Companion.QUERY_SESSION_0
+import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase.Companion.QUERY_TAGNAME
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsCollectionContaining.hasItem
 import org.hamcrest.core.IsCollectionContaining.hasItems
 import org.hamcrest.core.IsEqual.equalTo
 import org.hamcrest.core.IsInstanceOf.instanceOf
 import org.junit.Assert.assertThat
-import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 
-class SearchUseCaseTest {
+/**
+ * Unit tests for [SearchUseCase] and [SearchDbUseCase]. Parameterized to test both classes wieh
+ * the same cases.
+ */
+@RunWith(Parameterized::class)
+class SearchUseCaseTest(private val useCase: UseCase<String, List<Searchable>>) {
 
-    private lateinit var useCase: SearchUseCase
-
-    @Before
-    fun setup() {
-        useCase = SearchUseCase(DefaultSessionRepository(TestDataRepository))
+    companion object {
+        @JvmStatic
+        @Parameterized.Parameters
+        fun useCases() = listOf(
+            arrayOf(SearchUseCase(DefaultSessionRepository(TestDataRepository))),
+            arrayOf(SearchDbUseCase(
+                DefaultSessionRepository(TestDataRepository),
+                TestDataRepository,
+                FakeSearchAppDatabase())
+            )
+        )
     }
 
     @Test
     fun search_MatchesOnTitle() {
-        val result = useCase.executeNow(parameters = "session 0")
+        val result = useCase.executeNow(parameters = QUERY_SESSION_0)
         assertThatResultContainsOnlySession0(result)
     }
 
     @Test
     fun search_MatchesOnAbstract() {
-        val result = useCase.executeNow(parameters = "Awesome")
+        val result = useCase.executeNow(parameters = QUERY_ABSTRACT)
         assertThatResultContainsOnlySession0(result)
     }
 
     @Test
     fun search_MatchesOnTagName() {
-        val result = useCase.executeNow(parameters = "android")
+        val result = useCase.executeNow(parameters = QUERY_TAGNAME)
         assertThat(result, `is`(instanceOf(Result.Success::class.java)))
 
-        val sessions = (result as Result.Success).data
+        val sessions = (result as Result.Success).data.map {
+            (it as SearchedSession).session
+        }
         assertThat(sessions.size, `is`(equalTo(3)))
         assertThat(sessions, hasItems(TestData.session0, TestData.session1, TestData.session2))
     }
 
     @Test
     fun search_MatchesOnUserQuestion() {
-        val result = useCase.executeNow(parameters = "What are the Android talks at Google I/O")
+        val result = useCase.executeNow(parameters = QUERY_QUESTION)
         assertThat(result, `is`(instanceOf(Result.Success::class.java)))
 
-        val sessions = (result as Result.Success).data
+        val sessions = (result as Result.Success).data.map {
+            (it as SearchedSession).session
+        }
         assertThat(sessions.size, `is`(equalTo(3)))
         assertThat(sessions, hasItems(TestData.session0, TestData.session1, TestData.session2))
     }
 
     @Test
     fun search_returnsEmptyListForInvalidQuery() {
-        val result = useCase.executeNow(parameters = "In valid search query")
+        val result = useCase.executeNow(parameters = QUERY_EMPTY)
         assertThat(result, `is`(instanceOf(Result.Success::class.java)))
 
         val sessions = (result as Result.Success).data
         assertThat(sessions, `is`(equalTo(emptyList())))
     }
 
-    private fun assertThatResultContainsOnlySession0(result: Result<List<Session>>) {
+    private fun assertThatResultContainsOnlySession0(result: Result<List<Searchable>>) {
         assertThat(result, `is`(instanceOf(Result.Success::class.java)))
 
-        val sessions = (result as Result.Success).data
+        val sessions = (result as Result.Success).data.map {
+            (it as SearchedSession).session
+        }
         assertThat(sessions.size, `is`(equalTo(1)))
         assertThat(sessions, hasItem(TestData.session0))
     }

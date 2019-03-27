@@ -27,6 +27,7 @@ import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.NetworkConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.db.AppDatabase
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsDataSource
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
 import com.google.samples.apps.iosched.shared.data.logistics.RemoteConfigLogisticsDataSource
@@ -75,9 +76,10 @@ class SharedModule {
     @Provides
     fun provideConferenceDataRepository(
         @Named("remoteConfDatasource") remoteDataSource: ConferenceDataSource,
-        @Named("bootstrapConfDataSource") boostrapDataSource: ConferenceDataSource
+        @Named("bootstrapConfDataSource") boostrapDataSource: ConferenceDataSource,
+        appDatabase: AppDatabase
     ): ConferenceDataRepository {
-        return ConferenceDataRepository(remoteDataSource, boostrapDataSource)
+        return ConferenceDataRepository(remoteDataSource, boostrapDataSource, appDatabase)
     }
 
     @Singleton

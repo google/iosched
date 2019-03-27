@@ -95,7 +95,7 @@ data class Session(
     /**
      * The session's photo URL.
      */
-    val photoUrl: String?,
+    val photoUrl: String,
 
     /**
      * IDs of the sessions related to this session.
@@ -113,11 +113,15 @@ data class Session(
         return startTime <= now && endTime >= now
     }
 
+    val hasPhoto inline get() = photoUrl.isNotEmpty()
+
     /**
      * Returns whether the session has a video or not. A session could be live streaming or have a
      * recorded session. Both live stream and recorded videos are stored in [Session.youTubeUrl].
      */
-    fun hasVideo() = youTubeUrl.isNotEmpty()
+    val hasVideo inline get() = youTubeUrl.isNotEmpty()
+
+    val hasPhotoOrVideo inline get() = hasPhoto || hasVideo
 
     /**
      * The year the session was held.
@@ -149,14 +153,16 @@ data class Session(
 /**
  * Represents the type of the event e.g. Session, Codelab etc.
  */
-enum class SessionType {
-    SESSION,
-    APP_REVIEW,
-    OFFICE_HOURS,
-    CODELAB,
-    SANDBOX,
-    AFTER_HOURS,
-    UNKNOWN;
+enum class SessionType(val displayName: String) {
+
+    KEYNOTE("Keynote"),
+    SESSION("Session"),
+    APP_REVIEW("App Reviews"),
+    OFFICE_HOURS("Office Hours"),
+    CODELAB("Codelab"),
+    MEETUP("Meetup"),
+    AFTER_DARK("After Dark"),
+    UNKNOWN("Unknown");
 
     companion object {
 
@@ -167,13 +173,14 @@ enum class SessionType {
         fun fromTags(tags: List<Tag>): SessionType {
             val typeTag = tags.firstOrNull { it.category == Tag.CATEGORY_TYPE }
 
-            return when (typeTag?.tag) {
-                Tag.TYPE_APP_REVIEWS -> APP_REVIEW
-                Tag.TYPE_AFTERHOURS -> AFTER_HOURS
-                Tag.TYPE_CODELABS -> CODELAB
-                Tag.TYPE_OFFICEHOURS -> OFFICE_HOURS
-                Tag.TYPE_SANDBOXDEMO -> SANDBOX
+            return when (typeTag?.tagName) {
+                Tag.TYPE_KEYNOTE -> KEYNOTE
                 Tag.TYPE_SESSIONS -> SESSION
+                Tag.TYPE_APP_REVIEWS -> APP_REVIEW
+                Tag.TYPE_OFFICEHOURS -> OFFICE_HOURS
+                Tag.TYPE_CODELABS -> CODELAB
+                Tag.TYPE_MEETUPS -> MEETUP
+                Tag.TYPE_AFTERDARK -> AFTER_DARK
                 else -> UNKNOWN
             }
         }

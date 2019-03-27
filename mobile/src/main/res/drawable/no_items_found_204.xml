@@ -1,0 +1,54 @@
+<!--
+  ~ Copyright 2019 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:width="260dp"
+    android:height="120dp"
+    android:viewportWidth="260"
+    android:viewportHeight="120"
+    tools:ignore="VectorRaster">
+    <path
+        android:fillColor="#F1F3F4"
+        android:pathData="M40,0C17.909,0 0,17.909 0,40h80C80,17.909 62.091,0 40,0m0,3.75c18.722,0 34.175,14.267 36.057,32.5H3.943C5.825,18.017 21.278,3.75 40,3.75" />
+    <path
+        android:fillColor="#DADCE0"
+        android:pathData="M40,40L25,40L0,80h40L40,40zM36.875,43.125v33.75L5.638,76.875l21.094,-33.75h10.143z" />
+    <path
+        android:fillColor="#F1F3F4"
+        android:pathData="M0,120h80V80H0z" />
+    <path
+        android:fillColor="#9AA0A6"
+        android:pathData="M80,40H40v40c22.092,0 40,-17.909 40,-40" />
+    <path
+        android:fillColor="#F1F3F4"
+        android:pathData="M260,20c0,11.046 -8.954,20 -20,20s-20,-8.954 -20,-20 8.954,-20 20,-20 20,8.954 20,20M220,120h40L260,80h-40v40zM223.125,116.875h33.75v-33.75h-33.75v33.75z" />
+    <path
+        android:fillColor="#DADCE0"
+        android:pathData="M220,0l-40,25v55h40L220,0zM216.875,5.638v71.237h-33.75L183.125,26.732l33.75,-21.094z" />
+    <path
+        android:fillColor="#9AA0A6"
+        android:pathData="M220,80h40V40h-40z" />
+    <path
+        android:fillColor="#DADCE0"
+        android:pathData="M130,0c-22.091,0 -40,17.909 -40,40h80c0,-22.091 -17.909,-40 -40,-40m0,3.125c19.281,0 35.153,14.874 36.744,33.75H93.256C94.847,17.999 110.72,3.125 130,3.125" />
+    <path
+        android:fillColor="#F1F3F4"
+        android:pathData="M130,120c22.092,0 40,-17.909 40,-40H90c0,22.091 17.908,40 40,40" />
+    <path
+        android:fillColor="#9AA0A6"
+        android:pathData="M90,80h80V40H90z" />
+</vector>

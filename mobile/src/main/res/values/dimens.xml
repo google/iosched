@@ -72,4 +72,7 @@
     <item name="match_parent" format="integer" type="dimen">-1</item>
     <item name="wrap_content" format="integer" type="dimen">-2</item>
 
+    <!-- Search -->
+    <dimen name="search_result_icon_size">24dp</dimen>
+
 </resources>

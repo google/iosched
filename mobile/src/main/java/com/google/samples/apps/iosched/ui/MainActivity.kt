@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.firebase.ui.auth.IdpResponse
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.consume
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
@@ -30,6 +31,7 @@ import com.google.samples.apps.iosched.ui.info.InfoFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.ScheduleFragment
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
+import com.google.samples.apps.iosched.ui.search.SearchFragment
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.navigation
@@ -72,6 +74,17 @@ class MainActivity : DaggerAppCompatActivity() {
                 else -> false
             }
         }
+
+        //TODO: temp until we add navigation
+        scheduleViewModel.navigateToSearchAction.observe(this, EventObserver {
+            supportFragmentManager.inTransaction {
+                val fragment = SearchFragment()
+                currentFragment = fragment
+                addToBackStack(null)
+                replace(FRAGMENT_ID, fragment)
+            }
+        })
+
         // Add a listener to prevent reselects from being treated as selects.
         navigation.setOnNavigationItemReselectedListener {}
 

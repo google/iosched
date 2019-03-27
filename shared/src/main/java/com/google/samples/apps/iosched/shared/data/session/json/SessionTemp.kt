@@ -87,7 +87,7 @@ data class SessionTemp(
     /**
      * The session's photo URL.
      */
-    val photoUrl: String?,
+    val photoUrl: String,
 
     /**
      * IDs of the sessions related to this session.

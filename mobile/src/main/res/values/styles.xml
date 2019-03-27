@@ -333,4 +333,17 @@
         <item name="android:paddingLeft">@dimen/margin_normal</item>
         <item name="android:paddingRight">@dimen/margin_normal</item>
     </style>
+
+    <!-- Non-top-level screens should inflate with this theme to replace the keyline. -->
+    <style name="AppTheme.Detail">
+        <item name="sessionListKeyline">@dimen/margin_normal</item>
+    </style>
+
+    <!-- Misc -->
+    <style name="Widget.ADSSched.EmptyResults">
+        <item name="android:drawablePadding">@dimen/margin_normal</item>
+        <item name="android:drawableTop">@drawable/no_items_found_204</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+    </style>
 </resources>

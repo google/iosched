@@ -33,6 +33,8 @@
     </plurals>
     <string name="starred_events">Your starred events</string>
     <string name="starred_events_short">Starred</string>
+    <string name="search_schedule_hint" translation_description="Text field hint that is shown when user has not entered a search query">Search the schedule</string>
+    <string name="search_schedule_no_results" translation_description="Text that is shown if there are no search results">No results found</string>
 
     <string name="session_duration_location" translatable="false">%1s / %2s</string>
     <string name="session_date_duration_location" translatable="false">%1s / %2s / %3s</string>

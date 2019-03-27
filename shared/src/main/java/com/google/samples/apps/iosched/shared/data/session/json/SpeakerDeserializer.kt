@@ -36,7 +36,7 @@ class SpeakerDeserializer : JsonDeserializer<Speaker> {
         val social = obj.getAsJsonObject("socialLinks")
         return Speaker(
             id = obj.get("id").asString,
-            name = obj.get("name").asString,
+            name = obj.get("name")?.asString ?: "",
             imageUrl = obj.get("thumbnailUrl")?.asString ?: "",
             company = obj.get("company")?.asString ?: "",
             abstract = obj.get("bio")?.asString ?: "",

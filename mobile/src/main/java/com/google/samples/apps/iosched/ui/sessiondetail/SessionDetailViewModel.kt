@@ -199,7 +199,7 @@ class SessionDetailViewModel @Inject constructor(
         }
 
         isPlayable = session.map { currentSession ->
-            currentSession?.hasVideo() == true
+            currentSession.hasVideo
         }
 
         showRateButton = sessionTimeRelativeState.map { currentState ->
@@ -260,7 +260,7 @@ class SessionDetailViewModel @Inject constructor(
      */
     fun onPlayVideo() {
         val currentSession = session.value
-        if (currentSession?.hasVideo() == true) {
+        if (currentSession?.hasVideo == true) {
             navigateToYouTubeAction.value = Event(requireSession().youTubeUrl)
         }
     }

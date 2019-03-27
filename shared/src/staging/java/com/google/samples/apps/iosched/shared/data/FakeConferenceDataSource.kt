@@ -84,7 +84,7 @@ object FakeConferenceDataSource : ConferenceDataSource {
         val speaker = speakers.first { it.id == secondSession.speakers.toList().first().id }
 
         val newTag = Tag(
-            name = FAKE_SESSION_TAG_NAME, id = "FAKE_TAG", tag = "topic_staging",
+            displayName = FAKE_SESSION_TAG_NAME, id = "FAKE_TAG", tagName = "topic_staging",
             color = "#39C79D".toColorInt(), fontColor = "#202124".toColorInt(), category = "topic",
             orderInCategory = 13
         )

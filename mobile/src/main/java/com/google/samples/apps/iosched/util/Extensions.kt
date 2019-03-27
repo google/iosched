@@ -19,13 +19,17 @@ package com.google.samples.apps.iosched.util
 import android.app.Activity
 import android.content.res.Resources
 import android.net.wifi.WifiConfiguration
+import android.os.Handler
 import android.text.StaticLayout
 import android.util.TypedValue
 import android.view.View
+import android.view.View.OnAttachStateChangeListener
 import androidx.annotation.DimenRes
-import androidx.core.view.postDelayed
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ViewDataBinding
+import dagger.android.support.DaggerFragment
 
 fun ObservableBoolean.hasSameValue(other: ObservableBoolean) = get() == other.get()
 
@@ -43,9 +47,15 @@ inline fun <T : ViewDataBinding> T.executeAfter(block: T.() -> Unit) {
  */
 fun Activity.postponeEnterTransition(timeout: Long) {
     postponeEnterTransition()
-    window.decorView.postDelayed(timeout) {
-        startPostponedEnterTransition()
-    }
+    window.decorView.postDelayed({ startPostponedEnterTransition() }, timeout)
+}
+
+/**
+ * An extension to `postponeEnterTransition` which will resume after a timeout.
+ */
+fun DaggerFragment.postponeEnterTransition(timeout: Long) {
+    postponeEnterTransition()
+    Handler().postDelayed({ startPostponedEnterTransition() }, timeout)
 }
 
 /**
@@ -125,3 +135,44 @@ fun String.unwrapQuotes(): String {
     }
     return formattedConfigString
 }
+
+fun View.doOnApplyWindowInsets(f: (View, WindowInsetsCompat, ViewPaddingState) -> Unit) {
+    // Create a snapshot of the view's padding state
+    val paddingState = createStateForView(this)
+    ViewCompat.setOnApplyWindowInsetsListener(this) { v, insets ->
+        f(v, insets, paddingState)
+        insets
+    }
+    requestApplyInsetsWhenAttached()
+}
+
+/**
+ * Call [View.requestApplyInsets] in a safe away. If we're attached it calls it straight-away.
+ * If not it sets an [View.OnAttachStateChangeListener] and waits to be attached before calling
+ * [View.requestApplyInsets].
+ */
+fun View.requestApplyInsetsWhenAttached() {
+    if (isAttachedToWindow) {
+        requestApplyInsets()
+    } else {
+        addOnAttachStateChangeListener(object : OnAttachStateChangeListener {
+            override fun onViewAttachedToWindow(v: View) {
+                v.requestApplyInsets()
+            }
+
+            override fun onViewDetachedFromWindow(v: View) = Unit
+        })
+    }
+}
+
+private fun createStateForView(view: View) = ViewPaddingState(view.paddingLeft,
+    view.paddingTop, view.paddingRight, view.paddingBottom, view.paddingStart, view.paddingEnd)
+
+data class ViewPaddingState(
+    val left: Int,
+    val top: Int,
+    val right: Int,
+    val bottom: Int,
+    val start: Int,
+    val end: Int
+)

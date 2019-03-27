@@ -26,6 +26,8 @@
     <color name="google_blue_transparent">#e54688f1</color> <!-- 90% blue -->
     <color name="dark_gray">#ff808080</color>
 
+    <color name="transparent">#0fff</color>
+
     <integer-array name="swipe_refresh">
         <item>@color/google_blue</item>
         <item>@color/ads_yellow</item>

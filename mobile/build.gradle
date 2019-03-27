@@ -70,6 +70,13 @@ android {
     dataBinding {
         enabled true
     }
+    kapt {
+        javacOptions {
+            // Increase the max count of errors from annotation processors.
+            // Default is 100.
+            option("-Xmaxerrs", 2000)
+        }
+    }
 
     signingConfigs {
         // We need to sign debug builds with a debug key to make firebase auth happy
@@ -111,6 +118,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
     kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleVersion"
     testImplementation "androidx.arch.core:core-testing:$rootProject.lifecycleVersion"
+    implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    kapt "androidx.room:room-compiler:$rootProject.roomVersion"
 
     // Dagger
     implementation "com.google.dagger:dagger-android:$rootProject.dagger"

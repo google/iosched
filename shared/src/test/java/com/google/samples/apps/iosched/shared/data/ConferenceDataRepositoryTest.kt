@@ -22,6 +22,7 @@ import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.TestData.session1
 import com.google.samples.apps.iosched.test.data.TestData.session3
+import com.google.samples.apps.iosched.test.util.FakeAppDatabase
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import org.hamcrest.core.IsEqual.equalTo
 import org.hamcrest.core.IsNot.not
@@ -54,7 +55,8 @@ class ConferenceDataRepositoryTest {
         // and a bootstrap that returns session 3
         repo = ConferenceDataRepository(
             remoteDataSource = TestConfDataSourceSession0(),
-            boostrapDataSource = BootstrapDataSourceSession3()
+            boostrapDataSource = BootstrapDataSourceSession3(),
+            appDatabase = FakeAppDatabase()
         )
 
         // When requesting previously-refreshed data
@@ -76,7 +78,8 @@ class ConferenceDataRepositoryTest {
         // and a bootstrap that returns session 3
         repo = ConferenceDataRepository(
             remoteDataSource = NotAvailableDataSource(),
-            boostrapDataSource = BootstrapDataSourceSession3()
+            boostrapDataSource = BootstrapDataSourceSession3(),
+            appDatabase = FakeAppDatabase()
         )
 
         // Remote conference throws an error
@@ -104,7 +107,8 @@ class ConferenceDataRepositoryTest {
         // and a bootstrap that returns session 1
         repo = ConferenceDataRepository(
             remoteDataSource = ThrowingDataSourceNoCache(),
-            boostrapDataSource = TestConfDataSourceSession1()
+            boostrapDataSource = TestConfDataSourceSession1(),
+            appDatabase = FakeAppDatabase()
         )
 
         // Remote conference throws an error

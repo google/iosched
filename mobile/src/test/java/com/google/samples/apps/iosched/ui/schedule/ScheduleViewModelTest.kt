@@ -54,6 +54,7 @@ import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
+import com.google.samples.apps.iosched.test.util.fakes.FakeAppDatabase
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
@@ -302,7 +303,8 @@ class ScheduleViewModelTest {
             refreshConferenceDataUseCase = RefreshConferenceDataUseCase(
                 ConferenceDataRepository(
                     remoteDataSource = remoteDataSource,
-                    boostrapDataSource = TestDataSource
+                    boostrapDataSource = TestDataSource,
+                    appDatabase = FakeAppDatabase()
                 )
             )
         )
@@ -347,7 +349,8 @@ class ScheduleViewModelTest {
     private fun createTestConferenceDataRepository(): ConferenceDataRepository {
         return object: ConferenceDataRepository(
             remoteDataSource = TestConfDataSourceSession0(),
-            boostrapDataSource = BootstrapDataSourceSession3()
+            boostrapDataSource = BootstrapDataSourceSession3(),
+            appDatabase = FakeAppDatabase()
         ) {
             override fun getConferenceDays(): List<ConferenceDay> = TestData.TestConferenceDays
         }

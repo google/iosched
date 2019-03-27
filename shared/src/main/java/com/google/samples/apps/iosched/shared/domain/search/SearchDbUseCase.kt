@@ -16,34 +16,37 @@
 
 package com.google.samples.apps.iosched.shared.domain.search
 
+import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
+import com.google.samples.apps.iosched.shared.data.db.AppDatabase
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSession
-import timber.log.Timber
+import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSpeaker
 import javax.inject.Inject
 
 /**
- * Performs a search from a query string.
- *
- * A session is returned in the results if the title, description, or tag matches the query parameter.
+ * Performs a search in the database from a query string.
  */
-class SearchUseCase @Inject constructor(
-    private val repository: SessionRepository
+class SearchDbUseCase @Inject constructor(
+    private val sessionRepository: SessionRepository,
+    private val conferenceRepository: ConferenceDataRepository,
+    private val appDatabase: AppDatabase
 ) : UseCase<String, List<Searchable>>() {
 
     override fun execute(parameters: String): List<Searchable> {
-        Timber.d("Performing a search for any sessions that contain `$parameters`")
         val query = parameters.toLowerCase()
-        return repository.getSessions()
-            .filter { session ->
-                session.title.toLowerCase().contains(query) ||
-                    session.abstract.toLowerCase().contains(query) ||
-                    session.tags.any { tag ->
-                        query.contains(tag.displayName.toLowerCase())
-                    }
-            }
+        val sessionResults = appDatabase.sessionFtsDao().searchAllSessions(query).toSet()
+        val speakerResults = appDatabase.speakerFtsDao().searchAllSpeakers(query).toSet()
+        val searchedSessions = sessionRepository.getSessions()
+            .filter { session -> session.id in sessionResults }
             // Keynotes come first, followed by sessions, app reviews, game reviews ...
             .sortedBy { it.type }
             .map { SearchedSession(it) }
+        val conferenceData = conferenceRepository.getOfflineConferenceData()
+        val searchedSpeakers = conferenceData.speakers.filter {
+            it.id in speakerResults
+        }.map { SearchedSpeaker(it) }
+
+        return searchedSessions.plus(searchedSpeakers)
     }
 }
