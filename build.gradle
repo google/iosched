@@ -66,7 +66,7 @@ buildscript {
         legacySupportVersion = '1.0.0'
         lifecycleVersion = '2.0.0'
         lottieVersion = "2.5.1"
-        materialVersion = '1.1.0-alpha04-cl237931928'
+        materialVersion = '1.1.0-alpha05'
         mockitoVersion = "2.8.9"
         mockitoKotlinVersion = "1.5.0"
         navigationVersion = "2.0.0"
@@ -124,7 +124,6 @@ allprojects {
         maven {
             url "${rootProject.projectDir}/../../../prebuilts/fullsdk/linux/extras/support/m2repository"
         }
-        maven { url "${rootProject.projectDir}/prebuilts/m2repository" }
 
         flatDir {
             dirs "libs"
