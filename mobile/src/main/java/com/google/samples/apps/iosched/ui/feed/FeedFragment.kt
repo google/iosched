@@ -136,6 +136,7 @@ class FeedFragment : MainNavigationFragment() {
             val sectionHeaderViewBinder = FeedSectionHeaderViewBinder()
             val countdownTimerViewBinder = CountdownTimerViewBinder()
             val sessionsViewBinder = FeedSessionsViewBinder(model)
+            val announcementsPlaceholder = FeedAnnouncementsPlaceholderViewBinder()
             val viewBinders = ImmutableMap.builder<FeedItemClass, FeedItemBinder>()
                 .put(
                     announcementViewBinder.modelClass,
@@ -152,6 +153,10 @@ class FeedFragment : MainNavigationFragment() {
                 .put(
                     sessionsViewBinder.modelClass,
                     sessionsViewBinder as FeedItemBinder
+                )
+                .put(
+                    announcementsPlaceholder.modelClass,
+                    announcementsPlaceholder as FeedItemBinder
                 )
                 .build()
 

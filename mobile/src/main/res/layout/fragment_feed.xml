@@ -32,22 +32,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/feed_empty_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginHorizontal="@dimen/margin_large"
-            android:drawablePadding="@dimen/spacing_normal"
-            android:drawableTop="@drawable/io_logo"
-            android:gravity="center"
-            android:text="@string/feed_not_available"
-            app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/toolbar"
-            app:layout_constraintTop_toTopOf="@+id/recyclerView"
-            app:goneUnless="@{viewModel.feed.isEmpty &amp;&amp; !viewModel.isLoading}" />
-
         <View
             android:id="@+id/status_bar"
             style="@style/Widget.AppBar"
@@ -69,19 +53,6 @@
             app:navigationContentDescription="@string/a11y_show_navigation"
             app:navigationIcon="@drawable/ic_menu"
             app:title="Feed" />
-
-        <!-- TODO(b/72711711): Provide a better loading indicator -->
-        <ProgressBar
-            android:id="@+id/progress"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            app:goneUnless="@{safeUnbox(viewModel.isLoading)}" />
 
         <com.google.samples.apps.iosched.widget.FadingSnackbar
             android:id="@+id/snackbar"
