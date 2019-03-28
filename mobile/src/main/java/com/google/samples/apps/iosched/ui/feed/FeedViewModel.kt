@@ -129,13 +129,23 @@ class FeedViewModel @Inject constructor(
             username = userInfo?.getDisplayName()?.split(" ")?.get(0),
             titleId =
             if (userInfo?.isSignedIn() == true) {
-                if (userInfo.isRegistered()) string.feed_upcoming_events
-                else string.feed_saved_events
+                if (sessions as? Result.Success != null && sessions.data.userSessionCount == 0) {
+                    string.feed_no_saved_events
+                } else if (userInfo.isRegistered()) {
+                    string.feed_upcoming_events
+                } else {
+                    string.feed_saved_events
+                }
             } else
                 string.title_schedule,
             actionTextId =
             when (userInfo?.isSignedIn() == true) {
-                true -> string.feed_view_your_schedule
+                true -> {
+                    if (sessions as? Result.Success != null && sessions.data.userSessionCount == 0)
+                        string.feed_view_all_events
+                    else
+                        string.feed_view_your_schedule
+                }
                 false -> string.feed_view_all_events
             },
             userSessions = ((sessions as? Result.Success)?.data?.userSessions ?: emptyList()).let {
