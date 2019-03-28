@@ -66,12 +66,6 @@ class FeedViewModelTest {
             val actual = feedObservable?.get(index + 3)
             assertThat(actual, `is`(equalTo(item)))
         }
-
-        assertThat(
-            "Once feed items are loaded, isLoading should be false",
-            LiveDataTestUtil.getValue(viewModel.isLoading),
-            `is`(false)
-        )
     }
 
     @Test

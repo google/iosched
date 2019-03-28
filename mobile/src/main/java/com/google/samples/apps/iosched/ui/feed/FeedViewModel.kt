@@ -60,8 +60,6 @@ class FeedViewModel @Inject constructor(
 
     val feed: LiveData<List<Any>>
 
-    val isLoading: LiveData<Boolean>
-
     val snackBarMessage: LiveData<Event<SnackbarMessage>>
 
     private val loadSessionsResult: MediatorLiveData<Result<LoadFilteredUserSessionsResult>>
@@ -86,7 +84,13 @@ class FeedViewModel @Inject constructor(
         ) { userInfo, sessions -> createFeedSessionsContainer(userInfo, sessions) }
 
         val announcements: LiveData<List<Any>> = loadFeedResult.map {
-            (it as? Result.Success)?.data ?: emptyList()
+            val announcementsPlaceholder = createAnnouncementsPlaceholder(announcementsResult = it)
+            val announcementList = (it as? Result.Success)?.data ?: emptyList()
+
+            if (announcementsPlaceholder.isLoading || announcementsPlaceholder.notAvailable)
+                arrayListOf(announcementsPlaceholder)
+            else
+                announcementList
         }
 
         // Generate feed
@@ -95,10 +99,9 @@ class FeedViewModel @Inject constructor(
                 CountdownTimer(),
                 sessionContainer,
                 SectionHeader(string.feed_announcement_title)
-            ).plus(announcements)
+            )
+                .plus(announcements)
         }
-
-        isLoading = loadFeedResult.map { it == Result.Loading }
 
         errorMessage = loadFeedResult.map {
             Event(content = (it as? Result.Error)?.exception?.message ?: "")
@@ -119,6 +122,17 @@ class FeedViewModel @Inject constructor(
         }
 
         loadAnnouncementsUseCase.execute(Unit)
+    }
+
+    private fun createAnnouncementsPlaceholder(
+        announcementsResult: Result<List<Any>>?
+    ): AnnouncementsPlaceholder {
+        return AnnouncementsPlaceholder(
+            isLoading = announcementsResult is Result.Loading,
+            notAvailable = announcementsResult !is Result.Loading &&
+                ((announcementsResult as? Result.Success)?.data?.isEmpty() ?: false ||
+                    announcementsResult is Result.Error)
+        )
     }
 
     private fun createFeedSessionsContainer(
