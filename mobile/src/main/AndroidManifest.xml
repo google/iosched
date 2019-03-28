@@ -15,6 +15,7 @@
   ~ limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.google.samples.apps.iosched">
 
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -32,6 +33,12 @@
 
         <!-- Required for apps targeting API 28 and above and using Google Maps. -->
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
+
+        <meta-data android:name="com.google.ar.core" android:value="optional" />
+
+        <meta-data tools:replace="android:value"
+            android:name="com.google.ar.core.min_apk_version"
+            android:value="190128000" />
 
         <activity
             android:name=".ui.LauncherActivity"

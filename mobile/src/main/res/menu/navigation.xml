@@ -47,8 +47,8 @@
         <item
             android:id="@id/navigation_explore_ar"
             android:icon="@drawable/ic_nav_explore"
-            android:title="@string/title_explore_ar"
-            app:contentDescription="@string/title_explore_ar" />
+            android:title="@string/title_explore_io"
+            app:contentDescription="@string/title_explore_io" />
 
         <item
             android:id="@id/navigation_agenda"

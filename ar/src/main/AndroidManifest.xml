@@ -24,13 +24,13 @@
 
     <dist:module
         dist:onDemand="true"
-        dist:title="@string/feature_explore_ar">
+        dist:title="@string/feature_explore_io">
         <dist:fusing dist:include="true" />
     </dist:module>
 
     <application>
 
-        <meta-data android:name="com.google.ar.core" android:value="required" />
+        <meta-data android:name="com.google.ar.core" android:value="optional" />
 
         <activity android:name=".ArActivity"
             android:screenOrientation="portrait"
