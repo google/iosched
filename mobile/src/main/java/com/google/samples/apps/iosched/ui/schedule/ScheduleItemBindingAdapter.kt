@@ -43,7 +43,7 @@ fun sessionLengthLocation(
     textView: TextView,
     startTime: ZonedDateTime,
     endTime: ZonedDateTime,
-    room: Room,
+    room: Room?,
     timeZoneId: ZoneId?,
     alwaysShowDate: Boolean
 ) {
@@ -64,7 +64,7 @@ fun sessionLengthLocation(
             R.string.session_date_duration_location,
             TimeUtils.abbreviatedTimeString(localStartTime),
             durationString(textView.context, Duration.between(localStartTime, localEndTime)),
-            room.abbreviatedName
+            room?.abbreviatedName ?: "-"
         )
     } else {
         // Assume user is at the conference and show the duration and the full room name
@@ -72,7 +72,7 @@ fun sessionLengthLocation(
         textView.context.getString(
             R.string.session_duration_location,
             durationString(textView.context, Duration.between(startTime, endTime)),
-            room.name
+            room?.name ?: "-"
         )
     }
     // For accessibility, always use the full date time; without this, sticky headers will confuse
@@ -84,10 +84,14 @@ private fun fullDateTime(
     localStartTime: ZonedDateTime,
     localEndTime: ZonedDateTime,
     textView: TextView,
-    room: Room
+    room: Room?
 ): String {
     val timeString = TimeUtils.timeString(localStartTime, localEndTime)
-    return textView.context.getString(R.string.session_duration_location, timeString, room.name)
+    return textView.context.getString(
+        R.string.session_duration_location,
+        timeString,
+        room?.name ?: "-"
+    )
 }
 
 private fun durationString(context: Context, duration: Duration): String {
