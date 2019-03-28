@@ -21,7 +21,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.core.view.updatePadding
@@ -50,6 +49,7 @@ import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
 import com.google.samples.apps.iosched.util.HeightTopWindowInsetsListener
 import com.google.samples.apps.iosched.util.NoopWindowInsetsListener
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import com.google.samples.apps.iosched.util.navigationItemBackground
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
 import com.google.samples.apps.iosched.util.updateForTheme
 import com.google.samples.apps.iosched.widget.NavigationBarContentFrameLayout
@@ -172,12 +172,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
         navigation.apply {
             addHeaderView(navHeaderBinding.root)
 
-            // Need to inflate the CSL via AppCompatResources and set it as the tint
-            itemBackground = itemBackground?.mutate()?.apply {
-                val tint = AppCompatResources.getColorStateList(
-                        context, R.color.navigation_item_background_tint)
-                setTintList(tint)
-            }
+            itemBackground = navigationItemBackground(context)
 
             menu.findItem(R.id.navigation_map).isVisible = mapFeatureEnabled
             menu.findItem(R.id.navigation_feed).isVisible = feedFeatureEnabled
