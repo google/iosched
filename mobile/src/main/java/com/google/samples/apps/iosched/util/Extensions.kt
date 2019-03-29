@@ -17,11 +17,11 @@
 package com.google.samples.apps.iosched.util
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.res.Resources
 import android.graphics.Rect
 import android.graphics.Typeface
 import android.net.wifi.WifiConfiguration
+import android.os.Handler
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.Spanned
@@ -34,12 +34,12 @@ import android.view.WindowInsets
 import androidx.annotation.DimenRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.view.postDelayed
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.google.samples.apps.iosched.model.Theme
+import dagger.android.support.DaggerFragment
 
 fun ObservableBoolean.hasSameValue(other: ObservableBoolean) = get() == other.get()
 
@@ -55,11 +55,9 @@ inline fun <T : ViewDataBinding> T.executeAfter(block: T.() -> Unit) {
 /**
  * An extension to `postponeEnterTransition` which will resume after a timeout.
  */
-fun Activity.postponeEnterTransition(timeout: Long) {
+fun DaggerFragment.postponeEnterTransition(timeout: Long) {
     postponeEnterTransition()
-    window.decorView.postDelayed(timeout) {
-        startPostponedEnterTransition()
-    }
+    Handler().postDelayed({ startPostponedEnterTransition() }, timeout)
 }
 
 /**

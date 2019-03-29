@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.ui.sessiondetail
 
-import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.provider.CalendarContract
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,9 +32,13 @@ import androidx.core.view.forEach
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
+import androidx.transition.TransitionInflater
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.R.style
 import com.google.samples.apps.iosched.databinding.FragmentSessionDetailBinding
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
@@ -55,12 +59,14 @@ import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFra
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
 import com.google.samples.apps.iosched.ui.reservation.SwapReservationDialogFragment
 import com.google.samples.apps.iosched.ui.reservation.SwapReservationDialogFragment.Companion.DIALOG_SWAP_RESERVATION
+import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentDirections.Companion.toSessionDetail
+import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailFragmentDirections.Companion.toSpeakerDetail
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment.Companion.DIALOG_NOTIFICATIONS_PREFERENCE
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment.Companion.DIALOG_SIGN_IN
-import com.google.samples.apps.iosched.ui.speaker.SpeakerActivity
+import com.google.samples.apps.iosched.util.postponeEnterTransition
 import dagger.android.support.DaggerFragment
 import timber.log.Timber
 import javax.inject.Inject
@@ -98,7 +104,14 @@ class SessionDetailFragment : DaggerFragment() {
     ): View? {
         sessionDetailViewModel = viewModelProvider(viewModelFactory)
 
-        val binding = FragmentSessionDetailBinding.inflate(inflater, container, false).apply {
+        sharedElementReturnTransition =
+            TransitionInflater.from(context).inflateTransition(R.transition.speaker_shared_enter)
+        // Delay the enter transition until speaker image has loaded.
+        postponeEnterTransition(500L)
+
+        val themedInflater = inflater.cloneInContext(
+            ContextThemeWrapper(requireActivity(), style.AppTheme_SessionDetails))
+        val binding = FragmentSessionDetailBinding.inflate(themedInflater, container, false).apply {
             viewModel = sessionDetailViewModel
             lifecycleOwner = viewLifecycleOwner
         }
@@ -136,7 +149,12 @@ class SessionDetailFragment : DaggerFragment() {
         }
 
         binding.up.setOnClickListener {
-            NavUtils.navigateUpFromSameTask(requireActivity())
+            // TODO(benbaxter): Remove try/catch once SessionDetailActivity is deleted.
+            try {
+                NavUtils.navigateUpFromSameTask(requireActivity())
+            } catch (e: Exception) {
+                findNavController().navigateUp()
+            }
         }
 
         val detailsAdapter = SessionDetailAdapter(
@@ -183,7 +201,7 @@ class SessionDetailFragment : DaggerFragment() {
         })
 
         sessionDetailViewModel.navigateToSessionAction.observe(this, EventObserver { sessionId ->
-            startActivity(SessionDetailActivity.starterIntent(requireContext(), sessionId))
+            findNavController().navigate(toSessionDetail(sessionId))
         })
 
         val snackbarPreferenceViewModel: SnackbarPreferenceViewModel =
@@ -219,14 +237,9 @@ class SessionDetailFragment : DaggerFragment() {
         })
 
         sessionDetailViewModel.navigateToSpeakerDetail.observe(this, EventObserver { speakerId ->
-            requireActivity().run {
-                val sharedElement =
-                    findSpeakerHeadshot(binding.sessionDetailRecyclerView, speakerId)
-                val options = ActivityOptions.makeSceneTransitionAnimation(
-                    this, sharedElement, getString(R.string.speaker_headshot_transition)
-                )
-                startActivity(SpeakerActivity.starterIntent(this, speakerId), options.toBundle())
-            }
+            val sharedElement = findSpeakerHeadshot(binding.sessionDetailRecyclerView, speakerId)
+            val extras = FragmentNavigatorExtras(sharedElement to sharedElement.transitionName)
+            findNavController().navigate(toSpeakerDetail(speakerId), extras)
         })
 
         sessionDetailViewModel.navigateToSessionFeedbackAction.observe(this, EventObserver {
@@ -240,7 +253,16 @@ class SessionDetailFragment : DaggerFragment() {
     override fun onStart() {
         super.onStart()
         Timber.d("Loading details for session $arguments")
-        sessionDetailViewModel.setSessionId(requireNotNull(arguments).getString(EXTRA_SESSION_ID))
+
+        requireNotNull(arguments).apply {
+            // TODO(benbaxter): Only use SessionDetailFragmentArgs and delete SessionDetailActivity.
+            // Default with the value passed from the activity, otherwise assume the fragment was
+            // added from the navigation controller.
+            val sessionId = getString(EXTRA_SESSION_ID)
+                ?: SessionDetailFragmentArgs.fromBundle(this).sessionId
+
+            sessionDetailViewModel.setSessionId(sessionId)
+        }
     }
 
     override fun onStop() {

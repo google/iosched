@@ -68,7 +68,6 @@
     </style>
 
     <style name="AppTheme.Speaker">
-        <item name="android:windowSharedElementEnterTransition">@transition/speaker_shared_enter</item>
         <item name="sessionListKeyline">@dimen/margin_normal</item>
     </style>
 

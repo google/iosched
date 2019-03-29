@@ -34,6 +34,9 @@
             android:name="showAllEvents"
             app:argType="boolean"
             android:defaultValue="false" />
+        <action
+            android:id="@+id/to_session_detail"
+            app:destination="@id/navigation_session_detail" />
     </fragment>
     <fragment
         android:id="@id/navigation_info"
@@ -55,11 +58,41 @@
         android:id="@id/navigation_feed"
         android:name="com.google.samples.apps.iosched.ui.feed.FeedFragment"
         android:label="@string/title_feed"
-        tools:layout="@layout/fragment_feed" />
+        tools:layout="@layout/fragment_feed">
+        <action
+            android:id="@+id/to_session_detail"
+            app:destination="@id/navigation_session_detail" />
+    </fragment>
     <fragment
         android:id="@id/navigation_map"
         android:name="com.google.samples.apps.iosched.ui.map.MapFragment"
         android:label="@string/title_map"
         tools:layout="@layout/fragment_map" />
+
+    <fragment
+        android:id="@id/navigation_session_detail"
+        android:name="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailFragment"
+        tools:layout="@layout/fragment_session_detail">
+        <argument
+            android:name="session_id"
+            app:argType="string" />
+        <action
+            android:id="@+id/to_session_detail"
+            app:destination="@id/navigation_session_detail" />
+        <action
+            android:id="@+id/to_speaker_detail"
+            app:destination="@id/navigation_speaker_detail" />
+    </fragment>
+    <fragment
+        android:id="@id/navigation_speaker_detail"
+        android:name="com.google.samples.apps.iosched.ui.speaker.SpeakerFragment"
+        tools:layout="@layout/fragment_speaker">
+        <argument
+            android:name="speaker_id"
+            app:argType="string" />
+        <action
+            android:id="@+id/to_session_detail"
+            app:destination="@id/navigation_session_detail" />
+    </fragment>
 
 </navigation>
