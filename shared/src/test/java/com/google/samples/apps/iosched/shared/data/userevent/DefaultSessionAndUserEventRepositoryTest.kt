@@ -25,8 +25,6 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
 import com.google.samples.apps.iosched.test.data.TestData
 import org.hamcrest.Matchers.equalTo
-import org.hamcrest.Matchers.hasKey
-import org.hamcrest.Matchers.hasSize
 import org.hamcrest.Matchers.instanceOf
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsInstanceOf
@@ -94,11 +92,6 @@ class DefaultSessionAndUserEventRepositoryTest {
             assertThat(userSession.session.id, `is`(equalTo("2")))
             assertThat(userSession.userEvent.isStarred, `is`(true))
             assertThat(userSession.userEvent.isReviewed, `is`(false))
-            assertThat(userSession.userEvent.feedback.keys, hasSize(2))
-            assertThat(userSession.userEvent.feedback, hasKey("q1"))
-            assertThat(userSession.userEvent.feedback["q1"], `is`(equalTo(1)))
-            assertThat(userSession.userEvent.feedback, hasKey("q2"))
-            assertThat(userSession.userEvent.feedback["q2"], `is`(equalTo(2)))
         }
     }
 

@@ -23,10 +23,12 @@ import com.google.samples.apps.iosched.shared.data.FakeAppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ar.ArDebugFlagEndpoint
 import com.google.samples.apps.iosched.shared.data.ar.FakeArDebugFlagEndpoint
+import com.google.samples.apps.iosched.shared.data.FakeFeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
+import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
@@ -85,6 +87,12 @@ class SharedModule {
     @Provides
     fun provideUserEventDataSource(): UserEventDataSource {
         return FakeUserEventDataSource
+    }
+
+    @Singleton
+    @Provides
+    fun provideFeedbackEndpoint(): FeedbackEndpoint {
+        return FakeFeedbackEndpoint
     }
 
     @Singleton

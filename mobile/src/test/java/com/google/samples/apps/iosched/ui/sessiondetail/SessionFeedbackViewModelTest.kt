@@ -17,13 +17,18 @@
 package com.google.samples.apps.iosched.ui.sessiondetail
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.TestDataRepository
+import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.FeedbackUseCase
+import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
@@ -118,6 +123,14 @@ class SessionFeedbackViewModelTest {
         userEventDataSource: UserEventDataSource = TestUserEventDataSource()
     ): FeedbackUseCase {
         return FeedbackUseCase(
+            object : FeedbackEndpoint {
+                override fun sendFeedback(
+                    sessionId: SessionId,
+                    responses: Map<String, Int>
+                ): LiveData<Result<Unit>> {
+                    return MutableLiveData(Result.Success(Unit))
+                }
+            },
             DefaultSessionAndUserEventRepository(
                 userEventDataSource,
                 DefaultSessionRepository(TestDataRepository)

@@ -77,9 +77,14 @@ class SessionFeedbackFragment : DaggerAppCompatDialogFragment() {
             .setView(binding.root)
             .setPositiveButton(R.string.feedback_submit) { _, _ ->
                 viewModel.submit(questionAdapter.feedbackUpdates)
+                (parentFragment as Listener).onFeedbackSubmitted()
             }
             .setNegativeButton(android.R.string.cancel, /* ignore */ null)
             .create()
+    }
+
+    internal interface Listener {
+        fun onFeedbackSubmitted()
     }
 
     companion object {

@@ -20,7 +20,6 @@ import androidx.lifecycle.LiveData
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
-import com.google.samples.apps.iosched.shared.domain.users.FeedbackUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
@@ -45,10 +44,10 @@ interface UserEventDataSource {
      */
     fun starEvent(userId: String, userEvent: UserEvent): LiveData<Result<StarUpdatedStatus>>
 
-    fun submitFeedback(
+    fun recordFeedbackSent(
         userId: String,
         userEvent: UserEvent
-    ): LiveData<Result<FeedbackUpdatedStatus>>
+    ): LiveData<Result<Unit>>
 
     fun requestReservation(
         userId: String,
