@@ -58,7 +58,13 @@ class FirestoreAnnouncementDataSource @Inject constructor(
 
     private fun registerListenerForEvents(result: MutableLiveData<Result<List<Announcement>>>) {
         val eventsListener: (QuerySnapshot?, FirebaseFirestoreException?) -> Unit =
-            listener@{ snapshot, _ ->
+            listener@{ snapshot, fireStoreException ->
+                if (fireStoreException != null) {
+                    DefaultScheduler.execute {
+                        result.postValue(Result.Error(fireStoreException))
+                    }
+                    return@listener
+                }
                 snapshot ?: return@listener
 
                 DefaultScheduler.execute {
