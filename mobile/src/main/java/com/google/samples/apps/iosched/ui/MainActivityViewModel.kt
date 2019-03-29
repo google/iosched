@@ -18,10 +18,13 @@ package com.google.samples.apps.iosched.ui
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.domain.ar.ArCoreAvailabilityLiveData
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadPinnedSessionsJsonUseCase
 import com.google.samples.apps.iosched.shared.result.Event
+import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
 import javax.inject.Inject
@@ -29,6 +32,7 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(
     signInViewModelDelegate: SignInViewModelDelegate,
     themedActivityDelegate: ThemedActivityDelegate,
+    loadPinnedSessionsUseCase: LoadPinnedSessionsJsonUseCase,
     context: Context
 ) : ViewModel(),
     SignInViewModelDelegate by signInViewModelDelegate,
@@ -42,7 +46,22 @@ class MainActivityViewModel @Inject constructor(
     val navigateToSignOutDialogAction: LiveData<Event<Unit>>
         get() = _navigateToSignOutDialogAction
 
+    private val _pinnedSessionsJson = MediatorLiveData<String>()
+    val pinnedSessionsJson = _pinnedSessionsJson
+
     val arCoreAvailability = ArCoreAvailabilityLiveData(context)
+
+    init {
+        _pinnedSessionsJson.addSource(currentUserInfo) { user ->
+            _pinnedSessionsJson.value = null
+            val uid = user?.getUid() ?: return@addSource
+            loadPinnedSessionsUseCase.execute(uid)
+        }
+        _pinnedSessionsJson.addSource(loadPinnedSessionsUseCase.observe()) { result ->
+            val data = (result as? Result.Success)?.data ?: return@addSource
+            _pinnedSessionsJson.value = data
+        }
+    }
 
     fun onProfileClicked() {
         if (isSignedIn()) {

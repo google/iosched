@@ -124,6 +124,14 @@ object TimeUtils {
         return sb.toString()
     }
 
+    fun abbreviatedDayForAr(startTime: ZonedDateTime): String {
+        return DateTimeFormatter.ofPattern("MM/dd").format(startTime)
+    }
+
+    fun abbreviatedTimeForAr(startTime: ZonedDateTime): String {
+        return DateTimeFormatter.ofPattern("HH:mm").format(startTime)
+    }
+
     fun conferenceHasStarted(): Boolean {
         return ZonedDateTime.now().isAfter(ConferenceDays.first().start)
     }
