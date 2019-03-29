@@ -23,6 +23,7 @@
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorSecondary">?attr/colorPrimary</item>
+        <item name="colorOnSecondary">@color/color_on_secondary</item>
         <item name="colorControlLight">@color/color_control_light</item>
 
         <item name="toolbarStyle">@style/Widget.Toolbar</item>
