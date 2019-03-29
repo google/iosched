@@ -21,6 +21,7 @@
 
     <color name="color_primary">#8AB4F8</color>
     <color name="color_primary_dark">#669DF6</color>
+    <color name="color_on_secondary">#000</color>
 
     <color name="system_ui_scrim_light">#2EFFFFFF</color> <!-- 18% white -->
     <color name="system_ui_scrim_black">#54000000</color> <!-- 33% black -->
