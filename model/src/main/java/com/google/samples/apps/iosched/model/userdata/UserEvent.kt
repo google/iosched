@@ -57,10 +57,7 @@ data class UserEvent(
     private val reservationRequestResult: ReservationRequestResult? = null,
 
     /** Stores the user's latest reservation action  */
-    private val reservationRequest: ReservationRequest? = null,
-
-    /** User's feedback about this event. */
-    val feedback: Map<String, Int> = emptyMap()
+    private val reservationRequest: ReservationRequest? = null
 ) {
     fun isPinned(): Boolean {
         return isStarred || isReserved() || isWaitlisted()

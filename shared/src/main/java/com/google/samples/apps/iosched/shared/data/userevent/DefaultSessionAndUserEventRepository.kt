@@ -28,7 +28,6 @@ import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
-import com.google.samples.apps.iosched.shared.domain.users.FeedbackUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.SwapAction
@@ -197,11 +196,8 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         return userEventDataSource.starEvent(userId, userEvent)
     }
 
-    override fun submitFeedback(
-        userId: String,
-        userEvent: UserEvent
-    ): LiveData<Result<FeedbackUpdatedStatus>> {
-        return userEventDataSource.submitFeedback(userId, userEvent)
+    override fun recordFeedbackSent(userId: String, userEvent: UserEvent): LiveData<Result<Unit>> {
+        return userEventDataSource.recordFeedbackSent(userId, userEvent)
     }
 
     override fun changeReservation(
@@ -325,10 +321,10 @@ interface SessionAndUserEventRepository {
 
     fun starEvent(userId: String, userEvent: UserEvent): LiveData<Result<StarUpdatedStatus>>
 
-    fun submitFeedback(
+    fun recordFeedbackSent(
         userId: String,
         userEvent: UserEvent
-    ): LiveData<Result<FeedbackUpdatedStatus>>
+    ): LiveData<Result<Unit>>
 
     fun clearSingleEventSubscriptions()
 

@@ -74,7 +74,7 @@ import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
 
-class SessionDetailFragment : DaggerFragment() {
+class SessionDetailFragment : DaggerFragment(), SessionFeedbackFragment.Listener {
 
     private var shareString = ""
 
@@ -99,6 +99,8 @@ class SessionDetailFragment : DaggerFragment() {
 
     private lateinit var sessionTitle: String
 
+    private lateinit var binding: FragmentSessionDetailBinding
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -113,7 +115,7 @@ class SessionDetailFragment : DaggerFragment() {
 
         val themedInflater = inflater.cloneInContext(
             ContextThemeWrapper(requireActivity(), style.AppTheme_SessionDetails))
-        val binding = FragmentSessionDetailBinding.inflate(themedInflater, container, false).apply {
+        binding = FragmentSessionDetailBinding.inflate(themedInflater, container, false).apply {
             viewModel = sessionDetailViewModel
             lifecycleOwner = viewLifecycleOwner
         }
@@ -259,7 +261,7 @@ class SessionDetailFragment : DaggerFragment() {
 
         sessionDetailViewModel.navigateToSessionFeedbackAction.observe(this, EventObserver {
             SessionFeedbackFragment.createInstance(it)
-                .show(requireFragmentManager(), FRAGMENT_SESSION_FEEDBACK)
+                .show(childFragmentManager, FRAGMENT_SESSION_FEEDBACK)
         })
 
         return binding.root
@@ -321,6 +323,10 @@ class SessionDetailFragment : DaggerFragment() {
                 titleUpdated = true
             }
         })
+    }
+
+    override fun onFeedbackSubmitted() {
+        binding.snackbar.show(R.string.feedback_thank_you)
     }
 
     private fun openYoutubeUrl(youtubeUrl: String) {

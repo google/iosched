@@ -55,6 +55,7 @@ import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogPar
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.google.samples.apps.iosched.util.combine
 import org.threeten.bp.Duration
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
@@ -240,7 +241,8 @@ class SessionDetailViewModel @Inject constructor(
             currentSession?.hasVideo() == true
         }
 
-        showFeedbackButton = session.map { currentSession ->
+        showFeedbackButton = userEvent.combine(session) { userEvent, currentSession ->
+            !userEvent.isReviewed &&
             currentSession.type == SessionType.SESSION &&
                 TimeUtils.getSessionState(currentSession, ZonedDateTime.now()) ==
                 TimeUtils.SessionRelativeTimeState.AFTER

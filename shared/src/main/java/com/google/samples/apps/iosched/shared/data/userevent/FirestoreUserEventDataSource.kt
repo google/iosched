@@ -31,7 +31,6 @@ import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.shared.data.document2019
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
-import com.google.samples.apps.iosched.shared.domain.users.FeedbackUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
@@ -61,7 +60,7 @@ class FirestoreUserEventDataSource @Inject constructor(
         private const val QUEUE_COLLECTION = "queue"
         internal const val ID = "id"
         internal const val IS_STARRED = "isStarred"
-        internal const val FEEDBACK = "feedback"
+        internal const val REVIEWED = "reviewed"
 
         internal const val RESERVATION_REQUEST_KEY = "reservationRequest"
 
@@ -283,17 +282,15 @@ class FirestoreUserEventDataSource @Inject constructor(
         return result
     }
 
-    override fun submitFeedback(
+    override fun recordFeedbackSent(
         userId: String,
         userEvent: UserEvent
-    ): LiveData<Result<FeedbackUpdatedStatus>> {
-        val result = MutableLiveData<Result<FeedbackUpdatedStatus>>()
+    ): LiveData<Result<Unit>> {
+        val result = MutableLiveData<Result<Unit>>()
 
         val data = mapOf(
             ID to userEvent.id,
-            FEEDBACK to userEvent.feedback.map { (key, rating) ->
-                key to rating.toString()
-            }.toMap()
+            "reviewed" to true
         )
 
         firestore
@@ -301,9 +298,10 @@ class FirestoreUserEventDataSource @Inject constructor(
             .collection(USERS_COLLECTION)
             .document(userId)
             .collection(EVENTS_COLLECTION)
-            .document(userEvent.id).set(data, SetOptions.merge()).addOnCompleteListener { task ->
+            .document(userEvent.id).set(data, SetOptions.merge())
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    result.postValue(Result.Success(FeedbackUpdatedStatus.UPDATED))
+                    result.postValue(Result.Success(Unit))
                 } else {
                     result.postValue(
                         Result.Error(task.exception ?: RuntimeException("Error updating feedback."))

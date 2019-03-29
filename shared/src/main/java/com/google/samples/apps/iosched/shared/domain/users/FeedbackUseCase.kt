@@ -16,35 +16,39 @@
 
 package com.google.samples.apps.iosched.shared.domain.users
 
+import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
+import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import javax.inject.Inject
 
 open class FeedbackUseCase @Inject constructor(
+    private val endpoint: FeedbackEndpoint,
     private val repository: SessionAndUserEventRepository
-) : MediatorUseCase<FeedbackParameter, FeedbackUpdatedStatus>() {
+) : MediatorUseCase<FeedbackParameter, Unit>() {
 
     override fun execute(parameters: FeedbackParameter) {
-        val updateResult = try {
-            repository.submitFeedback(parameters.userId, parameters.userEvent)
-        } catch (e: Exception) {
-            result.postValue(Result.Error(e))
-            return
+        var tasks = 2
+        val taskDone = {
+            tasks -= 1
+            if (tasks <= 0) {
+                result.postValue(Result.Success(Unit))
+            }
         }
-        result.removeSource(updateResult)
-        result.addSource(updateResult) {
-            result.postValue(updateResult.value)
+        result.addSource(endpoint.sendFeedback(parameters.sessionId, parameters.responses)) {
+            taskDone()
+        }
+        result.addSource(repository.recordFeedbackSent(parameters.userId, parameters.userEvent)) {
+            taskDone()
         }
     }
 }
 
 data class FeedbackParameter(
     val userId: String,
-    val userEvent: UserEvent
+    val userEvent: UserEvent,
+    val sessionId: SessionId,
+    val responses: Map<String, Int>
 )
-
-enum class FeedbackUpdatedStatus {
-    UPDATED
-}

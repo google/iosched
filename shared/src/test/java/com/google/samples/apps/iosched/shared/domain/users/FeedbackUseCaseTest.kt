@@ -17,7 +17,11 @@
 package com.google.samples.apps.iosched.shared.domain.users
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
@@ -44,15 +48,28 @@ class FeedbackUseCaseTest {
 
     @Test
     fun submit() {
+        val testFeedbackEndpoint = object : FeedbackEndpoint {
+            override fun sendFeedback(
+                sessionId: SessionId,
+                responses: Map<String, Int>
+            ): LiveData<Result<Unit>> {
+                return MutableLiveData(Result.Success(Unit))
+            }
+        }
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
             TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
         )
-        val useCase = FeedbackUseCase(testUserEventRepository)
+        val useCase = FeedbackUseCase(testFeedbackEndpoint, testUserEventRepository)
 
         val resultLiveData = useCase.observe()
-        useCase.execute(FeedbackParameter("userIdTest", TestData.userEvents[0]))
+        useCase.execute(FeedbackParameter(
+            "userIdTest",
+            TestData.userEvents[0],
+            TestData.userEvents[0].id,
+            mapOf("q1" to 1)
+        ))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
-        assertEquals(Result.Success(FeedbackUpdatedStatus.UPDATED), result)
+        assertEquals(Result.Success(Unit), result)
     }
 }

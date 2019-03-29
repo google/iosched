@@ -24,7 +24,6 @@ import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventResult
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
-import com.google.samples.apps.iosched.shared.domain.users.FeedbackUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
@@ -66,13 +65,8 @@ class TestUserEventDataSource(
         return result
     }
 
-    override fun submitFeedback(
-        userId: String,
-        userEvent: UserEvent
-    ): LiveData<Result<FeedbackUpdatedStatus>> {
-        val result = MutableLiveData<Result<FeedbackUpdatedStatus>>()
-        result.postValue(Result.Success(FeedbackUpdatedStatus.UPDATED))
-        return result
+    override fun recordFeedbackSent(userId: String, userEvent: UserEvent): LiveData<Result<Unit>> {
+        return MutableLiveData(Result.Success(Unit))
     }
 
     override fun requestReservation(
