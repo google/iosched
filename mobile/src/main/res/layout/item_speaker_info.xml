@@ -68,6 +68,11 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.65" />
 
+        <!--
+        Using the speaker's id as the transition name so when there are multiple speakers the id is
+        unique, thus preventing conflicts with the transition name. See item_speaker.xml for the
+        corresponding shared element.
+         -->
         <ImageView
             android:id="@+id/speaker_grid_image"
             android:layout_width="@dimen/speaker_large_headshot_size"
@@ -75,7 +80,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginTop="24dp"
             android:contentDescription="@null"
-            android:transitionName="@string/speaker_headshot_transition"
+            android:transitionName="@{viewModel.speaker.id}"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/header_grid"
             app:layout_constraintTop_toTopOf="@id/header_grid"

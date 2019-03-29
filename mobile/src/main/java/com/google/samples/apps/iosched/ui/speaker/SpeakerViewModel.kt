@@ -65,8 +65,8 @@ class SpeakerViewModel @Inject constructor(
     val speakerUserSessions: LiveData<List<UserSession>>
         get() = _speakerUserSessions
 
-    val hasProfileImage: LiveData<Boolean> = _speaker.map {
-        !it?.imageUrl.isNullOrEmpty()
+    val hasNoProfileImage: LiveData<Boolean> = _speaker.map {
+        it?.imageUrl.isNullOrEmpty()
     }
 
     private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()

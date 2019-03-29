@@ -26,4 +26,6 @@
     <item name="navigation_map" type="id" />
     <item name="navigation_schedule" type="id" />
     <item name="navigation_settings" type="id" />
+    <item name="navigation_session_detail" type="id" />
+    <item name="navigation_speaker_detail" type="id" />
 </resources>

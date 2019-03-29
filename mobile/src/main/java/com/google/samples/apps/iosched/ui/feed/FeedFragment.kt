@@ -26,6 +26,7 @@ import androidx.core.view.updatePaddingRelative
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.common.collect.ImmutableMap
 import com.google.samples.apps.iosched.R
@@ -34,9 +35,9 @@ import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
+import com.google.samples.apps.iosched.ui.feed.FeedFragmentDirections.Companion.toSessionDetail
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentArgs
-import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.getTappableElementInsetsAsRect
@@ -113,7 +114,7 @@ class FeedFragment : MainNavigationFragment() {
     }
 
     private fun openSessionDetail(id: SessionId) {
-        startActivity(SessionDetailActivity.starterIntent(requireContext(), id))
+        findNavController().navigate(toSessionDetail(id))
     }
 
     private fun openSchedule(withPinnedSessions: Boolean) {
