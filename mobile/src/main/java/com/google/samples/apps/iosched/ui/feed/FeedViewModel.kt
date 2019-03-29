@@ -38,6 +38,7 @@ import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.combine
+import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 
 /**
@@ -148,9 +149,10 @@ class FeedViewModel @Inject constructor(
                 }
                 false -> string.feed_view_all_events
             },
-            userSessions = ((sessions as? Result.Success)?.data?.userSessions ?: emptyList()).let {
-                it.subList(0, Math.min(MAX_SESSIONS, it.size))
-            }
+            userSessions = ((sessions as? Result.Success)?.data?.userSessions ?: emptyList())
+                .filter { it.session.endTime >= ZonedDateTime.now() }
+                .let { it.subList(0, Math.min(MAX_SESSIONS, it.size)) }
+
         )
 
     private fun refreshSessions() {
