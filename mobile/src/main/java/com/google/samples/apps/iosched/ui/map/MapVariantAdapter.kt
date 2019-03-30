@@ -28,7 +28,6 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemMapVariantBinding
 import com.google.samples.apps.iosched.util.executeAfter
-import com.google.samples.apps.iosched.util.navigationItemBackground
 
 internal class MapVariantAdapter(
     private val callback: (MapVariant) -> Unit
@@ -72,10 +71,6 @@ internal class MapVariantAdapter(
 internal class MapVariantViewHolder(
     val binding: ItemMapVariantBinding
 ) : ViewHolder(binding.root) {
-
-    init {
-        binding.mapVariantLabel.background = navigationItemBackground(itemView.context)
-    }
 
     fun bind(mapVariant: MapVariant, isSelected: Boolean, callback: (MapVariant) -> Unit) {
         binding.executeAfter {
