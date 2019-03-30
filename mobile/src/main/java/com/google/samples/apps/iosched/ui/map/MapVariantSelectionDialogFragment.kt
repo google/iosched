@@ -17,28 +17,31 @@
 package com.google.samples.apps.iosched.ui.map
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.updatePaddingRelative
+import android.view.ViewGroup.MarginLayoutParams
+import android.view.WindowManager
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.parentViewModelProvider
-import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
-import com.google.samples.apps.iosched.widget.DaggerBottomSheetDialogFragment
+import dagger.android.support.DaggerAppCompatDialogFragment
 import javax.inject.Inject
 
-class MapVariantSelectionDialogFragment : DaggerBottomSheetDialogFragment() {
+class MapVariantSelectionDialogFragment : DaggerAppCompatDialogFragment() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var mapViewModel: MapViewModel
     private lateinit var adapter: MapVariantAdapter
 
+    // Normally we would implement onCreateDialog using a MaterialAlertDialogBuilder, but that
+    // doesn't allow the dialog width to wrap its contents, and also doesn't allow positioning
+    // of the dialog. Instead we implement onCreateView and handle the rest later.
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,12 +52,8 @@ class MapVariantSelectionDialogFragment : DaggerBottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         adapter = MapVariantAdapter(::selectMapVariant)
         view.findViewById<RecyclerView>(R.id.map_variant_list).adapter = adapter
-        view.doOnApplyWindowInsets { v, insets, padding ->
-            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
-        }
 
         mapViewModel = parentViewModelProvider(viewModelFactory)
         mapViewModel.mapVariant.observe(this, Observer {
@@ -64,14 +63,19 @@ class MapVariantSelectionDialogFragment : DaggerBottomSheetDialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        val window = dialog?.window ?: return
-        // Minor hack to make the bottom sheet draw behind the navigation bar.
-        window.findViewById<View>(com.google.android.material.R.id.container)
-            .fitsSystemWindows = false
-        // Minor hack to not show the sheet collapsed in landscape
-        (dialog as BottomSheetDialog).behavior.apply {
-            state = BottomSheetBehavior.STATE_EXPANDED
-            skipCollapsed = true
+        requireDialog().window?.apply {
+            // Don't dim the screen
+            clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            // Position the window
+            attributes.gravity = Gravity.BOTTOM or Gravity.END
+            // The window decor view's background shows behind the card, so remove it
+            setBackgroundDrawable(null)
+        }
+        // We can't set margins in XML because when shown as a dialog, onCreateView is passed a null
+        // container. LayoutParams are only generated when the view is added to a Dialog later.
+        val margin = resources.getDimensionPixelSize(R.dimen.margin_normal)
+        view?.updateLayoutParams<MarginLayoutParams> {
+            setMargins(margin, margin, margin, margin)
         }
     }
 

@@ -78,7 +78,7 @@
         <item name="buttonBarNegativeButtonStyle">@style/Widget.IOSched.BorderlessButton</item>
         <item name="buttonBarPositiveButtonStyle">@style/Widget.IOSched.BorderlessButton</item>
         <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
-        <item name="dialogPreferredPadding">24dp</item>
+        <item name="dialogPreferredPadding">@dimen/dialogPreferredPadding</item>
         <item name="materialAlertDialogTitleTextStyle">@style/AlertDialog.TitleText</item>
         <item name="materialAlertDialogTitlePanelStyle">@style/AlertDialog.TitlePanel</item>
         <item name="materialAlertDialogBodyTextStyle">@style/TextAppearance.AlertDialog.Message</item>

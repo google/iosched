@@ -31,33 +31,28 @@
             type="Boolean" />
     </data>
 
-    <!-- Wrap with FrameLayout in order to use android:foreground below API 23. -->
-    <FrameLayout
+    <!-- Use larger paddingEnd because the icon makes the paddingStart seem larger than it is. -->
+    <CheckedTextView
+        android:id="@+id/map_variant_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foreground="?selectableItemBackground">
+        android:background="?selectableItemBackground"
+        android:checked="@{isChecked}"
+        android:drawablePadding="@dimen/margin_normal"
+        android:drawableTint="@color/map_variant_icon"
+        android:fontFamily="@font/google_sans"
+        android:gravity="center_vertical"
+        android:minHeight="?listPreferredItemHeight"
+        android:paddingEnd="@dimen/dialogPreferredPaddingLarge"
+        android:paddingStart="?dialogPreferredPadding"
+        android:text="@{variant.labelResId}"
+        android:textAppearance="?textAppearanceListItem"
+        android:textColor="@color/map_variant_text"
+        app:variantIcon="@{variant.iconResId}"
+        tools:checked="@sample/map_variants.json/variants/checked"
+        tools:drawableStart="@drawable/ic_map_daytime"
+        tools:targetApi="m"
+        tools:text="@sample/map_variants.json/variants/title">
 
-        <CheckedTextView
-            android:id="@+id/map_variant_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="@{isChecked}"
-            android:drawablePadding="@dimen/margin_normal"
-            android:drawableTint="@color/map_variant_icon"
-            android:fontFamily="@font/google_sans"
-            android:gravity="center_vertical"
-            android:minHeight="?listPreferredItemHeight"
-            android:paddingEnd="?listPreferredItemPaddingEnd"
-            android:paddingStart="?listPreferredItemPaddingStart"
-            android:text="@{variant.labelResId}"
-            android:textAppearance="?textAppearanceListItem"
-            android:textColor="@color/map_variant_text"
-            app:variantIcon="@{variant.iconResId}"
-            tools:checked="@sample/map_variants.json/variants/checked"
-            tools:drawableStart="@drawable/ic_map_daytime"
-            tools:targetApi="m"
-            tools:text="@sample/map_variants.json/variants/title">
-
-        </CheckedTextView>
-    </FrameLayout>
+    </CheckedTextView>
 </layout>
