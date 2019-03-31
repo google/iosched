@@ -35,6 +35,7 @@
 
     <color name="color_primary">@color/indigo</color>
     <color name="color_primary_dark">@color/indigo_dark</color>
+    <color name="color_on_secondary">#FFF</color>
 
     <integer-array name="swipe_refresh">
         <item>@color/indigo</item>
