@@ -16,14 +16,6 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AlertDialog.Style" parent="MaterialAlertDialog.MaterialComponents">
-        <item name="shapeAppearanceOverlay">@style/AlertDialog.ShapeAppearanceOverlay</item>
-    </style>
-
-    <style name="AlertDialog.ShapeAppearanceOverlay" parent="ShapeAppearance.MaterialComponents.MediumComponent">
-        <item name="cornerSize">@dimen/dialog_corner_radius</item>
-    </style>
-
     <style name="AlertDialog.TitleText" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
         <item name="android:textAppearance">@style/TextAppearance.AlertDialog.Title</item>
     </style>

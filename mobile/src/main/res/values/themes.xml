@@ -42,8 +42,7 @@
 
         <item name="navigationViewStyle">@style/Widget.IOSched.NavigationView</item>
 
-        <item name="alertDialogTheme">@style/AlertDialog.Theme</item>
-        <item name="alertDialogStyle">@style/AlertDialog.Style</item>
+        <item name="materialAlertDialogTheme">@style/AlertDialog.Theme</item>
     </style>
 
     <style name="AppTheme" parent="Base.AppTheme" />
@@ -75,15 +74,14 @@
 
     <style name="AppTheme.PopupTheme" parent="ThemeOverlay.MaterialComponents.Light" />
 
-    <style name="AlertDialog.Theme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
-        <item name="android:textViewStyle">@style/Widget.IOSched.TextView</item>
+    <style name="AlertDialog.Theme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.IOSched.BorderlessButton</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.IOSched.BorderlessButton</item>
+        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
+        <item name="dialogPreferredPadding">24dp</item>
         <item name="materialAlertDialogTitleTextStyle">@style/AlertDialog.TitleText</item>
         <item name="materialAlertDialogTitlePanelStyle">@style/AlertDialog.TitlePanel</item>
-        <item name="buttonBarNegativeButtonStyle">@style/Widget.IOSched.BorderlessButton</item>
-        <item name="buttonBarPositiveButtonStyle">@style/Widget.IOSched.RaisedButton</item>
-        <item name="dialogPreferredPadding">24dp</item>
-        <!-- This is the text appearance of AlertDialog's message -->
-        <item name="textAppearanceBody1">@style/TextAppearance.AlertDialog.Message</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/TextAppearance.AlertDialog.Message</item>
     </style>
 
 </resources>
