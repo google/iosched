@@ -19,18 +19,11 @@ package com.google.samples.apps.iosched.ar
 import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.ar.core.ArCoreApk
-import com.google.ar.core.ArCoreApk.InstallStatus.INSTALLED
-import com.google.ar.core.ArCoreApk.InstallStatus.INSTALL_REQUESTED
-import com.google.ar.core.exceptions.UnavailableUserDeclinedInstallationException
 import com.google.ar.web.webview.ArWebView
 import com.google.samples.apps.iosched.domain.ar.ArConstants
 
 class ArActivity : AppCompatActivity() {
-
-    private var userRequestedInstall = true
 
     private lateinit var pinnedSessionsJson: String
 
@@ -39,36 +32,29 @@ class ArActivity : AppCompatActivity() {
 
         pinnedSessionsJson =
             intent?.extras?.getString(ArConstants.PINNED_SESSIONS_JSON_KEY, "") ?: ""
+
+        val arWebView = ArWebView(this)
+        setContentView(arWebView)
+        arWebView.apply {
+            webView.webViewClient = SendPinnedSessionsWebViewClient(pinnedSessionsJson)
+            webView.settings.mediaPlaybackRequiresUserGesture = false
+            // Loading a single entry point because all the user flow happens in JavaScript from the
+            // teaser page and requesting ARCore apk and camera permission
+            loadUrl("https://sp-io2019.appspot.com/")
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
-        try {
-            when (ArCoreApk.getInstance().requestInstall(this, userRequestedInstall)) {
-                INSTALLED -> {
-                    val arWebView = ArWebView(this)
-                    arWebView.webView.webViewClient = object : WebViewClient() {
-                        override fun onPageFinished(view: WebView?, url: String?) {
-                            super.onPageFinished(view, url)
-                            val javaScript =
-                                "if (window.app && window.app.sendIOAppUserAgenda) " +
-                                        "window.app.sendIOAppUserAgenda('$pinnedSessionsJson');"
-                            arWebView.webView.evaluateJavascript(javaScript) {}
-                        }
-                    }
-                    setContentView(arWebView)
-                    // TODO: Load the actual AR feature
-                    arWebView.loadUrl("https://ia-signpost-test.appspot.com")
-                }
-                INSTALL_REQUESTED -> {
-                    userRequestedInstall = false
-                    return
-                }
-                else -> return
-            }
-        } catch (e: UnavailableUserDeclinedInstallationException) {
-            Toast.makeText(this, getString(R.string.need_to_install_ar_core), Toast.LENGTH_LONG)
-                .show()
+    /**
+     * WebViewClient that sends the pinned sessions as json to the WebView.
+     * Defining it as a class otherwise an anonymous class was stripped from proguard.
+     */
+    private class SendPinnedSessionsWebViewClient(val json: String) : WebViewClient() {
+        override fun onPageFinished(view: WebView?, url: String?) {
+            super.onPageFinished(view, url)
+            val javaScript =
+                "if (window.app && window.app.sendIOAppUserAgenda) " +
+                        "window.app.sendIOAppUserAgenda('$json');"
+            view?.evaluateJavascript(javaScript) {}
         }
     }
 }
