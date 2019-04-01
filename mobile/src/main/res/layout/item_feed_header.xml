@@ -15,19 +15,26 @@
   ~ limitations under the License.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
-            name="countdownTimerItem"
-            type="com.google.samples.apps.iosched.ui.feed.CountdownTimer" />
+            name="feedHeader"
+            type="com.google.samples.apps.iosched.ui.feed.FeedHeader" />
     </data>
 
-    <com.google.samples.apps.iosched.widget.CountdownView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/countdown_height"
-        android:layout_marginHorizontal="@dimen/margin_normal"
-        android:layout_marginVertical="@dimen/spacing_normal" />
+        android:layout_height="wrap_content">
+
+        <com.google.samples.apps.iosched.widget.CountdownView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/countdown_height"
+            android:layout_marginHorizontal="@dimen/margin_normal"
+            android:layout_marginVertical="@dimen/spacing_normal"
+            app:goneUnless="@{feedHeader.timerVisible}" />
+    </FrameLayout>
 
 </layout>

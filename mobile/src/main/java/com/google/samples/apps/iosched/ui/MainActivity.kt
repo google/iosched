@@ -39,7 +39,7 @@ import com.google.samples.apps.iosched.databinding.NavigationHeaderBinding
 import com.google.samples.apps.iosched.domain.ar.ArConstants
 import com.google.samples.apps.iosched.domain.ar.InstallOrLaunchArFeatureActivity
 import com.google.samples.apps.iosched.shared.di.ExploreArEnabledFlag
-import com.google.samples.apps.iosched.shared.di.FeedFeatureEnabledFlag
+import com.google.samples.apps.iosched.shared.di.MainThreadHandler
 import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
@@ -87,7 +87,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
 
     @Inject
     @JvmField
-    @FeedFeatureEnabledFlag
+    @MainThreadHandler
     var feedFeatureEnabled: Boolean = false
 
     @Inject
