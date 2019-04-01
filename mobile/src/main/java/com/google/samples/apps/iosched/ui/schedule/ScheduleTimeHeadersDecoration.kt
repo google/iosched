@@ -60,7 +60,7 @@ class ScheduleTimeHeadersDecoration(
     private val hourMinTextSize: Int
     private val meridiemTextSize: Int
     private val hourFormatter = DateTimeFormatter.ofPattern("h")
-    private val hourMinFormatter = DateTimeFormatter.ofPattern("h:m")
+    private val hourMinFormatter = DateTimeFormatter.ofPattern("h:mm")
     private val meridiemFormatter = DateTimeFormatter.ofPattern("a")
 
     init {
