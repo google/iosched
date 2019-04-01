@@ -31,6 +31,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePaddingRelative
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableFloat
+import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -42,7 +43,8 @@ import com.google.samples.apps.iosched.shared.util.parentViewModelProvider
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
-import com.google.samples.apps.iosched.util.getTappableElementInsetsAsRect
+import com.google.samples.apps.iosched.util.getSystemGestureInsetsAsRect
+import com.google.samples.apps.iosched.util.lerp
 import com.google.samples.apps.iosched.util.slideOffsetToAlpha
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
@@ -71,11 +73,11 @@ class ScheduleFilterFragment : DaggerFragment() {
         private const val ALPHA_HEADER_MAX = 0.67f
         // Threshold for when the filter list content reach maximum alpha. Should be a value between
         // 0 and [ALPHA_CHANGEOVER], inclusive.
-        private const val ALPHA_CONTENT_TRANSITION_END = 0.2f
+        private const val ALPHA_CONTENT_END_ALPHA = 1f
         // Threshold for when the filter list content should starting changing alpha state
         // This should be a value between 0 and 1, coinciding with a point between the bottom
         // sheet's collapsed (0) and expanded (1) states.
-        private const val ALPHA_CONTENT_TRANSITION_START = 0.01f
+        private const val ALPHA_CONTENT_START_ALPHA = 0.2f
     }
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -92,6 +94,8 @@ class ScheduleFilterFragment : DaggerFragment() {
     private var descriptionAlpha = ObservableFloat(1f)
     private var recyclerviewAlpha = ObservableFloat(1f)
 
+    private val contentFadeInterpolator = LinearOutSlowInInterpolator()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -106,8 +110,7 @@ class ScheduleFilterFragment : DaggerFragment() {
 
         // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
         binding.recyclerview.doOnApplyWindowInsets { v, insets, padding ->
-            val tappableInsets = insets.getTappableElementInsetsAsRect()
-            v.updatePaddingRelative(bottom = padding.bottom + tappableInsets.bottom)
+            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
 
         return binding.root
@@ -140,12 +143,12 @@ class ScheduleFilterFragment : DaggerFragment() {
         val peekHeight = behavior.peekHeight
         val marginBottom = binding.root.marginBottom
         binding.root.doOnApplyWindowInsets { v, insets, _ ->
-            val tappableInsets = insets.getTappableElementInsetsAsRect()
+            val tappableInsets = insets.getSystemGestureInsetsAsRect()
             // Update the peek height so that it is above the navigation bar
             behavior.peekHeight = tappableInsets.bottom + peekHeight
 
             v.updateLayoutParams<MarginLayoutParams> {
-                bottomMargin = marginBottom + tappableInsets.top
+                bottomMargin = marginBottom + insets.systemWindowInsetTop
             }
         }
 
@@ -192,8 +195,8 @@ class ScheduleFilterFragment : DaggerFragment() {
         }
         // Due to the content view being visible below the navigation bar, we apply a short alpha
         // transition
-        recyclerviewAlpha.set(slideOffsetToAlpha(
-            slideOffset, ALPHA_CONTENT_TRANSITION_START, ALPHA_CONTENT_TRANSITION_END))
+        recyclerviewAlpha.set(lerp(ALPHA_CONTENT_START_ALPHA, ALPHA_CONTENT_END_ALPHA,
+                contentFadeInterpolator.getInterpolation(slideOffset)))
     }
 }
 

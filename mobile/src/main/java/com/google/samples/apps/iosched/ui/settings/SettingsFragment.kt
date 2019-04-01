@@ -32,7 +32,6 @@ import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
-import com.google.samples.apps.iosched.util.getTappableElementInsetsAsRect
 import javax.inject.Inject
 
 class SettingsFragment : MainNavigationFragment() {
@@ -58,8 +57,7 @@ class SettingsFragment : MainNavigationFragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         binding.settingsScroll.doOnApplyWindowInsets { v, insets, padding ->
-            val tappableInsets = insets.getTappableElementInsetsAsRect()
-            v.updatePaddingRelative(bottom = padding.bottom + tappableInsets.bottom)
+            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
 
         return binding.root

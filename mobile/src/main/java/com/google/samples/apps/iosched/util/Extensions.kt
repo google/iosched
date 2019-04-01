@@ -229,8 +229,8 @@ data class ViewPaddingState(
     val end: Int
 )
 
-fun WindowInsets.getTappableElementInsetsAsRect(): Rect {
-    return WindowInsetsUtils.getTappableElementInsets(this)
+fun WindowInsets.getSystemGestureInsetsAsRect(): Rect {
+    return WindowInsetsUtils.getSystemGestureInsets(this)
 }
 
 /** Compatibility removeIf since it was added in API 24 */
