@@ -134,7 +134,7 @@ class FeedFragment : MainNavigationFragment() {
         if (recyclerView.adapter == null) {
             val announcementViewBinder = FeedAnnouncementViewBinder()
             val sectionHeaderViewBinder = FeedSectionHeaderViewBinder()
-            val countdownTimerViewBinder = CountdownTimerViewBinder()
+            val feedHeaderViewBinder = FeedHeaderViewBinder()
             val sessionsViewBinder = FeedSessionsViewBinder(model)
             val announcementsPlaceholder = FeedAnnouncementsPlaceholderViewBinder()
             val viewBinders = ImmutableMap.builder<FeedItemClass, FeedItemBinder>()
@@ -147,8 +147,8 @@ class FeedFragment : MainNavigationFragment() {
                     sectionHeaderViewBinder as FeedItemBinder
                 )
                 .put(
-                    countdownTimerViewBinder.modelClass,
-                    countdownTimerViewBinder as FeedItemBinder
+                    feedHeaderViewBinder.modelClass,
+                    feedHeaderViewBinder as FeedItemBinder
                 )
                 .put(
                     sessionsViewBinder.modelClass,

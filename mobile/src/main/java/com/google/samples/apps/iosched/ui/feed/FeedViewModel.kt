@@ -49,7 +49,8 @@ import javax.inject.Inject
 class FeedViewModel @Inject constructor(
     private val loadAnnouncementsUseCase: LoadAnnouncementsUseCase,
     private val loadFilteredUserSessionsUseCase: LoadFilteredUserSessionsUseCase,
-    private val signInViewModelDelegate: SignInViewModelDelegate
+    private val signInViewModelDelegate: SignInViewModelDelegate,
+    private val feedHeaderLiveData: FeedHeaderLiveData
 ) : ViewModel(), FeedEventListener {
     companion object {
         // Show at max 10 sessions in the horizontal sessions list as user can click on
@@ -95,14 +96,13 @@ class FeedViewModel @Inject constructor(
         }
 
         // Generate feed
-        feed = sessionContainerLiveData.combine(announcements) { sessionContainer, announcements ->
-            arrayListOf(
-                CountdownTimer(),
-                sessionContainer,
-                SectionHeader(string.feed_announcement_title)
-            )
-                .plus(announcements)
-        }
+        feed = sessionContainerLiveData
+            .combine(announcements) { sessionContainer, announcements ->
+                arrayListOf(sessionContainer, SectionHeader(string.feed_announcement_title))
+                    .plus(announcements)
+            }.combine(feedHeaderLiveData) { otherItems, feedHeader ->
+                arrayListOf(feedHeader).plus(otherItems)
+            }
 
         errorMessage = loadFeedResult.map {
             Event(content = (it as? Result.Error)?.exception?.message ?: "")

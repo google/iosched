@@ -19,12 +19,15 @@ package com.google.samples.apps.iosched.di
 import android.content.ClipboardManager
 import android.content.Context
 import android.net.wifi.WifiManager
+import android.os.Handler
+import android.os.Looper
 import com.google.samples.apps.iosched.MainApplication
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
 import com.google.samples.apps.iosched.shared.data.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.data.agenda.DefaultAgendaRepository
+import com.google.samples.apps.iosched.shared.di.MainThreadHandler
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.FirebaseAnalyticsHelper
 import dagger.Module
@@ -58,6 +61,11 @@ class AppModule {
     fun providesClipboardManager(context: Context): ClipboardManager =
         context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE)
             as ClipboardManager
+
+    @Singleton
+    @Provides
+    @MainThreadHandler
+    fun providesMainThreadHandler(): Handler = Handler(Looper.getMainLooper())
 
     @Singleton
     @Provides
