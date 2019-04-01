@@ -31,7 +31,6 @@ import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.util.clearDecorations
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
-import com.google.samples.apps.iosched.util.getTappableElementInsetsAsRect
 import org.threeten.bp.ZoneId
 import javax.inject.Inject
 
@@ -52,8 +51,7 @@ class AgendaFragment : MainNavigationFragment() {
         }
         // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
         binding.recyclerView.doOnApplyWindowInsets { v, insets, padding ->
-            val tappableInsets = insets.getTappableElementInsetsAsRect()
-            v.updatePaddingRelative(bottom = padding.bottom + tappableInsets.bottom)
+            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
         return binding.root
     }
