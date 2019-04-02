@@ -21,6 +21,8 @@ import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.FakeAnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.FakeAppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.ar.ArDebugFlagEndpoint
+import com.google.samples.apps.iosched.shared.data.ar.FakeArDebugFlagEndpoint
 import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
@@ -123,5 +125,11 @@ class SharedModule {
     @Provides
     fun provideFeedRepository(dataSource: AnnouncementDataSource): FeedRepository {
         return DefaultFeedRepository(dataSource)
+    }
+
+    @Singleton
+    @Provides
+    fun provideArDebugFlagEndpoint(): ArDebugFlagEndpoint {
+        return FakeArDebugFlagEndpoint
     }
 }

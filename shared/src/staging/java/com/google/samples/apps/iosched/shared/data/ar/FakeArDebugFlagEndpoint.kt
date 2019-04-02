@@ -14,9 +14,17 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.domain.ar
+package com.google.samples.apps.iosched.shared.data.ar
 
-object ArConstants {
-    const val PINNED_SESSIONS_JSON_KEY = "pinned_sessions_json"
-    const val CAN_SIGNED_IN_USER_DEMO_AR = "can_demo_ar"
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.google.samples.apps.iosched.shared.result.Result
+
+object FakeArDebugFlagEndpoint : ArDebugFlagEndpoint {
+
+    override fun canDemoAr(): LiveData<Result<Boolean>> {
+        val result = MutableLiveData<Result<Boolean>>()
+        result.postValue(Result.Success(true))
+        return result
+    }
 }

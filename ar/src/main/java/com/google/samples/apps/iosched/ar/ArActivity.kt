@@ -25,18 +25,18 @@ import com.google.samples.apps.iosched.domain.ar.ArConstants
 
 class ArActivity : AppCompatActivity() {
 
-    private lateinit var pinnedSessionsJson: String
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        pinnedSessionsJson =
+        val pinnedSessionsJson =
             intent?.extras?.getString(ArConstants.PINNED_SESSIONS_JSON_KEY, "") ?: ""
+        val canSignedInUserDemoAr =
+            intent?.extras?.getBoolean(ArConstants.CAN_SIGNED_IN_USER_DEMO_AR, false) ?: false
 
         val arWebView = ArWebView(this)
         setContentView(arWebView)
         arWebView.apply {
-            webView.webViewClient = SendPinnedSessionsWebViewClient(pinnedSessionsJson)
+            webView.webViewClient = ArWebViewClient(pinnedSessionsJson, canSignedInUserDemoAr)
             webView.settings.mediaPlaybackRequiresUserGesture = false
             // Loading a single entry point because all the user flow happens in JavaScript from the
             // teaser page and requesting ARCore apk and camera permission
@@ -48,13 +48,18 @@ class ArActivity : AppCompatActivity() {
      * WebViewClient that sends the pinned sessions as json to the WebView.
      * Defining it as a class otherwise an anonymous class was stripped from proguard.
      */
-    private class SendPinnedSessionsWebViewClient(val json: String) : WebViewClient() {
+    private class ArWebViewClient(val json: String, val canDemoAr: Boolean) : WebViewClient() {
         override fun onPageFinished(view: WebView?, url: String?) {
             super.onPageFinished(view, url)
-            val javaScript =
+            val evalAgendaScript =
                 "if (window.app && window.app.sendIOAppUserAgenda) " +
                         "window.app.sendIOAppUserAgenda('$json');"
-            view?.evaluateJavascript(javaScript) {}
+            view?.evaluateJavascript(evalAgendaScript) {}
+            if (canDemoAr) {
+                val evalSetDebugUserScript = "if (window.app && window.app.setDebugUser) " +
+                        "window.app.setDebugUser()"
+                view?.evaluateJavascript(evalSetDebugUserScript) {}
+            }
         }
     }
 }

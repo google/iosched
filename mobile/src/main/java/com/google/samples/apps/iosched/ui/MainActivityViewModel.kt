@@ -22,6 +22,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.domain.ar.ArCoreAvailabilityLiveData
+import com.google.samples.apps.iosched.shared.domain.ar.LoadArDebugFlagUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadPinnedSessionsJsonUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
@@ -33,6 +34,7 @@ class MainActivityViewModel @Inject constructor(
     signInViewModelDelegate: SignInViewModelDelegate,
     themedActivityDelegate: ThemedActivityDelegate,
     loadPinnedSessionsUseCase: LoadPinnedSessionsJsonUseCase,
+    loadArDebugFlagUseCase: LoadArDebugFlagUseCase,
     context: Context
 ) : ViewModel(),
     SignInViewModelDelegate by signInViewModelDelegate,
@@ -49,6 +51,9 @@ class MainActivityViewModel @Inject constructor(
     private val _pinnedSessionsJson = MediatorLiveData<String>()
     val pinnedSessionsJson = _pinnedSessionsJson
 
+    private val _canSignedInUserDemoAr = MediatorLiveData<Boolean>()
+    val canSignedInUserDemoAr = _canSignedInUserDemoAr
+
     val arCoreAvailability = ArCoreAvailabilityLiveData(context)
 
     init {
@@ -60,6 +65,13 @@ class MainActivityViewModel @Inject constructor(
         _pinnedSessionsJson.addSource(loadPinnedSessionsUseCase.observe()) { result ->
             val data = (result as? Result.Success)?.data ?: return@addSource
             _pinnedSessionsJson.value = data
+        }
+        _canSignedInUserDemoAr.addSource(currentUserInfo) {
+            _canSignedInUserDemoAr.value = false
+            loadArDebugFlagUseCase.execute(Unit)
+        }
+        _canSignedInUserDemoAr.addSource(loadArDebugFlagUseCase.observe()) {
+            _canSignedInUserDemoAr.value = (it as? Result.Success)?.data == true
         }
     }
 

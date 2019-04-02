@@ -115,6 +115,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
 
     // For sending pinned sessions as JSON to the AR module
     private var pinnedSessionsJson: String? = null
+    private var canSignedInUserDemoAr: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -222,6 +223,10 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
             // Need to observe the pinnedSessions otherwise it's considered as inactive
             pinnedSessionsJson = it
         })
+        viewModel.canSignedInUserDemoAr.observe(this, Observer {
+            Timber.d("Signed in user can demo ar = $it")
+            canSignedInUserDemoAr = it
+        })
     }
 
     override fun registerToolbarWithNavigation(toolbar: Toolbar) {
@@ -289,14 +294,10 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
     }
 
     private fun openExploreAr() {
-        val intent = Intent(
-            this,
-            InstallOrLaunchArFeatureActivity::class.java
-        )
-        pinnedSessionsJson?.let {
-            intent.putExtras(Bundle().apply {
-                putString(ArConstants.PINNED_SESSIONS_JSON_KEY, it)
-            })
+        val intent = Intent(this,
+                InstallOrLaunchArFeatureActivity::class.java).apply {
+            putExtra(ArConstants.CAN_SIGNED_IN_USER_DEMO_AR, canSignedInUserDemoAr)
+            putExtra(ArConstants.PINNED_SESSIONS_JSON_KEY, pinnedSessionsJson)
         }
         startActivity(intent)
     }
