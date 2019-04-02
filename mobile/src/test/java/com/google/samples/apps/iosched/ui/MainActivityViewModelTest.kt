@@ -18,10 +18,13 @@ package com.google.samples.apps.iosched.ui
 
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.google.firebase.functions.FirebaseFunctions
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.TestDataRepository
+import com.google.samples.apps.iosched.shared.data.ar.DefaultArDebugFlagEndpoint
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.domain.ar.LoadArDebugFlagUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadPinnedSessionsJsonUseCase
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
@@ -57,6 +60,9 @@ class MainActivityViewModelTest {
                     TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
                 )
             ),
+            loadArDebugFlagUseCase = LoadArDebugFlagUseCase(
+                DefaultArDebugFlagEndpoint(
+                    mock(FirebaseFunctions::class.java))),
             context = mock(Context::class.java)
         )
     }

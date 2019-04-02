@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.shared.di
 import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.samples.apps.iosched.shared.BuildConfig
@@ -27,6 +28,8 @@ import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.NetworkConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.ar.ArDebugFlagEndpoint
+import com.google.samples.apps.iosched.shared.data.ar.DefaultArDebugFlagEndpoint
 import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.config.RemoteAppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
@@ -132,6 +135,18 @@ class SharedModule {
             .setTimestampsInSnapshotsEnabled(true)
             .build()
         return firestore
+    }
+
+    @Singleton
+    @Provides
+    fun provideFirebaseFunctions(): FirebaseFunctions {
+        return FirebaseFunctions.getInstance()
+    }
+
+    @Singleton
+    @Provides
+    fun provideArDebugFlagEndpoint(functions: FirebaseFunctions): ArDebugFlagEndpoint {
+        return DefaultArDebugFlagEndpoint(functions)
     }
 
     @Singleton
