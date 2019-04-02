@@ -18,10 +18,14 @@ package com.google.samples.apps.iosched.ui.feed
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemFeedAnnouncementBinding
 import com.google.samples.apps.iosched.model.Announcement
+import com.google.samples.apps.iosched.shared.util.TimeUtils
+import org.threeten.bp.ZonedDateTime
 
 class FeedAnnouncementViewBinder :
     FeedListItemViewBinder<Announcement, FeedAnnouncementViewHolder>(Announcement::class.java) {
@@ -51,4 +55,9 @@ class FeedAnnouncementViewHolder(private val binding: ItemFeedAnnouncementBindin
         binding.announcement = announcement
         binding.executePendingBindings()
     }
+}
+
+@BindingAdapter("dateTime")
+fun dateTime(textView: TextView, dateTime: ZonedDateTime) {
+    textView.text = TimeUtils.timeString(textView.context, dateTime)
 }

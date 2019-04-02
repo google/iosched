@@ -27,25 +27,18 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Tag
-import com.google.samples.apps.iosched.shared.util.TimeUtils
-import org.threeten.bp.ZonedDateTime
 
-@BindingAdapter("sessionTags")
-fun sessionTags(recyclerView: RecyclerView, sessionTags: List<Tag>?) {
-    if (sessionTags?.isNotEmpty() == true) {
+@BindingAdapter("topicTags")
+fun topicTags(recyclerView: RecyclerView, topicTags: List<Tag>?) {
+    if (topicTags?.isNotEmpty() == true) {
         recyclerView.isVisible = true
         recyclerView.adapter = (recyclerView.adapter as? TagAdapter ?: TagAdapter())
             .apply {
-                tags = sessionTags
+                tags = topicTags
             }
     } else {
         recyclerView.isGone = true
     }
-}
-
-@BindingAdapter("dateTime")
-fun dateTime(textView: TextView, dateTime: ZonedDateTime) {
-    textView.text = TimeUtils.timeString(textView.context, dateTime)
 }
 
 @BindingAdapter("tagTint")

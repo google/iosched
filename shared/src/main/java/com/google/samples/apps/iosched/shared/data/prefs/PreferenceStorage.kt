@@ -46,6 +46,7 @@ interface PreferenceStorage {
     var selectedFilters: String?
     var selectedTheme: String?
     var observableSelectedTheme: LiveData<String>
+    var codelabsInfoShown: Boolean
 }
 
 /**
@@ -112,6 +113,8 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
         }
         set(_) = throw IllegalAccessException("This property can't be changed")
 
+    override var codelabsInfoShown by BooleanPreference(prefs, PREF_CODELABS_INFO_SHOWN, false)
+
     companion object {
         const val PREFS_NAME = "iosched"
         const val PREF_ONBOARDING = "pref_onboarding"
@@ -124,6 +127,7 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
         const val PREF_CONFERENCE_TIME_ZONE = "pref_conference_time_zone"
         const val PREF_SELECTED_FILTERS = "pref_selected_filters"
         const val PREF_DARK_MODE_ENABLED = "pref_dark_mode"
+        const val PREF_CODELABS_INFO_SHOWN = "pref_codelabs_info_shown"
     }
 
     fun registerOnPreferenceChangeListener(listener: OnSharedPreferenceChangeListener) {

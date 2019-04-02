@@ -20,21 +20,31 @@ import android.os.Bundle
 import android.transition.TransitionInflater
 import android.transition.TransitionManager
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemCodelabBinding
+import com.google.samples.apps.iosched.databinding.ItemCodelabsHeaderBinding
+import com.google.samples.apps.iosched.databinding.ItemCodelabsInformationCardBinding
 import com.google.samples.apps.iosched.model.Codelab
+import com.google.samples.apps.iosched.ui.codelabs.CodelabsViewHolder.CodelabItemHolder
+import com.google.samples.apps.iosched.ui.codelabs.CodelabsViewHolder.CodelabsHeaderHolder
+import com.google.samples.apps.iosched.ui.codelabs.CodelabsViewHolder.CodelabsInformationCardHolder
 import com.google.samples.apps.iosched.util.compatRemoveIf
 import com.google.samples.apps.iosched.util.executeAfter
 
 internal class CodelabsAdapter(
+    private val tagViewPool: RecycledViewPool,
+    private val actionHandler: CodelabsActionsHandler,
     savedState: Bundle?
-) : ListAdapter<Codelab, CodelabViewHolder>(CodelabsDiffCallback) {
+) : ListAdapter<Any, CodelabsViewHolder>(CodelabsDiffCallback) {
 
     companion object {
         private const val STATE_KEY_EXPANDED_IDS = "CodelabsAdapter:expandedIds"
@@ -52,25 +62,59 @@ internal class CodelabsAdapter(
         state.putStringArray(STATE_KEY_EXPANDED_IDS, expandedIds.toTypedArray())
     }
 
-    override fun submitList(list: List<Codelab>?) {
+    override fun submitList(list: List<Any>?) {
         // Clear out any invalid IDs
         if (list == null) {
             expandedIds.clear()
         } else {
-            val ids = list.map { it.id }
+            val ids = list.filterIsInstance<Codelab>().map { it.id }
             expandedIds.compatRemoveIf { it !in ids }
         }
         super.submitList(list)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CodelabViewHolder {
-        return CodelabViewHolder(
-            ItemCodelabBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        )
+    override fun getItemViewType(position: Int): Int {
+        val item = getItem(position)
+        return when (item) {
+            is Codelab -> R.layout.item_codelab
+            is CodelabsInformationCard -> R.layout.item_codelabs_information_card
+            is CodelabsHeaderItem -> R.layout.item_codelabs_header
+            else -> throw IllegalStateException("Unknown type: ${item::class.java.simpleName}")
+        }
     }
 
-    override fun onBindViewHolder(holder: CodelabViewHolder, position: Int) {
-        val item = getItem(position)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CodelabsViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            R.layout.item_codelab -> CodelabItemHolder(
+                ItemCodelabBinding.inflate(inflater, parent, false).apply {
+                    codelabTags.apply {
+                        setRecycledViewPool(tagViewPool)
+                        layoutManager = FlexboxLayoutManager(parent.context).apply {
+                            recycleChildrenOnDetach = true
+                        }
+                    }
+                }
+            )
+            R.layout.item_codelabs_information_card -> CodelabsInformationCardHolder(
+                ItemCodelabsInformationCardBinding.inflate(inflater, parent, false)
+            )
+            R.layout.item_codelabs_header -> CodelabsHeaderHolder(
+                ItemCodelabsHeaderBinding.inflate(inflater, parent, false)
+            )
+            else -> throw IllegalArgumentException("Invalid viewType")
+        }
+    }
+
+    override fun onBindViewHolder(holder: CodelabsViewHolder, position: Int) {
+        when (holder) {
+            is CodelabItemHolder -> bindCodelabItemHolder(holder, getItem(position) as Codelab)
+            is CodelabsInformationCardHolder -> holder.binding.actionHandler = actionHandler
+            is CodelabsHeaderHolder -> holder.binding.actionHandler = actionHandler
+        }
+    }
+
+    private fun bindCodelabItemHolder(holder: CodelabItemHolder, item: Codelab) {
         holder.binding.executeAfter {
             codelab = item
             isExpanded = expandedIds.contains(item.id)
@@ -93,16 +137,43 @@ internal class CodelabsAdapter(
     }
 }
 
-internal class CodelabViewHolder(
-    val binding: ItemCodelabBinding
-) : ViewHolder(binding.root)
+// Marker objects for singleton items
+object CodelabsInformationCard
 
-internal object CodelabsDiffCallback : DiffUtil.ItemCallback<Codelab>() {
-    override fun areItemsTheSame(oldItem: Codelab, newItem: Codelab): Boolean =
-        oldItem.id == newItem.id
+object CodelabsHeaderItem
 
-    override fun areContentsTheSame(oldItem: Codelab, newItem: Codelab): Boolean =
-        oldItem == newItem
+internal sealed class CodelabsViewHolder(itemView: View) : ViewHolder(itemView) {
+
+    class CodelabItemHolder(
+        val binding: ItemCodelabBinding
+    ) : CodelabsViewHolder(binding.root)
+
+    class CodelabsInformationCardHolder(
+        val binding: ItemCodelabsInformationCardBinding
+    ) : CodelabsViewHolder(binding.root)
+
+    class CodelabsHeaderHolder(
+        val binding: ItemCodelabsHeaderBinding
+    ) : CodelabsViewHolder(binding.root)
+}
+
+internal object CodelabsDiffCallback : DiffUtil.ItemCallback<Any>() {
+
+    override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
+        return when {
+            oldItem === CodelabsInformationCard && newItem === CodelabsInformationCard -> true
+            oldItem === CodelabsHeaderItem && newItem === CodelabsHeaderItem -> true
+            oldItem is Codelab && newItem is Codelab -> oldItem.id == newItem.id
+            else -> false
+        }
+    }
+
+    override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
+        return when {
+            oldItem is Codelab && newItem is Codelab -> oldItem == newItem
+            else -> true
+        }
+    }
 }
 
 @BindingAdapter("codelabDuration")

@@ -20,24 +20,41 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.model.Codelab
+import com.google.samples.apps.iosched.shared.domain.codelabs.GetCodelabsInfoCardShownUseCase
 import com.google.samples.apps.iosched.shared.domain.codelabs.LoadCodelabsUseCase
+import com.google.samples.apps.iosched.shared.domain.codelabs.SetCodelabsInfoCardShownUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.successOr
-import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.util.combine
 import javax.inject.Inject
 
 class CodelabsViewModel @Inject constructor(
-    loadCodelabsUseCase: LoadCodelabsUseCase
+    loadCodelabsUseCase: LoadCodelabsUseCase,
+    getCodelabsInfoCardShownUseCase: GetCodelabsInfoCardShownUseCase,
+    private val setCodelabsInfoCardShownUseCase: SetCodelabsInfoCardShownUseCase
 ) : ViewModel() {
 
+    private val infoCardShownResult = MutableLiveData<Result<Boolean>>()
     private val codelabsUseCaseResult = MutableLiveData<Result<List<Codelab>>>()
-    val codelabs: LiveData<List<Codelab>>
+    val codelabs: LiveData<List<Any>>
 
     init {
-        codelabs = codelabsUseCaseResult.map {
-            it.successOr(emptyList())
+        codelabs = infoCardShownResult.combine(codelabsUseCaseResult) { cardShown, codelabs ->
+            val items = mutableListOf<Any>()
+            if (!cardShown.successOr(false)) {
+                items.add(CodelabsInformationCard)
+            }
+            items.add(CodelabsHeaderItem)
+            items.addAll(codelabs.successOr(emptyList()))
+            items
         }
 
+        getCodelabsInfoCardShownUseCase(Unit, infoCardShownResult)
         loadCodelabsUseCase(Unit, codelabsUseCaseResult)
+    }
+
+    fun dismissCodelabsInfoCard() {
+        setCodelabsInfoCardShownUseCase(Unit)
+        infoCardShownResult.value = Result.Success(true)
     }
 }

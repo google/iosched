@@ -23,20 +23,30 @@ import android.view.ViewGroup
 import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.databinding.FragmentCodelabsBinding
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import com.google.samples.apps.iosched.util.openWebsiteUrl
 import javax.inject.Inject
+import javax.inject.Named
 
-class CodelabsFragment : MainNavigationFragment() {
+class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
+
+    companion object {
+        private const val CODELABS_WEBSITE = "https://codelabs.developers.google.com"
+    }
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var codelabsViewModel: CodelabsViewModel
+    @Inject
+    @field:Named("tagViewPool")
+    lateinit var tagRecycledViewPool: RecycledViewPool
 
     private lateinit var binding: FragmentCodelabsBinding
-
+    private lateinit var codelabsViewModel: CodelabsViewModel
     private lateinit var codelabsAdapter: CodelabsAdapter
 
     override fun onCreateView(
@@ -51,7 +61,7 @@ class CodelabsFragment : MainNavigationFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        codelabsAdapter = CodelabsAdapter(savedInstanceState)
+        codelabsAdapter = CodelabsAdapter(tagRecycledViewPool, this, savedInstanceState)
         binding.codelabsList.adapter = codelabsAdapter
 
         // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
@@ -68,5 +78,18 @@ class CodelabsFragment : MainNavigationFragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         codelabsAdapter.onSaveInstanceState(outState)
+    }
+
+    override fun dismissCodelabsInfoCard() {
+        // Pass to ViewModel, which will update the list contents
+        codelabsViewModel.dismissCodelabsInfoCard()
+    }
+
+    override fun openCodelabsOnMap() {
+        findNavController().navigate(CodelabsFragmentDirections.toMap())
+    }
+
+    override fun launchCodelabsWebsite() {
+        openWebsiteUrl(requireContext(), CODELABS_WEBSITE)
     }
 }
