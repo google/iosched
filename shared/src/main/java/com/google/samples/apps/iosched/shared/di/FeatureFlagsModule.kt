@@ -43,4 +43,10 @@ class FeatureFlagsModule {
     fun provideMapFeatureEnabledFlag(appConfig: AppConfigDataSource): Boolean {
         return appConfig.isMapFeatureEnabled()
     }
+
+    @Provides
+    @CodelabsEnabledFlag
+    fun provideCodelabsEnabledFlag(appConfig: AppConfigDataSource): Boolean {
+        return appConfig.isCodelabsFeatureEnabled()
+    }
 }

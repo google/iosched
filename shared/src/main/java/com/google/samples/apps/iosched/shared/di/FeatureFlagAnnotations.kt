@@ -40,3 +40,11 @@ annotation class ExploreArEnabledFlag
     AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.FIELD
 )
 annotation class MapFeatureEnabledFlag
+
+// Whether or not the Codelabs feature is enabled
+@Qualifier
+@Target(
+    AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER,
+    AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.FIELD
+)
+annotation class CodelabsEnabledFlag
