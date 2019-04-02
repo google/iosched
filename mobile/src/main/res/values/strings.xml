@@ -35,6 +35,9 @@
     </plurals>
     <string name="starred_and_reserved">Your starred and reserved events</string>
     <string name="starred_and_reserved_short">Starred &amp; reserved</string>
+    <string name="search_schedule_hint" translation_description="Text field hint that is shown when user has not entered a search query">Search the schedule</string>
+    <string name="search_schedule_no_results" translation_description="Text that is shown if there are no search results">No results found</string>
+    <string name="search_schedule_error" translation_description="Text that is shown if there was an error searching">Error searching the schedule</string>
 
     <string name="session_duration_location" translatable="false">%1s / %2s</string>
     <string name="session_date_duration_location" translatable="false">%1s / %2s / %3s</string>
@@ -128,6 +131,7 @@
     <string name="a11y_play" translation_description="Alternate text for a button used to play a video">Play video</string>
 
     <string name="a11y_select_map_mode" translation_description="Alternate text for a button used to select the mode on the Map.">Select map mode</string>
+    <string name="a11y_search_schedule" translation_description="Alternate text for a button used to search the schedule.">Search schedule</string>
 
     <!-- Sign in / Sign out -->
     <string name="welcome" translation_description="Text shown instead of the user's name when the user is not signed in.">Welcome!</string>
