@@ -39,6 +39,7 @@
     <string name="session_duration_location" translatable="false">%1s / %2s</string>
     <string name="session_date_duration_location" translatable="false">%1s / %2s / %3s</string>
     <string name="agenda" translation_description="The title for the agenda screen where user can see all the sessions they plan to attend.">Agenda</string>
+    <string name="overview" translation_description="The title for the overview screen where user can see all the sessions they plan to attend.">Overview</string>
     <string name="agenda_duration" translatable="false">%1$s – %2$s</string>
     <string name="event_starred" translation_description="The message shown when user adds an event to their schedule.">Event added to your starred items</string>
     <string name="event_unstarred" translation_description="The message shown when user removes an event from their schedule.">Event removed from starred items</string>
