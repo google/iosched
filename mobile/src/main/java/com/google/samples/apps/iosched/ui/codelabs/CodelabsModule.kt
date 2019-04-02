@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.ui.codelabs
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.di.FragmentScoped
 import com.google.samples.apps.iosched.shared.di.ViewModelKey
+import com.google.samples.apps.iosched.ui.sessioncommon.SessionViewPoolModule
 import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -28,7 +29,7 @@ import dagger.multibindings.IntoMap
 internal abstract class CodelabsModule {
 
     @FragmentScoped
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [SessionViewPoolModule::class])
     internal abstract fun contributeCodelabsFragment(): CodelabsFragment
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.widget
+package com.google.samples.apps.iosched.shared.domain.codelabs
 
-import android.content.Context
-import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
+import com.google.samples.apps.iosched.shared.domain.UseCase
+import javax.inject.Inject
 
-class UnscrollableFlexboxLayoutManager(context: Context) : FlexboxLayoutManager(context) {
-    override fun canScrollVertically(): Boolean = false
-    override fun canScrollHorizontally(): Boolean = false
+open class GetCodelabsInfoCardShownUseCase @Inject constructor(
+    private val preferenceStorage: PreferenceStorage
+) : UseCase<Unit, Boolean>() {
+
+    override fun execute(parameters: Unit) = preferenceStorage.codelabsInfoShown
 }

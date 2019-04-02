@@ -36,7 +36,7 @@
         android:text="@{tag.name}"
         app:tagTint="@{tag.color}"
         tools:drawableStart="@drawable/tag_dot"
-        tools:drawableTint="#f0f"
-        tools:text="Android" />
+        tools:drawableTint="@sample/tags.json/tags/color"
+        tools:text="@sample/tags.json/tags/name" />
 
 </layout>
