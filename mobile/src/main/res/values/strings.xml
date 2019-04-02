@@ -318,4 +318,11 @@
     <string name="downloading_ar_module" translation_description="Message for telling the user that the augmented reality module is now being downloaded.">Downloading AR module</string>
     <string name="download_ar_dialog_title" translation_description="Title for a dialog asking the user whether to download the Augmented Reality module.">Download AR module</string>
     <string name="download_ar_dialog_message" translation_description="Message for a dialog asking the user whether to download the Augmented Reality module when they are on a metered network.">We need to download the Augmented Reality module from the Play Store before you can launch. This device is currently connected to a metered network which may charge you for any data transferred.\n\nDo you wish to proceed?\n\nNote that the AR mode is for an on-site experience.</string>
+
+    <!-- Codelabs -->
+    <string name="codelabs_information" translation_description="Information about codelabs.">Learn about the latest and greatest Google technologies via self-paced tutorials in our ready-to-code kiosks, or bring your own machine and take your work home with you. Kiosks are open daily except during the first Keynote.</string>
+    <string name="codelabs_building" translation_description="Text of a button that shows where the Codelabs building is on the map.">Codelabs building</string>
+    <string name="codelabs_website" translation_description="Text of a button that launches the Codelabs website.">Codelabs website</string>
+    <string name="codelab_duration" translation_description="Text showing the approximate time in minutes that a user would spend during a codelab tutorial. Abbreviated.">Duration: %1$d min</string>
+    <string name="start_codelab" translation_description="Text of a button that allows a user to start a codelab tutorial.">Start codelab</string>
 </resources>
