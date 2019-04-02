@@ -26,4 +26,5 @@ interface AppConfigDataSource {
     fun isFeedFeatureEnabled(): Boolean
     fun isMapFeatureEnabled(): Boolean
     fun isExploreArFeatureEnabled(): Boolean
+    fun isCodelabsFeatureEnabled(): Boolean
 }

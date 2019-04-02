@@ -35,4 +35,8 @@
         <key>explore_ar_enabled</key>
         <value>true</value>
     </entry>
+    <entry>
+        <key>codelabs_enabled</key>
+        <value>true</value>
+    </entry>
 </defaultsMap>

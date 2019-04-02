@@ -28,4 +28,5 @@ class FakeAppConfigDataSource : AppConfigDataSource {
     override fun isFeedFeatureEnabled(): Boolean = false
     override fun isMapFeatureEnabled(): Boolean = false
     override fun isExploreArFeatureEnabled(): Boolean = true
+    override fun isCodelabsFeatureEnabled(): Boolean = true
 }

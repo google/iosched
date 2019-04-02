@@ -70,6 +70,9 @@ class RemoteAppConfigDataSource @Inject constructor(
     override fun isExploreArFeatureEnabled(): Boolean =
         firebaseRemoteConfig.getBoolean(EXPLORE_AR_FEATURE_ENABLED)
 
+    override fun isCodelabsFeatureEnabled(): Boolean =
+        firebaseRemoteConfig.getBoolean(CODELABS_FEATURE_ENABLED)
+
     companion object {
         const val WIFI_SSID_KEY = "wifi_ssid"
         const val WIFI_PASSWORD_KEY = "wifi_password"
@@ -79,5 +82,6 @@ class RemoteAppConfigDataSource @Inject constructor(
         const val FEED_FEATURE_ENABLED = "feed_enabled"
         const val MAP_FEATURE_ENABLED = "map_enabled"
         const val EXPLORE_AR_FEATURE_ENABLED = "explore_ar_enabled"
+        const val CODELABS_FEATURE_ENABLED = "codelabs_enabled"
     }
 }
