@@ -79,11 +79,6 @@
             android:theme="@style/AppTheme.SessionDetails" />
 
         <activity
-            android:name=".ui.speaker.SpeakerActivity"
-            android:parentActivityName=".ui.MainActivity"
-            android:theme="@style/AppTheme.Speaker" />
-
-        <activity
             android:name=".ui.map.MapActivity" />
 
         <activity

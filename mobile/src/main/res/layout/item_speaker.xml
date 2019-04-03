@@ -37,13 +37,18 @@
         android:onClick="@{() -> eventListener.onSpeakerClicked(speaker.id)}"
         android:paddingVertical="@dimen/spacing_normal">
 
+        <!--
+        Using the speaker's id as the transition name so when there are multiple speakers the id is
+        unique, thus preventing conflicts with the transition name. See item_speaker_info.xml for
+        the corresponding shared element.
+         -->
         <ImageView
             android:id="@+id/speaker_item_headshot"
             android:layout_width="@dimen/speaker_headshot_size"
             android:layout_height="@dimen/speaker_headshot_size"
             android:layout_marginStart="@dimen/margin_normal"
             android:importantForAccessibility="no"
-            android:transitionName="@string/speaker_headshot_transition"
+            android:transitionName="@{speaker.id}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:speakerImage="@{speaker}" />

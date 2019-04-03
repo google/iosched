@@ -90,13 +90,13 @@ fun speakerImage(
 
     // Want a 'random' default avatar but should be stable as used on both session details &
     // speaker detail screens (as a shared element transition), so use first initial to pick.
-    val placeholderId = when (speaker.name[0].toLowerCase()) {
+    val placeholderId = when (speaker.name.firstOrNull()?.toLowerCase()) {
         in 'a'..'i' -> R.drawable.ic_default_avatar_1
         in 'j'..'r' -> R.drawable.ic_default_avatar_2
         else -> R.drawable.ic_default_avatar_3
     }
 
-    if (speaker.imageUrl.isNullOrBlank()) {
+    if (speaker.imageUrl.isBlank()) {
         imageView.setImageResource(placeholderId)
     } else {
         val imageLoad = Glide.with(imageView)

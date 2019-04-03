@@ -275,7 +275,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
     private fun getCurrentFragment(): MainNavigationFragment? {
         return navHostFragment
             ?.childFragmentManager
-            ?.primaryNavigationFragment as MainNavigationFragment?
+            ?.primaryNavigationFragment as? MainNavigationFragment
     }
 
     private fun navigateTo(navId: Int) {
