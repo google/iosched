@@ -24,7 +24,6 @@ import com.google.samples.apps.iosched.ui.MainActivityModule
 import com.google.samples.apps.iosched.ui.agenda.AgendaModule
 import com.google.samples.apps.iosched.ui.feed.FeedModule
 import com.google.samples.apps.iosched.ui.info.InfoModule
-import com.google.samples.apps.iosched.ui.map.MapActivity
 import com.google.samples.apps.iosched.ui.map.MapModule
 import com.google.samples.apps.iosched.ui.onboarding.OnboardingActivity
 import com.google.samples.apps.iosched.ui.onboarding.OnboardingModule
@@ -94,13 +93,4 @@ abstract class ActivityBindingModule {
         ]
     )
     internal abstract fun sessionDetailActivity(): SessionDetailActivity
-
-    @ActivityScoped
-    @ContributesAndroidInjector(
-        modules = [
-            MapModule::class,
-            PreferenceModule::class
-        ]
-    )
-    internal abstract fun mapActivity(): MapActivity
 }

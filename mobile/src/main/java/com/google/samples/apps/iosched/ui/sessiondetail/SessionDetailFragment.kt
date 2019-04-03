@@ -51,7 +51,6 @@ import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
-import com.google.samples.apps.iosched.ui.map.MapActivity
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment
@@ -132,13 +131,11 @@ class SessionDetailFragment : DaggerFragment() {
                         sessionDetailViewModel.onStarClicked()
                     }
                     R.id.menu_item_map -> {
-                        val roomId = session?.room?.id
-                        val startTime = session?.startTime?.toEpochMilli()
-                        if (roomId != null && startTime != null) {
-                            startActivity(
-                                MapActivity.starterIntent(requireContext(), roomId, startTime)
-                            )
-                        }
+                        val directions = SessionDetailFragmentDirections.toMap(
+                            featureId = session?.room?.id,
+                            startTime = session?.startTime?.toEpochMilli() ?: 0L
+                        )
+                        findNavController().navigate(directions)
                     }
                     R.id.menu_item_calendar -> {
                         sessionDetailViewModel.session.value?.let(::addToCalendar)

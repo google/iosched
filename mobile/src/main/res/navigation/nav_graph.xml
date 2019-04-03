@@ -67,7 +67,25 @@
         android:id="@id/navigation_map"
         android:name="com.google.samples.apps.iosched.ui.map.MapFragment"
         android:label="@string/title_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map" >
+        <!-- Navigation library doesn't allow nullable arguments of an enum type, so we have to use
+             the enum name instead. b/129802059
+        -->
+        <argument
+            android:name="mapVariant"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="featureId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="startTime"
+            android:defaultValue="0L"
+            app:argType="long" />
+    </fragment>
 
     <fragment
         android:id="@id/navigation_session_detail"
@@ -82,6 +100,9 @@
         <action
             android:id="@+id/to_speaker_detail"
             app:destination="@id/navigation_speaker_detail" />
+        <action
+            android:id="@+id/to_map"
+            app:destination="@id/navigation_map" />
     </fragment>
     <fragment
         android:id="@id/navigation_speaker_detail"
