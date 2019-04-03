@@ -25,4 +25,6 @@
     <string name="day1_date" translation_description="Actual date of the first day of the conference. Please make this as short as possible.">May 7</string>
     <string name="day2_date" translation_description="Actual date of the second day of the conference. Please make this as short as possible.">May 8</string>
     <string name="day3_date" translation_description="Actual date of the third day of the conference. Please make this as short as possible.">May 9</string>
+    <string name="session_notifications" translation_description="Title for notification channel that upcoming talk notifications will be sent to." translatable="false">Upcoming session notifications</string>
+    <string name="starting_soon" translation_description="displayed as subtext of session title" translatable="false">Session is starting soon!</string>
 </resources>

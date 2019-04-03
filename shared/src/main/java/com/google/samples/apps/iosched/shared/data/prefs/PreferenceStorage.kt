@@ -80,7 +80,7 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
         by BooleanPreference(prefs, PREF_NOTIFICATIONS_SHOWN, false)
 
     override var preferToReceiveNotifications
-        by BooleanPreference(prefs, PREF_RECEIVE_NOTIFICATIONS, true)
+        by BooleanPreference(prefs, PREF_RECEIVE_NOTIFICATIONS, false)
 
     override var myLocationOptedIn: Boolean
         by BooleanPreference(prefs, PREF_MY_LOCATION_OPTED_IN, false)

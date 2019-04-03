@@ -83,6 +83,10 @@ object TestUserEventDataSource : UserEventDataSource {
         return TestData.userEvents
     }
 
+    override fun getUserEvent(userId: String, eventId: SessionId): UserEvent? {
+        return TestData.userEvents.find { it.id == eventId }
+    }
+
     override fun swapReservation(
         userId: String,
         fromSession: Session,

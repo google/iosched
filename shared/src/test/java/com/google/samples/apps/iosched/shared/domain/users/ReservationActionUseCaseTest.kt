@@ -20,8 +20,10 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.ObservableUserEvents
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
@@ -156,6 +158,14 @@ object TestUserEventRepository : SessionAndUserEventRepository {
     }
 
     override fun clearSingleEventSubscriptions() {}
+
+    override fun getConferenceDays(): List<ConferenceDay> {
+        TODO("not implemented")
+    }
+
+    override fun getUserSession(userId: String, sessionId: SessionId): UserSession {
+        TODO("not implemented")
+    }
 }
 
 object FailingUserEventRepository : SessionAndUserEventRepository {
@@ -207,4 +217,12 @@ object FailingUserEventRepository : SessionAndUserEventRepository {
     }
 
     override fun clearSingleEventSubscriptions() {}
+
+    override fun getConferenceDays(): List<ConferenceDay> {
+        TODO("not implemented")
+    }
+
+    override fun getUserSession(userId: String, sessionId: SessionId): UserSession {
+        TODO("not implemented")
+    }
 }

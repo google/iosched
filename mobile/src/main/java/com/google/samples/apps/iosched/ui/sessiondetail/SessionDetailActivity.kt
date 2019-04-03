@@ -32,6 +32,7 @@ import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.theme.ThemeViewModel
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
 import com.google.samples.apps.iosched.util.updateForTheme
+import com.google.samples.apps.iosched.shared.notifications.AlarmBroadcastReceiver.Companion.QUERY_SESSION_ID
 import dagger.android.support.DaggerAppCompatActivity
 import timber.log.Timber
 import java.util.UUID
@@ -52,10 +53,15 @@ class SessionDetailActivity : DaggerAppCompatActivity() {
 
         setContentView(R.layout.activity_session_detail)
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.inTransaction {
-                val sessionId = intent.getStringExtra(EXTRA_SESSION_ID)
-                add(R.id.session_detail_container, SessionDetailFragment.newInstance(sessionId))
+        val sessionId = getSessionId(intent)
+        if (sessionId == null) {
+            Timber.e("Session ID not specified")
+            finish()
+        } else {
+            if (savedInstanceState == null) {
+                supportFragmentManager.inTransaction {
+                    add(R.id.session_detail_container, SessionDetailFragment.newInstance(sessionId))
+                }
             }
         }
 
@@ -76,6 +82,11 @@ class SessionDetailActivity : DaggerAppCompatActivity() {
                 )
             }
         }
+    }
+
+    private fun getSessionId(intent: Intent): String? {
+        return intent.data?.getQueryParameter(QUERY_SESSION_ID) // for iosched://sessions/{id}
+                ?: intent.getStringExtra(EXTRA_SESSION_ID)
     }
 
     companion object {

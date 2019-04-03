@@ -22,6 +22,8 @@ import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateU
 import com.google.samples.apps.iosched.shared.data.signin.datasources.FirebaseAuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.FirestoreRegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
+import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthIdDataSource
+import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.fcm.FcmTokenUpdater
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthSignInHandler
 import com.google.samples.apps.iosched.util.signin.SignInHandler
@@ -44,11 +46,14 @@ internal class SignInModule {
     @Provides
     fun provideAuthStateUserDataSource(
         firebase: FirebaseAuth,
-        firestore: FirebaseFirestore
+        firestore: FirebaseFirestore,
+        notificationAlarmUpdater: NotificationAlarmUpdater
     ): AuthStateUserDataSource {
+
         return FirebaseAuthStateUserDataSource(
             firebase,
-            FcmTokenUpdater(firestore)
+            FcmTokenUpdater(firestore),
+            notificationAlarmUpdater
         )
     }
 
@@ -56,5 +61,15 @@ internal class SignInModule {
     @Provides
     fun provideFirebaseAuth(): FirebaseAuth {
         return FirebaseAuth.getInstance()
+    }
+
+    @Singleton
+    @Provides
+    fun providesAuthIdDataSource(
+        firebaseAuth: FirebaseAuth
+    ): AuthIdDataSource {
+        return object : AuthIdDataSource {
+            override fun getUserId() = firebaseAuth.currentUser?.uid
+        }
     }
 }

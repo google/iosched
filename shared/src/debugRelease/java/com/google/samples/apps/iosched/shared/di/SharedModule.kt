@@ -118,7 +118,10 @@ class SharedModule {
         userEventDataSource: UserEventDataSource,
         sessionRepository: SessionRepository
     ): SessionAndUserEventRepository {
-        return DefaultSessionAndUserEventRepository(userEventDataSource, sessionRepository)
+        return DefaultSessionAndUserEventRepository(
+            userEventDataSource,
+            sessionRepository
+        )
     }
 
     @Singleton
@@ -129,6 +132,7 @@ class SharedModule {
             // This is to enable the offline data
             // https://firebase.google.com/docs/firestore/manage-data/enable-offline
             .setPersistenceEnabled(true)
+            .setTimestampsInSnapshotsEnabled(true)
             .build()
         return firestore
     }

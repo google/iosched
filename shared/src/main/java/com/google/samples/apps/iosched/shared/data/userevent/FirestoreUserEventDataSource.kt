@@ -186,6 +186,21 @@ class FirestoreUserEventDataSource @Inject constructor(
         return snapshot.documents.map { parseUserEvent(it) }
     }
 
+    override fun getUserEvent(userId: String, eventId: SessionId): UserEvent? {
+        if (userId.isEmpty()) {
+            return null
+        }
+
+        val task = firestore
+                .document2019()
+                .collection(USERS_COLLECTION)
+                .document(userId)
+                .collection(EVENTS_COLLECTION)
+                .document(eventId).get()
+        val snapshot = Tasks.await(task, 20, TimeUnit.SECONDS)
+        return parseUserEvent(snapshot)
+    }
+
     private fun registerListenerForEvents(
         result: MutableLiveData<UserEventsResult>,
         userId: String
@@ -218,7 +233,7 @@ class FirestoreUserEventDataSource @Inject constructor(
         // avoid that the upper layer LiveData detects the old data as a new data. I.e., when
         // addSource was called in DefaultSessionAndUserEventRepository#getObservableUserEvents,
         // the old data was considered as a new data even though it's for another user's data.
-        result.value = null
+        result.postValue(null)
         eventsChangedListenerSubscription = eventsCollection.addSnapshotListener(eventsListener)
     }
 

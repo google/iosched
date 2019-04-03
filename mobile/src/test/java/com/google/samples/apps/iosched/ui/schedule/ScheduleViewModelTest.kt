@@ -48,7 +48,7 @@ import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownU
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
-import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
+import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
@@ -411,7 +411,7 @@ class ScheduleViewModelTest {
             createTestLoadUserSessionsByDayUseCase(),
         loadTagsUseCase: LoadEventFiltersUseCase = createEventFiltersExceptionUseCase(),
         signInViewModelDelegate: SignInViewModelDelegate = createSignInViewModelDelegate(),
-        starEventUseCase: StarEventUseCase = createStarEventUseCase(),
+        starEventUseCase: StarEventAndNotifyUseCase = createStarEventUseCase(),
         snackbarMessageManager: SnackbarMessageManager = SnackbarMessageManager(
             FakePreferenceStorage()
         ),

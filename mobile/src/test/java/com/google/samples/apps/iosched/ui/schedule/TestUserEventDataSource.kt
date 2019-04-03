@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.ui.schedule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventResult
@@ -102,4 +103,8 @@ class TestUserEventDataSource(
     }
 
     override fun clearSingleEventSubscriptions() {}
+
+    override fun getUserEvent(userId: String, eventId: SessionId): UserEvent? {
+        TODO("not implemented")
+    }
 }

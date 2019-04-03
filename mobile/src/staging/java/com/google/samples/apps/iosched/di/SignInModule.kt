@@ -21,8 +21,10 @@ import com.google.samples.apps.iosched.shared.data.login.StagingAuthenticatedUse
 import com.google.samples.apps.iosched.shared.data.login.StagingSignInHandler
 import com.google.samples.apps.iosched.shared.data.login.datasources.StagingAuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.login.datasources.StagingRegisteredUserDataSource
+import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthIdDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
+import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import dagger.Module
 import dagger.Provides
@@ -43,12 +45,24 @@ internal class SignInModule {
 
     @Singleton
     @Provides
-    fun provideAuthStateUserDataSource(context: Context): AuthStateUserDataSource {
+    fun provideAuthStateUserDataSource(
+        context: Context,
+        notificationAlarmUpdater: NotificationAlarmUpdater
+    ): AuthStateUserDataSource {
         return StagingAuthStateUserDataSource(
             isRegistered = true,
             isSignedIn = true,
             context = context,
-            userId = "StagingTest"
+            userId = "StagingTest",
+            notificationAlarmUpdater = notificationAlarmUpdater
         )
+    }
+
+    @Singleton
+    @Provides
+    fun providesAuthIdDataSource(): AuthIdDataSource {
+        return object : AuthIdDataSource {
+            override fun getUserId() = "StagingTest"
+        }
     }
 }

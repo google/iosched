@@ -26,6 +26,7 @@ import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfoB
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserRegistration
 import com.google.samples.apps.iosched.shared.data.signin.FirebaseUserInfo
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.fcm.FcmTokenUpdater
 import com.google.samples.apps.iosched.shared.result.Result
 import timber.log.Timber
@@ -48,7 +49,8 @@ import javax.inject.Inject
  */
 class FirebaseAuthStateUserDataSource @Inject constructor(
     val firebase: FirebaseAuth,
-    private val tokenUpdater: FcmTokenUpdater
+    private val tokenUpdater: FcmTokenUpdater,
+    notificationAlarmUpdater: NotificationAlarmUpdater
 ) : AuthStateUserDataSource {
 
     private val currentFirebaseUserObservable =
@@ -56,7 +58,9 @@ class FirebaseAuthStateUserDataSource @Inject constructor(
 
     private var isAlreadyListening = false
 
-    // Listener that saves the [FirebaseUser], fetches the ID token, calls the registration point
+    private var lastUid: String? = null
+
+    // Listener that saves the [FirebaseUser], fetches the ID token
     // and updates the user ID observable.
     private val authStateListener: ((FirebaseAuth) -> Unit) = { auth ->
         DefaultScheduler.execute {
@@ -88,6 +92,17 @@ class FirebaseAuthStateUserDataSource @Inject constructor(
                 tokenUpdater.updateTokenForUser(currentUser.uid)
             }
         }
+        if (auth.currentUser == null) {
+            // Logout, cancel all alarms
+            notificationAlarmUpdater.cancelAll()
+        }
+        auth.currentUser?.let {
+            if (lastUid != auth.uid) { // Prevent duplicates
+                notificationAlarmUpdater.updateAll(it.uid)
+            }
+        }
+        // Save the last UID to prevent setting too many alarms.
+        lastUid = auth.uid
     }
 
     override fun startListening() {
