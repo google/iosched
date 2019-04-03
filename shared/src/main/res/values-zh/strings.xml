@@ -18,7 +18,7 @@
     <string name="day1">第 1 天</string>
     <string name="day2">第 2 天</string>
     <string name="day3">第 3 天</string>
-    <string name="day1_date">5 月 8 日</string>
-    <string name="day2_date">5 月 9 日</string>
-    <string name="day3_date">5 月 10 日</string>
+    <string name="day1_date">5月 8日</string>
+    <string name="day2_date">5月 9日</string>
+    <string name="day3_date">5月 10日</string>
 </resources>

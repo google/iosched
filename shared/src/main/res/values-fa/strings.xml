@@ -15,9 +15,9 @@
   ~ limitations under the License.
 -->
 <resources>
-    <string name="day1">روز اول</string>
-    <string name="day2">روز دوم</string>
-    <string name="day3">روز سوم</string>
+    <string name="day1">روز 1</string>
+    <string name="day2">روز 2</string>
+    <string name="day3">روز 3</string>
     <string name="day1_date">۸ مه</string>
     <string name="day2_date">۹ مه</string>
     <string name="day3_date">۱۰ مه</string>
