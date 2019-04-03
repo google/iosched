@@ -29,6 +29,8 @@ import androidx.core.app.ShareCompat
 import androidx.core.net.toUri
 import androidx.core.view.doOnLayout
 import androidx.core.view.forEach
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -65,6 +67,7 @@ import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFr
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment.Companion.DIALOG_NOTIFICATIONS_PREFERENCE
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment.Companion.DIALOG_SIGN_IN
+import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.postponeEnterTransition
 import dagger.android.support.DaggerFragment
 import timber.log.Timber
@@ -154,6 +157,10 @@ class SessionDetailFragment : DaggerFragment() {
             }
         }
 
+        val pushUpScrollListener = PushUpScrollListener(
+                binding.up, binding.sessionDetailRecyclerView,
+                R.id.session_detail_title, R.id.detail_image
+        )
         val detailsAdapter = SessionDetailAdapter(
             viewLifecycleOwner,
             sessionDetailViewModel,
@@ -167,13 +174,24 @@ class SessionDetailFragment : DaggerFragment() {
                 changeDuration = 120L
                 removeDuration = 100L
             }
+            addOnScrollListener(pushUpScrollListener)
             doOnLayout {
-                addOnScrollListener(
-                    PushUpScrollListener(
-                        binding.up, it, R.id.session_detail_title, R.id.detail_image
-                    )
-                )
+                pushUpScrollListener.syncPushUpPoint()
             }
+        }
+
+        binding.up.doOnApplyWindowInsets { view, insets, _ ->
+            view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                topMargin = insets.systemWindowInsetTop
+            }
+            view.requestLayout()
+            view.doOnLayout {
+                pushUpScrollListener.syncPushUpPoint()
+            }
+        }
+
+        binding.sessionDetailRecyclerView.doOnApplyWindowInsets { view, insets, state ->
+            view.updatePadding(bottom = state.bottom + insets.systemWindowInsetBottom)
         }
 
         sessionDetailViewModel.session.observe(this, Observer {
