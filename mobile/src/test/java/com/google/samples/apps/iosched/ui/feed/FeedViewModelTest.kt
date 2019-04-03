@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.feed
 
+import android.os.Handler
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.TestDataRepository
@@ -34,8 +35,12 @@ import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.ArgumentMatchers.anyLong
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito
 
 /**
  * Unit tests for the [FeedViewModel]
@@ -50,6 +55,17 @@ class FeedViewModelTest {
     @get:Rule
     var syncTaskExecutorRule = SyncTaskExecutorRule()
 
+    val mockHandler = Mockito.mock(Handler::class.java)
+
+    @Before
+    fun setup() {
+        Mockito.`when`(mockHandler.postDelayed(any(Runnable::class.java), anyLong()))
+            .thenAnswer { invocation ->
+                // Don't call run() on the argument as it will lead to stackOverFlow ;)
+                true
+            }
+    }
+
     @Test
     fun testDataIsLoaded_ObservablesUpdated() {
         // Create a test use case with test data
@@ -60,7 +76,7 @@ class FeedViewModelTest {
         val feedObservable = LiveDataTestUtil.getValue(viewModel.feed)
 
         // Check that data was loaded correctly
-        // Adding '+ 3' as the items will be preceded by 1. The countdownTimer 2. Sessions 3. Announcements header
+        // Adding '+ 3' as the items will be preceded by 1. The FeedHeader 2. Sessions 3. Announcements header
         assertThat(feedObservable?.size, `is`(equalTo(testData.size + 3)))
         for ((index, item) in testData.withIndex()) {
             val actual = feedObservable?.get(index + 3)
@@ -109,7 +125,8 @@ class FeedViewModelTest {
         return FeedViewModel(
             loadAnnouncementsUseCase = loadAnnouncementUseCase,
             loadFilteredUserSessionsUseCase = loadFilteredSessionsUseCase,
-            signInViewModelDelegate = signInViewModelDelegate
+            signInViewModelDelegate = signInViewModelDelegate,
+            feedHeaderLiveData = FeedHeaderLiveData().apply { handler = mockHandler }
         )
     }
 }
