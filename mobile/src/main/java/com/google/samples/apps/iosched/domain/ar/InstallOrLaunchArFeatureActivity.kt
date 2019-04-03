@@ -52,6 +52,7 @@ class InstallOrLaunchArFeatureActivity : AppCompatActivity() {
 
     // Json for showing pinned sessions in the ArActivity
     private lateinit var pinnedSessionsJson: String
+    private var canSignedInUserDemoAr: Boolean = false
 
     private val installStateListener: DynamicModuleLoadStateListener by lazyFast {
 
@@ -94,6 +95,8 @@ class InstallOrLaunchArFeatureActivity : AppCompatActivity() {
         progressbar = findViewById(R.id.progressbar_dynamic_module)
         pinnedSessionsJson =
             intent?.extras?.getString(ArConstants.PINNED_SESSIONS_JSON_KEY, "") ?: ""
+        canSignedInUserDemoAr =
+            intent?.extras?.getBoolean(ArConstants.CAN_SIGNED_IN_USER_DEMO_AR, false) ?: false
         tryLaunchOrInstallModule(SHOW_FAKE_MODULE_DOWNLOAD)
     }
 
@@ -129,6 +132,7 @@ class InstallOrLaunchArFeatureActivity : AppCompatActivity() {
             setClassName(applicationContext.packageName, ACTIVITY_TO_LAUNCH)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             putExtra(ArConstants.PINNED_SESSIONS_JSON_KEY, pinnedSessionsJson)
+            putExtra(ArConstants.CAN_SIGNED_IN_USER_DEMO_AR, canSignedInUserDemoAr)
         }
         if (classLoader.loadClass(ACTIVITY_TO_LAUNCH) != null) {
             createPackageContext(packageName, 0).startActivity(intent)
