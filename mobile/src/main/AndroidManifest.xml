@@ -89,9 +89,6 @@
         </activity>
 
         <activity
-            android:name=".ui.map.MapActivity" />
-
-        <activity
             android:name=".domain.ar.InstallOrLaunchArFeatureActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Fullscreen" />

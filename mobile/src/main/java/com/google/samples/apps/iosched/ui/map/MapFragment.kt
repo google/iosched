@@ -120,14 +120,17 @@ class MapFragment : MainNavigationFragment() {
         }
 
         if (savedInstanceState == null) {
-            val featureId = arguments?.getString(ARG_FEATURE_ID)
-            if (featureId.isNullOrEmpty()) {
-                viewModel.setMapVariant(MapVariant.forTime())
-            } else {
-                viewModel.requestHighlightFeature(featureId)
-                // Choose map variant based on feature's time
-                val time = Instant.ofEpochMilli(arguments?.getLong(ARG_FEATURE_START_TIME) ?: 0L)
-                viewModel.setMapVariant(MapVariant.forTime(time))
+            MapFragmentArgs.fromBundle(arguments ?: Bundle.EMPTY).run {
+                if (!featureId.isNullOrEmpty()) {
+                    viewModel.requestHighlightFeature(featureId)
+                }
+
+                val variant = when {
+                    mapVariant != null -> MapVariant.valueOf(mapVariant)
+                    startTime > 0L -> MapVariant.forTime(Instant.ofEpochMilli(startTime))
+                    else -> MapVariant.forTime()
+                }
+                viewModel.setMapVariant(variant)
             }
         }
 
