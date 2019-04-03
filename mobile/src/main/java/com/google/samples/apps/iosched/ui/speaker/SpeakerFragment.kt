@@ -22,6 +22,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -38,6 +40,7 @@ import com.google.samples.apps.iosched.ui.sessiondetail.PushUpScrollListener
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.speaker.SpeakerFragmentDirections.Companion.toSessionDetail
+import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.postponeEnterTransition
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -117,6 +120,10 @@ class SpeakerFragment : DaggerFragment() {
                 startPostponedEnterTransition()
             }
         }
+
+        val pushUpScrollListener = PushUpScrollListener(
+                binding.up, binding.speakerDetailRecyclerView,
+                R.id.speaker_name, R.id.speaker_grid_image)
         val speakerAdapter = SpeakerAdapter(
             viewLifecycleOwner,
             speakerViewModel,
@@ -131,10 +138,23 @@ class SpeakerFragment : DaggerFragment() {
                 changeDuration = 120L
                 removeDuration = 100L
             }
+            addOnScrollListener(pushUpScrollListener)
             doOnLayout {
-                addOnScrollListener(
-                    PushUpScrollListener(binding.up, it, R.id.speaker_name, R.id.speaker_grid_image)
-                )
+                pushUpScrollListener.syncPushUpPoint()
+            }
+            doOnApplyWindowInsets { view, insets, padding ->
+                view.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)
+            }
+        }
+
+        // Shift the 'up' bottom down as required
+        binding.up.doOnApplyWindowInsets { view, insets, _ ->
+            view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                topMargin = insets.systemWindowInsetTop
+            }
+            view.requestLayout()
+            view.doOnLayout {
+                pushUpScrollListener.syncPushUpPoint()
             }
         }
 
