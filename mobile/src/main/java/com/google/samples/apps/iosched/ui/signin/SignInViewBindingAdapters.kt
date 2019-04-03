@@ -48,3 +48,12 @@ fun setNavHeaderContentDescription(view: View, user: AuthenticatedUserInfo?) {
         view.resources.getString(R.string.a11y_signed_out_content_description)
     }
 }
+
+@BindingAdapter("signInContentDescription")
+fun setSignInContentDescription(view: View, user: AuthenticatedUserInfo?) {
+    view.contentDescription = if (user?.isSignedIn() == true) {
+        view.resources.getString(R.string.a11y_signed_in_content_description, user.getDisplayName())
+    } else {
+        view.resources.getString(R.string.a11y_signed_out_content_description)
+    }
+}

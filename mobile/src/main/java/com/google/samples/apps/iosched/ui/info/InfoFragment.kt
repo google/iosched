@@ -22,16 +22,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentInfoBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import javax.inject.Inject
 
 class InfoFragment : MainNavigationFragment() {
 
     @Inject lateinit var analyticsHelper: AnalyticsHelper
+
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var binding: FragmentInfoBinding
 
@@ -42,6 +46,7 @@ class InfoFragment : MainNavigationFragment() {
     ): View? {
         binding = FragmentInfoBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
+            activityViewModel = activityViewModelProvider(viewModelFactory)
         }
         return binding.root
     }

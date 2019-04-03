@@ -42,6 +42,7 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.sessions.ConferenceDayIndexer
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
@@ -124,6 +125,7 @@ class ScheduleFragment : MainNavigationFragment() {
         binding = FragmentScheduleBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = this@ScheduleFragment.scheduleViewModel
+            activityViewModel = activityViewModelProvider(viewModelFactory)
         }
 
         filtersFab = binding.filterFab
