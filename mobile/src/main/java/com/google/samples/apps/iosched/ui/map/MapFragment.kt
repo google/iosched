@@ -42,6 +42,7 @@ import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentMapBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
@@ -113,6 +114,7 @@ class MapFragment : MainNavigationFragment() {
         binding = FragmentMapBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = this@MapFragment.viewModel
+            activityViewModel = activityViewModelProvider(viewModelFactory)
         }
 
         mapView = binding.map.apply {

@@ -35,6 +35,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSettingsBinding
 import com.google.samples.apps.iosched.shared.result.EventObserver
+import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
@@ -60,6 +61,7 @@ class SettingsFragment : MainNavigationFragment() {
 
         val binding = FragmentSettingsBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
+        binding.activityViewModel = activityViewModelProvider(viewModelFactory)
         binding.lifecycleOwner = viewLifecycleOwner
 
         binding.settingsScroll.doOnApplyWindowInsets { v, insets, padding ->

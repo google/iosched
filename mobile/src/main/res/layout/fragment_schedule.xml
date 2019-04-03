@@ -26,6 +26,10 @@
             type="com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel" />
 
         <variable
+            name="activityViewModel"
+            type="com.google.samples.apps.iosched.ui.MainActivityViewModel" />
+
+        <variable
             name="isEmpty"
             type="boolean" />
     </data>
@@ -39,7 +43,8 @@
         <include
             android:id="@+id/include_schedule_appbar"
             layout="@layout/include_schedule_appbar"
-            app:viewModel="@{viewModel}" />
+            app:viewModel="@{viewModel}"
+            app:activityViewModel="@{activityViewModel}" />
 
         <!-- A view to draw above the AppBarLayout to mimic the status bar -->
         <View

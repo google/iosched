@@ -33,6 +33,7 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentFeedBinding
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.result.EventObserver
+import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.feed.FeedFragmentDirections.Companion.toSessionDetail
@@ -68,6 +69,7 @@ class FeedFragment : MainNavigationFragment() {
         ).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = model
+            activityViewModel = activityViewModelProvider(viewModelFactory)
         }
 
         binding.root.doOnApplyWindowInsets { _, insets, _ ->

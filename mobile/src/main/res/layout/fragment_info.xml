@@ -16,7 +16,14 @@
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="activityViewModel"
+            type="com.google.samples.apps.iosched.ui.MainActivityViewModel" />
+    </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -37,7 +44,23 @@
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:navigationContentDescription="@string/a11y_show_navigation"
                 app:navigationIcon="@drawable/ic_menu"
-                app:title="@string/title_info" />
+                app:title="@string/title_info">
+
+                <ImageView
+                    android:id="@+id/user_avatar"
+                    android:layout_width="@dimen/nav_account_image_size"
+                    android:layout_height="@dimen/nav_account_image_size"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_margin="@dimen/margin_small"
+                    android:contentDescription="@null"
+                    android:onClick="@{() -> activityViewModel.onProfileClicked()}"
+                    app:clipToCircle="@{true}"
+                    app:imageUri="@{activityViewModel.currentUserImageUri}"
+                    app:placeholder="@{@drawable/ic_default_profile_avatar}"
+                    app:signInContentDescription="@{activityViewModel.currentUserInfo}"
+                    tools:srcCompat="@drawable/ic_default_profile_avatar" />
+
+            </androidx.appcompat.widget.Toolbar>
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"

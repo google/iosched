@@ -157,7 +157,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
         drawer = findViewById(R.id.drawer)
 
         navHeaderBinding = NavigationHeaderBinding.inflate(layoutInflater).apply {
-            viewModel = this@MainActivity.viewModel
             lifecycleOwner = this@MainActivity
         }
 
