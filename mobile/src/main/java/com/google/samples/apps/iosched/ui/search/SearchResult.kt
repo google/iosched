@@ -14,18 +14,11 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.config
+package com.google.samples.apps.iosched.ui.search
 
-import androidx.lifecycle.LiveData
-import com.google.samples.apps.iosched.model.ConferenceWifiInfo
-
-interface AppConfigDataSource {
-
-    fun getStringLiveData(key: String): LiveData<String>
-    fun getWifiInfo(): ConferenceWifiInfo
-    fun isFeedFeatureEnabled(): Boolean
-    fun isMapFeatureEnabled(): Boolean
-    fun isExploreArFeatureEnabled(): Boolean
-    fun isCodelabsFeatureEnabled(): Boolean
-    fun isSearchScheduleFeatureEnabled(): Boolean
-}
+data class SearchResult(
+    val title: String,
+    val subtitle: String,
+    val type: String,
+    val objectId: String
+)

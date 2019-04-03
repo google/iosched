@@ -39,4 +39,8 @@
         <key>codelabs_enabled</key>
         <value>true</value>
     </entry>
+    <entry>
+        <key>search_schedule_enabled</key>
+        <value>true</value>
+    </entry>
 </defaultsMap>

@@ -49,4 +49,10 @@ class FeatureFlagsModule {
     fun provideCodelabsEnabledFlag(appConfig: AppConfigDataSource): Boolean {
         return appConfig.isCodelabsFeatureEnabled()
     }
+
+    @Provides
+    @SearchScheduleEnabledFlag
+    fun provideSearchScheduleEnabledFlag(appConfig: AppConfigDataSource): Boolean {
+        return appConfig.isSearchScheduleFeatureEnabled()
+    }
 }

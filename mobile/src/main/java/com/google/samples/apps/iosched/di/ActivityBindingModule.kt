@@ -31,6 +31,7 @@ import com.google.samples.apps.iosched.ui.onboarding.OnboardingModule
 import com.google.samples.apps.iosched.ui.prefs.PreferenceModule
 import com.google.samples.apps.iosched.ui.reservation.ReservationModule
 import com.google.samples.apps.iosched.ui.schedule.ScheduleModule
+import com.google.samples.apps.iosched.ui.search.SearchModule
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegateModule
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailModule
@@ -78,6 +79,7 @@ abstract class ActivityBindingModule {
             InfoModule::class,
             MapModule::class,
             ScheduleModule::class,
+            SearchModule::class,
             SessionDetailModule::class,
             SettingsModule::class,
             SpeakerModule::class,
