@@ -39,6 +39,7 @@ import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.di.SearchScheduleEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.sessions.ConferenceDayIndexer
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.TimeUtils
@@ -47,6 +48,7 @@ import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
+import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentDirections.Companion.toSearch
 import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentDirections.Companion.toSessionDetail
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment
@@ -87,6 +89,11 @@ class ScheduleFragment : MainNavigationFragment() {
     @Inject
     @field:Named("tagViewPool")
     lateinit var tagViewPool: RecycledViewPool
+
+    @Inject
+    @JvmField
+    @SearchScheduleEnabledFlag
+    var searchScheduleFeatureEnabled: Boolean = false
 
     @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
 
@@ -136,6 +143,21 @@ class ScheduleFragment : MainNavigationFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Set up search menu item
+        binding.includeScheduleAppbar.toolbar.run {
+            inflateMenu(R.menu.schedule_menu)
+            menu.findItem(R.id.search).isVisible = searchScheduleFeatureEnabled
+            setOnMenuItemClickListener { item ->
+                if (item.itemId == R.id.search) {
+                    openSearch()
+                    true
+                } else {
+                    false
+                }
+            }
+        }
+
         // Snackbar configuration
         val snackbarPrefViewModel: SnackbarPreferenceViewModel = viewModelProvider(viewModelFactory)
         setUpSnackbar(scheduleViewModel.snackBarMessage, snackbar, snackbarMessageManager,
@@ -391,6 +413,10 @@ class ScheduleFragment : MainNavigationFragment() {
 
     private fun openSessionDetail(id: SessionId) {
         findNavController().navigate(toSessionDetail(id))
+    }
+
+    private fun openSearch() {
+        findNavController().navigate(toSearch())
     }
 
     private fun openSignInDialog() {

@@ -43,6 +43,10 @@
     <dimen name="agenda_block_padding_vert">12dp</dimen>
     <dimen name="agenda_icon_width">56dp</dimen>
 
+    <dimen name="search_result_icon_size">24dp</dimen>
+    <dimen name="search_result_icon_margin">16dp</dimen>
+    <dimen name="search_result_padding_vert">12dp</dimen>
+
     <dimen name="onboarding_actions_height">112dp</dimen>
     <dimen name="onboarding_margins">48dp</dimen>
     <dimen name="onboarding_animation_padding">40dp</dimen>

@@ -37,6 +37,9 @@
         <action
             android:id="@+id/to_session_detail"
             app:destination="@id/navigation_session_detail" />
+        <action
+            android:id="@+id/to_search"
+            app:destination="@id/navigation_search" />
     </fragment>
 
     <fragment
@@ -108,6 +111,15 @@
                 android:defaultValue="codelabs"
                 app:argType="string" />
         </action>
+    </fragment>
+
+    <fragment
+        android:id="@id/navigation_search"
+        android:name="com.google.samples.apps.iosched.ui.search.SearchFragment"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/to_session_detail"
+            app:destination="@id/navigation_session_detail" />
     </fragment>
 
     <fragment

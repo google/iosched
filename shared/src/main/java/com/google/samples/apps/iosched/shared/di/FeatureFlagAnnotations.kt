@@ -48,3 +48,11 @@ annotation class MapFeatureEnabledFlag
     AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.FIELD
 )
 annotation class CodelabsEnabledFlag
+
+// Whether or not the Search Schedule feature is enabled
+@Qualifier
+@Target(
+    AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER,
+    AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.FIELD
+)
+annotation class SearchScheduleEnabledFlag
