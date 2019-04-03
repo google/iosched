@@ -26,7 +26,7 @@ class FeatureFlagsModule {
 
     @Provides
     @Singleton
-    @MainThreadHandler
+    @FeedFeatureEnabledFlag
     fun provideEnableFeedFeatureFlag(appConfig: AppConfigDataSource): Boolean {
         return appConfig.isFeedFeatureEnabled()
     }
