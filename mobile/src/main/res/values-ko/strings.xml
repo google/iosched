@@ -16,7 +16,7 @@
 -->
 <resources>
     <string name="title_schedule">일정</string>
-    <string name="title_feed">피드</string>
+
     <string name="title_map">지도</string>
     <string name="filters">필터</string>
     <string name="category_heading_tracks">주제</string>

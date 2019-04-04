@@ -16,7 +16,7 @@
 -->
 <resources>
     <string name="title_schedule">Lịch biểu</string>
-    <string name="title_feed">Nguồn cấp dữ liệu</string>
+
     <string name="title_map">Bản đồ</string>
     <string name="filters">Bộ lọc</string>
     <string name="category_heading_tracks">Chủ đề</string>

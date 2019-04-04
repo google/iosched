@@ -16,7 +16,7 @@
 -->
 <resources>
     <string name="title_schedule">الجدول الزمني</string>
-    <string name="title_feed">الخلاصة</string>
+
     <string name="title_map">الخريطة</string>
     <string name="filters">فلاتر</string>
     <string name="category_heading_tracks">المواضيع</string>
