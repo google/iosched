@@ -184,10 +184,6 @@ object TestData {
         reservationStatus = UserEvent.ReservationStatus.RESERVED,
         reservationRequestResult = ReservationRequestResult(
             RESERVE_SUCCEEDED, "123", System.currentTimeMillis()
-        ),
-        feedback = mapOf(
-            "q1" to 1,
-            "q2" to 2
         )
     )
     private val userEvent1 = UserEvent(
@@ -204,10 +200,6 @@ object TestData {
         reservationStatus = UserEvent.ReservationStatus.NONE,
         reservationRequestResult = ReservationRequestResult(
             RESERVE_DENIED_CUTOFF, "123", System.currentTimeMillis()
-        ),
-        feedback = mapOf(
-            "q1" to 1,
-            "q2" to 2
         )
     )
     private val userEvent3 = UserEvent(

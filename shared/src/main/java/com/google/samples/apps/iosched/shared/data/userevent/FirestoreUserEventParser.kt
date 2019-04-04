@@ -20,7 +20,6 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.samples.apps.iosched.model.reservations.ReservationRequest
 import com.google.samples.apps.iosched.model.reservations.ReservationRequestResult
 import com.google.samples.apps.iosched.model.userdata.UserEvent
-import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource.Companion.FEEDBACK
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource.Companion.RESERVATION_REQUEST_ACTION_KEY
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource.Companion.RESERVATION_REQUEST_KEY
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource.Companion.RESERVATION_REQUEST_REQUEST_ID_KEY
@@ -50,17 +49,8 @@ fun parseUserEvent(snapshot: DocumentSnapshot): UserEvent {
         reservationStatus = reservationStatus,
         isStarred = snapshot[FirestoreUserEventDataSource.IS_STARRED] as? Boolean ?: false,
         reservationRequest = reservationRequest,
-        feedback = parseFeedback(snapshot[FirestoreUserEventDataSource.FEEDBACK])
+        isReviewed = snapshot[FirestoreUserEventDataSource.REVIEWED] as? Boolean ?: false
     )
-}
-
-private fun parseFeedback(feedback: Any?): Map<String, Int> {
-    if (feedback !is Map<*, *>) {
-        return emptyMap()
-    }
-    return feedback.map { (k, v) ->
-        k.toString() to (v.toString().toIntOrNull() ?: 0)
-    }.toMap()
 }
 
 /**

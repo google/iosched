@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.ui.sessiondetail
 import androidx.annotation.IntRange
 import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.R
@@ -62,37 +63,36 @@ class SessionFeedbackViewModel @Inject constructor(
         )
     }
 
+    private var _sessionId: SessionId? = null
+
     private val loadUserSessionResult = loadUserSessionUseCase.observe()
 
     val title: LiveData<String> = Transformations.map(loadUserSessionResult) { result ->
         (result as? Result.Success)?.data?.userSession?.session?.title
     }
 
-    val questions: LiveData<List<Question>> = Transformations.map(loadUserSessionResult) { result ->
-        if (result is Result.Success) {
-            val userEvent = result.data.userSession.userEvent
-            val currentRatings = userEvent.feedback
-            MESSAGES.map { (key, value) ->
-                val (text, start, end) = value
-                Question(key, text, currentRatings[key] ?: 0, start, end)
-            }
-        } else {
-            emptyList()
-        }
-    }
+    val questions = MutableLiveData<List<Question>>(MESSAGES.map { (key, value) ->
+        val (text, start, end) = value
+        Question(key, text, 0, start, end)
+    })
 
     fun setSessionId(sessionId: SessionId) {
+        _sessionId = sessionId
         loadUserSessionUseCase.execute(getUserId() to sessionId)
     }
 
     fun submit(feedbackUpdates: Map<String, Int>) {
+        val sessionId = _sessionId ?: return
         val userId = getUserId()
         val userEvent = (loadUserSessionResult.value as? Result.Success)
             ?.data?.userSession?.userEvent
         if (userId != null && userEvent != null) {
-            feedbackUseCase.execute(FeedbackParameter(userId, userEvent.copy(
-                feedback = userEvent.feedback + feedbackUpdates
-            )))
+            feedbackUseCase.execute(FeedbackParameter(
+                userId,
+                userEvent,
+                sessionId,
+                feedbackUpdates
+            ))
         }
     }
 }

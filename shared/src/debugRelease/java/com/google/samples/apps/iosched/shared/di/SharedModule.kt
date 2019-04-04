@@ -36,6 +36,8 @@ import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.FirestoreAnnouncementDataSource
+import com.google.samples.apps.iosched.shared.data.feedback.DefaultFeedbackEndpoint
+import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
@@ -110,6 +112,12 @@ class SharedModule {
     @Provides
     fun provideUserEventDataSource(firestore: FirebaseFirestore): UserEventDataSource {
         return FirestoreUserEventDataSource(firestore)
+    }
+
+    @Singleton
+    @Provides
+    fun provideFeedbackEndpoint(functions: FirebaseFunctions): FeedbackEndpoint {
+        return DefaultFeedbackEndpoint(functions)
     }
 
     @Singleton

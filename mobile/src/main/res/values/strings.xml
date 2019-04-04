@@ -92,6 +92,8 @@
 
     <!-- Session Feedback -->
     <string name="feedback_submit" translation_description="The label for the button to submit feedback to a session">Submit</string>
+    <string name="feedback_thank_you" translation_description="The message shown to the user when they have sent feedback to a session.">Thank you for your feedback!</string>
+
     <string name="feedback_q1_text" translation_description="A question for session feedback (Q1)">How would you rate the overall quality of the Session?</string>
     <string name="feedback_q2_text" translation_description="A question for session feedback (Q2)">How would you describe the content of the Session based on your expectations/session description?</string>
     <string name="feedback_q3_text" translation_description="A question for session feedback (Q3)">How would you rate the Speaker(s)?</string>
