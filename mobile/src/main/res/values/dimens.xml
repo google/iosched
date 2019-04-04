@@ -83,6 +83,9 @@
 
     <dimen name="progressbar_width">250dp</dimen>"
 
+    <dimen name="dialogPreferredPadding">24dp</dimen>
+    <dimen name="dialogPreferredPaddingLarge">36dp</dimen> <!-- dialogPreferredPadding + 12dp -->
+
     <!-- per android.view.ViewGroup.LayoutParams -->
     <item name="match_parent" format="integer" type="dimen">-1</item>
     <item name="wrap_content" format="integer" type="dimen">-2</item>

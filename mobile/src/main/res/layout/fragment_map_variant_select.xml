@@ -14,19 +14,22 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
-<androidx.recyclerview.widget.RecyclerView
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map_variant_list"
-    android:clipToPadding="false"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:nestedScrollingEnabled="false"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/margin_normal"
-    android:paddingTop="@dimen/margin_normal"
-    app:layoutManager="LinearLayoutManager"
-    tools:itemCount="3"
-    tools:listitem="@layout/item_map_variant" />
+    app:cardCornerRadius="@dimen/dialog_corner_radius"
+    app:cardElevation="8dp">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/map_variant_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false"
+        android:orientation="vertical"
+        app:layoutManager="LinearLayoutManager"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_map_variant" />
+</com.google.android.material.card.MaterialCardView>
