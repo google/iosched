@@ -41,7 +41,6 @@ import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentArgs
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
-import kotlinx.android.synthetic.main.fragment_feed.toolbar
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -54,6 +53,7 @@ class FeedFragment : MainNavigationFragment() {
     lateinit var snackbarMessageManager: SnackbarMessageManager
 
     private lateinit var model: FeedViewModel
+    private lateinit var binding: FragmentFeedBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,13 +63,19 @@ class FeedFragment : MainNavigationFragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         model = viewModelProvider(viewModelFactory)
 
-        val binding = FragmentFeedBinding.inflate(
+        binding = FragmentFeedBinding.inflate(
             inflater, container, false
         ).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = model
             activityViewModel = activityViewModelProvider(viewModelFactory)
         }
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.root.doOnApplyWindowInsets { _, insets, _ ->
             binding.statusBar.run {
@@ -80,6 +86,10 @@ class FeedFragment : MainNavigationFragment() {
         }
 
         binding.recyclerView.doOnApplyWindowInsets { v, insets, padding ->
+            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+        }
+
+        binding.snackbar.doOnApplyWindowInsets { v, insets, padding ->
             v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
 
@@ -104,13 +114,6 @@ class FeedFragment : MainNavigationFragment() {
         model.navigateToScheduleAction.observe(this, EventObserver { withPinnedEvents ->
             openSchedule(withPinnedEvents)
         })
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        toolbar.setTitle(R.string.title_feed)
     }
 
     private fun openSessionDetail(id: SessionId) {

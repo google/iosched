@@ -41,10 +41,10 @@
             style="@style/Widget.AppBar"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:visibility="gone" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -56,7 +56,7 @@
             app:layout_constraintTop_toBottomOf="@id/status_bar"
             app:navigationContentDescription="@string/a11y_show_navigation"
             app:navigationIcon="@drawable/ic_menu"
-            app:title="Feed">
+            app:title="@string/title_feed">
 
             <ImageView
                 android:id="@+id/user_avatar"
@@ -74,16 +74,6 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <com.google.samples.apps.iosched.widget.FadingSnackbar
-            android:id="@+id/snackbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_dodgeInsetEdges="bottom" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -100,6 +90,17 @@
             app:layoutManager="LinearLayoutManager">
 
         </androidx.recyclerview.widget.RecyclerView>
+
+        <com.google.samples.apps.iosched.widget.FadingSnackbar
+            android:id="@+id/snackbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_dodgeInsetEdges="bottom" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
