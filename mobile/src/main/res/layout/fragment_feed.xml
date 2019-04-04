@@ -56,7 +56,7 @@
             app:layout_constraintTop_toBottomOf="@id/status_bar"
             app:navigationContentDescription="@string/a11y_show_navigation"
             app:navigationIcon="@drawable/ic_menu"
-            app:title="@string/title_feed">
+            app:title="@string/title_home">
 
             <ImageView
                 android:id="@+id/user_avatar"

@@ -16,7 +16,7 @@
 -->
 <resources>
     <string name="title_schedule">日程安排</string>
-    <string name="title_feed">动态</string>
+
     <string name="title_map">地图</string>
     <string name="filters">过滤条件</string>
     <string name="category_heading_tracks">主题</string>

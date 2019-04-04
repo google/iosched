@@ -60,7 +60,7 @@
     <fragment
         android:id="@id/navigation_feed"
         android:name="com.google.samples.apps.iosched.ui.feed.FeedFragment"
-        android:label="@string/title_feed"
+        android:label="@string/title_home"
         tools:layout="@layout/fragment_feed">
         <action
             android:id="@+id/to_session_detail"
