@@ -29,7 +29,7 @@
 
     <item
         android:id="@+id/menu_item_map"
-        android:icon="@drawable/ic_map"
+        android:icon="@drawable/ic_nav_map"
         android:title="@string/menu_item_session_location"
         app:showAsAction="always" />
 
