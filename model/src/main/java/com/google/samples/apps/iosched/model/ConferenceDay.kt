@@ -22,5 +22,5 @@ data class ConferenceDay(
     val start: ZonedDateTime,
     val end: ZonedDateTime
 ) {
-    fun contains(session: Session) = start <= session.startTime && end >= session.endTime
+    operator fun contains(session: Session) = start <= session.startTime && end >= session.endTime
 }
