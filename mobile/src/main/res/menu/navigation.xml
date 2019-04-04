@@ -18,25 +18,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/nav_first_group"
+        android:checkableBehavior="single">
 
         <item
             android:id="@id/navigation_feed"
-            android:icon="@drawable/ic_nav_feed"
+            android:icon="@drawable/ic_nav_home"
             android:title="@string/title_feed"
             app:contentDescription="@string/title_feed" />
-
-        <item
-            android:id="@id/navigation_info"
-            android:icon="@drawable/ic_nav_info"
-            android:title="@string/title_info"
-            app:contentDescription="@string/title_info" />
 
         <item
             android:id="@id/navigation_schedule"
             android:icon="@drawable/ic_nav_schedule"
             android:title="@string/title_schedule"
             app:contentDescription="@string/title_schedule" />
+
+        <item
+            android:id="@id/navigation_agenda"
+            android:icon="@drawable/ic_nav_agenda"
+            android:title="@string/agenda"
+            app:contentDescription="@string/agenda" />
 
         <item
             android:id="@id/navigation_map"
@@ -49,18 +51,22 @@
             android:icon="@drawable/ic_nav_explore"
             android:title="@string/title_explore_io"
             app:contentDescription="@string/title_explore_io" />
+    </group>
+
+    <group
+        android:id="@+id/nav_second_group"
+        android:checkableBehavior="single">
 
         <item
-            android:id="@id/navigation_agenda"
-            android:icon="@drawable/ic_nav_agenda"
-            android:title="@string/agenda"
-            app:contentDescription="@string/agenda" />
+            android:id="@id/navigation_info"
+            android:icon="@drawable/ic_nav_info"
+            android:title="@string/title_info"
+            app:contentDescription="@string/title_info" />
 
         <item
             android:id="@id/navigation_settings"
             android:icon="@drawable/ic_nav_settings"
             android:title="@string/settings_title"
             app:contentDescription="@string/settings_title" />
-
     </group>
 </menu>

@@ -80,6 +80,7 @@
     <!-- Equals what NavigationView ends up using: 32dp drawable padding
          + 24dp drawable size + 16dp listPreferredItemPaddingLeft -->
     <dimen name="nav_account_text_keyline">60dp</dimen>
+    <dimen name="nav_io_logo_hashtag_padding">24dp</dimen>
 
     <dimen name="progressbar_width">250dp</dimen>"
 
