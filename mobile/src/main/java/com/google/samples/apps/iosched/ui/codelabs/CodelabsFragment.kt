@@ -26,6 +26,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.databinding.FragmentCodelabsBinding
+import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
@@ -54,7 +55,9 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentCodelabsBinding.inflate(inflater, container, false)
+        binding = FragmentCodelabsBinding.inflate(inflater, container, false).apply {
+            activityViewModel = activityViewModelProvider(viewModelFactory)
+        }
         return binding.root
     }
 
