@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright 2019 Google LLC
   ~
@@ -17,10 +18,10 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
-    android:viewportWidth="24.0"
-    android:viewportHeight="24.0"
-    android:tint="#FFFFFF">
+    android:viewportWidth="24"
+    android:viewportHeight="24">
     <path
-        android:fillColor="#FF000000"
-        android:pathData="M12,10.9c-0.61,0 -1.1,0.49 -1.1,1.1s0.49,1.1 1.1,1.1c0.61,0 1.1,-0.49 1.1,-1.1s-0.49,-1.1 -1.1,-1.1zM12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2zM14.19,14.19L6,18l3.81,-8.19L18,6l-3.81,8.19z" />
+        android:pathData="M12,5.4C6.48,5.4 2,7.64 2,10.4c0,2.24 2.94,4.13 7,4.77l0.29,0.02 -2,2L8.7,18.6l4.21,-4.2L8.7,10.19 7.29,11.6l1.47,1.47C5.76,12.49 4,11.21 4,10.4c0,-1.06 3.04,-3 8,-3s8,1.94 8,3c0,0.73 -1.46,1.89 -4,2.53v2.05c3.53,-0.77 6,-2.53 6,-4.58 0,-2.76 -4.48,-5 -10,-5z"
+        android:fillColor="#5F6368"
+        android:fillType="nonZero" />
 </vector>
