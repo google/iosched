@@ -24,7 +24,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.updateLayoutParams
-import androidx.core.view.updatePadding
+import androidx.core.view.updatePaddingRelative
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -57,7 +57,6 @@ import com.google.samples.apps.iosched.util.clearDecorations
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.executeAfter
 import com.google.samples.apps.iosched.util.fabVisibility
-import com.google.samples.apps.iosched.util.getTappableElementInsetsAsRect
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_COLLAPSED
@@ -164,8 +163,7 @@ class ScheduleFragment : MainNavigationFragment() {
 
         // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
         binding.recyclerview.doOnApplyWindowInsets { v, insets, padding ->
-            val tappableInsets = insets.getTappableElementInsetsAsRect()
-            v.updatePadding(bottom = padding.bottom + tappableInsets.bottom)
+            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
 
         // Session list configuration

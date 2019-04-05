@@ -41,7 +41,6 @@ import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentArgs
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
-import com.google.samples.apps.iosched.util.getTappableElementInsetsAsRect
 import kotlinx.android.synthetic.main.fragment_feed.toolbar
 import timber.log.Timber
 import javax.inject.Inject
@@ -81,8 +80,7 @@ class FeedFragment : MainNavigationFragment() {
         }
 
         binding.recyclerView.doOnApplyWindowInsets { v, insets, padding ->
-            val tappableInsets = insets.getTappableElementInsetsAsRect()
-            v.updatePaddingRelative(bottom = padding.bottom + tappableInsets.bottom)
+            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
 
         setUpSnackbar(model.snackBarMessage, binding.snackbar, snackbarMessageManager)

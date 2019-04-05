@@ -20,12 +20,13 @@ import android.annotation.SuppressLint;
 import android.graphics.Rect;
 import android.view.WindowInsets;
 
+import androidx.annotation.NonNull;
+import androidx.core.os.BuildCompat;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import androidx.annotation.NonNull;
-import androidx.core.os.BuildCompat;
 import timber.log.Timber;
 
 /**
@@ -33,8 +34,11 @@ import timber.log.Timber;
  */
 @SuppressLint("PrivateApi")
 public class WindowInsetsUtils {
-    private static Method methodGetTappableElementInsets;
-    private static boolean methodGetTappableElementInsetsFetched;
+    private static Method methodGetMandatorySystemGestureInsets;
+    private static boolean methodGetMandatorySystemGestureInsetsFetched;
+
+    private static Method methodGetSystemGestureInsets;
+    private static boolean methodGetSystemGestureInsetsFetched;
 
     private static boolean insetsFetched;
     private static Class classInsets;
@@ -50,37 +54,46 @@ public class WindowInsetsUtils {
      */
     private static Rect getSystemWindowInsets(@NonNull final WindowInsets insets) {
         return new Rect(
-                insets.getSystemWindowInsetLeft(),insets.getSystemWindowInsetTop(),
+                insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(),
                 insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom());
     }
 
     /**
-     * Returns the tappable element insets. On Q we use reflection to access the API, before that
+     * Returns the system gesture insets. On Q we use reflection to access the API, before that
+     * we just use the system window insets
      */
-    public static Rect getTappableElementInsets(@NonNull final WindowInsets insets) {
-        if (!BuildCompat.isAtLeastQ()) {
-            // For devices running P and earlier, just return the system window insets
-            return getSystemWindowInsets(insets);
+    public static Rect getSystemGestureInsets(@NonNull final WindowInsets insets) {
+        if (BuildCompat.isAtLeastQ()) {
+            fetchInsetsClazz();
+            fetchGetSystemGestureInsetsMethod();
+            return invokeInsetsMethod(methodGetSystemGestureInsets, insets);
         }
+        // For devices running P and earlier, just return the system window insets
+        return getSystemWindowInsets(insets);
+    }
 
-        // If we reach here, we're running on a Android Q device so we can expect the APIs
-        // to work as intended
-
-        fetchInsetsClazz();
-        fetchGetTappableElementsInsetsMethod();
-
-        if (classInsets == null || methodGetTappableElementInsets == null) {
-            // Something has gone wrong here, just return the system window insets
-            return getSystemWindowInsets(insets);
+    /**
+     * Returns the mandatory system gesture insets. On Q we use reflection to access the API,
+     * before that we just use the system window insets
+     */
+    public static Rect getMandatorySystemGestureInsets(@NonNull final WindowInsets insets) {
+        if (BuildCompat.isAtLeastQ()) {
+            fetchInsetsClazz();
+            fetchGetMandatorySystemGestureInsetsMethod();
+            return invokeInsetsMethod(methodGetMandatorySystemGestureInsets, insets);
         }
+        // For devices running P and earlier, just return the system window insets
+        return getSystemWindowInsets(insets);
+    }
 
-        try {
-            final Object tappableElementInsets = methodGetTappableElementInsets.invoke(insets);
-            return insetsToRect(tappableElementInsets);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            Timber.e(e, "Error while invoking getTappableElementInsets via reflection");
+    private static Rect invokeInsetsMethod(Method method, @NonNull final WindowInsets insets) {
+        if (method != null) {
+            try {
+                return insetsToRect(method.invoke(insets));
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                Timber.e(e, "Error while invoking %s via reflection", method.getName());
+            }
         }
-
         // If we get here, something has gone wrong. We will just return the system window insets
         return getSystemWindowInsets(insets);
     }
@@ -94,28 +107,37 @@ public class WindowInsetsUtils {
                 fieldInsetsRight = classInsets.getField("right");
                 fieldInsetsBottom = classInsets.getField("bottom");
             } catch (ClassNotFoundException | NoSuchFieldException e) {
-                // Class does not exist before API 29
-                if (BuildCompat.isAtLeastQ()) {
-                    Timber.e(e, "Error while retrieving Insets class via reflection");
-                }
+                Timber.e(e, "Error while retrieving Insets class via reflection");
             }
             insetsFetched = true;
         }
     }
 
-    private static void fetchGetTappableElementsInsetsMethod() {
-        if (!methodGetTappableElementInsetsFetched) {
+    private static void fetchGetSystemGestureInsetsMethod() {
+        if (!methodGetSystemGestureInsetsFetched) {
             try {
-                methodGetTappableElementInsets =
-                        WindowInsets.class.getDeclaredMethod("getTappableElementInsets");
+                methodGetSystemGestureInsets =
+                        WindowInsets.class.getMethod("getSystemGestureInsets");
             } catch (NoSuchMethodException e) {
-                // Class does not exist before API 29
-                if (BuildCompat.isAtLeastQ()) {
-                    Timber.e(e, "Error while retrieving getTappableElementInsets"
-                            + " method via reflection");
-                }
+                // Method does not exist before API 29
+                Timber.e(e, "Error while retrieving getSystemGestureInsets"
+                        + " method via reflection");
             }
-            methodGetTappableElementInsetsFetched = true;
+            methodGetSystemGestureInsetsFetched = true;
+        }
+    }
+
+    private static void fetchGetMandatorySystemGestureInsetsMethod() {
+        if (!methodGetMandatorySystemGestureInsetsFetched) {
+            try {
+                methodGetMandatorySystemGestureInsets =
+                        WindowInsets.class.getMethod("getMandatorySystemGestureInsets");
+            } catch (NoSuchMethodException e) {
+                // Method does not exist before API 29
+                Timber.e(e, "Error while retrieving getMandatorySystemGestureInsets"
+                        + " method via reflection");
+            }
+            methodGetMandatorySystemGestureInsetsFetched = true;
         }
     }
 

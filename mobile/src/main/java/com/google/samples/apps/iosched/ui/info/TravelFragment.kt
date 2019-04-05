@@ -23,7 +23,6 @@ import android.view.ViewGroup
 import androidx.core.view.updatePaddingRelative
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
-import com.google.samples.apps.iosched.util.getTappableElementInsetsAsRect
 import dagger.android.support.DaggerFragment
 
 class TravelFragment : DaggerFragment() {
@@ -41,8 +40,7 @@ class TravelFragment : DaggerFragment() {
 
         // Pad the bottom of the ScrollView so that it scrolls up above the nav bar
         view.doOnApplyWindowInsets { v, insets, padding ->
-            val tappableInsets = insets.getTappableElementInsetsAsRect()
-            v.updatePaddingRelative(bottom = padding.bottom + tappableInsets.bottom)
+            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
     }
 }

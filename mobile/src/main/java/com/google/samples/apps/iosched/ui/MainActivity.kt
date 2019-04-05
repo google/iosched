@@ -22,6 +22,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.BuildCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.updatePadding
 import androidx.drawerlayout.widget.DrawerLayout
@@ -48,6 +49,7 @@ import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
 import com.google.samples.apps.iosched.util.HeightTopWindowInsetsListener
 import com.google.samples.apps.iosched.util.NoopWindowInsetsListener
+import com.google.samples.apps.iosched.util.ViewGestureUtils.shouldCloseDrawerFromBackPress
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.navigationItemBackground
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
@@ -256,7 +258,13 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
 
     override fun onBackPressed() {
         if (drawer.isDrawerOpen(navigation)) {
-            closeDrawer()
+            var closeDrawerOnBack = true
+            if (BuildCompat.isAtLeastQ()) {
+                closeDrawerOnBack = shouldCloseDrawerFromBackPress(drawer)
+            }
+            if (closeDrawerOnBack) {
+                closeDrawer()
+            }
         } else {
             super.onBackPressed()
         }
