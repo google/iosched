@@ -39,6 +39,7 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.NavigationHeaderBinding
 import com.google.samples.apps.iosched.domain.ar.ArConstants
 import com.google.samples.apps.iosched.domain.ar.InstallOrLaunchArFeatureActivity
+import com.google.samples.apps.iosched.shared.di.CodelabsEnabledFlag
 import com.google.samples.apps.iosched.shared.di.ExploreArEnabledFlag
 import com.google.samples.apps.iosched.shared.di.FeedFeatureEnabledFlag
 import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
@@ -77,6 +78,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
             R.id.navigation_map,
             R.id.navigation_info,
             R.id.navigation_agenda,
+            R.id.navigation_codelabs,
             R.id.navigation_settings
         )
     }
@@ -96,6 +98,11 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
     @JvmField
     @MapFeatureEnabledFlag
     var mapFeatureEnabled: Boolean = false
+
+    @Inject
+    @JvmField
+    @CodelabsEnabledFlag
+    var codelabsFeatureEnabled: Boolean = false
 
     @Inject
     @JvmField
@@ -178,6 +185,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
 
             menu.findItem(R.id.navigation_map).isVisible = mapFeatureEnabled
             menu.findItem(R.id.navigation_feed).isVisible = feedFeatureEnabled
+            menu.findItem(R.id.navigation_codelabs).isVisible = codelabsFeatureEnabled
             menu.findItem(R.id.navigation_explore_ar).apply {
                 // Handle launching new activities, otherwise assume the destination is handled
                 // by the nav graph. We want to launch a new Activity for only the AR menu

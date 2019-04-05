@@ -16,16 +16,22 @@
 
 package com.google.samples.apps.iosched.util
 
+import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.View
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.browser.customtabs.CustomTabsService
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.viewpager.widget.ViewPager
@@ -104,4 +110,38 @@ fun setText(view: TextView, @StringRes resId: Int) {
     } else {
         view.setText(resId)
     }
+}
+
+private const val CHROME_PACKAGE = "com.android.chrome"
+
+@BindingAdapter("websiteLink")
+fun websiteLink(
+    button: Button,
+    url: String?
+) {
+    if (url.isNullOrEmpty()) {
+        button.isClickable = false
+        return
+    }
+    button.setOnClickListener {
+        val context = it.context
+        if (context.isChromeCustomTabsSupported()) {
+            CustomTabsIntent.Builder().apply {
+                setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                setSecondaryToolbarColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
+            }.build().launchUrl(context, Uri.parse(url))
+        } else {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(url)
+            }
+            context.startActivity(intent, null)
+        }
+    }
+}
+
+private fun Context.isChromeCustomTabsSupported(): Boolean {
+    val serviceIntent = Intent(CustomTabsService.ACTION_CUSTOM_TABS_CONNECTION)
+    serviceIntent.setPackage(CHROME_PACKAGE)
+    val resolveInfos = packageManager.queryIntentServices(serviceIntent, 0)
+    return !resolveInfos.isNullOrEmpty()
 }

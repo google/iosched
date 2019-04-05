@@ -91,7 +91,7 @@ class CollapsibleCard @JvmOverloads constructor(
         toggle.duration = if (expanded) 300L else 200L
         TransitionManager.beginDelayedTransition(root.parent as ViewGroup, toggle)
         cardDescriptionView.visibility = if (expanded) View.VISIBLE else View.GONE
-        expandIcon.rotation = if (expanded) 180f else 0f
+        expandIcon.rotationX = if (expanded) 180f else 0f
         // activated used to tint controls when expanded
         expandIcon.isActivated = expanded
         cardTitleView.isActivated = expanded

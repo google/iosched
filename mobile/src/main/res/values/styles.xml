@@ -47,10 +47,14 @@
         <item name="android:textSize" tools:ignore="SpUsage">20dp</item>
     </style>
 
-    <style name="TextAppearance.IOSched.SessionTitle" parent="@style/TextAppearance.AppCompat.Subhead">
+
+
+    <style name="TextAppearance.IOSched.ListPrimary" parent="@style/TextAppearance.AppCompat.Subhead">
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="TextAppearance.IOSched.SessionTitle" parent="@style/TextAppearance.IOSched.ListPrimary" />
 
     <style name="TextAppearance.IOSched.Small" parent="TextAppearance.AppCompat.Small">
         <item name="android:textColor">?android:textColorPrimary</item>
@@ -104,9 +108,11 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
-    <style name="TextAppearance.IOSched.SpeakerTitle" parent="@style/TextAppearance.IOSched.SessionTitle">
+    <style name="TextAppearance.IOSched.SpeakerTitle" parent="@style/TextAppearance.IOSched.ListPrimary">
         <item name="android:textColor">?colorPrimary</item>
     </style>
+
+    <style name="TextAppearance.IOSched.CodelabTitle" parent="@style/TextAppearance.IOSched.ListPrimary" />
 
     <style name="TextApparance.IOSched.Map.Label" parent="TextAppearance.AppCompat.Body1">
         <item name="android:textSize">13sp</item>
