@@ -45,6 +45,7 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
+import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.getSystemGestureInsetsAsRect
 import com.google.samples.apps.iosched.util.slideOffsetToAlpha
@@ -114,7 +115,6 @@ class MapFragment : MainNavigationFragment() {
         binding = FragmentMapBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = this@MapFragment.viewModel
-            activityViewModel = activityViewModelProvider(viewModelFactory)
         }
 
         mapView = binding.map.apply {
@@ -144,7 +144,8 @@ class MapFragment : MainNavigationFragment() {
         fabBaseMarginBottom = binding.mapModeFab.marginBottom
 
         binding.toolbar.run {
-            inflateMenu(R.menu.map_menu)
+            setupProfileMenuItem(activityViewModelProvider(viewModelFactory), this@MapFragment)
+
             menu.findItem(R.id.action_my_location)?.let { item ->
                 viewModel.showMyLocationOption.observe(viewLifecycleOwner, Observer { option ->
                     item.isVisible = (option == true)

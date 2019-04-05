@@ -29,6 +29,7 @@ import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
+import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.clearDecorations
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import org.threeten.bp.ZoneId
@@ -59,8 +60,11 @@ class AgendaFragment : MainNavigationFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = viewModelProvider(viewModelFactory)
+
         binding.viewModel = viewModel
-        binding.activityViewModel = activityViewModelProvider(viewModelFactory)
+        binding.toolbar.setupProfileMenuItem(
+            activityViewModelProvider(viewModelFactory), this@AgendaFragment
+        )
     }
 }
 
