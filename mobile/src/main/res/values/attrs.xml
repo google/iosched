@@ -122,4 +122,9 @@
         <attr name="navigationBarBorderColor" format="color" />
         <attr name="navigationBarBorderSize" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="HashtagIoDecoration">
+        <attr name="android:drawable" />
+        <attr name="margin" format="dimension" />
+    </declare-styleable>
 </resources>
