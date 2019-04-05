@@ -27,3 +27,6 @@
 
 # https://github.com/firebase/FirebaseUI-Android/issues/1429
 -keep class com.firebase.ui.auth.** { * ; }
+
+# Firebase Functions
+-keep class org.json.** { *; }
