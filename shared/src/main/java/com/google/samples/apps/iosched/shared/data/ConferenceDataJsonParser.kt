@@ -20,11 +20,14 @@ import androidx.annotation.Keep
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonIOException
 import com.google.gson.JsonSyntaxException
+import com.google.samples.apps.iosched.model.Codelab
 import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.model.Room
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.Speaker
 import com.google.samples.apps.iosched.model.Tag
+import com.google.samples.apps.iosched.shared.data.session.json.CodelabDeserializer
+import com.google.samples.apps.iosched.shared.data.session.json.CodelabTemp
 import com.google.samples.apps.iosched.shared.data.session.json.RoomDeserializer
 import com.google.samples.apps.iosched.shared.data.session.json.SessionDeserializer
 import com.google.samples.apps.iosched.shared.data.session.json.SessionTemp
@@ -43,6 +46,7 @@ object ConferenceDataJsonParser {
             .registerTypeAdapter(Tag::class.java, TagDeserializer())
             .registerTypeAdapter(Speaker::class.java, SpeakerDeserializer())
             .registerTypeAdapter(Room::class.java, RoomDeserializer())
+            .registerTypeAdapter(CodelabTemp::class.java, CodelabDeserializer())
             .create()
 
         val tempData: TempConferenceData = gson.fromJson(jsonReader, TempConferenceData::class.java)
@@ -53,8 +57,7 @@ object ConferenceDataJsonParser {
      * Adds nested objects like `session.tags` to `sessions`
      */
     private fun normalize(data: TempConferenceData): ConferenceData {
-        val sessions: MutableList<Session> = mutableListOf()
-
+        val sessions = mutableListOf<Session>()
         data.sessions.forEach { session: SessionTemp ->
             val tags = data.tags.filter { it.tag in session.tagNames }
             val newSession = Session(
@@ -77,11 +80,27 @@ object ConferenceDataJsonParser {
             sessions.add(newSession)
         }
 
+        val codelabs = mutableListOf<Codelab>()
+        data.codelabs.forEach { codelab: CodelabTemp ->
+            val tags = data.tags.filter { it.tag in codelab.tags }
+            val newCodelab = Codelab(
+                id = codelab.id,
+                title = codelab.title,
+                description = codelab.description,
+                durationMinutes = codelab.durationMinutes,
+                iconUrl = codelab.iconUrl,
+                codelabUrl = codelab.codelabUrl,
+                tags = tags
+            )
+            codelabs.add(newCodelab)
+        }
+
         return ConferenceData(
             sessions = sessions,
-            tags = data.tags,
             speakers = data.speakers.values.toList(),
             rooms = data.rooms,
+            codelabs = codelabs,
+            tags = data.tags,
             version = data.version
         )
     }
@@ -96,6 +115,7 @@ data class TempConferenceData(
     val sessions: List<SessionTemp>,
     val speakers: Map<String, Speaker>,
     val rooms: List<Room>,
+    val codelabs: List<CodelabTemp>,
     val tags: List<Tag>,
     val version: Int
 )

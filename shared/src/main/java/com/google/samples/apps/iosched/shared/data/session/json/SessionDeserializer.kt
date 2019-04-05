@@ -19,14 +19,14 @@ package com.google.samples.apps.iosched.shared.data.session.json
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
-import com.google.gson.JsonObject
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneOffset
 import org.threeten.bp.ZonedDateTime
 import java.lang.reflect.Type
 
 /**
- * Deserializer for sessions. Returns a temporary session object, [SessionTemp].
+ * Deserializer for sessions. Returns temporary session objects, which are later normalized once
+ * other objects have also been parsed.
  */
 class SessionDeserializer : JsonDeserializer<SessionTemp> {
 
@@ -64,13 +64,6 @@ class SessionDeserializer : JsonDeserializer<SessionTemp> {
             youTubeUrl = obj.get("youtubeUrl")?.asString ?: "",
             room = obj.get("room").asString
         )
-    }
-
-    private fun getListFromJsonArray(obj: JsonObject, key: String): List<String> {
-        val array = obj.get(key).asJsonArray
-        val stringList = ArrayList<String>()
-        array.mapTo(stringList) { it.asString }
-        return stringList
     }
 
     private fun getUrlFromId(id: String): String {

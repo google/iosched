@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.model
+package com.google.samples.apps.iosched.shared.data.codelabs
 
-/**
- * Contains schedule data with the UI models.
- */
-data class ConferenceData(
-    val sessions: List<Session>,
-    val speakers: List<Speaker>,
-    val rooms: List<Room>,
-    val codelabs: List<Codelab>,
-    val tags: List<Tag>,
-    val version: Int
-)
+import com.google.samples.apps.iosched.model.Codelab
+import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
+import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton
+open class CodelabsRepository @Inject constructor(
+    private val conferenceDataRepository: ConferenceDataRepository
+) {
+    fun getCodelabs(): List<Codelab> = conferenceDataRepository.getOfflineConferenceData().codelabs
+}
