@@ -33,6 +33,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
 import com.google.samples.apps.iosched.R
@@ -55,6 +56,7 @@ import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.navigationItemBackground
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
 import com.google.samples.apps.iosched.util.updateForTheme
+import com.google.samples.apps.iosched.widget.HashtagIoDecoration
 import com.google.samples.apps.iosched.widget.NavigationBarContentFrameLayout
 import dagger.android.support.DaggerAppCompatActivity
 import timber.log.Timber
@@ -179,6 +181,16 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
 
         navigation = findViewById(R.id.navigation)
         navigation.apply {
+            // Add the #io19 decoration
+            val menuView = findViewById<RecyclerView>(R.id.design_navigation_view)?.apply {
+                addItemDecoration(HashtagIoDecoration(context))
+            }
+            // Update the Navigation header view to pad itself down
+            navHeaderBinding.root.doOnApplyWindowInsets { v, insets, padding ->
+                v.updatePadding(top = padding.top + insets.systemWindowInsetTop)
+                // NavigationView doesn't dispatch insets to the menu view, so pad the bottom here.
+                menuView?.updatePadding(bottom = insets.systemWindowInsetBottom)
+            }
             addHeaderView(navHeaderBinding.root)
 
             itemBackground = navigationItemBackground(context)
@@ -197,11 +209,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
                 }
             }
             setupWithNavController(navController)
-        }
-
-        // Update the Navigation header view to pad itself down
-        navHeaderBinding.root.doOnApplyWindowInsets { v, insets, padding ->
-            v.updatePadding(top = padding.top + insets.systemWindowInsetTop)
         }
 
         if (savedInstanceState == null) {

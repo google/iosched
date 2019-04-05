@@ -59,7 +59,6 @@
     <dimen name="dialog_corner_radius">8dp</dimen>
     <dimen name="ui_hint_dialog_icon_size">24dp</dimen>
 
-
     <dimen name="dialog_elevation">24dp</dimen>
     <dimen name="padding_borderless_button">16dp</dimen>
     <dimen name="padding_raised_button">12dp</dimen>
@@ -77,10 +76,8 @@
     <dimen name="feed_session_dimension">200dp</dimen>
 
     <dimen name="nav_account_image_size">32dp</dimen>
-    <!-- Equals what NavigationView ends up using: 32dp drawable padding
-         + 24dp drawable size + 16dp listPreferredItemPaddingLeft -->
-    <dimen name="nav_account_text_keyline">60dp</dimen>
-    <dimen name="nav_io_logo_hashtag_padding">24dp</dimen>
+    <dimen name="nav_header_logo_size">36dp</dimen>
+    <dimen name="nav_item_horizontal_padding">24dp</dimen>
 
     <dimen name="progressbar_width">250dp</dimen>"
 
