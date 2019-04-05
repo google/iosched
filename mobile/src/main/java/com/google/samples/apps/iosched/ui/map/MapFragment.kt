@@ -158,13 +158,6 @@ class MapFragment : MainNavigationFragment() {
                     false
                 }
             }
-
-            // This Fragment can appear as either a top-level screen or in a standalone activity.
-            // Set up toolbar navigation accordingly.
-            if (navigationHost != null) {
-                setNavigationIcon(R.drawable.ic_menu)
-                setNavigationContentDescription(R.string.a11y_show_navigation)
-            }
         }
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
