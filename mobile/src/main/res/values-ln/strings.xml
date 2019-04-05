@@ -16,7 +16,7 @@
 -->
 <resources>
     <string name="title_schedule">Programmation</string>
-    <string name="title_feed">Flux</string>
+
     <string name="title_map">Plan</string>
     <string name="filters">Filtres</string>
     <string name="category_heading_tracks">Thèmes</string>

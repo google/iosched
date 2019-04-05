@@ -16,7 +16,7 @@
 -->
 <resources>
     <string name="title_schedule">スケジュール</string>
-    <string name="title_feed">フィード</string>
+
     <string name="title_map">地図</string>
     <string name="filters">フィルタ</string>
     <string name="category_heading_tracks">トピック</string>

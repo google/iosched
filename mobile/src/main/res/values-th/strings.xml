@@ -16,7 +16,7 @@
 -->
 <resources>
     <string name="title_schedule">กำหนดการ</string>
-    <string name="title_feed">ฟีด</string>
+
     <string name="title_map">แผนที่</string>
     <string name="filters">ตัวกรอง</string>
     <string name="category_heading_tracks">หัวข้อ</string>

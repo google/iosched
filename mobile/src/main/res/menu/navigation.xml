@@ -25,8 +25,8 @@
         <item
             android:id="@id/navigation_feed"
             android:icon="@drawable/ic_nav_home"
-            android:title="@string/title_feed"
-            app:contentDescription="@string/title_feed" />
+            android:title="@string/title_home"
+            app:contentDescription="@string/title_home" />
 
         <item
             android:id="@id/navigation_schedule"

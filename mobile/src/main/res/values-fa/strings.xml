@@ -16,7 +16,7 @@
 -->
 <resources>
     <string name="title_schedule">زمان‌بندی</string>
-    <string name="title_feed">فید</string>
+
     <string name="title_map">نقشه</string>
     <string name="filters">فیلترها</string>
     <string name="category_heading_tracks">موضوعات</string>

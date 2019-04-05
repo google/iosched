@@ -16,7 +16,7 @@
 -->
 <resources>
     <string name="title_schedule">時間表</string>
-    <string name="title_feed">動態消息</string>
+
     <string name="title_map">地圖</string>
     <string name="filters">篩選器</string>
     <string name="category_heading_tracks">主題</string>

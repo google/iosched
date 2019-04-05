@@ -16,7 +16,7 @@
 -->
 <resources>
     <string name="title_schedule">Orari</string>
-    <string name="title_feed">Feed</string>
+
     <string name="title_map">Mappa</string>
     <string name="filters">Filtri</string>
     <string name="category_heading_tracks">Argomenti</string>

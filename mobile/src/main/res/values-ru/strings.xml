@@ -16,7 +16,7 @@
 -->
 <resources>
     <string name="title_schedule">Расписание</string>
-    <string name="title_feed">Лента</string>
+
     <string name="title_map">Схема места проведения</string>
     <string name="filters">Фильтры</string>
     <string name="category_heading_tracks">Темы</string>
