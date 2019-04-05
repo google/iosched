@@ -25,6 +25,7 @@
     <item name="navigation_feed" type="id" />
     <item name="navigation_info" type="id" />
     <item name="navigation_map" type="id" />
+    <item name="navigation_map_sublevel" type="id" />
     <item name="navigation_schedule" type="id" />
     <item name="navigation_settings" type="id" />
     <item name="navigation_session_detail" type="id" />
