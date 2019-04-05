@@ -31,8 +31,6 @@
 
     <application>
 
-        <meta-data android:name="com.google.ar.core" android:value="optional" />
-
         <activity android:name=".ArActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Fullscreen" />
