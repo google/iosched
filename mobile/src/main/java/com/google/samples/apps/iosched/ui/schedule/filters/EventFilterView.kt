@@ -23,6 +23,7 @@ import android.graphics.Outline
 import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.Paint.Style.STROKE
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.M
@@ -106,6 +107,8 @@ class EventFilterView @JvmOverloads constructor(
 
     private val touchFeedback: Drawable
 
+    private val cornerRadius: Float
+
     private lateinit var textLayout: StaticLayout
 
     private var progressAnimator: ValueAnimator? = null
@@ -131,6 +134,7 @@ class EventFilterView @JvmOverloads constructor(
         textPaint = TextPaint(ANTI_ALIAS_FLAG).apply {
             color = defaultTextColor
             textSize = a.getDimensionOrThrow(R.styleable.EventFilterView_android_textSize)
+            typeface = Typeface.MONOSPACE
         }
         dotPaint = Paint(ANTI_ALIAS_FLAG)
         clear = a.getDrawableOrThrow(R.styleable.EventFilterView_clearIcon).apply {
@@ -144,6 +148,7 @@ class EventFilterView @JvmOverloads constructor(
         padding = a.getDimensionPixelSizeOrThrow(R.styleable.EventFilterView_android_padding)
         isChecked = a.getBoolean(R.styleable.EventFilterView_android_checked, false)
         showIcons = a.getBoolean(R.styleable.EventFilterView_showIcons, true)
+        cornerRadius = a.getDimension(R.styleable.EventFilterView_cornerRadius, 0f)
         a.recycle()
         clipToOutline = true
     }
@@ -164,7 +169,8 @@ class EventFilterView @JvmOverloads constructor(
         setMeasuredDimension(w, h)
         outlineProvider = object : ViewOutlineProvider() {
             override fun getOutline(view: View, outline: Outline) {
-                outline.setRoundRect(0, 0, w, h, h / 2f)
+                val rounding = cornerRadius.coerceAtMost(h / 2f)
+                outline.setRoundRect(0, 0, w, h, rounding)
             }
         }
         touchFeedback.setBounds(0, 0, w, h)
@@ -174,7 +180,7 @@ class EventFilterView @JvmOverloads constructor(
         val strokeWidth = outlinePaint.strokeWidth
         val iconRadius = clear.intrinsicWidth / 2f
         val halfStroke = strokeWidth / 2f
-        val rounding = (height - strokeWidth) / 2f
+        val rounding = cornerRadius.coerceAtMost((height - strokeWidth) / 2f)
 
         // Outline
         if (progress < 1f) {
