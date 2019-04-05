@@ -24,9 +24,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.samples.apps.iosched.databinding.ItemSessionBinding
 import com.google.samples.apps.iosched.model.userdata.UserSession
-import com.google.samples.apps.iosched.widget.UnscrollableFlexboxLayoutManager
 import org.threeten.bp.ZoneId
 
 class ScheduleAdapter(
@@ -43,9 +43,7 @@ class ScheduleAdapter(
         ).apply {
             tags.apply {
                 setRecycledViewPool(tagViewPool)
-                // Use a customized FlexboxLayoutManager so that swiping the tags are doesn't
-                // trigger pull to refresh behavior.
-                layoutManager = UnscrollableFlexboxLayoutManager(parent.context).apply {
+                layoutManager = FlexboxLayoutManager(parent.context).apply {
                     recycleChildrenOnDetach = true
                 }
             }

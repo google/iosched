@@ -95,7 +95,20 @@
         android:id="@id/navigation_codelabs"
         android:name="com.google.samples.apps.iosched.ui.codelabs.CodelabsFragment"
         android:label="@string/event_codelabs_title"
-        tools:layout="@layout/fragment_codelabs" />
+        tools:layout="@layout/fragment_codelabs">
+        <action
+            android:id="@+id/to_map"
+            app:destination="@id/navigation_map">
+            <argument
+                android:name="mapVariant"
+                android:defaultValue="DAY"
+                app:argType="string" />
+            <argument
+                android:name="featureId"
+                android:defaultValue="codelabs"
+                app:argType="string" />
+        </action>
+    </fragment>
 
     <fragment
         android:id="@id/navigation_session_detail"

@@ -138,7 +138,7 @@
             app:barrierDirection="bottom"
             app:constraint_referenced_ids="livestream_icon,length_location" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.google.samples.apps.iosched.widget.NoTouchRecyclerView
             android:id="@+id/tags"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -147,10 +147,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/keyline"
             app:layout_constraintTop_toBottomOf="@id/tags_barrier"
-            app:sessionTags="@{userSession.session.displayTags}"
+            app:topicTags="@{userSession.session.displayTags}"
             tools:itemCount="3"
             tools:layoutManager="LinearLayoutManager"
-            tools:listitem="@layout/item_session_tag" />
+            tools:listitem="@layout/item_inline_tag" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

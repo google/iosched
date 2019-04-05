@@ -36,9 +36,9 @@
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
         android:minHeight="?listPreferredItemHeight"
-        android:paddingBottom="8dp"
         android:paddingEnd="?listPreferredItemPaddingEnd"
-        android:paddingTop="8dp"
+        android:paddingTop="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_small"
         tools:ignore="RtlSymmetry">
 
         <androidx.constraintlayout.widget.Guideline
@@ -95,6 +95,19 @@
             tools:text="@sample/codelabs.json/codelabs/duration"
             tools:visibility="visible" />
 
+        <com.google.samples.apps.iosched.widget.NoTouchRecyclerView
+            android:id="@+id/codelab_tags"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/codelab_duration"
+            app:topicTags="@{codelab.tags}"
+            tools:itemCount="3"
+            tools:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/item_inline_tag" />
+
         <TextView
             android:id="@+id/codelab_description"
             android:layout_width="0dp"
@@ -104,7 +117,7 @@
             android:textAppearance="@style/TextAppearance.IOSched.ListSecondary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/codelab_duration"
+            app:layout_constraintTop_toBottomOf="@id/codelab_tags"
             app:goneUnless="@{isExpanded}"
             tools:text="@sample/codelabs.json/codelabs/description"
             tools:visibility="visible" />

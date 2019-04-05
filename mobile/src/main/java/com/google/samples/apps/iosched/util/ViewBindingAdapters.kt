@@ -124,18 +124,21 @@ fun websiteLink(
         return
     }
     button.setOnClickListener {
-        val context = it.context
-        if (context.isChromeCustomTabsSupported()) {
-            CustomTabsIntent.Builder().apply {
-                setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                setSecondaryToolbarColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
-            }.build().launchUrl(context, Uri.parse(url))
-        } else {
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse(url)
-            }
-            context.startActivity(intent, null)
+        openWebsiteUrl(it.context, url)
+    }
+}
+
+fun openWebsiteUrl(context: Context, url: String) {
+    if (context.isChromeCustomTabsSupported()) {
+        CustomTabsIntent.Builder().apply {
+            setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary))
+            setSecondaryToolbarColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
+        }.build().launchUrl(context, Uri.parse(url))
+    } else {
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(url)
         }
+        context.startActivity(intent, null)
     }
 }
 
