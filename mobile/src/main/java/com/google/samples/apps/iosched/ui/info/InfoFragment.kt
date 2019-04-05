@@ -29,6 +29,7 @@ import com.google.samples.apps.iosched.databinding.FragmentInfoBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
+import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import javax.inject.Inject
 
 class InfoFragment : MainNavigationFragment() {
@@ -46,7 +47,6 @@ class InfoFragment : MainNavigationFragment() {
     ): View? {
         binding = FragmentInfoBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
-            activityViewModel = activityViewModelProvider(viewModelFactory)
         }
         return binding.root
     }
@@ -54,6 +54,10 @@ class InfoFragment : MainNavigationFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.run {
+            toolbar.setupProfileMenuItem(
+                activityViewModelProvider(viewModelFactory), this@InfoFragment
+            )
+
             viewpager.offscreenPageLimit = INFO_PAGES.size
             viewpager.adapter = InfoAdapter(childFragmentManager)
             tabs.setupWithViewPager(binding.viewpager)

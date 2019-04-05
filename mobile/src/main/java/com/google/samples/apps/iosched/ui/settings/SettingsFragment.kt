@@ -31,6 +31,7 @@ import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
+import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import javax.inject.Inject
 
@@ -53,8 +54,9 @@ class SettingsFragment : MainNavigationFragment() {
 
         val binding = FragmentSettingsBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.activityViewModel = activityViewModelProvider(viewModelFactory)
         binding.lifecycleOwner = viewLifecycleOwner
+
+        binding.toolbar.setupProfileMenuItem(activityViewModelProvider(viewModelFactory), this)
 
         binding.settingsScroll.doOnApplyWindowInsets { v, insets, padding ->
             v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
