@@ -367,6 +367,12 @@
 
     <style name="Widget.IOSched.NavigationView" parent="@style/Widget.MaterialComponents.NavigationView">
         <item name="itemBackground">@drawable/navigation_item_background</item>
+        <item name="itemHorizontalPadding">@dimen/nav_item_horizontal_padding</item>
+    </style>
+
+    <style name="Widget.IOSched.HashtagIoDecoration">
+        <item name="android:drawable">@drawable/hashtag_io19</item>
+        <item name="margin">@dimen/nav_item_horizontal_padding</item>
     </style>
 
 </resources>
