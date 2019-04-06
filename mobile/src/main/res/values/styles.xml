@@ -70,7 +70,10 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
-    <style name="TextAppearance.IOSched.Tag" parent="@style/TextAppearance.IOSched.ListSecondary" />
+    <style name="TextAppearance.IOSched.Tag" parent="@style/TextAppearance.IOSched.ListSecondary">
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:letterSpacing">@dimen/tag_letter_spacing</item>
+    </style>
 
     <style name="TextAppearance.IOSched.AgendaTitle" parent="@style/TextAppearance.AppCompat.Body1">
         <item name="android:fontFamily">@font/google_sans</item>
@@ -169,20 +172,10 @@
     <style name="Widget.IOSched.Tag.Inline">
         <item name="android:drawablePadding">@dimen/spacing_micro</item>
         <item name="android:drawableStart">@drawable/tag_dot</item>
-        <item name="android:fontFamily">monospace</item>
-    </style>
-
-    <style name="Widget.IOSched.Tag.Chip">
-        <item name="android:background">@drawable/tag_filled</item>
-        <item name="android:paddingLeft">@dimen/tag_hz_padding</item>
-        <item name="android:paddingRight">@dimen/tag_hz_padding</item>
-        <item name="android:paddingTop">@dimen/tag_vert_padding</item>
-        <item name="android:paddingBottom">@dimen/tag_vert_padding</item>
-        <item name="android:textColor">?android:textColorPrimary</item>
-        <item name="android:fontFamily">monospace</item>
     </style>
 
     <style name="Widget.IOSched.EventFilters">
+        <item name="android:letterSpacing">@dimen/tag_letter_spacing</item>
         <item name="android:padding">@dimen/spacing_normal</item>
         <item name="android:strokeColor">?colorControlLight</item>
         <item name="android:textColor">?android:textColorPrimary</item>

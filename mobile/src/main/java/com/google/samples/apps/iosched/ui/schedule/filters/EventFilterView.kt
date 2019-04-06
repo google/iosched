@@ -76,7 +76,7 @@ class EventFilterView @JvmOverloads constructor(
             requestLayout()
         }
 
-    var showIcons: Boolean = true
+    private var showIcons: Boolean = true
         set(value) {
             if (field != value) {
                 field = value
@@ -135,6 +135,7 @@ class EventFilterView @JvmOverloads constructor(
             color = defaultTextColor
             textSize = a.getDimensionOrThrow(R.styleable.EventFilterView_android_textSize)
             typeface = Typeface.MONOSPACE
+            letterSpacing = a.getFloat(R.styleable.EventFilterView_android_letterSpacing, 0f)
         }
         dotPaint = Paint(ANTI_ALIAS_FLAG)
         clear = a.getDrawableOrThrow(R.styleable.EventFilterView_clearIcon).apply {
