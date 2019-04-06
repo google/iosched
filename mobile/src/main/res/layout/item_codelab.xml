@@ -71,8 +71,6 @@
             android:importantForAccessibility="no"
             android:rotationX="@{isExpanded ? 180f : 0f}"
             android:src="@drawable/ic_expand_more"
-            android:tint="@color/collapsing_section"
-            android:tintMode="src_in"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
