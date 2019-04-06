@@ -37,6 +37,8 @@
     <color name="color_primary_dark">@color/indigo_dark</color>
     <color name="color_on_secondary">#FFF</color>
 
+    <color name="wifi_card_background">#e8f0fe</color>
+
     <integer-array name="swipe_refresh">
         <item>@color/indigo</item>
         <item>@color/teal</item>

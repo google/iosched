@@ -24,12 +24,14 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.updatePaddingRelative
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentInfoEventBinding
+import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
@@ -103,4 +105,13 @@ class EventFragment : DaggerFragment() {
 @BindingAdapter("countdownVisibility")
 fun countdownVisibility(countdown: View, ignored: Boolean?) {
     countdown.visibility = if (TimeUtils.conferenceHasStarted()) GONE else VISIBLE
+}
+
+@BindingAdapter("wifiInfo")
+fun bindWifiInfo(textView: TextView, wifiInfo: ConferenceWifiInfo?) {
+    textView.text = if (wifiInfo == null) null else {
+        textView.resources.getString(
+            R.string.wifi_network_and_password, wifiInfo.ssid, wifiInfo.password
+        )
+    }
 }
