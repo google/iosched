@@ -24,10 +24,13 @@ import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
+import com.google.samples.apps.iosched.shared.domain.feed.LoadMomentsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
@@ -101,7 +104,11 @@ class FeedViewModelTest {
      * Use case that always returns an error when executed.
      */
     object FailingUseCase :
-        LoadAnnouncementsUseCase(DefaultFeedRepository(TestAnnouncementDataSource)) {
+        LoadAnnouncementsUseCase(
+            DefaultFeedRepository(TestAnnouncementDataSource,
+                TestMomentDataSource
+            )
+        ) {
         override fun execute(parameters: Unit) {
             result.postValue(Result.Error(Exception("Error!")))
         }
@@ -119,14 +126,27 @@ class FeedViewModelTest {
             loadUser("123")
         },
         loadAnnouncementUseCase: LoadAnnouncementsUseCase = LoadAnnouncementsUseCase(
-            DefaultFeedRepository(TestAnnouncementDataSource)
+            DefaultFeedRepository(TestAnnouncementDataSource,
+                TestMomentDataSource
+            )
+        ),
+        loadMomentsUseCase: LoadMomentsUseCase = LoadMomentsUseCase(
+            DefaultFeedRepository(TestAnnouncementDataSource,
+                TestMomentDataSource
+            )
         )
     ): FeedViewModel {
         return FeedViewModel(
             loadAnnouncementsUseCase = loadAnnouncementUseCase,
             loadFilteredUserSessionsUseCase = loadFilteredSessionsUseCase,
             signInViewModelDelegate = signInViewModelDelegate,
-            feedHeaderLiveData = FeedHeaderLiveData().apply { handler = mockHandler }
+            getTimeZoneUseCase = createGetTimeZoneUseCase(),
+            feedHeaderLiveData = FeedHeaderLiveData(loadMomentsUseCase).apply {
+                handler = mockHandler
+            }
         )
     }
+
+    private fun createGetTimeZoneUseCase() =
+        object : GetTimeZoneUseCase(FakePreferenceStorage()) {}
 }

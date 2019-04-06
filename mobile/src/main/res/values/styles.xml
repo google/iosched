@@ -290,6 +290,24 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
     </style>
 
+    <style name="Widget.IOSched.Feed.Moment" parent="Widget.IOSched" />
+
+    <style name="Widget.IOSched.Feed.Moment.Time">
+        <item name="android:textAppearance">?attr/textAppearanceCaption</item>
+    </style>
+
+    <style name="Widget.IOSched.Feed.Moment.Title">
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:textAppearance">?attr/textAppearanceHeadline4</item>
+    </style>
+
+    <style name="Widget.IOSched.Feed.Moment.Card" parent="Widget.MaterialComponents.CardView">
+        <item name="cardElevation">0dp</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="cardCornerRadius">@dimen/feed_card_corner_radius</item>
+    </style>
+
     <style name="Widget.IOSched.Feed.Session" parent="Widget.IOSched" />
 
     <style name="Widget.IOSched.Feed.Session.Title">

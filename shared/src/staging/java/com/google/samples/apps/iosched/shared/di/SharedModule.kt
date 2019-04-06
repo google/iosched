@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.shared.di
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.FakeAnnouncementDataSource
+import com.google.samples.apps.iosched.shared.data.feed.FakeMomentDataSource
 import com.google.samples.apps.iosched.shared.data.FakeAppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ar.ArDebugFlagEndpoint
@@ -28,6 +29,7 @@ import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
+import com.google.samples.apps.iosched.shared.data.feed.MomentDataSource
 import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
@@ -134,8 +136,17 @@ class SharedModule {
 
     @Singleton
     @Provides
-    fun provideFeedRepository(dataSource: AnnouncementDataSource): FeedRepository {
-        return DefaultFeedRepository(dataSource)
+    fun provideMomentDataSource(): MomentDataSource {
+        return FakeMomentDataSource
+    }
+
+    @Singleton
+    @Provides
+    fun provideFeedRepository(
+        announcementDataSource: AnnouncementDataSource,
+        momentDataSource: MomentDataSource
+    ): FeedRepository {
+        return DefaultFeedRepository(announcementDataSource, momentDataSource)
     }
 
     @Singleton

@@ -20,6 +20,7 @@ import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.model.ConferenceDay
+import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.model.Room
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.Speaker
@@ -263,4 +264,22 @@ object TestData {
 
     val announcements = listOf(feedItem1, feedItem2, feedItem3, feedItem4)
     val feed = announcements.toList<Any>()
+
+    val moments = listOf(
+        Moment(
+            id = "1",
+            title = "KeyNote: Day 1",
+            streamUrl = "https://www.youtube.com",
+            startTime = ZonedDateTime.now(),
+            endTime = ZonedDateTime.now(),
+            textColor = 123,
+            ctaType = Moment.CTA_MAP_LOCATION,
+            imageUrl = "",
+            attendeeRequired = false,
+            timeVisible = false,
+            featureId = "",
+            featureName = "EATs Tent"
+        )
+
+    )
 }

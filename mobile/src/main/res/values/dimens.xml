@@ -50,6 +50,7 @@
     <dimen name="a11y_min_touch_target">48dp</dimen>
 
     <dimen name="app_bar_height">200dp</dimen>
+    <dimen name="moment_height">250dp</dimen>
     <dimen name="nav_drawer_width">@dimen/match_parent</dimen>
     <dimen name="bottom_sheet_elevation">8dp</dimen>
     <dimen name="bottom_sheet_corner_radius">16dp</dimen>
