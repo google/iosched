@@ -23,6 +23,8 @@ import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
 import com.google.samples.apps.iosched.model.Announcement
+import com.google.samples.apps.iosched.model.Moment
+import com.google.samples.apps.iosched.shared.domain.feed.TestMomentDataSource
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import org.junit.Assert
@@ -66,21 +68,39 @@ class LoadAnnouncementsUseCaseTest {
 }
 
 val SuccessfulFeedRepository = object : FeedRepository {
-    override fun clearSubscriptions() {}
-
     val dataSource = TestAnnouncementDataSource
+
+    val momentsDataSource = TestMomentDataSource
+
     override fun getObservableAnnouncements(): LiveData<Result<List<Announcement>>> {
         return dataSource.getObservableAnnouncements()
     }
+
+    override fun getObservableMoments(): LiveData<Result<List<Moment>>> {
+        return momentsDataSource.getObservableMoments()
+    }
+
+    override fun clearAnnouncementSubscriptions() {}
+
+    override fun clearMomentsSubscriptions() {}
 }
 
 val UnsuccessfulFeedRepository = object : FeedRepository {
-    override fun clearSubscriptions() {}
-
     private val feedResults: MutableLiveData<Result<List<Announcement>>> = MutableLiveData()
+
+    private val momentResults: MutableLiveData<Result<List<Moment>>> = MutableLiveData()
 
     override fun getObservableAnnouncements(): LiveData<Result<List<Announcement>>> {
         feedResults.postValue(Result.Error(Exception("Error!")))
         return feedResults
     }
+
+    override fun getObservableMoments(): LiveData<Result<List<Moment>>> {
+        momentResults.postValue(Result.Error(Exception("Error!")))
+        return momentResults
+    }
+
+    override fun clearAnnouncementSubscriptions() {}
+
+    override fun clearMomentsSubscriptions() {}
 }

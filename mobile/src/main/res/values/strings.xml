@@ -182,6 +182,7 @@
     <string name="feed_no_saved_events" translation_description="The title of the sessions section in feed when user is signed in and they don't have any saved event">No saved events</string>
     <string name="feed_view_all_events" translation_description="The title of the call to action in sessions section of feed when user is signed out">View all events</string>
     <string name="feed_view_your_schedule" translation_description="The title of the call to action in sessions section of feed when user is signed in">View your schedule</string>
+    <string name="feed_watch_live_stream" translation_description="The title of the call to action in FeedHeader when the moment contains a livestream">Watch livestream</string>
 
     <plurals name="duration_hours">
         <item quantity="one" translation_description="Unit for duration of time by hours. Singular.">%s hour</item>

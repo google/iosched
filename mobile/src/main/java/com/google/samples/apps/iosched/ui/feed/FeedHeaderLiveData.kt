@@ -17,18 +17,32 @@
 package com.google.samples.apps.iosched.ui.feed
 
 import android.os.Handler
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.shared.di.MainThreadHandler
+import com.google.samples.apps.iosched.shared.domain.feed.LoadMomentsUseCase
+import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.Duration
+import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 
 /** A class that controls the [@FeedHeader] */
-class FeedHeaderLiveData @Inject constructor() : LiveData<FeedHeader>() {
+class FeedHeaderLiveData @Inject constructor(
+    private val loadMomentsUseCase: LoadMomentsUseCase
+) : MediatorLiveData<FeedHeader>() {
     private val conferenceStart = TimeUtils.ConferenceDays.first().start.plusHours(3L)
-    private var feedHeader = FeedHeader(timerVisible = false, moment = null)
-    private val updater = Runnable { update() }
+    private var feedHeader =
+        FeedHeader(timerVisible = false, moment = null, timeZoneId = ZoneId.systemDefault())
+    private val updater = Runnable {
+        update(
+            momentsResult.value.let {
+                if (it is Success) it.data else emptyList()
+            }
+        )
+    }
+    private val momentsResult = loadMomentsUseCase.observe()
 
     @Inject
     @MainThreadHandler
@@ -37,23 +51,31 @@ class FeedHeaderLiveData @Inject constructor() : LiveData<FeedHeader>() {
     override fun onActive() {
         super.onActive()
         value = feedHeader
-        update()
+        addSource(momentsResult) {
+            update(if (it is Success) it.data else emptyList())
+        }
+        loadMomentsUseCase.execute(Unit)
     }
 
     override fun onInactive() {
         super.onInactive()
+        removeSource(momentsResult)
         handler.removeCallbacks(updater)
     }
 
-    private fun update() {
-        var timeUntilConf = Duration.between(ZonedDateTime.now(), conferenceStart)
+    private fun filterCurrentMoment(input: List<Moment>): Moment? {
+        val now = ZonedDateTime.now()
+        return input
+            .filter { it.startTime <= now && now < it.endTime }
+            .let { it.firstOrNull() }
+    }
 
-        val newFeedHeader = when (timeUntilConf.isNegative) {
-            true -> feedHeader.copy(timerVisible = false)
-            false -> feedHeader.copy(timerVisible = true)
-        }
+    private fun update(moments: List<Moment>) {
+        val currentMoment = filterCurrentMoment(moments)
+        val timeUntilConf = Duration.between(ZonedDateTime.now(), conferenceStart)
 
-        // TODO: Get the moments and select current moment
+        val newFeedHeader =
+            feedHeader.copy(timerVisible = !timeUntilConf.isNegative, moment = currentMoment)
 
         // Trigger update only when the value gets changed
         if (newFeedHeader != feedHeader) {

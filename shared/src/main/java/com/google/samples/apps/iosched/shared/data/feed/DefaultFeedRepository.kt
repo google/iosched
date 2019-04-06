@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.shared.data.feed
 
 import androidx.lifecycle.LiveData
 import com.google.samples.apps.iosched.model.Announcement
+import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.shared.result.Result
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -27,18 +28,26 @@ import javax.inject.Singleton
  */
 interface FeedRepository {
     fun getObservableAnnouncements(): LiveData<Result<List<Announcement>>>
-    fun clearSubscriptions()
+    fun getObservableMoments(): LiveData<Result<List<Moment>>>
+    fun clearAnnouncementSubscriptions()
+    fun clearMomentsSubscriptions()
 }
 
 @Singleton
 open class DefaultFeedRepository @Inject constructor(
-    private val dataSource: AnnouncementDataSource
+    private val announcementDataSource: AnnouncementDataSource,
+    private val momentDataSource: MomentDataSource
 ) : FeedRepository {
 
     override fun getObservableAnnouncements(): LiveData<Result<List<Announcement>>> =
-            dataSource.getObservableAnnouncements()
+        announcementDataSource.getObservableAnnouncements()
 
-    override fun clearSubscriptions() {
-        dataSource.clearSubscriptions()
-    }
+    override fun clearAnnouncementSubscriptions() =
+        announcementDataSource.clearSubscriptions()
+
+    override fun clearMomentsSubscriptions() =
+        momentDataSource.clearSubscriptions()
+
+    override fun getObservableMoments(): LiveData<Result<List<Moment>>> =
+        momentDataSource.getObservableMoments()
 }
