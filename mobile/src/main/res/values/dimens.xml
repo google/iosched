@@ -86,6 +86,13 @@
 
     <dimen name="progressbar_width">250dp</dimen>"
 
+    <dimen name="profile_dialog_account_image_size">36dp</dimen>
+    <!-- This is the avatar size + paddingTop + paddingBottom (36 + 16 + 16). This ensures the
+         avatar and text in the dialog header both have at least 16dp "margin" on top and bottom
+         regardless of the user's text scale setting.
+    -->
+    <dimen name="profile_dialog_header_height">68dp</dimen>
+
     <dimen name="dialogPreferredPadding">24dp</dimen>
     <dimen name="dialogPreferredPaddingLarge">36dp</dimen> <!-- dialogPreferredPadding + 12dp -->
 

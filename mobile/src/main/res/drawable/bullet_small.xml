@@ -15,18 +15,10 @@
   ~ limitations under the License.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <!-- Use a large orderInCategory to make it the last item if other menu items are inflated into
-         the same toolbar.
-         No title because it flickers when loading the image. Content description is set at runtime.
-    -->
-    <item
-        android:id="@+id/action_profile"
-        android:icon="@drawable/ic_default_profile_avatar"
-        android:orderInCategory="99"
-        app:showAsAction="always"
-        tools:ignore="MenuTitle" />
-</menu>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="?colorControlNormal" />
+    <size
+        android:width="4dp"
+        android:height="4dp" />
+</shape>

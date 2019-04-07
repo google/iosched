@@ -18,12 +18,21 @@ package com.google.samples.apps.iosched.ui.signin
 
 import android.app.Dialog
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isGone
+import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.databinding.DialogSignOutBinding
+import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignOut
+import com.google.samples.apps.iosched.util.executeAfter
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import dagger.android.support.DaggerAppCompatDialogFragment
 import javax.inject.Inject
@@ -41,22 +50,56 @@ class SignOutDialogFragment : DaggerAppCompatDialogFragment() {
 
     private lateinit var signInViewModel: SignInViewModel
 
+    private lateinit var binding: DialogSignOutBinding
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        // We want to create a dialog, but we also want to use DataBinding for the content view.
+        // We can do that by making an empty dialog and adding the content later.
+        return MaterialAlertDialogBuilder(requireContext()).create()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // In case we are showing as a dialog, use getLayoutInflater() instead.
+        binding = DialogSignOutBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         signInViewModel = viewModelProvider(viewModelFactory)
         signInViewModel.performSignInEvent.observe(this, Observer { request ->
             if (request.peekContent() == RequestSignOut) {
                 request.getContentIfNotHandled()
                 signInHandler.signOut(requireContext())
+                dismiss()
             }
         })
 
-        return MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.dialog_sign_out_title)
-            .setMessage(R.string.dialog_sign_out_content)
-            .setNegativeButton(R.string.not_now, null)
-            .setPositiveButton(R.string.sign_out) { _, _ ->
-                signInViewModel.onSignOut()
-            }
-            .create()
+        binding.executeAfter {
+            viewModel = signInViewModel
+            lifecycleOwner = viewLifecycleOwner
+        }
+
+        if (showsDialog) {
+            (requireDialog() as AlertDialog).setView(binding.root)
+        }
     }
+}
+
+@BindingAdapter("username")
+fun setUsername(textView: TextView, userInfo: AuthenticatedUserInfo?) {
+    val displayName = userInfo?.getDisplayName()
+    textView.text = displayName
+    textView.isGone = displayName.isNullOrEmpty()
+}
+
+@BindingAdapter("userEmail")
+fun setUserEmail(textView: TextView, userInfo: AuthenticatedUserInfo?) {
+    val email = userInfo?.getEmail()
+    textView.text = email
+    textView.isGone = email.isNullOrEmpty()
 }
