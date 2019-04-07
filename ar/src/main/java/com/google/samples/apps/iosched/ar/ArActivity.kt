@@ -21,7 +21,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import com.google.ar.web.webview.ArWebView
-import com.google.samples.apps.iosched.domain.ar.ArConstants
+import com.google.samples.apps.iosched.shared.domain.ar.ArConstants
 
 class ArActivity : AppCompatActivity() {
 

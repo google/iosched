@@ -37,9 +37,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.ar.ArActivity
 import com.google.samples.apps.iosched.databinding.NavigationHeaderBinding
-import com.google.samples.apps.iosched.domain.ar.ArConstants
-import com.google.samples.apps.iosched.domain.ar.InstallOrLaunchArFeatureActivity
+import com.google.samples.apps.iosched.shared.domain.ar.ArConstants
 import com.google.samples.apps.iosched.shared.di.CodelabsEnabledFlag
 import com.google.samples.apps.iosched.shared.di.ExploreArEnabledFlag
 import com.google.samples.apps.iosched.shared.di.FeedFeatureEnabledFlag
@@ -317,7 +317,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
 
     private fun openExploreAr() {
         val intent = Intent(this,
-                InstallOrLaunchArFeatureActivity::class.java).apply {
+                ArActivity::class.java).apply {
             putExtra(ArConstants.CAN_SIGNED_IN_USER_DEMO_AR, canSignedInUserDemoAr)
             putExtra(ArConstants.PINNED_SESSIONS_JSON_KEY, pinnedSessionsJson)
         }
