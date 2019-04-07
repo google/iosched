@@ -50,7 +50,7 @@ class PushUpScrollListener(
             pushPointY = textTop - up.height
         }
 
-        val photo = recyclerView.findViewById<View>(imageResId)
+        val photo = if (imageResId == 0) null else recyclerView.findViewById<View>(imageResId)
         if (photo != null) {
             // If no title in header, push the up button based on the bottom of the photo
             pushPointY = photo.height - up.height
