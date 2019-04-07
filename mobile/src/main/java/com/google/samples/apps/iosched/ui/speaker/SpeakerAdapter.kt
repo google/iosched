@@ -19,7 +19,6 @@ package com.google.samples.apps.iosched.ui.speaker
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -34,7 +33,7 @@ import com.google.samples.apps.iosched.ui.SectionHeader
 import com.google.samples.apps.iosched.ui.speaker.SpeakerViewHolder.HeaderViewHolder
 import com.google.samples.apps.iosched.ui.speaker.SpeakerViewHolder.SpeakerInfoViewHolder
 import com.google.samples.apps.iosched.ui.speaker.SpeakerViewHolder.SpeakerSessionViewHolder
-import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import com.google.samples.apps.iosched.util.executeAfter
 import java.util.Collections.emptyList
 
 /**
@@ -44,7 +43,6 @@ import java.util.Collections.emptyList
 class SpeakerAdapter(
     private val lifecycleOwner: LifecycleOwner,
     private val speakerViewModel: SpeakerViewModel,
-    private val imageLoadListener: ImageLoadListener,
     private val tagRecycledViewPool: RecycledViewPool
 ) : RecyclerView.Adapter<SpeakerViewHolder>() {
 
@@ -80,28 +78,18 @@ class SpeakerAdapter(
 
     override fun onBindViewHolder(holder: SpeakerViewHolder, position: Int) {
         when (holder) {
-            is SpeakerInfoViewHolder -> holder.binding.apply {
+            is SpeakerInfoViewHolder -> holder.binding.executeAfter {
                 viewModel = speakerViewModel
-                headshotLoadListener = imageLoadListener
                 lifecycleOwner = this@SpeakerAdapter.lifecycleOwner
-                executePendingBindings()
-            }.run {
-                // Shift the 'speaker headshot image' bottom down as required
-                speakerGridImage.doOnApplyWindowInsets { view, insets, _ ->
-                    view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                        topMargin = insets.systemWindowInsetTop
-                    }
-                }
             }
-            is SpeakerSessionViewHolder -> holder.binding.apply {
+            is SpeakerSessionViewHolder -> holder.binding.executeAfter {
                 userSession = differ.currentList[position] as UserSession
                 eventListener = speakerViewModel
                 timeZoneId = speakerViewModel.timeZoneId
                 alwaysShowDate = true
                 lifecycleOwner = this@SpeakerAdapter.lifecycleOwner
-                executePendingBindings()
             }
-            is HeaderViewHolder -> holder.binding.apply {
+            is HeaderViewHolder -> holder.binding.executeAfter {
                 sectionHeader = differ.currentList[position] as SectionHeader
             }
         }
