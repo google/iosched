@@ -19,13 +19,18 @@ package com.google.samples.apps.iosched.ui.signin
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.databinding.DialogSignInBinding
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignIn
+import com.google.samples.apps.iosched.util.executeAfter
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import dagger.android.support.DaggerAppCompatDialogFragment
 import javax.inject.Inject
@@ -43,7 +48,26 @@ class SignInDialogFragment : DaggerAppCompatDialogFragment() {
 
     private lateinit var signInViewModel: SignInViewModel
 
+    private lateinit var binding: DialogSignInBinding
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        // We want to create a dialog, but we also want to use DataBinding for the content view.
+        // We can do that by making an empty dialog and adding the content later.
+        return MaterialAlertDialogBuilder(requireContext()).create()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // In case we are showing as a dialog, use getLayoutInflater() instead.
+        binding = DialogSignInBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         signInViewModel = viewModelProvider(viewModelFactory)
         signInViewModel.performSignInEvent.observe(this, EventObserver { request ->
             if (request == RequestSignIn) {
@@ -57,17 +81,18 @@ class SignInDialogFragment : DaggerAppCompatDialogFragment() {
                     }
                     signInIntent.observeForever(observer)
                 }
+                dismiss()
             }
         })
 
-        return MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.dialog_sign_in_title)
-            .setMessage(R.string.dialog_sign_in_content)
-            .setNegativeButton(R.string.not_now, null)
-            .setPositiveButton(R.string.sign_in) { _, _ ->
-                signInViewModel.onSignIn()
-            }
-            .create()
+        binding.executeAfter {
+            viewModel = signInViewModel
+            lifecycleOwner = viewLifecycleOwner
+        }
+
+        if (showsDialog) {
+            (requireDialog() as AlertDialog).setView(binding.root)
+        }
     }
 
     companion object {
