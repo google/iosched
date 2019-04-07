@@ -118,12 +118,11 @@ android {
         sourceCompatibility 1.8
         targetCompatibility 1.8
     }
-
-    dynamicFeatures = [":ar"]
 }
 
 dependencies {
     implementation project(':shared')
+    implementation project(':ar')
     testImplementation project(':test-shared')
     testImplementation project(':androidTest-shared')
     implementation fileTree(include: ['*.jar'], dir: 'libs')

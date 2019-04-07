@@ -88,11 +88,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".domain.ar.InstallOrLaunchArFeatureActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Fullscreen" />
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
