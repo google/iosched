@@ -97,6 +97,7 @@
         <attr name="android:color" />
         <attr name="android:padding" />
         <attr name="android:strokeColor" />
+        <attr name="android:letterSpacing" />
         <attr name="outlineWidth" format="dimension" />
         <attr name="clearIcon" format="reference" />
         <attr name="foreground" format="reference" />
