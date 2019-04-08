@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.shared.data.feed
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -29,10 +30,8 @@ import com.google.samples.apps.iosched.shared.data.document2019
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.ColorUtils
 import org.threeten.bp.Instant
-import org.threeten.bp.ZoneOffset
-import org.threeten.bp.ZonedDateTime
+import org.threeten.bp.ZoneOffset.UTC
 import timber.log.Timber
-import java.util.Date
 import javax.inject.Inject
 
 interface AnnouncementDataSource {
@@ -107,13 +106,9 @@ class FirestoreAnnouncementDataSource @Inject constructor(
             category = snapshot[CATEGORY] as? String ?: "",
             imageUrl = snapshot[IMAGE_URL] as? String ?: "",
             message = snapshot[MESSAGE] as? String ?: "",
-            timestamp = ZonedDateTime.ofInstant(
-                Instant.ofEpochMilli(
-                    (snapshot[TIMESTAMP] as? Date
-                        ?: Date())
-                        .time
-                ), ZoneOffset.UTC
-            ),
+            timestamp = Instant.ofEpochSecond(
+                (snapshot[TIMESTAMP] as Timestamp).seconds
+            ).atZone(UTC),
             color = ColorUtils.parseHexColor(snapshot[COLOR] as? String ?: ""),
             priority = snapshot[PRIORITY] as? Boolean ?: false,
             emergency = snapshot[EMERGENCY] as? Boolean ?: false

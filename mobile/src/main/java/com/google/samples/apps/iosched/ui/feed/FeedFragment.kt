@@ -136,7 +136,8 @@ class FeedFragment : MainNavigationFragment() {
 
     private fun showFeedItems(recyclerView: RecyclerView, list: List<Any>?) {
         if (recyclerView.adapter == null) {
-            val announcementViewBinder = FeedAnnouncementViewBinder()
+            val announcementViewBinder =
+                FeedAnnouncementViewBinder(timeZoneId = model.timeZoneId, lifecycleOwner = this)
             val sectionHeaderViewBinder = FeedSectionHeaderViewBinder()
             val feedHeaderViewBinder = FeedHeaderViewBinder()
             val sessionsViewBinder = FeedSessionsViewBinder(model)
