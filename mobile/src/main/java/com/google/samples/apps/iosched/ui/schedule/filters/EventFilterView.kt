@@ -116,6 +116,8 @@ class EventFilterView @JvmOverloads constructor(
     private val interp =
         AnimationUtils.loadInterpolator(context, android.R.interpolator.fast_out_slow_in)
 
+    private var chipHeight = 0
+
     @ColorInt private val defaultTextColor: Int
 
     init {
@@ -164,24 +166,36 @@ class EventFilterView @JvmOverloads constructor(
             MeasureSpec.UNSPECIFIED -> Int.MAX_VALUE
             else -> Int.MAX_VALUE
         }
+
         createLayout(availableTextWidth)
+        chipHeight = padding + textLayout.height + padding
+
         val w = nonTextWidth + textLayout.textWidth()
-        val h = padding + textLayout.height + padding
+        val h = chipHeight.coerceAtLeast(suggestedMinimumHeight)
         setMeasuredDimension(w, h)
+
+        touchFeedback.setBounds(0, 0, w, chipHeight)
         outlineProvider = object : ViewOutlineProvider() {
             override fun getOutline(view: View, outline: Outline) {
-                val rounding = cornerRadius.coerceAtMost(h / 2f)
-                outline.setRoundRect(0, 0, w, h, rounding)
+                val rounding = cornerRadius.coerceAtMost(chipHeight / 2f)
+                val top = ((view.height - chipHeight) / 2).coerceAtLeast(0)
+                outline.setRoundRect(0, top, view.width, top + chipHeight, rounding)
             }
         }
-        touchFeedback.setBounds(0, 0, w, h)
     }
 
     override fun onDraw(canvas: Canvas) {
+        val ty = ((height - chipHeight) / 2f).coerceAtLeast(0f)
+        canvas.withTranslation(y = ty) {
+            drawChip(canvas)
+        }
+    }
+
+    private fun drawChip(canvas: Canvas) {
         val strokeWidth = outlinePaint.strokeWidth
         val iconRadius = clear.intrinsicWidth / 2f
         val halfStroke = strokeWidth / 2f
-        val rounding = cornerRadius.coerceAtMost((height - strokeWidth) / 2f)
+        val rounding = cornerRadius.coerceAtMost((chipHeight - strokeWidth) / 2f)
 
         // Outline
         if (progress < 1f) {
@@ -189,7 +203,7 @@ class EventFilterView @JvmOverloads constructor(
                 halfStroke,
                 halfStroke,
                 width - halfStroke,
-                height - halfStroke,
+                chipHeight - halfStroke,
                 rounding,
                 rounding,
                 outlinePaint
@@ -204,13 +218,18 @@ class EventFilterView @JvmOverloads constructor(
                 width.toFloat(),
                 progress
             )
-            canvas.drawCircle(strokeWidth + padding + iconRadius, height / 2f, dotRadius, dotPaint)
+            canvas.drawCircle(
+                strokeWidth + padding + iconRadius,
+                chipHeight / 2f,
+                dotRadius,
+                dotPaint
+            )
         } else {
             canvas.drawRoundRect(
                 halfStroke,
                 halfStroke,
                 width - halfStroke,
-                height - halfStroke,
+                chipHeight - halfStroke,
                 rounding,
                 rounding,
                 dotPaint
@@ -235,7 +254,7 @@ class EventFilterView @JvmOverloads constructor(
         }
         canvas.withTranslation(
             x = textX,
-            y = (height - textLayout.height) / 2f
+            y = (chipHeight - textLayout.height) / 2f
         ) {
             textLayout.draw(canvas)
         }
@@ -244,7 +263,7 @@ class EventFilterView @JvmOverloads constructor(
         if (showIcons && progress > 0f) {
             canvas.withTranslation(
                 x = width - strokeWidth - padding - iconRadius,
-                y = height / 2f
+                y = chipHeight / 2f
             ) {
                 canvas.withScale(progress, progress) {
                     clear.draw(canvas)
