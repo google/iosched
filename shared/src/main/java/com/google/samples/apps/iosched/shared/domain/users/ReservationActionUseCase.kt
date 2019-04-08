@@ -38,9 +38,13 @@ open class ReservationActionUseCase @Inject constructor(
                 val (userId, sessionId, action) = parameters
                 val updateResult = repository.changeReservation(userId, sessionId, action)
 
-                result.removeSource(updateResult)
-                result.addSource(updateResult) {
-                    result.postValue(updateResult.value)
+                DefaultScheduler.postToMainThread {
+                    // Posting this block to main thread because MediatorLiveData#addSource needs
+                    // to be called in the main thread since LiveData#observeForever is called
+                    result.removeSource(updateResult)
+                    result.addSource(updateResult) {
+                        result.postValue(updateResult.value)
+                    }
                 }
             } catch (e: Exception) {
                 Timber.d("Exception changing reservation")
