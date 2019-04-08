@@ -229,7 +229,7 @@
       "duration": 5,
       "icon": "",
       "link": "",
-      "tags": [
+      "tagNames": [
         "topic_flutter"
       ]
     },{
@@ -239,7 +239,7 @@
       "duration": 37,
       "icon": "",
       "link": "",
-      "tags": [
+      "tagNames": [
         "topic_cloud"
       ]
     }
