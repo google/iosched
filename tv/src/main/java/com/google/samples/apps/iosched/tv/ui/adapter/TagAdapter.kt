@@ -43,7 +43,7 @@ class TagAdapter : RecyclerView.Adapter<TagViewHolder>() {
         val tag = tags[position]
 
         holder.tagView?.apply {
-            text = tag.name
+            text = tag.displayName
             compoundDrawablesRelative[0]?.setTint(
                 tagTintOrDefault(tag.color, context)
             )

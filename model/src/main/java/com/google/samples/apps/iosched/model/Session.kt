@@ -186,7 +186,7 @@ enum class SessionType {
         fun fromTags(tags: List<Tag>): SessionType {
             val typeTag = tags.firstOrNull { it.category == Tag.CATEGORY_TYPE }
 
-            return when (typeTag?.tag) {
+            return when (typeTag?.tagName) {
                 Tag.TYPE_APP_REVIEWS -> APP_REVIEW
                 Tag.TYPE_AFTERHOURS -> AFTER_HOURS
                 Tag.TYPE_CODELABS -> CODELAB

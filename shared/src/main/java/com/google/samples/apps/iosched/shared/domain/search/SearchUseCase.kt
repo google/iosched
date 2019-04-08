@@ -38,7 +38,7 @@ class SearchUseCase @Inject constructor(
             .filter { session ->
                 session.title.toLowerCase().contains(query) ||
                     session.abstract.toLowerCase().contains(query) ||
-                    session.tags.any { tag -> query.contains(tag.name.toLowerCase()) }
+                    session.tags.any { tag -> query.contains(tag.displayName.toLowerCase()) }
             }
     }
 }

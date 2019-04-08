@@ -208,7 +208,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_micro"
-            android:text="@{viewModel.session.levelTag.name}"
+            android:text="@{viewModel.session.levelTag.displayName}"
             android:textColor="?android:textColorPrimary"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/session_detail_level_barrier"

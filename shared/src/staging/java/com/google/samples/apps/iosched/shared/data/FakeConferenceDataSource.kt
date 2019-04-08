@@ -59,7 +59,7 @@ object FakeConferenceDataSource : ConferenceDataSource {
 
         // Create a fake tag
         val stagingTag = Tag(
-            name = FAKE_SESSION_TAG_NAME, id = "FAKE_TAG", tag = "topic_staging",
+            displayName = FAKE_SESSION_TAG_NAME, id = "FAKE_TAG", tagName = "topic_staging",
             color = "#ff00ff".toColorInt(), fontColor = "#202124".toColorInt(), category = "topic",
             orderInCategory = 99
         )
