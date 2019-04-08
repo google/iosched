@@ -16,6 +16,8 @@
 
 package com.google.samples.apps.iosched.ui.codelabs
 
+import com.google.samples.apps.iosched.model.Codelab
+
 interface CodelabsActionsHandler {
 
     fun dismissCodelabsInfoCard()
@@ -23,4 +25,6 @@ interface CodelabsActionsHandler {
     fun openCodelabsOnMap()
 
     fun launchCodelabsWebsite()
+
+    fun startCodelab(codelab: Codelab)
 }

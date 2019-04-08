@@ -25,6 +25,6 @@
         </targets>
     </transition>
 
-    <autoTransition />
+    <autoTransition android:duration="200" />
 
 </transitionSet>

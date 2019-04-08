@@ -42,7 +42,7 @@ import com.google.samples.apps.iosched.util.executeAfter
 
 internal class CodelabsAdapter(
     private val tagViewPool: RecycledViewPool,
-    private val actionHandler: CodelabsActionsHandler,
+    private val codelabsActionsHandler: CodelabsActionsHandler,
     savedState: Bundle?
 ) : ListAdapter<Any, CodelabsViewHolder>(CodelabsDiffCallback) {
 
@@ -88,6 +88,7 @@ internal class CodelabsAdapter(
         return when (viewType) {
             R.layout.item_codelab -> CodelabItemHolder(
                 ItemCodelabBinding.inflate(inflater, parent, false).apply {
+                    actionHandler = codelabsActionsHandler
                     codelabTags.apply {
                         setRecycledViewPool(tagViewPool)
                         layoutManager = FlexboxLayoutManager(parent.context).apply {
@@ -97,21 +98,24 @@ internal class CodelabsAdapter(
                 }
             )
             R.layout.item_codelabs_information_card -> CodelabsInformationCardHolder(
-                ItemCodelabsInformationCardBinding.inflate(inflater, parent, false)
+                ItemCodelabsInformationCardBinding.inflate(inflater, parent, false).apply {
+                    actionHandler = codelabsActionsHandler
+                }
             )
             R.layout.item_codelabs_header -> CodelabsHeaderHolder(
-                ItemCodelabsHeaderBinding.inflate(inflater, parent, false)
+                ItemCodelabsHeaderBinding.inflate(inflater, parent, false).apply {
+                    actionHandler = codelabsActionsHandler
+                }
             )
             else -> throw IllegalArgumentException("Invalid viewType")
         }
     }
 
     override fun onBindViewHolder(holder: CodelabsViewHolder, position: Int) {
-        when (holder) {
-            is CodelabItemHolder -> bindCodelabItemHolder(holder, getItem(position) as Codelab)
-            is CodelabsInformationCardHolder -> holder.binding.actionHandler = actionHandler
-            is CodelabsHeaderHolder -> holder.binding.actionHandler = actionHandler
+        if (holder is CodelabItemHolder) {
+            bindCodelabItemHolder(holder, getItem(position) as Codelab)
         }
+        // Other types don't need additional binding
     }
 
     private fun bindCodelabItemHolder(holder: CodelabItemHolder, item: Codelab) {

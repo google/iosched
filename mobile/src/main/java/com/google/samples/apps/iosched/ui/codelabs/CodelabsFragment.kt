@@ -26,6 +26,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.databinding.FragmentCodelabsBinding
+import com.google.samples.apps.iosched.model.Codelab
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
@@ -46,6 +49,8 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
     @Inject
     @field:Named("tagViewPool")
     lateinit var tagRecycledViewPool: RecycledViewPool
+
+    @Inject lateinit var analyticsHelper: AnalyticsHelper
 
     private lateinit var binding: FragmentCodelabsBinding
     private lateinit var codelabsViewModel: CodelabsViewModel
@@ -76,6 +81,8 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
         codelabsViewModel.codelabs.observe(this, Observer {
             codelabsAdapter.submitList(it)
         })
+
+        analyticsHelper.sendScreenView("Codelabs", requireActivity())
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -90,9 +97,16 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
 
     override fun openCodelabsOnMap() {
         findNavController().navigate(CodelabsFragmentDirections.toMap())
+        // No analytics event, we log map marker selection in MapViewModel already.
     }
 
     override fun launchCodelabsWebsite() {
         openWebsiteUrl(requireContext(), CODELABS_WEBSITE)
+        analyticsHelper.logUiEvent("Codelabs Website", AnalyticsActions.CLICK)
+    }
+
+    override fun startCodelab(codelab: Codelab) {
+        openWebsiteUrl(requireContext(), codelab.codelabUrl)
+        analyticsHelper.logUiEvent("Start codelab \"${codelab.title}\"", AnalyticsActions.CLICK)
     }
 }

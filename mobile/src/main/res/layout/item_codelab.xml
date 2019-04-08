@@ -29,6 +29,10 @@
         <variable
             name="isExpanded"
             type="Boolean" />
+
+        <variable
+            name="actionHandler"
+            type="com.google.samples.apps.iosched.ui.codelabs.CodelabsActionsHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -127,13 +131,13 @@
             style="@style/Widget.IOSched.BorderlessButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> actionHandler.startCodelab(codelab)}"
             android:text="@string/start_codelab"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/codelab_description"
             app:goneUnless="@{isExpanded}"
             app:icon="@drawable/ic_launch"
             app:iconPadding="8dp"
-            app:websiteLink="@{codelab.codelabUrl}"
             tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
