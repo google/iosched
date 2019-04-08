@@ -34,14 +34,14 @@
         android:layout_marginTop="@dimen/margin_small"
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
+        app:contentPadding="@dimen/margin_normal"
         app:strokeColor="?colorControlLight"
         app:strokeWidth="1dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
@@ -54,7 +54,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginTop="@dimen/margin_normal"
                 android:onClick="@{() -> actionHandler.dismissCodelabsInfoCard()}"
                 android:text="@string/got_it" />
         </LinearLayout>

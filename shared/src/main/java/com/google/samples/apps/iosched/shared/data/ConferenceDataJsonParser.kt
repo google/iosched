@@ -59,7 +59,7 @@ object ConferenceDataJsonParser {
     private fun normalize(data: TempConferenceData): ConferenceData {
         val sessions = mutableListOf<Session>()
         data.sessions.forEach { session: SessionTemp ->
-            val tags = data.tags.filter { it.tag in session.tagNames }
+            val tags = data.tags.filter { it.tagName in session.tagNames }
             val newSession = Session(
                 id = session.id,
                 startTime = session.startTime,
@@ -82,7 +82,9 @@ object ConferenceDataJsonParser {
 
         val codelabs = mutableListOf<Codelab>()
         data.codelabs.forEach { codelab: CodelabTemp ->
-            val tags = data.tags.filter { it.tag in codelab.tags }
+            val tags = data.tags.filter {
+                it.category == Tag.CATEGORY_TOPIC && it.tagName in codelab.tagNames
+            }
             val newCodelab = Codelab(
                 id = codelab.id,
                 title = codelab.title,
