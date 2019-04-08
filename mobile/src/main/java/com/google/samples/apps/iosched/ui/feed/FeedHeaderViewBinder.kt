@@ -18,26 +18,27 @@ package com.google.samples.apps.iosched.ui.feed
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemFeedHeaderBinding
-import org.threeten.bp.ZonedDateTime
+import com.google.samples.apps.iosched.model.Moment
+import com.google.samples.apps.iosched.model.Moment.Companion.CTA_LIVE_STREAM
+import com.google.samples.apps.iosched.model.Moment.Companion.CTA_MAP_LOCATION
+import com.google.samples.apps.iosched.model.Moment.Companion.CTA_NO_ACTION
+import com.google.samples.apps.iosched.model.Moment.Companion.CTA_SIGNIN
 
-/** Feed item for the countdown timer. */
+import com.google.samples.apps.iosched.shared.util.TimeUtils
+import org.threeten.bp.ZoneId
+import org.threeten.bp.format.DateTimeFormatter
+
+/** Feed item for the Feed's header. */
 data class FeedHeader(
     val timerVisible: Boolean = false,
-    val moment: Moment?
-)
-
-data class Moment(
-    val title: String,
-    val startTime: ZonedDateTime,
-    val endTime: ZonedDateTime,
-    val contentActionUrl: String?,
-    val contentActionScreen: String?,
-    val callToAction: String?,
-    val imageUrl: String,
-    val signInRequiredForCta: Boolean
+    val moment: Moment?,
+    val userSignedIn: Boolean = false,
+    val userRegistered: Boolean = false,
+    val timeZoneId: ZoneId
 )
 
 class FeedHeaderViewBinder :
@@ -67,5 +68,40 @@ class FeedHeaderViewHolder(private val binding: ItemFeedHeaderBinding) :
     fun bind(feedHeader: FeedHeader) {
         binding.feedHeader = feedHeader
         binding.executePendingBindings()
+
+        feedHeader.moment?.apply {
+            binding.time.text =
+                (DateTimeFormatter.ofPattern("h:mm").format(
+                    TimeUtils.zonedTime(this.startTime, feedHeader.timeZoneId)
+                ) +
+                    " - " +
+                    DateTimeFormatter.ofPattern("h:mm a").format(
+                        TimeUtils.zonedTime(this.endTime, feedHeader.timeZoneId)
+                    ))
+
+            when (feedHeader.moment.ctaType) {
+                // TODO: set icons programatically
+                // TODO: set click listeners programatically
+                CTA_LIVE_STREAM -> {
+                    binding.actionButton.isVisible = true
+                    binding.actionButton.setText(R.string.feed_watch_live_stream)
+                }
+                CTA_MAP_LOCATION -> {
+                    binding.actionButton.isVisible = true
+                    binding.actionButton.text = feedHeader.moment.featureName
+                }
+                CTA_SIGNIN -> {
+                    if (feedHeader.userSignedIn) {
+                        binding.actionButton.isVisible = false
+                    } else {
+                        binding.actionButton.isVisible = true
+                        binding.actionButton.setText(R.string.sign_in)
+                    }
+                }
+                CTA_NO_ACTION -> {
+                    binding.actionButton.isVisible = false
+                }
+            }
+        }
     }
 }

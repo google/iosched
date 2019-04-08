@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,25 +18,25 @@ package com.google.samples.apps.iosched.shared.domain.feed
 
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
+import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
-import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.shared.result.Result
 import javax.inject.Inject
 
 /**
- * Loads all feed items into a list.
+ * Loads all moments into a list.
  */
-open class LoadAnnouncementsUseCase @Inject constructor(
+open class LoadMomentsUseCase @Inject constructor(
     private val repository: FeedRepository
-) : MediatorUseCase<Unit, List<Announcement>>() {
+) : MediatorUseCase<Unit, List<Moment>>() {
 
     override fun execute(parameters: Unit) {
         result.postValue(Result.Loading)
-        val feedObservable = repository.getObservableAnnouncements()
+        val momentsObservable = repository.getObservableMoments()
 
-        result.removeSource(feedObservable)
+        result.removeSource(momentsObservable)
         result.value = null
-        result.addSource(feedObservable) {
+        result.addSource(momentsObservable) {
             DefaultScheduler.execute {
                 when (it) {
                     is Result.Success -> {
@@ -53,6 +53,6 @@ open class LoadAnnouncementsUseCase @Inject constructor(
 
     fun onCleared() {
         // This use case is no longer going to be used so remove subscriptions
-        repository.clearAnnouncementSubscriptions()
+        repository.clearMomentsSubscriptions()
     }
 }

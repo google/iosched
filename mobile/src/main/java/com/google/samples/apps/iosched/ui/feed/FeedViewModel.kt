@@ -29,15 +29,19 @@ import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCa
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsParameters
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SectionHeader
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.combine
+import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 
@@ -50,12 +54,13 @@ class FeedViewModel @Inject constructor(
     private val loadAnnouncementsUseCase: LoadAnnouncementsUseCase,
     private val loadFilteredUserSessionsUseCase: LoadFilteredUserSessionsUseCase,
     private val signInViewModelDelegate: SignInViewModelDelegate,
+    private val getTimeZoneUseCase: GetTimeZoneUseCase,
     private val feedHeaderLiveData: FeedHeaderLiveData
 ) : ViewModel(), FeedEventListener {
     companion object {
         // Show at max 10 sessions in the horizontal sessions list as user can click on
         // View All sessions and go to schedule to view the full list
-        const val MAX_SESSIONS = 10
+        private const val MAX_SESSIONS = 10
     }
 
     val errorMessage: LiveData<Event<String>>
@@ -76,6 +81,9 @@ class FeedViewModel @Inject constructor(
     val navigateToScheduleAction: LiveData<Event<Boolean>>
         get() = _navigateToScheduleAction
 
+    private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
+    val timeZoneId: LiveData<ZoneId>
+
     init {
         loadSessionsResult = loadFilteredUserSessionsUseCase.observe()
         loadSessionsResult.addSource(signInViewModelDelegate.currentUserInfo) {
@@ -95,13 +103,30 @@ class FeedViewModel @Inject constructor(
                 announcementList
         }
 
+        timeZoneId = preferConferenceTimeZoneResult.map {
+            val preferConferenceTimeZone = it.successOr(true)
+            if (preferConferenceTimeZone) {
+                TimeUtils.CONFERENCE_TIMEZONE
+            } else {
+                ZoneId.systemDefault()
+            }
+        }
+
+        val feedHeaderLiveDataWithTimezone =
+            feedHeaderLiveData.combine(timeZoneId) { feedHeader, timeZoneId ->
+                feedHeader.copy(timeZoneId = timeZoneId)
+            }
+
         // Generate feed
         feed = sessionContainerLiveData
             .combine(announcements) { sessionContainer, announcements ->
                 arrayListOf(sessionContainer, SectionHeader(string.feed_announcement_title))
                     .plus(announcements)
-            }.combine(feedHeaderLiveData) { otherItems, feedHeader ->
-                arrayListOf(feedHeader).plus(otherItems)
+            }.combine(feedHeaderLiveDataWithTimezone) { otherItems, feedHeader ->
+                arrayListOf(feedHeader
+                    .let { injectUserInfo(it) }
+                    .let { removeMomentIfNotRegistered(it) })
+                    .plus(otherItems)
             }
 
         errorMessage = loadFeedResult.map {
@@ -122,8 +147,28 @@ class FeedViewModel @Inject constructor(
             }
         }
 
+        getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
         loadAnnouncementsUseCase.execute(Unit)
     }
+
+    private fun injectUserInfo(feedHeader: FeedHeader): FeedHeader {
+        val userInfo = signInViewModelDelegate.currentUserInfo.value ?: return feedHeader.copy(
+            userSignedIn = false, userRegistered = false
+        )
+        return feedHeader.copy(
+            userSignedIn = userInfo.isSignedIn(), userRegistered = userInfo.isRegistered()
+        )
+    }
+
+    private fun removeMomentIfNotRegistered(feedHeader: FeedHeader): FeedHeader =
+        feedHeader.let {
+            return@removeMomentIfNotRegistered it.copy(
+                moment = if (!it.userRegistered &&
+                    (it.moment?.attendeeRequired == true)
+                ) null
+                else it.moment
+            )
+        }
 
     private fun createAnnouncementsPlaceholder(
         announcementsResult: Result<List<Any>>?
