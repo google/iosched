@@ -41,7 +41,8 @@ data class FeedSessions(
     val username: String?,
     @StringRes val titleId: Int,
     @StringRes val actionTextId: Int,
-    val userSessions: List<UserSession>
+    val userSessions: List<UserSession>,
+    val timeZoneId: ZoneId = ZoneId.systemDefault()
 )
 
 class FeedSessionsViewBinder(private val eventListener: FeedEventListener) :
@@ -77,7 +78,8 @@ class FeedSessionsViewHolder(
     fun bind(sessions: FeedSessions) {
         binding.sessionContainerState = sessions
         binding.eventListener = eventListener
-        val sessionAdapter = FeedSessionAdapter(eventListener = eventListener)
+        val sessionAdapter =
+            FeedSessionAdapter(eventListener = eventListener, timeZoneId = sessions.timeZoneId)
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
             adapter = sessionAdapter
@@ -96,14 +98,17 @@ class FeedSessionsViewHolder(
 }
 
 /** Adapter which provides views for sessions inside the FeedSessionsContainer */
-class FeedSessionAdapter(private val eventListener: FeedEventListener) :
+class FeedSessionAdapter(
+    private val eventListener: FeedEventListener,
+    private val timeZoneId: ZoneId
+) :
     ListAdapter<UserSession, FeedSessionItemViewHolder>(SessionDiff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedSessionItemViewHolder {
         val binding = ItemFeedSessionBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
-        return FeedSessionItemViewHolder(binding, eventListener)
+        return FeedSessionItemViewHolder(binding, eventListener, timeZoneId)
     }
 
     override fun onBindViewHolder(holder: FeedSessionItemViewHolder, position: Int) {
@@ -114,20 +119,23 @@ class FeedSessionAdapter(private val eventListener: FeedEventListener) :
 /** ViewHolder for the sessions inside the FeedSessionsContainer */
 class FeedSessionItemViewHolder(
     private val binding: ItemFeedSessionBinding,
-    private val eventListener: FeedEventListener
+    private val eventListener: FeedEventListener,
+    private val timeZoneId: ZoneId
 ) : ViewHolder(binding.root) {
     fun bind(userSession: UserSession) {
         binding.userSession = userSession
         binding.eventListener = eventListener
+        binding.timeZoneId = timeZoneId
     }
 }
 
-@BindingAdapter(value = ["startTime"])
+@BindingAdapter("startTime", "timeZoneId")
 fun sessionStartTime(
     textView: TextView,
-    startTime: ZonedDateTime
+    startTime: ZonedDateTime,
+    timeZoneId: ZoneId
 ) {
     val timePattern = DateTimeFormatter.ofPattern("h:mm a")
     textView.text =
-        timePattern.format(TimeUtils.zonedTime(startTime, ZoneId.systemDefault()))
+        timePattern.format(TimeUtils.zonedTime(startTime, zoneId = timeZoneId))
 }

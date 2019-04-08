@@ -20,19 +20,29 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemFeedAnnouncementBinding
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.shared.util.TimeUtils
+import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 
-class FeedAnnouncementViewBinder :
-    FeedListItemViewBinder<Announcement, FeedAnnouncementViewHolder>(Announcement::class.java) {
+class FeedAnnouncementViewBinder(
+    private val timeZoneId: LiveData<ZoneId>,
+    private val lifecycleOwner: LifecycleOwner
+) :
+    FeedListItemViewBinder<Announcement, FeedAnnouncementViewHolder>(
+        Announcement::class.java
+    ) {
 
     override fun createViewHolder(parent: ViewGroup): FeedAnnouncementViewHolder =
         FeedAnnouncementViewHolder(
-            ItemFeedAnnouncementBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemFeedAnnouncementBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            lifecycleOwner,
+            timeZoneId
         )
 
     override fun bindViewHolder(model: Announcement, viewHolder: FeedAnnouncementViewHolder) {
@@ -48,16 +58,33 @@ class FeedAnnouncementViewBinder :
         oldItem == newItem
 }
 
-class FeedAnnouncementViewHolder(private val binding: ItemFeedAnnouncementBinding) :
+class FeedAnnouncementViewHolder(
+    private val binding: ItemFeedAnnouncementBinding,
+    private val lifecycleOwner: LifecycleOwner,
+    private val timeZoneId: LiveData<ZoneId>
+) :
     ViewHolder(binding.root) {
 
     fun bind(announcement: Announcement) {
         binding.announcement = announcement
+        binding.lifecycleOwner = lifecycleOwner
+        binding.timeZoneId = timeZoneId
         binding.executePendingBindings()
     }
 }
 
 @BindingAdapter("dateTime")
 fun dateTime(textView: TextView, dateTime: ZonedDateTime) {
-    textView.text = TimeUtils.timeString(textView.context, dateTime)
+    textView.text = TimeUtils.timeString(dateTime)
+}
+
+@BindingAdapter("dateTime", "timeZoneId")
+fun dateTime(textView: TextView, dateTime: ZonedDateTime, timeZoneId: ZoneId?) {
+    if (timeZoneId == null) {
+        textView.text = TimeUtils.timeString(dateTime)
+    } else {
+        textView.text = TimeUtils.timeString(
+            TimeUtils.zonedTime(dateTime, timeZoneId)
+        )
+    }
 }
