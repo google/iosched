@@ -40,7 +40,7 @@ class CodelabDeserializer : JsonDeserializer<CodelabTemp> {
             durationMinutes = obj.get("duration").asInt,
             iconUrl = obj.get("icon")?.asString,
             codelabUrl = obj.get("link").asString,
-            tags = getListFromJsonArray(obj, "tags")
+            tags = getListFromJsonArray(obj, "tagNames")
         )
     }
 }
