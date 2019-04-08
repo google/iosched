@@ -29,6 +29,18 @@ android {
         consumerProguardFiles 'consumer-proguard-rules.pro'
     }
 
+    buildTypes {
+        staging {
+            initWith debug
+
+            // Specifies a sorted list of fallback build types that the
+            // plugin should try to use when a dependency does not include a
+            // "staging" build type.
+            // Used with :test-shared, which doesn't have a staging variant.
+            matchingFallbacks = ['debug']
+        }
+    }
+
     lintOptions {
         disable 'InvalidPackage'
     }
@@ -48,4 +60,3 @@ dependencies {
     implementation "com.google.android.gms:play-services-vision:$rootProject.googlePlayServicesVisionVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlinVersion"
 }
-
