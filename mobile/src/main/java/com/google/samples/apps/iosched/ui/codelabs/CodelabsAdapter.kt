@@ -41,8 +41,9 @@ import com.google.samples.apps.iosched.util.compatRemoveIf
 import com.google.samples.apps.iosched.util.executeAfter
 
 internal class CodelabsAdapter(
-    private val tagViewPool: RecycledViewPool,
     private val codelabsActionsHandler: CodelabsActionsHandler,
+    private val tagViewPool: RecycledViewPool,
+    private val isMapEnabled: Boolean,
     savedState: Bundle?
 ) : ListAdapter<Any, CodelabsViewHolder>(CodelabsDiffCallback) {
 
@@ -105,6 +106,7 @@ internal class CodelabsAdapter(
             R.layout.item_codelabs_header -> CodelabsHeaderHolder(
                 ItemCodelabsHeaderBinding.inflate(inflater, parent, false).apply {
                     actionHandler = codelabsActionsHandler
+                    mapEnabled = isMapEnabled
                 }
             )
             else -> throw IllegalArgumentException("Invalid viewType")
