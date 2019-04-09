@@ -43,4 +43,8 @@
         <key>search_schedule_enabled</key>
         <value>true</value>
     </entry>
+    <entry>
+        <key>io_assistant_app_enabled</key>
+        <value>false</value>
+    </entry>
 </defaultsMap>

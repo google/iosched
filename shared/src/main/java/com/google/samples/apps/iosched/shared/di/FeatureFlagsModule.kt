@@ -55,4 +55,10 @@ class FeatureFlagsModule {
     fun provideSearchScheduleEnabledFlag(appConfig: AppConfigDataSource): Boolean {
         return appConfig.isSearchScheduleFeatureEnabled()
     }
+
+    @Provides
+    @AssistantAppEnabledFlag
+    fun provideAssistantAppEnabledFlag(appConfig: AppConfigDataSource): Boolean {
+        return appConfig.isAssistantAppFeatureEnabled()
+    }
 }

@@ -30,4 +30,5 @@ class FakeAppConfigDataSource : AppConfigDataSource {
     override fun isExploreArFeatureEnabled(): Boolean = true
     override fun isCodelabsFeatureEnabled(): Boolean = true
     override fun isSearchScheduleFeatureEnabled(): Boolean = false
+    override fun isAssistantAppFeatureEnabled(): Boolean = false
 }

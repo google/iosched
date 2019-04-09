@@ -28,4 +28,5 @@ interface AppConfigDataSource {
     fun isExploreArFeatureEnabled(): Boolean
     fun isCodelabsFeatureEnabled(): Boolean
     fun isSearchScheduleFeatureEnabled(): Boolean
+    fun isAssistantAppFeatureEnabled(): Boolean
 }
