@@ -22,6 +22,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.R.string
+import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
@@ -76,6 +77,18 @@ class FeedViewModel @Inject constructor(
     private val _navigateToSessionAction = MutableLiveData<Event<String>>()
     val navigateToSessionAction: LiveData<Event<String>>
         get() = _navigateToSessionAction
+
+    private val _navigateToMapAction = MutableLiveData<Event<Moment>>()
+    val navigateToMapAction: LiveData<Event<Moment>>
+        get() = _navigateToMapAction
+
+    private val _openSignInDialogAction = MutableLiveData<Event<Unit>>()
+    val openSignInDialogAction: LiveData<Event<Unit>>
+        get() = _openSignInDialogAction
+
+    private val _openLiveStreamAction = MutableLiveData<Event<String>>()
+    val openLiveStreamAction: LiveData<Event<String>>
+        get() = _openLiveStreamAction
 
     private val _navigateToScheduleAction = MutableLiveData<Event<Boolean>>()
     val navigateToScheduleAction: LiveData<Event<Boolean>>
@@ -246,8 +259,23 @@ class FeedViewModel @Inject constructor(
     override fun onStarClicked(userSession: UserSession) {
         TODO("not implemented")
     }
+
+    override fun signIn() {
+        _openSignInDialogAction.value = Event(Unit)
+    }
+
+    override fun openMap(moment: Moment) {
+        _navigateToMapAction.value = Event(moment)
+    }
+
+    override fun openLiveStream(liveStreamUrl: String) {
+        _openLiveStreamAction.value = Event(liveStreamUrl)
+    }
 }
 
 interface FeedEventListener : EventActions {
     fun openSchedule(showOnlyPinnedSessions: Boolean)
+    fun signIn()
+    fun openMap(moment: Moment)
+    fun openLiveStream(liveStreamUrl: String)
 }

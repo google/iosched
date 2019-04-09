@@ -50,6 +50,28 @@
             android:layout_width="@dimen/feed_session_dimension"
             android:layout_height="@dimen/feed_session_dimension">
 
+            <ImageView
+                android:id="@+id/reserved_icon"
+                android:layout_width="@dimen/feed_session_badge_icon_size"
+                android:layout_height="@dimen/feed_session_badge_icon_size"
+                android:layout_marginRight="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_small"
+                app:srcCompat="@drawable/ic_reserved"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:goneUnless="@{userSession.userEvent.isReserved}" />
+
+            <ImageView
+                android:id="@+id/starred_icon"
+                android:layout_width="@dimen/feed_session_badge_icon_size"
+                android:layout_height="@dimen/feed_session_badge_icon_size"
+                android:layout_marginRight="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_small"
+                app:srcCompat="@drawable/ic_star"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:goneUnless="@{userSession.userEvent.isStarred &amp;&amp; !userSession.userEvent.isReserved}" />
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/keyline_left"
                 android:layout_width="0dp"
@@ -66,14 +88,14 @@
 
             <TextView
                 android:id="@+id/time"
-                app:startTime="@{userSession.session.startTime}"
-                app:timeZoneId="@{timeZoneId}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_normal"
                 android:textAllCaps="true"
                 app:layout_constraintStart_toStartOf="@id/keyline_left"
                 app:layout_constraintTop_toTopOf="parent"
+                app:startTime="@{userSession.session.startTime}"
+                app:timeZoneId="@{timeZoneId}"
                 tools:text="1:00 pm" />
 
             <TextView
