@@ -127,9 +127,9 @@
     <string name="onboarding_get_started">시작하기</string>
     <string name="onboarding_welcome_to_google_i_o">Google I/O에 오신 것을 환영합니다.</string>
     <string name="onboarding_date_location">2018년 5월 8~10일,\nMountain View, CA</string>
-    <string name="onboarding_build_schedule">내 일정 만들기</string>
-    <string name="onboarding_build_sched_benefits">맞춤 I/O 경험을 만들고 참석자인 경우 좌석을 예약합니다.</string>
-    <string name="onboarding_watch_live">I/O 실시간 스트림 보기</string>
+
+
+
     <string name="onboarding_join_online">온라인으로 참여해 보세요. 기조 연설 및 대부분의 세션이 실시간으로 스트리밍됩니다.</string>
     <string name="onboarding_label_days">일</string>
     <string name="onboarding_label_hours">시간</string>

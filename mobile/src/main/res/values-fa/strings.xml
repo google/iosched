@@ -127,9 +127,9 @@
     <string name="onboarding_get_started">شروع به کار</string>
     <string name="onboarding_welcome_to_google_i_o">به Google I/O خوش‌آمدید</string>
     <string name="onboarding_date_location">۸ تا ۱۰ مه،\n‏۲۰۱۸ ‏ماونتین ویو، کالیفرنیا</string>
-    <string name="onboarding_build_schedule">زمان‌بندی خودتان را ایجاد کنید</string>
-    <string name="onboarding_build_sched_benefits">تجربه سفارشی I/O خودتان را ایجاد کنید و اگر شرکت‌کننده هستید صندلی رزرو کنید</string>
-    <string name="onboarding_watch_live">I/O را به‌طور زنده تماشا کنید</string>
+
+
+
     <string name="onboarding_join_online">به‌صورت آنلاین به ما بپیوندید. مطالب اصلی و اکثر جلسات پخش جریانی مستقیم دارند.</string>
     <string name="onboarding_label_days">روز</string>
     <string name="onboarding_label_hours">ساعت</string>

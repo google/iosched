@@ -208,14 +208,17 @@
     <string name="onboarding_get_started" translation_description="The label for the button to start using the app.">Get started</string>
     <string name="onboarding_welcome_to_google_i_o" translation_description="The welcome message shown at the onboarding screen of the app.">Welcome to Google I/O</string>
     <string name="onboarding_date_location" translation_description="The date and the place of Google I/O 2019.">May 7–9,\n2019 Mountain View, CA</string>
-    <string name="onboarding_build_schedule" translation_description="The explanation title of the feature where user can choose which sessions to attend.">Build your own schedule</string>
-    <string name="onboarding_build_sched_benefits" translation_description="The explanation of the feature where user can choose which sessions to attend.">Build your custom I/O experience and reserve seats if you\'re an attendee</string>
-    <string name="onboarding_watch_live" translation_description="The explanation title of the feature where user can watch I/O sessions by live stream.">Watch I/O Live</string>
     <string name="onboarding_join_online" translation_description="The explanation of the feature where user can watch I/O sessions by live stream.">Join us online. We\'ll be streaming the keynotes and most sessions live.</string>
     <string name="onboarding_label_days" translation_description="The label for the display of the number of days until the conference starts">D</string>
     <string name="onboarding_label_hours" translation_description="The label for the display of the number of hours until the conference starts">H</string>
     <string name="onboarding_label_mins" translation_description="The label for the display of the number of minutes until the conference starts">M</string>
     <string name="onboarding_label_seconds" translation_description="The label for the display of the number of seconds until the conference starts">S</string>
+    <string name="onboarding_welcome_google_io_pre" translation_description="The welcome message shown before the conference to tell that Google I/O is coming">Google I/O is coming</string>
+    <string name="onboarding_welcome_google_io_during" translation_description="The welcome message shown during the conference">Google I/O</string>
+    <string name="onboarding_welcome_google_io_post" translation_description="The welcome message shown post the conference">Watch the I/O \'19 recap and check out #io19 on social</string>
+    <string name="onboarding_signin" translation_description="The welcome message to encourage the user to sign-in to have better experience">Sign-in to receive I/O notifications and attendees can reserve seats for sessions.</string>
+    <string name="onboarding_explore_ar" translation_description="The welcome message shown post the conference">I/O in augmented reality. Once the conference begins you can Explore in AR.</string>
+
 
     <plurals name="session_starting_in" translation_description="A countdown timer for a session starting, e.g. 'Session starting in 5 minutes'. Will always be minutes">
         <item quantity="one">Session starting in %1$s minute</item>

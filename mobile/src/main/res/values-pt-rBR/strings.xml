@@ -127,9 +127,9 @@
     <string name="onboarding_get_started">Primeiros passos</string>
     <string name="onboarding_welcome_to_google_i_o">Boas-vindas ao Google I/O</string>
     <string name="onboarding_date_location">De 8 a 10 de maio de 2018 em Mountain View, CA</string>
-    <string name="onboarding_build_schedule">Crie sua própria programação</string>
-    <string name="onboarding_build_sched_benefits">Crie sua experiência personalizada no Google I/O e reserve lugares se você for um participante</string>
-    <string name="onboarding_watch_live">Assistir o I/O ao vivo</string>
+
+
+
     <string name="onboarding_join_online">Participe do evento pela Internet. Transmitiremos ao vivo as principais informações e a maioria das sessões.</string>
     <string name="onboarding_label_days">D</string>
     <string name="onboarding_label_hours">H</string>
