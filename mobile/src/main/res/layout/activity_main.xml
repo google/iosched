@@ -38,7 +38,7 @@
 
             <fragment
                 android:id="@+id/nav_host_fragment"
-                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:name="com.google.samples.apps.iosched.DispatchInsetsNavHostFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:defaultNavHost="true"
