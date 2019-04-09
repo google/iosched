@@ -136,6 +136,9 @@ fun websiteLink(
 }
 
 fun openWebsiteUrl(context: Context, url: String) {
+    if (url.isBlank()) {
+        return
+    }
     if (context.isChromeCustomTabsSupported()) {
         CustomTabsIntent.Builder().apply {
             setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary))

@@ -31,4 +31,6 @@ data class Codelab(
     val codelabUrl: String,
     /** [Tag]s applicable to this codelab */
     val tags: List<Tag>
-)
+) {
+    fun hasUrl() = !codelabUrl.isBlank()
+}
