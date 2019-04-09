@@ -20,7 +20,10 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.accessibility.AccessibilityEvent
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.AccessibilityDelegateCompat
+import androidx.core.view.ViewCompat
 import androidx.core.view.postDelayed
 import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieAnimationView.CacheStrategy.Strong
@@ -48,37 +51,76 @@ class CountdownView @JvmOverloads constructor(
     private var secs1 by AnimateDigitDelegate { root.findViewById(R.id.countdown_secs_1) }
     private var secs2 by AnimateDigitDelegate { root.findViewById(R.id.countdown_secs_2) }
 
+    private val conferenceStart = TimeUtils.ConferenceDays.first().start.plusHours(3L)
+
+    data class Countdown(
+        val days: Int,
+        val hours: Int,
+        val minutes: Int,
+        val seconds: Int
+    ) {
+        companion object {
+            fun until(time: ZonedDateTime): Countdown? {
+                var duration = Duration.between(ZonedDateTime.now(), time)
+                if (duration.isNegative) {
+                    return null
+                }
+                val days = duration.toDays()
+                duration = duration.minusDays(days)
+                val hours = duration.toHours()
+                duration = duration.minusHours(hours)
+                val mins = duration.toMinutes()
+                duration = duration.minusMinutes(mins)
+                val secs = duration.seconds
+                return Countdown(days.toInt(), hours.toInt(), mins.toInt(), secs.toInt())
+            }
+        }
+    }
+
+    init {
+        isFocusableInTouchMode = true
+        ViewCompat.setAccessibilityDelegate(this, object : AccessibilityDelegateCompat() {
+            override fun dispatchPopulateAccessibilityEvent(
+                host: View?,
+                event: AccessibilityEvent?
+            ): Boolean {
+                return if (event != null) {
+                    val countdown = Countdown.until(conferenceStart)
+                    if (countdown != null) {
+                        val res = context.resources
+                        event.text.add(res.getQuantityString(
+                            R.plurals.duration_days, countdown.days, countdown.days))
+                        event.text.add(res.getQuantityString(
+                            R.plurals.duration_hours, countdown.hours, countdown.hours))
+                        event.text.add(res.getQuantityString(
+                            R.plurals.duration_minutes, countdown.minutes, countdown.minutes))
+                        event.text.add(res.getQuantityString(
+                            R.plurals.duration_seconds, countdown.seconds, countdown.seconds))
+                    }
+                    true
+                } else {
+                    super.dispatchPopulateAccessibilityEvent(host, event)
+                }
+            }
+        })
+    }
+
     private val updateTime: Runnable = object : Runnable {
 
-        // todo: verify Keynote start time
-        private val conferenceStart = TimeUtils.ConferenceDays.first().start.plusHours(3L)
-
         override fun run() {
-            var timeUntilConf = Duration.between(ZonedDateTime.now(), conferenceStart)
+            val countdown = Countdown.until(conferenceStart) ?: return
 
-            if (timeUntilConf.isNegative) {
-                // stop the countdown once conf starts
-                return
-            }
+            days1 = (countdown.days / 10)
+            days2 = (countdown.days % 10)
 
-            val days = timeUntilConf.toDays()
-            days1 = (days / 10).toInt()
-            days2 = (days % 10).toInt()
-            timeUntilConf = timeUntilConf.minusDays(days)
+            hours1 = (countdown.hours / 10)
+            hours2 = (countdown.hours % 10)
 
-            val hours = timeUntilConf.toHours()
-            hours1 = (hours / 10).toInt()
-            hours2 = (hours % 10).toInt()
-            timeUntilConf = timeUntilConf.minusHours(hours)
+            mins1 = (countdown.minutes / 10)
+            mins2 = (countdown.minutes % 10)
 
-            val mins = timeUntilConf.toMinutes()
-            mins1 = (mins / 10).toInt()
-            mins2 = (mins % 10).toInt()
-            timeUntilConf = timeUntilConf.minusMinutes(mins)
-
-            val secs = timeUntilConf.seconds
-            secs1 = (secs / 10).toInt()
-            secs2 = (secs % 10).toInt()
+            secs1 = (countdown.seconds / 10)
+            secs2 = (countdown.seconds % 10)
 
             handler?.postDelayed(this, 1_000L) // Run self every second
         }
