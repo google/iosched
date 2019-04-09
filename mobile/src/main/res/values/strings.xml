@@ -152,7 +152,9 @@
     <string name="dialog_sign_out_content" translation_description="The content of the dialog. Used to confirm that the user wants to sign out.">All saved events, seat reservations and session ratings (if an attendee) remain synced to your account.</string>
     <string name="sign_out" translation_description="The description of a button to sign out.">Sign out</string>
 
-    <string name="profile" translation_description="Title for a menu item to change the user profile (sign in or sign out)">Profile</string>
+    <string name="profile" translation_description="Title for a menu item to change the user profile (sign in or sign out).">Profile</string>
+    <string name="manage_google_account" translation_description="Text for a button allowing the user to manage their Google account.">Manage your Google account</string>
+    <string name="manage_google_account_url" translatable="false">https://myaccount.google.com/</string>
 
     <!-- Cancel reservation dialog -->
     <string name="remove_reservation_title" translation_description="The title of the dialog when the user is about to remove their reservation.">Remove reservation?</string>
