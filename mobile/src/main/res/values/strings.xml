@@ -181,6 +181,11 @@
     <string name="feed_view_all_events" translation_description="The title of the call to action in sessions section of feed when user is signed out">View all events</string>
     <string name="feed_view_your_schedule" translation_description="The title of the call to action in sessions section of feed when user is signed in">View your schedule</string>
 
+    <plurals name="duration_days">
+        <item quantity="one" translation_description="Unit for duration of time by days. Singular.">%s day</item>
+        <item quantity="other" translation_description="Unit for duration of time by days. Plural.">%s days</item>
+    </plurals>
+
     <plurals name="duration_hours">
         <item quantity="one" translation_description="Unit for duration of time by hours. Singular.">%s hour</item>
         <item quantity="other" translation_description="Unit for duration of time by hours. Plural.">%s hours</item>
@@ -189,6 +194,11 @@
     <plurals name="duration_minutes">
         <item quantity="one" translation_description="Unit for duration of time by minutes. Singular.">%s minute</item>
         <item quantity="other" translation_description="Unit for duration of time by minutes. Plural.">%s minutes</item>
+    </plurals>
+
+    <plurals name="duration_seconds">
+        <item quantity="one" translation_description="Unit for duration of time by seconds. Singular.">%s second</item>
+        <item quantity="other" translation_description="Unit for duration of time by seconds. Plural.">%s seconds</item>
     </plurals>
 
     <!--Strings for sharing session-->
