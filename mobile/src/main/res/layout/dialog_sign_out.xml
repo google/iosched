@@ -88,14 +88,27 @@
             app:placeholder="@{@drawable/ic_default_profile_avatar}"
             tools:src="@drawable/ic_default_profile_avatar" />
 
+        <Button
+            android:id="@+id/manage_account"
+            style="@style/Widget.IOSched.ProfileDialog.ManageAccountButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/manage_google_account"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/username_email_container"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialComponents.Chip"
+            app:websiteLink="@{@string/manage_google_account_url}" />
+
         <View
             android:id="@+id/divider1"
             android:layout_width="0dp"
             android:layout_height="1dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/list_divider"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/username_email_container" />
+            app:layout_constraintTop_toBottomOf="@id/manage_account" />
 
         <TextView
             android:id="@+id/message"
