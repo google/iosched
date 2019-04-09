@@ -67,6 +67,7 @@
             android:paddingBottom="@dimen/spacing_normal"
             android:paddingTop="@dimen/spacing_normal"
             android:scrollbars="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layoutManager="LinearLayoutManager"
             app:searchResultItems="@{viewModel.searchResults}"
             app:searchViewModel="@{viewModel}"/>
