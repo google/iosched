@@ -32,6 +32,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentInfoEventBinding
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
+import com.google.samples.apps.iosched.shared.di.AssistantAppEnabledFlag
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
@@ -42,8 +43,15 @@ import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 class EventFragment : DaggerFragment() {
+
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
+
+    @Inject
+    @JvmField
+    @AssistantAppEnabledFlag
+    var assistantAppEnabled = false
+
     private lateinit var eventInfoViewModel: EventInfoViewModel
 
     override fun onCreateView(
@@ -56,6 +64,7 @@ class EventFragment : DaggerFragment() {
 
         val binding = FragmentInfoEventBinding.inflate(inflater, container, false).apply {
             viewModel = eventInfoViewModel
+            showAssistantApp = assistantAppEnabled
             lifecycleOwner = viewLifecycleOwner
         }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,27 +15,21 @@
   ~ limitations under the License.
   -->
 
-<vector
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="60dp"
-    android:height="60dp"
-    android:viewportWidth="60"
-    android:viewportHeight="60">
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="192"
+    android:viewportHeight="192">
     <path
-        android:pathData="M30,12l-8,35"
-        android:strokeColor="@color/yellow"
-        android:strokeLineCap="square"
-        android:strokeWidth="3" />
+        android:fillColor="#34A853"
+        android:pathData="M172,60m-12,0a12,12 0,1 1,24 0a12,12 0,1 1,-24 0" />
     <path
-        android:fillColor="@color/indigo"
-        android:pathData="M4,18.5a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0M14,28.5a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0M4,38.5a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0M14,18.5a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0M4,28.5a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0M14,38.5a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0" />
+        android:fillColor="#EA4335"
+        android:pathData="M136,88m-24,0a24,24 0,1 1,48 0a24,24 0,1 1,-48 0" />
     <path
-        android:pathData="M32,29a13,13 0,1 1,26 0a13,13 0,1 1,-26 0"
-        android:strokeColor="@color/teal"
-        android:strokeWidth="3" />
+        android:fillColor="#FBBC05"
+        android:pathData="M136,148m-28,0a28,28 0,1 1,56 0a28,28 0,1 1,-56 0" />
     <path
-        android:pathData="M40,29a5,5 0,1 1,10 0a5,5 0,1 1,-10 0"
-        android:strokeColor="@color/orange"
-        android:strokeWidth="3" />
-
+        android:fillColor="#4285F4"
+        android:pathData="M56,64m-48,0a48,48 0,1 1,96 0a48,48 0,1 1,-96 0" />
 </vector>

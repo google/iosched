@@ -16,23 +16,26 @@
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="viewModel"
             type="com.google.samples.apps.iosched.ui.info.EventInfoViewModel" />
+
+        <variable
+            name="showAssistantApp"
+            type="Boolean" />
     </data>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="@dimen/margin_normal"
-        android:paddingBottom="@dimen/margin_normal"
         android:clipToPadding="false"
+        android:paddingBottom="@dimen/margin_normal"
+        android:paddingTop="@dimen/margin_normal"
         android:scrollbarStyle="insideOverlay"
         android:scrollbars="vertical">
 
@@ -74,7 +77,8 @@
                 android:textAppearance="@style/TextAppearance.IOSched.Subhead"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/wifi_card" />
+                app:layout_constraintTop_toBottomOf="@id/wifi_card"
+                app:goneUnless="@{showAssistantApp}" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/assistant_app"
@@ -86,7 +90,8 @@
                 android:paddingVertical="@dimen/spacing_normal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/related_apps_header">
+                app:layout_constraintTop_toBottomOf="@+id/related_apps_header"
+                app:goneUnless="@{showAssistantApp}">
 
                 <ImageView
                     android:id="@+id/assistant_app_logo"
@@ -104,7 +109,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_normal"
-                    android:layout_marginStart="@dimen/margin_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
                     android:text="@string/assistant_app_description"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/assistant_app_logo"
@@ -116,11 +121,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_normal"
-                    android:layout_marginStart="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/spacing_micro"
                     android:text="@string/assistant_app_description2"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/assistant_app_logo"
+                    app:layout_constraintStart_toStartOf="@id/assistant_app_description"
                     app:layout_constraintTop_toBottomOf="@id/assistant_app_description" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
