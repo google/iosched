@@ -195,7 +195,7 @@
             app:layout_constraintBottom_toTopOf="@id/guide_peek_height"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_chevron_collapse" />
+            app:srcCompat="@drawable/ic_expand_more" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

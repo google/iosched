@@ -17,8 +17,6 @@
 package com.google.samples.apps.iosched.widget
 
 import android.content.Context
-import android.os.Build.VERSION.SDK_INT
-import android.os.Build.VERSION_CODES.M
 import android.os.Parcel
 import android.os.Parcelable
 import android.transition.Transition
@@ -31,7 +29,6 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
 import com.google.samples.apps.iosched.R
 
 class CollapsibleCard @JvmOverloads constructor(
@@ -66,10 +63,6 @@ class CollapsibleCard @JvmOverloads constructor(
             text = cardDescription
         }
         expandIcon = root.findViewById(R.id.expand_icon)
-        if (SDK_INT < M) {
-            expandIcon.imageTintList =
-                AppCompatResources.getColorStateList(context, R.color.collapsing_section)
-        }
         toggle = TransitionInflater.from(context)
             .inflateTransition(R.transition.info_card_toggle)
         titleContainer.setOnClickListener {
@@ -92,9 +85,6 @@ class CollapsibleCard @JvmOverloads constructor(
         TransitionManager.beginDelayedTransition(root.parent as ViewGroup, toggle)
         cardDescriptionView.visibility = if (expanded) View.VISIBLE else View.GONE
         expandIcon.rotationX = if (expanded) 180f else 0f
-        // activated used to tint controls when expanded
-        expandIcon.isActivated = expanded
-        cardTitleView.isActivated = expanded
         setTitleContentDescription(cardTitle)
     }
 

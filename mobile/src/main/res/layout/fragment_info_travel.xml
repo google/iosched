@@ -22,16 +22,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clipToPadding="false"
+    android:paddingBottom="@dimen/margin_normal"
+    android:paddingTop="@dimen/margin_normal"
     android:scrollbarStyle="insideOverlay"
     android:scrollbars="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@drawable/list_divider"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/margin_normal"
-        android:showDividers="middle">
+        android:orientation="vertical">
 
         <com.google.samples.apps.iosched.widget.CollapsibleCard
             android:id="@+id/directions_parking_card"
@@ -74,12 +73,6 @@
             android:layout_height="wrap_content"
             app:cardDescription="@string/travel_carpool_parking_description"
             app:cardTitle="@string/travel_carpool_parking_title" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:importantForAccessibility="no"
-            android:src="@drawable/info_transport_footer" />
 
     </LinearLayout>
 

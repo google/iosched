@@ -78,13 +78,12 @@
             android:fitsSystemWindows="true"
             app:layout_behavior="com.google.samples.apps.iosched.util.StatusBarScrimBehavior" />
 
-
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:pageMargin="@{@dimen/spacing_normal}"
+            app:pageMargin="@{@dimen/info_page_margin}"
             app:pageMarginDrawable="@{@drawable/page_margin}" />
 
         <com.google.samples.apps.iosched.widget.FadingSnackbar

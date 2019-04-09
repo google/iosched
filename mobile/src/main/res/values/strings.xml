@@ -297,6 +297,9 @@
     <string name="built_with_material_components" translation_description="The app was built with Material Components.">Built with Material Components.</string>
     <string name="tap_to_join_network" translation_description="Tap to join Wifi network.">(tap to join network)</string>
 
+    <string name="wifi_network_and_password" translation_description="Label for wifi network name and password, separated by a line break.">Network: %1$s\nPassword: %2$s</string>
+    <string name="join_network" translation_description="Text for a button to automatically connect to the Wifi network.">Join network</string>
+
     <string name="scavenger_hunt_description" translation_description="Text explaining the scavenger hunt happening at I/O.">Join the I/O Android Things Scavenger Hunt!</string>
     <string name="scavenger_hunt_description2" translation_description="Text explaining the scavenger hunt happening at I/O.">(Hint: There might be an Android Things Developer Kit in your future.)</string>
     <string name="assistant_app_description" translation_description="Text explaining the I/O 18 app for Google Assistant.">Use the I/O 18 Action on Google Assistant.</string>
