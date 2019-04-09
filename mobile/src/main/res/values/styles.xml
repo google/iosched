@@ -246,7 +246,7 @@
     </style>
 
     <style name="Widget.IOSched.HeaderGrid">
-        <item name="android:color">?attr/colorControlLight</item>
+        <item name="android:color">@color/header_grid</item>
         <item name="gridSize">8dp</item>
         <item name="gridStrokeWidth">1dp</item>
     </style>

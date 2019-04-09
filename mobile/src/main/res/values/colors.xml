@@ -38,6 +38,7 @@
     <color name="color_on_secondary">#FFF</color>
 
     <color name="wifi_card_background">#e8f0fe</color>
+    <color name="header_grid">#e6e6e6</color>
 
     <integer-array name="swipe_refresh">
         <item>@color/indigo</item>
