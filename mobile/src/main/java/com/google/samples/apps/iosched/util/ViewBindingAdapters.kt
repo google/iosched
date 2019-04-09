@@ -33,6 +33,7 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.browser.customtabs.CustomTabsService
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
@@ -114,15 +115,21 @@ fun setText(view: TextView, @StringRes resId: Int) {
 
 private const val CHROME_PACKAGE = "com.android.chrome"
 
-@BindingAdapter("websiteLink")
+@BindingAdapter("websiteLink", "hideWhenEmpty", requireAll = false)
 fun websiteLink(
     button: Button,
-    url: String?
+    url: String?,
+    hideWhenEmpty: Boolean = false
 ) {
     if (url.isNullOrEmpty()) {
-        button.isClickable = false
+        if (hideWhenEmpty) {
+            button.isVisible = false
+        } else {
+            button.isClickable = false
+        }
         return
     }
+    button.isVisible = true
     button.setOnClickListener {
         openWebsiteUrl(it.context, url)
     }

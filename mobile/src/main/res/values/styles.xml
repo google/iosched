@@ -85,6 +85,10 @@
         <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 
+    <style name="TextAppearance.IOSched.SpeakerTitle.Display" parent="@style/TextAppearance.MaterialComponents.Headline5">
+        <item name="android:fontFamily">@font/google_sans</item>
+    </style>
+
     <style name="TextAppearance.IOSched.Tab" parent="@style/TextAppearance.Design.Tab">
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textStyle">bold</item>
@@ -259,6 +263,15 @@
         <item name="android:lineSpacingMultiplier">1</item>
         <item name="autoSizeTextType">uniform</item>
         <item name="autoSizeMaxTextSize">34sp</item>
+    </style>
+
+    <style name="Widget.IOSched.SpeakerTitle">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textAppearance">@style/TextAppearance.IOSched.SpeakerTitle.Display</item>
+    </style>
+
+    <style name="Widget.IOSched.SocialButton" parent="Widget.IOSched.BorderlessButton">
+        <item name="android:minWidth">0dp</item>
     </style>
 
     <style name="TextAppearance.IOSched.CollapsibleCard" parent="@style/TextAppearance.AppCompat.Title">
