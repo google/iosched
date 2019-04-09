@@ -53,6 +53,7 @@ import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFr
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment.Companion.DIALOG_NOTIFICATIONS_PREFERENCE
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
+import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.clearDecorations
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.executeAfter
@@ -124,7 +125,6 @@ class ScheduleFragment : MainNavigationFragment() {
         binding = FragmentScheduleBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = this@ScheduleFragment.scheduleViewModel
-            activityViewModel = activityViewModelProvider(viewModelFactory)
         }
 
         filtersFab = binding.filterFab
@@ -142,6 +142,10 @@ class ScheduleFragment : MainNavigationFragment() {
             actionClickListener = {
                 snackbarPrefViewModel.onStopClicked()
             }
+        )
+
+        binding.includeScheduleAppbar.toolbar.setupProfileMenuItem(
+            activityViewModelProvider(viewModelFactory), this
         )
 
         // Filters sheet configuration

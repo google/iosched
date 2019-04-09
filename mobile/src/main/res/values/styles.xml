@@ -154,6 +154,7 @@
     </style>
 
     <style name="Widget.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:paddingEnd">8dp</item>
         <item name="titleTextAppearance">@style/TextAppearance.IOSched.ToolbarTitle</item>
         <item name="popupTheme">@style/AppTheme.PopupTheme</item>
     </style>

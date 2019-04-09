@@ -13,18 +13,18 @@
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
--->
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+  -->
 
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Use a large orderInCategory to make it the last item if other menu items are inflated into
+         the same toolbar.
+    -->
     <item
-        android:id="@+id/action_my_location"
-        android:icon="@drawable/ic_my_location"
-        android:title="@string/enable_my_location"
-        android:visible="false"
-        app:showAsAction="always"
-        tools:visible="true" />
-
+        android:id="@+id/action_profile"
+        android:icon="@drawable/ic_default_profile_avatar"
+        android:orderInCategory="99"
+        android:title="@string/profile"
+        app:showAsAction="always" />
 </menu>

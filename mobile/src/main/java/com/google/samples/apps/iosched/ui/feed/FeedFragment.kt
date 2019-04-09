@@ -40,6 +40,7 @@ import com.google.samples.apps.iosched.ui.feed.FeedFragmentDirections.Companion.
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentArgs
 import com.google.samples.apps.iosched.ui.setUpSnackbar
+import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import timber.log.Timber
 import javax.inject.Inject
@@ -60,7 +61,6 @@ class FeedFragment : MainNavigationFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        super.onCreateView(inflater, container, savedInstanceState)
         model = viewModelProvider(viewModelFactory)
 
         binding = FragmentFeedBinding.inflate(
@@ -68,7 +68,6 @@ class FeedFragment : MainNavigationFragment() {
         ).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = model
-            activityViewModel = activityViewModelProvider(viewModelFactory)
         }
 
         return binding.root
@@ -76,6 +75,7 @@ class FeedFragment : MainNavigationFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.toolbar.setupProfileMenuItem(activityViewModelProvider(viewModelFactory), this)
 
         binding.root.doOnApplyWindowInsets { _, insets, _ ->
             binding.statusBar.run {

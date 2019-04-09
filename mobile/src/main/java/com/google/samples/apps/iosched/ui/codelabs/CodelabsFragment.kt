@@ -33,6 +33,7 @@ import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
+import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.openWebsiteUrl
 import javax.inject.Inject
@@ -66,14 +67,13 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentCodelabsBinding.inflate(inflater, container, false).apply {
-            activityViewModel = activityViewModelProvider(viewModelFactory)
-        }
+        binding = FragmentCodelabsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.toolbar.setupProfileMenuItem(activityViewModelProvider(viewModelFactory), this)
 
         codelabsAdapter = CodelabsAdapter(
             this,
