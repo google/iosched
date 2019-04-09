@@ -23,6 +23,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
+import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.samples.apps.iosched.databinding.FragmentSearchBinding
@@ -30,8 +31,8 @@ import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.search.SearchFragmentDirections.Companion.toSessionDetail
-import kotlinx.android.synthetic.main.fragment_info_event.view.*
-import kotlinx.android.synthetic.main.fragment_search.view.*
+import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import kotlinx.android.synthetic.main.fragment_search.view.searchView
 import javax.inject.Inject
 
 class SearchFragment : MainNavigationFragment() {
@@ -81,6 +82,10 @@ class SearchFragment : MainNavigationFragment() {
             if (requestFocus()) {
                 showKeyboard(binding.toolbar.searchView)
             }
+        }
+
+        binding.recyclerView.doOnApplyWindowInsets { v, insets, padding ->
+            v.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
     }
 
