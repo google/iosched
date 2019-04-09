@@ -85,6 +85,15 @@ class FeedViewModel @Inject constructor(
     val timeZoneId: LiveData<ZoneId>
 
     init {
+        timeZoneId = preferConferenceTimeZoneResult.map {
+            val preferConferenceTimeZone = it.successOr(true)
+            if (preferConferenceTimeZone) {
+                TimeUtils.CONFERENCE_TIMEZONE
+            } else {
+                ZoneId.systemDefault()
+            }
+        }
+
         loadSessionsResult = loadFilteredUserSessionsUseCase.observe()
         loadSessionsResult.addSource(signInViewModelDelegate.currentUserInfo) {
             refreshSessions()
@@ -92,6 +101,9 @@ class FeedViewModel @Inject constructor(
         val sessionContainerLiveData = signInViewModelDelegate.currentUserInfo.combine(
             loadSessionsResult
         ) { userInfo, sessions -> createFeedSessionsContainer(userInfo, sessions) }
+            .combine(timeZoneId) { sessionContainer, timeZoneId ->
+                sessionContainer.copy(timeZoneId = timeZoneId)
+            }
 
         val announcements: LiveData<List<Any>> = loadFeedResult.map {
             val announcementsPlaceholder = createAnnouncementsPlaceholder(announcementsResult = it)
@@ -101,15 +113,6 @@ class FeedViewModel @Inject constructor(
                 arrayListOf(announcementsPlaceholder)
             else
                 announcementList
-        }
-
-        timeZoneId = preferConferenceTimeZoneResult.map {
-            val preferConferenceTimeZone = it.successOr(true)
-            if (preferConferenceTimeZone) {
-                TimeUtils.CONFERENCE_TIMEZONE
-            } else {
-                ZoneId.systemDefault()
-            }
         }
 
         val feedHeaderLiveDataWithTimezone =

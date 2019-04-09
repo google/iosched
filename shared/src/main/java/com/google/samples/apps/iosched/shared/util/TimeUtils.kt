@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.shared.util
 
-import android.content.Context
-import android.text.format.DateUtils
 import androidx.annotation.StringRes
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.Session
@@ -26,7 +24,6 @@ import com.google.samples.apps.iosched.shared.R
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
-import java.util.concurrent.TimeUnit
 
 object TimeUtils {
 
@@ -76,27 +73,14 @@ object TimeUtils {
     }
 
     /**
-     * Converts a [dateTime] to a short localised string.
+     * Converts a [dateTime] to a short string.
      *
-     * The returned string contains the date, time and weekday, but no year, localised in the
-     * timezone and Locale.
-     * Examples: <code>Tuesday, 9 May, 1:55pm</code> in EN_US and
-     * <code>Dienstag, 9. Mai, 13:55</code> in DE_DE.
+     * The returned string contains the date, time and weekday, but no year
+     * Examples: <code>Tuesday, May 9, 1:55pm</code> in EN_US and
+     * <code>Dienstag, Mai 9., 13:55</code> in DE_DE.
      */
-    fun timeString(context: Context, dateTime: ZonedDateTime): String {
-        val sb = StringBuilder()
-
-        val flags = DateUtils.FORMAT_SHOW_DATE or
-                DateUtils.FORMAT_NO_YEAR or
-                DateUtils.FORMAT_SHOW_WEEKDAY or
-                DateUtils.FORMAT_SHOW_TIME
-
-        // Convert the time from s to ms
-        val timestamp = TimeUnit.SECONDS.toMillis(dateTime.toEpochSecond())
-
-        sb.append(DateUtils.formatDateTime(context, timestamp, flags))
-        return sb.toString()
-    }
+    fun timeString(dateTime: ZonedDateTime): String =
+        DateTimeFormatter.ofPattern("EEE, MMM d,  h:mm a").format(dateTime)
 
     fun zonedTime(time: ZonedDateTime, zoneId: ZoneId = ZoneId.systemDefault()): ZonedDateTime {
         return ZonedDateTime.ofInstant(time.toInstant(), zoneId)

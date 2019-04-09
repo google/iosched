@@ -21,9 +21,16 @@
 
     <data>
 
+        <import type="androidx.lifecycle.LiveData" />
+
+        <variable
+            name="timeZoneId"
+            type="LiveData&lt;org.threeten.bp.ZoneId&gt;" />
+
         <variable
             name="announcement"
             type="com.google.samples.apps.iosched.model.Announcement" />
+
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -31,8 +38,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_normal"
-        app:contentPadding="@dimen/margin_small"
-        app:cardCornerRadius="@dimen/feed_card_corner_radius">
+        app:cardCornerRadius="@dimen/feed_card_corner_radius"
+        app:contentPadding="@dimen/margin_small">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -51,6 +58,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:dateTime="@{announcement.timestamp}"
+                app:timeZoneId="@{timeZoneId}"
                 tools:text="25 Mat 2017, 8:00am" />
 
             <TextView
