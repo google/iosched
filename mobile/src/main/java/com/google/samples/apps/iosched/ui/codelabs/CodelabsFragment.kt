@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.codelabs
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -35,7 +36,7 @@ import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
-import com.google.samples.apps.iosched.util.openWebsiteUrl
+import com.google.samples.apps.iosched.util.openWebsiteUri
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -43,6 +44,10 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
 
     companion object {
         private const val CODELABS_WEBSITE = "https://codelabs.developers.google.com"
+        private const val PARAM_UTM_SOURCE = "utm_source"
+        private const val PARAM_UTM_MEDIUM = "utm_medium"
+        private const val VALUE_UTM_SOURCE = "ioapp"
+        private const val VALUE_UTM_MEDIUM = "android"
     }
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -112,12 +117,20 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
     }
 
     override fun launchCodelabsWebsite() {
-        openWebsiteUrl(requireContext(), CODELABS_WEBSITE)
+        openWebsiteUri(requireContext(), addCodelabsAnalyticsQueryParams(CODELABS_WEBSITE))
         analyticsHelper.logUiEvent("Codelabs Website", AnalyticsActions.CLICK)
     }
 
     override fun startCodelab(codelab: Codelab) {
-        openWebsiteUrl(requireContext(), codelab.codelabUrl)
+        openWebsiteUri(requireContext(), addCodelabsAnalyticsQueryParams(codelab.codelabUrl))
         analyticsHelper.logUiEvent("Start codelab \"${codelab.title}\"", AnalyticsActions.CLICK)
+    }
+
+    private fun addCodelabsAnalyticsQueryParams(url: String): Uri {
+        return Uri.parse(url)
+            .buildUpon()
+            .appendQueryParameter(PARAM_UTM_SOURCE, VALUE_UTM_SOURCE)
+            .appendQueryParameter(PARAM_UTM_MEDIUM, VALUE_UTM_MEDIUM)
+            .build()
     }
 }
