@@ -37,6 +37,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:importantForAccessibility="no"
             app:offscreenPageLimit="@{2}" />
 
         <androidx.constraintlayout.widget.Guideline
