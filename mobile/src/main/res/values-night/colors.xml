@@ -30,4 +30,5 @@
     <color name="status_bar_scrim">@color/transparent</color>
 
     <color name="wifi_card_background">#263238</color>
+    <color name="header_grid">#222</color>
 </resources>
