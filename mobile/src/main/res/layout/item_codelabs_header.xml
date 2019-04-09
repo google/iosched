@@ -23,6 +23,10 @@
         <variable
             name="actionHandler"
             type="com.google.samples.apps.iosched.ui.codelabs.CodelabsActionsHandler" />
+
+        <variable
+            name="mapEnabled"
+            type="boolean" />
     </data>
 
     <com.google.android.flexbox.FlexboxLayout
@@ -45,6 +49,7 @@
             android:layout_height="wrap_content"
             android:onClick="@{() -> actionHandler.openCodelabsOnMap()}"
             android:text="@string/codelabs_building"
+            app:goneUnless="@{mapEnabled}"
             app:icon="@drawable/ic_nav_map" />
 
         <Button

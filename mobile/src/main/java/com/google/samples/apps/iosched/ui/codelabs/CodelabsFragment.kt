@@ -29,6 +29,7 @@ import com.google.samples.apps.iosched.databinding.FragmentCodelabsBinding
 import com.google.samples.apps.iosched.model.Codelab
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
@@ -48,6 +49,11 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
     @Inject
     @field:Named("tagViewPool")
     lateinit var tagRecycledViewPool: RecycledViewPool
+
+    @Inject
+    @JvmField
+    @MapFeatureEnabledFlag
+    var mapFeatureEnabled: Boolean = false
 
     @Inject lateinit var analyticsHelper: AnalyticsHelper
 
@@ -69,7 +75,12 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        codelabsAdapter = CodelabsAdapter(tagRecycledViewPool, this, savedInstanceState)
+        codelabsAdapter = CodelabsAdapter(
+            this,
+            tagRecycledViewPool,
+            mapFeatureEnabled,
+            savedInstanceState
+        )
         binding.codelabsList.adapter = codelabsAdapter
 
         // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
