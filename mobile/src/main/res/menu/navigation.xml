@@ -54,7 +54,7 @@
 
         <item
             android:id="@id/navigation_explore_ar"
-            android:icon="@drawable/ic_nav_explore"
+            android:icon="@drawable/ic_nav_signpost"
             android:title="@string/title_explore_io"
             app:contentDescription="@string/title_explore_io" />
     </group>
