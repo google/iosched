@@ -139,16 +139,18 @@ fun openWebsiteUrl(context: Context, url: String) {
     if (url.isBlank()) {
         return
     }
+    openWebsiteUri(context, Uri.parse(url))
+}
+
+fun openWebsiteUri(context: Context, uri: Uri) {
     if (context.isChromeCustomTabsSupported()) {
-        CustomTabsIntent.Builder().apply {
-            setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary))
-            setSecondaryToolbarColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
-        }.build().launchUrl(context, Uri.parse(url))
+        CustomTabsIntent.Builder()
+            .setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary))
+            .setSecondaryToolbarColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
+            .build()
+            .launchUrl(context, uri)
     } else {
-        val intent = Intent(Intent.ACTION_VIEW).apply {
-            data = Uri.parse(url)
-        }
-        context.startActivity(intent, null)
+        context.startActivity(Intent(Intent.ACTION_VIEW, uri))
     }
 }
 
