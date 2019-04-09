@@ -119,7 +119,7 @@
 
     <style name="TextAppearance.IOSched.CodelabTitle" parent="@style/TextAppearance.IOSched.ListPrimary" />
 
-    <style name="TextApparance.IOSched.Map.Label" parent="TextAppearance.AppCompat.Body1">
+    <style name="TextAppearance.IOSched.Map.Label" parent="TextAppearance.AppCompat.Body1">
         <item name="android:textSize">13sp</item>
         <item name="android:textColor">#FFF</item>
         <item name="android:shadowColor">#FF000000</item>

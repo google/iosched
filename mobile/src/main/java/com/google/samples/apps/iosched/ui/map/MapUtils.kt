@@ -47,7 +47,7 @@ fun processGeoJsonLayer(layer: GeoJsonLayer, context: Context) {
 /** Creates a new IconGenerator for labels on the map. */
 private fun getLabelIconGenerator(context: Context): IconGenerator {
     return IconGenerator(context).apply {
-        setTextAppearance(context, R.style.TextApparance_IOSched_Map_Label)
+        setTextAppearance(context, R.style.TextAppearance_IOSched_Map_Label)
         setBackground(null)
     }
 }
