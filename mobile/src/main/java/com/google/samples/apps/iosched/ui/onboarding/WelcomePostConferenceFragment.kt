@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,13 +23,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.samples.apps.iosched.R
 
-class CountdownFragment : Fragment() {
+/**
+ * First page of onboarding showing a welcome message post the conference.
+ */
+class WelcomePostConferenceFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_countdown, container, false)
+        return inflater.inflate(R.layout.fragment_onboarding_welcome_post, container, false)
     }
 }

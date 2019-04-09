@@ -39,6 +39,35 @@ internal abstract class OnboardingModule {
     internal abstract fun contributeOnboardingFragment(): OnboardingFragment
 
     /**
+     * Generates an [AndroidInjector] for the [WelcomePreConferenceFragment].
+     */
+    @FragmentScoped
+    @ContributesAndroidInjector
+    internal abstract fun contributeWelcomePreConferenceFragment(): WelcomePreConferenceFragment
+
+    /**
+     * Generates an [AndroidInjector] for the [WelcomeDuringConferenceFragment].
+     */
+    @FragmentScoped
+    @ContributesAndroidInjector
+    internal abstract fun contributeWelcomeDuringConferenceFragment():
+            WelcomeDuringConferenceFragment
+
+    /**
+     * Generates an [AndroidInjector] for the [OnboardingExploreArFragment].
+     */
+    @FragmentScoped
+    @ContributesAndroidInjector
+    internal abstract fun contributeOnboardingExploreArFragment(): OnboardingExploreArFragment
+
+    /**
+     * Generates an [AndroidInjector] for the [OnboardingSignInFragment].
+     */
+    @FragmentScoped
+    @ContributesAndroidInjector
+    internal abstract fun contributeOnboardingSignInFragment(): OnboardingSignInFragment
+
+    /**
      * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
      * want to get a [OnboardingViewModel] class.
      */

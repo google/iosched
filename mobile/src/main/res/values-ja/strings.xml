@@ -127,9 +127,9 @@
     <string name="onboarding_get_started">使ってみる</string>
     <string name="onboarding_welcome_to_google_i_o">Google I/O へようこそ</string>
     <string name="onboarding_date_location">2018 年 5 月 8～10 日、\nカリフォルニア州マウンテンビューで開催</string>
-    <string name="onboarding_build_schedule">自分用のスケジュールを組みましょう</string>
-    <string name="onboarding_build_sched_benefits">自分に合う I/O イベントを選び、参加する場合は座席を予約します</string>
-    <string name="onboarding_watch_live">I/O のライブ配信を見る</string>
+
+
+
     <string name="onboarding_join_online">オンラインでご参加いただけます。基調講演や大部分のセッションをライブ配信する予定です。</string>
     <string name="onboarding_label_days">日</string>
     <string name="onboarding_label_hours">時間</string>

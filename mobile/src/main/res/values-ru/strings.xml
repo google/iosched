@@ -133,9 +133,9 @@
     <string name="onboarding_get_started">Начать</string>
     <string name="onboarding_welcome_to_google_i_o">Добро пожаловать на фестиваль Google I/O</string>
     <string name="onboarding_date_location">8–10 мая 2018 г.,\nМаунтин-Вью, Калифорния</string>
-    <string name="onboarding_build_schedule">Составьте свое расписание</string>
-    <string name="onboarding_build_sched_benefits">Выберите, чем хотите заняться на фестивале I/O и забронируйте места на интересных вам сессиях.</string>
-    <string name="onboarding_watch_live">Прямая трансляция фестиваля I/O</string>
+
+
+
     <string name="onboarding_join_online">Присоединяйтесь к нам через Интернет: мы будем транслировать ключевые моменты выступлений и большинство сессий.</string>
     <string name="onboarding_label_days">д.</string>
     <string name="onboarding_label_hours">ч.</string>
