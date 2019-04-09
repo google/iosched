@@ -289,6 +289,13 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="Widget.IOSched.ProfileDialog.ManageAccountButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.Chip</item>
+    </style>
+
     <style name="Widget.IOSched.OnboardingDeck" parent="@android:style/Widget.Material.TextView">
         <item name="android:textAppearance">@style/TextAppearance.IOSched.OnboardingDeck</item>
         <item name="android:lineSpacingMultiplier">@dimen/text_line_spacing</item>
