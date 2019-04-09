@@ -30,6 +30,6 @@ data class CodelabTemp(
     val iconUrl: String?,
     /** URL to access this codelab on the web */
     val codelabUrl: String,
-    /** [Tag]s applicable to this codelab */
-    val tags: List<String>
+    /** Names of Tags applicable to this codelab */
+    val tagNames: List<String>
 )

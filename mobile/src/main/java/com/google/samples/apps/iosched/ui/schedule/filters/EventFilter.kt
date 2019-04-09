@@ -89,8 +89,8 @@ sealed class EventFilter(isChecked: Boolean) {
         override fun getTextResId(): Int = 0
         override fun getShortTextResId(): Int = 0
 
-        override fun getText(): String = tag.name
-        override fun getShortText(): String = tag.name
+        override fun getText(): String = tag.displayName
+        override fun getShortText(): String = tag.displayName
 
         /** Only the tag is used for equality. */
         override fun equals(other: Any?) =
