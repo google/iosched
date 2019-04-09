@@ -20,6 +20,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.google.android.material.button.MaterialButton
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemFeedHeaderBinding
 import com.google.samples.apps.iosched.model.Moment
@@ -41,14 +42,15 @@ data class FeedHeader(
     val timeZoneId: ZoneId
 )
 
-class FeedHeaderViewBinder :
+class FeedHeaderViewBinder(private val eventListener: FeedEventListener) :
     FeedListItemViewBinder<FeedHeader, FeedHeaderViewHolder>(FeedHeader::class.java) {
 
     override fun createViewHolder(parent: ViewGroup): FeedHeaderViewHolder =
         FeedHeaderViewHolder(
             ItemFeedHeaderBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
-            )
+            ),
+            eventListener
         )
 
     override fun bindViewHolder(model: FeedHeader, viewHolder: FeedHeaderViewHolder) {
@@ -62,7 +64,10 @@ class FeedHeaderViewBinder :
     override fun areContentsTheSame(oldItem: FeedHeader, newItem: FeedHeader) = oldItem == newItem
 }
 
-class FeedHeaderViewHolder(private val binding: ItemFeedHeaderBinding) :
+class FeedHeaderViewHolder(
+    private val binding: ItemFeedHeaderBinding,
+    private val eventListener: FeedEventListener
+) :
     ViewHolder(binding.root) {
 
     fun bind(feedHeader: FeedHeader) {
@@ -79,27 +84,49 @@ class FeedHeaderViewHolder(private val binding: ItemFeedHeaderBinding) :
                         TimeUtils.zonedTime(this.endTime, feedHeader.timeZoneId)
                     ))
 
+            val button = binding.actionButton as MaterialButton
             when (feedHeader.moment.ctaType) {
-                // TODO: set icons programatically
-                // TODO: set click listeners programatically
                 CTA_LIVE_STREAM -> {
-                    binding.actionButton.isVisible = true
-                    binding.actionButton.setText(R.string.feed_watch_live_stream)
+                    val url = feedHeader.moment?.streamUrl
+                    if (url.isNullOrEmpty()) {
+                        binding.actionButton.isVisible = false
+                    } else {
+                        button.apply {
+                            isVisible = true
+                            setText(R.string.feed_watch_live_stream)
+                            setOnClickListener {
+                                eventListener.openLiveStream(
+                                    feedHeader.moment?.streamUrl ?: ""
+                                )
+                            }
+                            setIconResource(R.drawable.ic_play_circle_outline)
+                        }
+                    }
                 }
                 CTA_MAP_LOCATION -> {
-                    binding.actionButton.isVisible = true
-                    binding.actionButton.text = feedHeader.moment.featureName
+                    button.apply {
+                        isVisible = true
+                        text = feedHeader.moment.featureName
+                        setOnClickListener {
+                            eventListener.openMap(feedHeader.moment)
+                        }
+                        setIconResource(R.drawable.ic_nav_map)
+                    }
                 }
                 CTA_SIGNIN -> {
                     if (feedHeader.userSignedIn) {
-                        binding.actionButton.isVisible = false
+                        button.isVisible = false
                     } else {
-                        binding.actionButton.isVisible = true
-                        binding.actionButton.setText(R.string.sign_in)
+                        button.apply {
+                            isVisible = true
+                            setText(R.string.sign_in)
+                            setOnClickListener { eventListener.signIn() }
+                            setIconResource(R.drawable.ic_default_profile_avatar)
+                        }
                     }
                 }
                 CTA_NO_ACTION -> {
-                    binding.actionButton.isVisible = false
+                    button.isVisible = false
                 }
             }
         }

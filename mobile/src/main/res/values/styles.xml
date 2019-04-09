@@ -335,7 +335,7 @@
     <style name="Widget.IOSched.Feed" parent="Widget.IOSched" />
 
     <style name="Widget.IOSched.Feed.Title">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
+        <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
     </style>
 
     <style name="Widget.IOSched.Feed.Moment" parent="Widget.IOSched" />
@@ -366,10 +366,6 @@
 
     <style name="Widget.IOSched.Feed.Username">
         <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
-    </style>
-
-     <style name="Widget.IOSched.Feed.SessionsTitle">
-        <item name="android:textAppearance">?attr/textAppearanceBody2</item>
     </style>
 
     <style name="Widget.IOSched.Feed.Category">
