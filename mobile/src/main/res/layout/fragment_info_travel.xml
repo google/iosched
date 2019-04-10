@@ -61,13 +61,6 @@
             app:cardTitle="@string/travel_biking_title" />
 
         <com.google.samples.apps.iosched.widget.CollapsibleCard
-            android:id="@+id/ride_sharing_card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardDescription="@string/travel_ride_sharing_description"
-            app:cardTitle="@string/travel_ride_sharing_title" />
-
-        <com.google.samples.apps.iosched.widget.CollapsibleCard
             android:id="@+id/carpooling_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
