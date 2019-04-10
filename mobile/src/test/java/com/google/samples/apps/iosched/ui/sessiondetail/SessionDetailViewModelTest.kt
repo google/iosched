@@ -30,11 +30,13 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.StarNotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
+import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
 import com.google.samples.apps.iosched.shared.time.TimeProvider
@@ -54,9 +56,12 @@ import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.doNothing
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.not
@@ -159,7 +164,7 @@ class SessionDetailViewModelTest {
 
         verify(reservationActionUseCaseMock).execute(
             ReservationRequestParameters(
-                testUid, TestData.session3.id, RequestAction()
+                testUid, TestData.session3.id, RequestAction(), TestData.userSession3
             )
         )
     }
@@ -405,10 +410,17 @@ class SessionDetailViewModelTest {
         return LoadUserSessionsUseCase(userEventRepository)
     }
 
+    private fun createFakeUpdater(): StarNotificationAlarmUpdater {
+        val alarmManager: SessionAlarmManager = mock()
+        doNothing().whenever(alarmManager).cancelAlarmForSession(any())
+        return StarNotificationAlarmUpdater(alarmManager)
+    }
+
     private fun createReservationActionUseCase() = object : ReservationActionUseCase(
         DefaultSessionAndUserEventRepository(
             TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
-        )
+        ),
+        createFakeUpdater()
     ) {}
 
     private fun createGetTimeZoneUseCase() =

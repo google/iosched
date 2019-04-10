@@ -17,9 +17,11 @@
 package com.google.samples.apps.iosched.shared.domain.users
 
 import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.domain.sessions.StarNotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.result.Result
 import timber.log.Timber
 import javax.inject.Inject
@@ -28,7 +30,8 @@ import javax.inject.Inject
  * Sends a request to reserve or cancel a reservation for a session.
  */
 open class ReservationActionUseCase @Inject constructor(
-    private val repository: SessionAndUserEventRepository
+    private val repository: SessionAndUserEventRepository,
+    private val starNotificationAlarmUpdater: StarNotificationAlarmUpdater
 ) : MediatorUseCase<ReservationRequestParameters, ReservationRequestAction>() {
 
     override fun execute(parameters: ReservationRequestParameters) {
@@ -43,6 +46,14 @@ open class ReservationActionUseCase @Inject constructor(
                     // to be called in the main thread since LiveData#observeForever is called
                     result.removeSource(updateResult)
                     result.addSource(updateResult) {
+                        if (it is Result.Success && parameters.userSession != null) {
+                            starNotificationAlarmUpdater.updateSession(
+                                parameters.userSession.session,
+                                parameters.userSession.userEvent.isStarred ||
+                                    // TODO(b/130515170)
+                                    it.data is ReservationRequestAction.RequestAction
+                            )
+                        }
                         result.postValue(updateResult.value)
                     }
                 }
@@ -57,7 +68,8 @@ open class ReservationActionUseCase @Inject constructor(
 data class ReservationRequestParameters(
     val userId: String,
     val sessionId: SessionId,
-    val action: ReservationRequestAction
+    val action: ReservationRequestAction,
+    val userSession: UserSession?
 )
 
 sealed class ReservationRequestAction {

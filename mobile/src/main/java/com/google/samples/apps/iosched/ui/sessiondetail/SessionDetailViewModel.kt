@@ -422,9 +422,19 @@ class SessionDetailViewModel @Inject constructor(
             )
             analyticsHelper.logUiEvent(sessionSnapshot.title, AnalyticsActions.RESERVE_FAILED)
         } else {
-            reservationActionUseCase.execute(
-                ReservationRequestParameters(userId, sessionSnapshot.id, RequestAction())
-            )
+
+            val userSessionResult = loadUserSessionResult.value
+            val userSession = if (userSessionResult is Result.Success) {
+                userSessionResult.data.userSession
+            } else {
+                null
+            }
+            reservationActionUseCase.execute(ReservationRequestParameters(
+                userId,
+                sessionSnapshot.id,
+                RequestAction(),
+                userSession
+            ))
             analyticsHelper.logUiEvent(sessionSnapshot.title, AnalyticsActions.RESERVE)
         }
     }

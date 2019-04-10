@@ -64,9 +64,9 @@ class NotificationAlarmUpdater @Inject constructor(
     ) {
         Timber.d("Setting all the alarms for user $userId")
         val startWork = System.currentTimeMillis()
-        sessions.userSessions.forEach { it: UserSession ->
-            if (it.userEvent.isStarred) {
-                alarmManager.setAlarmForSession(it.session)
+        sessions.userSessions.forEach { session: UserSession ->
+            if (session.userEvent.isStarred || session.userEvent.isReserved()) {
+                alarmManager.setAlarmForSession(session.session)
             }
         }
         Timber.d("Work finished in ${System.currentTimeMillis() - startWork} ms")
@@ -110,10 +110,12 @@ class NotificationAlarmUpdater @Inject constructor(
 @Singleton
 open class StarNotificationAlarmUpdater @Inject constructor(
     private val alarmManager: SessionAlarmManager
-
 ) {
-    open fun updateSession(session: Session, starred: Boolean) {
-        if (starred) {
+    open fun updateSession(
+        session: Session,
+        requestNotification: Boolean
+    ) {
+        if (requestNotification) {
             alarmManager.setAlarmForSession(session)
         } else {
             alarmManager.cancelAlarmForSession(session.id)
