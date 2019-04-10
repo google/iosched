@@ -29,12 +29,15 @@
 
     <dimen name="speaker_headshot_size">40dp</dimen>
     <dimen name="speaker_large_headshot_size">112dp</dimen>
-    <dimen name="session_keyline">64dp</dimen>
 
-    <dimen name="time_header_hour_text_size">24sp</dimen>
-    <dimen name="time_header_hour_min_text_size">20sp</dimen>
+    <dimen name="session_keyline">64dp</dimen>
+    <dimen name="schedule_item_padding_vertical">8dp</dimen>
+
+    <dimen name="time_header_time_text_size">18sp</dimen>
     <dimen name="time_header_meridiem_text_size">12sp</dimen>
     <dimen name="time_header_padding_top">4dp</dimen>
+    <dimen name="date_header_date_text_size">20sp</dimen>
+    <dimen name="date_header_day_text_size">12sp</dimen>
 
     <dimen name="day_separator_text_size">24sp</dimen>
     <dimen name="day_separator_text_width">160dp</dimen>

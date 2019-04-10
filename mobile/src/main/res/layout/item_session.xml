@@ -50,7 +50,7 @@
         android:background="?selectableItemBackground"
         android:onClick="@{() -> eventListener.openEventDetail(userSession.session.id)}"
         android:paddingEnd="@dimen/spacing_normal"
-        android:paddingVertical="@dimen/spacing_normal"
+        android:paddingVertical="@dimen/schedule_item_padding_vertical"
         tools:targetApi="o">
 
         <androidx.constraintlayout.widget.Guideline
@@ -142,7 +142,6 @@
             android:id="@+id/tags"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/spacing_normal"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/keyline"
