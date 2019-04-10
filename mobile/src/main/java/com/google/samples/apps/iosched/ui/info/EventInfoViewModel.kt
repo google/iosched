@@ -41,7 +41,7 @@ class EventInfoViewModel @Inject constructor(
 
     companion object {
         private const val ASSISTANT_APP_URL =
-            "https://assistant.google.com/services/a/uid/000000449633043c"
+            "https://assistant.google.com/services/invoke/uid/0000009fca77b068"
     }
 
     private val _wifiConfig = MutableLiveData<Result<ConferenceWifiInfo>>()
