@@ -68,6 +68,31 @@
         <action
             android:id="@+id/to_session_detail"
             app:destination="@id/navigation_session_detail" />
+        <action
+            android:id="@+id/to_schedule"
+            app:destination="@id/navigation_schedule">
+            <argument
+                android:name="showPinnedEvents"
+                android:defaultValue="false"
+                app:argType="boolean" />
+            <argument
+                android:name="showAllEvents"
+                android:defaultValue="false"
+                app:argType="boolean" />
+        </action>
+        <action
+            android:id="@+id/to_map"
+            app:destination="@id/navigation_map">
+            <argument
+                android:name="featureId"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+            <argument
+                android:name="startTime"
+                android:defaultValue="0L"
+                app:argType="long" />
+        </action>
     </fragment>
 
     <fragment
@@ -76,7 +101,7 @@
         android:label="@string/title_map"
         tools:layout="@layout/fragment_map">
         <!-- Navigation library doesn't allow nullable arguments of an enum type, so we have to use
-             the enum name instead. b/129802059
+             the enum name instead.
         -->
         <argument
             android:name="mapVariant"
