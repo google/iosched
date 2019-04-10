@@ -62,7 +62,7 @@
     <string name="cancellation_denied_cutoff" translation_description="The message shown when user is trying to cancel a reservation but it's denied because the session starts too soon">Cancellation denied: too close to start time.</string>
     <string name="cancellation_denied_unknown" translation_description="The message shown when user is trying to cancel a reservation but it's denied because of an unknown error">Cancellation denied: unknown error.</string>
 
-    <string name="schedule_filters_empty" translation_description="The message shown when a schedule page is empty because no events match the current filters.">No events today match your current filters.</string>
+    <string name="schedule_filters_empty" translation_description="The message shown when a schedule page is empty because no events match the current filters.">No events found.</string>
 
     <string name="reservation_reservable" translation_description="Label shown on events for which the user can request to reserve a seat.">Reserve seat</string>
     <string name="reservation_reserved" translation_description="Label shown on events for which the user has reserved a seat.">Reserved</string>
@@ -176,7 +176,7 @@
     <!-- Feed -->
     <string name="feed_item_pinned_icon" translation_description="Content description for an icon that indicates an entry in the news feed that is pinned at the top.">Pinned Item</string>
     <string name="feed_item_emergency_icon" translation_description="Content description for an icon that indicates an entry in the news feed that is marked as an emergency message.">Priority item</string>
-    <string name="feed_not_available" translation_description="Message that is shown when the feed could not be loaded or is empty.">Feed not available.</string>
+    <string name="feed_not_available" translation_description="Message that is shown when the announcements could not be loaded or are empty.">No announcements found.</string>
     <string name="feed_loading_error" translation_description="Short error message that is displayed in a Snackbar when the feed could not be loaded.">Could not load feed. Try again later.</string>
     <string name="feed_announcement_title" translation_description="The title of the announcements section in feed">Announcements</string>
     <string name="feed_upcoming_events" translation_description="The title of the sessions section in feed when user is attending">Upcoming events</string>
