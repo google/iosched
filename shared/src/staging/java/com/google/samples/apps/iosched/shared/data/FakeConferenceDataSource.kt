@@ -91,7 +91,8 @@ object FakeConferenceDataSource : ConferenceDataSource {
         )
         sessions.add(stagingSession)
 
-        addSessionForAlarmsTesting(sessions, stagingSession)
+        // TODO: Find a way to test alarms without introducing a session with invalid timestamps.
+        // addSessionForAlarmsTesting(sessions, stagingSession)
 
         // Return the new data replacing the modified properties only.
         return data.copy(sessions = sessions, speakers = speakers, tags = tags)
@@ -101,9 +102,7 @@ object FakeConferenceDataSource : ConferenceDataSource {
         sessions: MutableList<Session>,
         exampleSession: Session
     ) {
-
         val timeIn5Minutes = ZonedDateTime.now().plusMinutes(5).plusSeconds(10)
-
         sessions.add(
             exampleSession.copy(
                 id = ALARM_SESSION_ID,

@@ -58,7 +58,7 @@ class EventFilterView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr), Checkable {
 
-    var color: Int = 0xffff00ff.toInt()
+    var color: Int = 0
         set(value) {
             if (field != value) {
                 field = value
