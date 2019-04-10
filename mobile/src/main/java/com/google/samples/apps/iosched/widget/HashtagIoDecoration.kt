@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import androidx.recyclerview.widget.RecyclerView.State
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.util.isRtl
 import kotlin.math.max
 import kotlin.math.roundToInt
 
@@ -65,7 +66,7 @@ class HashtagIoDecoration(context: Context) : ItemDecoration() {
             return
         }
 
-        val x = if (parent.layoutDirection == View.LAYOUT_DIRECTION_RTL) {
+        val x = if (parent.isRtl()) {
             parent.paddingEnd + margin
         } else {
             parent.width - parent.paddingEnd - margin - drawable.intrinsicWidth

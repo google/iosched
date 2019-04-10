@@ -39,6 +39,7 @@ import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import androidx.recyclerview.widget.RecyclerView.State
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.util.isRtl
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
@@ -106,6 +107,12 @@ class ScheduleTimeHeadersDecoration(
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: State) {
         if (timeSlots.isEmpty() || parent.isEmpty()) return
 
+        val isRtl = parent.isRtl()
+        if (isRtl) {
+            c.save()
+            c.translate((parent.width - width).toFloat(), 0f)
+        }
+
         val parentPadding = parent.paddingTop
 
         var earliestPosition = Int.MAX_VALUE
@@ -150,9 +157,14 @@ class ScheduleTimeHeadersDecoration(
 
         if (earliestChild != null && earliestPosition != previousHeaderPosition) {
             // This child needs a sicky header
-            val stickyHeader = findHeaderBeforePosition(earliestPosition) ?: return
-            previousHasHeader = previousHeaderPosition - earliestPosition == 1
-            drawHeader(c, earliestChild, parentPadding, stickyHeader, 1f, previousHasHeader)
+            findHeaderBeforePosition(earliestPosition)?.let { stickyHeader ->
+                previousHasHeader = previousHeaderPosition - earliestPosition == 1
+                drawHeader(c, earliestChild, parentPadding, stickyHeader, 1f, previousHasHeader)
+            }
+        }
+
+        if (isRtl) {
+            c.restore()
         }
     }
 

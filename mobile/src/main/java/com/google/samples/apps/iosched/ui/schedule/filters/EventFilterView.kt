@@ -27,7 +27,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.M
-import android.text.Layout.Alignment.ALIGN_NORMAL
+import android.text.Layout.Alignment.ALIGN_CENTER
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.AttributeSet
@@ -45,6 +45,7 @@ import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.withScale
 import androidx.core.graphics.withTranslation
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.util.isRtl
 import com.google.samples.apps.iosched.util.lerp
 import com.google.samples.apps.iosched.util.textWidth
 
@@ -69,7 +70,7 @@ class EventFilterView @JvmOverloads constructor(
 
     var selectedTextColor: Int? = null
 
-    var text: CharSequence? = null
+    var text: CharSequence = ""
         set(value) {
             field = value
             updateContentDescription()
@@ -163,8 +164,8 @@ class EventFilterView @JvmOverloads constructor(
         val availableTextWidth = when (MeasureSpec.getMode(widthMeasureSpec)) {
             MeasureSpec.EXACTLY -> MeasureSpec.getSize(widthMeasureSpec) - nonTextWidth
             MeasureSpec.AT_MOST -> MeasureSpec.getSize(widthMeasureSpec) - nonTextWidth
-            MeasureSpec.UNSPECIFIED -> Int.MAX_VALUE
-            else -> Int.MAX_VALUE
+            // StaticLayout breaks when given extremely large values. 1000 pixels should be enough.
+            else /* MeasureSpec.UNSPECIFIED */ -> 1000
         }
 
         createLayout(availableTextWidth)
@@ -196,6 +197,7 @@ class EventFilterView @JvmOverloads constructor(
         val iconRadius = clear.intrinsicWidth / 2f
         val halfStroke = strokeWidth / 2f
         val rounding = cornerRadius.coerceAtMost((chipHeight - strokeWidth) / 2f)
+        val isRtl = isRtl()
 
         // Outline
         if (progress < 1f) {
@@ -218,8 +220,9 @@ class EventFilterView @JvmOverloads constructor(
                 width.toFloat(),
                 progress
             )
+            val dotCenterX = strokeWidth + padding + iconRadius
             canvas.drawCircle(
-                strokeWidth + padding + iconRadius,
+                if (isRtl) width - dotCenterX else dotCenterX,
                 chipHeight / 2f,
                 dotRadius,
                 dotPaint
@@ -237,15 +240,16 @@ class EventFilterView @JvmOverloads constructor(
         }
 
         // Text
-        val textX = if (showIcons) {
-            lerp(
-                strokeWidth + padding + clear.intrinsicWidth + padding,
-                strokeWidth + padding * 2f,
-                progress
-            )
+        val textLayoutDiff = (textLayout.width - textLayout.textWidth()) / 2
+        val textBaseOffset = strokeWidth + padding * 2f
+        val textAnimOffset = if (showIcons) {
+            val offsetProgress = if (isRtl) progress else 1f - progress
+            clear.intrinsicWidth * offsetProgress
         } else {
-            strokeWidth + padding * 2f
+            0f
         }
+        val textX = textBaseOffset + textAnimOffset - textLayoutDiff
+
         val selectedColor = selectedTextColor
         textPaint.color = if (selectedColor != null && selectedColor != 0 && progress > 0) {
             ColorUtils.blendARGB(defaultTextColor, selectedColor, progress)
@@ -261,8 +265,9 @@ class EventFilterView @JvmOverloads constructor(
 
         // Clear icon
         if (showIcons && progress > 0f) {
+            val iconX = width - strokeWidth - padding - iconRadius
             canvas.withTranslation(
-                x = width - strokeWidth - padding - iconRadius,
+                x = if (isRtl) width - iconX else iconX,
                 y = chipHeight / 2f
             ) {
                 canvas.withScale(progress, progress) {
@@ -328,9 +333,11 @@ class EventFilterView @JvmOverloads constructor(
 
     private fun createLayout(textWidth: Int) {
         textLayout = if (SDK_INT >= M) {
-            StaticLayout.Builder.obtain(text, 0, text?.length!!, textPaint, textWidth).build()
+            StaticLayout.Builder.obtain(text, 0, text.length, textPaint, textWidth)
+                .setAlignment(ALIGN_CENTER)
+                .build()
         } else {
-            StaticLayout(text, textPaint, textWidth, ALIGN_NORMAL, 1f, 0f, true)
+            StaticLayout(text, textPaint, textWidth, ALIGN_CENTER, 1f, 0f, true)
         }
     }
 
