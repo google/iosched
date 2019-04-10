@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2018 Google LLC
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -14,13 +15,11 @@
   ~ limitations under the License.
   -->
 
-
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.onboarding.CountdownFragment">
+    android:layout_height="match_parent" >
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_start"
@@ -36,40 +35,30 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/onboarding_margins" />
 
-    <!-- TODO: b/77879614 determine if this should be shown differently in landscape -->
-    <com.google.samples.apps.iosched.widget.CountdownView
-        android:id="@+id/countdown"
+    <ImageView
+        android:id="@+id/io_hashtag"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/watch_live"
-        app:layout_constraintEnd_toEndOf="@+id/guideline_end"
-        app:layout_constraintStart_toStartOf="@+id/guideline_start"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:fitsSystemWindows="true"
+        android:importantForAccessibility="no"
+        app:srcCompat="@drawable/onboarding_io_19"
+        app:layout_constraintBottom_toTopOf="@id/welcome_post_message"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <TextView
-        android:id="@+id/watch_live"
+        android:id="@+id/welcome_post_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/onboarding_watch_live"
+        android:text="@string/onboarding_welcome_google_io_post"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.IOSched.H1"
-        app:layout_constraintBottom_toTopOf="@id/join_online"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@id/countdown" />
-
-    <TextView
-        android:id="@+id/join_online"
-        style="@style/Widget.IOSched.OnboardingDeck"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_normal"
-        android:text="@string/onboarding_join_online"
         app:layout_constraintBottom_toTopOf="@id/spacer"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@id/watch_live" />
+        app:layout_constraintTop_toBottomOf="@id/io_hashtag" />
 
     <Space
         android:id="@+id/spacer"
@@ -79,6 +68,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/join_online" />
+        app:layout_constraintTop_toBottomOf="@id/welcome_post_message" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,16 +20,31 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.google.samples.apps.iosched.R
+import androidx.lifecycle.ViewModelProvider
+import com.google.samples.apps.iosched.databinding.FragmentOnboardingSigninBinding
+import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
+import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
-class CustomizeScheduleFragment : Fragment() {
+class OnboardingSignInFragment : DaggerFragment() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var binding: FragmentOnboardingSigninBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_customize_schedule, container, false)
+        binding = FragmentOnboardingSigninBinding.inflate(inflater, container, false).apply {
+            lifecycleOwner = viewLifecycleOwner
+        }
+        return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        binding.activityViewModel = activityViewModelProvider(viewModelFactory)
     }
 }

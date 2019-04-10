@@ -127,9 +127,9 @@
     <string name="onboarding_get_started">开始使用</string>
     <string name="onboarding_welcome_to_google_i_o">欢迎来到 Google I/O 大会</string>
     <string name="onboarding_date_location">2018 年 5 月 8 日至 10 日，加利福尼亚州山景城</string>
-    <string name="onboarding_build_schedule">创建自己的日程安排</string>
-    <string name="onboarding_build_sched_benefits">如果您是与会人员，可定制您的专属 I/O 大会体验并预订座位</string>
-    <string name="onboarding_watch_live">观看 I/O 大会直播</string>
+
+
+
     <string name="onboarding_join_online">在线加入我们。我们将直播主题演讲和大部分会议内容。</string>
     <string name="onboarding_label_days">天</string>
     <string name="onboarding_label_hours">小时</string>

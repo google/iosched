@@ -105,16 +105,24 @@ class OnboardingFragment : DaggerFragment() {
 class OnboardingAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
 
     // Don't show then countdown fragment if the conference has already started
-    private val fragments = if (TimeUtils.conferenceHasStarted()) {
+    private val fragments = if (!TimeUtils.conferenceHasStarted()) {
+        // Before the conference
         arrayOf(
-            WelcomeFragment(),
-            CustomizeScheduleFragment()
+            WelcomePreConferenceFragment(),
+            OnboardingSignInFragment(),
+            OnboardingExploreArFragment()
+        )
+    } else if (TimeUtils.conferenceHasStarted() && !TimeUtils.conferenceHasEnded()) {
+        // During the conference
+        arrayOf(
+            WelcomeDuringConferenceFragment(),
+            OnboardingSignInFragment(),
+            OnboardingExploreArFragment()
         )
     } else {
+        // Post the conference
         arrayOf(
-            WelcomeFragment(),
-            CustomizeScheduleFragment(),
-            CountdownFragment()
+            WelcomePostConferenceFragment()
         )
     }
 

@@ -59,7 +59,12 @@ abstract class ActivityBindingModule {
     internal abstract fun launcherActivity(): LauncherActivity
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = [OnboardingModule::class])
+    @ContributesAndroidInjector(
+        modules = [
+            OnboardingModule::class,
+            SignInDialogModule::class
+        ]
+    )
     internal abstract fun onboardingActivity(): OnboardingActivity
 
     @ActivityScoped
