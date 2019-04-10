@@ -164,7 +164,8 @@
     </style>
 
     <style name="TextAppearance.IOSched.InfoEventDescription.AppCallout">
-        <item name="android:textColor">?android:textColorLink</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">?colorPrimary</item>
     </style>
 
     <style name="TextAppearance.IOSched.AboutButtons" parent="@style/TextAppearance.MaterialComponents.Button">

@@ -56,3 +56,11 @@ annotation class CodelabsEnabledFlag
     AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.FIELD
 )
 annotation class SearchScheduleEnabledFlag
+
+// Whether or not the I/O app for Google Assistant callout is enabled
+@Qualifier
+@Target(
+    AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER,
+    AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.FIELD
+)
+annotation class AssistantAppEnabledFlag
