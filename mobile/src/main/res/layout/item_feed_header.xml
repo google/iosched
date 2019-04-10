@@ -33,8 +33,10 @@
         <com.google.samples.apps.iosched.widget.CountdownView
             android:layout_width="match_parent"
             android:layout_height="@dimen/countdown_height"
-            android:layout_marginHorizontal="@dimen/margin_normal"
-            android:layout_marginVertical="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/spacing_normal"
             app:goneUnless="@{feedHeader.timerVisible}" />
 
 
@@ -77,7 +79,7 @@
                 style="@style/Widget.IOSched.Feed.Moment.Time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_normal"
+                android:layout_marginStart="@dimen/margin_normal"
                 android:layout_marginTop="@dimen/margin_normal"
                 android:textColor="@{feedHeader.moment.textColor}"
                 app:layout_constraintStart_toStartOf="@+id/momentImageCard"
@@ -90,7 +92,7 @@
                 style="@style/Widget.IOSched.Feed.Moment.Title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_normal"
+                android:layout_marginStart="@dimen/margin_normal"
                 android:layout_marginTop="@dimen/margin_small"
                 android:text="@{feedHeader.moment.title}"
                 android:textColor="@{feedHeader.moment.textColor}"

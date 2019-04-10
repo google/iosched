@@ -41,10 +41,13 @@
         style="@style/Widget.IOSched.Feed.Card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_small"
         android:elevation="@dimen/cardview_default_elevation"
         android:onClick="@{() -> eventListener.openEventDetail(userSession.session.id)}"
-        android:paddingVertical="@dimen/margin_normal">
+        android:paddingTop="@dimen/margin_normal"
+        android:paddingBottom="@dimen/margin_normal"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="@dimen/feed_session_dimension"
