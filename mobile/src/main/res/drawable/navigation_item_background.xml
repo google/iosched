@@ -17,12 +17,15 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_checked="true">
-        <inset android:insetRight="8dp">
+        <inset
+            android:insetLeft="@dimen/nav_item_background_inset_left"
+            android:insetRight="@dimen/nav_item_background_inset_right">
             <shape>
-                <!-- Intrinsic height may vary. Use a large radius to ensure a semicircle. -->
                 <corners
-                    android:bottomRightRadius="100dp"
-                    android:topRightRadius="100dp" />
+                    android:bottomLeftRadius="@dimen/nav_item_background_corner_radius_left"
+                    android:bottomRightRadius="@dimen/nav_item_background_corner_radius_right"
+                    android:topLeftRadius="@dimen/nav_item_background_corner_radius_left"
+                    android:topRightRadius="@dimen/nav_item_background_corner_radius_right" />
             </shape>
         </inset>
     </item>

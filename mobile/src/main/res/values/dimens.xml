@@ -90,6 +90,11 @@
     <dimen name="nav_account_image_size">32dp</dimen>
     <dimen name="nav_header_logo_size">36dp</dimen>
     <dimen name="nav_item_horizontal_padding">24dp</dimen>
+    <!-- Intrinsic height may vary. Use a large radius to ensure a semicircle. -->
+    <dimen name="nav_item_background_corner_radius_left">0dp</dimen>
+    <dimen name="nav_item_background_corner_radius_right">100dp</dimen>
+    <dimen name="nav_item_background_inset_left">0dp</dimen>
+    <dimen name="nav_item_background_inset_right">8dp</dimen>
 
     <dimen name="progressbar_width">250dp</dimen>"
 
