@@ -31,21 +31,30 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.common.collect.ImmutableMap
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentFeedBinding
+import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
+import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.feed.FeedFragmentDirections.Companion.toSessionDetail
+import com.google.samples.apps.iosched.ui.map.MapFragmentArgs
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentArgs
 import com.google.samples.apps.iosched.ui.setUpSnackbar
+import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import com.google.samples.apps.iosched.util.openWebsiteUrl
 import timber.log.Timber
 import javax.inject.Inject
 
 class FeedFragment : MainNavigationFragment() {
+
+    companion object {
+        private const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
+    }
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -114,6 +123,16 @@ class FeedFragment : MainNavigationFragment() {
         model.navigateToScheduleAction.observe(this, EventObserver { withPinnedEvents ->
             openSchedule(withPinnedEvents)
         })
+
+        model.openSignInDialogAction.observe(this, EventObserver { openSignInDialog() })
+
+        model.openLiveStreamAction.observe(this, EventObserver { streamUrl ->
+            openLiveStreamUrl(streamUrl)
+        })
+
+        model.navigateToMapAction.observe(this, EventObserver { moment ->
+            navigateToMapUsingMoment(moment)
+        })
     }
 
     private fun openSessionDetail(id: SessionId) {
@@ -139,7 +158,7 @@ class FeedFragment : MainNavigationFragment() {
             val announcementViewBinder =
                 FeedAnnouncementViewBinder(timeZoneId = model.timeZoneId, lifecycleOwner = this)
             val sectionHeaderViewBinder = FeedSectionHeaderViewBinder()
-            val feedHeaderViewBinder = FeedHeaderViewBinder()
+            val feedHeaderViewBinder = FeedHeaderViewBinder(model)
             val sessionsViewBinder = FeedSessionsViewBinder(model)
             val announcementsPlaceholder = FeedAnnouncementsPlaceholderViewBinder()
             val viewBinders = ImmutableMap.builder<FeedItemClass, FeedItemBinder>()
@@ -168,5 +187,24 @@ class FeedFragment : MainNavigationFragment() {
             recyclerView.adapter = FeedAdapter(viewBinders)
         }
         (recyclerView.adapter as FeedAdapter).submitList(list ?: emptyList())
+    }
+
+    private fun openSignInDialog() {
+        SignInDialogFragment().show(
+            requireActivity().supportFragmentManager, DIALOG_NEED_TO_SIGN_IN
+        )
+    }
+
+    private fun navigateToMapUsingMoment(moment: Moment) {
+        findNavController().navigate(
+            R.id.navigation_map,
+            MapFragmentArgs(
+                featureId = moment.featureId, startTime = moment.startTime.toEpochMilli()
+            ).toBundle()
+        )
+    }
+
+    private fun openLiveStreamUrl(url: String) {
+        openWebsiteUrl(requireContext(), url)
     }
 }

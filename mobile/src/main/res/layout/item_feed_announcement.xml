@@ -23,6 +23,8 @@
 
         <import type="androidx.lifecycle.LiveData" />
 
+        <import type="android.text.TextUtils" />
+
         <variable
             name="timeZoneId"
             type="LiveData&lt;org.threeten.bp.ZoneId&gt;" />
@@ -45,6 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+
             <TextView
                 android:id="@+id/datetime"
                 android:layout_width="0dp"
@@ -54,26 +57,13 @@
                 android:layout_marginVertical="@dimen/spacing_normal"
                 android:paddingHorizontal="@dimen/spacing_normal"
                 android:textAppearance="@style/TextAppearance.IOSched.Small"
-                app:layout_constraintBottom_toBottomOf="@+id/category"
+                app:layout_constraintBottom_toTopOf="@+id/image"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:dateTime="@{announcement.timestamp}"
                 app:timeZoneId="@{timeZoneId}"
                 tools:text="25 Mat 2017, 8:00am" />
 
-            <TextView
-                android:id="@+id/category"
-                style="@style/Widget.IOSched.Feed.Category"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:background="@{announcement.color}"
-                android:padding="@dimen/spacing_micro"
-                android:text="@{announcement.category}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="AGENDA" />
 
             <TextView
                 android:id="@+id/title"
@@ -98,7 +88,8 @@
                 app:layout_constraintDimensionRatio="h,16:9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/category"
+                app:layout_constraintTop_toBottomOf="@+id/datetime"
+                app:goneUnless="@{!TextUtils.isEmpty(announcement.imageUrl)}"
                 app:imageUrl="@{announcement.imageUrl}"
                 app:srcCompat="@color/light_grey" />
 

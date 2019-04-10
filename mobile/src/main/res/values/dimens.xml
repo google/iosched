@@ -50,6 +50,10 @@
     <dimen name="search_result_icon_margin">16dp</dimen>
     <dimen name="search_result_padding_vert">12dp</dimen>
 
+
+    <dimen name="feed_header_cta_icon_size">24dp</dimen>
+    <dimen name="feed_header_cta_icon_padding">4dp</dimen>
+
     <dimen name="onboarding_actions_height">112dp</dimen>
     <dimen name="onboarding_margins">48dp</dimen>
     <dimen name="onboarding_animation_padding">40dp</dimen>
@@ -66,6 +70,8 @@
 
     <dimen name="dialog_corner_radius">8dp</dimen>
     <dimen name="ui_hint_dialog_icon_size">24dp</dimen>
+
+    <dimen name="feed_session_badge_icon_size">24dp</dimen>
 
     <dimen name="dialog_elevation">24dp</dimen>
     <dimen name="padding_borderless_button">16dp</dimen>

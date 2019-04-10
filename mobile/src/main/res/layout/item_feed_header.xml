@@ -106,6 +106,9 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="@+id/momentImageCard"
                 app:layout_constraintTop_toBottomOf="@+id/momentImageCard"
+                app:iconPadding="@dimen/feed_header_cta_icon_padding"
+                app:iconSize="@dimen/feed_header_cta_icon_size"
+                tools:icon="@drawable/ic_default_profile_avatar"
                 tools:text="Watch livestream" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
