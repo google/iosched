@@ -23,6 +23,7 @@ import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Intent
+import androidx.core.app.AlarmManagerCompat
 import androidx.core.content.getSystemService
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
@@ -79,7 +80,12 @@ open class SessionAlarmManager @Inject constructor(val context: Context) {
     private fun scheduleAlarmFor(pendingIntent: PendingIntent, session: Session) {
         systemAlarmManager?.let {
             val triggerAtMillis = session.startTime.toEpochMilli() - alarmTimeDelta
-            systemAlarmManager.setExact(RTC_WAKEUP, triggerAtMillis, pendingIntent)
+            AlarmManagerCompat.setExactAndAllowWhileIdle(
+                systemAlarmManager,
+                RTC_WAKEUP,
+                triggerAtMillis,
+                pendingIntent
+            )
             Timber.d("Scheduled alarm for session ${session.title} at $triggerAtMillis")
         }
     }
@@ -91,7 +97,12 @@ open class SessionAlarmManager @Inject constructor(val context: Context) {
                 CancelNotificationBroadcastReceiver.NOTIFICATION_ID_EXTRA, notificationId)
             val pendingIntent = PendingIntent.getBroadcast(context, notificationId, intent, 0)
             val triggerAtMillis = Instant.now().plus(5, ChronoUnit.MINUTES).toEpochMilli()
-            systemAlarmManager.set(RTC, triggerAtMillis, pendingIntent)
+            AlarmManagerCompat.setExactAndAllowWhileIdle(
+                systemAlarmManager,
+                RTC,
+                triggerAtMillis,
+                pendingIntent
+            )
             Timber.d("Scheduled notification dismissal for $notificationId at $triggerAtMillis")
         }
     }
