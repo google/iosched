@@ -40,11 +40,13 @@
                 app:navigationIcon="@drawable/ic_menu"
                 app:title="@string/title_info" />
 
+            <!-- ViewPager doesn't work in RTL, so force the tabs to layout LTR. -->
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
                 style="@style/Widget.IOSched.Tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layoutDirection="ltr" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

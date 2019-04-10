@@ -70,12 +70,11 @@
 
             <TextView
                 android:id="@+id/related_apps_header"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_large"
                 android:text="@string/related_apps_header"
                 android:textAppearance="@style/TextAppearance.IOSched.Subhead"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/wifi_card"
                 app:goneUnless="@{showAssistantApp}" />
@@ -111,6 +110,7 @@
                     android:layout_marginEnd="@dimen/margin_normal"
                     android:layout_marginStart="@dimen/spacing_normal"
                     android:text="@string/assistant_app_description"
+                    android:textAlignment="viewStart"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/assistant_app_logo"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -123,6 +123,7 @@
                     android:layout_marginEnd="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/spacing_micro"
                     android:text="@string/assistant_app_description2"
+                    android:textAlignment="viewStart"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/assistant_app_description"
                     app:layout_constraintTop_toBottomOf="@id/assistant_app_description" />
