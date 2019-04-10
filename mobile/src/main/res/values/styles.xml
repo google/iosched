@@ -388,6 +388,7 @@
         <item name="android:foreground">?selectableItemBackground</item>
         <item name="android:minHeight">?android:attr/listPreferredItemHeightSmall</item>
         <item name="android:padding">@dimen/margin_normal</item>
+        <item name="android:textAlignment">viewStart</item>
         <item name="switchPadding">@dimen/margin_small</item>
         <item name="switchTextAppearance">?attr/textAppearanceBody2</item>
     </style>
@@ -403,13 +404,15 @@
         <item name="android:gravity">start|center_vertical</item>
         <item name="android:paddingLeft">@dimen/margin_normal</item>
         <item name="android:paddingRight">@dimen/margin_normal</item>
+        <item name="android:textAlignment">viewStart</item>
     </style>
 
     <style name="Widget.IOSched.AboutHeading" parent="Widget.IOSched.TextView">
-        <item name="android:textAppearance">@style/TextAppearance.IOSched.Subhead</item>
         <item name="android:gravity">start|center_vertical</item>
         <item name="android:paddingLeft">@dimen/margin_normal</item>
         <item name="android:paddingRight">@dimen/margin_normal</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:textAppearance">@style/TextAppearance.IOSched.Subhead</item>
     </style>
 
     <style name="Widget.IOSched.NavigationBarContentFrameLayout" parent="android:Widget.Material">

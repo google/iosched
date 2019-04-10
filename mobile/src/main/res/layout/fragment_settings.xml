@@ -69,10 +69,11 @@
                     style="@style/Widget.IOSched.Settings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
                     android:focusable="true"
+                    android:gravity="start|center_vertical"
                     android:onClick="@{(view) -> viewModel.onThemeSettingClicked()}"
                     android:text="@string/settings_theme_title"
+                    android:textAlignment="viewStart"
                     android:textAppearance="?attr/textAppearanceBody2" />
 
                 <!-- AppCompat/MaterialComponents layout inflators don't automatically handle
