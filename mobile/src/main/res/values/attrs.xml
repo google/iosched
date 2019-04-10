@@ -30,6 +30,8 @@
     <!-- User is on the wait list for the event -->
     <attr name="state_wait_listed" format="boolean" />
 
+    <attr name="verticalBias" format="float" />
+
     <declare-styleable name="Theme">
         <!-- Navigation bar divider color, used by NavigationBarContentFrameLayout -->
         <attr name="ioschedNavigationBarDividerColor" format="reference" />
@@ -52,11 +54,11 @@
 
     <declare-styleable name="DateHeader">
         <attr name="android:width" />
-        <attr name="android:paddingTop" />
+        <attr name="android:height" />
         <attr name="android:textColor" />
+        <attr name="android:textSize" />
         <attr name="android:fontFamily" />
-        <attr name="dateTextSize" format="dimension" />
-        <attr name="dayTextSize" format="dimension" />
+        <attr name="verticalBias"/>
     </declare-styleable>
 
     <declare-styleable name="HeaderGridDrawable">
@@ -111,11 +113,12 @@
     </declare-styleable>
 
     <declare-styleable name="DaySeparatorDecoration">
+        <attr name="android:width" />
         <attr name="android:height" />
         <attr name="android:textColor" />
         <attr name="android:textSize" />
         <attr name="android:fontFamily" />
-        <attr name="verticalBias" format="float" />
+        <attr name="verticalBias" />
     </declare-styleable>
 
     <declare-styleable name="NavigationBarContentFrameLayout">
