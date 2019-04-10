@@ -87,7 +87,7 @@ class StarEventAndNotifyUseCaseTest {
 
         val resultLiveData = useCase.observe()
 
-        useCase.execute(StarEventParameter("userIdTest", TestData.userSession0))
+        useCase.execute(StarEventParameter("userIdTest", TestData.userSession3))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
         assertTrue(result is Result.Error)
@@ -106,11 +106,11 @@ class StarEventAndNotifyUseCaseTest {
 
         val resultLiveData = useCase.observe()
 
-        useCase.execute(StarEventParameter("userIdTest", TestData.userSession0))
+        useCase.execute(StarEventParameter("userIdTest", TestData.userSession3))
 
         LiveDataTestUtil.getValue(resultLiveData)
 
-        verify(updater).updateSession(TestData.userSession0.session, false)
+        verify(updater).updateSession(TestData.userSession3.session, false)
     }
 }
 

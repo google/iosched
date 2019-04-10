@@ -40,7 +40,7 @@ open class StarEventAndNotifyUseCase @Inject constructor(
         result.addSource(updateResult) {
             starNotificationAlarmUpdater.updateSession(
                 parameters.userSession.session,
-                parameters.userSession.userEvent.isStarred
+                parameters.userSession.userEvent.isNotificationRequired()
             )
             result.postValue(updateResult.value)
         }
