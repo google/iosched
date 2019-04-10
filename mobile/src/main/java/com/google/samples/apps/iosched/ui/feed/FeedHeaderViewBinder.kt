@@ -26,9 +26,7 @@ import com.google.samples.apps.iosched.databinding.ItemFeedHeaderBinding
 import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.model.Moment.Companion.CTA_LIVE_STREAM
 import com.google.samples.apps.iosched.model.Moment.Companion.CTA_MAP_LOCATION
-import com.google.samples.apps.iosched.model.Moment.Companion.CTA_NO_ACTION
 import com.google.samples.apps.iosched.model.Moment.Companion.CTA_SIGNIN
-
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.ZoneId
 import org.threeten.bp.format.DateTimeFormatter
@@ -85,19 +83,17 @@ class FeedHeaderViewHolder(
                     ))
 
             val button = binding.actionButton as MaterialButton
-            when (feedHeader.moment.ctaType) {
+            when (ctaType) {
                 CTA_LIVE_STREAM -> {
-                    val url = feedHeader.moment?.streamUrl
+                    val url = streamUrl
                     if (url.isNullOrEmpty()) {
-                        binding.actionButton.isVisible = false
+                        button.isVisible = false
                     } else {
                         button.apply {
                             isVisible = true
                             setText(R.string.feed_watch_live_stream)
                             setOnClickListener {
-                                eventListener.openLiveStream(
-                                    feedHeader.moment?.streamUrl ?: ""
-                                )
+                                eventListener.openLiveStream(url)
                             }
                             setIconResource(R.drawable.ic_play_circle_outline)
                         }
@@ -106,7 +102,7 @@ class FeedHeaderViewHolder(
                 CTA_MAP_LOCATION -> {
                     button.apply {
                         isVisible = true
-                        text = feedHeader.moment.featureName
+                        text = featureName
                         setOnClickListener {
                             eventListener.openMap(feedHeader.moment)
                         }
@@ -125,9 +121,7 @@ class FeedHeaderViewHolder(
                         }
                     }
                 }
-                CTA_NO_ACTION -> {
-                    button.isVisible = false
-                }
+                else /* CTA_NO_ACTION */ -> button.isVisible = false
             }
         }
     }

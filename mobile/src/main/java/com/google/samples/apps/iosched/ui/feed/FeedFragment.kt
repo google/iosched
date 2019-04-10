@@ -25,11 +25,9 @@ import androidx.core.view.isVisible
 import androidx.core.view.updatePaddingRelative
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.common.collect.ImmutableMap
-import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentFeedBinding
 import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.model.SessionId
@@ -38,10 +36,10 @@ import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
+import com.google.samples.apps.iosched.ui.feed.FeedFragmentDirections.Companion.toMap
+import com.google.samples.apps.iosched.ui.feed.FeedFragmentDirections.Companion.toSchedule
 import com.google.samples.apps.iosched.ui.feed.FeedFragmentDirections.Companion.toSessionDetail
-import com.google.samples.apps.iosched.ui.map.MapFragmentArgs
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
-import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentArgs
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
@@ -141,15 +139,9 @@ class FeedFragment : MainNavigationFragment() {
 
     private fun openSchedule(withPinnedSessions: Boolean) {
         if (withPinnedSessions) {
-            NavHostFragment.findNavController(this).navigate(
-                R.id.navigation_schedule,
-                ScheduleFragmentArgs(showPinnedEvents = true).toBundle()
-            )
+            findNavController().navigate(toSchedule(showPinnedEvents = true))
         } else {
-            NavHostFragment.findNavController(this).navigate(
-                R.id.navigation_schedule,
-                ScheduleFragmentArgs(showAllEvents = true).toBundle()
-            )
+            findNavController().navigate(toSchedule(showAllEvents = true))
         }
     }
 
@@ -197,10 +189,7 @@ class FeedFragment : MainNavigationFragment() {
 
     private fun navigateToMapUsingMoment(moment: Moment) {
         findNavController().navigate(
-            R.id.navigation_map,
-            MapFragmentArgs(
-                featureId = moment.featureId, startTime = moment.startTime.toEpochMilli()
-            ).toBundle()
+            toMap(featureId = moment.featureId, startTime = moment.startTime.toEpochMilli())
         )
     }
 
