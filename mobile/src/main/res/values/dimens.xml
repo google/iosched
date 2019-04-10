@@ -35,12 +35,10 @@
 
     <dimen name="time_header_time_text_size">18sp</dimen>
     <dimen name="time_header_meridiem_text_size">12sp</dimen>
-    <dimen name="time_header_padding_top">4dp</dimen>
-    <dimen name="date_header_date_text_size">20sp</dimen>
-    <dimen name="date_header_day_text_size">12sp</dimen>
 
-    <dimen name="day_separator_text_size">24sp</dimen>
-    <dimen name="day_separator_text_width">160dp</dimen>
+    <dimen name="day_header_text_size">20sp</dimen>
+    <dimen name="day_header_decor_width">300dp</dimen>
+    <dimen name="day_header_decor_height">72dp</dimen>
 
     <dimen name="agenda_item_stroke">2dp</dimen>
     <dimen name="agenda_block_padding_vert">12dp</dimen>

@@ -26,6 +26,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.samples.apps.iosched.databinding.FragmentAgendaBinding
 import com.google.samples.apps.iosched.model.Block
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
@@ -69,17 +70,22 @@ class AgendaFragment : MainNavigationFragment() {
 }
 
 @BindingAdapter(value = ["agendaItems", "timeZoneId"])
-fun agendaItems(recyclerView: RecyclerView, list: List<Block>?, timeZoneId: ZoneId?) {
+fun agendaItems(recyclerView: RecyclerView, list: List<Block>?, zoneId: ZoneId?) {
+    list ?: return
+    zoneId ?: return
+    val isInConferenceTimeZone = TimeUtils.isConferenceTimeZone(zoneId)
     if (recyclerView.adapter == null) {
         recyclerView.adapter = AgendaAdapter()
     }
     (recyclerView.adapter as AgendaAdapter).apply {
-        this.submitList(list ?: emptyList())
-        this.timeZoneId = timeZoneId ?: ZoneId.systemDefault()
+        submitList(list)
+        timeZoneId = zoneId
     }
     // Recreate the decoration used for the sticky date headers
     recyclerView.clearDecorations()
-    if (list != null && list.isNotEmpty()) {
-        recyclerView.addItemDecoration(AgendaHeadersDecoration(recyclerView.context, list))
+    if (list.isNotEmpty()) {
+        recyclerView.addItemDecoration(
+            AgendaHeadersDecoration(recyclerView.context, list, isInConferenceTimeZone)
+        )
     }
 }
