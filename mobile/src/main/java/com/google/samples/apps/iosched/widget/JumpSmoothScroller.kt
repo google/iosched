@@ -20,7 +20,6 @@ import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView.State
-import kotlin.math.abs
 
 /**
  * [LinearSmoothScroller] implementation that first jumps closer to the target position if necessary
@@ -40,14 +39,12 @@ class JumpSmoothScroller(
         val layoutManager = layoutManager as? LinearLayoutManager
         if (layoutManager != null) {
             // If we're far enough away from the target position, jump closer before scrolling
-            val firstVisible = layoutManager.findFirstVisibleItemPosition()
-            if (abs(firstVisible - targetPosition) > maxDifference) {
-                val jumpTo = if (targetPosition < firstVisible) {
-                    targetPosition + maxDifference
-                } else {
-                    targetPosition - maxDifference
-                }
-                action.jumpTo(jumpTo)
+            if (targetPosition + maxDifference < layoutManager.findFirstVisibleItemPosition()) {
+                action.jumpTo(targetPosition + maxDifference)
+                return
+            }
+            if (targetPosition - maxDifference > layoutManager.findLastVisibleItemPosition()) {
+                action.jumpTo(targetPosition - maxDifference)
                 return
             }
         }
