@@ -43,7 +43,7 @@
             android:padding="@dimen/margin_normal">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small"
                 android:text="@string/wifi_header"
@@ -51,9 +51,10 @@
 
             <TextView
                 android:id="@+id/wifi_network_and_password"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
+                android:textAlignment="viewStart"
                 android:textAppearance="?textAppearanceBody1"
                 app:wifiInfo="@{viewModel.wifiConfig}"
                 tools:text="@string/wifi_network_and_password" />
