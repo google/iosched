@@ -51,7 +51,8 @@
             android:transitionName="@{speaker.id}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:speakerImage="@{speaker}" />
+            app:speakerImage="@{speaker}"
+            tools:src="@drawable/ic_default_avatar_1" />
 
         <TextView
             android:id="@+id/speaker_item_name"
@@ -59,6 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginStart="@dimen/margin_normal"
+            android:textAlignment="viewStart"
             android:text="@{speaker.name}"
             android:textAppearance="@style/TextAppearance.IOSched.SpeakerTitle"
             app:layout_constraintBottom_toTopOf="@id/speaker_item_company"
@@ -74,6 +76,7 @@
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginTop="@dimen/spacing_micro"
             android:text="@{speaker.company}"
+            android:textAlignment="viewStart"
             android:textColor="?android:textColorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
