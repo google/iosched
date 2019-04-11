@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.map
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -61,13 +62,15 @@ class MapVariantSelectionDialogFragment : DaggerAppCompatDialogFragment() {
         })
     }
 
+    @SuppressLint("RtlHardcoded")
     override fun onStart() {
         super.onStart()
         requireDialog().window?.apply {
             // Don't dim the screen
             clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
             // Position the window
-            attributes.gravity = Gravity.BOTTOM or Gravity.END
+            val isRtl = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+            attributes.gravity = Gravity.BOTTOM or if (isRtl) Gravity.LEFT else Gravity.RIGHT
             // The window decor view's background shows behind the card, so remove it
             setBackgroundDrawable(null)
         }

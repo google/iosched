@@ -137,7 +137,8 @@
                         android:id="@+id/marker_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/margin_normal" />
+                        android:padding="@dimen/margin_normal"
+                        android:textAlignment="viewStart" />
                 </androidx.core.widget.NestedScrollView>
 
                 <View
@@ -179,8 +180,9 @@
                     android:layout_marginEnd="@dimen/margin_normal"
                     android:layout_marginStart="@dimen/margin_normal"
                     android:ellipsize="end"
-                    android:gravity="center_vertical"
+                    android:gravity="start|center_vertical"
                     android:lines="1"
+                    android:textAlignment="viewStart"
                     android:textAppearance="@style/TextAppearance.IOSched.Map.InfoTitle"
                     app:layout_constraintEnd_toStartOf="@id/expand_icon"
                     app:layout_constraintStart_toEndOf="@id/marker_icon"
