@@ -188,7 +188,7 @@
     <string name="built_with_material_components">使用 Material Components 开发。</string>
     <string name="scavenger_hunt_description">参加 I/O Android Things 寻宝游戏！</string>
     <string name="scavenger_hunt_description2">（提示：可能会有 Android Things 开发者套件在等着您哦。）</string>
-    <string name="assistant_app_description">在 Google 助理上使用 I/O 18 Action。</string>
-    <string name="assistant_app_description2">只需说“Hey Google, talk to Google I/O 18”（Hey Google，我要跟 Google I/O 18 聊一聊）！</string>
+    <string name="assistant_app_description">在 Google 助理上使用 I/O 19 Action。</string>
+    <string name="assistant_app_description2">只需说“Hey Google, talk to Google I/O 19”（Hey Google，我要跟 Google I/O 19 聊一聊）！</string>
     <string name="navigate_up">转到上一层级</string>
 </resources>

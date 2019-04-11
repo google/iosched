@@ -61,7 +61,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingVertical="@dimen/margin_normal"
+                android:paddingTop="@dimen/margin_normal"
+                android:paddingBottom="@dimen/margin_normal"
                 tools:targetApi="o">
 
                 <TextView
@@ -160,7 +161,8 @@
                     android:drawablePadding="@dimen/margin_small"
                     android:drawableStart="@drawable/ic_logo_components"
                     android:gravity="center"
-                    android:paddingHorizontal="@dimen/margin_normal"
+                    android:paddingEnd="@dimen/margin_normal"
+                    android:paddingStart="@dimen/margin_normal"
                     android:text="@string/built_with_material_components"
                     android:textAppearance="?attr/textAppearanceBody1" />
 

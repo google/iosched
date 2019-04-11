@@ -196,7 +196,7 @@
     <string name="built_with_material_components">В приложении использованы элементы Material Design.</string>
     <string name="scavenger_hunt_description">Примите участие в квесте и узнайте, что можно создать с помощью Android Things.</string>
     <string name="scavenger_hunt_description2">Подсказка: вас ждет новый пакет разработчика Android Things.</string>
-    <string name="assistant_app_description">Попробуйте приложение I/O 18 для Google Ассистента.</string>
-    <string name="assistant_app_description2">Просто скажите: \"Окей, Google, открой Google I/O 18\".</string>
+    <string name="assistant_app_description">Попробуйте приложение I/O 19 для Google Ассистента.</string>
+    <string name="assistant_app_description2">Просто скажите: \"Окей, Google, открой Google I/O 19\".</string>
     <string name="navigate_up">Перейти вверх</string>
 </resources>

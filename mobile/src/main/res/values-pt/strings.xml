@@ -188,7 +188,7 @@
     <string name="built_with_material_components">Criado com Material Components.</string>
     <string name="scavenger_hunt_description">Embarque na caça ao tesouro do Android Things do I/O!</string>
     <string name="scavenger_hunt_description2">(Dica: você pode descobrir que há um kit para desenvolvedor do Android Things esperando por você.)</string>
-    <string name="assistant_app_description">Use a ação do I/O 18 no Google Assistente.</string>
-    <string name="assistant_app_description2">Basta dizer \"Ok Google, fale sobre o Google I/O 18\"!</string>
+    <string name="assistant_app_description">Use a ação do I/O 19 no Google Assistente.</string>
+    <string name="assistant_app_description2">Basta dizer \"Ok Google, fale sobre o Google I/O 19\"!</string>
     <string name="navigate_up">Navegar para cima</string>
 </resources>

@@ -22,7 +22,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingBottom="@dimen/margin_normal"
-    android:paddingHorizontal="@dimen/margin_large"
+    android:paddingEnd="@dimen/margin_large"
+    android:paddingStart="@dimen/margin_large"
     tools:targetApi="o">
 
     <TextView

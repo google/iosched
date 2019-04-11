@@ -49,8 +49,10 @@
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
         android:onClick="@{() -> eventListener.openEventDetail(userSession.session.id)}"
+        android:paddingBottom="@dimen/schedule_item_padding_vertical"
         android:paddingEnd="@dimen/spacing_normal"
-        android:paddingVertical="@dimen/schedule_item_padding_vertical"
+        android:paddingStart="@dimen/spacing_normal"
+        android:paddingTop="@dimen/schedule_item_padding_vertical"
         tools:targetApi="o">
 
         <androidx.constraintlayout.widget.Guideline

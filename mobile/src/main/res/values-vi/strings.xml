@@ -188,7 +188,7 @@
     <string name="built_with_material_components">Được dựng với các Thành phần quan trọng.</string>
     <string name="scavenger_hunt_description">Cùng tham gia trò chơi Truy tìm kho báu của Android Things diễn ra tại I/O!</string>
     <string name="scavenger_hunt_description2">(Gợi ý: Có thể có một Bộ công cụ dành cho nhà phát triển Android Things ở tương lai bạn).</string>
-    <string name="assistant_app_description">Sử dụng Hành động của I/O 18 cho Trợ lý Google.</string>
-    <string name="assistant_app_description2">Chỉ cần nói: \"Hey Google, talk to Google I/O 18\"!</string>
+    <string name="assistant_app_description">Sử dụng Hành động của I/O 19 cho Trợ lý Google.</string>
+    <string name="assistant_app_description2">Chỉ cần nói: \"Hey Google, talk to Google I/O 19\"!</string>
     <string name="navigate_up">Di chuyển lên</string>
 </resources>
