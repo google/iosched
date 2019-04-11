@@ -32,6 +32,7 @@
         android:minHeight="?actionBarSize"
         android:paddingLeft="@dimen/margin_normal"
         android:paddingRight="@dimen/margin_normal"
+        android:textAlignment="viewStart"
         android:textAppearance="@style/TextAppearance.IOSched.Subhead"
         android:text="@{sectionHeader.titleId}"
         tools:text="@string/speaker_events_subhead" />
