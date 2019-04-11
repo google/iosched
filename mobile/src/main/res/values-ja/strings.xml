@@ -188,7 +188,7 @@
     <string name="built_with_material_components">このアプリは Material Components で構築されています。</string>
     <string name="scavenger_hunt_description">I/O Android Things スカベンジャー ハントにご参加ください。</string>
     <string name="scavenger_hunt_description2">（ヒント: 今後 Android Things デベロッパー向けキットを入手できる可能性があります）</string>
-    <string name="assistant_app_description">Google アシスタントへの I/O 18 のアクションを使用します。</string>
-    <string name="assistant_app_description2">「OK Google、Google I/O 18 と話したい」と言うだけで起動できます。</string>
+    <string name="assistant_app_description">Google アシスタントへの I/O 19 のアクションを使用します。</string>
+    <string name="assistant_app_description2">「OK Google、Google I/O 19 と話したい」と言うだけで起動できます。</string>
     <string name="navigate_up">上へ移動</string>
 </resources>

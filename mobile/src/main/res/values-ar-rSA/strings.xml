@@ -204,7 +204,7 @@
     <string name="built_with_material_components">تمّ إنشاء التطبيق عبر Material Components.</string>
     <string name="scavenger_hunt_description">شارِك في Scavenger Hunt من Android Things في مؤتمر I/O.</string>
     <string name="scavenger_hunt_description2">(تلميح: قد تتوفّر لديك مجموعة أدوات مطوّري برامج Android Things في المستقبل).</string>
-    <string name="assistant_app_description">يمكنك استخدام خدمة \"المهام مع مساعد Google\" المخصّصة لمؤتمر I/O 18.</string>
-    <string name="assistant_app_description2">ما عليك سوى قول \"Hey Google, talk to Google I/O 18\".</string>
+    <string name="assistant_app_description">يمكنك استخدام خدمة \"المهام مع مساعد Google\" المخصّصة لمؤتمر I/O 19.</string>
+    <string name="assistant_app_description2">ما عليك سوى قول \"Hey Google, talk to Google I/O 19\".</string>
     <string name="navigate_up">الانتقال إلى الأعلى</string>
 </resources>

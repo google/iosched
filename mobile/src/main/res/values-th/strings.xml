@@ -188,7 +188,7 @@
     <string name="built_with_material_components">สร้างด้วย Material Components</string>
     <string name="scavenger_hunt_description">เข้าร่วม I/O Android Things Scavenger Hunt</string>
     <string name="scavenger_hunt_description2">(คำใบ้: อาจมีชุด Android Things สำหรับนักพัฒนาซอฟต์แวร์ในอนาคต)</string>
-    <string name="assistant_app_description">ใช้ I/O 18 บน Action on Google Assistant</string>
-    <string name="assistant_app_description2">ลองพูดว่า \"Hey Google พูดกับ Google I/O 18\"</string>
+    <string name="assistant_app_description">ใช้ I/O 19 บน Action on Google Assistant</string>
+    <string name="assistant_app_description2">ลองพูดว่า \"Hey Google พูดกับ Google I/O 19\"</string>
     <string name="navigate_up">นำทางขึ้น</string>
 </resources>

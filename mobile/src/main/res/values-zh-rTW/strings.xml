@@ -188,7 +188,7 @@
     <string name="built_with_material_components">使用 Material Components 技術打造。</string>
     <string name="scavenger_hunt_description">立即參加 I/O Android Things 尋寶大賽！</string>
     <string name="scavenger_hunt_description2">(提示：未來您將有可能取得 Android Things 開發人員套件。)</string>
-    <string name="assistant_app_description">在 Google 助理上使用 2018 年 I/O 大會的應用程式動作。</string>
-    <string name="assistant_app_description2">只要說「Hey Google，連線到 2018 年 Google I/O 大會！」即可</string>
+    <string name="assistant_app_description">在 Google 助理上使用 2019 年 I/O 大會的應用程式動作。</string>
+    <string name="assistant_app_description2">只要說「Hey Google，連線到 2019 年 Google I/O 大會！」即可</string>
     <string name="navigate_up">向上瀏覽</string>
 </resources>

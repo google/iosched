@@ -188,7 +188,7 @@
     <string name="built_with_material_components">Material Components로 제작되었습니다.</string>
     <string name="scavenger_hunt_description">I/O Android Things 보물찾기에 참여해 보세요.</string>
     <string name="scavenger_hunt_description2">(힌트: Android Things 개발자 키트를 받으실 수도 있습니다.)</string>
-    <string name="assistant_app_description">I/O 18 Google 어시스턴트용 Action을 사용해 보세요.</string>
+    <string name="assistant_app_description">I/O 19 Google 어시스턴트용 Action을 사용해 보세요.</string>
     <string name="assistant_app_description2">\"Hey Google, Google I/O에 대해 얘기하자.\"라고 말하시기만 하면 됩니다.</string>
     <string name="navigate_up">위로 이동</string>
 </resources>

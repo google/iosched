@@ -188,7 +188,7 @@
     <string name="built_with_material_components">Erstellt mit Material Components.</string>
     <string name="scavenger_hunt_description">An der I/O Android Things-Schnitzeljagd teilnehmen.</string>
     <string name="scavenger_hunt_description2">(Ein kleiner Tipp: In der Zukunft wartet vielleicht ein Entwicklerpaket für Android Things auf Sie.)</string>
-    <string name="assistant_app_description">I/O 18 Action auf Google Assistant verwenden.</string>
-    <string name="assistant_app_description2">Sagen Sie einfach \"Hey Google, sprich mit Google I/O 18\".</string>
+    <string name="assistant_app_description">I/O 19 Action auf Google Assistant verwenden.</string>
+    <string name="assistant_app_description2">Sagen Sie einfach \"Hey Google, sprich mit Google I/O 19\".</string>
     <string name="navigate_up">Nach oben</string>
 </resources>
