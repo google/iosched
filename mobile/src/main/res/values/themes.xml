@@ -26,6 +26,7 @@
         <item name="colorOnSecondary">@color/color_on_secondary</item>
         <item name="colorControlLight">@color/color_control_light</item>
 
+        <item name="borderlessButtonStyle">@style/Widget.IOSched.BorderlessButton</item>
         <item name="toolbarStyle">@style/Widget.Toolbar</item>
         <item name="tabStyle">@style/Widget.IOSched.Tabs</item>
         <item name="android:textViewStyle">@style/Widget.IOSched.TextView</item>
@@ -43,6 +44,16 @@
         <item name="navigationViewStyle">@style/Widget.IOSched.NavigationView</item>
 
         <item name="materialAlertDialogTheme">@style/AlertDialog.Theme</item>
+    </style>
+
+    <style name="ThemeOverlay.IOSched.Light" parent="ThemeOverlay.MaterialComponents.Light">
+        <item name="colorPrimary">@color/deep_sky_blue</item>
+        <item name="colorPrimaryDark">@color/warm_blue</item>
+    </style>
+
+    <style name="ThemeOverlay.IOSched.Dark" parent="ThemeOverlay.MaterialComponents.Dark">
+        <item name="colorPrimary">@color/carolina_blue</item>
+        <item name="colorPrimaryDark">@color/cornflower_blue</item>
     </style>
 
     <style name="AppTheme" parent="Base.AppTheme" />
@@ -71,7 +82,7 @@
         <item name="sessionListKeyline">@dimen/margin_normal</item>
     </style>
 
-    <style name="AppTheme.PopupTheme" parent="ThemeOverlay.MaterialComponents.Light" />
+    <style name="AppTheme.PopupTheme" parent="ThemeOverlay.IOSched.Light" />
 
     <style name="AlertDialog.Theme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="buttonBarNegativeButtonStyle">@style/Widget.IOSched.BorderlessButton</item>
