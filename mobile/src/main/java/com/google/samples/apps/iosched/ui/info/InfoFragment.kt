@@ -94,9 +94,7 @@ class InfoFragment : MainNavigationFragment() {
     }
 
     companion object {
-        fun newInstance() = InfoFragment()
 
-        private val TAG: String = InfoFragment::class.java.simpleName
         private val INFO_TITLES = arrayOf(
             R.string.event_title,
             R.string.travel_title
@@ -104,6 +102,8 @@ class InfoFragment : MainNavigationFragment() {
         private val INFO_PAGES = arrayOf(
             { EventFragment() },
             { TravelFragment() }
+        // TODO: Not adding FaqFragment because it uses NestedScrollView, opening Info page takes
+        // noticeable amount of time.
         )
     }
 }
