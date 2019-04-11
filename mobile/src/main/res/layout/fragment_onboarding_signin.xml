@@ -59,7 +59,7 @@
 
         <Button
             android:id="@+id/button_signin"
-            style="@style/Widget.IOSched.BorderlessButton"
+            style="?borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_normal"

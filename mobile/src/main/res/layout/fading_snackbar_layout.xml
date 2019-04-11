@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_normal"
         android:background="@drawable/fading_snackbar_background"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+        android:theme="@style/ThemeOverlay.IOSched.Dark">
 
         <TextView
             android:id="@+id/snackbar_text"
@@ -43,13 +43,12 @@
 
         <Button
             android:id="@+id/snackbar_action"
-            style="@style/Widget.IOSched.SnackbarBorderlessAction"
+            style="?borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical|end"
             android:paddingEnd="@dimen/margin_normal"
             android:paddingStart="@dimen/margin_normal"
-            android:textAppearance="@style/TextAppearance.IOSched.FadingSnackbarAction"
             android:visibility="gone"
             tools:text="Action"
             tools:visibility="visible"

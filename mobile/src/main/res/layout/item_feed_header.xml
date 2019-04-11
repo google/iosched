@@ -103,7 +103,7 @@
 
             <Button
                 android:id="@+id/actionButton"
-                style="@style/Widget.IOSched.BorderlessButton"
+                style="?borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="@+id/momentImageCard"

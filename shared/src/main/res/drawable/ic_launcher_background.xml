@@ -30,6 +30,6 @@
         android:strokeWidth="3" />
     <path
         android:pathData="M69,53m-5,0a5,5 0,1 1,10 0a5,5 0,1 1,-10 0"
-        android:strokeColor="@color/orange"
+        android:strokeColor="@color/bright_orange"
         android:strokeWidth="3" />
 </vector>

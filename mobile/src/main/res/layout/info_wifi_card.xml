@@ -61,7 +61,7 @@
 
             <Button
                 android:id="@+id/join_network"
-                style="@style/Widget.IOSched.BorderlessButton"
+                style="?borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{() -> viewModel.onWifiConnect()}"

@@ -134,7 +134,6 @@
     </style>
 
     <style name="TextAppearance.IOSched.FadingSnackbarAction" parent="@style/TextAppearance.AppCompat.Button">
-        <item name="android:textColor">@color/teal</item>
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textAllCaps">false</item>
@@ -241,7 +240,7 @@
     </style>
 
     <style name="Widget.IOSched.DayIndicatorDecoration">
-        <item name="android:color">?colorAccent</item>
+        <item name="android:color">?colorPrimary</item>
         <item name="insetVertical">8dp</item>
     </style>
 
@@ -254,26 +253,18 @@
         <item name="verticalBias">0.67</item>
     </style>
 
-    <style name="Widget.IOSched.RaisedButton" parent="@style/Widget.AppCompat.Button.Colored">
+    <style name="Widget.IOSched.RaisedButton" parent="@style/Widget.MaterialComponents.Button">
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:background">@drawable/raised_button_background</item>
         <item name="android:letterSpacing">0.025</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:paddingTop">@dimen/padding_raised_button</item>
-        <item name="android:paddingBottom">@dimen/padding_raised_button</item>
     </style>
 
     <style name="Widget.IOSched.BorderlessButton" parent="@style/Widget.MaterialComponents.Button.TextButton">
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">?colorPrimary</item>
         <item name="android:letterSpacing">0.025</item>
         <item name="android:textAllCaps">false</item>
-    </style>
-
-    <style name="Widget.IOSched.SnackbarBorderlessAction" parent="@style/Widget.IOSched.BorderlessButton">
-        <item name="android:textColor">@color/color_on_snackbar_action</item>
     </style>
 
     <style name="Widget.IOSched.BorderlessButton.NormalText" parent="@style/Widget.MaterialComponents.Button.TextButton">

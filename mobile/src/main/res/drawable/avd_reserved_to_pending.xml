@@ -35,7 +35,7 @@
                 android:pivotX="12"
                 android:pivotY="13">
                 <path
-                    android:fillColor="#fff"
+                    android:fillColor="?colorSurface"
                     android:pathData="M 15.1 16 L 14.16 12.46 L 17 10.13 L 13.34 9.91 L 12 6.5 L 10.65 9.9 L 6.99 10.12 L 9.83 12.45 L 8.91 16 L 12.01 14 L 15.1 16 Z" />
             </group>
             <path
@@ -73,7 +73,7 @@
                     android:interpolator="@android:anim/linear_interpolator"
                     android:propertyName="strokeColor"
                     android:startOffset="50"
-                    android:valueFrom="@color/indigo"
+                    android:valueFrom="?colorPrimary"
                     android:valueTo="#dadce0"
                     android:valueType="colorType" />
             </set>

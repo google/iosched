@@ -24,26 +24,26 @@
     android:viewportHeight="108">
     <path
         android:pathData="M54,36L46,71"
-        android:strokeColor="@color/yellow"
+        android:strokeColor="@color/sun_yellow"
         android:strokeLineCap="square"
         android:strokeWidth="3" />
     <path
-        android:fillColor="@color/indigo"
+        android:fillColor="@color/deep_sky_blue"
         android:pathData="M30.5,42.5m-2.5,0a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0" />
     <path
-        android:fillColor="@color/indigo"
+        android:fillColor="@color/deep_sky_blue"
         android:pathData="M40.5,52.5m-2.5,0a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0" />
     <path
-        android:fillColor="@color/indigo"
+        android:fillColor="@color/deep_sky_blue"
         android:pathData="M30.5,62.5m-2.5,0a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0" />
     <path
-        android:fillColor="@color/indigo"
+        android:fillColor="@color/deep_sky_blue"
         android:pathData="M40.5,42.5m-2.5,0a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0" />
     <path
-        android:fillColor="@color/indigo"
+        android:fillColor="@color/deep_sky_blue"
         android:pathData="M30.5,52.5m-2.5,0a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0" />
     <path
-        android:fillColor="@color/indigo"
+        android:fillColor="@color/deep_sky_blue"
         android:pathData="M40.5,62.5m-2.5,0a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0" />
     <path
         android:name="finish"
