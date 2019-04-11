@@ -46,6 +46,7 @@
                 android:layout_weight="1"
                 android:paddingBottom="@dimen/spacing_micro"
                 android:paddingTop="@dimen/spacing_micro"
+                android:textAlignment="viewStart"
                 android:textAppearance="@style/TextAppearance.IOSched.CollapsibleCard"
                 tools:text="@string/travel_shuttle_title" />
 
@@ -67,6 +68,7 @@
             android:paddingEnd="@dimen/margin_normal"
             android:paddingStart="@dimen/margin_normal"
             android:paddingTop="@dimen/spacing_normal"
+            android:textAlignment="viewStart"
             android:textColor="?android:textColorPrimary"
             android:visibility="gone"
             tools:text="@string/travel_shuttle_description"
