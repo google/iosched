@@ -52,6 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:max="4"
+            android:minHeight="@dimen/a11y_min_touch_target"
             android:progress="@{question.currentRating - 1}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
