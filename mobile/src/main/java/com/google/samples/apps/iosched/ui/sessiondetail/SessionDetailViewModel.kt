@@ -38,8 +38,8 @@ import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseC
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.SwapAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
-import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
+import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
@@ -498,7 +498,7 @@ class SessionDetailViewModel @Inject constructor(
     }
 
     private fun showStarInBottomNav(): Boolean {
-        return observeRegisteredUser().value == true && session.value?.isReservable() == true
+        return observeRegisteredUser().value == true && session.value?.isReservable == true
     }
 }
 

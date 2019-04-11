@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.model
 
-import com.google.samples.apps.iosched.model.SessionType.SESSION
+import com.google.samples.apps.iosched.model.SessionType.Companion.reservableTypes
 import org.threeten.bp.ZonedDateTime
 
 typealias SessionId = String
@@ -145,7 +145,9 @@ data class Session(
     /**
      * Whether this event is reservable, based upon [type].
      */
-    fun isReservable() = type == SESSION
+    val isReservable: Boolean by lazy(LazyThreadSafetyMode.PUBLICATION) {
+        type in reservableTypes
+    }
 
     fun isOverlapping(session: Session): Boolean {
         return this.startTime < session.endTime && this.endTime > session.startTime
@@ -200,5 +202,7 @@ enum class SessionType {
                 else -> UNKNOWN
             }
         }
+
+        internal val reservableTypes = listOf(SESSION, OFFICE_HOURS, APP_REVIEW, GAME_REVIEW)
     }
 }
