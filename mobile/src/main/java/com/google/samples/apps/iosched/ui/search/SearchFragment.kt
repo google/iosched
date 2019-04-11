@@ -27,6 +27,7 @@ import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.samples.apps.iosched.databinding.FragmentSearchBinding
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
@@ -36,6 +37,7 @@ import kotlinx.android.synthetic.main.fragment_search.view.searchView
 import javax.inject.Inject
 
 class SearchFragment : MainNavigationFragment() {
+    @Inject lateinit var analyticsHelper: AnalyticsHelper
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var binding: FragmentSearchBinding
     private lateinit var viewModel: SearchViewModel
@@ -59,6 +61,8 @@ class SearchFragment : MainNavigationFragment() {
         viewModel.navigateToSessionAction.observe(this, EventObserver { sessionId ->
             findNavController().navigate(toSessionDetail(sessionId))
         })
+
+        analyticsHelper.sendScreenView("Search", requireActivity())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
