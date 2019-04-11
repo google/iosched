@@ -21,6 +21,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.search.SearchUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
@@ -29,6 +31,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
+    private val analyticsHelper: AnalyticsHelper,
     private val loadSearchResultsUseCase: SearchUseCase
 ) : ViewModel(), SearchResultActionHandler {
 
@@ -57,6 +60,7 @@ class SearchViewModel @Inject constructor(
     override fun openSearchResult(searchResult: SearchResult) {
         if (searchResult.type == "session") {
             val sessionId = searchResult.objectId
+            analyticsHelper.logUiEvent("Session: $sessionId", AnalyticsActions.SEARCH_RESULT_CLICK)
             _navigateToSessionAction.value = Event(sessionId)
         } else {
             // do nothing
@@ -65,6 +69,7 @@ class SearchViewModel @Inject constructor(
 
     fun onScheduleSearchQuerySubmitted(query: String) {
         Timber.d("Searching for query: $query")
+        analyticsHelper.logUiEvent("Query: $query", AnalyticsActions.SEARCH_QUERY_SUBMIT)
         loadSearchResultsUseCase(query, loadSearchResults)
     }
 }
