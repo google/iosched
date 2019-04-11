@@ -59,16 +59,39 @@ object TimeUtils {
         }
     }
 
-    /**
-     * Returns a string resource to use for the label of this day.
-     */
+    /** Return a string resource to use for the label of this day, e.g. "Tuesday, May 7". */
     @StringRes
     fun getLabelResForDay(day: ConferenceDay, inConferenceTimeZone: Boolean = true): Int {
+        return when (day) {
+            ConferenceDays[0] -> if (inConferenceTimeZone) R.string.day1_day_date else R.string.day1
+            ConferenceDays[1] -> if (inConferenceTimeZone) R.string.day2_day_date else R.string.day2
+            ConferenceDays[2] -> if (inConferenceTimeZone) R.string.day3_day_date else R.string.day3
+            else -> throw IllegalArgumentException("Unknown ConferenceDay")
+        }
+    }
+
+    /** Return a short string resource to use for the label of this day, e.g. "May 7". */
+    @StringRes
+    fun getShortLabelResForDay(day: ConferenceDay, inConferenceTimeZone: Boolean = true): Int {
         return when (day) {
             ConferenceDays[0] -> if (inConferenceTimeZone) R.string.day1_date else R.string.day1
             ConferenceDays[1] -> if (inConferenceTimeZone) R.string.day2_date else R.string.day2
             ConferenceDays[2] -> if (inConferenceTimeZone) R.string.day3_date else R.string.day3
             else -> throw IllegalArgumentException("Unknown ConferenceDay")
+        }
+    }
+
+    /** Return a string resource to use for the nearest day to the given time. */
+    @StringRes
+    fun getLabelResForTime(time: ZonedDateTime, inConferenceTimeZone: Boolean = true): Int {
+        return when {
+            time.isBefore(ConferenceDays[0].start) ->
+                if (inConferenceTimeZone) R.string.day0_day_date else R.string.day0
+            time.isBefore(ConferenceDays[1].start) ->
+                if (inConferenceTimeZone) R.string.day1_day_date else R.string.day1
+            time.isBefore(ConferenceDays[2].start) ->
+                if (inConferenceTimeZone) R.string.day2_day_date else R.string.day2
+            else -> if (inConferenceTimeZone) R.string.day3_day_date else R.string.day3
         }
     }
 

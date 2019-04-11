@@ -232,12 +232,12 @@
     </style>
 
     <style name="Widget.IOSched.DateHeaders">
-        <item name="android:width">@dimen/session_keyline</item>
+        <item name="android:width">@dimen/day_header_decor_width</item>
+        <item name="android:height">@dimen/day_header_decor_height</item>
         <item name="android:fontFamily">@font/google_sans</item>
-        <item name="android:paddingTop">@dimen/spacing_normal</item>
-        <item name="android:textColor">?colorPrimary</item>
-        <item name="dateTextSize">@dimen/date_header_date_text_size</item>
-        <item name="dayTextSize">@dimen/date_header_day_text_size</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:textSize">@dimen/day_header_text_size</item>
+        <item name="verticalBias">0.67</item>
     </style>
 
     <style name="Widget.IOSched.DayIndicatorDecoration">
@@ -246,10 +246,11 @@
     </style>
 
     <style name="Widget.IOSched.DaySeparatorDecoration">
+        <item name="android:width">@dimen/day_header_decor_width</item>
+        <item name="android:height">@dimen/day_header_decor_height</item>
         <item name="android:fontFamily">@font/google_sans</item>
-        <item name="android:height">80dp</item>
-        <item name="android:textColor">?colorAccent</item>
-        <item name="android:textSize">@dimen/day_separator_text_size</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:textSize">@dimen/day_header_text_size</item>
         <item name="verticalBias">0.67</item>
     </style>
 

@@ -27,6 +27,7 @@ import android.text.TextPaint
 import android.util.SparseArray
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.content.res.getDimensionPixelSizeOrThrow
 import androidx.core.content.res.getResourceIdOrThrow
 import androidx.core.graphics.withTranslation
 import androidx.core.util.containsKey
@@ -77,10 +78,10 @@ class DaySeparatorItemDecoration(
             attrs.getColor(R.styleable.DaySeparatorDecoration_android_textColor, Color.BLACK)
         paint.color = textColor
 
-        textWidth = context.resources.getDimensionPixelSize(R.dimen.day_separator_text_width)
-
+        textWidth =
+            attrs.getDimensionPixelSizeOrThrow(R.styleable.DaySeparatorDecoration_android_width)
         val height =
-            attrs.getDimensionPixelSize(R.styleable.DaySeparatorDecoration_android_height, 0)
+            attrs.getDimensionPixelSizeOrThrow(R.styleable.DaySeparatorDecoration_android_height)
         val minHeight = ceil(textSize).toInt()
         decorHeight = Math.max(height, minHeight)
 
@@ -101,19 +102,16 @@ class DaySeparatorItemDecoration(
         val sparseArray = SparseArray<StaticLayout>()
         for (day in indexer.days) {
             val position = indexer.positionForDay(day)
-            if (position > 0) {
-                val text = context.getString(TimeUtils.getLabelResForDay(day, isInConferenceZone))
-                val label = StaticLayout(text, paint, textWidth, ALIGN_CENTER, 1f, 0f, false)
-                sparseArray.put(position, label)
-            }
+            val text = context.getString(TimeUtils.getLabelResForDay(day, isInConferenceZone))
+            val label = StaticLayout(text, paint, textWidth, ALIGN_CENTER, 1f, 0f, false)
+            sparseArray.put(position, label)
         }
         return sparseArray
     }
 
     override fun getItemOffsets(outRect: Rect, child: View, parent: RecyclerView, state: State) {
         val position = parent.getChildAdapterPosition(child)
-        val top = if (position > 0 && labels.containsKey(position)) decorHeight else 0
-        outRect.set(0, top, 0, 0)
+        outRect.top = if (labels.containsKey(position)) decorHeight else 0
     }
 
     override fun onDraw(canvas: Canvas, parent: RecyclerView, state: State) {

@@ -86,7 +86,7 @@ class ScheduleTest {
     fun allDays_areClicked_showsSessions() {
         // Each of the days should be displayed
         ConferenceDays.forEachIndexed { i, conferenceDay ->
-            val dayTitle = resources.getString(TimeUtils.getLabelResForDay(conferenceDay))
+            val dayTitle = resources.getString(TimeUtils.getShortLabelResForDay(conferenceDay))
             onView(withText(dayTitle)).perform(click())
             onView(withText("First session day ${i + 1}"))
                 .check(matches(isDisplayed()))

@@ -81,5 +81,5 @@ fun setIndicatorText(
     dayIndicator: DayIndicator,
     inConferenceTimeZone: Boolean
 ) {
-    view.setText(TimeUtils.getLabelResForDay(dayIndicator.day, inConferenceTimeZone))
+    view.setText(TimeUtils.getShortLabelResForDay(dayIndicator.day, inConferenceTimeZone))
 }

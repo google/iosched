@@ -18,15 +18,11 @@ package com.google.samples.apps.iosched.ui.agenda
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Paint.ANTI_ALIAS_FLAG
+import android.graphics.Paint
 import android.graphics.Rect
-import android.graphics.Typeface.BOLD
 import android.text.Layout.Alignment.ALIGN_CENTER
-import android.text.SpannableStringBuilder
 import android.text.StaticLayout
 import android.text.TextPaint
-import android.text.style.AbsoluteSizeSpan
-import android.text.style.StyleSpan
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.res.getColorOrThrow
@@ -34,16 +30,15 @@ import androidx.core.content.res.getDimensionOrThrow
 import androidx.core.content.res.getDimensionPixelSizeOrThrow
 import androidx.core.content.res.getResourceIdOrThrow
 import androidx.core.graphics.withTranslation
-import androidx.core.text.inSpans
-import androidx.core.view.get
-import androidx.core.view.isEmpty
+import androidx.core.view.forEach
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import androidx.recyclerview.widget.RecyclerView.State
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Block
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.ZonedDateTime
-import org.threeten.bp.format.DateTimeFormatter
+import kotlin.math.ceil
 
 /**
  * A [RecyclerView.ItemDecoration] which draws sticky headers marking the days in a given list of
@@ -51,24 +46,23 @@ import org.threeten.bp.format.DateTimeFormatter
  */
 class AgendaHeadersDecoration(
     context: Context,
-    blocks: List<Block>
+    blocks: List<Block>,
+    inConferenceTimeZone: Boolean
 ) : ItemDecoration() {
 
     private val paint: TextPaint
-    private val width: Int
-    private val paddingTop: Int
-    private val dateFormatter = DateTimeFormatter.ofPattern("d")
-    private val dayFormatter = DateTimeFormatter.ofPattern("eee")
-    private val dayTextSize: Int
+    private val textWidth: Int
+    private val decorHeight: Int
+    private val verticalBias: Float
 
     init {
         val attrs = context.obtainStyledAttributes(
             R.style.Widget_IOSched_DateHeaders,
             R.styleable.DateHeader
         )
-        paint = TextPaint(ANTI_ALIAS_FLAG).apply {
+        paint = TextPaint(Paint.ANTI_ALIAS_FLAG or Paint.SUBPIXEL_TEXT_FLAG).apply {
             color = attrs.getColorOrThrow(R.styleable.DateHeader_android_textColor)
-            textSize = attrs.getDimensionOrThrow(R.styleable.DateHeader_dateTextSize)
+            textSize = attrs.getDimensionOrThrow(R.styleable.DateHeader_android_textSize)
             try {
                 typeface = ResourcesCompat.getFont(
                     context,
@@ -78,96 +72,60 @@ class AgendaHeadersDecoration(
                 // ignore
             }
         }
-        width = attrs.getDimensionPixelSizeOrThrow(R.styleable.DateHeader_android_width)
-        paddingTop = attrs.getDimensionPixelSizeOrThrow(R.styleable.DateHeader_android_paddingTop)
-        dayTextSize = attrs.getDimensionPixelSizeOrThrow(R.styleable.DateHeader_dayTextSize)
+
+        textWidth = attrs.getDimensionPixelSizeOrThrow(R.styleable.DateHeader_android_width)
+        val height = attrs.getDimensionPixelSizeOrThrow(R.styleable.DateHeader_android_height)
+        val minHeight = ceil(paint.textSize).toInt()
+        decorHeight = Math.max(height, minHeight)
+
+        verticalBias = attrs.getFloat(R.styleable.DateHeader_verticalBias, 0.5f).coerceIn(0f, 1f)
+
         attrs.recycle()
     }
 
     // Get the block index:day and create header layouts for each
     private val daySlots: Map<Int, StaticLayout> =
         indexAgendaHeaders(blocks).map {
-            it.first to createHeader(it.second)
+            it.first to createHeader(context, it.second, inConferenceTimeZone)
         }.toMap()
 
-    /**
-     *  Add gaps between days, split over the last and first block of a day.
-     */
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: State) {
         val position = parent.getChildAdapterPosition(view)
-        if (position <= 0) return
-
-        if (daySlots.containsKey(position)) {
-            // first block of day, pad top
-            outRect.top = paddingTop
-        } else if (daySlots.containsKey(position + 1)) {
-            // last block of day, pad bottom
-            outRect.bottom = paddingTop
-        }
+        outRect.top = if (daySlots.containsKey(position)) decorHeight else 0
     }
 
-    /**
-     * Loop over each child and draw any corresponding headers i.e. items who's position is a key in
-     * [daySlots]. We also look back to see if there are any headers _before_ the first header we
-     * found i.e. which needs to be sticky.
-     */
+    override fun onDraw(canvas: Canvas, parent: RecyclerView, state: State) {
+        val layoutManager = parent.layoutManager ?: return
+        val centerX = parent.width / 2f
 
-    override fun onDraw(c: Canvas, parent: RecyclerView, state: State) {
-        if (daySlots.isEmpty() || parent.isEmpty()) return
-
-        var earliestFoundHeaderPos = -1
-        var prevHeaderTop = Int.MAX_VALUE
-
-        // Loop over each attached view looking for header items.
-        // Loop backwards as a lower header can push another higher one upward.
-        for (i in parent.childCount - 1 downTo 0) {
-            val view = parent[i]
-            val viewTop = view.top + view.translationY.toInt()
-            if (view.bottom > 0 && viewTop < parent.height) {
-                val position = parent.getChildAdapterPosition(view)
-                daySlots[position]?.let { layout ->
-                    paint.alpha = (view.alpha * 255).toInt()
-                    val top = (viewTop + paddingTop)
-                        .coerceAtLeast(paddingTop)
-                        .coerceAtMost(prevHeaderTop - layout.height)
-                    c.withTranslation(y = top.toFloat()) {
-                        layout.draw(c)
-                    }
-                    earliestFoundHeaderPos = position
-                    prevHeaderTop = viewTop - paddingTop - paddingTop
-                }
-            }
-        }
-
-        // If no headers found, ensure header of the first shown item is drawn.
-        if (earliestFoundHeaderPos < 0) {
-            earliestFoundHeaderPos = parent.getChildAdapterPosition(parent[0]) + 1
-        }
-
-        // Look back over headers to see if a prior item should be drawn sticky.
-        for (headerPos in daySlots.keys.reversed()) {
-            if (headerPos < earliestFoundHeaderPos) {
-                daySlots[headerPos]?.let { layout ->
-                    val top = (prevHeaderTop - layout.height).coerceAtMost(paddingTop)
-                    c.withTranslation(y = top.toFloat()) {
-                        layout.draw(c)
+        parent.forEach { child ->
+            if (child.top < parent.height && child.bottom > 0) {
+                // Child is visible
+                val layout = daySlots[parent.getChildAdapterPosition(child)]
+                if (layout != null) {
+                    val dx = centerX - (layout.width / 2)
+                    val dy = layoutManager.getDecoratedTop(child) +
+                        child.translationY +
+                        // offset vertically within the space according to the bias
+                        (decorHeight - layout.height) * verticalBias
+                    canvas.withTranslation(x = dx, y = dy) {
+                        layout.draw(this)
                     }
                 }
-                break
             }
         }
     }
 
     /**
-     * Create a header layout for the given [day]
+     * Create a header layout for the given [time]
      */
-    private fun createHeader(day: ZonedDateTime): StaticLayout {
-        val text = SpannableStringBuilder(dateFormatter.format(day)).apply {
-            append(System.lineSeparator())
-            inSpans(AbsoluteSizeSpan(dayTextSize), StyleSpan(BOLD)) {
-                append(dayFormatter.format(day).toUpperCase())
-            }
-        }
-        return StaticLayout(text, paint, width, ALIGN_CENTER, 1f, 0f, false)
+    private fun createHeader(
+        context: Context,
+        time: ZonedDateTime,
+        inConferenceTimeZone: Boolean
+    ): StaticLayout {
+        val labelRes = TimeUtils.getLabelResForTime(time, inConferenceTimeZone)
+        val text = context.getText(labelRes)
+        return StaticLayout(text, paint, textWidth, ALIGN_CENTER, 1f, 0f, false)
     }
 }
