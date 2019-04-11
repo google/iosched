@@ -37,6 +37,8 @@
     <color name="color_primary_dark">@color/indigo_dark</color>
     <color name="color_on_secondary">#FFF</color>
 
+    <color name="color_on_snackbar_action">#64b5f6</color>
+
     <color name="wifi_card_background">#e8f0fe</color>
     <color name="header_grid">#e6e6e6</color>
     <color name="list_divider">#1f000000</color>>
