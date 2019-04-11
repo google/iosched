@@ -38,6 +38,7 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.di.SearchScheduleEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.sessions.ConferenceDayIndexer
@@ -150,6 +151,7 @@ class ScheduleFragment : MainNavigationFragment() {
             menu.findItem(R.id.search).isVisible = searchScheduleFeatureEnabled
             setOnMenuItemClickListener { item ->
                 if (item.itemId == R.id.search) {
+                    analyticsHelper.logUiEvent("Navigate to Search", AnalyticsActions.CLICK)
                     openSearch()
                     true
                 } else {

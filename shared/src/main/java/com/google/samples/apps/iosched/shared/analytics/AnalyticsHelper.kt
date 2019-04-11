@@ -52,6 +52,8 @@ object AnalyticsActions {
     const val FILTERS_UPDATED = "Updated filters"
     const val YOUTUBE_LINK = "Youtube link click"
     const val SHARE = "Share"
+    const val SEARCH_QUERY_SUBMIT = "Submitted search query"
+    const val SEARCH_RESULT_CLICK = "Clicked on search result"
 
     // Settings Actions
     const val ENABLE = "Enabled"
