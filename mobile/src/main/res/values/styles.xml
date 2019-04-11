@@ -272,6 +272,10 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <style name="Widget.IOSched.SnackbarBorderlessAction" parent="@style/Widget.IOSched.BorderlessButton">
+        <item name="android:textColor">@color/color_on_snackbar_action</item>
+    </style>
+
     <style name="Widget.IOSched.BorderlessButton.NormalText" parent="@style/Widget.MaterialComponents.Button.TextButton">
         <item name="android:textAppearance">?android:textAppearance</item>
         <item name="android:textColor">?android:textColorSecondary</item>
