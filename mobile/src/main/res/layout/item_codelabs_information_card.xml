@@ -44,6 +44,7 @@
             android:orientation="vertical">
 
             <TextView
+                style="@style/Widget.IOSched.MultilineBody"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/codelabs_information" />

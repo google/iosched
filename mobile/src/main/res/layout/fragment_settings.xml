@@ -32,7 +32,7 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
-            style="@style/Widget.AppBar"
+            style="@style/Widget.IOSched.AppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true">
@@ -67,21 +67,18 @@
 
                 <TextView
                     android:id="@+id/settings_choose_theme"
-                    style="@style/Widget.IOSched.Settings"
+                    style="@style/Widget.IOSched.Settings.Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="true"
-                    android:gravity="start|center_vertical"
                     android:onClick="@{(view) -> viewModel.onThemeSettingClicked()}"
-                    android:text="@string/settings_theme_title"
-                    android:textAlignment="viewStart"
-                    android:textAppearance="?attr/textAppearanceBody2" />
+                    android:text="@string/settings_theme_title" />
 
                 <!-- AppCompat/MaterialComponents layout inflators don't automatically handle
                      Switch widgets. See https://material.io/develop/android/components/switch/ -->
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/settings_time_zone"
-                    style="@style/Widget.IOSched.SettingsSwitch"
+                    style="@style/Widget.IOSched.Settings.Switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checked="@{viewModel.preferConferenceTimeZone}"
@@ -90,7 +87,7 @@
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/settings_enable_notifications"
-                    style="@style/Widget.IOSched.SettingsSwitch"
+                    style="@style/Widget.IOSched.Settings.Switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checked="@{viewModel.enableNotifications}"
@@ -99,7 +96,7 @@
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/settings_send_anonymous_usage_statistics"
-                    style="@style/Widget.IOSched.SettingsSwitch"
+                    style="@style/Widget.IOSched.Settings.Switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checked="@{viewModel.sendUsageStatistics}"
@@ -112,32 +109,34 @@
                     android:background="?android:dividerHorizontal" />
 
                 <TextView
-                    style="@style/Widget.IOSched.AboutHeading"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_normal"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_large"
+                    android:textAppearance="@style/TextAppearance.IOSched.Overline"
                     android:text="@string/about_title" />
 
-                <Button
+                <TextView
                     android:id="@+id/terms_of_service"
-                    style="@style/Widget.IOSched.AboutButtons"
+                    style="@style/Widget.IOSched.Settings.Button.About"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/settings_tos"
                     app:websiteLink="@{@string/tos_url}" />
 
-                <Button
+                <TextView
                     android:id="@+id/privacy_policy"
-                    style="@style/Widget.IOSched.AboutButtons"
+                    style="@style/Widget.IOSched.Settings.Button.About"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/settings_privacy_policy"
                     app:websiteLink="@{@string/privacy_policy_url}" />
 
-                <Button
+                <TextView
                     android:id="@+id/open_source_license"
-                    style="@style/Widget.IOSched.AboutButtons"
+                    style="@style/Widget.IOSched.Settings.Button.About"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/settings_oss_licenses"
@@ -151,6 +150,7 @@
                     android:gravity="start|center_vertical"
                     android:minHeight="48dp"
                     android:padding="@dimen/margin_normal"
+                    android:textAppearance="?textAppearanceBody2"
                     android:text="@string/version_name" />
 
                 <TextView

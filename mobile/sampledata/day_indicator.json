@@ -2,15 +2,15 @@
   "comment": "Sample day indicators for use with tools:... attributes in layouts",
   "indicators": [
     {
-      "label": "7",
-      "checked": true
-    },
-    {
-      "label": "8",
+      "label": "May 7",
       "checked": false
     },
     {
-      "label": "9",
+      "label": "May 8",
+      "checked": true
+    },
+    {
+      "label": "May 9",
       "checked": false
     }
   ]

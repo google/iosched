@@ -21,28 +21,29 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/margin_normal"
     android:paddingEnd="@dimen/margin_large"
     android:paddingStart="@dimen/margin_large"
     tools:targetApi="o">
 
     <TextView
         android:id="@+id/schedule_hint_textview_star_event"
+        style="?materialAlertDialogBodyTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawablePadding="@dimen/margin_normal"
         android:drawableStart="@drawable/ic_star_border"
         android:text="@string/schedule_hint_star_event"
-        android:textAppearance="@style/TextAppearance.AlertDialog.Message" />
+        tools:style="@style/AlertDialog.BodyText" />
 
     <TextView
         android:id="@+id/schedule_hint_textview_reserve_seat"
+        style="?materialAlertDialogBodyTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_normal"
         android:drawablePadding="@dimen/margin_normal"
         android:drawableStart="@drawable/ic_reservable"
         android:text="@string/schedule_hint_reserve_session_seat"
-        android:textAppearance="@style/TextAppearance.AlertDialog.Message" />
+        tools:style="@style/AlertDialog.BodyText"/>
 
 </LinearLayout>

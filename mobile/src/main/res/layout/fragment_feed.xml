@@ -33,7 +33,7 @@
 
         <View
             android:id="@+id/status_bar"
-            style="@style/Widget.AppBar"
+            style="@style/Widget.IOSched.AppBar"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:visibility="gone"
@@ -43,7 +43,7 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            style="@style/Widget.AppBar"
+            style="@style/Widget.IOSched.AppBar"
             android:layout_width="0dp"
             android:layout_height="?actionBarSize"
             app:layout_constraintLeft_toLeftOf="parent"

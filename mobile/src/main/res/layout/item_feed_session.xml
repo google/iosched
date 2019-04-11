@@ -43,11 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_small"
         android:layout_marginStart="@dimen/margin_small"
-        android:elevation="@dimen/cardview_default_elevation"
-        android:onClick="@{() -> eventListener.openEventDetail(userSession.session.id)}"
-        android:paddingTop="@dimen/margin_normal"
-        android:paddingBottom="@dimen/margin_normal"
-        >
+        android:onClick="@{() -> eventListener.openEventDetail(userSession.session.id)}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="@dimen/feed_session_dimension"
@@ -57,23 +53,25 @@
                 android:id="@+id/reserved_icon"
                 android:layout_width="@dimen/feed_session_badge_icon_size"
                 android:layout_height="@dimen/feed_session_badge_icon_size"
-                android:layout_marginRight="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_small"
                 android:layout_marginTop="@dimen/margin_small"
-                app:srcCompat="@drawable/ic_reserved"
+                android:contentDescription="@null"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:goneUnless="@{userSession.userEvent.isReserved}" />
+                app:goneUnless="@{userSession.userEvent.isReserved}"
+                app:srcCompat="@drawable/ic_reserved" />
 
             <ImageView
                 android:id="@+id/starred_icon"
                 android:layout_width="@dimen/feed_session_badge_icon_size"
                 android:layout_height="@dimen/feed_session_badge_icon_size"
-                android:layout_marginRight="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_small"
                 android:layout_marginTop="@dimen/margin_small"
-                app:srcCompat="@drawable/ic_star"
+                android:contentDescription="@null"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:goneUnless="@{userSession.userEvent.isStarred &amp;&amp; !userSession.userEvent.isReserved}" />
+                app:goneUnless="@{userSession.userEvent.isStarred &amp;&amp; !userSession.userEvent.isReserved}"
+                app:srcCompat="@drawable/ic_star" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/keyline_left"
@@ -94,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_normal"
-                android:textAllCaps="true"
+                android:textAppearance="@style/TextAppearance.IOSched.Feed.Session.Time"
                 app:layout_constraintStart_toStartOf="@id/keyline_left"
                 app:layout_constraintTop_toTopOf="parent"
                 app:startTime="@{userSession.session.startTime}"
@@ -110,7 +108,8 @@
                 android:text="@{userSession.session.title}"
                 app:layout_constraintEnd_toEndOf="@id/keyline_right"
                 app:layout_constraintStart_toStartOf="@id/keyline_left"
-                app:layout_constraintTop_toBottomOf="@+id/time" />
+                app:layout_constraintTop_toBottomOf="@+id/time"
+                tools:text="What's New in Android"/>
 
             <TextView
                 android:id="@+id/location"
@@ -121,7 +120,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/keyline_right"
                 app:layout_constraintStart_toStartOf="@id/keyline_left"
-                tools:text="Stage1" />
+                tools:text="Stage 1" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

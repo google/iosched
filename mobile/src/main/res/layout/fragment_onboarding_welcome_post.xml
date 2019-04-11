@@ -50,11 +50,11 @@
 
     <TextView
         android:id="@+id/welcome_post_message"
+        style="@style/Widget.IOSched.OnboardingText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/onboarding_welcome_google_io_post"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.IOSched.H1"
         app:layout_constraintBottom_toTopOf="@id/spacer"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintStart_toStartOf="@id/guideline_start"

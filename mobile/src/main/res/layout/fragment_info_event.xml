@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_large"
                 android:text="@string/related_apps_header"
-                android:textAppearance="@style/TextAppearance.IOSched.Subhead"
+                android:textAppearance="@style/TextAppearance.IOSched.Overline"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/wifi_card"
                 app:goneUnless="@{showAssistantApp}" />
@@ -105,7 +105,7 @@
 
                 <TextView
                     android:id="@+id/assistant_app_description"
-                    style="@style/TextAppearance.IOSched.InfoEventDescription.AppCallout"
+                    style="@style/TextAppearance.IOSched.Info.AssistantApp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_normal"
@@ -118,13 +118,13 @@
 
                 <TextView
                     android:id="@+id/assistant_app_description2"
-                    style="@style/TextAppearance.IOSched.InfoEventDescription"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/spacing_micro"
                     android:text="@string/assistant_app_description2"
                     android:textAlignment="viewStart"
+                    android:textAppearance="?textAppearanceBody2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/assistant_app_description"
                     app:layout_constraintTop_toBottomOf="@id/assistant_app_description" />
@@ -137,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_large"
                 android:text="@string/event_types_header"
-                android:textAppearance="@style/TextAppearance.IOSched.Subhead"
+                android:textAppearance="@style/TextAppearance.IOSched.Overline"
                 app:layout_constraintStart_toStartOf="@+id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@+id/assistant_app" />
 

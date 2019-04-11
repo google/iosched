@@ -149,7 +149,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:alpha="@{headerAlpha}"
-            android:textAppearance="?android:textAppearanceMedium"
+            android:textAppearance="@style/TextAppearance.IOSched.FiltersLabel"
             android:textColor="?android:textColorPrimary"
             app:layout_constraintBottom_toTopOf="@id/guide_peek_height"
             app:layout_constraintEnd_toEndOf="parent"
