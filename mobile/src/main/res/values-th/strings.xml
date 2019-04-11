@@ -145,17 +145,17 @@
     <string name="event_title">กิจกรรม</string>
     <string name="travel_title">การท่องเที่ยว</string>
     <string name="settings_title">การตั้งค่า</string>
-    <string name="travel_directions_title">เส้นทางการขับขี่</string>
-    <string name="travel_shuttle_title">บริการรถรับส่ง (แนะนำ)</string>
-    <string name="travel_carpool_parking_title">ที่จอดรถและการโดยสารรถร่วมกัน</string>
 
-    <string name="travel_public_transportation_title">การขนส่งมวลชน</string>
+
+
+
+
     <string name="travel_biking_title">ขี่จักรยาน</string>
-    <string name="travel_directions_description">ค้นหาเส้นทางใน <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> หรือ <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a> ไปยัง 1 Amphitheatre Pkwy, Mountain View, CA 94043</string>
-    <string name="travel_shuttle_description">มีรถรับส่งให้กับผู้เข้าร่วมกิจกรรม Google I/O ทุกคนจากโรงแรมที่ Google แนะนำโดยไม่มีค่าใช้จ่าย นอกจากนี้ยังมีบริการรับส่งจากซานฟรานซิสโกและสถานที่อื่นๆ ตามคาบสมุทร คุณต้องแสดงอีเมลยืนยันจาก Google I/O หรือป้ายการประชุมเพื่อขึ้นรถรับส่งของกิจกรรม Google I/O ทั้งหมด\n\nในแต่ละจุดรับส่งมีรถสำหรับผู้มีความบกพร่องทางร่างกาย โปรดระบุในแบบฟอร์มลงทะเบียนหากคุณต้องการความช่วยเหลือพิเศษใดๆ และทีมวางแผนจะติดตามผลกับคุณโดยตรง</string>
-    <string name="travel_carpool_parking_description">ที่จอดรถมีจำนวนจำกัดและมีเฉพาะในสถานที่ที่ Google I/O กำหนดไว้ซึ่งตั้งอยู่ระหว่าง Shoreline Amphitheatre บริเวณ Shoreline Boulevard เท่านั้น ไม่มีที่จอดรถสำหรับกิจกรรมใน Amphitheatre Parkway หรือ Charleston Road หากคุณจะเดินทางด้วยรถยนต์ส่วนตัว เราแนะนำให้โดยสารร่วมกับผู้เข้าร่วมคนอื่น เนื่องจากที่จอดรถจะเปิดให้บริการสำหรับรถที่มีผู้โดยสารอย่างน้อย 2 คนขึ้นไป</string>
 
-    <string name="travel_public_transportation_description">การขนส่งสาธารณะให้บริการไม่ถึงงาน Google I/O โปรดติดตามเพื่อดูตำแหน่งที่ให้บริการการเดินทางโดยรถรับส่งสำหรับกิจกรรม Google I/O</string>
+
+
+
+
     <string name="travel_biking_description">มีที่จอดรถจักรยานฟรีที่ Shoreline Amphitheatre ใน Parking Lot A โดย Silicon Valley Bicycle Coalition ให้บริการรับจอดรถจักรยานที่ปลอดภัยตั้งแต่เวลา 7.00 น. จนถึงเวลาที่กิจกรรมสิ้นสุดในแต่ละวัน มีทางจักรยาน 2 ทางคือ Stevens Creek Trail และ Permanente Creek Trail ที่อำนวยความสะดวกให้กับผู้ที่จะเดินทางด้วยจักรยานมายัง Shoreline Amphitheatre ตรวจสอบ Google Maps เพื่อดูเส้นทางการเดินทางด้วยจักรยานที่ดีที่สุด\n\nงาน Bay Area Bike to Work Day จะมีขึ้นในวันพฤหัสบดีที่ 10 พฤษภาคมโดยจะมีนักปั่นจักรยานหลายพันคนเข้าร่วมงานใกล้กับ Shoreline และจะมีจุดพักหลายร้อยจุดทั่วทั้งบริเวณงาน โปรดดูเว็บไซต์ Silicon Valley Bike to Work Day สำหรับข้อมูลเพิ่มเติม</string>
     <string name="view_sessions_text">ดูเซสชัน</string>
     <string name="view_codelabs_text">ดู Codelabs</string>

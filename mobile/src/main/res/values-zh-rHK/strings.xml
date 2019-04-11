@@ -145,17 +145,17 @@
     <string name="event_title">活動</string>
     <string name="travel_title">交通資訊</string>
     <string name="settings_title">設定</string>
-    <string name="travel_directions_title">行車路線</string>
-    <string name="travel_shuttle_title">接駁服務 (建議使用)</string>
-    <string name="travel_carpool_parking_title">停車與共乘資訊</string>
 
-    <string name="travel_public_transportation_title">大眾運輸</string>
+
+
+
+
     <string name="travel_biking_title">騎乘自行車</string>
-    <string name="travel_directions_description">請在 <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google 地圖</a>或 <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a> 中輸入以下地址：1 Amphitheatre Pkwy, Mountain View, CA 94043</string>
-    <string name="travel_shuttle_description">Google 推薦的所有飯店均設有活動接駁車，Google I/O 大會的參與者可以免費利用這項服務。舊金山和半島地區也設有特定停靠站，歡迎多加利用。搭乘接駁車時，請出示你收到的 Google I/O 大會確認電子郵件或大會徽章。\n\n每個上車地點皆可停放載運輪椅車輛。如果您需要任何特別協助，請在報名表上註明，我們的活動規劃小組將會直接與你聯繫。</string>
-    <string name="travel_carpool_parking_description">會場周邊的停車位數量相當有限。海岸露天劇場 (Shoreline Amphitheater) 旁的海岸大道 (Shoreline Boulevard) 上才設有 Google I/O 大會的指定停車格。露天劇場大道 (Amphitheatre Parkway) 或查爾斯頓路 (Charleston Road) 沿途並沒有大會來賓專用停車格，請特別留意。乘載人數超過兩人的車輛可優先選擇停車位，因此建議來賓盡量和其他與會者採用共乘方式前往會場。</string>
 
-    <string name="travel_public_transportation_description">大眾運輸工具並未直達 Google I/O 會場地點。請密切留意 Google I/O 大會提供的接駁車停靠站資訊。</string>
+
+
+
+
     <string name="travel_biking_description">若騎自行車前來，可以將車輛免費停放在海岸露天劇場的 A 區停車場。大會活動期間，矽谷單車聯盟 (Silicon Valley Bicycle Coalition) 每天上午 7 點到當天活動結束為止，皆為自行車騎士提供安全的代客停車服務。建議選擇史蒂文斯溪小道 (Stevens Creek Trail) 和佩曼南緹溪小道 (Permanente Creek Trail) 前往海岸露天劇場。如要取得適合自行車行駛的路線指引，請查看 Google 地圖。\n\n灣區今年的「騎自行車上班日」定於 5 月 10 日週四，屆時海岸地區會有上千名自行車騎士上路，整個地區將設置上百個補給站。詳情請瀏覽「矽谷騎自行車上班日」(Silicon Valley Bike to Work Day) 網站。</string>
     <string name="view_sessions_text">查看活動時間表</string>
     <string name="view_codelabs_text">查看 Codelab</string>
