@@ -43,7 +43,7 @@
 
         <Button
             android:id="@+id/snackbar_action"
-            style="?borderlessButtonStyle"
+            style="@style/Widget.IOSched.SnackbarBorderlessAction"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical|end"
