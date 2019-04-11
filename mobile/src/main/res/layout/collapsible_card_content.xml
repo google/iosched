@@ -48,7 +48,7 @@
                 android:paddingTop="@dimen/spacing_micro"
                 android:textAlignment="viewStart"
                 android:textAppearance="@style/TextAppearance.IOSched.CollapsibleCard"
-                tools:text="@string/travel_shuttle_title" />
+                tools:text="@string/travel_shuttle_service_title" />
 
             <ImageView
                 android:id="@+id/expand_icon"
@@ -62,6 +62,7 @@
 
         <com.google.samples.apps.iosched.widget.HtmlTextView
             android:id="@+id/card_description"
+            style="@style/Widget.IOSched.MultilineBody"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/margin_normal"
@@ -71,7 +72,7 @@
             android:textAlignment="viewStart"
             android:textColor="?android:textColorPrimary"
             android:visibility="gone"
-            tools:text="@string/travel_shuttle_description"
+            tools:text="@string/travel_shuttle_service_description"
             tools:visibility="visible" />
 
     </LinearLayout>

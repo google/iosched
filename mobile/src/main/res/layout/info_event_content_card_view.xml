@@ -52,14 +52,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/margin_normal"
-            android:textAppearance="@style/TextAppearance.IOSched.InfoEventTitle"
+            android:textAppearance="@style/TextAppearance.IOSched.H2"
             app:layout_constraintBottom_toBottomOf="@+id/grid"
             app:layout_constraintStart_toStartOf="@+id/grid"
             tools:text="Office Hours &amp; App Reviews" />
 
         <TextView
             android:id="@+id/event_content_description"
-            style="@style/TextAppearance.IOSched.InfoEventDescription"
+            style="@style/Widget.IOSched.MultilineBody"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_normal"
@@ -67,7 +67,8 @@
             android:layout_marginTop="@dimen/margin_normal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/grid" />
+            app:layout_constraintTop_toBottomOf="@+id/grid"
+            tools:text="@tools:sample/lorem[25]" />
 
         <!-- space maintains bottom margins if buttons aren't shown -->
         <Space
@@ -78,7 +79,6 @@
 
         <Button
             android:id="@+id/event_view_codelabs"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/info_event_buttons_margin"
@@ -88,7 +88,6 @@
 
         <Button
             android:id="@+id/event_view_sessions"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/info_event_buttons_margin"
@@ -98,7 +97,6 @@
 
         <Button
             android:id="@+id/event_view_map"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/info_event_buttons_margin"

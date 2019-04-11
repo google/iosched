@@ -22,7 +22,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
-import android.widget.Button
 import androidx.core.view.updatePaddingRelative
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.ViewModelProvider
@@ -67,7 +66,7 @@ class SettingsFragment : MainNavigationFragment() {
 }
 
 @BindingAdapter(value = ["dialogTitle", "fileLink"], requireAll = true)
-fun createDialogForFile(button: Button, dialogTitle: String, fileLink: String) {
+fun createDialogForFile(button: View, dialogTitle: String, fileLink: String) {
     val context = button.context
     button.setOnClickListener {
         val webView = WebView(context).apply { loadUrl(fileLink) }

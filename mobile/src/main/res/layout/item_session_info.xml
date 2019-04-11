@@ -157,7 +157,7 @@
             android:id="@+id/session_detail_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="?android:textColorPrimary"
+            android:textAppearance="?textAppearanceBody2"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/session_detail_with_video_title"
@@ -172,7 +172,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_micro"
             android:text="@{viewModel.session.room.name}"
-            android:textColor="?android:textColorPrimary"
+            android:textAppearance="?textAppearanceBody2"
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toTopOf="@id/session_detail_level_barrier"
             app:layout_constraintEnd_toStartOf="@id/session_detail_recorded"
@@ -209,7 +209,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_micro"
             android:text="@{viewModel.session.levelTag.displayName}"
-            android:textColor="?android:textColorPrimary"
+            android:textAppearance="?textAppearanceBody2"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/session_detail_level_barrier"
             app:goneUnless="@{viewModel.session.levelTag != null}"
@@ -227,6 +227,7 @@
 
         <TextView
             android:id="@+id/session_detail_description"
+            style="@style/Widget.IOSched.MultilineBody"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal"
@@ -235,7 +236,7 @@
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/session_detail_level"
-            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus et mauris blandit, porttitor leo sit amet, tincidunt tellus. Proin at rutrum risus. Sed volutpat tellus  " />
+            tools:text="@tools:sample/lorem[25]" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tags"
@@ -256,11 +257,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_normal"
+            android:onClick="@{() -> viewModel.onFeedbackClicked()}"
             android:text="@string/rate_session"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/tags"
             app:goneUnless="@{viewModel.showFeedbackButton}"
-            android:onClick="@{() -> viewModel.onFeedbackClicked()}"
             tools:text="Rate Session" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

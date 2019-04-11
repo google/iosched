@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small"
                 android:text="@string/wifi_header"
-                android:textAppearance="@style/TextAppearance.IOSched.Subhead" />
+                android:textAppearance="@style/TextAppearance.IOSched.Overline" />
 
             <TextView
                 android:id="@+id/wifi_network_and_password"

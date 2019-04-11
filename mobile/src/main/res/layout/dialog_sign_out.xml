@@ -59,10 +59,10 @@
 
             <TextView
                 android:id="@+id/username"
-                style="@style/TextAppearance.IOSched.Username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lines="1"
+                android:textAppearance="@style/TextAppearance.IOSched.AccountDialog.Username"
                 app:username="@{viewModel.currentUserInfo}"
                 tools:text="User Name" />
 
@@ -90,7 +90,7 @@
 
         <Button
             android:id="@+id/manage_account"
-            style="@style/Widget.IOSched.ProfileDialog.ManageAccountButton"
+            style="@style/Widget.IOSched.AccountDialog.ManageAccountButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/manage_google_account"
@@ -112,19 +112,19 @@
 
         <TextView
             android:id="@+id/message"
+            style="?materialAlertDialogBodyTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal"
             android:text="@string/dialog_sign_out_content"
-            android:textAppearance="?materialAlertDialogBodyTextStyle"
             app:layout_constraintEnd_toStartOf="@id/guideline_end"
             app:layout_constraintStart_toEndOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/divider1"
-            tools:textAppearance="@style/TextAppearance.IOSched.Body" />
+            tools:style="@style/AlertDialog.BodyText" />
 
         <TextView
             android:id="@+id/sign_out"
-            style="@style/Widget.IOSched.ProfileDialog.ActionButton"
+            style="@style/Widget.IOSched.AccountDialog.ActionButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal"

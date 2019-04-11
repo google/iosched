@@ -24,7 +24,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.StringRes
@@ -136,7 +135,7 @@ private const val CHROME_PACKAGE = "com.android.chrome"
 
 @BindingAdapter("websiteLink", "hideWhenEmpty", requireAll = false)
 fun websiteLink(
-    button: Button,
+    button: View,
     url: String?,
     hideWhenEmpty: Boolean = false
 ) {

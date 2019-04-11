@@ -81,7 +81,7 @@
             android:layout_marginEnd="@dimen/margin_normal"
             android:text="@{codelab.title}"
             android:textAlignment="viewStart"
-            android:textAppearance="@style/TextAppearance.IOSched.CodelabTitle"
+            android:textAppearance="?textAppearanceListItem"
             app:layout_constraintEnd_toStartOf="@id/expand_icon"
             app:layout_constraintStart_toEndOf="@id/guideline_start"
             app:layout_constraintTop_toTopOf="parent"
@@ -113,12 +113,12 @@
 
         <TextView
             android:id="@+id/codelab_description"
+            style="@style/Widget.IOSched.MultilineBody"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal"
             android:text="@{codelab.description}"
             android:textAlignment="viewStart"
-            android:textAppearance="@style/TextAppearance.IOSched.ListSecondary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/codelab_tags"

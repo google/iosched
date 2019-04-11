@@ -20,7 +20,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
-        style="@style/Widget.AppBar"
+        style="@style/Widget.IOSched.AppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true">
@@ -29,7 +29,6 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            app:contentInsetStartWithNavigation="?attr/sessionListKeyline"
             app:navigationContentDescription="@string/a11y_show_navigation"
             app:navigationIcon="@drawable/ic_menu"
             app:title="@string/title_schedule"

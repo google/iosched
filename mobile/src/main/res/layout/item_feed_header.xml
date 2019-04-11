@@ -56,7 +56,7 @@
             <!--Wrapped the image with a card to have corner radius-->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/momentImageCard"
-                style="@style/Widget.IOSched.Feed.Moment.Card"
+                style="@style/Widget.IOSched.Feed.Card"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -68,6 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/moment_height"
                     android:adjustViewBounds="true"
+                    android:contentDescription="@null"
                     android:scaleType="fitCenter"
                     app:momentImageUrl="@{feedHeader.moment.imageUrl}"
                     app:momentImageUrlDarkTheme="@{feedHeader.moment.imageUrlDarkTheme}"

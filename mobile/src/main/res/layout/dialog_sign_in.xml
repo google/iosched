@@ -45,7 +45,6 @@
 
         <TextView
             android:id="@+id/welcome"
-            style="@style/TextAppearance.IOSched.Username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
@@ -55,6 +54,7 @@
             android:paddingBottom="@dimen/margin_normal"
             android:paddingTop="@dimen/margin_normal"
             android:text="@string/welcome"
+            android:textAppearance="@style/TextAppearance.IOSched.AccountDialog.Username"
             app:layout_constraintEnd_toStartOf="@id/guideline_end"
             app:layout_constraintStart_toEndOf="@id/user_avatar"
             app:layout_constraintTop_toTopOf="parent" />
@@ -81,19 +81,19 @@
 
         <TextView
             android:id="@+id/message"
+            style="?materialAlertDialogBodyTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal"
             android:text="@string/dialog_sign_in_content"
-            android:textAppearance="?materialAlertDialogBodyTextStyle"
             app:layout_constraintEnd_toStartOf="@id/guideline_end"
             app:layout_constraintStart_toEndOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/divider1"
-            tools:textAppearance="@style/TextAppearance.IOSched.Body" />
+            tools:style="@style/AlertDialog.BodyText" />
 
         <TextView
             android:id="@+id/sign_in"
-            style="@style/Widget.IOSched.ProfileDialog.ActionButton"
+            style="@style/Widget.IOSched.AccountDialog.ActionButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal"

@@ -54,10 +54,10 @@
 
         <TextView
             android:id="@+id/username"
-            style="@style/Widget.IOSched.Feed.Username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{sessionContainerState.username}"
+            android:textAppearance="@style/TextAppearance.IOSched.H3"
             app:layout_constraintEnd_toEndOf="@+id/guideline_end"
             app:layout_constraintStart_toStartOf="@+id/guideline_start"
             app:layout_constraintTop_toTopOf="parent"
@@ -71,7 +71,7 @@
             android:layout_marginBottom="@dimen/margin_small"
             android:layout_marginTop="@dimen/margin_small"
             android:text="@{sessionContainerState.titleId}"
-            android:textAppearance="@style/TextAppearance.IOSched.Subhead"
+            android:textAppearance="@style/TextAppearance.IOSched.Overline"
             app:layout_constraintEnd_toEndOf="@+id/guideline_end"
             app:layout_constraintStart_toStartOf="@+id/guideline_start"
             app:layout_constraintTop_toBottomOf="@+id/username"

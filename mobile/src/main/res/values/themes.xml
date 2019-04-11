@@ -26,24 +26,29 @@
         <item name="colorOnSecondary">@color/color_on_secondary</item>
         <item name="colorControlLight">@color/color_control_light</item>
 
-        <item name="borderlessButtonStyle">@style/Widget.IOSched.BorderlessButton</item>
-        <item name="toolbarStyle">@style/Widget.Toolbar</item>
-        <item name="tabStyle">@style/Widget.IOSched.Tabs</item>
-        <item name="android:textViewStyle">@style/Widget.IOSched.TextView</item>
-
-        <item name="android:statusBarColor">@color/transparent</item>
+        <!-- Window decor -->
         <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/use_light_status</item>
-
+        <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">@bool/use_light_navigation</item>
         <item name="android:navigationBarColor">@color/nav_bar_scrim</item>
-        <item name="ioschedNavigationBarDividerColor">?attr/colorControlLight</item>
 
-        <item name="sessionListKeyline">@dimen/session_keyline</item>
+        <!-- Widget styles -->
+        <item name="toolbarStyle">@style/Widget.IOSched.Toolbar</item>
+        <item name="tabStyle">@style/Widget.IOSched.Tabs</item>
+        <item name="navigationViewStyle">@style/Widget.IOSched.NavigationView</item>
         <item name="eventFilterViewStyle">@style/Widget.IOSched.EventFilters</item>
 
-        <item name="navigationViewStyle">@style/Widget.IOSched.NavigationView</item>
+        <!-- Text appearances -->
+        <item name="textAppearanceBody2">@style/TextAppearance.IOSched.Body2</item>
+        <item name="textAppearanceButton">@style/TextAppearance.IOSched.Button</item>
+        <item name="textAppearanceListItem">@style/TextAppearance.IOSched.ListPrimary</item>
 
+        <!-- Dialogs -->
         <item name="materialAlertDialogTheme">@style/AlertDialog.Theme</item>
+
+        <!-- Custom theme attrs -->
+        <item name="ioschedNavigationBarDividerColor">?attr/colorControlLight</item>
+        <item name="sessionListKeyline">@dimen/session_keyline</item>
     </style>
 
     <style name="ThemeOverlay.IOSched.Light" parent="ThemeOverlay.MaterialComponents.Light">
@@ -85,13 +90,12 @@
     <style name="AppTheme.PopupTheme" parent="ThemeOverlay.IOSched.Light" />
 
     <style name="AlertDialog.Theme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-        <item name="buttonBarNegativeButtonStyle">@style/Widget.IOSched.BorderlessButton</item>
-        <item name="buttonBarPositiveButtonStyle">@style/Widget.IOSched.BorderlessButton</item>
+        <item name="buttonBarStyle">@style/AlertDialog.ButtonBar</item>
         <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
         <item name="dialogPreferredPadding">@dimen/dialogPreferredPadding</item>
         <item name="materialAlertDialogTitleTextStyle">@style/AlertDialog.TitleText</item>
         <item name="materialAlertDialogTitlePanelStyle">@style/AlertDialog.TitlePanel</item>
-        <item name="materialAlertDialogBodyTextStyle">@style/TextAppearance.AlertDialog.Message</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/AlertDialog.BodyText</item>
     </style>
 
 </resources>

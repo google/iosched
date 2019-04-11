@@ -73,11 +73,11 @@
 
         <TextView
             android:id="@+id/welcome_during_message"
+            style="@style/Widget.IOSched.OnboardingText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/onboarding_welcome_google_io_during"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.IOSched.H1"
             app:layout_constraintBottom_toTopOf="@id/date_location"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -85,11 +85,11 @@
 
         <TextView
             android:id="@+id/date_location"
-            style="@style/Widget.IOSched.OnboardingDeck"
+            style="@style/Widget.IOSched.OnboardingText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_normal"
             android:text="@string/onboarding_date_location"
+            android:textColor="?android:textColorSecondary"
             app:layout_constraintBottom_toTopOf="@id/spacer"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"

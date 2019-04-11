@@ -50,11 +50,11 @@
 
     <TextView
         android:id="@+id/message_no_network_title"
-        style="@style/TextAppearance.IOSched.InfoEventTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_normal"
         android:text="@string/no_network_connection"
+        android:textAppearance="@style/TextAppearance.IOSched.H1"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@+id/message_no_network_description"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"

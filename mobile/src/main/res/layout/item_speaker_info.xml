@@ -48,7 +48,7 @@
 
         <TextView
             android:id="@+id/speaker_name"
-            style="@style/Widget.IOSched.SpeakerTitle"
+            style="@style/Widget.IOSched.Speaker.Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{viewModel.speaker.name}"
@@ -72,7 +72,7 @@
 
             <Button
                 android:id="@+id/speaker_link_website"
-                style="@style/Widget.IOSched.SocialButton"
+                style="@style/Widget.IOSched.Speaker.SocialButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/speaker_link_website"
@@ -83,7 +83,7 @@
 
             <Button
                 android:id="@+id/speaker_link_twitter"
-                style="@style/Widget.IOSched.SocialButton"
+                style="@style/Widget.IOSched.Speaker.SocialButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/speaker_link_twitter"
@@ -94,7 +94,7 @@
 
             <Button
                 android:id="@+id/speaker_link_github"
-                style="@style/Widget.IOSched.SocialButton"
+                style="@style/Widget.IOSched.Speaker.SocialButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/speaker_link_github"
@@ -105,7 +105,7 @@
 
             <Button
                 android:id="@+id/speaker_link_linkedin"
-                style="@style/Widget.IOSched.SocialButton"
+                style="@style/Widget.IOSched.Speaker.SocialButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/speaker_link_linkedin"
@@ -118,6 +118,7 @@
 
         <TextView
             android:id="@+id/speaker_bio"
+            style="@style/Widget.IOSched.MultilineBody"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal"
@@ -127,7 +128,7 @@
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/speaker_links"
-            tools:text="Pixel puppeteer" />
+            tools:text="@tools:sample/lorem[25]" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -17,8 +17,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AlertDialog.TitleText" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
-        <item name="android:textSize">22sp</item>
-        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:fontFamily">@font/google_sans_medium</item>
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/google_sans_medium</item>
     </style>
 
     <style name="AlertDialog.TitlePanel" parent="MaterialAlertDialog.MaterialComponents.Title.Panel">
@@ -26,19 +27,63 @@
         <item name="android:paddingTop">?attr/dialogPreferredPadding</item>
     </style>
 
+    <style name="AlertDialog.BodyText" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:lineSpacingExtra">4sp</item>
+    </style>
+
+    <style name="AlertDialog.ButtonBar" parent ="@style/Widget.AppCompat.ButtonBar.AlertDialog">
+        <item name="android:paddingBottom">@dimen/margin_small</item>
+        <item name="android:paddingTop">@dimen/margin_small</item>
+    </style>
+
     <!-- Text appearances -->
 
-    <style name="TextAppearance.AlertDialog.Message" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">?android:textColorSecondary</item>
-        <item name="android:textAlignment">viewStart</item>
+    <!-- For titles, e.g. Event Detail, Speaker Detail -->
+    <style name="TextAppearance.IOSched.H1" parent="@style/TextAppearance.MaterialComponents.Headline5">
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textSize">@dimen/text_size_h1</item>
+        <item name="fontFamily">@font/google_sans</item>
     </style>
 
-    <style name="TextAppearance.IOSched.Body" parent="@style/TextAppearance.AppCompat.Body1">
-        <item name="android:textColor">?android:textColorSecondary</item>
+    <!-- For smaller titles, e.g. Schedule day decorations -->
+    <style name="TextAppearance.IOSched.H2" parent="@style/TextAppearance.IOSched.H1">
+        <item name="android:textSize">@dimen/text_size_h2</item>
     </style>
 
-    <style name="TextAppearance.IOSched.NoticeBody" parent="@style/TextAppearance.IOSched.Body">
+    <!-- For other prominent text -->
+    <style name="TextAppearance.IOSched.H3" parent="@style/TextAppearance.IOSched.H1">
+        <item name="android:fontFamily">@font/google_sans_medium</item>
+        <item name="android:textSize">@dimen/text_size_h3</item>
+        <item name="fontFamily">@font/google_sans_medium</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:fontFamily">@font/google_sans_medium</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="fontFamily">@font/google_sans_medium</item>
+    </style>
+
+    <!-- List item primary text, e.g. event titles, codelab titles -->
+    <style name="TextAppearance.IOSched.ListPrimary" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:fontFamily">@font/google_sans_medium</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="fontFamily">@font/google_sans_medium</item>
+    </style>
+
+    <!-- Intermediate style to make further style extensions below easier to follow -->
+    <style name="TextAppearance.IOSched.Body2" parent="TextAppearance.MaterialComponents.Body2" />
+
+    <!-- Section headers -->
+    <style name="TextAppearance.IOSched.Overline" parent="@style/TextAppearance.IOSched.Body2">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.NoticeBody" parent="@style/Widget.IOSched.MultilineBody">
         <item name="android:textSize">18sp</item>
     </style>
 
@@ -47,153 +92,96 @@
         <item name="android:textSize" tools:ignore="SpUsage">20dp</item>
     </style>
 
-    <style name="TextAppearance.IOSched.ListPrimary" parent="@style/TextAppearance.AppCompat.Subhead">
-        <item name="android:fontFamily">@font/google_sans</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.SessionTitle" parent="@style/TextAppearance.IOSched.ListPrimary" />
-
-    <style name="TextAppearance.IOSched.Small" parent="TextAppearance.AppCompat.Small">
-        <item name="android:textColor">?android:textColorPrimary</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.ListSecondary" parent="@style/TextAppearance.AppCompat.Body1">
-        <item name="android:textColor">?android:textColorSecondary</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.Question" parent="@style/TextAppearance.AppCompat.Body1">
-        <item name="android:fontFamily">@font/google_sans</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.ReservationStatus" parent="@style/TextAppearance.IOSched.ListSecondary">
-        <item name="android:textAllCaps">true</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.Tag" parent="@style/TextAppearance.IOSched.ListSecondary">
-        <item name="android:fontFamily">monospace</item>
-        <item name="android:letterSpacing">@dimen/tag_letter_spacing</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.AgendaTitle" parent="@style/TextAppearance.AppCompat.Body1">
-        <item name="android:fontFamily">@font/google_sans</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.SessionTitle.Display" parent="@style/TextAppearance.AppCompat.Display1">
-        <item name="android:fontFamily">@font/google_sans</item>
-        <item name="android:textColor">?android:textColorPrimary</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.SpeakerTitle.Display" parent="@style/TextAppearance.MaterialComponents.Headline5">
-        <item name="android:fontFamily">@font/google_sans</item>
-    </style>
-
     <style name="TextAppearance.IOSched.Tab" parent="@style/TextAppearance.Design.Tab">
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textStyle">bold</item>
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="TextAppearance.IOSched.H1" parent="@style/TextAppearance.AppCompat.Headline">
-        <item name="android:fontFamily">@font/google_sans</item>
-        <item name="android:textColor">?android:textColorPrimary</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.OnboardingDeck" parent="@style/TextAppearance.AppCompat.Body1">
-        <item name="android:fontFamily">@font/google_sans</item>
-        <item name="android:textColor">?android:textColorSecondary</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:lineSpacingMultiplier">@dimen/text_line_spacing</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.Subhead" parent="@style/TextAppearance.IOSched.Body">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">?android:textColorSecondary</item>
+    <!-- Schedule -->
+    <style name="TextAppearance.IOSched.ReservationStatus" parent="@style/TextAppearance.IOSched.Body2">
         <item name="android:textAllCaps">true</item>
     </style>
 
-    <style name="TextAppearance.IOSched.SpeakerTitle" parent="@style/TextAppearance.IOSched.ListPrimary">
-        <item name="android:textColor">?colorPrimary</item>
+    <style name="TextAppearance.IOSched.Tag" parent="@style/TextAppearance.IOSched.Body2">
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:letterSpacing">@dimen/tag_letter_spacing</item>
+        <item name="fontFamily">monospace</item>
     </style>
 
-    <style name="TextAppearance.IOSched.CodelabTitle" parent="@style/TextAppearance.IOSched.ListPrimary" />
+    <style name="TextAppearance.IOSched.FiltersLabel" parent="TextAppearance.IOSched.H2">
+        <item name="android:textSize">18sp</item>
+    </style>
 
-    <style name="TextAppearance.IOSched.Map.Label" parent="TextAppearance.AppCompat.Body1">
+    <!-- Map -->
+    <style name="TextAppearance.IOSched.Map.MarkerLabel" parent="TextAppearance.IOSched.Body2">
         <item name="android:textSize">13sp</item>
         <item name="android:fontFamily">monospace</item>
         <item name="android:textColor">#174ea6</item>
+        <item name="android:letterSpacing">-0.03</item>
     </style>
 
-    <style name="TextAppearance.IOSched.Map.InfoTitle" parent="@style/TextAppearance.AppCompat.Title">
+    <!-- Info -->
+    <style name="TextAppearance.IOSched.CollapsibleCard" parent="@style/TextAppearance.IOSched.ListPrimary">
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.Info.AssistantApp" parent="TextAppearance.IOSched.Body2">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">?colorPrimary</item>
+        <item name="fontFamily">sans-serif-medium</item>
+    </style>
+
+    <!-- Home -->
+    <style name="TextAppearance.IOSched.CountdownLabel" parent="@style/TextAppearance.MaterialComponents.Caption">
+        <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:fontFamily">@font/google_sans</item>
     </style>
 
-    <style name="TextAppearance.IOSched.FadingSnackbarAction" parent="@style/TextAppearance.AppCompat.Button">
-        <item name="android:textStyle">bold</item>
-        <item name="android:fontFamily">@font/google_sans</item>
-        <item name="android:textAllCaps">false</item>
+    <style name="TextAppearance.IOSched.Feed.Session.Time" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="fontFamily">sans-serif-medium</item>
     </style>
 
-    <style name="TextAppearance.IOSched.Links" parent="@style/TextAppearance.IOSched.Body">
-        <item name="android:textColor">?android:textColorPrimary</item>
-        <item name="android:textColorLink">?colorPrimary</item>
-        <item name="android:fontFamily">@font/google_sans</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.CollapsibleCard" parent="@style/TextAppearance.AppCompat.Title">
-        <item name="android:textSize">16sp</item>
-        <item name="android:fontFamily">@font/google_sans</item>
+    <!-- Settings -->
+    <style name="TextAppearance.IOSched.AboutButtons" parent="@style/TextAppearance.IOSched.ListPrimary">
         <item name="android:textColor">?colorPrimary</item>
     </style>
 
-    <style name="TextAppearance.IOSched.InfoEventTitle" parent="@style/TextAppearance.AppCompat.Title">
-        <item name="android:textSize">24sp</item>
-        <item name="android:fontFamily">@font/google_sans</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.InfoEventDescription" parent="@style/TextAppearance.AppCompat.Body1">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">?android:attr/textColorSecondary</item>
-        <item name="android:lineSpacingExtra">8sp</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.InfoEventDescription.AppCallout">
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textColor">?colorPrimary</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.AboutButtons" parent="@style/TextAppearance.MaterialComponents.Button">
-        <item name="android:fontFamily">@font/google_sans</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.Username" parent="@style/TextAppearance.AppCompat.Subhead">
-        <item name="android:fontFamily">sans-serif-medium</item>
-    </style>
+    <!-- Account dialogs -->
+    <style name="TextAppearance.IOSched.AccountDialog.Username" parent="@style/TextAppearance.IOSched.ListPrimary" />
 
     <!-- Widget styles -->
 
-    <style name="Widget.AppBar" parent="@style/Widget.Design.AppBarLayout">
+    <style name="Widget.IOSched" parent="@android:style/Widget.Material" />
+
+    <style name="Widget.IOSched.AppBar" parent="@style/Widget.Design.AppBarLayout">
         <item name="android:background">?attr/colorSurface</item>
         <item name="android:elevation">8dp</item>
     </style>
 
-    <style name="Widget.Toolbar" parent="Widget.AppCompat.Toolbar">
+    <style name="Widget.IOSched.Toolbar" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:paddingEnd">8dp</item>
-        <item name="titleTextAppearance">@style/TextAppearance.IOSched.ToolbarTitle</item>
+        <item name="contentInsetStartWithNavigation">?sessionListKeyline</item>
         <item name="popupTheme">@style/AppTheme.PopupTheme</item>
+        <item name="titleTextAppearance">@style/TextAppearance.IOSched.ToolbarTitle</item>
     </style>
-
-    <style name="Widget.IOSched" parent="@android:style/Widget" />
 
     <style name="Widget.IOSched.Tabs" parent="@style/Widget.MaterialComponents.TabLayout">
         <item name="tabTextAppearance">@style/TextAppearance.IOSched.Tab</item>
         <item name="tabIndicator">@drawable/tab_indicator</item>
     </style>
 
+    <!-- textAppearance alone doesn't support line spacing attrs. Multiline body text will use
+         style="Widget.IOSched.MultilineBody" instead of the equivalent textAppearance.
+    -->
+    <style name="Widget.IOSched.MultilineBody">
+        <item name="android:lineSpacingExtra">4sp</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <!-- Schedule -->
     <style name="Widget.IOSched.Tag">
         <item name="android:gravity">center_vertical</item>
         <item name="android:lines">1</item>
@@ -203,6 +191,7 @@
     <style name="Widget.IOSched.Tag.Inline">
         <item name="android:drawablePadding">@dimen/spacing_micro</item>
         <item name="android:drawableStart">@drawable/tag_dot</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
     <style name="Widget.IOSched.EventFilters">
@@ -227,15 +216,6 @@
         <item name="meridiemTextSize">@dimen/time_header_meridiem_text_size</item>
     </style>
 
-    <style name="Widget.IOSched.DateHeaders">
-        <item name="android:width">@dimen/day_header_decor_width</item>
-        <item name="android:height">@dimen/day_header_decor_height</item>
-        <item name="android:fontFamily">@font/google_sans</item>
-        <item name="android:textColor">?android:textColorPrimary</item>
-        <item name="android:textSize">@dimen/day_header_text_size</item>
-        <item name="verticalBias">0.67</item>
-    </style>
-
     <style name="Widget.IOSched.DayIndicatorDecoration">
         <item name="android:color">?colorPrimary</item>
         <item name="insetVertical">8dp</item>
@@ -250,122 +230,82 @@
         <item name="verticalBias">0.67</item>
     </style>
 
-    <style name="Widget.IOSched.RaisedButton" parent="@style/Widget.MaterialComponents.Button">
+    <!-- Agenda -->
+    <style name="Widget.IOSched.DateHeaders">
+        <item name="android:width">@dimen/day_header_decor_width</item>
+        <item name="android:height">@dimen/day_header_decor_height</item>
         <item name="android:fontFamily">@font/google_sans</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:letterSpacing">0.025</item>
-        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:textSize">@dimen/day_header_text_size</item>
+        <item name="verticalBias">0.67</item>
     </style>
 
-    <style name="Widget.IOSched.BorderlessButton" parent="@style/Widget.MaterialComponents.Button.TextButton">
-        <item name="android:fontFamily">@font/google_sans</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:letterSpacing">0.025</item>
-        <item name="android:textAllCaps">false</item>
-    </style>
-
+    <!-- Account dialogs -->
     <style name="Widget.IOSched.BorderlessButton.NormalText" parent="@style/Widget.MaterialComponents.Button.TextButton">
         <item name="android:textAppearance">?android:textAppearance</item>
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
-    <style name="Widget.IOSched.ProfileDialog.ActionButton" parent="@style/Widget.AppCompat.TextView">
+    <style name="Widget.IOSched.AccountDialog.ActionButton" parent="">
         <item name="android:background">?selectableItemBackground</item>
         <item name="android:drawablePadding">@dimen/margin_normal</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:minHeight">?listPreferredItemHeightSmall</item>
-        <item name="android:paddingBottom">@dimen/margin_small</item>
-        <item name="android:paddingEnd">?dialogPreferredPadding</item>
-        <item name="android:paddingStart">?dialogPreferredPadding</item>
-        <item name="android:paddingTop">@dimen/margin_small</item>
+        <item name="android:paddingBottom">@dimen/spacing_normal</item>
+        <item name="android:paddingRight">?listPreferredItemPaddingEnd</item>
+        <item name="android:paddingStart">?listPreferredItemPaddingStart</item>
+        <item name="android:paddingTop">@dimen/spacing_normal</item>
         <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="Widget.IOSched.ProfileDialog.ManageAccountButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="android:letterSpacing">0</item>
-        <item name="android:textAllCaps">false</item>
+    <style name="Widget.IOSched.AccountDialog.ManageAccountButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textColor">?android:textColorSecondary</item>
         <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.Chip</item>
     </style>
 
-    <style name="Widget.IOSched.OnboardingDeck" parent="@android:style/Widget.Material.TextView">
-        <item name="android:textAppearance">@style/TextAppearance.IOSched.OnboardingDeck</item>
-        <item name="android:lineSpacingMultiplier">@dimen/text_line_spacing</item>
-        <item name="android:textAlignment">center</item>
+    <!-- Onboarding -->
+    <style name="Widget.IOSched.OnboardingText">
+        <item name="android:textAppearance">@style/TextAppearance.IOSched.H1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:lineSpacingExtra">6sp</item>
     </style>
 
+    <!-- Event/Session detail -->
     <style name="Widget.IOSched.HeaderGrid">
         <item name="android:color">@color/header_grid</item>
         <item name="gridSize">8dp</item>
         <item name="gridStrokeWidth">1dp</item>
     </style>
 
-    <style name="Widget.IOSched.TextView" parent="@android:style/Widget.Material.TextView">
-        <item name="android:textAppearance">@style/TextAppearance.IOSched.Body</item>
-        <item name="android:lineSpacingMultiplier">@dimen/text_line_spacing</item>
-    </style>
-
     <style name="Widget.IOSched.SessionDetailTitle">
         <item name="android:gravity">start|bottom</item>
-        <item name="android:textAppearance">@style/TextAppearance.IOSched.SessionTitle.Display</item>
+        <item name="android:textAppearance">@style/TextAppearance.IOSched.H1</item>
         <item name="android:breakStrategy" tools:targetApi="m">balanced</item>
-        <item name="android:lineSpacingMultiplier">1</item>
-        <item name="autoSizeTextType">uniform</item>
-        <item name="autoSizeMaxTextSize">34sp</item>
     </style>
 
-    <style name="Widget.IOSched.SpeakerTitle">
+    <!-- Speaker Detail -->
+    <style name="Widget.IOSched.Speaker" />
+
+    <style name="Widget.IOSched.Speaker.Title">
         <item name="android:gravity">center_horizontal</item>
-        <item name="android:textAppearance">@style/TextAppearance.IOSched.SpeakerTitle.Display</item>
+        <item name="android:textAppearance">@style/TextAppearance.IOSched.H1</item>
     </style>
 
-    <style name="Widget.IOSched.SocialButton" parent="Widget.IOSched.BorderlessButton">
+    <style name="Widget.IOSched.Speaker.SocialButton" parent="@style/Widget.MaterialComponents.Button.TextButton">
         <item name="android:minWidth">0dp</item>
     </style>
 
-    <style name="Widget.IOSched.Feed" parent="Widget.IOSched" />
+    <!-- Home -->
+    <style name="Widget.IOSched.Feed" />
 
-    <style name="Widget.IOSched.Feed.Title">
-        <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
-    </style>
-
-    <style name="Widget.IOSched.Feed.Moment" parent="Widget.IOSched" />
-
-    <style name="Widget.IOSched.Feed.Moment.Time">
-        <item name="android:textAppearance">?attr/textAppearanceCaption</item>
-    </style>
-
-    <style name="Widget.IOSched.Feed.Moment.Title">
-        <item name="android:ellipsize">end</item>
-        <item name="android:maxLines">3</item>
-        <item name="android:textAppearance">?attr/textAppearanceHeadline4</item>
-    </style>
-
-    <style name="Widget.IOSched.Feed.Moment.Card" parent="Widget.MaterialComponents.CardView">
-        <item name="cardElevation">0dp</item>
-        <item name="strokeWidth">0dp</item>
-        <item name="cardCornerRadius">@dimen/feed_card_corner_radius</item>
-    </style>
-
-    <style name="Widget.IOSched.Feed.Session" parent="Widget.IOSched" />
+    <style name="Widget.IOSched.Feed.Session" />
 
     <style name="Widget.IOSched.Feed.Session.Title">
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">3</item>
-        <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
-    </style>
-
-    <style name="Widget.IOSched.Feed.Username">
-        <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
-    </style>
-
-    <style name="Widget.IOSched.Feed.Category">
-        <item name="android:textAppearance">@style/TextAppearance.IOSched.Small</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:lines">1</item>
-        <item name="android:textAllCaps">true</item>
+        <item name="android:textAppearance">?attr/textAppearanceListItem</item>
     </style>
 
     <style name="Widget.IOSched.Feed.Card" parent="Widget.MaterialComponents.CardView">
@@ -375,7 +315,10 @@
         <item name="cardCornerRadius">@dimen/feed_card_corner_radius</item>
     </style>
 
-    <style name="Widget.IOSched.SettingsSwitch" parent="Widget.MaterialComponents.CompoundButton.Switch">
+    <!-- Settings -->
+    <style name="Widget.IOSched.Settings" />
+
+    <style name="Widget.IOSched.Settings.Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
         <item name="android:background">@null</item>
         <item name="android:foreground">?selectableItemBackground</item>
         <item name="android:minHeight">?android:attr/listPreferredItemHeightSmall</item>
@@ -385,28 +328,23 @@
         <item name="switchTextAppearance">?attr/textAppearanceBody2</item>
     </style>
 
-    <style name="Widget.IOSched.Settings" parent="android:Widget">
+    <style name="Widget.IOSched.Settings.Button">
         <item name="android:background">?selectableItemBackground</item>
-        <item name="android:minHeight">?android:attr/listPreferredItemHeightSmall</item>
-        <item name="android:padding">@dimen/margin_normal</item>
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:minHeight">?listPreferredItemHeightSmall</item>
+        <item name="android:paddingBottom">@dimen/spacing_normal</item>
+        <item name="android:paddingRight">?listPreferredItemPaddingEnd</item>
+        <item name="android:paddingStart">?listPreferredItemPaddingStart</item>
+        <item name="android:paddingTop">@dimen/spacing_normal</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:textAppearance">?textAppearanceBody2</item>
     </style>
 
-    <style name="Widget.IOSched.AboutButtons" parent="@style/Widget.MaterialComponents.Button.TextButton">
+    <style name="Widget.IOSched.Settings.Button.About">
         <item name="android:textAppearance">@style/TextAppearance.IOSched.AboutButtons</item>
-        <item name="android:gravity">start|center_vertical</item>
-        <item name="android:paddingLeft">@dimen/margin_normal</item>
-        <item name="android:paddingRight">@dimen/margin_normal</item>
-        <item name="android:textAlignment">viewStart</item>
     </style>
 
-    <style name="Widget.IOSched.AboutHeading" parent="Widget.IOSched.TextView">
-        <item name="android:gravity">start|center_vertical</item>
-        <item name="android:paddingLeft">@dimen/margin_normal</item>
-        <item name="android:paddingRight">@dimen/margin_normal</item>
-        <item name="android:textAlignment">viewStart</item>
-        <item name="android:textAppearance">@style/TextAppearance.IOSched.Subhead</item>
-    </style>
-
+    <!-- Navigation -->
     <style name="Widget.IOSched.NavigationBarContentFrameLayout" parent="android:Widget.Material">
         <item name="navigationBarBorderColor">?attr/ioschedNavigationBarDividerColor</item>
         <item name="navigationBarBorderSize">1dp</item>
