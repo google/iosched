@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.widget
 import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
+import android.text.method.LinkMovementMethod
 import android.transition.Transition
 import android.transition.TransitionInflater
 import android.transition.TransitionManager
@@ -29,8 +30,13 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import com.google.samples.apps.iosched.R
 
+/**
+ * Collapsible card, description of which can be HTML.
+ * In that case, the text specified as "cardDescription" needs to be wrapped with <![CDATA[ ... ]]>
+ */
 class CollapsibleCard @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -39,12 +45,12 @@ class CollapsibleCard @JvmOverloads constructor(
 
     private var expanded = false
     private val cardTitleView: TextView
-    private val cardDescriptionView: HtmlTextView
+    private val cardDescriptionView: TextView
     private val expandIcon: ImageView
     private val titleContainer: View
     private val toggle: Transition
     private val root: View
-    private val cardTitle: String
+    private val cardTitle: String?
 
     init {
         val arr = context.obtainStyledAttributes(attrs, R.styleable.CollapsibleCard, 0, 0)
@@ -59,9 +65,11 @@ class CollapsibleCard @JvmOverloads constructor(
             text = cardTitle
         }
         setTitleContentDescription(cardTitle)
-        cardDescriptionView = root.findViewById<HtmlTextView>(R.id.card_description).apply {
-            text = cardDescription
+        cardDescriptionView = root.findViewById<TextView>(R.id.card_description).apply {
+            text = HtmlCompat.fromHtml(cardDescription, HtmlCompat.FROM_HTML_MODE_COMPACT)
+            movementMethod = LinkMovementMethod.getInstance()
         }
+
         expandIcon = root.findViewById(R.id.expand_icon)
         toggle = TransitionInflater.from(context)
             .inflateTransition(R.transition.info_card_toggle)
