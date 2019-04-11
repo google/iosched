@@ -145,17 +145,17 @@
     <string name="event_title">Sự kiện</string>
     <string name="travel_title">Thông tin di chuyển</string>
     <string name="settings_title">Cài đặt</string>
-    <string name="travel_directions_title">Chỉ đường lái xe</string>
-    <string name="travel_shuttle_title">Dịch vụ đưa đón (đề xuất)</string>
-    <string name="travel_carpool_parking_title">Đỗ xe và Đi chung xe</string>
 
-    <string name="travel_public_transportation_title">Giao thông công cộng</string>
+
+
+
+
     <string name="travel_biking_title">Đi xe đạp</string>
-    <string name="travel_directions_description">Tìm đường đến số 1 Amphitheatre Pkwy, Mountain View, CA 94043 trên <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> hoặc <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a></string>
-    <string name="travel_shuttle_description">Sẽ có xe đưa đón miễn phí dành cho tất cả những người tham dự sự kiện Google I/O từ những khách sạn do Google đề xuất. Cũng có dịch vụ dành riêng từ San Francisco và những vị trí khác dọc khu vực Bán đảo. Bạn phải xuất trình email xác nhận của Google I/O hoặc huy hiệu của hội nghị để lên xe đưa đón đến sự kiện Google I/O.\n\nMỗi vị trí đón khách đều có phương tiện trợ giúp dành cho người khuyết tật. Nếu bạn có bất kỳ yêu cầu hỗ trợ đặc biệt nào, vui lòng ghi rõ trên phiếu đăng ký. Sau đó, bộ phận kế hoạch sẽ trực tiếp hỗ trợ bạn.</string>
-    <string name="travel_carpool_parking_description">Chỗ đỗ xe rất hạn chế và chỉ có tại khu vực dành riêng cho Google I/O từ Nhà hát vòm Shoreline (Shoreline Amphitheatre) dọc theo Đại lộ Shoreline (Shoreline Boulevard). Dọc theo Đại lộ Amphitheatre (Amphitheatre Parkway) hoặc Đường Charleston (Charleston Road) không có chỗ đỗ xe dành riêng cho sự kiện. Nếu bạn dự định lái xe, chúng tôi khuyên bạn đi chung xe với những người tham dự khác vì khu vực đỗ xe của sự kiện chỉ dành cho những ô tô chở từ hai người trở lên.</string>
 
-    <string name="travel_public_transportation_description">Không có phương tiện công cộng đi thẳng tới Google I/O. Hãy chú ý theo dõi vị trí chính xác của các dịch vụ đưa đón đến sự kiện của Google I/O.</string>
+
+
+
+
     <string name="travel_biking_description">Có khu vực giữ xe đạp miễn phí tại Nhà hát vòm Shoreline (Shoreline Amphitheatre) ở Bãi đỗ xe A. Hàng ngày Hiệp hội Xe đạp Thung lũng Silicon (Silicon Valley Bicycle Coalition) sẽ cung cấp khu vực trông giữ xe đạp an toàn từ 7 giờ sáng đến khi sự kiện kết thúc. Có hai tuyến đường tiện lợi để người đi xe đạp tới thẳng Nhà hát vòm Shoreline (Shoreline Amphitheatre) là Stevens Creek và Permanente Creek Trail. Hãy kiểm tra Google Maps để tìm tuyến đường và hướng đi tiện lợi nhất cho người đi xe đạp.\n\nTổ chức Ngày Đạp xe đi làm Vùng Vinh (Bay Area Bike to Work Day) lên kế hoạch đạp xe vào ngày thứ Năm, 10 tháng 5. Sẽ có hàng nghìn người đi xe đạp tham gia gần Shoreline và khu vực này có hàng trăm trạm nghỉ chân. Vui lòng truy cập trang web của Tổ chức Ngày Đạp xe đi làm của Thung lũng Silicon (Silicon Valley Bike to Work Day) để biết thêm thông tin chi tiết.</string>
     <string name="view_sessions_text">Xem các phiên sự kiện</string>
     <string name="view_codelabs_text">Xem các phòng thí nghiệm lập trình</string>

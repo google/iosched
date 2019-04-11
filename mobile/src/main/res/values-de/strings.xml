@@ -145,17 +145,17 @@
     <string name="event_title">Veranstaltung</string>
     <string name="travel_title">Anreise</string>
     <string name="settings_title">Einstellungen</string>
-    <string name="travel_directions_title">Routenplaner</string>
-    <string name="travel_shuttle_title">Shuttleservice (empfohlen)</string>
-    <string name="travel_carpool_parking_title">Parken und Fahrgemeinschaften</string>
 
-    <string name="travel_public_transportation_title">Öffentliche Verkehrsmittel</string>
+
+
+
+
     <string name="travel_biking_title">Mit dem Fahrrad</string>
-    <string name="travel_directions_description">Die Wegbeschreibung zu 1 Amphitheatre Pkwy, Mountain View, CA 94043 finden Sie auf <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> oder <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a></string>
-    <string name="travel_shuttle_description">Teilnehmer der Google I/O können von allen bei Google empfohlenen Hotels aus einen kostenlosen Shuttleservice zur Veranstaltung nutzen. Dieser Service ist auch von ausgewählten Standorten in San Francisco und der Halbinsel aus verfügbar. Zeigen Sie beim Einsteigen in ein Google I/O-Shuttle bitte die Google I/O-Bestätigungs-E-Mail oder das Ansteckschild für die Konferenz vor.\n\nDer Einsatz von barrierefreien Fahrzeugen ist an jedem Abholort möglich. Geben Sie bitte auf Ihrem Registrierungsformular an, ob Sie besondere Unterstützung benötigen. Das Planungsteam wird sich dann mit Ihnen in Verbindung setzen.</string>
-    <string name="travel_carpool_parking_description">Parkplätze sind nur sehr begrenzt vorhanden und befinden sich ausschließlich auf den für die Google I/O ausgewiesenen Flächen gegenüber dem Shoreline Amphitheatre entlang dem Shoreline Boulevard. Auf dem Amphitheatre Parkway oder der Charleston Road gibt es keine Parkplätze für die Veranstaltung. Wenn Sie mit dem Auto anreisen möchten, empfehlen wir, dass Sie mit anderen Teilnehmern Fahrgemeinschaften bilden, da die bevorzugten Parkplätze für Autos mit mindestens zwei Insassen reserviert sind.</string>
 
-    <string name="travel_public_transportation_description">Der öffentliche Nahverkehr reicht nicht bis direkt zur Google I/O. Informieren Sie sich über die Haltestellen der Shuttles zur Google I/O.</string>
+
+
+
+
     <string name="travel_biking_description">Am Shoreline Amphitheatre auf Parkplatz A stehen kostenlose Fahrradstellplätze zur Verfügung. Die Silicon Valley Bicycle Coalition bietet täglich von 7 Uhr bis zum Ende der Veranstaltung einen sicheren Parkdienst an. Es gibt zwei Radwege, den Stevens Creek Trail und den Permanente Creek Trail, über die Radfahrer das Shoreline bequem erreichen können. Die besten Radwege und -routen finden Sie auf Google Maps.\n\nAm 10. Mai findet der \"Bay Area Bike to Work Day\" statt. In der unmittelbaren Umgebung des Shoreline Amphitheatre werden dann Tausende teilnehmende Radfahrer unterwegs sein und es wird in der Gegend Hunderte Verpflegungsstationen geben. Weitere Informationen dazu finden Sie auf der Website von Silicon Valley Bike to Work Day.</string>
     <string name="view_sessions_text">Sitzungen anzeigen</string>
     <string name="view_codelabs_text">Codelabs anzeigen</string>
