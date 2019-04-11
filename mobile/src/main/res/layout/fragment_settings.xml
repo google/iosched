@@ -118,14 +118,6 @@
                     android:text="@string/about_title" />
 
                 <Button
-                    android:id="@+id/faq_link"
-                    style="@style/Widget.IOSched.AboutButtons"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/faq_title"
-                    app:websiteLink="@{@string/faq_url}" />
-
-                <Button
                     android:id="@+id/terms_of_service"
                     style="@style/Widget.IOSched.AboutButtons"
                     android:layout_width="match_parent"
