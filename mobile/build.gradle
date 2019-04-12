@@ -56,6 +56,7 @@ android {
 
         manifestPlaceholders = [crashlyticsEnabled: true]
 
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
