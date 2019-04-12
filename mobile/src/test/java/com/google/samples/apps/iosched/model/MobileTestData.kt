@@ -21,7 +21,6 @@ import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.TestData.androidTag
 import com.google.samples.apps.iosched.test.data.TestData.cloudTag
-import com.google.samples.apps.iosched.test.data.TestData.codelabsTag
 import com.google.samples.apps.iosched.test.data.TestData.sessionsTag
 import com.google.samples.apps.iosched.test.data.TestData.webTag
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.TagFilter
@@ -33,7 +32,7 @@ object MobileTestData {
 
     val tagFiltersList = listOf(
         androidTag, webTag, cloudTag, // TOPIC
-        sessionsTag, codelabsTag      // TYPE
+        sessionsTag                   // TYPE
     ).map { TagFilter(it, false) }
 }
 
