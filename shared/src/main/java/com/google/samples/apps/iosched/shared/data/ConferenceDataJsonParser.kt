@@ -101,6 +101,7 @@ object ConferenceDataJsonParser {
                 durationMinutes = codelab.durationMinutes,
                 iconUrl = codelab.iconUrl,
                 codelabUrl = codelab.codelabUrl,
+                sortPriority = codelab.sortPriority,
                 tags = tags
             )
             codelabs.add(newCodelab)
