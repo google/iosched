@@ -71,6 +71,7 @@ class SessionViewHolder(
         binding.eventListener = eventListener
         binding.showReservations = showReservations
         binding.timeZoneId = timeZoneId
+        binding.showTime = false
         binding.lifecycleOwner = lifecycleOwner
         binding.executePendingBindings()
     }
