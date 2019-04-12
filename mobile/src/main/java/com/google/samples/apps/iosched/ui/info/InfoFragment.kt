@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.updatePaddingRelative
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.ViewModelProvider
@@ -30,6 +31,7 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
+import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import javax.inject.Inject
 
 class InfoFragment : MainNavigationFragment() {
@@ -47,6 +49,9 @@ class InfoFragment : MainNavigationFragment() {
     ): View? {
         binding = FragmentInfoBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
+        }
+        binding.viewpager.doOnApplyWindowInsets { v, insets, padding ->
+            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
         return binding.root
     }
