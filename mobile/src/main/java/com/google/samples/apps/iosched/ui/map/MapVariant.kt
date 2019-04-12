@@ -34,21 +34,24 @@ enum class MapVariant(
     val end: Instant,
     @StringRes val labelResId: Int,
     @DrawableRes val iconResId: Int,
-    @RawRes val markersResId: Int
+    @RawRes val markersResId: Int,
+    val mapTilePrefix: String
 ) {
     AFTER_DARK(
         ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_AFTERHOURS_START).toInstant(),
         ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_END).toInstant(),
         R.string.map_variant_after_dark,
         R.drawable.ic_map_after_dark,
-        raw.map_markers
+        raw.map_markers,
+        "night"
     ),
     CONCERT(
         ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY2_CONCERT_START).toInstant(),
         ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY2_END).toInstant(),
         R.string.map_variant_concert,
         R.drawable.ic_map_concert,
-        raw.map_markers
+        raw.map_markers,
+        "concert"
     ),
     // Note: must be last to facilitate [forTime]
     DAY(
@@ -56,7 +59,8 @@ enum class MapVariant(
         ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY3_END).toInstant(),
         R.string.map_variant_daytime,
         R.drawable.ic_map_daytime,
-        raw.map_markers
+        raw.map_markers,
+        "day"
     );
 
     operator fun contains(time: Instant): Boolean {
