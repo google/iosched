@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.ui
 
 import android.app.Activity
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
@@ -90,6 +91,9 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var connectivityManager: ConnectivityManager
 
     @Inject
     @JvmField
@@ -316,11 +320,15 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
     }
 
     private fun openExploreAr() {
-        val intent = Intent(this,
+        if (connectivityManager.activeNetworkInfo?.isConnected == true) {
+            val intent = Intent(this,
                 ArActivity::class.java).apply {
-            putExtra(ArConstants.CAN_SIGNED_IN_USER_DEMO_AR, canSignedInUserDemoAr)
-            putExtra(ArConstants.PINNED_SESSIONS_JSON_KEY, pinnedSessionsJson)
+                putExtra(ArConstants.CAN_SIGNED_IN_USER_DEMO_AR, canSignedInUserDemoAr)
+                putExtra(ArConstants.PINNED_SESSIONS_JSON_KEY, pinnedSessionsJson)
+            }
+            startActivity(intent)
+        } else {
+            navigateTo(R.id.navigation_no_network_ar)
         }
-        startActivity(intent)
     }
 }
