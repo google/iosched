@@ -383,8 +383,8 @@ class ScheduleFragment : MainNavigationFragment() {
             return
         }
 
-        val firstDay = dayIndexer.dayForPosition(first, 0)
-        val lastDay = dayIndexer.dayForPosition(last, -1)
+        val firstDay = dayIndexer.dayForPosition(first) ?: return
+        val lastDay = dayIndexer.dayForPosition(last) ?: return
         val highlightRange = dayIndexer.days.indexOf(firstDay)..dayIndexer.days.indexOf(lastDay)
         if (highlightRange != cachedBubbleRange) {
             cachedBubbleRange = highlightRange
