@@ -40,21 +40,14 @@ class ConferenceDayIndexer(
     val days = mapping.map { it.key }
     private val startPositions = mapping.map { it.value }
 
-    fun dayForPosition(position: Int, fallback: Int? = null): ConferenceDay {
+    fun dayForPosition(position: Int): ConferenceDay? {
         startPositions.asReversed().forEachIndexed { index, intVal ->
             if (intVal <= position) {
                 // Indexes are inverted because of asReversed()
                 return days[days.size - index - 1]
             }
         }
-        if (fallback != null) {
-            return if (fallback < 0) {
-                days[days.size + fallback]
-            } else {
-                days[fallback]
-            }
-        }
-        throw IllegalArgumentException("Invalid position: $position")
+        return null
     }
 
     fun positionForDay(day: ConferenceDay): Int {
