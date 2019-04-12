@@ -169,12 +169,14 @@ data class Session(
  * Represents the type of the event e.g. Session, Codelab etc.
  */
 enum class SessionType {
+    KEYNOTE,
     SESSION,
     APP_REVIEW,
+    GAME_REVIEW,
     OFFICE_HOURS,
     CODELAB,
-    SANDBOX,
-    AFTER_HOURS,
+    MEETUP,
+    AFTER_DARK,
     UNKNOWN;
 
     companion object {
@@ -187,12 +189,14 @@ enum class SessionType {
             val typeTag = tags.firstOrNull { it.category == Tag.CATEGORY_TYPE }
 
             return when (typeTag?.tagName) {
-                Tag.TYPE_APP_REVIEWS -> APP_REVIEW
-                Tag.TYPE_AFTERHOURS -> AFTER_HOURS
-                Tag.TYPE_CODELABS -> CODELAB
-                Tag.TYPE_OFFICEHOURS -> OFFICE_HOURS
-                Tag.TYPE_SANDBOXDEMO -> SANDBOX
+                Tag.TYPE_KEYNOTE -> KEYNOTE
                 Tag.TYPE_SESSIONS -> SESSION
+                Tag.TYPE_APP_REVIEWS -> APP_REVIEW
+                Tag.TYPE_GAME_REVIEWS -> GAME_REVIEW
+                Tag.TYPE_OFFICEHOURS -> OFFICE_HOURS
+                Tag.TYPE_CODELABS -> CODELAB
+                Tag.TYPE_MEETUPS -> MEETUP
+                Tag.TYPE_AFTERDARK -> AFTER_DARK
                 else -> UNKNOWN
             }
         }

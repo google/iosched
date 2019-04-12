@@ -24,6 +24,9 @@ import com.google.samples.apps.iosched.model.Codelab
 import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.model.Room
 import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.model.SessionType
+import com.google.samples.apps.iosched.model.SessionType.KEYNOTE
+import com.google.samples.apps.iosched.model.SessionType.SESSION
 import com.google.samples.apps.iosched.model.Speaker
 import com.google.samples.apps.iosched.model.Tag
 import com.google.samples.apps.iosched.shared.data.session.json.CodelabDeserializer
@@ -60,6 +63,12 @@ object ConferenceDataJsonParser {
         val sessions = mutableListOf<Session>()
         data.sessions.forEach { session: SessionTemp ->
             val tags = data.tags.filter { it.tagName in session.tagNames }
+            val type = SessionType.fromTags(tags)
+            val displayTags = if (type == SESSION || type == KEYNOTE) {
+                tags.filter { it.category == Tag.CATEGORY_TOPIC }
+            } else {
+                emptyList()
+            }
             val newSession = Session(
                 id = session.id,
                 startTime = session.startTime,
@@ -71,7 +80,7 @@ object ConferenceDataJsonParser {
                 isLivestream = session.isLivestream,
                 youTubeUrl = session.youTubeUrl,
                 tags = tags,
-                displayTags = tags.filter { it.category == Tag.CATEGORY_TOPIC },
+                displayTags = displayTags,
                 speakers = session.speakers.mapNotNull { data.speakers[it] }.toSet(),
                 photoUrl = session.photoUrl,
                 relatedSessions = session.relatedSessions,

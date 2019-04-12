@@ -28,6 +28,10 @@ class UserSessionMatcher {
     companion object {
         // Used to filter out Tag categories and define which order to display them.
         val FILTER_CATEGORIES = arrayOf(Tag.CATEGORY_TOPIC, Tag.CATEGORY_TYPE)
+
+        fun isSupportedTag(tag: Tag): Boolean {
+            return tag.tagName != Tag.TYPE_CODELABS && tag.category in FILTER_CATEGORIES
+        }
     }
 
     private var showPinnedEventsOnly = false
