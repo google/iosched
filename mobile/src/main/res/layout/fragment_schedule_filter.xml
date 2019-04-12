@@ -164,7 +164,7 @@
             style="?borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|start"
+            android:layout_marginStart="@dimen/spacing_normal"
             android:alpha="@{headerAlpha}"
             android:clickable="@{headerAlpha > 0f}"
             android:minWidth="0dp"
