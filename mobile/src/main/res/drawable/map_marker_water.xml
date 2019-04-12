@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -27,7 +27,8 @@
     <path
         android:fillColor="#fbbc04"
         android:pathData="M12,0a12,12 0 0.6,0.6 0,24a12,12 0 0.6,0.6 0,-24M12,1.8a10.2,10.2 0 0,0 0,20.4a10.2,10.2 0 0,0 0,-20.4" />
+
     <path
         android:fillColor="#174ea6"
-        android:pathData="M8.2,6l0,12 2.4,0 0,-4.2 2.1,0a3.9,3.9 0,0 0,0 -7.8zm2.4,2.4l2.1,0a1.5,1.5 0,1 1,0,3l-2.1,0z" />
+        android:pathData="M11.99,19.95c3.17,0,5.06,-2.27,5.06,-5.06c0,-2.79,-3.8,-7.12,-5.06,-10.98c-1.3,3.87,-5.06,8.19,-5.06,10.98c0,2.8,1.89,5.06,5.06,5.06zm0.26,-1.26c-2.16,0,-3.9,-1.75,-3.91,-3.91c0,-0.23,0.18,-0.41,0.41,-0.41c0.23,0,0.41,0.18,0.41,0.41c0,1.7,1.38,3.08,3.08,3.08c0.23,0,0.41,0.18,0.41,0.41c0,0.23,-0.1,0.41,-0.41,0.41z" />
 </vector>
