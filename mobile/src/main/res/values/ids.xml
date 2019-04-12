@@ -31,4 +31,5 @@
     <item name="navigation_session_detail" type="id" />
     <item name="navigation_speaker_detail" type="id" />
     <item name="navigation_search" type="id" />
+    <item name="navigation_no_network_ar" type="id" />
 </resources>

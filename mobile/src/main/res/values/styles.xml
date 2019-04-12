@@ -38,6 +38,10 @@
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
+    <style name="TextAppearance.IOSched.NoticeBody" parent="@style/TextAppearance.IOSched.Body">
+        <item name="android:textSize">18sp</item>
+    </style>
+
     <style name="TextAppearance.IOSched.ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textSize" tools:ignore="SpUsage">20dp</item>
