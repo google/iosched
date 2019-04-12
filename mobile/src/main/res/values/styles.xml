@@ -17,7 +17,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AlertDialog.TitleText" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
-        <item name="android:textAppearance">@style/TextAppearance.AlertDialog.Title</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">@font/google_sans</item>
     </style>
 
     <style name="AlertDialog.TitlePanel" parent="MaterialAlertDialog.MaterialComponents.Title.Panel">
@@ -26,11 +27,6 @@
     </style>
 
     <!-- Text appearances -->
-
-    <style name="TextAppearance.AlertDialog.Title" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
-        <item name="android:textSize">22sp</item>
-        <item name="android:fontFamily">@font/google_sans</item>
-    </style>
 
     <style name="TextAppearance.AlertDialog.Message" parent="TextAppearance.MaterialComponents.Body1">
         <item name="android:textSize">16sp</item>
