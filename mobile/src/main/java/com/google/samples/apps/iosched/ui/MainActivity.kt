@@ -323,6 +323,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
         if (connectivityManager.activeNetworkInfo?.isConnected == true) {
             val intent = Intent(this,
                 ArActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 putExtra(ArConstants.CAN_SIGNED_IN_USER_DEMO_AR, canSignedInUserDemoAr)
                 putExtra(ArConstants.PINNED_SESSIONS_JSON_KEY, pinnedSessionsJson)
             }
