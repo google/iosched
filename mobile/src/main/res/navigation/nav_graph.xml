@@ -203,4 +203,10 @@
             android:defaultValue="0L"
             app:argType="long" />
     </fragment>
+
+    <fragment
+        android:id="@id/navigation_no_network_ar"
+        android:name="com.google.samples.apps.iosched.domain.ar.NoNetworkConnectionFragment"
+        android:label="@string/no_network_connection"
+        tools:layout="@layout/fragment_no_network" />
 </navigation>

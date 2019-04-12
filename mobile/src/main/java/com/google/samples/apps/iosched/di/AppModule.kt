@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.di
 
 import android.content.ClipboardManager
 import android.content.Context
+import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
 import android.os.Handler
 import android.os.Looper
@@ -56,6 +57,11 @@ class AppModule {
     @Provides
     fun providesWifiManager(context: Context): WifiManager =
         context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+
+    @Provides
+    fun providesConnectivityManager(context: Context): ConnectivityManager =
+        context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE)
+                as ConnectivityManager
 
     @Provides
     fun providesClipboardManager(context: Context): ClipboardManager =
