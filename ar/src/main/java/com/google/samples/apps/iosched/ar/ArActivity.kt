@@ -25,6 +25,8 @@ import com.google.samples.apps.iosched.shared.domain.ar.ArConstants
 
 class ArActivity : AppCompatActivity() {
 
+    private lateinit var arWebView: ArWebView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -33,7 +35,7 @@ class ArActivity : AppCompatActivity() {
         val canSignedInUserDemoAr =
             intent?.extras?.getBoolean(ArConstants.CAN_SIGNED_IN_USER_DEMO_AR, false) ?: false
 
-        val arWebView = ArWebView(this)
+        arWebView = ArWebView(this)
         setContentView(arWebView)
         arWebView.apply {
             webView.webViewClient = ArWebViewClient(pinnedSessionsJson, canSignedInUserDemoAr)
@@ -42,6 +44,11 @@ class ArActivity : AppCompatActivity() {
             // teaser page and requesting ARCore apk and camera permission
             loadUrl("https://sp-io2019.appspot.com/")
         }
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        arWebView.webView.reload()
     }
 
     /**
