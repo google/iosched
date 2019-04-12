@@ -52,7 +52,7 @@ open class LoadFilteredUserSessionsUseCase @Inject constructor(
                     is Result.Success -> {
                         val filteredSessions = observableResult.data.userSessions
                             .filter { sessionMatcher.matches(it) }
-                            .sortedBy { it.session.startTime }
+                            .sortedWith(compareBy({ it.session.startTime }, { it.session.type }))
 
                         // Compute type from tags now so it's done in the background
                         filteredSessions.forEach { it.session.type }

@@ -36,8 +36,9 @@ open class LoadEventFiltersUseCase @Inject constructor(
         val tags = tagRepository.getTags()
         parameters.removeOrphanedTags(tags)
 
-        val filters = tags.filter { it.category in UserSessionMatcher.FILTER_CATEGORIES }
-            // Only tags in these categories appear in the filters list
+        val filters = tags
+            // Only these tags appear in the filters list
+            .filter { UserSessionMatcher.isSupportedTag(it) }
             // Map category -> List<TagFilter>
             .groupBy { it.category }
             // Sort entries in desired order
