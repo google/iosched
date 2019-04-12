@@ -117,6 +117,16 @@ object TimeUtils {
         return DateTimeFormatter.ofPattern("EEE, MMM d").format(startTime)
     }
 
+    /** Format a time to show month and day, e.g. "May 7" */
+    fun dateString(startTime: ZonedDateTime): String {
+        return DateTimeFormatter.ofPattern("MMM d").format(startTime)
+    }
+
+    /** Format a time to show month, day, and time, e.g. "May 7, 10:00 AM" */
+    fun dateTimeString(startTime: ZonedDateTime): String {
+        return DateTimeFormatter.ofPattern("MMM d, h:mm a").format(startTime)
+    }
+
     fun timeString(startTime: ZonedDateTime, endTime: ZonedDateTime): String {
         val sb = StringBuilder()
         sb.append(DateTimeFormatter.ofPattern("EEE, MMM d, h:mm ").format(startTime))

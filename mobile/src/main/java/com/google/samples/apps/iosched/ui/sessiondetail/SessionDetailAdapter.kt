@@ -105,7 +105,7 @@ class SessionDetailAdapter(
                 userSession = differ.currentList[position] as UserSession
                 eventListener = sessionDetailViewModel
                 timeZoneId = sessionDetailViewModel.timeZoneId
-                alwaysShowDate = true
+                showTime = true
                 lifecycleOwner = this@SessionDetailAdapter.lifecycleOwner
             }
             is HeaderViewHolder -> holder.binding.executeAfter {

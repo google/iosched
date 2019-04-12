@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.ui.schedule
 
-import android.content.Context
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.TextView
@@ -27,80 +26,50 @@ import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.ui.reservation.ReservationTextView
 import com.google.samples.apps.iosched.ui.reservation.ReservationViewState
-import org.threeten.bp.Duration
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 
 @BindingAdapter(
     "sessionStart",
-    "sessionEnd",
-    "sessionRoom",
     "timeZoneId",
-    "alwaysShowDate",
+    "showTime",
+    "sessionRoom",
     requireAll = true
 )
-fun sessionLengthLocation(
+fun sessionDateTimeLocation(
     textView: TextView,
     startTime: ZonedDateTime,
-    endTime: ZonedDateTime,
-    room: Room?,
-    timeZoneId: ZoneId?,
-    alwaysShowDate: Boolean
-) {
-    if (timeZoneId == null) {
-        // Race condition where this parameter (provided by a LiveData) is null when we are called.
-        return
-    }
-    val localStartTime = TimeUtils.zonedTime(startTime, timeZoneId)
-    val localEndTime = TimeUtils.zonedTime(endTime, timeZoneId)
-    textView.text = if (alwaysShowDate) {
-        // In places where sessions are shown without day/time decorations, show full date & time
-        // (respecting timezone) plus location. Example: "Wed, May 9, 9 – 10 am / Stage 1"
-        fullDateTime(localStartTime, localEndTime, textView, room)
-    } else if (!TimeUtils.isConferenceTimeZone(timeZoneId)) {
-        // Show the local time, the duration, and the abbreviated room name.
-        // Example: "Tue, May 8 / 1 hour / Stage 1"
-        textView.context.getString(
-            R.string.session_date_duration_location,
-            TimeUtils.abbreviatedTimeString(localStartTime),
-            durationString(textView.context, Duration.between(localStartTime, localEndTime)),
-            room?.abbreviatedName ?: "-"
-        )
-    } else {
-        // Assume user is at the conference and show the duration and the full room name
-        // Example: "1 hour / Stage2 / Hydra"
-        textView.context.getString(
-            R.string.session_duration_location,
-            durationString(textView.context, Duration.between(startTime, endTime)),
-            room?.name ?: "-"
-        )
-    }
-    // For accessibility, always use the full date time; without this, sticky headers will confuse
-    // a Talkback user.
-    textView.contentDescription = fullDateTime(localStartTime, localEndTime, textView, room)
-}
-
-private fun fullDateTime(
-    localStartTime: ZonedDateTime,
-    localEndTime: ZonedDateTime,
-    textView: TextView,
+    zoneId: ZoneId?,
+    showTime: Boolean,
     room: Room?
-): String {
-    val timeString = TimeUtils.timeString(localStartTime, localEndTime)
-    return textView.context.getString(
-        R.string.session_duration_location,
-        timeString,
-        room?.name ?: "-"
-    )
-}
+) {
+    zoneId ?: return
+    val roomName = room?.name ?: "-"
+    val localStartTime = TimeUtils.zonedTime(startTime, zoneId)
 
-private fun durationString(context: Context, duration: Duration): String {
-    val hours = duration.toHours()
-    return if (hours > 0L) {
-        context.resources.getQuantityString(R.plurals.duration_hours, hours.toInt(), hours)
+    // For a11y, always use date, time, and location -> "May 7, 10:00 AM / Amphitheatre
+    val dateTimeString = TimeUtils.dateTimeString(localStartTime)
+    val contentDescription = textView.resources.getString(
+        R.string.session_duration_location,
+        dateTimeString,
+        roomName
+    )
+    textView.contentDescription = contentDescription
+
+    textView.text = if (showTime) {
+        // Show date, time, and location, so just reuse the content description
+        contentDescription
+    } else if (!TimeUtils.isConferenceTimeZone(zoneId)) {
+        // Show date and location -> "May 7 / Amphitheatre"
+        val dateString = TimeUtils.dateString(localStartTime)
+        textView.resources.getString(
+            R.string.session_duration_location,
+            dateString,
+            roomName
+        )
     } else {
-        val minutes = duration.toMinutes()
-        context.resources.getQuantityString(R.plurals.duration_minutes, minutes.toInt(), minutes)
+        // Show location only
+        roomName
     }
 }
 
