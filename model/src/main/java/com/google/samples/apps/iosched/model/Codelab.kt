@@ -29,6 +29,8 @@ data class Codelab(
     val iconUrl: String?,
     /** URL to access this codelab on the web */
     val codelabUrl: String,
+    /** Sort priorty. Higher sort priority should come before lower ones. */
+    val sortPriority: Int,
     /** [Tag]s applicable to this codelab */
     val tags: List<Tag>
 ) {

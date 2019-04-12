@@ -236,15 +236,24 @@ object TestData {
 
     val codelab0 = Codelab(
         id = "codelab0", title = "Android is Cool", description = "Make Android apps in 5 minutes!",
-        durationMinutes = 5, iconUrl = null, codelabUrl = "", tags = listOf(androidTag)
+        durationMinutes = 6, iconUrl = null, codelabUrl = "", sortPriority = 0,
+        tags = listOf(androidTag)
     )
 
     val codelab1 = Codelab(
         id = "codelab1", title = "HTML 6", description = "Webs aren't just for spiders anymore.",
-        durationMinutes = 37, iconUrl = null, codelabUrl = "", tags = listOf(webTag)
+        durationMinutes = 37, iconUrl = null, codelabUrl = "", sortPriority = 0,
+        tags = listOf(webTag)
     )
 
-    val codelabs = listOf(codelab0, codelab1)
+    val codelab2 = Codelab(
+        id = "codelab2", title = "Martian Learning", description = "Machine Learning in Space",
+        durationMinutes = 20, iconUrl = null, codelabUrl = "", sortPriority = 1,
+        tags = listOf(cloudTag)
+    )
+
+    val codelabs = listOf(codelab0, codelab1, codelab2)
+    val codelabsSorted = listOf(codelab2, codelab0, codelab1)
 
     // endregion Declarations
 
