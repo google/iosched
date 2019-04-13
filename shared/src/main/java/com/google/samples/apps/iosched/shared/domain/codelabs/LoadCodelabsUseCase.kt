@@ -24,5 +24,8 @@ import javax.inject.Inject
 class LoadCodelabsUseCase @Inject constructor(private val repository: CodelabsRepository) :
     UseCase<Unit, List<Codelab>>() {
 
-    override fun execute(parameters: Unit) = repository.getCodelabs().sortedBy { it.title }
+    override fun execute(parameters: Unit): List<Codelab> {
+        return repository.getCodelabs()
+            .sortedWith(compareByDescending<Codelab> { it.sortPriority }.thenBy { it.title })
+    }
 }

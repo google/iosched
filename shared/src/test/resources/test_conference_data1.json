@@ -229,10 +229,12 @@
       "duration": 5,
       "icon": "",
       "link": "",
+      "priority": "1",
       "tagNames": [
         "topic_flutter"
       ]
     },{
+      "comment": "priority intentionally omitted for test",
       "id": "codelab1",
       "title": "Cloud frameworks",
       "description": "Should you use Cirrus, Stratus, or Cumulonimbus for your new cloud service?",

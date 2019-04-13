@@ -31,5 +31,7 @@ data class CodelabTemp(
     /** URL to access this codelab on the web */
     val codelabUrl: String,
     /** Names of Tags applicable to this codelab */
-    val tagNames: List<String>
+    val tagNames: List<String>,
+    /** Sort priorty. Higher sort priority should come before lower ones. */
+    val sortPriority: Int
 )
