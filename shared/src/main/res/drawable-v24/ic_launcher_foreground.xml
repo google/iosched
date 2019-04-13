@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,36 +15,21 @@
   ~ limitations under the License.
   -->
 
-<vector
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
     <path
-        android:pathData="M54,36L46,71"
-        android:strokeColor="@color/sun_yellow"
-        android:strokeLineCap="square"
-        android:strokeWidth="3" />
+        android:name="I"
+        android:pathData="M26.81,39h14.69v29.32h-14.69z"
+        android:fillColor="#aecbfa" />
     <path
-        android:fillColor="@color/deep_sky_blue"
-        android:pathData="M30.5,42.5m-2.5,0a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0" />
-    <path
-        android:fillColor="@color/deep_sky_blue"
-        android:pathData="M40.5,52.5m-2.5,0a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0" />
-    <path
-        android:fillColor="@color/deep_sky_blue"
-        android:pathData="M30.5,62.5m-2.5,0a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0" />
-    <path
-        android:fillColor="@color/deep_sky_blue"
-        android:pathData="M40.5,42.5m-2.5,0a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0" />
-    <path
-        android:fillColor="@color/deep_sky_blue"
-        android:pathData="M30.5,52.5m-2.5,0a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0" />
-    <path
-        android:fillColor="@color/deep_sky_blue"
-        android:pathData="M40.5,62.5m-2.5,0a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0" />
+        android:name="O"
+        android:pathData="M67.5,40.3a14.46,14.46 0,1 1,0 28.92a14.46,14.46 0,1 1,0 -28.92z"
+        android:strokeColor="#1a73e8"
+        android:strokeWidth="2" />
     <path
         android:name="finish"
         android:pathData="M0,0h108v108h-108z">
