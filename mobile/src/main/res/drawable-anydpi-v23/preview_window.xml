@@ -20,7 +20,7 @@
     <item android:drawable="?attr/colorSurface" />
 
     <item
-        android:drawable="@drawable/io_logo"
+        android:drawable="@drawable/preview_window_logo"
         android:gravity="center" />
 
 </layer-list>
