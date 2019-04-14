@@ -53,7 +53,10 @@ class ScheduleFilterAdapter(val viewModel: ScheduleViewModel) :
             list?.forEach {
                 val category = it.getFilterCategory()
                 if (category != previousCategory && category != NONE) {
-                    newList.add(SectionHeader(category.labelResId))
+                    newList += SectionHeader(
+                            titleId = category.labelResId,
+                            useHorizontalPadding = false
+                    )
                 }
                 newList.add(it)
                 previousCategory = category
