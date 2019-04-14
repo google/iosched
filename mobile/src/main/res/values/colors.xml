@@ -33,6 +33,7 @@
 
     <!-- Other colors with dark mode alternatives -->
     <color name="wifi_card_background">#e8f0fe</color>
+    <color name="event_card_header_background">@color/event_card_header_background_light</color>
     <color name="header_grid">#e6e6e6</color>
     <color name="list_divider">#1f000000</color>>
 
@@ -42,6 +43,9 @@
     <color name="highlight_light">#33ffffff</color> <!-- 20% white -->
     <color name="scrim">#33000000</color> <!-- 20% black -->
     <color name="reddish">#d32f2f</color>
+
+    <color name="event_card_header_background_light">#f8f9fa</color>
+    <color name="event_card_header_background_dark">#252729</color>
 
     <integer-array name="swipe_refresh">
         <item>@color/deep_sky_blue</item>
