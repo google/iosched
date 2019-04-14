@@ -17,6 +17,8 @@
 package com.google.samples.apps.iosched.ui.agenda
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.shared.data.agenda.AgendaRepository
@@ -50,11 +52,18 @@ class AgendaViewModelTest {
             GetTimeZoneUseCase(FakePreferenceStorage())
         )
 
-        val blocks = LiveDataTestUtil.getValue(viewModel.agenda)
+        val blocks = LiveDataTestUtil.getValue(viewModel.loadAgendaResult)
         assertThat(blocks, isEqualTo(TestData.agenda))
     }
 
     internal class FakeAgendaRepository : AgendaRepository {
+
+        override fun getObservableAgenda(): LiveData<List<Block>> {
+            val result: MutableLiveData<List<Block>> = MutableLiveData()
+            result.postValue(TestData.agenda)
+            return result
+        }
+
         override fun getAgenda(): List<Block> = TestData.agenda
     }
 }

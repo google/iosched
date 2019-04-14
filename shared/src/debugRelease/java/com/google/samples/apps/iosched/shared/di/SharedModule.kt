@@ -176,11 +176,18 @@ class SharedModule {
 
     @Singleton
     @Provides
-    fun provideFirebaseRemoteConfig(): FirebaseRemoteConfig {
-        val remoteConfig = FirebaseRemoteConfig.getInstance()
-        val configSettings = FirebaseRemoteConfigSettings.Builder()
+    fun provideFirebaseRemoteConfigSettings(): FirebaseRemoteConfigSettings {
+        return FirebaseRemoteConfigSettings.Builder()
             .setDeveloperModeEnabled(BuildConfig.DEBUG)
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideFirebaseRemoteConfig(
+        configSettings: FirebaseRemoteConfigSettings
+    ): FirebaseRemoteConfig {
+        val remoteConfig = FirebaseRemoteConfig.getInstance()
         remoteConfig.setConfigSettings(configSettings)
         remoteConfig.setDefaults(R.xml.remote_config_defaults)
         return remoteConfig
@@ -188,8 +195,11 @@ class SharedModule {
 
     @Singleton
     @Provides
-    fun provideAppConfigDataSource(remoteConfig: FirebaseRemoteConfig): AppConfigDataSource {
-        return RemoteAppConfigDataSource(remoteConfig)
+    fun provideAppConfigDataSource(
+        remoteConfig: FirebaseRemoteConfig,
+        configSettings: FirebaseRemoteConfigSettings
+    ): AppConfigDataSource {
+        return RemoteAppConfigDataSource(remoteConfig, configSettings)
     }
 
     @Singleton

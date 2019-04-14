@@ -24,6 +24,7 @@ import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.invoke
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
 import org.threeten.bp.ZoneId
@@ -34,17 +35,12 @@ class AgendaViewModel @Inject constructor(
     getTimeZoneUseCase: GetTimeZoneUseCase
 ) : ViewModel() {
 
-    private val loadAgendaResult = MutableLiveData<Result<List<Block>>>()
-    val agenda: LiveData<List<Block>>
+    val loadAgendaResult: LiveData<List<Block>>
 
     private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
     val timeZoneId: LiveData<ZoneId>
 
     init {
-        agenda = loadAgendaResult.map {
-            (it as? Result.Success)?.data ?: emptyList()
-        }
-
         val showInConferenceTimeZone = preferConferenceTimeZoneResult.map {
             (it as? Result.Success<Boolean>)?.data ?: true
         }
@@ -58,6 +54,10 @@ class AgendaViewModel @Inject constructor(
 
         // Load agenda blocks.
         getTimeZoneUseCase(preferConferenceTimeZoneResult)
-        loadAgendaUseCase(loadAgendaResult)
+        val observableAgenda = loadAgendaUseCase.observe()
+        loadAgendaUseCase.execute(Unit)
+        loadAgendaResult = observableAgenda.map {
+            (it as? Result.Success)?.data ?: emptyList()
+        }
     }
 }
