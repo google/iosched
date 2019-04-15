@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.ui.map
 
 import com.google.android.gms.maps.model.UrlTileProvider
+import com.google.samples.apps.iosched.BuildConfig
 import java.net.URL
 
 class MapTileProvider(
@@ -26,8 +27,7 @@ class MapTileProvider(
 
     companion object {
         // Order of format arguments: variant name, tile size, zoom level, tile x, tile y
-        private const val TILE_URL_BASE =
-            "https://storage.googleapis.com/io2019-festivus/images/maptiles/%s/%d/%d/%d_%d.png"
+        private const val BASE_URL = BuildConfig.MAP_TILE_URL_BASE + "/%s/%d/%d/%d_%d.png"
 
         private const val BASE_TILE_SIZE = 256
 
@@ -42,7 +42,6 @@ class MapTileProvider(
     }
 
     override fun getTileUrl(x: Int, y: Int, zoom: Int): URL {
-        // TODO change path based on variant when we have tiles for other variants.
-        return URL(TILE_URL_BASE.format("day", tileSize, zoom, x, y))
+        return URL(BASE_URL.format(variant.mapTilePrefix, tileSize, zoom, x, y))
     }
 }

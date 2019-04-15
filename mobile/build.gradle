@@ -68,12 +68,16 @@ android {
             resValue "string",
                     "google_maps_key",
                     "AIzaSyD5jqwKMm1SeoYsW25vxCXfTlhDBeZ4H5c"
+
+            buildConfigField "String", "MAP_TILE_URL_BASE", "\"https://storage.googleapis.com/io2019-festivus-prod/images/maptiles\""
         }
         debug {
             manifestPlaceholders = [crashlyticsEnabled: false]
             resValue "string",
                     "google_maps_key",
                     "AIzaSyAhJx57ikQH9rYc8IT8W3d2As5cGHMBvuo"
+
+            buildConfigField "String", "MAP_TILE_URL_BASE", "\"https://storage.googleapis.com/io2019-festivus/images/maptiles\""
         }
         staging {
             initWith debug
