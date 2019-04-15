@@ -68,6 +68,7 @@ import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFr
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment.Companion.DIALOG_SIGN_IN
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import com.google.samples.apps.iosched.util.openWebsiteUrl
 import com.google.samples.apps.iosched.util.postponeEnterTransition
 import dagger.android.support.DaggerFragment
 import timber.log.Timber
@@ -123,6 +124,9 @@ class SessionDetailFragment : DaggerFragment(), SessionFeedbackFragment.Listener
         binding.sessionDetailBottomAppBar.run {
             inflateMenu(R.menu.session_detail_menu)
             menu.findItem(R.id.menu_item_map)?.isVisible = isMapEnabled
+            sessionDetailViewModel.session.observe(viewLifecycleOwner, Observer { session ->
+                menu.findItem(R.id.menu_item_ask_question).isVisible = session.doryLink.isNotBlank()
+            })
             setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.menu_item_share -> {
@@ -141,6 +145,11 @@ class SessionDetailFragment : DaggerFragment(), SessionFeedbackFragment.Listener
                             startTime = session?.startTime?.toEpochMilli() ?: 0L
                         )
                         findNavController().navigate(directions)
+                    }
+                    R.id.menu_item_ask_question -> {
+                        sessionDetailViewModel.session.value?.let { session ->
+                            openWebsiteUrl(requireContext(), session.doryLink)
+                        }
                     }
                     R.id.menu_item_calendar -> {
                         sessionDetailViewModel.session.value?.let(::addToCalendar)

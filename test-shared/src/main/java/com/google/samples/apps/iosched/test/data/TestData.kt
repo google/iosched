@@ -108,7 +108,7 @@ object TestData {
         id = "0", title = "Session 0", abstract = "This session is awesome",
         startTime = TestConferenceDays[0].start, endTime = TestConferenceDays[0].end,
         isLivestream = false,
-        room = room, sessionUrl = "", youTubeUrl = "", photoUrl = "",
+        room = room, sessionUrl = "", youTubeUrl = "", photoUrl = "", doryLink = "",
         tags = listOf(androidTag, webTag, sessionsTag),
         displayTags = listOf(androidTag, webTag),
         speakers = setOf(speaker1), relatedSessions = emptySet()
@@ -118,7 +118,7 @@ object TestData {
         id = "1", title = "Session 1", abstract = "",
         startTime = TestConferenceDays[0].start, endTime = TestConferenceDays[0].end,
         isLivestream = false,
-        room = room, sessionUrl = "", youTubeUrl = "", photoUrl = "",
+        room = room, sessionUrl = "", youTubeUrl = "", photoUrl = "", doryLink = "",
         tags = listOf(androidTag, webTag, codelabsTag),
         displayTags = listOf(androidTag, webTag),
         speakers = setOf(speaker2), relatedSessions = emptySet()
@@ -128,7 +128,7 @@ object TestData {
         id = "2", title = "Session 2", abstract = "",
         startTime = TestConferenceDays[1].start, endTime = TestConferenceDays[1].end,
         isLivestream = false,
-        room = room, sessionUrl = "", youTubeUrl = "", photoUrl = "",
+        room = room, sessionUrl = "", youTubeUrl = "", photoUrl = "", doryLink = "",
         tags = listOf(androidTag, sessionsTag, beginnerTag), displayTags = listOf(androidTag),
         speakers = setOf(speaker3), relatedSessions = emptySet()
     )
@@ -137,7 +137,7 @@ object TestData {
         id = "3", title = "Session 3", abstract = "",
         startTime = TestConferenceDays[2].start, endTime = TestConferenceDays[2].end,
         isLivestream = false,
-        room = room, sessionUrl = "", youTubeUrl = "", photoUrl = "",
+        room = room, sessionUrl = "", youTubeUrl = "", photoUrl = "", doryLink = "",
         tags = listOf(webTag, sessionsTag, intermediateTag), displayTags = listOf(webTag),
         speakers = setOf(speaker1, speaker2), relatedSessions = emptySet()
     )
@@ -149,6 +149,7 @@ object TestData {
         isLivestream = true,
         room = room, sessionUrl = "",
         youTubeUrl = "\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\"", photoUrl = "",
+        doryLink = "",
         tags = listOf(webTag, advancedTag), displayTags = listOf(webTag),
         speakers = setOf(speaker1), relatedSessions = emptySet()
     )

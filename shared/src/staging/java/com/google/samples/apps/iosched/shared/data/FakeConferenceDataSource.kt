@@ -86,6 +86,7 @@ object FakeConferenceDataSource : ConferenceDataSource {
             photoUrl = null,
             relatedSessions = emptySet(),
             sessionUrl = "",
+            doryLink = "",
             youTubeUrl = ""
         )
         sessions.add(stagingSession)

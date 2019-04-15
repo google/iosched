@@ -78,6 +78,7 @@ object ConferenceDataJsonParser {
                 sessionUrl = session.sessionUrl,
                 isLivestream = session.isLivestream,
                 youTubeUrl = session.youTubeUrl,
+                doryLink = session.doryLink,
                 tags = tags,
                 displayTags = displayTags,
                 speakers = session.speakers.mapNotNull { data.speakers[it] }.toSet(),
