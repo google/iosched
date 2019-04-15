@@ -27,9 +27,7 @@ import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.model.Moment.Companion.CTA_LIVE_STREAM
 import com.google.samples.apps.iosched.model.Moment.Companion.CTA_MAP_LOCATION
 import com.google.samples.apps.iosched.model.Moment.Companion.CTA_SIGNIN
-import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.ZoneId
-import org.threeten.bp.format.DateTimeFormatter
 
 /** Feed item for the Feed's header. */
 data class FeedHeader(
@@ -73,14 +71,6 @@ class FeedHeaderViewHolder(
         binding.executePendingBindings()
 
         feedHeader.moment?.apply {
-            binding.time.text =
-                (DateTimeFormatter.ofPattern("h:mm").format(
-                    TimeUtils.zonedTime(this.startTime, feedHeader.timeZoneId)
-                ) +
-                    " - " +
-                    DateTimeFormatter.ofPattern("h:mm a").format(
-                        TimeUtils.zonedTime(this.endTime, feedHeader.timeZoneId)
-                    ))
 
             val button = binding.actionButton as MaterialButton
             when (ctaType) {

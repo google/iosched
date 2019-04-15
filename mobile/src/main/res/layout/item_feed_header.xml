@@ -74,33 +74,6 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                android:id="@+id/time"
-                style="@style/Widget.IOSched.Feed.Moment.Time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_normal"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:textColor="@{feedHeader.moment.textColor}"
-                app:layout_constraintStart_toStartOf="@+id/momentImageCard"
-                app:layout_constraintTop_toTopOf="@+id/momentImageCard"
-                app:goneUnless="@{feedHeader.moment.timeVisible}"
-                tools:text="8:00-10:00 PM" />
-
-            <TextView
-                android:id="@+id/title"
-                style="@style/Widget.IOSched.Feed.Moment.Title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_normal"
-                android:layout_marginTop="@dimen/margin_small"
-                android:text="@{feedHeader.moment.title}"
-                android:textColor="@{feedHeader.moment.textColor}"
-                app:layout_constraintEnd_toEndOf="@id/two_third_guideline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/time"
-                tools:text="Headline  Opener" />
-
             <Button
                 android:id="@+id/actionButton"
                 style="?borderlessButtonStyle"
