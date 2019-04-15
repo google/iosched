@@ -80,6 +80,7 @@
     <string name="schedule_hint_reserve_session_seat_content_description" translation_description="The content description for the icon to reserve a session.">An image to reserve a session seat</string>
 
     <!-- Session Detail -->
+    <string name="ask_question" translation_description="The label for the link to open an input form to ask a question about this session. [CHAR_LIMIT=30]">Q &amp; A</string>
     <string name="rate_session" translation_description="The label for the button to rate the session by 5 stars">Rate Session</string>
     <string name="menu_item_session_location" translation_description="The label for the location of the session.">Session location</string>
     <string name="menu_item_session_star" translation_description="The label for starring of the session.">Star session</string>

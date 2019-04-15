@@ -73,6 +73,11 @@ data class Session(
     val youTubeUrl: String,
 
     /**
+     * URL to the Dory page.
+     */
+    val doryLink: String,
+
+    /**
      * The [Tag]s associated with the session. Ordered, with the most important tags appearing
      * first.
      */

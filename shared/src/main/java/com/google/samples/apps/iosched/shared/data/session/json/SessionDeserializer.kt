@@ -58,6 +58,7 @@ class SessionDeserializer : JsonDeserializer<SessionTemp> {
             photoUrl = obj.get("photoUrl")?.asString,
             isLivestream = obj.get("youtubeVideoType")?.asString == "livestream" ||
                 obj.get("livestream")?.asBoolean == true,
+            doryLink = obj.get("doryLink")?.asString ?: "",
             speakers = speakers.toSet(),
             tagNames = tagNames.toList(),
             relatedSessions = relatedSessions.toSet(),
