@@ -19,12 +19,14 @@ package com.google.samples.apps.iosched.ui.reservation
 import android.app.Dialog
 import android.content.res.Resources
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
-import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
+import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.util.makeBold
 import dagger.android.support.DaggerAppCompatDialogFragment
 import javax.inject.Inject
@@ -53,13 +55,13 @@ class RemoveReservationDialogFragment : DaggerAppCompatDialogFragment() {
     }
 
     @Inject
-    lateinit var reservationActionUseCase: ReservationActionUseCase
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private lateinit var viewModel: RemoveReservationViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val context = requireContext()
         val args = requireNotNull(arguments)
-        val userId = requireNotNull(args.getString(USER_ID_KEY))
-        val sessionId = requireNotNull(args.getString(SESSION_ID_KEY))
         val sessionTitle = requireNotNull(args.getString(SESSION_TITLE_KEY))
 
         return MaterialAlertDialogBuilder(context)
@@ -67,11 +69,24 @@ class RemoveReservationDialogFragment : DaggerAppCompatDialogFragment() {
             .setMessage(formatRemoveReservationMessage(context.resources, sessionTitle))
             .setNegativeButton(R.string.cancel, null)
             .setPositiveButton(R.string.remove) { _, _ ->
-                reservationActionUseCase.execute(
-                    ReservationRequestParameters(userId, sessionId, CancelAction())
-                )
+                viewModel.removeReservation()
             }
             .create()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        viewModel = viewModelProvider(viewModelFactory)
+        val sessionId = arguments?.getString(SESSION_ID_KEY)
+        if (sessionId == null) {
+            dismiss()
+        } else {
+            viewModel.setSessionId(sessionId)
+        }
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     private fun formatRemoveReservationMessage(

@@ -27,11 +27,17 @@ import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.ObservableUserEvents
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
+import com.google.samples.apps.iosched.shared.domain.sessions.StarNotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
+import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.doNothing
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Assert
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -52,7 +58,7 @@ class ReservationActionUseCaseTest {
 
     @Test
     fun sessionIsRequestedSuccessfully() {
-        val useCase = ReservationActionUseCase(TestUserEventRepository)
+        val useCase = ReservationActionUseCase(TestUserEventRepository, createFakeUpdater())
 
         val resultLiveData = useCase.observe()
 
@@ -60,7 +66,8 @@ class ReservationActionUseCaseTest {
             ReservationRequestParameters(
                 "userTest",
                 TestData.session0.id,
-                RequestAction()
+                RequestAction(),
+                null
             )
         )
 
@@ -70,14 +77,15 @@ class ReservationActionUseCaseTest {
 
     @Test
     fun sessionIsCanceledSuccessfully() {
-        val useCase = ReservationActionUseCase(TestUserEventRepository)
+        val useCase = ReservationActionUseCase(TestUserEventRepository, createFakeUpdater())
 
         val resultLiveData = useCase.observe()
 
         useCase.execute(
             ReservationRequestParameters(
                 "userTest", TestData.session0.id,
-                CancelAction()
+                CancelAction(),
+                null
             )
         )
 
@@ -87,14 +95,15 @@ class ReservationActionUseCaseTest {
 
     @Test
     fun requestFails() {
-        val useCase = ReservationActionUseCase(FailingUserEventRepository)
+        val useCase = ReservationActionUseCase(FailingUserEventRepository, createFakeUpdater())
 
         val resultLiveData = useCase.observe()
 
         useCase.execute(
             ReservationRequestParameters(
                 "userTest", TestData.session0.id,
-                CancelAction()
+                CancelAction(),
+                null
             )
         )
 
@@ -219,4 +228,10 @@ object FailingUserEventRepository : SessionAndUserEventRepository {
     override fun getUserSession(userId: String, sessionId: SessionId): UserSession {
         TODO("not implemented")
     }
+}
+
+private fun createFakeUpdater(): StarNotificationAlarmUpdater {
+    val alarmManager: SessionAlarmManager = mock()
+    doNothing().whenever(alarmManager).cancelAlarmForSession(any())
+    return StarNotificationAlarmUpdater(alarmManager)
 }

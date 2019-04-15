@@ -97,9 +97,11 @@ class AlarmBroadcastReceiver : DaggerBroadcastReceiver() {
         Timber.d("Showing notification for $sessionId, user $userId")
 
         val userEvent: Result<UserSession>? = getUserEvent(userId, sessionId)
-        // Don't notify if for some reason the event is no longer starred.
+        // Don't notify if for some reason the event is no longer starred or reserved.
         if (userEvent is Success) {
-            if (userEvent.data.userEvent.isStarred && isSessionCurrent(userEvent.data.session)) {
+            val event = userEvent.data.userEvent
+            if ((event.isStarred || event.isReserved()) &&
+                isSessionCurrent(userEvent.data.session)) {
                 try {
                     val notificationId = showNotification(context, userEvent.data.session)
                     // Dismiss in any case
