@@ -121,11 +121,8 @@
 
     <style name="TextAppearance.IOSched.Map.Label" parent="TextAppearance.AppCompat.Body1">
         <item name="android:textSize">13sp</item>
-        <item name="android:textColor">#FFF</item>
-        <item name="android:shadowColor">#FF000000</item>
-        <item name="android:shadowDx">1</item>
-        <item name="android:shadowDy">1</item>
-        <item name="android:shadowRadius">3</item>
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:textColor">#174ea6</item>
     </style>
 
     <style name="TextAppearance.IOSched.Map.InfoTitle" parent="@style/TextAppearance.AppCompat.Title">
