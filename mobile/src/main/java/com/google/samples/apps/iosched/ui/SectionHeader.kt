@@ -18,4 +18,7 @@ package com.google.samples.apps.iosched.ui
 
 import androidx.annotation.StringRes
 
-data class SectionHeader(@StringRes val titleId: Int)
+data class SectionHeader(
+    @StringRes val titleId: Int,
+    val useHorizontalPadding: Boolean = true
+)
