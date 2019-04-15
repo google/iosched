@@ -102,13 +102,14 @@ class InfoFragment : MainNavigationFragment() {
 
         private val INFO_TITLES = arrayOf(
             R.string.event_title,
-            R.string.travel_title
+            R.string.travel_title,
+            R.string.faq_title
         )
         private val INFO_PAGES = arrayOf(
             { EventFragment() },
-            { TravelFragment() }
-        // TODO: Not adding FaqFragment because it uses NestedScrollView, opening Info page takes
-        // noticeable amount of time.
+            { TravelFragment() },
+            { FaqFragment() }
+        // TODO: Track the InfoPage performance b/130335745
         )
     }
 }
