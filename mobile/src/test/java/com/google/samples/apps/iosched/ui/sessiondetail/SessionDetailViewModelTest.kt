@@ -382,7 +382,7 @@ class SessionDetailViewModelTest {
             id = "0", title = "Session 0", abstract = "",
             startTime = ConferenceDays.first().start,
             endTime = ConferenceDays.first().end, room = TestData.room, isLivestream = false,
-            sessionUrl = "", liveStreamUrl = "", youTubeUrl = youtubeUrl, photoUrl = "",
+            sessionUrl = "", youTubeUrl = youtubeUrl, photoUrl = "",
             tags = listOf(TestData.androidTag, TestData.webTag),
             displayTags = listOf(TestData.androidTag, TestData.webTag),
             speakers = setOf(TestData.speaker1), relatedSessions = emptySet()

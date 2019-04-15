@@ -59,11 +59,6 @@ data class SessionTemp(
     val room: String,
 
     /**
-     * Url for the session livestream.
-     */
-    val liveStreamUrl: String,
-
-    /**
      * Indicates if the Session has a live stream.
      */
     val isLivestream: Boolean,

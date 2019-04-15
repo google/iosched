@@ -63,11 +63,6 @@ data class Session(
     val sessionUrl: String,
 
     /**
-     * Url for the session livestream.
-     */
-    val liveStreamUrl: String?,
-
-    /**
      * Indicates if the Session has a live stream.
      */
     val isLivestream: Boolean,
@@ -160,9 +155,9 @@ data class Session(
         append(abstract)
         append(paragraphDelimiter)
         append(speakers.joinToString(speakerDelimiter) { speaker -> speaker.name })
-        if (!liveStreamUrl.isNullOrEmpty()) {
+        if (!isLivestream && !youTubeUrl.isEmpty()) {
             append(paragraphDelimiter)
-            append(liveStreamUrl)
+            append(youTubeUrl)
         }
     }
 }
