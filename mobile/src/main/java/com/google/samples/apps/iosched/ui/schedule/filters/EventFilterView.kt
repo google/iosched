@@ -68,7 +68,13 @@ class EventFilterView @JvmOverloads constructor(
             }
         }
 
-    var selectedTextColor: Int? = null
+    var selectedTextColor: Int = 0
+        set(value) {
+            field = value
+            if (value != 0) {
+                clear.mutate().setTint(value)
+            }
+        }
 
     var text: CharSequence = ""
         set(value) {
@@ -251,7 +257,7 @@ class EventFilterView @JvmOverloads constructor(
         val textX = textBaseOffset + textAnimOffset - textLayoutDiff
 
         val selectedColor = selectedTextColor
-        textPaint.color = if (selectedColor != null && selectedColor != 0 && progress > 0) {
+        textPaint.color = if (selectedColor != 0 && progress > 0) {
             ColorUtils.blendARGB(defaultTextColor, selectedColor, progress)
         } else {
             defaultTextColor
