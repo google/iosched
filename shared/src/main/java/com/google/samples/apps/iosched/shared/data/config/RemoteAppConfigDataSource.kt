@@ -161,9 +161,6 @@ class RemoteAppConfigDataSource @Inject constructor(
         )
     }
 
-    override fun isFeedFeatureEnabled(): Boolean =
-        firebaseRemoteConfig.getBoolean(FEED_FEATURE_ENABLED)
-
     override fun isMapFeatureEnabled(): Boolean =
         firebaseRemoteConfig.getBoolean(MAP_FEATURE_ENABLED)
 
@@ -241,7 +238,6 @@ class RemoteAppConfigDataSource @Inject constructor(
         const val SANDBOXES_DAY3_START_TIME = "sandboxes_day3_start_time"
         const val SANDBOXES_DAY3_END_TIME = "sandboxes_day3_end_time"
 
-        const val FEED_FEATURE_ENABLED = "feed_enabled"
         const val MAP_FEATURE_ENABLED = "map_enabled"
         const val EXPLORE_AR_FEATURE_ENABLED = "explore_ar_enabled"
         const val CODELABS_FEATURE_ENABLED = "codelabs_enabled"

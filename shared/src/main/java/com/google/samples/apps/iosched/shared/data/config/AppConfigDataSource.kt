@@ -24,7 +24,6 @@ interface AppConfigDataSource {
     fun getStringLiveData(key: String): LiveData<String>
     fun syncStringsAsync(changedCallback: StringsChangedCallback?)
     fun getWifiInfo(): ConferenceWifiInfo
-    fun isFeedFeatureEnabled(): Boolean
     fun isMapFeatureEnabled(): Boolean
     fun isExploreArFeatureEnabled(): Boolean
     fun isCodelabsFeatureEnabled(): Boolean
