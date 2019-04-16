@@ -62,7 +62,7 @@
             android:paddingTop="@dimen/spacing_normal"
             android:scrollbars="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:agendaItems="@{viewModel.agenda}"
+            app:agendaItems="@{viewModel.loadAgendaResult}"
             app:layoutManager="LinearLayoutManager"
             app:timeZoneId="@{viewModel.timeZoneId}"
             tools:ignore="UnusedAttribute" />

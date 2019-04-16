@@ -28,6 +28,7 @@ import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
 import com.google.samples.apps.iosched.shared.data.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.data.agenda.DefaultAgendaRepository
+import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
 import com.google.samples.apps.iosched.shared.di.MainThreadHandler
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.FirebaseAnalyticsHelper
@@ -83,5 +84,6 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideAgendaRepository(): AgendaRepository = DefaultAgendaRepository()
+    fun provideAgendaRepository(appConfigDataSource: AppConfigDataSource): AgendaRepository =
+            DefaultAgendaRepository(appConfigDataSource)
 }

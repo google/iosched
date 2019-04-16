@@ -20,10 +20,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
+import com.google.samples.apps.iosched.shared.data.config.StringsChangedCallback
 
 class FakeAppConfigDataSource : AppConfigDataSource {
 
     override fun getStringLiveData(key: String): LiveData<String> = MutableLiveData()
+    override fun syncStringsAsync(changedCallback: StringsChangedCallback?) = Unit
     override fun getWifiInfo(): ConferenceWifiInfo = ConferenceWifiInfo("", "")
     override fun isFeedFeatureEnabled(): Boolean = false
     override fun isMapFeatureEnabled(): Boolean = false
