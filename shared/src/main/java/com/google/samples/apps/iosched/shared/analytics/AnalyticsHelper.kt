@@ -55,6 +55,12 @@ object AnalyticsActions {
     const val SEARCH_QUERY_SUBMIT = "Submitted search query"
     const val SEARCH_RESULT_CLICK = "Clicked on search result"
 
+    const val HOME_TO_MAP = "Home to Map transition"
+    const val HOME_TO_SCHEDULE = "Home to Schedule transition"
+    const val HOME_TO_SESSION_DETAIL = "Home to Session Detail transition"
+    const val HOME_TO_SIGN_IN = "Home to Sign In transition"
+    const val HOME_TO_LIVESTREAM = "Home to Live stream transition"
+
     // Settings Actions
     const val ENABLE = "Enabled"
     const val DISABLE = "Disabled"

@@ -25,6 +25,8 @@ import com.google.samples.apps.iosched.R.string
 import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsParameters
@@ -57,10 +59,12 @@ class FeedViewModel @Inject constructor(
     private val loadAnnouncementsUseCase: LoadAnnouncementsUseCase,
     private val loadFilteredUserSessionsUseCase: LoadFilteredUserSessionsUseCase,
     private val signInViewModelDelegate: SignInViewModelDelegate,
+    private val analyticsHelper: AnalyticsHelper,
     getTimeZoneUseCase: GetTimeZoneUseCase,
     themedActivityDelegate: ThemedActivityDelegate,
     feedHeaderLiveData: FeedHeaderLiveData
 ) : ViewModel(), FeedEventListener, ThemedActivityDelegate by themedActivityDelegate {
+
     companion object {
         // Show at max 10 sessions in the horizontal sessions list as user can click on
         // View All sessions and go to schedule to view the full list
@@ -253,10 +257,13 @@ class FeedViewModel @Inject constructor(
     }
 
     override fun openEventDetail(id: SessionId) {
+        analyticsHelper.logUiEvent("Home to event detail",
+            AnalyticsActions.HOME_TO_SESSION_DETAIL)
         _navigateToSessionAction.value = Event(id)
     }
 
     override fun openSchedule(showOnlyPinnedSessions: Boolean) {
+        analyticsHelper.logUiEvent("Home to Schedule", AnalyticsActions.HOME_TO_SCHEDULE)
         _navigateToScheduleAction.value = Event(showOnlyPinnedSessions)
     }
 
@@ -265,14 +272,17 @@ class FeedViewModel @Inject constructor(
     }
 
     override fun signIn() {
+        analyticsHelper.logUiEvent("Home to Sign In", AnalyticsActions.HOME_TO_SIGN_IN)
         _openSignInDialogAction.value = Event(Unit)
     }
 
     override fun openMap(moment: Moment) {
+        analyticsHelper.logUiEvent(moment.title.toString(), AnalyticsActions.HOME_TO_MAP)
         _navigateToMapAction.value = Event(moment)
     }
 
     override fun openLiveStream(liveStreamUrl: String) {
+        analyticsHelper.logUiEvent(liveStreamUrl, AnalyticsActions.HOME_TO_LIVESTREAM)
         _openLiveStreamAction.value = Event(liveStreamUrl)
     }
 }

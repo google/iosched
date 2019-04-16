@@ -31,6 +31,7 @@ import com.google.common.collect.ImmutableMap
 import com.google.samples.apps.iosched.databinding.FragmentFeedBinding
 import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
@@ -60,6 +61,9 @@ class FeedFragment : MainNavigationFragment() {
     @Inject
     lateinit var snackbarMessageManager: SnackbarMessageManager
 
+    @Inject
+    lateinit var analyticsHelper: AnalyticsHelper
+
     private lateinit var model: FeedViewModel
     private lateinit var binding: FragmentFeedBinding
 
@@ -82,6 +86,8 @@ class FeedFragment : MainNavigationFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        analyticsHelper.sendScreenView("Home", requireActivity())
+
         binding.toolbar.setupProfileMenuItem(activityViewModelProvider(viewModelFactory), this)
 
         binding.root.doOnApplyWindowInsets { _, insets, _ ->
