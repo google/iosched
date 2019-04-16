@@ -43,7 +43,6 @@ import com.google.samples.apps.iosched.databinding.NavigationHeaderBinding
 import com.google.samples.apps.iosched.shared.domain.ar.ArConstants
 import com.google.samples.apps.iosched.shared.di.CodelabsEnabledFlag
 import com.google.samples.apps.iosched.shared.di.ExploreArEnabledFlag
-import com.google.samples.apps.iosched.shared.di.FeedFeatureEnabledFlag
 import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
@@ -94,11 +93,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
 
     @Inject
     lateinit var connectivityManager: ConnectivityManager
-
-    @Inject
-    @JvmField
-    @FeedFeatureEnabledFlag
-    var feedFeatureEnabled: Boolean = false
 
     @Inject
     @JvmField
@@ -200,7 +194,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
             itemBackground = navigationItemBackground(context)
 
             menu.findItem(R.id.navigation_map).isVisible = mapFeatureEnabled
-            menu.findItem(R.id.navigation_feed).isVisible = feedFeatureEnabled
             menu.findItem(R.id.navigation_codelabs).isVisible = codelabsFeatureEnabled
             menu.findItem(R.id.navigation_explore_ar).apply {
                 // Handle launching new activities, otherwise assume the destination is handled
@@ -216,8 +209,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
         }
 
         if (savedInstanceState == null) {
-            // default to showing Schedule
-            val initialNavId = intent.getIntExtra(EXTRA_NAVIGATION_ID, R.id.navigation_schedule)
+            // default to showing Home
+            val initialNavId = intent.getIntExtra(EXTRA_NAVIGATION_ID, R.id.navigation_feed)
             navigation.setCheckedItem(initialNavId) // doesn't trigger listener
             navigateTo(initialNavId)
         }

@@ -26,13 +26,6 @@ class FeatureFlagsModule {
 
     @Provides
     @Singleton
-    @FeedFeatureEnabledFlag
-    fun provideEnableFeedFeatureFlag(appConfig: AppConfigDataSource): Boolean {
-        return appConfig.isFeedFeatureEnabled()
-    }
-
-    @Provides
-    @Singleton
     @ExploreArEnabledFlag
     fun provideEnableExploreArFlag(appConfig: AppConfigDataSource): Boolean {
         return appConfig.isExploreArFeatureEnabled()
