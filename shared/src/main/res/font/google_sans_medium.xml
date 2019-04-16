@@ -15,8 +15,10 @@
   ~ limitations under the License.
   -->
 
-<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+<font-family
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:fontProviderAuthority="com.google.android.gms.fonts"
     android:fontProviderCerts="@array/com_google_android_gms_fonts_certs"
     android:fontProviderPackage="com.google.android.gms"
@@ -24,4 +26,5 @@
     app:fontProviderAuthority="com.google.android.gms.fonts"
     app:fontProviderCerts="@array/com_google_android_gms_fonts_certs"
     app:fontProviderPackage="com.google.android.gms"
-    app:fontProviderQuery="Google Sans:500"/>
+    app:fontProviderQuery="Google Sans:500"
+    tools:ignore="FontValidationError,FontValidationWarning,UnusedAttribute" />
