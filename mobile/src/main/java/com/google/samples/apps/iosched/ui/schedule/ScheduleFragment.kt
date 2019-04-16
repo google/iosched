@@ -287,6 +287,7 @@ class ScheduleFragment : MainNavigationFragment() {
             // Process arguments to set initial filters
             arguments?.let {
                 if (ScheduleFragmentArgs.fromBundle(it).showPinnedEvents) {
+                    scheduleViewModel.clearFilters()
                     scheduleViewModel.showPinnedEvents()
                 }
                 if (ScheduleFragmentArgs.fromBundle(it).showAllEvents) {
