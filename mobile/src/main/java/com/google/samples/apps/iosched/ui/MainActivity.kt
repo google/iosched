@@ -180,6 +180,13 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
         navController = findNavController(R.id.nav_host_fragment)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             currentNavId = destination.id
+            val isTopLevelDestination = TOP_LEVEL_DESTINATIONS.contains(destination.id)
+            val lockMode = if (isTopLevelDestination) {
+                DrawerLayout.LOCK_MODE_UNLOCKED
+            } else {
+                DrawerLayout.LOCK_MODE_LOCKED_CLOSED
+            }
+            drawer.setDrawerLockMode(lockMode)
         }
 
         navigation = findViewById(R.id.navigation)
