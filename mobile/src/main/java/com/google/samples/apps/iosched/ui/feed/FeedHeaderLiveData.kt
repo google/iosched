@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.ui.feed
 import android.os.Handler
 import androidx.lifecycle.MediatorLiveData
 import com.google.samples.apps.iosched.model.Moment
+import com.google.samples.apps.iosched.model.Theme
 import com.google.samples.apps.iosched.shared.di.MainThreadHandler
 import com.google.samples.apps.iosched.shared.domain.feed.LoadMomentsUseCase
 import com.google.samples.apps.iosched.shared.result.Result.Success
@@ -34,7 +35,8 @@ class FeedHeaderLiveData @Inject constructor(
 ) : MediatorLiveData<FeedHeader>() {
     private val conferenceStart = TimeUtils.ConferenceDays.first().start.plusHours(3L)
     private var feedHeader =
-        FeedHeader(timerVisible = false, moment = null, timeZoneId = ZoneId.systemDefault())
+        FeedHeader(timerVisible = false, moment = null, timeZoneId = ZoneId.systemDefault(),
+            theme = Theme.SYSTEM)
     private val updater = Runnable {
         update(
             momentsResult.value.let {

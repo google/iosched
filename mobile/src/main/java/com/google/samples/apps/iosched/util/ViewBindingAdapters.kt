@@ -40,6 +40,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.model.Theme
+import com.google.samples.apps.iosched.model.Theme.DARK
 import com.google.samples.apps.iosched.widget.CustomSwipeRefreshLayout
 import timber.log.Timber
 
@@ -67,6 +69,23 @@ fun pageMargin(viewPager: ViewPager, pageMargin: Float) {
 fun clipToCircle(view: View, clip: Boolean) {
     view.clipToOutline = clip
     view.outlineProvider = if (clip) CircularOutlineProvider else null
+}
+
+@BindingAdapter(value = [
+    "momentImageUrl",
+    "momentImageUrlDarkTheme",
+    "momentTheme"],
+    requireAll = false)
+fun momentImageUrl(
+    imageView: ImageView,
+    momentImageUrl: String?,
+    momentImageUrlDarkTheme: String?,
+    momentTheme: Theme?
+) {
+    when (momentTheme) {
+        DARK -> imageUri(imageView, momentImageUrlDarkTheme?.toUri(), null)
+        else -> imageUri(imageView, momentImageUrl?.toUri(), null)
+    }
 }
 
 @BindingAdapter(value = ["imageUri", "placeholder"], requireAll = false)
