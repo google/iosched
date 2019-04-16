@@ -49,13 +49,15 @@ class StarReserveFab(
             }
         }
 
-    var reservationStatus = ReservationViewState.RESERVATION_DISABLED
+    var reservationStatus: ReservationViewState? = null
         set(value) {
             if (value != field || mode != RESERVE) {
                 field = value
                 currentDrawable = R.drawable.asld_reservation
                 mode = RESERVE
-                contentDescription = context.getString(value.contentDescription)
+                if (value != null) {
+                    contentDescription = context.getString(value.contentDescription)
+                }
                 refreshDrawableState()
             }
         }
@@ -91,7 +93,7 @@ class StarReserveFab(
                 mergeDrawableStates(drawableState, state)
             }
             isShowingReservation() -> {
-                mergeDrawableStates(drawableState, reservationStatus.state)
+                mergeDrawableStates(drawableState, reservationStatus?.state)
             }
         }
         return drawableState
