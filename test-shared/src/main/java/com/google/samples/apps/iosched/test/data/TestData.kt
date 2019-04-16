@@ -299,6 +299,7 @@ object TestData {
             textColor = 123,
             ctaType = Moment.CTA_MAP_LOCATION,
             imageUrl = "",
+            imageUrlDarkTheme = "",
             attendeeRequired = false,
             timeVisible = false,
             featureId = "",

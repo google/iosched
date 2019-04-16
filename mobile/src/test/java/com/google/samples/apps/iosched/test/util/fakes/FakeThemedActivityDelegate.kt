@@ -22,6 +22,8 @@ import com.google.samples.apps.iosched.model.Theme
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
 
 class FakeThemedActivityDelegate(
-    override val theme: LiveData<Theme> = MutableLiveData(),
+    override val theme: LiveData<Theme> = MutableLiveData<Theme>().apply {
+        setValue(Theme.SYSTEM)
+    },
     override val currentTheme: Theme = Theme.SYSTEM
 ) : ThemedActivityDelegate
