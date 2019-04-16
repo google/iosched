@@ -75,7 +75,7 @@
             android:id="@+id/welcome_pre_message"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/onboarding_welcome_google_io_during"
+            android:text="@string/onboarding_welcome_google_io_pre"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.IOSched.H1"
             app:layout_constraintBottom_toTopOf="@id/date_location"
