@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.ui.search
 
 import android.content.Context
 import android.os.Bundle
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ import android.widget.SearchView
 import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.samples.apps.iosched.R.style
 import com.google.samples.apps.iosched.databinding.FragmentSearchBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.EventObserver
@@ -47,7 +49,9 @@ class SearchFragment : MainNavigationFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSearchBinding.inflate(inflater, container, false).apply {
+        val themedInflater =
+            inflater.cloneInContext(ContextThemeWrapper(requireActivity(), style.AppTheme_Detail))
+        binding = FragmentSearchBinding.inflate(themedInflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
         }
         return binding.root

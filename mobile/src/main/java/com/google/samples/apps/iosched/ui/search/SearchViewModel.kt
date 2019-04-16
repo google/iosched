@@ -26,6 +26,7 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.search.SearchUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.util.map
 import timber.log.Timber
 import javax.inject.Inject
@@ -41,19 +42,19 @@ class SearchViewModel @Inject constructor(
 
     private val loadSearchResults = MutableLiveData<Result<List<Session>>>()
     val searchResults: LiveData<List<SearchResult>>
+
+    val isEmpty: LiveData<Boolean>
+
     init {
         searchResults = loadSearchResults.map {
-            val result = it as? Result.Success
-
-            if (result != null) {
-                val resultsList = mutableListOf<SearchResult>()
-                result.data.forEach { session ->
-                    resultsList.add(SearchResult(session.title, "Session", "session", session.id))
-                }
-                resultsList
-            } else {
-                emptyList<SearchResult>()
+            val result = it as? Result.Success ?: return@map emptyList<SearchResult>()
+            result.data.map { session ->
+                SearchResult(session.title, "Session", "session", session.id)
             }
+        }
+
+        isEmpty = loadSearchResults.map {
+            it.successOr(null).isNullOrEmpty()
         }
     }
 
@@ -62,8 +63,6 @@ class SearchViewModel @Inject constructor(
             val sessionId = searchResult.objectId
             analyticsHelper.logUiEvent("Session: $sessionId", AnalyticsActions.SEARCH_RESULT_CLICK)
             _navigateToSessionAction.value = Event(sessionId)
-        } else {
-            // do nothing
         }
     }
 

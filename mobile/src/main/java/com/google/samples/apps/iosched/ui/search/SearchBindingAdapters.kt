@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.ui.search
 
 import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.samples.apps.iosched.R
@@ -42,6 +43,10 @@ fun searchResultItems(
         recyclerView.adapter = SearchAdapter(searchViewModel)
     }
 
-    // TODO add case for no search term
-    (recyclerView.adapter as SearchAdapter).submitList(list ?: emptyList())
+    if (list.isNullOrEmpty()) {
+        recyclerView.isVisible = false
+    } else {
+        recyclerView.isVisible = true
+        (recyclerView.adapter as SearchAdapter).submitList(list)
+    }
 }

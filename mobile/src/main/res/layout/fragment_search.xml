@@ -16,6 +16,7 @@
   -->
 
 <layout
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -50,7 +51,10 @@
                     android:layout_height="match_parent"
                     android:iconifiedByDefault="false"
                     android:queryBackground="@color/transparent"
-                    android:queryHint="@string/search_schedule_hint">
+                    android:queryHint="@string/search_schedule_hint"
+                    android:searchIcon="@null"
+                    android:searchHintIcon="@null"
+                    tools:targetApi="lollipop_mr1">
 
                 </SearchView>
 
@@ -71,6 +75,22 @@
             app:layoutManager="LinearLayoutManager"
             app:searchResultItems="@{viewModel.searchResults}"
             app:searchViewModel="@{viewModel}"/>
+
+        <TextView
+            android:id="@+id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/schedule_page_padding_bottom"
+            android:layout_marginHorizontal="@dimen/margin_large"
+            android:drawablePadding="@dimen/spacing_normal"
+            android:drawableTop="@drawable/no_items_found_204"
+            android:gravity="center"
+            android:text="@string/schedule_filters_empty"
+            app:goneUnless="@{viewModel.isEmpty}"
+            tools:targetApi="o"
+            tools:text="@string/schedule_filters_empty"
+            tools:visibility="visible" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -15,15 +15,16 @@
   ~ limitations under the License.
   -->
 
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="eventListener"
             type="com.google.samples.apps.iosched.ui.search.SearchResultActionHandler" />
+
         <variable
             name="searchResult"
             type="com.google.samples.apps.iosched.ui.search.SearchResult" />
@@ -34,35 +35,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
+        android:minHeight="?listPreferredItemHeight"
         android:onClick="@{() -> eventListener.openSearchResult(searchResult)}"
-        android:paddingBottom="@dimen/search_result_padding_vert"
+        android:paddingBottom="@dimen/spacing_normal"
         android:paddingEnd="?listPreferredItemPaddingEnd"
         android:paddingStart="?listPreferredItemPaddingStart"
-        android:paddingTop="@dimen/search_result_padding_vert">
+        android:paddingTop="@dimen/spacing_normal">
 
         <ImageView
             android:id="@+id/search_result_icon"
             android:layout_width="@dimen/search_result_icon_size"
             android:layout_height="@dimen/search_result_icon_size"
-            android:layout_margin="@dimen/search_result_icon_margin"
+            android:layout_marginTop="@dimen/margin_small"
             android:contentDescription="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/search_result_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:searchResultIcon="@{searchResult.type}" />
+            app:searchResultIcon="@{searchResult.type}"
+            tools:src="@drawable/ic_event" />
 
         <TextView
             android:id="@+id/search_result_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/search_result_padding_vert"
+            android:layout_marginStart="@dimen/margin_normal"
             android:text="@{searchResult.title}"
+            android:textAlignment="viewStart"
             android:textAppearance="?textAppearanceListItem"
+            app:layout_constraintBottom_toTopOf="@id/search_result_type"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/search_result_icon"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
             tools:text="What's new in Android" />
 
         <TextView
@@ -70,7 +74,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{searchResult.subtitle}"
-            app:layout_constraintEnd_toEndOf="@id/search_result_title"
+            android:textAlignment="viewStart"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/search_result_title"
             app:layout_constraintTop_toBottomOf="@id/search_result_title"
             tools:text="Session" />

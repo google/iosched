@@ -113,8 +113,8 @@ class SessionDetailFragment : DaggerFragment(), SessionFeedbackFragment.Listener
         // Delay the enter transition until speaker image has loaded.
         postponeEnterTransition(500L)
 
-        val themedInflater = inflater.cloneInContext(
-            ContextThemeWrapper(requireActivity(), style.AppTheme_SessionDetails))
+        val themedInflater =
+            inflater.cloneInContext(ContextThemeWrapper(requireActivity(), style.AppTheme_Detail))
         binding = FragmentSessionDetailBinding.inflate(themedInflater, container, false).apply {
             viewModel = sessionDetailViewModel
             lifecycleOwner = viewLifecycleOwner

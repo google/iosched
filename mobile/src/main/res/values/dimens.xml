@@ -52,8 +52,6 @@
     <dimen name="agenda_icon_width">56dp</dimen>
 
     <dimen name="search_result_icon_size">24dp</dimen>
-    <dimen name="search_result_icon_margin">16dp</dimen>
-    <dimen name="search_result_padding_vert">12dp</dimen>
 
     <dimen name="feed_header_cta_icon_size">24dp</dimen>
     <dimen name="feed_header_cta_icon_padding">4dp</dimen>
