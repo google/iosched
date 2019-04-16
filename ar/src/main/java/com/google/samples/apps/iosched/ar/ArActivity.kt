@@ -38,8 +38,14 @@ class ArActivity : AppCompatActivity() {
         arWebView = ArWebView(this)
         setContentView(arWebView)
         arWebView.apply {
-            webView.webViewClient = ArWebViewClient(pinnedSessionsJson, canSignedInUserDemoAr)
-            webView.settings.mediaPlaybackRequiresUserGesture = false
+            webView.apply {
+                webViewClient = ArWebViewClient(pinnedSessionsJson, canSignedInUserDemoAr)
+                settings.apply {
+                    mediaPlaybackRequiresUserGesture = false
+                    domStorageEnabled = true
+                    databaseEnabled = true
+                }
+            }
             // Loading a single entry point because all the user flow happens in JavaScript from the
             // teaser page and requesting ARCore apk and camera permission
             loadUrl("https://sp-io2019.appspot.com/")
