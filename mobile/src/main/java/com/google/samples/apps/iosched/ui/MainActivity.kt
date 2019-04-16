@@ -40,6 +40,8 @@ import com.google.android.material.navigation.NavigationView
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.ar.ArActivity
 import com.google.samples.apps.iosched.databinding.NavigationHeaderBinding
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.ar.ArConstants
 import com.google.samples.apps.iosched.shared.di.CodelabsEnabledFlag
 import com.google.samples.apps.iosched.shared.di.ExploreArEnabledFlag
@@ -93,6 +95,9 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
 
     @Inject
     lateinit var connectivityManager: ConnectivityManager
+
+    @Inject
+    lateinit var analyticsHelper: AnalyticsHelper
 
     @Inject
     @JvmField
@@ -200,6 +205,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
                 // by the nav graph. We want to launch a new Activity for only the AR menu
                 isVisible = exploreArFeatureEnabled
                 setOnMenuItemClickListener {
+                    analyticsHelper.logUiEvent("Navigate to Explore I/O", AnalyticsActions.CLICK)
                     openExploreAr()
                     closeDrawer()
                     true
