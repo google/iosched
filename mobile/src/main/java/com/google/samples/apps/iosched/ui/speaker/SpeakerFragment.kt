@@ -89,8 +89,8 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
             }
         }
 
-        val themedInflater = inflater.cloneInContext(
-            ContextThemeWrapper(requireActivity(), R.style.AppTheme_Speaker))
+        val themedInflater =
+            inflater.cloneInContext(ContextThemeWrapper(requireActivity(), R.style.AppTheme_Detail))
         binding = FragmentSpeakerBinding.inflate(themedInflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             headshotLoadListener = imageLoadListener

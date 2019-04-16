@@ -73,18 +73,8 @@
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
-    <style name="AppTheme.Fullscreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-    </style>
-
-    <style name="AppTheme.SessionDetails">
-        <item name="sessionListKeyline">@dimen/margin_normal</item>
-    </style>
-
-    <style name="AppTheme.Speaker">
+    <!-- Non-top-level screens should inflate with this theme to replace the keyline. -->
+    <style name="AppTheme.Detail">
         <item name="sessionListKeyline">@dimen/margin_normal</item>
     </style>
 

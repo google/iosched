@@ -50,17 +50,22 @@
         android:background="?selectableItemBackground"
         android:onClick="@{() -> eventListener.openEventDetail(userSession.session.id)}"
         android:paddingBottom="@dimen/schedule_item_padding_vertical"
-        android:paddingEnd="@dimen/spacing_normal"
-        android:paddingStart="@dimen/spacing_normal"
         android:paddingTop="@dimen/schedule_item_padding_vertical"
         tools:targetApi="o">
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/keyline"
+            android:id="@+id/guideline_start"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="vertical"
             app:layout_constraintGuide_begin="?sessionListKeyline" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/margin_small" />
 
         <TextView
             android:id="@+id/title"
@@ -70,7 +75,7 @@
             android:textAlignment="viewStart"
             android:textAppearance="?textAppearanceListItem"
             app:layout_constraintEnd_toStartOf="@+id/bookmark_session"
-            app:layout_constraintStart_toEndOf="@id/keyline"
+            app:layout_constraintStart_toEndOf="@id/guideline_start"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="What's new in Android" />
 
@@ -95,7 +100,7 @@
             android:gravity="center_vertical"
             android:textAppearance="@style/TextAppearance.IOSched.ReservationStatus"
             app:layout_constraintEnd_toEndOf="@id/title"
-            app:layout_constraintStart_toEndOf="@id/keyline"
+            app:layout_constraintStart_toEndOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/title"
             app:isReservable="@{userSession.session.isReservable}"
             app:reservationStatus="@{userSession.userEvent}"
@@ -113,7 +118,7 @@
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@id/tags_barrier"
             app:layout_constraintEnd_toStartOf="@id/length_location"
-            app:layout_constraintStart_toEndOf="@id/keyline"
+            app:layout_constraintStart_toEndOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/reservation_status"
             app:goneUnless="@{userSession.session.isLivestream}"
             app:srcCompat="@drawable/ic_livestreamed" />
@@ -124,7 +129,7 @@
             android:layout_height="wrap_content"
             android:textAlignment="viewStart"
             app:layout_constraintBottom_toTopOf="@id/tags_barrier"
-            app:layout_constraintEnd_toEndOf="@id/title"
+            app:layout_constraintEnd_toStartOf="@id/guideline_end"
             app:layout_constraintStart_toEndOf="@id/livestream_icon"
             app:layout_constraintTop_toBottomOf="@id/reservation_status"
             app:showTime="@{showTime}"
@@ -145,8 +150,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/keyline"
+            app:layout_constraintEnd_toStartOf="@id/guideline_end"
+            app:layout_constraintStart_toEndOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/tags_barrier"
             app:topicTags="@{userSession.session.displayTags}"
             tools:itemCount="3"
