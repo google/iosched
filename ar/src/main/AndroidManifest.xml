@@ -16,23 +16,16 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:dist="http://schemas.android.com/apk/distribution"
     package="com.google.samples.apps.iosched.ar">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <dist:module
-        dist:onDemand="true"
-        dist:title="@string/feature_explore_io">
-        <dist:fusing dist:include="true" />
-    </dist:module>
-
     <application>
 
         <activity android:name=".ArActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Fullscreen" />
+            android:theme="@style/AppTheme.NoActionBar.BlackStatusBar" />
     </application>
 </manifest>

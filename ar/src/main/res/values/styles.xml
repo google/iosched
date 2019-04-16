@@ -15,10 +15,7 @@
   -->
 <resources>
 
-    <style name="AppTheme.Fullscreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowContentOverlay">@null</item>
+    <style name="AppTheme.NoActionBar.BlackStatusBar" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="android:statusBarColor">@color/black</item>
     </style>
 </resources>
