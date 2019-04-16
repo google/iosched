@@ -18,14 +18,6 @@ package com.google.samples.apps.iosched.shared.di
 
 import javax.inject.Qualifier
 
-/** Contains the dagger qualifiers for the feature flags to be used across iosched  */
-@Qualifier
-@Target(
-    AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER,
-    AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.FIELD
-)
-annotation class FeedFeatureEnabledFlag
-
 @Qualifier
 @Target(
     AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER,

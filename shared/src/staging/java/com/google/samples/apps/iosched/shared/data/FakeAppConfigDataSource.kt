@@ -27,7 +27,6 @@ class FakeAppConfigDataSource : AppConfigDataSource {
     override fun getStringLiveData(key: String): LiveData<String> = MutableLiveData()
     override fun syncStringsAsync(changedCallback: StringsChangedCallback?) = Unit
     override fun getWifiInfo(): ConferenceWifiInfo = ConferenceWifiInfo("", "")
-    override fun isFeedFeatureEnabled(): Boolean = false
     override fun isMapFeatureEnabled(): Boolean = false
     override fun isExploreArFeatureEnabled(): Boolean = true
     override fun isCodelabsFeatureEnabled(): Boolean = true
