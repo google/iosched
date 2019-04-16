@@ -33,6 +33,7 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSe
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils
@@ -41,6 +42,7 @@ import com.google.samples.apps.iosched.ui.SectionHeader
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
 import com.google.samples.apps.iosched.util.combine
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
@@ -55,9 +57,10 @@ class FeedViewModel @Inject constructor(
     private val loadAnnouncementsUseCase: LoadAnnouncementsUseCase,
     private val loadFilteredUserSessionsUseCase: LoadFilteredUserSessionsUseCase,
     private val signInViewModelDelegate: SignInViewModelDelegate,
-    private val getTimeZoneUseCase: GetTimeZoneUseCase,
-    private val feedHeaderLiveData: FeedHeaderLiveData
-) : ViewModel(), FeedEventListener {
+    getTimeZoneUseCase: GetTimeZoneUseCase,
+    themedActivityDelegate: ThemedActivityDelegate,
+    feedHeaderLiveData: FeedHeaderLiveData
+) : ViewModel(), FeedEventListener, ThemedActivityDelegate by themedActivityDelegate {
     companion object {
         // Show at max 10 sessions in the horizontal sessions list as user can click on
         // View All sessions and go to schedule to view the full list
@@ -111,6 +114,7 @@ class FeedViewModel @Inject constructor(
         loadSessionsResult.addSource(signInViewModelDelegate.currentUserInfo) {
             refreshSessions()
         }
+
         val sessionContainerLiveData = signInViewModelDelegate.currentUserInfo.combine(
             loadSessionsResult
         ) { userInfo, sessions -> createFeedSessionsContainer(userInfo, sessions) }
@@ -128,9 +132,9 @@ class FeedViewModel @Inject constructor(
                 announcementList
         }
 
-        val feedHeaderLiveDataWithTimezone =
-            feedHeaderLiveData.combine(timeZoneId) { feedHeader, timeZoneId ->
-                feedHeader.copy(timeZoneId = timeZoneId)
+        val feedHeaderWithTimezoneAndTheme =
+            feedHeaderLiveData.combine(timeZoneId, theme) { feedHeader, timeZoneId, theme ->
+                feedHeader.copy(timeZoneId = timeZoneId, theme = theme)
             }
 
         // Generate feed
@@ -138,7 +142,7 @@ class FeedViewModel @Inject constructor(
             .combine(announcements) { sessionContainer, announcements ->
                 arrayListOf(sessionContainer, SectionHeader(string.feed_announcement_title))
                     .plus(announcements)
-            }.combine(feedHeaderLiveDataWithTimezone) { otherItems, feedHeader ->
+            }.combine(feedHeaderWithTimezoneAndTheme) { otherItems, feedHeader ->
                 arrayListOf(feedHeader
                     .let { injectUserInfo(it) }
                     .let { removeMomentIfNotRegistered(it) })

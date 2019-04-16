@@ -32,6 +32,7 @@ import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
+import com.google.samples.apps.iosched.test.util.fakes.FakeThemedActivityDelegate
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import org.hamcrest.Matchers.`is`
@@ -141,6 +142,7 @@ class FeedViewModelTest {
             loadFilteredUserSessionsUseCase = loadFilteredSessionsUseCase,
             signInViewModelDelegate = signInViewModelDelegate,
             getTimeZoneUseCase = createGetTimeZoneUseCase(),
+            themedActivityDelegate = FakeThemedActivityDelegate(),
             feedHeaderLiveData = FeedHeaderLiveData(loadMomentsUseCase).apply {
                 handler = mockHandler
             }

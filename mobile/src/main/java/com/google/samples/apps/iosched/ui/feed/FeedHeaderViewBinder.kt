@@ -27,6 +27,7 @@ import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.model.Moment.Companion.CTA_LIVE_STREAM
 import com.google.samples.apps.iosched.model.Moment.Companion.CTA_MAP_LOCATION
 import com.google.samples.apps.iosched.model.Moment.Companion.CTA_SIGNIN
+import com.google.samples.apps.iosched.model.Theme
 import org.threeten.bp.ZoneId
 
 /** Feed item for the Feed's header. */
@@ -35,7 +36,8 @@ data class FeedHeader(
     val moment: Moment?,
     val userSignedIn: Boolean = false,
     val userRegistered: Boolean = false,
-    val timeZoneId: ZoneId
+    val timeZoneId: ZoneId,
+    val theme: Theme
 )
 
 class FeedHeaderViewBinder(private val eventListener: FeedEventListener) :

@@ -106,6 +106,7 @@ class FirestoreMomentDataSource @Inject constructor(
             textColor = ColorUtils.parseHexColor(snapshot[TEXT_COLOR] as? String ?: ""),
             ctaType = snapshot[CTA_TYPE] as? String ?: "",
             imageUrl = snapshot[IMAGE_URL] as? String ?: "",
+            imageUrlDarkTheme = snapshot[IMAGE_URL_DARK] as? String ?: "",
             attendeeRequired = snapshot[ATTENDEE_REQUIRED] as? Boolean ?: false,
             timeVisible = snapshot[TIME_VISIBLE] as? Boolean ?: false,
             featureId = snapshot[FEATURE_ID] as? String,
@@ -122,6 +123,7 @@ class FirestoreMomentDataSource @Inject constructor(
         private const val STREAM_URL = "streamUrl"
         private const val TEXT_COLOR = "textColor"
         private const val IMAGE_URL = "imageUrl"
+        private const val IMAGE_URL_DARK = "imageUrlDarkTheme"
         private const val CTA_TYPE = "ctaType"
         private const val TIME_VISIBLE = "timeVisible"
         private const val FEATURE_ID = "featureId"

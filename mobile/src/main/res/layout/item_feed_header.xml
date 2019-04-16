@@ -68,8 +68,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/moment_height"
                     android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"
-                    app:imageUrl="@{feedHeader.moment.imageUrl}"
+                    android:scaleType="fitCenter"
+                    app:momentImageUrl="@{feedHeader.moment.imageUrl}"
+                    app:momentImageUrlDarkTheme="@{feedHeader.moment.imageUrlDarkTheme}"
+                    app:momentTheme="@{feedHeader.theme}"
                     app:srcCompat="@color/light_grey" />
 
             </com.google.android.material.card.MaterialCardView>

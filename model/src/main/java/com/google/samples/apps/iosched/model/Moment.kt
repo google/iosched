@@ -27,6 +27,7 @@ data class Moment(
     val timeVisible: Boolean,
     @ColorInt val textColor: Int,
     val imageUrl: String,
+    val imageUrlDarkTheme: String,
     val attendeeRequired: Boolean,
     val ctaType: String, // MAP_LOCATION, LIVE_STREAM, SIGN_IN, NO_ACTION
     val featureId: String?, // if ctaType is MapLocation
