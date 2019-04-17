@@ -287,6 +287,10 @@ class MapFragment : MainNavigationFragment() {
         }
 
         binding.markerTitle.text = markerInfo.title
+        binding.markerSubtitle.apply {
+            text = markerInfo.subtitle
+            isVisible = !markerInfo.subtitle.isNullOrEmpty()
+        }
 
         val description = Html.fromHtml(markerInfo.description ?: "")
         val hasDescription = description.isNotEmpty()

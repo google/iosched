@@ -369,4 +369,23 @@
         <item name="margin">@dimen/nav_item_horizontal_padding</item>
     </style>
 
+    <!-- Map -->
+    <style name="Widget.IOSched.Map" />
+
+    <style name="Widget.IOSched.Map.MarkerTitle">
+        <item name="android:ellipsize">end</item>
+        <item name="android:lines">1</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:textAppearance">@style/TextAppearance.IOSched.H3</item>
+        <!-- Use dp because we need the title and subtitle to always fit in the sheet peak area. -->
+        <item name="android:textSize" tools:ignore="SpUsage">20dp</item>
+    </style>
+
+    <style name="Widget.IOSched.Map.MarkerSubtitle" parent="Widget.IOSched.Map.MarkerTitle">
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <!-- Use dp because we need the title and subtitle to always fit in the sheet peak area. -->
+        <item name="android:textSize" tools:ignore="SpUsage">16dp</item>
+    </style>
+
 </resources>
