@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.ar
 
 import android.os.Bundle
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import com.google.ar.web.webview.ArWebView
 import com.google.samples.apps.iosched.shared.domain.ar.ArConstants
@@ -39,7 +38,8 @@ class ArActivity : AppCompatActivity() {
         setContentView(arWebView)
         arWebView.apply {
             webView.apply {
-                webViewClient = ArWebViewClient(pinnedSessionsJson, canSignedInUserDemoAr)
+                webViewClient =
+                        ArWebViewClient(pinnedSessionsJson, canSignedInUserDemoAr, arWebView)
                 settings.apply {
                     mediaPlaybackRequiresUserGesture = false
                     domStorageEnabled = true
@@ -61,7 +61,12 @@ class ArActivity : AppCompatActivity() {
      * WebViewClient that sends the pinned sessions as json to the WebView.
      * Defining it as a class otherwise an anonymous class was stripped from proguard.
      */
-    private class ArWebViewClient(val json: String, val canDemoAr: Boolean) : WebViewClient() {
+    private class ArWebViewClient(
+        val json: String,
+        val canDemoAr: Boolean,
+        val arWebView: ArWebView
+    ) :
+            ArWebView.ArWebViewDefaultWebViewClient(arWebView) {
         override fun onPageFinished(view: WebView?, url: String?) {
             super.onPageFinished(view, url)
             val evalAgendaScript =
