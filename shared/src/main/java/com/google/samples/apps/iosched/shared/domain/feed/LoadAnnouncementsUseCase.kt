@@ -21,13 +21,17 @@ import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.time.TimeProvider
+import org.threeten.bp.ZoneId
+import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 
 /**
  * Loads all feed items into a list.
  */
 open class LoadAnnouncementsUseCase @Inject constructor(
-    private val repository: FeedRepository
+    private val repository: FeedRepository,
+    private val timeProvider: TimeProvider
 ) : MediatorUseCase<Unit, List<Announcement>>() {
 
     override fun execute(parameters: Unit) {
@@ -40,7 +44,13 @@ open class LoadAnnouncementsUseCase @Inject constructor(
             DefaultScheduler.execute {
                 when (it) {
                     is Result.Success -> {
-                        val feedItems = it.data
+                        // This can be any timezone because ZonedDateTime#isAfter compares using the
+                        // epochSeconds
+                        val now =
+                            ZonedDateTime.ofInstant(timeProvider.now(), ZoneId.systemDefault())
+                        val feedItems = it.data.filter {
+                            now.isAfter(it.timestamp)
+                        }
                         result.postValue(Result.Success(feedItems))
                     }
                     is Result.Error -> {

@@ -75,7 +75,7 @@ class FirestoreAnnouncementDataSource @Inject constructor(
 
                         val feedItemsResult = snapshot.documents.map { parseFeedItem(it) }
                             .sortedWith(compareByDescending<Announcement> { it.priority }
-                                .thenBy { it.timestamp })
+                                .thenByDescending { it.timestamp })
                         result.postValue(Result.Success(feedItemsResult))
                     } catch (e: Exception) {
                         result.postValue(Result.Error(e))

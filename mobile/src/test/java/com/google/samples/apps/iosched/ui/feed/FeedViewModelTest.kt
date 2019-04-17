@@ -28,12 +28,14 @@ import com.google.samples.apps.iosched.shared.domain.feed.LoadMomentsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeThemedActivityDelegate
+import com.google.samples.apps.iosched.test.util.time.FixedTimeProvider
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import org.hamcrest.Matchers.`is`
@@ -60,7 +62,7 @@ class FeedViewModelTest {
     @get:Rule
     var syncTaskExecutorRule = SyncTaskExecutorRule()
 
-    val mockHandler = Mockito.mock(Handler::class.java)
+    private val mockHandler = Mockito.mock(Handler::class.java)
 
     @Before
     fun setup() {
@@ -109,7 +111,8 @@ class FeedViewModelTest {
         LoadAnnouncementsUseCase(
             DefaultFeedRepository(TestAnnouncementDataSource,
                 TestMomentDataSource
-            )
+            ),
+            FixedTimeProvider(TimeUtils.ConferenceDays[2].end.toInstant())
         ) {
         override fun execute(parameters: Unit) {
             result.postValue(Result.Error(Exception("Error!")))
@@ -130,7 +133,8 @@ class FeedViewModelTest {
         loadAnnouncementUseCase: LoadAnnouncementsUseCase = LoadAnnouncementsUseCase(
             DefaultFeedRepository(TestAnnouncementDataSource,
                 TestMomentDataSource
-            )
+            ),
+            FixedTimeProvider(TimeUtils.ConferenceDays[2].end.toInstant())
         ),
         loadMomentsUseCase: LoadMomentsUseCase = LoadMomentsUseCase(
             DefaultFeedRepository(TestAnnouncementDataSource,
