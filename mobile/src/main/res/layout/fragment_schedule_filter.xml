@@ -55,7 +55,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="@dimen/bottom_sheet_peek_height" />
+            app:layout_constraintGuide_begin="@dimen/schedule_bottom_sheet_peek_height" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"

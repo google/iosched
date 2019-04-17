@@ -171,6 +171,7 @@ class MapViewModel @Inject constructor(
         val title = feature.getProperty("title")
         _selectedMarkerInfo.value = MarkerInfo(
             title,
+            feature.getProperty("subtitle"),
             feature.getProperty("description"),
             feature.getProperty("icon")
         )
@@ -194,6 +195,7 @@ class MapViewModel @Inject constructor(
 
 data class MarkerInfo(
     val title: String,
+    val subtitle: String?,
     val description: String?,
     val iconName: String?
 )
