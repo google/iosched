@@ -47,22 +47,6 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/datetime"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_normal"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:paddingEnd="@dimen/spacing_normal"
-                android:paddingStart="@dimen/spacing_normal"
-                android:textAppearance="?textAppearanceBody2"
-                app:layout_constraintBottom_toTopOf="@+id/image"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:dateTime="@{announcement.timestamp}"
-                app:timeZoneId="@{timeZoneId}"
-                tools:text="25 Mat 2017, 8:00am" />
-
-            <TextView
                 android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -80,14 +64,13 @@
                 android:id="@+id/image"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="@dimen/spacing_normal"
                 android:adjustViewBounds="true"
                 android:contentDescription="@null"
-                android:scaleType="centerCrop"
+                android:scaleType="fitCenter"
                 app:layout_constraintDimensionRatio="h,16:9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/datetime"
+                app:layout_constraintTop_toTopOf="parent"
                 app:goneUnless="@{!TextUtils.isEmpty(announcement.imageUrl)}"
                 app:imageUrl="@{announcement.imageUrl}"
                 app:srcCompat="@color/light_grey" />
@@ -108,36 +91,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/title"
                 app:layout_constraintVertical_bias="0.0"
                 tools:text="We hope you enjoyed I/O!" />
-
-            <ImageView
-                android:id="@+id/priority_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_normal"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:contentDescription="@string/feed_item_pinned_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/message"
-                app:goneUnless="@{announcement.priority}"
-                app:srcCompat="@drawable/ic_lock" />
-
-            <ImageView
-                android:id="@+id/emergency_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_normal"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:contentDescription="@string/feed_item_emergency_icon"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/priority_icon"
-                app:layout_constraintTop_toBottomOf="@+id/message"
-                app:goneUnless="@{announcement.emergency}"
-                app:srcCompat="@drawable/ic_emergency"
-                tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
