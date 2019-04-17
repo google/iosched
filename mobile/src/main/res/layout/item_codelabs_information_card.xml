@@ -34,7 +34,10 @@
         android:layout_marginTop="@dimen/margin_small"
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
-        app:contentPadding="@dimen/margin_normal"
+        app:contentPaddingBottom="@dimen/margin_small"
+        app:contentPaddingLeft="@dimen/margin_normal"
+        app:contentPaddingRight="@dimen/margin_normal"
+        app:contentPaddingTop="@dimen/margin_normal"
         app:strokeColor="?colorControlLight"
         app:strokeWidth="1dp">
 
@@ -55,6 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                android:layout_marginTop="@dimen/margin_small"
                 android:onClick="@{() -> actionHandler.dismissCodelabsInfoCard()}"
                 android:text="@string/got_it" />
         </LinearLayout>
