@@ -364,7 +364,7 @@ class ScheduleFragment : MainNavigationFragment() {
                 if (showFab) {
                     R.dimen.snackbar_margin_bottom_fab
                 } else {
-                    R.dimen.bottom_sheet_peek_height
+                    R.dimen.schedule_bottom_sheet_peek_height
                 }
             )
         }

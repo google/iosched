@@ -33,12 +33,12 @@ fun processGeoJsonLayer(layer: GeoJsonLayer, context: Context) {
     val iconGenerator = getLabelIconGenerator(context)
     layer.features.forEach { feature ->
         val icon = feature.getProperty("icon")
-        val title = feature.getProperty("title")
+        val label = feature.getProperty("label") ?: feature.getProperty("title")
 
         val drawableRes = getDrawableResourceForIcon(context, icon)
         feature.pointStyle = when {
-            drawableRes != 0 -> createIconMarker(context, drawableRes, title)
-            title != null -> createLabelMarker(iconGenerator, title) // Fall back to title
+            drawableRes != 0 -> createIconMarker(context, drawableRes, label)
+            label != null -> createLabelMarker(iconGenerator, label) // Fall back to label
             else -> GeoJsonPointStyle() // no styling
         }
     }
