@@ -20,17 +20,20 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
-import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
-import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.model.Moment
+import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
+import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
 import com.google.samples.apps.iosched.shared.domain.feed.TestMomentDataSource
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.time.TimeProvider
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import org.junit.Assert
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
+import org.threeten.bp.Instant
 
 /**
  * Unit tests for [LoadAnnouncementsUseCase]
@@ -44,7 +47,9 @@ class LoadAnnouncementsUseCaseTest {
 
     @Test
     fun feedItemsLoadedSuccessfully() {
-        val useCase = LoadAnnouncementsUseCase(SuccessfulFeedRepository)
+        val useCase = LoadAnnouncementsUseCase(
+            SuccessfulFeedRepository,
+            FixedTimeProvider(TimeUtils.ConferenceDays[2].end.toInstant()))
 
         val resultLivedata = useCase.observe()
 
@@ -56,7 +61,9 @@ class LoadAnnouncementsUseCaseTest {
 
     @Test
     fun feedItemsLoadedUnsuccessfully() {
-        val useCase = LoadAnnouncementsUseCase(UnsuccessfulFeedRepository)
+        val useCase = LoadAnnouncementsUseCase(
+            UnsuccessfulFeedRepository,
+            FixedTimeProvider(TimeUtils.ConferenceDays[2].end.toInstant()))
 
         val resultLivedata = useCase.observe()
 
@@ -64,6 +71,22 @@ class LoadAnnouncementsUseCaseTest {
 
         val result = LiveDataTestUtil.getValue(resultLivedata)
         assertTrue(result is Result.Error)
+    }
+
+    @Test
+    fun feedItemsLoaded_filteredByTimestamp() {
+        val useCase = LoadAnnouncementsUseCase(
+            SuccessfulFeedRepository,
+            FixedTimeProvider(TimeUtils.ConferenceDays[0].end.plusHours(1).toInstant()))
+
+        val resultLivedata = useCase.observe()
+
+        useCase.execute(Unit)
+
+        val result = LiveDataTestUtil.getValue(resultLivedata)
+        Assert.assertEquals(result, Result.Success(
+            listOf(TestAnnouncementDataSource.feedItems[0],
+                TestAnnouncementDataSource.feedItems[1])))
     }
 }
 
@@ -103,4 +126,15 @@ val UnsuccessfulFeedRepository = object : FeedRepository {
     override fun clearAnnouncementSubscriptions() {}
 
     override fun clearMomentsSubscriptions() {}
+}
+
+/**
+ * Fix the TimeProvider to a fixed time
+ * TODO: Better to share this class with the one in the mobile module
+ */
+private class FixedTimeProvider(var instant: Instant) : TimeProvider {
+
+    override fun now(): Instant {
+        return instant
+    }
 }
