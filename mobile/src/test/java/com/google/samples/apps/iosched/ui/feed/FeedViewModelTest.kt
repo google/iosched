@@ -30,6 +30,7 @@ import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeThemedActivityDelegate
@@ -145,7 +146,8 @@ class FeedViewModelTest {
             themedActivityDelegate = FakeThemedActivityDelegate(),
             feedHeaderLiveData = FeedHeaderLiveData(loadMomentsUseCase).apply {
                 handler = mockHandler
-            }
+            },
+            analyticsHelper = FakeAnalyticsHelper()
         )
     }
 
