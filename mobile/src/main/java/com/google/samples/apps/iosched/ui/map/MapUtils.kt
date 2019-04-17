@@ -76,8 +76,10 @@ private fun createLabelMarker(
     val icon = BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon(title))
     return GeoJsonPointStyle().apply {
         setAnchor(.5f, .5f)
-        setTitle(title)
         setIcon(icon)
+        // Don't set the title because we don't want to show an InfoWindow, but set the snippet for
+        // accessibility services (TalkBack).
+        snippet = title
         isVisible = true
     }
 }
