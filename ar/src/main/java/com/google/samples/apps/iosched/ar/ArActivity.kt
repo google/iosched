@@ -57,6 +57,11 @@ class ArActivity : AppCompatActivity() {
         arWebView.webView.reload()
     }
 
+    override fun onDestroy() {
+        arWebView.webView.destroy()
+        super.onDestroy()
+    }
+
     /**
      * WebViewClient that sends the pinned sessions as json to the WebView.
      * Defining it as a class otherwise an anonymous class was stripped from proguard.
