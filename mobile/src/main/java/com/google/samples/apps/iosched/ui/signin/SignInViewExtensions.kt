@@ -51,7 +51,7 @@ fun Toolbar.setupProfileMenuItem(
     val avatarSize = resources.getDimensionPixelSize(R.dimen.nav_account_image_size)
     val target = profileItem.asGlideTarget(avatarSize)
     viewModel.currentUserImageUri.observe(lifecycleOwner, Observer {
-        setProfileAvatar(context, target, it, R.drawable.ic_default_profile_avatar)
+        setProfileAvatar(context, target, it)
     })
 }
 
@@ -68,7 +68,7 @@ fun setProfileAvatar(
     context: Context,
     target: Target<Drawable>,
     imageUri: Uri?,
-    placeholder: Int = R.drawable.generic_placeholder
+    placeholder: Int = R.drawable.ic_default_profile_avatar
 ) {
     // Inflate the drawable for proper tinting
     val placeholderDrawable = AppCompatResources.getDrawable(context, placeholder)

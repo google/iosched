@@ -23,8 +23,6 @@
 
         <import type="androidx.lifecycle.LiveData" />
 
-        <import type="android.text.TextUtils" />
-
         <variable
             name="timeZoneId"
             type="LiveData&lt;org.threeten.bp.ZoneId&gt;" />
@@ -39,58 +37,56 @@
         style="@style/Widget.IOSched.Feed.Card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_normal"
-        app:contentPadding="@dimen/margin_small">
+        android:layout_margin="@dimen/margin_normal">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:paddingEnd="@dimen/spacing_normal"
-                android:paddingStart="@dimen/spacing_normal"
-                android:text="@{announcement.title}"
-                android:textAppearance="?textAppearanceListItem"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/image"
-                tools:text="Google I/O Highlights" />
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/feed_announcement_min_height">
 
             <ImageView
                 android:id="@+id/image"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:adjustViewBounds="true"
                 android:contentDescription="@null"
-                android:scaleType="fitCenter"
-                app:layout_constraintDimensionRatio="h,16:9"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:goneUnless="@{!TextUtils.isEmpty(announcement.imageUrl)}"
+                app:layout_constraintWidth_percent="@dimen/feed_announcement_image_width_percent"
+                app:goneUnless="@{announcement.hasImage}"
                 app:imageUrl="@{announcement.imageUrl}"
-                app:srcCompat="@color/light_grey" />
+                app:placeholder="@{@drawable/generic_placeholder}"
+                tools:src="@drawable/event_header_sessions"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_normal"
+                android:text="@{announcement.title}"
+                android:textAlignment="viewStart"
+                android:textAppearance="?textAppearanceListItem"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/image"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Google I/O Highlights" />
 
             <TextView
                 android:id="@+id/message"
                 style="@style/Widget.IOSched.MultilineBody"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_normal"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:paddingEnd="@dimen/spacing_normal"
-                android:paddingStart="@dimen/spacing_normal"
+                android:layout_margin="@dimen/margin_normal"
                 android:text="@{announcement.message}"
+                android:textAlignment="viewStart"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@id/image"
                 app:layout_constraintTop_toBottomOf="@+id/title"
-                app:layout_constraintVertical_bias="0.0"
-                tools:text="We hope you enjoyed I/O!" />
+                tools:text="@tools:sample/lorem[10]" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
