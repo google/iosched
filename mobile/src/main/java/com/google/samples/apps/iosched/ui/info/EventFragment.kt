@@ -76,29 +76,6 @@ class EventFragment : DaggerFragment() {
         val snackbarLayout = requireActivity().findViewById<FadingSnackbar>(R.id.snackbar)
         setUpSnackbar(eventInfoViewModel.snackBarMessage, snackbarLayout, snackbarMessageManager)
 
-        // TODO: launch filtered schedule
-        // TODO: launch map
-        // TODO: launch codelabs
-        binding.eventSandbox.apply {
-            onViewSessionsClicked = { _, _ -> Unit }
-            onViewMapClicked = { _, _ -> Unit }
-            onViewCodelabsClicked = { _, _ -> Unit }
-        }
-        binding.eventCodelabs.apply {
-            onViewSessionsClicked = { _, _ -> Unit }
-            onViewMapClicked = { _, _ -> Unit }
-            onViewCodelabsClicked = { _, _ -> Unit }
-        }
-        binding.eventOfficehours.apply {
-            onViewSessionsClicked = { _, _ -> Unit }
-            onViewMapClicked = { _, _ -> Unit }
-            onViewCodelabsClicked = { _, _ -> Unit }
-        }
-        binding.eventAfterhours.apply {
-            onViewSessionsClicked = { _, _ -> Unit }
-            onViewMapClicked = { _, _ -> Unit }
-            onViewCodelabsClicked = { _, _ -> Unit }
-        }
         return binding.root
     }
 

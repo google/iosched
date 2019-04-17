@@ -49,6 +49,7 @@
         <!-- Custom theme attrs -->
         <item name="ioschedNavigationBarDividerColor">?attr/colorControlLight</item>
         <item name="sessionListKeyline">@dimen/session_keyline</item>
+        <item name="eventCardHeaderBackground">@color/event_card_header_background</item>
     </style>
 
     <style name="ThemeOverlay.IOSched.Light" parent="ThemeOverlay.MaterialComponents.Light">

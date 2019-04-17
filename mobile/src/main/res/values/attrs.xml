@@ -34,13 +34,15 @@
 
     <declare-styleable name="Theme">
         <!-- Navigation bar divider color, used by NavigationBarContentFrameLayout -->
-        <attr name="ioschedNavigationBarDividerColor" format="reference" />
+        <attr name="ioschedNavigationBarDividerColor" format="color" />
 
-        <attr name="colorControlLight" format="reference" />
+        <attr name="colorControlLight" format="color" />
 
         <attr name="sessionListKeyline" format="dimension" />
 
         <attr name="eventFilterViewStyle" format="reference" />
+
+        <attr name="eventCardHeaderBackground" format="reference|color" />
     </declare-styleable>
 
     <declare-styleable name="TimeHeader">
@@ -76,13 +78,11 @@
         <attr name="state_reservation_pending" />
     </declare-styleable>
 
-    <declare-styleable name="EventView">
+    <declare-styleable name="EventCardView">
         <attr name="eventTitle" format="string" />
         <attr name="eventDescription" format="string" />
-        <attr name="filteredEventsLinkUri" format="string" />
-        <attr name="mapLinkUri" format="string" />
-        <attr name="codelabsUri" format="string" />
         <attr name="eventTypeLogo" format="reference" />
+        <attr name="eventTypeLogoBackground" format="reference|color" />
     </declare-styleable>
 
     <declare-styleable name="CollapsibleCard">
