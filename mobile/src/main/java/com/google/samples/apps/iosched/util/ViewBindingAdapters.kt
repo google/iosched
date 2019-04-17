@@ -27,7 +27,6 @@ import android.view.View.VISIBLE
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.StringRes
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.browser.customtabs.CustomTabsService
 import androidx.core.content.ContextCompat
@@ -89,20 +88,17 @@ fun momentImageUrl(
 
 @BindingAdapter(value = ["imageUri", "placeholder"], requireAll = false)
 fun imageUri(imageView: ImageView, imageUri: Uri?, placeholder: Drawable?) {
-    val placeholderDrawable = placeholder ?: AppCompatResources.getDrawable(
-        imageView.context, R.drawable.generic_placeholder
-    )
     when (imageUri) {
         null -> {
             Timber.d("Unsetting image url")
             Glide.with(imageView)
-                .load(placeholderDrawable)
+                .load(placeholder)
                 .into(imageView)
         }
         else -> {
             Glide.with(imageView)
                 .load(imageUri)
-                .apply(RequestOptions().placeholder(placeholderDrawable))
+                .apply(RequestOptions().placeholder(placeholder))
                 .into(imageView)
         }
     }
