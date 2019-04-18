@@ -221,7 +221,7 @@
     <!-- Onboarding -->
     <string name="onboarding_get_started" translation_description="The label for the button to start using the app.">Get started</string>
     <string name="onboarding_welcome_to_google_i_o" translation_description="The welcome message shown at the onboarding screen of the app.">Welcome to Google I/O</string>
-    <string name="onboarding_date_location" translation_description="The date and the place of Google I/O 2019.">May 7–9, 2019\nMountain View, CA</string>
+    <string name="onboarding_date_location" translation_description="The date and the place of Google I/O 2019. [CHAR_LIMIT=80]">May 7–9, 2019\nMountain View, CA</string>
     <string name="onboarding_join_online" translation_description="The explanation of the feature where user can watch I/O sessions by live stream.">Join us online. We\'ll be streaming the keynotes and most sessions live.</string>
     <string name="onboarding_label_days" translation_description="The label for the display of the number of days until the conference starts">D</string>
     <string name="onboarding_label_hours" translation_description="The label for the display of the number of hours until the conference starts">H</string>
@@ -361,8 +361,8 @@
 
     <string name="scavenger_hunt_description" translation_description="Text explaining the scavenger hunt happening at I/O.">Join the I/O Android Things Scavenger Hunt!</string>
     <string name="scavenger_hunt_description2" translation_description="Text explaining the scavenger hunt happening at I/O.">(Hint: There might be an Android Things Developer Kit in your future.)</string>
-    <string name="assistant_app_description" translation_description="Text explaining the I/O 19 app for Google Assistant.">Use the I/O 19 Action on Google Assistant.</string>
-    <string name="assistant_app_description2" translation_description="Text explaining the I/O 19 app for Google Assistant.">Just say \"Hey Google, talk to Google I/O 19\"!</string>
+    <string name="assistant_app_description" translation_description="Text explaining the I/O 19 app for Google Assistant. [CHAR_LIMIT=100]">Use the I/O 19 Action on Google Assistant.</string>
+    <string name="assistant_app_description2" translation_description="Text explaining the I/O 19 app for Google Assistant. [CHAR_LIMIT=100]">Just say \"Hey Google, talk to Google I/O 19\"!</string>
 
     <!-- Speaker -->
     <string name="speaker_link_website" translation_description="The label for a link to a speaker's Website">Website</string>
