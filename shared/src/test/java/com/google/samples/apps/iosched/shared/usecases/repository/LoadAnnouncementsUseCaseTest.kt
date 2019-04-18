@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.shared.usecases.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.Announcement
@@ -50,10 +49,9 @@ class LoadAnnouncementsUseCaseTest {
         val useCase = LoadAnnouncementsUseCase(
             SuccessfulFeedRepository,
             FixedTimeProvider(TimeUtils.ConferenceDays[2].end.toInstant()))
+        val resultLivedata = MutableLiveData<Result<List<Announcement>>>()
 
-        val resultLivedata = useCase.observe()
-
-        useCase.execute(Unit)
+        useCase(Unit, resultLivedata)
 
         val result = LiveDataTestUtil.getValue(resultLivedata)
         Assert.assertEquals(result, Result.Success(TestAnnouncementDataSource.feedItems))
@@ -64,10 +62,9 @@ class LoadAnnouncementsUseCaseTest {
         val useCase = LoadAnnouncementsUseCase(
             UnsuccessfulFeedRepository,
             FixedTimeProvider(TimeUtils.ConferenceDays[2].end.toInstant()))
+        val resultLivedata = MutableLiveData<Result<List<Announcement>>>()
 
-        val resultLivedata = useCase.observe()
-
-        useCase.execute(Unit)
+        useCase(Unit, resultLivedata)
 
         val result = LiveDataTestUtil.getValue(resultLivedata)
         assertTrue(result is Result.Error)
@@ -78,10 +75,9 @@ class LoadAnnouncementsUseCaseTest {
         val useCase = LoadAnnouncementsUseCase(
             SuccessfulFeedRepository,
             FixedTimeProvider(TimeUtils.ConferenceDays[0].end.plusHours(1).toInstant()))
+        val resultLivedata = MutableLiveData<Result<List<Announcement>>>()
 
-        val resultLivedata = useCase.observe()
-
-        useCase.execute(Unit)
+        useCase(Unit, resultLivedata)
 
         val result = LiveDataTestUtil.getValue(resultLivedata)
         Assert.assertEquals(result, Result.Success(
@@ -91,41 +87,22 @@ class LoadAnnouncementsUseCaseTest {
 }
 
 val SuccessfulFeedRepository = object : FeedRepository {
-    val dataSource = TestAnnouncementDataSource
 
-    val momentsDataSource = TestMomentDataSource
+    override fun getAnnouncements(): List<Announcement> =
+        TestAnnouncementDataSource.getAnnouncements()
 
-    override fun getObservableAnnouncements(): LiveData<Result<List<Announcement>>> {
-        return dataSource.getObservableAnnouncements()
-    }
-
-    override fun getObservableMoments(): LiveData<Result<List<Moment>>> {
-        return momentsDataSource.getObservableMoments()
-    }
-
-    override fun clearAnnouncementSubscriptions() {}
-
-    override fun clearMomentsSubscriptions() {}
+    override fun getMoments(): List<Moment> = TestMomentDataSource.getMoments()
 }
 
 val UnsuccessfulFeedRepository = object : FeedRepository {
-    private val feedResults: MutableLiveData<Result<List<Announcement>>> = MutableLiveData()
 
-    private val momentResults: MutableLiveData<Result<List<Moment>>> = MutableLiveData()
-
-    override fun getObservableAnnouncements(): LiveData<Result<List<Announcement>>> {
-        feedResults.postValue(Result.Error(Exception("Error!")))
-        return feedResults
+    override fun getAnnouncements(): List<Announcement> {
+        throw Exception("Error!")
     }
 
-    override fun getObservableMoments(): LiveData<Result<List<Moment>>> {
-        momentResults.postValue(Result.Error(Exception("Error!")))
-        return momentResults
+    override fun getMoments(): List<Moment> {
+        throw Exception("Error!")
     }
-
-    override fun clearAnnouncementSubscriptions() {}
-
-    override fun clearMomentsSubscriptions() {}
 }
 
 /**

@@ -16,11 +16,9 @@
 
 package com.google.samples.apps.iosched.shared.domain.feed
 
-import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
-import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.model.Moment
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
-import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
+import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
 
 /**
@@ -28,31 +26,9 @@ import javax.inject.Inject
  */
 open class LoadMomentsUseCase @Inject constructor(
     private val repository: FeedRepository
-) : MediatorUseCase<Unit, List<Moment>>() {
+) : UseCase<Unit, List<Moment>>() {
 
-    override fun execute(parameters: Unit) {
-        result.postValue(Result.Loading)
-        val momentsObservable = repository.getObservableMoments()
-
-        result.removeSource(momentsObservable)
-        result.value = null
-        result.addSource(momentsObservable) {
-            DefaultScheduler.execute {
-                when (it) {
-                    is Result.Success -> {
-                        val feedItems = it.data
-                        result.postValue(Result.Success(feedItems))
-                    }
-                    is Result.Error -> {
-                        result.postValue(it)
-                    }
-                }
-            }
-        }
-    }
-
-    fun onCleared() {
-        // This use case is no longer going to be used so remove subscriptions
-        repository.clearMomentsSubscriptions()
+    override fun execute(parameters: Unit): List<Moment> {
+        return repository.getMoments()
     }
 }

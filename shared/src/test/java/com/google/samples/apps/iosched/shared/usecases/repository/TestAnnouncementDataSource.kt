@@ -16,25 +16,16 @@
 
 package com.google.samples.apps.iosched.shared.usecases.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
 import com.google.samples.apps.iosched.model.Announcement
-import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 
 /**
  * Generates dummy session data to be used in tests.
  */
 object TestAnnouncementDataSource : AnnouncementDataSource {
-    private val feedResults: MutableLiveData<Result<List<Announcement>>> = MutableLiveData()
 
-    override fun getObservableAnnouncements(): LiveData<Result<List<Announcement>>> {
-        feedResults.postValue(Result.Success(feedItems))
-        return feedResults
-    }
-
-    override fun clearSubscriptions() {}
+    override fun getAnnouncements(): List<Announcement> = feedItems
 
     private val feedItem1 = Announcement(
         id = "0", title = "Item 1", message = "",
