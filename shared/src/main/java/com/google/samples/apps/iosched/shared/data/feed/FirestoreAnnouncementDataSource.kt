@@ -16,27 +16,20 @@
 
 package com.google.samples.apps.iosched.shared.data.feed
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.shared.data.document2019
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
-import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.ColorUtils
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneOffset.UTC
-import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 interface AnnouncementDataSource {
-    fun getObservableAnnouncements(): LiveData<Result<List<Announcement>>>
-    fun clearSubscriptions()
+    fun getAnnouncements(): List<Announcement>
 }
 
 /**
@@ -45,57 +38,17 @@ interface AnnouncementDataSource {
 class FirestoreAnnouncementDataSource @Inject constructor(
     val firestore: FirebaseFirestore
 ) : AnnouncementDataSource {
-    // Observable feed items
-    private val resultFeed = MutableLiveData<Result<List<Announcement>>>()
 
-    override fun getObservableAnnouncements(): LiveData<Result<List<Announcement>>> {
-        registerListenerForEvents(resultFeed)
-        return resultFeed
-    }
-
-    private var feedChangedListenerSubscription: ListenerRegistration? = null
-
-    private fun registerListenerForEvents(result: MutableLiveData<Result<List<Announcement>>>) {
-        val eventsListener: (QuerySnapshot?, FirebaseFirestoreException?) -> Unit =
-            listener@{ snapshot, fireStoreException ->
-                if (fireStoreException != null) {
-                    DefaultScheduler.execute {
-                        result.postValue(Result.Error(fireStoreException))
-                    }
-                    return@listener
-                }
-                snapshot ?: return@listener
-
-                DefaultScheduler.execute {
-                    try {
-                        Timber.d("Feed items change detected: ${snapshot.documentChanges.size}")
-
-                        // Parse the document into feed items and sort them.
-                        // First by priority, then timestamp.
-
-                        val feedItemsResult = snapshot.documents.map { parseFeedItem(it) }
-                            .sortedWith(compareByDescending<Announcement> { it.priority }
-                                .thenByDescending { it.timestamp })
-                        result.postValue(Result.Success(feedItemsResult))
-                    } catch (e: Exception) {
-                        result.postValue(Result.Error(e))
-                    }
-                }
-            }
-
-        // Only load items marked as active.
-        val collection = firestore
+    override fun getAnnouncements(): List<Announcement> {
+        val task = firestore
             .document2019()
             .collection(FEED_COLLECTION)
             .whereEqualTo(ACTIVE, true)
-        feedChangedListenerSubscription?.remove()
-        feedChangedListenerSubscription = collection.addSnapshotListener(eventsListener)
-    }
-
-    override fun clearSubscriptions() {
-        Timber.d("Firestore Feed data source: Clearing subscriptions")
-        resultFeed.value = null
-        feedChangedListenerSubscription?.remove()
+            .get()
+        val snapshot = Tasks.await(task, 20, TimeUnit.SECONDS)
+        return snapshot.documents.map { parseFeedItem(it) }
+            .sortedWith(compareByDescending<Announcement> { it.priority }
+            .thenByDescending { it.timestamp })
     }
 
     private fun parseFeedItem(snapshot: DocumentSnapshot): Announcement {

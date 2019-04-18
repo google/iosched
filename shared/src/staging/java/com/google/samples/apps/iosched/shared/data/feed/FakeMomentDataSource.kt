@@ -16,10 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.data.feed
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.Moment
-import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.ColorUtils
 import org.threeten.bp.ZonedDateTime
 
@@ -43,17 +40,5 @@ object FakeMomentDataSource : MomentDataSource {
         featureName = "EATs Tent"
     )
 
-    override fun getObservableMoments(): LiveData<Result<List<Moment>>> {
-        val result = MutableLiveData<Result<List<Moment>>>()
-        result.postValue(
-            Result.Success(
-                arrayListOf(
-                    moment
-                )
-            )
-        )
-        return result
-    }
-
-    override fun clearSubscriptions() {}
+    override fun getMoments(): List<Moment> = listOf(moment)
 }

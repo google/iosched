@@ -17,10 +17,8 @@
 package com.google.samples.apps.iosched.shared.domain.feed
 
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
-import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.model.Announcement
-import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.domain.UseCase
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
@@ -32,37 +30,13 @@ import javax.inject.Inject
 open class LoadAnnouncementsUseCase @Inject constructor(
     private val repository: FeedRepository,
     private val timeProvider: TimeProvider
-) : MediatorUseCase<Unit, List<Announcement>>() {
+) : UseCase<Unit, List<Announcement>>() {
 
-    override fun execute(parameters: Unit) {
-        result.postValue(Result.Loading)
-        val feedObservable = repository.getObservableAnnouncements()
-
-        result.removeSource(feedObservable)
-        result.value = null
-        result.addSource(feedObservable) {
-            DefaultScheduler.execute {
-                when (it) {
-                    is Result.Success -> {
-                        // This can be any timezone because ZonedDateTime#isAfter compares using the
-                        // epochSeconds
-                        val now =
-                            ZonedDateTime.ofInstant(timeProvider.now(), ZoneId.systemDefault())
-                        val feedItems = it.data.filter {
-                            now.isAfter(it.timestamp)
-                        }
-                        result.postValue(Result.Success(feedItems))
-                    }
-                    is Result.Error -> {
-                        result.postValue(it)
-                    }
-                }
-            }
+    override fun execute(parameters: Unit): List<Announcement> {
+        val announcements = repository.getAnnouncements()
+        val now = ZonedDateTime.ofInstant(timeProvider.now(), ZoneId.systemDefault())
+        return announcements.filter {
+            now.isAfter(it.timestamp)
         }
-    }
-
-    fun onCleared() {
-        // This use case is no longer going to be used so remove subscriptions
-        repository.clearAnnouncementSubscriptions()
     }
 }

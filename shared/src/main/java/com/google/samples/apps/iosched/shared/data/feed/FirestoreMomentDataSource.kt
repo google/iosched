@@ -16,27 +16,20 @@
 
 package com.google.samples.apps.iosched.shared.data.feed
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.QuerySnapshot
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.shared.data.document2019
-import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.ColorUtils
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
-import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 interface MomentDataSource {
-    fun getObservableMoments(): LiveData<Result<List<Moment>>>
-    fun clearSubscriptions()
+    fun getMoments(): List<Moment>
 }
 
 /**
@@ -45,51 +38,14 @@ interface MomentDataSource {
 class FirestoreMomentDataSource @Inject constructor(
     val firestore: FirebaseFirestore
 ) : MomentDataSource {
-    // Observable moments
-    private val resultFeed = MutableLiveData<Result<List<Moment>>>()
 
-    override fun getObservableMoments(): LiveData<Result<List<Moment>>> {
-        registerListenerForEvents(resultFeed)
-        return resultFeed
-    }
-
-    private var feedChangedListenerSubscription: ListenerRegistration? = null
-
-    private fun registerListenerForEvents(result: MutableLiveData<Result<List<Moment>>>) {
-        val eventsListener: (QuerySnapshot?, FirebaseFirestoreException?) -> Unit =
-            listener@{ snapshot, fireStoreException ->
-                if (fireStoreException != null) {
-                    DefaultScheduler.execute {
-                        result.postValue(Result.Error(fireStoreException))
-                    }
-                    return@listener
-                }
-                snapshot ?: return@listener
-
-                DefaultScheduler.execute {
-                    try {
-                        Timber.d("Moments change detected: ${snapshot.documentChanges.size}")
-
-                        val momentsResult = snapshot.documents.map { parseMomentItem(it) }
-                            .sortedBy { it.startTime }
-                        result.postValue(Result.Success(momentsResult))
-                    } catch (e: Exception) {
-                        result.postValue(Result.Error(e))
-                    }
-                }
-            }
-
-        val collection = firestore
+    override fun getMoments(): List<Moment> {
+        val task = firestore
             .document2019()
             .collection(MOMENT_COLLECTION)
-        feedChangedListenerSubscription?.remove()
-        feedChangedListenerSubscription = collection.addSnapshotListener(eventsListener)
-    }
-
-    override fun clearSubscriptions() {
-        Timber.d("Firestore moments data source: Clearing subscriptions")
-        resultFeed.value = null
-        feedChangedListenerSubscription?.remove()
+            .get()
+        val snapshot = Tasks.await(task, 20, TimeUnit.SECONDS)
+        return snapshot.documents.map { parseMomentItem(it) }.sortedBy { it.startTime }
     }
 
     private fun parseMomentItem(snapshot: DocumentSnapshot): Moment {

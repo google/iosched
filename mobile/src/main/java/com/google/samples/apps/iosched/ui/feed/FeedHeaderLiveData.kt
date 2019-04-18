@@ -18,10 +18,12 @@ package com.google.samples.apps.iosched.ui.feed
 
 import android.os.Handler
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.model.Theme
 import com.google.samples.apps.iosched.shared.di.MainThreadHandler
 import com.google.samples.apps.iosched.shared.domain.feed.LoadMomentsUseCase
+import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.Duration
@@ -44,7 +46,7 @@ class FeedHeaderLiveData @Inject constructor(
             }
         )
     }
-    private val momentsResult = loadMomentsUseCase.observe()
+    private val momentsResult = MutableLiveData<Result<List<Moment>>>()
 
     @Inject
     @MainThreadHandler
@@ -56,7 +58,7 @@ class FeedHeaderLiveData @Inject constructor(
         addSource(momentsResult) {
             update(if (it is Success) it.data else emptyList())
         }
-        loadMomentsUseCase.execute(Unit)
+        loadMomentsUseCase(Unit, momentsResult)
     }
 
     override fun onInactive() {
