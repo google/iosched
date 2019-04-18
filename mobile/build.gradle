@@ -137,7 +137,6 @@ dependencies {
     implementation "androidx.cardview:cardview:$rootProject.cardviewVersion"
     implementation "androidx.browser:browser:$rootProject.browserVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
-    implementation "com.google.android.instantapps:instantapps:$rootProject.instantAppsVersion"
     implementation "com.google.android.material:material:$rootProject.materialVersion"
     implementation "com.google.android:flexbox:$rootProject.flexboxVersion"
     implementation "com.airbnb.android:lottie:$rootProject.lottieVersion"
