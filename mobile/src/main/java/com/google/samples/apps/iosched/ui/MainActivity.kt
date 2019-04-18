@@ -212,8 +212,21 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
                 // by the nav graph. We want to launch a new Activity for only the AR menu
                 isVisible = exploreArFeatureEnabled
                 setOnMenuItemClickListener {
-                    analyticsHelper.logUiEvent("Navigate to Explore I/O", AnalyticsActions.CLICK)
-                    openExploreAr()
+                    if (connectivityManager.activeNetworkInfo?.isConnected == true) {
+                        if (viewModel.arCoreAvailability.value?.isSupported == true) {
+                            analyticsHelper
+                                .logUiEvent("Navigate to Explore I/O ARCore supported",
+                                    AnalyticsActions.CLICK)
+                            openExploreAr()
+                        } else {
+                            analyticsHelper
+                                .logUiEvent("Navigate to Explore I/O ARCore NOT supported",
+                                    AnalyticsActions.CLICK)
+                            openArCoreNotSupported()
+                        }
+                    } else {
+                        openNoConnection()
+                    }
                     closeDrawer()
                     true
                 }
@@ -237,13 +250,9 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
         viewModel.navigateToSignOutDialogAction.observe(this, EventObserver {
             openSignOutDialog()
         })
-
         viewModel.arCoreAvailability.observe(this, Observer {
-            // Hide the Explore AR menu if the device is not ARCore-certified
+            // Start observing ArCoreAvailability otherwise the value isn't updated
             Timber.d("ArCoreAvailability = $it")
-            if (it.isUnsupported) {
-                navigation.menu.findItem(R.id.navigation_explore_ar).isVisible = false
-            }
         })
         viewModel.pinnedSessionsJson.observe(this, Observer {
             // Need to observe the pinnedSessions otherwise it's considered as inactive
@@ -326,16 +335,22 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
     }
 
     private fun openExploreAr() {
-        if (connectivityManager.activeNetworkInfo?.isConnected == true) {
-            val intent = Intent(this,
-                ArActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                putExtra(ArConstants.CAN_SIGNED_IN_USER_DEMO_AR, canSignedInUserDemoAr)
-                putExtra(ArConstants.PINNED_SESSIONS_JSON_KEY, pinnedSessionsJson)
-            }
-            startActivity(intent)
-        } else {
-            navigateTo(R.id.navigation_no_network_ar)
+        val intent = Intent(
+            this,
+            ArActivity::class.java
+        ).apply {
+            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            putExtra(ArConstants.CAN_SIGNED_IN_USER_DEMO_AR, canSignedInUserDemoAr)
+            putExtra(ArConstants.PINNED_SESSIONS_JSON_KEY, pinnedSessionsJson)
         }
+        startActivity(intent)
+    }
+
+    private fun openNoConnection() {
+        navigateTo(R.id.navigation_no_network_ar)
+    }
+
+    private fun openArCoreNotSupported() {
+        navigateTo(R.id.navigation_phone_does_not_support_arcore)
     }
 }
