@@ -56,7 +56,8 @@ class SessionDeserializer : JsonDeserializer<SessionTemp> {
             ),
             abstract = obj.get("description").asString,
             photoUrl = obj.get("photoUrl")?.asString,
-            isLivestream = obj.get("livestream").asBoolean,
+            isLivestream = obj.get("youtubeVideoType")?.asString == "livestream" ||
+                obj.get("livestream")?.asBoolean == true,
             speakers = speakers.toSet(),
             tagNames = tagNames.toList(),
             relatedSessions = relatedSessions.toSet(),
