@@ -26,7 +26,6 @@ import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.postDelayed
 import com.airbnb.lottie.LottieAnimationView
-import com.airbnb.lottie.LottieAnimationView.CacheStrategy.Strong
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.Duration
@@ -156,7 +155,7 @@ class CountdownView @JvmOverloads constructor(
                 val view = viewProvider()
                 if (oldValue != -1) {
                     // Animate out the prev digit i.e play the second half of it's comp
-                    view.setAnimation("anim/$oldValue.json", Strong)
+                    view.setAnimation("anim/$oldValue.json")
                     view.setMinAndMaxProgress(0.5f, 1f)
                     // Some issues scheduling & playing 2 * 500ms comps every 1s. Speed up the
                     // outward anim slightly to give us some headroom ¯\_(ツ)_/¯
@@ -164,14 +163,14 @@ class CountdownView @JvmOverloads constructor(
                     view.playAnimation()
 
                     view.postDelayed(500L) {
-                        view.setAnimation("anim/$newValue.json", Strong)
+                        view.setAnimation("anim/$newValue.json")
                         view.setMinAndMaxProgress(0f, 0.5f)
                         view.speed = 1f
                         view.playAnimation()
                     }
                 } else {
                     // Initial show, just animate in the desired digit
-                    view.setAnimation("anim/$newValue.json", Strong)
+                    view.setAnimation("anim/$newValue.json")
                     view.setMinAndMaxProgress(0f, 0.5f)
                     view.playAnimation()
                 }
