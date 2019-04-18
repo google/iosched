@@ -32,4 +32,5 @@
     <item name="navigation_speaker_detail" type="id" />
     <item name="navigation_search" type="id" />
     <item name="navigation_no_network_ar" type="id" />
+    <item name="navigation_phone_does_not_support_arcore" type="id" />
 </resources>
