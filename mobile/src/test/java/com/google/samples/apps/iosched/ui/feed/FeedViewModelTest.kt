@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.ui.feed
 import android.os.Handler
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
@@ -27,7 +28,6 @@ import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCa
 import com.google.samples.apps.iosched.shared.domain.feed.LoadMomentsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
-import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
@@ -67,7 +67,7 @@ class FeedViewModelTest {
     @Before
     fun setup() {
         Mockito.`when`(mockHandler.postDelayed(any(Runnable::class.java), anyLong()))
-            .thenAnswer { invocation ->
+            .thenAnswer {
                 // Don't call run() on the argument as it will lead to stackOverFlow ;)
                 true
             }
@@ -114,8 +114,9 @@ class FeedViewModelTest {
             ),
             FixedTimeProvider(TimeUtils.ConferenceDays[2].end.toInstant())
         ) {
-        override fun execute(parameters: Unit) {
-            result.postValue(Result.Error(Exception("Error!")))
+
+        override fun execute(parameters: Unit): List<Announcement> {
+            throw Exception("Error!")
         }
     }
 

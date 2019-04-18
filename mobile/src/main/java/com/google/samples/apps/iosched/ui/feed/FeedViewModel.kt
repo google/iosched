@@ -22,6 +22,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.R.string
+import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
@@ -35,7 +36,6 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSe
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils
@@ -56,7 +56,7 @@ import javax.inject.Inject
  * create the object, so defining a [@Provides] method for this class won't be needed.
  */
 class FeedViewModel @Inject constructor(
-    private val loadAnnouncementsUseCase: LoadAnnouncementsUseCase,
+    loadAnnouncementsUseCase: LoadAnnouncementsUseCase,
     private val loadFilteredUserSessionsUseCase: LoadFilteredUserSessionsUseCase,
     private val signInViewModelDelegate: SignInViewModelDelegate,
     private val analyticsHelper: AnalyticsHelper,
@@ -79,7 +79,7 @@ class FeedViewModel @Inject constructor(
 
     private val loadSessionsResult: MediatorLiveData<Result<LoadFilteredUserSessionsResult>>
 
-    private val loadFeedResult = loadAnnouncementsUseCase.observe()
+    private val loadFeedResult = MutableLiveData<Result<List<Announcement>>>()
 
     private val _navigateToSessionAction = MutableLiveData<Event<String>>()
     val navigateToSessionAction: LiveData<Event<String>>
@@ -126,6 +126,7 @@ class FeedViewModel @Inject constructor(
                 sessionContainer.copy(timeZoneId = timeZoneId)
             }
 
+        loadAnnouncementsUseCase(Unit, loadFeedResult)
         val announcements: LiveData<List<Any>> = loadFeedResult.map {
             val announcementsPlaceholder = createAnnouncementsPlaceholder(announcementsResult = it)
             val announcementList = (it as? Result.Success)?.data ?: emptyList()
@@ -172,7 +173,6 @@ class FeedViewModel @Inject constructor(
         }
 
         getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
-        loadAnnouncementsUseCase.execute(Unit)
     }
 
     private fun injectUserInfo(feedHeader: FeedHeader): FeedHeader {
@@ -249,11 +249,6 @@ class FeedViewModel @Inject constructor(
                 signInViewModelDelegate.getUserId()
             )
         )
-    }
-
-    override fun onCleared() {
-        // Clear subscriptions that might be leaked or that will not be used in the future.
-        loadAnnouncementsUseCase.onCleared()
     }
 
     override fun openEventDetail(id: SessionId) {

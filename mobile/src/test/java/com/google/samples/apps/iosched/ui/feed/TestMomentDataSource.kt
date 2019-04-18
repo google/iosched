@@ -16,23 +16,14 @@
 
 package com.google.samples.apps.iosched.ui.feed
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.shared.data.feed.MomentDataSource
-import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.TestData
 
 /**
  * Generates dummy moments data to be used in tests.
  */
 object TestMomentDataSource : MomentDataSource {
-    override fun getObservableMoments(): LiveData<Result<List<Moment>>> {
-        val data = MutableLiveData<Result<List<Moment>>>()
-        val items = TestData.moments
-        data.value = (Result.Success(items))
-        return data
-    }
 
-    override fun clearSubscriptions() {}
+    override fun getMoments(): List<Moment> = TestData.moments
 }
