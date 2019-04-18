@@ -23,7 +23,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
 import androidx.appcompat.widget.Toolbar
-import androidx.core.os.BuildCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.updatePadding
 import androidx.drawerlayout.widget.DrawerLayout
@@ -291,14 +290,13 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
     }
 
     override fun onBackPressed() {
-        if (drawer.isDrawerOpen(navigation)) {
-            var closeDrawerOnBack = true
-            if (BuildCompat.isAtLeastQ()) {
-                closeDrawerOnBack = shouldCloseDrawerFromBackPress(drawer)
-            }
-            if (closeDrawerOnBack) {
-                closeDrawer()
-            }
+        /**
+         * If the drawer is open, the behavior changes based on the API level.
+         * When gesture nav is enabled (Q+), we want back to exit when the drawer is open.
+         * When button navigation is enabled (on Q or pre-Q) we want to close the drawer on back.
+         */
+        if (drawer.isDrawerOpen(navigation) && shouldCloseDrawerFromBackPress(drawer)) {
+            closeDrawer()
         } else {
             super.onBackPressed()
         }

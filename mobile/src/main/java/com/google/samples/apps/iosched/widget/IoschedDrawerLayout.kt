@@ -60,6 +60,11 @@ class IoschedDrawerLayout @JvmOverloads constructor(
         updateGestureExclusion()
     }
 
+    override fun setDrawerLockMode(lockMode: Int, edgeGravity: Int) {
+        super.setDrawerLockMode(lockMode, edgeGravity)
+        updateGestureExclusion()
+    }
+
     @SuppressLint("RtlHardcoded")
     private fun updateGestureExclusion() {
         // If we're not running on Q, we can skip this method entirely
@@ -67,17 +72,19 @@ class IoschedDrawerLayout @JvmOverloads constructor(
 
         var rects: MutableList<Rect>? = null
 
-        if (hasClosedDrawer(Gravity.LEFT)) {
-            // We have a closed drawer on the left, add an exclusion rect so that the user
-            // can swipe it open
+        if (getDrawerLockMode(Gravity.LEFT) != DrawerLayout.LOCK_MODE_LOCKED_CLOSED &&
+                hasClosedDrawer(Gravity.LEFT)) {
+            // We have a non-locked closed drawer on the left, add an exclusion rect so
+            // that the user can swipe it open
             if (rects == null) {
                 rects = mutableListOf()
             }
             rects.add(Rect(0, 0, dpToPx(EDGE_SIZE_DP), height))
         }
-        if (hasClosedDrawer(Gravity.RIGHT)) {
-            // We have a closed drawer on the right, add an exclusion rect so that the user
-            // can swipe it open
+        if (getDrawerLockMode(Gravity.RIGHT) != DrawerLayout.LOCK_MODE_LOCKED_CLOSED &&
+                hasClosedDrawer(Gravity.RIGHT)) {
+            // We have a non-locked closed drawer on the right, add an exclusion rect so
+            // that the user can swipe it open
             if (rects == null) {
                 rects = mutableListOf()
             }
