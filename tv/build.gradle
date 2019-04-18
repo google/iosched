@@ -91,7 +91,10 @@ dependencies {
 
     // Architecture Components
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
+    implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
     kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleVersion"
+    kapt "androidx.room:room-compiler:$rootProject.roomVersion"
     testImplementation "androidx.arch.core:core-testing:$rootProject.archTestingVersion"
 
     // Dagger
