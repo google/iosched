@@ -24,9 +24,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.shared.data.document2019
+import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.ColorUtils
 import org.threeten.bp.Instant
@@ -104,7 +104,7 @@ class FirestoreAnnouncementDataSource @Inject constructor(
             id = snapshot.id,
             title = snapshot[TITLE] as? String ?: "",
             category = snapshot[CATEGORY] as? String ?: "",
-            imageUrl = snapshot[IMAGE_URL] as? String ?: "",
+            imageUrl = snapshot[IMAGE_URL] as? String,
             message = snapshot[MESSAGE] as? String ?: "",
             timestamp = Instant.ofEpochSecond(
                 (snapshot[TIMESTAMP] as Timestamp).seconds

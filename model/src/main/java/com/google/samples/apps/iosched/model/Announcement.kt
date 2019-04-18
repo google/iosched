@@ -35,10 +35,12 @@ data class Announcement(
      */
     val emergency: Boolean,
     val timestamp: ZonedDateTime,
-    val imageUrl: String,
+    val imageUrl: String?,
     /**
      * Item category. Free form string.
      */
     val category: String,
     @ColorInt val color: Int
-)
+) {
+    val hasImage = !imageUrl.isNullOrEmpty()
+}
