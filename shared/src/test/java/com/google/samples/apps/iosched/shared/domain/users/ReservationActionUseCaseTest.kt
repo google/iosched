@@ -27,7 +27,7 @@ import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.ObservableUserEvents
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
-import com.google.samples.apps.iosched.shared.domain.sessions.StarNotificationAlarmUpdater
+import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
@@ -230,8 +230,8 @@ object FailingUserEventRepository : SessionAndUserEventRepository {
     }
 }
 
-private fun createFakeUpdater(): StarNotificationAlarmUpdater {
+private fun createFakeUpdater(): StarReserveNotificationAlarmUpdater {
     val alarmManager: SessionAlarmManager = mock()
     doNothing().whenever(alarmManager).cancelAlarmForSession(any())
-    return StarNotificationAlarmUpdater(alarmManager)
+    return StarReserveNotificationAlarmUpdater(alarmManager)
 }

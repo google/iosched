@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.model.userdata
 
 import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.model.SessionType
 
 /**
  * Wrapper class to hold the [Session] and associating [UserEvent].
@@ -24,4 +25,11 @@ import com.google.samples.apps.iosched.model.Session
 data class UserSession(
     val session: Session,
     val userEvent: UserEvent
-)
+) {
+
+    fun isPostSessionNotificationRequired(): Boolean {
+        return userEvent.isReserved() &&
+                !userEvent.isReviewed &&
+                session.type == SessionType.SESSION
+    }
+}

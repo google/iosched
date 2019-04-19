@@ -21,7 +21,7 @@ import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
-import com.google.samples.apps.iosched.shared.domain.sessions.StarNotificationAlarmUpdater
+import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.result.Result
 import timber.log.Timber
 import javax.inject.Inject
@@ -31,7 +31,7 @@ import javax.inject.Inject
  */
 open class ReservationActionUseCase @Inject constructor(
     private val repository: SessionAndUserEventRepository,
-    private val starNotificationAlarmUpdater: StarNotificationAlarmUpdater
+    private val alarmUpdater: StarReserveNotificationAlarmUpdater
 ) : MediatorUseCase<ReservationRequestParameters, ReservationRequestAction>() {
 
     override fun execute(parameters: ReservationRequestParameters) {
@@ -47,8 +47,8 @@ open class ReservationActionUseCase @Inject constructor(
                     result.removeSource(updateResult)
                     result.addSource(updateResult) {
                         if (it is Result.Success && parameters.userSession != null) {
-                            starNotificationAlarmUpdater.updateSession(
-                                parameters.userSession.session,
+                            alarmUpdater.updateSession(
+                                parameters.userSession,
                                 parameters.userSession.userEvent.isStarred ||
                                     // TODO(b/130515170)
                                     it.data is ReservationRequestAction.RequestAction

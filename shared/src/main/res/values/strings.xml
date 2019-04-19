@@ -32,6 +32,8 @@
     <string name="day2_day_date" translation_description="Actual day and date of the second day of the conference.">Wednesday, May 8</string>
     <string name="day3_day_date" translation_description="Actual day and date of the third day of the conference.">Thursday, May 9</string>
 
-    <string name="session_notifications" translation_description="Title for notification channel that upcoming talk notifications will be sent to." translatable="false">Upcoming session notifications</string>
+    <string name="session_notifications" translation_description="Title for notification channel that upcoming talk notifications will be sent to. [CHAR_LIMIT=50]">Upcoming sessions</string>
+    <string name="session_feedback_notifications" translation_description="Title of notification channel for asking user to rate a session. [CHAR_LIMIT=50]">Session feedback</string>
     <string name="starting_soon" translation_description="displayed as subtext of session title" translatable="false">Session is starting soon!</string>
+    <string name="please_rate_session" translation_description="displayed as subtext of session title for a notification to ask the user to rate the session [CHAR_LIMIT=50]">Please rate session</string>
 </resources>

@@ -69,22 +69,35 @@ class AlarmBroadcastReceiver : DaggerBroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
-        Timber.e("Alarm received")
-        val sessionId = intent.getStringExtra(
-            SESSION_ID_EXTRA
-        ) ?: return
-        val userId = authIdDataSource.getUserId()
-        if (userId != null) {
-            DefaultScheduler.execute {
-                checkThenShowNotification(context, sessionId, userId)
-            }
-        } else {
+        Timber.d("Alarm received")
+
+        val sessionId = intent.getStringExtra(EXTRA_SESSION_ID) ?: return
+        val userId = authIdDataSource.getUserId() ?: run {
             Timber.e("No user ID, not showing notification.")
+            return
+        }
+
+        val channel = intent.getStringExtra(EXTRA_NOTIFICATION_CHANNEL)
+        when (channel) {
+            CHANNEL_ID_UPCOMING -> {
+                DefaultScheduler.execute {
+                    checkThenShowPreSessionNotification(context, sessionId, userId)
+                }
+            }
+            CHANNEL_ID_FEEDBACK -> {
+                DefaultScheduler.execute {
+                    checkThenShowPostSessionNotification(context, sessionId, userId)
+                }
+            }
+            else -> {
+                // This shouldn't happen, but we don't want the app to crash. Only logging
+                Timber.w("Broadcast with unknown channel received: $channel")
+            }
         }
     }
 
     @WorkerThread
-    private fun checkThenShowNotification(
+    private fun checkThenShowPreSessionNotification(
         context: Context,
         sessionId: String,
         userId: String
@@ -94,16 +107,16 @@ class AlarmBroadcastReceiver : DaggerBroadcastReceiver() {
             return
         }
 
-        Timber.d("Showing notification for $sessionId, user $userId")
+        Timber.d("Showing pre session notification for $sessionId, user $userId")
 
         val userEvent: Result<UserSession>? = getUserEvent(userId, sessionId)
         // Don't notify if for some reason the event is no longer starred or reserved.
         if (userEvent is Success) {
             val event = userEvent.data.userEvent
-            if ((event.isStarred || event.isReserved()) &&
+            if (event.isPreSessionNotificationRequired() &&
                 isSessionCurrent(userEvent.data.session)) {
                 try {
-                    val notificationId = showNotification(context, userEvent.data.session)
+                    val notificationId = showPreSessionNotification(context, userEvent.data.session)
                     // Dismiss in any case
                     alarmManager.dismissNotificationInFiveMinutes(notificationId)
                 } catch (ex: Exception) {
@@ -117,10 +130,39 @@ class AlarmBroadcastReceiver : DaggerBroadcastReceiver() {
         }
     }
 
+    @WorkerThread
+    private fun checkThenShowPostSessionNotification(
+        context: Context,
+        sessionId: String,
+        userId: String
+    ) {
+        if (!sharedPreferencesStorage.preferToReceiveNotifications) {
+            Timber.d("User disabled notifications, not showing")
+            return
+        }
+
+        Timber.d("Showing post session notification for $sessionId, user $userId")
+
+        val userEvent: Result<UserSession>? = getUserEvent(userId, sessionId)
+        // Only notify the user when the userEvent is retrieved successfully because if the user
+        // is offline, they can't send the feedback anyway
+        val userSession = (userEvent as? Success<UserSession>)?.data ?: return
+        val now = Instant.now()
+        if (userSession.isPostSessionNotificationRequired() &&
+            now.isAfter(userSession.session.endTime.toInstant())) {
+            try {
+                showPostSessionNotification(context, userEvent.data.session)
+            } catch (ex: Exception) {
+                Timber.e(ex)
+                return
+            }
+        }
+    }
+
     private fun notifyWithoutUserEvent(sessionId: String, context: Context) {
         val session = loadSession.executeNow(sessionId)
         if (session is Success) {
-            val notificationId = showNotification(context, session.data)
+            val notificationId = showPreSessionNotification(context, session.data)
             alarmManager.dismissNotificationInFiveMinutes(notificationId)
         } else {
             Timber.e("Session couldn't be loaded for notification")
@@ -131,19 +173,21 @@ class AlarmBroadcastReceiver : DaggerBroadcastReceiver() {
         return try {
             loadUserSession.executeNow(userId to sessionId)
         } catch (ex: Exception) {
-            Timber.e("Session notification is set, however there was an error confirming that " +
-                    "the event is still starred. Showing notification.")
+            Timber.e(
+                """Session notification is set, however there was an error confirming
+                    |that the event is still starred. Showing notification.""".trimMargin()
+            )
             null
         }
     }
 
     @WorkerThread
-    private fun showNotification(context: Context, session: Session): Int {
+    private fun showPreSessionNotification(context: Context, session: Session): Int {
         val notificationManager: NotificationManager = context.getSystemService()
-                ?: throw Exception("Notification Manager not found.")
+            ?: throw Exception("Notification Manager not found.")
 
         if (VERSION.SDK_INT >= VERSION_CODES.O) {
-            makeNotificationChannel(context, notificationManager)
+            makeNotificationChannelForPreSession(context, notificationManager)
         }
 
         val intent = Intent(
@@ -159,7 +203,7 @@ class AlarmBroadcastReceiver : DaggerBroadcastReceiver() {
             // Get the PendingIntent containing the entire back stack
             .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        val notification = NotificationCompat.Builder(context, ALARM_BROADCAST_CHANNEL_ID)
+        val notification = NotificationCompat.Builder(context, CHANNEL_ID_UPCOMING)
             .setContentTitle(session.title)
             .setContentText(context.getString(R.string.starting_soon))
             .setSmallIcon(R.drawable.ic_notif_session_starting)
@@ -174,20 +218,71 @@ class AlarmBroadcastReceiver : DaggerBroadcastReceiver() {
         return notificationId
     }
 
+    @WorkerThread
+    private fun showPostSessionNotification(context: Context, session: Session): Int {
+        val notificationManager: NotificationManager = context.getSystemService()
+                ?: throw Exception("Notification Manager not found.")
+
+        if (VERSION.SDK_INT >= VERSION_CODES.O) {
+            makeNotificationChannelForPostSession(context, notificationManager)
+        }
+
+        val intent = Intent(
+            ACTION_VIEW,
+            "iosched://sessions?$QUERY_SESSION_ID=${session.id}".toUri()
+        ).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            putExtra(EXTRA_SHOW_RATE_SESSION_FLAG, true)
+        }
+
+        // Create the TaskStackBuilder
+        val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(context)
+            // Add the intent, which inflates the back stack
+            .addNextIntentWithParentStack(intent)
+            // Get the PendingIntent containing the entire back stack
+            .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val notification = NotificationCompat.Builder(context, CHANNEL_ID_FEEDBACK)
+            .setContentTitle(session.title)
+            .setContentText(context.getString(R.string.please_rate_session))
+            .setSmallIcon(R.drawable.ic_notif_session_starting)
+            .setContentIntent(resultPendingIntent)
+            .setTimeoutAfter(TimeUnit.MINUTES.toMillis(20)) // Backup (cancelled with receiver)
+            .setAutoCancel(true)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .build()
+
+        val notificationId = session.id.hashCode()
+        notificationManager.notify(notificationId, notification)
+        return notificationId
+    }
+
     @RequiresApi(VERSION_CODES.O)
-    private fun makeNotificationChannel(
+    private fun makeNotificationChannelForPreSession(
         context: Context,
         notificationManager: NotificationManager
     ) {
-        val channelId =
-            ALARM_BROADCAST_CHANNEL_ID
-        val channel = NotificationChannel(
-            channelId,
-            context.getString(R.string.session_notifications),
-            NotificationManager.IMPORTANCE_DEFAULT
-        ).apply { lockscreenVisibility = Notification.VISIBILITY_PUBLIC }
+        notificationManager.createNotificationChannel(
+            NotificationChannel(
+                CHANNEL_ID_UPCOMING,
+                context.getString(R.string.session_notifications),
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply { lockscreenVisibility = Notification.VISIBILITY_PUBLIC }
+        )
+    }
 
-        notificationManager.createNotificationChannel(channel)
+    @RequiresApi(VERSION_CODES.O)
+    private fun makeNotificationChannelForPostSession(
+        context: Context,
+        notificationManager: NotificationManager
+    ) {
+        notificationManager.createNotificationChannel(
+            NotificationChannel(
+                CHANNEL_ID_FEEDBACK,
+                context.getString(R.string.session_feedback_notifications),
+                NotificationManager.IMPORTANCE_LOW
+            ).apply { lockscreenVisibility = Notification.VISIBILITY_PUBLIC }
+        )
     }
 
     private fun isSessionCurrent(session: Session): Boolean {
@@ -195,9 +290,14 @@ class AlarmBroadcastReceiver : DaggerBroadcastReceiver() {
     }
 
     companion object {
-        const val SESSION_ID_EXTRA = "user_event_extra"
-        const val USER_ID_EXTRA = "user_id_extra"
+        const val EXTRA_NOTIFICATION_CHANNEL = "notification_channel"
+        const val EXTRA_SESSION_ID = "user_event_extra"
+
+        /** If this flag it set to true in session detail, the show rate dialog should be opened */
+        const val EXTRA_SHOW_RATE_SESSION_FLAG = "show_rate_session_extra"
+
         const val QUERY_SESSION_ID = "session_id"
-        private const val ALARM_BROADCAST_CHANNEL_ID = "alarm_broadcast_channel_id"
+        const val CHANNEL_ID_UPCOMING = "upcoming_channel_id"
+        const val CHANNEL_ID_FEEDBACK = "feedback_channel_id"
     }
 }

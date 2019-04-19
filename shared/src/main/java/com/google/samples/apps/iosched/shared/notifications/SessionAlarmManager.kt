@@ -27,6 +27,7 @@ import androidx.core.app.AlarmManagerCompat
 import androidx.core.content.getSystemService
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import org.threeten.bp.Instant
 import org.threeten.bp.temporal.ChronoUnit
@@ -44,28 +45,56 @@ open class SessionAlarmManager @Inject constructor(val context: Context) {
     /**
      * Schedules an alarm for a session.
      */
-    fun setAlarmForSession(session: Session) {
+    fun setAlarmForSession(userSession: UserSession) {
+        val session = userSession.session
         if ((session.startTime.toInstant().minusMillis(alarmTimeDelta)).isBefore(Instant.now())) {
             Timber.d("Trying to schedule an alarm for a past session, ignoring.")
             return
         }
         cancelAlarmForSession(session.id)
-        val pendingIntent = makePendingIntent(session.id) ?: return
-        scheduleAlarmFor(pendingIntent, session)
+
+        val upcomingIntent =
+            makePendingIntent(session.id, AlarmBroadcastReceiver.CHANNEL_ID_UPCOMING)
+        upcomingIntent?.let {
+            scheduleAlarmForPreSession(it, session)
+        }
+        if (userSession.isPostSessionNotificationRequired()) {
+            val feedbackIntent =
+                makePendingIntent(session.id, AlarmBroadcastReceiver.CHANNEL_ID_FEEDBACK)
+            feedbackIntent?.let {
+                scheduleAlarmForPostSession(it, session)
+            }
+        }
     }
 
     open fun cancelAlarmForSession(sessionId: SessionId) {
-        val pendingIntent = makePendingIntent(sessionId) ?: return
-        cancelAlarmFor(pendingIntent)
-        Timber.d("Cancelled alarm for session $sessionId")
+        val upcomingIntent =
+            makePendingIntent(sessionId, AlarmBroadcastReceiver.CHANNEL_ID_UPCOMING)
+        upcomingIntent?.let {
+            cancelAlarmFor(it)
+            Timber.d("Cancelled upcoming alarm for session $sessionId")
+        }
+        val feedbackIntent =
+            makePendingIntent(sessionId, AlarmBroadcastReceiver.CHANNEL_ID_FEEDBACK)
+        feedbackIntent?.let {
+            cancelAlarmFor(it)
+            Timber.d("Cancelled feedback alarm for session $sessionId")
+        }
     }
 
-    private fun makePendingIntent(sessionId: SessionId): PendingIntent? {
-        val intent = Intent(context, AlarmBroadcastReceiver::class.java)
-        intent.putExtra(
-            AlarmBroadcastReceiver.SESSION_ID_EXTRA, sessionId)
+    private fun makePendingIntent(sessionId: SessionId, channel: String): PendingIntent? {
         return PendingIntent.getBroadcast(
-            context, sessionId.hashCode(), intent, FLAG_UPDATE_CURRENT
+            context,
+            // To make the requestCode unique for the upcoming and feedback channels for the
+            // same session, concatenating the strings
+            (sessionId + channel).hashCode(),
+            Intent(context, AlarmBroadcastReceiver::class.java)
+                .putExtra(AlarmBroadcastReceiver.EXTRA_SESSION_ID, sessionId)
+                .putExtra(
+                    AlarmBroadcastReceiver.EXTRA_NOTIFICATION_CHANNEL,
+                    channel
+                ),
+            FLAG_UPDATE_CURRENT
         )
     }
 
@@ -77,16 +106,34 @@ open class SessionAlarmManager @Inject constructor(val context: Context) {
         }
     }
 
-    private fun scheduleAlarmFor(pendingIntent: PendingIntent, session: Session) {
+    private fun scheduleAlarmForPreSession(pendingIntent: PendingIntent, session: Session) {
+        val triggerAtMillis = session.startTime.toEpochMilli() - alarmTimeDelta
+        scheduleAlarmFor(pendingIntent, session, triggerAtMillis,
+            AlarmBroadcastReceiver.CHANNEL_ID_UPCOMING)
+    }
+
+    private fun scheduleAlarmForPostSession(pendingIntent: PendingIntent, session: Session) {
+        val triggerAtMillis = session.endTime.toEpochMilli() + alarmTimeDelta
+        scheduleAlarmFor(pendingIntent, session, triggerAtMillis,
+            AlarmBroadcastReceiver.CHANNEL_ID_FEEDBACK)
+    }
+
+    private fun scheduleAlarmFor(
+        pendingIntent: PendingIntent,
+        session: Session,
+        triggerAtMillis: Long,
+        channel: String
+    ) {
         systemAlarmManager?.let {
-            val triggerAtMillis = session.startTime.toEpochMilli() - alarmTimeDelta
             AlarmManagerCompat.setExactAndAllowWhileIdle(
                 systemAlarmManager,
                 RTC_WAKEUP,
                 triggerAtMillis,
                 pendingIntent
             )
-            Timber.d("Scheduled alarm for session ${session.title} at $triggerAtMillis")
+            Timber.d("""Scheduled alarm for session ${session.title} at $triggerAtMillis
+                |for channel: $channel""".trimMargin()
+            )
         }
     }
 

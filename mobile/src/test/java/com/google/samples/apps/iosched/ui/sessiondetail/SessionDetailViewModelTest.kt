@@ -30,7 +30,7 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.StarNotificationAlarmUpdater
+import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
@@ -410,10 +410,10 @@ class SessionDetailViewModelTest {
         return LoadUserSessionsUseCase(userEventRepository)
     }
 
-    private fun createFakeUpdater(): StarNotificationAlarmUpdater {
+    private fun createFakeUpdater(): StarReserveNotificationAlarmUpdater {
         val alarmManager: SessionAlarmManager = mock()
         doNothing().whenever(alarmManager).cancelAlarmForSession(any())
-        return StarNotificationAlarmUpdater(alarmManager)
+        return StarReserveNotificationAlarmUpdater(alarmManager)
     }
 
     private fun createReservationActionUseCase() = object : ReservationActionUseCase(
