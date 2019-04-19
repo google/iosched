@@ -1,0 +1,336 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "id": "restroom1",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom",
+        "description": "Just North-west of concession stand, on the East side of the ampitheatre"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080374,
+          37.427546
+        ]
+      }
+    },
+    {
+      "id": "restroom2",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom",
+        "description": "North of Stage 8"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078942,
+          37.427014
+        ]
+      }
+    },
+    {
+      "id": "restroom3",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom",
+        "description": "Across from the I/O store and South of the press lounge"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079669,
+          37.426839
+        ]
+      }
+    },
+    {
+      "id": "restroom4",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom",
+        "description": "West of the Ampitheatre, North of the concession stand"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.08149,
+          37.426243
+        ]
+      }
+    },
+    {
+      "id": "shuttle",
+      "type": "Feature",
+      "properties": {
+        "title": "Attendee Shuttles",
+        "icon": "map_marker_shuttle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.076808,
+          37.425892
+        ]
+      }
+    },
+    {
+      "id": "lot_a",
+      "type": "Feature",
+      "properties": {
+        "title": "Lot A"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.077082,
+          37.427511
+        ]
+      }
+    },
+    {
+      "id": "lot_b",
+      "type": "Feature",
+      "properties": {
+        "title": "Lot B"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.076106,
+          37.426374
+        ]
+      }
+    },
+    {
+      "id": "accessibility_restroom2",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Restroom",
+        "icon": "map_marker_handicap",
+        "description": "South of Press Lounge, North of the Codelabs building"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079644,
+          37.42669
+        ]
+      }
+    },
+    {
+      "id": "accessibility_restroom3",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Restroom",
+        "icon": "map_marker_handicap",
+        "description": "South of the Codelabs building, next to the Mother's Room"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080175,
+          37.426013
+        ]
+      }
+    },
+    {
+      "id": "accessibility_parking",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Parking Entrance",
+        "icon": "map_marker_handicap",
+        "description": "At the parking entrance, directly West of Lot B "
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.077945,
+          37.426766
+        ]
+      }
+    },
+    {
+      "id": "accessibility_shuttle",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Shuttle Pickup",
+        "icon": "map_marker_handicap",
+        "description": "Outside of the Ampitheatre, north of the big I/O"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079289,
+          37.426395
+        ]
+      }
+    },
+    {
+      "id": "concert",
+      "type": "Feature",
+      "properties": {
+        "title": "After Hours Concert",
+        "label": "Concert",
+        "description": "Come enjoy a private musical experience just for I/O attendees! Stay tuned for more details about this year's performance!"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080696,
+          37.426793
+        ]
+      }
+    },
+    {
+      "id": "concession1",
+      "type": "Feature",
+      "properties": {
+        "title": "Concession Stand",
+        "icon": "map_marker_food",
+        "description": "Food and drinks will be available for attendees throughout After Hours."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.081384,
+          37.426011
+        ]
+      }
+    },
+    {
+      "id": "concession2",
+      "type": "Feature",
+      "properties": {
+        "title": "Concession Stand",
+        "icon": "map_marker_food",
+        "description": "Food and drinks will be available for attendees throughout After Hours."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080267,
+          37.426246
+        ]
+      }
+    },
+    {
+      "id": "concession3",
+      "type": "Feature",
+      "properties": {
+        "title": "Concession Stand",
+        "icon": "map_marker_food",
+        "description": "Food and drinks will be available for attendees throughout After Hours."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079901,
+          37.426659
+        ]
+      }
+    },
+    {
+      "id": "concession4",
+      "type": "Feature",
+      "properties": {
+        "title": "Concession Stand",
+        "icon": "map_marker_food",
+        "description": "Food and drinks will be available for attendees throughout After Hours."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080046,
+          37.427616
+        ]
+      }
+    },
+    {
+      "id": "drinks1",
+      "type": "Feature",
+      "properties": {
+        "title": "Beer/Wine Trailer",
+        "icon": "map_marker_drink",
+        "description": "Come grab a drink from our selection of beers and wines."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080006,
+          37.425864
+        ]
+      }
+    },
+    {
+      "id": "drinks2",
+      "type": "Feature",
+      "properties": {
+        "title": "Beer/Wine Trailer",
+        "icon": "map_marker_drink",
+        "description": "Come grab a drink from our selection of beers and wines."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.08137,
+          37.42623
+        ]
+      }
+    },
+    {
+      "id": "drinks3",
+      "type": "Feature",
+      "properties": {
+        "title": "Beer/Wine Trailer",
+        "icon": "map_marker_drink",
+        "description": "Come grab a drink from our selection of beers and wines."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.081413,
+          37.426128
+        ]
+      }
+    },
+    {
+      "id": "drinks4",
+      "type": "Feature",
+      "properties": {
+        "title": "Beer/Wine Trailer",
+        "icon": "map_marker_drink",
+        "description": "Come grab a drink from our selection of beers and wines."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.081338,
+          37.426009
+        ]
+      }
+    },
+    {
+      "id": "accessibility_concert_entrance",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Concert Entrance",
+        "icon": "map_marker_handicap",
+        "description": "Just North of the Codelabs building and Information desk"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080239,
+          37.426766
+        ]
+      }
+    }
+  ]
+}
