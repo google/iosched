@@ -126,7 +126,7 @@
     <string name="my_location_rationale">برنامه برای نشان دادن مکان شما روی نقشه، به مجوز مکان نیاز دارد.</string>
     <string name="onboarding_get_started">شروع به کار</string>
     <string name="onboarding_welcome_to_google_i_o">به Google I/O خوش‌آمدید</string>
-    <string name="onboarding_date_location">۸ تا ۱۰ مه،\n‏۲۰۱۸ ‏ماونتین ویو، کالیفرنیا</string>
+
 
 
 
@@ -156,7 +156,7 @@
 
 
 
-    <string name="travel_biking_description">پارکینگ رایگان برای دوچرخه در پارکینگ A در Shoreline Amphitheatre دردسترس خواهد بود. Silicon Valley Bicycle Coalition از ساعت ۷ صبح تا پایان رویداد در هر روز، خدمات پارکینگ وله امن برای دوچرخه ارايه می‌دهد. دو مسیر Stevens Creek Trail و Permanente Creek Trail برای دوچرخه‌سوارانی که به‌سمت Shoreline Amphitheatre می‌روند، مناسب است. برای اطلاع از بهترین مسیرها و راه‌های دوچرخه‌سواری به Google Maps مراجعه کنید.\n\n‏ Bike to Work Day در Bay Area برای روز پنج‌شنبه ۱۰ مه زمان‌بندی شده است. در آن روز هزاران دوچرخه‌سوار در نزدیکی Shoreline حضور خواهند داشت و صدها ایستگاه تجدید قوا در سراسر مسیر قرار خواهد گرفت. لطفاً برای کسب اطلاعات بیشتر به وب‌سایت Silicon Valley Bike to Work Day مراجعه کنید.</string>
+
     <string name="view_sessions_text">مشاهده جلسات</string>
     <string name="view_codelabs_text">مشاهده Codelabs</string>
     <string name="view_events_text">مشاهده رویدادها</string>

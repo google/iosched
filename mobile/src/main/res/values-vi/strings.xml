@@ -126,7 +126,7 @@
     <string name="my_location_rationale">Ứng dụng này cần bạn cấp quyền truy cập vị trí để hiển thị vị trí của bạn trên bản đồ.</string>
     <string name="onboarding_get_started">Bắt đầu</string>
     <string name="onboarding_welcome_to_google_i_o">Chào mừng bạn đến với Google I/O</string>
-    <string name="onboarding_date_location">8-10 tháng 5\nnăm 2018 Mountain View, CA</string>
+
 
 
 
@@ -156,7 +156,7 @@
 
 
 
-    <string name="travel_biking_description">Có khu vực giữ xe đạp miễn phí tại Nhà hát vòm Shoreline (Shoreline Amphitheatre) ở Bãi đỗ xe A. Hàng ngày Hiệp hội Xe đạp Thung lũng Silicon (Silicon Valley Bicycle Coalition) sẽ cung cấp khu vực trông giữ xe đạp an toàn từ 7 giờ sáng đến khi sự kiện kết thúc. Có hai tuyến đường tiện lợi để người đi xe đạp tới thẳng Nhà hát vòm Shoreline (Shoreline Amphitheatre) là Stevens Creek và Permanente Creek Trail. Hãy kiểm tra Google Maps để tìm tuyến đường và hướng đi tiện lợi nhất cho người đi xe đạp.\n\nTổ chức Ngày Đạp xe đi làm Vùng Vinh (Bay Area Bike to Work Day) lên kế hoạch đạp xe vào ngày thứ Năm, 10 tháng 5. Sẽ có hàng nghìn người đi xe đạp tham gia gần Shoreline và khu vực này có hàng trăm trạm nghỉ chân. Vui lòng truy cập trang web của Tổ chức Ngày Đạp xe đi làm của Thung lũng Silicon (Silicon Valley Bike to Work Day) để biết thêm thông tin chi tiết.</string>
+
     <string name="view_sessions_text">Xem các phiên sự kiện</string>
     <string name="view_codelabs_text">Xem các phòng thí nghiệm lập trình</string>
     <string name="view_events_text">Xem sự kiện</string>

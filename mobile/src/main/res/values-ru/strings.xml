@@ -132,7 +132,7 @@
     <string name="my_location_rationale">Разрешите доступ к своему местоположению, чтобы мы могли показывать вам его на карте.</string>
     <string name="onboarding_get_started">Начать</string>
     <string name="onboarding_welcome_to_google_i_o">Добро пожаловать на фестиваль Google I/O</string>
-    <string name="onboarding_date_location">8–10 мая 2018 г.,\nМаунтин-Вью, Калифорния</string>
+
 
 
 
@@ -164,7 +164,7 @@
 
 
 
-    <string name="travel_biking_description">Велосипедисты могут добраться до амфитеатра по одной из двух дорожек: Stevens Creek Trail или Permanente Creek Trail. Посмотреть, где они расположены, можно в сервисе \"Google Карты\". В зоне A у здания Shoreline Amphitheatre расположена бесплатная велопарковка. Кроме того, ежедневно с 7 часов утра и до окончания мероприятий будет работать пункт парковки от организации Silicon Valley Bicycle Coalition.\n\n10 мая в Области залива Сан-Франциско состоится акция \"На работу на велосипеде\". В ней примут участие сотни велосипедистов. На маршруте будут организованы пункты питания. С подробной информацией можно ознакомиться на сайте мероприятия.</string>
+
     <string name="view_sessions_text">Показать сессии</string>
     <string name="view_codelabs_text">Показать занятия в формате Codelab</string>
     <string name="view_events_text">Показать все мероприятия</string>
