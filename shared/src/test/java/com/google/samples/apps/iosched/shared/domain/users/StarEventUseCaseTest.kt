@@ -19,7 +19,7 @@ package com.google.samples.apps.iosched.shared.domain.users
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.shared.domain.sessions.StarNotificationAlarmUpdater
+import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.ConferenceDay
@@ -78,11 +78,11 @@ class StarEventAndNotifyUseCaseTest {
     fun sessionIsStarredUnsuccessfully() {
         val alarmManager: SessionAlarmManager = mock()
         doNothing().whenever(alarmManager).cancelAlarmForSession(any())
-        val starNotificationAlarmUpdater = StarNotificationAlarmUpdater(alarmManager)
+        val alarmUpdater = StarReserveNotificationAlarmUpdater(alarmManager)
 
         val useCase = StarEventAndNotifyUseCase(
             FailingSessionAndUserEventRepository,
-            starNotificationAlarmUpdater
+            alarmUpdater
         )
 
         val resultLiveData = useCase.observe()
@@ -98,7 +98,7 @@ class StarEventAndNotifyUseCaseTest {
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
             TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
         )
-        val updater: StarNotificationAlarmUpdater = mock {}
+        val updater: StarReserveNotificationAlarmUpdater = mock {}
 
         doNothing().whenever(updater).updateSession(any(), any())
 
@@ -110,7 +110,7 @@ class StarEventAndNotifyUseCaseTest {
 
         LiveDataTestUtil.getValue(resultLiveData)
 
-        verify(updater).updateSession(TestData.userSession3.session, false)
+        verify(updater).updateSession(TestData.userSession3, false)
     }
 }
 

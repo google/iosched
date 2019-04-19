@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.shared.domain.sessions
 
 import androidx.lifecycle.LiveData
-import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.ObservableUserEvents
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
@@ -29,7 +28,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Sets a notification for each session that is starred by the user.
+ * Sets a notification for each session that is starred or reserved by the user.
  */
 @Singleton
 class NotificationAlarmUpdater @Inject constructor(
@@ -66,7 +65,7 @@ class NotificationAlarmUpdater @Inject constructor(
         val startWork = System.currentTimeMillis()
         sessions.userSessions.forEach { session: UserSession ->
             if (session.userEvent.isStarred || session.userEvent.isReserved()) {
-                alarmManager.setAlarmForSession(session.session)
+                alarmManager.setAlarmForSession(session)
             }
         }
         Timber.d("Work finished in ${System.currentTimeMillis() - startWork} ms")
@@ -108,17 +107,17 @@ class NotificationAlarmUpdater @Inject constructor(
 }
 
 @Singleton
-open class StarNotificationAlarmUpdater @Inject constructor(
+open class StarReserveNotificationAlarmUpdater @Inject constructor(
     private val alarmManager: SessionAlarmManager
 ) {
     open fun updateSession(
-        session: Session,
+        userSession: UserSession,
         requestNotification: Boolean
     ) {
         if (requestNotification) {
-            alarmManager.setAlarmForSession(session)
+            alarmManager.setAlarmForSession(userSession)
         } else {
-            alarmManager.cancelAlarmForSession(session.id)
+            alarmManager.cancelAlarmForSession(userSession.session.id)
         }
     }
 }

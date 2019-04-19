@@ -49,6 +49,7 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
+import com.google.samples.apps.iosched.shared.notifications.AlarmBroadcastReceiver
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
@@ -269,10 +270,21 @@ class SessionDetailFragment : DaggerFragment(), SessionFeedbackFragment.Listener
         })
 
         sessionDetailViewModel.navigateToSessionFeedbackAction.observe(this, EventObserver {
-            SessionFeedbackFragment.createInstance(it)
-                .show(childFragmentManager, FRAGMENT_SESSION_FEEDBACK)
+            openFeedbackDialog(it)
         })
 
+        // When opened from the post session notification, open the feedback dialog
+        requireNotNull(arguments).apply {
+            val sessionId = getString(EXTRA_SESSION_ID)
+                    ?: SessionDetailFragmentArgs.fromBundle(this).sessionId
+            val openRateSession =
+                arguments?.getBoolean(AlarmBroadcastReceiver.EXTRA_SHOW_RATE_SESSION_FLAG) ?: false
+            sessionDetailViewModel.showFeedbackButton.observe(this@SessionDetailFragment, Observer {
+                if (it == true && openRateSession) {
+                    openFeedbackDialog(sessionId)
+                }
+            })
+        }
         return binding.root
     }
 
@@ -400,13 +412,21 @@ class SessionDetailFragment : DaggerFragment(), SessionFeedbackFragment.Listener
         }
     }
 
+    private fun openFeedbackDialog(sessionId: String) {
+        SessionFeedbackFragment.createInstance(sessionId)
+            .show(childFragmentManager, FRAGMENT_SESSION_FEEDBACK)
+    }
+
     companion object {
         private const val FRAGMENT_SESSION_FEEDBACK = "feedback"
 
         private const val EXTRA_SESSION_ID = "SESSION_ID"
 
-        fun newInstance(sessionId: SessionId): SessionDetailFragment {
-            val bundle = Bundle().apply { putString(EXTRA_SESSION_ID, sessionId) }
+        fun newInstance(sessionId: SessionId, openRateSession: Boolean): SessionDetailFragment {
+            val bundle = Bundle().apply {
+                putString(EXTRA_SESSION_ID, sessionId)
+                putBoolean(AlarmBroadcastReceiver.EXTRA_SHOW_RATE_SESSION_FLAG, openRateSession)
+            }
             return SessionDetailFragment().apply { arguments = bundle }
         }
     }
