@@ -126,7 +126,7 @@
     <string name="my_location_rationale">授予應用程式位置存取權後，即可在地圖上顯示您的位置。</string>
     <string name="onboarding_get_started">開始使用</string>
     <string name="onboarding_welcome_to_google_i_o">歡迎使用 Google I/O</string>
-    <string name="onboarding_date_location">2018 年 5 月 8 日至 10 日，\nMountain View, CA, USA</string>
+
 
 
 
@@ -156,7 +156,7 @@
 
 
 
-    <string name="travel_biking_description">若騎自行車前來，可以將車輛免費停放在海岸露天劇場的 A 區停車場。大會活動期間，矽谷單車聯盟 (Silicon Valley Bicycle Coalition) 每天上午 7 點到當天活動結束為止，皆為自行車騎士提供安全的代客停車服務。建議選擇史蒂文斯溪小道 (Stevens Creek Trail) 和佩曼南緹溪小道 (Permanente Creek Trail) 前往海岸露天劇場。如要取得適合自行車行駛的路線指引，請查看 Google 地圖。\n\n灣區今年的「騎自行車上班日」定於 5 月 10 日週四，屆時海岸地區會有上千名自行車騎士上路，整個地區將設置上百個補給站。詳情請瀏覽「矽谷騎自行車上班日」(Silicon Valley Bike to Work Day) 網站。</string>
+
     <string name="view_sessions_text">查看活動時間表</string>
     <string name="view_codelabs_text">查看 Codelab</string>
     <string name="view_events_text">查看活動</string>

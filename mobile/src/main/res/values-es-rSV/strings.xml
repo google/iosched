@@ -126,7 +126,7 @@
     <string name="my_location_rationale">Para mostrar tu ubicación en el mapa, la app necesita el permiso correspondiente.</string>
     <string name="onboarding_get_started">Comenzar</string>
     <string name="onboarding_welcome_to_google_i_o">Te damos la bienvenida a Google I/O</string>
-    <string name="onboarding_date_location">Del 8 al 10 de mayo,\n2018 Mountain View, CA</string>
+
 
 
 
@@ -156,7 +156,7 @@
 
 
 
-    <string name="travel_biking_description">Estará disponible un estacionamiento gratuito para bicicletas en el Estacionamiento A de Shoreline Amphitheatre. La organización Silicon Valley Bicycle Coalition proporcionará servicio de estacionamiento seguro cada uno de los días del evento, desde las 7:00 a.m. hasta la hora de finalización. Hay dos ciclovías prácticas para las personas que van a Shoreline Amphitheatre en bicicleta: Stevens Creek Trail y Permanente Creek Trail. Revisa Google Maps a fin de conocer las rutas y direcciones más convenientes para ir en bicicleta. \n\nEl evento Bike to Work Day se llevará a cabo en el Área de la Bahía el jueves 10 de mayo. Miles de ciclistas participarán cerca de Shoreline Amphitheatre y habrá cientos de estaciones de hidratación en el área. Revisa el sitio web del Bike to Work Day de Silicon Valley para obtener más información.</string>
+
     <string name="view_sessions_text">Ver sesiones</string>
     <string name="view_codelabs_text">Ver laboratorios de código</string>
     <string name="view_events_text">Ver los eventos</string>

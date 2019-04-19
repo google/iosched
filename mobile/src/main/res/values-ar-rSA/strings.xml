@@ -138,7 +138,7 @@
     <string name="my_location_rationale">يجب منح التطبيق إذن تحديد الموقع الجغرافي ليتمكّن من عرض موقعك الجغرافي على الخريطة.</string>
     <string name="onboarding_get_started">البدء</string>
     <string name="onboarding_welcome_to_google_i_o">أهلاً بك في Google I/O</string>
-    <string name="onboarding_date_location">من 8 إلى 10 أيار (مايو)، \n2018 Mountain View, CA</string>
+
 
 
 
@@ -172,7 +172,7 @@
 
 
 
-    <string name="travel_biking_description">سيتوفّر موقف مجّاني للدرّاجات في مدرّج شورلاين في موقف السيارات A. سيتولّى \"ائتلاف الدرّاجات في سيليكون فالي\" خدمة ركن الدرّاجات بشكلٍ آمن من الساعة 7 صباحًا وحتى انتهاء الحدث. يمكن أن يسلك راكبو الدرّاجات المتوجّهون إلى مدرّج شورلاين طريقَين هما: طريق ستيفنز كريك وطريق بيرمانينت كريك. يُرجى الاطّلاع على \"خرائط Google\" للتحقّق من أفضل الطرقات المناسبة لقيادة للدرّاجات والاتّجاهات.\n\nإنّ حدث Bay Area Bike to Work Day سيُعقد يوم الخميس في 10 أيّار (مايو). سيشارك العديد من راكبي الدرّاجات بالقرب من شورلاين وسيتوفّر العديد من محطات تزويد الطاقة في المنطقة. يُرجى الاطّلاع على موقع Silicon Valley Bike to Work Day الإلكتروني للمزيد من المعلومات.</string>
+
     <string name="view_sessions_text">عرض الجلسات</string>
     <string name="view_codelabs_text">عرض Codelabs</string>
     <string name="view_events_text">عرض الأحداث</string>
