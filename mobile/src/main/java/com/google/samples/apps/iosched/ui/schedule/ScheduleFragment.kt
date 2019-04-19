@@ -61,6 +61,7 @@ import com.google.samples.apps.iosched.util.clearDecorations
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.executeAfter
 import com.google.samples.apps.iosched.util.fabVisibility
+import com.google.samples.apps.iosched.util.requestApplyInsetsWhenAttached
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_COLLAPSED
@@ -289,6 +290,9 @@ class ScheduleFragment : MainNavigationFragment() {
                 if (ScheduleFragmentArgs.fromBundle(it).showPinnedEvents) {
                     scheduleViewModel.clearFilters()
                     scheduleViewModel.showPinnedEvents()
+                    binding.coordinatorLayout.postDelayed({
+                        binding.coordinatorLayout.requestApplyInsetsWhenAttached()
+                    }, 500)
                 }
                 if (ScheduleFragmentArgs.fromBundle(it).showAllEvents) {
                     scheduleViewModel.clearFilters()
