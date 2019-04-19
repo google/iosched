@@ -126,7 +126,7 @@
     <string name="my_location_rationale">マップで現在地を表示するには、アプリに位置情報へのアクセスを許可する必要があります。</string>
     <string name="onboarding_get_started">使ってみる</string>
     <string name="onboarding_welcome_to_google_i_o">Google I/O へようこそ</string>
-    <string name="onboarding_date_location">2018 年 5 月 8～10 日、\nカリフォルニア州マウンテンビューで開催</string>
+
 
 
 
@@ -156,7 +156,7 @@
 
 
 
-    <string name="travel_biking_description">Shoreline Amphitheatre の駐車場 A では、無料の駐輪場をご利用いただけます。毎日午前 7 時からイベント終了まで、Silicon Valley Bicycle Coalition が安全な駐輪サービスを提供いたします。Shoreline Amphitheatre まで自転車で移動する方は、Stevens Creek Trail と Permanente Creek Trail の 2 本の自転車道を利用されると便利です。自転車での最適な移動経路は、Google マップでご確認ください。\n\n5 月 10 日木曜日には、Bay Area Bike to Work Day の開催が予定されています。Shoreline 近郊では何千名ものサイクリストが参加する見込みで、地域全体で数百か所に Energizer Station が設置されます。詳しくは、Silicon Valley Bike to Work Day のウェブサイトをご覧ください。</string>
+
     <string name="view_sessions_text">セッションを表示</string>
     <string name="view_codelabs_text">Codelab を表示</string>
     <string name="view_events_text">イベントを表示</string>

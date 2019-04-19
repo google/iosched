@@ -126,7 +126,7 @@
     <string name="my_location_rationale">此应用需要位置权限才能在地图上显示您所在的位置。</string>
     <string name="onboarding_get_started">开始使用</string>
     <string name="onboarding_welcome_to_google_i_o">欢迎来到 Google I/O 大会</string>
-    <string name="onboarding_date_location">2018 年 5 月 8 日至 10 日，加利福尼亚州山景城</string>
+
 
 
 
@@ -156,7 +156,7 @@
 
 
 
-    <string name="travel_biking_description">Shoreline Amphitheatre 的 A 停车场将提供免费的自行车存放服务。Silicon Valley Bicycle Coalition 每天将从早上 7 点开始为您的自行车提供安全的代客停车服务，直到当天活动结束。骑自行车者可通过两条便利的路线前往 Shoreline Amphitheatre：一条是 Stevens Creek Trail，另一条是 Permanente Creek Trail。请查看 Google 地图，以获取最佳骑车路线和方向。\n\n湾区今年的骑车上班日 (Bike to Work Day) 定为 5 月 10 日（星期四），届时海岸线附近将有数千人骑自行车参与节日活动，整个地区将设置数百个补给站。如需了解详情，请访问 Silicon Valley Bike to Work Day 网站。</string>
+
     <string name="view_sessions_text">查看会议</string>
     <string name="view_codelabs_text">查看代码实验室</string>
     <string name="view_events_text">查看活动</string>
