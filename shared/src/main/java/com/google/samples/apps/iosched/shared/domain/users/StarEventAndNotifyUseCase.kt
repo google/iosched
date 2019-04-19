@@ -19,13 +19,13 @@ package com.google.samples.apps.iosched.shared.domain.users
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.StarNotificationAlarmUpdater
+import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.result.Result
 import javax.inject.Inject
 
 open class StarEventAndNotifyUseCase @Inject constructor(
     private val repository: SessionAndUserEventRepository,
-    private val starNotificationAlarmUpdater: StarNotificationAlarmUpdater
+    private val alarmUpdater: StarReserveNotificationAlarmUpdater
 ) : MediatorUseCase<StarEventParameter, StarUpdatedStatus>() {
 
     override fun execute(parameters: StarEventParameter) {
@@ -38,9 +38,9 @@ open class StarEventAndNotifyUseCase @Inject constructor(
         // Avoid duplicating sources and trigger an update on the LiveData from the base class.
         result.removeSource(updateResult)
         result.addSource(updateResult) {
-            starNotificationAlarmUpdater.updateSession(
-                parameters.userSession.session,
-                parameters.userSession.userEvent.isNotificationRequired()
+            alarmUpdater.updateSession(
+                parameters.userSession,
+                parameters.userSession.userEvent.isPreSessionNotificationRequired()
             )
             result.postValue(updateResult.value)
         }

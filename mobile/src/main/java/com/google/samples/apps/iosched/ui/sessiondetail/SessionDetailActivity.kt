@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.firebase.ui.auth.IdpResponse
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.shared.notifications.AlarmBroadcastReceiver
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.SnackbarMessage
@@ -54,13 +55,16 @@ class SessionDetailActivity : DaggerAppCompatActivity() {
         setContentView(R.layout.activity_session_detail)
 
         val sessionId = getSessionId(intent)
+        val openRateSession =
+            intent.extras?.getBoolean(AlarmBroadcastReceiver.EXTRA_SHOW_RATE_SESSION_FLAG) ?: false
         if (sessionId == null) {
             Timber.e("Session ID not specified")
             finish()
         } else {
             if (savedInstanceState == null) {
                 supportFragmentManager.inTransaction {
-                    add(R.id.session_detail_container, SessionDetailFragment.newInstance(sessionId))
+                    add(R.id.session_detail_container,
+                        SessionDetailFragment.newInstance(sessionId, openRateSession))
                 }
             }
         }
