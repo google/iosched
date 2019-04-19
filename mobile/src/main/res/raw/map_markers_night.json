@@ -1,0 +1,456 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "id": "eats",
+      "type": "Feature",
+      "properties": {
+        "title": "EATS",
+        "icon": "map_marker_food",
+        "description": "Hungry? This is where you can find food and drinks throughout the event:<br/><br/><b>Day 1</b><br/>Breakfast: Concession stands around the Amphitheatre<br/>Lunch: Concession stands around the Amphitheatre<br/>After Hours: EATS Market<br/><br/><b>Day 2</b><br/>Breakfast: Concession stands around the Amphitheatre<br/>Lunch: EATS Market<br/>Concert: Concession stands around the Amphitheatre<br/><br/><b>Day 3</b><br/>Breakfast: Concession stands around the Amphitheatre<br/>Lunch: EATS Market<br/><br/>Snacks and water will be available throughout the venue at all times. Check the event agenda for exact meal schedules.<br/><br/><b>Dietary restrictions</b><br/>All Kosher and Halal meals can be picked up across from the entrance to the Press Lounge inside the Concourse. Any other dietary needs will be listed on catering signage at each of the food stands or buffets within the venue - this includes gluten free, dairy free, vegan, and vegetarian."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080059,
+          37.424479
+        ]
+      }
+    },
+    {
+      "id": "restroom5",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom",
+        "description": "Next to the Mother's room and across from the I/O Store"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080238,
+          37.426008
+        ]
+      }
+    },
+    {
+      "id": "restroom6",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom",
+        "description": "Behind Dome F"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078577,
+          37.426126
+        ]
+      }
+    },
+    {
+      "id": "restroom7",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom",
+        "description": "East of Dome E"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078782,
+          37.425581
+        ]
+      }
+    },
+    {
+      "id": "restroom8",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom",
+        "description": "Between Stages 6 & 7"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07875,
+          37.425163
+        ]
+      }
+    },
+    {
+      "id": "restroom9",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom",
+        "description": "South of the Mother's room by Stage 5"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079115,
+          37.424396
+        ]
+      }
+    },
+    {
+      "id": "shuttle",
+      "type": "Feature",
+      "properties": {
+        "title": "Attendee Shuttles",
+        "icon": "map_marker_shuttle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.076808,
+          37.425892
+        ]
+      }
+    },
+    {
+      "id": "lot_a",
+      "type": "Feature",
+      "properties": {
+        "title": "Lot A"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.077082,
+          37.427511
+        ]
+      }
+    },
+    {
+      "id": "lot_b",
+      "type": "Feature",
+      "properties": {
+        "title": "Lot B"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.076106,
+          37.426374
+        ]
+      }
+    },
+    {
+      "id": "accessibility_restroom3",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Restroom",
+        "icon": "map_marker_handicap",
+        "description": "South of the Codelabs building, next to the Mother's Room"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080175,
+          37.426013
+        ]
+      }
+    },
+    {
+      "id": "accessibility_restroom4",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Restroom",
+        "icon": "map_marker_handicap",
+        "description": "East of Sandbox F"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078614,
+          37.426217
+        ]
+      }
+    },
+    {
+      "id": "accessibility_restroom5",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Restroom",
+        "icon": "map_marker_handicap",
+        "description": "Between Stages 6 & 7"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078849,
+          37.425237
+        ]
+      }
+    },
+    {
+      "id": "accessibility_restroom6",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Restroom",
+        "icon": "map_marker_handicap",
+        "description": "South of Stage 5, South of the Mother's Room"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079099,
+          37.424422
+        ]
+      }
+    },
+    {
+      "id": "accessibility_parking",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Parking Entrance",
+        "icon": "map_marker_handicap",
+        "description": "At the parking entrance, directly West of Lot B "
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.077945,
+          37.426766
+        ]
+      }
+    },
+    {
+      "id": "accessibility_shuttle",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Shuttle Pickup",
+        "icon": "map_marker_handicap",
+        "description": "Outside of the Ampitheatre, north of the big I/O"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079289,
+          37.426395
+        ]
+      }
+    },
+    {
+      "id": "ar_cade",
+      "type": "Feature",
+      "properties": {
+        "title": "ARcade",
+        "description": "All the originals you could imagine with a special AR tribute to a Google classic"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07882,
+          37.424977
+        ]
+      }
+    },
+    {
+      "id": "anna_ridler_mosaic_virus",
+      "type": "Feature",
+      "properties": {
+        "title": "Anna Ridler - Mosaic Virus ",
+        "label": "Anna Ridler\nMosaic Virus ",
+        "description": "To create this piece, the artist constructed her own training set, based on thousands of pictures she took and categorized by hand. Using AI to \"imagine\" or \"dream\" tulips, the model is not just repeating flowers that are in its dataset, but creating new flowers from the knowledge that it has about the flowers it has seen."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079381,
+          37.425496
+        ]
+      }
+    },
+    {
+      "id": "onformative_meandering_river",
+      "type": "Feature",
+      "properties": {
+        "title": "Onformative - Meandering River ",
+        "label": "Onformative\nMeandering River ",
+        "description": "Meandering River simulates the unpredictable movements of rivers and reinterprets their organic structures, rhythmic fluctuations and visual materiality. It makes changing landscapes perceivable by visualizing and sonifying a river’s impact on the surface of the earth through bespoke algorithms drawn from scientific research and satellite imagery.\n"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079449,
+          37.424875
+        ]
+      }
+    },
+    {
+      "id": "after_glow",
+      "type": "Feature",
+      "properties": {
+        "title": "After Glow",
+        "description": "Imaginative and exciting performance space that blends cirque nouveau and technology. Featuring the talents of Quixotic."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078775,
+          37.423883
+        ]
+      }
+    },
+    {
+      "id": "boardwalk",
+      "type": "Feature",
+      "properties": {
+        "title": "Boardwalk",
+        "description": "To experience the community and culture of I/O, take a stroll down the Boardwalk to check out I/O's own broadcast studio, lightning sessions, and our new I/O Arts program."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079347,
+          37.424022
+        ]
+      }
+    },
+    {
+      "id": "spatial",
+      "type": "Feature",
+      "properties": {
+        "title": "SP a T i AL ",
+        "description": "A multi-dimensional sound and performance environment, featuring artists working in creative coding and new technologies in the world of A.I. & M.L."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079633,
+          37.42408
+        ]
+      }
+    },
+    {
+      "id": "the_rink",
+      "type": "Feature",
+      "properties": {
+        "title": "The Rink",
+        "description": "Skate back to the 70's in I/O's own roller disco. Show us your moves and we will provide the grooves."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.0797,
+          37.425635
+        ]
+      }
+    },
+    {
+      "id": "fungineers",
+      "type": "Feature",
+      "properties": {
+        "title": "Fungineers",
+        "description": "The Fungineers are a super-surreal performance group, freestyling, improvising, and serving up ice cream."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079838,
+          37.425524
+        ]
+      }
+    },
+    {
+      "id": "wi_fries",
+      "type": "Feature",
+      "properties": {
+        "title": "Wi-Fries",
+        "description": "Grab a bite and get down at the Eats and Beats stage. Techno with a side of tacos all night long with DJ Jaj!"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080314,
+          37.425709
+        ]
+      }
+    },
+    {
+      "id": "landmark_stage",
+      "type": "Feature",
+      "properties": {
+        "title": "Landmark Stage",
+        "description": "See the I/O Landmark come to life in AR. Celebrate by sharing your photos with #io19. Evening performances by NVO and East Bay Brass Band "
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079272,
+          37.425999
+        ]
+      }
+    },
+    {
+      "id": "drinks1",
+      "type": "Feature",
+      "properties": {
+        "title": "Beer/Wine Trailer",
+        "icon": "map_marker_drink",
+        "description": "Come grab a drink from our selection of beers and wines."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079736,
+          37.425941
+        ]
+      }
+    },
+    {
+      "id": "drinks2",
+      "type": "Feature",
+      "properties": {
+        "title": "Beer/Wine Trailer",
+        "icon": "map_marker_drink",
+        "description": "Come grab a drink from our selection of beers and wines."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079196,
+          37.42501
+        ]
+      }
+    },
+    {
+      "id": "drinks3",
+      "type": "Feature",
+      "properties": {
+        "title": "Beer/Wine Trailer",
+        "icon": "map_marker_drink",
+        "description": "Come grab a drink from our selection of beers and wines."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079313,
+          37.424568
+        ]
+      }
+    },
+    {
+      "id": "drinks4",
+      "type": "Feature",
+      "properties": {
+        "title": "Beer/Wine Trailer",
+        "icon": "map_marker_drink",
+        "description": "Come grab a drink from our selection of beers and wines."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079181,
+          37.424603
+        ]
+      }
+    }
+  ]
+}

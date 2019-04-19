@@ -20,7 +20,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
 import androidx.annotation.StringRes
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.R.raw
 import com.google.samples.apps.iosched.shared.BuildConfig
 import org.threeten.bp.Instant
 import org.threeten.bp.ZonedDateTime
@@ -42,7 +41,7 @@ enum class MapVariant(
         ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_END).toInstant(),
         R.string.map_variant_after_dark,
         R.drawable.ic_map_after_dark,
-        raw.map_markers,
+        R.raw.map_markers_night,
         "night"
     ),
     CONCERT(
@@ -50,7 +49,7 @@ enum class MapVariant(
         ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY2_END).toInstant(),
         R.string.map_variant_concert,
         R.drawable.ic_map_concert,
-        raw.map_markers,
+        R.raw.map_markers_concert,
         "concert"
     ),
     // Note: must be last to facilitate [forTime]
@@ -59,7 +58,7 @@ enum class MapVariant(
         ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY3_END).toInstant(),
         R.string.map_variant_daytime,
         R.drawable.ic_map_daytime,
-        raw.map_markers,
+        R.raw.map_markers_day,
         "day"
     );
 

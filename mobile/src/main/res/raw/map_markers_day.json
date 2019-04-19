@@ -1,0 +1,1411 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "id": "8e98d56a-a179-42b9-8d53-7784f4aeee6a",
+      "type": "Feature",
+      "properties": {
+        "title": "Amphitheatre",
+        "description": "Attend the two Keynotes on May 7: The Google Keynote will feature our latest product and platform innovations led by Sundar Pichai, CEO, Google. The Developer Keynote will focus specifically on updates to our developer products and platforms.<br/><br/>The Amphitheatre will also host breakout Sessions throughout the three days of the event, and the After Hours concert on Day 2."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080725,
+          37.4268969
+        ]
+      }
+    },
+    {
+      "id": "359b19a7-b164-4468-a800-e79f465966bf",
+      "type": "Feature",
+      "properties": {
+        "title": "Stage 1",
+        "icon": "map_marker_1",
+        "description": "Attend 40-minute Sessions throughout the three days of the event. Check the schedule for more details on topics and speakers."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.0797,
+          37.425635
+        ]
+      }
+    },
+    {
+      "id": "e9e80667-1a48-4d46-a3d7-d643f8aecd7d",
+      "type": "Feature",
+      "properties": {
+        "title": "Stage 2",
+        "icon": "map_marker_2",
+        "description": "Attend 40-minute Sessions throughout the three days of the event. Check the schedule for more details on topics and speakers."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080294,
+          37.425053
+        ]
+      }
+    },
+    {
+      "id": "f14d05f1-0581-45c5-aff4-389bf36c3f75",
+      "type": "Feature",
+      "properties": {
+        "title": "Stage 3",
+        "icon": "map_marker_3",
+        "description": "Attend 40-minute Sessions throughout the three days of the event. Check the schedule for more details on topics and speakers."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079989,
+          37.423816
+        ]
+      }
+    },
+    {
+      "id": "b312c1d6-1a40-4e3f-9b9d-a90109ca2145",
+      "type": "Feature",
+      "properties": {
+        "title": "Stage 4",
+        "icon": "map_marker_4",
+        "description": "Attend 40-minute Sessions throughout the three days of the event. Check the schedule for more details on topics and speakers."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079633,
+          37.42408
+        ]
+      }
+    },
+    {
+      "id": "f44c348b-da68-41aa-a3e1-8fd3431dc7c3",
+      "type": "Feature",
+      "properties": {
+        "title": "Stage 5",
+        "icon": "map_marker_5",
+        "description": "Attend 40-minute Sessions throughout the three days of the event. Check the schedule for more details on topics and speakers."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078775,
+          37.423883
+        ]
+      }
+    },
+    {
+      "id": "38d5eb0d-2088-4096-ad83-916fff0be562",
+      "type": "Feature",
+      "properties": {
+        "title": "Stage 6",
+        "icon": "map_marker_6",
+        "description": "Attend 40-minute Sessions throughout the three days of the event. Check the schedule for more details on topics and speakers."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07882,
+          37.424977
+        ]
+      }
+    },
+    {
+      "id": "b9b00678-787a-4297-a359-d72d636efd19",
+      "type": "Feature",
+      "properties": {
+        "title": "Stage 7",
+        "icon": "map_marker_7",
+        "description": "Attend 40-minute Sessions throughout the three days of the event. Check the schedule for more details on topics and speakers."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07878,
+          37.425407
+        ]
+      }
+    },
+    {
+      "id": "d676bb28-7508-4487-a8a8-c4c258c9219e",
+      "type": "Feature",
+      "properties": {
+        "title": "Stage 8",
+        "icon": "map_marker_8",
+        "description": "Attend 40-minute Sessions throughout the three days of the event. Check the schedule for more details on topics and speakers."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078813,
+          37.427163
+        ]
+      }
+    },
+    {
+      "id": "community_lounge",
+      "type": "Feature",
+      "properties": {
+        "title": "Community Lounge",
+        "icon": "map_marker_lounge",
+        "description": "Enjoy informal encounters with Googlers, community leads, and developers from all around the world in the Community Lounge. It's also a space for you to chill out, try some games, meet others, and join community meetups."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080388,
+          37.425685
+        ]
+      }
+    },
+    {
+      "id": "certification_lounge",
+      "type": "Feature",
+      "properties": {
+        "title": "Certification Lounge",
+        "icon": "map_marker_lounge",
+        "description": "Find out what's new in the Google Developers and Cloud Certification programs. Try your hand at a sample mini-exam, meet Android, Web, and Cloud experts, network with developer peers, and learn how you can gain recognition for your skills by becoming a Google certified developer."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080287,
+          37.425685
+        ]
+      }
+    },
+    {
+      "id": "sandbox_a",
+      "type": "Feature",
+      "properties": {
+        "title": "Sandbox A",
+        "subtitle": "Payments / Web / Chrome OS",
+        "icon": "map_marker_a",
+        "description": "Meet the Chrome OS, Google Pay and the Web Platform engineers and product leads to talk about the latest updates and learn how to get started. You'll learn how <b>Google Pay</b> APIs can help you build better checkout experiences in your apps and websites. Sign up for a lightening integration session to see how quickly you can get started.<br/><br/><b>Chrome OS</b> not only powers devices from tablets to desktops, but it can also run Android, Web and Linux applications natively, making Chromebooks great machines for development. Meet Chrome OS experts to learn how to enable Linux (Beta) on Chromebooks for Web development, or use tools and editors like Android Studio, install packages and use different environments such as VS Code, IntelliJ, while getting the speed, simplicity and security of Chrome OS.<br/><br/>Finally, with the <b>Web</b> platform gaining incredible momentum across browsers, join the Chrome team and experts at Google to learn how to build modern experiences using modern web tech including AMP, Web Packaging, TWAs and PWA (mobile & desktop) as well as tools like web.dev, Lighthouse and the Search Console. You’ll also get a glimpse of the future of the Web as it moves to newer platforms."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079843,
+          37.425687
+        ]
+      }
+    },
+    {
+      "id": "sandbox_b",
+      "type": "Feature",
+      "properties": {
+        "title": "Sandbox B",
+        "subtitle": "AR / Flutter",
+        "icon": "map_marker_b",
+        "description": "Two innovative and exciting Google technologies under one Sandbox: AR and Flutter.<br/><br/>Experience augmented reality (<b>AR</b>) for yourself and see what’s possible when your smartphone camera bridges the digital and physical worlds as you stroll through the AR promenade. Collaborate with friends new and old to build an epic AR garden. Learn about the Mars Rover here on Planet Earth by interacting with a 3D digital model. Transform into a character from a comic book.<br/><br/>Frolic in <b/>Flutter</b>'s device forest, a hands-on collage of diverse platforms all running Flutter apps. Learn about coding with Flutter through a fun game about the everyday heroes and heroines in software development. You’ll also be able to try out Flutter's newest features and chat with engineers about building your own app in Flutter."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079674,
+          37.425373
+        ]
+      }
+    },
+    {
+      "id": "sandbox_c",
+      "type": "Feature",
+      "properties": {
+        "title": "Sandbox C",
+        "subtitle": "Android",
+        "icon": "map_marker_c",
+        "description": "Meet the experts from Android, Google Play, Android TV, and Wear OS by Google, and talk directly to Googlers to get your questions answered.<br/><br/>Googlers will be on hand from across the world of Android, from Jetpack, Android Studio and Kotlin to the Android App Bundle and the Google Play Console teams.<br/><br/>In Android TV's Sandbox you'll learn about the user experience and try out great apps that take advantage of the biggest screen in the home. In the Wear OS by Google sandbox try, experience and learn more about the latest smartwatches.<br/><br/>Connect with the people who built the world's most popular mobile platform and get your burning questions answered at Google I/O in the Android and Google Play dome."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079729,
+          37.425049
+        ]
+      }
+    },
+    {
+      "id": "sandbox_d",
+      "type": "Feature",
+      "properties": {
+        "title": "Sandbox D",
+        "subtitle": "Experiments",
+        "icon": "map_marker_d",
+        "description": "A collection of innovative \"Start with One\" experiments built with Google technologies and inspired by one person, one community, or one need. See their origin stories, meet the creators, and learn about the surprising innovations that followed."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079204,
+          37.425247
+        ]
+      }
+    },
+    {
+      "id": "sandbox_e",
+      "type": "Feature",
+      "properties": {
+        "title": "Sandbox E",
+        "subtitle": "Accessibility / Material Design",
+        "icon": "map_marker_e",
+        "description": "Get the latest from Material Design and Accessibility with interactive demos and short talks on hot UX topics like motion, icons, theming, and accessibility. Through a trio of fun experiences, learn about inclusive design principles that improve the UI for all users. Bring your burning questions, we’ll have a Q&A desk fully staffed by accessibility experts and Material pros."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079209,
+          37.425627
+        ]
+      }
+    },
+    {
+      "id": "sandbox_f",
+      "type": "Feature",
+      "properties": {
+        "title": "Sandbox F",
+        "subtitle": "Cloud / Firebase",
+        "icon": "map_marker_f",
+        "description": "Meet the Google Cloud and Firebase engineers and product leads. Try out demos, ask questions, and learn how to build and scale your apps."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078842,
+          37.426239
+        ]
+      }
+    },
+    {
+      "id": "sandbox_g",
+      "type": "Feature",
+      "properties": {
+        "title": "Sandbox G",
+        "subtitle": "Machine Learning / AI",
+        "icon": "map_marker_g",
+        "description": "Come meet the Google AI teams! Check out the latest demos of TensorFlow, ML Kit, and Cloud AutoML, and learn how to build and scale your apps."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078659,
+          37.426433
+        ]
+      }
+    },
+    {
+      "id": "sandbox_h",
+      "type": "Feature",
+      "properties": {
+        "title": "Sandbox H",
+        "subtitle": "Assistant",
+        "icon": "map_marker_h",
+        "description": "Step inside the Google Assistant Sandbox! Play with interactive demos and discover new ways to build for the Assistant, from integrating your existing content, apps, and devices, to creating completely new user experiences. Explore the latest Assistant features alongside Google product leads and conversational designers, and leave inspired to build your next Action."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078995,
+          37.426589
+        ]
+      }
+    },
+    {
+      "id": "android_for_cars",
+      "type": "Feature",
+      "properties": {
+        "title": "Android for Cars ",
+        "description": "Swing by the Android for Cars Sandbox to see the best of the Google and developer ecosystems for cars, experience live demos, and learn how you can develop for in-car experiences.<br/><br/>What to expect:<br/><ul><li>A brand new media experience for Android Auto, both on your phone screen and on your car display, making it easier and faster than ever before to surface content to users.</li>\n<li>An in-car concept with the latest version of Android running as the built-in infotainment platform.</li>\n<li>You'll also see developer apps and Google services like Google Maps, the Google Assistant, and Google Play Store, all adapted and optimized for the new automotive interface.</li></ul>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079141,
+          37.427117
+        ]
+      }
+    },
+    {
+      "id": "6827a562-dca1-4dc4-adec-32c69559e32b",
+      "type": "Feature",
+      "properties": {
+        "title": "Office Hours & App Reviews",
+        "label": "Office Hours &\nApp Reviews",
+        "description": "Got technical questions or want to learn something new about Google products? Office hours provides one-on-one in-person support for everything Google. Product teams will be on hand throughout the event during defined time slots.<br/><br/>App Reviews are 25-minute slots designated for attendees to engage with Engineering and UX experts and review questions related to App experience and user interface. Googlers will offer expert advice and candid feedback on any questions participants have about their apps."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079729,
+          37.425049
+        ]
+      }
+    },
+    {
+      "id": "5fc9ab36-28fb-4ca2-b172-48a7984d5844,codelabs",
+      "type": "Feature",
+      "properties": {
+        "title": "Codelabs",
+        "description": "Get hands-on with the newest Google technologies by trying one of over 100 brand-new Codelabs. Our ready-to-code kiosks have eerything you need to try one of our self-paced tutorials. Or bring your own machine and take your work home with you. Google staff will be on hand to help if you get stuck."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079998,
+          37.426393
+        ]
+      }
+    },
+    {
+      "id": "e73736f7-39fd-4f9b-87bc-7abe7271271a,9f0b69a4-66a8-49e7-bc64-d79606b63f8e,3e731738-43cf-485b-a464-cc88c205301a",
+      "type": "Feature",
+      "properties": {
+        "title": "Garage & Gaming",
+        "description": "Want to know what Google is doing in gaming? Come check out the Games sandbox where you’ll learn about how Google helps game developers across all stages of development. We’ll show off tools and platforms to help you build the best games, optimizations for adapting your game beyond mobile, and how to reach and engage with more players. Come meet the teams working on games technologies and play some games with us."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078648,
+          37.426663
+        ]
+      }
+    },
+    {
+      "id": "eats",
+      "type": "Feature",
+      "properties": {
+        "title": "EATS",
+        "icon": "map_marker_food",
+        "description": "Hungry? This is where you can find food and drinks throughout the event:<br/><br/><b>Day 1</b><br/>Breakfast: Concession stands around the Amphitheatre<br/>Lunch: Concession stands around the Amphitheatre<br/>After Hours: EATS Market<br/><br/><b>Day 2</b><br/>Breakfast: Concession stands around the Amphitheatre<br/>Lunch: EATS Market<br/>Concert: Concession stands around the Amphitheatre<br/><br/><b>Day 3</b><br/>Breakfast: Concession stands around the Amphitheatre<br/>Lunch: EATS Market<br/><br/>Snacks and water will be available throughout the venue at all times. Check the event agenda for exact meal schedules.<br/><br/><b>Dietary restrictions</b><br/>All Kosher and Halal meals can be picked up across from the entrance to the Press Lounge inside the Concourse. Any other dietary needs will be listed on catering signage at each of the food stands or buffets within the venue - this includes gluten free, dairy free, vegan, and vegetarian."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080059,
+          37.424479
+        ]
+      }
+    },
+    {
+      "id": "concession1",
+      "type": "Feature",
+      "properties": {
+        "title": "Concession stand",
+        "icon": "map_marker_food",
+        "description": "Hungry? This is where you can find food and drinks throughout the event:<br/><br/><b>Day 1</b><br/>Breakfast: Concession stands around the Amphitheatre<br/>Lunch: Concession stands around the Amphitheatre<br/>After Hours: EATS Market<br/><br/><b>Day 2</b><br/>Breakfast: Concession stands around the Amphitheatre<br/>Lunch: EATS Market<br/>Concert: Concession stands around the Amphitheatre<br/><br/><b>Day 3</b><br/>Breakfast: Concession stands around the Amphitheatre<br/>Lunch: EATS Market<br/><br/>Snacks and water will be available throughout the venue at all times. Check the event agenda for exact meal schedules.<br/><br/><b>Dietary restrictions</b><br/>All Kosher and Halal meals can be picked up across from the entrance to the Press Lounge inside the Concourse. Any other dietary needs will be listed on catering signage at each of the food stands or buffets within the venue - this includes gluten free, dairy free, vegan, and vegetarian."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.081384,
+          37.426011
+        ]
+      }
+    },
+    {
+      "id": "concession2",
+      "type": "Feature",
+      "properties": {
+        "title": "Concession stand",
+        "icon": "map_marker_food",
+        "description": "Hungry? This is where you can find food and drinks throughout the event:<br/><br/><b>Day 1</b><br/>Breakfast: Concession stands around the Amphitheatre<br/>Lunch: Concession stands around the Amphitheatre<br/>After Hours: EATS Market<br/><br/><b>Day 2</b><br/>Breakfast: Concession stands around the Amphitheatre<br/>Lunch: EATS Market<br/>Concert: Concession stands around the Amphitheatre<br/><br/><b>Day 3</b><br/>Breakfast: Concession stands around the Amphitheatre<br/>Lunch: EATS Market<br/><br/>Snacks and water will be available throughout the venue at all times. Check the event agenda for exact meal schedules.<br/><br/><b>Dietary restrictions</b><br/>All Kosher and Halal meals can be picked up across from the entrance to the Press Lounge inside the Concourse. Any other dietary needs will be listed on catering signage at each of the food stands or buffets within the venue - this includes gluten free, dairy free, vegan, and vegetarian."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080267,
+          37.426246
+        ]
+      }
+    },
+    {
+      "id": "concession3",
+      "type": "Feature",
+      "properties": {
+        "title": "Concession stand",
+        "icon": "map_marker_food",
+        "description": "Hungry? This is where you can find food and drinks throughout the event:<br/><br/><b>Day 1</b><br/>Breakfast: Concession stands around the Amphitheatre<br/>Lunch: Concession stands around the Amphitheatre<br/>After Hours: EATS Market<br/><br/><b>Day 2</b><br/>Breakfast: Concession stands around the Amphitheatre<br/>Lunch: EATS Market<br/>Concert: Concession stands around the Amphitheatre<br/><br/><b>Day 3</b><br/>Breakfast: Concession stands around the Amphitheatre<br/>Lunch: EATS Market<br/><br/>Snacks and water will be available throughout the venue at all times. Check the event agenda for exact meal schedules.<br/><br/><b>Dietary restrictions</b><br/>All Kosher and Halal meals can be picked up across from the entrance to the Press Lounge inside the Concourse. Any other dietary needs will be listed on catering signage at each of the food stands or buffets within the venue - this includes gluten free, dairy free, vegan, and vegetarian."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079901,
+          37.426659
+        ]
+      }
+    },
+    {
+      "id": "concession4",
+      "type": "Feature",
+      "properties": {
+        "title": "Concession stand",
+        "icon": "map_marker_food",
+        "description": "Hungry? This is where you can find food and drinks throughout the event:<br/><br/><b>Day 1</b><br/>Breakfast: Concession stands around the Amphitheatre<br/>Lunch: Concession stands around the Amphitheatre<br/>After Hours: EATS Market<br/><br/><b>Day 2</b><br/>Breakfast: Concession stands around the Amphitheatre<br/>Lunch: EATS Market<br/>Concert: Concession stands around the Amphitheatre<br/><br/><b>Day 3</b><br/>Breakfast: Concession stands around the Amphitheatre<br/>Lunch: EATS Market<br/><br/>Snacks and water will be available throughout the venue at all times. Check the event agenda for exact meal schedules.<br/><br/><b>Dietary restrictions</b><br/>All Kosher and Halal meals can be picked up across from the entrance to the Press Lounge inside the Concourse. Any other dietary needs will be listed on catering signage at each of the food stands or buffets within the venue - this includes gluten free, dairy free, vegan, and vegetarian."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080046,
+          37.427616
+        ]
+      }
+    },
+    {
+      "id": "registration",
+      "type": "Feature",
+      "properties": {
+        "title": "Registration",
+        "description": "Pick-up your badge starting on May 6 between 7am - 7pm. Check the event agenda for the badge pick-up schedule on May 7-9."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.077491,
+          37.425949
+        ]
+      }
+    },
+    {
+      "id": "press_lounge1",
+      "type": "Feature",
+      "properties": {
+        "title": "Press Lounge",
+        "icon": "map_marker_lounge",
+        "description": "Reserved for guests with Press badges."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079781,
+          37.427098
+        ]
+      }
+    },
+    {
+      "id": "press_lounge2",
+      "type": "Feature",
+      "properties": {
+        "title": "Press Lounge",
+        "icon": "map_marker_lounge",
+        "description": "Reserved for guests with Press badges."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080182,
+          37.427446
+        ]
+      }
+    },
+    {
+      "id": "charging1",
+      "type": "Feature",
+      "properties": {
+        "title": "Charging stations",
+        "icon": "map_marker_charging",
+        "description": "Need some juice? Charging stations are available throughout the main street of the venue."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079383,
+          37.425754
+        ]
+      }
+    },
+    {
+      "id": "charging2",
+      "type": "Feature",
+      "properties": {
+        "title": "Charging stations",
+        "icon": "map_marker_charging",
+        "description": "Need some juice? Charging stations are available throughout the main street of the venue."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079532,
+          37.424864
+        ]
+      }
+    },
+    {
+      "id": "mothers_room1",
+      "type": "Feature",
+      "properties": {
+        "title": "Mother's Room",
+        "icon": "map_marker_mothers_room",
+        "description": "Mothers who are nursing are welcome to attend the conference with their child. There will be four first-come, first-served mothers' rooms available throughout the venue. Please see the conference help desk for more information.<br/><br/>This room will be available on<br/><b>May 7</b>: 8am - 8pm<br/><b>May 8</b>: 8am - 8pm<br/><b>May 9</b>: 8am - 4pm"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078672,
+          37.426017
+        ]
+      }
+    },
+    {
+      "id": "mothers_room2",
+      "type": "Feature",
+      "properties": {
+        "title": "Mother's Room",
+        "icon": "map_marker_mothers_room",
+        "description": "Mothers who are nursing are welcome to attend the conference with their child. There will be four first-come, first-served mothers' rooms available throughout the venue. Please see the conference help desk for more information.<br/><br/>This room will be available on<br/><b>May 7</b>: 11:30am - 8pm<br/><b>May 8</b>: 8am - 8pm<br/><b>May 9</b>: 8am - 4pm"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078881,
+          37.425079
+        ]
+      }
+    },
+    {
+      "id": "mothers_room3",
+      "type": "Feature",
+      "properties": {
+        "title": "Mother's Room",
+        "icon": "map_marker_mothers_room",
+        "description": "Mothers who are nursing are welcome to attend the conference with their child. There will be four first-come, first-served mothers' rooms available throughout the venue. Please see the conference help desk for more information.<br/><br/>This room will be available on<br/><b>May 7</b>: 11:30am - 8pm<br/><b>May 8</b>: 8am - 8pm<br/><b>May 9</b>: 8am - 4pm"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079126,
+          37.424376
+        ]
+      }
+    },
+    {
+      "id": "mothers_room4",
+      "type": "Feature",
+      "properties": {
+        "title": "Mother's Room",
+        "icon": "map_marker_mothers_room",
+        "description": "Mothers who are nursing are welcome to attend the conference with their child. There will be four first-come, first-served mothers' rooms available throughout the venue. Please see the conference help desk for more information.<br/><br/>This room will be available on<br/><b>May 7</b>: 11:30am - 8pm<br/><b>May 8</b>: 8am - 8pm<br/><b>May 9</b>: 8am - 4pm"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080362,
+          37.425963
+        ]
+      }
+    },
+    {
+      "id": "store1",
+      "type": "Feature",
+      "properties": {
+        "title": "I/O Store",
+        "icon": "map_marker_store",
+        "description": "The store offers a unique collection of Google I/O'19 branded goodies available for purchase, including T-shirts, hoodies, hats, and a signature Android figurine."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07989,
+          37.426784
+        ]
+      }
+    },
+    {
+      "id": "store2",
+      "type": "Feature",
+      "properties": {
+        "title": "I/O Store",
+        "icon": "map_marker_store",
+        "description": "The store offers a unique collection of Google I/O'19 branded goodies available for purchase, including T-shirts, hoodies, hats, and a signature Android figurine."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080377,
+          37.426185
+        ]
+      }
+    },
+    {
+      "id": "info_desk",
+      "type": "Feature",
+      "properties": {
+        "title": "Information Desk",
+        "icon": "map_marker_info",
+        "description": "If you have any questions about the event, you can ask the Staff members at the Info Desk for help."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080099,
+          37.42647
+        ]
+      }
+    },
+    {
+      "id": "restroom1",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom",
+        "description": "Just North-west of concession stand, on the East side of the ampitheatre"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080374,
+          37.427546
+        ]
+      }
+    },
+    {
+      "id": "restroom2",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom",
+        "description": "North of Stage 8"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078942,
+          37.427014
+        ]
+      }
+    },
+    {
+      "id": "restroom3",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom",
+        "description": "Across from the I/O store and South of the press lounge"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079669,
+          37.426839
+        ]
+      }
+    },
+    {
+      "id": "restroom4",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom",
+        "description": "West of the Ampitheatre, North of the concession stand"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.08149,
+          37.426243
+        ]
+      }
+    },
+    {
+      "id": "restroom5",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom",
+        "description": "Next to the Mother's room and across from the I/O Store"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080238,
+          37.426008
+        ]
+      }
+    },
+    {
+      "id": "restroom6",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom",
+        "description": "Behind Dome F"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078577,
+          37.426126
+        ]
+      }
+    },
+    {
+      "id": "restroom7",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom",
+        "description": "East of Dome E"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078782,
+          37.425581
+        ]
+      }
+    },
+    {
+      "id": "restroom8",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom",
+        "description": "Between Stages 6 & 7"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07875,
+          37.425163
+        ]
+      }
+    },
+    {
+      "id": "restroom9",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom",
+        "description": "South of the Mother's room by Stage 5"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079115,
+          37.424396
+        ]
+      }
+    },
+    {
+      "id": "shuttle",
+      "type": "Feature",
+      "properties": {
+        "title": "Attendee Shuttles",
+        "icon": "map_marker_shuttle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.076808,
+          37.425892
+        ]
+      }
+    },
+    {
+      "id": "io_landmark",
+      "type": "Feature",
+      "properties": {
+        "title": "I/O Landmark"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079272,
+          37.425999
+        ]
+      }
+    },
+    {
+      "id": "lot_a",
+      "type": "Feature",
+      "properties": {
+        "title": "Lot A"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.077082,
+          37.427511
+        ]
+      }
+    },
+    {
+      "id": "lot_b",
+      "type": "Feature",
+      "properties": {
+        "title": "Lot B"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.076106,
+          37.426374
+        ]
+      }
+    },
+    {
+      "id": "concourse",
+      "type": "Feature",
+      "properties": {
+        "title": "Concourse"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07984,
+          37.426303
+        ]
+      }
+    },
+    {
+      "id": "boardwalk",
+      "type": "Feature",
+      "properties": {
+        "title": "Boardwalk"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079476,
+          37.425391
+        ]
+      }
+    },
+    {
+      "id": "digital_detox",
+      "type": "Feature",
+      "properties": {
+        "title": "Digital Detox"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07939,
+          37.424511
+        ]
+      }
+    },
+    {
+      "id": "shadow_art",
+      "type": "Feature",
+      "properties": {
+        "title": "Shadow Art"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079633,
+          37.42408
+        ]
+      }
+    },
+    {
+      "id": "sculpture_garden",
+      "type": "Feature",
+      "properties": {
+        "title": "Sculpture Garden"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080795,
+          37.42592
+        ]
+      }
+    },
+    {
+      "id": "accessibility_restroom1",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Restroom",
+        "icon": "map_marker_handicap",
+        "description": "North of Stage 8"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079116,
+          37.427199
+        ]
+      }
+    },
+    {
+      "id": "accessibility_restroom2",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Restroom",
+        "icon": "map_marker_handicap",
+        "description": "South of Press Lounge, North of the Codelabs building"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079644,
+          37.42669
+        ]
+      }
+    },
+    {
+      "id": "accessibility_restroom3",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Restroom",
+        "icon": "map_marker_handicap",
+        "description": "South of the Codelabs building, next to the Mother's Room"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080175,
+          37.426013
+        ]
+      }
+    },
+    {
+      "id": "accessibility_restroom4",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Restroom",
+        "icon": "map_marker_handicap",
+        "description": "East of Sandbox F"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078614,
+          37.426217
+        ]
+      }
+    },
+    {
+      "id": "accessibility_restroom5",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Restroom",
+        "icon": "map_marker_handicap",
+        "description": "Between Stages 6 & 7"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.078849,
+          37.425237
+        ]
+      }
+    },
+    {
+      "id": "accessibility_restroom6",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Restroom",
+        "icon": "map_marker_handicap",
+        "description": "South of Stage 5, South of the Mother's Room"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079099,
+          37.424422
+        ]
+      }
+    },
+    {
+      "id": "accessibility_eats1",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Counter @ EATS",
+        "icon": "map_marker_handicap",
+        "description": "East counter of EATS venue"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079715,
+          37.424592
+        ]
+      }
+    },
+    {
+      "id": "accessibility_eats2",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Counter @ EATS",
+        "icon": "map_marker_handicap",
+        "description": "West counter of EATS venue"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080133,
+          37.424605
+        ]
+      }
+    },
+    {
+      "id": "accessibility_parking",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Parking Entrance",
+        "icon": "map_marker_handicap",
+        "description": "At the parking entrance, directly West of Lot B "
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.077945,
+          37.426766
+        ]
+      }
+    },
+    {
+      "id": "accessibility_shuttle",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Shuttle Pickup",
+        "icon": "map_marker_handicap",
+        "description": "Outside of the Ampitheatre, north of the big I/O"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079289,
+          37.426395
+        ]
+      }
+    },
+    {
+      "id": "accessibility_registration",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Registration",
+        "icon": "map_marker_handicap",
+        "description": "West side of the Registration tent"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.077541,
+          37.426036
+        ]
+      }
+    },
+    {
+      "id": "service_pet_relief",
+      "type": "Feature",
+      "properties": {
+        "title": "Service Pet Relief Area",
+        "icon": "map_marker_service_dog",
+        "description": "Give your furry friend a break on the lawn West of EATS"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080766,
+          37.42562
+        ]
+      }
+    },
+    {
+      "id": "quiet_room",
+      "type": "Feature",
+      "properties": {
+        "title": "Quiet Room",
+        "icon": "map_marker_handicap",
+        "description": "Due North of Codelabs, South of the Press Lounge, in the shed"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079987,
+          37.427084
+        ]
+      }
+    },
+    {
+      "id": "accessibility_keynote_entrance",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Keynote Entrance",
+        "icon": "map_marker_handicap",
+        "description": "Just North of the Codelabs building and Information desk"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080239,
+          37.426766
+        ]
+      }
+    },
+    {
+      "id": "kosher1",
+      "type": "Feature",
+      "properties": {
+        "title": "Kosher/Halal Meal Pick Up",
+        "icon": "map_marker_food",
+        "description": "Next to the Concessions stand, drectly across from the entrance to the Press Lounge.<br/><br/>Day 1: Breakfast, Lunch<br/>Day 2: Breakfast, Concert<br/>Day 3: Breakfast"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079812,
+          37.42685
+        ]
+      }
+    },
+    {
+      "id": "kosher2",
+      "type": "Feature",
+      "properties": {
+        "title": "Kosher/Halal Meal Pick Up",
+        "icon": "map_marker_food",
+        "description": "Located inside EATS, look for the EATS flag (#5)<br/><br/>Day 1: After Dark dinner<br/>Day 2: Lunch<br/>Day 3: Lunch"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079919,
+          37.424631
+        ]
+      }
+    },
+    {
+      "id": "rideshare",
+      "type": "Feature",
+      "properties": {
+        "title": "Rideshare drop-off & pick-up",
+        "icon": "map_marker_rideshare"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07669,
+          37.425819
+        ]
+      }
+    },
+    {
+      "id": "medical1",
+      "type": "Feature",
+      "properties": {
+        "title": "First aid station",
+        "icon": "map_marker_medical",
+        "description": "If you need any medical assistance throughout the event, please make your way to the Medical station. If you’re unable to commute or you’re not feeling well ask a Staff member for help instead."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080438,
+          37.425891
+        ]
+      }
+    },
+    {
+      "id": "medical2",
+      "type": "Feature",
+      "properties": {
+        "title": "First aid station",
+        "icon": "map_marker_medical",
+        "description": "If you need any medical assistance throughout the event, please make your way to the Medical station. If you’re unable to commute or you’re not feeling well ask a Staff member for help instead."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.08014,
+          37.424059
+        ]
+      }
+    },
+    {
+      "id": "anna_ridler_mosaic_virus",
+      "type": "Feature",
+      "properties": {
+        "title": "Anna Ridler - Mosaic Virus ",
+        "label": "Anna Ridler\nMosaic Virus ",
+        "description": "To create this piece, the artist constructed her own training set, based on thousands of pictures she took and categorized by hand. Using AI to \"imagine\" or \"dream\" tulips, the model is not just repeating flowers that are in its dataset, but creating new flowers from the knowledge that it has about the flowers it has seen."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079381,
+          37.425496
+        ]
+      }
+    },
+    {
+      "id": "mcxt_mural",
+      "type": "Feature",
+      "properties": {
+        "title": "MCXT Mural ",
+        "description": "An Inclusive Lens'<br/><br/>Monica Canilao & Xara Thustra are two Bay Area artists who combined their vision, talents, and activism to form a legendary creative partnership: MCXT. Their work is big in scale and heart. MCXT uses drawing, installation, murals, and other media to cultivate a sense of wonder and mindfulness that can help us see the infinite stories in and between people, objects, and ideas."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079518,
+          37.425236
+        ]
+      }
+    },
+    {
+      "id": "onformative_meandering_river",
+      "type": "Feature",
+      "properties": {
+        "title": "Onformative - Meandering River ",
+        "label": "Onformative\nMeandering River ",
+        "description": "Meandering River simulates the unpredictable movements of rivers and reinterprets their organic structures, rhythmic fluctuations and visual materiality. It makes changing landscapes perceivable by visualizing and sonifying a river’s impact on the surface of the earth through bespoke algorithms drawn from scientific research and satellite imagery.\n"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079449,
+          37.424875
+        ]
+      }
+    },
+    {
+      "id": "draw_to_art",
+      "type": "Feature",
+      "properties": {
+        "title": "Draw to Art",
+        "description": "Draw to Art Start drawing to discover artworks. Draw to Art is an experience from Google Arts & Culture that uses machine learning to match doodles to drawings, paintings and sculptures from museums around the world"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079538,
+          37.425503
+        ]
+      }
+    },
+    {
+      "id": "boardwalk",
+      "type": "Feature",
+      "properties": {
+        "title": "Boardwalk",
+        "description": "To experience the community and culture of I/O, take a stroll down the Boardwalk to check out I/O's own broadcast studio, lightning sessions, and our new I/O Arts program."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079347,
+          37.424022
+        ]
+      }
+    },
+    {
+      "id": "mk1",
+      "type": "Feature",
+      "properties": {
+        "title": "Micro Kitchen",
+        "icon": "map_marker_food",
+        "description": "Snacks and water will be available throughout the venue at all times."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079155,
+          37.426844
+        ]
+      }
+    },
+    {
+      "id": "mk2",
+      "type": "Feature",
+      "properties": {
+        "title": "Micro Kitchen",
+        "icon": "map_marker_food",
+        "description": "Snacks and water will be available throughout the venue at all times."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079767,
+          37.425914
+        ]
+      }
+    },
+    {
+      "id": "mk3",
+      "type": "Feature",
+      "properties": {
+        "title": "Micro Kitchen",
+        "icon": "map_marker_food",
+        "description": "Snacks and water will be available throughout the venue at all times."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080024,
+          37.42512
+        ]
+      }
+    },
+    {
+      "id": "mk4",
+      "type": "Feature",
+      "properties": {
+        "title": "Micro Kitchen",
+        "icon": "map_marker_food",
+        "description": "Snacks and water will be available throughout the venue at all times."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079751,
+          37.424429
+        ]
+      }
+    },
+    {
+      "id": "mk5",
+      "type": "Feature",
+      "properties": {
+        "title": "Micro Kitchen",
+        "icon": "map_marker_food",
+        "description": "Snacks and water will be available throughout the venue at all times."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079256,
+          37.424203
+        ]
+      }
+    },
+    {
+      "id": "mk6",
+      "type": "Feature",
+      "properties": {
+        "title": "Micro Kitchen",
+        "icon": "map_marker_food",
+        "description": "Snacks and water will be available throughout the venue at all times."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079213,
+          37.425427
+        ]
+      }
+    },
+    {
+      "id": "mk7",
+      "type": "Feature",
+      "properties": {
+        "title": "Micro Kitchen",
+        "icon": "map_marker_food",
+        "description": "Snacks and water will be available throughout the venue at all times."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079245,
+          37.425152
+        ]
+      }
+    }
+  ]
+}
