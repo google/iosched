@@ -242,8 +242,9 @@ class SessionDetailViewModel @Inject constructor(
         }
 
         showFeedbackButton = userEvent.combine(session) { userEvent, currentSession ->
-            !userEvent.isReviewed &&
-            currentSession.type == SessionType.SESSION &&
+            isSignedIn() &&
+                !userEvent.isReviewed &&
+                currentSession.type == SessionType.SESSION &&
                 TimeUtils.getSessionState(currentSession, ZonedDateTime.now()) ==
                 TimeUtils.SessionRelativeTimeState.AFTER
         }
