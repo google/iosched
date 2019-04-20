@@ -1,0 +1,70 @@
+<!--
+  ~ Copyright 2019 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="90dp"
+    android:height="20dp"
+    android:viewportWidth="90"
+    android:viewportHeight="20">
+    <path
+        android:pathData="M11.44,13.8h3.7v-7.63h-3.7z"
+        android:strokeColor="#AECBF7"
+        android:strokeWidth="0.4" />
+    <path
+        android:pathData="M18.57,4.795l-2.45,10.86"
+        android:strokeColor="#AECBF7"
+        android:strokeWidth="0.4" />
+    <path
+        android:pathData="M22.94,6.24a3.84,3.84 0 1,1 0,7.68a3.84,3.84 0 1,1 0,-7.68"
+        android:strokeColor="#4285F4"
+        android:strokeWidth="0.4" />
+    <path
+        android:pathData="M28.7,13.8h3.7v-7.63h-3.7z"
+        android:strokeColor="#FAD2CF"
+        android:strokeWidth="0.4" />
+    <path
+        android:pathData="M35.91,4.795l-2.45,10.86"
+        android:strokeColor="#FAD2CF"
+        android:strokeWidth="0.4" />
+    <path
+        android:pathData="M40.28,6.24a3.84,3.84 0 1,1 0,7.68a3.84,3.84 0 1,1 0,-7.68"
+        android:strokeColor="#E5443F"
+        android:strokeWidth="0.4" />
+    <path
+        android:pathData="M46.04,13.8h3.7v-7.63h-3.7z"
+        android:strokeColor="#FDE293"
+        android:strokeWidth=".4" />
+    <path
+        android:pathData="M53.25,4.795l-2.45,10.86"
+        android:strokeColor="#FDE293"
+        android:strokeWidth="0.4" />
+    <path
+        android:pathData="M57.62,6.24a3.84,3.84 0 1,1 0,7.68a3.84,3.84 0 1,1 0,-7.68"
+        android:strokeColor="#FBBC04"
+        android:strokeWidth="0.4" />
+    <path
+        android:pathData="M63.38,13.8h3.7v-7.63h-3.7z"
+        android:strokeColor="#A8DAB5"
+        android:strokeWidth="0.4" />
+    <path
+        android:pathData="M70.59,4.795l-2.45,10.86"
+        android:strokeColor="#A8DAB5"
+        android:strokeWidth="0.4" />
+    <path
+        android:pathData="M74.96,6.24a3.84,3.84 0 1,1 0,7.68a3.84,3.84 0 1,1 0,-7.68"
+        android:strokeColor="#5BB974"
+        android:strokeWidth="0.4" />
+</vector>

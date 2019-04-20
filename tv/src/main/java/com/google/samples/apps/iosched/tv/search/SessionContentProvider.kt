@@ -150,7 +150,7 @@ class SessionContentProvider : ContentProvider() {
             session.id,
             session.title,
             session.description,
-            session.photoUrl ?: "",
+            session.photoUrl,
             "video/mp4", // TODO: get the content type of the videos.
             session.isLive(),
             0, // TODO: get video width

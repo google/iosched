@@ -24,12 +24,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.app.NavUtils
 import androidx.core.app.ShareCompat
 import androidx.core.net.toUri
-import androidx.core.view.doOnLayout
 import androidx.core.view.forEach
-import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
@@ -54,6 +51,7 @@ import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment
@@ -71,12 +69,11 @@ import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment.Companion.
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.openWebsiteUrl
 import com.google.samples.apps.iosched.util.postponeEnterTransition
-import dagger.android.support.DaggerFragment
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
 
-class SessionDetailFragment : DaggerFragment(), SessionFeedbackFragment.Listener {
+class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.Listener {
 
     private var shareString = ""
 
@@ -160,19 +157,6 @@ class SessionDetailFragment : DaggerFragment(), SessionFeedbackFragment.Listener
             }
         }
 
-        binding.up.setOnClickListener {
-            // TODO(benbaxter): Remove try/catch once SessionDetailActivity is deleted.
-            try {
-                NavUtils.navigateUpFromSameTask(requireActivity())
-            } catch (e: Exception) {
-                findNavController().navigateUp()
-            }
-        }
-
-        val pushUpScrollListener = PushUpScrollListener(
-                binding.up, binding.sessionDetailRecyclerView,
-                R.id.session_detail_title, R.id.detail_image
-        )
         val detailsAdapter = SessionDetailAdapter(
             viewLifecycleOwner,
             sessionDetailViewModel,
@@ -186,24 +170,13 @@ class SessionDetailFragment : DaggerFragment(), SessionFeedbackFragment.Listener
                 changeDuration = 120L
                 removeDuration = 100L
             }
-            addOnScrollListener(pushUpScrollListener)
-            doOnLayout {
-                pushUpScrollListener.syncPushUpPoint()
+            doOnApplyWindowInsets { view, insets, state ->
+                view.updatePadding(bottom = state.bottom + insets.systemWindowInsetBottom)
+                // CollapsingToolbarLayout's defualt scrim visible trigger height is a bit large.
+                // Choose something smaller so that the content stays visible longer.
+                binding.collapsingToolbar.scrimVisibleHeightTrigger =
+                    insets.systemWindowInsetTop * 2
             }
-        }
-
-        binding.up.doOnApplyWindowInsets { view, insets, _ ->
-            view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                topMargin = insets.systemWindowInsetTop
-            }
-            view.requestLayout()
-            view.doOnLayout {
-                pushUpScrollListener.syncPushUpPoint()
-            }
-        }
-
-        binding.sessionDetailRecyclerView.doOnApplyWindowInsets { view, insets, state ->
-            view.updatePadding(bottom = state.bottom + insets.systemWindowInsetBottom)
         }
 
         sessionDetailViewModel.session.observe(this, Observer {

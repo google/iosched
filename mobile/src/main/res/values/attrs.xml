@@ -63,12 +63,6 @@
         <attr name="verticalBias"/>
     </declare-styleable>
 
-    <declare-styleable name="HeaderGridDrawable">
-        <attr name="android:color" />
-        <attr name="gridSize" format="dimension" />
-        <attr name="gridStrokeWidth" format="dimension" />
-    </declare-styleable>
-
     <declare-styleable name="ReserveButton">
         <attr name="state_reservable" />
         <attr name="state_reserved" />

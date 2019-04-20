@@ -272,19 +272,6 @@
         <item name="android:lineSpacingExtra">6sp</item>
     </style>
 
-    <!-- Event/Session detail -->
-    <style name="Widget.IOSched.HeaderGrid">
-        <item name="android:color">@color/header_grid</item>
-        <item name="gridSize">8dp</item>
-        <item name="gridStrokeWidth">1dp</item>
-    </style>
-
-    <style name="Widget.IOSched.SessionDetailTitle">
-        <item name="android:gravity">start|bottom</item>
-        <item name="android:textAppearance">@style/TextAppearance.IOSched.H1</item>
-        <item name="android:breakStrategy" tools:targetApi="m">balanced</item>
-    </style>
-
     <!-- Speaker Detail -->
     <style name="Widget.IOSched.Speaker" />
 

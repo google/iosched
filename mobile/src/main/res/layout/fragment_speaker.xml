@@ -38,9 +38,10 @@
         android:fitsSystemWindows="true"
         tools:ignore="MergeRootFrame">
 
-        <!-- CollapsingToolbarLayout consumes all system window insets
-             Use wrap_content for height so that the CollapsingToolbarLayout doesn't collapse when
-             the content isn't enough to fill the screen.
+        <!-- CollapsingToolbarLayout consumes all system window insets, so we need to put the
+             RecyclerView first in order for it to inspect the insets first.
+             Use layout_height="wrap_content" so that the CollapsingToolbarLayout doesn't collapse
+             when there is not enough content to fill the screen.
         -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/speaker_detail_recycler_view"
@@ -65,7 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_scrollFlags="scroll"
-                app:statusBarScrim="@null">
+                app:statusBarScrim="?colorSurface">
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"

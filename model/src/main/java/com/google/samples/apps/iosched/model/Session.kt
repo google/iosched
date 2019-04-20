@@ -96,7 +96,7 @@ data class Session(
     /**
      * The session's photo URL.
      */
-    val photoUrl: String?,
+    val photoUrl: String,
 
     /**
      * IDs of the sessions related to this session.
@@ -114,11 +114,15 @@ data class Session(
         return startTime <= now && endTime >= now
     }
 
+    val hasPhoto inline get() = photoUrl.isNotEmpty()
+
     /**
      * Returns whether the session has a video or not. A session could be live streaming or have a
      * recorded session. Both live stream and recorded videos are stored in [Session.youTubeUrl].
      */
-    fun hasVideo() = youTubeUrl.isNotEmpty()
+    val hasVideo inline get() = youTubeUrl.isNotEmpty()
+
+    val hasPhotoOrVideo inline get() = hasPhoto || hasVideo
 
     /**
      * The year the session was held.

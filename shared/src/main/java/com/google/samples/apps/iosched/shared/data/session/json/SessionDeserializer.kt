@@ -55,7 +55,7 @@ class SessionDeserializer : JsonDeserializer<SessionTemp> {
                 Instant.ofEpochMilli(obj.get("endTimestamp").asLong), ZoneOffset.UTC
             ),
             description = obj.get("description").asString,
-            photoUrl = obj.get("photoUrl")?.asString,
+            photoUrl = obj.get("photoUrl")?.asString ?: "",
             isLivestream = obj.get("youtubeVideoType")?.asString == "livestream" ||
                 obj.get("livestream")?.asBoolean == true,
             doryLink = obj.get("doryLink")?.asString ?: "",

@@ -83,7 +83,7 @@ object FakeConferenceDataSource : ConferenceDataSource {
             startTime = startTime,
             endTime = startTime.plusHours(1),
             isLivestream = false,
-            photoUrl = null,
+            photoUrl = "",
             relatedSessions = emptySet(),
             sessionUrl = "",
             doryLink = "",
