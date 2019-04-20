@@ -34,5 +34,7 @@ class SearchDbUseCase @Inject constructor(
         val query = parameters.toLowerCase()
         val results = appDatabase.sessionFtsDao().searchAllSessions(query).toSet()
         return repository.getSessions().filter { session -> session.id in results }
+            // Keynotes come first, followed by sessions, app reviews, game reviews ...
+            .sortedBy { it.type }
     }
 }

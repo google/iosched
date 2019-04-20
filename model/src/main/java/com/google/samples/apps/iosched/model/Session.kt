@@ -170,16 +170,17 @@ data class Session(
 /**
  * Represents the type of the event e.g. Session, Codelab etc.
  */
-enum class SessionType {
-    KEYNOTE,
-    SESSION,
-    APP_REVIEW,
-    GAME_REVIEW,
-    OFFICE_HOURS,
-    CODELAB,
-    MEETUP,
-    AFTER_DARK,
-    UNKNOWN;
+enum class SessionType(val displayName: String) {
+
+    KEYNOTE("Keynote"),
+    SESSION("Session"),
+    APP_REVIEW("App Reviews"),
+    GAME_REVIEW("Game Reviews"),
+    OFFICE_HOURS("Office Hours"),
+    CODELAB("Codelab"),
+    MEETUP("Meetup"),
+    AFTER_DARK("After Dark"),
+    UNKNOWN("Unknown");
 
     companion object {
 

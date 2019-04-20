@@ -38,7 +38,10 @@ class SearchUseCase @Inject constructor(
             .filter { session ->
                 session.title.toLowerCase().contains(query) ||
                     session.abstract.toLowerCase().contains(query) ||
-                    session.tags.any { tag -> query.contains(tag.displayName.toLowerCase()) }
-            }
+                    session.tags.any { tag ->
+                        query.contains(tag.displayName.toLowerCase())
+                    }
+                // Keynotes come first, followed by sessions, app reviews, game reviews ...
+            }.sortedBy { it.type }
     }
 }

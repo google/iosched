@@ -73,7 +73,7 @@ data class Tag(
         const val CATEGORY_LEVEL = "level"
 
         // Exhaustive list of IDs for tags with category = TYPE
-        const val TYPE_KEYNOTE = "type_keynote"
+        const val TYPE_KEYNOTE = "type_keynotes"
         const val TYPE_SESSIONS = "type_sessions"
         const val TYPE_APP_REVIEWS = "type_appreviews"
         const val TYPE_AFTERDARK = "type_afterdark"
