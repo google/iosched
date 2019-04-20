@@ -76,22 +76,22 @@ class SearchFragment : MainNavigationFragment() {
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     dismissKeyboard(this@apply)
-                    viewModel.onScheduleSearchQuerySubmitted(query)
                     return true
                 }
 
                 override fun onQueryTextChange(newText: String): Boolean {
-                    // Do nothing
+                    viewModel.onSearchQueryChanged(newText)
                     return true
                 }
             })
 
             // Set focus on the SearchView and open the keyboard
-            if (requestFocus()) {
-                showKeyboard(binding.toolbar.searchView)
+            setOnQueryTextFocusChangeListener { view, hasFocus ->
+                if (hasFocus) {
+                    showKeyboard(view.findFocus())
+                }
             }
         }
-
         binding.recyclerView.doOnApplyWindowInsets { v, insets, padding ->
             v.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }

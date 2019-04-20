@@ -57,7 +57,11 @@ class SearchViewModel @Inject constructor(
         searchResults = loadSearchResults.map {
             val result = it as? Result.Success ?: return@map emptyList<SearchResult>()
             result.data.map { session ->
-                SearchResult(session.title, "Session", "session", session.id)
+                SearchResult(session.title,
+                        session.type.displayName,
+                        // TODO: SessionType needs to be passed instead of hard-coded string
+                        "session",
+                        session.id)
             }
         }
 
@@ -74,8 +78,15 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun onScheduleSearchQuerySubmitted(query: String) {
-        analyticsHelper.logUiEvent("Query: $query", AnalyticsActions.SEARCH_QUERY_SUBMIT)
+    fun onSearchQueryChanged(newQuery: String) {
+        if (newQuery.length < 2) {
+            return
+        }
+        analyticsHelper.logUiEvent("Query: $newQuery", AnalyticsActions.SEARCH_QUERY_SUBMIT)
+        executeSearch(newQuery)
+    }
+
+    private fun executeSearch(query: String) {
         if (searchUsingRoomFeatureEnabled) {
             Timber.d("Searching for query using Room: $query")
             loadDbSearchResultsUseCase(query, loadSearchResults)
