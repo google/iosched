@@ -21,11 +21,16 @@ import androidx.room.InvalidationTracker
 import androidx.sqlite.db.SupportSQLiteOpenHelper
 import com.google.samples.apps.iosched.shared.data.db.AppDatabase
 import com.google.samples.apps.iosched.shared.data.db.SessionFtsDao
+import com.google.samples.apps.iosched.shared.data.db.SpeakerFtsDao
 import org.mockito.Mockito
 
 class FakeAppDatabase : AppDatabase() {
     override fun sessionFtsDao(): SessionFtsDao {
         return Mockito.mock(SessionFtsDao::class.java)
+    }
+
+    override fun speakerFtsDao(): SpeakerFtsDao {
+        return Mockito.mock(SpeakerFtsDao::class.java)
     }
 
     override fun createOpenHelper(config: DatabaseConfiguration?): SupportSQLiteOpenHelper {

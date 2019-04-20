@@ -14,17 +14,21 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.search
+package com.google.samples.apps.iosched.shared.data.db
 
-data class SearchResult(
-    val title: String,
-    val subtitle: String,
-    val type: SearchResultType,
-    val objectId: String
-)
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
-enum class SearchResultType {
-    SESSION,
-    SPEAKER,
-    CODELAB
+/**
+ * The Data Access Object for the [SpeakerFtsEntity] class.
+ */
+@Dao
+interface SpeakerFtsDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(speakers: List<SpeakerFtsEntity>)
+
+    @Query("SELECT speakerId FROM speakersFts WHERE speakersFts MATCH :query")
+    fun searchAllSpeakers(query: String): List<String>
 }

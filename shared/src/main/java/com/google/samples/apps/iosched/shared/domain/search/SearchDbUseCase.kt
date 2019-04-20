@@ -16,25 +16,35 @@
 
 package com.google.samples.apps.iosched.shared.domain.search
 
-import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.db.AppDatabase
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.domain.UseCase
+import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSession
+import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSpeaker
 import javax.inject.Inject
 
 /**
  * Performs a search in the database from a query string.
  */
 class SearchDbUseCase @Inject constructor(
-    private val repository: SessionRepository,
+    private val sessionRepository: SessionRepository,
+    private val conferenceRepository: ConferenceDataRepository,
     private val appDatabase: AppDatabase
-) : UseCase<String, List<Session>>() {
+) : UseCase<String, List<Searchable>>() {
 
-    override fun execute(parameters: String): List<Session> {
+    override fun execute(parameters: String): List<Searchable> {
         val query = parameters.toLowerCase()
-        val results = appDatabase.sessionFtsDao().searchAllSessions(query).toSet()
-        return repository.getSessions().filter { session -> session.id in results }
+        val sessionResults = appDatabase.sessionFtsDao().searchAllSessions(query).toSet()
+        val speakerResults = appDatabase.speakerFtsDao().searchAllSpeakers(query).toSet()
+        val searchedSessions = sessionRepository.getSessions()
+            .filter { session -> session.id in sessionResults }
             // Keynotes come first, followed by sessions, app reviews, game reviews ...
             .sortedBy { it.type }
+            .map { SearchedSession(it) }
+        val searchedSpeakers = conferenceRepository.getOfflineConferenceData().speakers.filter {
+            it.id in speakerResults
+        }.map { SearchedSpeaker(it) }
+        return searchedSessions.plus(searchedSpeakers)
     }
 }

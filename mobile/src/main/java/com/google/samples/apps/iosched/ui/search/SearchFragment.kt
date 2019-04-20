@@ -34,6 +34,7 @@ import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.search.SearchFragmentDirections.Companion.toSessionDetail
+import com.google.samples.apps.iosched.ui.search.SearchFragmentDirections.Companion.toSpeakerDetail
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import kotlinx.android.synthetic.main.fragment_search.view.searchView
 import javax.inject.Inject
@@ -65,7 +66,9 @@ class SearchFragment : MainNavigationFragment() {
         viewModel.navigateToSessionAction.observe(this, EventObserver { sessionId ->
             findNavController().navigate(toSessionDetail(sessionId))
         })
-
+        viewModel.navigateToSpeakerAction.observe(this, EventObserver { speakerId ->
+            findNavController().navigate(toSpeakerDetail(speakerId))
+        })
         analyticsHelper.sendScreenView("Search", requireActivity())
     }
 
