@@ -34,7 +34,6 @@
     <!-- Other colors with dark mode alternatives -->
     <color name="wifi_card_background">#e8f0fe</color>
     <color name="event_card_header_background">@color/event_card_header_background_light</color>
-    <color name="header_grid">#e6e6e6</color>
     <color name="list_divider">#1f000000</color>>
 
     <!-- Other colors -->

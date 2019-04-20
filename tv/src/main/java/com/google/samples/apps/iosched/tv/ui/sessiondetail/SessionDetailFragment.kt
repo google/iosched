@@ -104,7 +104,7 @@ class SessionDetailFragment : DetailsSupportFragment() {
 
     private fun createSessionActions(session: Session): ArrayObjectAdapter {
         val actions = mutableListOf<Action>()
-        if (session.hasVideo()) {
+        if (session.hasVideo) {
             actions += Action(
                 ACTION_WATCH,
                 resources.getString(R.string.session_detail_watch),
@@ -168,7 +168,7 @@ private class SessionDetailsOnActionClickedListener(
 ) : OnActionClickedListener {
 
     override fun onActionClicked(action: Action) {
-        if (action.id == ACTION_WATCH && session.hasVideo()) {
+        if (action.id == ACTION_WATCH && session.hasVideo) {
             val playerIntent = SessionPlayerActivity.createIntent(context, session.id)
             context.startActivity(playerIntent)
         } else {

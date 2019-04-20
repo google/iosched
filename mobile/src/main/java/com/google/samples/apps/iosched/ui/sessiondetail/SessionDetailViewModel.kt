@@ -43,6 +43,7 @@ import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import com.google.samples.apps.iosched.shared.util.SetIntervalLiveData.DefaultIntervalMapper
@@ -120,10 +121,6 @@ class SessionDetailViewModel @Inject constructor(
         get() = _relatedUserSessions
 
     val showFeedbackButton: LiveData<Boolean>
-    val hasPhotoOrVideo: LiveData<Boolean>
-    val isPlayable: LiveData<Boolean>
-    val hasSpeakers: LiveData<Boolean>
-    val hasRelated: LiveData<Boolean>
     val timeUntilStart: LiveData<Duration?>
     val isReservationDisabled: LiveData<Boolean>
     private val _shouldShowStarInBottomNav = MediatorLiveData<Boolean>()
@@ -233,14 +230,6 @@ class SessionDetailViewModel @Inject constructor(
             TimeUtils.getSessionState(currentSession, ZonedDateTime.now())
         }
 
-        hasPhotoOrVideo = session.map { currentSession ->
-            !currentSession?.photoUrl.isNullOrEmpty() || !currentSession?.youTubeUrl.isNullOrEmpty()
-        }
-
-        isPlayable = session.map { currentSession ->
-            currentSession?.hasVideo() == true
-        }
-
         showFeedbackButton = userEvent.combine(session) { userEvent, currentSession ->
             isSignedIn() &&
                 !userEvent.isReviewed &&
@@ -249,20 +238,11 @@ class SessionDetailViewModel @Inject constructor(
                 TimeUtils.SessionRelativeTimeState.AFTER
         }
 
-        hasSpeakers = session.map { currentSession ->
-            currentSession.speakers.isNotEmpty()
-        }
-
-        hasRelated = session.map { currentSession ->
-            currentSession.relatedSessions.isNotEmpty()
-        }
-
         // Updates periodically with a special [IntervalLiveData]
         timeUntilStart = DefaultIntervalMapper.mapAtInterval(session, TEN_SECONDS) { session ->
             session?.startTime?.let { startTime ->
                 val duration = Duration.between(timeProvider.now(), startTime)
-                val minutes = duration.toMinutes()
-                when (minutes) {
+                when (duration.toMinutes()) {
                     in 1..5 -> duration
                     else -> null
                 }
@@ -317,8 +297,8 @@ class SessionDetailViewModel @Inject constructor(
         }
 
         _navigateToSwapReservationDialogAction.addSource(reservationActionUseCase.observe()) {
-            ((it as? Result.Success)?.data as? SwapAction)?.let {
-                _navigateToSwapReservationDialogAction.postValue(Event(it.parameters))
+            (it?.successOr(null) as? SwapAction)?.let { swap ->
+                _navigateToSwapReservationDialogAction.postValue(Event(swap.parameters))
             }
         }
     }
@@ -350,14 +330,14 @@ class SessionDetailViewModel @Inject constructor(
      * Called by the UI when play button is clicked
      */
     fun onPlayVideo() {
-        val currentSession = session.value
-        if (currentSession?.hasVideo() == true) {
-            navigateToYouTubeAction.value = Event(requireSession().youTubeUrl)
+        session.value?.let {
+            if (it.hasVideo) {
+                navigateToYouTubeAction.value = Event(it.youTubeUrl)
+            }
         }
     }
 
     override fun onStarClicked() {
-
         val userEventSnapshot = userEvent.value ?: return
         val sessionSnapshot = session.value ?: return
         onStarClicked(UserSession(sessionSnapshot, userEventSnapshot))
@@ -502,10 +482,6 @@ class SessionDetailViewModel @Inject constructor(
      */
     private fun getSessionId(): SessionId? {
         return sessionId.value
-    }
-
-    private fun requireSession(): Session {
-        return session.value ?: throw IllegalStateException("Session should not be null")
     }
 
     private fun showStarInBottomNav(): Boolean {

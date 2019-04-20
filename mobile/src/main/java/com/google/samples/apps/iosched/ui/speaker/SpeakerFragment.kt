@@ -140,6 +140,10 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
             }
             doOnApplyWindowInsets { view, insets, padding ->
                 view.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)
+                // CollapsingToolbarLayout's defualt scrim visible trigger height is a bit large.
+                // Choose something smaller so that the content stays visible longer.
+                binding.collapsingToolbar.scrimVisibleHeightTrigger =
+                    insets.systemWindowInsetTop * 2
             }
         }
 

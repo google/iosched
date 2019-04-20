@@ -53,7 +53,7 @@ class SessionPlayerActivity : FragmentActivity() {
         viewModel.session.observe(this, EventObserver { session ->
 
             Timber.d("Launching session in YouTube")
-            if (session.hasVideo()) {
+            if (session.hasVideo) {
                 startActivity(Intent(Intent.ACTION_VIEW, session.youTubeUrl.toUri()))
             }
             // Always finish activity since we are delegating to another view.

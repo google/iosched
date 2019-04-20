@@ -32,6 +32,5 @@
     <!-- Other colors with light mode alternatives -->
     <color name="wifi_card_background">#263238</color>
     <color name="event_card_header_background">@color/event_card_header_background_dark</color>
-    <color name="header_grid">#222</color>
     <color name="list_divider">#1fffffff</color>
 </resources>

@@ -93,13 +93,12 @@
 
         <com.google.samples.apps.iosched.ui.reservation.ReservationTextView
             android:id="@+id/reservation_status"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_micro"
             android:drawablePadding="@dimen/spacing_normal"
             android:gravity="center_vertical"
             android:textAppearance="@style/TextAppearance.IOSched.ReservationStatus"
-            app:layout_constraintEnd_toEndOf="@id/title"
             app:layout_constraintStart_toEndOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/title"
             app:isReservable="@{userSession.session.isReservable}"
