@@ -22,6 +22,7 @@ import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.shared.data.db.AppDatabase
 import com.google.samples.apps.iosched.shared.data.db.SessionFtsEntity
+import com.google.samples.apps.iosched.shared.data.db.SpeakerFtsEntity
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import java.io.IOException
 import javax.inject.Inject
@@ -118,16 +119,23 @@ open class ConferenceDataRepository @Inject constructor(
     }
 
     open fun populateSearchData(conferenceData: ConferenceData) {
-        val sessionFtsEntities = mutableListOf<SessionFtsEntity>()
-        conferenceData.sessions.forEach { session ->
-            sessionFtsEntities.add(SessionFtsEntity(
+        val sessionFtsEntities = conferenceData.sessions.map { session ->
+            SessionFtsEntity(
                 sessionId = session.id,
                 title = session.title,
                 description = session.abstract,
                 speakers = session.speakers.joinToString { it.name }
-            ))
+            )
         }
         appDatabase.sessionFtsDao().insertAll(sessionFtsEntities)
+        val speakers = conferenceData.speakers.map {
+            SpeakerFtsEntity(
+                speakerId = it.id,
+                name = it.name,
+                description = it.abstract
+            )
+        }
+        appDatabase.speakerFtsDao().insertAll(speakers)
     }
 
     open fun getConferenceDays(): List<ConferenceDay> = TimeUtils.ConferenceDays

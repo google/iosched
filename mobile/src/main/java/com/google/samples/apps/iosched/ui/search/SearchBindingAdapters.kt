@@ -22,13 +22,16 @@ import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.ui.search.SearchResultType.CODELAB
+import com.google.samples.apps.iosched.ui.search.SearchResultType.SESSION
+import com.google.samples.apps.iosched.ui.search.SearchResultType.SPEAKER
 
 @BindingAdapter("searchResultIcon")
-fun searchResultIcon(imageView: ImageView, type: String) {
+fun searchResultIcon(imageView: ImageView, type: SearchResultType) {
     val iconId = when (type) {
-        "session" -> R.drawable.ic_event
-        "codelab" -> R.drawable.ic_agenda_codelab
-        else -> R.drawable.ic_event
+        SESSION -> R.drawable.ic_event
+        SPEAKER -> R.drawable.ic_account_box
+        CODELAB -> R.drawable.ic_agenda_codelab
     }
     imageView.setImageDrawable(AppCompatResources.getDrawable(imageView.context, iconId))
 }

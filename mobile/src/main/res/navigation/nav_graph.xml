@@ -145,6 +145,9 @@
         <action
             android:id="@+id/to_session_detail"
             app:destination="@id/navigation_session_detail" />
+        <action
+            android:id="@+id/to_speaker_detail"
+            app:destination="@id/navigation_speaker_detail" />
     </fragment>
 
     <fragment

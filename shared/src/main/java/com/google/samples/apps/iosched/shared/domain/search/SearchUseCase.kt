@@ -16,9 +16,9 @@
 
 package com.google.samples.apps.iosched.shared.domain.search
 
-import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.domain.UseCase
+import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSession
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -29,9 +29,9 @@ import javax.inject.Inject
  */
 class SearchUseCase @Inject constructor(
     private val repository: SessionRepository
-) : UseCase<String, List<Session>>() {
+) : UseCase<String, List<Searchable>>() {
 
-    override fun execute(parameters: String): List<Session> {
+    override fun execute(parameters: String): List<Searchable> {
         Timber.d("Performing a search for any sessions that contain `$parameters`")
         val query = parameters.toLowerCase()
         return repository.getSessions()
@@ -41,7 +41,9 @@ class SearchUseCase @Inject constructor(
                     session.tags.any { tag ->
                         query.contains(tag.displayName.toLowerCase())
                     }
-                // Keynotes come first, followed by sessions, app reviews, game reviews ...
-            }.sortedBy { it.type }
+            }
+            // Keynotes come first, followed by sessions, app reviews, game reviews ...
+            .sortedBy { it.type }
+            .map { SearchedSession(it) }
     }
 }

@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.search
+package com.google.samples.apps.iosched.shared.domain.search
 
-data class SearchResult(
-    val title: String,
-    val subtitle: String,
-    val type: SearchResultType,
-    val objectId: String
-)
+import com.google.samples.apps.iosched.model.Session
+import com.google.samples.apps.iosched.model.Speaker
 
-enum class SearchResultType {
-    SESSION,
-    SPEAKER,
-    CODELAB
+/**
+ * Sealed class that represents searchable contents.
+ */
+sealed class Searchable {
+
+    class SearchedSession(val session: Session) : Searchable()
+    class SearchedSpeaker(val speaker: Speaker) : Searchable()
 }

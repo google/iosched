@@ -27,6 +27,8 @@ import android.net.Uri
 import android.provider.BaseColumns
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.shared.domain.search.SearchUseCase
+import com.google.samples.apps.iosched.shared.domain.search.Searchable
+import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSession
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.tv.TvApplication
 import timber.log.Timber
@@ -113,7 +115,7 @@ class SessionContentProvider : ContentProvider() {
      */
     private fun search(query: String): Cursor {
 
-        val result: Result<List<Session>> = searchUseCase.executeNow(query)
+        val result: Result<List<Searchable>> = searchUseCase.executeNow(query)
 
         val sessions = when (result) {
             is Result.Error -> {
@@ -122,7 +124,9 @@ class SessionContentProvider : ContentProvider() {
                 Timber.e(result.exception, "Could not retrieve search results for query: $query")
                 emptyList()
             }
-            is Result.Success -> result.data
+            is Result.Success -> result.data.map {
+                (it as SearchedSession).session
+            }
             else -> emptyList()
         }
 
@@ -135,7 +139,7 @@ class SessionContentProvider : ContentProvider() {
 
         sessions
             .map { session: Session -> convertMovieIntoRow(session) }
-            .forEach({ row -> matrixCursor.addRow(row) })
+            .forEach { row -> matrixCursor.addRow(row) }
 
         Timber.d("Returning ${matrixCursor.count} results for query `$query`")
         return matrixCursor
