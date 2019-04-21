@@ -83,7 +83,7 @@ object TestData {
         name = "Troy McClure",
         imageUrl = "",
         company = "",
-        abstract = ""
+        biography = ""
     )
 
     val speaker2 = Speaker(
@@ -91,7 +91,7 @@ object TestData {
         name = "Disco Stu",
         imageUrl = "",
         company = "",
-        abstract = ""
+        biography = ""
     )
 
     val speaker3 = Speaker(
@@ -99,13 +99,13 @@ object TestData {
         name = "Hans Moleman",
         imageUrl = "",
         company = "",
-        abstract = ""
+        biography = ""
     )
 
     val room = Room(id = "1", name = "Tent 1")
 
     val session0 = Session(
-        id = "0", title = "Session 0", abstract = "This session is awesome",
+        id = "0", title = "Session 0", description = "This session is awesome",
         startTime = TestConferenceDays[0].start, endTime = TestConferenceDays[0].end,
         isLivestream = false,
         room = room, sessionUrl = "", youTubeUrl = "", photoUrl = "", doryLink = "",
@@ -115,7 +115,7 @@ object TestData {
     )
 
     val session1 = Session(
-        id = "1", title = "Session 1", abstract = "",
+        id = "1", title = "Session 1", description = "",
         startTime = TestConferenceDays[0].start, endTime = TestConferenceDays[0].end,
         isLivestream = false,
         room = room, sessionUrl = "", youTubeUrl = "", photoUrl = "", doryLink = "",
@@ -125,7 +125,7 @@ object TestData {
     )
 
     val session2 = Session(
-        id = "2", title = "Session 2", abstract = "",
+        id = "2", title = "Session 2", description = "",
         startTime = TestConferenceDays[1].start, endTime = TestConferenceDays[1].end,
         isLivestream = false,
         room = room, sessionUrl = "", youTubeUrl = "", photoUrl = "", doryLink = "",
@@ -134,7 +134,7 @@ object TestData {
     )
 
     val session3 = Session(
-        id = "3", title = "Session 3", abstract = "",
+        id = "3", title = "Session 3", description = "",
         startTime = TestConferenceDays[2].start, endTime = TestConferenceDays[2].end,
         isLivestream = false,
         room = room, sessionUrl = "", youTubeUrl = "", photoUrl = "", doryLink = "",
@@ -143,7 +143,7 @@ object TestData {
     )
 
     val sessionWithYoutubeUrl = Session(
-        id = "4", title = "Session 4", abstract = "",
+        id = "4", title = "Session 4", description = "",
         startTime = TestConferenceDays[2].start.plusMinutes(1),
         endTime = TestConferenceDays[2].end,
         isLivestream = true,

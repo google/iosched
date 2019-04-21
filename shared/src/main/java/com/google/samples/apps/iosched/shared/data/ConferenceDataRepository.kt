@@ -124,7 +124,7 @@ open class ConferenceDataRepository @Inject constructor(
             SessionFtsEntity(
                 sessionId = session.id,
                 title = session.title,
-                description = session.abstract,
+                description = session.description,
                 speakers = session.speakers.joinToString { it.name }
             )
         }
@@ -133,7 +133,7 @@ open class ConferenceDataRepository @Inject constructor(
             SpeakerFtsEntity(
                 speakerId = it.id,
                 name = it.name,
-                description = it.abstract
+                description = it.biography
             )
         }
         appDatabase.speakerFtsDao().insertAll(speakers)

@@ -395,7 +395,7 @@ class SessionDetailFragment : DaggerFragment(), SessionFeedbackFragment.Listener
             .setData(CalendarContract.Events.CONTENT_URI)
             .putExtra(CalendarContract.Events.TITLE, session.title)
             .putExtra(CalendarContract.Events.EVENT_LOCATION, session.room?.name)
-            .putExtra(CalendarContract.Events.DESCRIPTION, session.getDescription(
+            .putExtra(CalendarContract.Events.DESCRIPTION, session.getCalendarDescription(
                 getString(R.string.paragraph_delimiter),
                 getString(R.string.speaker_delimiter)
             ))

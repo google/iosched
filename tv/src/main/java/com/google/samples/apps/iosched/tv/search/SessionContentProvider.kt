@@ -149,7 +149,7 @@ class SessionContentProvider : ContentProvider() {
         return arrayOf(
             session.id,
             session.title,
-            session.abstract,
+            session.description,
             session.photoUrl ?: "",
             "video/mp4", // TODO: get the content type of the videos.
             session.isLive(),

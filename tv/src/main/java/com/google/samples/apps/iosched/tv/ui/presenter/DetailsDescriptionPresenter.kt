@@ -29,7 +29,7 @@ import com.google.samples.apps.iosched.tv.ui.adapter.TagAdapter
  * Custom presenter for displaying the details of a [Session].
  *
  * Extending [AbstractDetailsDescriptionPresenter] limits the display to title, subtitle,
- * description. This custom presenter displays title, abstract, speakers, tags, and other metadata
+ * description. This custom presenter displays title, description, speakers, tags, and other metadata
  * about a session.
  */
 class DetailsDescriptionPresenter : Presenter() {
@@ -48,7 +48,7 @@ class DetailsDescriptionPresenter : Presenter() {
         holder.titleView.text = session.title
         holder.timeView.text = TimeUtils.timeString(session.startTime, session.endTime)
         holder.roomView.text = session.room?.name ?: ""
-        holder.descriptionView.text = session.abstract
+        holder.descriptionView.text = session.description
 
         holder.tagRecyclerView.adapter = TagAdapter().apply {
             tags = session.displayTags

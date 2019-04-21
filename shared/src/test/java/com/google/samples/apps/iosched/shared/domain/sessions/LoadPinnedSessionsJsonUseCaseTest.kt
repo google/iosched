@@ -76,7 +76,7 @@ class LoadPinnedSessionsJsonUseCaseTest {
                         day = TimeUtils.abbreviatedDayForAr(it.startTime),
                         time = TimeUtils.abbreviatedTimeForAr(it.startTime),
                         timestamp = it.startTime.toEpochMilli(),
-                        description = it.abstract
+                        description = it.description
                     )
                 }
         )

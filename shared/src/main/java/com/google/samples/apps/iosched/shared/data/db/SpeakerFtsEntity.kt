@@ -46,11 +46,7 @@ data class SpeakerFtsEntity(
     val name: String,
 
     /**
-     * Body of text with the speaker's description.
-     *
-     * Note that this is named "abstract" in Speaker.  This causes an issue with kapt, which
-     * in turn causes issues with Room.  For more details, see
-     * https://youtrack.jetbrains.com/issue/KT-27804.
+     * Body of text with the speaker's description. Note that this is named "biography" in Speaker.
      */
     @ColumnInfo(name = "description")
     val description: String

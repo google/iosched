@@ -74,7 +74,7 @@ object ConferenceDataJsonParser {
                 startTime = session.startTime,
                 endTime = session.endTime,
                 title = session.title,
-                abstract = session.abstract,
+                description = session.description,
                 sessionUrl = session.sessionUrl,
                 isLivestream = session.isLivestream,
                 youTubeUrl = session.youTubeUrl,

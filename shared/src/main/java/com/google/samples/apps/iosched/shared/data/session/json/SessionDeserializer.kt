@@ -54,7 +54,7 @@ class SessionDeserializer : JsonDeserializer<SessionTemp> {
             endTime = ZonedDateTime.ofInstant(
                 Instant.ofEpochMilli(obj.get("endTimestamp").asLong), ZoneOffset.UTC
             ),
-            abstract = obj.get("description").asString,
+            description = obj.get("description").asString,
             photoUrl = obj.get("photoUrl")?.asString,
             isLivestream = obj.get("youtubeVideoType")?.asString == "livestream" ||
                 obj.get("livestream")?.asBoolean == true,
