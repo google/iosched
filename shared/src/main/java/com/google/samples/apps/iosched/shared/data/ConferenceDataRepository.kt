@@ -21,6 +21,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.shared.data.db.AppDatabase
+import com.google.samples.apps.iosched.shared.data.db.CodelabFtsEntity
 import com.google.samples.apps.iosched.shared.data.db.SessionFtsEntity
 import com.google.samples.apps.iosched.shared.data.db.SpeakerFtsEntity
 import com.google.samples.apps.iosched.shared.util.TimeUtils
@@ -136,6 +137,14 @@ open class ConferenceDataRepository @Inject constructor(
             )
         }
         appDatabase.speakerFtsDao().insertAll(speakers)
+        val codelabs = conferenceData.codelabs.map {
+            CodelabFtsEntity(
+                codelabId = it.id,
+                title = it.title,
+                description = it.description
+            )
+        }
+        appDatabase.codelabFtsDao().insertAll(codelabs)
     }
 
     open fun getConferenceDays(): List<ConferenceDay> = TimeUtils.ConferenceDays
