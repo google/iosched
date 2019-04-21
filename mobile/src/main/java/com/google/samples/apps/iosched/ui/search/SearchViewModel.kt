@@ -27,6 +27,7 @@ import com.google.samples.apps.iosched.shared.di.SearchUsingRoomEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.search.SearchDbUseCase
 import com.google.samples.apps.iosched.shared.domain.search.SearchUseCase
 import com.google.samples.apps.iosched.shared.domain.search.Searchable
+import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedCodelab
 import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSession
 import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSpeaker
 import com.google.samples.apps.iosched.shared.result.Event
@@ -56,6 +57,10 @@ class SearchViewModel @Inject constructor(
     private val _navigateToSpeakerAction = MutableLiveData<Event<SpeakerId>>()
     val navigateToSpeakerAction: LiveData<Event<SpeakerId>> = _navigateToSpeakerAction
 
+    // Has codelabUrl as String
+    private val _navigateToCodelabAction = MutableLiveData<Event<String>>()
+    val navigateToCodelabAction: LiveData<Event<String>> = _navigateToCodelabAction
+
     private val loadSearchResults = MutableLiveData<Result<List<Searchable>>>()
     val searchResults: LiveData<List<SearchResult>>
 
@@ -71,7 +76,7 @@ class SearchViewModel @Inject constructor(
                         SearchResult(
                             session.title,
                             session.type.displayName,
-                            SearchResultType.SESSION,
+                            SESSION,
                             session.id
                         )
                     }
@@ -80,8 +85,19 @@ class SearchViewModel @Inject constructor(
                         SearchResult(
                             speaker.name,
                             "Speaker",
-                            SearchResultType.SPEAKER,
+                            SPEAKER,
                             speaker.id
+                        )
+                    }
+                    is SearchedCodelab -> {
+                        val codelab = searched.codelab
+                        SearchResult(
+                            codelab.title,
+                            "Codelab",
+                            CODELAB,
+                            // This may not be unique, but to navigate to the meaningful page,
+                            // assigning codelabUrl as id
+                            codelab.codelabUrl
                         )
                     }
                 }
@@ -108,7 +124,10 @@ class SearchViewModel @Inject constructor(
                 _navigateToSpeakerAction.value = Event(speakerId)
             }
             CODELAB -> {
-                // not implemented
+                val url = searchResult.objectId
+                analyticsHelper.logUiEvent("Codelab: $url",
+                    AnalyticsActions.SEARCH_RESULT_CLICK)
+                _navigateToCodelabAction.value = Event(url)
             }
         }
     }

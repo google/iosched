@@ -26,13 +26,15 @@ import androidx.room.RoomDatabase
  */
 @Database(entities = [
     SessionFtsEntity::class,
-    SpeakerFtsEntity::class
+    SpeakerFtsEntity::class,
+    CodelabFtsEntity::class
 ],
-    version = 2,
+    version = 3,
     exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun sessionFtsDao(): SessionFtsDao
     abstract fun speakerFtsDao(): SpeakerFtsDao
+    abstract fun codelabFtsDao(): CodelabFtsDao
 
     companion object {
         private const val databaseName = "iosched-db"

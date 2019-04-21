@@ -14,18 +14,21 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.domain.search
+package com.google.samples.apps.iosched.shared.data.db
 
-import com.google.samples.apps.iosched.model.Codelab
-import com.google.samples.apps.iosched.model.Session
-import com.google.samples.apps.iosched.model.Speaker
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
 /**
- * Sealed class that represents searchable contents.
+ * The Data Access Object for the [CodelabFtsEntity] class.
  */
-sealed class Searchable {
+@Dao
+interface CodelabFtsDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(codelabs: List<CodelabFtsEntity>)
 
-    class SearchedSession(val session: Session) : Searchable()
-    class SearchedSpeaker(val speaker: Speaker) : Searchable()
-    class SearchedCodelab(val codelab: Codelab) : Searchable()
+    @Query("SELECT codelabId FROM codelabsFts WHERE codelabsFts MATCH :query")
+    fun searchAllCodelabs(query: String): List<String>
 }
