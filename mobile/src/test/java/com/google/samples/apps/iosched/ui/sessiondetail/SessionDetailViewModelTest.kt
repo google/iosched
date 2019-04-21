@@ -379,7 +379,7 @@ class SessionDetailViewModelTest {
 
     private fun createSessionWithUrl(youtubeUrl: String) =
         Session(
-            id = "0", title = "Session 0", abstract = "",
+            id = "0", title = "Session 0", description = "",
             startTime = ConferenceDays.first().start,
             endTime = ConferenceDays.first().end, room = TestData.room, isLivestream = false,
             sessionUrl = "", youTubeUrl = youtubeUrl, photoUrl = "", doryLink = "",

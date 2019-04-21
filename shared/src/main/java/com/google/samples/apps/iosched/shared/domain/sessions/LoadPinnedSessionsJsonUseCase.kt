@@ -83,7 +83,7 @@ open class LoadPinnedSessionsJsonUseCase @Inject constructor(
                                 day = TimeUtils.abbreviatedDayForAr(zonedTime),
                                 time = TimeUtils.abbreviatedTimeForAr(zonedTime),
                                 timestamp = session.startTime.toEpochMilli(),
-                                description = session.abstract)
+                                description = session.description)
                         }
                         val jsonResult = gson.toJson(PinnedSessionsSchedule(useCaseResult))
                         result.postValue(Result.Success(jsonResult))

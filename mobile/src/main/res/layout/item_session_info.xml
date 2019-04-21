@@ -232,7 +232,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal"
             android:paddingTop="@dimen/spacing_normal"
-            android:text="@{viewModel.session.abstract}"
+            android:text="@{viewModel.session.description}"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/session_detail_level"

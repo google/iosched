@@ -75,7 +75,7 @@ object FakeConferenceDataSource : ConferenceDataSource {
         val stagingSession = Session(
             id = FAKE_SESSION_ID,
             title = FAKE_SESSION_NAME,
-            abstract = "Staging session abstract",
+            description = "Staging session description",
             room = data.rooms.first(),
             speakers = setOf(stagingSpeaker),
             tags = listOf(stagingTag),

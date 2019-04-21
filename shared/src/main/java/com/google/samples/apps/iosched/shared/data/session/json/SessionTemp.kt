@@ -46,7 +46,7 @@ data class SessionTemp(
     /**
      * Body of text explaining this session in detail.
      */
-    val abstract: String,
+    val description: String,
 
     /**
      * Full URL for the session online.

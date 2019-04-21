@@ -54,10 +54,6 @@ data class SessionFtsEntity(
 
     /**
      * Body of text with the session's description.
-     *
-     * Note that this is named "abstract" in [Session].  This causes an issue with kapt, which
-     * in turn causes issues with Room.  For more details, see
-     * https://youtrack.jetbrains.com/issue/KT-27804.
      */
     @ColumnInfo(name = "description")
     val description: String,

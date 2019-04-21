@@ -50,7 +50,7 @@ data class Session(
     /**
      * Body of text explaining this session in detail.
      */
-    val abstract: String,
+    val description: String,
 
     /**
      * The session room.
@@ -154,10 +154,13 @@ data class Session(
     }
 
     /**
-     * Description of this event. Includes abstract, speakers, and live-streaming URL.
+     * Detailed description of this event. Includes description, speakers, and live-streaming URL.
      */
-    fun getDescription(paragraphDelimiter: String, speakerDelimiter: String): String = buildString {
-        append(abstract)
+    fun getCalendarDescription(
+        paragraphDelimiter: String,
+        speakerDelimiter: String
+    ): String = buildString {
+        append(description)
         append(paragraphDelimiter)
         append(speakers.joinToString(speakerDelimiter) { speaker -> speaker.name })
         if (!isLivestream && !youTubeUrl.isEmpty()) {

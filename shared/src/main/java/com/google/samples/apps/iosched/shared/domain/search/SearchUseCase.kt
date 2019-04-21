@@ -25,7 +25,7 @@ import javax.inject.Inject
 /**
  * Performs a search from a query string.
  *
- * A session is returned in the results if the title, abstract, or tag matches the query parameter.
+ * A session is returned in the results if the title, description, or tag matches the query parameter.
  */
 class SearchUseCase @Inject constructor(
     private val repository: SessionRepository
@@ -37,7 +37,7 @@ class SearchUseCase @Inject constructor(
         return repository.getSessions()
             .filter { session ->
                 session.title.toLowerCase().contains(query) ||
-                    session.abstract.toLowerCase().contains(query) ||
+                    session.description.toLowerCase().contains(query) ||
                     session.tags.any { tag ->
                         query.contains(tag.displayName.toLowerCase())
                     }
