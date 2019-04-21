@@ -189,7 +189,7 @@ class DefaultAgendaRepository(private val appConfigDataSource: AppConfigDataSour
                     dataSource.getStringLiveData(CODELABS_DAY1_END_TIME).value)
             ),
             Block(
-                title = "Office Hours & App Review",
+                title = "Office Hours & App Reviews",
                 type = "office_hours",
                 color = 0xff4285f4.toInt(),
                 isDark = true,
@@ -219,7 +219,7 @@ class DefaultAgendaRepository(private val appConfigDataSource: AppConfigDataSour
                     dataSource.getStringLiveData(AFTER_DARK_END_TIME).value)
             ),
             Block(
-                title = "Badge & device pick-up",
+                title = "Badge pick-up",
                 type = "badge",
                 color = 0xffe6e6e6.toInt(),
                 startTime = ZonedDateTime.parse(
@@ -308,7 +308,7 @@ class DefaultAgendaRepository(private val appConfigDataSource: AppConfigDataSour
                     dataSource.getStringLiveData(CONCERT_END_TIME).value)
             ),
             Block(
-                title = "Badge & device pick-up",
+                title = "Badge pick-up",
                 type = "badge",
                 color = 0xffe6e6e6.toInt(),
                 startTime = ZonedDateTime.parse(
