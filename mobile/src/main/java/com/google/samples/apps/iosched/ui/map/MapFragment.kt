@@ -257,6 +257,9 @@ class MapFragment : MainNavigationFragment() {
         mapView.getMapAsync { googleMap ->
             googleMap.apply {
                 setOnMapClickListener { viewModel.dismissFeatureDetails() }
+                setOnCameraMoveListener {
+                    viewModel.onZoomChanged(googleMap.cameraPosition.zoom)
+                }
                 enableMyLocation(false)
             }
         }

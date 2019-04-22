@@ -80,7 +80,6 @@ private fun createLabelMarker(
         // Don't set the title because we don't want to show an InfoWindow, but set the snippet for
         // accessibility services (TalkBack).
         snippet = title
-        isVisible = true
     }
 }
 
@@ -99,7 +98,6 @@ private fun createIconMarker(
         setAnchor(0.5f, 1f)
         setTitle(title)
         setIcon(icon)
-        isVisible = true
     }
 }
 
