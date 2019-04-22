@@ -40,7 +40,12 @@ abstract class AppDatabase : RoomDatabase() {
         private const val databaseName = "iosched-db"
 
         fun buildDatabase(context: Context): AppDatabase {
-            return Room.databaseBuilder(context, AppDatabase::class.java, databaseName).build()
+            // Since Room is only used for FTS, destructive migration is enough because the tables
+            // are cleared every time the app launches.
+            // https://medium.com/androiddevelopers/understanding-migrations-with-room-f01e04b07929
+            return Room.databaseBuilder(context, AppDatabase::class.java, databaseName)
+                .fallbackToDestructiveMigration()
+                .build()
         }
     }
 }
