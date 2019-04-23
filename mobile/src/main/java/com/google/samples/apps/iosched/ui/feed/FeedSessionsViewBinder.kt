@@ -42,7 +42,8 @@ data class FeedSessions(
     @StringRes val titleId: Int,
     @StringRes val actionTextId: Int,
     val userSessions: List<UserSession>,
-    val timeZoneId: ZoneId = ZoneId.systemDefault()
+    val timeZoneId: ZoneId = ZoneId.systemDefault(),
+    val isLoading: Boolean
 )
 
 class FeedSessionsViewBinder(private val eventListener: FeedEventListener) :

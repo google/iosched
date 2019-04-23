@@ -234,8 +234,8 @@ class FeedViewModel @Inject constructor(
             },
             userSessions = ((sessions as? Result.Success)?.data?.userSessions ?: emptyList())
                 .filter { it.session.endTime >= ZonedDateTime.now() }
-                .let { it.subList(0, Math.min(MAX_SESSIONS, it.size)) }
-
+                .let { it.subList(0, Math.min(MAX_SESSIONS, it.size)) },
+            isLoading = sessions is Result.Loading
         )
 
     private fun refreshSessions() {
