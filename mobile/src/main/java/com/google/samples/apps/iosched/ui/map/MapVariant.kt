@@ -34,6 +34,7 @@ enum class MapVariant(
     @StringRes val labelResId: Int,
     @DrawableRes val iconResId: Int,
     @RawRes val markersResId: Int,
+    @RawRes val styleResId: Int,
     val mapTilePrefix: String
 ) {
     AFTER_DARK(
@@ -42,6 +43,7 @@ enum class MapVariant(
         R.string.map_variant_after_dark,
         R.drawable.ic_map_after_dark,
         R.raw.map_markers_night,
+        R.raw.map_style_night,
         "night"
     ),
     CONCERT(
@@ -50,6 +52,7 @@ enum class MapVariant(
         R.string.map_variant_concert,
         R.drawable.ic_map_concert,
         R.raw.map_markers_concert,
+        R.raw.map_style_night,
         "concert"
     ),
     // Note: must be last to facilitate [forTime]
@@ -59,6 +62,7 @@ enum class MapVariant(
         R.string.map_variant_daytime,
         R.drawable.ic_map_daytime,
         R.raw.map_markers_day,
+        R.raw.map_style_day,
         "day"
     );
 
