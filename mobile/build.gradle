@@ -31,10 +31,6 @@ android {
         versionName rootProject.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "float[]",
-                "MAP_FLOORPLAN_MAPPING",
-                "{${map_floorplan_nw}, ${map_floorplan_ne}, ${map_floorplan_se}}"
-
         buildConfigField "com.google.android.gms.maps.model.LatLng",
                 "MAP_VIEWPORT_BOUND_NE",
                 "new com.google.android.gms.maps.model.LatLng(${map_viewport_bound_ne})"
