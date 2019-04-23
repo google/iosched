@@ -20,6 +20,7 @@ import androidx.lifecycle.LiveData
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.ObservableUserEvents
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
@@ -89,7 +90,9 @@ class NotificationAlarmUpdater @Inject constructor(
 
         val newObserver = { sessions: Result<ObservableUserEvents> ->
             when (sessions) {
-                is Success -> cancelAllSessions(sessions.data)
+                is Success -> DefaultScheduler.execute {
+                    cancelAllSessions(sessions.data)
+                }
                 is Error -> Timber.e(sessions.cause)
             }
         }
