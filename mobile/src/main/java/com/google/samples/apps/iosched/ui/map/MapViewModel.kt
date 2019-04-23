@@ -53,8 +53,8 @@ class MapViewModel @Inject constructor(
      * Area covered by the venue. Determines the viewport of the map.
      */
     val conferenceLocationBounds = LatLngBounds(
-        BuildConfig.MAP_VIEWPORT_BOUND_NW,
-        BuildConfig.MAP_VIEWPORT_BOUND_SE
+        BuildConfig.MAP_VIEWPORT_BOUND_SW,
+        BuildConfig.MAP_VIEWPORT_BOUND_NE
     )
 
     private val _mapVariant = MutableLiveData<MapVariant>()
@@ -80,6 +80,7 @@ class MapViewModel @Inject constructor(
     private var requestedFeatureId: String? = null
 
     private val focusZoomLevel = BuildConfig.MAP_CAMERA_FOCUS_ZOOM
+    private var currentZoomLevel = 16 // min zoom level supported
 
     private val _bottomSheetStateEvent = MediatorLiveData<Event<Int>>()
     val bottomSheetStateEvent: LiveData<Event<Int>>
@@ -106,8 +107,8 @@ class MapViewModel @Inject constructor(
         _geoJsonLayer.addSource(loadGeoJsonResult) { result ->
             if (result is Success) {
                 hasLoadedFeatures = true
-                _geoJsonLayer.value = result.data.geoJsonLayer
                 setMapFeatures(result.data.featureMap)
+                _geoJsonLayer.value = result.data.geoJsonLayer
             }
         }
 
@@ -145,10 +146,29 @@ class MapViewModel @Inject constructor(
     private fun setMapFeatures(features: Map<String, GeoJsonFeature>) {
         featureLookup.clear()
         featureLookup.putAll(features)
+        updateFeaturesVisiblity(currentZoomLevel.toFloat())
         // if we have a pending request to highlight a feature, resolve it now
         val featureId = requestedFeatureId ?: return
         requestedFeatureId = null
         highlightFeature(featureId)
+    }
+
+    fun onZoomChanged(zoom: Float) {
+        // Truncate the zoom and check if we're in the same level
+        val zoomInt = zoom.toInt()
+        if (currentZoomLevel != zoomInt) {
+            currentZoomLevel = zoomInt
+            updateFeaturesVisiblity(zoom)
+        }
+    }
+
+    private fun updateFeaturesVisiblity(zoom: Float) {
+        // Don't hide the marker if it's currently being focused on by the user
+        val selectedId = selectedMarkerInfo.value?.id
+        featureLookup.values.forEach { feature ->
+            val minZoom = feature.getProperty("minZoom")?.toFloatOrNull() ?: 0f
+            feature.pointStyle.isVisible = (feature.id == selectedId || zoom > minZoom)
+        }
     }
 
     fun requestHighlightFeature(featureId: String) {
@@ -170,6 +190,7 @@ class MapViewModel @Inject constructor(
         // publish feature data
         val title = feature.getProperty("title")
         _selectedMarkerInfo.value = MarkerInfo(
+            featureId,
             title,
             feature.getProperty("subtitle"),
             feature.getProperty("description"),
@@ -185,6 +206,7 @@ class MapViewModel @Inject constructor(
 
     fun dismissFeatureDetails() {
         _bottomSheetStateEvent.value = Event(BottomSheetBehavior.STATE_HIDDEN)
+        _selectedMarkerInfo.value = null
     }
 
     fun logViewedMarkerDetails() {
@@ -194,6 +216,7 @@ class MapViewModel @Inject constructor(
 }
 
 data class MarkerInfo(
+    val id: String,
     val title: String,
     val subtitle: String?,
     val description: String?,
