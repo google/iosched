@@ -132,7 +132,7 @@
         <item quantity="other">%s دقيقة</item>
     </plurals>
     <string name="menu_item_share_session">مشاركة الجلسة</string>
-    <string name="share_text_session_detail">يُرجى الاطّلاع على \"%1$s\" على العنوان #io18 %2$s.</string>
+    <string name="share_text_session_detail">يُرجى الاطّلاع على \"%1$s\" على العنوان #io19 %2$s.</string>
     <string name="intent_chooser_session_detail">مشاركة</string>
     <string name="enable_my_location">تفعيل الوصول إلى موقعي</string>
     <string name="my_location_rationale">يجب منح التطبيق إذن تحديد الموقع الجغرافي ليتمكّن من عرض موقعك الجغرافي على الخريطة.</string>

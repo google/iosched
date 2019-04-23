@@ -120,7 +120,7 @@
         <item quantity="other">%s minutos</item>
     </plurals>
     <string name="menu_item_share_session">Compartir sesión</string>
-    <string name="share_text_session_detail">Mira la sesión %1$s en #io18 %2$s</string>
+    <string name="share_text_session_detail">Mira la sesión %1$s en #io19 %2$s</string>
     <string name="intent_chooser_session_detail">Compartir</string>
     <string name="enable_my_location">Habilitar mi ubicación</string>
     <string name="my_location_rationale">Para mostrar tu ubicación en el mapa, la app necesita el permiso correspondiente.</string>

@@ -120,7 +120,7 @@
         <item quantity="other">%s분</item>
     </plurals>
     <string name="menu_item_share_session">세션 공유</string>
-    <string name="share_text_session_detail">#io18 %2$s에서 \'%1$s\' 확인해 보기</string>
+    <string name="share_text_session_detail">#io19 %2$s에서 \'%1$s\' 확인해 보기</string>
     <string name="intent_chooser_session_detail">공유</string>
     <string name="enable_my_location">내 위치 사용</string>
     <string name="my_location_rationale">지도에 위치를 표시하려면 앱에 위치 정보 액세스 권한이 필요합니다.</string>

@@ -120,7 +120,7 @@
         <item quantity="other">%s minutes</item>
     </plurals>
     <string name="menu_item_share_session">Partager la séance</string>
-    <string name="share_text_session_detail">Voir « %1$s » à #io18 %2$s</string>
+    <string name="share_text_session_detail">Voir « %1$s » à #io19 %2$s</string>
     <string name="intent_chooser_session_detail">Partage</string>
     <string name="enable_my_location">Activer la localisation</string>
     <string name="my_location_rationale">L\'application doit disposer de l\'autorisation d\'accéder à votre position pour afficher celle-ci sur la carte.</string>

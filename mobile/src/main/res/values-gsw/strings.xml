@@ -120,7 +120,7 @@
         <item quantity="other">%s Minuten</item>
     </plurals>
     <string name="menu_item_share_session">Sitzung teilen</string>
-    <string name="share_text_session_detail">%1$s bei #io18 %2$s ansehen</string>
+    <string name="share_text_session_detail">%1$s bei #io19 %2$s ansehen</string>
     <string name="intent_chooser_session_detail">Teilen</string>
     <string name="enable_my_location">\"Mein Standort\" aktivieren</string>
     <string name="my_location_rationale">Die App benötigt die Berechtigung zur Standortermittlung, um Ihren Standort auf der Karte anzuzeigen.</string>

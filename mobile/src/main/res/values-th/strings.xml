@@ -120,7 +120,7 @@
         <item quantity="other">%s นาที</item>
     </plurals>
     <string name="menu_item_share_session">แชร์เซสชัน</string>
-    <string name="share_text_session_detail">ลองดู \"%1$s\" ที่ #io18 %2$s</string>
+    <string name="share_text_session_detail">ลองดู \"%1$s\" ที่ #io19 %2$s</string>
     <string name="intent_chooser_session_detail">แชร์</string>
     <string name="enable_my_location">เปิดใช้ตำแหน่งของฉัน</string>
     <string name="my_location_rationale">แอปจำเป็นต้องมีสิทธิ์เข้าถึงตำแหน่งเพื่อแสดงตำแหน่งของคุณบนแผนที่</string>

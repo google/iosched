@@ -120,7 +120,7 @@
         <item quantity="other">%s 分鐘</item>
     </plurals>
     <string name="menu_item_share_session">分享講座資訊</string>
-    <string name="share_text_session_detail">快來參加「%1$s」，詳情請見 #io18 %2$s</string>
+    <string name="share_text_session_detail">快來參加「%1$s」，詳情請見 #io19 %2$s</string>
     <string name="intent_chooser_session_detail">分享</string>
     <string name="enable_my_location">啟用我的位置</string>
     <string name="my_location_rationale">授予應用程式位置存取權後，即可在地圖上顯示您的位置。</string>
