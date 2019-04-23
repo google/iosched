@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.ar
 
 import android.os.Bundle
+import android.view.WindowManager
 import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.ar.web.webview.ArWebView
@@ -50,6 +51,7 @@ class ArActivity : AppCompatActivity() {
             // teaser page and requesting ARCore apk and camera permission
             loadUrl("https://sp-io2019.appspot.com/")
         }
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     override fun onRestart() {
@@ -59,6 +61,7 @@ class ArActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         arWebView.webView.destroy()
+        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         super.onDestroy()
     }
 
@@ -69,7 +72,7 @@ class ArActivity : AppCompatActivity() {
     private class ArWebViewClient(
         val json: String,
         val canDemoAr: Boolean,
-        val arWebView: ArWebView
+        arWebView: ArWebView
     ) :
             ArWebView.ArWebViewDefaultWebViewClient(arWebView) {
         override fun onPageFinished(view: WebView?, url: String?) {
