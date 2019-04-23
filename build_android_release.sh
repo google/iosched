@@ -16,7 +16,6 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 MOBILE_OUT=$DIR/mobile/build/outputs
-TV_OUT=$DIR/tv/build/outputs
 
 export ANDROID_HOME="$(cd $DIR/../../../prebuilts/fullsdk/linux && pwd )"
 
@@ -30,17 +29,13 @@ BUILD_RESULT=$?
 
 # Debug
 cp $MOBILE_OUT/apk/debug/mobile-debug.apk $DIST_DIR
-cp $TV_OUT/apk/debug/tv-debug.apk $DIST_DIR
 
 # Staging
 cp $MOBILE_OUT/apk/staging/mobile-staging.apk $DIST_DIR
-cp $TV_OUT/apk/staging/tv-staging.apk $DIST_DIR
 
 # Release
 cp $MOBILE_OUT/apk/release/mobile-release-unsigned.apk $DIST_DIR/mobile-release.apk
 cp $MOBILE_OUT/mapping/release/mapping.txt $DIST_DIR/mobile-release-apk-mapping.txt
-cp $TV_OUT/apk/release/tv-release-unsigned.apk $DIST_DIR/tv-release.apk
-cp $TV_OUT/mapping/release/mapping.txt $DIST_DIR/tv-release-apk-mapping.txt
 
 # Build App Bundles
 # Don't clean here, otherwise all apks are gone.
@@ -48,17 +43,13 @@ $DIR/gradlew bundle ${GRADLE_PARAMS}
 
 # Debug
 cp $MOBILE_OUT/bundle/debug/mobile.aab $DIST_DIR/mobile-debug.aab
-cp $TV_OUT/bundle/debug/tv.aab $DIST_DIR/tv-debug.aab
 
 # Staging
 cp $MOBILE_OUT/bundle/staging/mobile.aab $DIST_DIR/mobile-staging.aab
-cp $TV_OUT/bundle/staging/tv.aab $DIST_DIR/tv-staging.aab
 
 # Release
 cp $MOBILE_OUT/bundle/release/mobile.aab $DIST_DIR/mobile-release.aab
 cp $MOBILE_OUT/mapping/release/mapping.txt $DIST_DIR/mobile-release-aab-mapping.txt
-cp $TV_OUT/bundle/release/tv.aab $DIST_DIR/tv-release.aab
-cp $TV_OUT/mapping/release/mapping.txt $DIST_DIR/tv-release-aab-mapping.txt
 BUILD_RESULT=$?
 
 exit $BUILD_RESULT
