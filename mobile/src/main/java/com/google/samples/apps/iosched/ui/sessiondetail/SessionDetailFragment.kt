@@ -35,7 +35,6 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import androidx.transition.TransitionInflater
-import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.R.style
 import com.google.samples.apps.iosched.databinding.FragmentSessionDetailBinding
@@ -286,9 +285,7 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
         super.onActivityCreated(savedInstanceState)
 
         // Observing the changes from Fragment because data binding doesn't work with menu items.
-        val menu = requireActivity().findViewById<BottomAppBar>(
-            R.id.session_detail_bottom_app_bar
-        ).menu
+        val menu = binding.sessionDetailBottomAppBar.menu
         val starMenu = menu.findItem(R.id.menu_item_star)
         sessionDetailViewModel.shouldShowStarInBottomNav.observe(this, Observer { showStar ->
             showStar?.let {
@@ -313,7 +310,9 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
         sessionDetailViewModel.session.observe(this, Observer {
             if (it != null && !titleUpdated) {
                 sessionTitle = it.title
-                analyticsHelper.sendScreenView("Session Details: $sessionTitle", requireActivity())
+                activity?.let { activity ->
+                    analyticsHelper.sendScreenView("Session Details: $sessionTitle", activity)
+                }
                 titleUpdated = true
             }
         })
