@@ -120,7 +120,7 @@
         <item quantity="other">%s分</item>
     </plurals>
     <string name="menu_item_share_session">セッションを共有</string>
-    <string name="share_text_session_detail">#io18 %2$s で「%1$s」をご確認ください</string>
+    <string name="share_text_session_detail">#io19 %2$s で「%1$s」をご確認ください</string>
     <string name="intent_chooser_session_detail">共有</string>
     <string name="enable_my_location">現在地情報を有効にする</string>
     <string name="my_location_rationale">マップで現在地を表示するには、アプリに位置情報へのアクセスを許可する必要があります。</string>

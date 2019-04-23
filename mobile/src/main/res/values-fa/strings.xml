@@ -120,7 +120,7 @@
         <item quantity="other">%s دقیقه</item>
     </plurals>
     <string name="menu_item_share_session">هم‌رسانی جلسه</string>
-    <string name="share_text_session_detail">«%1$s» را در #io18 %2$s بررسی کنید</string>
+    <string name="share_text_session_detail">«%1$s» را در #io19 %2$s بررسی کنید</string>
     <string name="intent_chooser_session_detail">هم‌رسانی</string>
     <string name="enable_my_location">فعال کردن مکان من</string>
     <string name="my_location_rationale">برنامه برای نشان دادن مکان شما روی نقشه، به مجوز مکان نیاز دارد.</string>

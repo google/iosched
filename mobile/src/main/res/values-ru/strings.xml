@@ -126,7 +126,7 @@
         <item quantity="other">%s минуты</item>
     </plurals>
     <string name="menu_item_share_session">Поделиться сессией</string>
-    <string name="share_text_session_detail">Узнайте о сессии \"%1$s\" на фестивале #io18 %2$s</string>
+    <string name="share_text_session_detail">Узнайте о сессии \"%1$s\" на фестивале #io19 %2$s</string>
     <string name="intent_chooser_session_detail">Поделиться</string>
     <string name="enable_my_location">Открыть доступ к геоданным</string>
     <string name="my_location_rationale">Разрешите доступ к своему местоположению, чтобы мы могли показывать вам его на карте.</string>

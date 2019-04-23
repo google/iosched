@@ -68,7 +68,7 @@ class SessionDeserializer : JsonDeserializer<SessionTemp> {
     }
 
     private fun getUrlFromId(id: String): String {
-        val prefix = "https://events.google.com/io/schedule/?section=day&sid="
+        val prefix = "https://events.google.com/io/schedule/events/"
         return if (id.isNotEmpty()) prefix + id else ""
     }
 }

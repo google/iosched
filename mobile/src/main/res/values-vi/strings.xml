@@ -120,7 +120,7 @@
         <item quantity="other">%s phút</item>
     </plurals>
     <string name="menu_item_share_session">Chia sẻ về phiên hội thảo</string>
-    <string name="share_text_session_detail">Hãy đến tham gia hội thảo \"%1$s\" tại #io18 %2$s</string>
+    <string name="share_text_session_detail">Hãy đến tham gia hội thảo \"%1$s\" tại #io19 %2$s</string>
     <string name="intent_chooser_session_detail">Chia sẻ</string>
     <string name="enable_my_location">Bật vị trí của tôi</string>
     <string name="my_location_rationale">Ứng dụng này cần bạn cấp quyền truy cập vị trí để hiển thị vị trí của bạn trên bản đồ.</string>
