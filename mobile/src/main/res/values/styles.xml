@@ -115,9 +115,9 @@
 
     <!-- Map -->
     <style name="TextAppearance.IOSched.Map.MarkerLabel" parent="TextAppearance.IOSched.Body2">
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:fontFamily">monospace</item>
-        <item name="android:textColor">#174ea6</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:letterSpacing">-0.03</item>
     </style>
 
