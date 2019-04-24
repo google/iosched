@@ -59,6 +59,14 @@ class ArActivity : AppCompatActivity() {
         arWebView.webView.reload()
     }
 
+    override fun onStop() {
+        super.onStop()
+        val addOverlayScript =
+                "if (window.app && window.app.addIntroOverlay) " +
+                        "window.app.addIntroOverlay();"
+        arWebView.webView.evaluateJavascript(addOverlayScript) {}
+    }
+
     override fun onDestroy() {
         arWebView.webView.destroy()
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
