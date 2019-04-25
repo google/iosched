@@ -129,7 +129,7 @@ class CountdownView @JvmOverloads constructor(
         override fun run() {
             val countdown = Countdown.until(conferenceStart) ?: return
 
-            if (compositions.ready) {
+            compositions.doOnReady {
                 days1 = (countdown.days / 10)
                 days2 = (countdown.days % 10)
 
@@ -141,9 +141,9 @@ class CountdownView @JvmOverloads constructor(
 
                 secs1 = (countdown.seconds / 10)
                 secs2 = (countdown.seconds % 10)
-            }
 
-            handler?.postDelayed(this, 1_000L) // Run self every second
+                handler?.postDelayed(this, 1_000L) // Run self every second
+            }
         }
     }
 
@@ -208,6 +208,8 @@ private class CompositionSet {
 
     private val _compositions = arrayOfNulls<LottieComposition?>(10)
 
+    private var doOnReadyCallback: (() -> Unit)? = null
+
     val ready: Boolean
         get() = _compositions.all { it != null }
 
@@ -215,7 +217,21 @@ private class CompositionSet {
         for (i in 0..9) {
             LottieCompositionFactory.fromAsset(context, "anim/$i.json").addListener { composition ->
                 _compositions[i] = composition
+                if (ready) {
+                    doOnReadyCallback?.let {
+                        it()
+                        doOnReadyCallback = null
+                    }
+                }
             }
+        }
+    }
+
+    fun doOnReady(body: () -> Unit) {
+        if (ready) {
+            body()
+        } else {
+            doOnReadyCallback = body
         }
     }
 
