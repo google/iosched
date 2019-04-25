@@ -54,13 +54,6 @@ internal abstract class OnboardingModule {
             WelcomeDuringConferenceFragment
 
     /**
-     * Generates an [AndroidInjector] for the [OnboardingExploreArFragment].
-     */
-    @FragmentScoped
-    @ContributesAndroidInjector
-    internal abstract fun contributeOnboardingExploreArFragment(): OnboardingExploreArFragment
-
-    /**
      * Generates an [AndroidInjector] for the [OnboardingSignInFragment].
      */
     @FragmentScoped
