@@ -109,15 +109,13 @@ class OnboardingAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter
         // Before the conference
         arrayOf(
             WelcomePreConferenceFragment(),
-            OnboardingSignInFragment(),
-            OnboardingExploreArFragment()
+            OnboardingSignInFragment()
         )
     } else if (TimeUtils.conferenceHasStarted() && !TimeUtils.conferenceHasEnded()) {
         // During the conference
         arrayOf(
             WelcomeDuringConferenceFragment(),
-            OnboardingSignInFragment(),
-            OnboardingExploreArFragment()
+            OnboardingSignInFragment()
         )
     } else {
         // Post the conference
