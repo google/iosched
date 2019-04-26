@@ -166,8 +166,10 @@ class MapViewModel @Inject constructor(
         // Don't hide the marker if it's currently being focused on by the user
         val selectedId = selectedMarkerInfo.value?.id
         featureLookup.values.forEach { feature ->
-            val minZoom = feature.getProperty("minZoom")?.toFloatOrNull() ?: 0f
-            feature.pointStyle.isVisible = (feature.id == selectedId || zoom > minZoom)
+            if (feature.id != selectedId) {
+                val minZoom = feature.getProperty("minZoom")?.toFloatOrNull() ?: 0f
+                feature.pointStyle.isVisible = zoom >= minZoom
+            }
         }
     }
 
