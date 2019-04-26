@@ -20,10 +20,10 @@
     <string name="day2">2 日目</string>
     <string name="day3">3 日目</string>
     <string name="day1_date">5月7日</string>
-    <string name="day2_date">5 月 8 日</string>
+    <string name="day2_date">5月8日</string>
     <string name="day3_date">5月9日</string>
     <string name="day0">前日</string>
-    <string name="day0_day_date">5月7日火曜日</string>
+    <string name="day0_day_date">5月6日月曜日</string>
     <string name="day1_day_date">5月7日火曜日</string>
     <string name="day2_day_date">5月8日水曜日</string>
     <string name="day3_day_date">5月9日木曜日</string>

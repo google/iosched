@@ -19,11 +19,11 @@
     <string name="day1">اليوم 1</string>
     <string name="day2">اليوم 2</string>
     <string name="day3">اليوم 3</string>
-    <string name="day1_date">7 أيار (مايو)</string>
+    <string name="day1_date">7 مايو</string>
     <string name="day2_date">8 مايو</string>
     <string name="day3_date">9 مايو</string>
     <string name="day0">اليوم السابق للمؤتمر</string>
-    <string name="day0_day_date">الثلاثاء 7 أيار (مايو)</string>
+    <string name="day0_day_date">الاثنين 6 أيار (مايو)</string>
     <string name="day1_day_date">الثلاثاء 7 أيار (مايو)</string>
     <string name="day2_day_date">الأربعاء 8 أيار (مايو)</string>
     <string name="day3_day_date">الخميس 9 أيار (مايو)</string>
