@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Copyright 2019 Google LLC
   ~
@@ -15,10 +15,16 @@
   ~ limitations under the License.
 -->
 <resources>
-    <string name="day1">Giorno 1</string>
-    <string name="day2">Giorno 2</string>
-    <string name="day3">Giorno 3</string>
-
-
-
+    <string name="feature_explore_io">Scopri l\'I/O</string>
+    <string name="day1">Primo giorno</string>
+    <string name="day2">Secondo giorno</string>
+    <string name="day3">Terzo giorno</string>
+    <string name="day1_date">7 maggio</string>
+    <string name="day2_date">8 maggio</string>
+    <string name="day3_date">9 maggio</string>
+    <string name="day0">Il giorno precedente</string>
+    <string name="day0_day_date">Martedì 7 maggio</string>
+    <string name="day1_day_date">Martedì 7 maggio</string>
+    <string name="day2_day_date">Mercoledì 8 maggio</string>
+    <string name="day3_day_date">Giovedì 9 maggio</string>
 </resources>
