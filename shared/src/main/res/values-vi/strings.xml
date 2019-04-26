@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Copyright 2019 Google LLC
   ~
@@ -15,10 +15,16 @@
   ~ limitations under the License.
 -->
 <resources>
+    <string name="feature_explore_io">Khám phá địa điểm diễn ra sự kiện I/O</string>
     <string name="day1">Ngày 1</string>
     <string name="day2">Ngày 2</string>
     <string name="day3">Ngày 3</string>
-
-
-
+    <string name="day1_date">Ngày 7 tháng 5</string>
+    <string name="day2_date">Ngày 8 tháng 5</string>
+    <string name="day3_date">Ngày 9 tháng 5</string>
+    <string name="day0">Ngày trước khi diễn ra hội nghị</string>
+    <string name="day0_day_date">Thứ Ba, ngày 7 tháng 5</string>
+    <string name="day1_day_date">Thứ Ba, ngày 7 tháng 5</string>
+    <string name="day2_day_date">Thứ Tư, ngày 8 tháng 5</string>
+    <string name="day3_day_date">Thứ Năm, ngày 9 tháng 5</string>
 </resources>
