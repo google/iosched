@@ -98,6 +98,7 @@ class SearchFragment : MainNavigationFragment() {
                     showKeyboard(view.findFocus())
                 }
             }
+            requestFocus()
         }
         binding.recyclerView.doOnApplyWindowInsets { v, insets, padding ->
             v.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)

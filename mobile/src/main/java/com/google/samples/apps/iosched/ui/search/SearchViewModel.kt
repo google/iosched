@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.ui.search
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.model.SessionId
@@ -62,14 +63,17 @@ class SearchViewModel @Inject constructor(
     val navigateToCodelabAction: LiveData<Event<String>> = _navigateToCodelabAction
 
     private val loadSearchResults = MutableLiveData<Result<List<Searchable>>>()
-    val searchResults: LiveData<List<SearchResult>>
 
-    val isEmpty: LiveData<Boolean>
+    private val _searchResults = MediatorLiveData<List<SearchResult>>()
+    val searchResults: LiveData<List<SearchResult>> = _searchResults
+
+    private val _isEmpty = MediatorLiveData<Boolean>()
+    val isEmpty: LiveData<Boolean> = _isEmpty
 
     init {
-        searchResults = loadSearchResults.map {
-            val result = it as? Result.Success ?: return@map emptyList<SearchResult>()
-            result.data.map { searched ->
+        _searchResults.addSource(loadSearchResults) {
+            val result = (it as? Result.Success)?.data ?: emptyList()
+            _searchResults.value = result.map { searched ->
                 when (searched) {
                     is SearchedSession -> {
                         val session = searched.session
@@ -95,7 +99,7 @@ class SearchViewModel @Inject constructor(
                             codelab.title,
                             "Codelab",
                             CODELAB,
-                            // This may not be unique, but to navigate to the meaningful page,
+                            // This may not be unique, but to navigate to a meaningful page,
                             // assigning codelabUrl as id
                             codelab.codelabUrl
                         )
@@ -103,9 +107,8 @@ class SearchViewModel @Inject constructor(
                 }
             }
         }
-
-        isEmpty = loadSearchResults.map {
-            it.successOr(null).isNullOrEmpty()
+        _isEmpty.addSource(loadSearchResults) {
+            _isEmpty.value = it.successOr(null).isNullOrEmpty()
         }
     }
 
@@ -134,6 +137,7 @@ class SearchViewModel @Inject constructor(
 
     fun onSearchQueryChanged(newQuery: String) {
         if (newQuery.length < 2) {
+            onQueryCleared()
             return
         }
         analyticsHelper.logUiEvent("Query: $newQuery", AnalyticsActions.SEARCH_QUERY_SUBMIT)
@@ -148,5 +152,11 @@ class SearchViewModel @Inject constructor(
             Timber.d("Searching for query without using Room: $query")
             loadSearchResultsUseCase(query, loadSearchResults)
         }
+    }
+
+    private fun onQueryCleared() {
+        _searchResults.value = emptyList()
+        // Explicitly set false to not show the "No results" state
+        _isEmpty.value = false
     }
 }
