@@ -285,14 +285,15 @@ class ScheduleFragment : MainNavigationFragment() {
             // VM outlives the UI, so reset this flag when a new Schedule page is shown
             scheduleViewModel.userHasInteracted = false
 
+            binding.coordinatorLayout.postDelayed({
+                binding.coordinatorLayout.requestApplyInsetsWhenAttached()
+            }, 500)
+
             // Process arguments to set initial filters
             arguments?.let {
                 if (ScheduleFragmentArgs.fromBundle(it).showPinnedEvents) {
                     scheduleViewModel.clearFilters()
                     scheduleViewModel.showPinnedEvents()
-                    binding.coordinatorLayout.postDelayed({
-                        binding.coordinatorLayout.requestApplyInsetsWhenAttached()
-                    }, 500)
                 }
                 if (ScheduleFragmentArgs.fromBundle(it).showAllEvents) {
                     scheduleViewModel.clearFilters()
