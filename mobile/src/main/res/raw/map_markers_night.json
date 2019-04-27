@@ -229,6 +229,19 @@
       }
     },
     {
+      "id": "bb3d8fbf-6b3f-4316-816e-deae33bdf035,boardwalk",
+      "type": "Feature",
+      "properties": {
+        "title": "Boardwalk",
+        "description": "Experience all the community and culture of I/O by taking a stroll down the Boardwalk. There you’ll find our own Broadcast Studio, Draw to Art (interactive easels from Google Arts & Culture powered by ML), lightning sessions, and other fun surprises.",
+        "minZoom": 99
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-122.079476, 37.425391]
+      }
+    },
+    {
       "id": "digital_detox",
       "type": "Feature",
       "properties": {
