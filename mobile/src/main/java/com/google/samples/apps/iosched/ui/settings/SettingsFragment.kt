@@ -22,9 +22,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
+import android.widget.TextView
 import androidx.core.view.updatePaddingRelative
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.ViewModelProvider
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSettingsBinding
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
@@ -76,4 +78,9 @@ fun createDialogForFile(button: View, dialogTitle: String, fileLink: String) {
             .create()
             .show()
     }
+}
+
+@BindingAdapter("versionName")
+fun setVersionName(view: TextView, versionName: String) {
+    view.text = view.resources.getString(R.string.version_name, versionName)
 }

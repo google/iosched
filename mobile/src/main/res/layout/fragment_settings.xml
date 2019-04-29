@@ -20,6 +20,8 @@
 
     <data>
 
+        <import type="com.google.samples.apps.iosched.BuildConfig" />
+
         <variable
             name="viewModel"
             type="com.google.samples.apps.iosched.ui.settings.SettingsViewModel" />
@@ -151,7 +153,7 @@
                     android:minHeight="48dp"
                     android:padding="@dimen/margin_normal"
                     android:textAppearance="?textAppearanceBody2"
-                    android:text="@string/version_name" />
+                    app:versionName="@{BuildConfig.VERSION_NAME}" />
 
                 <TextView
                     android:layout_width="wrap_content"

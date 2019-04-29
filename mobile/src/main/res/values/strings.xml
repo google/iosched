@@ -234,7 +234,6 @@
     <string name="onboarding_signin" translation_description="The welcome message to encourage the user to sign-in to have better experience">Sign-in to receive I/O notifications and attendees can reserve seats for sessions.</string>
     <string name="onboarding_explore_ar" translation_description="The welcome message shown post the conference">I/O in augmented reality. Once the conference begins you can Explore in AR.</string>
 
-
     <plurals name="session_starting_in" translation_description="A countdown timer for a session starting, e.g. 'Session starting in 5 minutes'. Will always be minutes">
         <item quantity="one">Session starting in %1$s minute</item>
         <item quantity="other">Session starting in %1$s minutes</item>
@@ -243,12 +242,15 @@
     <string name="expanded" translation_description="The label used on a button when a view is in an expanded state.">Expanded</string>
     <string name="collapsed" translation_description="The label used on a button when a view is in an collapsed state.">Collapsed</string>
 
+    <!-- Settings -->
+    <string name="settings_title" translation_description="Title for the tab that shows all the settings of this app.">Settings</string>
+    <string name="version_name" translation_description="Label for the app version name in Settings.">Version %s</string>
+
     <!-- Info pages - TODO: update with 2018 copy and set translatable="true". -->
     <string name="info_title" translation_description="The title for the info screen where user can see various information, such as FAQ and travel info.">Info</string>
     <string name="event_title" translation_description="The title for the tab that shows interesting events, such as sessions and office hours.">Event</string>
     <string name="travel_title" translation_description="The title for the tab that shows travel information, such as carpool and bus schedules.">Travel</string>
     <string name="faq_title" translation_description="The title for the tab that shows FAQ.">FAQ</string>
-    <string name="settings_title" translation_description="Title for the tab that shows all the settings of this app.">Settings</string>
     <string name="about_title" translation_description="Title for the 'About' tab that shows miscellaneous info.">About</string>
 
     <string name="faq_url" translatable="false">https://events.google.com/io/faq/</string>

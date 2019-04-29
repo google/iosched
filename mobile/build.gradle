@@ -48,8 +48,6 @@ android {
         resValue "dimen", "map_viewport_min_zoom", "${map_viewport_min_zoom}"
         resValue "dimen", "map_viewport_max_zoom", "${map_viewport_max_zoom}"
 
-        resValue "string", "version_name", "Version ${rootProject.versionName}"
-
         manifestPlaceholders = [crashlyticsEnabled: true]
 
         vectorDrawables.useSupportLibrary = true
@@ -68,6 +66,7 @@ android {
             buildConfigField "String", "MAP_TILE_URL_BASE", "\"https://storage.googleapis.com/io2019-festivus-prod/images/maptiles\""
         }
         debug {
+            versionNameSuffix = '-debug'
             manifestPlaceholders = [crashlyticsEnabled: false]
             resValue "string",
                     "google_maps_key",
@@ -77,6 +76,7 @@ android {
         }
         staging {
             initWith debug
+            versionNameSuffix = '-staging'
 
             // Specifies a sorted list of fallback build types that the
             // plugin should try to use when a dependency does not include a
