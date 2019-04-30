@@ -1,0 +1,37 @@
+<!--
+  ~ Copyright 2019 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="400"
+    android:viewportHeight="400">
+    <path
+        android:fillColor="#54abd0f2"
+        android:pathData="M0,0H400V400H0Z" />
+    <path
+        android:fillColor="#39c79d"
+        android:pathData="M128.38,249.06l200.29,-93.4l84.52,181.26l-200.29,93.4z" />
+    <path
+        android:fillColor="#39c79d"
+        android:pathData="m234.01,51.46c-1.71,-0.11,-3.47,0.64,-3.57,2.34l-2.3,36.98c-15.57,0.04,-36.95,4.5,-49.36,11.05c-12.41,6.54,-29.39,18.36,-37.65,29.5l-29.9,-21.83c-2.73,-1.99,-6.84,4.25,-4.37,6.02l29.53,21.18c-17.89,24.71,-32.06,65.52,-11.61,104.38l200.29,-93.41c-20.44,-40.92,-60.98,-56.99,-89.46,-56.79l1.7,-36.56c0.08,-1.76,-1.58,-2.74,-3.29,-2.85zm15.28,66.82a10,10,109.31,0,1,9.27,10.68a10,10,57.89,0,1,-10.68,9.27a10,10,133.25,0,1,-9.27,-10.68a10,10,109.31,0,1,10.68,-9.27zm-91.24,42.68a10,10,75.94,0,1,9.27,10.68a10,10,101.53,0,1,-10.68,9.27a10,10,96.27,0,1,-9.27,-10.68a10,10,105.46,0,1,10.68,-9.27z" />
+    <path
+        android:fillColor="#39c79d"
+        android:pathData="M21.59,180.86a24,24,110.64,0,1,33.82,2.96l71.99,85.79a24,24,105.88,0,1,-2.96,33.82a24,24,105.88,0,1,-33.81,-2.96l-71.99,-85.8a24,24,110.64,0,1,2.95,-33.81z" />
+    <path
+        android:fillColor="#39c79d"
+        android:pathData="M357.9,142.03a24,24,108.07,0,1,31.89,11.61l47.34,101.5a24,24,110.06,0,1,-11.61,31.9a24,24,110.06,0,1,-31.9,-11.61l-47.33,-101.51a24,24,108.07,0,1,11.61,-31.89z" />
+</vector>

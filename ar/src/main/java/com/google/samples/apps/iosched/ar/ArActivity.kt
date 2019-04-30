@@ -40,7 +40,7 @@ class ArActivity : AppCompatActivity() {
         arWebView.apply {
             webView.apply {
                 webViewClient =
-                        ArWebViewClient(pinnedSessionsJson, canSignedInUserDemoAr, arWebView)
+                    ArWebViewClient(pinnedSessionsJson, canSignedInUserDemoAr, arWebView)
                 settings.apply {
                     mediaPlaybackRequiresUserGesture = false
                     domStorageEnabled = true
@@ -62,8 +62,8 @@ class ArActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         val addOverlayScript =
-                "if (window.app && window.app.addIntroOverlay) " +
-                        "window.app.addIntroOverlay();"
+            "if (window.app && window.app.addIntroOverlay) " +
+                "window.app.addIntroOverlay();"
         arWebView.webView.evaluateJavascript(addOverlayScript) {}
     }
 
@@ -81,17 +81,17 @@ class ArActivity : AppCompatActivity() {
         val json: String,
         val canDemoAr: Boolean,
         arWebView: ArWebView
-    ) :
-            ArWebView.ArWebViewDefaultWebViewClient(arWebView) {
+    ) : ArWebView.ArWebViewDefaultWebViewClient(arWebView) {
+
         override fun onPageFinished(view: WebView?, url: String?) {
             super.onPageFinished(view, url)
             val evalAgendaScript =
                 "if (window.app && window.app.sendIOAppUserAgenda) " +
-                        "window.app.sendIOAppUserAgenda('$json');"
+                    "window.app.sendIOAppUserAgenda('$json');"
             view?.evaluateJavascript(evalAgendaScript) {}
             if (canDemoAr) {
                 val evalSetDebugUserScript = "if (window.app && window.app.setDebugUser) " +
-                        "window.app.setDebugUser()"
+                    "window.app.setDebugUser()"
                 view?.evaluateJavascript(evalSetDebugUserScript) {}
             }
         }

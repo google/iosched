@@ -85,14 +85,13 @@ open class StagingAuthenticatedUserInfo(
     override fun getDisplayName(): String? = "Staging User"
 
     override fun getPhotoUrl(): Uri? {
-        val resources = context.getResources()
-        val uri = Uri.Builder()
+        val resources = context.resources
+        return Uri.Builder()
             .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
             .authority(resources.getResourcePackageName(R.drawable.staging_user_profile))
             .appendPath(resources.getResourceTypeName(R.drawable.staging_user_profile))
             .appendPath(resources.getResourceEntryName(R.drawable.staging_user_profile))
             .build()
-        return uri
     }
 
     override fun getProviderId(): String = TODO("Not implemented")
