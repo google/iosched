@@ -38,8 +38,8 @@
 
     <ImageView
         android:id="@+id/image_arcore_gray"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
         android:contentDescription="@string/no_network_connection"
         app:layout_constraintBottom_toTopOf="@+id/phone_does_not_support_arcore_title"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
