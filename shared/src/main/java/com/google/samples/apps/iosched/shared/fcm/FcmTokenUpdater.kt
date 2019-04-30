@@ -28,42 +28,35 @@ import javax.inject.Inject
 /**
  * Saves the FCM ID tokens in Firestore.
  */
-class FcmTokenUpdater @Inject constructor(
-    val firestore: FirebaseFirestore
-) {
+class FcmTokenUpdater @Inject constructor(val firestore: FirebaseFirestore) {
 
     fun updateTokenForUser(userId: String) {
-        val token = FirebaseInstanceId.getInstance().token
+        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { instanceIdResult ->
+            val token = instanceIdResult.token
 
-        if (token == null) {
-            Timber.e("Error getting FCM ID token for user $userId")
-            return
-        }
+            // Write token to /users/<userId>/fcmTokens/<token[0..TOKEN_ID_LENGTH]/
+            val tokenInfo = mapOf(
+                LAST_VISIT_KEY to FieldValue.serverTimestamp(),
+                TOKEN_ID_KEY to token
+            )
 
-        // Write token to /users/<userId>/fcmTokens/<token[0..TOKEN_ID_LENGTH]/
-
-        val tokenInfo = mapOf(
-            LAST_VISIT_KEY to FieldValue.serverTimestamp(),
-            TOKEN_ID_KEY to token
-        )
-
-        // All Firestore operations are started from the main thread
-        // to avoid concurrency issues.
-        DefaultScheduler.postToMainThread {
-            firestore
-                .document2019()
-                .collection(USERS_COLLECTION)
-                .document(userId)
-                .collection(FCM_IDS_COLLECTION)
-                .document(token.take(TOKEN_ID_LENGTH))
-                .set(tokenInfo, SetOptions.merge()).addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        Timber.d("FCM ID token successfully uploaded for user $userId\"")
-                    } else {
-                        Timber.e("FCM ID token: Error uploading for user $userId")
+            // All Firestore operations start from the main thread to avoid concurrency issues.
+            DefaultScheduler.postToMainThread {
+                firestore
+                    .document2019()
+                    .collection(USERS_COLLECTION)
+                    .document(userId)
+                    .collection(FCM_IDS_COLLECTION)
+                    .document(token.take(TOKEN_ID_LENGTH))
+                    .set(tokenInfo, SetOptions.merge()).addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            Timber.d("FCM ID token successfully uploaded for user $userId\"")
+                        } else {
+                            Timber.e("FCM ID token: Error uploading for user $userId")
+                        }
                     }
-                }
             }
+        }
     }
 
     companion object {
