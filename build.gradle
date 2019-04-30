@@ -142,4 +142,17 @@ subprojects {
             licenseHeaderFile project.rootProject.file('copyright.kt')
         }
     }
+
+    // `spotlessCheck` runs when a build includes `check`, notably during presubmit. In these cases
+    // we prefer `spotlessCheck` run as early as possible since it fails in seconds. This prevents a
+    // build from running for several minutes doing other intensive tasks (resource processing, code
+    // generation, compilation, etc) only to fail on a formatting nit.
+    // Using `mustRunAfter` avoids creating a task dependency. The order is enforced only if
+    // `spotlessCheck` is already scheduled to run, so we can still build and launch from the IDE
+    // while the code is "dirty".
+    tasks.whenTaskAdded {
+        if (name == 'preBuild') {
+            mustRunAfter 'spotlessCheck'
+        }
+    }
 }
