@@ -72,6 +72,10 @@ android {
 
     lintOptions {
         disable 'InvalidPackage', "MissingTranslation"
+        // Version changes are beyond our control, so don't warn. The IDE will still mark these.
+        disable 'GradleDependency'
+        // Timber needs to update to new Lint API
+        disable 'ObsoleteLintCustomCheck'
     }
 
     // debug and release variants share the same source dir
