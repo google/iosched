@@ -16,8 +16,8 @@
 
 package com.google.samples.apps.iosched.shared.domain.feed
 
-import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.model.Announcement
+import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import org.threeten.bp.ZoneId
