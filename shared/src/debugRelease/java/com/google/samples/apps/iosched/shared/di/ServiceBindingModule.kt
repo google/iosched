@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.shared.di
 
 import com.google.samples.apps.iosched.shared.data.job.ConferenceDataService
-import com.google.samples.apps.iosched.shared.fcm.IoschedFirebaseInstanceIDService
 import com.google.samples.apps.iosched.shared.fcm.IoschedFirebaseMessagingService
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -30,10 +29,6 @@ abstract class ServiceBindingModule {
     @ServiceScoped
     @ContributesAndroidInjector
     internal abstract fun ioschedMessagingService(): IoschedFirebaseMessagingService
-
-    @ServiceScoped
-    @ContributesAndroidInjector
-    internal abstract fun provideFirebaseInstanceIDService(): IoschedFirebaseInstanceIDService
 
     @ServiceScoped
     @ContributesAndroidInjector
