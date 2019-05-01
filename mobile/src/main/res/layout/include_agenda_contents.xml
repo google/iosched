@@ -44,7 +44,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:agendaColor="@{agenda.color}"
             app:agendaStrokeColor="@{agenda.strokeColor}"
-            app:agendaStrokeWidth="@{@dimen/agenda_item_stroke}"
+            app:agendaStrokeWidth="@{@dimen/agenda_item_stroke_width}"
             tools:background="#eee" />
 
         <ImageView
@@ -63,7 +63,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/agenda_block_padding_vert"
+            android:layout_marginTop="@dimen/agenda_block_padding_vertical"
             android:text="@{agenda.title}"
             android:textAlignment="viewStart"
             android:textAppearance="?textAppearanceListItem"
@@ -76,7 +76,7 @@
             android:id="@+id/duration"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/agenda_block_padding_vert"
+            android:paddingBottom="@dimen/agenda_block_padding_vertical"
             android:textAlignment="viewStart"
             android:textAppearance="?textAppearanceBody2"
             app:layout_constraintEnd_toEndOf="@id/agenda_title"
