@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.feed
 
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -23,7 +24,12 @@ import androidx.annotation.StringRes
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import androidx.recyclerview.widget.RecyclerView.NO_POSITION
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemFeedSessionBinding
@@ -46,37 +52,67 @@ data class FeedSessions(
     val isLoading: Boolean
 )
 
-class FeedSessionsViewBinder(private val eventListener: FeedEventListener) :
+class FeedSessionsViewBinder(
+    private val eventListener: FeedEventListener,
+    var recyclerViewManagerState: Parcelable? = null
+) :
     FeedListItemViewBinder<FeedSessions, FeedSessionsViewHolder>(FeedSessions::class.java) {
 
-    override fun createViewHolder(parent: ViewGroup): FeedSessionsViewHolder =
-        FeedSessionsViewHolder(
+    override fun createViewHolder(parent: ViewGroup): FeedSessionsViewHolder {
+        val holder = FeedSessionsViewHolder(
             ItemFeedSessionsContainerBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             ),
             eventListener
         )
 
+        holder.binding.recyclerView.addOnScrollListener(object : OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == SCROLL_STATE_IDLE) {
+                    saveInstanceState(holder)
+                }
+            }
+        })
+        return holder
+    }
+
     override fun bindViewHolder(model: FeedSessions, viewHolder: FeedSessionsViewHolder) {
-        viewHolder.bind(model)
+        viewHolder.bind(model, recyclerViewManagerState)
     }
 
     override fun getFeedItemType(): Int = R.layout.item_feed_sessions_container
 
-    override fun areItemsTheSame(oldItem: FeedSessions, newItem: FeedSessions): Boolean =
-        oldItem.id == newItem.id
+    override fun areItemsTheSame(oldItem: FeedSessions, newItem: FeedSessions): Boolean = true
 
     override fun areContentsTheSame(oldItem: FeedSessions, newItem: FeedSessions) =
         oldItem == newItem
+
+    override fun onViewRecycled(viewHolder: FeedSessionsViewHolder) {
+        saveInstanceState(viewHolder)
+    }
+
+    override fun onViewDetachedFromWindow(viewHolder: FeedSessionsViewHolder) {
+        saveInstanceState(viewHolder)
+    }
+
+    fun saveInstanceState(viewHolder: FeedSessionsViewHolder) {
+        if (viewHolder.adapterPosition == NO_POSITION) {
+            return
+        }
+        recyclerViewManagerState = viewHolder.getLayoutManagerState()
+    }
 }
 
 class FeedSessionsViewHolder(
-    private val binding: ItemFeedSessionsContainerBinding,
+    val binding: ItemFeedSessionsContainerBinding,
     private val eventListener: FeedEventListener
 ) :
     ViewHolder(binding.root) {
 
-    fun bind(sessions: FeedSessions) {
+    private var layoutManager: LayoutManager? = null
+
+    fun bind(sessions: FeedSessions, layoutManagerState: Parcelable?) {
         binding.sessionContainerState = sessions
         binding.eventListener = eventListener
         val sessionAdapter =
@@ -85,6 +121,7 @@ class FeedSessionsViewHolder(
             layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
             adapter = sessionAdapter
         }
+        layoutManager = binding.recyclerView.layoutManager
 
         binding.actionButton.setOnClickListener {
             if (sessions.actionTextId == R.string.feed_view_all_events) {
@@ -94,8 +131,14 @@ class FeedSessionsViewHolder(
             }
         }
         sessionAdapter.submitList(sessions.userSessions)
+        if (layoutManagerState != null) {
+            layoutManager?.onRestoreInstanceState(layoutManagerState)
+        }
+
         binding.executePendingBindings()
     }
+
+    fun getLayoutManagerState(): Parcelable? = layoutManager?.onSaveInstanceState()
 }
 
 /** Adapter which provides views for sessions inside the FeedSessionsContainer */

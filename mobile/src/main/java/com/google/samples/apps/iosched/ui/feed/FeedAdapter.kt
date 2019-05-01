@@ -43,6 +43,16 @@ class FeedAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         return getViewBinder(getItemViewType(position)).bindViewHolder(getItem(position), holder)
     }
+
+    override fun onViewRecycled(holder: ViewHolder) {
+        getViewBinder(holder.itemViewType).onViewRecycled(holder)
+        super.onViewRecycled(holder)
+    }
+
+    override fun onViewDetachedFromWindow(holder: ViewHolder) {
+        getViewBinder(holder.itemViewType).onViewDetachedFromWindow(holder)
+        super.onViewDetachedFromWindow(holder)
+    }
 }
 
 /** Encapsulates logic to create and bind a ViewHolder for a type of item in the Feed. */
@@ -53,6 +63,10 @@ abstract class FeedListItemViewBinder<M, in VH : ViewHolder>(
     abstract fun createViewHolder(parent: ViewGroup): ViewHolder
     abstract fun bindViewHolder(model: M, viewHolder: VH)
     abstract fun getFeedItemType(): Int
+
+    // Having these as non abstract because not all the viewBinders are required to implement them.
+    open fun onViewRecycled(viewHolder: VH) = Unit
+    open fun onViewDetachedFromWindow(viewHolder: VH) = Unit
 }
 
 internal class FeedDiffCallback(
