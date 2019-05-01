@@ -53,6 +53,7 @@ class FeedFragment : MainNavigationFragment() {
 
     companion object {
         private const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
+        private const val BUNDLE_KEY_SESSIONS_LAYOUT_MANAGER_STATE = "sessions_layout_manager"
     }
 
     @Inject
@@ -66,6 +67,8 @@ class FeedFragment : MainNavigationFragment() {
 
     private lateinit var model: FeedViewModel
     private lateinit var binding: FragmentFeedBinding
+    private var adapter: FeedAdapter? = null
+    private lateinit var sessionsViewBinder: FeedSessionsViewBinder
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -84,6 +87,14 @@ class FeedFragment : MainNavigationFragment() {
         return binding.root
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelable(
+            BUNDLE_KEY_SESSIONS_LAYOUT_MANAGER_STATE,
+            sessionsViewBinder.recyclerViewManagerState
+        )
+        super.onSaveInstanceState(outState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         analyticsHelper.sendScreenView("Home", requireActivity())
@@ -96,6 +107,16 @@ class FeedFragment : MainNavigationFragment() {
                 isVisible = layoutParams.height > 0
                 requestLayout()
             }
+        }
+
+        if (adapter == null) {
+            // Initialising sessionsViewBinder here to handle config change.
+            sessionsViewBinder =
+                FeedSessionsViewBinder(
+                    model, savedInstanceState?.getParcelable(
+                        BUNDLE_KEY_SESSIONS_LAYOUT_MANAGER_STATE
+                    )
+                )
         }
 
         binding.recyclerView.doOnApplyWindowInsets { v, insets, padding ->
@@ -152,12 +173,12 @@ class FeedFragment : MainNavigationFragment() {
     }
 
     private fun showFeedItems(recyclerView: RecyclerView, list: List<Any>?) {
-        if (recyclerView.adapter == null) {
+
+        if (adapter == null) {
             val announcementViewBinder =
                 FeedAnnouncementViewBinder(timeZoneId = model.timeZoneId, lifecycleOwner = this)
             val sectionHeaderViewBinder = FeedSectionHeaderViewBinder()
             val feedHeaderViewBinder = FeedHeaderViewBinder(model)
-            val sessionsViewBinder = FeedSessionsViewBinder(model)
             val announcementsPlaceholder = FeedAnnouncementsPlaceholderViewBinder()
             val viewBinders = ImmutableMap.builder<FeedItemClass, FeedItemBinder>()
                 .put(
@@ -182,7 +203,10 @@ class FeedFragment : MainNavigationFragment() {
                 )
                 .build()
 
-            recyclerView.adapter = FeedAdapter(viewBinders)
+            adapter = FeedAdapter(viewBinders)
+        }
+        if (recyclerView.adapter == null) {
+            recyclerView.adapter = adapter
         }
         (recyclerView.adapter as FeedAdapter).submitList(list ?: emptyList())
     }
