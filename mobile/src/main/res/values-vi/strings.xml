@@ -23,20 +23,15 @@
     <string name="filters">Bộ lọc</string>
     <string name="category_heading_tracks">Chủ đề</string>
     <string name="category_heading_types">Loại</string>
-    <string name="clear_all">Xóa tất cả</string>
     <string name="reset">Đặt lại</string>
-    <string name="pinned_events_filter_description">Chỉ hiển thị những sự kiện được gắn sao và đặt chỗ</string>
     <plurals name="filter_event_count">
-        <item quantity="one">%1$d Sự kiện</item>
         <item quantity="other">%1$d Sự kiện</item>
     </plurals>
     <string name="starred_and_reserved">Các sự kiện được gắn sao và đặt chỗ của bạn</string>
     <string name="starred_and_reserved_short">Sự kiện của bạn</string>
     <string name="search_schedule_hint">Tìm kiếm lịch trình</string>
     <string name="search_schedule_no_results">Không tìm thấy kết quả nào</string>
-    <string name="search_schedule_error">Xảy ra lỗi khi tìm kiếm lịch biểu</string>
     <string name="agenda">Lịch trình sự kiện</string>
-    <string name="overview">Tổng quan</string>
     <string name="event_starred">Đã thêm sự kiện vào các mục có gắn dấu sao của bạn</string>
     <string name="event_unstarred">Đã xóa sự kiện khỏi các mục được gắn dấu sao</string>
     <string name="event_star_error">Xảy ra lỗi khi thêm sự kiện vào các mục được gắn dấu sao</string>
@@ -62,11 +57,8 @@
     <string name="reservation_disabled">Không thể đặt chỗ</string>
     <string name="reservation_pending">Đang chờ xử lý đặt chỗ</string>
     <string name="schedule_hint_title">Tùy chỉnh lịch biểu của bạn</string>
-    <string name="schedule_hint_view_only_your_events">Chỉ hiển thị các sự kiện của bạn</string>
     <string name="schedule_hint_star_event">Thêm vào mục các sự kiện được gắn dấu sao của bạn</string>
     <string name="schedule_hint_reserve_session_seat">Đặt trước một chỗ</string>
-    <string name="schedule_hint_star_event_content_description">HÌnh ảnh để gắn sao sự kiện</string>
-    <string name="schedule_hint_reserve_session_seat_content_description">Hình ảnh để đặt chỗ</string>
     <string name="rate_session">Đánh giá phiên hội thảo</string>
     <string name="menu_item_session_location">Địa điểm diễn ra phiên hội thảo</string>
     <string name="menu_item_session_star">Bắt đầu phiên</string>
@@ -93,10 +85,7 @@
     <string name="a11y_clear_tag_filters">Xóa bộ lọc</string>
     <string name="a11y_filter_applied">Đã áp dụng bộ lọc %1s</string>
     <string name="a11y_filter_not_applied">Chưa áp dụng bộ lọc %1s</string>
-    <string name="a11y_pinned">Chỉ hiển thị những sự kiện được gắn sao và đặt chỗ</string>
-    <string name="a11y_revert_pinned">Hiển thị tất cả các phiên</string>
     <string name="a11y_reservation_available">Đặt chỗ tại sự kiện</string>
-    <string name="a11y_reservation_working">Đang xử lý đặt chỗ tại sự kiện</string>
     <string name="a11y_reservation_reserved">Đã đặt chỗ tại sự kiện</string>
     <string name="a11y_reservation_disabled">Không thể đặt chỗ</string>
     <string name="a11y_reservation_wait_list_available">Tham gia danh sách chờ đặt chỗ tại sự kiện</string>
@@ -109,19 +98,14 @@
     <string name="a11y_select_map_mode">Chọn chế độ bản đồ</string>
     <string name="a11y_search_schedule">Tìm kiếm lịch biểu</string>
     <string name="welcome">Xin chào!</string>
-    <string name="sign_in_hint">Nhấn để đăng nhập</string>
     <string name="a11y_signed_in_content_description">Đã đăng nhập bằng %s.</string>
     <string name="a11y_signed_out_content_description">Nhấn để đăng nhập.</string>
-    <string name="dialog_sign_in_title">Đăng nhập để tùy chỉnh lịch biểu của bạn</string>
     <string name="dialog_sign_in_content">Đăng nhập để lưu các sự kiện, đặt chỗ và xếp hạng các phiên sự kiện (nếu tham dự). Các thao tác sẽ được đồng bộ từ tài khoản của bạn trên cả ứng dụng và trang web.</string>
-    <string name="not_now">Để sau</string>
     <string name="sign_in">Đăng nhập</string>
     <string name="firebase_auth_no_network_connection">Không có kết nối Internet</string>
     <string name="firebase_auth_unknown_error">Lỗi không xác định</string>
-    <string name="dialog_sign_out_title">Đăng xuất?</string>
     <string name="dialog_sign_out_content">Tất cả sự kiện đã lưu, đặt chỗ và xếp hạng phiên sự kiện (nếu tham dự) vẫn được đồng bộ hóa với tài khoản của bạn.</string>
     <string name="sign_out">Đăng xuất</string>
-    <string name="profile">Hồ sơ</string>
     <string name="manage_google_account">Quản lý Tài khoản Google của bạn</string>
     <string name="remove_reservation_title">Xóa yêu cầu đặt chỗ</string>
     <string name="remove_reservation_content">Bạn sắp từ bỏ đặt chỗ tại "%1$s". Nếu bạn quyết định không đặt chỗ nhưng vẫn muốn tham dự, tất cả các phiên sự kiện sẽ có một số chỗ ngồi dành cho những người đến sớm.</string>
@@ -134,8 +118,6 @@
     <string name="notifications_preference_dialog_content">Bạn muốn nhận thông báo về I/O? Chúng tôi sẽ gửi thông tin cho bạn về thời gian bắt đầu phiên sự kiện, những sự kiện hậu kỳ, ghi hình sự kiện, v.v. Bạn có thể thay đổi mục cài đặt tại "Thông tin &gt; Cài đặt" bất kỳ lúc nào.</string>
     <string name="no">Không</string>
     <string name="yes">Có</string>
-    <string name="feed_item_pinned_icon">Mục đã ghim</string>
-    <string name="feed_item_emergency_icon">Mục ưu tiên</string>
     <string name="feed_not_available">Không tim thấy thông báo nào.</string>
     <string name="feed_loading_error">Không thể tải nguồn cấp dữ liệu. Thử lại sau.</string>
     <string name="feed_announcement_title">Thông báo</string>
@@ -146,19 +128,15 @@
     <string name="feed_view_your_schedule">Xem lịch biểu của bạn</string>
     <string name="feed_watch_live_stream">Xem sự kiện phát trực tiếp</string>
     <plurals name="duration_days">
-        <item quantity="one">%s ngày</item>
         <item quantity="other">%s ngày</item>
     </plurals>
     <plurals name="duration_hours">
-        <item quantity="one">%s giờ</item>
         <item quantity="other">%s giờ</item>
     </plurals>
     <plurals name="duration_minutes">
-        <item quantity="one">%s phút</item>
         <item quantity="other">%s phút</item>
     </plurals>
     <plurals name="duration_seconds">
-        <item quantity="one">%s giây</item>
         <item quantity="other">%s giây</item>
     </plurals>
     <string name="menu_item_share_session">Chia sẻ về phiên hội thảo</string>
@@ -172,7 +150,6 @@
     <string name="onboarding_get_started">Bắt đầu</string>
     <string name="onboarding_welcome_to_google_i_o">Chào mừng bạn đến với Google I/O</string>
     <string name="onboarding_date_location">Ngày 7-9 tháng 5 năm 2019\nMountain View, CA</string>
-    <string name="onboarding_join_online">Hãy tham gia cùng chúng tôi trên mạng. Chúng tôi sẽ phát trực tiếp các phần thuyết trình chính và hầu hết các phiên hội thảo.</string>
     <string name="onboarding_label_days">Ngày</string>
     <string name="onboarding_label_hours">Giờ</string>
     <string name="onboarding_label_mins">Phút</string>
@@ -181,14 +158,11 @@
     <string name="onboarding_welcome_google_io_during">Google I/O</string>
     <string name="onboarding_welcome_google_io_post">Xem nội dung tóm lược của I/O 2019 và xem những bài đăng có hashtag #io19 trên mạng xã hội</string>
     <string name="onboarding_signin">Đăng nhập để nhận các thông báo từ sự kiện I/O và người tham dự có thể đặt chỗ trước tại các phiên sự kiện.</string>
-    <string name="onboarding_explore_ar">Xem nội dung tóm lược của I/O 2019 và xem những bài đăng có hashtag #io19 trên mạng xã hội</string>
     <plurals name="session_starting_in">
-        <item quantity="one">Phiên sự kiện sẽ bắt đầu trong %1$s phút nữa</item>
         <item quantity="other">Phiên sự kiện sẽ bắt đầu trong %1$s phút nữa</item>
     </plurals>
     <string name="expanded">Đã mở rộng</string>
     <string name="collapsed">Đã thu gọn</string>
-    <string name="info_title">Thông tin</string>
     <string name="event_title">Sự kiện</string>
     <string name="travel_title">Thông tin di chuyển</string>
     <string name="faq_title">CÂU HỎI THƯỜNG GẶP</string>
@@ -247,13 +221,7 @@
     <string name="faq_sessions_be_live_streamed_question_description">Hai bài phát biểu và tất các phiên tại sự kiện sẽ được phát trực tiếp trên trang chủ của sự kiện trong suốt ba ngày diễn ra sự kiện. Nếu bạn bận làm việc hoặc sinh sống tại một khu vực lệch múi giờ, bạn có thể xem bản ghi hình các phiên sự kiện sau trên &lt;a href="https://www.youtube.com/user/GoogleDevelopers"&gt;kênh YouTube của Google Developers&lt;/a&gt;.</string>
     <string name="faq_want_to_celebrate_i_o_description">Có! Hàng năm, các nhà phát triển trên toàn thế giới tổ chức &lt;a href="https://events.google.com/io/extended"&gt;các sự kiện Google I/O Mở rộng&lt;/a&gt;. Trong suốt những sự kiện này, các nhà tổ chức có thể phát trực tiếp sự kiện và tổ chức những phiên sự kiện của riêng mình, như sự kiện hackathon, các lớp học mã, các buổi giới thiệu minh họa và nhiều sự kiện khác.&lt;br&gt; Nếu bạn định tham gia với tư cách người đăng cai tổ chức sự kiện I/O Mở rộng năm nay, thì hãy làm theo các bước sau đây để bắt đầu:&lt;br&gt;&lt;br&gt; Vui lòng đọc kỹ &lt;a href="https://docs.google.com/presentation/d/e/2PACX–1vReWDtj-yASOho5q7XC6lYY8af9wRa13-81mPaoSRodiRoCw4MKJnQExQ8GxyNyCQiPZpBprznPG4ex/pub?slide=id.g62811f3b0_18"&gt;Hướng dẫn tổ chức&lt;/a&gt; để xem các mẹo và gợi ý về cách tổ chức một sự kiện thành công.&lt;br&gt;&lt;br&gt; &lt;a href="https://events.google.com/io/extended/form"&gt;Đăng ký&lt;/a&gt; trên trang web I/O để có thêm nhiều người biết tới sự kiện công khai của bạn.&lt;br&gt;&lt;br&gt; Sử dụng hashtag chính thức #io19extended trong tất cả các bài đăng trên mạng xã hội có liên quan đến sự kiện I/O Mở rộng để mọi người có thể dễ dàng tìm thấy sự kiện hơn.&lt;br&gt;&lt;br&gt; Lưu ý: Những người tổ chức sự kiện I/O Mở rộng có quyền yêu cầu xóa dữ liệu sự kiện và/hoặc dữ liệu cá nhân sau khi sự kiện kết thúc bằng cách gửi email tới địa chỉ io19@google.com.&lt;br&gt; Nếu bạn chỉ muốn tham dự sự kiện I/O Mở rộng, hãy duyệt qua &lt;a href="https://events.google.com/io/extended"&gt;bản đồ của chúng tôi&lt;/a&gt; để tìm sự kiện ở gần khu vực của bạn và trả lời thư mời!&lt;br&gt; Nếu có thắc mắc về chương trình I/O Mở rộng, vui lòng liên hệ với chúng tôi theo địa chỉ io19extended\-external@google.com.</string>
     <string name="view_sessions_text">Xem các phiên sự kiện</string>
-    <string name="view_codelabs_text">Xem các phòng thí nghiệm lập trình</string>
-    <string name="view_events_text">Xem sự kiện</string>
-    <string name="view_map_text">Xem bản đồ</string>
-    <string name="wifi_network_label">Mạng Wi-Fi</string>
-    <string name="wifi_password_label">Mật khẩu:</string>
     <string name="wifi_install_success">Đã lưu mạng wifi</string>
-    <string name="wifi_install_error_message">Rất tiếc, không thể lưu mạng wifi</string>
     <string name="wifi_install_clipboard_message">Không thể lưu mạng wifi.\nVì vậy, chúng tôi đã lưu mật khẩu vào khay nhớ tạm.</string>
     <string name="event_sessions_title">Số phiên</string>
     <string name="event_sandbox_title">Hộp cát</string>
@@ -270,27 +238,20 @@
     <string name="wifi_header">Wi-Fi</string>
     <string name="related_apps_header">Ứng dụng liên quan</string>
     <string name="event_types_header">Loại sự kiện</string>
-    <string name="general_header">Thông tin chung</string>
-    <string name="agreements_header">Thỏa thuận</string>
     <string name="settings_time_zone_label">Sự kiện ở múi giờ chuẩn Thái Bình Dương (UTC-8)</string>
     <string name="settings_enable_notifications">Bật thông báo</string>
     <string name="settings_send_anonymous_usage_statistics">Gửi số liệu thống kê sử dụng ẩn danh</string>
     <string name="settings_tos">Điều khoản dịch vụ</string>
     <string name="settings_privacy_policy">Chính sách quyền riêng tư</string>
     <string name="settings_oss_licenses">Giấy phép mã nguồn mở</string>
-    <string name="settings_version_label">Phiên bản %1$s, bản dựng %2$s</string>
     <string name="settings_theme_title">Chọn giao diện</string>
     <string name="settings_theme_system">Mặc định hệ thống</string>
     <string name="settings_theme_light">Nhẹ</string>
     <string name="settings_theme_dark">Tối</string>
     <string name="settings_theme_battery">Đặt theo Trình tiết kiệm pin</string>
-    <string name="faq_label">Câu hỏi thường gặp</string>
     <string name="built_with_material_components">Được thiết kế với Material Components.</string>
-    <string name="tap_to_join_network">(nhấn để vào mạng)</string>
     <string name="wifi_network_and_password">Mạng: %1$s\nMật khẩu: %2$s</string>
     <string name="join_network">Vào mạng</string>
-    <string name="scavenger_hunt_description">Cùng tham gia trò chơi Truy tìm kho báu của Android Things diễn ra tại I/O!</string>
-    <string name="scavenger_hunt_description2">Cùng tham gia trò chơi Truy tìm kho báu của Android Things diễn ra tại I/O!</string>
     <string name="assistant_app_description">Chỉ cần nói: "Hey Google, talk to Google I/O 19"!</string>
     <string name="assistant_app_description2">Chỉ cần nói: "Hey Google, talk to Google I/O 19"!</string>
     <string name="speaker_link_website">Trang web</string>
@@ -300,10 +261,6 @@
     <string name="speaker_events_subhead">Sự kiện</string>
     <string name="no_network_connection">Không có kết nối internet.</string>
     <string name="navigate_up">Di chuyển lên</string>
-    <string name="error_fetch_ar_module">Đã xảy ra lỗi khi tải mô-đun AR. Hãy kiểm tra kết nối mạng của bạn.</string>
-    <string name="downloading_ar_module">Đang tải mô-đun AR xuống</string>
-    <string name="download_ar_dialog_title">Tải mô-đun AR xuống</string>
-    <string name="download_ar_dialog_message">Chúng tôi cần tải mô-đun thực tế tăng cường từ Cửa hàng Play trước khi bạn có thể khởi chạy chương trình. Thiết bị này đang kết nối với mạng có đo lượng dữ liệu sử dụng nên bạn có thể bị tính phí chuyển dữ liệu.\n\nBạn có muốn tiếp tục không?\n\nLưu ý: Chế độ AR chỉ dành cho trải nghiệm tại chỗ.</string>
     <string name="no_network_description">Để sử dụng tính năng Khám phá I/O, hãy thử:\n\n - Tắt chế độ trên máy bay\n\n - Bật dữ liệu di động hoặc Wi-Fi\n\n - Kiểm tra tín hiệu trong khu vực của bạn</string>
     <string name="phone_does_not_support_arcore_title">Điện thoại của bạn không hỗ trợ ARCore</string>
     <string name="phone_does_not_support_arcore_message">Thử dùng thiết bị khác hoặc mượn thiết bị của bạn bè</string>

@@ -26,9 +26,7 @@
     <string name="filters" translation_description="The label for the button to filter sessions by their topics, room, and so on.">Filters</string>
     <string name="category_heading_tracks" translation_description="Label in the filters panel above session topics (Android, Cloud, etc.)">Topics</string>
     <string name="category_heading_types" translation_description="Label in the filters panel above event types (Sessions, Codelabs, etc.)">Types</string>
-    <string name="clear_all" translation_description="The label for the button to clear all the filter conditions.">Clear all</string>
     <string name="reset" translation_description="The label for the button to reset the filter conditions.">Reset</string>
-    <string name="pinned_events_filter_description" translation_description="Message shown when the user toggles the switch to see their pinned events.">Showing only starred and reserved events</string>
     <plurals name="filter_event_count" translation_description="A label showing how many events match the current filters">
         <item quantity="one">%1$d Event</item>
         <item quantity="other">%1$d Events</item>
@@ -37,12 +35,9 @@
     <string name="starred_and_reserved_short">Your events</string>
     <string name="search_schedule_hint" translation_description="Text field hint that is shown when user has not entered a search query">Search the schedule</string>
     <string name="search_schedule_no_results" translation_description="Text that is shown if there are no search results">No results found</string>
-    <string name="search_schedule_error" translation_description="Text that is shown if there was an error searching">Error searching the schedule</string>
 
     <string name="session_duration_location" translatable="false">%1s / %2s</string>
-    <string name="session_date_duration_location" translatable="false">%1s / %2s / %3s</string>
     <string name="agenda" translation_description="The title for the agenda screen where user can see all the sessions they plan to attend.">Agenda</string>
-    <string name="overview" translation_description="The title for the overview screen where user can see all the sessions they plan to attend.">Overview</string>
     <string name="agenda_duration" translatable="false">%1$s – %2$s</string>
     <string name="event_starred" translation_description="The message shown when user adds an event to their schedule.">Event added to your starred items</string>
     <string name="event_unstarred" translation_description="The message shown when user removes an event from their schedule.">Event removed from starred items</string>
@@ -73,11 +68,8 @@
 
     <!-- Schedule UI hints -->
     <string name="schedule_hint_title" translation_description="The title of the schedule hint dialog.">Customize your schedule</string>
-    <string name="schedule_hint_view_only_your_events" translation_description="The schedule hint for the switch that toggles if the attendee wants to see their pinned events.">View only your events</string>
     <string name="schedule_hint_star_event" translation_description="The schedule hint for the icon to star an event.">Add to your starred events</string>
     <string name="schedule_hint_reserve_session_seat" translation_description="The schedule hint for the icon to reserve a session.">Reserve a session seat</string>
-    <string name="schedule_hint_star_event_content_description" translation_description="The content description for the icon to star an event.">An image to star an event</string>
-    <string name="schedule_hint_reserve_session_seat_content_description" translation_description="The content description for the icon to reserve a session.">An image to reserve a session seat</string>
 
     <!-- Session Detail -->
     <string name="ask_question" translation_description="The label for the link to open an input form to ask a question about this session. [CHAR_LIMIT=30]">Q &amp; A</string>
@@ -118,11 +110,7 @@
     <string name="a11y_filter_applied" translation_description="Alternative text when an event filter is applies">%1s filter applied</string>
     <string name="a11y_filter_not_applied" translation_description="Alternative text when an event filter is not applies">%1s filter not applied</string>
 
-    <string name="a11y_pinned" translation_description="Description of a button that's used to show only starred and reserved events.">Only starred and reserved events</string>
-    <string name="a11y_revert_pinned" translation_description="Description of a button to revert the switch that shows only starred and reserved events.">Show all sessions</string>
-
     <string name="a11y_reservation_available" translation_description="Alternative text for the button letting the user reserve a seat for a given event.">Reserve event</string>
-    <string name="a11y_reservation_working" translation_description="Alternative text for the event reservation button whilst it is working on processing a reservation.">Working to reserve event</string>
     <string name="a11y_reservation_reserved" translation_description="Alternative text for the event reservation button when the user has reserved a seat.">Event reserved</string>
     <string name="a11y_reservation_disabled" translation_description="Alternative text for the event reservation button when reservation is not available.">Reservation not available</string>
     <string name="a11y_reservation_wait_list_available" translation_description="Alternative text for the event reservation button when the user can join a wait list.">Join wait list for event</string>
@@ -138,22 +126,17 @@
 
     <!-- Sign in / Sign out -->
     <string name="welcome" translation_description="Text shown instead of the user's name when the user is not signed in.">Welcome!</string>
-    <string name="sign_in_hint" translation_description="Text shown instead of the user's email when the user is not signed in.">Tap to sign in</string>
     <string name="a11y_signed_in_content_description" translation_description="Description of the account header when the user is signed in.">Signed in as %s.</string>
     <string name="a11y_signed_out_content_description" translation_description="Description of the account header when the user is not signed in.">Tap to sign in.</string>
 
-    <string name="dialog_sign_in_title" translation_description="The title of the dialog. When the user needs to sign in.">Sign in to customize your schedule</string>
     <string name="dialog_sign_in_content" translation_description="The content of the dialog. When the user needs to sign in.">Sign in to save events, reserve seats and rate sessions (if an attendee). Actions will be synced from your account across app and site.</string>
-    <string name="not_now" translation_description="The description of a button that the user doesn't want to sign in.">Not now</string>
     <string name="sign_in" translation_description="The description of a button to sign in.">Sign in</string>
     <string name="firebase_auth_no_network_connection" translation_description="Snackbar message when there is no network connectivity.">No internet connection</string>
     <string name="firebase_auth_unknown_error" translation_description="Snackbar message when Firebase Auth has an unknown error.">Unknown error</string>
 
-    <string name="dialog_sign_out_title" translation_description="The title of the dialog. Used to confirm that the user wants to sign out.">Sign out?</string>
     <string name="dialog_sign_out_content" translation_description="The content of the dialog. Used to confirm that the user wants to sign out.">All saved events, seat reservations and session ratings (if an attendee) remain synced to your account.</string>
     <string name="sign_out" translation_description="The description of a button to sign out.">Sign out</string>
 
-    <string name="profile" translation_description="Title for a menu item to change the user profile (sign in or sign out).">Profile</string>
     <string name="manage_google_account" translation_description="Text for a button allowing the user to manage their Google account.">Manage your Google account</string>
     <string name="manage_google_account_url" translatable="false">https://myaccount.google.com/</string>
 
@@ -175,8 +158,6 @@
     <string name="yes" translation_description="Positive answer to the question \'Would you like to receive notification?\'">Yes</string>
 
     <!-- Feed -->
-    <string name="feed_item_pinned_icon" translation_description="Content description for an icon that indicates an entry in the news feed that is pinned at the top.">Pinned Item</string>
-    <string name="feed_item_emergency_icon" translation_description="Content description for an icon that indicates an entry in the news feed that is marked as an emergency message.">Priority item</string>
     <string name="feed_not_available" translation_description="Message that is shown when the announcements could not be loaded or are empty.">No announcements found.</string>
     <string name="feed_loading_error" translation_description="Short error message that is displayed in a Snackbar when the feed could not be loaded.">Could not load feed. Try again later.</string>
     <string name="feed_announcement_title" translation_description="The title of the announcements section in feed">Announcements</string>
@@ -223,7 +204,6 @@
     <string name="onboarding_get_started" translation_description="The label for the button to start using the app.">Get started</string>
     <string name="onboarding_welcome_to_google_i_o" translation_description="The welcome message shown at the onboarding screen of the app.">Welcome to Google I/O</string>
     <string name="onboarding_date_location" translation_description="The date and the place of Google I/O 2019. [CHAR_LIMIT=80]">May 7–9, 2019\nMountain View, CA</string>
-    <string name="onboarding_join_online" translation_description="The explanation of the feature where user can watch I/O sessions by live stream.">Join us online. We\'ll be streaming the keynotes and most sessions live.</string>
     <string name="onboarding_label_days" translation_description="The label for the display of the number of days until the conference starts">D</string>
     <string name="onboarding_label_hours" translation_description="The label for the display of the number of hours until the conference starts">H</string>
     <string name="onboarding_label_mins" translation_description="The label for the display of the number of minutes until the conference starts">M</string>
@@ -232,7 +212,6 @@
     <string name="onboarding_welcome_google_io_during" translation_description="The welcome message shown during the conference">Google I/O</string>
     <string name="onboarding_welcome_google_io_post" translation_description="The welcome message shown post the conference">Watch the I/O \'19 recap and check out #io19 on social</string>
     <string name="onboarding_signin" translation_description="The welcome message to encourage the user to sign-in to have better experience">Sign-in to receive I/O notifications and attendees can reserve seats for sessions.</string>
-    <string name="onboarding_explore_ar" translation_description="The welcome message shown post the conference">I/O in augmented reality. Once the conference begins you can Explore in AR.</string>
 
     <plurals name="session_starting_in" translation_description="A countdown timer for a session starting, e.g. 'Session starting in 5 minutes'. Will always be minutes">
         <item quantity="one">Session starting in %1$s minute</item>
@@ -247,13 +226,11 @@
     <string name="version_name" translation_description="Label for the app version name in Settings.">Version %s</string>
 
     <!-- Info pages - TODO: update with 2018 copy and set translatable="true". -->
-    <string name="info_title" translation_description="The title for the info screen where user can see various information, such as FAQ and travel info.">Info</string>
     <string name="event_title" translation_description="The title for the tab that shows interesting events, such as sessions and office hours.">Event</string>
     <string name="travel_title" translation_description="The title for the tab that shows travel information, such as carpool and bus schedules.">Travel</string>
     <string name="faq_title" translation_description="The title for the tab that shows FAQ.">FAQ</string>
     <string name="about_title" translation_description="Title for the 'About' tab that shows miscellaneous info.">About</string>
 
-    <string name="faq_url" translatable="false">https://events.google.com/io/faq/</string>
     <string name="tos_url" translatable="false">https://policies.google.com/terms</string>
     <string name="privacy_policy_url" translatable="false">https://policies.google.com/privacy</string>
     <string name="oss_file" translatable="false">file:///android_asset/licenses.html</string>
@@ -315,13 +292,7 @@
     <string name="faq_want_to_celebrate_i_o_description" translation_description="Information on I want to celebrate I/O with my community in FAQ"><![CDATA[Yes! Every year, developers around the world host <a href="https://events.google.com/io/extended">Google I/O Extended events</a>. During these events, organizers can livestream the event and host their own sessions including hackathons, codelabs, demos, and more.<br> If you\'re joining us as an I/O Extended host this year, here are the steps you should take to get started:<br><br>  Read through the <a href="https://docs.google.com/presentation/d/e/2PACX–1vReWDtj-yASOho5q7XC6lYY8af9wRa13-81mPaoSRodiRoCw4MKJnQExQ8GxyNyCQiPZpBprznPG4ex/pub?slide=id.g62811f3b0_18">Organizer Guide</a> to get tips and suggestions on how to host a successful event.<br><br> <a href="https://events.google.com/io/extended/form">Register</a> your public event on the I/O website for increased visibility.<br><br> Use the official #io19extended hashtag on all your social posts related to I/O Extended for easier discoverability.<br><br> Note: I/O Extended hosts can request the deletion of their personal and/or event data after the event ends by emailing io19@google.com.<br> If you simply want to attend an I/O Extended event, browse <a href="https://events.google.com/io/extended">our map</a> to find one near you and RSVP!<br> For questions about the I/O Extended program, contact us at io19extended\-external@google.com.]]></string>
 
     <string name="view_sessions_text" translation_description="Link label for viewing all sessions in schedule.">View Sessions</string>
-    <string name="view_codelabs_text" translation_description="Link label for viewing all codelabs.">View Codelabs</string>
-    <string name="view_events_text" translation_description="Link label for viewing all events.">View Events</string>
-    <string name="view_map_text" translation_description="Link label for viewing events.">View Map</string>
-    <string name="wifi_network_label" translation_description="Label for wifi network name.">Wifi network:</string>
-    <string name="wifi_password_label" translation_description="Label for wifi network password">Password:</string>
     <string name="wifi_install_success" translation_description="Snackbar message when wifi network is successfully saved.">Wifi network saved</string>
-    <string name="wifi_install_error_message" translation_description="Snackbar message when saving wifi network fails.">Sorry, unable to save wifi network</string>
     <string name="wifi_install_clipboard_message" translation_description="WiFi install failed, so tell the user we saved the password to the clipboard.">Unable to save wifi network.\nSaved password to clipboard instead.</string>
     <string name="event_sessions_title" translation_description="Header label for general information on &quot;sessions&quot;.">Sessions</string>
     <string name="event_sandbox_title" translation_description="Header label for general &quot;sandbox&quot; description.">Sandbox</string>
@@ -338,8 +309,6 @@
     <string name="wifi_header" translation_description="Header label for wifi information.">Wifi</string>
     <string name="related_apps_header" translation_description="Header label for related apps.">Related Apps</string>
     <string name="event_types_header" translation_description="Header label for information on the different event types.">Event Types</string>
-    <string name="general_header" translation_description="Header label for general info.">General</string>
-    <string name="agreements_header" translation_description="Header label for links to TOS, privacy policy, OSS licenses.">Agreements</string>
 
     <!--Info pages - Strings ready to translate-->
     <string name="settings_time_zone_label" translate_description="Set time zone in app to PST.">Events in Pacific Time Zone (UTC-8)</string>
@@ -348,22 +317,17 @@
     <string name="settings_tos" translation_description="Open link to terms of service.">Terms of service</string>
     <string name="settings_privacy_policy" translation_description="Open link to privacy policy.">Privacy policy</string>
     <string name="settings_oss_licenses" translation_description="Open link to open source licenses.">Open sources licenses</string>
-    <string name="settings_version_label" translation_description="Version and build numbers.">Version %1$s, build %2$s</string>
     <string name="settings_theme_title" translation_description="Choose the app theme">Choose theme</string>
     <string name="settings_theme_system" translation_description="Theme option to use the system default">System default</string>
     <string name="settings_theme_light" translation_description="Theme option to use the light theme">Light</string>
     <string name="settings_theme_dark" translation_description="Theme option to use the dark theme">Dark</string>
     <string name="settings_theme_battery" translation_description="Theme option to use which is set by the device Battery Saver feature being enabled">Set by Battery Saver</string>
 
-    <string name="faq_label" translation_description="Label for link to FAQ on website.">FAQ</string>
     <string name="built_with_material_components" translation_description="The app was built with Material Components.">Built with Material Components.</string>
-    <string name="tap_to_join_network" translation_description="Tap to join Wifi network.">(tap to join network)</string>
 
     <string name="wifi_network_and_password" translation_description="Label for wifi network name and password, separated by a line break.">Network: %1$s\nPassword: %2$s</string>
     <string name="join_network" translation_description="Text for a button to automatically connect to the Wifi network.">Join network</string>
 
-    <string name="scavenger_hunt_description" translation_description="Text explaining the scavenger hunt happening at I/O.">Join the I/O Android Things Scavenger Hunt!</string>
-    <string name="scavenger_hunt_description2" translation_description="Text explaining the scavenger hunt happening at I/O.">(Hint: There might be an Android Things Developer Kit in your future.)</string>
     <string name="assistant_app_description" translation_description="Text explaining the I/O 19 app for Google Assistant. [CHAR_LIMIT=100]">Use the I/O 19 Action on Google Assistant.</string>
     <string name="assistant_app_description2" translation_description="Text explaining the I/O 19 app for Google Assistant. [CHAR_LIMIT=100]">Just say \"Hey Google, talk to Google I/O 19\"!</string>
 
@@ -373,7 +337,6 @@
     <string name="speaker_link_github" translation_description="The label for a link to a speaker's GitHub profile">GitHub</string>
     <string name="speaker_link_linkedin" translation_description="The label for a link to a speaker's LinkedIn profile">LinkedIn</string>
     <!-- \u0020 is breakable whitespace - whitespace characters at start/end of string res are trimmed. -->
-    <string name="speaker_link_separator" translatable="false">\u0020/\u0020</string>
     <string name="speaker_events_subhead" translation_description="The heading for a list of events a speaker is associated with">Events</string>
 
     <string name="no_network_connection" translation_description="Snackbar message when there is not network connection">No internet connection.</string>
@@ -381,10 +344,6 @@
     <string name="navigate_up" translation_description="Arrow at the top left of the screen for navigation">Navigate up</string>
 
     <!-- AR -->
-    <string name="error_fetch_ar_module" translation_description="Error message shown when an error happens when downloading the Augmented Reality module">An error occurred while downloading the AR module. Is your network connection working?</string>
-    <string name="downloading_ar_module" translation_description="Message for telling the user that the augmented reality module is now being downloaded.">Downloading AR module</string>
-    <string name="download_ar_dialog_title" translation_description="Title for a dialog asking the user whether to download the Augmented Reality module.">Download AR module</string>
-    <string name="download_ar_dialog_message" translation_description="Message for a dialog asking the user whether to download the Augmented Reality module when they are on a metered network.">We need to download the Augmented Reality module from the Play Store before you can launch. This device is currently connected to a metered network which may charge you for any data transferred.\n\nDo you wish to proceed?\n\nNote that the AR mode is for an on-site experience.</string>
     <string name="no_network_description" translation_description="Message to be shown when user tries to open the Explore feature without any network connection. [CHAR_LIMIT=500]">To use Explore I/O, try:\n\n - Turning off airplane mode\n\n - Turning on mobile data or Wi-Fi\n\n - Checking the signal in your area</string>
     <string name="phone_does_not_support_arcore_title" translation_description="Title to be shown when user tries to open the Explore feature with a device which does not support ARCore. [CHAR_LIMIT=500]">Your phone doesn\'t support ARCore</string>
     <string name="phone_does_not_support_arcore_message" translation_description="Message to be shown when user tries to open the Explore feature with a device which does not support ARCore. [CHAR_LIMIT=500]">Try another device, or borrow one from a friend</string>

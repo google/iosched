@@ -23,20 +23,15 @@
     <string name="filters">ตัวกรอง</string>
     <string name="category_heading_tracks">หัวข้อ</string>
     <string name="category_heading_types">ประเภท</string>
-    <string name="clear_all">ล้างทั้งหมด</string>
     <string name="reset">รีเซ็ต</string>
-    <string name="pinned_events_filter_description">แสดงเฉพาะกิจกรรมที่ติดดาวและจองไว้</string>
     <plurals name="filter_event_count">
-        <item quantity="one">%1$d กิจกรรม</item>
         <item quantity="other">%1$d กิจกรรม</item>
     </plurals>
     <string name="starred_and_reserved">กิจกรรมที่ติดดาวและจองไว้</string>
     <string name="starred_and_reserved_short">กิจกรรมของคุณ</string>
     <string name="search_schedule_hint">ค้นหากำหนดการ</string>
     <string name="search_schedule_no_results">ไม่พบผลลัพธ์</string>
-    <string name="search_schedule_error">เกิดข้อผิดพลาดขณะค้นหากำหนดการ</string>
     <string name="agenda">กำหนดการ</string>
-    <string name="overview">ภาพรวม</string>
     <string name="event_starred">เพิ่มกิจกรรมลงในรายการที่ติดดาวแล้ว</string>
     <string name="event_unstarred">นำกิจกรรมออกจากรายการที่ติดดาวแล้ว</string>
     <string name="event_star_error">เกิดข้อผิดพลาดในการเพิ่มกิจกรรมไปยังรายการที่ติดดาว</string>
@@ -62,11 +57,8 @@
     <string name="reservation_disabled">การจองไม่พร้อมใช้งาน</string>
     <string name="reservation_pending">การจองรอดำเนินการ</string>
     <string name="schedule_hint_title">ปรับแต่งกำหนดการ</string>
-    <string name="schedule_hint_view_only_your_events">ดูเฉพาะกิจกรรมของคุณ</string>
     <string name="schedule_hint_star_event">เพิ่มไปยังกิจกรรมที่ติดดาว</string>
     <string name="schedule_hint_reserve_session_seat">จองที่นั่งสำหรับเข้าชม</string>
-    <string name="schedule_hint_star_event_content_description">รูปภาพที่ใช้ติดดาวกิจกรรม</string>
-    <string name="schedule_hint_reserve_session_seat_content_description">รูปภาพที่ใช้จองที่นั่งสำหรับเข้าชม</string>
     <string name="rate_session">ให้คะแนนเซสชัน</string>
     <string name="menu_item_session_location">ตำแหน่งที่ตั้งของเซสชัน</string>
     <string name="menu_item_session_star">ติดดาวเซสชัน</string>
@@ -93,10 +85,7 @@
     <string name="a11y_clear_tag_filters">ล้างตัวกรอง</string>
     <string name="a11y_filter_applied">ใช้ตัวกรอง %1s แล้ว</string>
     <string name="a11y_filter_not_applied">ไม่ได้ใช้ตัวกรอง %1s</string>
-    <string name="a11y_pinned">เฉพาะกิจกรรมที่ติดดาวและจองไว้</string>
-    <string name="a11y_revert_pinned">แสดงเซสชันทั้งหมด</string>
     <string name="a11y_reservation_available">จองกิจกรรม</string>
-    <string name="a11y_reservation_working">กำลังจองกิจกรรม</string>
     <string name="a11y_reservation_reserved">จองกิจกรรมแล้ว</string>
     <string name="a11y_reservation_disabled">การจองไม่พร้อมใช้งาน</string>
     <string name="a11y_reservation_wait_list_available">เข้าร่วมรายชื่อรอเรียกสำหรับกิจกรรม</string>
@@ -109,19 +98,14 @@
     <string name="a11y_select_map_mode">เลือกโหมดแผนที่</string>
     <string name="a11y_search_schedule">ค้นหากำหนดการ</string>
     <string name="welcome">ยินดีต้อนรับ</string>
-    <string name="sign_in_hint">แตะเพื่อลงชื่อเข้าใช้</string>
     <string name="a11y_signed_in_content_description">ลงชื่อเข้าใช้ด้วย %s</string>
     <string name="a11y_signed_out_content_description">แตะเพื่อลงชื่อเข้าใช้</string>
-    <string name="dialog_sign_in_title">ลงชื่อเข้าใช้เพื่อปรับแต่งกำหนดการ</string>
     <string name="dialog_sign_in_content">ลงชื่อเข้าใช้เพื่อบันทึกกิจกรรม จองที่นั่ง และให้คะแนนเซสชัน (หากเป็นผู้เข้าร่วม) การดำเนินการจะได้รับการซิงค์จากบัญชีไปยังแอปและเว็บไซต์</string>
-    <string name="not_now">ไม่ใช่ตอนนี้</string>
     <string name="sign_in">ลงชื่อเข้าใช้</string>
     <string name="firebase_auth_no_network_connection">ไม่มีการเชื่อมต่ออินเทอร์เน็ต</string>
     <string name="firebase_auth_unknown_error">ข้อผิดพลาดที่ไม่รู้จัก</string>
-    <string name="dialog_sign_out_title">ออกจากระบบไหม</string>
     <string name="dialog_sign_out_content">กิจกรรม การจองที่นั่ง และการให้คะแนนเซสชัน (หากเป็นผู้เข้าร่วม) ทั้งหมดจะยังซิงค์กับบัญชี</string>
     <string name="sign_out">ออกจากระบบ</string>
-    <string name="profile">โปรไฟล์</string>
     <string name="manage_google_account">จัดการบัญชี Google</string>
     <string name="remove_reservation_title">นำการจองออกไหม</string>
     <string name="remove_reservation_content">คุณกำลังจะยกเลิกที่นั่งสำหรับ "%1$s" หากคุณตัดสินใจที่จะไม่จองที่นั่งแต่ยังต้องการเข้าร่วม เซสชันทั้งหมดจะยังมีที่นั่งจำนวนหนึ่งที่ให้สิทธิ์ผู้ที่มาก่อนได้ก่อน</string>
@@ -134,8 +118,6 @@
     <string name="notifications_preference_dialog_content">คุณต้องการรับการแจ้งเตือนเกี่ยวกับ I/O ไหม เราจะส่งข้อมูลเกี่ยวกับเวลาเริ่มต้นของเซสชัน กิจกรรมหลังเซสชัน การบันทึกเซสชัน และอื่นๆ ให้ คุณเปลี่ยนการตั้งค่านี้ใน "ข้อมูล &gt; การตั้งค่า" ได้ทุกเมื่อ</string>
     <string name="no">ไม่</string>
     <string name="yes">ใช่</string>
-    <string name="feed_item_pinned_icon">รายการที่ตรึงไว้</string>
-    <string name="feed_item_emergency_icon">รายการสำคัญ</string>
     <string name="feed_not_available">ไม่พบประกาศ</string>
     <string name="feed_loading_error">โหลดฟีดไม่ได้ ลองอีกครั้งในภายหลัง</string>
     <string name="feed_announcement_title">ประกาศ</string>
@@ -146,19 +128,15 @@
     <string name="feed_view_your_schedule">ดูกำหนดการ</string>
     <string name="feed_watch_live_stream">ดูสตรีมแบบสด</string>
     <plurals name="duration_days">
-        <item quantity="one">%s วัน</item>
         <item quantity="other">%s วัน</item>
     </plurals>
     <plurals name="duration_hours">
-        <item quantity="one">%s ชั่วโมง</item>
         <item quantity="other">%s ชั่วโมง</item>
     </plurals>
     <plurals name="duration_minutes">
-        <item quantity="one">%s นาที</item>
         <item quantity="other">%s นาที</item>
     </plurals>
     <plurals name="duration_seconds">
-        <item quantity="one">%s วินาที</item>
         <item quantity="other">%s วินาที</item>
     </plurals>
     <string name="menu_item_share_session">แชร์เซสชัน</string>
@@ -172,7 +150,6 @@
     <string name="onboarding_get_started">เริ่มต้นใช้งาน</string>
     <string name="onboarding_welcome_to_google_i_o">ยินดีต้อนรับสู่ Google I/O</string>
     <string name="onboarding_date_location">วันที่ 7-9 พฤษภาคม 2019\nMountain View, CA</string>
-    <string name="onboarding_join_online">เข้าร่วมกับเราในโลกออนไลน์ เราจะสตรีมเกี่ยวกับประเด็นสำคัญและเซสชันส่วนใหญ่กันแบบสดๆ</string>
     <string name="onboarding_label_days">วัน</string>
     <string name="onboarding_label_hours">ชม.</string>
     <string name="onboarding_label_mins">นาที</string>
@@ -181,14 +158,11 @@
     <string name="onboarding_welcome_google_io_during">Google I/O</string>
     <string name="onboarding_welcome_google_io_post">รับชมสรุปงาน I/O \'19 และดู #io19 ในโซเชียล</string>
     <string name="onboarding_signin">ลงชื่อเข้าใช้เพื่อรับการแจ้งเตือนเกี่ยวกับ I/O โดยผู้เข้าร่วมจะจองที่นั่งสำหรับเซสชันได้</string>
-    <string name="onboarding_explore_ar">รับชมสรุปงาน I/O \'19 และดู #io19 ในโซเชียล</string>
     <plurals name="session_starting_in">
-        <item quantity="one">เซสชันจะเริ่มในอีก %1$s นาที</item>
         <item quantity="other">เซสชันจะเริ่มในอีก %1$s นาที</item>
     </plurals>
     <string name="expanded">ขยาย</string>
     <string name="collapsed">ยุบ</string>
-    <string name="info_title">ข้อมูล</string>
     <string name="event_title">กิจกรรม</string>
     <string name="travel_title">การท่องเที่ยว</string>
     <string name="faq_title">คำถามที่พบบ่อย</string>
@@ -247,13 +221,7 @@
     <string name="faq_sessions_be_live_streamed_question_description">ประเด็นสำคัญ 2 ประเด็นและเซสชันทั้งหมดจะมีการสตรีมแบบสดผ่านหน้าแรกของเว็บไซต์กิจกรรมในวันงานทั้ง 3 วัน หากคุณไม่ว่างหรืออยู่อีกซีกโลกหนึ่งซึ่งมีความต่างกันเรื่องเวลา คุณจะรับชมบันทึกของเซสชันภายหลังได้ที่&lt;a href="https://www.youtube.com/user/GoogleDevelopers"&gt;ช่อง Google Developers ใน YouTube&lt;/a&gt;</string>
     <string name="faq_want_to_celebrate_i_o_description">ได้ ในทุกๆ ปี นักพัฒนาซอฟต์แวร์ทั่วโลกจะจัด&lt;a href="https://events.google.com/io/extended"&gt;กิจกรรม Google I/O Extended&lt;/a&gt; ขึ้น ระหว่างงาน ทางผู้จัดจะแสดงสตรีมแบบสดของกิจกรรมและจัดเซสชันขึ้นเอง ได้แก่ แฮ็กกาธอน, Codelabs, การสาธิต และอื่นๆ อีกมากมาย&lt;br&gt; หากเข้าร่วมเป็นผู้จัดงาน I/O Extended กับเราในปีนี้ คุณควรทำตามขั้นตอนเริ่มต้นดังนี้&lt;br&gt;&lt;br&gt; อ่าน&lt;a href="https://docs.google.com/presentation/d/e/2PACX–1vReWDtj-yASOho5q7XC6lYY8af9wRa13-81mPaoSRodiRoCw4MKJnQExQ8GxyNyCQiPZpBprznPG4ex/pub?slide=id.g62811f3b0_18"&gt;คู่มือสำหรับผู้จัด&lt;/a&gt;เพื่อดูเคล็ดลับและคำแนะนำต่างๆ เกี่ยวกับวิธีจัดกิจกรรมให้ประสบความสำเร็จ&lt;br&gt;&lt;br&gt; &lt;a href="https://events.google.com/io/extended/form"&gt;ลงทะเบียน&lt;/a&gt;กิจกรรมสาธารณะในเว็บไซต์ I/O เพื่อให้ผู้คนรู้จักมากขึ้น&lt;br&gt;&lt;br&gt; ติดแฮชแท็กอย่างเป็นทางการ #io19extended ในโพสต์บนโซเชียลเน็ตเวิร์กทั้งหมดที่เกี่ยวข้องกับ I/O Extended เพื่อให้ผู้คนค้นพบกิจกรรมได้ง่ายขึ้น&lt;br&gt;&lt;br&gt; หมายเหตุ: ผู้จัด I/O Extended จะส่งคำขอให้ลบข้อมูลส่วนตัวและ/หรือข้อมูลกิจกรรมหลังจบกิจกรรมได้โดยส่งอีเมลไปที่ io19@google.com&lt;br&gt; หากคุณเพียงต้องการเข้าร่วมกิจกรรม I/O Extended โปรดเรียกดู&lt;a href="https://events.google.com/io/extended"&gt;แผนที่ของเรา&lt;/a&gt;เพื่อค้นหากิจกรรมใกล้คุณและตอบกลับคำเชิญเข้าร่วมกิจกรรม&lt;br&gt; หากมีคำถามเพิ่มเติมเกี่ยวกับโปรแกรม I/O Extended โปรดติดต่อเราที่ io19extended\-external@google.com</string>
     <string name="view_sessions_text">ดูเซสชัน</string>
-    <string name="view_codelabs_text">ดู Codelabs</string>
-    <string name="view_events_text">ดูกิจกรรม</string>
-    <string name="view_map_text">ดูแผนที่</string>
-    <string name="wifi_network_label">เครือข่าย WiFi</string>
-    <string name="wifi_password_label">รหัสผ่าน</string>
     <string name="wifi_install_success">บันทึกเครือข่าย WiFi แล้ว</string>
-    <string name="wifi_install_error_message">ขออภัย ระบบบันทึกเครือข่าย WiFi ไม่สำเร็จ</string>
     <string name="wifi_install_clipboard_message">บันทึกเครือข่าย Wi-Fi ไม่ได้\nบันทึกรหัสผ่านไปยังคลิปบอร์ดแทน</string>
     <string name="event_sessions_title">เซสชัน</string>
     <string name="event_sandbox_title">แซนด์บ็อกซ์</string>
@@ -270,27 +238,20 @@
     <string name="wifi_header">Wi-Fi</string>
     <string name="related_apps_header">แอปที่เกี่ยวข้อง</string>
     <string name="event_types_header">ประเภทกิจกรรม</string>
-    <string name="general_header">ทั่วไป</string>
-    <string name="agreements_header">ข้อตกลง</string>
     <string name="settings_time_zone_label">กิจกรรมในเขตเวลาแปซิฟิก (UTC-8)</string>
     <string name="settings_enable_notifications">เปิดใช้การแจ้งเตือน</string>
     <string name="settings_send_anonymous_usage_statistics">ส่งสถิติการใช้งานแบบไม่ระบุตัวตน</string>
     <string name="settings_tos">ข้อกำหนดในการให้บริการ</string>
     <string name="settings_privacy_policy">นโยบายความเป็นส่วนตัว</string>
     <string name="settings_oss_licenses">ใบอนุญาตโอเพนซอร์ส</string>
-    <string name="settings_version_label">เวอร์ชัน %1$s, บิวด์ %2$s</string>
     <string name="settings_theme_title">เลือกธีม</string>
     <string name="settings_theme_system">ค่าเริ่มต้นของระบบ</string>
     <string name="settings_theme_light">สว่าง</string>
     <string name="settings_theme_dark">สีเข้ม</string>
     <string name="settings_theme_battery">ตั้งตามโหมดประหยัดแบตเตอรี่</string>
-    <string name="faq_label">คำถามที่พบบ่อย</string>
     <string name="built_with_material_components">สร้างด้วย Material Components</string>
-    <string name="tap_to_join_network">(แตะเพื่อเข้าร่วมเครือข่าย)</string>
     <string name="wifi_network_and_password">เครือข่าย: %1$s\nรหัสผ่าน: %2$s</string>
     <string name="join_network">เข้าร่วมเครือข่าย</string>
-    <string name="scavenger_hunt_description">เข้าร่วม I/O Android Things Scavenger Hunt</string>
-    <string name="scavenger_hunt_description2">เข้าร่วม I/O Android Things Scavenger Hunt</string>
     <string name="assistant_app_description">ลองพูดว่า "Hey Google พูดกับ Google I/O 19"</string>
     <string name="assistant_app_description2">ลองพูดว่า "Hey Google พูดกับ Google I/O 19"</string>
     <string name="speaker_link_website">เว็บไซต์</string>
@@ -300,10 +261,6 @@
     <string name="speaker_events_subhead">กิจกรรม</string>
     <string name="no_network_connection">ไม่มีการเชื่อมต่ออินเทอร์เน็ต</string>
     <string name="navigate_up">นำทางขึ้น</string>
-    <string name="error_fetch_ar_module">เกิดข้อผิดพลาดขณะดาวน์โหลดโมดูล AR การเชื่อมต่อเครือข่ายของคุณใช้งานได้ใช่ไหม</string>
-    <string name="downloading_ar_module">กำลังดาวน์โหลดโมดูล AR</string>
-    <string name="download_ar_dialog_title">ดาวน์โหลดโมดูล AR</string>
-    <string name="download_ar_dialog_message">เราจำเป็นต้องดาวน์โหลดโมดูล Augmented Reality จาก Play Store ก่อน คุณจึงจะเริ่มใช้งานได้ อุปกรณ์นี้กำลังเชื่อมต่อกับเครือข่ายที่มีการวัดปริมาณอินเทอร์เน็ตซึ่งอาจเรียกเก็บเงินสำหรับข้อมูลที่ถ่ายโอนจากคุณ\n\nคุณต้องการดำเนินการต่อไหม\n\nโปรดทราบว่าโหมด AR ใช้ได้ในบริเวณงานเท่านั้น</string>
     <string name="no_network_description">หากต้องการใช้ Explore I/O ลองทำดังนี้\n\n - ปิดโหมดเครื่องบิน\n\n - เปิดเน็ตมือถือหรือ Wi-Fi\n\n - ตรวจสอบสัญญาณในพื้นที่</string>
     <string name="phone_does_not_support_arcore_title">โทรศัพท์ของคุณไม่รองรับ ARCore</string>
     <string name="phone_does_not_support_arcore_message">ลองเปลี่ยนอุปกรณ์หรือยืมอุปกรณ์ของเพื่อน</string>

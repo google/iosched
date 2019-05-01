@@ -23,20 +23,15 @@
     <string name="filters">フィルタ</string>
     <string name="category_heading_tracks">トピック</string>
     <string name="category_heading_types">種類</string>
-    <string name="clear_all">すべてクリア</string>
     <string name="reset">リセット</string>
-    <string name="pinned_events_filter_description">スター付きのイベントと予約済みのイベントのみを表示しています</string>
     <plurals name="filter_event_count">
-        <item quantity="one">%1$d 件のイベント</item>
         <item quantity="other">%1$d 件のイベント</item>
     </plurals>
     <string name="starred_and_reserved">スター付きイベントと予約済みイベント</string>
     <string name="starred_and_reserved_short">あなたのイベント</string>
     <string name="search_schedule_hint">スケジュールを検索します</string>
     <string name="search_schedule_no_results">一致する検索結果はありません</string>
-    <string name="search_schedule_error">スケジュールの検索中にエラーが発生しました</string>
     <string name="agenda">予定リスト</string>
-    <string name="overview">概要</string>
     <string name="event_starred">スター付きアイテムにイベントを追加しました</string>
     <string name="event_unstarred">スター付きアイテムから削除されたイベント</string>
     <string name="event_star_error">スター付きアイテムにイベントを追加する際にエラーが発生しました</string>
@@ -62,11 +57,8 @@
     <string name="reservation_disabled">予約できません</string>
     <string name="reservation_pending">予約保留中</string>
     <string name="schedule_hint_title">スケジュールをカスタマイズしましょう</string>
-    <string name="schedule_hint_view_only_your_events">自分のイベントのみを表示</string>
     <string name="schedule_hint_star_event">スター付きイベントに追加</string>
     <string name="schedule_hint_reserve_session_seat">セッションの座席を予約しましょう</string>
-    <string name="schedule_hint_star_event_content_description">イベントにスターを付ける画像</string>
-    <string name="schedule_hint_reserve_session_seat_content_description">セッションの座席を予約する画像</string>
     <string name="rate_session">セッションを評価</string>
     <string name="menu_item_session_location">セッションの場所</string>
     <string name="menu_item_session_star">セッションにスターを付ける</string>
@@ -93,10 +85,7 @@
     <string name="a11y_clear_tag_filters">フィルタをクリア</string>
     <string name="a11y_filter_applied">%1s フィルタが適用されました</string>
     <string name="a11y_filter_not_applied">%1s フィルタが適用されていません</string>
-    <string name="a11y_pinned">スター付きイベントと予約済みイベントのみ</string>
-    <string name="a11y_revert_pinned">すべてのセッションを表示</string>
     <string name="a11y_reservation_available">イベントを予約</string>
-    <string name="a11y_reservation_working">イベント予約の処理中</string>
     <string name="a11y_reservation_reserved">予約済みイベント</string>
     <string name="a11y_reservation_disabled">予約できません</string>
     <string name="a11y_reservation_wait_list_available">イベントのウェイティング リストに登録する</string>
@@ -109,19 +98,14 @@
     <string name="a11y_select_map_mode">マップモードを選択</string>
     <string name="a11y_search_schedule">スケジュールを検索</string>
     <string name="welcome">ようこそ</string>
-    <string name="sign_in_hint">タップしてログインしてください</string>
     <string name="a11y_signed_in_content_description">%s としてログインしています。</string>
     <string name="a11y_signed_out_content_description">タップしてログインしてください。</string>
-    <string name="dialog_sign_in_title">ログインしてスケジュールをカスタマイズ</string>
     <string name="dialog_sign_in_content">イベントの保存、座席の予約、セッションの評価（出席者の場合）を行うには、ログインしてください。アカウントでの操作はアプリとサイトの間で同期されます。</string>
-    <string name="not_now">後で</string>
     <string name="sign_in">ログイン</string>
     <string name="firebase_auth_no_network_connection">インターネットに接続されていません</string>
     <string name="firebase_auth_unknown_error">不明なエラー</string>
-    <string name="dialog_sign_out_title">ログアウトしますか？</string>
     <string name="dialog_sign_out_content">保存したイベント、座席の予約、セッションの評価（出席者の場合）は、すべてアカウントに同期されたままとなります。</string>
     <string name="sign_out">ログアウト</string>
-    <string name="profile">プロフィール</string>
     <string name="manage_google_account">Google アカウントを管理</string>
     <string name="remove_reservation_title">予約を削除しますか？</string>
     <string name="remove_reservation_content">「%1$s」の座席をキャンセルします。座席を予約しないで参加を希望する方向けに、先着順でご利用いただける座席をすべてのセッションで一部ご用意しています。</string>
@@ -134,8 +118,6 @@
     <string name="notifications_preference_dialog_content">I/O に関する通知を受け取りますか？セッションの開始時間、時間外イベント、セッションの録画などに関する情報をお送りいたします。この設定は、[情報] &gt; [設定] でいつでも変更できます。</string>
     <string name="no">いいえ</string>
     <string name="yes">はい</string>
-    <string name="feed_item_pinned_icon">固定アイテム</string>
-    <string name="feed_item_emergency_icon">優先アイテム</string>
     <string name="feed_not_available">お知らせが見つかりません。</string>
     <string name="feed_loading_error">フィードを読み込めませんでした。しばらくしてからもう一度お試しください。</string>
     <string name="feed_announcement_title">お知らせ</string>
@@ -146,19 +128,15 @@
     <string name="feed_view_your_schedule">スケジュールを表示</string>
     <string name="feed_watch_live_stream">ライブ配信を視聴</string>
     <plurals name="duration_days">
-        <item quantity="one">%s日</item>
         <item quantity="other">%s日</item>
     </plurals>
     <plurals name="duration_hours">
-        <item quantity="one">%s時間</item>
         <item quantity="other">%s時間</item>
     </plurals>
     <plurals name="duration_minutes">
-        <item quantity="one">%s分</item>
         <item quantity="other">%s分</item>
     </plurals>
     <plurals name="duration_seconds">
-        <item quantity="one">%s秒</item>
         <item quantity="other">%s秒</item>
     </plurals>
     <string name="menu_item_share_session">セッションを共有</string>
@@ -172,7 +150,6 @@
     <string name="onboarding_get_started">使ってみる</string>
     <string name="onboarding_welcome_to_google_i_o">Google I/O へようこそ</string>
     <string name="onboarding_date_location">2019 年 5 月 7～9 日\nカリフォルニア州マウンテン ビューで開催</string>
-    <string name="onboarding_join_online">オンラインでご参加いただけます。基調講演や大部分のセッションをライブ配信する予定です。</string>
     <string name="onboarding_label_days">日</string>
     <string name="onboarding_label_hours">時間</string>
     <string name="onboarding_label_mins">分</string>
@@ -181,14 +158,11 @@
     <string name="onboarding_welcome_google_io_during">Google I/O</string>
     <string name="onboarding_welcome_google_io_post">I/O \'19 のまとめ映像と、ソーシャル メディアで #io19 をチェック</string>
     <string name="onboarding_signin">ログインして I/O の通知を受け取ってください。参加者はセッションの座席を予約できます。</string>
-    <string name="onboarding_explore_ar">I/O \'19 のまとめ映像と、ソーシャル メディアで #io19 をチェック</string>
     <plurals name="session_starting_in">
-        <item quantity="one">あと %1$s 分でセッションが始まります</item>
         <item quantity="other">あと %1$s 分でセッションが始まります</item>
     </plurals>
     <string name="expanded">展開済み</string>
     <string name="collapsed">折りたたみ済み</string>
-    <string name="info_title">情報</string>
     <string name="event_title">イベント</string>
     <string name="travel_title">交通手段</string>
     <string name="faq_title">よくある質問</string>
@@ -247,13 +221,7 @@
     <string name="faq_sessions_be_live_streamed_question_description">基調講演 2 題とすべてのセッションは、フェスティバル開催中の 3 日間、イベントサイトのホームページでライブ配信されます。お仕事などでご都合の付かない方や時差のある地域の方は、後ほど &lt;a href="https://www.youtube.com/user/GoogleDevelopers"&gt;Google Developers の YouTube チャンネル&lt;/a&gt;で録画を配信しますので、そちらをご覧ください。</string>
     <string name="faq_want_to_celebrate_i_o_description">はい。世界中のデベロッパーが、毎年 &lt;a href="https://events.google.com/io/extended"&gt;Google I/O Extended イベント&lt;/a&gt;を開催します。イベント主催者はライブ配信や、ハッカソン、コードラボ、デモなどのセッションを提供できます。&lt;br&gt; 今年、I/O Extended のホストとして参加する場合は、まず以下の手順を行ってください。&lt;br&gt;&lt;br&gt;  『&lt;a href="https://docs.google.com/presentation/d/e/2PACX–1vReWDtj-yASOho5q7XC6lYY8af9wRa13-81mPaoSRodiRoCw4MKJnQExQ8GxyNyCQiPZpBprznPG4ex/pub?slide=id.g62811f3b0_18"&gt;主催者ガイド&lt;/a&gt;』で、イベントを成功に導くためのヒントとアドバイスに目を通す。&lt;br&gt;&lt;br&gt; 認知度の向上のため、I/O ウェブサイトに一般公開のイベントを&lt;a href="https://events.google.com/io/extended/form"&gt;登録&lt;/a&gt;する。&lt;br&gt;&lt;br&gt; I/O Extended に関連したすべての SNS 配信で公式の #io19extended ハッシュタグを使用して、目に留まりやすくする。&lt;br&gt;&lt;br&gt; 注: I/O Extended のホストは、イベント終了後に io19@google.com 宛てにメールを送信して個人データやイベントデータの削除を要求できます。&lt;br&gt; I/O Extended イベントに参加するだけの場合は、&lt;a href="https://events.google.com/io/extended"&gt;地図&lt;/a&gt;を参照して、お近くのイベントを見つけて参加を表明してください。&lt;br&gt; I/O Extended プログラムに関するご質問は、io19extended\-external@google.com 宛てにお問い合わせください。</string>
     <string name="view_sessions_text">セッションを表示</string>
-    <string name="view_codelabs_text">Codelab を表示</string>
-    <string name="view_events_text">イベントを表示</string>
-    <string name="view_map_text">地図を表示</string>
-    <string name="wifi_network_label">Wi-Fi ネットワーク:</string>
-    <string name="wifi_password_label">パスワード:</string>
     <string name="wifi_install_success">Wi-Fi ネットワークを保存しました</string>
-    <string name="wifi_install_error_message">Wi-Fi ネットワークを保存できません</string>
     <string name="wifi_install_clipboard_message">Wi-Fi ネットワークを保存できません。\nパスワードをクリップボードに保存しました。</string>
     <string name="event_sessions_title">セッション</string>
     <string name="event_sandbox_title">サンドボックス</string>
@@ -270,27 +238,20 @@
     <string name="wifi_header">Wi-Fi</string>
     <string name="related_apps_header">関連アプリ</string>
     <string name="event_types_header">イベントの種類</string>
-    <string name="general_header">全般</string>
-    <string name="agreements_header">合意事項</string>
     <string name="settings_time_zone_label">太平洋標準時（UTC-8）でのイベント</string>
     <string name="settings_enable_notifications">通知を有効にします</string>
     <string name="settings_send_anonymous_usage_statistics">使用状況を匿名で送信</string>
     <string name="settings_tos">利用規約</string>
     <string name="settings_privacy_policy">プライバシー ポリシー</string>
     <string name="settings_oss_licenses">オープンソース ライセンス</string>
-    <string name="settings_version_label">バージョン %1$s、ビルド %2$s</string>
     <string name="settings_theme_title">テーマを選択</string>
     <string name="settings_theme_system">システムのデフォルト</string>
     <string name="settings_theme_light">ライト</string>
     <string name="settings_theme_dark">ダーク</string>
     <string name="settings_theme_battery">バッテリー セーバーが自動で設定</string>
-    <string name="faq_label">よくある質問</string>
     <string name="built_with_material_components">このアプリは Material Components で構築されています。</string>
-    <string name="tap_to_join_network">（タップしてネットワークに接続）</string>
     <string name="wifi_network_and_password">ネットワーク: %1$s\nパスワード: %2$s</string>
     <string name="join_network">ネットワークに参加</string>
-    <string name="scavenger_hunt_description">I/O Android Things スカベンジャー ハントにご参加ください。</string>
-    <string name="scavenger_hunt_description2">I/O Android Things スカベンジャー ハントにご参加ください。</string>
     <string name="assistant_app_description">「OK Google、Google I/O 19 と話したい」と言うだけで起動できます。</string>
     <string name="assistant_app_description2">「OK Google、Google I/O 19 と話したい」と言うだけで起動できます。</string>
     <string name="speaker_link_website">ウェブサイト</string>
@@ -300,10 +261,6 @@
     <string name="speaker_events_subhead">イベント</string>
     <string name="no_network_connection">インターネットに接続されていません。</string>
     <string name="navigate_up">上へ移動</string>
-    <string name="error_fetch_ar_module">AR モジュールのダウンロード中にエラーが発生しました。ネットワークに正常に接続されていることをご確認ください。</string>
-    <string name="downloading_ar_module">AR モジュールをダウンロードしています</string>
-    <string name="download_ar_dialog_title">AR モジュールのダウンロード</string>
-    <string name="download_ar_dialog_message">拡張現実モジュールを起動するには、その前に Play ストアからこのモジュールをダウンロードする必要があります。このデバイスは現在、従量制ネットワークに接続されているため、データの転送に料金が発生する場合があります。\n\n続行してもよろしいですか？\n\n注: 拡張現実モードは、オンサイトでの利用を目的としたものです。</string>
     <string name="no_network_description">Explore I/O を使用するには:\n\n - 機内モードをオフにしてください。\n\n - モバイルデータまたは Wi-Fi をオンにしてください。\n\n - 電波の状態を確認してください。</string>
     <string name="phone_does_not_support_arcore_title">スマートフォンが ARCore をサポートしていません</string>
     <string name="phone_does_not_support_arcore_message">別のデバイスを使用するか、ご友人からデバイスを借りてお試しください</string>
