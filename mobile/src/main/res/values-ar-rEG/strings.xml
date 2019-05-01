@@ -23,9 +23,7 @@
     <string name="filters">فلاتر</string>
     <string name="category_heading_tracks">المواضيع</string>
     <string name="category_heading_types">أنواع الحدث</string>
-    <string name="clear_all">إزالة كل الشروط</string>
     <string name="reset">إعادة ضبط</string>
-    <string name="pinned_events_filter_description">عرض الفعاليات المحجوزة والتي تمّ تمييزها بنجمة فقط</string>
     <plurals name="filter_event_count">
         <item quantity="zero"> %1$d حدث</item>
         <item quantity="one"> حدث (%1$d)</item>
@@ -38,9 +36,7 @@
     <string name="starred_and_reserved_short">الفعاليات التي ستشارك فيها</string>
     <string name="search_schedule_hint">البحث في الجدول الزمني</string>
     <string name="search_schedule_no_results">لم يتمّ العثور على نتائج.</string>
-    <string name="search_schedule_error">حدث خطأ أثناء البحث في الجدول الزمني.</string>
     <string name="agenda">جدول الأعمال</string>
-    <string name="overview">نظرة عامّة</string>
     <string name="event_starred">تمّت إضافة الحدث إلى العناصر المميّزة بنجمة.</string>
     <string name="event_unstarred">تمّت إزالة الحدث من العناصر المميّزة بنجمة.</string>
     <string name="event_star_error">حدث خطأ أثناء إضافة الحدث إلى العناصر المميّزة بنجمة.</string>
@@ -66,11 +62,8 @@
     <string name="reservation_disabled">الحجوزات غير متاحة.</string>
     <string name="reservation_pending">الحجز في الانتظار</string>
     <string name="schedule_hint_title">تخصيص الجدول الزمني</string>
-    <string name="schedule_hint_view_only_your_events">عرض الأحداث التي تسجّلت فيها فقط</string>
     <string name="schedule_hint_star_event">إضافة الحدث إلى الأحداث المميّزة بنجمة</string>
     <string name="schedule_hint_reserve_session_seat">حجز مِقعد للجلسة</string>
-    <string name="schedule_hint_star_event_content_description">صورة لتمييز أيّ حدث بنجمة</string>
-    <string name="schedule_hint_reserve_session_seat_content_description">صورة لحجز مِقعد للجلسة</string>
     <string name="rate_session">تقييم الجلسة</string>
     <string name="menu_item_session_location">موقع الجلسة</string>
     <string name="menu_item_session_star">تمييز الجلسة بنجمة</string>
@@ -97,10 +90,7 @@
     <string name="a11y_clear_tag_filters">مسح الفلاتر</string>
     <string name="a11y_filter_applied">تمّ تطبيق الفلتر %1s.</string>
     <string name="a11y_filter_not_applied">لم يتمّ تطبيق الفلتر %1s.</string>
-    <string name="a11y_pinned">الفعاليات المحجوزة والتي تمّ تمييزها بنجمة فقط</string>
-    <string name="a11y_revert_pinned">عرض كلّ الجلسات</string>
     <string name="a11y_reservation_available">حجز مِقعد</string>
-    <string name="a11y_reservation_working">جارٍ حجز مِقعد</string>
     <string name="a11y_reservation_reserved">تمّ حجز مِقعد في الحدث</string>
     <string name="a11y_reservation_disabled">الحجز غير متاح</string>
     <string name="a11y_reservation_wait_list_available">الانضمام إلى قائمة الانتظار للحدث</string>
@@ -113,19 +103,14 @@
     <string name="a11y_select_map_mode">اختيار وضع الخريطة</string>
     <string name="a11y_search_schedule">البحث في الجدول الزمني</string>
     <string name="welcome">مرحبًا</string>
-    <string name="sign_in_hint">يُرجى النقر لتسجيل الدخول.</string>
     <string name="a11y_signed_in_content_description">تم تسجيل الدخول من حساب %s.</string>
     <string name="a11y_signed_out_content_description">يُرجى النقر لتسجيل الدخول.</string>
-    <string name="dialog_sign_in_title">تسجيل الدخول لتخصيص الجدول الزمني</string>
     <string name="dialog_sign_in_content">يُرجى تسجيل الدخول لحفظ الأحداث، وحجز المقاعد، وتقييم الجلسات (إذا كنت ضيفًا). وستتمّ مزامنة الإجراءات التي يتمّ إجراؤها في حسابك على التطبيق والموقع الإلكتروني.</string>
-    <string name="not_now">في وقت لاحق</string>
     <string name="sign_in">تسجيل الدخول</string>
     <string name="firebase_auth_no_network_connection">لا يتوفَّر اتصال بالإنترنت.</string>
     <string name="firebase_auth_unknown_error">خطأ غير معروف</string>
-    <string name="dialog_sign_out_title">هل تريد الخروج؟</string>
     <string name="dialog_sign_out_content">ستبقى كلّ الأحداث وحجوزات المقاعد وتقييمات الجلسات المحفوظة (إذا كنت ضيفًا) متزامنة على حسابك.</string>
     <string name="sign_out">الخروج</string>
-    <string name="profile">الملف الشخصي</string>
     <string name="manage_google_account">إدارة حسابك على Google</string>
     <string name="remove_reservation_title">هل تودّ إزالة الحجز؟</string>
     <string name="remove_reservation_content">إنّك على وشك إلغاء حجزك في "%1$s". إذا أردت المشاركة في الجلسة بدون حجز مقعد، يتبقّى عدد من المقاعد المتاحة في كلّ الجلسات والأولوية حسب الأسبقيّة.</string>
@@ -138,8 +123,6 @@
     <string name="notifications_preference_dialog_content">هل تريد تلقّي إشعارات حول I/O؟ سنرسل إليك معلومات عن وقت بدء الجلسات، والأحداث التي تليها، والتسجيلات وغيرها. يمكنك تغيير هذا الإعداد ضمن "المعلومات &gt; الإعدادات" في أيّ وقت.</string>
     <string name="no">لا</string>
     <string name="yes">نعم</string>
-    <string name="feed_item_pinned_icon">العنصر المثبَّت</string>
-    <string name="feed_item_emergency_icon">عنصر ذو أولوية</string>
     <string name="feed_not_available">لم يتمّ العثور على إعلانات.</string>
     <string name="feed_loading_error">تعذّر تحميل الخلاصة. يُرجى إعادة المحاولة.</string>
     <string name="feed_announcement_title">الإعلانات</string>
@@ -192,7 +175,6 @@
     <string name="onboarding_get_started">البدء</string>
     <string name="onboarding_welcome_to_google_i_o">أهلاً بك في Google I/O</string>
     <string name="onboarding_date_location">من 7 إلى 9 أيار (مايو) 2019\nMountain View, CA</string>
-    <string name="onboarding_join_online">ندعوك للانضمام إلينا حيث نبثّ الأفكار الرئيسية ومعظم الجلسات مباشرةً على الإنترنت.</string>
     <string name="onboarding_label_days">يوم</string>
     <string name="onboarding_label_hours">س</string>
     <string name="onboarding_label_mins">د</string>
@@ -201,7 +183,6 @@
     <string name="onboarding_welcome_google_io_during">Google I/O</string>
     <string name="onboarding_welcome_google_io_post">ننصحك بمشاهدة ملخّص مؤتمر I/O للعام 2019 والاطّلاع على ‎#io19 على وسائل التواصل الاجتماعي.</string>
     <string name="onboarding_signin">عليك تسجيل الدخول لتلقّي إشعارات I/O ويستطيع الضيوف حجز مقاعد للجلسات.</string>
-    <string name="onboarding_explore_ar">ننصحك بمشاهدة ملخّص مؤتمر I/O للعام 2019 والاطّلاع على ‎#io19 على وسائل التواصل الاجتماعي.</string>
     <plurals name="session_starting_in">
         <item quantity="zero">ستبدأ الجلسة بعد (%1$s) دقيقة.</item>
         <item quantity="one">ستبدأ الجلسة بعد دقيقة (%1$s).</item>
@@ -212,7 +193,6 @@
     </plurals>
     <string name="expanded">طريقة عرض موسّعة</string>
     <string name="collapsed">طريقة عرض مصغّرة</string>
-    <string name="info_title">معلومات</string>
     <string name="event_title">الحدث</string>
     <string name="travel_title">السفر</string>
     <string name="faq_title">الأسئلة الشائعة</string>
@@ -271,13 +251,7 @@
     <string name="faq_sessions_be_live_streamed_question_description">سيتمّ بثّ العرضين التقديميين الرئيسيّين وكلّ "الجلسات" بشكل مباشر على الصفحة الرئيسية لموقع الويب الخاص بالفعالية طوال أيام المؤتمر الثلاثة. في حال انهماكك في العمل أو إقامتك في بلد يتّبع توقيتًا زمنيًا مختلفًا، يمكنك مشاهدة تسجيلات الجلسات في وقت لاحق على &lt;a href="https://www.youtube.com/user/GoogleDevelopers"&gt;قناة Google Developers على YouTube‏&lt;/a&gt;.</string>
     <string name="faq_want_to_celebrate_i_o_description">نعم. يستضيف مطوّرو البرامج من حول العالم كلّ عام &lt;a href="https://events.google.com/io/extended"&gt;فعاليات Google I/O Extended‏&lt;/a&gt;. وخلال هذه الفعاليات، تستطيع الجهات المنظِّمة بث المحتوى مباشرةً واستضافة جلساتهم الخاصة من ضمنها الهاكاثونات والدروس التطبيقية حول الترميز والعروض التوضيحية وغيرها.&lt;br&gt; وإذا أردت المشاركة في فعالية I/O Extended كمضيف هذا العام، يمكنك اتّباع هذه الخطوات للبدء في ذلك:&lt;br&gt;&lt;br&gt;  يُرجى قراءة &lt;a href="https://docs.google.com/presentation/d/e/2PACX–1vReWDtj-yASOho5q7XC6lYY8af9wRa13-81mPaoSRodiRoCw4MKJnQExQ8GxyNyCQiPZpBprznPG4ex/pub?slide=id.g62811f3b0_18"&gt;دليل الجهات المنظِّمة&lt;/a&gt; للحصول على نصائح واقتراحات حول كيفية استضافة فعالية ناجحة.&lt;br&gt;&lt;br&gt; &lt;a href="https://events.google.com/io/extended/form"&gt;سجِّل&lt;/a&gt; الفعالية العامة التي تريدها على موقع الويب الخاص بمؤتمر I/O لتصل إلى جمهور أكبر.&lt;br&gt;&lt;br&gt; استخدِم علامة التصنيف ‎#io19extended الرسمية في كلّ المشارَكات المتعلّقة بفعالية I/O Extended على وسائل التواصل الاجتماعي لتسهيل العثور عليها&lt;br&gt;&lt;br&gt; ملاحظة: يمكن لمستضيفي I/O Extended طلب حذف معلوماتهم الشخصية و/أو بيانات الفعالية بعد انتهائها عبر توجيه رسالة إلكترونية إلى العنوان io19@google.com.&lt;‏br&gt; إذا أردت حضور فعالية I/O Extended ببساطة، تصفَّح &lt;a href="https://events.google.com/io/extended"&gt;الخريطة&lt;/a&gt; لإيجاد فعالية تقع بالقرب منك والردّ على الدعوة.&lt;br&gt; إذا كان لديك أسئلة حول برنامج I/O Extended، يمكنك التواصل معنا على البريد الإلكتروني io19extended\-external@google.com.</string>
     <string name="view_sessions_text">عرض الجلسات</string>
-    <string name="view_codelabs_text">عرض Codelabs</string>
-    <string name="view_events_text">عرض الأحداث</string>
-    <string name="view_map_text">عرض الخريطة</string>
-    <string name="wifi_network_label">اسم شبكة Wi-Fi:</string>
-    <string name="wifi_password_label">كلمة المرور:</string>
     <string name="wifi_install_success">تمّ حفظ شبكة Wi-Fi.</string>
-    <string name="wifi_install_error_message">تعذّر حفظ شبكة Wi-Fi.</string>
     <string name="wifi_install_clipboard_message">تعذّر حفظ تفاصيل شبكة Wi-Fi.‏\nوتمّ حفظ كلمة المرور في الحافظة بدلاً من ذلك.</string>
     <string name="event_sessions_title">الجلسات</string>
     <string name="event_sandbox_title">وَضْع الحماية</string>
@@ -294,27 +268,20 @@
     <string name="wifi_header">Wi-Fi</string>
     <string name="related_apps_header">التطبيقات ذات الصلة</string>
     <string name="event_types_header">أنواع الأحداث</string>
-    <string name="general_header">معلومات عامّة</string>
-    <string name="agreements_header">الاتفاقيات</string>
     <string name="settings_time_zone_label">تجري الأحداث بتوقيت المحيط الهادئ (UTC-8).</string>
     <string name="settings_enable_notifications">تفعيل الإشعارات</string>
     <string name="settings_send_anonymous_usage_statistics">إرسال إحصاءات الاستخدام المجهولة المصدر</string>
     <string name="settings_tos">بنود الخدمة</string>
     <string name="settings_privacy_policy">سياسة الخصوصية</string>
     <string name="settings_oss_licenses">تراخيص البرامج المفتوحة المصدر</string>
-    <string name="settings_version_label">الإصدار %1$s، النسخة %2$s</string>
     <string name="settings_theme_title">اختيار تصميم</string>
     <string name="settings_theme_system">إعداد تلقائي للنظام</string>
     <string name="settings_theme_light">فاتح</string>
     <string name="settings_theme_dark">غامق</string>
     <string name="settings_theme_battery">الضبط حسب ميزة "توفير شحن البطارية"</string>
-    <string name="faq_label">الأسئلة الشائعة</string>
     <string name="built_with_material_components">تمّ إنشاء التطبيق عبر Material Components.</string>
-    <string name="tap_to_join_network">(انقر للانضمام إلى الشبكة)</string>
     <string name="wifi_network_and_password">الشبكة: %1$s\nكلمة المرور: %2$s</string>
     <string name="join_network">الانضمام إلى الشبكة</string>
-    <string name="scavenger_hunt_description">شارِك في Scavenger Hunt من Android Things في مؤتمر I/O.</string>
-    <string name="scavenger_hunt_description2">شارِك في Scavenger Hunt من Android Things في مؤتمر I/O.</string>
     <string name="assistant_app_description">ما عليك سوى قول "Hey Google, talk to Google I/O 19".</string>
     <string name="assistant_app_description2">ما عليك سوى قول "Hey Google, talk to Google I/O 19".</string>
     <string name="speaker_link_website">موقع الويب</string>
@@ -324,10 +291,6 @@
     <string name="speaker_events_subhead">الفعاليات</string>
     <string name="no_network_connection">لا يتوفّر اتصال بالإنترنت.</string>
     <string name="navigate_up">الانتقال إلى الأعلى</string>
-    <string name="error_fetch_ar_module">حدث خطأ أثناء تنزيل وحدة الواقع المعزّز. يُرجى التحقّق من الاتصال بالشبكة.</string>
-    <string name="downloading_ar_module">جارٍ تنزيل وحدة الواقع المعزّز</string>
-    <string name="download_ar_dialog_title">تنزيل وحدة الواقع المعزّز</string>
-    <string name="download_ar_dialog_message">يجب تنزيل وحدة الواقع المعزّز من "متجر Play" قبل التشغيل. إنّ هذا الجهاز مرتبط حاليًا بشبكة تفرض تكلفة استخدام، ما قد يؤدي إلى تحصيل رسوم منك مقابل نقل البيانات.\n\nهل تودّ المتابعة؟\n\nإنّ وضع الواقع المعزّز هو ميزة حصرية للضيوف الحاضرين.</string>
     <string name="no_network_description">لاستخدام ميزة Explore I/O، يُرجى محاولة:\n\n - إيقاف "وضع الطائرة"\n\n - تفعيل بيانات الجوّال أو  شبكة Wi-Fi‏\n\n - التحقّق من الإشارة في منطقتك.</string>
     <string name="phone_does_not_support_arcore_title">لا يمكنك استخدام ARCore على هاتفك.</string>
     <string name="phone_does_not_support_arcore_message">يُرجى استخدام جهاز آخر أو استعارة جهاز من صديق.</string>

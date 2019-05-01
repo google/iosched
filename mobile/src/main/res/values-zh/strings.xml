@@ -23,20 +23,15 @@
     <string name="filters">过滤条件</string>
     <string name="category_heading_tracks">主题</string>
     <string name="category_heading_types">类型</string>
-    <string name="clear_all">全部清除</string>
     <string name="reset">重置</string>
-    <string name="pinned_events_filter_description">仅显示已加星标的活动和已预约的活动</string>
     <plurals name="filter_event_count">
-        <item quantity="one">%1$d 个活动</item>
         <item quantity="other">%1$d 个活动</item>
     </plurals>
     <string name="starred_and_reserved">您已加星标的活动和已预约的活动</string>
     <string name="starred_and_reserved_short">您的活动</string>
     <string name="search_schedule_hint">搜索日程安排</string>
     <string name="search_schedule_no_results">未找到任何结果</string>
-    <string name="search_schedule_error">搜索日程安排时出错</string>
     <string name="agenda">日程</string>
-    <string name="overview">概览</string>
     <string name="event_starred">已将活动添加到您的加星标项</string>
     <string name="event_unstarred">活动已从已加星标的项中移除</string>
     <string name="event_star_error">向已加星标的项添加活动时出错</string>
@@ -62,11 +57,8 @@
     <string name="reservation_disabled">无法预约</string>
     <string name="reservation_pending">预约待处理</string>
     <string name="schedule_hint_title">自定义日程安排</string>
-    <string name="schedule_hint_view_only_your_events">只查看您的活动</string>
     <string name="schedule_hint_star_event">添加到您已加星标的活动中</string>
     <string name="schedule_hint_reserve_session_seat">预约会议席位</string>
-    <string name="schedule_hint_star_event_content_description">为活动加注星标的图片</string>
-    <string name="schedule_hint_reserve_session_seat_content_description">预约会议席位的图片</string>
     <string name="rate_session">为会议评分</string>
     <string name="menu_item_session_location">会议位置</string>
     <string name="menu_item_session_star">为会议加注星标</string>
@@ -93,10 +85,7 @@
     <string name="a11y_clear_tag_filters">清除过滤条件</string>
     <string name="a11y_filter_applied">已应用过滤条件“%1s”</string>
     <string name="a11y_filter_not_applied">未应用过滤条件“%1s”</string>
-    <string name="a11y_pinned">仅限已加星标的活动和已预约的活动</string>
-    <string name="a11y_revert_pinned">显示所有会议</string>
     <string name="a11y_reservation_available">预约活动</string>
-    <string name="a11y_reservation_working">正在预约活动</string>
     <string name="a11y_reservation_reserved">已成功预约活动</string>
     <string name="a11y_reservation_disabled">无法预约</string>
     <string name="a11y_reservation_wait_list_available">进入活动候补名单</string>
@@ -109,19 +98,14 @@
     <string name="a11y_select_map_mode">选择地图模式</string>
     <string name="a11y_search_schedule">搜索日程安排</string>
     <string name="welcome">欢迎！</string>
-    <string name="sign_in_hint">点按即可登录</string>
     <string name="a11y_signed_in_content_description">目前登录的帐号是 %s。</string>
     <string name="a11y_signed_out_content_description">点按即可登录。</string>
-    <string name="dialog_sign_in_title">登录即可自定义您的日程安排</string>
     <string name="dialog_sign_in_content">登录即可保存活动、预约席位并为会议评分（如果是会议参加者）。系统将通过您的帐号同步在应用和网站中执行的操作。</string>
-    <string name="not_now">以后再说</string>
     <string name="sign_in">登录</string>
     <string name="firebase_auth_no_network_connection">未连接到互联网</string>
     <string name="firebase_auth_unknown_error">未知错误</string>
-    <string name="dialog_sign_out_title">要退出帐号吗？</string>
     <string name="dialog_sign_out_content">所有已保存的活动、席位预约和会议评分（如果是会议参加者）都会持续同步到您的帐号中。</string>
     <string name="sign_out">退出帐号</string>
-    <string name="profile">个人资料</string>
     <string name="manage_google_account">管理您的 Google 帐号</string>
     <string name="remove_reservation_title">要移除预约项目吗？</string>
     <string name="remove_reservation_content">您即将放弃“%1$s”的预约席位。如果您决定不预约席位，但仍想参加会议，我们的所有会议都会保留部分无需预约的座位：座位有限，先到现场者先得。</string>
@@ -134,8 +118,6 @@
     <string name="notifications_preference_dialog_content">想要接收有关 I/O 大会的通知吗？我们会向您发送会议开始时间、会后活动、会议录像等相关信息。您可以随时在“信息”&gt;“设置”下更改此设置。</string>
     <string name="no">否</string>
     <string name="yes">是</string>
-    <string name="feed_item_pinned_icon">置顶项</string>
-    <string name="feed_item_emergency_icon">优先事项</string>
     <string name="feed_not_available">未找到任何公告。</string>
     <string name="feed_loading_error">无法加载 Feed。请稍后再试。</string>
     <string name="feed_announcement_title">公告</string>
@@ -146,19 +128,15 @@
     <string name="feed_view_your_schedule">查看您的日程安排</string>
     <string name="feed_watch_live_stream">观看直播</string>
     <plurals name="duration_days">
-        <item quantity="one">%s 天</item>
         <item quantity="other">%s 天</item>
     </plurals>
     <plurals name="duration_hours">
-        <item quantity="one">%s 小时</item>
         <item quantity="other">%s 小时</item>
     </plurals>
     <plurals name="duration_minutes">
-        <item quantity="one">%s 分钟</item>
         <item quantity="other">%s 分钟</item>
     </plurals>
     <plurals name="duration_seconds">
-        <item quantity="one">%s 秒</item>
         <item quantity="other">%s 秒</item>
     </plurals>
     <string name="menu_item_share_session">分享会议</string>
@@ -172,7 +150,6 @@
     <string name="onboarding_get_started">开始使用</string>
     <string name="onboarding_welcome_to_google_i_o">欢迎来到 Google I/O 大会</string>
     <string name="onboarding_date_location">2019 年 5 月 7 日至 9 日\n加利福尼亚州山景城</string>
-    <string name="onboarding_join_online">在线加入我们。我们将直播主题演讲和大部分会议内容。</string>
     <string name="onboarding_label_days">天</string>
     <string name="onboarding_label_hours">小时</string>
     <string name="onboarding_label_mins">分</string>
@@ -181,14 +158,11 @@
     <string name="onboarding_welcome_google_io_during">Google I/O 大会</string>
     <string name="onboarding_welcome_google_io_post">观看 2019 年 I/O 大会回顾并在社交网络上关注 #io19</string>
     <string name="onboarding_signin">登录即可接收 I/O 大会通知，并且参加者可以预约各场研讨会的座位。</string>
-    <string name="onboarding_explore_ar">观看 2019 年 I/O 大会回顾并在社交网络上关注 #io19</string>
     <plurals name="session_starting_in">
-        <item quantity="one">会议将在 %1$s 分钟后开始</item>
         <item quantity="other">会议将在 %1$s 分钟后开始</item>
     </plurals>
     <string name="expanded">已展开</string>
     <string name="collapsed">已收起</string>
-    <string name="info_title">信息</string>
     <string name="event_title">活动</string>
     <string name="travel_title">出行信息</string>
     <string name="faq_title">常见问题解答</string>
@@ -247,13 +221,7 @@
     <string name="faq_sessions_be_live_streamed_question_description">本届大会为期三天，期间我们会在大会网站的首页上提供两场主题演讲和所有研讨会的现场直播。如果您工作繁忙，或因身处地球的另一端而面临时差造成的不便，则可以在晚些时候通过 &lt;a href="https://www.youtube.com/user/GoogleDevelopers"&gt;YouTube 上的“Google Developers”频道&lt;/a&gt;观看活动录像。</string>
     <string name="faq_want_to_celebrate_i_o_description">会！每年，世界各地的开发者都会举办 &lt;a href="https://events.google.com/io/extended"&gt;Google I/O Extended 活动&lt;/a&gt;。在这些活动期间，主办者可以直播 Google I/O 大会并举办自己的研讨会（包括黑客马拉松、代码实验室、演示等）。&lt;br&gt;如果您今年要作为 I/O Extended 主办者加入参与大会，您应该按照以下步骤着手：&lt;br&gt;&lt;br&gt;仔细阅读&lt;a href="https://docs.google.com/presentation/d/e/2PACX–1vReWDtj-yASOho5q7XC6lYY8af9wRa13-81mPaoSRodiRoCw4MKJnQExQ8GxyNyCQiPZpBprznPG4ex/pub?slide=id.g62811f3b0_18"&gt;主办者指南&lt;/a&gt;以获得如何成功举办活动的提示和建议。&lt;br&gt;&lt;br&gt;请在 I/O 网站上&lt;a href="https://events.google.com/io/extended/form"&gt;注册&lt;/a&gt;您的公开活动，以提高曝光度。&lt;br&gt;&lt;br&gt;在所有与 I/O Extended 相关的社交信息中使用官方 #io19extended # 标签，方便用户发现您。&lt;br&gt;&lt;br&gt;注意：活动结束后，I/O Extended 主办者可以向 io19@google.com 发送电子邮件来请求删除其个人和/或活动数据。&lt;br&gt;如果您只想参加 I/O Extended 活动，请浏览&lt;a href="https://events.google.com/io/extended"&gt;我们的地图&lt;/a&gt;寻找您附近的活动并确认您要参加该活动！&lt;br&gt;如有 I/O Extended 计划方面的问题，请发送电子邮件至 io19extended\-external@google.com 与我们联系。</string>
     <string name="view_sessions_text">查看会议</string>
-    <string name="view_codelabs_text">查看代码实验室</string>
-    <string name="view_events_text">查看活动</string>
-    <string name="view_map_text">查看地图</string>
-    <string name="wifi_network_label">Wi-Fi 网络：</string>
-    <string name="wifi_password_label">密码：</string>
     <string name="wifi_install_success">Wi-Fi 网络已保存</string>
-    <string name="wifi_install_error_message">抱歉，无法保存 Wi-Fi 网络</string>
     <string name="wifi_install_clipboard_message">无法保存 Wi-Fi 网络。\n已将密码保存到剪贴板。</string>
     <string name="event_sessions_title">会议</string>
     <string name="event_sandbox_title">沙盒</string>
@@ -270,27 +238,20 @@
     <string name="wifi_header">Wi-Fi</string>
     <string name="related_apps_header">相关应用</string>
     <string name="event_types_header">活动类型</string>
-    <string name="general_header">常规</string>
-    <string name="agreements_header">协议</string>
     <string name="settings_time_zone_label">活动时间为太平洋时区 (UTC-8) 的时间</string>
     <string name="settings_enable_notifications">启用通知</string>
     <string name="settings_send_anonymous_usage_statistics">发送匿名使用情况统计信息</string>
     <string name="settings_tos">服务条款</string>
     <string name="settings_privacy_policy">隐私权政策</string>
     <string name="settings_oss_licenses">开放源代码许可</string>
-    <string name="settings_version_label">版本：%1$s，内部版本号：%2$s</string>
     <string name="settings_theme_title">选择主题背景</string>
     <string name="settings_theme_system">系统默认</string>
     <string name="settings_theme_light">浅色</string>
     <string name="settings_theme_dark">深色</string>
     <string name="settings_theme_battery">根据省电模式设置</string>
-    <string name="faq_label">常见问题解答</string>
     <string name="built_with_material_components">使用 Material Components 开发。</string>
-    <string name="tap_to_join_network">（点按即可加入网络）</string>
     <string name="wifi_network_and_password">网络：%1$s\n密码：%2$s</string>
     <string name="join_network">加入网络</string>
-    <string name="scavenger_hunt_description">参加 I/O Android Things 寻宝游戏！</string>
-    <string name="scavenger_hunt_description2">参加 I/O Android Things 寻宝游戏！</string>
     <string name="assistant_app_description">只需说“Hey Google, talk to Google I/O 19”（Hey Google，我要跟 Google I/O 19 聊一聊）！</string>
     <string name="assistant_app_description2">只需说“Hey Google, talk to Google I/O 19”（Hey Google，我要跟 Google I/O 19 聊一聊）！</string>
     <string name="speaker_link_website">网站</string>
@@ -300,10 +261,6 @@
     <string name="speaker_events_subhead">活动</string>
     <string name="no_network_connection">未连接到互联网。</string>
     <string name="navigate_up">转到上一层级</string>
-    <string name="error_fetch_ar_module">下载 AR 模块时出错。您的网络连接正常吗？</string>
-    <string name="downloading_ar_module">下载 AR 模块</string>
-    <string name="download_ar_dialog_title">下载 AR 模块</string>
-    <string name="download_ar_dialog_message">我们需要先从 Play 商店下载增强现实模块，然后您才能启动。此设备现在连接到一个按流量计费的网络，可能会对所有传输数据收费。\n\n要继续吗？\n\n请注意，AR 模式仅适用于现场体验。</string>
     <string name="no_network_description">要使用“探索 I/O 大会”，请尝试：\n\n - 关闭飞行模式\n\n - 开启移动数据网络或 WLAN\n\n - 检查您所在区域的信号强度</string>
     <string name="phone_does_not_support_arcore_title">您手机不支持 ARCore</string>
     <string name="phone_does_not_support_arcore_message">请尝试换一部设备，或者借用下朋友的设备</string>

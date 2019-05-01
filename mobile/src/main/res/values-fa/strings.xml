@@ -23,9 +23,7 @@
     <string name="filters">فیلترها</string>
     <string name="category_heading_tracks">موضوعات</string>
     <string name="category_heading_types">انواع</string>
-    <string name="clear_all">پاک‌کردن همه</string>
     <string name="reset">بازنشانی</string>
-    <string name="pinned_events_filter_description">فقط رویدادهای ستاره‌دار و رزروشده نمایش داده می‌شود</string>
     <plurals name="filter_event_count">
         <item quantity="one">%1$d رویداد</item>
         <item quantity="other">%1$d رویداد</item>
@@ -34,9 +32,7 @@
     <string name="starred_and_reserved_short">رویدادهای شما</string>
     <string name="search_schedule_hint">جستجوی زمان‌بندی</string>
     <string name="search_schedule_no_results">نتیجه‌ای پیدا نشد</string>
-    <string name="search_schedule_error">خطا در جستجوی زمان‌بندی</string>
     <string name="agenda">برنامه</string>
-    <string name="overview">نمای کلی</string>
     <string name="event_starred">رویداد به موارد ستاره‌دار اضافه شد</string>
     <string name="event_unstarred">رویداد از موارد ستاره‌دار برداشته شد</string>
     <string name="event_star_error">خطا هنگام اضافه‌کردن رویداد به موارد ستاره‌دار</string>
@@ -62,11 +58,8 @@
     <string name="reservation_disabled">رزرو در دسترس نیست</string>
     <string name="reservation_pending">رزرو درحالت انتظار</string>
     <string name="schedule_hint_title">سفارشی‌ساختن زمان‌بندی</string>
-    <string name="schedule_hint_view_only_your_events">فقط مشاهده رویدادها</string>
     <string name="schedule_hint_star_event">اضافه‌کردن به رویدادهای ستاره‌دار</string>
     <string name="schedule_hint_reserve_session_seat">رزروکردن صندلی جلسه</string>
-    <string name="schedule_hint_star_event_content_description">تصویری برای ستاره‌دارکردن رویداد</string>
-    <string name="schedule_hint_reserve_session_seat_content_description">تصویری برای رزروکردن صندلی جلسه</string>
     <string name="rate_session">رتبه‌بندی جلسه</string>
     <string name="menu_item_session_location">موقعیت مکانی جلسه</string>
     <string name="menu_item_session_star">ستاره‌دارکردن جلسه</string>
@@ -93,10 +86,7 @@
     <string name="a11y_clear_tag_filters">پاک‌کردن فیلترها</string>
     <string name="a11y_filter_applied">فیلتر %1s اعمال شد</string>
     <string name="a11y_filter_not_applied">فیلتر %1s اعمال نشد</string>
-    <string name="a11y_pinned">فقط رویدادهای ستاره‌دار و رزروشده</string>
-    <string name="a11y_revert_pinned">نمایش همه جلسات</string>
     <string name="a11y_reservation_available">رزرو رویداد</string>
-    <string name="a11y_reservation_working">در‌حال رزروکردن رویداد</string>
     <string name="a11y_reservation_reserved">رویداد رزرو شد</string>
     <string name="a11y_reservation_disabled">رزروکردن دردسترس نیست</string>
     <string name="a11y_reservation_wait_list_available">به فهرست انتظار رویداد بپیوندید</string>
@@ -109,19 +99,14 @@
     <string name="a11y_select_map_mode">انتخاب حالت نقشه</string>
     <string name="a11y_search_schedule">جستجوی زمان‌بندی</string>
     <string name="welcome">خوش آمدید!</string>
-    <string name="sign_in_hint">برای ورود به سیستم ضربه بزنید</string>
     <string name="a11y_signed_in_content_description">به‌عنوان %s به سیستم وارد شده‌اید.</string>
     <string name="a11y_signed_out_content_description">برای وارد شدن لمس کنید.</string>
-    <string name="dialog_sign_in_title">برای سفارشی‌ساختن زمان‌بندی‌تان وارد سیستم شوید</string>
     <string name="dialog_sign_in_content">برای ذخیره‌کردن رویدادها، رزروکردن صندلی و رتبه‌بندی جلسات (اگر شرکت‌کننده هستید)، وارد سیستم شوید.</string>
-    <string name="not_now">الآن نه</string>
     <string name="sign_in">ورود به سیستم</string>
     <string name="firebase_auth_no_network_connection">اتصال اینترنت قطع است.</string>
     <string name="firebase_auth_unknown_error">خطای ناشناس</string>
-    <string name="dialog_sign_out_title">از سیستم خارج می‌شوید؟</string>
     <string name="dialog_sign_out_content">همه رویدادهای ذخیره‌شده، صندلی‌های رزرو‌شده و جلسات رتبه‌بندی‌شده (اگر شرکت‌کننده هستید)، با حسابتان هم‌گام باقی می‌ماند.</string>
     <string name="sign_out">خروج از سیستم</string>
-    <string name="profile">نمایه</string>
     <string name="manage_google_account">مدیریت حساب Google</string>
     <string name="remove_reservation_title">رزرو حذف شود؟</string>
     <string name="remove_reservation_content">درحال واگذارکردن صندلی‌تان در «%1$s» هستید. اگر تصمیم ندارید صندلی رزرو کنید اما همچنان می‌خواهید شرکت کنید، بخشی از صندلی‌های همه جلسات به‌ترتیب ورود شرکت‌کنندگان، درمحل دردسترس خواهد بود.</string>
@@ -134,8 +119,6 @@
     <string name="notifications_preference_dialog_content">می‌خواهید اعلان‌های مربوط به I/O را دریافت کنید؟ اطلاعات مربوط به زمان شروع جلسه، رویدادهای پس از ساعات کاری، موارد ضبط‌شده جلسات و غیره را برایتان ارسال می‌کنیم. هرزمان خواستید می‌توانید این تنظیمات را در «اطلاعات &gt; تنظیمات» تغییر دهید.</string>
     <string name="no">نه</string>
     <string name="yes">بله</string>
-    <string name="feed_item_pinned_icon">مورد پین‌شده</string>
-    <string name="feed_item_emergency_icon">مورد اولویت‌دار</string>
     <string name="feed_not_available">اعلامیه‌ای پیدا نشد.</string>
     <string name="feed_loading_error">فید بارگیری نشد. بعداً دوباره امتحان کنید.</string>
     <string name="feed_announcement_title">اعلامیه‌ها</string>
@@ -172,7 +155,6 @@
     <string name="onboarding_get_started">شروع به کار</string>
     <string name="onboarding_welcome_to_google_i_o">به Google I/O خوش‌آمدید</string>
     <string name="onboarding_date_location">۷ تا ۹ مه ۲۰۱۹‏\nماونتین ویو، کالیفرنیا</string>
-    <string name="onboarding_join_online">به‌صورت آنلاین به ما بپیوندید. مطالب اصلی و اکثر جلسات پخش جریانی مستقیم دارند.</string>
     <string name="onboarding_label_days">روز</string>
     <string name="onboarding_label_hours">ساعت</string>
     <string name="onboarding_label_mins">دقیقه</string>
@@ -181,14 +163,12 @@
     <string name="onboarding_welcome_google_io_during">Google I/O</string>
     <string name="onboarding_welcome_google_io_post">خلاصه I/O \'19 را تماشا کنید و #io19 را در شبکه‌های اجتماعی بررسی کنید</string>
     <string name="onboarding_signin">برای دریافت اعلان‌های مربوط به I/O، وارد سیستم شوید. شرکت‌کنندگان می‌توانند برای شرکت در جلسات، صندلی رزرو کنند.</string>
-    <string name="onboarding_explore_ar">خلاصه I/O \'19 را تماشا کنید و #io19 را در شبکه‌های اجتماعی بررسی کنید</string>
     <plurals name="session_starting_in">
         <item quantity="one">جلسه ظرف %1$s دقیقه شروع می‌شود</item>
         <item quantity="other">جلسه ظرف %1$s دقیقه شروع می‌شود</item>
     </plurals>
     <string name="expanded">بزرگ‌شده</string>
     <string name="collapsed">کوچک‌شده</string>
-    <string name="info_title">اطلاعات</string>
     <string name="event_title">رویداد</string>
     <string name="travel_title">سفر</string>
     <string name="faq_title">سؤالات متداول</string>
@@ -247,13 +227,7 @@
     <string name="faq_sessions_be_live_streamed_question_description">در طول این جشنواره سه‌روزه، دو سخنرانی اصلی و تمامی جلسات در صفحه اصلی وب‌سایت رویداد، پخش جریانی مستقیم خواهد شد. اگر مشغول کار هستید یا در آن سوی سیاره زندگی می‌کنید و با جلسات اختلاف زمانی دارید، می‌توانید بعداً در &lt;a href="https://www.youtube.com/user/GoogleDevelopers"&gt;‏کانال YouTube ‏Google Developers‏&lt;/a&gt; جلسات را به‌طور ضبط‌شده تماشا کنید.</string>
     <string name="faq_want_to_celebrate_i_o_description">بله! هرسال، برنامه‌نویسان سراسر دنیا میزبان &lt;a href="https://events.google.com/io/extended"&gt;رویدادهای Google I/O Extended‏&lt;/a&gt; هستند. درطول این رویدادها، سازمان‌دهندگان می‌توانند رویداد را پخش جریانی مستقیم کنند و جلساتی شامل هکاتون، codlab‏، نسخه نمایشی و غیره را برگزار کنند.&lt;br&gt; اگر امسال به‌عنوان میزبان I/O Extended به ما ملحق می‌شوید، برای شروع به‌کار باید مراحل زیر را دنبال کنید: &lt;br&gt;&lt;br&gt;  برای دریافت نکات و پیشنهادهایی درباره نحوه میزبانی رویدادی موفق، &lt;a href="https://docs.google.com/presentation/d/e/2PACX–1vReWDtj-yASOho5q7XC6lYY8af9wRa13-81mPaoSRodiRoCw4MKJnQExQ8GxyNyCQiPZpBprznPG4ex/pub?slide=id.g62811f3b0_18"&gt;دستورالعمل سازمان‌دهنده&lt;/a&gt; را به‌طور کامل مطالعه کنید. برای نمایان‌شدن بیشتر، رویداد عمومی‌تان را در وب‌سایت I/O‏ &lt;br&gt;&lt;br&gt; &lt;a href="https://events.google.com/io/extended/form"&gt;ثبت کنید&lt;/a&gt; ‏&lt;br&gt;&lt;br&gt; برای قابلیت شناسایی آسان‌تر، از هشتگ رسمی #io19extended در همه پست‌های اجتماعی مرتبط با I/O Extended استفاده کنید.&lt;br&gt;&lt;br&gt; توجه: میزبان‌های I/O Extended می‌توانند با ارسال ایمیل به io19@google.com درخواست کنند که داده‌های شخصی‌شان و/یا داده‌های مربوط به رویداد پس از پایان رویداد حذف شود.&lt;br&gt; اگر می‌خواهید در رویداد I/O Extended شرکت کنید، برای پیدا کردن رویدادی در نزدیکی شما &lt;a href="https://events.google.com/io/extended"&gt;نقشه ما&lt;/a&gt; را مرور کنید و به دعوت پاسخ دهید.&lt;br&gt; اگر درباره برنامه I/O Extended سؤالی دارید، ازطریق io19extended\-external@google.com با ما تماس بگیرید.</string>
     <string name="view_sessions_text">مشاهده جلسات</string>
-    <string name="view_codelabs_text">مشاهده Codelabs</string>
-    <string name="view_events_text">مشاهده رویدادها</string>
-    <string name="view_map_text">مشاهده نقشه</string>
-    <string name="wifi_network_label">شبکه‌ Wi-Fi:</string>
-    <string name="wifi_password_label">گذرواژه:</string>
     <string name="wifi_install_success">شبکه Wifi ذخیره شد</string>
-    <string name="wifi_install_error_message">متأسفیم، ذخیره شبکه Wifi امکان‌پذیر نیست</string>
     <string name="wifi_install_clipboard_message">شبکه wifi ذخیره نشد.\nبه جای آن، گذرواژه در بریده‌دان ذخیره شد.</string>
     <string name="event_sessions_title">جلسات</string>
     <string name="event_sandbox_title">جعبه ایمنی</string>
@@ -270,27 +244,20 @@
     <string name="wifi_header">Wifi</string>
     <string name="related_apps_header">برنامه‌های مرتبط</string>
     <string name="event_types_header">انواع رویداد</string>
-    <string name="general_header">عمومی</string>
-    <string name="agreements_header">قراردادها</string>
     <string name="settings_time_zone_label">زمان رویدادها به منطقه زمانی Pacific ‏(UTC-8)</string>
     <string name="settings_enable_notifications">فعال‌کردن اعلان‌ها</string>
     <string name="settings_send_anonymous_usage_statistics">ارسال آمار کاربرد به‌طور ناشناس</string>
     <string name="settings_tos">شرایط و ضوابط</string>
     <string name="settings_privacy_policy">خط‌مشی حریم خصوصی</string>
     <string name="settings_oss_licenses">مجوز‌های منبع‌آزاد</string>
-    <string name="settings_version_label">نسخه %1$s، ساخت %2$s</string>
     <string name="settings_theme_title">انتخاب طرح زمینه</string>
     <string name="settings_theme_system">پیش‌فرض سیستم</string>
     <string name="settings_theme_light">روشن</string>
     <string name="settings_theme_dark">تیره</string>
     <string name="settings_theme_battery">تنظیم‌شده با بهینه‌سازی باتری</string>
-    <string name="faq_label">سؤالات متداول</string>
     <string name="built_with_material_components">ساخته‌شده با Material Components.</string>
-    <string name="tap_to_join_network">(برای پیوستن به شبکه، ضربه بزنید)</string>
     <string name="wifi_network_and_password">شبکه: %1$s\nگذرواژه: %2$s</string>
     <string name="join_network">پیوستن به شبکه</string>
-    <string name="scavenger_hunt_description">به I/O Android Things Scavenger Hunt بپیوندید!</string>
-    <string name="scavenger_hunt_description2">به I/O Android Things Scavenger Hunt بپیوندید!</string>
     <string name="assistant_app_description">فقط بگویید «Hey Google, talk to Google I/O 19»!</string>
     <string name="assistant_app_description2">فقط بگویید «Hey Google, talk to Google I/O 19»!</string>
     <string name="speaker_link_website">وب‌سایت</string>
@@ -300,10 +267,6 @@
     <string name="speaker_events_subhead">رویدادها</string>
     <string name="no_network_connection">به اینترنت متصل نیستید.</string>
     <string name="navigate_up">پیمایش به بالا</string>
-    <string name="error_fetch_ar_module">هنگام بارگیری مدول AR خطایی روی داد. اتصال شبکه‌تان کار می‌کند؟</string>
-    <string name="downloading_ar_module">درحال بارگیری مدول AR</string>
-    <string name="download_ar_dialog_title">بارگیری مدول AR</string>
-    <string name="download_ar_dialog_message">پیش از راه‌اندازی، باید مدول «واقعیت افزوده» را از «فروشگاه Play» بارگیری کنیم. درحال‌حاضر، این دستگاه به شبکه‌ای محدود وصل است که ممکن است برای هر انتقال هر داده از شما هزینه کسر کند.\n\nمی‌خواهید ادامه دهید؟\n\nتوجه داشته باشید که حالت AR برای تجربه درون سایت است.</string>
     <string name="no_network_description">برای استفاده از «کاوش I/O»، روش‌های زیر را امتحان کنید:\n\n - خاموش کردن حالت هواپیما\n\n - روشن کردن داده تلفن همراه یا Wi-Fi‏\n\n - بررسی سیگنال در منطقه‌تان</string>
     <string name="phone_does_not_support_arcore_title">تلفنتان از ARCore پشتیبانی نمی‌کند</string>
     <string name="phone_does_not_support_arcore_message">دستگاه دیگری را امتحان کنید یا از دوستتان قرض بگیرید</string>

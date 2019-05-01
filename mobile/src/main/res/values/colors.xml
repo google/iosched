@@ -39,9 +39,7 @@
     <!-- Other colors -->
     <color name="default_tag_color">#999</color>
     <color name="light_grey">#e6e6e6</color>
-    <color name="highlight_light">#33ffffff</color> <!-- 20% white -->
     <color name="scrim">#33000000</color> <!-- 20% black -->
-    <color name="reddish">#d32f2f</color>
 
     <color name="event_card_header_background_light">#f8f9fa</color>
     <color name="event_card_header_background_dark">#252729</color>

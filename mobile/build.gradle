@@ -106,10 +106,11 @@ android {
     }
 
     lintOptions {
+        // Eliminates UnusedResources false positives for resources used in DataBinding layouts
+        checkGeneratedSources = true
         // Running lint over the debug variant is enough
         checkReleaseBuilds false
-
-        disable "InvalidPackage", "MissingTranslation"
+        // See lint.xml for rules configuration
     }
 
     testBuildType "staging"

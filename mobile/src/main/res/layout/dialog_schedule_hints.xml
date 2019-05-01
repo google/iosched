@@ -33,7 +33,8 @@
         android:drawablePadding="@dimen/margin_normal"
         android:drawableStart="@drawable/ic_star_border"
         android:text="@string/schedule_hint_star_event"
-        tools:style="@style/AlertDialog.BodyText" />
+        tools:style="@style/AlertDialog.BodyText"
+        tools:ignore="PrivateResource" />
 
     <TextView
         android:id="@+id/schedule_hint_textview_reserve_seat"
@@ -44,6 +45,7 @@
         android:drawablePadding="@dimen/margin_normal"
         android:drawableStart="@drawable/ic_reservable"
         android:text="@string/schedule_hint_reserve_session_seat"
-        tools:style="@style/AlertDialog.BodyText"/>
+        tools:style="@style/AlertDialog.BodyText"
+        tools:ignore="PrivateResource" />
 
 </LinearLayout>

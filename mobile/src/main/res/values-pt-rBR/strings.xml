@@ -23,9 +23,7 @@
     <string name="filters">Filtros</string>
     <string name="category_heading_tracks">Assuntos</string>
     <string name="category_heading_types">Tipos</string>
-    <string name="clear_all">Limpar tudo</string>
     <string name="reset">Redefinir</string>
-    <string name="pinned_events_filter_description">Mostrar apenas eventos reservados e marcados com estrela</string>
     <plurals name="filter_event_count">
         <item quantity="one">%1$d evento</item>
         <item quantity="other">%1$d eventos</item>
@@ -34,9 +32,7 @@
     <string name="starred_and_reserved_short">Seus eventos</string>
     <string name="search_schedule_hint">Pesquisar a programação</string>
     <string name="search_schedule_no_results">Nenhum resultado encontrado</string>
-    <string name="search_schedule_error">Erro ao pesquisar a programação</string>
     <string name="agenda">Compromissos</string>
-    <string name="overview">Geral</string>
     <string name="event_starred">Evento adicionado aos seus itens com estrela</string>
     <string name="event_unstarred">Evento removido dos itens marcados com estrela</string>
     <string name="event_star_error">Erro ao adicionar evento aos itens marcados com estrela</string>
@@ -62,11 +58,8 @@
     <string name="reservation_disabled">Reservas indisponíveis</string>
     <string name="reservation_pending">Reserva pendente</string>
     <string name="schedule_hint_title">Personalizar sua programação</string>
-    <string name="schedule_hint_view_only_your_events">Ver apenas seus eventos</string>
     <string name="schedule_hint_star_event">Adicionar aos seus eventos marcados com estrela</string>
     <string name="schedule_hint_reserve_session_seat">Reservar um assento na sessão</string>
-    <string name="schedule_hint_star_event_content_description">Uma imagem para marcar um evento com estrela</string>
-    <string name="schedule_hint_reserve_session_seat_content_description">Uma imagem para reservar um assento na sessão</string>
     <string name="rate_session">Avaliar sessão</string>
     <string name="menu_item_session_location">Local da sessão</string>
     <string name="menu_item_session_star">Marcar sessão com estrela</string>
@@ -93,10 +86,7 @@
     <string name="a11y_clear_tag_filters">Limpar filtros</string>
     <string name="a11y_filter_applied">%1s filtro aplicado.</string>
     <string name="a11y_filter_not_applied">%1s Filtro não aplicado</string>
-    <string name="a11y_pinned">Somente eventos reservados e marcados com estrela</string>
-    <string name="a11y_revert_pinned">Mostrar todas as sessões</string>
     <string name="a11y_reservation_available">Reservar evento</string>
-    <string name="a11y_reservation_working">Trabalhando para reservar evento</string>
     <string name="a11y_reservation_reserved">Evento reservado</string>
     <string name="a11y_reservation_disabled">Reserva indisponível</string>
     <string name="a11y_reservation_wait_list_available">Entrar na lista de espera do evento</string>
@@ -109,19 +99,14 @@
     <string name="a11y_select_map_mode">Selecionar o modo mapa</string>
     <string name="a11y_search_schedule">Pesquisar programação</string>
     <string name="welcome">Olá!</string>
-    <string name="sign_in_hint">Toque para fazer login</string>
     <string name="a11y_signed_in_content_description">Login feito como %s.</string>
     <string name="a11y_signed_out_content_description">Toque para fazer login.</string>
-    <string name="dialog_sign_in_title">Faça login para personalizar sua programação</string>
     <string name="dialog_sign_in_content">Faça login para salvar eventos, reservar assentos e avaliar as sessões de que você participou. As ações serão sincronizadas na sua conta entre o aplicativo e o site.</string>
-    <string name="not_now">Agora não</string>
     <string name="sign_in">Fazer login</string>
     <string name="firebase_auth_no_network_connection">Sem conexão com a Internet</string>
     <string name="firebase_auth_unknown_error">Erro desconhecido</string>
-    <string name="dialog_sign_out_title">Sair?</string>
     <string name="dialog_sign_out_content">Todos os eventos salvos, assentos reservados e avaliações das sessões de que você participou permanecem sincronizados com sua conta.</string>
     <string name="sign_out">Sair</string>
-    <string name="profile">Perfil</string>
     <string name="manage_google_account">Gerencie sua Conta do Google</string>
     <string name="remove_reservation_title">Remover reserva?</string>
     <string name="remove_reservation_content">Você está prestes a desistir do seu assento em "%1$s". Se decidir não reservar uma vaga, mas ainda quiser participar, uma parte dos assentos de todas as sessões estará disponível por ordem de chegada.</string>
@@ -134,8 +119,6 @@
     <string name="notifications_preference_dialog_content">Quer receber notificações sobre o I/O? Nós enviaremos informações sobre o horário de início das sessões, os eventos que ocorrerão após as sessões, as gravações de sessões e muito mais. Você pode alterar essas configurações em "Informações &gt; Configurações" a qualquer momento.</string>
     <string name="no">Não</string>
     <string name="yes">Sim</string>
-    <string name="feed_item_pinned_icon">Item fixado</string>
-    <string name="feed_item_emergency_icon">Item prioritário</string>
     <string name="feed_not_available">Nenhum anúncio encontrado.</string>
     <string name="feed_loading_error">Não foi possível carregar o feed. Tente novamente mais tarde.</string>
     <string name="feed_announcement_title">Anúncios</string>
@@ -172,7 +155,6 @@
     <string name="onboarding_get_started">Primeiros passos</string>
     <string name="onboarding_welcome_to_google_i_o">Boas-vindas ao Google I/O</string>
     <string name="onboarding_date_location">De 7 a 9 de maio de 2019\nem Mountain View, CA</string>
-    <string name="onboarding_join_online">Participe do evento pela Internet. Transmitiremos ao vivo as principais informações e a maioria das sessões.</string>
     <string name="onboarding_label_days">D</string>
     <string name="onboarding_label_hours">H</string>
     <string name="onboarding_label_mins">MIN</string>
@@ -181,14 +163,12 @@
     <string name="onboarding_welcome_google_io_during">Google I/O</string>
     <string name="onboarding_welcome_google_io_post">Assista a recapitulação do I/O \'19 e confira a #io19 nas redes sociais</string>
     <string name="onboarding_signin">Inscreva-se para receber notificações do I/O. Participantes poderão reservar assentos para as sessões.</string>
-    <string name="onboarding_explore_ar">Assista a recapitulação do I/O \'19 e confira a #io19 nas redes sociais</string>
     <plurals name="session_starting_in">
         <item quantity="one">A sessão começa em %1$s minuto</item>
         <item quantity="other">A sessão começa em %1$s minutos</item>
     </plurals>
     <string name="expanded">Expandido</string>
     <string name="collapsed">Recolhido</string>
-    <string name="info_title">Informações</string>
     <string name="event_title">Evento</string>
     <string name="travel_title">Viagem</string>
     <string name="faq_title">Perguntas frequentes</string>
@@ -247,13 +227,7 @@
     <string name="faq_sessions_be_live_streamed_question_description">As duas palestras principais e todas as sessões serão transmitidas ao vivo na página inicial do site do evento durante os três dias de duração dele. Se estiver muito atarefado ou do outro lado do mundo, em que há uma diferença significativa de fuso horário, assista mais tarde às gravações das sessões no &lt;a href="https://www.youtube.com/user/GoogleDevelopers"&gt;canal Google Developers do YouTube.</string>
     <string name="faq_want_to_celebrate_i_o_description">Sim. A cada ano, desenvolvedores de todo o mundo apresentam eventos no &lt;a href="https://events.google.com/io/extended"&gt;Google I/O Extended&lt;/a&gt;. Durante esses eventos, os organizadores podem transmitir ao vivo e apresentar suas próprias sessões, incluindo hackathons, codelabs, demos e muito mais.&lt;br&gt; Se você vai se unir a nós como um apresentador do I/O Extended neste ano, veja aqui os passos necessários para começar:&lt;br&gt;&lt;br&gt;  Leia o &lt;a href="https://docs.google.com/presentation/d/e/2PACX–1vReWDtj-yASOho5q7XC6lYY8af9wRa13-81mPaoSRodiRoCw4MKJnQExQ8GxyNyCQiPZpBprznPG4ex/pub?slide=id.g62811f3b0_18"&gt;Guia do organizador&lt;/a&gt; para dicas e sugestões sobre como apresentar um evento de sucesso.&lt;br&gt;&lt;br&gt; &lt;a href="https://events.google.com/io/extended/form"&gt;Registre&lt;/a&gt; seu evento público no site do I/O para aumentar sua visibilidade.&lt;br&gt;&lt;br&gt; Use a hashtag oficial #io19extended em todas suas postagens sociais relacionadas ao I/O Extended para facilitar sua descoberta.&lt;br&gt;&lt;br&gt; Observação: Apresentadores do I/O Extended podem solicitar a remoção dos seu dados pessoais e/ou do evento após o término do evento enviando um e-mail para io19@google.com.&lt;br&gt; Se você quer apenas participar de um evento I/O Extended, navegue pelo &lt;a href="https://events.google.com/io/extended"&gt;nosso mapa&lt;/a&gt; para encontrar um e confirme sua presença!&lt;br&gt; Para perguntas sobre o programa I/O Extended, entre em contato pelo io19extended\-external@google.com.</string>
     <string name="view_sessions_text">Ver sessões</string>
-    <string name="view_codelabs_text">Ver codelabs</string>
-    <string name="view_events_text">Ver eventos</string>
-    <string name="view_map_text">Ver mapa</string>
-    <string name="wifi_network_label">Rede Wi-Fi:</string>
-    <string name="wifi_password_label">Senha:</string>
     <string name="wifi_install_success">Rede Wi-Fi salva</string>
-    <string name="wifi_install_error_message">Não foi possível salvar a rede Wi-Fi</string>
     <string name="wifi_install_clipboard_message">Não foi possível salvar a rede Wi-Fi.\nA senha foi salva na área de transferência.</string>
     <string name="event_sessions_title">Sessões</string>
     <string name="event_sandbox_title">Sandbox</string>
@@ -270,27 +244,20 @@
     <string name="wifi_header">Wi-Fi</string>
     <string name="related_apps_header">Aplicativos relacionados</string>
     <string name="event_types_header">Tipos de evento</string>
-    <string name="general_header">Geral</string>
-    <string name="agreements_header">Contratos</string>
     <string name="settings_time_zone_label">Eventos no fuso horário do Pacífico (UTC-8)</string>
     <string name="settings_enable_notifications">Ativar notificações</string>
     <string name="settings_send_anonymous_usage_statistics">Enviar estatísticas de uso anônimas</string>
     <string name="settings_tos">Termos de Serviço</string>
     <string name="settings_privacy_policy">Política de Privacidade</string>
     <string name="settings_oss_licenses">Licenças de código aberto</string>
-    <string name="settings_version_label">Versão %1$s, compilação %2$s</string>
     <string name="settings_theme_title">Escolher tema</string>
     <string name="settings_theme_system">Padrão do sistema</string>
     <string name="settings_theme_light">Leve</string>
     <string name="settings_theme_dark">Escuro</string>
     <string name="settings_theme_battery">Configurar por "Economia de bateria"</string>
-    <string name="faq_label">Perguntas frequentes</string>
     <string name="built_with_material_components">Criado com Material Components.</string>
-    <string name="tap_to_join_network">(toque para entrar na rede)</string>
     <string name="wifi_network_and_password">Rede: %1$s\nSenha: %2$s</string>
     <string name="join_network">Participar da rede</string>
-    <string name="scavenger_hunt_description">Embarque na caça ao tesouro do Android Things do I/O!</string>
-    <string name="scavenger_hunt_description2">Embarque na caça ao tesouro do Android Things do I/O!</string>
     <string name="assistant_app_description">Basta dizer "Ok Google, fale sobre o Google I/O 19"!</string>
     <string name="assistant_app_description2">Basta dizer "Ok Google, fale sobre o Google I/O 19"!</string>
     <string name="speaker_link_website">Site</string>
@@ -300,10 +267,6 @@
     <string name="speaker_events_subhead">Eventos</string>
     <string name="no_network_connection">Sem conexão com a Internet.</string>
     <string name="navigate_up">Navegar para cima</string>
-    <string name="error_fetch_ar_module">Ocorreu um erro durante o download do módulo de RA. Verifique sua conexão com a rede.</string>
-    <string name="downloading_ar_module">Como fazer o download do módulo de RA</string>
-    <string name="download_ar_dialog_title">Faça o download do módulo RA</string>
-    <string name="download_ar_dialog_message">Precisamos fazer o download do módulo de realidade aumentada da Play Store antes que você possa começar. No momento, este dispositivo está conectado a uma rede limitada, que poderá cobrá-lo por quaisquer dados transferidos.\n\nVocê quer prosseguir?\n\nObserve que o modo RA é apenas para experimentação no local.</string>
     <string name="no_network_description">Para usar a função "Explorar o I/O",:\n\n — Desative o modo avião\n\n — Desative os dados móveis ou o Wi-Fi\n\n — Verifique o sinal na sua área</string>
     <string name="phone_does_not_support_arcore_title">Seu smartphone não é compatível com o ARCore</string>
     <string name="phone_does_not_support_arcore_message">Tente outro dispositivo ou peça um emprestado a um amigo</string>
