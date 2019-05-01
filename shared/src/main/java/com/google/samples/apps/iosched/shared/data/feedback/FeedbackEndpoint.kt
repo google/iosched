@@ -40,7 +40,8 @@ class DefaultFeedbackEndpoint @Inject constructor(
             .getHttpsCallable("sendFeedback")
             .call(hashMapOf(
                 "sessionId" to sessionId,
-                "responses" to responses
+                "responses" to responses,
+                "client" to "ANDROID"
             ))
             .addOnCompleteListener { task ->
                 result.postValue(if (task.isSuccessful) {
