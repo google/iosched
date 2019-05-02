@@ -43,7 +43,6 @@ import org.threeten.bp.format.DateTimeFormatter
 
 /** A data class representing the state of FeedSEssionsContainer */
 data class FeedSessions(
-    val id: String = "sessions_container",
     val username: String?,
     @StringRes val titleId: Int,
     @StringRes val actionTextId: Int,
@@ -55,8 +54,7 @@ data class FeedSessions(
 class FeedSessionsViewBinder(
     private val eventListener: FeedEventListener,
     var recyclerViewManagerState: Parcelable? = null
-) :
-    FeedListItemViewBinder<FeedSessions, FeedSessionsViewHolder>(FeedSessions::class.java) {
+) : FeedItemViewBinder<FeedSessions, FeedSessionsViewHolder>(FeedSessions::class.java) {
 
     override fun createViewHolder(parent: ViewGroup): FeedSessionsViewHolder {
         val holder = FeedSessionsViewHolder(
@@ -107,8 +105,7 @@ class FeedSessionsViewBinder(
 class FeedSessionsViewHolder(
     val binding: ItemFeedSessionsContainerBinding,
     private val eventListener: FeedEventListener
-) :
-    ViewHolder(binding.root) {
+) : ViewHolder(binding.root) {
 
     private var layoutManager: LayoutManager? = null
 
@@ -145,8 +142,7 @@ class FeedSessionsViewHolder(
 class FeedSessionAdapter(
     private val eventListener: FeedEventListener,
     private val timeZoneId: ZoneId
-) :
-    ListAdapter<UserSession, FeedSessionItemViewHolder>(SessionDiff) {
+) : ListAdapter<UserSession, FeedSessionItemViewHolder>(SessionDiff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedSessionItemViewHolder {
         val binding = ItemFeedSessionBinding.inflate(
@@ -180,6 +176,5 @@ fun sessionStartTime(
     timeZoneId: ZoneId
 ) {
     val timePattern = DateTimeFormatter.ofPattern("h:mm a")
-    textView.text =
-        timePattern.format(TimeUtils.zonedTime(startTime, zoneId = timeZoneId))
+    textView.text = timePattern.format(TimeUtils.zonedTime(startTime, zoneId = timeZoneId))
 }

@@ -95,16 +95,6 @@ object TimeUtils {
         }
     }
 
-    /**
-     * Converts a [dateTime] to a short string.
-     *
-     * The returned string contains the date, time and weekday, but no year
-     * Examples: <code>Tuesday, May 9, 1:55pm</code> in EN_US and
-     * <code>Dienstag, Mai 9., 13:55</code> in DE_DE.
-     */
-    fun timeString(dateTime: ZonedDateTime): String =
-        DateTimeFormatter.ofPattern("EEE, MMM d,  h:mm a").format(dateTime)
-
     fun zonedTime(time: ZonedDateTime, zoneId: ZoneId = ZoneId.systemDefault()): ZonedDateTime {
         return ZonedDateTime.ofInstant(time.toInstant(), zoneId)
     }
@@ -155,5 +145,10 @@ object TimeUtils {
 
     fun conferenceHasEnded(): Boolean {
         return ZonedDateTime.now().isAfter(ConferenceDays.last().end)
+    }
+
+    // TODO(b/132697497) replace with a UseCase
+    fun getKeynoteStartTime(): ZonedDateTime {
+        return ConferenceDays.first().start.plusHours(3L)
     }
 }

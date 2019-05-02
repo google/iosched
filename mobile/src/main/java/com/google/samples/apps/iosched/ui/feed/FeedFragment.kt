@@ -156,7 +156,7 @@ class FeedFragment : MainNavigationFragment() {
         })
 
         model.navigateToMapAction.observe(this, EventObserver { moment ->
-            navigateToMapUsingMoment(moment)
+            openMap(moment)
         })
     }
 
@@ -173,13 +173,18 @@ class FeedFragment : MainNavigationFragment() {
     }
 
     private fun showFeedItems(recyclerView: RecyclerView, list: List<Any>?) {
-
         if (adapter == null) {
-            val announcementViewBinder =
-                FeedAnnouncementViewBinder(timeZoneId = model.timeZoneId, lifecycleOwner = this)
             val sectionHeaderViewBinder = FeedSectionHeaderViewBinder()
-            val feedHeaderViewBinder = FeedHeaderViewBinder(model)
-            val announcementsPlaceholder = FeedAnnouncementsPlaceholderViewBinder()
+            val countdownViewBinder = CountdownViewBinder()
+            val momentViewBinder = MomentViewBinder(
+                eventListener = model,
+                userInfoLiveData = model.currentUserInfo,
+                themeLiveData = model.theme
+            )
+            val sessionsViewBinder = FeedSessionsViewBinder(model)
+            val announcementViewBinder = AnnouncementViewBinder(model.timeZoneId, this)
+            val announcementsEmptyViewBinder = AnnouncementsEmptyViewBinder()
+            val announcementsLoadingViewBinder = AnnouncementsLoadingViewBinder()
             @Suppress("UNCHECKED_CAST")
             val viewBinders = ImmutableMap.builder<FeedItemClass, FeedItemBinder>()
                 .put(
@@ -191,16 +196,24 @@ class FeedFragment : MainNavigationFragment() {
                     sectionHeaderViewBinder as FeedItemBinder
                 )
                 .put(
-                    feedHeaderViewBinder.modelClass,
-                    feedHeaderViewBinder as FeedItemBinder
+                    countdownViewBinder.modelClass,
+                    countdownViewBinder as FeedItemBinder
+                )
+                .put(
+                    momentViewBinder.modelClass,
+                    momentViewBinder as FeedItemBinder
                 )
                 .put(
                     sessionsViewBinder.modelClass,
                     sessionsViewBinder as FeedItemBinder
                 )
                 .put(
-                    announcementsPlaceholder.modelClass,
-                    announcementsPlaceholder as FeedItemBinder
+                    announcementsEmptyViewBinder.modelClass,
+                    announcementsEmptyViewBinder as FeedItemBinder
+                )
+                .put(
+                    announcementsLoadingViewBinder.modelClass,
+                    announcementsLoadingViewBinder as FeedItemBinder
                 )
                 .build()
 
@@ -218,7 +231,7 @@ class FeedFragment : MainNavigationFragment() {
         )
     }
 
-    private fun navigateToMapUsingMoment(moment: Moment) {
+    private fun openMap(moment: Moment) {
         findNavController().navigate(
             toMap(featureId = moment.featureId, startTime = moment.startTime.toEpochMilli())
         )

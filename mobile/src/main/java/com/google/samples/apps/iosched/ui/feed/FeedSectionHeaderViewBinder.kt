@@ -24,7 +24,7 @@ import com.google.samples.apps.iosched.databinding.ItemGenericSectionHeaderBindi
 import com.google.samples.apps.iosched.ui.SectionHeader
 
 class FeedSectionHeaderViewBinder :
-    FeedListItemViewBinder<SectionHeader, SectionHeaderViewHolder>(SectionHeader::class.java) {
+    FeedItemViewBinder<SectionHeader, SectionHeaderViewHolder>(SectionHeader::class.java) {
 
     override fun createViewHolder(parent: ViewGroup): SectionHeaderViewHolder =
         SectionHeaderViewHolder(
