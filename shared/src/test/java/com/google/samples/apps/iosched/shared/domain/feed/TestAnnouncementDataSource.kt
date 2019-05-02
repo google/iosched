@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.di
+package com.google.samples.apps.iosched.shared.domain.feed
 
-import javax.inject.Qualifier
+import com.google.samples.apps.iosched.model.Announcement
+import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
+import com.google.samples.apps.iosched.test.data.TestData
 
-@Qualifier
-@Target(
-    AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER,
-    AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.FIELD,
-    AnnotationTarget.VALUE_PARAMETER
-)
-annotation class MainThreadHandler
+object TestAnnouncementDataSource : AnnouncementDataSource {
+
+    override fun getAnnouncements(): List<Announcement> = TestData.announcements
+}

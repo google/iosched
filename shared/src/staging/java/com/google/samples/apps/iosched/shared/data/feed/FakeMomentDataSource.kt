@@ -24,20 +24,25 @@ import org.threeten.bp.ZonedDateTime
  * Returns hardcoded data for development and testing.
  */
 object FakeMomentDataSource : MomentDataSource {
+    private val imageBaseUrl =
+        "https://firebasestorage.googleapis.com/v0/b/io2019-festivus/o/images%2Fhome/"
     private val moment = Moment(
         id = "1",
-        title = "KeyNote: Day 1",
-        streamUrl = "https://www.youtube.com",
-        startTime = ZonedDateTime.now(),
-        endTime = ZonedDateTime.now(),
+        title = "Keynote",
+        streamUrl = "https://youtu.be/lyRPyRKHO8M",
+        startTime = ZonedDateTime.parse("2019-05-07T10:00:00-07:00"),
+        endTime = ZonedDateTime.parse("2019-05-07T11:30:00-07:00"),
         textColor = ColorUtils.parseHexColor("#ffffff"),
-        ctaType = Moment.CTA_MAP_LOCATION,
-        imageUrl = "",
-        imageUrlDarkTheme = "",
+        ctaType = Moment.CTA_LIVE_STREAM,
+        imageUrl = "https://firebasestorage.googleapis.com/v0/b/io2019-festivus/o/images%2Fhome" +
+            "%2FHome-GoogleKeynote%402x.png?alt=media&token=0df80e81-5bea-4171-9016-4f1e3dcfc7f9",
+        imageUrlDarkTheme = "https://firebasestorage.googleapis.com/v0/b/io2019-festivus/o/images" +
+            "%2Fhome%2FDM-Home-GoogleKeynote%402x.png?alt=media&token=bfd169ae-f501-4cf8-94be-" +
+            "462682d40fd7",
         attendeeRequired = false,
         timeVisible = false,
         featureId = "",
-        featureName = "EATs Tent"
+        featureName = ""
     )
 
     override fun getMoments(): List<Moment> = listOf(moment)

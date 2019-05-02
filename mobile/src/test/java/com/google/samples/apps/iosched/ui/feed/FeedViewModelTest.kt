@@ -20,15 +20,16 @@ import android.os.Handler
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.Announcement
+import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
-import com.google.samples.apps.iosched.shared.domain.feed.LoadMomentsUseCase
+import com.google.samples.apps.iosched.shared.domain.feed.LoadCurrentMomentUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
-import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
@@ -36,18 +37,23 @@ import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeThemedActivityDelegate
 import com.google.samples.apps.iosched.test.util.time.FixedTimeProvider
+import com.google.samples.apps.iosched.ui.SectionHeader
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
+import com.google.samples.apps.iosched.util.ConferenceStartedLiveData
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.instanceOf
 import org.junit.Assert.assertThat
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.Mockito
+import org.threeten.bp.Instant
 
 /**
  * Unit tests for the [FeedViewModel]
@@ -64,40 +70,41 @@ class FeedViewModelTest {
 
     private val mockHandler = Mockito.mock(Handler::class.java)
 
+    private val defaultFeedRepository =
+        DefaultFeedRepository(TestAnnouncementDataSource, TestMomentDataSource)
+
+    // Loads feed roughly during the Keynote time
+    private val defaultTimeProvider =
+        FixedTimeProvider(TestData.TestConferenceDays[0].start.plusHours(4).toInstant())
+
     @Before
     fun setup() {
         Mockito.`when`(mockHandler.postDelayed(any(Runnable::class.java), anyLong()))
             .thenAnswer {
-                // Don't call run() on the argument as it will lead to stackOverFlow ;)
-                true
+                true // Don't call run() on the argument as it will lead to stackOverFlow ;)
             }
     }
 
     @Test
     fun testDataIsLoaded_ObservablesUpdated() {
-        // Create a test use case with test data
-        val testData = TestData.feed
-
-        // Create ViewModel with the use case and load the feed
+        // Create ViewModel with the use case and load the feed.
         val viewModel = createFeedViewModel()
         val feedObservable = LiveDataTestUtil.getValue(viewModel.feed)
 
-        // Check that data was loaded correctly
-        // Adding '+ 3' as the items will be preceded by 1. The FeedHeader 2. Sessions 3. Announcements header
-        assertThat(feedObservable?.size, `is`(equalTo(testData.size + 3)))
-        for ((index, item) in testData.withIndex()) {
-            val actual = feedObservable?.get(index + 3)
-            assertThat(actual, `is`(equalTo(item)))
-        }
+        // Check that data was loaded correctly.
+        // At the specified time, the Moment is relevant and there is one Announcement.
+        // Add two more for the Sessions carousel and the "Announcements' heading.
+        assertThat(feedObservable?.size, `is`(equalTo(4)))
+        assertThat(feedObservable?.get(0) as? Moment, `is`(equalTo(TestData.moment1)))
+        assertThat(feedObservable?.get(1), `is`(instanceOf(FeedSessions::class.java)))
+        assertThat(feedObservable?.get(2), `is`(instanceOf(SectionHeader::class.java)))
+        assertThat(feedObservable?.get(3) as? Announcement, `is`(equalTo(TestData.feedItem1)))
     }
 
     @Test
     fun testDataIsLoaded_Fails() {
-        // Create a test use case with test repository that returns an error
-        val loadFeedUseCase = FailingUseCase
-
-        // Create ViewModel with the use case
-        val viewModel = createFeedViewModel(loadAnnouncementUseCase = loadFeedUseCase)
+        // Create ViewModel with a use case that returns an error
+        val viewModel = createFeedViewModel(loadAnnouncementUseCase = FailingUseCase)
 
         // Verify that an error was caught
         val errorMessage = LiveDataTestUtil.getValue(viewModel.errorMessage)
@@ -107,55 +114,44 @@ class FeedViewModelTest {
     /**
      * Use case that always returns an error when executed.
      */
-    object FailingUseCase :
-        LoadAnnouncementsUseCase(
-            DefaultFeedRepository(TestAnnouncementDataSource,
-                TestMomentDataSource
-            ),
-            FixedTimeProvider(TimeUtils.ConferenceDays[2].end.toInstant())
-        ) {
-
-        override fun execute(parameters: Unit): List<Announcement> {
+    object FailingUseCase : LoadAnnouncementsUseCase(
+        DefaultFeedRepository(TestAnnouncementDataSource, TestMomentDataSource)
+    ) {
+        override fun execute(parameters: Instant): List<Announcement> {
             throw Exception("Error!")
         }
     }
 
     private fun createFeedViewModel(
+        loadCurrentMomentUseCase: LoadCurrentMomentUseCase =
+            LoadCurrentMomentUseCase(defaultFeedRepository),
+        loadAnnouncementUseCase: LoadAnnouncementsUseCase =
+            LoadAnnouncementsUseCase(defaultFeedRepository),
         loadFilteredSessionsUseCase: LoadFilteredUserSessionsUseCase =
             LoadFilteredUserSessionsUseCase(
                 DefaultSessionAndUserEventRepository(
                     TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
                 )
             ),
-
+        getTimeZoneUseCase: GetTimeZoneUseCase = GetTimeZoneUseCase(FakePreferenceStorage()),
+        conferenceStartedLiveData: ConferenceStartedLiveData =
+            ConferenceStartedLiveData(mockHandler, defaultTimeProvider),
+        timeProvider: TimeProvider = defaultTimeProvider,
         signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate().apply {
             loadUser("123")
         },
-        loadAnnouncementUseCase: LoadAnnouncementsUseCase = LoadAnnouncementsUseCase(
-            DefaultFeedRepository(TestAnnouncementDataSource,
-                TestMomentDataSource
-            ),
-            FixedTimeProvider(TimeUtils.ConferenceDays[2].end.toInstant())
-        ),
-        loadMomentsUseCase: LoadMomentsUseCase = LoadMomentsUseCase(
-            DefaultFeedRepository(TestAnnouncementDataSource,
-                TestMomentDataSource
-            )
-        )
+        themedActivityDelegate: ThemedActivityDelegate = FakeThemedActivityDelegate()
     ): FeedViewModel {
         return FeedViewModel(
+            loadCurrentMomentUseCase = loadCurrentMomentUseCase,
             loadAnnouncementsUseCase = loadAnnouncementUseCase,
             loadFilteredUserSessionsUseCase = loadFilteredSessionsUseCase,
+            getTimeZoneUseCase = getTimeZoneUseCase,
+            conferenceStartedLiveData = conferenceStartedLiveData,
+            timeProvider = timeProvider,
+            analyticsHelper = FakeAnalyticsHelper(),
             signInViewModelDelegate = signInViewModelDelegate,
-            getTimeZoneUseCase = createGetTimeZoneUseCase(),
-            themedActivityDelegate = FakeThemedActivityDelegate(),
-            feedHeaderLiveData = FeedHeaderLiveData(loadMomentsUseCase).apply {
-                handler = mockHandler
-            },
-            analyticsHelper = FakeAnalyticsHelper()
+            themedActivityDelegate = themedActivityDelegate
         )
     }
-
-    private fun createGetTimeZoneUseCase() =
-        object : GetTimeZoneUseCase(FakePreferenceStorage()) {}
 }

@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
 typealias FeedItemClass = Class<out Any>
 
-typealias FeedItemBinder = FeedListItemViewBinder<Any, ViewHolder>
+typealias FeedItemBinder = FeedItemViewBinder<Any, ViewHolder>
 
 class FeedAdapter(
     private val viewBinders: Map<FeedItemClass, FeedItemBinder>
@@ -56,7 +56,7 @@ class FeedAdapter(
 }
 
 /** Encapsulates logic to create and bind a ViewHolder for a type of item in the Feed. */
-abstract class FeedListItemViewBinder<M, in VH : ViewHolder>(
+abstract class FeedItemViewBinder<M, in VH : ViewHolder>(
     val modelClass: Class<out M>
 ) : DiffUtil.ItemCallback<M>() {
 

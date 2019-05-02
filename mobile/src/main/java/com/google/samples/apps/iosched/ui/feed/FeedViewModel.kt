@@ -21,7 +21,6 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.R.string
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.model.SessionId
@@ -30,14 +29,17 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
+import com.google.samples.apps.iosched.shared.domain.feed.LoadCurrentMomentUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsParameters
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.Result.Loading
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
+import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SectionHeader
@@ -45,6 +47,7 @@ import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
+import com.google.samples.apps.iosched.util.ConferenceStartedLiveData
 import com.google.samples.apps.iosched.util.combine
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
@@ -56,19 +59,29 @@ import javax.inject.Inject
  * create the object, so defining a [@Provides] method for this class won't be needed.
  */
 class FeedViewModel @Inject constructor(
+    private val loadCurrentMomentUseCase: LoadCurrentMomentUseCase,
     loadAnnouncementsUseCase: LoadAnnouncementsUseCase,
     private val loadFilteredUserSessionsUseCase: LoadFilteredUserSessionsUseCase,
-    private val signInViewModelDelegate: SignInViewModelDelegate,
-    private val analyticsHelper: AnalyticsHelper,
     getTimeZoneUseCase: GetTimeZoneUseCase,
-    themedActivityDelegate: ThemedActivityDelegate,
-    feedHeaderLiveData: FeedHeaderLiveData
-) : ViewModel(), FeedEventListener, ThemedActivityDelegate by themedActivityDelegate {
+    conferenceStartedLiveData: ConferenceStartedLiveData,
+    private val timeProvider: TimeProvider,
+    private val analyticsHelper: AnalyticsHelper,
+    private val signInViewModelDelegate: SignInViewModelDelegate,
+    themedActivityDelegate: ThemedActivityDelegate
+) : ViewModel(),
+    FeedEventListener,
+    ThemedActivityDelegate by themedActivityDelegate,
+    SignInViewModelDelegate by signInViewModelDelegate {
 
     companion object {
         // Show at max 10 sessions in the horizontal sessions list as user can click on
         // View All sessions and go to schedule to view the full list
         private const val MAX_SESSIONS = 10
+
+        // Indicates there is no header to show at the current time. We need this sentinel value
+        // because our LiveData.combine extension functions interpret null values to mean the
+        // LiveData has not returned a result, but null for the current Moment is valid.
+        private object NoHeader
     }
 
     val errorMessage: LiveData<Event<String>>
@@ -79,7 +92,9 @@ class FeedViewModel @Inject constructor(
 
     private val loadSessionsResult: MediatorLiveData<Result<LoadFilteredUserSessionsResult>>
 
-    private val loadFeedResult = MutableLiveData<Result<List<Announcement>>>()
+    private val loadAnnouncementsResult = MutableLiveData<Result<List<Announcement>>>()
+
+    private val currentMomentResult = MediatorLiveData<Result<Moment?>>()
 
     private val _navigateToSessionAction = MutableLiveData<Event<String>>()
     val navigateToSessionAction: LiveData<Event<String>>
@@ -106,12 +121,7 @@ class FeedViewModel @Inject constructor(
 
     init {
         timeZoneId = preferConferenceTimeZoneResult.map {
-            val preferConferenceTimeZone = it.successOr(true)
-            if (preferConferenceTimeZone) {
-                TimeUtils.CONFERENCE_TIMEZONE
-            } else {
-                ZoneId.systemDefault()
-            }
+            if (it.successOr(true)) TimeUtils.CONFERENCE_TIMEZONE else ZoneId.systemDefault()
         }
 
         loadSessionsResult = loadFilteredUserSessionsUseCase.observe()
@@ -120,45 +130,59 @@ class FeedViewModel @Inject constructor(
         }
 
         val sessionContainerLiveData = signInViewModelDelegate.currentUserInfo.combine(
-            loadSessionsResult
-        ) { userInfo, sessions -> createFeedSessionsContainer(userInfo, sessions) }
-            .combine(timeZoneId) { sessionContainer, timeZoneId ->
-                sessionContainer.copy(timeZoneId = timeZoneId)
-            }
-
-        loadAnnouncementsUseCase(Unit, loadFeedResult)
-        val announcementsLiveData: LiveData<List<Any>> = loadFeedResult.map {
-            val announcementsPlaceholder = createAnnouncementsPlaceholder(announcementsResult = it)
-            val announcementList = (it as? Result.Success)?.data ?: emptyList()
-            if (announcementsPlaceholder.isLoading || announcementsPlaceholder.notAvailable)
-                listOf(announcementsPlaceholder)
-            else
-                announcementList
+            loadSessionsResult,
+            timeZoneId
+        ) { userInfo, sessions, timeZone ->
+            createFeedSessionsContainer(userInfo, sessions, timeZone)
         }
 
-        val feedHeaderWithTimezoneAndTheme =
-            feedHeaderLiveData.combine(timeZoneId, theme) { feedHeader, timeZoneId, theme ->
-                feedHeader.copy(timeZoneId = timeZoneId, theme = theme)
+        loadAnnouncementsUseCase(timeProvider.now(), loadAnnouncementsResult)
+        val announcements: LiveData<List<Any>> = loadAnnouncementsResult.map {
+            if (it is Loading) {
+                listOf(LoadingIndicator)
+            } else {
+                val items = it.successOr(emptyList())
+                if (items.isNotEmpty()) items else listOf(AnnouncementsEmpty)
             }
+        }
 
-        // Generate feed
-        feed = sessionContainerLiveData
-            .combine(announcementsLiveData) { sessionContainer, announcements ->
-                arrayListOf(sessionContainer, SectionHeader(string.feed_announcement_title))
-                    .plus(announcements)
-            }.combine(feedHeaderWithTimezoneAndTheme) { otherItems, feedHeader ->
-                arrayListOf(
-                    removeMomentIfNotRegistered(injectUserInfo(feedHeader))
-                ).plus(otherItems)
+        currentMomentResult.addSource(conferenceStartedLiveData) {
+            // This will change to the first moment when the Keynote starts
+            loadCurrentMomentUseCase(timeProvider.now(), currentMomentResult)
+        }
+
+        val currentFeedHeader = conferenceStartedLiveData.combine(
+            currentMomentResult
+        ) { conferenceStarted, momentResult ->
+            if (!conferenceStarted) {
+                CountdownItem
+            } else {
+                // Use case can return null even on success, so replace nulls with a sentinel
+                momentResult.successOr(null) ?: NoHeader
             }
+        }
 
-        errorMessage = loadFeedResult.map {
+        // Compose feed
+        feed = currentFeedHeader.combine(
+            sessionContainerLiveData,
+            announcements
+        ) { feedHeader, sessionContainer, announcementItems ->
+            val feedItems = mutableListOf<Any>()
+            if (feedHeader != NoHeader) {
+                feedItems.add(feedHeader)
+            }
+            feedItems.plus(sessionContainer)
+                .plus(SectionHeader(R.string.feed_announcement_title))
+                .plus(announcementItems)
+        }
+
+        errorMessage = loadAnnouncementsResult.map {
             Event(content = (it as? Result.Error)?.exception?.message ?: "")
         }
 
         // Show an error message if the feed could not be loaded.
         snackBarMessage = MediatorLiveData()
-        snackBarMessage.addSource(loadFeedResult) {
+        snackBarMessage.addSource(loadAnnouncementsResult) {
             if (it is Result.Error) {
                 snackBarMessage.value =
                     Event(
@@ -173,68 +197,41 @@ class FeedViewModel @Inject constructor(
         getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
     }
 
-    private fun injectUserInfo(feedHeader: FeedHeader): FeedHeader {
-        val userInfo = signInViewModelDelegate.currentUserInfo.value ?: return feedHeader.copy(
-            userSignedIn = false, userRegistered = false
-        )
-        return feedHeader.copy(
-            userSignedIn = userInfo.isSignedIn(), userRegistered = userInfo.isRegistered()
-        )
-    }
-
-    private fun removeMomentIfNotRegistered(feedHeader: FeedHeader): FeedHeader =
-        feedHeader.let {
-            return@removeMomentIfNotRegistered it.copy(
-                moment = if (!it.userRegistered &&
-                    (it.moment?.attendeeRequired == true)
-                ) null
-                else it.moment
-            )
-        }
-
-    private fun createAnnouncementsPlaceholder(
-        announcementsResult: Result<List<Any>>?
-    ): AnnouncementsPlaceholder {
-        return AnnouncementsPlaceholder(
-            isLoading = announcementsResult is Result.Loading,
-            notAvailable = announcementsResult !is Result.Loading &&
-                ((announcementsResult as? Result.Success)?.data?.isEmpty() ?: false ||
-                    announcementsResult is Result.Error)
-        )
-    }
-
     private fun createFeedSessionsContainer(
         userInfo: AuthenticatedUserInfo?,
-        sessions: Result<LoadFilteredUserSessionsResult>
-    ): FeedSessions =
-        FeedSessions(
-            username = userInfo?.getDisplayName()?.split(" ")?.get(0),
-            titleId =
-            if (userInfo?.isSignedIn() == true) {
-                if (sessions as? Result.Success != null && sessions.data.userSessionCount == 0) {
-                    string.feed_no_saved_events
-                } else if (userInfo.isRegistered()) {
-                    string.feed_upcoming_events
-                } else {
-                    string.feed_saved_events
-                }
-            } else
-                string.title_schedule,
-            actionTextId =
-            when (userInfo?.isSignedIn() == true) {
-                true -> {
-                    if (sessions as? Result.Success != null && sessions.data.userSessionCount == 0)
-                        string.feed_view_all_events
-                    else
-                        string.feed_view_your_schedule
-                }
-                false -> string.feed_view_all_events
-            },
-            userSessions = ((sessions as? Result.Success)?.data?.userSessions ?: emptyList())
-                .filter { it.session.endTime >= ZonedDateTime.now() }
-                .let { it.subList(0, Math.min(MAX_SESSIONS, it.size)) },
-            isLoading = sessions is Result.Loading
+        sessionsResult: Result<LoadFilteredUserSessionsResult>,
+        timeZoneId: ZoneId
+    ): FeedSessions {
+        val isSignedIn = userInfo?.isSignedIn() ?: false
+        val isRegistered = userInfo?.isRegistered() ?: false
+        val sessions = sessionsResult.successOr(null)?.userSessions ?: emptyList()
+        val hasSessions = sessions.isEmpty()
+        val now = ZonedDateTime.ofInstant(timeProvider.now(), timeZoneId)
+        val upcomingSessions = sessions
+            .filter { it.session.endTime.isAfter(now) }
+            .take(MAX_SESSIONS)
+
+        val username = userInfo?.getDisplayName()?.split(" ")?.get(0)
+        val titleId = when {
+            isSignedIn && !hasSessions -> R.string.feed_no_saved_events
+            isSignedIn && isRegistered -> R.string.feed_upcoming_events
+            isSignedIn -> R.string.feed_saved_events
+            else -> R.string.title_schedule
+        }
+        val actionId = when {
+            isSignedIn && hasSessions -> R.string.feed_view_your_schedule
+            else -> R.string.feed_view_all_events
+        }
+
+        return FeedSessions(
+            username = username,
+            titleId = titleId,
+            actionTextId = actionId,
+            userSessions = upcomingSessions,
+            timeZoneId = timeZoneId,
+            isLoading = sessionsResult is Loading
         )
+    }
 
     private fun refreshSessions() {
         val sessionMatcher = UserSessionMatcher()

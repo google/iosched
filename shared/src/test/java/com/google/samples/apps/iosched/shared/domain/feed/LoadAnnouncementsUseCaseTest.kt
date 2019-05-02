@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.usecases.repository
+package com.google.samples.apps.iosched.shared.domain.feed
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.model.Moment
+import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
-import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
-import com.google.samples.apps.iosched.shared.domain.feed.TestMomentDataSource
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.time.TimeProvider
-import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -45,56 +43,49 @@ class LoadAnnouncementsUseCaseTest {
     val syncTaskExecutorRule = SyncTaskExecutorRule()
 
     @Test
-    fun feedItemsLoadedSuccessfully() {
-        val useCase = LoadAnnouncementsUseCase(
-            SuccessfulFeedRepository,
-            FixedTimeProvider(TimeUtils.ConferenceDays[2].end.toInstant()))
+    fun announcementsLoadedSuccessfully() {
+        val useCase = LoadAnnouncementsUseCase(successfulFeedRepository)
         val resultLivedata = MutableLiveData<Result<List<Announcement>>>()
 
-        useCase(Unit, resultLivedata)
+        // Load all items
+        val time = TestData.TestConferenceDays.last().end.toInstant()
+        useCase(time, resultLivedata)
 
         val result = LiveDataTestUtil.getValue(resultLivedata)
-        Assert.assertEquals(result, Result.Success(TestAnnouncementDataSource.feedItems))
+        assertEquals(result, Result.Success(TestData.announcements))
     }
 
     @Test
-    fun feedItemsLoadedUnsuccessfully() {
-        val useCase = LoadAnnouncementsUseCase(
-            UnsuccessfulFeedRepository,
-            FixedTimeProvider(TimeUtils.ConferenceDays[2].end.toInstant()))
+    fun announcementsLoadedUnsuccessfully() {
+        val useCase = LoadAnnouncementsUseCase(unsuccessfulFeedRepository)
         val resultLivedata = MutableLiveData<Result<List<Announcement>>>()
 
-        useCase(Unit, resultLivedata)
+        // Time doesn't matter
+        useCase(Instant.now(), resultLivedata)
 
         val result = LiveDataTestUtil.getValue(resultLivedata)
         assertTrue(result is Result.Error)
     }
 
     @Test
-    fun feedItemsLoaded_filteredByTimestamp() {
-        val useCase = LoadAnnouncementsUseCase(
-            SuccessfulFeedRepository,
-            FixedTimeProvider(TimeUtils.ConferenceDays[0].end.plusHours(1).toInstant()))
+    fun announcementsLoaded_filteredByTimestamp() {
+        val useCase = LoadAnnouncementsUseCase(successfulFeedRepository)
         val resultLivedata = MutableLiveData<Result<List<Announcement>>>()
 
-        useCase(Unit, resultLivedata)
+        // Load only the first day's items
+        val time = TestData.TestConferenceDays.first().end.plusMinutes(1).toInstant()
+        useCase(time, resultLivedata)
 
         val result = LiveDataTestUtil.getValue(resultLivedata)
-        Assert.assertEquals(result, Result.Success(
-            listOf(TestAnnouncementDataSource.feedItems[0],
-                TestAnnouncementDataSource.feedItems[1])))
+        assertEquals(result, Result.Success(TestData.announcements.subList(0, 2)))
     }
 }
 
-val SuccessfulFeedRepository = object : FeedRepository {
+private val successfulFeedRepository = DefaultFeedRepository(
+    TestAnnouncementDataSource, TestMomentDataSource
+)
 
-    override fun getAnnouncements(): List<Announcement> =
-        TestAnnouncementDataSource.getAnnouncements()
-
-    override fun getMoments(): List<Moment> = TestMomentDataSource.getMoments()
-}
-
-val UnsuccessfulFeedRepository = object : FeedRepository {
+private val unsuccessfulFeedRepository = object : FeedRepository {
 
     override fun getAnnouncements(): List<Announcement> {
         throw Exception("Error!")
@@ -102,16 +93,5 @@ val UnsuccessfulFeedRepository = object : FeedRepository {
 
     override fun getMoments(): List<Moment> {
         throw Exception("Error!")
-    }
-}
-
-/**
- * Fix the TimeProvider to a fixed time
- * TODO: Better to share this class with the one in the mobile module
- */
-private class FixedTimeProvider(var instant: Instant) : TimeProvider {
-
-    override fun now(): Instant {
-        return instant
     }
 }
