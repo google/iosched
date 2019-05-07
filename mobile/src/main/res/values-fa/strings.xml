@@ -162,7 +162,7 @@
         <item quantity="other">%s ثانیه</item>
     </plurals>
     <string name="menu_item_share_session">هم‌رسانی جلسه</string>
-    <string name="share_text_session_detail">«%1$s» را در #io18 %2$s بررسی کنید</string>
+    <string name="share_text_session_detail">«%1$s» را در #io19 %2$s بررسی کنید</string>
     <string name="intent_chooser_session_detail">هم‌رسانی</string>
     <string name="map_variant_after_dark">شبانگاهی</string>
     <string name="map_variant_concert">کنسرت</string>
