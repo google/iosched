@@ -90,6 +90,7 @@ class EventFragment : DaggerFragment() {
 
 @BindingAdapter("countdownVisibility")
 fun countdownVisibility(countdown: View, ignored: Boolean?) {
+    // TODO Remove this method since ignored is unused
     countdown.visibility = if (TimeUtils.conferenceHasStarted()) GONE else VISIBLE
 }
 

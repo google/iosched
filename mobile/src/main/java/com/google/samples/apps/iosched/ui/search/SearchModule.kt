@@ -29,6 +29,7 @@ import dagger.multibindings.IntoMap
  * Module where classes needed to create the [SearchFragment] are defined.
  */
 @Module
+@Suppress("UNUSED")
 internal abstract class SearchModule {
 
     /**

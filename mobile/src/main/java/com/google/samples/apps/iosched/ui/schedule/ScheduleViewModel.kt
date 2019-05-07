@@ -73,7 +73,7 @@ class ScheduleViewModel @Inject constructor(
     scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase,
     topicSubscriber: TopicSubscriber,
     private val snackbarMessageManager: SnackbarMessageManager,
-    private val getTimeZoneUseCase: GetTimeZoneUseCase,
+    getTimeZoneUseCase: GetTimeZoneUseCase,
     private val refreshConferenceDataUseCase: RefreshConferenceDataUseCase,
     observeConferenceDataUseCase: ObserveConferenceDataUseCase,
     loadSelectedFiltersUseCase: LoadSelectedFiltersUseCase,
@@ -112,7 +112,8 @@ class ScheduleViewModel @Inject constructor(
     val hasAnyFilters: LiveData<Boolean>
         get() = _hasAnyFilters
 
-    private val loadSessionsResult: MediatorLiveData<Result<LoadFilteredUserSessionsResult>>
+    private val loadSessionsResult: MediatorLiveData<Result<LoadFilteredUserSessionsResult>> =
+        loadFilteredUserSessionsUseCase.observe()
     private val loadEventFiltersResult = MediatorLiveData<Result<List<EventFilter>>>()
     private val swipeRefreshResult = MutableLiveData<Result<Boolean>>()
 
@@ -156,9 +157,6 @@ class ScheduleViewModel @Inject constructor(
         get() = _scrollToEvent
 
     init {
-        // Load sessions and tags and store the result in `LiveData`s
-        loadSessionsResult = loadFilteredUserSessionsUseCase.observe()
-
         val conferenceDataAvailable = observeConferenceDataUseCase.observe()
 
         // Load EventFilters when persisted filters are loaded and when there's new conference data

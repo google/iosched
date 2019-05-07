@@ -29,6 +29,7 @@ import dagger.multibindings.IntoMap
  * Module that provides classes needed for reservations.
  */
 @Module
+@Suppress("UNUSED")
 internal abstract class ReservationModule {
 
     /**

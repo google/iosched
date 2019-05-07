@@ -25,8 +25,6 @@ import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.Paint.Style.STROKE
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import android.os.Build.VERSION.SDK_INT
-import android.os.Build.VERSION_CODES.M
 import android.text.Layout.Alignment.ALIGN_CENTER
 import android.text.StaticLayout
 import android.text.TextPaint
@@ -47,6 +45,7 @@ import androidx.core.graphics.withTranslation
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.util.isRtl
 import com.google.samples.apps.iosched.util.lerp
+import com.google.samples.apps.iosched.util.newStaticLayout
 import com.google.samples.apps.iosched.util.textWidth
 
 /**
@@ -171,7 +170,8 @@ class EventFilterView @JvmOverloads constructor(
             MeasureSpec.EXACTLY -> MeasureSpec.getSize(widthMeasureSpec) - nonTextWidth
             MeasureSpec.AT_MOST -> MeasureSpec.getSize(widthMeasureSpec) - nonTextWidth
             // StaticLayout breaks when given extremely large values. 1000 pixels should be enough.
-            else /* MeasureSpec.UNSPECIFIED */ -> 1000
+            MeasureSpec.UNSPECIFIED -> 1000
+            else -> 1000
         }
 
         createLayout(availableTextWidth)
@@ -318,7 +318,7 @@ class EventFilterView @JvmOverloads constructor(
         progress = if (checked) 1f else 0f
     }
 
-    override fun verifyDrawable(who: Drawable?): Boolean {
+    override fun verifyDrawable(who: Drawable): Boolean {
         return super.verifyDrawable(who) || who == touchFeedback
     }
 
@@ -338,13 +338,7 @@ class EventFilterView @JvmOverloads constructor(
     }
 
     private fun createLayout(textWidth: Int) {
-        textLayout = if (SDK_INT >= M) {
-            StaticLayout.Builder.obtain(text, 0, text.length, textPaint, textWidth)
-                .setAlignment(ALIGN_CENTER)
-                .build()
-        } else {
-            StaticLayout(text, textPaint, textWidth, ALIGN_CENTER, 1f, 0f, true)
-        }
+        textLayout = newStaticLayout(text, textPaint, textWidth, ALIGN_CENTER, 1f, 0f, true)
     }
 
     private fun updateContentDescription() {

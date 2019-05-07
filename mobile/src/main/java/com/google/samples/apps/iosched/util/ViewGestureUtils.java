@@ -47,8 +47,7 @@ public class ViewGestureUtils {
                 return (List<Rect>) method.invoke(view);
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 // Method does not exist before API 29
-                Timber.e(e, "Error while retrieving getSystemGestureExclusionRects"
-                        + " method via reflection");
+                Timber.e(e, "Error while retrieving getSystemGestureExclusionRects method via reflection");
             }
         }
         // If we're not running on Q, or we hit an error, just return an empty list
@@ -65,8 +64,7 @@ public class ViewGestureUtils {
                 method.invoke(view, rects);
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 // Method does not exist before API 29
-                Timber.e(e, "Error while retrieving setSystemGestureExclusionRects"
-                        + " method via reflection");
+                Timber.e(e, "Error while retrieving setSystemGestureExclusionRects method via reflection");
             }
         }
     }

@@ -39,24 +39,12 @@ class FirebaseAnalyticsHelper(
     preferenceStorage: PreferenceStorage
 ) : AnalyticsHelper {
 
-    private val TAG = "Analytics"
-
-    private val UPROP_USER_SIGNED_IN = "user_signed_in"
-    private val UPROP_USER_REGISTERED = "user_registered"
-
-    private var firebaseAnalytics: FirebaseAnalytics
+    private var firebaseAnalytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
 
     /**
      * stores a strong reference to preference change][PreferenceManager]
      */
     private var prefListener: SharedPreferences.OnSharedPreferenceChangeListener? = null
-
-    /**
-     * Log a specific screen view under the `screenName` string.
-     */
-    private val FA_CONTENT_TYPE_SCREENVIEW = "screen"
-    private val FA_KEY_UI_ACTION = "ui_action"
-    private val FA_CONTENT_TYPE_UI_EVENT = "ui event"
 
     private var analyticsEnabled: Boolean = false
         set(enabled) {
@@ -70,7 +58,6 @@ class FirebaseAnalyticsHelper(
      * (possible except on first run), initialize analytics Immediately.
      */
     init {
-        firebaseAnalytics = FirebaseAnalytics.getInstance(context)
 
         DefaultScheduler.execute { // Prevent access to preferences on main thread
             analyticsEnabled = preferenceStorage.sendUsageStatistics
@@ -154,5 +141,17 @@ class FirebaseAnalyticsHelper(
     private fun getBooleanPreferenceAction(prefs: SharedPreferences, key: String): String {
         return if (prefs.getBoolean(key, true)) AnalyticsActions.ENABLE
         else AnalyticsActions.DISABLE
+    }
+
+    companion object {
+        private const val UPROP_USER_SIGNED_IN = "user_signed_in"
+        private const val UPROP_USER_REGISTERED = "user_registered"
+
+        /**
+         * Log a specific screen view under the `screenName` string.
+         */
+        private const val FA_CONTENT_TYPE_SCREENVIEW = "screen"
+        private const val FA_KEY_UI_ACTION = "ui_action"
+        private const val FA_CONTENT_TYPE_UI_EVENT = "ui event"
     }
 }

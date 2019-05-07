@@ -223,6 +223,7 @@
                 app:eventTitle="@string/event_meals_title"
                 app:eventTypeLogo="@drawable/event_header_meals" />
 
+            <!-- TODO remove countdownVisibility method -->
             <com.google.samples.apps.iosched.widget.CountdownView
                 android:layout_width="0dp"
                 android:layout_height="@dimen/countdown_height"

@@ -18,17 +18,13 @@ package com.google.samples.apps.iosched.ui.feed
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemFeedAnnouncementBinding
 import com.google.samples.apps.iosched.model.Announcement
-import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.ZoneId
-import org.threeten.bp.ZonedDateTime
 
 class FeedAnnouncementViewBinder(
     private val timeZoneId: LiveData<ZoneId>,
@@ -70,21 +66,5 @@ class FeedAnnouncementViewHolder(
         binding.lifecycleOwner = lifecycleOwner
         binding.timeZoneId = timeZoneId
         binding.executePendingBindings()
-    }
-}
-
-@BindingAdapter("dateTime")
-fun dateTime(textView: TextView, dateTime: ZonedDateTime) {
-    textView.text = TimeUtils.timeString(dateTime)
-}
-
-@BindingAdapter("dateTime", "timeZoneId")
-fun dateTime(textView: TextView, dateTime: ZonedDateTime, timeZoneId: ZoneId?) {
-    if (timeZoneId == null) {
-        textView.text = TimeUtils.timeString(dateTime)
-    } else {
-        textView.text = TimeUtils.timeString(
-            TimeUtils.zonedTime(dateTime, timeZoneId)
-        )
     }
 }

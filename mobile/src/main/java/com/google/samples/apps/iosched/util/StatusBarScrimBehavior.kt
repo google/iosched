@@ -25,6 +25,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.appbar.AppBarLayout
 
 @Keep
+@Suppress("UNUSED")
 class StatusBarScrimBehavior(
     context: Context,
     attrs: AttributeSet
