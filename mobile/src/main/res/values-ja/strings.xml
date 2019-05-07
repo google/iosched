@@ -162,7 +162,7 @@
         <item quantity="other">%s秒</item>
     </plurals>
     <string name="menu_item_share_session">セッションを共有</string>
-    <string name="share_text_session_detail">#io18 %2$s で「%1$s」をご確認ください</string>
+    <string name="share_text_session_detail">#io19 %2$s で「%1$s」をご確認ください</string>
     <string name="intent_chooser_session_detail">共有</string>
     <string name="map_variant_after_dark">アフターダーク</string>
     <string name="map_variant_concert">コンサート</string>

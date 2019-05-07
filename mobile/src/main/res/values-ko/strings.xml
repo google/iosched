@@ -162,7 +162,7 @@
         <item quantity="other">%s초</item>
     </plurals>
     <string name="menu_item_share_session">세션 공유</string>
-    <string name="share_text_session_detail">#io18 %2$s에서 \'%1$s\' 확인해 보기</string>
+    <string name="share_text_session_detail">#io19 %2$s에서 \'%1$s\' 확인해 보기</string>
     <string name="intent_chooser_session_detail">공유</string>
     <string name="map_variant_after_dark">저녁 시간</string>
     <string name="map_variant_concert">콘서트</string>

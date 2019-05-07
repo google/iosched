@@ -162,7 +162,7 @@
         <item quantity="other">%s secondi</item>
     </plurals>
     <string name="menu_item_share_session">Condividi sessione</string>
-    <string name="share_text_session_detail">Dai un\'occhiata a "%1$s" alla pagina #io18 %2$s</string>
+    <string name="share_text_session_detail">Dai un\'occhiata a "%1$s" alla pagina #io19 %2$s</string>
     <string name="intent_chooser_session_detail">Condividi</string>
     <string name="map_variant_after_dark">Dopo il tramonto</string>
     <string name="map_variant_concert">Concerto</string>
