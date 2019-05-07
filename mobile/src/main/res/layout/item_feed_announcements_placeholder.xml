@@ -32,15 +32,13 @@
 
         <TextView
             android:id="@+id/feed_empty_text"
+            style="@style/Widget.IOSched.EmptyResults"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="@dimen/margin_large"
             android:layout_marginStart="@dimen/margin_large"
-            android:drawablePadding="@dimen/spacing_normal"
-            android:drawableTop="@drawable/no_items_found_204"
-            android:gravity="center"
             android:text="@string/feed_not_available"
             app:goneUnless="@{announcementPlaceholder.notAvailable}" />
 

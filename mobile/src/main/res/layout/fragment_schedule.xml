@@ -73,18 +73,15 @@
 
                 <TextView
                     android:id="@+id/empty"
+                    style="@style/Widget.IOSched.EmptyResults"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/schedule_page_padding_bottom"
                     android:layout_marginHorizontal="@dimen/margin_large"
-                    android:drawablePadding="@dimen/spacing_normal"
-                    android:drawableTop="@drawable/no_items_found_204"
-                    android:gravity="center"
                     android:text="@string/schedule_filters_empty"
                     app:goneUnless="@{isEmpty &amp;&amp; !viewModel.isLoading}"
                     tools:targetApi="o"
-                    tools:text="@string/schedule_filters_empty"
                     tools:visibility="visible" />
 
             </FrameLayout>
