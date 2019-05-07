@@ -126,16 +126,18 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
         // If there is no logged-in user, return the session with a null UserEvent
         if (userId == null) {
-            Timber.d("EventRepository: No user logged in, returning session without user event.")
-            val session = sessionRepository.getSession(eventId)
-            sessionResult.postValue(
-                Result.Success(
-                    LoadUserSessionUseCaseResult(
-                        userSession = UserSession(session, createDefaultUserEvent(session)),
-                        userMessage = null
+            DefaultScheduler.execute {
+                Timber.d("EventRepository: No user logged in, returning session without user event")
+                val session = sessionRepository.getSession(eventId)
+                sessionResult.postValue(
+                    Result.Success(
+                        LoadUserSessionUseCaseResult(
+                            userSession = UserSession(session, createDefaultUserEvent(session)),
+                            userMessage = null
+                        )
                     )
                 )
-            )
+            }
             return sessionResult
         }
 
