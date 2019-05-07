@@ -162,7 +162,7 @@
         <item quantity="other">%s 秒</item>
     </plurals>
     <string name="menu_item_share_session">分享講座資訊</string>
-    <string name="share_text_session_detail">快來參加「%1$s」，詳情請見 #io18 %2$s</string>
+    <string name="share_text_session_detail">快來參加「%1$s」，詳情請見 #io19 %2$s</string>
     <string name="intent_chooser_session_detail">分享</string>
     <string name="map_variant_after_dark">會後活動</string>
     <string name="map_variant_concert">音樂會</string>

@@ -162,7 +162,7 @@
         <item quantity="other">%s secondes</item>
     </plurals>
     <string name="menu_item_share_session">Partager la séance</string>
-    <string name="share_text_session_detail">Voir « %1$s » à #io18 %2$s</string>
+    <string name="share_text_session_detail">Voir « %1$s » à #io19 %2$s</string>
     <string name="intent_chooser_session_detail">Partage</string>
     <string name="map_variant_after_dark">After Dark</string>
     <string name="map_variant_concert">Concert</string>
