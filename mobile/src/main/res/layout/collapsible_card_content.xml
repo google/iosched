@@ -60,7 +60,7 @@
 
         </LinearLayout>
 
-        <com.google.samples.apps.iosched.widget.HtmlTextView
+        <TextView
             android:id="@+id/card_description"
             style="@style/Widget.IOSched.MultilineBody"
             android:layout_width="match_parent"
