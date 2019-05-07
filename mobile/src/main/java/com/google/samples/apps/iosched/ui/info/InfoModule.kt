@@ -29,6 +29,7 @@ import dagger.multibindings.IntoMap
  * Module where classes needed to create the [InfoFragment] are defined.
  */
 @Module
+@Suppress("UNUSED")
 internal abstract class InfoModule {
     /**
      * Generates an [AndroidInjector] for the [InfoFragment].

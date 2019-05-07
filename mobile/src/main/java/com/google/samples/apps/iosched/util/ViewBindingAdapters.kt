@@ -22,7 +22,6 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.View
 import android.view.View.GONE
-import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.ImageView
 import android.widget.TextView
@@ -42,11 +41,6 @@ import com.google.samples.apps.iosched.model.Theme
 import com.google.samples.apps.iosched.model.Theme.DARK
 import com.google.samples.apps.iosched.widget.CustomSwipeRefreshLayout
 import timber.log.Timber
-
-@BindingAdapter("invisibleUnless")
-fun invisibleUnless(view: View, visible: Boolean) {
-    view.visibility = if (visible) VISIBLE else INVISIBLE
-}
 
 @BindingAdapter("goneUnless")
 fun goneUnless(view: View, visible: Boolean) {

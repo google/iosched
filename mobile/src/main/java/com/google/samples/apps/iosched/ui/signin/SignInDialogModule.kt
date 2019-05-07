@@ -29,6 +29,7 @@ import dagger.multibindings.IntoMap
  * Module that defines the child fragments related to sign in/out.
  */
 @Module
+@Suppress("UNUSED")
 internal abstract class SignInDialogModule {
 
     /**

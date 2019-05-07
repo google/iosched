@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.speaker
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
@@ -31,6 +32,7 @@ import com.google.samples.apps.iosched.model.Speaker
 /**
  * Loads a [Speaker]'s photo or picks a default avatar if no photo is specified.
  */
+@SuppressLint("CheckResult")
 @BindingAdapter(value = ["speakerImage", "listener"], requireAll = false)
 fun speakerImage(
     imageView: ImageView,

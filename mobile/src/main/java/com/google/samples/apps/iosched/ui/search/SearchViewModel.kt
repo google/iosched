@@ -34,7 +34,6 @@ import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedS
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.successOr
-import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.search.SearchResultType.CODELAB
 import com.google.samples.apps.iosched.ui.search.SearchResultType.SESSION
 import com.google.samples.apps.iosched.ui.search.SearchResultType.SPEAKER

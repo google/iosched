@@ -27,6 +27,7 @@ import dagger.multibindings.IntoMap
  * Module where classes needed to create the [FeedFragment] are defined.
  */
 @Module
+@Suppress("UNUSED")
 internal abstract class FeedModule {
 
     /**

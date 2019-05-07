@@ -127,12 +127,11 @@ class FeedViewModel @Inject constructor(
             }
 
         loadAnnouncementsUseCase(Unit, loadFeedResult)
-        val announcements: LiveData<List<Any>> = loadFeedResult.map {
+        val announcementsLiveData: LiveData<List<Any>> = loadFeedResult.map {
             val announcementsPlaceholder = createAnnouncementsPlaceholder(announcementsResult = it)
             val announcementList = (it as? Result.Success)?.data ?: emptyList()
-
             if (announcementsPlaceholder.isLoading || announcementsPlaceholder.notAvailable)
-                arrayListOf(announcementsPlaceholder)
+                listOf(announcementsPlaceholder)
             else
                 announcementList
         }
@@ -144,14 +143,13 @@ class FeedViewModel @Inject constructor(
 
         // Generate feed
         feed = sessionContainerLiveData
-            .combine(announcements) { sessionContainer, announcements ->
+            .combine(announcementsLiveData) { sessionContainer, announcements ->
                 arrayListOf(sessionContainer, SectionHeader(string.feed_announcement_title))
                     .plus(announcements)
             }.combine(feedHeaderWithTimezoneAndTheme) { otherItems, feedHeader ->
-                arrayListOf(feedHeader
-                    .let { injectUserInfo(it) }
-                    .let { removeMomentIfNotRegistered(it) })
-                    .plus(otherItems)
+                arrayListOf(
+                    removeMomentIfNotRegistered(injectUserInfo(feedHeader))
+                ).plus(otherItems)
             }
 
         errorMessage = loadFeedResult.map {

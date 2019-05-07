@@ -24,6 +24,7 @@ import dagger.multibindings.IntoMap
 import javax.inject.Singleton
 
 @Module
+@Suppress("UNUSED")
 abstract class ThemedActivityDelegateModule {
 
     @Singleton

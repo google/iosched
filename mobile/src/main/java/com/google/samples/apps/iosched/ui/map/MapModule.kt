@@ -29,6 +29,7 @@ import dagger.multibindings.IntoMap
  * Module where classes needed to create the [MapFragment] are defined.
  */
 @Module
+@Suppress("UNUSED")
 internal abstract class MapModule {
     /**
      * Generates an [AndroidInjector] for the [MapFragment] as a Dagger subcomponent.

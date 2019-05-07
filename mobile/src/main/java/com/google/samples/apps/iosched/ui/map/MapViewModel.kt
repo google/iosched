@@ -60,11 +60,6 @@ class MapViewModel @Inject constructor(
     private val _mapVariant = MutableLiveData<MapVariant>()
     val mapVariant = Transformations.distinctUntilChanged(_mapVariant)
 
-    /**
-     * True if any errors occur in fetching the data.
-     */
-    val errorMessageShown = MutableLiveData<Boolean>().apply { value = false }
-
     private val _mapCenterEvent = MutableLiveData<Event<CameraUpdate>>()
     val mapCenterEvent: LiveData<Event<CameraUpdate>>
         get() = _mapCenterEvent

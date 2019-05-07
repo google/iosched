@@ -25,6 +25,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.bottomappbar.BottomAppBar
 
 @Keep
+@Suppress("UNUSED")
 class NavigationBarScrimBehavior(
     context: Context,
     attrs: AttributeSet

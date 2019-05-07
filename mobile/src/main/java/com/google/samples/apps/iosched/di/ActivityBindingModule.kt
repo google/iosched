@@ -52,6 +52,7 @@ import dagger.android.ContributesAndroidInjector
  * When Dagger.Android annotation processor runs it will create 2 subcomponents for us.
  */
 @Module
+@Suppress("UNUSED")
 abstract class ActivityBindingModule {
 
     @ActivityScoped

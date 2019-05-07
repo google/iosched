@@ -40,6 +40,7 @@ import androidx.recyclerview.widget.RecyclerView.State
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.util.isRtl
+import com.google.samples.apps.iosched.util.newStaticLayout
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
@@ -210,6 +211,6 @@ class ScheduleTimeHeadersDecoration(
                 append(meridiemFormatter.format(startTime).toUpperCase())
             }
         }
-        return StaticLayout(text, paint, width, ALIGN_CENTER, 1f, 0f, false)
+        return newStaticLayout(text, paint, width, ALIGN_CENTER, 1f, 0f, false)
     }
 }

@@ -31,10 +31,10 @@ class FeedAdapter(
 
     private val viewTypeToBinders = viewBinders.mapKeys { it.value.getFeedItemType() }
 
-    private fun getViewBinder(viewType: Int): FeedItemBinder = viewTypeToBinders[viewType]!!
+    private fun getViewBinder(viewType: Int): FeedItemBinder = viewTypeToBinders.getValue(viewType)
 
     override fun getItemViewType(position: Int): Int =
-        viewBinders[super.getItem(position).javaClass]!!.getFeedItemType()
+        viewBinders.getValue(super.getItem(position).javaClass).getFeedItemType()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return getViewBinder(viewType).createViewHolder(parent)

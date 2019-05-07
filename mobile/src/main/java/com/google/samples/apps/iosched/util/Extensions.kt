@@ -21,11 +21,14 @@ import android.content.res.Resources
 import android.graphics.Rect
 import android.graphics.Typeface
 import android.net.wifi.WifiConfiguration
+import android.os.Build
 import android.os.Handler
+import android.text.Layout.Alignment
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.StaticLayout
+import android.text.TextPaint
 import android.text.style.StyleSpan
 import android.util.TypedValue
 import android.view.View
@@ -69,6 +72,27 @@ fun StaticLayout.textWidth(): Int {
         width = width.coerceAtLeast(getLineWidth(i))
     }
     return width.toInt()
+}
+
+fun newStaticLayout(
+    source: CharSequence,
+    paint: TextPaint,
+    width: Int,
+    alignment: Alignment,
+    spacingmult: Float,
+    spacingadd: Float,
+    includepad: Boolean
+): StaticLayout {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        StaticLayout.Builder.obtain(source, 0, source.length, paint, width).apply {
+            setAlignment(alignment)
+            setLineSpacing(spacingadd, spacingmult)
+            setIncludePad(includepad)
+        }.build()
+    } else {
+        @Suppress("DEPRECATION")
+        StaticLayout(source, paint, width, alignment, spacingmult, spacingadd, includepad)
+    }
 }
 
 /**

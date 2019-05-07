@@ -23,7 +23,7 @@ import dagger.Provides
 import javax.inject.Named
 
 /**
- * Provides [RecycleViewPool]s to share views between [RecyclerView]s.
+ * Provides [RecyclerView.RecycledViewPool]s to share views between [RecyclerView]s.
  * E.g. Between different days of the schedule.
  */
 @Module

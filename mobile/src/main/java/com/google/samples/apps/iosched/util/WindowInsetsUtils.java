@@ -41,7 +41,6 @@ public class WindowInsetsUtils {
     private static boolean methodGetSystemGestureInsetsFetched;
 
     private static boolean insetsFetched;
-    private static Class classInsets;
     private static Field fieldInsetsLeft;
     private static Field fieldInsetsTop;
     private static Field fieldInsetsRight;
@@ -101,7 +100,7 @@ public class WindowInsetsUtils {
     private static void fetchInsetsClazz() {
         if (!insetsFetched) {
             try {
-                classInsets = Class.forName("android.graphics.Insets");
+                Class classInsets = Class.forName("android.graphics.Insets");
                 fieldInsetsLeft = classInsets.getField("left");
                 fieldInsetsTop = classInsets.getField("top");
                 fieldInsetsRight = classInsets.getField("right");
@@ -120,8 +119,7 @@ public class WindowInsetsUtils {
                         WindowInsets.class.getMethod("getSystemGestureInsets");
             } catch (NoSuchMethodException e) {
                 // Method does not exist before API 29
-                Timber.e(e, "Error while retrieving getSystemGestureInsets"
-                        + " method via reflection");
+                Timber.e(e, "Error while retrieving getSystemGestureInsets method via reflection");
             }
             methodGetSystemGestureInsetsFetched = true;
         }
@@ -134,8 +132,7 @@ public class WindowInsetsUtils {
                         WindowInsets.class.getMethod("getMandatorySystemGestureInsets");
             } catch (NoSuchMethodException e) {
                 // Method does not exist before API 29
-                Timber.e(e, "Error while retrieving getMandatorySystemGestureInsets"
-                        + " method via reflection");
+                Timber.e(e, "Error while retrieving getMandatorySystemGestureInsets method via reflection");
             }
             methodGetMandatorySystemGestureInsetsFetched = true;
         }

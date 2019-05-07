@@ -69,6 +69,12 @@ sealed class EventFilter(isChecked: Boolean) {
         override fun getShortTextResId(): Int = R.string.starred_and_reserved_short
 
         override fun equals(other: Any?): Boolean = other is MyEventsFilter
+
+        // This class isn't used for a key for a collection, overriding hashCode for removing a
+        // lint warning
+        override fun hashCode(): Int {
+            return javaClass.hashCode()
+        }
     }
 
     /** Filter for event tags. */
