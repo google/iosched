@@ -170,7 +170,7 @@
 
     <!-- Notifications preference dialog -->
     <string name="notifications_preference_dialog_title" translation_description="The title of the dialog for the notifications preference">I/O Notifications</string>
-    <string name="notifications_preference_dialog_content" translation_description="The content of the dialog for the notifications preference">Would you like to receive notifications about I/O? We\'ll send you information about session start times, after hours events, session recordings, and more. You can change this setting under \"Info > Settings\" at any time.</string>
+    <string name="notifications_preference_dialog_content" translation_description="The content of the dialog for the notifications preference">Would you like to receive notifications about I/O? We\'ll send you information about session start times, after hours events, session recordings, and more. You can change this setting under \"Settings\" at any time.</string>
     <string name="no" translation_description="Negative answer to the question \'Would you like to receive notification?\'">No</string>
     <string name="yes" translation_description="Positive answer to the question \'Would you like to receive notification?\'">Yes</string>
 
