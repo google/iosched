@@ -375,11 +375,4 @@
         <item name="android:textSize" tools:ignore="SpUsage">16dp</item>
     </style>
 
-    <!-- Misc -->
-    <style name="Widget.IOSched.EmptyResults">
-        <item name="android:drawablePadding">@dimen/margin_normal</item>
-        <item name="android:drawableTop">@drawable/no_items_found_204</item>
-        <item name="android:gravity">center_horizontal</item>
-        <item name="android:textAppearance">?android:textAppearanceMedium</item>
-    </style>
 </resources>
