@@ -20,8 +20,8 @@
 buildscript {
     ext {
         // App version
-        versionName = '7.0.14' // X.Y.Z; X = Major, Y = minor, Z = Patch level
-        versionCodeBase = 70140 // XYYZZM; M = Module (tv, mobile)
+        versionName = '7.0.15' // X.Y.Z; X = Major, Y = minor, Z = Patch level
+        versionCodeBase = 70150 // XYYZZM; M = Module (tv, mobile)
         versionCodeTv = versionCodeBase + 2
         versionCodeMobile = versionCodeBase + 3
 
