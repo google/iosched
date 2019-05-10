@@ -25,6 +25,7 @@ import dagger.Module
  * our own implementation: [IOSchedViewModelFactory].
  */
 @Module
+@Suppress("UNUSED")
 abstract class ViewModelModule {
 
     @Binds

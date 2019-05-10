@@ -16,11 +16,10 @@
 
 package com.google.samples.apps.iosched.shared.di
 
-import java.lang.annotation.ElementType
-import java.lang.annotation.Retention
-import java.lang.annotation.RetentionPolicy
-import java.lang.annotation.Target
 import javax.inject.Scope
+import kotlin.annotation.Retention
+import kotlin.annotation.Target
+import kotlin.annotation.AnnotationRetention
 
 /**
  * The BroadcastReceiverScoped custom scoping annotation specifies that the lifespan of a dependency be
@@ -28,6 +27,6 @@ import javax.inject.Scope
  * singleton within the lifespan of a BroadcastReceiver.
  */
 @Scope
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE, ElementType.METHOD)
+@Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.TYPE, AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 annotation class BroadcastReceiverScoped

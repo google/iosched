@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.samples.apps.iosched.shared.di;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package com.google.samples.apps.iosched.shared.di
 
-import javax.inject.Scope;
+import kotlin.annotation.Retention
+import kotlin.annotation.Target
+import kotlin.annotation.AnnotationRetention
+
+import javax.inject.Scope
 
 /**
  * The ChildFragmentScoped custom scoping annotation specifies that the lifespan of a dependency be
@@ -28,7 +28,6 @@ import javax.inject.Scope;
  * singleton within the lifespan of a child Fragment
  */
 @Scope
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
-public @interface ChildFragmentScoped {
-}
+@Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.TYPE, AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
+annotation class ChildFragmentScoped

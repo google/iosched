@@ -26,7 +26,7 @@ import javax.inject.Inject
 open class NotificationsPrefShownActionUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage
 ) : UseCase<Boolean, Unit>() {
-    override fun execute(completed: Boolean) {
-        preferenceStorage.notificationsPreferenceShown = completed
+    override fun execute(parameters: Boolean) {
+        preferenceStorage.notificationsPreferenceShown = parameters
     }
 }

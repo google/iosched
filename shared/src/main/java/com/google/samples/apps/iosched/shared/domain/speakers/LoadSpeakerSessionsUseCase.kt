@@ -36,7 +36,9 @@ open class LoadSpeakerUseCase @Inject constructor(
             .firstOrNull { it.id == parameters }
             ?: throw SpeakerNotFoundException("No speaker found with id $parameters")
         val sessionIds = conferenceDataRepository.getOfflineConferenceData().sessions
-            .filter { it.speakers.find { it.id == parameters } != null }
+            .filter {
+                it.speakers.find { speaker -> speaker.id == parameters } != null
+            }
             .map { it.id }
             .toSet()
         return LoadSpeakerUseCaseResult(speaker, sessionIds)

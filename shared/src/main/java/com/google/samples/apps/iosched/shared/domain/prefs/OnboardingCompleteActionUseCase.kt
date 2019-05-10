@@ -26,7 +26,7 @@ import javax.inject.Inject
 open class OnboardingCompleteActionUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage
 ) : UseCase<Boolean, Unit>() {
-    override fun execute(completed: Boolean) {
-        preferenceStorage.onboardingCompleted = completed
+    override fun execute(parameters: Boolean) {
+        preferenceStorage.onboardingCompleted = parameters
     }
 }
