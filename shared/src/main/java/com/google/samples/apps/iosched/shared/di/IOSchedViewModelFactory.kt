@@ -31,7 +31,7 @@ class IOSchedViewModelFactory @Inject constructor(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val found = creators.entries.find { modelClass.isAssignableFrom(it.key) }
         val creator = found?.value
-            ?: throw IllegalArgumentException("unknown model class " + modelClass)
+            ?: throw IllegalArgumentException("unknown model class $modelClass")
         try {
             @Suppress("UNCHECKED_CAST")
             return creator.get() as T

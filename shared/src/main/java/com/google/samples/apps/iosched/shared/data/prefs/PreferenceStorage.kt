@@ -93,7 +93,7 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
             observableShowSnackbarResult.value = snackbarIsStopped
             return observableShowSnackbarResult
         }
-        set(value) = throw IllegalAccessException("This property can't be changed")
+        set(_) = throw IllegalAccessException("This property can't be changed")
 
     override var sendUsageStatistics by BooleanPreference(prefs, PREF_SEND_USAGE_STATISTICS, true)
 

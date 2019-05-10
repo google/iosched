@@ -41,7 +41,7 @@ object AuthenticatedUserRegistration {
     fun callRegistrationEndpoint(token: String) {
         DefaultScheduler.execute {
             val request = Request.Builder()
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer $token")
                 .url(BuildConfig.REGISTRATION_ENDPOINT_URL)
                 .build()
 

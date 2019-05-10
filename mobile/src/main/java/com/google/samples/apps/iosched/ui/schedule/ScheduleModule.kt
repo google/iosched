@@ -32,6 +32,7 @@ import dagger.multibindings.IntoMap
  * Module where classes needed to create the [ScheduleFragment] are defined.
  */
 @Module
+@Suppress("UNUSED")
 internal abstract class ScheduleModule {
 
     /**
