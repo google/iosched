@@ -25,7 +25,6 @@ class ConferenceDayIndexer(
      */
     mapping: Map<ConferenceDay, Int>
 ) {
-
     init {
         var previous = -1
         mapping.forEach { (_, value) ->
@@ -57,6 +56,4 @@ class ConferenceDayIndexer(
         }
         return startPositions[index]
     }
-
-    fun isDayStartPosition(position: Int) = startPositions.contains(position)
 }
