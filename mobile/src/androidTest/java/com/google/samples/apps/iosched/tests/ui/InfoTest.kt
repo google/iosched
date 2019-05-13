@@ -17,16 +17,22 @@
 package com.google.samples.apps.iosched.tests.ui
 
 import android.content.Context
+import android.widget.TextView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.R.id
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
 import com.google.samples.apps.iosched.tests.SyncTaskExecutorRule
+import org.hamcrest.CoreMatchers.allOf
+import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -52,10 +58,14 @@ class InfoTest {
 
     @Test
     fun info_basicViewsDisplayed() {
-        onView(withText(resources.getString(R.string.wifi_header))).check(matches(isDisplayed()))
+        // Title
+        onView(allOf(instanceOf(TextView::class.java), withParent(ViewMatchers.withId(id.toolbar))))
+            .check(matches(withText(R.string.info_title)))
+        onView(withText(resources.getString(R.string.event_types_header)))
+            .check(matches(isDisplayed()))
         // Travel tab
         onView(withText(resources.getString(R.string.travel_title))).perform(click())
-        onView(withText(resources.getString(R.string.travel_directions_title)))
+        onView(withText(resources.getString(R.string.travel_what_to_bring_title)))
             .check(matches(isDisplayed()))
     }
 }

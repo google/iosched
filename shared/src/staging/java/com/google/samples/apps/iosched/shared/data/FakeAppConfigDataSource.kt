@@ -24,13 +24,17 @@ import com.google.samples.apps.iosched.shared.data.config.StringsChangedCallback
 
 class FakeAppConfigDataSource : AppConfigDataSource {
 
-    override fun getStringLiveData(key: String): LiveData<String> = MutableLiveData()
+    override fun getStringLiveData(key: String): LiveData<String> {
+        return MutableLiveData<String>().apply {
+            value = "2019-05-07T10:00-07:00"
+        }
+    }
     override fun syncStringsAsync(changedCallback: StringsChangedCallback?) = Unit
     override fun getWifiInfo(): ConferenceWifiInfo = ConferenceWifiInfo("", "")
-    override fun isMapFeatureEnabled(): Boolean = false
+    override fun isMapFeatureEnabled(): Boolean = true
     override fun isExploreArFeatureEnabled(): Boolean = true
     override fun isCodelabsFeatureEnabled(): Boolean = true
     override fun isSearchScheduleFeatureEnabled(): Boolean = false
-    override fun isSearchUsingRoomFeatureEnabled(): Boolean = false
+    override fun isSearchUsingRoomFeatureEnabled(): Boolean = true
     override fun isAssistantAppFeatureEnabled(): Boolean = false
 }
