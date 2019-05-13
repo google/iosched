@@ -88,10 +88,12 @@ class FeedFragment : MainNavigationFragment() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelable(
-            BUNDLE_KEY_SESSIONS_LAYOUT_MANAGER_STATE,
-            sessionsViewBinder.recyclerViewManagerState
-        )
+        if (::sessionsViewBinder.isInitialized) {
+            outState.putParcelable(
+                BUNDLE_KEY_SESSIONS_LAYOUT_MANAGER_STATE,
+                sessionsViewBinder.recyclerViewManagerState
+            )
+        }
         super.onSaveInstanceState(outState)
     }
 

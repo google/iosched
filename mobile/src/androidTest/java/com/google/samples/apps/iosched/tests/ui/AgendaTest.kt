@@ -16,16 +16,19 @@
 
 package com.google.samples.apps.iosched.tests.ui
 
+import android.widget.TextView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
 import com.google.samples.apps.iosched.tests.SyncTaskExecutorRule
 import org.hamcrest.CoreMatchers.allOf
+import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -47,7 +50,8 @@ class AgendaTest {
     @Test
     fun agenda_basicViewsDisplayed() {
         // Title
-        onView(allOf(withText(R.string.agenda), withId(R.id.title))).check(matches(isDisplayed()))
+        onView(allOf(instanceOf(TextView::class.java), withParent(withId(R.id.toolbar))))
+            .check(matches(withText(R.string.agenda)))
         // One of the blocks
         onView(withText("Breakfast")).check(matches(isDisplayed()))
     }

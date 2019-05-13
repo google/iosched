@@ -54,6 +54,7 @@ import org.junit.runner.RunWith
 /**
  * Basic Espresso tests for the schedule screen.
  */
+// TODO: Fix the entire tests
 @RunWith(AndroidJUnit4::class)
 class ScheduleTest {
 
@@ -100,7 +101,7 @@ class ScheduleTest {
 
         onView(
             allOf(
-                withId(R.id.session_detail_with_video_title),
+                withId(R.id.session_detail_title),
                 withText("First session day 1")
             )
         )

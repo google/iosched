@@ -17,17 +17,21 @@
 package com.google.samples.apps.iosched.tests.ui
 
 import android.content.Context
+import android.widget.TextView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.R.id
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
 import com.google.samples.apps.iosched.tests.SyncTaskExecutorRule
 import org.hamcrest.CoreMatchers.allOf
+import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -53,20 +57,14 @@ class SettingsTest {
 
     @Test
     fun settings_basicViewsDisplayed() {
-        // Setting title
-        onView(allOf(withText(resources.getString(R.string.settings_title)), withId(R.id.title)))
-            .check(matches(isDisplayed()))
+        // Title
+        onView(allOf(instanceOf(TextView::class.java), withParent(withId(id.toolbar))))
+            .check(matches(withText(R.string.settings_title)))
         // Preference toggle
         onView(withText(resources.getString(R.string.settings_enable_notifications)))
             .check(matches(isDisplayed()))
         // About label
         onView(withText(resources.getString(R.string.about_title)))
-            .check(matches(isDisplayed()))
-        // FAQ link
-        onView(withText(resources.getString(R.string.faq_title)))
-            .check(matches(isDisplayed()))
-        // Version
-        onView(withText(resources.getString(R.string.version_name)))
             .check(matches(isDisplayed()))
     }
 }
