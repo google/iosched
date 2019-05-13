@@ -37,6 +37,7 @@ import androidx.recyclerview.widget.RecyclerView.State
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.util.newStaticLayout
 import org.threeten.bp.ZonedDateTime
 import kotlin.math.ceil
 
@@ -126,6 +127,6 @@ class AgendaHeadersDecoration(
     ): StaticLayout {
         val labelRes = TimeUtils.getLabelResForTime(time, inConferenceTimeZone)
         val text = context.getText(labelRes)
-        return StaticLayout(text, paint, textWidth, ALIGN_CENTER, 1f, 0f, false)
+        return newStaticLayout(text, paint, textWidth, ALIGN_CENTER, 1f, 0f, false)
     }
 }

@@ -76,7 +76,7 @@ class SessionDetailViewModel @Inject constructor(
     private val loadRelatedSessionUseCase: LoadUserSessionsUseCase,
     private val starEventUseCase: StarEventAndNotifyUseCase,
     private val reservationActionUseCase: ReservationActionUseCase,
-    private val getTimeZoneUseCase: GetTimeZoneUseCase,
+    getTimeZoneUseCase: GetTimeZoneUseCase,
     private val snackbarMessageManager: SnackbarMessageManager,
     timeProvider: TimeProvider,
     private val networkUtils: NetworkUtils,
@@ -84,7 +84,8 @@ class SessionDetailViewModel @Inject constructor(
 ) : ViewModel(), SessionDetailEventListener, EventActions,
     SignInViewModelDelegate by signInViewModelDelegate {
 
-    private val loadUserSessionResult: MediatorLiveData<Result<LoadUserSessionUseCaseResult>>
+    private val loadUserSessionResult: MediatorLiveData<Result<LoadUserSessionUseCaseResult>> =
+        loadUserSessionUseCase.observe()
 
     private val loadRelatedUserSessions: LiveData<Result<LoadUserSessionsUseCaseResult>>
 
@@ -151,7 +152,6 @@ class SessionDetailViewModel @Inject constructor(
         get() = _navigateToSessionFeedbackAction
 
     init {
-        loadUserSessionResult = loadUserSessionUseCase.observe()
 
         loadRelatedUserSessions = loadRelatedSessionUseCase.observe()
 

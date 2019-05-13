@@ -29,6 +29,7 @@ import dagger.multibindings.IntoMap
  * Module where classes needed to create the [SettingsFragment] are defined.
  */
 @Module
+@Suppress("UNUSED")
 internal abstract class SettingsModule {
     /**
      * Generates an [AndroidInjector] for the [SettingsFragment].

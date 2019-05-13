@@ -23,6 +23,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 
 @Module
+@Suppress("UNUSED")
 abstract class MainActivityModule {
 
     @Binds

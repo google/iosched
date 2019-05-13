@@ -16,14 +16,14 @@
 
 package com.google.samples.apps.iosched.ui
 
-import android.text.Html
+import androidx.core.text.HtmlCompat
+import androidx.core.text.HtmlCompat.FROM_HTML_MODE_LEGACY
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.widget.FadingSnackbar
-import timber.log.Timber
 
 /**
  * An extension for Fragments that sets up a Snackbar with a [SnackbarMessageManager].
@@ -49,13 +49,10 @@ fun Fragment.setUpSnackbar(
 
     // Important reservations messages are handled with a message manager
     snackbarMessageManager.observeNextMessage().observe(this, EventObserver { message ->
-        val messageText = Html.fromHtml(
-            requireContext().getString(message.messageId, message.session?.title)
+        val messageText = HtmlCompat.fromHtml(
+            requireContext().getString(message.messageId, message.session?.title),
+            FROM_HTML_MODE_LEGACY
         )
-        if (messageText == null) {
-            Timber.e("Empty Snackbar message")
-            return@EventObserver
-        }
         fadingSnackbar.show(
             messageText = messageText,
             actionId = message.actionId,

@@ -39,8 +39,8 @@ class CrashlyticsTree : Timber.Tree() {
     }
 
     companion object {
-        private val CRASHLYTICS_KEY_PRIORITY = "priority"
-        private val CRASHLYTICS_KEY_TAG = "tag"
-        private val CRASHLYTICS_KEY_MESSAGE = "message"
+        private const val CRASHLYTICS_KEY_PRIORITY = "priority"
+        private const val CRASHLYTICS_KEY_TAG = "tag"
+        private const val CRASHLYTICS_KEY_MESSAGE = "message"
     }
 }

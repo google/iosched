@@ -43,7 +43,9 @@ class ThemeSettingDialogFragment : DaggerAppCompatDialogFragment() {
         return MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.settings_theme_title)
                 .setSingleChoiceItems(listAdapter, 0) { dialog, position ->
-                    viewModel.setTheme(listAdapter.getItem(position).theme)
+                    listAdapter.getItem(position)?.theme?.let {
+                        viewModel.setTheme(it)
+                    }
                     dialog.dismiss()
                 }
                 .create()
@@ -65,7 +67,7 @@ class ThemeSettingDialogFragment : DaggerAppCompatDialogFragment() {
 
     private fun updateSelectedItem(selected: Theme?) {
         val selectedPosition = (0 until listAdapter.count).indexOfFirst { index ->
-            listAdapter.getItem(index).theme == selected
+            listAdapter.getItem(index)?.theme == selected
         }
         (dialog as AlertDialog).listView.setItemChecked(selectedPosition, true)
     }

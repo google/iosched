@@ -38,6 +38,7 @@ import androidx.recyclerview.widget.RecyclerView.State
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.domain.sessions.ConferenceDayIndexer
 import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.util.newStaticLayout
 import org.threeten.bp.ZoneId
 import kotlin.math.ceil
 
@@ -103,7 +104,7 @@ class DaySeparatorItemDecoration(
         for (day in indexer.days) {
             val position = indexer.positionForDay(day)
             val text = context.getString(TimeUtils.getLabelResForDay(day, isInConferenceZone))
-            val label = StaticLayout(text, paint, textWidth, ALIGN_CENTER, 1f, 0f, false)
+            val label = newStaticLayout(text, paint, textWidth, ALIGN_CENTER, 1f, 0f, false)
             sparseArray.put(position, label)
         }
         return sparseArray

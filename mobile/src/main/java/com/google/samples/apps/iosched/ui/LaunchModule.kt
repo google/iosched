@@ -26,6 +26,7 @@ import dagger.multibindings.IntoMap
  * Module where classes needed for app launch are defined.
  */
 @Module
+@Suppress("UNUSED")
 internal abstract class LaunchModule {
 
     /**

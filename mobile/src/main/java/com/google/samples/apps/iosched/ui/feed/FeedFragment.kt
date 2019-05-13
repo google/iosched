@@ -180,6 +180,7 @@ class FeedFragment : MainNavigationFragment() {
             val sectionHeaderViewBinder = FeedSectionHeaderViewBinder()
             val feedHeaderViewBinder = FeedHeaderViewBinder(model)
             val announcementsPlaceholder = FeedAnnouncementsPlaceholderViewBinder()
+            @Suppress("UNCHECKED_CAST")
             val viewBinders = ImmutableMap.builder<FeedItemClass, FeedItemBinder>()
                 .put(
                     announcementViewBinder.modelClass,
