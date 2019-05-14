@@ -58,7 +58,7 @@
             app:layout_constraintGuide_begin="@dimen/schedule_bottom_sheet_peek_height" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview"
+            android:id="@+id/recyclerview_filter"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:alpha="@{recyclerviewAlpha}"
@@ -175,7 +175,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:animatedOnClick="@{() -> viewModel.clearFilters()}"
-            app:eventFilters="@{recyclerview}"
+            app:eventFilters="@{recyclerviewFilter}"
             app:goneUnless="@{viewModel.hasAnyFilters}"
             tools:targetApi="o"
             tools:visibility="visible" />
