@@ -109,7 +109,7 @@ class ScheduleFilterFragment : DaggerFragment() {
         }
 
         // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
-        binding.recyclerview.doOnApplyWindowInsets { v, insets, padding ->
+        binding.recyclerviewFilter.doOnApplyWindowInsets { v, insets, padding ->
             v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
 
@@ -127,7 +127,7 @@ class ScheduleFilterFragment : DaggerFragment() {
         filterAdapter = ScheduleFilterAdapter(viewModel)
         viewModel.eventFilters.observe(this, Observer { filterAdapter.submitEventFilterList(it) })
 
-        binding.recyclerview.apply {
+        binding.recyclerviewFilter.apply {
             adapter = filterAdapter
             setHasFixedSize(true)
             (layoutManager as GridLayoutManager).spanSizeLookup =

@@ -138,7 +138,7 @@ class ScheduleFragment : MainNavigationFragment() {
 
         filtersFab = binding.filterFab
         snackbar = binding.snackbar
-        scheduleRecyclerView = binding.recyclerview
+        scheduleRecyclerView = binding.recyclerviewSchedule
         dayIndicatorRecyclerView = binding.includeScheduleAppbar.dayIndicators
         return binding.root
     }
@@ -191,7 +191,7 @@ class ScheduleFragment : MainNavigationFragment() {
         })
 
         // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
-        binding.recyclerview.doOnApplyWindowInsets { v, insets, padding ->
+        binding.recyclerviewSchedule.doOnApplyWindowInsets { v, insets, padding ->
             v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
 
