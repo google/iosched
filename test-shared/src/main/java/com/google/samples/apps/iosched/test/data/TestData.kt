@@ -288,24 +288,21 @@ object TestData {
     )
 
     val announcements = listOf(feedItem1, feedItem2, feedItem3, feedItem4)
-    val feed = announcements.toList<Any>()
-
-    val moments = listOf(
-        Moment(
-            id = "1",
-            title = "KeyNote: Day 1",
-            streamUrl = "https://www.youtube.com",
-            startTime = ZonedDateTime.now(),
-            endTime = ZonedDateTime.now(),
-            textColor = 123,
-            ctaType = Moment.CTA_MAP_LOCATION,
-            imageUrl = "",
-            imageUrlDarkTheme = "",
-            attendeeRequired = false,
-            timeVisible = false,
-            featureId = "",
-            featureName = "EATs Tent"
-        )
-
+    val moment1 = Moment(
+        id = "1",
+        title = "KeyNote: Day 1",
+        streamUrl = "https://www.youtube.com",
+        startTime = TestConferenceDays[0].start,
+        endTime = TestConferenceDays[0].end,
+        textColor = 123,
+        ctaType = Moment.CTA_LIVE_STREAM,
+        imageUrl = "",
+        imageUrlDarkTheme = "",
+        attendeeRequired = false,
+        timeVisible = false,
+        featureId = "",
+        featureName = ""
     )
+
+    val moments = listOf(moment1)
 }

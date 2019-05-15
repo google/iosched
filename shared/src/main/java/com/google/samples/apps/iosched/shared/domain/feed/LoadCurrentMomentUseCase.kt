@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.domain.feed
 
-import com.google.samples.apps.iosched.model.Announcement
+import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import org.threeten.bp.Instant
@@ -25,17 +25,15 @@ import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 
 /**
- * Loads all feed items into a list.
+ * Loads a [Moment] corresponding to the given time passed as a parameter.
  */
-open class LoadAnnouncementsUseCase @Inject constructor(
+open class LoadCurrentMomentUseCase @Inject constructor(
     private val repository: FeedRepository
-) : UseCase<Instant, List<Announcement>>() {
+) : UseCase<Instant, Moment?>() {
 
-    override fun execute(parameters: Instant): List<Announcement> {
-        val announcements = repository.getAnnouncements()
-        val now = ZonedDateTime.ofInstant(parameters, ZoneId.systemDefault())
-        return announcements.filter {
-            now.isAfter(it.timestamp)
-        }
+    override fun execute(parameters: Instant): Moment? {
+        val time = ZonedDateTime.ofInstant(parameters, ZoneId.systemDefault())
+        return repository.getMoments()
+            .firstOrNull { it.startTime <= time && time < it.endTime }
     }
 }
