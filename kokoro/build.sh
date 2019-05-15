@@ -32,3 +32,20 @@ echo y | ${ANDROID_SDK_HOME}/tools/bin/sdkmanager "build-tools;28.0.3"
 cd $KOKORO_ARTIFACTS_DIR/git/iosched
 
 ./gradlew "${GRADLE_FLAGS[@]}" build
+
+
+# For Firebase Test Lab
+SERVICE_ACCOUNT_KEY=${KOKORO_GFILE_DIR}/events-dev-62d2e-072ce72b3067.json
+gcloud config set project events-dev-62d2e
+gcloud auth activate-service-account firebasetestlabforkokoro@events-dev-62d2e.iam.gserviceaccount.com --key-file ${SERVICE_ACCOUNT_KEY}
+
+./gradlew mobile:assembleAndroidTest
+./gradlew mobile:assembleStaging
+gcloud firebase test android run \
+    --type instrumentation \
+    --app  mobile/build/outputs/apk/staging/mobile-staging.apk \
+    --test mobile/build/outputs/apk/androidTest/staging/mobile-staging-androidTest.apk \
+    --device-ids blueline \
+    --os-version-ids 28 \
+    --locales en \
+    --timeout 120
