@@ -19,16 +19,14 @@ package com.google.samples.apps.iosched.util;
 import android.annotation.SuppressLint;
 import android.graphics.Rect;
 import android.view.View;
-import android.view.WindowInsets;
-
-import androidx.annotation.NonNull;
-import androidx.core.os.BuildCompat;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.core.os.BuildCompat;
 import timber.log.Timber;
 
 /**
@@ -38,15 +36,16 @@ import timber.log.Timber;
 public class ViewGestureUtils {
     private ViewGestureUtils() {}
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unused")
     @NonNull
     public static List<Rect> getSystemGestureExclusionRects(@NonNull final View view) {
+        // Method does not exist before API 29
         if (BuildCompat.isAtLeastQ()) {
             try {
                 Method method = view.getClass().getMethod("getSystemGestureExclusionRects");
+                //noinspection unchecked
                 return (List<Rect>) method.invoke(view);
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                // Method does not exist before API 29
                 Timber.e(e, "Error while retrieving getSystemGestureExclusionRects method via reflection");
             }
         }
@@ -54,16 +53,15 @@ public class ViewGestureUtils {
         return Collections.emptyList();
     }
 
-    @SuppressWarnings("unchecked")
-    public static void setSystemGestureExclusionRects(
-            @NonNull final View view, @NonNull final List<Rect> rects) {
+    public static void setSystemGestureExclusionRects(@NonNull final View view,
+            @NonNull final List<Rect> rects) {
+        // Method does not exist before API 29
         if (BuildCompat.isAtLeastQ()) {
             try {
-                Method method = view.getClass().getMethod(
-                        "setSystemGestureExclusionRects", List.class);
+                Method method = view.getClass().getMethod("setSystemGestureExclusionRects",
+                        List.class);
                 method.invoke(view, rects);
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                // Method does not exist before API 29
                 Timber.e(e, "Error while retrieving setSystemGestureExclusionRects method via reflection");
             }
         }
@@ -72,7 +70,7 @@ public class ViewGestureUtils {
     @SuppressLint("NewApi") // Suppressed because lint doesn't recognize isAtLeastQ()
     public static boolean shouldCloseDrawerFromBackPress(@NonNull final View view) {
         if (BuildCompat.isAtLeastQ()) {
-            // If we're running on Q, and this call to closeDrawers if from a key event
+            // If we're running on Q, and this call to closeDrawers is from a key event
             // (for back handling), we should only honor it IF the device is not currently
             // in gesture mode. We approximate that by checking the system gesture insets
             final Rect systemGestureInsets = WindowInsetsUtils.getSystemGestureInsets(

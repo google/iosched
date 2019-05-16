@@ -23,20 +23,15 @@
     <string name="filters">필터</string>
     <string name="category_heading_tracks">주제</string>
     <string name="category_heading_types">유형</string>
-    <string name="clear_all">모두 삭제</string>
     <string name="reset">재설정</string>
-    <string name="pinned_events_filter_description">별표 표시 및 예약한 이벤트만 표시</string>
     <plurals name="filter_event_count">
-        <item quantity="one">이벤트 %1$d개</item>
         <item quantity="other">이벤트 %1$d개</item>
     </plurals>
     <string name="starred_and_reserved">별표 표시 및 예약한 이벤트</string>
     <string name="starred_and_reserved_short">내 이벤트</string>
     <string name="search_schedule_hint">일정 검색</string>
     <string name="search_schedule_no_results">검색결과 없음</string>
-    <string name="search_schedule_error">일정 검색 오류</string>
     <string name="agenda">일정목록</string>
-    <string name="overview">개요</string>
     <string name="event_starred">별표 표시한 항목에 이벤트를 추가했습니다.</string>
     <string name="event_unstarred">별표 표시한 항목에서 이벤트를 삭제했습니다.</string>
     <string name="event_star_error">별표 표시된 항목에 이벤트를 추가하는 중에 오류가 발생했습니다.</string>
@@ -62,11 +57,8 @@
     <string name="reservation_disabled">예약 불가</string>
     <string name="reservation_pending">예약 대기 중</string>
     <string name="schedule_hint_title">일정 맞춤설정</string>
-    <string name="schedule_hint_view_only_your_events">내 이벤트만 보기</string>
     <string name="schedule_hint_star_event">별표 표시한 이벤트에 추가</string>
     <string name="schedule_hint_reserve_session_seat">세션 좌석 예약</string>
-    <string name="schedule_hint_star_event_content_description">이벤트 별표 표시 이미지</string>
-    <string name="schedule_hint_reserve_session_seat_content_description">세션 좌석 예약 이미지</string>
     <string name="rate_session">세션 평가</string>
     <string name="menu_item_session_location">세션 위치</string>
     <string name="menu_item_session_star">세션 별표 표시</string>
@@ -93,10 +85,7 @@
     <string name="a11y_clear_tag_filters">필터 지우기</string>
     <string name="a11y_filter_applied">%1s 필터 적용됨</string>
     <string name="a11y_filter_not_applied">%1s 필터 적용되지 않음</string>
-    <string name="a11y_pinned">별표 표시 및 예약한 이벤트만</string>
-    <string name="a11y_revert_pinned">모든 세션 표시</string>
     <string name="a11y_reservation_available">이벤트 예약</string>
-    <string name="a11y_reservation_working">이벤트 예약 작업 중</string>
     <string name="a11y_reservation_reserved">이벤트 예약됨</string>
     <string name="a11y_reservation_disabled">예약 불가</string>
     <string name="a11y_reservation_wait_list_available">이벤트 대기자 명단 등록</string>
@@ -109,19 +98,14 @@
     <string name="a11y_select_map_mode">지도 모드 선택</string>
     <string name="a11y_search_schedule">일정 검색</string>
     <string name="welcome">환영합니다.</string>
-    <string name="sign_in_hint">로그인하려면 탭하세요.</string>
     <string name="a11y_signed_in_content_description">로그인한 계정은 %s입니다.</string>
     <string name="a11y_signed_out_content_description">로그인하려면 탭하세요.</string>
-    <string name="dialog_sign_in_title">로그인하여 일정 맞춤설정</string>
     <string name="dialog_sign_in_content">이벤트를 저장하고, 좌석을 예약하고, 참석한 세션을 평가하려면 로그인하세요. 관련 작업이 앱과 사이트에서 계정과 동기화됩니다.</string>
-    <string name="not_now">나중에</string>
     <string name="sign_in">로그인</string>
     <string name="firebase_auth_no_network_connection">인터넷에 연결되지 않음</string>
     <string name="firebase_auth_unknown_error">알 수 없는 오류</string>
-    <string name="dialog_sign_out_title">로그아웃하시겠습니까?</string>
     <string name="dialog_sign_out_content">모든 저장된 이벤트, 좌석 예약, 참석한 세션 평가가 계정에 동기화된 상태로 유지됩니다.</string>
     <string name="sign_out">로그아웃</string>
-    <string name="profile">프로필</string>
     <string name="manage_google_account">Google 계정 관리</string>
     <string name="remove_reservation_title">예약을 삭제하시겠습니까?</string>
     <string name="remove_reservation_content">\'%1$s\' 좌석 예약을 취소합니다. 좌석을 예약하지 않기로 했지만 참석하고 싶은 경우 모든 세션에 준비된 선착순 좌석을 이용하면 됩니다.</string>
@@ -134,8 +118,6 @@
     <string name="notifications_preference_dialog_content">I/O에 대한 알림을 받고 싶으신가요? 세션 시작 시간, 공식 일정 후 이벤트, 세션 녹화 등에 대한 정보를 보내드립니다. 언제든지 \'정보 &gt; 설정\'에서 알림 설정을 변경할 수 있습니다.</string>
     <string name="no">아니요</string>
     <string name="yes">예</string>
-    <string name="feed_item_pinned_icon">고정한 항목</string>
-    <string name="feed_item_emergency_icon">중요 항목</string>
     <string name="feed_not_available">공지가 없습니다.</string>
     <string name="feed_loading_error">피드를 로드할 수 없습니다. 나중에 다시 시도하세요.</string>
     <string name="feed_announcement_title">공지</string>
@@ -146,19 +128,15 @@
     <string name="feed_view_your_schedule">일정 보기</string>
     <string name="feed_watch_live_stream">실시간 스트림 보기</string>
     <plurals name="duration_days">
-        <item quantity="one">%s일</item>
         <item quantity="other">%s일</item>
     </plurals>
     <plurals name="duration_hours">
-        <item quantity="one">%s시간</item>
         <item quantity="other">%s시간</item>
     </plurals>
     <plurals name="duration_minutes">
-        <item quantity="one">%s분</item>
         <item quantity="other">%s분</item>
     </plurals>
     <plurals name="duration_seconds">
-        <item quantity="one">%s초</item>
         <item quantity="other">%s초</item>
     </plurals>
     <string name="menu_item_share_session">세션 공유</string>
@@ -172,7 +150,6 @@
     <string name="onboarding_get_started">시작하기</string>
     <string name="onboarding_welcome_to_google_i_o">Google I/O에 오신 것을 환영합니다.</string>
     <string name="onboarding_date_location">2019년 5월 7~9일,\n캘리포니아 마운틴뷰</string>
-    <string name="onboarding_join_online">온라인으로 참여해 보세요. 기조 연설 및 대부분의 세션이 실시간으로 스트리밍됩니다.</string>
     <string name="onboarding_label_days">일</string>
     <string name="onboarding_label_hours">시간</string>
     <string name="onboarding_label_mins">분</string>
@@ -181,14 +158,11 @@
     <string name="onboarding_welcome_google_io_during">Google I/O</string>
     <string name="onboarding_welcome_google_io_post">I/O 2019 요약 동영상을 시청하고 소셜 미디어에서 #io19를 확인해 보세요.</string>
     <string name="onboarding_signin">I/O 알림을 받으려면 로그인하세요. 참석자는 로그인하면 세션 좌석을 예약할 수 있습니다.</string>
-    <string name="onboarding_explore_ar">I/O 2019 요약 동영상을 시청하고 소셜 미디어에서 #io19를 확인해 보세요.</string>
     <plurals name="session_starting_in">
-        <item quantity="one">%1$s분 후 세션 시작</item>
         <item quantity="other">%1$s분 후 세션 시작</item>
     </plurals>
     <string name="expanded">펼침</string>
     <string name="collapsed">접힘</string>
-    <string name="info_title">정보</string>
     <string name="event_title">이벤트</string>
     <string name="travel_title">이동 정보</string>
     <string name="faq_title">FAQ</string>
@@ -247,13 +221,7 @@
     <string name="faq_sessions_be_live_streamed_question_description">3일간의 페스티벌 동안 두 번의 기조연설과 모든 세션이 이벤트 웹사이트 홈페이지에서 실시간 스트리밍됩니다. 업무 시간과 겹치거나 시차가 있는 해외에 거주하는 경우 나중에 &lt;a href="https://www.youtube.com/user/GoogleDevelopers"&gt;Google Developers YouTube 채널&lt;/a&gt;에서 세션 녹화를 시청할 수 있습니다.</string>
     <string name="faq_want_to_celebrate_i_o_description">예. 매년 전 세계 곳곳의 개발자들이 &lt;a href="https://events.google.com/io/extended"&gt;Google I/O Extended 이벤트&lt;/a&gt;를 주최합니다. 이 이벤트 중에 주최자가 이벤트를 실시간 스트리밍하고 해커톤, Codelab, 데모 등의 자체 세션을 진행합니다.&lt;br&gt; 올해 I/O Extended 주최자로 참여하려면 다음 단계를 통해 시작해 보세요.&lt;br&gt;&lt;br&gt;  &lt;a href="https://docs.google.com/presentation/d/e/2PACX–1vReWDtj-yASOho5q7XC6lYY8af9wRa13-81mPaoSRodiRoCw4MKJnQExQ8GxyNyCQiPZpBprznPG4ex/pub?slide=id.g62811f3b0_18"&gt;주최자 가이드&lt;/a&gt;를 읽고 성공적인 이벤트를 주최하는 방법에 대한 팁과 권장사항을 확인합니다.&lt;br&gt;&lt;br&gt; 보다 많은 사람에게 노출될 수 있도록 I/O 웹사이트에 공개 이벤트를 &lt;a href="https://events.google.com/io/extended/form"&gt;등록&lt;/a&gt;합니다.&lt;br&gt;&lt;br&gt; 보다 쉽게 검색할 수 있도록 I/O Extended와 관련된 모든 소셜 게시물에 공식 #io19extended 해시태그를 사용합니다. &lt;br&gt;&lt;br&gt; 참고: I/O Extended 주최자는 이벤트 종료 후에 이메일(io19@google.com)로 개인 또는 이벤트 데이터를 삭제해 달라고 요청할 수 있습니다.&lt;br&gt; I/O Extended 이벤트에 참석만 하고 싶은 경우에는 &lt;a href="https://events.google.com/io/extended"&gt;지도&lt;/a&gt;에서 가까운 이벤트 장소를 찾아 참석 신청을 해 보세요.&lt;br&gt; I/O Extended 프로그램에 대한 질문은 io19extended\-external@google.com에 문의해 주세요.</string>
     <string name="view_sessions_text">세션 보기</string>
-    <string name="view_codelabs_text">Codelab 보기</string>
-    <string name="view_events_text">이벤트 보기</string>
-    <string name="view_map_text">지도 보기</string>
-    <string name="wifi_network_label">Wi-Fi 네트워크:</string>
-    <string name="wifi_password_label">비밀번호:</string>
     <string name="wifi_install_success">Wi-Fi 네트워크를 저장했습니다.</string>
-    <string name="wifi_install_error_message">죄송합니다. Wi-Fi 네트워크를 저장할 수 없습니다.</string>
     <string name="wifi_install_clipboard_message">Wi-Fi 네트워크를 저장할 수 없습니다.\n비밀번호를 클립보드로 복사했습니다.</string>
     <string name="event_sessions_title">세션</string>
     <string name="event_sandbox_title">샌드박스</string>
@@ -270,27 +238,20 @@
     <string name="wifi_header">Wi-Fi</string>
     <string name="related_apps_header">관련 앱</string>
     <string name="event_types_header">이벤트 유형</string>
-    <string name="general_header">일반</string>
-    <string name="agreements_header">약관</string>
     <string name="settings_time_zone_label">태평양 표준시 시간대 기준의 이벤트(UTC-8)</string>
     <string name="settings_enable_notifications">알림 사용</string>
     <string name="settings_send_anonymous_usage_statistics">익명 사용 통계 보내기</string>
     <string name="settings_tos">서비스 약관</string>
     <string name="settings_privacy_policy">개인정보처리방침</string>
     <string name="settings_oss_licenses">오픈소스 라이선스</string>
-    <string name="settings_version_label">버전 %1$s, 빌드 %2$s</string>
     <string name="settings_theme_title">테마 선택</string>
     <string name="settings_theme_system">시스템 기본값</string>
     <string name="settings_theme_light">밝게</string>
     <string name="settings_theme_dark">어둡게</string>
     <string name="settings_theme_battery">절전 모드 설정</string>
-    <string name="faq_label">FAQ</string>
     <string name="built_with_material_components">Material Components로 제작되었습니다.</string>
-    <string name="tap_to_join_network">(네트워크에 연결하려면 탭)</string>
     <string name="wifi_network_and_password">네트워크: %1$s\n비밀번호: %2$s</string>
     <string name="join_network">네트워크 연결</string>
-    <string name="scavenger_hunt_description">I/O Android Things 보물찾기에 참여해 보세요.</string>
-    <string name="scavenger_hunt_description2">I/O Android Things 보물찾기에 참여해 보세요.</string>
     <string name="assistant_app_description">"Hey Google, Google I/O 2019에 대해 얘기하자."라고 말하기만 하면 됩니다.</string>
     <string name="assistant_app_description2">"Hey Google, Google I/O 2019에 대해 얘기하자."라고 말하기만 하면 됩니다.</string>
     <string name="speaker_link_website">웹사이트</string>
@@ -300,10 +261,6 @@
     <string name="speaker_events_subhead">이벤트</string>
     <string name="no_network_connection">인터넷에 연결되지 않았습니다.</string>
     <string name="navigate_up">위로 이동</string>
-    <string name="error_fetch_ar_module">AR 모듈을 다운로드하는 중에 오류가 발생했습니다. 네트워크에 연결되어 있나요?</string>
-    <string name="downloading_ar_module">AR 모듈 다운로드 중</string>
-    <string name="download_ar_dialog_title">AR 모듈 다운로드</string>
-    <string name="download_ar_dialog_message">Play 스토어에서 증강 현실 모듈을 다운로드해야 시작할 수 있습니다. 현재 기기가 요금이 부과되는 네트워크에 연결되어 있으므로 데이터 전송 요금이 청구될 수 있습니다.\n\n계속 진행하시겠어요?\n\nAR 모듈은 현장 참석자용입니다.</string>
     <string name="no_network_description">I/O 둘러보기 기능을 이용하려면 다음과 같이 설정하세요.\n\n - 비행기 모드 사용 중지\n\n - 모바일 데이터 또는 Wi-Fi 사용 설정\n\n - 현재 위치의 통신 상태 확인</string>
     <string name="phone_does_not_support_arcore_title">ARCore를 지원하지 않는 휴대전화</string>
     <string name="phone_does_not_support_arcore_message">다른 기기를 사용하거나 친구의 기기를 빌려 보세요.</string>

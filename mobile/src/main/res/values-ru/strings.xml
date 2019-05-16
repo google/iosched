@@ -23,9 +23,7 @@
     <string name="filters">Фильтры</string>
     <string name="category_heading_tracks">Темы</string>
     <string name="category_heading_types">Типы</string>
-    <string name="clear_all">Удалить все</string>
     <string name="reset">Сбросить</string>
-    <string name="pinned_events_filter_description">Будут показываться только сохраненные события, а также мероприятия, на которые вы забронировали место</string>
     <plurals name="filter_event_count">
         <item quantity="one">%1$d мероприятие</item>
         <item quantity="few">%1$d мероприятия</item>
@@ -36,9 +34,7 @@
     <string name="starred_and_reserved_short">Мои мероприятия</string>
     <string name="search_schedule_hint">Поиск по расписанию</string>
     <string name="search_schedule_no_results">Ничего не найдено</string>
-    <string name="search_schedule_error">Во время поиска произошла ошибка.</string>
     <string name="agenda">Расписание</string>
-    <string name="overview">Обзор</string>
     <string name="event_starred">Мероприятие добавлено в ваше расписание</string>
     <string name="event_unstarred">Мероприятие удалено из вашего расписания.</string>
     <string name="event_star_error">Не удалось добавить мероприятие в расписание.</string>
@@ -64,11 +60,8 @@
     <string name="reservation_disabled">Бронирование недоступно</string>
     <string name="reservation_pending">Запрос на бронирование рассматривается</string>
     <string name="schedule_hint_title">Составьте свое расписание</string>
-    <string name="schedule_hint_view_only_your_events">Показать только сохраненные мероприятия</string>
     <string name="schedule_hint_star_event">Добавить в расписание</string>
     <string name="schedule_hint_reserve_session_seat">Забронировать место на сессии</string>
-    <string name="schedule_hint_star_event_content_description">Значок для добавления мероприятия в расписание</string>
-    <string name="schedule_hint_reserve_session_seat_content_description">Значок для бронирования места на сессии</string>
     <string name="rate_session">Оценить сессию</string>
     <string name="menu_item_session_location">Место проведения сессии</string>
     <string name="menu_item_session_star">Добавить сессию в расписание</string>
@@ -95,10 +88,7 @@
     <string name="a11y_clear_tag_filters">Удалить фильтры</string>
     <string name="a11y_filter_applied">Применен фильтр: %1s</string>
     <string name="a11y_filter_not_applied">Фильтр "%1s" не применен</string>
-    <string name="a11y_pinned">Только сохраненные мероприятия</string>
-    <string name="a11y_revert_pinned">Показать все сессии</string>
     <string name="a11y_reservation_available">Забронировать место на мероприятии</string>
-    <string name="a11y_reservation_working">Запрос на бронирование обрабатывается…</string>
     <string name="a11y_reservation_reserved">Место забронировано</string>
     <string name="a11y_reservation_disabled">Бронирование недоступно</string>
     <string name="a11y_reservation_wait_list_available">Отправить запрос на добавление в список ожидания</string>
@@ -111,19 +101,14 @@
     <string name="a11y_select_map_mode">Задать параметры карты</string>
     <string name="a11y_search_schedule">Поиск расписания</string>
     <string name="welcome">Добро пожаловать!</string>
-    <string name="sign_in_hint">Войти</string>
     <string name="a11y_signed_in_content_description">Вы вошли в аккаунт %s.</string>
     <string name="a11y_signed_out_content_description">Нажмите, чтобы войти.</string>
-    <string name="dialog_sign_in_title">Войдите в аккаунт</string>
     <string name="dialog_sign_in_content">Тогда вы сможете добавлять мероприятия в свое расписание, бронировать места и оценивать сессии. Сведения обо всех действиях, которые вы выполните в аккаунте, будут доступны как в приложении, так и на сайте.</string>
-    <string name="not_now">Не сейчас</string>
     <string name="sign_in">Войти</string>
     <string name="firebase_auth_no_network_connection">Нет подключения к Интернету.</string>
     <string name="firebase_auth_unknown_error">Неизвестная ошибка.</string>
-    <string name="dialog_sign_out_title">Выйти из аккаунта?</string>
     <string name="dialog_sign_out_content">Данные о ваших оценках, добавленных в расписание мероприятиях и забронированных местах будут сохранены.</string>
     <string name="sign_out">Выйти</string>
-    <string name="profile">Профиль</string>
     <string name="manage_google_account">Настроить аккаунт Google</string>
     <string name="remove_reservation_title">Отменить бронирование?</string>
     <string name="remove_reservation_content">Если вы сделаете это, занять место на сессии "%1$s" можно будет только в порядке живой очереди.</string>
@@ -136,8 +121,6 @@
     <string name="notifications_preference_dialog_content">Если вы включите уведомления, мы будем сообщать вам о начале сессий и появлении записей с них, а также о развлекательных мероприятиях и других важных новостях фестиваля. Изменить параметры уведомлений можно будет в любое время в разделе "Информация" в настройках.</string>
     <string name="no">Нет</string>
     <string name="yes">Да</string>
-    <string name="feed_item_pinned_icon">Закрепленная запись</string>
-    <string name="feed_item_emergency_icon">Важное сообщение</string>
     <string name="feed_not_available">Новостей нет.</string>
     <string name="feed_loading_error">Не удалось загрузить фид. Повторите попытку позже.</string>
     <string name="feed_announcement_title">Новости</string>
@@ -182,7 +165,6 @@
     <string name="onboarding_get_started">Начать</string>
     <string name="onboarding_welcome_to_google_i_o">Добро пожаловать на фестиваль Google I/O</string>
     <string name="onboarding_date_location">7–9 мая 2019 г.,\nМаунтин-Вью, Калифорния</string>
-    <string name="onboarding_join_online">Присоединяйтесь к нам через Интернет: мы будем транслировать ключевые моменты выступлений и большинство сессий.</string>
     <string name="onboarding_label_days">д.</string>
     <string name="onboarding_label_hours">ч.</string>
     <string name="onboarding_label_mins">м.</string>
@@ -191,7 +173,6 @@
     <string name="onboarding_welcome_google_io_during">Google I/O</string>
     <string name="onboarding_welcome_google_io_post">Посмотрите резюме Google I/O 2019 и узнайте, что говорят о конференции в социальных сетях, с помощью хештега #io19</string>
     <string name="onboarding_signin">Войдите в аккаунт, чтобы получать уведомления о фестивале и бронировать места на мероприятия.</string>
-    <string name="onboarding_explore_ar">Посмотрите резюме Google I/O 2019 и узнайте, что говорят о конференции в социальных сетях, с помощью хештега #io19</string>
     <plurals name="session_starting_in">
         <item quantity="one">Сессия начнется через %1$s минуту</item>
         <item quantity="few">Сессия начнется через %1$s минуты</item>
@@ -200,7 +181,6 @@
     </plurals>
     <string name="expanded">Развернуто</string>
     <string name="collapsed">Свернуто</string>
-    <string name="info_title">Информация</string>
     <string name="event_title">Мероприятие</string>
     <string name="travel_title">Полезные сведения</string>
     <string name="faq_title">Часто задаваемые вопросы</string>
@@ -259,13 +239,7 @@
     <string name="faq_sessions_be_live_streamed_question_description">У вас нет возможности посетить фестиваль лично? Ничего страшного. Присоединяйтесь к нам через Интернет. Две презентации и все сессии можно будет посмотреть в прямом эфире на сайте I/O. Сессии также будут доступны в записи на канале YouTube &lt;a href="https://www.youtube.com/user/GoogleDevelopers"&gt;Google Developers&lt;/a&gt;.</string>
     <string name="faq_want_to_celebrate_i_o_description">Да! Каждый год разработчики со всего мира организовывают &lt;a href="https://events.google.com/io/extended"&gt;мероприятия Google I/O Extended&lt;/a&gt;, в рамках которых они проводят собственные сессии и смотрят прямые трансляции фестиваля. &lt;br&gt; Хотите стать ведущим такого события? &lt;br&gt;&lt;br&gt;Ознакомьтесь с &lt;a href="https://docs.google.com/presentation/d/e/2PACX–1vReWDtj-yASOho5q7XC6lYY8af9wRa13-81mPaoSRodiRoCw4MKJnQExQ8GxyNyCQiPZpBprznPG4ex/pub?slide=id.g62811f3b0_18"&gt;этими материалами&lt;/a&gt;. Там вы найдете советы о том, что нужно сделать, чтобы провести успешное мероприятие.&lt;br&gt;&lt;br&gt; Далее &lt;a href="https://events.google.com/io/extended/form"&gt;зарегистрируйте&lt;/a&gt; свое событие на сайте конференции.&lt;br&gt;&lt;br&gt; Кроме того, продвигайте мероприятие в социальных сетях, используя официальный хештэг фестиваля #io19extended специально для Google I/O Extended.&lt;br&gt;&lt;br&gt; Примечание. Организаторы I/O Extended могут попросить компанию Google удалить их личные данные или сведения о мероприятии после его завершения. Для этого нужно написать нам на адрес io19@google.com.&lt;br&gt; Хотите просто поучаствовать в таком мероприятии? Откройте &lt;a href="https://events.google.com/io/extended"&gt;эту карту&lt;/a&gt;, найдите событие рядом с вами и зарегистрируйтесь.&lt;br&gt; Остались вопросы о программе I/O Extended? Напишите нам на адрес io19extended\-external@google.com.</string>
     <string name="view_sessions_text">Показать сессии</string>
-    <string name="view_codelabs_text">Показать занятия в формате Codelab</string>
-    <string name="view_events_text">Показать все мероприятия</string>
-    <string name="view_map_text">Показать карту</string>
-    <string name="wifi_network_label">Название сети Wi-Fi:</string>
-    <string name="wifi_password_label">Пароль:</string>
     <string name="wifi_install_success">Сеть Wi-Fi сохранена.</string>
-    <string name="wifi_install_error_message">Не удалось сохранить сеть Wi-Fi.</string>
     <string name="wifi_install_clipboard_message">Не удалось сохранить сеть Wi-Fi.\nПароль от сети Wi-Fi скопирован в буфер обмена.</string>
     <string name="event_sessions_title">Сеансы</string>
     <string name="event_sandbox_title">Тестирования</string>
@@ -282,27 +256,20 @@
     <string name="wifi_header">Сведения о Wi-Fi</string>
     <string name="related_apps_header">Похожие приложения</string>
     <string name="event_types_header">Типы мероприятий</string>
-    <string name="general_header">Общая информация</string>
-    <string name="agreements_header">Соглашения</string>
     <string name="settings_time_zone_label">Тихоокеанский часовой пояс (UTC-8)</string>
     <string name="settings_enable_notifications">Включить уведомления</string>
     <string name="settings_send_anonymous_usage_statistics">Отправлять анонимную статистику использования</string>
     <string name="settings_tos">Условия использования</string>
     <string name="settings_privacy_policy">Политика конфиденциальности</string>
     <string name="settings_oss_licenses">Посмотреть лицензии ПО с открытым исходным кодом</string>
-    <string name="settings_version_label">Версия %1$s, сборка %2$s</string>
     <string name="settings_theme_title">Выберите тему</string>
     <string name="settings_theme_system">Системное значение по умолчанию</string>
     <string name="settings_theme_light">Светлый режим</string>
     <string name="settings_theme_dark">Ночной режим</string>
     <string name="settings_theme_battery">Учитывать режим энергосбережения</string>
-    <string name="faq_label">Часто задаваемые вопросы</string>
     <string name="built_with_material_components">В приложении использованы элементы Material Design.</string>
-    <string name="tap_to_join_network">(нажмите, чтобы подключиться)</string>
     <string name="wifi_network_and_password">Название сети Wi-Fi: %1$s\nПароль: %2$s</string>
     <string name="join_network">Присоединиться к сети</string>
-    <string name="scavenger_hunt_description">Примите участие в квесте и узнайте, что можно создать с помощью Android Things.</string>
-    <string name="scavenger_hunt_description2">Примите участие в квесте и узнайте, что можно создать с помощью Android Things.</string>
     <string name="assistant_app_description">Просто скажите: "Окей, Google, открой Google I/O 19".</string>
     <string name="assistant_app_description2">Просто скажите: "Окей, Google, открой Google I/O 19".</string>
     <string name="speaker_link_website">Сайт</string>
@@ -312,10 +279,6 @@
     <string name="speaker_events_subhead">Мероприятия</string>
     <string name="no_network_connection">Нет подключения к Интернету.</string>
     <string name="navigate_up">Перейти вверх</string>
-    <string name="error_fetch_ar_module">Не удалось скачать модуль дополненной реальности. Проверьте подключение к Сети.</string>
-    <string name="downloading_ar_module">Скачивание модуля дополненной реальности…</string>
-    <string name="download_ar_dialog_title">Скачать модуль дополненной реальности</string>
-    <string name="download_ar_dialog_message">Чтобы начать, необходимо скачать модуль дополненной реальности из Play Маркета. Ваше устройство подключено к сети с ограниченным трафиком, поэтому за передачу данных может взиматься плата.\n\nСкачать модуль?\n\nОбратите внимание, что возможности дополненной реальности доступны только для посетителей конференции.</string>
     <string name="no_network_description">Чтобы запустить экскурсию по фестивалю в дополненной реальности, попробуйте сделать следующее:\n\n - Отключите режим полета.\n\n - Включите передачу мобильных данных или настройте соединение с Wi-Fi.\n\n - Убедитесь, что уровень сигнала достаточный.</string>
     <string name="phone_does_not_support_arcore_title">На вашем телефоне приложение ARCore не поддерживается</string>
     <string name="phone_does_not_support_arcore_message">Попробуйте использовать другое устройство.</string>
