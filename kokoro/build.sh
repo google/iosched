@@ -41,11 +41,29 @@ gcloud auth activate-service-account firebasetestlabforkokoro@events-dev-62d2e.i
 
 ./gradlew mobile:assembleAndroidTest
 ./gradlew mobile:assembleStaging
-gcloud firebase test android run \
-    --type instrumentation \
-    --app  mobile/build/outputs/apk/staging/mobile-staging.apk \
-    --test mobile/build/outputs/apk/androidTest/staging/mobile-staging-androidTest.apk \
-    --device-ids blueline \
-    --os-version-ids 28 \
-    --locales en \
-    --timeout 120
+
+MAX_RETRY=3
+run_firebase_test_lab() {
+  ## Retry can be done by passing the --num-flaky-test-attempts to gcloud, but gcloud SDK in the
+  ## kokoro server doesn't support it yet.
+
+  set +e # To not exit on an error to retry flaky tests
+  local counter=0
+  local result=1
+  while [ $result != 0 -a $counter -lt $MAX_RETRY ]; do
+    gcloud firebase test android run \
+        --type instrumentation \
+        --app  mobile/build/outputs/apk/staging/mobile-staging.apk \
+        --test mobile/build/outputs/apk/androidTest/staging/mobile-staging-androidTest.apk \
+        --device-ids hammerhead,walleye,blueline \
+        --os-version-ids 21,26,28,Q-beta-3 \
+        --locales en \
+        --timeout 60
+    result=$? ;
+    let counter=counter+1
+  done
+  return $result
+}
+
+run_firebase_test_lab
+exit $?
