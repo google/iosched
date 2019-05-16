@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.domain.ar
+package com.google.samples.apps.iosched.ui.ar
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,13 +23,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.samples.apps.iosched.R
 
-class NoNetworkConnectionFragment : Fragment() {
+class ArCoreNotSupportedFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_no_network, container, false)
+        return inflater.inflate(R.layout.fragment_arcore_not_supported, container, false)
     }
 }
