@@ -209,13 +209,13 @@
 
     <fragment
         android:id="@id/navigation_no_network_ar"
-        android:name="com.google.samples.apps.iosched.domain.ar.NoNetworkConnectionFragment"
+        android:name="com.google.samples.apps.iosched.ui.ar.NoNetworkConnectionFragment"
         android:label="@string/no_network_connection"
         tools:layout="@layout/fragment_no_network" />
 
     <fragment
         android:id="@id/navigation_phone_does_not_support_arcore"
-        android:name="com.google.samples.apps.iosched.domain.ar.ArCoreNotSupportedFragment"
+        android:name="com.google.samples.apps.iosched.ui.ar.ArCoreNotSupportedFragment"
         android:label="@string/phone_does_not_support_arcore_title"
         tools:layout="@layout/fragment_arcore_not_supported" />
 </navigation>
