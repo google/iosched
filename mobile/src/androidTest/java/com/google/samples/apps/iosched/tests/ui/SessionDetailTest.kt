@@ -100,7 +100,7 @@ class SessionDetailTest {
             .perform(RecyclerViewActions.scrollToPosition<SessionDetailViewHolder>(4))
 
         // Check that the title is correct
-        onView(allOf(withId(R.id.title), withText("First session day 3")))
+        onView(allOf(withId(R.id.session_detail_title), withText("Fake session on day 1")))
             .check(matches(isDisplayed()))
     }
 }
