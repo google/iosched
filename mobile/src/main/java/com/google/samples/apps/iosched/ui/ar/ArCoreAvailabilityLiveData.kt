@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.domain.ar
+package com.google.samples.apps.iosched.ui.ar
 
 import android.content.Context
 import android.os.Handler
