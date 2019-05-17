@@ -60,7 +60,7 @@ class InfoTest {
     fun info_basicViewsDisplayed() {
         // Title
         onView(allOf(instanceOf(TextView::class.java), withParent(ViewMatchers.withId(id.toolbar))))
-            .check(matches(withText(R.string.info_title)))
+            .check(matches(withText(R.string.title_info)))
         onView(withText(resources.getString(R.string.event_types_header)))
             .check(matches(isDisplayed()))
         // Travel tab
