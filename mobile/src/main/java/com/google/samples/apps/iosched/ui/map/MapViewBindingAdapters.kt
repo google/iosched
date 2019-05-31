@@ -26,7 +26,7 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.TileOverlayOptions
 import com.google.samples.apps.iosched.shared.result.Event
-import com.google.samples.apps.iosched.util.getFloat
+import com.google.samples.apps.iosched.util.getFloatUsingCompat
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 
 @BindingAdapter("mapStyle")
@@ -66,8 +66,8 @@ fun mapCenter(mapView: MapView, event: Event<CameraUpdate>?) {
  */
 @BindingAdapter("mapMinZoom", "mapMaxZoom", requireAll = true)
 fun mapZoomLevels(mapView: MapView, @DimenRes minZoomResId: Int, @DimenRes maxZoomResId: Int) {
-    val minZoom = mapView.resources.getFloat(minZoomResId)
-    val maxZoom = mapView.resources.getFloat(maxZoomResId)
+    val minZoom = mapView.resources.getFloatUsingCompat(minZoomResId)
+    val maxZoom = mapView.resources.getFloatUsingCompat(maxZoomResId)
     mapView.getMapAsync {
         it.setMinZoomPreference(minZoom)
         it.setMaxZoomPreference(maxZoom)

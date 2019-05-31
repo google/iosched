@@ -105,10 +105,10 @@ inline fun <reified VM : ViewModel> Fragment.parentViewModelProvider(
 // region Parcelables, Bundles
 
 /** Write a boolean to a Parcel. */
-fun Parcel.writeBoolean(value: Boolean) = ParcelCompat.writeBoolean(this, value)
+fun Parcel.writeBooleanUsingCompat(value: Boolean) = ParcelCompat.writeBoolean(this, value)
 
 /** Read a boolean from a Parcel. */
-fun Parcel.readBoolean() = ParcelCompat.readBoolean(this)
+fun Parcel.readBooleanUsingCompat() = ParcelCompat.readBoolean(this)
 
 // endregion
 // region LiveData

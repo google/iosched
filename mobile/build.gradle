@@ -129,11 +129,14 @@ dependencies {
     testImplementation project(':androidTest-shared')
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
+    implementation "androidx.core:core-ktx:$rootProject.coreVersion"
+
     // UI
     implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
     implementation "androidx.cardview:cardview:$rootProject.cardviewVersion"
     implementation "androidx.browser:browser:$rootProject.browserVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
+    implementation "androidx.drawerlayout:drawerlayout:$rootProject.drawerLayoutVersion"
     implementation "com.google.android.material:material:$rootProject.materialVersion"
     implementation "com.google.android:flexbox:$rootProject.flexboxVersion"
     implementation "com.airbnb.android:lottie:$rootProject.lottieVersion"

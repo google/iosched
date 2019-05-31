@@ -35,8 +35,8 @@ import androidx.core.view.ViewCompat
 import androidx.customview.view.AbsSavedState
 import androidx.customview.widget.ViewDragHelper
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.util.readBoolean
-import com.google.samples.apps.iosched.shared.util.writeBoolean
+import com.google.samples.apps.iosched.shared.util.readBooleanUsingCompat
+import com.google.samples.apps.iosched.shared.util.writeBooleanUsingCompat
 import java.lang.ref.WeakReference
 import kotlin.math.absoluteValue
 
@@ -836,10 +836,10 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
         constructor(source: Parcel, loader: ClassLoader?) : super(source, loader) {
             state = source.readInt()
             peekHeight = source.readInt()
-            isFitToContents = source.readBoolean()
-            isHideable = source.readBoolean()
-            skipCollapsed = source.readBoolean()
-            isDraggable = source.readBoolean()
+            isFitToContents = source.readBooleanUsingCompat()
+            isHideable = source.readBooleanUsingCompat()
+            skipCollapsed = source.readBooleanUsingCompat()
+            isDraggable = source.readBooleanUsingCompat()
         }
 
         constructor(
@@ -864,10 +864,10 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
             dest.apply {
                 writeInt(state)
                 writeInt(peekHeight)
-                writeBoolean(isFitToContents)
-                writeBoolean(isHideable)
-                writeBoolean(skipCollapsed)
-                writeBoolean(isDraggable)
+                writeBooleanUsingCompat(isFitToContents)
+                writeBooleanUsingCompat(isHideable)
+                writeBooleanUsingCompat(skipCollapsed)
+                writeBooleanUsingCompat(isDraggable)
             }
         }
 
