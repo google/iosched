@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.util
 
 import android.annotation.SuppressLint
 import android.content.res.Resources
-import android.graphics.Rect
 import android.graphics.Typeface
 import android.net.wifi.WifiConfiguration
 import android.os.Build
@@ -30,15 +29,18 @@ import android.text.Spanned
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.text.style.StyleSpan
-import android.util.TypedValue
 import android.view.View
 import android.view.View.OnAttachStateChangeListener
-import android.view.WindowInsets
 import androidx.annotation.DimenRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.BuildCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ViewDataBinding
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.google.samples.apps.iosched.model.Theme
@@ -105,10 +107,8 @@ fun lerp(a: Float, b: Float, t: Float): Float {
 /**
  * Alternative to Resources.getDimension() for values that are TYPE_FLOAT.
  */
-fun Resources.getFloat(@DimenRes resId: Int): Float {
-    val outValue = TypedValue()
-    getValue(resId, outValue, true)
-    return outValue.float
+fun Resources.getFloatUsingCompat(@DimenRes resId: Int): Float {
+    return ResourcesCompat.getFloat(this, resId)
 }
 
 /**
@@ -246,10 +246,10 @@ fun <A, B, C, Result> LiveData<A>.combine(
     return result
 }
 
-fun View.doOnApplyWindowInsets(f: (View, WindowInsets, ViewPaddingState) -> Unit) {
+fun View.doOnApplyWindowInsets(f: (View, WindowInsetsCompat, ViewPaddingState) -> Unit) {
     // Create a snapshot of the view's padding state
     val paddingState = createStateForView(this)
-    setOnApplyWindowInsetsListener { v, insets ->
+    ViewCompat.setOnApplyWindowInsetsListener(this) { v, insets ->
         f(v, insets, paddingState)
         insets
     }
@@ -287,8 +287,19 @@ data class ViewPaddingState(
     val end: Int
 )
 
-fun WindowInsets.getSystemGestureInsetsAsRect(): Rect {
-    return WindowInsetsUtils.getSystemGestureInsets(this)
+@SuppressLint("NewApi") // Lint does not understand isAtLeastQ currently
+fun DrawerLayout.shouldCloseDrawerFromBackPress(): Boolean {
+    if (BuildCompat.isAtLeastQ()) {
+        // If we're running on Q, and this call to closeDrawers is from a key event
+        // (for back handling), we should only honor it IF the device is not currently
+        // in gesture mode. We approximate that by checking the system gesture insets
+        return rootWindowInsets?.let {
+            val systemGestureInsets = it.systemGestureInsets
+            return systemGestureInsets.left == 0 && systemGestureInsets.right == 0
+        } ?: false
+    }
+    // On P and earlier, always close the drawer
+    return true
 }
 
 /** Compatibility removeIf since it was added in API 24 */

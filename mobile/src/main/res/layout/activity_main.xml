@@ -23,7 +23,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.samples.apps.iosched.widget.IoschedDrawerLayout
+    <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -68,6 +68,6 @@
             app:insetForeground="@color/transparent"
             app:menu="@menu/navigation" />
 
-    </com.google.samples.apps.iosched.widget.IoschedDrawerLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
 
 </com.google.samples.apps.iosched.widget.NavigationBarContentFrameLayout>

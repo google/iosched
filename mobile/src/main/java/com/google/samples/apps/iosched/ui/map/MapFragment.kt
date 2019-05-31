@@ -47,7 +47,6 @@ import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
-import com.google.samples.apps.iosched.util.getSystemGestureInsetsAsRect
 import com.google.samples.apps.iosched.util.slideOffsetToAlpha
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
@@ -231,8 +230,8 @@ class MapFragment : MainNavigationFragment() {
 
             // The peek height should use the bottom system gesture inset since it is a scrolling
             // widget
-            val tappableInsets = insets.getSystemGestureInsetsAsRect()
-            bottomSheetBehavior.peekHeight = tappableInsets.bottom + originalPeekHeight
+            val gestureInsets = insets.systemGestureInsets
+            bottomSheetBehavior.peekHeight = gestureInsets.bottom + originalPeekHeight
         }
 
         // Make the header clickable.

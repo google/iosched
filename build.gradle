@@ -26,7 +26,7 @@ buildscript {
         versionCodeMobile = versionCodeBase + 3
 
         // SDK and tools
-        compileSdkVersion = 28
+        compileSdkVersion = 'android-Q'
         minSdkVersion = 21
         minTvSdkVersion = 21 // TV was introduced with Lollipop, min SDK should be 21.
         targetSdkVersion = 28
@@ -39,9 +39,11 @@ buildscript {
         arcoreVersion = '1.7.0'
         browserVersion = '1.0.0'
         constraintLayoutVersion = '1.1.3'
+        coreVersion = '1.2.0-alpha01'
         crashlyticsVersion = '2.9.8'
         dagger = "2.16"
         dataBindingCompilerVersion = '3.0.1'
+        drawerLayoutVersion = '1.1.0-alpha01'
         espressoVersion = '3.1.1'
         fabricVersion = '1.25.4'
         firebaseAuthVersion = '16.1.0'

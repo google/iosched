@@ -52,9 +52,9 @@ import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
 import com.google.samples.apps.iosched.util.HeightTopWindowInsetsListener
 import com.google.samples.apps.iosched.util.NoopWindowInsetsListener
-import com.google.samples.apps.iosched.util.ViewGestureUtils.shouldCloseDrawerFromBackPress
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.navigationItemBackground
+import com.google.samples.apps.iosched.util.shouldCloseDrawerFromBackPress
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
 import com.google.samples.apps.iosched.util.updateForTheme
 import com.google.samples.apps.iosched.widget.HashtagIoDecoration
@@ -295,7 +295,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
          * When gesture nav is enabled (Q+), we want back to exit when the drawer is open.
          * When button navigation is enabled (on Q or pre-Q) we want to close the drawer on back.
          */
-        if (drawer.isDrawerOpen(navigation) && shouldCloseDrawerFromBackPress(drawer)) {
+        if (drawer.isDrawerOpen(navigation) && drawer.shouldCloseDrawerFromBackPress()) {
             closeDrawer()
         } else {
             super.onBackPressed()

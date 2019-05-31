@@ -43,7 +43,6 @@ import com.google.samples.apps.iosched.shared.util.parentViewModelProvider
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
-import com.google.samples.apps.iosched.util.getSystemGestureInsetsAsRect
 import com.google.samples.apps.iosched.util.lerp
 import com.google.samples.apps.iosched.util.slideOffsetToAlpha
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
@@ -143,9 +142,9 @@ class ScheduleFilterFragment : DaggerFragment() {
         val peekHeight = behavior.peekHeight
         val marginBottom = binding.root.marginBottom
         binding.root.doOnApplyWindowInsets { v, insets, _ ->
-            val tappableInsets = insets.getSystemGestureInsetsAsRect()
+            val gestureInsets = insets.systemGestureInsets
             // Update the peek height so that it is above the navigation bar
-            behavior.peekHeight = tappableInsets.bottom + peekHeight
+            behavior.peekHeight = gestureInsets.bottom + peekHeight
 
             v.updateLayoutParams<MarginLayoutParams> {
                 bottomMargin = marginBottom + insets.systemWindowInsetTop
