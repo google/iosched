@@ -26,10 +26,10 @@ buildscript {
         versionCodeMobile = versionCodeBase + 3
 
         // SDK and tools
-        compileSdkVersion = 'android-Q'
+        compileSdkVersion = 29
         minSdkVersion = 21
         minTvSdkVersion = 21 // TV was introduced with Lollipop, min SDK should be 21.
-        targetSdkVersion = 28
+        targetSdkVersion = 29
 
         // App dependencies
         androidGradlePluginVersion = '3.3.2'
