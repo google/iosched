@@ -151,4 +151,6 @@ object TimeUtils {
     fun getKeynoteStartTime(): ZonedDateTime {
         return ConferenceDays.first().start.plusHours(3L)
     }
+
+    fun getConferenceEndTime() = ConferenceDays.last().end
 }

@@ -47,7 +47,9 @@ import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
-import com.google.samples.apps.iosched.util.ConferenceStartedLiveData
+import com.google.samples.apps.iosched.util.ConferenceStateLiveData
+import com.google.samples.apps.iosched.util.ConferenceState.ENDED
+import com.google.samples.apps.iosched.util.ConferenceState.UPCOMING
 import com.google.samples.apps.iosched.util.combine
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
@@ -63,7 +65,7 @@ class FeedViewModel @Inject constructor(
     loadAnnouncementsUseCase: LoadAnnouncementsUseCase,
     private val loadFilteredUserSessionsUseCase: LoadFilteredUserSessionsUseCase,
     getTimeZoneUseCase: GetTimeZoneUseCase,
-    conferenceStartedLiveData: ConferenceStartedLiveData,
+    conferenceStateLiveData: ConferenceStateLiveData,
     private val timeProvider: TimeProvider,
     private val analyticsHelper: AnalyticsHelper,
     private val signInViewModelDelegate: SignInViewModelDelegate,
@@ -82,6 +84,10 @@ class FeedViewModel @Inject constructor(
         // because our LiveData.combine extension functions interpret null values to mean the
         // LiveData has not returned a result, but null for the current Moment is valid.
         private object NoHeader
+
+        // Indicates there is no sessions related display on the home screen as the conference is
+        // over.
+        private object NoSessionsContainer
     }
 
     val errorMessage: LiveData<Event<String>>
@@ -129,12 +135,22 @@ class FeedViewModel @Inject constructor(
             refreshSessions()
         }
 
-        val sessionContainerLiveData = signInViewModelDelegate.currentUserInfo.combine(
-            loadSessionsResult,
-            timeZoneId
-        ) { userInfo, sessions, timeZone ->
-            createFeedSessionsContainer(userInfo, sessions, timeZone)
-        }
+        val sessionContainerLiveData =
+            signInViewModelDelegate.currentUserInfo
+                .combine(
+                    loadSessionsResult,
+                    timeZoneId
+                ) { userInfo, sessions, timeZone ->
+                    createFeedSessionsContainer(userInfo, sessions, timeZone)
+                }
+                // Further combine with conferenceState and decide if the
+                // feedSessionsContainer should be shown or not.
+                .combine(conferenceStateLiveData) { sessionsContainer, conferenceState ->
+                    if (conferenceState == ENDED)
+                        NoSessionsContainer
+                    else
+                        sessionsContainer
+                }
 
         loadAnnouncementsUseCase(timeProvider.now(), loadAnnouncementsResult)
         val announcements: LiveData<List<Any>> = loadAnnouncementsResult.map {
@@ -146,15 +162,15 @@ class FeedViewModel @Inject constructor(
             }
         }
 
-        currentMomentResult.addSource(conferenceStartedLiveData) {
+        currentMomentResult.addSource(conferenceStateLiveData) {
             // This will change to the first moment when the Keynote starts
             loadCurrentMomentUseCase(timeProvider.now(), currentMomentResult)
         }
 
-        val currentFeedHeader = conferenceStartedLiveData.combine(
+        val currentFeedHeader = conferenceStateLiveData.combine(
             currentMomentResult
         ) { conferenceStarted, momentResult ->
-            if (!conferenceStarted) {
+            if (conferenceStarted == UPCOMING) {
                 CountdownItem
             } else {
                 // Use case can return null even on success, so replace nulls with a sentinel
@@ -171,8 +187,10 @@ class FeedViewModel @Inject constructor(
             if (feedHeader != NoHeader) {
                 feedItems.add(feedHeader)
             }
-            feedItems.plus(sessionContainer)
-                .plus(SectionHeader(R.string.feed_announcement_title))
+            if (sessionContainer != NoSessionsContainer) {
+                feedItems.add(sessionContainer)
+            }
+            feedItems.plus(SectionHeader(R.string.feed_announcement_title))
                 .plus(announcementItems)
         }
 

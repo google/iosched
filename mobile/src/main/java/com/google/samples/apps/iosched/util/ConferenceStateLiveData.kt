@@ -21,13 +21,18 @@ import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.di.MainThreadHandler
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.util.ConferenceState.ENDED
+import com.google.samples.apps.iosched.util.ConferenceState.STARTED
+import com.google.samples.apps.iosched.util.ConferenceState.UPCOMING
 import org.threeten.bp.Duration
 import javax.inject.Inject
 
-class ConferenceStartedLiveData @Inject constructor(
+enum class ConferenceState { UPCOMING, STARTED, ENDED }
+
+class ConferenceStateLiveData @Inject constructor(
     @MainThreadHandler private val handler: Handler,
     private val timeProvider: TimeProvider
-) : MutableLiveData<Boolean>() {
+) : MutableLiveData<ConferenceState>() {
 
     private val updateRunnable = Runnable { checkTime() }
 
@@ -44,11 +49,18 @@ class ConferenceStartedLiveData @Inject constructor(
     private fun checkTime() {
         val timeUntilStart = Duration.between(timeProvider.now(), TimeUtils.getKeynoteStartTime())
         if (timeUntilStart.isNegative) {
-            // Conference started
-            postValue(true)
+            val timeUntilEnd =
+                Duration.between(timeProvider.now(), TimeUtils.getConferenceEndTime())
+            if (timeUntilEnd.isNegative) {
+                postValue(ENDED)
+            } else {
+                postValue(STARTED)
+                // Check again after the duration, to mark ENDED in real-time
+                handler.postDelayed(updateRunnable, timeUntilEnd.toMillis())
+            }
         } else {
-            postValue(false)
-            // Check again after the duration
+            postValue(UPCOMING)
+            // Check again after the duration, to mark STARTED in real-time
             handler.postDelayed(updateRunnable, timeUntilStart.toMillis())
         }
     }
