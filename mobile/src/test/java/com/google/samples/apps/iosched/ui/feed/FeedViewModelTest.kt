@@ -41,7 +41,7 @@ import com.google.samples.apps.iosched.ui.SectionHeader
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
-import com.google.samples.apps.iosched.util.ConferenceStartedLiveData
+import com.google.samples.apps.iosched.util.ConferenceStateLiveData
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.instanceOf
@@ -134,8 +134,8 @@ class FeedViewModelTest {
                 )
             ),
         getTimeZoneUseCase: GetTimeZoneUseCase = GetTimeZoneUseCase(FakePreferenceStorage()),
-        conferenceStartedLiveData: ConferenceStartedLiveData =
-            ConferenceStartedLiveData(mockHandler, defaultTimeProvider),
+        conferenceStateLiveData: ConferenceStateLiveData =
+            ConferenceStateLiveData(mockHandler, defaultTimeProvider),
         timeProvider: TimeProvider = defaultTimeProvider,
         signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate().apply {
             loadUser("123")
@@ -147,7 +147,7 @@ class FeedViewModelTest {
             loadAnnouncementsUseCase = loadAnnouncementUseCase,
             loadFilteredUserSessionsUseCase = loadFilteredSessionsUseCase,
             getTimeZoneUseCase = getTimeZoneUseCase,
-            conferenceStartedLiveData = conferenceStartedLiveData,
+            conferenceStateLiveData = conferenceStateLiveData,
             timeProvider = timeProvider,
             analyticsHelper = FakeAnalyticsHelper(),
             signInViewModelDelegate = signInViewModelDelegate,
