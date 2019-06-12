@@ -20,8 +20,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
-import android.os.Handler
-import android.os.Looper
 import com.google.samples.apps.iosched.MainApplication
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
@@ -31,6 +29,8 @@ import com.google.samples.apps.iosched.shared.data.agenda.DefaultAgendaRepositor
 import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.db.AppDatabase
 import com.google.samples.apps.iosched.shared.di.MainThreadHandler
+import com.google.samples.apps.iosched.shared.domain.internal.IOSchedHandler
+import com.google.samples.apps.iosched.shared.domain.internal.IOSchedMainHandler
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.FirebaseAnalyticsHelper
 import dagger.Module
@@ -73,7 +73,7 @@ class AppModule {
     @Singleton
     @Provides
     @MainThreadHandler
-    fun providesMainThreadHandler(): Handler = Handler(Looper.getMainLooper())
+    fun providesMainThreadHandler(): IOSchedHandler = IOSchedMainHandler()
 
     @Singleton
     @Provides

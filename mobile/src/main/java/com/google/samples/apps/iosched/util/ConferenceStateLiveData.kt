@@ -16,9 +16,9 @@
 
 package com.google.samples.apps.iosched.util
 
-import android.os.Handler
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.di.MainThreadHandler
+import com.google.samples.apps.iosched.shared.domain.internal.IOSchedHandler
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.util.ConferenceState.ENDED
@@ -30,7 +30,7 @@ import javax.inject.Inject
 enum class ConferenceState { UPCOMING, STARTED, ENDED }
 
 class ConferenceStateLiveData @Inject constructor(
-    @MainThreadHandler private val handler: Handler,
+    @MainThreadHandler private val handler: IOSchedHandler,
     private val timeProvider: TimeProvider
 ) : MutableLiveData<ConferenceState>() {
 

@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.ui.feed
 
-import android.os.Handler
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.Announcement
@@ -27,6 +26,7 @@ import com.google.samples.apps.iosched.shared.data.session.DefaultSessionReposit
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
 import com.google.samples.apps.iosched.shared.domain.feed.LoadCurrentMomentUseCase
+import com.google.samples.apps.iosched.shared.domain.internal.IOSchedHandler
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.time.TimeProvider
@@ -47,12 +47,8 @@ import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.instanceOf
 import org.junit.Assert.assertThat
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.anyLong
-import org.mockito.Mockito
 import org.threeten.bp.Instant
 
 /**
@@ -68,7 +64,13 @@ class FeedViewModelTest {
     @get:Rule
     var syncTaskExecutorRule = SyncTaskExecutorRule()
 
-    private val mockHandler = Mockito.mock(Handler::class.java)
+    private val fakeHandler = object : IOSchedHandler {
+        override fun post(runnable: Runnable) = true
+
+        override fun postDelayed(runnable: Runnable, millis: Long) = true
+
+        override fun removeCallbacks(runnable: Runnable) {}
+    }
 
     private val defaultFeedRepository =
         DefaultFeedRepository(TestAnnouncementDataSource, TestMomentDataSource)
@@ -76,14 +78,6 @@ class FeedViewModelTest {
     // Loads feed roughly during the Keynote time
     private val defaultTimeProvider =
         FixedTimeProvider(TestData.TestConferenceDays[0].start.plusHours(4).toInstant())
-
-    @Before
-    fun setup() {
-        Mockito.`when`(mockHandler.postDelayed(any(Runnable::class.java), anyLong()))
-            .thenAnswer {
-                true // Don't call run() on the argument as it will lead to stackOverFlow ;)
-            }
-    }
 
     @Test
     fun testDataIsLoaded_ObservablesUpdated() {
@@ -135,7 +129,7 @@ class FeedViewModelTest {
             ),
         getTimeZoneUseCase: GetTimeZoneUseCase = GetTimeZoneUseCase(FakePreferenceStorage()),
         conferenceStateLiveData: ConferenceStateLiveData =
-            ConferenceStateLiveData(mockHandler, defaultTimeProvider),
+            ConferenceStateLiveData(fakeHandler, defaultTimeProvider),
         timeProvider: TimeProvider = defaultTimeProvider,
         signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate().apply {
             loadUser("123")
