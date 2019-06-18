@@ -19,13 +19,13 @@ package com.google.samples.apps.iosched.ar
 import android.os.Bundle
 import android.view.WindowManager
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
-import com.google.ar.web.webview.ArWebView
 import com.google.samples.apps.iosched.shared.domain.ar.ArConstants
 
 class ArActivity : AppCompatActivity() {
 
-    private lateinit var arWebView: ArWebView
+    private lateinit var arWebView: WebView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,17 +35,15 @@ class ArActivity : AppCompatActivity() {
         val canSignedInUserDemoAr =
             intent?.extras?.getBoolean(ArConstants.CAN_SIGNED_IN_USER_DEMO_AR, false) ?: false
 
-        arWebView = ArWebView(this)
+        arWebView = WebView(this)
         setContentView(arWebView)
         arWebView.apply {
-            webView.apply {
-                webViewClient =
-                    ArWebViewClient(pinnedSessionsJson, canSignedInUserDemoAr, arWebView)
-                settings.apply {
-                    mediaPlaybackRequiresUserGesture = false
-                    domStorageEnabled = true
-                    databaseEnabled = true
-                }
+            webViewClient =
+                ArWebViewClient(pinnedSessionsJson, canSignedInUserDemoAr)
+            settings.apply {
+                mediaPlaybackRequiresUserGesture = false
+                domStorageEnabled = true
+                databaseEnabled = true
             }
             // Loading a single entry point because all the user flow happens in JavaScript from the
             // teaser page and requesting ARCore apk and camera permission
@@ -56,19 +54,19 @@ class ArActivity : AppCompatActivity() {
 
     override fun onRestart() {
         super.onRestart()
-        arWebView.webView.reload()
+        arWebView.reload()
     }
 
     override fun onStop() {
         super.onStop()
         val addOverlayScript =
             "if (window.app && window.app.addIntroOverlay) " +
-                "window.app.addIntroOverlay();"
-        arWebView.webView.evaluateJavascript(addOverlayScript) {}
+                    "window.app.addIntroOverlay();"
+        arWebView.evaluateJavascript(addOverlayScript) {}
     }
 
     override fun onDestroy() {
-        arWebView.webView.destroy()
+        arWebView.destroy()
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         super.onDestroy()
     }
@@ -79,19 +77,18 @@ class ArActivity : AppCompatActivity() {
      */
     private class ArWebViewClient(
         val json: String,
-        val canDemoAr: Boolean,
-        arWebView: ArWebView
-    ) : ArWebView.ArWebViewDefaultWebViewClient(arWebView) {
+        val canDemoAr: Boolean
+    ) : WebViewClient() {
 
         override fun onPageFinished(view: WebView?, url: String?) {
             super.onPageFinished(view, url)
             val evalAgendaScript =
                 "if (window.app && window.app.sendIOAppUserAgenda) " +
-                    "window.app.sendIOAppUserAgenda('$json');"
+                        "window.app.sendIOAppUserAgenda('$json');"
             view?.evaluateJavascript(evalAgendaScript) {}
             if (canDemoAr) {
                 val evalSetDebugUserScript = "if (window.app && window.app.setDebugUser) " +
-                    "window.app.setDebugUser()"
+                        "window.app.setDebugUser()"
                 view?.evaluateJavascript(evalSetDebugUserScript) {}
             }
         }

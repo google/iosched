@@ -56,7 +56,6 @@ android {
 
 dependencies {
     implementation project(':shared')
-    implementation(name:'arwebview', ext:'aar')
     implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
     implementation "com.google.ar:core:$rootProject.arcoreVersion"
     implementation "com.google.android.gms:play-services-vision:$rootProject.googlePlayServicesVisionVersion"
