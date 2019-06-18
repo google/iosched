@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.codelabs
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.transition.TransitionManager
@@ -174,6 +175,8 @@ internal object CodelabsDiffCallback : DiffUtil.ItemCallback<Any>() {
         }
     }
 
+    @SuppressLint("DiffUtilEquals")
+    // Workaround of https://issuetracker.google.com/issues/122928037
     override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
         return when {
             oldItem is Codelab && newItem is Codelab -> oldItem == newItem

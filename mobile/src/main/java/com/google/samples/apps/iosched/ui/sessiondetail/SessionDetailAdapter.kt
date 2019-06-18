@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.sessiondetail
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -169,6 +170,8 @@ object DiffCallback : DiffUtil.ItemCallback<Any>() {
         }
     }
 
+    @SuppressLint("DiffUtilEquals")
+    // Workaround of https://issuetracker.google.com/issues/122928037
     override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
         return when {
             oldItem is Speaker && newItem is Speaker -> oldItem == newItem
