@@ -51,12 +51,13 @@ run_firebase_test_lab() {
   local counter=0
   local result=1
   while [ $result != 0 -a $counter -lt $MAX_RETRY ]; do
+    ## TODO: Add os-version 29 once it's available
     gcloud firebase test android run \
         --type instrumentation \
         --app  mobile/build/outputs/apk/staging/mobile-staging.apk \
         --test mobile/build/outputs/apk/androidTest/staging/mobile-staging-androidTest.apk \
         --device-ids hammerhead,walleye,blueline \
-        --os-version-ids 21,26,28,Q-beta-3 \
+        --os-version-ids 21,26,28 \
         --locales en \
         --timeout 60
     result=$? ;
