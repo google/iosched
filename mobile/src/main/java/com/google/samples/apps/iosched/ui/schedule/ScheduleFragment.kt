@@ -21,7 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePaddingRelative
@@ -121,7 +121,9 @@ class ScheduleFragment : MainNavigationFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        requireActivity().addOnBackPressedCallback(this, OnBackPressedCallback { onBackPressed() })
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            onBackPressed()
+        }
     }
 
     override fun onCreateView(

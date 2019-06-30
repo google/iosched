@@ -132,7 +132,9 @@ dependencies {
     implementation "androidx.core:core-ktx:$rootProject.coreVersion"
 
     // UI
+    implementation "androidx.activity:activity-ktx:$rootProject.activityVersion"
     implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
+    implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentVersion"
     implementation "androidx.cardview:cardview:$rootProject.cardviewVersion"
     implementation "androidx.browser:browser:$rootProject.browserVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"

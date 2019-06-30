@@ -25,7 +25,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
-import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -102,7 +102,9 @@ class MapFragment : MainNavigationFragment() {
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY)
         }
 
-        requireActivity().addOnBackPressedCallback(this, OnBackPressedCallback { onBackPressed() })
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            onBackPressed()
+        }
     }
 
     override fun onCreateView(
