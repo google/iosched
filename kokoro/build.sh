@@ -24,6 +24,9 @@ if [[ -n "$GRADLE_DEBUG" ]]; then
   GRADLE_FLAGS=( --debug --stacktrace )
 fi
 
+export ANDROID_SDK_HOME=/opt/android-sdk/current
+echo y | ${ANDROID_SDK_HOME}/tools/bin/sdkmanager "build-tools;28.0.3"
+
 cd $KOKORO_ARTIFACTS_DIR/git/iosched
 
 ./gradlew "${GRADLE_FLAGS[@]}" build

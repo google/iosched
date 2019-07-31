@@ -136,13 +136,13 @@
 
     <!--Strings for sharing session-->
     <string name="menu_item_share_session" translation_description="The label for the button to share this session on SNS, etc.">Share session</string>
-    <string name="share_text_session_detail" translation_description="The default message to be used when user is sharing an Android Dev Summit session on SNS, etc.">Check out \'%1$s\' at #ads2018 %2$s</string>
+    <string name="share_text_session_detail" translation_description="The default message to be used when user is sharing an Android Dev Summit session on SNS, etc.">Check out \'%1$s\' at #ads2019 %2$s</string>
     <string name="intent_chooser_session_detail" translation_description="The label for share screen where user can tell people about an Android Dev Summit session on SNS, etc.">Share</string>
 
     <!-- Onboarding -->
     <string name="onboarding_get_started" translation_description="The label for the button to start using the app.">Get started</string>
-    <string name="onboarding_welcome_to_google_i_o" translation_description="The welcome message shown at the onboarding screen of the app.">Welcome to the Android Dev Summit</string>
-    <string name="onboarding_date_location" translation_description="The date and the place of Android Dev Summit 2018.">November 7–8, 2018\nMountain View, CA</string>
+    <string name="onboarding_welcome_to_conference" translation_description="The welcome message shown at the onboarding screen of the app.">Welcome to the Android Dev Summit</string>
+    <string name="onboarding_date_location" translation_description="The date and the place of Android Dev Summit 2019.">October 23–24, 2019\nSunnyvale, CA</string>
     <string name="onboarding_build_schedule" translation_description="The explanation title of the feature where user can choose which sessions to attend.">Build your own schedule</string>
     <string name="onboarding_build_sched_benefits" translation_description="The explanation of the feature where user can choose which sessions to attend.">Build your custom Android Dev Summit experience</string>
     <string name="onboarding_watch_live" translation_description="The explanation title of the feature where user can watch the Android Dev Summit sessions by live stream.">Watch Android Dev Summit Live</string>
@@ -160,7 +160,6 @@
     <string name="expanded" translation_description="The label used on a button when a view is in an expanded state.">Expanded</string>
     <string name="collapsed" translation_description="The label used on a button when a view is in an collapsed state.">Collapsed</string>
 
-    <!-- Info pages - TODO: update with 2018 copy and set translatable="true". -->
     <string name="info_title" translation_description="The title for the info screen where user can see various information, such as FAQ and travel info.">Info</string>
     <string name="event_title" translation_description="The title for the tab that shows interesting events, such as sessions and office hours.">Event</string>
     <string name="travel_title" translation_description="The title for the tab that shows travel information, such as carpool and bus schedules.">FAQ</string>
@@ -189,17 +188,17 @@
     <string name="prayer_title" translation_description="Header label for Mother's room details">Prayer Room</string>
 
     <string name="travel_directions_description" translation_description="Instructions on how to find directions to the conference."><![CDATA[
-    Find directions on <a href="https://www.google.com/maps/place/Computer+History+Museum/@37.4142744,-122.077409,15z/data=!4m5!3m4!1s0x0:0xea8071641d7ef4f2!8m2!3d37.4142744!4d-122.077409">Google Maps</a> to 1401 N Shoreline Blvd, Mountain View, CA 94043, USA
+    TODO
     ]]></string>
     <string name="travel_shuttle_description" translation_description="Shuttle service instructions."><![CDATA[
-    <p>Shuttles will be provided from the Mountain View Caltrain station to the Computer History Museum in the morning and from the Computer History Museum to the Mountain View Caltrain station in the evening.</p><p>Morning Shuttles will run every 15 minutes from 7:00am-10:00am.</p><p>Evening Shuttles will run every 15 minutes from 6:00pm-11:00pm.</p>
+    <p>TODO: Shuttles will be provided from the Mountain View Caltrain station to the Computer History Museum in the morning and from the Computer History Museum to the Mountain View Caltrain station in the evening.</p><p>Morning Shuttles will run every 15 minutes from 7:00am-10:00am.</p><p>Evening Shuttles will run every 15 minutes from 6:00pm-11:00pm.</p>
     ]]></string>
     <string name="travel_carpool_parking_description" translation_description="Carpool and parking instructions."><![CDATA[
-    <p>There are a limited number of parking spaces available at the Computer History Museum. However, overflow parking will be available on a first-come first-served basis.</p>
+    <p>TODO:There are a limited number of parking spaces available at the Computer History Museum. However, overflow parking will be available on a first-come first-served basis.</p>
     <p>Bike parking is complimentary for attendees and will be available outside of the venue during event hours. Please note that there is only enough parking for 10 bicycles. Parking will be on a first-come, first-served basis.</p>
     ]]></string>
     <string name="travel_public_transportation_description" translation_description="Public transportation instructions."><![CDATA[
-    <p>Downtown Mountain View Station</p><p>600 W Evelyn Ave, Mountain View, CA 94041. See <a href="http://www.caltrain.com/schedules/weekdaytimetable.html">schedule</a> for current departure and arrival times.
+    <p>TODO: Downtown Mountain View Station</p><p>600 W Evelyn Ave, Mountain View, CA 94041. See <a href="http://www.caltrain.com/schedules/weekdaytimetable.html">schedule</a> for current departure and arrival times.
     ]]></string>
     <string name="travel_childcare" translation_description="Mother's room and childcare instructions"><![CDATA[
     Please ask a member of staff at the registration or help desk for the location of each room onsite. We will be offering reimbursement for childcare for those attendees that may require it. To find out more information please email <a href="mailto:android-dev-summit@google.com">android-dev-summit@google.com</a>.
@@ -209,8 +208,7 @@
     <p>All presentations will be in English. Attendance at sessions and product demos is on a first-come, first-served basis.</p>
     ]]></string>
     <string name="badges_description" translation_description="Badges instructions"><![CDATA[
-    <p>Badge pickup will be available starting at 08:00 AM on Wednesday,
-        November 7. Make sure to bring your photo ID along with your registration
+    <p>Badge pickup will be available starting at TODO. Make sure to bring your photo ID along with your registration
         confirmation email, as we’ll need to verify it prior to assigning
         you your badge for this event. We’re OK with government issued
         licenses, passports, and other forms of identification. If you don’t
@@ -228,7 +226,7 @@
         and company or organization (if provided).</p>
     ]]></string>
     <string name="accessibility_description"><![CDATA[
-    <p>Google strives to make events open and accessible to everyone,
+    <p>TODO Google strives to make events open and accessible to everyone,
         regardless of disability or special needs. Participants with
         disabilities and/or special needs should provide details in the
         registration form and/or by emailing us at
@@ -242,14 +240,14 @@
     <string name="youth_attendance_description"><![CDATA[
     <p>
         Attendees must be at least 15 years of age to attend Android Dev Summit
-        2018 unaccompanied. Although 15-, 16- and 17-year-old attendees don’t
+        2019 unaccompanied. Although 15-, 16- and 17-year-old attendees don’t
         require an adult to accompany them, they must return a signed parental consent
         form in advance of the event. Google does not offer chaperone tickets for 15-,
         16- and 17-year-old attendees. Please contact <a href="https://developer.android.com/dev-summit/faq/android-dev-summit@google.com">
         android-dev-summit@google.com</a> for more details.
       </p><p>
         Attendees younger than 15 years of age require parent or legal guardian to a
-        company them to attend Android Dev Summit 2018. The parent or legal guardian
+        company them to attend Android Dev Summit 2019. The parent or legal guardian
         of the minor attendee must return a signed parental consent form in advance of
         the event. Please contact
         <a href="https://developer.android.com/dev-summit/faq/android-dev-summit@google.com">android-dev-summit@google.com</a>
@@ -280,7 +278,7 @@
     <string name="event_sandbox_description" translation_description="General information on sandboxes.">Dedicated spaces to explore, learn, and play with our latest products and platforms via interactive demos, physical installations, and more.</string>
     <string name="event_codelabs_description" translation_description="General information on codelabs.">Google Developers Codelabs provide a guided, tutorial, hands-on coding experience by stepping you through the process of building a small application, or adding a new feature to an existing application.</string>
     <string name="event_lightning_description" translation_description="General information on Lightning talks.">A lightning talk is very short and focused presentation that lasts only a few minutes, using a format that introduces urgency. This style of micro presentation allows many speakers to present in a single session at a forum, thereby quickly transferring information and avoiding “death by powerpoint” at conferences.</string>
-    <string name="event_afterhours_description" translation_description="General information on after hours.">All registered attendees are invited to the after party on the evening of November 7. Event credentials will be required for entry. Please join us for appetizers, drinks, music, games, and more. Alcoholic beverages will be available for those 21 years of age and over.</string>
+    <string name="event_afterhours_description" translation_description="General information on after hours.">All registered attendees are invited to the after party on the evening of TODO. Event credentials will be required for entry. Please join us for appetizers, drinks, music, games, and more. Alcoholic beverages will be available for those 21 years of age and over.</string>
     <string name="event_officehours_description" translation_description="General information on office hours and app reviews.">Office Hour Pods are your chance to meet one-on-one with Android experts to ask all your technical questions! Here, you’ll have an opportunity to receive advice and tips on your specific app-related projects.</string>
     <string name="event_fireside_description" translation_description="General information on Fireside chats.">A fireside chat is an information discussion between a moderator and one or more Android professionals in front of an audience. Although there won’t be a fire to sit beside, the conversational tone of the chat typically evokes an easy and relaxed language that promotes examples and analogies for better understanding. The audience is often invited to ask questions or make remarks either during or after the chat.</string>
     <string name="event_meals_description" translation_description="General information on meals.">Attendees are offered complimentary breakfast, lunch, and snacks on the day of the conference.</string>
@@ -302,16 +300,11 @@
     <string name="built_with_material_content_description" translation_description="The app was built with Material Components.">Built with Material Components.</string>
     <string name="tap_to_join_network" translation_description="Tap to join Wifi network.">(tap to join network)</string>
 
-    <string name="scavenger_hunt_description" translation_description="Text explaining the scavenger hunt happening at I/O.">Join the I/O Android Things Scavenger Hunt!</string>
-    <string name="scavenger_hunt_description2" translation_description="Text explaining the scavenger hunt happening at I/O.">(Hint: There might be an Android Things Developer Kit in your future.)</string>
-    <string name="assistant_app_description" translation_description="Text explaining the I/O 18 app for Google Assistant.">Use the I/O 18 Action on Google Assistant.</string>
-    <string name="assistant_app_description2" translation_description="Text explaining the I/O 18 app for Google Assistant.">Just say \"Hey Google, talk to Google I/O 18\"!</string>
-
     <!-- Day labels for schedule -->
     <string name="day1" translation_description="Label for the first day of the conference">Day 1</string>
     <string name="day2" translation_description="Label for the second day of the conference">Day 2</string>
-    <string name="day1_date" translation_description="Actual date of the first day of the conference">Nov 7</string>
-    <string name="day2_date" translation_description="Actual date of the second day of the conference">Nov 8</string>
+    <string name="day1_date" translation_description="Actual date of the first day of the conference">Oct 23</string>
+    <string name="day2_date" translation_description="Actual date of the second day of the conference">Oct 24</string>
 
     <!-- Speaker -->
     <string name="speaker_link_website" translation_description="The label for a link to a speaker's Website">Website</string>

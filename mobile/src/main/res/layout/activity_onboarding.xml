@@ -63,7 +63,7 @@
             android:id="@+id/welcome"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/onboarding_welcome_to_google_i_o"
+            android:text="@string/onboarding_welcome_to_conference"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.ADSSched.H1"
             app:layout_constraintBottom_toTopOf="@id/date_location"
