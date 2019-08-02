@@ -62,7 +62,7 @@
 
         </RelativeLayout>
 
-        <com.google.samples.apps.adssched.widget.HtmlTextView
+        <com.google.samples.apps.iosched.widget.HtmlTextView
             android:id="@+id/card_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

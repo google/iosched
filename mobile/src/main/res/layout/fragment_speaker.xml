@@ -24,7 +24,7 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.adssched.ui.speaker.SpeakerViewModel" />
+            type="com.google.samples.apps.iosched.ui.speaker.SpeakerViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -49,7 +49,7 @@
             android:background="?selectableItemBackgroundBorderless"
             app:srcCompat="@drawable/ic_arrow_back" />
 
-        <com.google.samples.apps.adssched.widget.FadingSnackbar
+        <com.google.samples.apps.iosched.widget.FadingSnackbar
             android:id="@+id/snackbar"
             android:layout_width="@dimen/snackbar_width"
             android:layout_height="wrap_content"

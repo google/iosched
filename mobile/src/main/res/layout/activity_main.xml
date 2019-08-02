@@ -21,7 +21,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.google.samples.apps.adssched.ui.MainActivity">
+    tools:context="com.google.samples.apps.iosched.ui.MainActivity">
 
     <FrameLayout
         android:id="@+id/fragment_container"
@@ -44,7 +44,7 @@
         app:labelVisibilityMode="labeled"
         app:menu="@menu/navigation" />
 
-    <com.google.samples.apps.adssched.widget.FadingSnackbar
+    <com.google.samples.apps.iosched.widget.FadingSnackbar
         android:id="@+id/snackbar"
         android:layout_width="@dimen/snackbar_width"
         android:layout_height="wrap_content"

@@ -24,10 +24,10 @@
 
         <variable
             name="eventFilter"
-            type="com.google.samples.apps.adssched.ui.schedule.filters.EventFilter" />
+            type="com.google.samples.apps.iosched.ui.schedule.filters.EventFilter" />
     </data>
 
-    <com.google.samples.apps.adssched.ui.schedule.filters.EventFilterView
+    <com.google.samples.apps.iosched.ui.schedule.filters.EventFilterView
         android:id="@+id/filter_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

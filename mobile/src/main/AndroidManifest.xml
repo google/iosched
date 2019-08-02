@@ -17,7 +17,7 @@
 
 <!-- ATTENTION: Needs to duplicate entire manifest to instant due to manifest merging issues. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.google.samples.apps.adssched"
+    package="com.google.samples.apps.iosched"
     android:targetSandboxVersion="2">
     <!-- targetSandBoxVersion="2" is a requirement for instant apps. -->
 

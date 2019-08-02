@@ -20,7 +20,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.google.samples.apps.adssched.ui.signin.NotificationsPreferenceViewModel" />
+            type="com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceViewModel" />
     </data>
 
     <LinearLayout

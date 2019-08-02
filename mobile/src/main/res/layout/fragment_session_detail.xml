@@ -24,7 +24,7 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.adssched.ui.sessiondetail.SessionDetailViewModel" />
+            type="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -52,7 +52,7 @@
             android:contentDescription="@string/navigate_up"
             app:srcCompat="@drawable/ic_arrow_back" />
 
-        <com.google.samples.apps.adssched.widget.CheckableFab
+        <com.google.samples.apps.iosched.widget.CheckableFab
             android:id="@+id/session_detail_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
 
         <!-- A custom snackbar implementation for more control over positioning i.e. above the FAB,
              and to control its entry/exit animation. -->
-        <com.google.samples.apps.adssched.widget.FadingSnackbar
+        <com.google.samples.apps.iosched.widget.FadingSnackbar
             android:id="@+id/snackbar"
             android:layout_width="@dimen/snackbar_width"
             android:layout_height="wrap_content"

@@ -21,7 +21,7 @@
 
     <data>
 
-        <import type="com.google.samples.apps.adssched.R" />
+        <import type="com.google.samples.apps.iosched.R" />
     </data>
 
     <androidx.core.widget.NestedScrollView

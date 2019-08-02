@@ -21,7 +21,7 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.adssched.ui.signin.SignInViewModel" />
+            type="com.google.samples.apps.iosched.ui.signin.SignInViewModel" />
 
     </data>
 

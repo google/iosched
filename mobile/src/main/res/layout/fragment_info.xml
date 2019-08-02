@@ -53,7 +53,7 @@
             app:pageMargin="@{@dimen/spacing_normal}"
             app:pageMarginDrawable="@{@drawable/page_margin}" />
 
-        <com.google.samples.apps.adssched.widget.FadingSnackbar
+        <com.google.samples.apps.iosched.widget.FadingSnackbar
             android:id="@+id/snackbar"
             android:layout_width="@dimen/snackbar_width"
             android:layout_height="wrap_content"

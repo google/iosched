@@ -24,11 +24,11 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.adssched.ui.speaker.SpeakerViewModel" />
+            type="com.google.samples.apps.iosched.ui.speaker.SpeakerViewModel" />
 
         <variable
             name="headshotLoadListener"
-            type="com.google.samples.apps.adssched.ui.speaker.ImageLoadListener" />
+            type="com.google.samples.apps.iosched.ui.speaker.ImageLoadListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

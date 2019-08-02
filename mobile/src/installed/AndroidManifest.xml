@@ -15,7 +15,7 @@
   ~ limitations under the License.
   -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.google.samples.apps.adssched"
+    package="com.google.samples.apps.iosched"
     xmlns:dist="http://schemas.android.com/apk/distribution">
 
     <application>

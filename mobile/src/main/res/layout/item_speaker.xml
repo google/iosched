@@ -23,11 +23,11 @@
 
         <variable
             name="speaker"
-            type="com.google.samples.apps.adssched.model.Speaker" />
+            type="com.google.samples.apps.iosched.model.Speaker" />
 
         <variable
             name="eventListener"
-            type="com.google.samples.apps.adssched.ui.sessiondetail.SessionDetailEventListener" />
+            type="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailEventListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

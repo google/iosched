@@ -24,7 +24,7 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.adssched.ui.schedule.ScheduleViewModel" />
+            type="com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel" />
 
         <variable
             name="headerAlpha"

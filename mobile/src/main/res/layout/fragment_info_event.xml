@@ -23,7 +23,7 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.adssched.ui.info.EventInfoViewModel" />
+            type="com.google.samples.apps.iosched.ui.info.EventInfoViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -143,7 +143,7 @@
                     app:layout_constraintStart_toStartOf="@+id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@+id/wifi_password_label" />
 
-                <com.google.samples.apps.adssched.widget.EventView
+                <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_sessions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -154,7 +154,7 @@
                     app:eventTitle="@string/event_sessions_title"
                     app:eventTypeLogo="@drawable/event_header_sessions" />
 
-                <com.google.samples.apps.adssched.widget.EventView
+                <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_lightning"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -164,7 +164,7 @@
                     app:eventTitle="@string/event_lightning_title"
                     app:eventTypeLogo="@drawable/event_header_sandbox" />
 
-                <com.google.samples.apps.adssched.widget.EventView
+                <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_codelabs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -174,7 +174,7 @@
                     app:eventTitle="@string/event_codelabs_title"
                     app:eventTypeLogo="@drawable/event_header_codelabs" />
 
-                <com.google.samples.apps.adssched.widget.EventView
+                <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_officehours"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -184,7 +184,7 @@
                     app:eventTitle="@string/event_officehours_title"
                     app:eventTypeLogo="@drawable/event_header_office_hours" />
 
-                <com.google.samples.apps.adssched.widget.EventView
+                <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_fireside"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -194,7 +194,7 @@
                     app:eventTitle="@string/event_fireside_title"
                     app:eventTypeLogo="@drawable/event_header_afterhours" />
 
-                <com.google.samples.apps.adssched.widget.EventView
+                <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_meals"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

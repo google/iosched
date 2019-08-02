@@ -23,7 +23,7 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.adssched.ui.schedule.ScheduleViewModel" />
+            type="com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel" />
 
     </data>
 
@@ -36,7 +36,7 @@
             layout="@layout/include_schedule_appbar"
             app:viewModel="@{viewModel}" />
 
-        <com.google.samples.apps.adssched.widget.CustomSwipeRefreshLayout
+        <com.google.samples.apps.iosched.widget.CustomSwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -51,7 +51,7 @@
                 app:pageMargin="@{@dimen/spacing_normal}"
                 app:pageMarginDrawable="@{@drawable/page_margin}" />
 
-        </com.google.samples.apps.adssched.widget.CustomSwipeRefreshLayout>
+        </com.google.samples.apps.iosched.widget.CustomSwipeRefreshLayout>
 
         <!-- TODO(b/72711711): Provide a better loading indicator -->
         <ProgressBar
@@ -65,7 +65,7 @@
 
         <!-- A custom snackbar implementation for more control over positioning i.e. above the
              FAB, to control its entry/exit animation. -->
-        <com.google.samples.apps.adssched.widget.FadingSnackbar
+        <com.google.samples.apps.iosched.widget.FadingSnackbar
             android:id="@+id/snackbar"
             android:layout_width="@dimen/snackbar_width"
             android:layout_height="wrap_content"
@@ -93,12 +93,12 @@
           -->
         <fragment
             android:id="@+id/filter_sheet"
-            android:name="com.google.samples.apps.adssched.ui.schedule.filters.ScheduleFilterFragment"
+            android:name="com.google.samples.apps.iosched.ui.schedule.filters.ScheduleFilterFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
             android:layout_marginBottom="4dp"
-            app:layout_behavior="com.google.samples.apps.adssched.widget.BottomSheetBehavior"
+            app:layout_behavior="com.google.samples.apps.iosched.widget.BottomSheetBehavior"
             app:behavior_hideable="true"
             app:behavior_peekHeight="@dimen/bottom_sheet_peek_height"
             app:behavior_skipCollapsed="true"

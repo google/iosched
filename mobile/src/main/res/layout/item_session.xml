@@ -25,11 +25,11 @@
 
         <variable
             name="userSession"
-            type="com.google.samples.apps.adssched.model.userdata.UserSession" />
+            type="com.google.samples.apps.iosched.model.userdata.UserSession" />
 
         <variable
             name="eventListener"
-            type="com.google.samples.apps.adssched.ui.sessioncommon.EventActions" />
+            type="com.google.samples.apps.iosched.ui.sessioncommon.EventActions" />
 
         <variable
             name="alwaysShowDate"
