@@ -50,7 +50,7 @@ class CustomDimDialog(context: Context?) : AppCompatDialog(context, R.style.Them
         }
     }
 
-    override fun setContentView(view: View?) {
+    override fun setContentView(view: View) {
         if (view != null) {
             super.setContentView(wrap(view))
         }

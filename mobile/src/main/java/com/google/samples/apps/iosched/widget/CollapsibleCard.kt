@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.widget
 import android.content.Context
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.M
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.text.Html
@@ -101,7 +102,7 @@ class CollapsibleCard @JvmOverloads constructor(
     }
 
     override fun onSaveInstanceState(): Parcelable {
-        val savedState = SavedState(super.onSaveInstanceState())
+        val savedState = SavedState(super.onSaveInstanceState() ?: Bundle.EMPTY)
         savedState.expanded = expanded
         return savedState
     }

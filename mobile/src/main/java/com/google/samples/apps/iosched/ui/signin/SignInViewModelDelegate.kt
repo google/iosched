@@ -28,6 +28,10 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignOut
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 enum class SignInEvent {
@@ -105,6 +109,15 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
 
     private val _isSignedIn: LiveData<Boolean>
 
+    /**
+     * Injecting viewModelScope is cumbersome here. This creates a scope specific to this class.
+     * Worst case scenario is that if the coroutines this scope launch are running while the
+     * original ViewModel is destroyed, the FirebaseSignInViewModelDelegate instance will be
+     * in memory until the coroutines finish.
+     */
+    private val signInScope: CoroutineScope =
+            CoroutineScope(Dispatchers.Main + SupervisorJob())
+
     private val notificationsPrefIsShown = MutableLiveData<Result<Boolean>>()
 
     init {
@@ -125,7 +138,9 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
         shouldShowNotificationsPrefAction.addSource(_isSignedIn) {
             // Refresh the preferences
             notificationsPrefIsShown.value = null
-            notificationsPrefIsShownUseCase(Unit, notificationsPrefIsShown)
+            signInScope.launch {
+                notificationsPrefIsShown.value = notificationsPrefIsShownUseCase(Unit)
+            }
         }
     }
 
@@ -142,7 +157,9 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
     override fun emitSignInRequest() {
         // Refresh the notificationsPrefIsShown because it's used to indicate if the
         // notifications preference dialog should be shown
-        notificationsPrefIsShownUseCase(Unit, notificationsPrefIsShown)
+        signInScope.launch {
+            notificationsPrefIsShown.value = notificationsPrefIsShownUseCase(Unit)
+        }
 
         performSignInEvent.postValue(Event(SignInEvent.RequestSignIn))
     }

@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.shared.notifications
 
-
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -37,17 +36,22 @@ import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.R
 import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthIdDataSource
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionSyncUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionSyncUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import dagger.android.DaggerBroadcastReceiver
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import org.threeten.bp.Instant
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-
 
 /**
  * Receives broadcast intents with information for session notifications.
@@ -69,6 +73,10 @@ class AlarmBroadcastReceiver : DaggerBroadcastReceiver() {
     @Inject
     lateinit var authIdDataSource: AuthIdDataSource
 
+    // Coroutines scope for AlarmBroadcastReceiver background work
+    private val alarmScope: CoroutineScope =
+        CoroutineScope(Dispatchers.Default + SupervisorJob())
+
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
         Timber.e("Alarm received")
@@ -77,7 +85,7 @@ class AlarmBroadcastReceiver : DaggerBroadcastReceiver() {
         ) ?: return
         val userId = authIdDataSource.getUserId()
         if (userId != null) {
-            DefaultScheduler.execute {
+            alarmScope.launch {
                 checkThenShowNotification(context, sessionId, userId)
             }
         } else {
@@ -85,9 +93,8 @@ class AlarmBroadcastReceiver : DaggerBroadcastReceiver() {
         }
     }
 
-
     @WorkerThread
-    private fun checkThenShowNotification(
+    private suspend fun checkThenShowNotification(
         context: Context,
         sessionId: String,
         userId: String
@@ -118,22 +125,32 @@ class AlarmBroadcastReceiver : DaggerBroadcastReceiver() {
         }
     }
 
-    private fun notifyWithoutUserEvent(sessionId: String, context: Context) {
-        val session = loadSession.executeNow(sessionId)
-        if (session is Success) {
-            val notificationId = showNotification(context, session.data)
-            alarmManager.dismissNotificationInFiveMinutes(notificationId)
-        } else {
-            Timber.e("Session couldn't be loaded for notification")
+    private suspend fun notifyWithoutUserEvent(sessionId: String, context: Context) {
+        // Using supervisorScope to not propagate a possible exception that'd make the app crash
+        supervisorScope {
+            // Using async coroutine builder to wait for the result of the use case computation
+            val session = async { loadSession(sessionId) }.await()
+            if (session is Success) {
+                val notificationId = showNotification(context, session.data)
+                alarmManager.dismissNotificationInFiveMinutes(notificationId)
+            } else {
+                Timber.e("Session couldn't be loaded for notification")
+            }
         }
     }
 
-    private fun getUserEvent(userId: String, sessionId: String): Result<UserSession>? {
+    private suspend fun getUserEvent(userId: String, sessionId: String): Result<UserSession>? {
         return try {
-            loadUserSession.executeNow(userId to sessionId)
+            // Using coroutineScope to propagate exception to the try/catch block
+            coroutineScope {
+                // Using async coroutine builder to wait for the result of the use case computation
+                async { loadUserSession(userId to sessionId) }.await()
+            }
         } catch (ex: Exception) {
-            Timber.e("Session notification is set, however there was an error confirming that " +
-                    "the event is still starred. Showing notification.")
+            Timber.e(
+                "Session notification is set, however there was an error confirming that " +
+                    "the event is still starred. Showing notification."
+            )
             null
         }
     }
@@ -141,7 +158,7 @@ class AlarmBroadcastReceiver : DaggerBroadcastReceiver() {
     @WorkerThread
     private fun showNotification(context: Context, session: Session): Int {
         val notificationManager: NotificationManager = context.getSystemService()
-                ?: throw Exception("Notification Manager not found.")
+            ?: throw Exception("Notification Manager not found.")
 
         if (VERSION.SDK_INT >= VERSION_CODES.O) {
             makeNotificationChannel(context, notificationManager)
@@ -197,7 +214,6 @@ class AlarmBroadcastReceiver : DaggerBroadcastReceiver() {
 
     companion object {
         const val SESSION_ID_EXTRA = "user_event_extra"
-        const val USER_ID_EXTRA = "user_id_extra"
         const val QUERY_SESSION_ID = "session_id"
         private const val ALARM_BROADCAST_CHANNEL_ID = "alarm_broadcast_channel_id"
     }

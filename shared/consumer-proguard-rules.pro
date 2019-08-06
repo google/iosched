@@ -35,3 +35,6 @@
 -keep class com.google.samples.apps.iosched.model.** {
     *;
 }
+
+# Coroutines bug https://github.com/Kotlin/kotlinx.coroutines/issues/1270
+-dontwarn kotlinx.coroutines.flow.**

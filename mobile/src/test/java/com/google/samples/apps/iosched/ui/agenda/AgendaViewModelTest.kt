@@ -22,7 +22,9 @@ import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import org.hamcrest.MatcherAssert.assertThat
@@ -43,11 +45,15 @@ class AgendaViewModelTest {
     @get:Rule
     var syncTaskExecutorRule = SyncTaskExecutorRule()
 
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
+
     @Test
-    fun agendaDataIsLoaded() {
+    fun agendaDataIsLoaded() = coroutineRule.runBlockingTest {
         val viewModel = AgendaViewModel(
-            LoadAgendaUseCase(FakeAgendaRepository()),
-            GetTimeZoneUseCase(FakePreferenceStorage())
+            LoadAgendaUseCase(FakeAgendaRepository(), coroutineRule.testDispatcher),
+            GetTimeZoneUseCase(FakePreferenceStorage(), coroutineRule.testDispatcher)
         )
 
         val blocks = LiveDataTestUtil.getValue(viewModel.agenda)

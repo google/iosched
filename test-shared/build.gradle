@@ -20,8 +20,11 @@ apply plugin: 'kotlin'
 dependencies {
 
     implementation project(":model")
+
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlinVersion"
+    implementation "junit:junit:$rootProject.junitVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$rootProject.coroutinesVersion"
 
     // ThreeTenBP for the shared module only. Date and time API for Java.
     testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"

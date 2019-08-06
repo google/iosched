@@ -20,6 +20,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
@@ -74,9 +75,17 @@ class SessionDetailViewModel @Inject constructor(
 
     private val sessionTimeRelativeState: LiveData<TimeUtils.SessionRelativeTimeState>
 
-    private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
-
-    val timeZoneId: LiveData<ZoneId>
+    private val preferConferenceTimeZoneResult = liveData { emit(getTimeZoneUseCase(Unit)) }
+    private val showInConferenceTimeZone = preferConferenceTimeZoneResult.map {
+        (it as? Result.Success<Boolean>)?.data ?: true
+    }
+    val timeZoneId = showInConferenceTimeZone.map { inConferenceTimeZone ->
+        if (inConferenceTimeZone) {
+            TimeUtils.CONFERENCE_TIMEZONE
+        } else {
+            ZoneId.systemDefault()
+        }
+    }
 
     private val _errorMessage = MediatorLiveData<Event<String>>()
     val errorMessage: LiveData<Event<String>>
@@ -126,8 +135,6 @@ class SessionDetailViewModel @Inject constructor(
 
         loadRelatedUserSessions = loadRelatedSessionUseCase.observe()
 
-        getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
-
         /* Wire observable dependencies */
 
         // If the user changes, load new data for them
@@ -171,18 +178,6 @@ class SessionDetailViewModel @Inject constructor(
         _relatedUserSessions.addSource(loadRelatedUserSessions) {
             (loadRelatedUserSessions.value as? Result.Success)?.data?.let {
                 _relatedUserSessions.value = it.userSessions
-            }
-        }
-
-        val showInConferenceTimeZone = preferConferenceTimeZoneResult.map {
-            (it as? Result.Success<Boolean>)?.data ?: true
-        }
-
-        timeZoneId = showInConferenceTimeZone.map { inConferenceTimeZone ->
-            if (inConferenceTimeZone) {
-                TimeUtils.CONFERENCE_TIMEZONE
-            } else {
-                ZoneId.systemDefault()
             }
         }
 

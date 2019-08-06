@@ -17,7 +17,9 @@
 package com.google.samples.apps.iosched.ui.schedule
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShowActionUseCase
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -28,6 +30,8 @@ class ScheduleUiHintsDialogViewModel @Inject constructor(
 ) : ViewModel() {
 
     fun onDismissed() {
-        scheduleUiHintsShowActionUseCase(true)
+        viewModelScope.launch {
+            scheduleUiHintsShowActionUseCase(true)
+        }
     }
 }

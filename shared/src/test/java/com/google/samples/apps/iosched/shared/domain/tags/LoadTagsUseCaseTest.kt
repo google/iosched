@@ -19,9 +19,11 @@ package com.google.samples.apps.iosched.shared.domain.tags
 import com.google.samples.apps.iosched.model.Tag
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
-import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import org.junit.Assert.assertEquals
+import org.junit.Rule
 import org.junit.Test
 
 /**
@@ -29,11 +31,16 @@ import org.junit.Test
  */
 class LoadTagsUseCaseTest {
 
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
+
     @Test
-    fun returnsListOfTags() {
-        val loadTagsUseCase = LoadTagsUseCase(TagRepository(TestDataRepository))
-        val tags: Result.Success<List<Tag>> =
-            loadTagsUseCase.executeNow(Unit) as Success<List<Tag>>
+    fun returnsListOfTags() = coroutineRule.runBlockingTest {
+        val loadTagsUseCase =
+            LoadTagsUseCase(TagRepository(TestDataRepository), coroutineRule.testDispatcher)
+        val tags: Success<List<Tag>> =
+            loadTagsUseCase(Unit) as Success<List<Tag>>
 
         assertEquals(tags.data, TagRepository(TestDataRepository).getTags())
     }

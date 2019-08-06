@@ -281,7 +281,7 @@ class EventFilterView @JvmOverloads constructor(
         progress = if (checked) 1f else 0f
     }
 
-    override fun verifyDrawable(who: Drawable?): Boolean {
+    override fun verifyDrawable(who: Drawable): Boolean {
         return super.verifyDrawable(who) || who == touchFeedback
     }
 
@@ -302,7 +302,8 @@ class EventFilterView @JvmOverloads constructor(
 
     private fun createLayout(textWidth: Int) {
         textLayout = if (SDK_INT >= M) {
-            StaticLayout.Builder.obtain(text, 0, text?.length!!, textPaint, textWidth).build()
+            StaticLayout.Builder.obtain(text ?: "", 0, text?.length ?: 0, textPaint, textWidth)
+                .build()
         } else {
             StaticLayout(text, textPaint, textWidth, ALIGN_NORMAL, 1f, 0f, true)
         }

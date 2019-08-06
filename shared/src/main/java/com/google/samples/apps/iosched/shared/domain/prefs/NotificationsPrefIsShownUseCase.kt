@@ -17,14 +17,17 @@
 package com.google.samples.apps.iosched.shared.domain.prefs
 
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
+import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 /**
  * Returns whether the notifications preference has been shown to the user.
  */
 open class NotificationsPrefIsShownUseCase @Inject constructor(
-    private val preferenceStorage: PreferenceStorage
-) : UseCase<Unit, Boolean>() {
+    private val preferenceStorage: PreferenceStorage,
+    @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
+) : UseCase<Unit, Boolean>(defaultDispatcher) {
     override fun execute(parameters: Unit): Boolean = preferenceStorage.notificationsPreferenceShown
 }

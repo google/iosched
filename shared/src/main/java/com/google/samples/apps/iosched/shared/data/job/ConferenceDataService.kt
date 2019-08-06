@@ -18,8 +18,10 @@ package com.google.samples.apps.iosched.shared.data.job
 
 import android.app.job.JobParameters
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
-import com.google.samples.apps.iosched.shared.result.succeeded
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -32,28 +34,27 @@ class ConferenceDataService : DaggerJobService() {
     @Inject
     lateinit var refreshEventDataUseCase: RefreshConferenceDataUseCase
 
+    // Coroutines scope for ConferenceDataService background work
+    private val serviceScope: CoroutineScope =
+        CoroutineScope(Dispatchers.Default + SupervisorJob())
+
     override fun onStartJob(params: JobParameters?): Boolean {
 
         Timber.i("ConferenceDataService triggering refresh conference data.")
 
-        // Execute off the main thread
-        DefaultScheduler.execute {
-
-            val result = refreshEventDataUseCase.executeNow(Unit)
-
-            when {
-                result.succeeded -> {
-                    Timber.d("ConferenceDataService finished successfuly.")
-                    // Finishing indicating this job doesn't need to be rescheduled.
-                    jobFinished(params, false)
-                }
-                else -> {
-                    Timber.e("ConferenceDataService failed. It will retry.")
-                    // Indicating job shold be rescheduled
-                    jobFinished(params, true)
-                }
+        try {
+            serviceScope.launch {
+                refreshEventDataUseCase(Unit)
+                Timber.d("ConferenceDataService finished successfuly.")
+                // Finishing indicating this job doesn't need to be rescheduled.
+                jobFinished(params, false)
             }
+        } catch (e: Exception) {
+            Timber.e("ConferenceDataService failed. It will retry.")
+            // Indicating job shold be rescheduled
+            jobFinished(params, true)
         }
+
         // Returning true to indicate we're not done yet (execution still running in the background)
         return true
     }

@@ -17,6 +17,8 @@
 package com.google.samples.apps.iosched.shared.domain
 
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
+import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -24,8 +26,9 @@ import javax.inject.Inject
  * Forces a refresh in the conference data repository.
  */
 open class RefreshConferenceDataUseCase @Inject constructor(
-    private val repository: ConferenceDataRepository
-) : UseCase<Any, Boolean>() {
+    private val repository: ConferenceDataRepository,
+    @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
+) : UseCase<Any, Boolean>(defaultDispatcher) {
 
     override fun execute(parameters: Any): Boolean {
         try {

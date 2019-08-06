@@ -19,8 +19,10 @@ package com.google.samples.apps.iosched.ui.onboarding
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompleteActionUseCase
 import com.google.samples.apps.iosched.shared.result.Event
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -34,7 +36,9 @@ class OnboardingViewModel @Inject constructor(
     val navigateToMainActivity: LiveData<Event<Unit>> = _navigateToMainActivity
 
     fun getStartedClick() {
-        onboardingCompleteActionUseCase(true)
-        _navigateToMainActivity.postValue(Event(Unit))
+        viewModelScope.launch {
+            onboardingCompleteActionUseCase(true)
+            _navigateToMainActivity.value = Event(Unit)
+        }
     }
 }

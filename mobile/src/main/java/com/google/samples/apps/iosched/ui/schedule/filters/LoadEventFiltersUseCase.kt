@@ -18,19 +18,22 @@ package com.google.samples.apps.iosched.ui.schedule.filters
 
 import com.google.samples.apps.iosched.model.Tag
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
+import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.TagFilter
 import com.google.samples.apps.iosched.util.isEven
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 /**
  * Use case that loads a list of [TagFilter]s for the schedule filters UI.
  */
 open class LoadEventFiltersUseCase @Inject constructor(
-    private val tagRepository: TagRepository
-) : UseCase<UserSessionMatcher, List<EventFilter>>() {
+    private val tagRepository: TagRepository,
+    @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
+) : UseCase<UserSessionMatcher, List<EventFilter>>(defaultDispatcher) {
 
     override fun execute(parameters: UserSessionMatcher): List<EventFilter> {
         val tags = tagRepository.getTags()

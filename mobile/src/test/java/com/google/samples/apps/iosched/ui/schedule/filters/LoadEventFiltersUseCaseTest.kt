@@ -22,9 +22,11 @@ import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData.androidTag
 import com.google.samples.apps.iosched.test.data.TestData.cloudTag
 import com.google.samples.apps.iosched.test.data.TestData.webTag
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -37,22 +39,28 @@ class LoadEventFiltersUseCaseTest {
     @JvmField
     val instantTaskExecutor = InstantTaskExecutorRule()
 
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
+
     @Test
-    fun interleaveSort() {
+    fun interleaveSort() = coroutineRule.runBlockingTest {
         // Given unordered tags with same category
         val testList = listOf(webTag, cloudTag, androidTag)
         val expected = listOf(androidTag, webTag, cloudTag)
 
-        val useCase = LoadEventFiltersUseCase(TagRepository(TestDataRepository))
+        val useCase =
+            LoadEventFiltersUseCase(TagRepository(TestDataRepository), coroutineRule.testDispatcher)
 
         // Items are sorted and interleaved
         assertEquals(expected, useCase.interleaveSort(testList))
     }
 
     @Test
-    fun loadsFilters() {
-        val useCase = LoadEventFiltersUseCase(TagRepository(TestDataRepository))
-        val result = useCase.executeNow(UserSessionMatcher()) as Success
+    fun loadsFilters() = coroutineRule.runBlockingTest {
+        val useCase =
+            LoadEventFiltersUseCase(TagRepository(TestDataRepository), coroutineRule.testDispatcher)
+        val result = useCase(UserSessionMatcher()) as Success
 
         assertTrue(result.data[0] is MyEventsFilter)
         assertEquals(result.data.subList(1, result.data.size), MobileTestData.tagFiltersList)

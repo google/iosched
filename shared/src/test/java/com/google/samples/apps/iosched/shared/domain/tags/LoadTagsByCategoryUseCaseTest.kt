@@ -20,6 +20,7 @@ import com.google.samples.apps.iosched.model.Tag
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData.advancedTag
 import com.google.samples.apps.iosched.test.data.TestData.androidTag
 import com.google.samples.apps.iosched.test.data.TestData.beginnerTag
@@ -28,7 +29,9 @@ import com.google.samples.apps.iosched.test.data.TestData.codelabsTag
 import com.google.samples.apps.iosched.test.data.TestData.intermediateTag
 import com.google.samples.apps.iosched.test.data.TestData.sessionsTag
 import com.google.samples.apps.iosched.test.data.TestData.webTag
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import org.junit.Assert.assertEquals
+import org.junit.Rule
 import org.junit.Test
 
 /**
@@ -36,10 +39,16 @@ import org.junit.Test
  */
 class LoadTagsByCategoryUseCaseTest {
 
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
+
     @Test
-    fun returnsOrderedTags() {
-        val useCase = LoadTagsByCategoryUseCase(TagRepository(TestDataRepository))
-        val tags = useCase.executeNow(Unit) as Result.Success<List<Tag>>
+    fun returnsOrderedTags() = coroutineRule.runBlockingTest {
+        val useCase = LoadTagsByCategoryUseCase(
+            TagRepository(TestDataRepository), coroutineRule.testDispatcher
+        )
+        val tags = useCase(Unit) as Result.Success<List<Tag>>
 
         // Expected values to assert
         val expected = listOf(

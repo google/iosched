@@ -20,6 +20,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.model.Speaker
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.model.userdata.UserSession
@@ -30,9 +31,11 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUs
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCase
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCaseResult
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.updateOnSuccess
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -48,7 +51,7 @@ class SpeakerViewModel @Inject constructor(
     SignInViewModelDelegate by signInViewModelDelegate,
     EventActionsViewModelDelegate by eventActionsViewModelDelegate {
 
-    private val loadSpeakerUseCaseResult = MutableLiveData<Result<LoadSpeakerUseCaseResult>>()
+    private val loadSpeakerUseCaseResult = MutableLiveData<LoadSpeakerUseCaseResult>()
 
     private val loadSpeakerUserSessions: LiveData<Result<LoadUserSessionsUseCaseResult>>
 
@@ -69,16 +72,12 @@ class SpeakerViewModel @Inject constructor(
 
         // If there's a new result with data, update speaker
         _speaker.addSource(loadSpeakerUseCaseResult) {
-            (loadSpeakerUseCaseResult.value as? Result.Success)?.data?.let {
-                _speaker.value = it.speaker
-            }
+            _speaker.value = it.speaker
         }
 
         // Also load their sessions
         loadSpeakerUserSessions.addSource(loadSpeakerUseCaseResult) {
-            (loadSpeakerUseCaseResult.value as? Result.Success)?.data?.let {
-                loadSpeakerSessionsUseCase.execute(getUserId() to it.sessionIds)
-            }
+            loadSpeakerSessionsUseCase.execute(getUserId() to it.sessionIds)
         }
 
         // When their sessions load, update speakerUserSessions
@@ -93,7 +92,9 @@ class SpeakerViewModel @Inject constructor(
      * Provides the speaker ID which initiates all data loading.
      */
     fun setSpeakerId(id: SpeakerId) {
-        loadSpeakerUseCase(id, loadSpeakerUseCaseResult)
+        viewModelScope.launch {
+            loadSpeakerUseCase(id).updateOnSuccess(loadSpeakerUseCaseResult)
+        }
     }
 
     override fun onStarClicked(userSession: UserSession) {

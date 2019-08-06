@@ -68,7 +68,8 @@ class SpeakerFragment : DaggerFragment() {
         savedInstanceState: Bundle?
     ): View? {
         speakerViewModel = viewModelProvider(viewModelFactory)
-        speakerViewModel.setSpeakerId(requireNotNull(arguments).getString(SPEAKER_ID))
+        speakerViewModel.setSpeakerId(requireNotNull(arguments).getString(SPEAKER_ID)
+            ?: throw IllegalStateException("Speaker ID cannot be empty"))
 
         // Delay the Activity enter transition until speaker image has loaded
         activity?.postponeEnterTransition(500L)

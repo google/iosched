@@ -22,6 +22,8 @@ import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.ui.schedule.FakeObserveUserAuthStateUseCase
@@ -44,11 +46,15 @@ class FirebaseSignInViewModelDelegateTest {
     // Executes tasks in a synchronous [TaskScheduler]
     @get:Rule var syncTaskExecutorRule = SyncTaskExecutorRule()
 
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
+
     @Test
-    fun testSignedOut() {
+    fun testSignedOut() = coroutineRule.runBlockingTest {
         val subject = FirebaseSignInViewModelDelegate(
             FakeObserveUserAuthStateUseCase(
-                    user = Result.Success(null)
+                user = Result.Success(null)
             ),
             createNotificationsPrefIsShownUseCase()
         )
@@ -68,7 +74,7 @@ class FirebaseSignInViewModelDelegateTest {
     }
 
     @Test
-    fun testSignedInRegistered() {
+    fun testSignedInRegistered() = coroutineRule.runBlockingTest {
 
         val user = mock<AuthenticatedUserInfo> {
             on { getUid() }.doReturn("123")
@@ -77,7 +83,7 @@ class FirebaseSignInViewModelDelegateTest {
         }
         val subject = FirebaseSignInViewModelDelegate(
             FakeObserveUserAuthStateUseCase(
-                    user = Result.Success(user)
+                user = Result.Success(user)
             ),
             createNotificationsPrefIsShownUseCase()
         )
@@ -94,7 +100,7 @@ class FirebaseSignInViewModelDelegateTest {
     }
 
     @Test
-    fun testSignedInNotRegistered() {
+    fun testSignedInNotRegistered() = coroutineRule.runBlockingTest {
 
         val user = mock<AuthenticatedUserInfo> {
             on { getUid() }.doReturn("123")
@@ -103,7 +109,7 @@ class FirebaseSignInViewModelDelegateTest {
         }
         val subject = FirebaseSignInViewModelDelegate(
             FakeObserveUserAuthStateUseCase(
-                    user = Result.Success(user)
+                user = Result.Success(user)
             ),
             createNotificationsPrefIsShownUseCase()
         )
@@ -120,10 +126,10 @@ class FirebaseSignInViewModelDelegateTest {
     }
 
     @Test
-    fun testPostSignIn() {
+    fun testPostSignIn() = coroutineRule.runBlockingTest {
         val subject = FirebaseSignInViewModelDelegate(
             FakeObserveUserAuthStateUseCase(
-                    user = Result.Success(null)
+                user = Result.Success(null)
             ),
             createNotificationsPrefIsShownUseCase()
         )
@@ -138,10 +144,10 @@ class FirebaseSignInViewModelDelegateTest {
     }
 
     @Test
-    fun testPostSignOut() {
+    fun testPostSignOut() = coroutineRule.runBlockingTest {
         val subject = FirebaseSignInViewModelDelegate(
             FakeObserveUserAuthStateUseCase(
-                    user = Result.Success(null)
+                user = Result.Success(null)
             ),
             createNotificationsPrefIsShownUseCase()
         )
@@ -155,6 +161,8 @@ class FirebaseSignInViewModelDelegateTest {
     }
 
     private fun createNotificationsPrefIsShownUseCase(): NotificationsPrefIsShownUseCase {
-        return NotificationsPrefIsShownUseCase(FakePreferenceStorage())
+        return NotificationsPrefIsShownUseCase(
+            FakePreferenceStorage(), coroutineRule.testDispatcher
+        )
     }
 }

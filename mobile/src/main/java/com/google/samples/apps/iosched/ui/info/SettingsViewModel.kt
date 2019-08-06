@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.ui.info
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefSaveActionUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetAnalyticsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetNotificationsSettingUseCase
@@ -26,9 +27,9 @@ import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetAnalyticsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.Event
-import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.result.Result.Success
-import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.shared.result.data
+import com.google.samples.apps.iosched.shared.result.updateOnSuccess
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SettingsViewModel @Inject constructor(
@@ -41,16 +42,19 @@ class SettingsViewModel @Inject constructor(
 ) : ViewModel() {
 
     // Time Zone setting
-    private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
+    private val preferConferenceTimeZoneResult = MutableLiveData<Boolean>()
     val preferConferenceTimeZone: LiveData<Boolean>
+        get() = preferConferenceTimeZoneResult
 
     // Notifications setting
-    val enableNotificationsResult = MutableLiveData<Result<Boolean>>()
+    private val enableNotificationsResult = MutableLiveData<Boolean>()
     val enableNotifications: LiveData<Boolean>
+        get() = enableNotificationsResult
 
     // Analytics setting
-    private val sendUsageStatisticsResult = MutableLiveData<Result<Boolean>>()
+    private val sendUsageStatisticsResult = MutableLiveData<Boolean>()
     val sendUsageStatistics: LiveData<Boolean>
+        get() = sendUsageStatisticsResult
 
     // Notifications sign in
     private val _showSignIn = MutableLiveData<Event<Unit>>()
@@ -58,28 +62,28 @@ class SettingsViewModel @Inject constructor(
         get() = _showSignIn
 
     init {
-        getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
-        preferConferenceTimeZone = preferConferenceTimeZoneResult.map {
-            (it as? Success<Boolean>)?.data ?: true
+        // Executing use cases in parallel
+        viewModelScope.launch {
+            preferConferenceTimeZoneResult.value = getTimeZoneUseCase(Unit).data ?: true
         }
-
-        getAnalyticsSettingUseCase(Unit, sendUsageStatisticsResult)
-        sendUsageStatistics = sendUsageStatisticsResult.map {
-            (it as? Success<Boolean>)?.data ?: false
+        viewModelScope.launch {
+            sendUsageStatisticsResult.value = getAnalyticsSettingUseCase(Unit).data ?: false
         }
-
-        getNotificationsSettingUseCase(Unit, enableNotificationsResult)
-        enableNotifications = enableNotificationsResult.map {
-            (it as? Success<Boolean>)?.data ?: false
+        viewModelScope.launch {
+            enableNotificationsResult.value = getNotificationsSettingUseCase(Unit).data ?: false
         }
     }
 
     fun toggleTimeZone(checked: Boolean) {
-        setTimeZoneUseCase(checked, preferConferenceTimeZoneResult)
+        viewModelScope.launch {
+            setTimeZoneUseCase(checked).updateOnSuccess(preferConferenceTimeZoneResult)
+        }
     }
 
     fun toggleSendUsageStatistics(checked: Boolean) {
-        setAnalyticsSettingUseCase(checked, sendUsageStatisticsResult)
+        viewModelScope.launch {
+            setAnalyticsSettingUseCase(checked).updateOnSuccess(sendUsageStatisticsResult)
+        }
     }
 
     fun toggleEnableNotifications(checked: Boolean, isInstantApp: Boolean) {
@@ -87,6 +91,8 @@ class SettingsViewModel @Inject constructor(
             _showSignIn.value = Event(Unit)
             return
         }
-        notificationsPrefSaveActionUseCase(checked, enableNotificationsResult)
+        viewModelScope.launch {
+            notificationsPrefSaveActionUseCase(checked).updateOnSuccess(enableNotificationsResult)
+        }
     }
 }

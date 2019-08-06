@@ -18,14 +18,18 @@ package com.google.samples.apps.iosched.shared.domain.tags
 
 import com.google.samples.apps.iosched.model.Tag
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
+import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 /**
  * Loads tags from a repository. Sub classes should manipulate the tags' order for their use case.
  */
-open class LoadTagsUseCase @Inject constructor(private val repository: TagRepository) :
-    UseCase<Unit, List<Tag>>() {
+open class LoadTagsUseCase @Inject constructor(
+    private val repository: TagRepository,
+    @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
+) : UseCase<Unit, List<Tag>>(defaultDispatcher) {
 
     override fun execute(parameters: Unit) = repository.getTags()
 }

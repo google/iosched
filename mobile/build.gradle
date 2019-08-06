@@ -115,8 +115,10 @@ dependencies {
     implementation "com.google.android:flexbox:$rootProject.flexboxVersion"
 
     // Architecture Components
-    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
-    kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleAlphaVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.lifecycleAlphaVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleAlphaVersion"
+    kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleAlphaVersion"
     testImplementation "androidx.arch.core:core-testing:$rootProject.lifecycleVersion"
     implementation "androidx.room:room-ktx:$rootProject.roomVersion"
     implementation "androidx.room:room-runtime:$rootProject.roomVersion"
@@ -152,6 +154,7 @@ dependencies {
 
     // Local unit tests
     testImplementation "junit:junit:$rootProject.junitVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$rootProject.coroutinesVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation "com.nhaarman:mockito-kotlin:$rootProject.mockitoKotlinVersion"
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"

@@ -51,7 +51,9 @@ import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakeAppDatabase
@@ -93,8 +95,12 @@ class ScheduleViewModelTest {
     @get:Rule
     var syncTaskExecutorRule = SyncTaskExecutorRule()
 
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
+
     @Test
-    fun testDataIsLoaded_ObservablesUpdated() { // TODO: Very slow test (1s)
+    fun testDataIsLoaded_ObservablesUpdated() = coroutineRule.runBlockingTest {
         // Create test use cases with test data
         val loadSessionsUseCase = LoadUserSessionsByDayUseCase(
             DefaultSessionAndUserEventRepository(
@@ -102,7 +108,9 @@ class ScheduleViewModelTest {
                 DefaultSessionRepository(TestDataRepository)
             )
         )
-        val loadTagsUseCase = LoadEventFiltersUseCase(TagRepository(TestDataRepository))
+
+        val loadTagsUseCase =
+            LoadEventFiltersUseCase(TagRepository(TestDataRepository), coroutineRule.testDispatcher)
         val signInDelegate = FakeSignInViewModelDelegate()
 
         // Create ViewModel with the use cases
@@ -134,7 +142,8 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun profileClicked_whileLoggedIn_showsSignOutDialog() {
+    fun profileClicked_whileLoggedIn_showsSignOutDialog() = coroutineRule.runBlockingTest {
+
         // Given a ViewModel with a signed in user
         val signInViewModelDelegate = createSignInViewModelDelegate().apply {
             injectIsSignedIn = true
@@ -150,7 +159,7 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun profileClicked_whileLoggedOut_showsSignInDialog() {
+    fun profileClicked_whileLoggedOut_showsSignInDialog() = coroutineRule.runBlockingTest {
         // Given a ViewModel with no signed in user
         val signInViewModelDelegate = createSignInViewModelDelegate().apply {
             injectIsSignedIn = false
@@ -166,7 +175,7 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun loggedInUser_setsProfileContentDescription() {
+    fun loggedInUser_setsProfileContentDescription() = coroutineRule.runBlockingTest {
         // Given a mock firebase user
         val mockUser = mock<AuthenticatedUserInfo> {
             on { getUid() }.doReturn("123")
@@ -177,7 +186,7 @@ class ScheduleViewModelTest {
         // Create ViewModel
         val observableFirebaseUserUseCase =
             FakeObserveUserAuthStateUseCase(
-                    user = Result.Success(mockUser)
+                user = Result.Success(mockUser)
             )
         val signInViewModelComponent = FirebaseSignInViewModelDelegate(
             observableFirebaseUserUseCase,
@@ -192,14 +201,14 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun noLoggedInUser_setsProfileContentDescription() {
+    fun noLoggedInUser_setsProfileContentDescription() = coroutineRule.runBlockingTest {
         // Given no firebase user
         val noFirebaseUser = null
 
         // Create ViewModel
         val observableFirebaseUserUseCase =
             FakeObserveUserAuthStateUseCase(
-                    user = Result.Success(noFirebaseUser)
+                user = Result.Success(noFirebaseUser)
             )
         val signInViewModelComponent = FirebaseSignInViewModelDelegate(
             observableFirebaseUserUseCase,
@@ -212,14 +221,14 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun errorLoggingIn_setsProfileContentDescription() {
+    fun errorLoggingIn_setsProfileContentDescription() = coroutineRule.runBlockingTest {
         // Given no firebase user
         val errorLoadingFirebaseUser = Result.Error(Exception())
 
         // Create ViewModel
         val observableFirebaseUserUseCase =
             FakeObserveUserAuthStateUseCase(
-                    user = errorLoadingFirebaseUser
+                user = errorLoadingFirebaseUser
             )
         val signInViewModelComponent = FirebaseSignInViewModelDelegate(
             observableFirebaseUserUseCase,
@@ -231,7 +240,7 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun testDataIsLoaded_Fails() {
+    fun testDataIsLoaded_Fails() = coroutineRule.runBlockingTest {
         // Create ViewModel
         val viewModel = createScheduleViewModel()
         val errorMsg = LiveDataTestUtil.getValue(viewModel.errorMessage)
@@ -241,7 +250,7 @@ class ScheduleViewModelTest {
     /** Starring **/
 
     @Test
-    fun testStarEvent() {
+    fun testStarEvent() = coroutineRule.runBlockingTest {
         // Create test use cases with test data
         val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
         val viewModel = createScheduleViewModel(snackbarMessageManager = snackbarMessageManager)
@@ -258,7 +267,7 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun testUnstarEvent() {
+    fun testUnstarEvent() = coroutineRule.runBlockingTest {
         // Create test use cases with test data
         val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
         val viewModel = createScheduleViewModel(snackbarMessageManager = snackbarMessageManager)
@@ -273,7 +282,7 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun testStar_notLoggedInUser() {
+    fun testStar_notLoggedInUser() = coroutineRule.runBlockingTest {
         // Create test use cases with test data
         val signInDelegate = FakeSignInViewModelDelegate()
         signInDelegate.injectIsSignedIn = false
@@ -296,7 +305,7 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun swipeRefresh_refreshesRemoteConfData() {
+    fun swipeRefresh_refreshesRemoteConfData() = coroutineRule.runBlockingTest {
         // Given a view model with a mocked remote data source
         val remoteDataSource = mock<ConferenceDataSource> {}
         val viewModel = createScheduleViewModel(
@@ -305,7 +314,8 @@ class ScheduleViewModelTest {
                     remoteDataSource = remoteDataSource,
                     boostrapDataSource = TestDataSource,
                     appDatabase = FakeAppDatabase()
-                )
+                ),
+                coroutineRule.testDispatcher
             )
         )
 
@@ -320,7 +330,7 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun newDataFromConfRepo_scheduleUpdated() {
+    fun newDataFromConfRepo_scheduleUpdated() = coroutineRule.runBlockingTest {
         val repo = createTestConferenceDataRepository()
 
         val loadUserSessionsByDayUseCase = createTestLoadUserSessionsByDayUseCase(
@@ -330,9 +340,6 @@ class ScheduleViewModelTest {
             loadSessionsUseCase = loadUserSessionsByDayUseCase,
             observeConferenceDataUseCase = ObserveConferenceDataUseCase(repo)
         )
-
-        // Observe viewmodel to load sessions
-        viewModel.getSessionTimeDataForDay(0).observeForever {}
 
         // Trigger a refresh on the repo
         repo.refreshCacheWithRemoteConferenceData()
@@ -347,7 +354,7 @@ class ScheduleViewModelTest {
     }
 
     private fun createTestConferenceDataRepository(): ConferenceDataRepository {
-        return object: ConferenceDataRepository(
+        return object : ConferenceDataRepository(
             remoteDataSource = TestConfDataSourceSession0(),
             boostrapDataSource = BootstrapDataSourceSession3(),
             appDatabase = FakeAppDatabase()
@@ -359,7 +366,9 @@ class ScheduleViewModelTest {
     private fun createScheduleViewModel(
         loadSessionsUseCase: LoadUserSessionsByDayUseCase =
             createTestLoadUserSessionsByDayUseCase(),
-        getConferenceDaysUseCase: GetConferenceDaysUseCase = GetConferenceDaysUseCase(TestDataRepository),
+        getConferenceDaysUseCase: GetConferenceDaysUseCase = GetConferenceDaysUseCase(
+            TestDataRepository
+        ),
         loadTagsUseCase: LoadEventFiltersUseCase = createEventFiltersExceptionUseCase(),
         signInViewModelDelegate: SignInViewModelDelegate = createSignInViewModelDelegate(),
         starEventUseCase: StarEventAndNotifyUseCase = createStarEventUseCase(),
@@ -369,13 +378,13 @@ class ScheduleViewModelTest {
         getTimeZoneUseCase: GetTimeZoneUseCase = createGetTimeZoneUseCase(),
         topicSubscriber: TopicSubscriber = mock {},
         refreshConferenceDataUseCase: RefreshConferenceDataUseCase =
-            RefreshConferenceDataUseCase(TestDataRepository),
+            RefreshConferenceDataUseCase(TestDataRepository, coroutineRule.testDispatcher),
         observeConferenceDataUseCase: ObserveConferenceDataUseCase =
             ObserveConferenceDataUseCase(TestDataRepository),
         loadSelectedFiltersUseCase: LoadSelectedFiltersUseCase =
-            LoadSelectedFiltersUseCase(FakePreferenceStorage()),
+            LoadSelectedFiltersUseCase(FakePreferenceStorage(), coroutineRule.testDispatcher),
         saveSelectedFiltersUseCase: SaveSelectedFiltersUseCase =
-            SaveSelectedFiltersUseCase(FakePreferenceStorage()),
+            SaveSelectedFiltersUseCase(FakePreferenceStorage(), coroutineRule.testDispatcher),
         analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper()
     ): ScheduleViewModel {
 
@@ -417,7 +426,9 @@ class ScheduleViewModelTest {
      * Creates a use case that throws an exception.
      */
     private fun createEventFiltersExceptionUseCase(): LoadEventFiltersUseCase {
-        return object : LoadEventFiltersUseCase(TagRepository(TestDataRepository)) {
+        return object : LoadEventFiltersUseCase(
+            TagRepository(TestDataRepository), coroutineRule.testDispatcher
+        ) {
             override fun execute(parameters: UserSessionMatcher): List<EventFilter> {
                 throw Exception("Testing exception")
             }
@@ -429,7 +440,7 @@ class ScheduleViewModelTest {
     private fun createStarEventUseCase() = FakeStarEventUseCase()
 
     private fun createGetTimeZoneUseCase() =
-        object : GetTimeZoneUseCase(FakePreferenceStorage()) {}
+        object : GetTimeZoneUseCase(FakePreferenceStorage(), coroutineRule.testDispatcher) {}
 }
 
 class TestAuthStateUserDataSource(
@@ -444,7 +455,7 @@ class TestAuthStateUserDataSource(
 }
 
 class FakeObserveUserAuthStateUseCase(
-        user: Result<AuthenticatedUserInfo?>?
+    user: Result<AuthenticatedUserInfo?>?
 ) : ObserveUserAuthStateUseCase(TestAuthStateUserDataSource(user))
 
 class TestConfDataSourceSession0 : ConferenceDataSource {

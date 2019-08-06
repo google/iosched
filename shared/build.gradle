@@ -89,6 +89,10 @@ dependencies {
     implementation "androidx.room:room-runtime:$rootProject.roomVersion"
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
 
+    // Coroutines
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutinesVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$rootProject.coroutinesVersion"
+
     // Utils
     api "com.jakewharton.timber:timber:$rootProject.timberVersion"
     implementation "com.google.code.gson:gson:$rootProject.gsonVersion"

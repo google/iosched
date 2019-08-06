@@ -21,6 +21,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
@@ -44,6 +45,7 @@ import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
+import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
@@ -55,6 +57,7 @@ import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.TagFilter
 import com.google.samples.apps.iosched.ui.schedule.filters.LoadEventFiltersUseCase
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import kotlinx.coroutines.launch
 import org.threeten.bp.ZoneId
 import timber.log.Timber
 import java.util.UUID
@@ -167,14 +170,20 @@ class ScheduleViewModel @Inject constructor(
 
         // Load EventFilters when persisted filters are loaded and when there's new conference data
         loadEventFiltersResult.addSource(loadSelectedFiltersResult) {
-            loadEventFiltersUseCase(userSessionMatcher, loadEventFiltersResult)
+            viewModelScope.launch {
+                loadEventFiltersResult.value = loadEventFiltersUseCase(userSessionMatcher)
+            }
         }
         loadEventFiltersResult.addSource(conferenceDataAvailable) {
-            loadEventFiltersUseCase(userSessionMatcher, loadEventFiltersResult)
+            viewModelScope.launch {
+                loadEventFiltersResult.value = loadEventFiltersUseCase(userSessionMatcher)
+            }
         }
 
         // Load persisted filters to the matcher
-        loadSelectedFiltersUseCase(userSessionMatcher, loadSelectedFiltersResult)
+        viewModelScope.launch {
+            loadSelectedFiltersResult.value = loadSelectedFiltersUseCase(userSessionMatcher)
+        }
 
         // Load sessions when persisted filters are loaded and when there's new conference data
         loadSessionsResult.addSource(conferenceDataAvailable) {
@@ -187,7 +196,7 @@ class ScheduleViewModel @Inject constructor(
         }
 
         eventCount = loadSessionsResult.map {
-            (it as? Result.Success)?.data?.userSessionCount ?: 0
+            it.data?.userSessionCount ?: 0
         }
 
         isLoading = loadSessionsResult.map { it == Result.Loading }
@@ -233,12 +242,12 @@ class ScheduleViewModel @Inject constructor(
 
         // Refresh the list of user sessions if the user is updated.
         loadSessionsResult.addSource(currentFirebaseUser) {
-            Timber.d("Loading user session with user ${(it as? Result.Success)?.data?.getUid()}")
+            Timber.d("Loading user session with user ${it?.data?.getUid()}")
             refreshUserSessions()
         }
 
         val showInConferenceTimeZone = preferConferenceTimeZoneResult.map {
-            (it as? Result.Success<Boolean>)?.data ?: true
+            it.data ?: true
         }
 
         timeZoneId = showInConferenceTimeZone.map { inConferenceTimeZone ->
@@ -267,9 +276,9 @@ class ScheduleViewModel @Inject constructor(
 
             sessionTimeDataDay.addSource(loadSessionsResult) {
                 val userSessions =
-                    (it as? Result.Success)?.data?.userSessionsPerDay
+                    it.data?.userSessionsPerDay
                         ?.get(getConferenceDaysUseCase()[index])
-                            ?: return@addSource
+                        ?: return@addSource
                 sessionTimeDataDay.value = sessionTimeDataDay.value?.apply {
                     list = userSessions
                 } ?: SessionTimeData(list = userSessions)
@@ -321,7 +330,9 @@ class ScheduleViewModel @Inject constructor(
             // Actually toggle the filter
             filter.isChecked.set(enabled)
             // Persist the filters
-            saveSelectedFiltersUseCase(userSessionMatcher)
+            viewModelScope.launch {
+                saveSelectedFiltersUseCase(userSessionMatcher)
+            }
             // Update observables
             updateFilterStateObservables()
             refreshUserSessions()
@@ -340,7 +351,9 @@ class ScheduleViewModel @Inject constructor(
     override fun clearFilters() {
         if (userSessionMatcher.clearAll()) {
             eventFilters.value?.forEach { it.isChecked.set(false) }
-            saveSelectedFiltersUseCase(userSessionMatcher)
+            viewModelScope.launch {
+                saveSelectedFiltersUseCase(userSessionMatcher)
+            }
             updateFilterStateObservables()
             refreshUserSessions()
 
@@ -357,7 +370,9 @@ class ScheduleViewModel @Inject constructor(
     }
 
     fun onSwipeRefresh() {
-        refreshConferenceDataUseCase(Any(), swipeRefreshResult)
+        viewModelScope.launch {
+            swipeRefreshResult.value = refreshConferenceDataUseCase(Any())
+        }
     }
 
     fun onProfileClicked() {
@@ -387,9 +402,11 @@ class ScheduleViewModel @Inject constructor(
 
     private fun refreshUserSessions() {
         Timber.d("ViewModel refreshing user sessions")
-        loadUserSessionsByDayUseCase.execute(
-            LoadUserSessionsByDayUseCaseParameters(userSessionMatcher, getUserId())
-        )
+        viewModelScope.launch {
+            loadUserSessionsByDayUseCase.execute(
+                LoadUserSessionsByDayUseCaseParameters(userSessionMatcher, getUserId())
+            )
+        }
     }
 
     override fun onStarClicked(userSession: UserSession) {
@@ -424,13 +441,17 @@ class ScheduleViewModel @Inject constructor(
                 StarEventParameter(
                     it,
                     userSession.copy(
-                        userEvent = userSession.userEvent.copy(isStarred = newIsStarredState))
+                        userEvent = userSession.userEvent.copy(isStarred = newIsStarredState)
+                    )
                 )
             )
         }
     }
+
     fun initializeTimeZone() {
-        getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
+        viewModelScope.launch {
+            preferConferenceTimeZoneResult.value = getTimeZoneUseCase(Unit)
+        }
     }
 }
 

@@ -22,6 +22,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompleteActionUseCase
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
@@ -42,11 +44,16 @@ class OnboardingViewModelTest {
     @get:Rule
     var syncTaskExecutorRule = SyncTaskExecutorRule()
 
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
+
     @Test
-    fun onGetStartedClicked_updatesPrefs() {
+    fun onGetStartedClicked_updatesPrefs() = coroutineRule.runBlockingTest {
         // Given an onboarding view model
         val prefs = mock<PreferenceStorage>()
-        val onboardingCompleteActionUseCase = OnboardingCompleteActionUseCase(prefs)
+        val onboardingCompleteActionUseCase =
+            OnboardingCompleteActionUseCase(prefs, coroutineRule.testDispatcher)
         val viewModel = OnboardingViewModel(onboardingCompleteActionUseCase)
 
         // When getStarted is called

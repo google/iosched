@@ -20,7 +20,9 @@ import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.Speaker
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
+import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 /**
@@ -28,8 +30,9 @@ import javax.inject.Inject
  * they are speaking in.
  */
 open class LoadSpeakerUseCase @Inject constructor(
-    private val conferenceDataRepository: ConferenceDataRepository
-) : UseCase<SpeakerId, LoadSpeakerUseCaseResult>() {
+    private val conferenceDataRepository: ConferenceDataRepository,
+    @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
+) : UseCase<SpeakerId, LoadSpeakerUseCaseResult>(defaultDispatcher) {
 
     override fun execute(parameters: SpeakerId): LoadSpeakerUseCaseResult {
         val speaker = conferenceDataRepository.getOfflineConferenceData().speakers

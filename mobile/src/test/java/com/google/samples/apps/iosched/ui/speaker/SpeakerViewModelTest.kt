@@ -26,7 +26,9 @@ import com.google.samples.apps.iosched.shared.data.session.DefaultSessionReposit
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCase
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakeEventActionsViewModelDelegate
@@ -49,8 +51,11 @@ class SpeakerViewModelTest {
     // Executes tasks in a synchronous [TaskScheduler]
     @get:Rule var syncTaskExecutorRule = SyncTaskExecutorRule()
 
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule var coroutineRule = MainCoroutineRule()
+
     @Test
-    fun setSpeakerId_loadsSpeaker() {
+    fun setSpeakerId_loadsSpeaker() = coroutineRule.runBlockingTest {
         // Given a speaker view model
         val viewModel = createViewModel()
 
@@ -60,6 +65,7 @@ class SpeakerViewModelTest {
         // Then the speaker is loaded
         assertEquals(TestData.speaker1, LiveDataTestUtil.getValue(viewModel.speaker))
     }
+
 //TODO: fixed with notifications CL
 //    @Test
 //    fun setSpeakerId_loadsSpeakersEvents_singleEvent() {
@@ -92,7 +98,9 @@ class SpeakerViewModelTest {
 //    }
 
     private fun createViewModel(
-        loadSpeakerUseCase: LoadSpeakerUseCase = LoadSpeakerUseCase(TestDataRepository),
+        loadSpeakerUseCase: LoadSpeakerUseCase = LoadSpeakerUseCase(
+            TestDataRepository, coroutineRule.testDispatcher
+        ),
         loadSpeakerSessionsUseCase: LoadUserSessionsUseCase = LoadUserSessionsUseCase(
             DefaultSessionAndUserEventRepository(
                 TestUserEventDataSource(),

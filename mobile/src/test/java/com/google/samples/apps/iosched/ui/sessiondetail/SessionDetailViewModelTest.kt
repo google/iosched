@@ -35,7 +35,9 @@ import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import com.google.samples.apps.iosched.shared.util.SetIntervalLiveData
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
@@ -69,6 +71,9 @@ class SessionDetailViewModelTest {
     // Allows explicit setting of "now"
     @get:Rule var fixedTimeExecutorRule = FixedTimeExecutorRule()
 
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule var coroutineRule = MainCoroutineRule()
+
     // Allows IntervalMapper to execute immediately
     @get:Rule var fakeIntervalMapperRule = FakeIntervalMapperRule()
 
@@ -88,13 +93,13 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun testAnonymous_dataReady() {
+    fun testAnonymous_dataReady() = coroutineRule.runBlockingTest {
         // Even with a session ID set, data is null if no user is available
         assertNotEquals(null, LiveDataTestUtil.getValue(viewModel.session))
     }
 
     @Test
-    fun testDataIsLoaded_authReady() {
+    fun testDataIsLoaded_authReady() = coroutineRule.runBlockingTest {
         val vm = createSessionDetailViewModelWithAuthEnabled()
         vm.setSessionId(testSession.id)
 
@@ -102,7 +107,7 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun testOnPlayVideo_createsEventForVideo() {
+    fun testOnPlayVideo_createsEventForVideo() = coroutineRule.runBlockingTest {
         val vm = createSessionDetailViewModelWithAuthEnabled()
 
         vm.setSessionId(TestData.sessionWithYoutubeUrl.id)
@@ -117,7 +122,7 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun testStartsInTenMinutes_thenHasNullTimeUntilStart() {
+    fun testStartsInTenMinutes_thenHasNullTimeUntilStart() = coroutineRule.runBlockingTest {
         val vm = createSessionDetailViewModelWithAuthEnabled()
         fixedTimeExecutorRule.time = testSession.startTime.minusMinutes(10).toInstant()
         forceTimeUntilStartIntervalUpdate(vm)
@@ -144,7 +149,7 @@ class SessionDetailViewModelTest {
 //    }
 
     @Test
-    fun testStartsIn0Minutes_thenHasNullTimeUntilStart() {
+    fun testStartsIn0Minutes_thenHasNullTimeUntilStart() = coroutineRule.runBlockingTest {
         val vm = createSessionDetailViewModelWithAuthEnabled()
         fixedTimeExecutorRule.time = testSession.startTime.minusSeconds(30).toInstant()
         forceTimeUntilStartIntervalUpdate(vm)
@@ -152,7 +157,7 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun testStarts10MinutesAgo_thenHasNullTimeUntilStart() {
+    fun testStarts10MinutesAgo_thenHasNullTimeUntilStart() = coroutineRule.runBlockingTest {
         val vm = createSessionDetailViewModelWithAuthEnabled()
         fixedTimeExecutorRule.time = testSession.startTime.plusMinutes(10).toInstant()
         forceTimeUntilStartIntervalUpdate(vm)
@@ -196,7 +201,7 @@ class SessionDetailViewModelTest {
 //    }
 
     @Test
-    fun testOnPlayVideo_doesNotCreateEventForVideo() {
+    fun testOnPlayVideo_doesNotCreateEventForVideo() = coroutineRule.runBlockingTest {
         val sessionWithoutYoutubeUrl = testSession
         val vm = createSessionDetailViewModelWithAuthEnabled()
 
@@ -274,5 +279,5 @@ class SessionDetailViewModelTest {
     }
 
     private fun createGetTimeZoneUseCase() =
-        object : GetTimeZoneUseCase(FakePreferenceStorage()) {}
+        object : GetTimeZoneUseCase(FakePreferenceStorage(), coroutineRule.testDispatcher) {}
 }

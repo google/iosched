@@ -20,29 +20,27 @@ import android.net.wifi.WifiConfiguration
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.logistics.LoadWifiInfoUseCase
 import com.google.samples.apps.iosched.shared.result.Event
-import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
-import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.wifi.WifiInstaller
 import javax.inject.Inject
 
 class EventInfoViewModel @Inject constructor(
     loadWifiInfoUseCase: LoadWifiInfoUseCase,
     private val wifiInstaller: WifiInstaller?,
-    signInViewModelDelegate: SignInViewModelDelegate,
     private val analyticsHelper: AnalyticsHelper
 ) : ViewModel() {
 
-    private val _wifiConfig = MutableLiveData<Result<ConferenceWifiInfo>>()
-    val wifiSsid: LiveData<String?>
-    val wifiPassword: LiveData<String?>
+    private val _wifiConfig = liveData { emit(loadWifiInfoUseCase(Unit)) }
+    val wifiSsid = _wifiConfig.map { it.data?.ssid }
+    val wifiPassword = _wifiConfig.map { it.data?.password }
 
     private val _snackbarMessage = MutableLiveData<Event<SnackbarMessage>>()
     val snackBarMessage: LiveData<Event<SnackbarMessage>>
@@ -56,16 +54,6 @@ class EventInfoViewModel @Inject constructor(
     private val _showWifi = MutableLiveData<Boolean>().apply { value = false }
     val showWifi: LiveData<Boolean>
         get() = _showWifi
-
-    init {
-        loadWifiInfoUseCase(Unit, _wifiConfig)
-        wifiSsid = _wifiConfig.map {
-            (it as? Result.Success)?.data?.ssid
-        }
-        wifiPassword = _wifiConfig.map {
-            (it as? Result.Success)?.data?.password
-        }
-    }
 
     fun onWifiConnect() {
         val ssid = wifiSsid.value

@@ -20,6 +20,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
@@ -34,6 +35,7 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.ui.search.SearchResultType.SESSION
 import com.google.samples.apps.iosched.ui.search.SearchResultType.SPEAKER
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -55,44 +57,11 @@ class SearchViewModel @Inject constructor(
     private val _navigateToSpeakerAction = MutableLiveData<Event<SpeakerId>>()
     val navigateToSpeakerAction: LiveData<Event<SpeakerId>> = _navigateToSpeakerAction
 
-    private val loadSearchResults = MutableLiveData<Result<List<Searchable>>>()
-
     private val _searchResults = MediatorLiveData<List<SearchResult>>()
     val searchResults: LiveData<List<SearchResult>> = _searchResults
 
     private val _isEmpty = MediatorLiveData<Boolean>()
     val isEmpty: LiveData<Boolean> = _isEmpty
-
-    init {
-        _searchResults.addSource(loadSearchResults) {
-            val result = (it as? Result.Success)?.data ?: emptyList()
-            _searchResults.value = result.map { searched ->
-                when (searched) {
-                    is SearchedSession -> {
-                        val session = searched.session
-                        SearchResult(
-                            session.title,
-                            session.type.displayName,
-                            SESSION,
-                            session.id
-                        )
-                    }
-                    is SearchedSpeaker -> {
-                        val speaker = searched.speaker
-                        SearchResult(
-                            speaker.name,
-                            "Speaker",
-                            SPEAKER,
-                            speaker.id
-                        )
-                    }
-                }
-            }
-        }
-        _isEmpty.addSource(loadSearchResults) {
-            _isEmpty.value = it.successOr(null).isNullOrEmpty()
-        }
-    }
 
     override fun openSearchResult(searchResult: SearchResult) {
         when (searchResult.type) {
@@ -123,11 +92,43 @@ class SearchViewModel @Inject constructor(
     private fun executeSearch(query: String) {
         if (searchUsingRoomFeatureEnabled) {
             Timber.d("Searching for query using Room: $query")
-            loadDbSearchResultsUseCase(query, loadSearchResults)
+            viewModelScope.launch {
+                processSearchResult(loadDbSearchResultsUseCase(query))
+            }
         } else {
             Timber.d("Searching for query without using Room: $query")
-            loadSearchResultsUseCase(query, loadSearchResults)
+            viewModelScope.launch {
+                processSearchResult(loadSearchResultsUseCase(query))
+            }
         }
+    }
+
+    private fun processSearchResult(result: Result<List<Searchable>>) {
+        val searchResults = (result as? Result.Success)?.data ?: emptyList()
+        _searchResults.value = searchResults.map { searched ->
+            when (searched) {
+                is SearchedSession -> {
+                    val session = searched.session
+                    SearchResult(
+                        session.title,
+                        session.type.displayName,
+                        SESSION,
+                        session.id
+                    )
+                }
+                is SearchedSpeaker -> {
+                    val speaker = searched.speaker
+                    SearchResult(
+                        speaker.name,
+                        "Speaker",
+                        SPEAKER,
+                        speaker.id
+                    )
+                }
+            }
+        }
+
+        _isEmpty.value = result.successOr(null).isNullOrEmpty()
     }
 
     private fun onQueryCleared() {

@@ -18,10 +18,14 @@ package com.google.samples.apps.iosched.shared.domain.tags
 
 import com.google.samples.apps.iosched.model.Tag
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
+import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
-open class LoadTagsByCategoryUseCase @Inject constructor(repository: TagRepository) :
-    LoadTagsUseCase(repository) {
+open class LoadTagsByCategoryUseCase @Inject constructor(
+    repository: TagRepository,
+    @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
+) : LoadTagsUseCase(repository, defaultDispatcher) {
 
     override fun execute(parameters: Unit): List<Tag> {
         return super.execute(parameters)

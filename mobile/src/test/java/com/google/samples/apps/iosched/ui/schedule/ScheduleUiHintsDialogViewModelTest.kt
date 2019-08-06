@@ -19,6 +19,8 @@ package com.google.samples.apps.iosched.ui.schedule
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShowActionUseCase
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
@@ -38,10 +40,14 @@ class ScheduleUiHintsDialogViewModelTest {
     @get:Rule
     var syncTaskExecutorRule = SyncTaskExecutorRule()
 
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
+
     @Test
-    fun dismissed_navigateUiHintsShowAction() {
+    fun dismissed_navigateUiHintsShowAction() = coroutineRule.runBlockingTest {
         val mockPrefs = mock<PreferenceStorage> {}
-        val useCase = ScheduleUiHintsShowActionUseCase(mockPrefs)
+        val useCase = ScheduleUiHintsShowActionUseCase(mockPrefs, coroutineRule.testDispatcher)
         val viewModel = ScheduleUiHintsDialogViewModel(useCase)
 
         viewModel.onDismissed()

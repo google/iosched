@@ -18,14 +18,17 @@ package com.google.samples.apps.iosched.shared.domain.logistics
 
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
+import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 open class LoadWifiInfoUseCase @Inject constructor(
-    private val logisticsRepository: LogisticsRepository
-) : UseCase<Unit, ConferenceWifiInfo>() {
+    private val logisticsRepository: LogisticsRepository,
+    @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
+) : UseCase<Unit, ConferenceWifiInfo>(defaultDispatcher) {
 
     override fun execute(parameters: Unit): ConferenceWifiInfo {
         return logisticsRepository.getWifiInfo()

@@ -19,12 +19,15 @@ package com.google.samples.apps.iosched.shared.domain.sessions
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 open class LoadSessionSyncUseCase @Inject constructor(
-        private val repository: SessionRepository
-) : UseCase<SessionId, Session>() {
+    private val repository: SessionRepository,
+    @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
+) : UseCase<SessionId, Session>(defaultDispatcher) {
 
     override fun execute(parameters: SessionId): Session {
         return repository.getSession(parameters)

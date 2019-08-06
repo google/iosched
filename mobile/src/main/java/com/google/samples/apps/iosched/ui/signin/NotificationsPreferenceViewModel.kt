@@ -19,9 +19,11 @@ package com.google.samples.apps.iosched.ui.signin
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefSaveActionUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefShownActionUseCase
 import com.google.samples.apps.iosched.shared.result.Event
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -42,7 +44,9 @@ class NotificationsPreferenceViewModel @Inject constructor(
         get() = _dismissEvent
 
     fun onYesClicked() {
-        notificationsPrefSaveActionUseCase(true)
+        viewModelScope.launch {
+            notificationsPrefSaveActionUseCase(true)
+        }
         _dismissEvent.value = Event(Unit)
     }
 
@@ -50,11 +54,15 @@ class NotificationsPreferenceViewModel @Inject constructor(
         _installAppEvent.value = Event(Unit)
     }
     fun onNoClicked() {
-        notificationsPrefSaveActionUseCase(false)
+        viewModelScope.launch {
+            notificationsPrefSaveActionUseCase(false)
+        }
         _dismissEvent.value = Event(Unit)
     }
 
     fun onDismissed() {
-        notificationsPrefShownActionUseCase(true)
+        viewModelScope.launch {
+            notificationsPrefShownActionUseCase(true)
+        }
     }
 }
