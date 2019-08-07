@@ -17,23 +17,26 @@
 package com.google.samples.apps.iosched.shared.data.userevent
 
 import androidx.annotation.MainThread
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Tasks
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.result.Result
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 /**
  * The data source for user data stored in firestore. It observes user data and also updates
@@ -50,18 +53,8 @@ class FirestoreUserEventDataSource @Inject constructor(
         private const val USERS_COLLECTION = "users"
         private const val EVENTS_COLLECTION = "events"
         internal const val ID = "id"
-        internal const val START_TIME = "startTime"
-        internal const val END_TIME = "endTime"
         internal const val IS_STARRED = "isStarred"
     }
-
-    // Null if the listener is not yet added
-    private var eventsChangedListenerSubscription: ListenerRegistration? = null
-    private var eventChangedListenerSubscription: ListenerRegistration? = null
-
-    // Observable events
-    private val resultEvents = MutableLiveData<UserEventsResult>()
-    private val resultSingleEvent = MutableLiveData<UserEventResult>()
 
     /**
      * Asynchronous method to get the user events.
@@ -69,26 +62,73 @@ class FirestoreUserEventDataSource @Inject constructor(
      * This method generates important messages to the user if a reservation is confirmed or
      * waitlisted.
      */
-    override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {
-        if (userId.isEmpty()) {
-            resultEvents.postValue(UserEventsResult(emptyList()))
-            return resultEvents
-        }
+    override fun getObservableUserEvents(userId: String): Flow<UserEventsResult> {
+        return if (userId.isEmpty()) {
+            flow { emit(UserEventsResult(emptyList())) }
+        } else {
+            (channelFlow {
+                val eventsCollection = firestore.collection(USERS_COLLECTION)
+                    .document(userId)
+                    .collection(EVENTS_COLLECTION)
 
-        registerListenerForEvents(resultEvents, userId)
-        return resultEvents
+                // TODO: Flow refactor check addSnapshotListener documentation (null value?)
+                val subscription = eventsCollection.addSnapshotListener { snapshot, _ ->
+                    if (snapshot == null) {
+                        return@addSnapshotListener
+                    }
+
+                    Timber.d("Events changes detected: ${snapshot.documentChanges.size}")
+
+                    // Generate important user messages, like new reservations, if any.
+                    val userEventsResult = UserEventsResult(
+                        userEvents = snapshot.documents.map { parseUserEvent(it) }
+                    )
+                    offer(userEventsResult)
+                }
+
+                // The callback inside awaitClose will be executed when the channel is
+                // either closed or cancelled
+                awaitClose { subscription.remove() }
+            }).flowOn(Dispatchers.Main)
+        }
     }
 
-    override fun getObservableUserEvent(
-        userId: String,
-        eventId: SessionId
-    ): LiveData<UserEventResult> {
-        if (userId.isEmpty()) {
-            resultSingleEvent.postValue(UserEventResult(userEvent = null))
-            return resultSingleEvent
+    override fun getObservableUserEvent(userId: String, eventId: SessionId): Flow<UserEventResult> {
+        return if (userId.isEmpty()) {
+            flow {
+                emit(UserEventResult(userEvent = null))
+            }
+        } else {
+            (channelFlow<UserEventResult> {
+
+                val eventDocument = firestore.collection(USERS_COLLECTION)
+                    .document(userId)
+                    .collection(EVENTS_COLLECTION)
+                    .document(eventId)
+
+                val subscription = eventDocument.addSnapshotListener { snapshot, _ ->
+                    if (snapshot == null) {
+                        return@addSnapshotListener
+                    }
+
+                    Timber.d("Event changes detected on session: $eventId")
+                    val userEvent = if (snapshot.exists()) {
+                        parseUserEvent(snapshot)
+                    } else {
+                        null
+                    }
+
+                    val userEventResult = UserEventResult(
+                        userEvent = userEvent
+                    )
+                    channel.offer(userEventResult)
+                }
+
+                // The callback inside awaitClose will be executed when the channel is
+                // either closed or cancelled
+                awaitClose { subscription.remove() }
+            }).flowOn(Dispatchers.Main)
         }
-        registerListenerForSingleEvent(eventId, userId)
-        return resultSingleEvent
     }
 
     @MainThread // Firestore limitation b/116784117
@@ -110,125 +150,55 @@ class FirestoreUserEventDataSource @Inject constructor(
         }
 
         val task = firestore.collection(USERS_COLLECTION)
-                .document(userId)
-                .collection(EVENTS_COLLECTION)
-                .document(eventId).get()
+            .document(userId)
+            .collection(EVENTS_COLLECTION)
+            .document(eventId).get()
         val snapshot = Tasks.await(task, 20, TimeUnit.SECONDS)
         return parseUserEvent(snapshot)
     }
 
-    private fun registerListenerForEvents(
-        result: MutableLiveData<UserEventsResult>,
-        userId: String
-    ) {
-        val eventsListener: (QuerySnapshot?, FirebaseFirestoreException?) -> Unit =
-            listener@{ snapshot, _ ->
-                snapshot ?: return@listener
-
-                DefaultScheduler.execute {
-                    Timber.d("Events changes detected: ${snapshot.documentChanges.size}")
-
-                    // Generate important user messages, like new reservations, if any.
-                    val userEventsResult = UserEventsResult(
-                        userEvents = snapshot.documents.map { parseUserEvent(it) }
-                    )
-                    result.postValue(userEventsResult)
-                }
-            }
-
-        val eventsCollection = firestore.collection(USERS_COLLECTION)
-            .document(userId)
-            .collection(EVENTS_COLLECTION)
-
-        eventsChangedListenerSubscription?.remove() // Remove in case userId changes.
-        // Set a value in case there are no changes to the data on start
-        // This needs to be set to avoid that the upper layer LiveData detects the old data as a
-        // new data.
-        // When addSource was called in DefaultSessionAndUserEventRepository#getObservableUserEvents
-        // the old data was considered as a new data even though it's for another user's data
-        result.postValue(null)
-        eventsChangedListenerSubscription = eventsCollection.addSnapshotListener(eventsListener)
-    }
-
-    private fun registerListenerForSingleEvent(
-        sessionId: SessionId,
-        userId: String
-    ) {
-        val result = resultSingleEvent
-
-        val singleEventListener: (DocumentSnapshot?, FirebaseFirestoreException?) -> Unit =
-            listener@{ snapshot, _ ->
-                snapshot ?: return@listener
-
-                DefaultScheduler.execute {
-                    Timber.d("Event changes detected on session: $sessionId")
-
-                    val userEvent = if (snapshot.exists()) {
-                        parseUserEvent(snapshot)
-                    } else {
-                        null
-                    }
-
-                    val userEventResult = UserEventResult(
-                        userEvent = userEvent
-                    )
-                    result.postValue(userEventResult)
-                }
-            }
-
-        val eventDocument = firestore.collection(USERS_COLLECTION)
-            .document(userId)
-            .collection(EVENTS_COLLECTION)
-            .document(sessionId)
-
-        eventChangedListenerSubscription?.remove() // Remove in case userId changes.
-        resultSingleEvent.value = null
-        eventChangedListenerSubscription = eventDocument.addSnapshotListener(singleEventListener)
-    }
-
-    override fun clearSingleEventSubscriptions() {
-        Timber.d("Firestore Event data source: Clearing subscriptions")
-        resultSingleEvent.value = null
-        eventChangedListenerSubscription?.remove() // Remove to avoid leaks
-    }
-
-    /** Firestore writes **/
-
     /**
-     * Stars or unstars an event.
-     *
-     * @returns a result via a LiveData.
+     * Stars or unstars an event. This has to be run on the Main thread because of Firestore
+     * limitations.
      */
-    override fun starEvent(
+    override suspend fun starEvent(
         userId: String,
         userEvent: UserEvent
-    ): LiveData<Result<StarUpdatedStatus>> {
-        val result = MutableLiveData<Result<StarUpdatedStatus>>()
+    ): Result<StarUpdatedStatus> = withContext(Dispatchers.Main) {
+        // The suspendCancellableCoroutine method suspends a coroutine manually. With the
+        // continuation object you receive in the lambda, you can resume the coroutine
+        // after the work is done.
+        suspendCancellableCoroutine<Result<StarUpdatedStatus>> { continuation ->
 
-        val data = mapOf(
-            ID to userEvent.id,
-            IS_STARRED to userEvent.isStarred
-        )
+            val data = mapOf(
+                ID to userEvent.id,
+                IS_STARRED to userEvent.isStarred
+            )
 
-        firestore.collection(USERS_COLLECTION)
-            .document(userId)
-            .collection(EVENTS_COLLECTION)
-            .document(userEvent.id).set(data, SetOptions.merge()).addOnCompleteListener {
-                if (it.isSuccessful) {
-                    result.postValue(
-                        Result.Success(
-                            if (userEvent.isStarred) StarUpdatedStatus.STARRED
-                            else StarUpdatedStatus.UNSTARRED
+            firestore.collection(USERS_COLLECTION)
+                .document(userId)
+                .collection(EVENTS_COLLECTION)
+                .document(userEvent.id).set(data, SetOptions.merge())
+                .addOnCompleteListener {
+                    if (!continuation.isActive) return@addOnCompleteListener
+                    if (it.isSuccessful) {
+                        continuation.resume(
+                            Result.Success(
+                                if (userEvent.isStarred) StarUpdatedStatus.STARRED
+                                else StarUpdatedStatus.UNSTARRED
+                            )
                         )
-                    )
-                } else {
-                    result.postValue(
-                        Result.Error(
-                            it.exception ?: RuntimeException("Error updating star.")
+                    } else {
+                        continuation.resume(
+                            Result.Error(
+                                it.exception ?: RuntimeException("Error updating star.")
+                            )
                         )
-                    )
+                    }
+                }.addOnFailureListener {
+                    if (!continuation.isActive) return@addOnFailureListener
+                    continuation.resumeWithException(it)
                 }
-            }
-        return result
+        }
     }
 }

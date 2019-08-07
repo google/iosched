@@ -24,6 +24,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.samples.apps.iosched.databinding.DialogSignInBinding
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
@@ -34,6 +35,8 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -75,10 +78,11 @@ class SignInDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInject
             if (request.peekContent() == RequestSignIn) {
                 request.getContentIfNotHandled()
                 activity?.let {
-                    signInHandler.makeSignInIntent().observe(this, Observer {
-                        startActivityForResult(it, SIGN_IN_ACTIVITY_REQUEST_CODE)
+                    lifecycleScope.launch {
+                        val result = signInHandler.makeSignInIntent().first()
+                        startActivityForResult(result, SIGN_IN_ACTIVITY_REQUEST_CODE)
                         dismiss()
-                    })
+                    }
                 }
             }
         })

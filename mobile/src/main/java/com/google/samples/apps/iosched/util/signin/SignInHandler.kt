@@ -19,12 +19,13 @@ package com.google.samples.apps.iosched.util.signin
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 /**
  * Element in the presentation layer that interacts with the Auth provider (Firebase in this case).
@@ -33,7 +34,7 @@ import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
  */
 interface SignInHandler {
 
-    fun makeSignInIntent(): LiveData<Intent?>
+    fun makeSignInIntent(): Flow<Intent?>
 
     fun signIn(resultCode: Int, data: Intent?, onComplete: (SignInResult) -> Unit)
 
@@ -50,31 +51,26 @@ class DefaultSignInHandler : SignInHandler {
      *
      * To observe the result you must pass this to startActivityForResult.
      */
-    override fun makeSignInIntent(): LiveData<Intent?> {
+    override fun makeSignInIntent(): Flow<Intent?> = (flow {
 
-        val result = MutableLiveData<Intent?>()
-
-        // Run on background because AuthUI does I/O operations.
-        DefaultScheduler.execute {
-            // this is mutable because FirebaseUI requires it be mutable
-            val providers = mutableListOf(
-                AuthUI.IdpConfig.GoogleBuilder().setSignInOptions(
-                    GoogleSignInOptions.Builder()
-                        .requestId()
-                        .requestEmail()
-                        .build()
-                ).build()
-            )
-
-            result.postValue(
-                AuthUI.getInstance()
-                    .createSignInIntentBuilder()
-                    .setAvailableProviders(providers)
+        // this is mutable because FirebaseUI requires it be mutable
+        val providers = mutableListOf(
+            AuthUI.IdpConfig.GoogleBuilder().setSignInOptions(
+                GoogleSignInOptions.Builder()
+                    .requestId()
+                    .requestEmail()
                     .build()
-            )
-        }
-        return result
-    }
+            ).build()
+        )
+
+        emit(
+            AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(providers)
+                .build()
+        )
+        // Run on background because AuthUI does I/O operations
+    }).flowOn(Dispatchers.Default)
 
     /**
      * Parse the response from a sign in request, helper to call from onActivityResult.

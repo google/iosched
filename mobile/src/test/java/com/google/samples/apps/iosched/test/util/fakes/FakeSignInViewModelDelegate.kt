@@ -25,10 +25,16 @@ import com.google.samples.apps.iosched.ui.signin.SignInEvent
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 
 class FakeSignInViewModelDelegate : SignInViewModelDelegate {
 
-    override val currentFirebaseUser = MutableLiveData<Result<AuthenticatedUserInfo>?>()
+    private var lastUserId: String? = null
+    private val userChannel = ConflatedBroadcastChannel<Result<AuthenticatedUserInfo>>()
+
+    override val currentFirebaseUser: Flow<Result<AuthenticatedUserInfo>> = userChannel.asFlow()
     override val currentUserImageUri = MutableLiveData<Uri?>()
     override val performSignInEvent = MutableLiveData<Event<SignInEvent>>()
     override val shouldShowNotificationsPrefAction = MutableLiveData<Event<Boolean>>()
@@ -41,7 +47,7 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
 
     override fun observeSignedInUser() = TODO("Not implemented")
 
-    override fun emitSignInRequest() {
+    override suspend fun emitSignInRequest() {
         signInRequestsEmitted++
     }
 
@@ -49,10 +55,7 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
         signOutRequestsEmitted++
     }
 
-    override fun getUserId(): String? {
-        val user = currentFirebaseUser.value
-        return (user as? Result.Success)?.data?.getUid()
-    }
+    override fun getUserId() = lastUserId
 
     fun loadUser(id: String) {
         val mockUser = mock<AuthenticatedUserInfo> {
@@ -60,6 +63,11 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
             on { getPhotoUrl() }.doReturn(mock<Uri> {})
             on { isSignedIn() }.doReturn(true)
         }
-        currentFirebaseUser.postValue(Result.Success(mockUser))
+        lastUserId = id
+        userChannel.offer(Result.Success(mockUser))
+    }
+
+    fun closeChannel() {
+        userChannel.close()
     }
 }

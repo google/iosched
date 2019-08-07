@@ -18,47 +18,32 @@ package com.google.samples.apps.iosched.shared.domain.auth
 
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
-import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
+import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
+import com.google.samples.apps.iosched.shared.domain.FlowUseCase
 import com.google.samples.apps.iosched.shared.result.Result
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * A [MediatorUseCase] that observes a data source to generate an [AuthenticatedUserInfo].
+ * A [FlowUseCase] that observes a data source to generate an [AuthenticatedUserInfo].
  *
  * [AuthStateUserDataSource] provides general user information, like user IDs.
  */
 @Singleton
 open class ObserveUserAuthStateUseCase @Inject constructor(
-    private val authStateUserDataSource: AuthStateUserDataSource
-) : MediatorUseCase<Any, AuthenticatedUserInfo>() {
+    private val authStateUserDataSource: AuthStateUserDataSource,
+    @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
+) : FlowUseCase<Any, AuthenticatedUserInfo?>(defaultDispatcher) {
 
-    private val currentFirebaseUserObservable = authStateUserDataSource.getBasicUserInfo()
-
-    init {
-
-        // If the Firebase user changes, update the result
-        result.addSource(currentFirebaseUserObservable) {
-            val userResult = currentFirebaseUserObservable.value
-
-            (userResult as? Result.Success)?.data?.let {
-                result.postValue(Result.Success(it))
-            }
-
-            // Sign out
-            if (userResult is Result.Success && userResult.data?.isSignedIn() == false) {
-                result.postValue(null)
-            }
-
-            // Error
-            if (userResult is Result.Error) {
-                result.postValue(Result.Error(Exception("FirebaseAuth error")))
+    override fun execute(parameters: Any): Flow<Result<AuthenticatedUserInfo?>> =
+        authStateUserDataSource.getBasicUserInfo().map { userResult ->
+            if (userResult is Result.Success) {
+                Result.Success(userResult.data)
+            } else {
+                Result.Error(Exception("FirebaseAuth error"))
             }
         }
-    }
-
-    override fun execute(parameters: Any) {
-        // Start listening to the [AuthStateUserDataSource] for changes in auth state.
-        authStateUserDataSource.startListening()
-    }
 }

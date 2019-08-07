@@ -28,6 +28,10 @@ import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.UUID
 import javax.inject.Inject
@@ -47,6 +51,8 @@ class DefaultEventActionsViewModelDelegate @Inject constructor(
     private val starEventUseCase: StarEventAndNotifyUseCase,
     private val snackbarMessageManager: SnackbarMessageManager
 ) : EventActionsViewModelDelegate, SignInViewModelDelegate by signInViewModelDelegate {
+
+    private val delegateScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     private val _navigateToEventAction = MutableLiveData<Event<SessionId>>()
     override val navigateToEventAction: LiveData<Event<SessionId>>
@@ -86,13 +92,15 @@ class DefaultEventActionsViewModelDelegate @Inject constructor(
             )
         )
 
-        getUserId()?.let {
-            starEventUseCase.execute(
-                StarEventParameter(
-                    it, userSession.copy(
-                        userEvent = userSession.userEvent.copy(isStarred = newIsStarredState))
+        delegateScope.launch {
+            getUserId()?.let {
+                starEventUseCase.invoke(
+                    StarEventParameter(
+                        it, userSession.copy(
+                            userEvent = userSession.userEvent.copy(isStarred = newIsStarredState))
+                    )
                 )
-            )
+            }
         }
     }
 }

@@ -16,21 +16,24 @@
 
 package com.google.samples.apps.iosched.shared.domain
 
-import androidx.lifecycle.MediatorLiveData
 import com.google.samples.apps.iosched.shared.result.Result
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
 
 /**
  * Executes business logic in its execute method and keep posting updates to the result as
  * [Result<R>].
  * Handling an exception (emit [Result.Error] to the result) is the subclasses's responsibility.
  */
-abstract class MediatorUseCase<in P, R> {
-    protected val result = MediatorLiveData<Result<R>>()
+abstract class FlowUseCase<in P, R>(private val coroutineDispatcher: CoroutineDispatcher) {
 
-    // Make this as open so that mock instances can mock this method
-    open fun observe(): MediatorLiveData<Result<R>> {
-        return result
+    operator fun invoke(parameters: P): Flow<Result<R>> {
+        return execute(parameters)
+            .catch { e -> emit(Result.Error(Exception(e))) }
+            .flowOn(coroutineDispatcher)
     }
 
-    abstract fun execute(parameters: P)
+    abstract fun execute(parameters: P): Flow<Result<R>>
 }

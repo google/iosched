@@ -22,6 +22,7 @@ import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
@@ -31,6 +32,7 @@ import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
+import kotlinx.coroutines.flow.first
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -53,23 +55,16 @@ class FirebaseSignInViewModelDelegateTest {
     @Test
     fun testSignedOut() = coroutineRule.runBlockingTest {
         val subject = FirebaseSignInViewModelDelegate(
-            FakeObserveUserAuthStateUseCase(
-                user = Result.Success(null)
-            ),
-            createNotificationsPrefIsShownUseCase()
+            FakeObserveUserAuthStateUseCase(Result.Success(null), coroutineRule.testDispatcher),
+            createNotificationsPrefIsShownUseCase(),
+            coroutineRule.testDispatcher,
+            coroutineRule.testDispatcher
         )
 
-        val currentFirebaseUser = LiveDataTestUtil.getValue(
-            subject.currentFirebaseUser
-        ) as Result.Success<AuthenticatedUserInfo>?
-        assertEquals(
-            null,
-            currentFirebaseUser?.data?.getUid()
-        )
-        assertEquals(
-            null,
-            LiveDataTestUtil.getValue(subject.currentUserImageUri)
-        )
+        val currentFirebaseUser = subject.currentFirebaseUser.first()
+
+        assertEquals(null, currentFirebaseUser.data?.getUid())
+        assertEquals(null, LiveDataTestUtil.getValue(subject.currentUserImageUri))
         assertFalse(subject.isSignedIn())
     }
 
@@ -82,20 +77,16 @@ class FirebaseSignInViewModelDelegateTest {
             on { isSignedIn() }.doReturn(true)
         }
         val subject = FirebaseSignInViewModelDelegate(
-            FakeObserveUserAuthStateUseCase(
-                user = Result.Success(user)
-            ),
-            createNotificationsPrefIsShownUseCase()
+            FakeObserveUserAuthStateUseCase(Result.Success(user), coroutineRule.testDispatcher),
+            createNotificationsPrefIsShownUseCase(),
+            coroutineRule.testDispatcher,
+            coroutineRule.testDispatcher
         )
 
-        assertEquals(
-            user.getUid(),
-            (LiveDataTestUtil.getValue(subject.currentFirebaseUser) as Result.Success).data.getUid()
-        )
-        assertEquals(
-            user.getPhotoUrl(),
-            LiveDataTestUtil.getValue(subject.currentUserImageUri)
-        )
+        val currentFirebaseUser = subject.currentFirebaseUser.first()
+
+        assertEquals(user.getUid(), currentFirebaseUser.data?.getUid())
+        assertEquals(user.getPhotoUrl(), LiveDataTestUtil.getValue(subject.currentUserImageUri))
         assertTrue(subject.isSignedIn())
     }
 
@@ -108,30 +99,26 @@ class FirebaseSignInViewModelDelegateTest {
             on { isSignedIn() }.doReturn(true)
         }
         val subject = FirebaseSignInViewModelDelegate(
-            FakeObserveUserAuthStateUseCase(
-                user = Result.Success(user)
-            ),
-            createNotificationsPrefIsShownUseCase()
+            FakeObserveUserAuthStateUseCase(Result.Success(user), coroutineRule.testDispatcher),
+            createNotificationsPrefIsShownUseCase(),
+            coroutineRule.testDispatcher,
+            coroutineRule.testDispatcher
         )
 
-        assertEquals(
-            user.getUid(),
-            (LiveDataTestUtil.getValue(subject.currentFirebaseUser) as Result.Success).data.getUid()
-        )
-        assertEquals(
-            user.getPhotoUrl(),
-            LiveDataTestUtil.getValue(subject.currentUserImageUri)
-        )
+        val currentFirebaseUser = subject.currentFirebaseUser.first()
+
+        assertEquals(user.getUid(), currentFirebaseUser.data?.getUid())
+        assertEquals(user.getPhotoUrl(), LiveDataTestUtil.getValue(subject.currentUserImageUri))
         assertTrue(subject.isSignedIn())
     }
 
     @Test
     fun testPostSignIn() = coroutineRule.runBlockingTest {
         val subject = FirebaseSignInViewModelDelegate(
-            FakeObserveUserAuthStateUseCase(
-                user = Result.Success(null)
-            ),
-            createNotificationsPrefIsShownUseCase()
+            FakeObserveUserAuthStateUseCase(Result.Success(null), coroutineRule.testDispatcher),
+            createNotificationsPrefIsShownUseCase(),
+            coroutineRule.testDispatcher,
+            coroutineRule.testDispatcher
         )
 
         subject.emitSignInRequest()
@@ -146,10 +133,10 @@ class FirebaseSignInViewModelDelegateTest {
     @Test
     fun testPostSignOut() = coroutineRule.runBlockingTest {
         val subject = FirebaseSignInViewModelDelegate(
-            FakeObserveUserAuthStateUseCase(
-                user = Result.Success(null)
-            ),
-            createNotificationsPrefIsShownUseCase()
+            FakeObserveUserAuthStateUseCase(Result.Success(null), coroutineRule.testDispatcher),
+            createNotificationsPrefIsShownUseCase(),
+            coroutineRule.testDispatcher,
+            coroutineRule.testDispatcher
         )
 
         subject.emitSignOutRequest()

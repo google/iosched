@@ -50,6 +50,7 @@ import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNull
@@ -81,6 +82,7 @@ class SessionDetailViewModelTest {
     private val testSession = TestData.session0
 
     private lateinit var mockNetworkUtils: NetworkUtils
+    private lateinit var viewModelDelegate: FakeSignInViewModelDelegate
 
     @Before
     fun setup() {
@@ -88,8 +90,14 @@ class SessionDetailViewModelTest {
             on { hasNetworkConnection() }.doReturn(true)
         }
 
-        viewModel = createSessionDetailViewModel()
+        viewModelDelegate = FakeSignInViewModelDelegate()
+        viewModel = createSessionDetailViewModel(viewModelDelegate)
         viewModel.setSessionId(testSession.id)
+    }
+
+    @After
+    fun tearDown() {
+        viewModelDelegate.closeChannel()
     }
 
     @Test
@@ -100,7 +108,7 @@ class SessionDetailViewModelTest {
 
     @Test
     fun testDataIsLoaded_authReady() = coroutineRule.runBlockingTest {
-        val vm = createSessionDetailViewModelWithAuthEnabled()
+        val vm = createSessionDetailViewModelWithAuthEnabled(viewModelDelegate)
         vm.setSessionId(testSession.id)
 
         assertEquals(testSession, LiveDataTestUtil.getValue(vm.session))
@@ -108,7 +116,7 @@ class SessionDetailViewModelTest {
 
     @Test
     fun testOnPlayVideo_createsEventForVideo() = coroutineRule.runBlockingTest {
-        val vm = createSessionDetailViewModelWithAuthEnabled()
+        val vm = createSessionDetailViewModelWithAuthEnabled(viewModelDelegate)
 
         vm.setSessionId(TestData.sessionWithYoutubeUrl.id)
 
@@ -123,7 +131,7 @@ class SessionDetailViewModelTest {
 
     @Test
     fun testStartsInTenMinutes_thenHasNullTimeUntilStart() = coroutineRule.runBlockingTest {
-        val vm = createSessionDetailViewModelWithAuthEnabled()
+        val vm = createSessionDetailViewModelWithAuthEnabled(viewModelDelegate)
         fixedTimeExecutorRule.time = testSession.startTime.minusMinutes(10).toInstant()
         forceTimeUntilStartIntervalUpdate(vm)
         assertEquals(null, LiveDataTestUtil.getValue(vm.timeUntilStart))
@@ -150,7 +158,7 @@ class SessionDetailViewModelTest {
 
     @Test
     fun testStartsIn0Minutes_thenHasNullTimeUntilStart() = coroutineRule.runBlockingTest {
-        val vm = createSessionDetailViewModelWithAuthEnabled()
+        val vm = createSessionDetailViewModelWithAuthEnabled(viewModelDelegate)
         fixedTimeExecutorRule.time = testSession.startTime.minusSeconds(30).toInstant()
         forceTimeUntilStartIntervalUpdate(vm)
         assertEquals(null, LiveDataTestUtil.getValue(vm.timeUntilStart))
@@ -158,7 +166,7 @@ class SessionDetailViewModelTest {
 
     @Test
     fun testStarts10MinutesAgo_thenHasNullTimeUntilStart() = coroutineRule.runBlockingTest {
-        val vm = createSessionDetailViewModelWithAuthEnabled()
+        val vm = createSessionDetailViewModelWithAuthEnabled(viewModelDelegate)
         fixedTimeExecutorRule.time = testSession.startTime.plusMinutes(10).toInstant()
         forceTimeUntilStartIntervalUpdate(vm)
         assertEquals(null, LiveDataTestUtil.getValue(vm.timeUntilStart))
@@ -203,7 +211,7 @@ class SessionDetailViewModelTest {
     @Test
     fun testOnPlayVideo_doesNotCreateEventForVideo() = coroutineRule.runBlockingTest {
         val sessionWithoutYoutubeUrl = testSession
-        val vm = createSessionDetailViewModelWithAuthEnabled()
+        val vm = createSessionDetailViewModelWithAuthEnabled(viewModelDelegate)
 
         // This loads the session and forces vm.session to be set before calling onPlayVideo
         vm.setSessionId(sessionWithoutYoutubeUrl.id)
@@ -215,19 +223,22 @@ class SessionDetailViewModelTest {
 
     // TODO: Add a test for onReservationClicked
 
-    private fun createSessionDetailViewModelWithAuthEnabled(): SessionDetailViewModel {
+    private fun createSessionDetailViewModelWithAuthEnabled(
+        signInViewModelPlugin: FakeSignInViewModelDelegate
+    ): SessionDetailViewModel {
         // If session ID and user are available, session data can be loaded
-        val signInViewModelPlugin = FakeSignInViewModelDelegate()
         signInViewModelPlugin.loadUser("123")
         return createSessionDetailViewModel(signInViewModelPlugin = signInViewModelPlugin)
     }
 
     private fun createSessionDetailViewModel(
-        signInViewModelPlugin: SignInViewModelDelegate = FakeSignInViewModelDelegate(),
+        signInViewModelPlugin: SignInViewModelDelegate,
         loadUserSessionUseCase: LoadUserSessionUseCase = createTestLoadUserSessionUseCase(),
         loadRelatedSessionsUseCase: LoadUserSessionsUseCase =
             createTestLoadUserSessionsUseCase(),
-        starEventUseCase: StarEventAndNotifyUseCase = FakeStarEventUseCase(),
+        starEventUseCase: StarEventAndNotifyUseCase = FakeStarEventUseCase(
+            coroutineRule.testDispatcher
+        ),
         getTimeZoneUseCase: GetTimeZoneUseCase = createGetTimeZoneUseCase(),
         snackbarMessageManager: SnackbarMessageManager =
             SnackbarMessageManager(FakePreferenceStorage()),
@@ -264,7 +275,7 @@ class SessionDetailViewModelTest {
             userEventDataSource,
             sessionRepository
         )
-        return LoadUserSessionUseCase(userEventRepository)
+        return LoadUserSessionUseCase(userEventRepository, coroutineRule.testDispatcher)
     }
 
     private fun createTestLoadUserSessionsUseCase(
@@ -275,7 +286,7 @@ class SessionDetailViewModelTest {
             userEventDataSource,
             sessionRepository
         )
-        return LoadUserSessionsUseCase(userEventRepository)
+        return LoadUserSessionsUseCase(userEventRepository, coroutineRule.testDispatcher)
     }
 
     private fun createGetTimeZoneUseCase() =

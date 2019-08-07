@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.ui.schedule.day
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
@@ -28,42 +26,26 @@ import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus.STA
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus.UNSTARRED
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.TestData
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
-class TestUserEventDataSource(
-    private val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData(),
-    private val userEventResult: MutableLiveData<UserEventResult> = MutableLiveData()
-) : UserEventDataSource {
+class TestUserEventDataSource : UserEventDataSource {
 
-    override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {
-        userEventsResult.postValue(UserEventsResult(TestData.userEvents))
-        return userEventsResult
+    override fun getObservableUserEvents(userId: String): Flow<UserEventsResult> = flow {
+        emit(UserEventsResult(TestData.userEvents))
     }
 
-    override fun getObservableUserEvent(
-        userId: String,
-        eventId: String
-    ): LiveData<UserEventResult> {
-        userEventResult.postValue(UserEventResult(TestData.userEvents
+    override fun getObservableUserEvent(userId: String, eventId: String) = flow {
+        emit(UserEventResult(TestData.userEvents
             .find { it.id == eventId } ?: TestData.userEvents[0]))
-        return userEventResult
     }
 
-    override fun starEvent(
+    override suspend fun starEvent(
         userId: String,
         userEvent: UserEvent
-    ): LiveData<Result<StarUpdatedStatus>> {
-        val result = MutableLiveData<Result<StarUpdatedStatus>>()
-        result.postValue(
-            Result.Success(
-                if (userEvent.isStarred) STARRED else UNSTARRED
-            )
-        )
-        return result
-    }
+    ): Result<StarUpdatedStatus> = Result.Success(if (userEvent.isStarred) STARRED else UNSTARRED)
 
     override fun getUserEvents(userId: String): List<UserEvent> = TestData.userEvents
-
-    override fun clearSingleEventSubscriptions() {}
 
     override fun getUserEvent(userId: String, eventId: SessionId): UserEvent? {
         TODO("not implemented")

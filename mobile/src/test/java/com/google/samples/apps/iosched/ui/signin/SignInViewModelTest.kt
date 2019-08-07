@@ -18,10 +18,13 @@ package com.google.samples.apps.iosched.ui.signin
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
-import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertNotNull
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -33,40 +36,53 @@ class SignInViewModelTest {
     // Executes tasks in a synchronous [TaskScheduler]
     @get:Rule var syncTaskExecutorRule = SyncTaskExecutorRule()
 
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule var coroutineRule = MainCoroutineRule()
+
+    private lateinit var viewModelDelegate: FakeSignInViewModelDelegate
+
+    @Before
+    fun setUp() {
+        viewModelDelegate = FakeSignInViewModelDelegate()
+    }
+
+    @After
+    fun tearDown() {
+        viewModelDelegate.closeChannel()
+    }
+
     @Test
     fun signedInUser_signsOut() {
         // Given a view model with a signed in user
-        val signInViewModelDelegate = FakeSignInViewModelDelegate().apply {
-            injectIsSignedIn = true
-        }
-        val viewModel = SignInViewModel(signInViewModelDelegate)
+        viewModelDelegate.injectIsSignedIn = true
+
+        val viewModel = SignInViewModel(viewModelDelegate)
 
         // When sign out is requested
         viewModel.onSignOut()
 
         // Then a sign out request is emitted
-        assertEquals(1, signInViewModelDelegate.signOutRequestsEmitted)
+        assertEquals(1, viewModelDelegate.signOutRequestsEmitted)
     }
 
     @Test
     fun noSignedInUser_signsIn() {
         // Given a view model with a signed out user
-        val signInViewModelDelegate = FakeSignInViewModelDelegate().apply {
-            injectIsSignedIn = false
-        }
-        val viewModel = SignInViewModel(signInViewModelDelegate)
+        viewModelDelegate.injectIsSignedIn = false
+
+        val viewModel = SignInViewModel(viewModelDelegate)
 
         // When sign out is requested
         viewModel.onSignIn()
 
         // Then a sign out request is emitted
-        assertEquals(1, signInViewModelDelegate.signInRequestsEmitted)
+        assertEquals(1, viewModelDelegate.signInRequestsEmitted)
     }
 
     @Test
     fun onCancel_dialogDismiss() {
         // Given a view model with a signed in user
-        val viewModel = SignInViewModel(FakeSignInViewModelDelegate())
+        val viewModel = SignInViewModel(viewModelDelegate)
 
         // When cancel is requested
         viewModel.onCancel()

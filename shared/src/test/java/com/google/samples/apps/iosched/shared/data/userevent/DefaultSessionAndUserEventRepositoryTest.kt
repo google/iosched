@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.shared.data.userevent
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
@@ -26,6 +25,8 @@ import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
 import com.google.samples.apps.iosched.test.data.TestData
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsInstanceOf
@@ -47,7 +48,7 @@ class DefaultSessionAndUserEventRepositoryTest {
     var syncExecutorRule = SyncExecutorRule()
 
     @Test
-    fun observableUserEvents_areMappedCorrectly() {
+    fun observableUserEvents_areMappedCorrectly() = runBlocking {
         val repository = object : DefaultSessionAndUserEventRepository(
             userEventDataSource = TestUserEventDataSource(),
             sessionRepository = DefaultSessionRepository(TestDataRepository)
@@ -55,7 +56,7 @@ class DefaultSessionAndUserEventRepositoryTest {
             override fun getConferenceDays(): List<ConferenceDay> = TestData.TestConferenceDays
         }
 
-        val userEvents = LiveDataTestUtil.getValue(repository.getObservableUserEvents("user"))
+        val userEvents = repository.getObservableUserEvents("user").first()
 
         assertThat(userEvents, `is`(IsInstanceOf(Result.Success::class.java)))
 

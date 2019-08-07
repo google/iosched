@@ -16,23 +16,22 @@
 
 package com.google.samples.apps.iosched.shared.domain.sessions
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
+import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
-import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import org.hamcrest.CoreMatchers.`is`
+import com.google.samples.apps.iosched.test.data.runBlockingTest
+import kotlinx.coroutines.flow.single
+import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.instanceOf
 import org.junit.Assert.assertThat
@@ -44,189 +43,113 @@ import org.junit.Test
  */
 class LoadUserSessionsByDayUseCaseTest {
 
-    // Executes tasks in the Architecture Components in the same thread
+    // Overrides Dispatchers.Main used in Coroutines
     @get:Rule
-    var instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule var syncExecutorRule = SyncExecutorRule()
+    var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun returnsMapOfSessions() {
+    fun returnsMapOfSessions() = coroutineRule.runBlockingTest {
 
-        val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
+        val useCase = useCaseWithRepository()
 
-        val testUserEventRepository = DefaultSessionAndUserEventRepository(
-            TestUserEventDataSource(userEventsResult),
-            DefaultSessionRepository(TestDataRepository)
-        )
-        val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
+        val result = useCase(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1"))
+            .single()
 
-        val resultLiveData = useCase.observe()
-
-        useCase.execute(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1"))
-
-        val result = LiveDataTestUtil.getValue(resultLiveData)
-            as Result.Success<LoadUserSessionsByDayUseCaseResult>
-
-        assertThat(
-            TestData.userSessionMap,
-            `is`(equalTo(result.data.userSessionsPerDay))
-        )
+        assertThat(TestData.userSessionMap, `is`(equalTo(result.data?.userSessionsPerDay)))
     }
 
     @Test
-    fun userEventsMessage() {
+    fun userEventsMessage() = coroutineRule.runBlockingTest {
 
-        val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
+        val useCase = useCaseWithRepository()
 
-        val testUserEventRepository = DefaultSessionAndUserEventRepository(
-            TestUserEventDataSource(userEventsResult),
-            DefaultSessionRepository(TestDataRepository)
-        )
-        val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
+        val result = useCase(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1"))
+            .single()
 
-        val resultLiveData = useCase.observe()
-
-        useCase.execute(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1"))
-
-        userEventsResult.postValue(
-            UserEventsResult(
-                userEvents = TestData.userEvents
-            )
-        )
-
-        val result = LiveDataTestUtil.getValue(resultLiveData)
-            as Result.Success<LoadUserSessionsByDayUseCaseResult>
-
-        assertThat(
-            TestData.userSessionMap,
-            `is`(equalTo(result.data.userSessionsPerDay))
-        )
+        assertThat(TestData.userSessionMap, `is`(equalTo(result.data?.userSessionsPerDay)))
     }
 
     @Test
-    fun errorCase() {
+    fun errorCase() = coroutineRule.runBlockingTest {
 
-        val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
+        val useCase = useCaseWithRepository(FailingSessionRepository)
 
-        val testUserEventRepository = DefaultSessionAndUserEventRepository(
-            TestUserEventDataSource(userEventsResult),
-            FailingSessionRepository
-        )
-
-        val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
-
-        val resultLiveData = useCase.observe()
-
-        useCase.execute(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1"))
-
-        val result = LiveDataTestUtil.getValue(resultLiveData)
+        val result = useCase(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1"))
+            .single()
 
         assertThat(result, `is`(instanceOf(Result.Error::class.java)))
     }
 
     @Test
-    fun returnsCurrentEventIndex() {
-        // Given the use case
-        val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
+    fun returnsCurrentEventIndex() = coroutineRule.runBlockingTest {
 
         val sessionRepository = DefaultSessionRepository(TestDataRepository)
-        val testUserEventRepository = DefaultSessionAndUserEventRepository(
-            TestUserEventDataSource(userEventsResult),
-            sessionRepository
-        )
-        val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
-        val resultLiveData = useCase.observe()
+        val useCase = useCaseWithRepository(sessionRepository)
 
         // When we execute it, passing Day 2 +3hrs as the current time
-
         val now = sessionRepository.getConferenceDays().first().start.plusHours(3L)
-        useCase.execute(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1", now))
 
-        // Then the expected indexes are returned
-        val result = LiveDataTestUtil.getValue(resultLiveData)
-            as Result.Success<LoadUserSessionsByDayUseCaseResult>
-        assertThat(
-            EventLocation(0, 0),
-            `is`(equalTo(result.data.firstUnfinishedSession))
-        )
+        val result = useCase(
+            LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1", now)
+        ).single()
+
+        assertThat(EventLocation(0, 0), `is`(equalTo(result.data?.firstUnfinishedSession)))
     }
 
     @Test
-    fun midConference_afterDayEnd_returnsCurrentEventIndex() {
-        // Given the use case
-        val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
+    fun midConference_afterDayEnd_returnsCurrentEventIndex() = coroutineRule.runBlockingTest {
 
         val sessionRepository = DefaultSessionRepository(TestDataRepository)
-        val testUserEventRepository = DefaultSessionAndUserEventRepository(
-            TestUserEventDataSource(userEventsResult),
-            sessionRepository
-        )
-        val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
-        val resultLiveData = useCase.observe()
+        val useCase = useCaseWithRepository(sessionRepository)
 
         // When we execute it, passing Day 1 *after the end of day*
         val now = sessionRepository.getConferenceDays()[0].end.plusHours(3L)
-        useCase.execute(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1", now))
 
-        // Then returns the index of the first session the next day
-        val result = LiveDataTestUtil.getValue(resultLiveData)
-            as Result.Success<LoadUserSessionsByDayUseCaseResult>
-        assertThat(
-            EventLocation(1, 0),
-            `is`(equalTo(result.data.firstUnfinishedSession))
-        )
+        val result = useCase(
+            LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1", now)
+        ).single()
+
+        assertThat(EventLocation(1, 0), `is`(equalTo(result.data?.firstUnfinishedSession)))
     }
 
     @Test
-    fun beforeConference_returnsNoCurrentEventIndex() {
-        // Given the use case
-        val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
+    fun beforeConference_returnsNoCurrentEventIndex() = coroutineRule.runBlockingTest {
 
-        val testUserEventRepository = DefaultSessionAndUserEventRepository(
-            TestUserEventDataSource(userEventsResult),
-            DefaultSessionRepository(TestDataRepository)
-        )
-        val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
-        val resultLiveData = useCase.observe()
+        val useCase = useCaseWithRepository()
 
         // When we execute it, passing a current time *before* the conference
         val now = TestData.TestConferenceDays.first().start.minusDays(2L)
-        useCase.execute(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1", now))
 
-        // Then the expected indexes are returned
-        val result = LiveDataTestUtil.getValue(resultLiveData)
-            as Result.Success<LoadUserSessionsByDayUseCaseResult>
-        assertThat(
-            null,
-            `is`(equalTo(result.data.firstUnfinishedSession))
-        )
+        val result = useCase(
+            LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1", now)
+        ).single()
+
+        assertThat(null, `is`(equalTo(result.data?.firstUnfinishedSession)))
     }
 
     @Test
-    fun afterConference_returnsNoCurrentEventIndex() {
-        // Given the use case
-        val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
+    fun afterConference_returnsNoCurrentEventIndex() = coroutineRule.runBlockingTest {
 
-        val testUserEventRepository = DefaultSessionAndUserEventRepository(
-            TestUserEventDataSource(userEventsResult),
-            DefaultSessionRepository(TestDataRepository)
-        )
-        val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
-        val resultLiveData = useCase.observe()
+        val useCase = useCaseWithRepository()
 
         // When we execute it, passing a current time *after* the conference
         val now = TestData.TestConferenceDays.last().end.plusHours(2L)
-        useCase.execute(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1", now))
 
-        // Then the expected indexes are returned
-        val result = LiveDataTestUtil.getValue(resultLiveData)
-            as Result.Success<LoadUserSessionsByDayUseCaseResult>
-        assertThat(
-            null,
-            `is`(equalTo(result.data.firstUnfinishedSession))
+        val result = useCase(
+            LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1", now)
+        ).single()
+
+        assertThat(null, `is`(equalTo(result.data?.firstUnfinishedSession)))
+    }
+
+    private fun useCaseWithRepository(
+        repository: SessionRepository = DefaultSessionRepository(TestDataRepository)
+    ): LoadUserSessionsByDayUseCase {
+        val testUserEventRepository = DefaultSessionAndUserEventRepository(
+            TestUserEventDataSource(),
+            repository
         )
+        return LoadUserSessionsByDayUseCase(testUserEventRepository, coroutineRule.testDispatcher)
     }
 }
 
@@ -239,5 +162,6 @@ object FailingSessionRepository : SessionRepository {
     override fun getSession(eventId: SessionId): Session {
         throw Exception("test")
     }
+
     override fun getConferenceDays(): List<ConferenceDay> = TestData.TestConferenceDays
 }

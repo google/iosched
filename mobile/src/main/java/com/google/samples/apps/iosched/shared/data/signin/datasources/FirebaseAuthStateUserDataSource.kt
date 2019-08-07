@@ -16,16 +16,17 @@
 
 package com.google.samples.apps.iosched.shared.data.signin.datasources
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.data.signin.FirebaseUserInfo
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.fcm.FcmTokenUpdater
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.Result.Success
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -41,58 +42,57 @@ import javax.inject.Inject
 class FirebaseAuthStateUserDataSource @Inject constructor(
     val firebase: FirebaseAuth,
     private val tokenUpdater: FcmTokenUpdater,
-    notificationAlarmUpdater: NotificationAlarmUpdater
+    private val notificationAlarmUpdater: NotificationAlarmUpdater
 ) : AuthStateUserDataSource {
 
-    private val currentFirebaseUserObservable =
-        MutableLiveData<Result<AuthenticatedUserInfo?>>()
-
-    private var isAlreadyListening = false
-
+    private var isListening = false
     private var lastUid: String? = null
+
+    // Channel that keeps track of User Authentication
+    private val channel = ConflatedBroadcastChannel<Result<AuthenticatedUserInfo>>()
 
     // Listener that saves the [FirebaseUser], fetches the ID token
     // and updates the user ID observable.
-    private val authStateListener: ((FirebaseAuth) -> Unit) = { auth ->
-        DefaultScheduler.execute {
-            Timber.d("Received a FirebaseAuth update.")
-            // Post the current user for observers
-            currentFirebaseUserObservable.postValue(
-                Result.Success(
-                    FirebaseUserInfo(auth.currentUser)
-                )
-            )
+    val listener: ((FirebaseAuth) -> Unit) = { auth ->
+        Timber.d("Received a FirebaseAuth update")
 
-            auth.currentUser?.let { currentUser ->
-                // Save the FCM ID token in firestore
-                tokenUpdater.updateTokenForUser(currentUser.uid)
+        auth.currentUser?.let { currentUser ->
+            // Save the FCM ID token in firestore
+            tokenUpdater.updateTokenForUser(currentUser.uid)
+
+            if (lastUid != auth.uid) { // Prevent duplicates
+                notificationAlarmUpdater.updateAll(currentUser.uid)
             }
         }
+
         if (auth.currentUser == null) {
             // Logout, cancel all alarms
             notificationAlarmUpdater.cancelAll()
         }
-        auth.currentUser?.let {
-            if (lastUid != auth.uid) { // Prevent duplicates
-                notificationAlarmUpdater.updateAll(it.uid)
-            }
-        }
+
         // Save the last UID to prevent setting too many alarms.
         lastUid = auth.uid
-    }
 
-    override fun startListening() {
-        if (!isAlreadyListening) {
-            firebase.addAuthStateListener(authStateListener)
-            isAlreadyListening = true
+        // Send the current user for observers
+        if (!channel.isClosedForSend) {
+            channel.offer(Success(FirebaseUserInfo(auth.currentUser)))
+        } else {
+            unregisterListener()
         }
     }
 
-    override fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfo?>> {
-        return currentFirebaseUserObservable
+    // Synchronized method, multiple calls to this method at the same time isn't allowed since
+    // isListening is read and can be modified
+    @Synchronized
+    override fun getBasicUserInfo(): Flow<Result<AuthenticatedUserInfo>> {
+        if (!isListening) {
+            firebase.addAuthStateListener(listener)
+            isListening = true
+        }
+        return channel.asFlow()
     }
 
-    override fun clearListener() {
-        firebase.removeAuthStateListener(authStateListener)
+    private fun unregisterListener() {
+        firebase.removeAuthStateListener(listener)
     }
 }

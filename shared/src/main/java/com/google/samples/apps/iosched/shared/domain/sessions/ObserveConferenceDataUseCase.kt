@@ -17,20 +17,25 @@
 package com.google.samples.apps.iosched.shared.domain.sessions
 
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
-import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
+import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
+import com.google.samples.apps.iosched.shared.domain.FlowUseCase
 import com.google.samples.apps.iosched.shared.result.Result
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
  * Forces a refresh in the conference data repository.
  */
 open class ObserveConferenceDataUseCase @Inject constructor(
-    private val repository: ConferenceDataRepository
-) : MediatorUseCase<Any, Long>() {
+    private val repository: ConferenceDataRepository,
+    @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
+) : FlowUseCase<Any, Long>(defaultDispatcher) {
 
-    override fun execute(parameters: Any) {
-        result.addSource(repository.dataLastUpdatedObservable) { it: Long? ->
-            result.postValue(Result.Success(it ?: 0))
+    override fun execute(parameters: Any): Flow<Result<Long>> {
+        return repository.dataLastUpdates.map {
+            Result.Success(it)
         }
     }
 }

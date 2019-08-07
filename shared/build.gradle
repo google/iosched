@@ -135,6 +135,9 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation "com.nhaarman:mockito-kotlin:$rootProject.mockitoKotlinVersion"
 
+    // unit tests with Room
+    testImplementation "androidx.room:room-runtime:$rootProject.roomVersion"
+
     // unit tests livedata
     testImplementation "androidx.arch.core:core-testing:$rootProject.archCoreTestingVersion"
 }

@@ -18,31 +18,33 @@ package com.google.samples.apps.iosched.shared.domain.users
 
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
+import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
+import com.google.samples.apps.iosched.shared.domain.SuspendUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.StarNotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.result.Result
+import kotlinx.coroutines.CoroutineDispatcher
+import java.lang.IllegalStateException
 import javax.inject.Inject
 
 open class StarEventAndNotifyUseCase @Inject constructor(
     private val repository: SessionAndUserEventRepository,
-    private val starNotificationAlarmUpdater: StarNotificationAlarmUpdater
-) : MediatorUseCase<StarEventParameter, StarUpdatedStatus>() {
+    private val starNotificationAlarmUpdater: StarNotificationAlarmUpdater,
+    @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
+) : SuspendUseCase<StarEventParameter, StarUpdatedStatus>(defaultDispatcher) {
 
-    override fun execute(parameters: StarEventParameter) {
-        val updateResult = try {
-            repository.starEvent(parameters.userId, parameters.userSession.userEvent)
-        } catch (e: Exception) {
-            result.postValue(Result.Error(e))
-            return
-        }
-        // Avoid duplicating sources and trigger an update on the LiveData from the base class.
-        result.removeSource(updateResult)
-        result.addSource(updateResult) {
-            starNotificationAlarmUpdater.updateSession(
-                parameters.userSession.session,
-                parameters.userSession.userEvent.isStarred
-            )
-            result.postValue(updateResult.value)
+    override suspend fun execute(parameters: StarEventParameter): StarUpdatedStatus {
+        val result = repository.starEvent(parameters.userId, parameters.userSession.userEvent)
+        return when (result) {
+            is Result.Success -> {
+                val updateResult = result.data
+                starNotificationAlarmUpdater.updateSession(
+                    parameters.userSession.session,
+                    parameters.userSession.userEvent.isStarred
+                )
+                updateResult
+            }
+            is Result.Error -> throw result.exception
+            else -> throw IllegalStateException()
         }
     }
 }

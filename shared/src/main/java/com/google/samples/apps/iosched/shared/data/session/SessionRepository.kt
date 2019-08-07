@@ -20,7 +20,6 @@ import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
-import com.google.samples.apps.iosched.shared.domain.sessions.SessionNotFoundException
 import javax.inject.Inject
 
 /**

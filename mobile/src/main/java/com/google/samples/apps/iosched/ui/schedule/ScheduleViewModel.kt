@@ -40,7 +40,6 @@ import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceD
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
-import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
@@ -57,7 +56,11 @@ import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.TagFilter
 import com.google.samples.apps.iosched.ui.schedule.filters.LoadEventFiltersUseCase
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.google.samples.apps.iosched.util.cancelIfActive
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import org.threeten.bp.ZoneId
 import timber.log.Timber
 import java.util.UUID
@@ -71,7 +74,7 @@ import javax.inject.Inject
 class ScheduleViewModel @Inject constructor(
     private val loadUserSessionsByDayUseCase: LoadUserSessionsByDayUseCase,
     private val getConferenceDaysUseCase: GetConferenceDaysUseCase,
-    loadEventFiltersUseCase: LoadEventFiltersUseCase,
+    private val loadEventFiltersUseCase: LoadEventFiltersUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
     private val starEventUseCase: StarEventAndNotifyUseCase,
     topicSubscriber: TopicSubscriber,
@@ -84,34 +87,62 @@ class ScheduleViewModel @Inject constructor(
     private val analyticsHelper: AnalyticsHelper
 ) : ViewModel(), ScheduleEventListener, SignInViewModelDelegate by signInViewModelDelegate {
 
-    val isLoading: LiveData<Boolean>
+    // Keeps track of the coroutine that listens for user sessions
+    private var loadUserSessionsJob: Job? = null
 
-    val swipeRefreshing: LiveData<Boolean>
+    private val loadSessionsResult = MutableLiveData<Result<LoadUserSessionsByDayUseCaseResult>>()
+
+    val isLoading: LiveData<Boolean> = loadSessionsResult.map { it == Result.Loading }
 
     // The current UserSessionMatcher, used to filter the events that are shown
     private val userSessionMatcher = UserSessionMatcher()
-    private val loadSelectedFiltersResult = MutableLiveData<Result<Unit>>()
 
     private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
+
+    private val showInConferenceTimeZone = preferConferenceTimeZoneResult.map { it.data ?: true }
 
     /**
      * Gets the label to display for each conference date. When using time zones other than the
      * conference zone, conference days and calendar dates may not align. To minimize confusion,
      * we show actual dates when using conference zone time; otherwise, we show the day number.
      */
-    val labelsForDays: LiveData<List<Int>>
-    val timeZoneId: LiveData<ZoneId>
-
-    private val sessionTimeDataDay = getConferenceDaysUseCase().map {
-        MediatorLiveData<SessionTimeData>()
+    val labelsForDays: LiveData<List<Int>> = showInConferenceTimeZone.map { inConferenceTimeZone ->
+        if (TimeUtils.physicallyInConferenceTimeZone() || inConferenceTimeZone) {
+            return@map listOf(R.string.day1_date, R.string.day2_date)
+        } else {
+            return@map listOf(R.string.day1, R.string.day2)
+        }
     }
+
+    val timeZoneId: LiveData<ZoneId> = showInConferenceTimeZone.map { inConferenceTimeZone ->
+        if (inConferenceTimeZone) {
+            TimeUtils.CONFERENCE_TIMEZONE
+        } else {
+            ZoneId.systemDefault()
+        }
+    }
+
+    private val sessionTimeDataDay: List<MediatorLiveData<SessionTimeData>> =
+        getConferenceDaysUseCase().map {
+            MediatorLiveData<SessionTimeData>()
+        }.apply {
+            // Session data observes the time zone and the repository.
+            forEachIndexed { _, sessionTimeDataDay ->
+                sessionTimeDataDay.addSource(timeZoneId) {
+                    sessionTimeDataDay.value = sessionTimeDataDay.value?.apply {
+                        timeZoneId = it
+                    } ?: SessionTimeData(timeZoneId = it)
+                }
+            }
+        }
 
     // Cached list of TagFilters returned by the use case. Only Result.Success modifies it.
     private var cachedEventFilters = mutableListOf<EventFilter>()
 
-    private val _eventFilters = MediatorLiveData<List<EventFilter>>()
+    private val _eventFilters = MutableLiveData<List<EventFilter>>()
     val eventFilters: LiveData<List<EventFilter>>
         get() = _eventFilters
+
     private val _selectedFilters = MutableLiveData<List<EventFilter>>()
     val selectedFilters: LiveData<List<EventFilter>>
         get() = _selectedFilters
@@ -119,15 +150,23 @@ class ScheduleViewModel @Inject constructor(
     val hasAnyFilters: LiveData<Boolean>
         get() = _hasAnyFilters
 
-    private val loadSessionsResult: MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>
-    private val loadEventFiltersResult = MediatorLiveData<Result<List<EventFilter>>>()
     private val swipeRefreshResult = MutableLiveData<Result<Boolean>>()
+    val swipeRefreshing: LiveData<Boolean> = swipeRefreshResult.map {
+        // Whenever refresh finishes, stop the indicator, whatever the result
+        false
+    }
 
-    val eventCount: LiveData<Int>
+    val eventCount: LiveData<Int> = loadSessionsResult.map { it.data?.userSessionCount ?: 0 }
 
     /** LiveData for Actions and Events **/
 
-    private val _errorMessage = MediatorLiveData<Event<String>>()
+    private val _errorMessage = MediatorLiveData<Event<String>>().apply {
+        addSource(loadSessionsResult) { result ->
+            if (result is Result.Error) {
+                value = Event(content = result.exception.message ?: "Error")
+            }
+        }
+    }
     val errorMessage: LiveData<Event<String>>
         get() = _errorMessage
 
@@ -156,147 +195,60 @@ class ScheduleViewModel @Inject constructor(
     private val _navigateToSearchAction = MutableLiveData<Event<Unit>>()
     val navigateToSearchAction: LiveData<Event<Unit>> = _navigateToSearchAction
 
-    private val scheduleUiHintsShownResult = MutableLiveData<Result<Boolean>>()
-
     // Flags used to indicate if the "scroll to now" feature has been used already.
     var userHasInteracted = false
 
     // The currently happening event
-    val currentEvent: LiveData<EventLocation?>
+    val currentEvent: LiveData<EventLocation?> =
+        loadSessionsResult.map { it.data?.firstUnfinishedSession }
 
     init {
-        // Load sessions and tags and store the result in `LiveData`s
-        loadSessionsResult = loadUserSessionsByDayUseCase.observe()
-
-        val conferenceDataAvailable = observeConferenceDataUseCase.observe()
-
-        // Load EventFilters when persisted filters are loaded and when there's new conference data
-        loadEventFiltersResult.addSource(loadSelectedFiltersResult) {
-            viewModelScope.launch {
-                loadEventFiltersResult.value = loadEventFiltersUseCase(userSessionMatcher)
-            }
-        }
-        loadEventFiltersResult.addSource(conferenceDataAvailable) {
-            viewModelScope.launch {
-                loadEventFiltersResult.value = loadEventFiltersUseCase(userSessionMatcher)
-            }
-        }
-
-        // Load persisted filters to the matcher
+        // Load persisted filters to the matcher when the ViewModel starts
         viewModelScope.launch {
-            loadSelectedFiltersResult.value = loadSelectedFiltersUseCase(userSessionMatcher)
-        }
 
-        // Load sessions when persisted filters are loaded and when there's new conference data
-        loadSessionsResult.addSource(conferenceDataAvailable) {
-            Timber.d("Detected new data in conference data repository")
-            refreshUserSessions()
-        }
-        loadSessionsResult.addSource(loadEventFiltersResult) {
-            Timber.d("Loaded filters from persistent storage")
-            refreshUserSessions()
-        }
-
-        eventCount = loadSessionsResult.map {
-            it.data?.userSessionCount ?: 0
-        }
-
-        isLoading = loadSessionsResult.map { it == Result.Loading }
-
-        _errorMessage.addSource(loadSessionsResult) { result ->
-            if (result is Result.Error) {
-                _errorMessage.value = Event(content = result.exception.message ?: "Error")
-            }
-        }
-        _errorMessage.addSource(loadEventFiltersResult) { result ->
-            if (result is Result.Error) {
-                _errorMessage.value = Event(content = result.exception.message ?: "Error")
-            }
-        }
-
-        _eventFilters.addSource(loadEventFiltersResult) {
-            if (it is Success) {
-                cachedEventFilters = it.data.toMutableList()
-                updateFilterStateObservables()
-            }
-        }
-
-        _profileContentDesc.addSource(currentFirebaseUser) {
-            _profileContentDesc.value = getProfileContentDescription(it)
-        }
-
-        // Show an error message if a star request fails
-        _snackBarMessage.addSource(starEventUseCase.observe()) { it: Result<StarUpdatedStatus>? ->
-            // Show a snackbar message on error.
-            if (it is Result.Error) {
-                _snackBarMessage.postValue(
-                    Event(
-                        SnackbarMessage(
-                            messageId = R.string.event_star_error,
-                            longDuration = true
-                        )
-                    )
-                )
-            }
-        }
-
-        // Refresh the list of user sessions if the user is updated.
-        loadSessionsResult.addSource(currentFirebaseUser) {
-            Timber.d("Loading user session with user ${it?.data?.getUid()}")
-            refreshUserSessions()
-        }
-
-        val showInConferenceTimeZone = preferConferenceTimeZoneResult.map {
-            it.data ?: true
-        }
-
-        timeZoneId = showInConferenceTimeZone.map { inConferenceTimeZone ->
-            if (inConferenceTimeZone) {
-                TimeUtils.CONFERENCE_TIMEZONE
-            } else {
-                ZoneId.systemDefault()
-            }
-        }
-
-        labelsForDays = showInConferenceTimeZone.map { inConferenceTimeZone ->
-            if (TimeUtils.physicallyInConferenceTimeZone() || inConferenceTimeZone) {
-                return@map listOf(R.string.day1_date, R.string.day2_date)
-            } else {
-                return@map listOf(R.string.day1, R.string.day2)
-            }
-        }
-
-        // Session data observes the time zone and the repository.
-        sessionTimeDataDay.forEachIndexed { index, sessionTimeDataDay ->
-            sessionTimeDataDay.addSource(timeZoneId) {
-                sessionTimeDataDay.value = sessionTimeDataDay.value?.apply {
-                    timeZoneId = it
-                } ?: SessionTimeData(timeZoneId = it)
+            // If these use cases fail, we don't want to cancel the execution of this coroutine
+            supervisorScope {
+                loadSelectedFiltersUseCase(userSessionMatcher)
+                loadEventFilters()
             }
 
-            sessionTimeDataDay.addSource(loadSessionsResult) {
-                val userSessions =
-                    it.data?.userSessionsPerDay
-                        ?.get(getConferenceDaysUseCase()[index])
-                        ?: return@addSource
-                sessionTimeDataDay.value = sessionTimeDataDay.value?.apply {
-                    list = userSessions
-                } ?: SessionTimeData(list = userSessions)
+            // Creating a new coroutine to listen for user auth changes because we don't want
+            // to suspend the calling coroutine on the collect call and we also want to
+            // listen for changes in conference data
+            launch {
+                // Load user sessions when the user has changed and update profile content
+                currentFirebaseUser.collect {
+                    _profileContentDesc.value = getProfileContentDescription(it)
+                    Timber.d("Loading user session with user ${it?.data?.getUid()}")
+                    refreshUserSessions()
+                }
             }
-        }
-        swipeRefreshing = swipeRefreshResult.map {
-            // Whenever refresh finishes, stop the indicator, whatever the result
-            false
+
+            launch {
+                // Load filters and user sessions when there's new conference data
+                observeConferenceDataUseCase(Any()).collect {
+                    Timber.d("Detected new data in conference data repository")
+                    loadEventFilters()
+                    refreshUserSessions()
+                }
+            }
         }
 
         // Subscribe user to schedule updates
         topicSubscriber.subscribeToScheduleUpdates()
 
-        // Observe updates in conference data
-        observeConferenceDataUseCase.execute(Any())
+        initializeTimeZone()
+    }
 
-        currentEvent = loadSessionsResult.map { result ->
-            (result as? Success)?.data?.firstUnfinishedSession
+    // Load EventFilters when persisted filters are loaded and when there's new conference data
+    private suspend fun loadEventFilters() {
+        val loadEventFiltersResult = loadEventFiltersUseCase(userSessionMatcher)
+        if (loadEventFiltersResult is Success) {
+            cachedEventFilters = loadEventFiltersResult.data.toMutableList()
+            updateFilterStateObservables()
+        } else if (loadEventFiltersResult is Result.Error) {
+            _errorMessage.value =
+                Event(content = loadEventFiltersResult.exception.message ?: "Error")
         }
 
         initializeTimeZone()
@@ -399,8 +351,8 @@ class ScheduleViewModel @Inject constructor(
     }
 
     @StringRes
-    private fun getProfileContentDescription(userResult: Result<AuthenticatedUserInfo>?): Int {
-        return if (userResult is Success && userResult.data.isSignedIn()) {
+    private fun getProfileContentDescription(userResult: Result<AuthenticatedUserInfo?>): Int {
+        return if (userResult is Success && userResult.data?.isSignedIn() == true) {
             R.string.sign_out
         } else {
             R.string.sign_in
@@ -409,10 +361,26 @@ class ScheduleViewModel @Inject constructor(
 
     private fun refreshUserSessions() {
         Timber.d("ViewModel refreshing user sessions")
-        viewModelScope.launch {
-            loadUserSessionsByDayUseCase.execute(
+
+        // when there's a new user, cancel listening for the old user's sessions
+        loadUserSessionsJob.cancelIfActive()
+
+        loadUserSessionsJob = viewModelScope.launch {
+            loadUserSessionsByDayUseCase(
                 LoadUserSessionsByDayUseCaseParameters(userSessionMatcher, getUserId())
-            )
+            ).collect {
+                loadSessionsResult.value = it
+
+                // Group sessions by day
+                sessionTimeDataDay.forEachIndexed { index, sessionTimeDataDay ->
+                    val userSessions =
+                        it.data?.userSessionsPerDay?.get(getConferenceDaysUseCase()[index])
+                            ?: return@forEachIndexed
+                    sessionTimeDataDay.value = sessionTimeDataDay.value?.apply {
+                        list = userSessions
+                    } ?: SessionTimeData(list = userSessions)
+                }
+            }
         }
     }
 
@@ -443,15 +411,27 @@ class ScheduleViewModel @Inject constructor(
             )
         )
 
-        getUserId()?.let {
-            starEventUseCase.execute(
-                StarEventParameter(
-                    it,
-                    userSession.copy(
-                        userEvent = userSession.userEvent.copy(isStarred = newIsStarredState)
+        viewModelScope.launch {
+            getUserId()?.let {
+                val result = starEventUseCase(
+                    StarEventParameter(
+                        it,
+                        userSession.copy(
+                            userEvent = userSession.userEvent.copy(isStarred = newIsStarredState)
+                        )
                     )
                 )
-            )
+
+                // Show an error message if a star request fails
+                if (result is Result.Error) {
+                    _snackBarMessage.value = Event(
+                        SnackbarMessage(
+                            messageId = R.string.event_star_error,
+                            longDuration = true
+                        )
+                    )
+                }
+            }
         }
     }
 

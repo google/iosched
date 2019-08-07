@@ -17,13 +17,14 @@
 package com.google.samples.apps.iosched.shared.data
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.TestData.session1
 import com.google.samples.apps.iosched.test.data.TestData.session3
 import com.google.samples.apps.iosched.test.util.FakeAppDatabase
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import org.hamcrest.core.IsEqual.equalTo
 import org.hamcrest.core.IsNot.not
 import org.hamcrest.core.IsNull.notNullValue
@@ -50,7 +51,7 @@ class ConferenceDataRepositoryTest {
     private lateinit var repo: ConferenceDataRepository
 
     @Test
-    fun remotePrevailsOverBootstrap() {
+    fun remotePrevailsOverBootstrap() = runBlocking {
         // Given a repo with a working remote data source that returns session0
         // and a bootstrap that returns session 3
         repo = ConferenceDataRepository(
@@ -67,13 +68,16 @@ class ConferenceDataRepositoryTest {
         assertThat(data.sessions.first(), Is(equalTo(TestData.session0)))
         // and meta info should be set
         assertThat(repo.latestUpdateSource, Is(equalTo(UpdateSource.NETWORK)))
-        assertThat(LiveDataTestUtil.getValue(repo.dataLastUpdatedObservable), Is(not(equalTo(0L))))
+
+        val lastUpdate = repo.dataLastUpdates.first()
+
+        assertThat(lastUpdate, Is(not(equalTo(0L))))
         assertThat(repo.latestException, Is(nullValue()))
         assertThat(repo.currentConferenceDataVersion, Is(equalTo(NETWORK_DATA_VERSION)))
     }
 
     @Test
-    fun remoteNotAvailable_bootstrapUsed() {
+    fun remoteNotAvailable_bootstrapUsed() = runBlocking {
         // Given a repo with unavailable remote data source
         // and a bootstrap that returns session 3
         repo = ConferenceDataRepository(
@@ -96,13 +100,12 @@ class ConferenceDataRepositoryTest {
         assertThat(data.sessions.first(), Is(equalTo(session3)))
         // and meta info should be set
         assertThat(repo.latestUpdateSource, Is(equalTo(UpdateSource.BOOTSTRAP)))
-        assertThat(LiveDataTestUtil.getValue(repo.dataLastUpdatedObservable), Is(not(equalTo(0L))))
         assertThat(repo.latestException, Is(notNullValue()))
         assertThat(repo.currentConferenceDataVersion, Is(equalTo(BOOTSTRAP_DATA_VERSION)))
     }
 
     @Test
-    fun networkExceptionCacheUnavailable_cacheReturned() {
+    fun networkExceptionCacheUnavailable_cacheReturned() = runBlocking {
         // Given a repo with unavailable remote data (that throws an exception) and no cache
         // and a bootstrap that returns session 1
         repo = ConferenceDataRepository(
@@ -125,7 +128,6 @@ class ConferenceDataRepositoryTest {
         assertThat(data.sessions.first(), Is(equalTo(session1)))
         // and meta info should be set
         assertThat(repo.latestUpdateSource, Is(equalTo(UpdateSource.BOOTSTRAP)))
-        assertThat(LiveDataTestUtil.getValue(repo.dataLastUpdatedObservable), Is(not(equalTo(0L))))
         assertThat(repo.latestException, Is(notNullValue()))
         assertThat(repo.currentConferenceDataVersion, Is(equalTo(CACHE_DATA_VERSION)))
     }

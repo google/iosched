@@ -22,11 +22,13 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import com.nhaarman.mockito_kotlin.mock
+import kotlinx.coroutines.CoroutineDispatcher
 
-class FakeStarEventUseCase : StarEventAndNotifyUseCase(
+class FakeStarEventUseCase(dispatcher: CoroutineDispatcher) : StarEventAndNotifyUseCase(
     DefaultSessionAndUserEventRepository(
         TestUserEventDataSource(),
         DefaultSessionRepository(TestDataRepository)
     ),
-    mock {}
+    mock {},
+    dispatcher
 )

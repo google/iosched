@@ -16,13 +16,12 @@
 
 package com.google.samples.apps.iosched.shared.domain.sessions
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
-import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
+import com.google.samples.apps.iosched.test.data.runBlockingTest
+import kotlinx.coroutines.flow.first
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.notNullValue
-import org.hamcrest.Matchers.nullValue
 import org.hamcrest.core.Is.`is`
 import org.junit.Rule
 import org.junit.Test
@@ -32,33 +31,19 @@ import org.junit.Test
  */
 class ObserveConferenceDataUseCaseTest {
 
-    @Rule
-    @JvmField
-    val instantTaskExecutor = InstantTaskExecutorRule()
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun remoteConfDataRefreshed_valueIsUpdated() {
+    fun remoteConfDataRefreshed_valueIsUpdated() = coroutineRule.runBlockingTest {
 
         val repo = TestDataRepository
-        val subject = ObserveConferenceDataUseCase(repo)
-
-        // Start the listeners
-        subject.execute(Any())
-
-        val value = LiveDataTestUtil.getValue(subject.observe())
-
-        assertThat(
-            value,
-            `is`(nullValue())
-        )
-
+        val subject = ObserveConferenceDataUseCase(repo, coroutineRule.testDispatcher)
         repo.refreshCacheWithRemoteConferenceData()
 
-        val newValue = LiveDataTestUtil.getValue(subject.observe()) as Result.Success
+        val result = subject(Any()).first()
 
-        assertThat(
-            newValue.data,
-            `is`(notNullValue())
-        )
+        assertThat(result, `is`(notNullValue()))
     }
 }

@@ -19,7 +19,9 @@ package com.google.samples.apps.iosched.ui.signin
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.shared.result.Event
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -36,7 +38,9 @@ class SignInViewModel @Inject constructor(
 
     fun onSignIn() {
         Timber.d("Sign in requested")
-        emitSignInRequest()
+        viewModelScope.launch {
+            emitSignInRequest()
+        }
     }
 
     fun onSignOut() {

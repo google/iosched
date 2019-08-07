@@ -30,6 +30,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ViewDataBinding
 import dagger.android.support.DaggerFragment
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.transform
 
 fun ObservableBoolean.hasSameValue(other: ObservableBoolean) = get() == other.get()
 
@@ -165,8 +168,34 @@ fun View.requestApplyInsetsWhenAttached() {
     }
 }
 
-private fun createStateForView(view: View) = ViewPaddingState(view.paddingLeft,
-    view.paddingTop, view.paddingRight, view.paddingBottom, view.paddingStart, view.paddingEnd)
+/**
+ * Flow transformation that ignores the first element emitted by the original Flow.
+ */
+fun <T> Flow<T>.ignoreFirst(): Flow<T> {
+    var firstElement = true
+    return transform { value ->
+        if (firstElement) {
+            firstElement = false
+            return@transform
+        } else {
+            return@transform emit(value)
+        }
+    }
+}
+
+/**
+ * Cancel the Job if it's active.
+ */
+fun Job?.cancelIfActive() {
+    if (this?.isActive == true) {
+        cancel()
+    }
+}
+
+private fun createStateForView(view: View) = ViewPaddingState(
+    view.paddingLeft, view.paddingTop, view.paddingRight, view.paddingBottom, view.paddingStart,
+    view.paddingEnd
+)
 
 data class ViewPaddingState(
     val left: Int,

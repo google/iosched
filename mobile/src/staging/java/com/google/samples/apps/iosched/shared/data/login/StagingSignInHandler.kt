@@ -19,7 +19,6 @@ package com.google.samples.apps.iosched.shared.data.login
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.login.datasources.StagingAuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
@@ -27,6 +26,8 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import com.google.samples.apps.iosched.util.signin.SignInResult
 import com.google.samples.apps.iosched.util.signin.SignInSuccess
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 
 /**
@@ -35,10 +36,10 @@ import timber.log.Timber
  */
 class StagingSignInHandler(val user: StagingAuthenticatedUser) : SignInHandler {
 
-    override fun makeSignInIntent(): LiveData<Intent?> {
+    override fun makeSignInIntent(): Flow<Intent?> {
         Timber.d("staging makeSignInIntent called")
         user.signIn()
-        return MutableLiveData()
+        return flow { }
     }
 
     override fun signIn(resultCode: Int, data: Intent?, onComplete: (SignInResult) -> Unit) {

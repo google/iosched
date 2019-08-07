@@ -27,14 +27,16 @@ import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCase
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCaseResult
-import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.result.updateOnSuccess
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.google.samples.apps.iosched.util.cancelIfActive
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -52,9 +54,10 @@ class SpeakerViewModel @Inject constructor(
     SignInViewModelDelegate by signInViewModelDelegate,
     EventActionsViewModelDelegate by eventActionsViewModelDelegate {
 
-    private val loadSpeakerUseCaseResult = MutableLiveData<LoadSpeakerUseCaseResult>()
+    // Keeps track of the coroutine that listens for speaker sessions
+    private var loadSpeakerSessionsJob: Job? = null
 
-    private val loadSpeakerUserSessions: LiveData<Result<LoadUserSessionsUseCaseResult>>
+    private val loadSpeakerUseCaseResult = MutableLiveData<LoadSpeakerUseCaseResult>()
 
     private val _speaker = MediatorLiveData<Speaker>()
     val speaker: LiveData<Speaker>
@@ -69,36 +72,10 @@ class SpeakerViewModel @Inject constructor(
     }
 
     init {
-        loadSpeakerUserSessions = loadSpeakerSessionsUseCase.observe()
-
         // If there's a new result with data, update speaker
         _speaker.addSource(loadSpeakerUseCaseResult) {
             _speaker.value = it.speaker
-        }
-
-        // Also load their sessions
-        loadSpeakerUserSessions.addSource(loadSpeakerUseCaseResult) {
-            loadSpeakerSessionsUseCase.execute(getUserId() to it.sessionIds)
-        }
-
-        // When their sessions load, update speakerUserSessions
-        _speakerUserSessions.addSource(loadSpeakerUserSessions) {
-            (loadSpeakerUserSessions.value as? Result.Success)?.data?.let {
-                _speakerUserSessions.value = it.userSessions
-            }
-        }
-    }
-
-    /**
-     * Provides the speaker ID which initiates all data loading.
-     */
-    fun setSpeakerId(id: SpeakerId?) {
-        if (id == null) {
-            Timber.e("Speaker ID is null")
-            return
-        }
-        viewModelScope.launch {
-            loadSpeakerUseCase(id).updateOnSuccess(loadSpeakerUseCaseResult)
+            loadSpeakerSessions(it)
         }
     }
 
@@ -118,6 +95,38 @@ class SpeakerViewModel @Inject constructor(
         if (sessions != null) {
             val session = sessions.first { it.session.id == sessionId }.session
             analyticsHelper.logUiEvent(session.title, AnalyticsActions.STARRED)
+        }
+    }
+
+    /**
+     * Listens for a speaker session changes. When there are new changes,
+     * _speakerUserSessions liveData is updated.
+     */
+    private fun loadSpeakerSessions(loadSpeakerUseCaseResult: LoadSpeakerUseCaseResult) {
+        // If there's a new speaker, cancels listening for the old speaker's sessions
+        loadSpeakerSessionsJob.cancelIfActive()
+
+        loadSpeakerSessionsJob = viewModelScope.launch {
+            loadSpeakerSessionsUseCase(
+                getUserId() to loadSpeakerUseCaseResult.sessionIds
+            ).collect {
+                it.data?.let {
+                    _speakerUserSessions.value = it.userSessions
+                }
+            }
+        }
+    }
+
+    /**
+     * Provides the speaker ID which initiates all data loading.
+     */
+    fun setSpeakerId(id: SpeakerId?) {
+        if (id == null) {
+            Timber.e("Speaker ID is null")
+            return
+        }
+        viewModelScope.launch {
+            loadSpeakerUseCase(id).updateOnSuccess(loadSpeakerUseCaseResult)
         }
     }
 }

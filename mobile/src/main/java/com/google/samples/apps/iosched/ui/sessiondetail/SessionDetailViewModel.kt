@@ -21,6 +21,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
@@ -30,14 +31,13 @@ import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.SetIntervalLiveData.DefaultIntervalMapper
 import com.google.samples.apps.iosched.shared.util.TimeUtils
@@ -46,6 +46,12 @@ import com.google.samples.apps.iosched.shared.util.setValueIfNew
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.google.samples.apps.iosched.util.cancelIfActive
+import com.google.samples.apps.iosched.util.ignoreFirst
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import org.threeten.bp.Duration
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
@@ -69,9 +75,11 @@ class SessionDetailViewModel @Inject constructor(
 ) : ViewModel(), SessionDetailEventListener, EventActions,
     SignInViewModelDelegate by signInViewModelDelegate {
 
-    private val loadUserSessionResult: MediatorLiveData<Result<LoadUserSessionUseCaseResult>>
+    // Keeps track of the coroutine that listens for a user session
+    private var loadUserSessionJob: Job? = null
 
-    private val loadRelatedUserSessions: LiveData<Result<LoadUserSessionsUseCaseResult>>
+    // Keeps track of the coroutine that listens for related user sessions
+    private var loadRelatedSessionJob: Job? = null
 
     private val sessionTimeRelativeState: LiveData<TimeUtils.SessionRelativeTimeState>
 
@@ -131,16 +139,17 @@ class SessionDetailViewModel @Inject constructor(
         get() = _navigateToSpeakerDetail
 
     init {
-        loadUserSessionResult = loadUserSessionUseCase.observe()
-
-        loadRelatedUserSessions = loadRelatedSessionUseCase.observe()
-
-        /* Wire observable dependencies */
-
-        // If the user changes, load new data for them
-        _userEvent.addSource(currentFirebaseUser) {
-            Timber.d("CurrentFirebaseUser changed, refreshing")
-            refreshUserSession()
+        /**
+         *  If the user changes, load new data for them.
+         *  It's safe to ignore the first element since setting the sessionId already
+         *  refreshes the sessions CurrentFirebaseUser will always emit the current user as soon
+         *  as collect happens since the implementation is backed by a ConflatedBroadcastChannel.
+         */
+        viewModelScope.launch {
+            currentFirebaseUser.ignoreFirst().collect {
+                Timber.d("CurrentFirebaseUser changed, refreshing")
+                refreshUserSession()
+            }
         }
 
         // If the session ID changes, load new data for it
@@ -148,40 +157,6 @@ class SessionDetailViewModel @Inject constructor(
             Timber.d("SessionId changed, refreshing")
             refreshUserSession()
         }
-
-        /* Wire result dependencies */
-
-        // If there's a new result with data, update the session
-        _session.addSource(loadUserSessionResult) {
-            (loadUserSessionResult.value as? Result.Success)?.data?.userSession?.session?.let {
-                _session.value = it
-            }
-        }
-
-        // If there's a new result with data, update the UserEvent
-        _userEvent.addSource(loadUserSessionResult) {
-            (loadUserSessionResult.value as? Result.Success)?.data?.userSession?.userEvent?.let {
-                _userEvent.value = it
-            }
-        }
-
-        // If there's a new Session, then load any related sessions
-        loadRelatedUserSessions.addSource(loadUserSessionResult) {
-            (loadUserSessionResult.value as? Result.Success)?.data?.userSession?.session?.let {
-                val related = it.relatedSessions
-                if (related.isNotEmpty()) {
-                    loadRelatedSessionUseCase.execute(getUserId() to related)
-                }
-            }
-        }
-
-        _relatedUserSessions.addSource(loadRelatedUserSessions) {
-            (loadRelatedUserSessions.value as? Result.Success)?.data?.let {
-                _relatedUserSessions.value = it.userSessions
-            }
-        }
-
-        /* Wire observables exposed for UI elements */
 
         // TODO this should also be called when session state is stale (b/74242921)
         // If there's a new session, update the relative time status (before, during, after...)
@@ -221,46 +196,6 @@ class SessionDetailViewModel @Inject constructor(
                     else -> null
                 }
             }
-        }
-
-        /* Wiring dependencies for stars and reservation. */
-
-        _snackBarMessage.addSource(starEventUseCase.observe()) { result ->
-            // Show an error message if a star request fails
-            if (result is Result.Error) {
-                _snackBarMessage.postValue(Event(SnackbarMessage(R.string.event_star_error)))
-            }
-        }
-    }
-
-    private fun refreshUserSession() {
-        getSessionId()?.let {
-            Timber.d("Refreshing data with session ID $it and user ${getUserId()}")
-            loadUserSessionUseCase.execute(getUserId() to it)
-        }
-    }
-
-    // TODO: write tests b/74611561
-    fun setSessionId(newSessionId: SessionId?) {
-        if (newSessionId == null) {
-            Timber.e("Session ID is null")
-            return
-        }
-        sessionId.setValueIfNew(newSessionId)
-    }
-
-    override fun onCleared() {
-        // Clear subscriptions that might be leaked or that will not be used in the future.
-        loadUserSessionUseCase.onCleared()
-    }
-
-    /**
-     * Called by the UI when play button is clicked
-     */
-    fun onPlayVideo() {
-        val currentSession = session.value
-        if (currentSession?.hasVideo == true) {
-            navigateToYouTubeAction.value = Event(requireSession().youTubeUrl)
         }
     }
 
@@ -306,19 +241,95 @@ class SessionDetailViewModel @Inject constructor(
         }
         _snackBarMessage.postValue(Event(snackbarMessage))
 
-        getUserId()?.let {
-            starEventUseCase.execute(
-                StarEventParameter(
-                    it,
-                    userSession.copy(
-                        userEvent = userSession.userEvent.copy(isStarred = newIsStarredState))
+        viewModelScope.launch {
+            getUserId()?.let {
+                val result = starEventUseCase(
+                    StarEventParameter(
+                        it, userSession.copy(
+                            userEvent = userSession.userEvent.copy(isStarred = newIsStarredState)
+                        )
+                    )
                 )
-            )
+
+                // Show an error message if a star request fails
+                if (result is Result.Error) {
+                    _snackBarMessage.postValue(Event(SnackbarMessage(R.string.event_star_error)))
+                }
+            }
         }
     }
 
     override fun onSpeakerClicked(speakerId: SpeakerId) {
         _navigateToSpeakerDetail.postValue(Event(speakerId))
+    }
+
+    // TODO: write tests b/74611561
+    fun setSessionId(newSessionId: SessionId?) {
+        if (newSessionId == null) {
+            Timber.e("Session ID is null")
+            return
+        }
+        sessionId.setValueIfNew(newSessionId)
+    }
+
+    /**
+     * Called by the UI when play button is clicked
+     */
+    fun onPlayVideo() {
+        val currentSession = session.value
+        if (currentSession?.hasVideo == true) {
+            navigateToYouTubeAction.value = Event(requireSession().youTubeUrl)
+        }
+    }
+
+    private fun refreshUserSession() {
+        getSessionId()?.let {
+            Timber.d("Refreshing data with session ID $it and user ${getUserId()}")
+            listenForUserSessionChanges(it)
+        }
+    }
+
+    private fun listenForUserSessionChanges(sessionId: SessionId) {
+        // Cancels listening for the old session
+        loadUserSessionJob.cancelIfActive()
+
+        loadUserSessionJob = viewModelScope.launch {
+            loadUserSessionUseCase(getUserId() to sessionId).collect { loadResult ->
+                // If there's a new result with data, update the session
+                loadResult.data?.userSession?.session?.let { session ->
+                    _session.value = session
+                }
+                // If there's a new result with data, update the UserEvent
+                loadResult.data?.userSession?.userEvent?.let { userEvent ->
+                    _userEvent.value = userEvent
+                }
+
+                // Cancels listening for old related user sessions
+                loadRelatedSessionJob.cancelIfActive()
+
+                // If there's a new Session, then load any related sessions
+                loadResult.data?.userSession?.session?.let { session ->
+                    val related = session.relatedSessions
+                    if (related.isNotEmpty()) {
+                        listenForRelatedSessions(related)
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun listenForRelatedSessions(related: Set<SessionId>) {
+        // if this fails, we don't want to propagate the error and
+        // stop listening for user session changes
+        supervisorScope {
+            loadRelatedSessionJob = launch {
+                loadRelatedSessionUseCase(getUserId() to related).collect {
+                    it.data?.let {
+                        _relatedUserSessions.value = it.userSessions
+                    }
+                }
+            }
+        }
     }
 
     /**

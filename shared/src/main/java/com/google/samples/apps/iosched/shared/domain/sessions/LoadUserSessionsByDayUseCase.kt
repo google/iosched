@@ -19,10 +19,13 @@ package com.google.samples.apps.iosched.shared.domain.sessions
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
+import com.google.samples.apps.iosched.shared.domain.FlowUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
 import javax.inject.Inject
@@ -31,46 +34,43 @@ import javax.inject.Inject
  * Loads sessions into lists keyed by [ConferenceDay].
  */
 open class LoadUserSessionsByDayUseCase @Inject constructor(
-    private val userEventRepository: DefaultSessionAndUserEventRepository
-) : MediatorUseCase<LoadUserSessionsByDayUseCaseParameters, LoadUserSessionsByDayUseCaseResult>() {
+    private val userEventRepository: DefaultSessionAndUserEventRepository,
+    @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
+) : FlowUseCase<LoadUserSessionsByDayUseCaseParameters, LoadUserSessionsByDayUseCaseResult>(
+    defaultDispatcher
+) {
 
-    override fun execute(parameters: LoadUserSessionsByDayUseCaseParameters) {
+    override fun execute(
+        parameters: LoadUserSessionsByDayUseCaseParameters
+    ): Flow<Result<LoadUserSessionsByDayUseCaseResult>> {
         val (sessionMatcher, userId) = parameters
-
         Timber.d("LoadUserSessionsByDayUseCase: Refreshing sessions with user data")
-        result.postValue(Result.Loading)
+        return userEventRepository.getObservableUserEvents(userId).map {
+            when (it) {
+                is Result.Success -> {
+                    val userSessions = it.data.userSessionsPerDay.mapValues { (_, sessions) ->
+                        sessions.filter { sessionMatcher.matches(it) }
+                            .sortedBy { it.session.startTime }
+                    }
 
-        val userSessionsObservable = userEventRepository.getObservableUserEvents(userId)
+                    // Compute type from tags now so it's done in the background
+                    userSessions.forEach { it.value.forEach { it.session.type } }
 
-        // Avoid duplicating sources and trigger an update on the LiveData from the base class.
-        result.removeSource(userSessionsObservable)
-        result.addSource(userSessionsObservable) {
-            DefaultScheduler.execute {
-                when (it) {
-                    is Result.Success -> {
-                        val userSessions = it.data.userSessionsPerDay.mapValues { (_, sessions) ->
-                            sessions.filter { sessionMatcher.matches(it) }
-                                .sortedBy { it.session.startTime }
-                        }
-
-                        // Compute type from tags now so it's done in the background
-                        userSessions.forEach { it.value.forEach { it.session.type } }
-
-                        val usecaseResult = LoadUserSessionsByDayUseCaseResult(
-                            userSessionsPerDay = userSessions,
-                            userSessionCount = userSessions.values.map { it.size }.sum(),
-                            firstUnfinishedSession = findFirstUnfinishedSession(
-                                userSessions,
-                                userEventRepository.getConferenceDays(),
-                                parameters.now
-                            )
+                    val usecaseResult = LoadUserSessionsByDayUseCaseResult(
+                        userSessionsPerDay = userSessions,
+                        userSessionCount = userSessions.values.map { it.size }.sum(),
+                        firstUnfinishedSession = findFirstUnfinishedSession(
+                            userSessions,
+                            userEventRepository.getConferenceDays(),
+                            parameters.now
                         )
-                        result.postValue(Result.Success(usecaseResult))
-                    }
-                    is Result.Error -> {
-                        result.postValue(it)
-                    }
+                    )
+                    Result.Success(usecaseResult)
                 }
+                is Result.Error -> {
+                    it
+                }
+                else -> Result.Error(IllegalStateException("Something went wrong"))
             }
         }
     }

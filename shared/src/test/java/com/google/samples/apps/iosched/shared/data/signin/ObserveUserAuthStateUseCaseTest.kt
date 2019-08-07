@@ -16,15 +16,17 @@
 
 package com.google.samples.apps.iosched.shared.data.signin
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.data
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.single
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.instanceOf
 import org.hamcrest.core.Is.`is`
@@ -39,120 +41,63 @@ const val TEST_USER_ID = "testuser"
  */
 class ObserveUserAuthStateUseCaseTest {
 
-    @Rule
-    @JvmField
-    val instantTaskExecutor = InstantTaskExecutorRule()
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun userSuccess() {
+    fun userSuccess() = coroutineRule.runBlockingTest {
+        val subject = createObserveUserAuthStateUseCase(isAnonymous = false, isSuccess = true)
 
-        val subject = createObserveUserAuthStateUseCase(
-            isAnonymous = false,
-            isSuccess = true,
-            userId = TEST_USER_ID
-        )
+        val result = subject(Any()).single()
 
-        // Start the listeners
-        subject.execute(Any())
-
-        val value = LiveDataTestUtil.getValue(subject.observe()) as Result.Success
-
-        assertThat(
-            value.data.getUid(),
-            `is`(equalTo(TEST_USER_ID))
-        )
-        assertThat(
-            value.data.isSignedIn(),
-            `is`(equalTo(true))
-        )
+        assertThat(result.data?.getUid(), `is`(equalTo(TEST_USER_ID)))
+        assertThat(result.data?.isSignedIn(), `is`(equalTo(true)))
     }
 
     @Test
-    fun userError() {
-        val subject = createObserveUserAuthStateUseCase(
-            isAnonymous = false,
-            isSuccess = false,
-            userId = TEST_USER_ID
-        )
+    fun userError() = coroutineRule.runBlockingTest {
+        val subject = createObserveUserAuthStateUseCase(isAnonymous = false, isSuccess = false)
 
-        // Start the listeners
-        subject.execute(Any())
+        val result = subject(Any()).single()
 
-        val value = LiveDataTestUtil.getValue(subject.observe())
-
-        assertThat(
-            value,
-            `is`(instanceOf(Result.Error::class.java))
-        )
+        assertThat(result, `is`(instanceOf(Result.Error::class.java)))
     }
 
     @Test
-    fun userLogsOut() {
-        val subject = createObserveUserAuthStateUseCase(
-            isAnonymous = true,
-            isSuccess = true,
-            userId = TEST_USER_ID
-        )
+    fun userLogsOut() = coroutineRule.runBlockingTest {
+        val subject = createObserveUserAuthStateUseCase(isAnonymous = true, isSuccess = true)
 
-        // Start the listeners
-        subject.execute(Any())
+        val result = subject(Any()).single()
 
-        val value = LiveDataTestUtil.getValue(subject.observe()) as Result.Success
-
-        assertThat(
-            value.data.getUid(),
-            `is`(equalTo(TEST_USER_ID))
-        )
-        assertThat(
-            value.data.isSignedIn(),
-            `is`(equalTo(false))
-        )
+        assertThat(result.data?.getUid(), `is`(equalTo(TEST_USER_ID)))
+        assertThat(result.data?.isSignedIn(), `is`(equalTo(false)))
     }
 
     private fun createObserveUserAuthStateUseCase(
         isAnonymous: Boolean,
-        isSuccess: Boolean,
-        userId: String
+        isSuccess: Boolean
     ): ObserveUserAuthStateUseCase {
-        val authStateUserDataSource = FakeAuthStateUserDataSource(
-            isAnonymous, isSuccess, userId
-        )
-
-        val subject = ObserveUserAuthStateUseCase(authStateUserDataSource)
-        return subject
+        val authStateUserDataSource = FakeAuthStateUserDataSource(isAnonymous, isSuccess)
+        return ObserveUserAuthStateUseCase(authStateUserDataSource, coroutineRule.testDispatcher)
     }
 }
 
 class FakeAuthStateUserDataSource(
     private val isAnonymous: Boolean,
-    private val successFirebaseUser: Boolean,
-    private val userId: String?
+    private val successFirebaseUser: Boolean
 ) : AuthStateUserDataSource {
 
-    private val _userId = MutableLiveData<String?>()
-
-    private val _firebaseUser = MutableLiveData<Result<AuthenticatedUserInfo?>>()
-
-    override fun startListening() {
-        _userId.postValue(userId)
-
+    override fun getBasicUserInfo(): Flow<Result<AuthenticatedUserInfo>> = flow {
         if (successFirebaseUser) {
             val mockUser = mock<AuthenticatedUserInfo> {
                 on { isAnonymous() }.doReturn(isAnonymous)
                 on { getUid() }.doReturn(TEST_USER_ID)
                 on { isSignedIn() }.doReturn(!isAnonymous)
             }
-            _firebaseUser.postValue(Result.Success(mockUser))
+            emit(Result.Success(mockUser))
         } else {
-            _firebaseUser.postValue(Result.Error(Exception("Test")))
+            emit(Result.Error(Exception("Test")))
         }
-    }
-
-    override fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfo?>> {
-        return _firebaseUser
-    }
-
-    override fun clearListener() {
-        // Noop
     }
 }

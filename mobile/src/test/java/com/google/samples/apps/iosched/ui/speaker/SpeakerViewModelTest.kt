@@ -36,7 +36,9 @@ import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelega
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -53,6 +55,18 @@ class SpeakerViewModelTest {
 
     // Overrides Dispatchers.Main used in Coroutines
     @get:Rule var coroutineRule = MainCoroutineRule()
+
+    private lateinit var viewModelDelegate: FakeSignInViewModelDelegate
+
+    @Before
+    fun setUp() {
+        viewModelDelegate = FakeSignInViewModelDelegate()
+    }
+
+    @After
+    fun tearDown() {
+        viewModelDelegate.closeChannel()
+    }
 
     @Test
     fun setSpeakerId_loadsSpeaker() = coroutineRule.runBlockingTest {
@@ -105,9 +119,10 @@ class SpeakerViewModelTest {
             DefaultSessionAndUserEventRepository(
                 TestUserEventDataSource(),
                 DefaultSessionRepository(TestDataRepository)
-            )
+            ),
+            coroutineRule.testDispatcher
         ),
-        signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate().apply {
+        signInViewModelDelegate: SignInViewModelDelegate = viewModelDelegate.apply {
             loadUser("123")
         },
         eventActionsDelegate: EventActionsViewModelDelegate = FakeEventActionsViewModelDelegate(),

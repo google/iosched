@@ -16,17 +16,17 @@
 
 package com.google.samples.apps.iosched.shared.data.userevent
 
-import androidx.lifecycle.LiveData
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.result.Result
+import kotlinx.coroutines.flow.Flow
 
 interface UserEventDataSource {
 
-    fun getObservableUserEvents(userId: String): LiveData<UserEventsResult>
+    fun getObservableUserEvents(userId: String): Flow<UserEventsResult>
 
-    fun getObservableUserEvent(userId: String, eventId: SessionId): LiveData<UserEventResult>
+    fun getObservableUserEvent(userId: String, eventId: SessionId): Flow<UserEventResult>
 
     fun getUserEvents(userId: String): List<UserEvent>
 
@@ -39,9 +39,7 @@ interface UserEventDataSource {
      * @param userEvent the [UserEvent], which isStarred is going to be the updated status
      * @return the LiveData that represents the status of the star operation.
      */
-    fun starEvent(userId: String, userEvent: UserEvent): LiveData<Result<StarUpdatedStatus>>
-
-    fun clearSingleEventSubscriptions()
+    suspend fun starEvent(userId: String, userEvent: UserEvent): Result<StarUpdatedStatus>
 }
 
 data class UserEventsResult(

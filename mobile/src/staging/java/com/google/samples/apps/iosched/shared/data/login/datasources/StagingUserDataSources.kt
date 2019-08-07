@@ -19,14 +19,14 @@ package com.google.samples.apps.iosched.shared.data.login.datasources
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.UserInfo
 import com.google.samples.apps.iosched.shared.R
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.result.Result
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
 
 /**
  * A configurable [AuthenticatedUserInfo] used for staging.
@@ -88,30 +88,17 @@ class StagingAuthStateUserDataSource(
     val notificationAlarmUpdater: NotificationAlarmUpdater
 ) : AuthStateUserDataSource {
 
-    val _userId = MutableLiveData<String?>()
-
-    val _firebaseUser = MutableLiveData<Result<AuthenticatedUserInfo?>>()
-
     val user = StagingAuthenticatedUserInfo(
         registered = isRegistered,
-        signedIn = isSignedIn, context = context
+        signedIn = isSignedIn,
+        context = context
     )
 
-    override fun startListening() {
-        _userId.postValue(userId)
-
-        _firebaseUser.postValue(Result.Success(user))
-
+    override fun getBasicUserInfo() = flow {
+        emit(Result.Success(user))
+    }.onEach {
         userId?.let {
             notificationAlarmUpdater.updateAll(userId)
         }
-    }
-
-    override fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfo?>> {
-        return _firebaseUser
-    }
-
-    override fun clearListener() {
-        // Noop
     }
 }

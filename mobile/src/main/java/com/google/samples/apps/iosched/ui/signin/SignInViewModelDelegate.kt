@@ -21,17 +21,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
+import com.google.samples.apps.iosched.shared.di.MainDispatcher
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
-import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignOut
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
 
 enum class SignInEvent {
@@ -54,9 +56,9 @@ enum class SignInEvent {
  */
 interface SignInViewModelDelegate {
     /**
-     * Live updated value of the current firebase user
+     * Stream of the current Firebase user
      */
-    val currentFirebaseUser: LiveData<Result<AuthenticatedUserInfo>?>
+    val currentFirebaseUser: Flow<Result<AuthenticatedUserInfo?>>
 
     /**
      * Live updated value of the current firebase users image url
@@ -77,7 +79,7 @@ interface SignInViewModelDelegate {
     /**
      * Emit an Event on performSignInEvent to request sign-in
      */
-    fun emitSignInRequest()
+    suspend fun emitSignInRequest()
 
     /**
      * Emit an Event on performSignInEvent to request sign-out
@@ -99,47 +101,54 @@ interface SignInViewModelDelegate {
  */
 internal class FirebaseSignInViewModelDelegate @Inject constructor(
     observeUserAuthStateUseCase: ObserveUserAuthStateUseCase,
-    private val notificationsPrefIsShownUseCase: NotificationsPrefIsShownUseCase
+    private val notificationsPrefIsShownUseCase: NotificationsPrefIsShownUseCase,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    @MainDispatcher private val mainDispatcher: CoroutineDispatcher
 ) : SignInViewModelDelegate {
 
     override val performSignInEvent = MutableLiveData<Event<SignInEvent>>()
-    override val currentFirebaseUser: LiveData<Result<AuthenticatedUserInfo>?>
+    override val currentFirebaseUser: Flow<Result<AuthenticatedUserInfo?>>
+
+    private val _currentUserImageUri = MutableLiveData<Uri?>()
     override val currentUserImageUri: LiveData<Uri?>
+        get() = _currentUserImageUri
+
     override val shouldShowNotificationsPrefAction = MediatorLiveData<Event<Boolean>>()
 
-    private val _isSignedIn: LiveData<Boolean>
+    private val _isSignedIn = MutableLiveData<Boolean>()
 
-    /**
-     * Injecting viewModelScope is cumbersome here. This creates a scope specific to this class.
-     * Worst case scenario is that if the coroutines this scope launch are running while the
-     * original ViewModel is destroyed, the FirebaseSignInViewModelDelegate instance will be
-     * in memory until the coroutines finish.
-     */
-    private val signInScope: CoroutineScope =
-            CoroutineScope(Dispatchers.Main + SupervisorJob())
+    private var authenticatedUserInfo: AuthenticatedUserInfo? = null
 
     private val notificationsPrefIsShown = MutableLiveData<Result<Boolean>>()
 
     init {
-        currentFirebaseUser = observeUserAuthStateUseCase.observe()
+        currentFirebaseUser = observeUserAuthStateUseCase(Any()).map {
+            if (it is Success) {
+                authenticatedUserInfo = it.data
+                _currentUserImageUri.value = it.data?.getPhotoUrl()
+                _isSignedIn.value = it.data?.isSignedIn() ?: false
+                refreshNotificationDialogShown(it)
+            } else if (it is Result.Error) {
+                Timber.e(it.exception)
+            }
 
-        currentUserImageUri = currentFirebaseUser.map { result: Result<AuthenticatedUserInfo?>? ->
-            (result as? Result.Success)?.data?.getPhotoUrl()
+            it
         }
-
-        _isSignedIn = currentFirebaseUser.map { isSignedIn() }
-
-        observeUserAuthStateUseCase.execute(Any())
 
         shouldShowNotificationsPrefAction.addSource(notificationsPrefIsShown) {
             showNotificationPref()
         }
+    }
 
-        shouldShowNotificationsPrefAction.addSource(_isSignedIn) {
-            // Refresh the preferences
+    // Refresh whether the notification preference dialog has been shown
+    private suspend fun refreshNotificationDialogShown(it: Success<AuthenticatedUserInfo?>) {
+        if (it.data?.isSignedIn() == true) {
             notificationsPrefIsShown.value = null
-            signInScope.launch {
-                notificationsPrefIsShown.value = notificationsPrefIsShownUseCase(Unit)
+            withContext(ioDispatcher) {
+                val notificationShown = notificationsPrefIsShownUseCase(Unit)
+                withContext(mainDispatcher) {
+                    notificationsPrefIsShown.value = notificationShown
+                }
             }
         }
     }
@@ -154,14 +163,16 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
         }
     }
 
-    override fun emitSignInRequest() {
+    override suspend fun emitSignInRequest() {
         // Refresh the notificationsPrefIsShown because it's used to indicate if the
         // notifications preference dialog should be shown
-        signInScope.launch {
-            notificationsPrefIsShown.value = notificationsPrefIsShownUseCase(Unit)
+        withContext(ioDispatcher) {
+            val notificationShown = notificationsPrefIsShownUseCase(Unit)
+            withContext(mainDispatcher) {
+                notificationsPrefIsShown.value = notificationShown
+                performSignInEvent.value = Event(SignInEvent.RequestSignIn)
+            }
         }
-
-        performSignInEvent.postValue(Event(SignInEvent.RequestSignIn))
     }
 
     override fun emitSignOutRequest() {
@@ -169,7 +180,7 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
     }
 
     override fun isSignedIn(): Boolean {
-        return (currentFirebaseUser.value as? Result.Success)?.data?.isSignedIn() == true
+        return _isSignedIn.value == true
     }
 
     override fun observeSignedInUser(): LiveData<Boolean> {
@@ -177,7 +188,6 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
     }
 
     override fun getUserId(): String? {
-        val user = currentFirebaseUser.value
-        return (user as? Result.Success)?.data?.getUid()
+        return authenticatedUserInfo?.getUid()
     }
 }
