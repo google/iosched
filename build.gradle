@@ -47,12 +47,12 @@ buildscript {
         drawerLayoutVersion = '1.1.0-alpha02'
         espressoVersion = '3.1.1'
         fabricVersion = '1.25.4'
-        firebaseAuthVersion = '16.1.0'
-        firebaseConfigVersion = '16.1.2'
-        firebaseCoreVersion = '16.0.6'
-        firebaseFirestoreVersion = '17.1.4'
-        firebaseFunctionsVersion = '16.3.0'
-        firebaseMessagingVersion = '17.3.4'
+        firebaseAuthVersion = '18.1.0'
+        firebaseConfigVersion = '18.0.0'
+        firebaseCoreVersion = '17.0.1'
+        firebaseFirestoreVersion = '20.2.0'
+        firebaseFunctionsVersion = '18.1.0'
+        firebaseMessagingVersion = '19.0.1'
         firebaseUiVersion = "4.0.0"
         flexboxVersion = "1.1.0"
         fragmentVersion = "1.1.0-beta01"
@@ -64,7 +64,7 @@ buildscript {
         gsonVersion = "2.8.1"
         hamcrestVersion = '1.3'
         junitVersion = '4.12'
-        kotlinVersion = '1.3.20'
+        kotlinVersion = '1.3.41'
         ktxVersion = "1.0.0"
         leanbackVersion = '1.0.0'
         legacySupportVersion = '1.0.0'
