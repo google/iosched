@@ -107,9 +107,11 @@ class ScheduleViewModel @Inject constructor(
     }
 
     // Cached list of TagFilters returned by the use case. Only Result.Success modifies it.
-    private var cachedEventFilters = emptyList<EventFilter>()
+    private var cachedEventFilters = mutableListOf<EventFilter>()
 
+    private val _eventFilters = MediatorLiveData<List<EventFilter>>()
     val eventFilters: LiveData<List<EventFilter>>
+        get() = _eventFilters
     private val _selectedFilters = MutableLiveData<List<EventFilter>>()
     val selectedFilters: LiveData<List<EventFilter>>
         get() = _selectedFilters
@@ -212,13 +214,11 @@ class ScheduleViewModel @Inject constructor(
             }
         }
 
-        eventFilters = loadEventFiltersResult.map {
+        _eventFilters.addSource(loadEventFiltersResult) {
             if (it is Success) {
-                cachedEventFilters = it.data
+                cachedEventFilters = it.data.toMutableList()
                 updateFilterStateObservables()
             }
-            // TODO handle Error result
-            cachedEventFilters
         }
 
         _profileContentDesc.addSource(currentFirebaseUser) {
@@ -328,7 +328,8 @@ class ScheduleViewModel @Inject constructor(
         }
         if (changed) {
             // Actually toggle the filter
-            filter.isChecked.set(enabled)
+            val index = cachedEventFilters.indexOf(filter)
+            cachedEventFilters[index] = filter.copy(enabled)
             // Persist the filters
             viewModelScope.launch {
                 saveSelectedFiltersUseCase(userSessionMatcher)
@@ -350,7 +351,10 @@ class ScheduleViewModel @Inject constructor(
 
     override fun clearFilters() {
         if (userSessionMatcher.clearAll()) {
-            eventFilters.value?.forEach { it.isChecked.set(false) }
+            cachedEventFilters = cachedEventFilters.mapTo(mutableListOf()) {
+                if (it.isSelected) it.copy(false) else it
+            }
+
             viewModelScope.launch {
                 saveSelectedFiltersUseCase(userSessionMatcher)
             }
@@ -366,7 +370,8 @@ class ScheduleViewModel @Inject constructor(
     private fun updateFilterStateObservables() {
         val hasAnyFilters = userSessionMatcher.hasAnyFilters()
         _hasAnyFilters.value = hasAnyFilters
-        _selectedFilters.value = cachedEventFilters.filter { it.isChecked.get() }
+        _eventFilters.value = cachedEventFilters
+        _selectedFilters.value = cachedEventFilters.filter { it.isSelected }
     }
 
     fun onSwipeRefresh() {

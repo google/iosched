@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_micro"
             android:layout_marginTop="@dimen/spacing_micro"
-            android:checked="@{eventFilter.isChecked}"
+            android:checked="@{eventFilter.isSelected}"
             app:color="@{eventFilter.getColor()}"
             app:eventFilter="@{eventFilter}"
             app:eventFilterText="@{eventFilter}"

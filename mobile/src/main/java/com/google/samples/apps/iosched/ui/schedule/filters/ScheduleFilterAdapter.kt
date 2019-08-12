@@ -31,6 +31,7 @@ import com.google.samples.apps.iosched.shared.util.inflate
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.EventFilterCategory
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.EventFilterCategory.NONE
+import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.TagFilter
 
 /**
@@ -140,9 +141,11 @@ internal object EventFilterDiff : DiffUtil.ItemCallback<Any>() {
     override fun areItemsTheSame(oldItem: Any, newItem: Any) = oldItem == newItem
 
     override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
-        // This method is only called if areItemsTheSame() returns true. For anything other than
-        // TagFilter items, that check suffices for this one as well.
-        return (oldItem as? TagFilter)?.isUiContentEqual(newItem as TagFilter) ?: true
+        return when (oldItem) {
+            is MyEventsFilter -> oldItem.isUiContentEqual(newItem as MyEventsFilter)
+            is TagFilter -> oldItem.isUiContentEqual(newItem as TagFilter)
+            else -> true
+        }
     }
 }
 
