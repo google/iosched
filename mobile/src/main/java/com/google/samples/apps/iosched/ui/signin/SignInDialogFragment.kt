@@ -55,7 +55,7 @@ class SignInDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInject
         return fragmentInjector
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
     }

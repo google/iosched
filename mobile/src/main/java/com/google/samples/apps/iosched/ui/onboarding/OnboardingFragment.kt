@@ -71,7 +71,7 @@ class OnboardingFragment : DaggerFragment() {
 
         binding = FragmentOnboardingBinding.inflate(inflater, container, false).apply {
             viewModel = onboardingViewModel
-            setLifecycleOwner(this@OnboardingFragment)
+            lifecycleOwner = this@OnboardingFragment
             pager.adapter = OnboardingAdapter(childFragmentManager)
             pagerPager = ViewPagerPager(pager)
             // If user touches pager then stop auto advance
@@ -91,7 +91,7 @@ class OnboardingFragment : DaggerFragment() {
         return binding.root
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         handler.postDelayed(advancePager, INITIAL_ADVANCE_DELAY)
     }
