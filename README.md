@@ -22,7 +22,7 @@ guide attendees during the conference in Info, and time-relevant information
 during the conference in Home.
 
 <div>
-  <img align="center" src="schedule.png" alt="Schedule screenshot" height="640" width="360">
+  <img align="center" src="schedule.png" alt="Schedule screenshot" height="640" width="320">
 </div>
 
 # Development Environment
