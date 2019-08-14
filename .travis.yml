@@ -16,9 +16,9 @@ android:
   components:
     - tools
     - platform-tools
-    - build-tools-27.0.3
-    - android-28
-    - addon-google_apis-google-28
+    - build-tools-28.0.3
+    - android-29
+    - addon-google_apis-google-29
     - extra-google-m2repository
     - extra-android-m2repository
 script:
