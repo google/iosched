@@ -18,6 +18,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'io.fabric'
 
 android {
@@ -30,16 +31,12 @@ android {
         versionName rootProject.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "float[]",
-                "MAP_FLOORPLAN_MAPPING",
-                "{${map_floorplan_nw}, ${map_floorplan_ne}, ${map_floorplan_se}}"
-
         buildConfigField "com.google.android.gms.maps.model.LatLng",
-                "MAP_VIEWPORT_BOUND_NW",
-                "new com.google.android.gms.maps.model.LatLng(${map_viewport_bound_nw})"
+                "MAP_VIEWPORT_BOUND_NE",
+                "new com.google.android.gms.maps.model.LatLng(${map_viewport_bound_ne})"
         buildConfigField "com.google.android.gms.maps.model.LatLng",
-                "MAP_VIEWPORT_BOUND_SE",
-                "new com.google.android.gms.maps.model.LatLng(${map_viewport_bound_se})"
+                "MAP_VIEWPORT_BOUND_SW",
+                "new com.google.android.gms.maps.model.LatLng(${map_viewport_bound_sw})"
 
         buildConfigField "float", "MAP_CAMERA_FOCUS_ZOOM", "${map_camera_focus_zoom}"
 
@@ -49,28 +46,37 @@ android {
         resValue "dimen", "map_camera_tilt", "${map_default_camera_tilt}"
         resValue "dimen", "map_camera_zoom", "${map_default_camera_zoom}"
         resValue "dimen", "map_viewport_min_zoom", "${map_viewport_min_zoom}"
+        resValue "dimen", "map_viewport_max_zoom", "${map_viewport_max_zoom}"
 
         manifestPlaceholders = [crashlyticsEnabled: true]
 
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources true
+            // TODO: b/120517460 shrinkResource can't be used with dynamic-feature at this moment.
+            //       Need to ensure the app size has not increased
             manifestPlaceholders = [crashlyticsEnabled: true]
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             resValue "string",
                     "google_maps_key",
                     "AIzaSyD5jqwKMm1SeoYsW25vxCXfTlhDBeZ4H5c"
+
+            buildConfigField "String", "MAP_TILE_URL_BASE", "\"https://storage.googleapis.com/io2019-festivus-prod/images/maptiles\""
         }
         debug {
+            versionNameSuffix = '-debug'
             manifestPlaceholders = [crashlyticsEnabled: false]
             resValue "string",
                     "google_maps_key",
                     "AIzaSyAhJx57ikQH9rYc8IT8W3d2As5cGHMBvuo"
+
+            buildConfigField "String", "MAP_TILE_URL_BASE", "\"https://storage.googleapis.com/io2019-festivus/images/maptiles\""
         }
         staging {
             initWith debug
+            versionNameSuffix = '-staging'
 
             // Specifies a sorted list of fallback build types that the
             // plugin should try to use when a dependency does not include a
@@ -100,23 +106,39 @@ android {
     }
 
     lintOptions {
-        disable "InvalidPackage", "MissingTranslation"
+        // Eliminates UnusedResources false positives for resources used in DataBinding layouts
+        checkGeneratedSources = true
+        // Running lint over the debug variant is enough
+        checkReleaseBuilds false
+        // See lint.xml for rules configuration
     }
 
     testBuildType "staging"
+
+    // Required for AR because it includes a library built with Java 8
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
 }
 
 dependencies {
-    implementation project(":shared")
+    implementation project(':shared')
+    implementation project(':ar')
     testImplementation project(':test-shared')
     testImplementation project(':androidTest-shared')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "androidx.core:core-ktx:$rootProject.coreVersion"
 
     // UI
+    implementation "androidx.activity:activity-ktx:$rootProject.activityVersion"
     implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
+    implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentVersion"
+    implementation "androidx.cardview:cardview:$rootProject.cardviewVersion"
     implementation "androidx.browser:browser:$rootProject.browserVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
+    implementation "androidx.drawerlayout:drawerlayout:$rootProject.drawerLayoutVersion"
     implementation "com.google.android.material:material:$rootProject.materialVersion"
     implementation "com.google.android:flexbox:$rootProject.flexboxVersion"
     implementation "com.airbnb.android:lottie:$rootProject.lottieVersion"
@@ -125,7 +147,14 @@ dependencies {
     // Architecture Components
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
     kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleVersion"
-    testImplementation "androidx.arch.core:core-testing:$rootProject.lifecycleVersion"
+    testImplementation "androidx.arch.core:core-testing:$rootProject.archTestingVersion"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+    implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    kapt "androidx.room:room-compiler:$rootProject.roomVersion"
+    testImplementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    testImplementation "androidx.room:room-runtime:$rootProject.roomVersion"
 
     // Dagger
     implementation "com.google.dagger:dagger-android:$rootProject.dagger"
@@ -141,9 +170,8 @@ dependencies {
     implementation "com.firebaseui:firebase-ui-auth:$rootProject.firebaseUiVersion"
     implementation "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
 
-    // Utils
     // Date and time API for Java.
-    api "com.jakewharton.threetenabp:threetenabp:$rootProject.threetenabpVersion"
+    implementation "com.jakewharton.threetenabp:threetenabp:$rootProject.threetenabpVersion"
     testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"
     implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
 
@@ -153,6 +181,7 @@ dependencies {
     // Instrumentation tests
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$rootProject.espressoVersion"
+    androidTestImplementation "androidx.test.ext:junit:$rootProject.testExtVersion"
     androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
     androidTestImplementation "androidx.test:rules:$rootProject.rulesVersion"
 
@@ -162,14 +191,10 @@ dependencies {
     testImplementation "com.nhaarman:mockito-kotlin:$rootProject.mockitoKotlinVersion"
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
 
-    // Leak Canary
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
-    stagingImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
-
     // Solve conflicts with gson. DataBinding is using an old version.
     implementation "com.google.code.gson:gson:$gsonVersion"
 
+    implementation "com.google.ar:core:$rootProject.arcoreVersion"
 }
 
 apply plugin: 'com.google.gms.google-services'

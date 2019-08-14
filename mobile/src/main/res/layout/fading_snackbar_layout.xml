@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_normal"
         android:background="@drawable/fading_snackbar_background"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+        android:theme="@style/ThemeOverlay.IOSched.Dark">
 
         <TextView
             android:id="@+id/snackbar_text"
@@ -38,7 +38,8 @@
             android:maxLines="4"
             android:padding="@dimen/margin_normal"
             android:textAlignment="viewStart"
-            android:textAppearance="@style/TextAppearance.Design.Snackbar.Message" />
+            android:textAppearance="@style/TextAppearance.Design.Snackbar.Message"
+            tools:text="Look at all the wonderful snack bar text..." />
 
         <Button
             android:id="@+id/snackbar_action"
@@ -46,9 +47,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical|end"
-            android:paddingHorizontal="@dimen/margin_normal"
-            android:textAppearance="@style/TextAppearance.IOSched.FadingSnackbarAction"
+            android:paddingEnd="@dimen/margin_normal"
+            android:paddingStart="@dimen/margin_normal"
             android:visibility="gone"
+            tools:text="Action"
+            tools:visibility="visible"
             tools:targetApi="o" />
 
     </LinearLayout>

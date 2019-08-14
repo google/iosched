@@ -16,41 +16,54 @@
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/info_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
-            style="@style/Widget.AppBar"
+            style="@style/Widget.IOSched.AppBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true">
 
-            <TextView
-                android:id="@+id/title"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                android:gravity="center"
-                android:text="@string/title_info"
-                android:textAppearance="@style/TextAppearance.IOSched.ToolbarTitle"
-                app:layout_scrollFlags="scroll|snap|exitUntilCollapsed" />
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:navigationContentDescription="@string/a11y_show_navigation"
+                app:navigationIcon="@drawable/ic_menu"
+                app:title="@string/title_info" />
 
+            <!-- ViewPager doesn't work in RTL, so force the tabs to layout LTR. -->
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
                 style="@style/Widget.IOSched.Tabs"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize" />
+                android:layout_height="wrap_content"
+                android:layoutDirection="ltr" />
 
         </com.google.android.material.appbar.AppBarLayout>
+
+        <!-- A view to draw above the AppBarLayout to mimic the status bar -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="?attr/colorSurface"
+            android:fitsSystemWindows="true"
+            app:layout_behavior="com.google.samples.apps.iosched.util.StatusBarScrimBehavior" />
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:pageMargin="@{@dimen/spacing_normal}"
+            app:pageMargin="@{@dimen/info_page_margin}"
             app:pageMarginDrawable="@{@drawable/page_margin}" />
 
         <com.google.samples.apps.iosched.widget.FadingSnackbar

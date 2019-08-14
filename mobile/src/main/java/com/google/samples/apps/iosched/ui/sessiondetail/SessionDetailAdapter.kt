@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.sessiondetail
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,15 +26,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.databinding.ItemGenericSectionHeaderBinding
 import com.google.samples.apps.iosched.databinding.ItemSessionBinding
 import com.google.samples.apps.iosched.databinding.ItemSessionInfoBinding
 import com.google.samples.apps.iosched.databinding.ItemSpeakerBinding
 import com.google.samples.apps.iosched.model.Speaker
 import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.ui.SectionHeader
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewHolder.HeaderViewHolder
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewHolder.RelatedViewHolder
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewHolder.SessionInfoViewHolder
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewHolder.SpeakerViewHolder
+import com.google.samples.apps.iosched.util.executeAfter
 
 /**
  * [RecyclerView.Adapter] for presenting a session details, composed of information about the
@@ -44,6 +48,8 @@ class SessionDetailAdapter(
     private val sessionDetailViewModel: SessionDetailViewModel,
     private val tagRecycledViewPool: RecycledViewPool
 ) : RecyclerView.Adapter<SessionDetailViewHolder>() {
+
+    private val differ = AsyncListDiffer<Any>(this, DiffCallback)
 
     var speakers: List<Speaker> = emptyList()
         set(value) {
@@ -57,8 +63,6 @@ class SessionDetailAdapter(
             differ.submitList(buildMergedList(relatedSessions = value))
         }
 
-    private val differ = AsyncListDiffer<Any>(this, DiffCallback)
-
     init {
         differ.submitList(buildMergedList())
     }
@@ -69,19 +73,16 @@ class SessionDetailAdapter(
             R.layout.item_session_info -> SessionInfoViewHolder(
                 ItemSessionInfoBinding.inflate(inflater, parent, false)
             )
-            R.layout.item_speaker_header -> HeaderViewHolder(
-                inflater.inflate(viewType, parent, false)
-            )
             R.layout.item_speaker -> SpeakerViewHolder(
                 ItemSpeakerBinding.inflate(inflater, parent, false)
-            )
-            R.layout.item_related_header -> HeaderViewHolder(
-                inflater.inflate(viewType, parent, false)
             )
             R.layout.item_session -> RelatedViewHolder(
                 ItemSessionBinding.inflate(inflater, parent, false).apply {
                     tags.setRecycledViewPool(tagRecycledViewPool)
                 }
+            )
+            R.layout.item_generic_section_header -> HeaderViewHolder(
+                ItemGenericSectionHeaderBinding.inflate(inflater, parent, false)
             )
             else -> throw IllegalStateException("Unknown viewType $viewType")
         }
@@ -89,37 +90,37 @@ class SessionDetailAdapter(
 
     override fun onBindViewHolder(holder: SessionDetailViewHolder, position: Int) {
         when (holder) {
-            is SessionInfoViewHolder -> holder.binding.apply {
+            is SessionInfoViewHolder -> holder.binding.executeAfter {
                 viewModel = sessionDetailViewModel
                 tagViewPool = tagRecycledViewPool
-                setLifecycleOwner(lifecycleOwner)
-                executePendingBindings()
+                lifecycleOwner = this@SessionDetailAdapter.lifecycleOwner
             }
-            is SpeakerViewHolder -> holder.binding.apply {
+            is SpeakerViewHolder -> holder.binding.executeAfter {
                 val presenter = differ.currentList[position] as Speaker
                 speaker = presenter
                 eventListener = sessionDetailViewModel
-                setLifecycleOwner(lifecycleOwner)
+                lifecycleOwner = this@SessionDetailAdapter.lifecycleOwner
                 root.setTag(R.id.tag_speaker_id, presenter.id) // Used to identify clicked view
-                executePendingBindings()
             }
-            is RelatedViewHolder -> holder.binding.apply {
+            is RelatedViewHolder -> holder.binding.executeAfter {
                 userSession = differ.currentList[position] as UserSession
                 eventListener = sessionDetailViewModel
-                setLifecycleOwner(lifecycleOwner)
-                executePendingBindings()
+                timeZoneId = sessionDetailViewModel.timeZoneId
+                showTime = true
+                lifecycleOwner = this@SessionDetailAdapter.lifecycleOwner
             }
-            is HeaderViewHolder -> Unit // no-op
+            is HeaderViewHolder -> holder.binding.executeAfter {
+                sectionHeader = differ.currentList[position] as SectionHeader
+            }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (differ.currentList[position]) {
             is SessionItem -> R.layout.item_session_info
-            is SpeakerHeaderItem -> R.layout.item_speaker_header
             is Speaker -> R.layout.item_speaker
-            is RelatedHeaderItem -> R.layout.item_related_header
             is UserSession -> R.layout.item_session
+            is SectionHeader -> R.layout.item_generic_section_header
             else -> throw IllegalStateException("Unknown view type at position $position")
         }
     }
@@ -138,34 +139,30 @@ class SessionDetailAdapter(
     ): List<Any> {
         val merged = mutableListOf<Any>(SessionItem)
         if (sessionSpeakers.isNotEmpty()) {
-            merged += SpeakerHeaderItem
+            merged += SectionHeader(R.string.session_detail_speakers_header)
             merged.addAll(sessionSpeakers)
         }
         if (relatedSessions.isNotEmpty()) {
-            merged += RelatedHeaderItem
+            merged += SectionHeader(R.string.session_detail_related_header)
             merged.addAll(relatedSessions)
         }
         return merged
     }
 }
 
-// Marker objects for use in our merged representation.
+// Marker object for use in our merged representation.
 
 object SessionItem
-
-object SpeakerHeaderItem
-
-object RelatedHeaderItem
 
 /**
  * Diff items presented by this adapter.
  */
 object DiffCallback : DiffUtil.ItemCallback<Any>() {
+
     override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
         return when {
             oldItem === SessionItem && newItem === SessionItem -> true
-            oldItem === SpeakerHeaderItem && newItem === SpeakerHeaderItem -> true
-            oldItem === RelatedHeaderItem && newItem === RelatedHeaderItem -> true
+            oldItem is SectionHeader && newItem is SectionHeader -> oldItem == newItem
             oldItem is Speaker && newItem is Speaker -> oldItem.id == newItem.id
             oldItem is UserSession && newItem is UserSession ->
                 oldItem.session.id == newItem.session.id
@@ -173,6 +170,8 @@ object DiffCallback : DiffUtil.ItemCallback<Any>() {
         }
     }
 
+    @SuppressLint("DiffUtilEquals")
+    // Workaround of https://issuetracker.google.com/issues/122928037
     override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
         return when {
             oldItem is Speaker && newItem is Speaker -> oldItem == newItem
@@ -200,6 +199,6 @@ sealed class SessionDetailViewHolder(itemView: View) : RecyclerView.ViewHolder(i
     ) : SessionDetailViewHolder(binding.root)
 
     class HeaderViewHolder(
-        itemView: View
-    ) : SessionDetailViewHolder(itemView)
+        val binding: ItemGenericSectionHeaderBinding
+    ) : SessionDetailViewHolder(binding.root)
 }

@@ -17,8 +17,9 @@ types and by topics (Android, Firebase, etc.). Users can see details about
 events, and they can star events that interest them. Conference attendees can
 reserve events to guarantee a seat.
 
-The app also displays a map of the venue and shows informational pages to guide
-attendees during the conference.
+Other features include a Map of the venue, informational pages to
+guide attendees during the conference in Info, and time-relevant information
+during the conference in Home.
 
 <div>
   <img align="center" src="schedule.png" alt="Schedule screenshot" height="640" width="360">
@@ -29,13 +30,13 @@ attendees during the conference.
 The app is written entirely in Kotlin and uses the Gradle build system.
 
 To build the app, use the `gradlew build` command or use "Import Project" in
-Android Studio. A canary or stable version >= 3.2 of Android Studio is
+Android Studio. A canary or stable version >= 3.4 of Android Studio is
 required and may be downloaded
-[here](https://developer.android.com/studio/archive).
+[here](https://developer.android.com/studio/).
 
 # Architecture
 
-The 2018 version of the app constitutes a comprehensive rewrite. The
+The 2019 version of the app is built on top of the last year's app. The
 architecture is built around
 [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/).
 
@@ -65,6 +66,13 @@ We implemented a lightweight domain layer, which sits between the data layer
 and the presentation layer, and handles discrete pieces of business logic off
 the UI thread. See the `.\*UseCase.kt` files under `shared/domain` for
 [examples](https://github.com/google/iosched/search?q=UseCase&unscoped_q=UseCase).
+
+We used [Navigation component](https://developer.android.com/guide/navigation)
+to simplify into a single Activity app.
+
+We used [Room](https://developer.android.com/jetpack/androidx/releases/room)
+for Full Text Search using [Fts4](https://developer.android.com/reference/androidx/room/Fts4)
+to search for a session, speaker, or codelab.
 
 We used [Dagger2](https://github.com/google/dagger) for dependency injection
 and we heavily relied on
@@ -117,3 +125,4 @@ enhanced functionality provided by
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+

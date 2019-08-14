@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="timeZoneId"
+            type="org.threeten.bp.ZoneId" />
+
+        <variable
+            name="userSession"
+            type="com.google.samples.apps.iosched.model.userdata.UserSession" />
+
+        <variable
+            name="eventListener"
+            type="com.google.samples.apps.iosched.ui.feed.FeedEventListener" />
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.IOSched.Feed.Card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_small"
+        android:onClick="@{() -> eventListener.openEventDetail(userSession.session.id)}">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="@dimen/feed_session_dimension"
+            android:layout_height="@dimen/feed_session_dimension">
+
+            <ImageView
+                android:id="@+id/reserved_icon"
+                android:layout_width="@dimen/feed_session_badge_icon_size"
+                android:layout_height="@dimen/feed_session_badge_icon_size"
+                android:layout_marginEnd="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_small"
+                android:contentDescription="@null"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:goneUnless="@{userSession.userEvent.isReserved}"
+                app:srcCompat="@drawable/ic_reserved" />
+
+            <ImageView
+                android:id="@+id/starred_icon"
+                android:layout_width="@dimen/feed_session_badge_icon_size"
+                android:layout_height="@dimen/feed_session_badge_icon_size"
+                android:layout_marginEnd="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_small"
+                android:contentDescription="@null"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:goneUnless="@{userSession.userEvent.isStarred &amp;&amp; !userSession.userEvent.isReserved}"
+                app:srcCompat="@drawable/ic_star" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/keyline_left"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/margin_normal" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/keyline_right"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/margin_normal" />
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:textAppearance="@style/TextAppearance.IOSched.Feed.Session.Time"
+                app:layout_constraintStart_toStartOf="@id/keyline_left"
+                app:layout_constraintTop_toTopOf="parent"
+                app:startTime="@{userSession.session.startTime}"
+                app:timeZoneId="@{timeZoneId}"
+                tools:text="1:00 pm" />
+
+            <TextView
+                android:id="@+id/title"
+                style="@style/Widget.IOSched.Feed.Session.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:text="@{userSession.session.title}"
+                app:layout_constraintEnd_toEndOf="@id/keyline_right"
+                app:layout_constraintStart_toStartOf="@id/keyline_left"
+                app:layout_constraintTop_toBottomOf="@+id/time"
+                tools:text="What's New in Android"/>
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:text="@{userSession.session.room.name}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/keyline_right"
+                app:layout_constraintStart_toStartOf="@id/keyline_left"
+                tools:text="Stage 1" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

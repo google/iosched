@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -14,70 +14,172 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="viewModel"
             type="com.google.samples.apps.iosched.ui.signin.SignInViewModel" />
-
     </data>
 
-    <LinearLayout
-        style="@style/Widget.IOSched.Dialog"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
-            android:layout_marginTop="@dimen/margin_large"
-            android:paddingHorizontal="@dimen/margin_large"
-            android:text="@string/dialog_sign_out_title"
-            android:textAppearance="@style/TextAppearance.IOSched.DialogTitle" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="?dialogPreferredPadding" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/spacing_normal"
-            android:paddingHorizontal="@dimen/margin_large"
-            android:text="@string/dialog_sign_out_content"
-            android:textAppearance="@style/TextAppearance.IOSched.DialogContent" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="?dialogPreferredPadding" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/username_email_container"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="end"
-            android:orientation="horizontal">
+            android:layout_marginStart="@dimen/margin_small"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/profile_dialog_header_height"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/margin_normal"
+            android:paddingTop="@dimen/margin_normal"
+            app:layout_constraintEnd_toStartOf="@id/guideline_end"
+            app:layout_constraintStart_toEndOf="@id/user_avatar"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <Button
-                style="@style/Widget.IOSched.BorderlessButton"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_normal"
-                android:layout_marginStart="@dimen/margin_large"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:onClick="@{() -> viewModel.onCancel()}"
-                android:text="@string/not_now" />
+                android:lines="1"
+                android:textAppearance="@style/TextAppearance.IOSched.AccountDialog.Username"
+                app:username="@{viewModel.currentUserInfo}"
+                tools:text="User Name" />
 
-            <Button
-                style="@style/Widget.IOSched.RaisedButton"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_normal"
-                android:layout_marginEnd="@dimen/margin_large"
-                android:layout_marginStart="@dimen/spacing_normal"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:onClick="@{() -> viewModel.onSignOut()}"
-                android:text="@string/sign_out" />
-
+                android:lines="1"
+                app:userEmail="@{viewModel.currentUserInfo}"
+                tools:text="user@email.com" />
         </LinearLayout>
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/user_avatar"
+            android:layout_width="@dimen/profile_dialog_account_image_size"
+            android:layout_height="@dimen/profile_dialog_account_image_size"
+            android:contentDescription="@null"
+            app:layout_constraintBottom_toBottomOf="@id/username_email_container"
+            app:layout_constraintStart_toEndOf="@id/guideline_start"
+            app:layout_constraintTop_toTopOf="parent"
+            app:clipToCircle="@{true}"
+            app:imageUri="@{viewModel.currentUserImageUri}"
+            app:placeholder="@{@drawable/ic_default_profile_avatar}"
+            tools:src="@drawable/ic_default_profile_avatar" />
 
+        <Button
+            android:id="@+id/manage_account"
+            style="@style/Widget.IOSched.AccountDialog.ManageAccountButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/manage_google_account"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/username_email_container"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialComponents.Chip"
+            app:websiteLink="@{@string/manage_google_account_url}" />
+
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/list_divider"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/manage_account" />
+
+        <TextView
+            android:id="@+id/message"
+            style="?materialAlertDialogBodyTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:text="@string/dialog_sign_out_content"
+            app:layout_constraintEnd_toStartOf="@id/guideline_end"
+            app:layout_constraintStart_toEndOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/divider1"
+            tools:style="@style/AlertDialog.BodyText"
+            tools:ignore="PrivateResource" />
+
+        <TextView
+            android:id="@+id/sign_out"
+            style="@style/Widget.IOSched.AccountDialog.ActionButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:drawableStart="@drawable/ic_logout"
+            android:onClick="@{() -> viewModel.onSignOut()}"
+            android:text="@string/sign_out"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/message" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@drawable/list_divider"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sign_out" />
+
+        <Button
+            android:id="@+id/privacy_policy"
+            style="@style/Widget.IOSched.BorderlessButton.NormalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_privacy_policy"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bullet"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider2"
+            app:websiteLink="@{@string/privacy_policy_url}" />
+
+        <ImageView
+            android:id="@+id/bullet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/terms_of_service"
+            app:layout_constraintStart_toEndOf="@id/privacy_policy"
+            app:layout_constraintTop_toBottomOf="@id/divider2"
+            app:srcCompat="@drawable/bullet_small" />
+
+        <Button
+            android:id="@+id/terms_of_service"
+            style="@style/Widget.IOSched.BorderlessButton.NormalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_tos"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/bullet"
+            app:layout_constraintTop_toBottomOf="@id/divider2"
+            app:websiteLink="@{@string/tos_url}" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

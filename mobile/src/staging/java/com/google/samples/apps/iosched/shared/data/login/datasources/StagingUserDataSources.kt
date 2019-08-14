@@ -16,17 +16,18 @@
 
 package com.google.samples.apps.iosched.shared.data.login.datasources
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.UserInfo
 import com.google.samples.apps.iosched.shared.R
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfoBasic
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
+import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.result.Result
 
 /**
@@ -69,7 +70,7 @@ open class StagingAuthenticatedUserInfo(
 
     override fun isRegistrationDataReady(): Boolean = true
 
-    override fun getEmail(): String? = TODO("Not implemented")
+    override fun getEmail(): String? = "staginguser@example.com"
 
     override fun getProviderData(): MutableList<out UserInfo> = TODO("Not implemented")
 
@@ -81,17 +82,16 @@ open class StagingAuthenticatedUserInfo(
 
     override fun isEmailVerified(): Boolean = TODO("Not implemented")
 
-    override fun getDisplayName(): String? = TODO("Not implemented")
+    override fun getDisplayName(): String? = "Staging User"
 
     override fun getPhotoUrl(): Uri? {
-        val resources = context.getResources()
-        val uri = Uri.Builder()
+        val resources = context.resources
+        return Uri.Builder()
             .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
             .authority(resources.getResourcePackageName(R.drawable.staging_user_profile))
             .appendPath(resources.getResourceTypeName(R.drawable.staging_user_profile))
             .appendPath(resources.getResourceEntryName(R.drawable.staging_user_profile))
             .build()
-        return uri
     }
 
     override fun getProviderId(): String = TODO("Not implemented")
@@ -110,7 +110,8 @@ class StagingAuthStateUserDataSource(
     val isSignedIn: Boolean,
     val isRegistered: Boolean,
     val userId: String?,
-    val context: Context
+    val context: Context,
+    val notificationAlarmUpdater: NotificationAlarmUpdater
 ) : AuthStateUserDataSource {
 
     val _userId = MutableLiveData<String?>()
@@ -126,6 +127,10 @@ class StagingAuthStateUserDataSource(
         _userId.postValue(userId)
 
         _firebaseUser.postValue(Result.Success(user))
+
+        userId?.let {
+            notificationAlarmUpdater.updateAll(userId)
+        }
     }
 
     override fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfoBasic?>> {

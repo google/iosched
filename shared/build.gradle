@@ -36,6 +36,9 @@ android {
         buildConfigField "String", "CONFERENCE_DAY3_START", "\"${conference_day3_start}\""
         buildConfigField "String", "CONFERENCE_DAY3_END", "\"${conference_day3_end}\""
 
+        buildConfigField "String", "CONFERENCE_DAY1_AFTERHOURS_START", "\"${conference_day1_afterhours_start}\""
+        buildConfigField "String", "CONFERENCE_DAY2_CONCERT_START", "\"${conference_day2_concert_start}\""
+
         buildConfigField "String",
                 "BOOTSTRAP_CONF_DATA_FILENAME",
                 "\"${bootstrap_conference_data_filename}\""
@@ -49,13 +52,12 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
             buildConfigField "String", "REGISTRATION_ENDPOINT_URL", "\"https://events-d07ac.appspot.com/_ah/api/registration/v1/register\""
-            buildConfigField "String", "CONFERENCE_DATA_URL", "\"https://firebasestorage.googleapis.com/v0/b/io2018-festivus-prod/o/sessions.json?alt=media&token=89140adf-e228-45a5-9ae3-8ed01547166a\""
+            buildConfigField "String", "CONFERENCE_DATA_URL", "\"https://firebasestorage.googleapis.com/v0/b/io2019-festivus-prod/o/sessions.json?alt=media&token=89140adf-e228-45a5-9ae3-8ed01547166a\""
         }
         debug {
             buildConfigField "String", "REGISTRATION_ENDPOINT_URL", "\"https://events-dev-62d2e.appspot.com/_ah/api/registration/v1/register\""
-            buildConfigField "String", "CONFERENCE_DATA_URL", "\"https://firebasestorage.googleapis.com/v0/b/io2018-festivus/o/sessions.json?alt=media&token=019af2ec-9fd1-408e-9b86-891e4f66e674\""
+            buildConfigField "String", "CONFERENCE_DATA_URL", "\"https://firebasestorage.googleapis.com/v0/b/io2019-festivus/o/sessions.json?alt=media&token=019af2ec-9fd1-408e-9b86-891e4f66e674\""
         }
         staging {
             initWith debug
@@ -69,7 +71,11 @@ android {
     }
 
     lintOptions {
-        disable 'InvalidPackage'
+        disable 'InvalidPackage', "MissingTranslation"
+        // Version changes are beyond our control, so don't warn. The IDE will still mark these.
+        disable 'GradleDependency'
+        // Timber needs to update to new Lint API
+        disable 'ObsoleteLintCustomCheck'
     }
 
     // debug and release variants share the same source dir
@@ -89,6 +95,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata:$rootProject.lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$rootProject.lifecycleVersion"
+    implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    kapt "androidx.room:room-compiler:$rootProject.roomVersion"
 
     // Maps
     api("com.google.maps.android:android-maps-utils:$rootProject.googleMapUtilsVersion") {
@@ -119,7 +128,10 @@ dependencies {
     api "com.google.firebase:firebase-config:$rootProject.firebaseConfigVersion"
     api "com.google.firebase:firebase-core:$rootProject.firebaseCoreVersion"
     api "com.google.firebase:firebase-firestore:$rootProject.firebaseFirestoreVersion"
+    api "com.google.firebase:firebase-functions:$rootProject.firebaseFunctionsVersion"
     api "com.google.firebase:firebase-messaging:$rootProject.firebaseMessagingVersion"
+    // Has to be replaced to avoid compile / runtime conflicts between okhttp and firestore
+    api "com.squareup.okio:okio:$rootProject.okioVersion"
 
     // ThreeTenBP for the shared module only. Date and time API for Java.
     testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"
@@ -132,7 +144,7 @@ dependencies {
     testImplementation "com.nhaarman:mockito-kotlin:$rootProject.mockitoKotlinVersion"
 
     // unit tests livedata
-    testImplementation "androidx.arch.core:core-testing:$rootProject.lifecycleVersion"
+    testImplementation "androidx.arch.core:core-testing:$rootProject.archTestingVersion"
 }
 
 apply plugin: 'com.google.gms.google-services'

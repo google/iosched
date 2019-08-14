@@ -22,6 +22,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.samples.apps.iosched.shared.data.document2019
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.result.Result
 import timber.log.Timber
@@ -52,9 +53,9 @@ class FirestoreRegisteredUserDataSource @Inject constructor(
      * Listens to changes in the user document in Firestore. A Change in the "registered" field
      * will emit a new user.
      */
-    override fun listenToUserChanges(newUserId: String) {
-        val userId = if (lastUserId != newUserId) {
-            newUserId
+    override fun listenToUserChanges(userId: String) {
+        val newUserId = if (lastUserId != userId) {
+            userId
         } else {
             // No need to refresh
             return
@@ -72,7 +73,7 @@ class FirestoreRegisteredUserDataSource @Inject constructor(
                 DefaultScheduler.execute {
                     if (snapshot == null || !snapshot.exists()) {
                         // When the account signs in for the first time, the document doesn't exist
-                        Timber.d("Document for snapshot $userId doesn't exist")
+                        Timber.d("Document for snapshot $newUserId doesn't exist")
                         result.postValue(Result.Success(false))
                         return@execute
                     }
@@ -86,9 +87,12 @@ class FirestoreRegisteredUserDataSource @Inject constructor(
                     }
                 }
             }
-        registeredChangedListenerSubscription = firestore.collection(USERS_COLLECTION)
-            .document(userId).addSnapshotListener(registeredChangedListener)
-        lastUserId = userId
+        registeredChangedListenerSubscription = firestore
+            .document2019()
+            .collection(USERS_COLLECTION)
+            .document(newUserId)
+            .addSnapshotListener(registeredChangedListener)
+        lastUserId = newUserId
     }
 
     override fun observeResult(): LiveData<Result<Boolean?>?> {

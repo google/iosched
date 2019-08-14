@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2019 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="feature_explore_io">I/O erkunden</string>
+    <string name="day1">Tag 1</string>
+    <string name="day2">Tag 2</string>
+    <string name="day3">Tag 3</string>
+    <string name="day1_date">7. Mai</string>
+    <string name="day2_date">8. Mai</string>
+    <string name="day3_date">9. Mai</string>
+    <string name="day0">Der Tag davor</string>
+    <string name="day0_day_date">Montag, 06. Mai</string>
+    <string name="day1_day_date">Dienstag, 07. Mai</string>
+    <string name="day2_day_date">Mittwoch, 08. Mai</string>
+    <string name="day3_day_date">Donnerstag, 09. Mai</string>
+</resources>

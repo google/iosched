@@ -16,16 +16,18 @@
   -->
 
 <resources>
-    <!-- primary palette -->
-    <color name="indigo">#4768fd</color>
-    <color name="indigo_dark">#3c54fe</color>
-    <color name="teal">#31e7b6</color>
-    <color name="light_blue">#27e5fd</color>
-    <color name="yellow">#fcd230</color>
-    <color name="orange">#ff6c00</color>
+    <!-- 2019 colors -->
+    <color name="deep_sky_blue">#1a73e8</color> <!-- colorPrimary in Light mode-->
+    <color name="warm_blue">#574ddd</color> <!-- colorPrimaryDark in Light mode-->
+    <color name="carolina_blue">#8ab4f8</color> <!-- colorPrimary in Dark mode-->
+    <color name="cornflower_blue">#669DF6</color> <!-- colorPrimaryDark in Dark mode-->
+
+    <color name="teal">#069f86</color>
+    <color name="bright_light_blue">#27e5fd</color>
+    <color name="sun_yellow">#fcd230</color>
+    <color name="bright_orange">#ff6c00</color>
+
     <color name="white">#fff</color>
-    <color name="grey_800">#424242</color>
-    <color name="grey_600">#747474</color>
-    <color name="spacer_grey">#e0e0e0</color>
-    <color name="white_90">#e6ffffff</color>
+    <color name="black">#000</color>
+    <color name="transparent">#0fff</color>
 </resources>

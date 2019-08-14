@@ -17,25 +17,26 @@
 
 <resources>
     <string name="title_schedule" translation_description="The title for the schedule screen where user can see their schedule for Google I/O.">Schedule</string>
+    <string name="title_home" translation_description="The title for the Home screen where user can all the updates from Google I/O team.">Home</string>
     <string name="title_map" translation_description="The title for the map screen where user can see the map of the venue.">Map</string>
+    <string name="title_explore_io" translation_description="The title for the Augmented reality exploration screen where the user can explore the I/O venue in AR.">Explore I/O</string>
     <string name="title_info" translation_description="The title for the info screen where user can see various information, such as FAQ and travel info.">Info</string>
 
     <!-- Schedule -->
     <string name="filters" translation_description="The label for the button to filter sessions by their topics, room, and so on.">Filters</string>
     <string name="category_heading_tracks" translation_description="Label in the filters panel above session topics (Android, Cloud, etc.)">Topics</string>
     <string name="category_heading_types" translation_description="Label in the filters panel above event types (Sessions, Codelabs, etc.)">Types</string>
-    <string name="clear_all" translation_description="The label for the button to clear all the filter conditions.">Clear all</string>
     <string name="reset" translation_description="The label for the button to reset the filter conditions.">Reset</string>
-    <string name="pinned_events_filter_description" translation_description="Message shown when the user toggles the switch to see their pinned events.">Showing only starred and reserved events</string>
     <plurals name="filter_event_count" translation_description="A label showing how many events match the current filters">
         <item quantity="one">%1$d Event</item>
         <item quantity="other">%1$d Events</item>
     </plurals>
     <string name="starred_and_reserved">Your starred and reserved events</string>
-    <string name="starred_and_reserved_short">Starred &amp; reserved</string>
+    <string name="starred_and_reserved_short">Your events</string>
+    <string name="search_schedule_hint" translation_description="Text field hint that is shown when user has not entered a search query">Search the schedule</string>
+    <string name="search_schedule_no_results" translation_description="Text that is shown if there are no search results">No results found</string>
 
     <string name="session_duration_location" translatable="false">%1s / %2s</string>
-    <string name="session_date_duration_location" translatable="false">%1s / %2s / %3s</string>
     <string name="agenda" translation_description="The title for the agenda screen where user can see all the sessions they plan to attend.">Agenda</string>
     <string name="agenda_duration" translatable="false">%1$s – %2$s</string>
     <string name="event_starred" translation_description="The message shown when user adds an event to their schedule.">Event added to your starred items</string>
@@ -56,7 +57,7 @@
     <string name="cancellation_denied_cutoff" translation_description="The message shown when user is trying to cancel a reservation but it's denied because the session starts too soon">Cancellation denied: too close to start time.</string>
     <string name="cancellation_denied_unknown" translation_description="The message shown when user is trying to cancel a reservation but it's denied because of an unknown error">Cancellation denied: unknown error.</string>
 
-    <string name="schedule_filters_empty" translation_description="The message shown when a schedule page is empty because no events match the current filters.">No events today match your current filters.</string>
+    <string name="schedule_filters_empty" translation_description="The message shown when a schedule page is empty because no events match the current filters.">No events found.</string>
 
     <string name="reservation_reservable" translation_description="Label shown on events for which the user can request to reserve a seat.">Reserve seat</string>
     <string name="reservation_reserved" translation_description="Label shown on events for which the user has reserved a seat.">Reserved</string>
@@ -67,31 +68,49 @@
 
     <!-- Schedule UI hints -->
     <string name="schedule_hint_title" translation_description="The title of the schedule hint dialog.">Customize your schedule</string>
-    <string name="schedule_hint_view_only_your_events" translation_description="The schedule hint for the switch that toggles if the attendee wants to see their pinned events.">View only your events</string>
     <string name="schedule_hint_star_event" translation_description="The schedule hint for the icon to star an event.">Add to your starred events</string>
     <string name="schedule_hint_reserve_session_seat" translation_description="The schedule hint for the icon to reserve a session.">Reserve a session seat</string>
-    <string name="schedule_hint_star_event_content_description" translation_description="The content description for the icon to star an event.">An image to star an event</string>
-    <string name="schedule_hint_reserve_session_seat_content_description" translation_description="The content description for the icon to reserve a session.">An image to reserve a session seat</string>
 
     <!-- Session Detail -->
+    <string name="ask_question" translation_description="The label for the link to open an input form to ask a question about this session. [CHAR_LIMIT=30]">Q &amp; A</string>
     <string name="rate_session" translation_description="The label for the button to rate the session by 5 stars">Rate Session</string>
     <string name="menu_item_session_location" translation_description="The label for the location of the session.">Session location</string>
     <string name="menu_item_session_star" translation_description="The label for starring of the session.">Star session</string>
+    <string name="menu_item_calendar" translation_description="The label for adding a session schedule to the user's calendar app.">Add to calendar</string>
+    <string name="paragraph_delimiter" translatable="false">\n\n</string>
+    <string name="speaker_delimiter" translation_description="The text delimiter of speaker names. The names are not localized.">, </string>
     <string name="session_detail_header_aspect" translatable="false">H,16:9</string>
     <string name="session_detail_speakers_header" translation_descriptions="The label for the session speakers.">Speakers</string>
     <string name="session_detail_related_header" translation_description="The label for the events related to this session.">Related Events</string>
 
+    <!-- Session Feedback -->
+    <string name="feedback_submit" translation_description="The label for the button to submit feedback to a session">Submit</string>
+    <string name="feedback_thank_you" translation_description="The message shown to the user when they have sent feedback to a session.">Thank you for your feedback!</string>
+
+    <string name="feedback_q1_text" translation_description="A question for session feedback (Q1)">How would you rate the overall quality of the Session?</string>
+    <string name="feedback_q2_text" translation_description="A question for session feedback (Q2)">How would you describe the content of the Session based on your expectations/session description?</string>
+    <string name="feedback_q3_text" translation_description="A question for session feedback (Q3)">How would you rate the Speaker(s)?</string>
+    <string name="feedback_q4_text" translation_description="A question for session feedback (q4)">How relevant was the Session to your projects?</string>
+
+    <string name="feedback_q1_label_start" translation_description="The label of negative answer for a session feedback question (Q1)">Poor</string>
+    <string name="feedback_q2_label_start" translation_description="The label of negative answer for a session feedback question (Q2)">Poor</string>
+    <string name="feedback_q3_label_start" translation_description="The label of negative answer for a session feedback question (Q3)">Poor</string>
+    <string name="feedback_q4_label_start" translation_description="The label of negative answer for a session feedback question (Q4)">Not very</string>
+
+    <string name="feedback_q1_label_end" translation_description="The label of positive answer for a session feedback question (Q1)">Outstanding</string>
+    <string name="feedback_q2_label_end" translation_description="The label of positive answer for a session feedback question (Q2)">Outstanding</string>
+    <string name="feedback_q3_label_end" translation_description="The label of positive answer for a session feedback question (Q3)">Outstanding</string>
+    <string name="feedback_q4_label_end" translation_description="The label of positive answer for a session feedback question (Q4)">Extremely</string>
+
     <!-- Accessibility -->
+    <string name="a11y_show_navigation" translation_description="Description of the menu button shown on top-level screens.">Show navigation menu</string>
+
     <string name="a11y_collapse_filters_sheet" translation_description="Description of a button to lower the filters sheet.">Lower filters sheet</string>
     <string name="a11y_clear_tag_filters" translation_description="Description of a button to remove all current tag filters.">Clear filters</string>
     <string name="a11y_filter_applied" translation_description="Alternative text when an event filter is applies">%1s filter applied</string>
     <string name="a11y_filter_not_applied" translation_description="Alternative text when an event filter is not applies">%1s filter not applied</string>
 
-    <string name="a11y_pinned" translation_description="Description of a button that's used to show only starred and reserved events.">Only starred and reserved events</string>
-    <string name="a11y_revert_pinned" translation_description="Description of a button to revert the switch that shows only starred and reserved events.">Show all sessions</string>
-
     <string name="a11y_reservation_available" translation_description="Alternative text for the button letting the user reserve a seat for a given event.">Reserve event</string>
-    <string name="a11y_reservation_working" translation_description="Alternative text for the event reservation button whilst it is working on processing a reservation.">Working to reserve event</string>
     <string name="a11y_reservation_reserved" translation_description="Alternative text for the event reservation button when the user has reserved a seat.">Event reserved</string>
     <string name="a11y_reservation_disabled" translation_description="Alternative text for the event reservation button when reservation is not available.">Reservation not available</string>
     <string name="a11y_reservation_wait_list_available" translation_description="Alternative text for the event reservation button when the user can join a wait list.">Join wait list for event</string>
@@ -102,18 +121,24 @@
     <string name="a11y_star" translation_description="Alternate text for a button used for starring or unstarring events">Star</string>
     <string name="a11y_play" translation_description="Alternate text for a button used to play a video">Play video</string>
 
-    <!-- Sign in dialog -->
-    <string name="dialog_sign_in_title" translation_description="The title of the dialog. When the user needs to sign in.">Sign in to customize your schedule</string>
+    <string name="a11y_select_map_mode" translation_description="Alternate text for a button used to select the mode on the Map.">Select map mode</string>
+    <string name="a11y_search_schedule" translation_description="Alternate text for a button used to search the schedule.">Search schedule</string>
+
+    <!-- Sign in / Sign out -->
+    <string name="welcome" translation_description="Text shown instead of the user's name when the user is not signed in.">Welcome!</string>
+    <string name="a11y_signed_in_content_description" translation_description="Description of the account header when the user is signed in.">Signed in as %s.</string>
+    <string name="a11y_signed_out_content_description" translation_description="Description of the account header when the user is not signed in.">Tap to sign in.</string>
+
     <string name="dialog_sign_in_content" translation_description="The content of the dialog. When the user needs to sign in.">Sign in to save events, reserve seats and rate sessions (if an attendee). Actions will be synced from your account across app and site.</string>
-    <string name="not_now" translation_description="The description of a button that the user doesn't want to sign in.">Not now</string>
     <string name="sign_in" translation_description="The description of a button to sign in.">Sign in</string>
     <string name="firebase_auth_no_network_connection" translation_description="Snackbar message when there is no network connectivity.">No internet connection</string>
     <string name="firebase_auth_unknown_error" translation_description="Snackbar message when Firebase Auth has an unknown error.">Unknown error</string>
 
-    <!-- Sign out dialog -->
-    <string name="dialog_sign_out_title" translation_description="The title of the dialog. Used to confirm that the user wants to sign out.">Sign out?</string>
     <string name="dialog_sign_out_content" translation_description="The content of the dialog. Used to confirm that the user wants to sign out.">All saved events, seat reservations and session ratings (if an attendee) remain synced to your account.</string>
     <string name="sign_out" translation_description="The description of a button to sign out.">Sign out</string>
+
+    <string name="manage_google_account" translation_description="Text for a button allowing the user to manage their Google account.">Manage your Google account</string>
+    <string name="manage_google_account_url" translatable="false">https://myaccount.google.com/</string>
 
     <!-- Cancel reservation dialog -->
     <string name="remove_reservation_title" translation_description="The title of the dialog when the user is about to remove their reservation.">Remove reservation?</string>
@@ -128,9 +153,25 @@
 
     <!-- Notifications preference dialog -->
     <string name="notifications_preference_dialog_title" translation_description="The title of the dialog for the notifications preference">I/O Notifications</string>
-    <string name="notifications_preference_dialog_content" translation_description="The content of the dialog for the notifications preference">Would you like to receive notifications about I/O? We\'ll send you information about session start times, after hours events, session recordings, and more. You can change this setting under \"Info > Settings\" at any time.</string>
+    <string name="notifications_preference_dialog_content" translation_description="The content of the dialog for the notifications preference">Would you like to receive notifications about I/O? We\'ll send you information about session start times, after hours events, session recordings, and more. You can change this setting under \"Settings\" at any time.</string>
     <string name="no" translation_description="Negative answer to the question \'Would you like to receive notification?\'">No</string>
     <string name="yes" translation_description="Positive answer to the question \'Would you like to receive notification?\'">Yes</string>
+
+    <!-- Feed -->
+    <string name="feed_not_available" translation_description="Message that is shown when the announcements could not be loaded or are empty.">No announcements found.</string>
+    <string name="feed_loading_error" translation_description="Short error message that is displayed in a Snackbar when the feed could not be loaded.">Could not load feed. Try again later.</string>
+    <string name="feed_announcement_title" translation_description="The title of the announcements section in feed">Announcements</string>
+    <string name="feed_upcoming_events" translation_description="The title of the sessions section in feed when user is attending">Upcoming events</string>
+    <string name="feed_saved_events" translation_description="The title of the sessions section in feed when user is signed in">Saved events</string>
+    <string name="feed_no_saved_events" translation_description="The title of the sessions section in feed when user is signed in and they don't have any saved event">No saved events</string>
+    <string name="feed_view_all_events" translation_description="The title of the call to action in sessions section of feed when user is signed out">View all events</string>
+    <string name="feed_view_your_schedule" translation_description="The title of the call to action in sessions section of feed when user is signed in">View your schedule</string>
+    <string name="feed_watch_live_stream" translation_description="The title of the call to action in FeedHeader when the moment contains a livestream">Watch livestream</string>
+
+    <plurals name="duration_days">
+        <item quantity="one" translation_description="Unit for duration of time by days. Singular.">%s day</item>
+        <item quantity="other" translation_description="Unit for duration of time by days. Plural.">%s days</item>
+    </plurals>
 
     <plurals name="duration_hours">
         <item quantity="one" translation_description="Unit for duration of time by hours. Singular.">%s hour</item>
@@ -142,23 +183,35 @@
         <item quantity="other" translation_description="Unit for duration of time by minutes. Plural.">%s minutes</item>
     </plurals>
 
+    <plurals name="duration_seconds">
+        <item quantity="one" translation_description="Unit for duration of time by seconds. Singular.">%s second</item>
+        <item quantity="other" translation_description="Unit for duration of time by seconds. Plural.">%s seconds</item>
+    </plurals>
+
     <!--Strings for sharing session-->
     <string name="menu_item_share_session" translation_description="The label for the button to share this session on SNS, etc.">Share session</string>
-    <string name="share_text_session_detail" translation_description="The default message to be used when user is sharing an I/O session on SNS, etc.">Check out \'%1$s\' at #io18 %2$s</string>
+    <string name="share_text_session_detail" translation_description="The default message to be used when user is sharing an I/O session on SNS, etc.">Check out \'%1$s\' at #io19 %2$s</string>
     <string name="intent_chooser_session_detail" translation_description="The label for share screen where user can tell people about an I/O session on SNS, etc.">Share</string>
+
+    <!-- Map -->
+    <string name="map_variant_after_dark" translation_description="Label for the map mode showing the after dark map.">After dark</string>
+    <string name="map_variant_concert" translation_description="Label for the map mode showing the concert map.">Concert</string>
+    <string name="map_variant_daytime" translation_description="Label for the map mode showing the daytime map.">Daytime</string>
+    <string name="enable_my_location" translation_description="The label for the button to enable the blue dot indicating the user's location on the map">Enable my location</string>
+    <string name="my_location_rationale" translation_description="Explanation about the location permission">The app needs location permission to show your location on the map.</string>
 
     <!-- Onboarding -->
     <string name="onboarding_get_started" translation_description="The label for the button to start using the app.">Get started</string>
     <string name="onboarding_welcome_to_google_i_o" translation_description="The welcome message shown at the onboarding screen of the app.">Welcome to Google I/O</string>
-    <string name="onboarding_date_location" translation_description="The date and the place of Google I/O 2018.">May 8–10,\n2018 Mountain View, CA</string>
-    <string name="onboarding_build_schedule" translation_description="The explanation title of the feature where user can choose which sessions to attend.">Build your own schedule</string>
-    <string name="onboarding_build_sched_benefits" translation_description="The explanation of the feature where user can choose which sessions to attend.">Build your custom I/O experience and reserve seats if you\'re an attendee</string>
-    <string name="onboarding_watch_live" translation_description="The explanation title of the feature where user can watch I/O sessions by live stream.">Watch I/O Live</string>
-    <string name="onboarding_join_online" translation_description="The explanation of the feature where user can watch I/O sessions by live stream.">Join us online. We\'ll be streaming the keynotes and most sessions live.</string>
+    <string name="onboarding_date_location" translation_description="The date and the place of Google I/O 2019. [CHAR_LIMIT=80]">May 7–9, 2019\nMountain View, CA</string>
     <string name="onboarding_label_days" translation_description="The label for the display of the number of days until the conference starts">D</string>
     <string name="onboarding_label_hours" translation_description="The label for the display of the number of hours until the conference starts">H</string>
     <string name="onboarding_label_mins" translation_description="The label for the display of the number of minutes until the conference starts">M</string>
     <string name="onboarding_label_seconds" translation_description="The label for the display of the number of seconds until the conference starts">S</string>
+    <string name="onboarding_welcome_google_io_pre" translation_description="The welcome message shown before the conference to tell that Google I/O is coming">Google I/O is coming</string>
+    <string name="onboarding_welcome_google_io_during" translation_description="The welcome message shown during the conference">Google I/O</string>
+    <string name="onboarding_welcome_google_io_post" translation_description="The welcome message shown post the conference">Watch the I/O \'19 recap and check out #io19 on social</string>
+    <string name="onboarding_signin" translation_description="The welcome message to encourage the user to sign-in to have better experience">Sign-in to receive I/O notifications and attendees can reserve seats for sessions.</string>
 
     <plurals name="session_starting_in" translation_description="A countdown timer for a session starting, e.g. 'Session starting in 5 minutes'. Will always be minutes">
         <item quantity="one">Session starting in %1$s minute</item>
@@ -168,41 +221,78 @@
     <string name="expanded" translation_description="The label used on a button when a view is in an expanded state.">Expanded</string>
     <string name="collapsed" translation_description="The label used on a button when a view is in an collapsed state.">Collapsed</string>
 
+    <!-- Settings -->
+    <string name="settings_title" translation_description="Title for the tab that shows all the settings of this app.">Settings</string>
+    <string name="version_name" translation_description="Label for the app version name in Settings.">Version %s</string>
+
     <!-- Info pages - TODO: update with 2018 copy and set translatable="true". -->
-    <string name="info_title" translation_description="The title for the info screen where user can see various information, such as FAQ and travel info.">Info</string>
     <string name="event_title" translation_description="The title for the tab that shows interesting events, such as sessions and office hours.">Event</string>
     <string name="travel_title" translation_description="The title for the tab that shows travel information, such as carpool and bus schedules.">Travel</string>
     <string name="faq_title" translation_description="The title for the tab that shows FAQ.">FAQ</string>
-    <string name="settings_title" translation_description="Title for the tab that shows all the settings of this app.">Settings</string>
     <string name="about_title" translation_description="Title for the 'About' tab that shows miscellaneous info.">About</string>
 
-    <string name="faq_url" translatable="false">https://events.google.com/io/faq/</string>
     <string name="tos_url" translatable="false">https://policies.google.com/terms</string>
     <string name="privacy_policy_url" translatable="false">https://policies.google.com/privacy</string>
     <string name="oss_file" translatable="false">file:///android_asset/licenses.html</string>
 
-    <string name="travel_directions_title" translation_description="Header label for driving directions details.">Driving Directions</string>
-    <string name="travel_shuttle_title" translation_description="Header label for shuttle service details.">Shuttle Service (Recommended)</string>
-    <string name="travel_carpool_parking_title" translation_description="Header label for parking and carpooling details.">Parking &amp; Carpooling</string>
-    <string name="travel_ride_sharing_title" translation_description="Header label for ride sharing app details (i.e. Lyft Line, Waze Carpool).">Ride Sharing</string>
-    <string name="travel_public_transportation_title" translation_description="Header label for public transportation details.">Public Transportation</string>
-    <string name="travel_biking_title" translation_description="Header label for bicycling details">Biking</string>
+    <string name="travel_what_to_bring_title" translation_description="Header label for what to bring for the event">What to bring for the event</string>
+    <string name="travel_hotels_title" translation_description="Header label for hotels information for travel">Hotels</string>
+    <string name="travel_getting_to_mountain_view_title" translation_description="Header label for getting to Mountain View for travel">Getting to Mountain View</string>
+    <string name="travel_getting_to_shoreline_title" translation_description="Header label for getting to Mountain View for travel">Getting to Shoreline Amphitheatre</string>
+    <string name="travel_shuttle_service_title" translation_description="Header label for Shuttle service for travel">Shuttle service</string>
+    <string name="travel_off_site_parking_title" translation_description="Header label for off-site parking for travel">Off-site parking</string>
+    <string name="travel_for_public_transportation_title" translation_description="Header label public transportation for travel">Public transportation</string>
+    <string name="travel_biking_title" translation_description="Header label for biking for travel">Biking</string>
+    <string name="travel_ridesharing_title" translation_description="Header label for ride sharing for travel">Ridesharing</string>
+    <string name="travel_airport_transfers_title" translation_description="Header label for airport transfers for travel">Airport Transfers</string>
 
-    <string name="travel_directions_description" translation_description="Instructions on how to find directions to the conference.">Find directions on <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> or <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a> to 1 Amphitheatre Pkwy, Mountain View, CA 94043</string>
-    <string name="travel_shuttle_description" translation_description="Shuttle service instructions.">Event shuttles will be provided at no charge to all Google I/O attendees from all Google-recommended hotels. There is also select service from San Francisco and other locations along the Peninsula. You must show your Google I/O confirmation email or conference badge to board all Google I/O event shuttles.\n\nEach pick-up location can support accessible vehicles. Please indicate on your registration form if you have any special assistance requirements, and the planning team will follow up with you directly.</string>
-    <string name="travel_carpool_parking_description" translation_description="Carpool and parking instructions.">Parking is very limited and available only in Google I/O designated lots located across from Shoreline Amphitheatre along Shoreline Boulevard. There is no event parking along Amphitheatre Parkway or Charleston Road. If you plan to drive, we recommend carpooling with other attendees as preferred parking spaces will be available for cars containing two or more people.</string>
-    <string name="travel_ride_sharing_description" translation_description="Ride sharing app instructions and discounts."><b>Waze Carpool</b>\nWaze Carpool is a trusted community of drivers and riders that is available to make your Google I/O commute fun, fast and affordable. Driving? Open <a href="http://Waze.com/get">Waze</a> when you get to the Bay Area. Looking for a ride? Install <a href="http://Waze.com/carpool">Waze Carpool</a> before you arrive. Check back here in the coming weeks for carpool discount codes exclusive to Google I/O attendees.\n\n<b>Lyft Line</b>\nDownload the Lyft app from Google Play and use Lyft Line to share a ride for less with others going the same way.\n<b>Discount code</b>: Googleio18\nThis code is valid from May 8–10, 2018 for shared rides with Lyft Line. It’s redeemable for up to $10 per trip and for up to 250 users per day. Rides must begin or end at Shoreline Amphitheatre.</string>
-    <string name="travel_public_transportation_description" translation_description="Public transportation instructions.">Public transit doesn’t go directly to Google I/O. Stay tuned for the exact transportation locations serviced by Google I/O event shuttles.</string>
-    <string name="travel_biking_description" translation_description="Bicycle instructions.">Complimentary bike parking will be available at Shoreline Amphitheatre in Parking Lot A. The Silicon Valley Bicycle Coalition will provide secure valet parking for your bicycle from 7am until the event ends each day. There are two trails, Stevens Creek Trail and Permanente Creek Trail, that are convenient for bike riders heading to Shoreline Amphitheatre. Check Google Maps for the best bike routes and directions.\n\nThe Bay Area Bike to Work Day is scheduled on Thursday, May 10th. There will be thousands of cyclists participating near Shoreline and there are hundreds of energizer stations throughout the area. Please check out the Silicon Valley Bike to Work Day website for more information.</string>
+    <string name="travel_what_to_bring_description" translation_description="Information on what to bring for the event"><![CDATA[Google I/O is an outdoor festival. While this is a big part of what makes I/O special, it also means there are some things to consider. Sessions will happen inside climate-controlled tents, but sunscreen, sunglasses, and an extra layer for the evening are recommended. I/O is a casual event, so keep this in mind when deciding what to wear.]]></string>
+    <string name="travel_hotels_description" translation_description="Information on hotels for travel"><![CDATA[We have room blocks at many local hotels. The list of hotels and room availability will be updated regularly. Please use the map below to find the hotel that’s best for you. <a href="https://www.google.com/maps/d/u/1/viewer?mid=11u43dDY9LID1uf46p4y7ba2_TbE_Y8-W&ll=37.383600316075075%2C-122.07007405000002&z=12">Hotel Map</a>]]></string>
+    <string name="travel_getting_to_mountain_view_description" translation_description="Information on getting to Mountain View for travel"><![CDATA[Here are the three major airports in the Bay Area with international airline service:<br> <a href="https://www.google.com/maps/dir/San+Francisco+International+Airport,+San+Francisco,+CA+94128/Shoreline+Amphitheatre,+Amphitheatre+Parkway,+Mountain+View,+CA/@37.5206703,-122.3803144,11z/data=!3m1!4b1!4m18!4m17!1m5!1m1!1s0x808f778c55555555:0xa4f25c571acded3f!2m2!1d-122.3789554!2d37.6213129!1m5!1m1!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!2m2!1d-122.0807647!2d37.4267703!2m3!6e0!7e2!8j1463556000!3e0?hl=en">San Francisco International Airport (SFO)</a> ~24 miles<br><br> <a href="https://www.google.com/maps/dir/Oakland+International+Airport,+Oakland,+CA/Shoreline+Amphitheatre,+Amphitheatre+Parkway,+Mountain+View,+CA/@37.5755915,-122.270249,11z/data=!3m1!4b1!4m18!4m17!1m5!1m1!1s0x808f845402c0a641:0xb0630c0f03017460!2m2!1d-122.2197428!2d37.7125689!1m5!1m1!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!2m2!1d-122.0807647!2d37.4267703!2m3!6e0!7e2!8j1463556000!3e0?hl=en">Oakland International Airport (OAK)</a> ~32 miles<br><br> <a href="https://www.google.com/maps/dir/San+Jose+International+Airport-Sjc,+Airport+Boulevard,+San+Jose,+CA,+United+States/Shoreline+Amphitheatre,+Amphitheatre+Parkway,+Mountain+View,+CA/@37.3954744,-122.0741791,12z/data=!3m1!4b1!4m18!4m17!1m5!1m1!1s0x808fcbc3fab3c59b:0xbcfa443f6df67e3e!2m2!1d-121.9289375!2d37.3639472!1m5!1m1!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!2m2!1d-122.0807647!2d37.4267703!2m3!6e0!7e2!8j1463556000!3e0?hl=en">San Jose International Airport (SJC)</a> ~12 miles]]></string>
+    <string name="travel_getting_to_shoreline_description" translation_description="Information on getting to Shoreline Amphitheater travel"><![CDATA[In an effort to reduce traffic congestion and reduce our carbon emissions, Google I/O 2019 has committed to be a “No Parking Event*.” This decision has been carefully considered and we are offering you many free options to arrive at the event without requiring a vehicle.<br><br>We will be providing more information as the event approaches.<br><br>*Accessibility parking will be available.]]></string>
+    <string name="travel_shuttle_service_description" translation_description="Information on getting to Shoreline Amphitheater travel"><![CDATA[Free event shuttles from all Google recommended hotels will be provided for Google I/O attendees. There will also be select service from San Francisco, Millbrae BART, Mountain View Caltrain, San Jose, and Oakland. We are increasing the shuttle frequency and capacity at the Mountain View Caltrain and Millbrae Bart stations. Check back closer to the event for pick-up schedules and additional shuttle pickup locations. The Shuttle Schedule  will be posted closer to the event.]]></string>
+    <string name="travel_off_site_parking_description" translation_description="Information on off-site parking for travel"><![CDATA[Free off-site parking will be provided at <a href="https://www.sjearthquakes.com/avayastadium/parking-directions">Avaya Stadium</a>. Shuttles from Avaya will be provided to/from Google I/O.<br><br> Please indicate on your registration form if you have any ADA or special assistance requirements, and the planning team will follow up with you directly.]]></string>
+    <string name="travel_for_public_transportation_description" translation_description="Information on public transportation for travel"><![CDATA[We will offer prepaid public transit passes that will be available for pickup during preregistration. Public transportation to the area is accessible via:<br><br> <a href="http://www.caltrain.com/">Caltrain</a>: Regional rail system<br><br> <a href="http://www.vta.org/getting-around/interactive-light-rail-map">VTA</a>: Light rail system servicing the South Bay<br><br> <a href="https://www.bart.gov/">BART</a>: Bay Area Rapid Transit<br><br> <a href="https://www.amtrak.com/home.html">AMTRAK</a>: Regional rail system<br><br> Public transit doesn’t go directly to Google I/O. Stay tuned for the exact transportation locations serviced by Google I/O event shuttles. ]]></string>
+    <string name="travel_biking_description" translation_description="Information on biking for travel"><![CDATA[Complimentary bike parking will be available at Shoreline Amphitheatre in Parking Lot A. The Silicon Valley Bicycle Coalition will provide secure valet parking for your bicycle from 7am until the event ends each day.<br><br> Check Google Maps for the best bike routes and directions. There are two trails, Stevens Creek Trail and Permanente Creek Trail, that are convenient for bike riders heading to Shoreline Amphitheatre.]]></string>
+    <string name="travel_ridesharing_description" translation_description="Information on ridesharing for travel"><![CDATA[We will be offering partially subsidized use of Lyft Shared and Uber Pool  to/from Shoreline with the code IO2019. You can redeem this code as long as your destination or pick up is Shoreline Amphitheatre.<br><br> Lyft Share: Download the <a href="https://play.google.com/store/apps/details?id=me.lyft.android&hl=enor">Lyft app</a> and use Lyft Shared using Code: IO2019 with a $15 credit per ride.<br><br> uberPOOL: Download the <a href="https://play.google.com/store/apps/details?id=com.ubercab&hl=en">Uber app</a> to use uberPOOL and share a ride using the <a href="https://r.uber.com/LYMijgu98T">Uber Voucher Link.</a>]]></string>
+    <string name="travel_airport_transfers_description" translation_description="Information on ridesharing for travel"><![CDATA[Airport transfers to SFO and SJC from Google I/O will be provided on the last day of the event. Airport transfers will NOT be provided on any other dates.]]></string>
+
+    <string name="faq_when_and_where_title" translation_description="Header label for when and where is Google I/O 2019">When and where is Google I/O 2019?</string>
+    <string name="faq_how_can_i_stay_informed_title" translation_description="Header label for how can I stay informed on Google I/O 2019">How can I stay informed on the latest from Google I/O?</string>
+    <string name="faq_will_the_sessions_be_english_title" translation_description="Header label for will the sessions be in English">Will all the Sessions be in English?</string>
+    <string name="faq_can_i_reserve_sessions_ahead_of_time_title" translation_description="Header label for can I reserve sessions ahead of time">Can I reserve Sessions ahead of the event?</string>
+    <string name="faq_best_way_to_get_to_shoreline_title" translation_description="Header label for what is the best way to get to Shoreline Amphitheater">What\’s the best way to get to Shoreline Amphitheatre?</string>
+    <string name="faq_where_and_when_can_i_pick_up_badge_title" translation_description="Header label for where and when an attendee can pick up their badge">Where and when can I pick up my badge?</string>
+    <string name="faq_want_a_front_row_seat_at_keynote_title" translation_description="Header label for I want a front row seat at the Keynote">I really want a front row seat at the Keynote. Tips?</string>
+    <string name="faq_what_should_i_wear_title" translation_description="Header label for what should I wear">What should I wear?</string>
+    <string name="faq_onsite_food_options_title" translation_description="Header label for onsite food options in FAQ">I like to snack. What are my onsite food options?</string>
+    <string name="faq_if_i_lose_something_onsite_title" translation_description="Header label for if I lose something else in FAQ">If I lose something onsite, where can I find it?</string>
+    <string name="faq_after_dark_program_title" translation_description="Header label for after dark program in FAQ">The After Dark programs sound like fun. Should I go?</string>
+    <string name="faq_accessibility_needs_title" translation_description="Header label for accessibility needs in FAQ">Can you accommodate my accessibility needs?</string>
+    <string name="faq_support_for_expectant_mothers_parents_title" translation_description="Header label for support for expectant mothers and parents in FAQ">How do you support expectant mothers and parents attending I/O?</string>
+    <string name="faq_community_guidelines_and_policy_title" translation_description="Header label community guidelines and Anti harassment policy in FAQ">Google\’s Event Community Guidelines and Anti-Harassment Policy</string>
+    <string name="faq_sessions_be_live_streamed_question_title" translation_description="Header label for a question whether the sessions be livestreamed in FAQ">Will the Sessions be livestreamed?  What if I can\’t follow the event in real time?</string>
+    <string name="faq_want_to_celebrate_i_o_title" translation_description="Header label for I want to celebrate I/O with my community FAQ">I want to celebrate I/O with my community!  Any ideas?</string>
+
+    <string name="faq_when_and_where_description" translation_description="Information on when and where is Google I/O 2019 in FAQ"><![CDATA[The 2019 developer festival will be held from May 7 – 9 at Shoreline Amphitheatre in Mountain View, California.]]></string>
+    <string name="faq_how_can_i_stay_informed_description" translation_description="Information on when and where is Google I/O 2019 in FAQ"><![CDATA[To stay up-to-date on the latest information on Sessions, speakers, and overall activities, be sure to frequently visit the <a href="https://events.google.com/io/">Google I/O 2019 website</a>, the <a href="http://googledevelopers.blogspot.com/">Google Developers Blog</a>, and follow us on <a href="https://twitter.com/googledevs">Twitter</a> and <a href="https://www.facebook.com/Google-Developers-967415219957038/">Facebook</a>. You can also follow and join the social conversation about Google I/O 2019 via the official <a href="https://twitter.com/search?q=%23io19&src=typd">#io19</a> hashtag. In addition, we\'ll be emailing important information to all registered attendees, along with check-in instructions prior to the festival.]]></string>
+    <string name="faq_will_the_sessions_be_english_description" translation_description="Information on will the sessions be in English in FAQ"><![CDATA[Yes. This will allow our global audience to follow along.]]></string>
+    <string name="faq_can_i_reserve_sessions_ahead_of_time_description" translation_description="Information on can I reserve sessions ahead of time in FAQ"><![CDATA[Starting in April, in-person attendees can reserve seats for Sessions in advance of the event on the I/O website and also via the I/O mobile app (note: a portion of Session seats will be exempt from reservations and available first-come, first-served onsite). Attendance at Codelabs, App Reviews, and Office Hours is on a first-come, first-served basis onsite.]]></string>
+    <string name="faq_best_way_to_get_to_shoreline_description" translation_description="Information on what is the best way to get to Shoreline Amphitheater in FAQ"><![CDATA[Check out the Travel section for all the transportation tips you need, including shuttle information, driving and biking directions, ride sharing tips, and more!]]></string>
+    <string name="faq_where_and_when_can_i_pick_up_badge_description" translation_description="Information on where and when an attendee can pick up their badge in FAQ"><![CDATA[To expedite the check-in process, we\'ll begin badge pickup on Monday, May 6, at Shoreline Amphitheatre. To give you your Google I/O badge, we\'ll need to:<br> - Verify your photo ID. We\'re OK with government-issued licenses, passports, and other forms of identification. If you don\'t have proper identification, you won\'t be able to receive a badge and won\'t be admitted into the conference. The name on your ID needs to be an exact match of your registration profile. If you\'re an Academic attendee, please remember to bring proof of eligibility.<br> - Scan your registration QR code received via email. You can scan it from your phone—no need to print the email! #savetheenvironment <br><br>Please note, you may not share, give, or otherwise provide your badge to anyone. Google I/O badges aren\'t replaceable, so don\'t lose yours or you won\'t be readmitted to the conference. You must wear your Google I/O badge to gain admission to Google I/O, including the Sessions, Sandboxes, and After Hours. If requested by security, please display or provide additional identification. Google I/O badges may include your name, company or organization (if provided), and photo.]]></string>
+    <string name="faq_want_a_front_row_seat_at_keynote_description" translation_description="Information on I want a front row seat at the Keynote in FAQ"><![CDATA[Everyone is guaranteed a seat for the Keynotes, but the best seats will be assigned on a first-come, first-served basis during badge pickup beginning at 7am on May 6th. So make sure to come by early!]]></string>
+    <string name="faq_what_should_i_wear_description" translation_description="Information on what should I wear at the conference"><![CDATA[Google I/O is an outdoor developer event, so please be comfortable and casual. There is no enforced dress code. The Bay Area can get very hot during the day and chilly in the evenings, so take this into consideration when planning your attire.]]></string>
+    <string name="faq_onsite_food_options_description" translation_description="Information on onsite food options"><![CDATA[Good news, we like food, too!  Attendees are offered complimentary breakfast, lunch, and snacks on all three days of the conference. Dinner will also be available on Day 1 and 2 during the After Hours events.]]></string>
+    <string name="faq_if_i_lose_something_onsite_description" translation_description="Information on if I lose something else in FAQ"><![CDATA[We got your back! The lost and found station will be located at the Conference Information Desk during event hours. Any items left overnight will be turned over to the Conference Security Office. One important detail: Google I/O badges are NOT replaceable, so don\'t lose yours or you won\'t be readmitted to the conference.]]></string>
+    <string name="faq_after_dark_program_description" translation_description="Information on after dark program in FAQ"><![CDATA[These are two nights you don\'t want to miss! Attendees are invited to enjoy music, games, and more during the evening of May 8, and to an exclusive concert in the Amphitheatre on May 9. Food and drinks will be available on both nights (alcoholic beverages available for those 21 and over). Both After Hours events are hosted at Shoreline Amphitheatre, and your attendee badge is required for entrance.]]></string>
+    <string name="faq_accessibility_needs_description" translation_description="Information on accessibility needs in FAQ"><![CDATA[Google strives to make events open and accessible to everyone, regardless of disability or special needs. Participants with disabilities and/or special needs should provide details in the registration form and/or by emailing us at io19@google.com. This information will be kept private and will be distributed only to the individuals who need to know it to accommodate your request. Otherwise, please approach the Help Desk at Google I/O if you need assistance or have questions about accessibility during the event.<br><br>Shoreline Amphitheatre is an entirely outdoor venue. While the Keynotes will be taking place in an open-air amphitheatre, the Sessions will take place in enclosed areas. All areas of the venue are accessible for wheelchair users, and there will be a limited number of wheelchairs available on a first-come, first-served basis. Wheelchairs can be checked out at the First Aid station and returned at the end of each day. Additionally, there will be a service dog relief area.<br><br> We\'ll provide live real-time transcription (CART) for the Keynotes and Sessions. Caption text displayed on a large screen at the front of the room will be accessible to all attendees. We\'ll also use the text to provide captions for our livestream and post-event recordings.<br><br> If you need an ASL interpreter to accompany you in the Sessions at Google I/O, please let us know during registration and we\'ll be happy to provide one for you. We\'ll do our best to find a technical translator who is familiar with the domain, but please keep in mind that the interpreter probably won\'t be able to meet with the speakers beforehand.<br><br> ADA parking spaces will be available. When arriving at the venue, please follow signs for ADA parking. Please have your placard hanging from your rearview mirror and visible to parking employees at all times to expedite the parking process. Accessible parking spaces are readily available on a first-come, first-served basis and may not be reserved in advance to fairly serve all attendees.]]></string>
+    <string name="faq_support_for_expectant_mothers_parent_description" translation_description="Information on accessibility needs in FAQ"><![CDATA[We\'ll have expectant mother parking spaces in the ADA area.<br> Mothers who are nursing are welcome to attend the conference with their child. There will be four mothers\' rooms open on May 7 and 8 from 8am - 8pm and on May 9 from 8am - 4pm. Sign up sheets will be available in front of the mothers\' rooms and usage is first-come, first-served. Please see the conference help desk for more information.<br><br> Childcare reimbursement of USD $100 per day (not exceeding USD $300 total) will be offered to parents attending that express interest in childcare via our registration form, and is available on a first-come, first-served basis. Our childcare reimbursement is offered through a third-party vendor. If your request for childcare is approved by us via email before the conference starts and your onsite attendance is confirmed, our vendor will reach out to you with next steps within 7 business days following Google I/O. They will manage all disbursement of our childcare disbursement.]]></string>
+    <string name="faq_community_guidelines_and_policy_description" translation_description="Information on guidelines and Anti harassment policy in FAQ"><![CDATA[Google is dedicated to providing a harassment-free and inclusive event experience for everyone regardless of gender identity and expression, sexual orientation, disabilities, neurodiversity, physical appearance, body size, ethnicity, nationality, race, age, religion, or other protected category. In an effort to make the event as inclusive as possible, gender-neutral bathrooms will be offered throughout the venue.<br><br> We don\'t tolerate harassment of event participants in any form.<br> Google takes violations of our policy seriously and will respond appropriately. For more information on Google\'s Event Community Guidelines and Anti-Harassment Policy, please see <a href="https://www.google.com/events/policy/anti-harassmentpolicy.html">here</a>.]]></string>
+    <string name="faq_sessions_be_live_streamed_question_description" translation_description="Information on whether the sessions be livestreamd in FAQ"><![CDATA[The two Keynotes and all Sessions will be livestreamed on the event website\'s homepage during the three days of the festival. If you\'re busy at work or on the other side of the planet with a tricky time difference, you can watch the session recordings later on the <a href="https://www.youtube.com/user/GoogleDevelopers">Google Developers YouTube channel</a>.]]></string>
+    <string name="faq_want_to_celebrate_i_o_description" translation_description="Information on I want to celebrate I/O with my community in FAQ"><![CDATA[Yes! Every year, developers around the world host <a href="https://events.google.com/io/extended">Google I/O Extended events</a>. During these events, organizers can livestream the event and host their own sessions including hackathons, codelabs, demos, and more.<br> If you\'re joining us as an I/O Extended host this year, here are the steps you should take to get started:<br><br>  Read through the <a href="https://docs.google.com/presentation/d/e/2PACX–1vReWDtj-yASOho5q7XC6lYY8af9wRa13-81mPaoSRodiRoCw4MKJnQExQ8GxyNyCQiPZpBprznPG4ex/pub?slide=id.g62811f3b0_18">Organizer Guide</a> to get tips and suggestions on how to host a successful event.<br><br> <a href="https://events.google.com/io/extended/form">Register</a> your public event on the I/O website for increased visibility.<br><br> Use the official #io19extended hashtag on all your social posts related to I/O Extended for easier discoverability.<br><br> Note: I/O Extended hosts can request the deletion of their personal and/or event data after the event ends by emailing io19@google.com.<br> If you simply want to attend an I/O Extended event, browse <a href="https://events.google.com/io/extended">our map</a> to find one near you and RSVP!<br> For questions about the I/O Extended program, contact us at io19extended\-external@google.com.]]></string>
 
     <string name="view_sessions_text" translation_description="Link label for viewing all sessions in schedule.">View Sessions</string>
-    <string name="view_codelabs_text" translation_description="Link label for viewing all codelabs.">View Codelabs</string>
-    <string name="view_events_text" translation_description="Link label for viewing all events.">View Events</string>
-    <string name="view_map_text" translation_description="Link label for viewing events.">View Map</string>
-    <string name="wifi_network_label" translation_description="Label for wifi network name.">Wifi network:</string>
-    <string name="wifi_password_label" translation_description="Label for wifi network password">Password:</string>
     <string name="wifi_install_success" translation_description="Snackbar message when wifi network is successfully saved.">Wifi network saved</string>
-    <string name="wifi_install_error_message" translation_description="Snackbar message when saving wifi network fails.">Sorry, unable to save wifi network</string>
     <string name="wifi_install_clipboard_message" translation_description="WiFi install failed, so tell the user we saved the password to the clipboard.">Unable to save wifi network.\nSaved password to clipboard instead.</string>
     <string name="event_sessions_title" translation_description="Header label for general information on &quot;sessions&quot;.">Sessions</string>
     <string name="event_sandbox_title" translation_description="Header label for general &quot;sandbox&quot; description.">Sandbox</string>
@@ -219,8 +309,6 @@
     <string name="wifi_header" translation_description="Header label for wifi information.">Wifi</string>
     <string name="related_apps_header" translation_description="Header label for related apps.">Related Apps</string>
     <string name="event_types_header" translation_description="Header label for information on the different event types.">Event Types</string>
-    <string name="general_header" translation_description="Header label for general info.">General</string>
-    <string name="agreements_header" translation_description="Header label for links to TOS, privacy policy, OSS licenses.">Agreements</string>
 
     <!--Info pages - Strings ready to translate-->
     <string name="settings_time_zone_label" translate_description="Set time zone in app to PST.">Events in Pacific Time Zone (UTC-8)</string>
@@ -229,23 +317,19 @@
     <string name="settings_tos" translation_description="Open link to terms of service.">Terms of service</string>
     <string name="settings_privacy_policy" translation_description="Open link to privacy policy.">Privacy policy</string>
     <string name="settings_oss_licenses" translation_description="Open link to open source licenses.">Open sources licenses</string>
-    <string name="settings_version_label" translation_description="Version and build numbers.">Version %1$s, build %2$s</string>
-    <string name="faq_label" translation_description="Label for link to FAQ on website.">FAQ</string>
-    <string name="built_with_material_content_description" translation_description="The app was built with Material Components.">Built with Material Components.</string>
-    <string name="tap_to_join_network" translation_description="Tap to join Wifi network.">(tap to join network)</string>
+    <string name="settings_theme_title" translation_description="Choose the app theme">Choose theme</string>
+    <string name="settings_theme_system" translation_description="Theme option to use the system default">System default</string>
+    <string name="settings_theme_light" translation_description="Theme option to use the light theme">Light</string>
+    <string name="settings_theme_dark" translation_description="Theme option to use the dark theme">Dark</string>
+    <string name="settings_theme_battery" translation_description="Theme option to use which is set by the device Battery Saver feature being enabled">Set by Battery Saver</string>
 
-    <string name="scavenger_hunt_description" translation_description="Text explaining the scavenger hunt happening at I/O.">Join the I/O Android Things Scavenger Hunt!</string>
-    <string name="scavenger_hunt_description2" translation_description="Text explaining the scavenger hunt happening at I/O.">(Hint: There might be an Android Things Developer Kit in your future.)</string>
-    <string name="assistant_app_description" translation_description="Text explaining the I/O 18 app for Google Assistant.">Use the I/O 18 Action on Google Assistant.</string>
-    <string name="assistant_app_description2" translation_description="Text explaining the I/O 18 app for Google Assistant.">Just say \"Hey Google, talk to Google I/O 18\"!</string>
+    <string name="built_with_material_components" translation_description="The app was built with Material Components.">Built with Material Components.</string>
 
-    <!-- Day labels for schedule -->
-    <string name="day1" translation_description="Label for the first day of the conference">Day 1</string>
-    <string name="day2" translation_description="Label for the second day of the conference">Day 2</string>
-    <string name="day3" translation_description="Label for the third day of the conference">Day 3</string>
-    <string name="day1_date" translation_description="Actual date of the first day of the conference">May 8</string>
-    <string name="day2_date" translation_description="Actual date of the second day of the conference">May 9</string>
-    <string name="day3_date" translation_description="Actual date of the third day of the conference">May 10</string>
+    <string name="wifi_network_and_password" translation_description="Label for wifi network name and password, separated by a line break.">Network: %1$s\nPassword: %2$s</string>
+    <string name="join_network" translation_description="Text for a button to automatically connect to the Wifi network.">Join network</string>
+
+    <string name="assistant_app_description" translation_description="Text explaining the I/O 19 app for Google Assistant. [CHAR_LIMIT=100]">Use the I/O 19 Action on Google Assistant.</string>
+    <string name="assistant_app_description2" translation_description="Text explaining the I/O 19 app for Google Assistant. [CHAR_LIMIT=100]">Just say \"Hey Google, talk to Google I/O 19\"!</string>
 
     <!-- Speaker -->
     <string name="speaker_link_website" translation_description="The label for a link to a speaker's Website">Website</string>
@@ -253,12 +337,22 @@
     <string name="speaker_link_github" translation_description="The label for a link to a speaker's GitHub profile">GitHub</string>
     <string name="speaker_link_linkedin" translation_description="The label for a link to a speaker's LinkedIn profile">LinkedIn</string>
     <!-- \u0020 is breakable whitespace - whitespace characters at start/end of string res are trimmed. -->
-    <string name="speaker_link_separator" translatable="false">\u0020/\u0020</string>
     <string name="speaker_events_subhead" translation_description="The heading for a list of events a speaker is associated with">Events</string>
-    <string name="speaker_headshot_transition" translatable="false">speaker_headshot</string>
 
     <string name="no_network_connection" translation_description="Snackbar message when there is not network connection">No internet connection.</string>
 
-    <string name="navigate_up" translation-description="Arrow at the top left of the screen for navigation">Navigate up</string>
+    <string name="navigate_up" translation_description="Arrow at the top left of the screen for navigation">Navigate up</string>
+
+    <!-- AR -->
+    <string name="no_network_description" translation_description="Message to be shown when user tries to open the Explore feature without any network connection. [CHAR_LIMIT=500]">To use Explore I/O, try:\n\n - Turning off airplane mode\n\n - Turning on mobile data or Wi-Fi\n\n - Checking the signal in your area</string>
+    <string name="phone_does_not_support_arcore_title" translation_description="Title to be shown when user tries to open the Explore feature with a device which does not support ARCore. [CHAR_LIMIT=500]">Your phone doesn\'t support ARCore</string>
+    <string name="phone_does_not_support_arcore_message" translation_description="Message to be shown when user tries to open the Explore feature with a device which does not support ARCore. [CHAR_LIMIT=500]">Try another device, or borrow one from a friend</string>
+
+    <!-- Codelabs -->
+    <string name="codelabs_information" translation_description="Information about codelabs.">Learn about the latest and greatest Google technologies via self-paced tutorials in our ready-to-code kiosks, or bring your own machine and take your work home with you. Kiosks are open daily except during the first Keynote.</string>
+    <string name="codelabs_building" translation_description="Text of a button that shows where the Codelabs building is on the map.">Codelabs building</string>
+    <string name="codelabs_website" translation_description="Text of a button that launches the Codelabs website.">Codelabs website</string>
+    <string name="codelab_duration" translation_description="Text showing the approximate time in minutes that a user would spend during a codelab tutorial. Abbreviated.">Duration: %1$d min</string>
+    <string name="start_codelab" translation_description="Text of a button that allows a user to start a codelab tutorial.">Start codelab</string>
 
 </resources>

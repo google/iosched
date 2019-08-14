@@ -26,7 +26,7 @@ import com.google.samples.apps.iosched.util.hasSameValue
 
 sealed class EventFilter(isChecked: Boolean) {
 
-    enum class EventFilterCategory(@StringRes val resId: Int) {
+    enum class EventFilterCategory(@StringRes val labelResId: Int) {
         NONE(0),
         TOPICS(R.string.category_heading_tracks),
         EVENT_TYPES(R.string.category_heading_types)
@@ -69,6 +69,12 @@ sealed class EventFilter(isChecked: Boolean) {
         override fun getShortTextResId(): Int = R.string.starred_and_reserved_short
 
         override fun equals(other: Any?): Boolean = other is MyEventsFilter
+
+        // This class isn't used for a key for a collection, overriding hashCode for removing a
+        // lint warning
+        override fun hashCode(): Int {
+            return javaClass.hashCode()
+        }
     }
 
     /** Filter for event tags. */
@@ -89,8 +95,8 @@ sealed class EventFilter(isChecked: Boolean) {
         override fun getTextResId(): Int = 0
         override fun getShortTextResId(): Int = 0
 
-        override fun getText(): String = tag.name
-        override fun getShortText(): String = tag.name
+        override fun getText(): String = tag.displayName
+        override fun getShortText(): String = tag.displayName
 
         /** Only the tag is used for equality. */
         override fun equals(other: Any?) =

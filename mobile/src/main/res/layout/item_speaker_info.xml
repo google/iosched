@@ -25,10 +25,6 @@
         <variable
             name="viewModel"
             type="com.google.samples.apps.iosched.ui.speaker.SpeakerViewModel" />
-
-        <variable
-            name="headshotLoadListener"
-            type="com.google.samples.apps.iosched.ui.speaker.ImageLoadListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -50,81 +46,89 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="@dimen/margin_normal" />
 
-        <ImageView
-            android:id="@+id/header_grid"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="@string/session_detail_header_aspect"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:headerImage="@{null}" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_title_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.65" />
-
-        <ImageView
-            android:id="@+id/speaker_grid_image"
-            android:layout_width="@dimen/speaker_large_headshot_size"
-            android:layout_height="@dimen/speaker_large_headshot_size"
-            android:layout_marginEnd="32dp"
-            android:layout_marginTop="24dp"
-            android:transitionName="@string/speaker_headshot_transition"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="@id/header_grid"
-            app:layout_constraintTop_toTopOf="@id/header_grid"
-            app:listener="@{headshotLoadListener}"
-            app:speakerImage="@{viewModel.speaker}" />
-
         <TextView
             android:id="@+id/speaker_name"
-            style="@style/Widget.IOSched.SessionDetailTitle"
+            style="@style/Widget.IOSched.Speaker.Title"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:paddingBottom="@dimen/margin_normal"
-            android:paddingTop="72dp"
+            android:layout_height="wrap_content"
             android:text="@{viewModel.speaker.name}"
-            app:layout_constraintBottom_toBottomOf="@id/header_grid"
-            app:layout_constraintEnd_toEndOf="@id/guideline_title_end"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toTopOf="@id/header_grid"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="Nick Butcher" />
 
-        <Space
-            android:id="@+id/spacer"
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            app:layout_constraintTop_toBottomOf="@id/header_grid" />
-
-        <TextView
+        <com.google.android.flexbox.FlexboxLayout
             android:id="@+id/speaker_links"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/margin_normal"
-            android:textAppearance="@style/TextAppearance.IOSched.Links"
+            android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/spacer"
-            app:githubUrl="@{viewModel.speaker.githubUrl}"
-            app:linkedInUrl="@{viewModel.speaker.linkedInUrl}"
-            app:twitterUrl="@{viewModel.speaker.twitterUrl}"
-            app:websiteUrl="@{viewModel.speaker.websiteUrl}"
-            tools:text="Twitter / GitHub" />
+            app:layout_constraintTop_toBottomOf="@id/speaker_name"
+            app:dividerDrawableVertical="@drawable/divider_slash"
+            app:flexDirection="row"
+            app:flexWrap="wrap"
+            app:showDividerVertical="middle">
+
+            <Button
+                android:id="@+id/speaker_link_website"
+                style="@style/Widget.IOSched.Speaker.SocialButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/speaker_link_website"
+                android:visibility="gone"
+                app:hideWhenEmpty="@{true}"
+                app:websiteLink="@{viewModel.speaker.websiteUrl}"
+                tools:visibility="visible" />
+
+            <Button
+                android:id="@+id/speaker_link_twitter"
+                style="@style/Widget.IOSched.Speaker.SocialButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/speaker_link_twitter"
+                android:visibility="gone"
+                app:hideWhenEmpty="@{true}"
+                app:websiteLink="@{viewModel.speaker.twitterUrl}"
+                tools:visibility="visible" />
+
+            <Button
+                android:id="@+id/speaker_link_github"
+                style="@style/Widget.IOSched.Speaker.SocialButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/speaker_link_github"
+                android:visibility="gone"
+                app:hideWhenEmpty="@{true}"
+                app:websiteLink="@{viewModel.speaker.githubUrl}"
+                tools:visibility="visible" />
+
+            <Button
+                android:id="@+id/speaker_link_linkedin"
+                style="@style/Widget.IOSched.Speaker.SocialButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/speaker_link_linkedin"
+                android:visibility="gone"
+                app:hideWhenEmpty="@{true}"
+                app:websiteLink="@{viewModel.speaker.linkedInUrl}"
+                tools:visibility="visible" />
+
+        </com.google.android.flexbox.FlexboxLayout>
 
         <TextView
             android:id="@+id/speaker_bio"
+            style="@style/Widget.IOSched.MultilineBody"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.speaker.abstract}"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:text="@{viewModel.speaker.biography}"
+            android:textAlignment="viewStart"
             android:textColor="?android:textColorPrimary"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/speaker_links"
-            tools:text="Pixel puppeteer" />
+            tools:text="@tools:sample/lorem[25]" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

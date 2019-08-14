@@ -20,7 +20,6 @@ import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.result.Event
-import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.ui.signin.SignInEvent
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.doReturn
@@ -28,12 +27,13 @@ import com.nhaarman.mockito_kotlin.mock
 
 class FakeSignInViewModelDelegate : SignInViewModelDelegate {
 
-    override val currentFirebaseUser = MutableLiveData<Result<AuthenticatedUserInfo>?>()
+    override val currentUserInfo = MutableLiveData<AuthenticatedUserInfo?>()
     override val currentUserImageUri = MutableLiveData<Uri?>()
     override val performSignInEvent = MutableLiveData<Event<SignInEvent>>()
     override val shouldShowNotificationsPrefAction = MutableLiveData<Event<Boolean>>()
 
     var injectIsSignedIn = true
+    var injectIsRegistered = false
     var signInRequestsEmitted = 0
     var signOutRequestsEmitted = 0
 
@@ -45,7 +45,7 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
         value = injectIsSignedIn
     }
 
-    override fun isRegistered(): Boolean = injectIsSignedIn
+    override fun isRegistered(): Boolean = injectIsRegistered
 
     override fun emitSignInRequest() {
         signInRequestsEmitted++
@@ -56,8 +56,7 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
     }
 
     override fun getUserId(): String? {
-        val user = currentFirebaseUser.value
-        return (user as? Result.Success)?.data?.getUid()
+        return currentUserInfo.value?.getUid()
     }
 
     fun loadUser(id: String) {
@@ -65,8 +64,9 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
             on { getUid() }.doReturn(id)
             on { getPhotoUrl() }.doReturn(mock<Uri> {})
             on { isSignedIn() }.doReturn(true)
+            on { this@on.isRegistered() }.doReturn(injectIsRegistered)
             on { isRegistrationDataReady() }.doReturn(true)
         }
-        currentFirebaseUser.postValue(Result.Success(mockUser))
+        currentUserInfo.postValue(mockUser)
     }
 }

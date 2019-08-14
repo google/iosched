@@ -17,13 +17,24 @@
 package com.google.samples.apps.iosched.shared.domain.agenda
 
 import com.google.samples.apps.iosched.model.Block
-import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaRepository
-import com.google.samples.apps.iosched.shared.domain.UseCase
+import com.google.samples.apps.iosched.shared.data.agenda.AgendaRepository
+import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
+import com.google.samples.apps.iosched.shared.result.Result
 import javax.inject.Inject
 
 open class LoadAgendaUseCase @Inject constructor(
     private val repository: AgendaRepository
-) : UseCase<Unit, List<Block>>() {
+) : MediatorUseCase<Unit, List<Block>>() {
 
-    override fun execute(parameters: Unit) = repository.getAgenda()
+    override fun execute(parameters: Unit) {
+        try {
+            val observableAgenda = repository.getObservableAgenda()
+            result.removeSource(observableAgenda)
+            result.addSource(observableAgenda) {
+                result.postValue(Result.Success(it))
+            }
+        } catch (e: Exception) {
+            result.postValue(Result.Error(e))
+        }
+    }
 }

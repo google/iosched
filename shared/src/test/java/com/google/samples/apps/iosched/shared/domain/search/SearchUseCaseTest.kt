@@ -18,8 +18,8 @@
 
 package com.google.samples.apps.iosched.shared.domain.search
 
-import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
+import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSession
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.TestData
@@ -58,7 +58,9 @@ class SearchUseCaseTest {
         val result = useCase.executeNow(parameters = "android")
         assertThat(result, `is`(instanceOf(Result.Success::class.java)))
 
-        val sessions = (result as Result.Success).data
+        val sessions = (result as Result.Success).data.map {
+            (it as SearchedSession).session
+        }
         assertThat(sessions.size, `is`(equalTo(3)))
         assertThat(sessions, hasItems(TestData.session0, TestData.session1, TestData.session2))
     }
@@ -68,7 +70,9 @@ class SearchUseCaseTest {
         val result = useCase.executeNow(parameters = "What are the Android talks at Google I/O")
         assertThat(result, `is`(instanceOf(Result.Success::class.java)))
 
-        val sessions = (result as Result.Success).data
+        val sessions = (result as Result.Success).data.map {
+            (it as SearchedSession).session
+        }
         assertThat(sessions.size, `is`(equalTo(3)))
         assertThat(sessions, hasItems(TestData.session0, TestData.session1, TestData.session2))
     }
@@ -82,10 +86,12 @@ class SearchUseCaseTest {
         assertThat(sessions, `is`(equalTo(emptyList())))
     }
 
-    private fun assertThatResultContainsOnlySession0(result: Result<List<Session>>) {
+    private fun assertThatResultContainsOnlySession0(result: Result<List<Searchable>>) {
         assertThat(result, `is`(instanceOf(Result.Success::class.java)))
 
-        val sessions = (result as Result.Success).data
+        val sessions = (result as Result.Success).data.map {
+            (it as SearchedSession).session
+        }
         assertThat(sessions.size, `is`(equalTo(1)))
         assertThat(sessions, hasItem(TestData.session0))
     }

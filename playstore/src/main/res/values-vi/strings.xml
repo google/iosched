@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
   ~ limitations under the License.
 -->
 <resources>
-    <string name="playstore_title">Google I/O 2018</string>
+
     <string name="playstore_tagline">Người đồng hành của bạn sẽ điều hướng I/O, cho dù bạn tham gia trực tiếp hay từ xa.</string>
-    <string name="playstore_description">Ứng dụng hội thảo Google I/O 2018 chính thức là người đồng hành của bạn, giúp điều hướng cuộc hội thảo, cho dù bạn tham gia trực tiếp hay từ xa. Với ứng dụng này, bạn có thể:\n\n• Khám phá lịch trình hội thảo, với thông tin chi tiết về chủ đề và diễn giả\n• Lưu sự kiện vào Lịch biểu, lịch biểu cá nhân hóa của bạn\n• Nhận lời nhắc trước khi sự kiện bạn đã lưu vào Lịch biểu bắt đầu\n• Đồng bộ lịch biểu tùy chỉnh của bạn giữa tất cả các thiết bị và trang web I/O\n• Định hướng cho bản thân bằng bản đồ hội thảo dựa trên vector\n• Chọn nhận những thông báo quan trọng về sự kiện, lịch biểu, di chuyển, sau giờ làm việc, bản ghi phiên sự kiện, v.v.\n\nDành riêng cho những người tham gia trực tiếp:\n• Tận dụng cấu hình WiFi lắp đặt trước sự kiện\n• Đặt chỗ cho sự kiện trước lịch tổ chức\n\nMã nguồn cho ứng dụng sẽ sớm được ra mắt sau I/O.</string>
+
     <string name="playstore_change">Cập nhật cho Google I/O 2018\n• Đặt chỗ cho sự kiện trước lịch tổ chức\n• Đọc thông tin quan trọng về Sự kiện, Thông tin di chuyển và Câu hỏi thường gặp.</string>
     <string name="playstore_required_permissions">Các quyền bắt buộc</string>
     <string name="playstore_optional_permissions">Các quyền tùy chọn</string>

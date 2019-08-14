@@ -25,29 +25,76 @@
         <variable
             name="viewModel"
             type="com.google.samples.apps.iosched.ui.speaker.SpeakerViewModel" />
+
+        <variable
+            name="headshotLoadListener"
+            type="com.google.samples.apps.iosched.ui.speaker.ImageLoadListener" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinator_layout_session_detail"
+        android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         tools:ignore="MergeRootFrame">
 
+        <!-- CollapsingToolbarLayout consumes all system window insets, so we need to put the
+             RecyclerView first in order for it to inspect the insets first.
+             Use layout_height="wrap_content" so that the CollapsingToolbarLayout doesn't collapse
+             when there is not enough content to fill the screen.
+        -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/speaker_detail_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/margin_normal"
             android:scrollbars="vertical"
-            app:hasFixedSize="@{true}"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layoutManager="LinearLayoutManager" />
 
-        <ImageButton
-            android:id="@+id/up"
-            android:layout_width="?actionBarSize"
-            android:layout_height="?actionBarSize"
-            android:layout_gravity="start|top"
-            android:background="?selectableItemBackgroundBorderless"
-            app:srcCompat="@drawable/ic_arrow_back" />
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:fitsSystemWindows="true"
+            app:elevation="0dp">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll"
+                app:statusBarScrim="?colorSurface">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:navigationContentDescription="@string/navigate_up"
+                    app:navigationIcon="@drawable/ic_arrow_back" />
+
+                <!-- Use the speaker id as the transition name. When a session has multiple
+                     speakers, the id is unique, preventing conflicts with the transition name.
+                     See item_speaker.xml for the corresponding shared element.
+                -->
+                <ImageView
+                    android:id="@+id/speaker_image"
+                    android:layout_width="@dimen/speaker_large_headshot_size"
+                    android:layout_height="@dimen/speaker_large_headshot_size"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="?actionBarSize"
+                    android:contentDescription="@null"
+                    android:transitionName="@{viewModel.speaker.id}"
+                    app:listener="@{headshotLoadListener}"
+                    app:speakerImage="@{viewModel.speaker}"
+                    tools:src="@drawable/ic_default_avatar_1" />
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <com.google.samples.apps.iosched.widget.FadingSnackbar
             android:id="@+id/snackbar"

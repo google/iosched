@@ -16,9 +16,12 @@
 
 package com.google.samples.apps.iosched.test.data
 
+import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.model.Block
+import com.google.samples.apps.iosched.model.Codelab
 import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.model.ConferenceDay
+import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.model.Room
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.Speaker
@@ -29,6 +32,7 @@ import com.google.samples.apps.iosched.model.reservations.ReservationRequestResu
 import com.google.samples.apps.iosched.model.reservations.ReservationRequestResult.ReservationRequestStatus.RESERVE_SUCCEEDED
 import com.google.samples.apps.iosched.model.reservations.ReservationRequestResult.ReservationRequestStatus.RESERVE_WAITLISTED
 import com.google.samples.apps.iosched.model.userdata.UserEvent
+import com.google.samples.apps.iosched.model.userdata.UserEvent.ReservationStatus.NONE
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import org.threeten.bp.ZonedDateTime
 
@@ -37,12 +41,12 @@ import org.threeten.bp.ZonedDateTime
  */
 object TestData {
 
-    val CONFERENCE_DAY1_START = "2018-05-08T07:00:00-07:00"
-    val CONFERENCE_DAY1_END = "2018-05-08T22:00:01-07:00"
-    val CONFERENCE_DAY2_END = "2018-05-09T22:00:01-07:00"
-    val CONFERENCE_DAY2_START = "2018-05-09T08:00:00-07:00"
-    val CONFERENCE_DAY3_END = "2018-05-10T22:00:00-07:00"
-    val CONFERENCE_DAY3_START = "2018-05-10T08:00:00-07:00"
+    private const val CONFERENCE_DAY1_START = "2019-05-07T07:00:00-07:00"
+    private const val CONFERENCE_DAY1_END = "2019-05-07T22:00:01-07:00"
+    private const val CONFERENCE_DAY2_END = "2019-05-08T22:00:01-07:00"
+    private const val CONFERENCE_DAY2_START = "2019-05-08T08:00:00-07:00"
+    private const val CONFERENCE_DAY3_END = "2019-05-09T22:00:00-07:00"
+    private const val CONFERENCE_DAY3_START = "2019-05-09T08:00:00-07:00"
 
     val TestConferenceDays = listOf(
         ConferenceDay(
@@ -79,7 +83,7 @@ object TestData {
         name = "Troy McClure",
         imageUrl = "",
         company = "",
-        abstract = ""
+        biography = ""
     )
 
     val speaker2 = Speaker(
@@ -87,7 +91,7 @@ object TestData {
         name = "Disco Stu",
         imageUrl = "",
         company = "",
-        abstract = ""
+        biography = ""
     )
 
     val speaker3 = Speaker(
@@ -95,53 +99,57 @@ object TestData {
         name = "Hans Moleman",
         imageUrl = "",
         company = "",
-        abstract = ""
+        biography = ""
     )
 
     val room = Room(id = "1", name = "Tent 1")
 
     val session0 = Session(
-        id = "0", title = "Session 0", abstract = "This session is awesome",
+        id = "0", title = "Session 0", description = "This session is awesome",
         startTime = TestConferenceDays[0].start, endTime = TestConferenceDays[0].end,
         isLivestream = false,
-        room = room, sessionUrl = "", liveStreamUrl = "", youTubeUrl = "", photoUrl = "",
-        tags = listOf(androidTag, webTag, sessionsTag), displayTags = listOf(androidTag, webTag),
+        room = room, sessionUrl = "", youTubeUrl = "", photoUrl = "", doryLink = "",
+        tags = listOf(androidTag, webTag, sessionsTag),
+        displayTags = listOf(androidTag, webTag),
         speakers = setOf(speaker1), relatedSessions = emptySet()
     )
 
     val session1 = Session(
-        id = "1", title = "Session 1", abstract = "",
+        id = "1", title = "Session 1", description = "",
         startTime = TestConferenceDays[0].start, endTime = TestConferenceDays[0].end,
         isLivestream = false,
-        room = room, sessionUrl = "", liveStreamUrl = "", youTubeUrl = "", photoUrl = "",
-        tags = listOf(androidTag, webTag, codelabsTag), displayTags = listOf(androidTag, webTag),
+        room = room, sessionUrl = "", youTubeUrl = "", photoUrl = "", doryLink = "",
+        tags = listOf(androidTag, webTag, codelabsTag),
+        displayTags = listOf(androidTag, webTag),
         speakers = setOf(speaker2), relatedSessions = emptySet()
     )
 
     val session2 = Session(
-        id = "2", title = "Session 2", abstract = "",
+        id = "2", title = "Session 2", description = "",
         startTime = TestConferenceDays[1].start, endTime = TestConferenceDays[1].end,
         isLivestream = false,
-        room = room, sessionUrl = "", liveStreamUrl = "", youTubeUrl = "", photoUrl = "",
+        room = room, sessionUrl = "", youTubeUrl = "", photoUrl = "", doryLink = "",
         tags = listOf(androidTag, sessionsTag, beginnerTag), displayTags = listOf(androidTag),
         speakers = setOf(speaker3), relatedSessions = emptySet()
     )
 
     val session3 = Session(
-        id = "3", title = "Session 3", abstract = "",
+        id = "3", title = "Session 3", description = "",
         startTime = TestConferenceDays[2].start, endTime = TestConferenceDays[2].end,
         isLivestream = false,
-        room = room, sessionUrl = "", liveStreamUrl = "", youTubeUrl = "", photoUrl = "",
+        room = room, sessionUrl = "", youTubeUrl = "", photoUrl = "", doryLink = "",
         tags = listOf(webTag, sessionsTag, intermediateTag), displayTags = listOf(webTag),
         speakers = setOf(speaker1, speaker2), relatedSessions = emptySet()
     )
 
     val sessionWithYoutubeUrl = Session(
-        id = "4", title = "Session 4", abstract = "",
-        startTime = TestConferenceDays[2].start.plusMinutes(1), endTime = TestConferenceDays[2].end,
+        id = "4", title = "Session 4", description = "",
+        startTime = TestConferenceDays[2].start.plusMinutes(1),
+        endTime = TestConferenceDays[2].end,
         isLivestream = true,
-        room = room, sessionUrl = "", liveStreamUrl = "",
+        room = room, sessionUrl = "",
         youTubeUrl = "\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\"", photoUrl = "",
+        doryLink = "",
         tags = listOf(webTag, advancedTag), displayTags = listOf(webTag),
         speakers = setOf(speaker1), relatedSessions = emptySet()
     )
@@ -201,7 +209,7 @@ object TestData {
     private val userEvent3 = UserEvent(
         sessionIDs[3], isStarred = false,
         isReviewed = true,
-        reservationStatus = UserEvent.ReservationStatus.NONE,
+        reservationStatus = NONE,
         reservationRequestResult = ReservationRequestResult(
             RESERVE_DENIED_UNKNOWN, "123", System.currentTimeMillis()
         )
@@ -217,20 +225,84 @@ object TestData {
     val userSession3 = UserSession(session3, userEvent3)
     val userSession4 = UserSession(sessionWithYoutubeUrl, userEvent4)
 
-    val userSessionMap = mapOf(
-        TestConferenceDays[0] to listOf(userSession0, userSession1),
-        TestConferenceDays[1] to listOf(userSession2),
-        TestConferenceDays[2] to listOf(userSession3, userSession4)
+    val userSessionList = listOf(
+        userSession0,
+        userSession1,
+        userSession2,
+        userSession3,
+        userSession4
     )
+
     val userEvents = listOf(userEvent0, userEvent1, userEvent2, userEvent3, userEvent4)
+
+    val codelab0 = Codelab(
+        id = "codelab0", title = "Android is Cool", description = "Make Android apps in 5 minutes!",
+        durationMinutes = 6, iconUrl = null, codelabUrl = "", sortPriority = 0,
+        tags = listOf(androidTag)
+    )
+
+    val codelab1 = Codelab(
+        id = "codelab1", title = "HTML 6", description = "Webs aren't just for spiders anymore.",
+        durationMinutes = 37, iconUrl = null, codelabUrl = "", sortPriority = 0,
+        tags = listOf(webTag)
+    )
+
+    val codelab2 = Codelab(
+        id = "codelab2", title = "Martian Learning", description = "Machine Learning in Space",
+        durationMinutes = 20, iconUrl = null, codelabUrl = "", sortPriority = 1,
+        tags = listOf(cloudTag)
+    )
+
+    val codelabs = listOf(codelab0, codelab1, codelab2)
+    val codelabsSorted = listOf(codelab2, codelab0, codelab1)
 
     // endregion Declarations
 
     val conferenceData = ConferenceData(
         sessions = sessionsList,
-        tags = tagsList,
-        rooms = listOf(room),
         speakers = listOf(speaker1, speaker2, speaker3),
+        rooms = listOf(room),
+        codelabs = codelabs,
+        tags = tagsList,
         version = 42
     )
+
+    val feedItem1 = Announcement(
+        id = "0", title = "Item 1", message = "", timestamp = TestConferenceDays[0].start,
+        imageUrl = "", color = 0, category = "", priority = true, emergency = true
+    )
+
+    val feedItem2 = Announcement(
+        id = "1", title = "Item 2", message = "", timestamp = TestConferenceDays[0].end,
+        imageUrl = "", color = 0, category = "", priority = true, emergency = false
+    )
+
+    val feedItem3 = Announcement(
+        id = "2", title = "Item 3", message = "", timestamp = TestConferenceDays[1].start,
+        imageUrl = "", color = 0, category = "", priority = false, emergency = false
+    )
+
+    val feedItem4 = Announcement(
+        id = "3", title = "Item 4", message = "", timestamp = TestConferenceDays[1].end,
+        imageUrl = "", color = 0, category = "", priority = false, emergency = false
+    )
+
+    val announcements = listOf(feedItem1, feedItem2, feedItem3, feedItem4)
+    val moment1 = Moment(
+        id = "1",
+        title = "KeyNote: Day 1",
+        streamUrl = "https://www.youtube.com",
+        startTime = TestConferenceDays[0].start,
+        endTime = TestConferenceDays[0].end,
+        textColor = 123,
+        ctaType = Moment.CTA_LIVE_STREAM,
+        imageUrl = "",
+        imageUrlDarkTheme = "",
+        attendeeRequired = false,
+        timeVisible = false,
+        featureId = "",
+        featureName = ""
+    )
+
+    val moments = listOf(moment1)
 }

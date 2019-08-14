@@ -43,13 +43,13 @@ fun parseUserEvent(snapshot: DocumentSnapshot): UserEvent {
     val reservationStatus = (snapshot[RESERVATION_STATUS_KEY] as? String)?.let {
         UserEvent.ReservationStatus.getIfPresent(it)
     }
-
     return UserEvent(
         id = snapshot.id,
         reservationRequestResult = reservationRequestResult,
         reservationStatus = reservationStatus,
         isStarred = snapshot[FirestoreUserEventDataSource.IS_STARRED] as? Boolean ?: false,
-        reservationRequest = reservationRequest
+        reservationRequest = reservationRequest,
+        isReviewed = snapshot[FirestoreUserEventDataSource.REVIEWED] as? Boolean ?: false
     )
 }
 

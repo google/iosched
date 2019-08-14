@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
   ~ limitations under the License.
 -->
 <resources>
-    <string name="playstore_title">Google I/O 2018</string>
+
     <string name="playstore_tagline">Ihr Co-Pilot für die Navigation auf der I/O – vor Ort oder per Fernzugriff.</string>
-    <string name="playstore_description">Die offizielle App zur Google I/O 2018 ist Ihr Co-Pilot für die Navigation auf der Konferenz – direkt vor Ort oder per Fernzugriff. Mit dieser App können Sie:\n\n• den Zeitplan der Konferenz einsehen, inklusive Details zu Themen und Rednern,\n• Veranstaltungen speichern und so Ihren persönlichen Zeitplan erstellen,\n• Erinnerungen für im Zeitplan gespeicherte Veranstaltungen setzen,\n• Ihren persönlichen Zeitplan auf allen Ihren Geräten und mit der I/O-Website synchronisieren,\n• sich mit der vektorbasierten Konferenzkarte zurechtfinden,\n• Benachrichtigungen zu Veranstaltung, Zeitplan, Anreise, Rahmenprogramm, Sitzungsaufzeichnungen und vielem mehr anfordern.\n\nExklusiv für Teilnehmer vor Ort:\n• Nutzen Sie die bequeme WLAN-Vorabkonfiguration.\n• Reservieren Sie vorab Plätze für Veranstaltungen.\n\nDer Quellcode für die App steht im Anschluss an die I/O zur Verfügung.</string>
+
     <string name="playstore_change">Aktualisiert für Google I/O 2018\n• Vorab-Reservierung von Plätzen für Veranstaltungen\n• Lesen Sie die wichtigen Informationen zur Veranstaltung, Reisedetails und FAQ.</string>
     <string name="playstore_required_permissions">Erforderliche Berechtigung</string>
     <string name="playstore_optional_permissions">Optionale Berechtigungen</string>

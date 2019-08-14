@@ -22,6 +22,7 @@ import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.TestData.session1
 import com.google.samples.apps.iosched.test.data.TestData.session3
+import com.google.samples.apps.iosched.test.util.FakeAppDatabase
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import org.hamcrest.core.IsEqual.equalTo
 import org.hamcrest.core.IsNot.not
@@ -54,7 +55,8 @@ class ConferenceDataRepositoryTest {
         // and a bootstrap that returns session 3
         repo = ConferenceDataRepository(
             remoteDataSource = TestConfDataSourceSession0(),
-            boostrapDataSource = BootstrapDataSourceSession3()
+            boostrapDataSource = BootstrapDataSourceSession3(),
+            appDatabase = FakeAppDatabase()
         )
 
         // When requesting previously-refreshed data
@@ -76,7 +78,8 @@ class ConferenceDataRepositoryTest {
         // and a bootstrap that returns session 3
         repo = ConferenceDataRepository(
             remoteDataSource = NotAvailableDataSource(),
-            boostrapDataSource = BootstrapDataSourceSession3()
+            boostrapDataSource = BootstrapDataSourceSession3(),
+            appDatabase = FakeAppDatabase()
         )
 
         // Remote conference throws an error
@@ -104,7 +107,8 @@ class ConferenceDataRepositoryTest {
         // and a bootstrap that returns session 1
         repo = ConferenceDataRepository(
             remoteDataSource = ThrowingDataSourceNoCache(),
-            boostrapDataSource = TestConfDataSourceSession1()
+            boostrapDataSource = TestConfDataSourceSession1(),
+            appDatabase = FakeAppDatabase()
         )
 
         // Remote conference throws an error
@@ -146,9 +150,10 @@ class TestConfDataSourceSession0 : ConferenceDataSource {
 
     private val conferenceData = ConferenceData(
         sessions = listOf(TestData.session0),
-        tags = listOf(TestData.androidTag, TestData.webTag),
         speakers = listOf(TestData.speaker1),
         rooms = emptyList(),
+        codelabs = emptyList(),
+        tags = listOf(TestData.androidTag, TestData.webTag),
         version = NETWORK_DATA_VERSION
     )
 }
@@ -157,9 +162,10 @@ private class TestConfDataSourceSession1 : ConferenceDataSource {
     override fun getRemoteConferenceData(): ConferenceData? {
         return ConferenceData(
             sessions = listOf(TestData.session1),
-            tags = listOf(TestData.androidTag, TestData.webTag),
             speakers = listOf(TestData.speaker1),
             rooms = emptyList(),
+            codelabs = emptyList(),
+            tags = listOf(TestData.androidTag, TestData.webTag),
             version = NETWORK_DATA_VERSION
         )
     }
@@ -167,9 +173,10 @@ private class TestConfDataSourceSession1 : ConferenceDataSource {
     override fun getOfflineConferenceData(): ConferenceData? {
         return ConferenceData(
             sessions = listOf(TestData.session1),
-            tags = listOf(TestData.androidTag, TestData.webTag),
             speakers = listOf(TestData.speaker1),
             rooms = emptyList(),
+            codelabs = emptyList(),
+            tags = listOf(TestData.androidTag, TestData.webTag),
             version = CACHE_DATA_VERSION
         )
     }
@@ -183,9 +190,10 @@ class BootstrapDataSourceSession3 : ConferenceDataSource {
     override fun getOfflineConferenceData(): ConferenceData? {
         return ConferenceData(
             sessions = listOf(TestData.session3),
-            tags = listOf(TestData.androidTag, TestData.webTag),
             speakers = listOf(TestData.speaker1),
             rooms = emptyList(),
+            codelabs = emptyList(),
+            tags = listOf(TestData.androidTag, TestData.webTag),
             version = BOOTSTRAP_DATA_VERSION
         )
     }
@@ -199,9 +207,10 @@ private class TestConfDataSourceOnlyCachedSession1 : ConferenceDataSource {
     override fun getOfflineConferenceData(): ConferenceData? {
         return ConferenceData(
             sessions = listOf(TestData.session1),
-            tags = listOf(TestData.androidTag, TestData.webTag),
             speakers = listOf(TestData.speaker1),
             rooms = emptyList(),
+            codelabs = emptyList(),
+            tags = listOf(TestData.androidTag, TestData.webTag),
             version = CACHE_DATA_VERSION
         )
     }
@@ -225,9 +234,10 @@ private class ThrowingDataSourceCacheSession2 : ConferenceDataSource {
     override fun getOfflineConferenceData(): ConferenceData? {
         return ConferenceData(
             sessions = listOf(TestData.session2),
-            tags = listOf(TestData.androidTag, TestData.webTag),
             speakers = listOf(TestData.speaker1),
             rooms = emptyList(),
+            codelabs = emptyList(),
+            tags = listOf(TestData.androidTag, TestData.webTag),
             version = CACHE_DATA_VERSION
         )
     }

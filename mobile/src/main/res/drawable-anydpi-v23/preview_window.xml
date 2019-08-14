@@ -17,10 +17,10 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@color/white" />
+    <item android:drawable="?attr/colorSurface" />
 
     <item
-        android:drawable="@drawable/io_logo"
+        android:drawable="@drawable/preview_window_logo"
         android:gravity="center" />
 
 </layer-list>

@@ -30,17 +30,17 @@ class SpeakerUtilsTest {
     fun setup() {
         speaker1 = Speaker(
             id = "1", name = "Troy McClure", imageUrl = "",
-            company = "", abstract = ""
+            company = "", biography = ""
         )
 
         speaker2 = Speaker(
             id = "2", name = "Ziggy Anderson", imageUrl = "",
-            company = "", abstract = ""
+            company = "", biography = ""
         )
 
         speaker3 = Speaker(
             id = "3", name = "Leah Hadley", imageUrl = "",
-            company = "", abstract = ""
+            company = "", biography = ""
         )
     }
 

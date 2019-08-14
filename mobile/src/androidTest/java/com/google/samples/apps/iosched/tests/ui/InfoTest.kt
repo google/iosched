@@ -16,21 +16,23 @@
 
 package com.google.samples.apps.iosched.tests.ui
 
-import androidx.test.InstrumentationRegistry
+import android.content.Context
+import android.widget.TextView
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.R.id
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
 import com.google.samples.apps.iosched.tests.SyncTaskExecutorRule
-import com.google.samples.apps.iosched.ui.MainActivity
-import org.junit.Before
+import org.hamcrest.CoreMatchers.allOf
+import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -42,7 +44,7 @@ import org.junit.runner.RunWith
 class InfoTest {
 
     @get:Rule
-    var activityRule = ActivityTestRule<MainActivity>(MainActivity::class.java)
+    var activityRule = MainActivityTestRule(R.id.navigation_info)
 
     // Executes tasks in a synchronous [TaskScheduler]
     @get:Rule
@@ -52,26 +54,18 @@ class InfoTest {
     @get:Rule
     var preferencesRule = SetPreferencesRule()
 
-    private val resources = InstrumentationRegistry.getTargetContext().resources
-
-    @Before
-    fun goToInfoScreen() {
-        onView(withId(R.id.navigation_info)).perform(ViewActions.click())
-    }
+    private val resources = ApplicationProvider.getApplicationContext<Context>().resources
 
     @Test
     fun info_basicViewsDisplayed() {
-        onView(withText(resources.getString(R.string.wifi_header))).check(matches(isDisplayed()))
+        // Title
+        onView(allOf(instanceOf(TextView::class.java), withParent(ViewMatchers.withId(id.toolbar))))
+            .check(matches(withText(R.string.title_info)))
+        onView(withText(resources.getString(R.string.event_types_header)))
+            .check(matches(isDisplayed()))
         // Travel tab
         onView(withText(resources.getString(R.string.travel_title))).perform(click())
-        onView(withText(resources.getString(R.string.travel_directions_title)))
-            .check(matches(isDisplayed()))
-        // About tab
-        onView(withText(resources.getString(R.string.about_title))).perform(click())
-        onView(withText(resources.getString(R.string.faq_title))).check(matches(isDisplayed()))
-        // Setting tab
-        onView(withText(resources.getString(R.string.settings_title))).perform(click())
-        onView(withText(resources.getString(R.string.settings_enable_notifications)))
+        onView(withText(resources.getString(R.string.travel_what_to_bring_title)))
             .check(matches(isDisplayed()))
     }
 }

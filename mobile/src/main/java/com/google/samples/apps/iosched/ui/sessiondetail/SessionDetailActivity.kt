@@ -20,13 +20,20 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.firebase.ui.auth.IdpResponse
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.shared.notifications.AlarmBroadcastReceiver
 import com.google.samples.apps.iosched.shared.util.inTransaction
+import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
+import com.google.samples.apps.iosched.ui.theme.ThemeViewModel
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
+import com.google.samples.apps.iosched.util.updateForTheme
+import com.google.samples.apps.iosched.shared.notifications.AlarmBroadcastReceiver.Companion.QUERY_SESSION_ID
 import dagger.android.support.DaggerAppCompatActivity
 import timber.log.Timber
 import java.util.UUID
@@ -37,16 +44,32 @@ class SessionDetailActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var snackbarMessageManager: SnackbarMessageManager
 
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val viewModel: ThemeViewModel = viewModelProvider(viewModelFactory)
+        updateForTheme(viewModel.currentTheme)
+
         setContentView(R.layout.activity_session_detail)
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.inTransaction {
-                val sessionId = intent.getStringExtra(EXTRA_SESSION_ID)
-                add(R.id.session_detail_container, SessionDetailFragment.newInstance(sessionId))
+        val sessionId = getSessionId(intent)
+        val openRateSession =
+            intent.extras?.getBoolean(AlarmBroadcastReceiver.EXTRA_SHOW_RATE_SESSION_FLAG) ?: false
+        if (sessionId == null) {
+            Timber.e("Session ID not specified")
+            finish()
+        } else {
+            if (savedInstanceState == null) {
+                supportFragmentManager.inTransaction {
+                    add(R.id.session_detail_container,
+                        SessionDetailFragment.newInstance(sessionId, openRateSession))
+                }
             }
         }
+
+        viewModel.theme.observe(this, Observer(::updateForTheme))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -63,6 +86,11 @@ class SessionDetailActivity : DaggerAppCompatActivity() {
                 )
             }
         }
+    }
+
+    private fun getSessionId(intent: Intent): String? {
+        return intent.data?.getQueryParameter(QUERY_SESSION_ID) // for iosched://sessions/{id}
+                ?: intent.getStringExtra(EXTRA_SESSION_ID)
     }
 
     companion object {

@@ -23,6 +23,7 @@ import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompleteActionUseCase
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import org.junit.Assert.assertNotNull
@@ -47,7 +48,8 @@ class OnboardingViewModelTest {
         // Given an onboarding view model
         val prefs = mock<PreferenceStorage>()
         val onboardingCompleteActionUseCase = OnboardingCompleteActionUseCase(prefs)
-        val viewModel = OnboardingViewModel(onboardingCompleteActionUseCase)
+        val signInDelegate = FakeSignInViewModelDelegate()
+        val viewModel = OnboardingViewModel(onboardingCompleteActionUseCase, signInDelegate)
 
         // When getStarted is called
         viewModel.getStartedClick()
@@ -57,6 +59,22 @@ class OnboardingViewModelTest {
 
         // And that the navigation event was fired
         val navigateEvent = LiveDataTestUtil.getValue(viewModel.navigateToMainActivity)
+        assertNotNull(navigateEvent?.getContentIfNotHandled())
+    }
+
+    @Test
+    fun onSigninClicked() {
+        // Given an onboarding view model
+        val prefs = mock<PreferenceStorage>()
+        val onboardingCompleteActionUseCase = OnboardingCompleteActionUseCase(prefs)
+        val signInDelegate = FakeSignInViewModelDelegate()
+        val viewModel = OnboardingViewModel(onboardingCompleteActionUseCase, signInDelegate)
+
+        // When getStarted is called
+        viewModel.onSigninClicked()
+
+        // And that the navigation event was fired
+        val navigateEvent = LiveDataTestUtil.getValue(viewModel.navigateToSignInDialogAction)
         assertNotNull(navigateEvent?.getContentIfNotHandled())
     }
 }

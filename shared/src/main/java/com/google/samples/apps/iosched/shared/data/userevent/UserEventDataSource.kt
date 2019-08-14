@@ -33,6 +33,8 @@ interface UserEventDataSource {
 
     fun getUserEvents(userId: String): List<UserEvent>
 
+    fun getUserEvent(userId: String, eventId: SessionId): UserEvent?
+
     /**
      * Toggle the isStarred status for an event.
      *
@@ -41,6 +43,11 @@ interface UserEventDataSource {
      * @return the LiveData that represents the status of the star operation.
      */
     fun starEvent(userId: String, userEvent: UserEvent): LiveData<Result<StarUpdatedStatus>>
+
+    fun recordFeedbackSent(
+        userId: String,
+        userEvent: UserEvent
+    ): LiveData<Result<Unit>>
 
     fun requestReservation(
         userId: String,

@@ -22,26 +22,18 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
-    <application
-        android:allowBackup="true"
-        android:label="@string/app_name">
+    <application android:label="@string/app_name">
 
-        <service
-            android:name=".fcm.IoschedFirebaseMessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
         <service
             android:name=".data.job.ConferenceDataService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
-            android:name=".fcm.IoschedFirebaseInstanceIDService">
+            android:name=".fcm.IoschedFirebaseMessagingService"
+            android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
 
     </application>
 

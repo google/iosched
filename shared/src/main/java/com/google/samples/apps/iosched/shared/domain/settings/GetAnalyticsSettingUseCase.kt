@@ -20,8 +20,8 @@ import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
 
-open class GetAnalyticsSettingUseCase @Inject constructor(private val preferenceStorage: PreferenceStorage) :
-    UseCase<Unit, Boolean>() {
-
+open class GetAnalyticsSettingUseCase @Inject constructor(
+    private val preferenceStorage: PreferenceStorage
+) : UseCase<Unit, Boolean>() {
     override fun execute(parameters: Unit) = preferenceStorage.sendUsageStatistics
 }

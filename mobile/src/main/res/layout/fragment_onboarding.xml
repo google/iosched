@@ -33,6 +33,7 @@
             android:id="@+id/pager"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:importantForAccessibility="no"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,10 +49,11 @@
 
         <Button
             android:id="@+id/get_started"
-            style="@style/Widget.IOSched.RaisedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{() -> viewModel.getStartedClick()}"
+            android:paddingBottom="@dimen/padding_onboarding_button"
+            android:paddingTop="@dimen/padding_onboarding_button"
             android:text="@string/onboarding_get_started"
             app:layout_constraintBottom_toTopOf="@id/page_indicator"
             app:layout_constraintEnd_toEndOf="parent"

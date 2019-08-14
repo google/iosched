@@ -36,11 +36,11 @@ class TagDeserializer : JsonDeserializer<Tag> {
         return Tag(
             id = obj.get("id").asString,
             category = obj.get("category").asString,
-            tag = obj.get("tag").asString,
+            tagName = obj.get("tag").asString,
             orderInCategory = obj.get("order_in_category")?.asInt ?: 999,
             color = parseColor(obj.get("color")?.asString),
             fontColor = parseColor(obj.get("fontColor")?.asString),
-            name = obj.get("name").asString
+            displayName = obj.get("name").asString
         )
     }
 }

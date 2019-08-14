@@ -34,15 +34,16 @@ class ConferenceDataJsonParserTest {
 
     @Test
     fun testFakeData1() {
-        val inputStream = this.javaClass.classLoader.getResource(FILENAME)
-            .openStream()
+        val inputStream = this.javaClass.classLoader?.getResource(FILENAME)
+            ?.openStream()
 
-        val data = ConferenceDataJsonParser.parseConferenceData(inputStream)
+        val data = ConferenceDataJsonParser.parseConferenceData(inputStream!!)
 
         assertThat(data.sessions.size, Is(equalTo(3)))
         assertThat(data.rooms.size, Is(equalTo(2)))
         assertThat(data.speakers.size, Is(equalTo(3)))
         assertThat(data.tags.size, Is(equalTo(3)))
+        assertThat(data.codelabs.size, Is(equalTo(2)))
         assertThat(data.version, Is(equalTo(42)))
 
         /* Relations */
@@ -61,9 +62,9 @@ class ConferenceDataJsonParserTest {
 
     @Test(expected = JsonSyntaxException::class)
     fun testMalformedJson() {
-        val inputStream = this.javaClass.classLoader.getResource(MALFORMED_FILENAME)
-            .openStream()
+        val inputStream = this.javaClass.classLoader?.getResource(MALFORMED_FILENAME)
+            ?.openStream()
 
-        ConferenceDataJsonParser.parseConferenceData(inputStream)
+        ConferenceDataJsonParser.parseConferenceData(inputStream!!)
     }
 }

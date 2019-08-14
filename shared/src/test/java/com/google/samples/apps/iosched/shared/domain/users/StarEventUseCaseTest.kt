@@ -19,28 +19,37 @@ package com.google.samples.apps.iosched.shared.domain.users
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotificationAlarmUpdater
+import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.data.userevent.ObservableUserEvents
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.doNothing
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Assert
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
 /**
- * Unit tests for [StarEventUseCase]
+ * Unit tests for [StarEventAndNotifyUseCase]
  */
-class StarEventUseCaseTest {
+class StarEventAndNotifyUseCaseTest {
 
     // Executes tasks in the Architecture Components in the same thread
     @get:Rule
@@ -55,11 +64,11 @@ class StarEventUseCaseTest {
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
             TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
         )
-        val useCase = StarEventUseCase(testUserEventRepository)
+        val useCase = StarEventAndNotifyUseCase(testUserEventRepository, mock {})
 
         val resultLiveData = useCase.observe()
 
-        useCase.execute(StarEventParameter("userIdTest", TestData.userEvents[1]))
+        useCase.execute(StarEventParameter("userIdTest", TestData.userSession1))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
         Assert.assertEquals(result, Result.Success(StarUpdatedStatus.STARRED))
@@ -67,18 +76,46 @@ class StarEventUseCaseTest {
 
     @Test
     fun sessionIsStarredUnsuccessfully() {
-        val useCase = StarEventUseCase(FailingSessionAndUserEventRepository)
+        val alarmManager: SessionAlarmManager = mock()
+        doNothing().whenever(alarmManager).cancelAlarmForSession(any())
+        val alarmUpdater = StarReserveNotificationAlarmUpdater(alarmManager)
+
+        val useCase = StarEventAndNotifyUseCase(
+            FailingSessionAndUserEventRepository,
+            alarmUpdater
+        )
 
         val resultLiveData = useCase.observe()
 
-        useCase.execute(StarEventParameter("userIdTest", TestData.userEvents[0]))
+        useCase.execute(StarEventParameter("userIdTest", TestData.userSession3))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
         assertTrue(result is Result.Error)
     }
+
+    @Test
+    fun sessionIsStarredAndNotificationSet() {
+        val testUserEventRepository = DefaultSessionAndUserEventRepository(
+            TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
+        )
+        val updater: StarReserveNotificationAlarmUpdater = mock {}
+
+        doNothing().whenever(updater).updateSession(any(), any())
+
+        val useCase = StarEventAndNotifyUseCase(testUserEventRepository, updater)
+
+        val resultLiveData = useCase.observe()
+
+        useCase.execute(StarEventParameter("userIdTest", TestData.userSession3))
+
+        LiveDataTestUtil.getValue(resultLiveData)
+
+        verify(updater).updateSession(TestData.userSession3, false)
+    }
 }
 
 val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepository {
+
     val result = MutableLiveData<Result<StarUpdatedStatus>>()
 
     override fun starEvent(
@@ -89,9 +126,13 @@ val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepositor
         return result
     }
 
+    override fun recordFeedbackSent(userId: String, userEvent: UserEvent): LiveData<Result<Unit>> {
+        throw NotImplementedError()
+    }
+
     override fun getObservableUserEvents(
         userId: String?
-    ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
+    ): LiveData<Result<ObservableUserEvents>> {
         throw NotImplementedError()
     }
 
@@ -122,5 +163,13 @@ val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepositor
         throw NotImplementedError()
     }
 
+    override fun getUserSession(userId: String, sessionId: SessionId): UserSession {
+        throw NotImplementedError()
+    }
+
     override fun clearSingleEventSubscriptions() {}
+
+    override fun getConferenceDays(): List<ConferenceDay> {
+        throw NotImplementedError()
+    }
 }

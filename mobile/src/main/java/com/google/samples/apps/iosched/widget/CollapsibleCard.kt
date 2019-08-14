@@ -17,10 +17,9 @@
 package com.google.samples.apps.iosched.widget
 
 import android.content.Context
-import android.os.Build.VERSION.SDK_INT
-import android.os.Build.VERSION_CODES.M
 import android.os.Parcel
 import android.os.Parcelable
+import android.text.method.LinkMovementMethod
 import android.transition.Transition
 import android.transition.TransitionInflater
 import android.transition.TransitionManager
@@ -31,9 +30,13 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.text.HtmlCompat
 import com.google.samples.apps.iosched.R
 
+/**
+ * Collapsible card, description of which can be HTML.
+ * In that case, the text specified as "cardDescription" needs to be wrapped with <![CDATA[ ... ]]>
+ */
 class CollapsibleCard @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -42,12 +45,12 @@ class CollapsibleCard @JvmOverloads constructor(
 
     private var expanded = false
     private val cardTitleView: TextView
-    private val cardDescriptionView: HtmlTextView
+    private val cardDescriptionView: TextView
     private val expandIcon: ImageView
     private val titleContainer: View
     private val toggle: Transition
     private val root: View
-    private val cardTitle: String
+    private val cardTitle: String?
 
     init {
         val arr = context.obtainStyledAttributes(attrs, R.styleable.CollapsibleCard, 0, 0)
@@ -62,14 +65,14 @@ class CollapsibleCard @JvmOverloads constructor(
             text = cardTitle
         }
         setTitleContentDescription(cardTitle)
-        cardDescriptionView = root.findViewById<HtmlTextView>(R.id.card_description).apply {
-            text = cardDescription
+        cardDescriptionView = root.findViewById<TextView>(R.id.card_description).apply {
+            if (cardDescription != null) {
+                text = HtmlCompat.fromHtml(cardDescription, HtmlCompat.FROM_HTML_MODE_COMPACT)
+            }
+            movementMethod = LinkMovementMethod.getInstance()
         }
+
         expandIcon = root.findViewById(R.id.expand_icon)
-        if (SDK_INT < M) {
-            expandIcon.imageTintList =
-                AppCompatResources.getColorStateList(context, R.color.collapsing_section)
-        }
         toggle = TransitionInflater.from(context)
             .inflateTransition(R.transition.info_card_toggle)
         titleContainer.setOnClickListener {
@@ -91,10 +94,7 @@ class CollapsibleCard @JvmOverloads constructor(
         toggle.duration = if (expanded) 300L else 200L
         TransitionManager.beginDelayedTransition(root.parent as ViewGroup, toggle)
         cardDescriptionView.visibility = if (expanded) View.VISIBLE else View.GONE
-        expandIcon.rotation = if (expanded) 180f else 0f
-        // activated used to tint controls when expanded
-        expandIcon.isActivated = expanded
-        cardTitleView.isActivated = expanded
+        expandIcon.rotationX = if (expanded) 180f else 0f
         setTitleContentDescription(cardTitle)
     }
 
@@ -122,7 +122,7 @@ class CollapsibleCard @JvmOverloads constructor(
             expanded = source.readByte().toInt() != 0
         }
 
-        constructor(superState: Parcelable) : super(superState)
+        constructor(superState: Parcelable?) : super(superState)
 
         override fun writeToParcel(out: Parcel, flags: Int) {
             super.writeToParcel(out, flags)

@@ -34,7 +34,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/margin_normal">
+        android:importantForAccessibility="no"
+        android:paddingBottom="@dimen/margin_normal"
+        android:paddingTop="24dp">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_start"
@@ -50,119 +52,32 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="@dimen/margin_normal" />
 
-        <ImageView
-            android:id="@+id/detail_image"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:importantForAccessibility="no"
-            android:scaleType="centerCrop"
-            app:layout_constraintDimensionRatio="@string/session_detail_header_aspect"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:headerImage="@{viewModel.session.photoUrl}" />
-
-        <!-- Static header image, shown if there is a photo or video -->
-        <ImageView
-            android:id="@+id/detail_event_type_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/event_logo_end_margin"
-            android:layout_marginTop="@dimen/event_logo_top_margin"
-            android:importantForAccessibility="no"
-            app:layout_constraintEnd_toEndOf="@+id/detail_image"
-            app:layout_constraintTop_toTopOf="@+id/detail_image"
-            app:eventType="@{viewModel.session.type}"
-            app:goneUnless="@{viewModel.hasPhotoOrVideo}" />
-
-        <!-- Play button, shown if there is a recording available -->
-        <ImageButton
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@color/scrim"
-            android:contentDescription="@string/a11y_play"
-            android:foreground="?selectableItemBackground"
-            android:onClick="@{() -> viewModel.onPlayVideo()}"
-            android:scaleType="center"
-            app:layout_constraintBottom_toBottomOf="@id/detail_image"
-            app:layout_constraintEnd_toEndOf="@id/detail_image"
-            app:layout_constraintStart_toStartOf="@id/detail_image"
-            app:layout_constraintTop_toTopOf="@id/detail_image"
-            app:goneUnless="@{viewModel.isPlayable}"
-            app:srcCompat="@drawable/ic_play" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_title_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.65" />
-
-        <!-- Header animation, shown only if there isn't a photo or video -->
-        <com.airbnb.lottie.LottieAnimationView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintBottom_toBottomOf="@id/detail_image"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="@id/detail_image"
-            app:layout_constraintStart_toEndOf="@id/guideline_title_end"
-            app:layout_constraintTop_toTopOf="@id/detail_image"
-            app:layout_constraintVertical_bias="0"
-            app:eventHeaderAnim="@{viewModel.session}"
-            app:goneUnless="@{!viewModel.hasPhotoOrVideo}"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true" />
-
-        <!-- Title on header: only shown if there isn't a photo header or video. -->
         <TextView
             android:id="@+id/session_detail_title"
-            style="@style/Widget.IOSched.SessionDetailTitle"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:paddingBottom="@dimen/margin_normal"
-            android:paddingTop="72dp"
-            android:text="@{viewModel.session.title}"
-            app:layout_constraintBottom_toBottomOf="@id/detail_image"
-            app:layout_constraintEnd_toEndOf="@id/guideline_title_end"
-            app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toTopOf="@id/detail_image"
-            app:goneUnless="@{!viewModel.hasPhotoOrVideo}"
-            tools:text="Session Title" />
-
-        <Space
-            android:id="@+id/spacer"
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            app:layout_constraintTop_toBottomOf="@id/detail_image" />
-
-        <!-- Title below header: shown if there is a photo header or video. -->
-        <TextView
-            android:id="@+id/session_detail_with_video_title"
-            style="@style/Widget.IOSched.SessionDetailTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/margin_normal"
             android:text="@{viewModel.session.title}"
+            android:textAlignment="viewStart"
+            android:textAppearance="@style/TextAppearance.IOSched.H1"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/spacer"
-            app:goneUnless="@{viewModel.hasPhotoOrVideo}"
-            tools:text="Session Title" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Architecture Components: Solving the Lifecycle Problem" />
 
         <TextView
             android:id="@+id/session_detail_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="?android:textColorPrimary"
+            android:layout_marginTop="24dp"
+            android:textAlignment="viewStart"
+            android:textAppearance="?textAppearanceBody2"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/session_detail_with_video_title"
+            app:layout_constraintTop_toBottomOf="@id/session_detail_title"
             app:sessionDetailEndTime="@{viewModel.session.endTime}"
             app:sessionDetailStartTime="@{viewModel.session.startTime}"
             app:timeZoneId="@{viewModel.timeZoneId}"
-            tools:text="Session Time" />
+            tools:text="Tuesday, May 7, 11 am - 12 pm" />
 
         <TextView
             android:id="@+id/session_detail_room"
@@ -170,7 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_micro"
             android:text="@{viewModel.session.room.name}"
-            android:textColor="?android:textColorPrimary"
+            android:textAppearance="?textAppearanceBody2"
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toTopOf="@id/session_detail_level_barrier"
             app:layout_constraintEnd_toStartOf="@id/session_detail_recorded"
@@ -178,7 +93,7 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/session_detail_time"
-            tools:text="Session Location" />
+            tools:text="Stage 3" />
 
         <ImageView
             android:id="@+id/session_detail_recorded"
@@ -206,8 +121,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_micro"
-            android:text="@{viewModel.session.levelTag.name}"
-            android:textColor="?android:textColorPrimary"
+            android:text="@{viewModel.session.levelTag.displayName}"
+            android:textAppearance="?textAppearanceBody2"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/session_detail_level_barrier"
             app:goneUnless="@{viewModel.session.levelTag != null}"
@@ -219,21 +134,22 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/session_detail_recorded"
+            app:layout_constraintTop_toBottomOf="@id/session_detail_level"
             app:sessionStartCountdown="@{viewModel.timeUntilStart}"
             tools:text="5 minutes" />
 
         <TextView
             android:id="@+id/session_detail_description"
+            style="@style/Widget.IOSched.MultilineBody"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal"
             android:paddingTop="@dimen/spacing_normal"
-            android:text="@{viewModel.session.abstract}"
+            android:text="@{viewModel.session.description}"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/session_detail_level"
-            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus et mauris blandit, porttitor leo sit amet, tincidunt tellus. Proin at rutrum risus. Sed volutpat tellus  " />
+            tools:text="@tools:sample/lorem[25]" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tags"
@@ -247,17 +163,18 @@
             app:flexDirection="row"
             app:flexWrap="wrap"
             app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
-            app:sessionTags="@{viewModel.session.displayTags}" />
+            app:topicTags="@{viewModel.session.displayTags}" />
 
         <Button
-            android:id="@+id/session_detail_rate_button"
+            android:id="@+id/session_detail_feedback_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_normal"
+            android:onClick="@{() -> viewModel.onFeedbackClicked()}"
             android:text="@string/rate_session"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/tags"
-            app:goneUnless="@{viewModel.showRateButton}"
+            app:goneUnless="@{viewModel.showFeedbackButton}"
             tools:text="Rate Session" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

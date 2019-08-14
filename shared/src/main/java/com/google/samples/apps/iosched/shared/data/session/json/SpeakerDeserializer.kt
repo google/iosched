@@ -39,11 +39,11 @@ class SpeakerDeserializer : JsonDeserializer<Speaker> {
             name = obj.get("name").asString,
             imageUrl = obj.get("thumbnailUrl")?.asString ?: "",
             company = obj.get("company")?.asString ?: "",
-            abstract = obj.get("bio")?.asString ?: "",
-            websiteUrl = social?.get("website")?.asString,
-            twitterUrl = social?.get("twitter")?.asString,
-            githubUrl = social?.get("github")?.asString,
-            linkedInUrl = social?.get("linkedin")?.asString
+            biography = obj.get("bio")?.asString ?: "",
+            websiteUrl = social?.get("Website")?.asString,
+            twitterUrl = social?.get("Twitter")?.asString,
+            githubUrl = social?.get("GitHub")?.asString,
+            linkedInUrl = social?.get("LinkedIn")?.asString
         )
     }
 }

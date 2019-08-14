@@ -48,7 +48,7 @@ class TestUserEventDataSource(
         userId: String,
         eventId: SessionId
     ): LiveData<UserEventResult> {
-        userEventResult.postValue(UserEventResult(TestData.userEvents[0]))
+        userEventResult.postValue(UserEventResult(TestData.userEvents.find { it.id == eventId }))
         return userEventResult
     }
 
@@ -63,6 +63,10 @@ class TestUserEventDataSource(
             )
         )
         return result
+    }
+
+    override fun recordFeedbackSent(userId: String, userEvent: UserEvent): LiveData<Result<Unit>> {
+        return MutableLiveData(Result.Success(Unit))
     }
 
     override fun requestReservation(
@@ -92,4 +96,8 @@ class TestUserEventDataSource(
     }
 
     override fun clearSingleEventSubscriptions() {}
+
+    override fun getUserEvent(userId: String, eventId: SessionId): UserEvent? {
+        throw NotImplementedError()
+    }
 }

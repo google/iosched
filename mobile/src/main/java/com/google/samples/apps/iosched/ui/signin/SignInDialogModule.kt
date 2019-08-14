@@ -29,6 +29,7 @@ import dagger.multibindings.IntoMap
  * Module that defines the child fragments related to sign in/out.
  */
 @Module
+@Suppress("UNUSED")
 internal abstract class SignInDialogModule {
 
     /**
@@ -61,14 +62,4 @@ internal abstract class SignInDialogModule {
     @IntoMap
     @ViewModelKey(SignInViewModel::class)
     abstract fun bindSignInViewModel(viewModel: SignInViewModel): ViewModel
-
-    /**
-     * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
-     * want to get a [NotificationsPreferenceViewModel] class.
-     */
-    @Binds
-    @IntoMap
-    @ViewModelKey(NotificationsPreferenceViewModel::class)
-    abstract fun bindNotificationsPreferenceViewModel(viewModel: NotificationsPreferenceViewModel):
-        ViewModel
 }

@@ -63,6 +63,7 @@
                     android:duration="400"
                     android:interpolator="@android:anim/linear_interpolator"
                     android:propertyName="strokeColor"
+                    android:valueFrom="#8a8a8a"
                     android:valueTo="#dadce0"
                     android:valueType="colorType" />
             </set>

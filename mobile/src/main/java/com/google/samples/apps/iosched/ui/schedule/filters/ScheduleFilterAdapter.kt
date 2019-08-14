@@ -17,17 +17,16 @@
 package com.google.samples.apps.iosched.ui.schedule.filters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemEventFilterBinding
+import com.google.samples.apps.iosched.databinding.ItemGenericSectionHeaderBinding
 import com.google.samples.apps.iosched.shared.util.exceptionInDebug
-import com.google.samples.apps.iosched.shared.util.inflate
+import com.google.samples.apps.iosched.ui.SectionHeader
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.EventFilterCategory
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.EventFilterCategory.NONE
@@ -40,7 +39,7 @@ class ScheduleFilterAdapter(val viewModel: ScheduleViewModel) :
     ListAdapter<Any, ViewHolder>(EventFilterDiff) {
 
     companion object {
-        private const val VIEW_TYPE_HEADING = R.layout.item_filter_heading
+        private const val VIEW_TYPE_HEADING = R.layout.item_generic_section_header
         private const val VIEW_TYPE_FILTER = R.layout.item_event_filter
 
         /**
@@ -54,7 +53,10 @@ class ScheduleFilterAdapter(val viewModel: ScheduleViewModel) :
             list?.forEach {
                 val category = it.getFilterCategory()
                 if (category != previousCategory && category != NONE) {
-                    newList.add(category)
+                    newList += SectionHeader(
+                            titleId = category.labelResId,
+                            useHorizontalPadding = false
+                    )
                 }
                 newList.add(it)
                 previousCategory = category
@@ -77,7 +79,7 @@ class ScheduleFilterAdapter(val viewModel: ScheduleViewModel) :
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is EventFilterCategory -> VIEW_TYPE_HEADING
+            is SectionHeader -> VIEW_TYPE_HEADING
             is EventFilter -> VIEW_TYPE_FILTER
             else -> throw IllegalArgumentException("Unknown item type")
         }
@@ -96,7 +98,13 @@ class ScheduleFilterAdapter(val viewModel: ScheduleViewModel) :
     }
 
     private fun createHeadingViewHolder(parent: ViewGroup): HeadingViewHolder {
-        return HeadingViewHolder(parent.inflate(VIEW_TYPE_HEADING, false))
+        return HeadingViewHolder(
+            ItemGenericSectionHeaderBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     private fun createFilterViewHolder(parent: ViewGroup): FilterViewHolder {
@@ -111,17 +119,19 @@ class ScheduleFilterAdapter(val viewModel: ScheduleViewModel) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (holder) {
-            is HeadingViewHolder -> holder.bind(getItem(position) as EventFilterCategory)
+            is HeadingViewHolder -> holder.bind(getItem(position) as SectionHeader)
             is FilterViewHolder -> holder.bind(getItem(position) as EventFilter)
         }
     }
 
     /** ViewHolder for category heading items. */
-    class HeadingViewHolder(itemView: View) : ViewHolder(itemView) {
-        private val textView = itemView as TextView
+    class HeadingViewHolder(
+        private val binding: ItemGenericSectionHeaderBinding
+    ) : ViewHolder(binding.root) {
 
-        internal fun bind(item: EventFilterCategory) {
-            textView.setText(item.resId)
+        internal fun bind(item: SectionHeader) {
+            binding.sectionHeader = item
+            binding.executePendingBindings()
         }
     }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
   ~ limitations under the License.
 -->
 <resources>
-    <string name="playstore_title">2018 年 Google I/O 大會</string>
+
     <string name="playstore_tagline">不論是親臨 I/O 大會現場或以遠端方式參加，這款應用程式都是你的最佳導航幫手。</string>
-    <string name="playstore_description">不論是親臨現場或以遠端方式參加，2018 年 Google I/O 大會官方應用程式都是你的最佳導航幫手。你可以透過這款應用程式進行以下操作：\n\n• 探索大會時間表，並查看有關講座主題和講者的詳細資訊\n• 將活動儲存至你個人專屬的「時間表」頁面\n• 在你儲存至「時間表」的活動開始之前，接收活動提醒\n• 在你的所有裝置和 I/O 大會網站之間同步處理你的自訂時間表\n• 使用向量大會地圖取得路線資訊\n• 選擇接收重要通知，掌握有關活動、時間表、交通方式、會後活動、講座錄影存檔等資訊\n\n現場來賓享有以下福利：\n• 在活動開始前使用便利的 Wi-Fi 網路上網\n• 可事先預約活動席位\n\n我們會在 I/O 大會結束後盡快提供本應用程式的原始碼。</string>
+
     <string name="playstore_change">更新 2018 年 Google I/O 大會相關訊息\n• 可事先預約活動席位\n• 可查看有關大會活動的重要資訊、交通方式詳細資訊和常見問題。</string>
     <string name="playstore_required_permissions">必要權限</string>
     <string name="playstore_optional_permissions">選用權限</string>

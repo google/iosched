@@ -29,7 +29,7 @@ open class ObserveConferenceDataUseCase @Inject constructor(
 ) : MediatorUseCase<Any, Long>() {
 
     override fun execute(parameters: Any) {
-        result.addSource(repository.dataLastUpdatedObservable) { it: Long? ->
+        result.addSource(repository.dataLastUpdatedObservable) {
             result.postValue(Result.Success(it ?: 0))
         }
     }

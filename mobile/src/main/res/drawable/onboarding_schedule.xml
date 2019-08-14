@@ -1,0 +1,84 @@
+<!--
+  ~ Copyright 2019 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="180dp"
+    android:height="125dp"
+    android:viewportWidth="360"
+    android:viewportHeight="250">
+    <path
+        android:fillColor="#34A853"
+        android:pathData="M195,163.192h135v42.394H195z" />
+    <path
+        android:pathData="M194.5,164.202v83.78"
+        android:strokeColor="#F4F4F4"
+        android:strokeLineCap="square"
+        android:strokeWidth="3" />
+    <path
+        android:fillColor="#D2E3FC"
+        android:pathData="M123,206.596h135v42.394H123z" />
+    <path
+        android:fillColor="#FBBC04"
+        android:pathData="M78,120.798h45v42.394H78z" />
+    <path
+        android:pathData="M122.5,36.335l0.5,126.19"
+        android:strokeColor="#F4F4F4"
+        android:strokeLineCap="square"
+        android:strokeWidth="3" />
+    <path
+        android:fillColor="#4285F4"
+        android:pathData="M246,225.008l-7.19,-0.626L236,217.7l-2.81,6.692 -7.19,0.616 5.46,4.774 -1.64,7.096 6.18,-3.765 6.18,3.765 -1.63,-7.096z" />
+    <path
+        android:pathData="M77.5,35.745v124.924"
+        android:strokeColor="#F4F4F4"
+        android:strokeLineCap="square"
+        android:strokeWidth="3" />
+    <path
+        android:pathData="M33,249.495h327M32,36.335v126.857"
+        android:strokeColor="#E8EAED"
+        android:strokeLineCap="square"
+        android:strokeWidth="3" />
+    <path
+        android:pathData="M0,78.29h160.42M32,163.192v85.799"
+        android:strokeColor="#F4F4F4"
+        android:strokeLineCap="square"
+        android:strokeWidth="3" />
+    <path
+        android:pathData="M257.5,207.606v40.375M122.5,207.606v40.375"
+        android:strokeColor="#E8EAED"
+        android:strokeLineCap="square"
+        android:strokeWidth="3" />
+    <path
+        android:pathData="M330.01,164.202l-0.01,41.89"
+        android:strokeColor="#F4F4F4"
+        android:strokeLineCap="square"
+        android:strokeWidth="3" />
+    <path
+        android:pathData="M0,205.587l360,0.505"
+        android:strokeColor="#E8EAED"
+        android:strokeLineCap="square"
+        android:strokeWidth="3" />
+    <path
+        android:pathData="M32,162.688h298"
+        android:strokeColor="#F4F4F4"
+        android:strokeLineCap="square"
+        android:strokeWidth="4" />
+    <path
+        android:pathData="M0,120.546h236.135"
+        android:strokeColor="#E8EAED"
+        android:strokeLineCap="square"
+        android:strokeWidth="3" />
+</vector>

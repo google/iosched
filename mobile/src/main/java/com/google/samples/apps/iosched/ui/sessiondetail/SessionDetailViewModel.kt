@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.model.SessionType
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.model.userdata.UserSession
@@ -37,11 +38,12 @@ import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseC
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.SwapAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
+import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
-import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import com.google.samples.apps.iosched.shared.util.SetIntervalLiveData.DefaultIntervalMapper
@@ -54,6 +56,7 @@ import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogPar
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.google.samples.apps.iosched.util.combine
 import org.threeten.bp.Duration
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
@@ -71,9 +74,9 @@ class SessionDetailViewModel @Inject constructor(
     private val signInViewModelDelegate: SignInViewModelDelegate,
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val loadRelatedSessionUseCase: LoadUserSessionsUseCase,
-    private val starEventUseCase: StarEventUseCase,
+    private val starEventUseCase: StarEventAndNotifyUseCase,
     private val reservationActionUseCase: ReservationActionUseCase,
-    private val getTimeZoneUseCase: GetTimeZoneUseCase,
+    getTimeZoneUseCase: GetTimeZoneUseCase,
     private val snackbarMessageManager: SnackbarMessageManager,
     timeProvider: TimeProvider,
     private val networkUtils: NetworkUtils,
@@ -81,7 +84,8 @@ class SessionDetailViewModel @Inject constructor(
 ) : ViewModel(), SessionDetailEventListener, EventActions,
     SignInViewModelDelegate by signInViewModelDelegate {
 
-    private val loadUserSessionResult: MediatorLiveData<Result<LoadUserSessionUseCaseResult>>
+    private val loadUserSessionResult: MediatorLiveData<Result<LoadUserSessionUseCaseResult>> =
+        loadUserSessionUseCase.observe()
 
     private val loadRelatedUserSessions: LiveData<Result<LoadUserSessionsUseCaseResult>>
 
@@ -117,11 +121,7 @@ class SessionDetailViewModel @Inject constructor(
     val relatedUserSessions: LiveData<List<UserSession>>
         get() = _relatedUserSessions
 
-    val showRateButton: LiveData<Boolean>
-    val hasPhotoOrVideo: LiveData<Boolean>
-    val isPlayable: LiveData<Boolean>
-    val hasSpeakers: LiveData<Boolean>
-    val hasRelated: LiveData<Boolean>
+    val showFeedbackButton: LiveData<Boolean>
     val timeUntilStart: LiveData<Duration?>
     val isReservationDisabled: LiveData<Boolean>
     private val _shouldShowStarInBottomNav = MediatorLiveData<Boolean>()
@@ -147,8 +147,11 @@ class SessionDetailViewModel @Inject constructor(
     val navigateToSpeakerDetail: LiveData<Event<SpeakerId>>
         get() = _navigateToSpeakerDetail
 
+    private val _navigateToSessionFeedbackAction = MutableLiveData<Event<SessionId>>()
+    val navigateToSessionFeedbackAction: LiveData<Event<SessionId>>
+        get() = _navigateToSessionFeedbackAction
+
     init {
-        loadUserSessionResult = loadUserSessionUseCase.observe()
 
         loadRelatedUserSessions = loadRelatedSessionUseCase.observe()
 
@@ -157,7 +160,7 @@ class SessionDetailViewModel @Inject constructor(
         /* Wire observable dependencies */
 
         // If the user changes, load new data for them
-        _userEvent.addSource(currentFirebaseUser) {
+        _userEvent.addSource(currentUserInfo) {
             Timber.d("CurrentFirebaseUser changed, refreshing")
             refreshUserSession()
         }
@@ -177,12 +180,12 @@ class SessionDetailViewModel @Inject constructor(
             }
         }
 
-        _shouldShowStarInBottomNav.addSource(session, {
+        _shouldShowStarInBottomNav.addSource(session) {
             _shouldShowStarInBottomNav.value = showStarInBottomNav()
-        })
-        _shouldShowStarInBottomNav.addSource(observeRegisteredUser(), {
+        }
+        _shouldShowStarInBottomNav.addSource(observeRegisteredUser()) {
             _shouldShowStarInBottomNav.value = showStarInBottomNav()
-        })
+        }
 
         // If there's a new result with data, update the UserEvent
         _userEvent.addSource(loadUserSessionResult) {
@@ -227,34 +230,19 @@ class SessionDetailViewModel @Inject constructor(
             TimeUtils.getSessionState(currentSession, ZonedDateTime.now())
         }
 
-        hasPhotoOrVideo = session.map { currentSession ->
-            !currentSession?.photoUrl.isNullOrEmpty() || !currentSession?.youTubeUrl.isNullOrEmpty()
-        }
-
-        isPlayable = session.map { currentSession ->
-            currentSession?.hasVideo() == true
-        }
-
-        showRateButton = sessionTimeRelativeState.map { currentState ->
-            // TODO: uncomment when rate session logic is hooked up
-            // currentState == TimeUtils.SessionRelativeTimeState.AFTER
-            false
-        }
-
-        hasSpeakers = session.map { currentSession ->
-            currentSession?.speakers?.isNotEmpty() ?: false
-        }
-
-        hasRelated = session.map { currentSession ->
-            currentSession?.relatedSessions?.isNotEmpty() ?: false
+        showFeedbackButton = userEvent.combine(session) { userEvent, currentSession ->
+            isSignedIn() &&
+                !userEvent.isReviewed &&
+                currentSession.type == SessionType.SESSION &&
+                TimeUtils.getSessionState(currentSession, ZonedDateTime.now()) ==
+                TimeUtils.SessionRelativeTimeState.AFTER
         }
 
         // Updates periodically with a special [IntervalLiveData]
         timeUntilStart = DefaultIntervalMapper.mapAtInterval(session, TEN_SECONDS) { session ->
             session?.startTime?.let { startTime ->
                 val duration = Duration.between(timeProvider.now(), startTime)
-                val minutes = duration.toMinutes()
-                when (minutes) {
+                when (duration.toMinutes()) {
                     in 1..5 -> duration
                     else -> null
                 }
@@ -308,21 +296,15 @@ class SessionDetailViewModel @Inject constructor(
             }
         }
 
-        _navigateToSwapReservationDialogAction.addSource(reservationActionUseCase.observe(), {
-            ((it as? Result.Success)?.data as? SwapAction)?.let {
-                _navigateToSwapReservationDialogAction.postValue(Event(it.parameters))
+        _navigateToSwapReservationDialogAction.addSource(reservationActionUseCase.observe()) {
+            (it?.successOr(null) as? SwapAction)?.let { swap ->
+                _navigateToSwapReservationDialogAction.postValue(Event(swap.parameters))
             }
-        })
+        }
     }
 
     private fun refreshUserSession() {
-        if (currentFirebaseUser.value == null) {
-            // No user information provided by [SignInViewModelDelegate] yet.
-            Timber.d("No user information available yet, not refreshing")
-            return
-        }
-        val registrationDataReady =
-            (currentFirebaseUser.value as? Result.Success)?.data?.isRegistrationDataReady()
+        val registrationDataReady = currentUserInfo.value?.isRegistrationDataReady()
         if (registrationDataReady == false) {
             // No registration information provided by [SignInViewModelDelegate] yet.
             Timber.d("No registration information yet, not refreshing")
@@ -348,42 +330,17 @@ class SessionDetailViewModel @Inject constructor(
      * Called by the UI when play button is clicked
      */
     fun onPlayVideo() {
-        val currentSession = session.value
-        if (currentSession?.hasVideo() == true) {
-            navigateToYouTubeAction.value = Event(requireSession().youTubeUrl)
+        session.value?.let {
+            if (it.hasVideo) {
+                navigateToYouTubeAction.value = Event(it.youTubeUrl)
+            }
         }
     }
 
     override fun onStarClicked() {
         val userEventSnapshot = userEvent.value ?: return
-        val newIsStarredState = !userEventSnapshot.isStarred
-
-        // Update the snackbar message optimistically.
-        val stringResId = if (newIsStarredState) {
-            val sessionTitle = session.value?.title
-            if (sessionTitle != null) {
-                analyticsHelper.logUiEvent(sessionTitle, AnalyticsActions.STARRED)
-            }
-            R.string.event_starred
-        } else {
-            R.string.event_unstarred
-        }
-        snackbarMessageManager.addMessage(
-            SnackbarMessage(
-                messageId = stringResId,
-                actionId = R.string.dont_show,
-                requestChangeId = UUID.randomUUID().toString()
-            )
-        )
-
-        getUserId()?.let {
-            starEventUseCase.execute(
-                StarEventParameter(
-                    it,
-                    userEventSnapshot.copy(isStarred = newIsStarredState)
-                )
-            )
-        }
+        val sessionSnapshot = session.value ?: return
+        onStarClicked(UserSession(sessionSnapshot, userEventSnapshot))
     }
 
     override fun onReservationClicked() {
@@ -446,9 +403,19 @@ class SessionDetailViewModel @Inject constructor(
             )
             analyticsHelper.logUiEvent(sessionSnapshot.title, AnalyticsActions.RESERVE_FAILED)
         } else {
-            reservationActionUseCase.execute(
-                ReservationRequestParameters(userId, sessionSnapshot.id, RequestAction())
-            )
+
+            val userSessionResult = loadUserSessionResult.value
+            val userSession = if (userSessionResult is Result.Success) {
+                userSessionResult.data.userSession
+            } else {
+                null
+            }
+            reservationActionUseCase.execute(ReservationRequestParameters(
+                userId,
+                sessionSnapshot.id,
+                RequestAction(),
+                userSession
+            ))
             analyticsHelper.logUiEvent(sessionSnapshot.title, AnalyticsActions.RESERVE)
         }
     }
@@ -492,7 +459,8 @@ class SessionDetailViewModel @Inject constructor(
             starEventUseCase.execute(
                 StarEventParameter(
                     it,
-                    userSession.userEvent.copy(isStarred = newIsStarredState)
+                    userSession.copy(
+                        userEvent = userSession.userEvent.copy(isStarred = newIsStarredState))
                 )
             )
         }
@@ -502,6 +470,13 @@ class SessionDetailViewModel @Inject constructor(
         _navigateToSpeakerDetail.postValue(Event(speakerId))
     }
 
+    override fun onFeedbackClicked() {
+        val sessionId = getSessionId()
+        if (sessionId != null) {
+            _navigateToSessionFeedbackAction.postValue(Event(sessionId))
+        }
+    }
+
     /**
      * Returns the current session ID or null if not available.
      */
@@ -509,12 +484,8 @@ class SessionDetailViewModel @Inject constructor(
         return sessionId.value
     }
 
-    private fun requireSession(): Session {
-        return session.value ?: throw IllegalStateException("Session should not be null")
-    }
-
     private fun showStarInBottomNav(): Boolean {
-        return observeRegisteredUser().value == true && session.value?.isReservable() == true
+        return observeRegisteredUser().value == true && session.value?.isReservable == true
     }
 }
 
@@ -527,4 +498,6 @@ interface SessionDetailEventListener {
     fun onLoginClicked()
 
     fun onSpeakerClicked(speakerId: SpeakerId)
+
+    fun onFeedbackClicked()
 }

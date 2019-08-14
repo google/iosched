@@ -38,16 +38,9 @@ internal abstract class InfoFragmentsModule {
     internal abstract fun contributeTravelFragment(): TravelFragment
 
     /**
-     * Generates an [AndroidInjector] for the [AboutFragment].
+     * Generates an [AndroidInjector] for the [FaqFragment].
      */
     @ChildFragmentScoped
     @ContributesAndroidInjector
-    internal abstract fun contributeFaqFragment(): AboutFragment
-
-    /**
-     * Generates an [AndroidInjector] for the [SettingsFragment].
-     */
-    @ChildFragmentScoped
-    @ContributesAndroidInjector
-    internal abstract fun contributeSettingsFragment(): SettingsFragment
+    internal abstract fun contributeFaqFragment(): FaqFragment
 }

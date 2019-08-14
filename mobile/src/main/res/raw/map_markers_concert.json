@@ -1,0 +1,442 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "id": "mothers_room4",
+      "type": "Feature",
+      "properties": {
+        "title": "Mother's Room",
+        "icon": "map_marker_mothers_room",
+        "description": "Mothers who are nursing are welcome to attend the conference with their child. There will be four first-come, first-served mothers' rooms available throughout the venue. Please see the conference help desk for more information.<br/><br/>This room will be open on<br/><b>May 7</b>: 7am - 7pm<br/><b>May 8</b>: 8am - 10pm<br/><b>May 9</b>: 8am - 5pm",
+        "minZoom": 18
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.08032388,
+          37.42602807
+        ]
+      }
+    },
+    {
+      "id": "info_desk",
+      "type": "Feature",
+      "properties": {
+        "title": "Information Desk",
+        "icon": "map_marker_info",
+        "description": "If you have any questions about the event, you can ask the Staff members at the Info Desk for help.",
+        "minZoom": 17
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07976195,
+          37.42630471
+        ]
+      }
+    },
+    {
+      "id": "shuttle",
+      "type": "Feature",
+      "properties": {
+        "title": "Attendee Shuttles",
+        "label": "Shuttles",
+        "description": "Free event shuttles from all Google recommended hotels will be provided for Google I/O attendees. There will also be select service from San Francisco, Millbrae BART, Mountain View Caltrain, San Jose, and Oakland. We are increasing the shuttle frequency and capacity at the Mountain View Caltrain and Millbrae Bart stations. Please see the Google I/O 2019 event website and app for detailed shuttles schedules and pick-up/drop-off locations."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07656175,
+          37.42589921
+        ]
+      }
+    },
+    {
+      "id": "io_landmark",
+      "type": "Feature",
+      "properties": {
+        "title": "I/O Landmark",
+        "description": "See the I/O Landmark come to life in AR. Celebrate by sharing your photos with <b>#io19</b>."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07945015,
+          37.42609171
+        ]
+      }
+    },
+    {
+      "id": "lot_a",
+      "type": "Feature",
+      "properties": {
+        "title": "Parking Lot A",
+        "label": "Lot A",
+        "description": "Parking Lot A hosts several I/O related services including Registration, Accessibility & Expectant Mothers' Parking, Bike Parking, and Bag/Coat Check."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.077082,
+          37.427511
+        ]
+      }
+    },
+    {
+      "id": "lot_b",
+      "type": "Feature",
+      "properties": {
+        "title": "Parking Lot B",
+        "label": "Lot B",
+        "description": "Attendee shuttles drop-off and pick-up point."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.0759549,
+          37.42640243
+        ]
+      }
+    },
+    {
+      "id": "medical1",
+      "type": "Feature",
+      "properties": {
+        "title": "First Aid station",
+        "icon": "map_marker_medical",
+        "description": "If you need any medical assistance throughout the event, please make your way to the Medical station. If you’re unable to commute or you’re not feeling well, ask any Staff member for help."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.08038389,
+          37.42596843
+        ]
+      }
+    },
+    {
+      "id": "medical2",
+      "type": "Feature",
+      "properties": {
+        "title": "First Aid station",
+        "icon": "map_marker_medical",
+        "description": "If you need any medical assistance throughout the event, please make your way to the Medical station. If you’re unable to commute or you’re not feeling well, ask any Staff member for help."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.08020921,
+          37.42390811
+        ]
+      }
+    },
+    {
+      "id": "rideshare",
+      "type": "Feature",
+      "properties": {
+        "title": "Rideshare pick-up & drop-off",
+        "label": "Rideshare",
+        "description": "Download the Uber or Lyft app and use discount code: <b>IO2019</b><br/><br/>This code is valid from May 7-9, 2019 for shared rides with <b>Lyft Shared</b> and <b>UberPool</b>. It’s redeemable for up to $15 per trip and for up to 600 users per day. Rides must begin or end at Shoreline Amphitheatre."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.08050862,
+          37.42311652
+        ]
+      }
+    },
+    {
+      "id": "bike_parking",
+      "type": "Feature",
+      "properties": {
+        "title": "Bike Parking",
+        "description": "Complimentary bike parking will be available to attendees during event hours at Shoreline Amphitheatre in Parking Lot A.",
+        "minZoom": 17
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07678337,
+          37.42664925
+        ]
+      }
+    },
+    {
+      "id": "coat_check",
+      "type": "Feature",
+      "properties": {
+        "title": "Bag/Coat Check",
+        "description": "Complimentary bag and coat check will be available to attendees during event hours at Shoreline Amphitheatre in Parking Lot A.",
+        "minZoom": 18
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.077001,
+          37.426289
+        ]
+      }
+    },
+    {
+      "id": "concert",
+      "type": "Feature",
+      "properties": {
+        "title": "After Hours Concert",
+        "label": "Concert",
+        "description": "Enjoy a private musical experience just for I/O attendees! Stay tuned for more details about this year's performance!"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080696,
+          37.426793
+        ]
+      }
+    },
+    {
+      "id": "drinks1",
+      "type": "Feature",
+      "properties": {
+        "title": "Beer/Wine Trailers",
+        "icon": "map_marker_drink",
+        "description": "Come grab a drink from our selection of beers and wines."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.081289,
+          37.426141
+        ]
+      }
+    },
+    {
+      "id": "concession1",
+      "type": "Feature",
+      "properties": {
+        "title": "Concession stand",
+        "icon": "map_marker_food",
+        "description": "Come grab a bite at one of the concession stands found around the concourse from 7pm - 9:30pm."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.0815054,
+          37.42604512
+        ]
+      }
+    },
+    {
+      "id": "concession2",
+      "type": "Feature",
+      "properties": {
+        "title": "Concession stand",
+        "icon": "map_marker_food",
+        "description": "Come grab a bite at one of the concession stands found around the concourse from 7pm - 9:30pm.",
+        "minZoom": 17
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080377,
+          37.426185
+        ]
+      }
+    },
+    {
+      "id": "concession3",
+      "type": "Feature",
+      "properties": {
+        "title": "Concession stand",
+        "icon": "map_marker_food",
+        "description": "Come grab a bite at one of the concession stands found around the concourse from 7pm - 9:30pm.",
+        "minZoom": 17
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07985014,
+          37.42676267
+        ]
+      }
+    },
+    {
+      "id": "concession4",
+      "type": "Feature",
+      "properties": {
+        "title": "Concession stand",
+        "icon": "map_marker_food",
+        "description": "Come grab a bite at one of the concession stands found around the concourse from 7pm - 9:30pm."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080046,
+          37.427616
+        ]
+      }
+    },
+    {
+      "id": "restroom1",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.080374,
+          37.427546
+        ]
+      }
+    },
+    {
+      "id": "restroom3",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom",
+        "minZoom": 17
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079669,
+          37.426839
+        ]
+      }
+    },
+    {
+      "id": "restroom4",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.081553,
+          37.42629167
+        ]
+      }
+    },
+    {
+      "id": "restroom5",
+      "type": "Feature",
+      "properties": {
+        "title": "Restrooms",
+        "icon": "map_marker_restroom",
+        "minZoom": 17
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.0801777,
+          37.42606029
+        ]
+      }
+    },
+    {
+      "id": "accessibility_concert_entrance",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Entrance",
+        "subtitle": "Concert",
+        "icon": "map_marker_handicap",
+        "minZoom": 17
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07986757,
+          37.42661011
+        ]
+      }
+    },
+    {
+      "id": "accessibility_restroom2",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Restroom",
+        "icon": "map_marker_handicap",
+        "description": "Restroom trailer includes one male restroom, one female restroom, and one unisex ADA restroom.",
+        "minZoom": 17
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.079644,
+          37.42669
+        ]
+      }
+    },
+    {
+      "id": "accessibility_restroom3",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Restroom",
+        "icon": "map_marker_handicap",
+        "description": "Restroom trailer includes one male restroom, one female restroom, and one unisex ADA restroom.",
+        "minZoom": 17
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.08007813,
+          37.4260792
+        ]
+      }
+    },
+    {
+      "id": "accessibility_parking_entrance",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Parking Entrance",
+        "icon": "map_marker_handicap",
+        "description": "When arriving at the venue, follow signs for Accessibility Parking. Please have your placard hanging from your rearview mirror and visible to parking employees at all times to expedite the parking process. Accessible parking spaces are readily available on a first-come, first-served basis and may not be reserved in advance."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.077945,
+          37.426766
+        ]
+      }
+    },
+    {
+      "id": "accessibility_shuttle",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility Shuttle Pickup",
+        "icon": "map_marker_handicap"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07933918,
+          37.42635051
+        ]
+      }
+    },
+    {
+      "id": "accessibility_parking",
+      "type": "Feature",
+      "properties": {
+        "title": "Accessibility / Expectant Mothers",
+        "subtitle": "Parking",
+        "label": "Accessibility &\nExpectant Mothers",
+        "description": "Designated parking in Lot A for Accessibility and Expectant Mothers. When arriving at the venue, follow signs for Accessibility Parking. Accessible parking spaces are readily available on a first-come, first-served basis and may not be reserved in advance.",
+        "minZoom": 17
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.07710657,
+          37.42703931
+        ]
+      }
+    }
+  ]
+}

@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -21,15 +20,18 @@
     android:viewportWidth="36"
     android:viewportHeight="36">
     <path
-        android:pathData="M18,18m-17,0a17,17 0,1 1,34 0a17,17 0,1 1,-34 0"
-        android:strokeColor="#FF6C00"
-        android:strokeWidth="2" />
+        android:pathData="M18,18m-17.375,0a17.375,17.375 0,1 1,34.75 0a17.375,17.375 0,1 1,-34.75 0"
+        android:strokeWidth="1.25"
+        android:strokeColor="#ff6c00" />
     <path
-        android:pathData="M17.96,11.48m-5.48,0a5.48,5.48 0,1 1,10.96 0a5.48,5.48 0,1 1,-10.96 0"
-        android:strokeColor="#31E7B6"
-        android:strokeWidth="2" />
+        android:pathData="M12.6125,10.3785a5.3785,5.3785 0,0 1,10.75 0z"
+        android:strokeWidth="1.25"
+        android:strokeColor="#31e7b6" />
     <path
-        android:pathData="M7,23.22a12.67,12.67 0,0 1,10.96 -6.26c4.68,0 8.77,2.51 10.95,6.26a12.67,12.67 0,0 1,-10.95 6.26c-4.69,0 -8.77,-2.52 -10.96,-6.26z"
-        android:strokeColor="#FCD230"
-        android:strokeWidth="2" />
+        android:pathData="M12,11a6,6 0,0 0,12 0z"
+        android:fillColor="#069f86" />
+    <path
+        android:pathData="M8.2,26.9a9.8,9.8 0,0 1,19.6 0z"
+        android:strokeWidth="1.1"
+        android:strokeColor="#4285F4" />
 </vector>

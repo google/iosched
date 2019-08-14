@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,24 +16,29 @@
 -->
 <resources>
     <string name="title_schedule">Lịch biểu</string>
+    <string name="title_home">Trang chủ</string>
     <string name="title_map">Bản đồ</string>
+    <string name="title_explore_io">Khám phá địa điểm diễn ra sự kiện I/O</string>
+    <string name="title_info">Thông tin</string>
     <string name="filters">Bộ lọc</string>
     <string name="category_heading_tracks">Chủ đề</string>
     <string name="category_heading_types">Loại</string>
-    <string name="clear_all">Xóa tất cả</string>
     <string name="reset">Đặt lại</string>
     <plurals name="filter_event_count">
-        <item quantity="one">%1$d Sự kiện</item>
         <item quantity="other">%1$d Sự kiện</item>
     </plurals>
+    <string name="starred_and_reserved">Các sự kiện được gắn sao và đặt chỗ của bạn</string>
+    <string name="starred_and_reserved_short">Sự kiện của bạn</string>
+    <string name="search_schedule_hint">Tìm kiếm lịch trình</string>
+    <string name="search_schedule_no_results">Không tìm thấy kết quả nào</string>
     <string name="agenda">Lịch trình sự kiện</string>
     <string name="event_starred">Đã thêm sự kiện vào các mục có gắn dấu sao của bạn</string>
     <string name="event_unstarred">Đã xóa sự kiện khỏi các mục được gắn dấu sao</string>
     <string name="event_star_error">Xảy ra lỗi khi thêm sự kiện vào các mục được gắn dấu sao</string>
     <string name="reservation_error">Xảy ra lỗi khi thay đổi đặt chỗ. Vui lòng đợi cho đến khi các yêu cầu trước đó kết thúc hoặc thử lại sau.</string>
     <string name="reservation_request_succeeded">Đã yêu cầu đặt chỗ.</string>
-    <string name="reservation_cancel_succeeded">Đã hủy đặt chỗ: \"&lt;b&gt;%s&lt;/b&gt;.\"</string>
-    <string name="reservation_new">Bạn đã đặt chỗ tại \"&lt;b&gt;%s&lt;/b&gt;\".</string>
+    <string name="reservation_cancel_succeeded">Đã hủy đặt chỗ: "&lt;b&gt;%s&lt;/b&gt;."</string>
+    <string name="reservation_new">Bạn đã đặt chỗ tại "&lt;b&gt;%s&lt;/b&gt;".</string>
     <string name="reservation_replaced">Đã thay đổi sự kiện.</string>
     <string name="waitlist_new">Bạn đã được ghi tên trong danh sách chờ đặt chỗ.</string>
     <string name="waitlist_cancel_succeeded">Đã xóa khỏi danh sách chờ đặt chỗ.</string>
@@ -44,28 +49,43 @@
     <string name="reservation_denied_unknown">Đặt chỗ bị từ chối: lỗi không xác định.</string>
     <string name="cancellation_denied_cutoff">Từ chối hủy: quá sát thời gian bắt đầu.</string>
     <string name="cancellation_denied_unknown">Từ chối hủy: lỗi không xác định.</string>
-    <string name="schedule_filters_empty">Hôm nay bạn chưa gắn sao hay đặt chỗ cho sự kiện nào.</string>
+    <string name="schedule_filters_empty">Không tìm thấy sự kiện nào.</string>
     <string name="reservation_reservable">Đặt chỗ</string>
     <string name="reservation_reserved">Đã đặt chỗ</string>
     <string name="reservation_waitlisted">Được đưa vào danh sách chờ đặt chỗ</string>
     <string name="reservation_waitlist_available">Tham gia danh sách chờ</string>
     <string name="reservation_disabled">Không thể đặt chỗ</string>
+    <string name="reservation_pending">Đang chờ xử lý đặt chỗ</string>
     <string name="schedule_hint_title">Tùy chỉnh lịch biểu của bạn</string>
-    <string name="schedule_hint_view_only_your_events">Chỉ hiển thị các sự kiện của bạn</string>
     <string name="schedule_hint_star_event">Thêm vào mục các sự kiện được gắn dấu sao của bạn</string>
     <string name="schedule_hint_reserve_session_seat">Đặt trước một chỗ</string>
-    <string name="schedule_hint_star_event_content_description">HÌnh ảnh để gắn sao sự kiện</string>
-    <string name="schedule_hint_reserve_session_seat_content_description">Hình ảnh để đặt chỗ</string>
     <string name="rate_session">Đánh giá phiên hội thảo</string>
     <string name="menu_item_session_location">Địa điểm diễn ra phiên hội thảo</string>
     <string name="menu_item_session_star">Bắt đầu phiên</string>
+    <string name="menu_item_calendar">Thêm vào lịch</string>
+    <string name="speaker_delimiter">,</string>
     <string name="session_detail_speakers_header">Diễn giả</string>
     <string name="session_detail_related_header">Các sự kiện liên quan</string>
+    <string name="feedback_submit">Gửi</string>
+    <string name="feedback_thank_you">Cảm ơn phản hồi của bạn!</string>
+    <string name="feedback_q1_text">Vui lòng cho biết ý kiến đánh giá của bạn về chất lượng chung của Phiên hội thảo này.</string>
+    <string name="feedback_q2_text">Vui lòng cho biết cảm nhận của bạn về nội dung của Phiên hội thảo này dựa trên kỳ vọng của bạn hoặc thông tin mô tả của phiên hội thảo.</string>
+    <string name="feedback_q3_text">Vui lòng cho biết mức độ liên quan của Phiên hội thảo này với các dự án của bạn.</string>
+    <string name="feedback_q4_text">Vui lòng cho biết mức độ liên quan của Phiên hội thảo này với các dự án của bạn.</string>
+    <string name="feedback_q1_label_start">Rất căn bản</string>
+    <string name="feedback_q2_label_start">Kém</string>
+    <string name="feedback_q3_label_start">Kém</string>
+    <string name="feedback_q4_label_start">Không quá</string>
+    <string name="feedback_q1_label_end">Vượt trội</string>
+    <string name="feedback_q2_label_end">Vượt trội</string>
+    <string name="feedback_q3_label_end">Cực kỳ</string>
+    <string name="feedback_q4_label_end">Cực kỳ</string>
+    <string name="a11y_show_navigation">Hiển thị menu di chuyển</string>
     <string name="a11y_collapse_filters_sheet">Hạ thấp bảng bộ lọc</string>
     <string name="a11y_clear_tag_filters">Xóa bộ lọc</string>
-    <string name="a11y_revert_pinned">Hiển thị tất cả các phiên</string>
+    <string name="a11y_filter_applied">Đã áp dụng bộ lọc %1s</string>
+    <string name="a11y_filter_not_applied">Chưa áp dụng bộ lọc %1s</string>
     <string name="a11y_reservation_available">Đặt chỗ tại sự kiện</string>
-    <string name="a11y_reservation_working">Đang xử lý đặt chỗ tại sự kiện</string>
     <string name="a11y_reservation_reserved">Đã đặt chỗ tại sự kiện</string>
     <string name="a11y_reservation_disabled">Không thể đặt chỗ</string>
     <string name="a11y_reservation_wait_list_available">Tham gia danh sách chờ đặt chỗ tại sự kiện</string>
@@ -75,99 +95,178 @@
     <string name="a11y_unstarred">Chưa đánh dấu sự kiện</string>
     <string name="a11y_star">Ngôi sao</string>
     <string name="a11y_play">Phát video</string>
-    <string name="dialog_sign_in_title">Đăng nhập để tùy chỉnh lịch biểu của bạn</string>
+    <string name="a11y_select_map_mode">Chọn chế độ bản đồ</string>
+    <string name="a11y_search_schedule">Tìm kiếm lịch biểu</string>
+    <string name="welcome">Xin chào!</string>
+    <string name="a11y_signed_in_content_description">Đã đăng nhập bằng %s.</string>
+    <string name="a11y_signed_out_content_description">Nhấn để đăng nhập.</string>
     <string name="dialog_sign_in_content">Đăng nhập để lưu các sự kiện, đặt chỗ và xếp hạng các phiên sự kiện (nếu tham dự). Các thao tác sẽ được đồng bộ từ tài khoản của bạn trên cả ứng dụng và trang web.</string>
-    <string name="not_now">Để sau</string>
     <string name="sign_in">Đăng nhập</string>
-    <string name="dialog_sign_out_title">Đăng xuất?</string>
+    <string name="firebase_auth_no_network_connection">Không có kết nối Internet</string>
+    <string name="firebase_auth_unknown_error">Lỗi không xác định</string>
     <string name="dialog_sign_out_content">Tất cả sự kiện đã lưu, đặt chỗ và xếp hạng phiên sự kiện (nếu tham dự) vẫn được đồng bộ hóa với tài khoản của bạn.</string>
     <string name="sign_out">Đăng xuất</string>
+    <string name="manage_google_account">Quản lý Tài khoản Google của bạn</string>
     <string name="remove_reservation_title">Xóa yêu cầu đặt chỗ</string>
-    <string name="remove_reservation_content">Bạn sắp từ bỏ đặt chỗ tại \"%1$s\". Nếu bạn quyết định không đặt chỗ nhưng vẫn muốn tham dự, tất cả các phiên sự kiện sẽ có một số chỗ ngồi dành cho những người đến sớm.</string>
+    <string name="remove_reservation_content">Bạn sắp từ bỏ đặt chỗ tại "%1$s". Nếu bạn quyết định không đặt chỗ nhưng vẫn muốn tham dự, tất cả các phiên sự kiện sẽ có một số chỗ ngồi dành cho những người đến sớm.</string>
     <string name="cancel">Hủy</string>
     <string name="remove">Xóa</string>
     <string name="swap_reservation_title">Thay đổi đặt chỗ?</string>
-    <string name="swap_reservation_content">Bạn đã đặt chỗ/đã có tên trong danh sách chờ đặt chỗ tại \"%1$s\". Mỗi lần chỉ được một đặt chỗ. Bạn có muốn thay đổi sang đặt chỗ tại \"%2$s\"?</string>
+    <string name="swap_reservation_content">Bạn đã đặt chỗ/đã có tên trong danh sách chờ đặt chỗ tại "%1$s"?. Mỗi lần chỉ được một đặt chỗ. Bạn có muốn thay đổi sang đặt chỗ tại "%2$s"?</string>
     <string name="swap">Hoán đổi</string>
     <string name="notifications_preference_dialog_title">Thông báo I/O</string>
-    <string name="notifications_preference_dialog_content">Bạn muốn nhận thông báo về I/O? Chúng tôi sẽ gửi thông tin cho bạn về thời gian bắt đầu phiên sự kiện, những sự kiện hậu kỳ, ghi hình sự kiện, v.v. Bạn có thể thay đổi mục cài đặt tại \"Thông tin &gt; Cài đặt\" bất kỳ lúc nào.</string>
+    <string name="notifications_preference_dialog_content">Bạn muốn nhận thông báo về I/O? Chúng tôi sẽ gửi thông tin cho bạn về thời gian bắt đầu phiên sự kiện, những sự kiện hậu kỳ, ghi hình sự kiện, v.v. Bạn có thể thay đổi mục cài đặt tại "Thông tin &gt; Cài đặt" bất kỳ lúc nào.</string>
     <string name="no">Không</string>
     <string name="yes">Có</string>
+    <string name="feed_not_available">Không tim thấy thông báo nào.</string>
+    <string name="feed_loading_error">Không thể tải nguồn cấp dữ liệu. Thử lại sau.</string>
+    <string name="feed_announcement_title">Thông báo</string>
+    <string name="feed_upcoming_events">Sự kiện sắp diễn ra</string>
+    <string name="feed_saved_events">Sự kiện đã lưu</string>
+    <string name="feed_no_saved_events">Chưa lưu sự kiện nào</string>
+    <string name="feed_view_all_events">Xem tất cả sự kiện</string>
+    <string name="feed_view_your_schedule">Xem lịch biểu của bạn</string>
+    <string name="feed_watch_live_stream">Xem sự kiện phát trực tiếp</string>
+    <plurals name="duration_days">
+        <item quantity="other">%s ngày</item>
+    </plurals>
     <plurals name="duration_hours">
-        <item quantity="one">%s giờ</item>
         <item quantity="other">%s giờ</item>
     </plurals>
     <plurals name="duration_minutes">
-        <item quantity="one">%s phút</item>
         <item quantity="other">%s phút</item>
     </plurals>
+    <plurals name="duration_seconds">
+        <item quantity="other">%s giây</item>
+    </plurals>
     <string name="menu_item_share_session">Chia sẻ về phiên hội thảo</string>
-    <string name="share_text_session_detail">Hãy đến tham gia hội thảo \"%1$s\" tại #io18 %2$s</string>
+    <string name="share_text_session_detail">Hãy đến tham gia hội thảo "%1$s" tại #io19 %2$s</string>
     <string name="intent_chooser_session_detail">Chia sẻ</string>
+    <string name="map_variant_after_dark">Bản đồ buổi tối</string>
+    <string name="map_variant_concert">Hòa nhạc</string>
+    <string name="map_variant_daytime">Ban ngày</string>
+    <string name="enable_my_location">Bật vị trí của tôi</string>
+    <string name="my_location_rationale">Ứng dụng này cần bạn cấp quyền truy cập vị trí để hiển thị vị trí của bạn trên bản đồ.</string>
     <string name="onboarding_get_started">Bắt đầu</string>
     <string name="onboarding_welcome_to_google_i_o">Chào mừng bạn đến với Google I/O</string>
-    <string name="onboarding_date_location">8-10 tháng 5\nnăm 2018 Mountain View, CA</string>
-    <string name="onboarding_build_schedule">Tạo lịch sự kiện của riêng bạn</string>
-    <string name="onboarding_build_sched_benefits">Bạn có thể thiết kế trải nghiệm I/O dành riêng cho mình và đặt trước chỗ ngồi nếu là người tham gia sự kiện</string>
-    <string name="onboarding_watch_live">Theo dõi I/O trực tiếp</string>
-    <string name="onboarding_join_online">Hãy tham gia cùng chúng tôi trên mạng. Chúng tôi sẽ phát trực tiếp các phần thuyết trình chính và hầu hết các phiên hội thảo.</string>
+    <string name="onboarding_date_location">Ngày 7-9 tháng 5 năm 2019\nMountain View, CA</string>
     <string name="onboarding_label_days">Ngày</string>
     <string name="onboarding_label_hours">Giờ</string>
     <string name="onboarding_label_mins">Phút</string>
     <string name="onboarding_label_seconds">Giây</string>
+    <string name="onboarding_welcome_google_io_pre">Sự kiện Google I/O sắp diễn ra</string>
+    <string name="onboarding_welcome_google_io_during">Google I/O</string>
+    <string name="onboarding_welcome_google_io_post">Xem nội dung tóm lược của I/O 2019 và xem những bài đăng có hashtag #io19 trên mạng xã hội</string>
+    <string name="onboarding_signin">Đăng nhập để nhận các thông báo từ sự kiện I/O và người tham dự có thể đặt chỗ trước tại các phiên sự kiện.</string>
     <plurals name="session_starting_in">
-        <item quantity="one">Phiên sự kiện sẽ bắt đầu trong %1$s phút nữa</item>
         <item quantity="other">Phiên sự kiện sẽ bắt đầu trong %1$s phút nữa</item>
     </plurals>
     <string name="expanded">Đã mở rộng</string>
     <string name="collapsed">Đã thu gọn</string>
-    <string name="info_title">Thông tin</string>
     <string name="event_title">Sự kiện</string>
     <string name="travel_title">Thông tin di chuyển</string>
+    <string name="faq_title">CÂU HỎI THƯỜNG GẶP</string>
     <string name="settings_title">Cài đặt</string>
-    <string name="travel_directions_title">Chỉ đường lái xe</string>
-    <string name="travel_shuttle_title">Dịch vụ đưa đón (đề xuất)</string>
-    <string name="travel_carpool_parking_title">Đỗ xe và Đi chung xe</string>
-    <string name="travel_ride_sharing_title">Chia sẻ chuyến đi</string>
-    <string name="travel_public_transportation_title">Giao thông công cộng</string>
+    <string name="about_title">Giới thiệu</string>
+    <string name="travel_what_to_bring_title">Những điều cần chuẩn bị để tham gia sự kiện</string>
+    <string name="travel_hotels_title">Khách sạn</string>
+    <string name="travel_getting_to_mountain_view_title">Đến Mountain View</string>
+    <string name="travel_getting_to_shoreline_title">Đến Mountain View</string>
+    <string name="travel_shuttle_service_title">Dịch vụ đưa đón</string>
+    <string name="travel_off_site_parking_title">Đỗ xe bên ngoài sự kiện</string>
+    <string name="travel_for_public_transportation_title">Giao thông công cộng</string>
     <string name="travel_biking_title">Đi xe đạp</string>
-    <string name="travel_directions_description">Tìm đường đến số 1 Amphitheatre Pkwy, Mountain View, CA 94043 trên <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> hoặc <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a></string>
-    <string name="travel_shuttle_description">Sẽ có dịch vụ đưa đón miễn phí đến sự kiện dành cho tất cả những người tham dự Google I/O từ những khách sạn do Google đề xuất. Cũng có dịch vụ tùy chọn từ San Francisco đến những khu vực khác dọc Bán đảo. Bạn phải xuất trình email xác nhận của Google I/O hoặc thẻ hội nghị để lên các phương tiện đưa đón đến sự kiện của Google I/O.\n\nMỗi vị trí đón khách đều có phương tiện trợ giúp đặc biệt dành cho người khuyết tật theo Ðạo luật người khuyết tật Hoa Kỳ (ADA). Vui lòng ghi rõ trên phiếu đăng ký nếu bạn có bất kỳ yêu cầu hỗ trợ đặc biệt nào hoặc yêu cầu theo ADA và bộ phận kế hoạch sẽ trực tiếp hỗ trợ bạn.</string>
-    <string name="travel_carpool_parking_description">Chỗ đỗ xe rất hạn chế và chỉ có tại khu vực dành riêng cho Google I/O từ Nhà hát vòm Shoreline (Shoreline Amphitheatre) dọc theo Đại lộ Shoreline (Shoreline Boulevard). Dọc theo Đại lộ Amphitheatre (Amphitheatre Parkway) hoặc Đường Charleston (Charleston Road) không có chỗ đỗ xe dành riêng cho sự kiện. Nếu bạn dự định lái xe, chúng tôi khuyên bạn đi chung xe với những người tham dự khác vì khu vực đỗ xe của sự kiện chỉ dành cho những ô tô chở từ hai người trở lên.</string>
-    <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\nWaze Carpool là một cộng đồng lái xe và người đi chung xe đáng tin cậy có thể khiến hành trình của bạn đến Google I/O trở nên vui vẻ, nhanh chóng và tiết kiệm. Bạn lái xe ư? Hãy mở <a href="http://Waze.com/get">Waze</a> khi bạn đến Vùng Vịnh (Bay Area). Bạn muốn đi nhờ xe ư? Hãy cài đặt <a href="http://Waze.com/carpool">Waze Carpool</a> trước khi đến. Trong mấy tuần sắp tới, vui lòng vào đây để xem mã giảm giá đi chung xe dành riêng cho những người tham dự Google I/O.\n\n<b>Lyft Line</b>\nTải ứng dụng Lyft xuống từ Google Play và sử dụng Lyft Line để chia sẻ chuyến đi với những người khác có cùng hành trình nhằm tiết kiệm chi phí.\n<b>Mã giảm giá</b>: Googleio18\nĐây là mã có hiệu lực từ ngày 8 đến ngày 10 tháng 5 năm 2018 dành cho những người đi chung xe sử dụng Lyft Line. Mỗi chuyến đi có thể được giảm tới $10 và mỗi ngày tối đa 250 người có thể sử dụng mã này. Người đi chung xe phải có điểm xuất phát hoặc điểm đến là Nhà hát vòm Shoreline (Shoreline Amphitheatre).</string>
-    <string name="travel_public_transportation_description">Không có phương tiện công cộng đi thẳng tới Google I/O. Hãy chú ý theo dõi vị trí chính xác của các dịch vụ đưa đón đến sự kiện của Google I/O.</string>
-    <string name="travel_biking_description">Có khu vực giữ xe đạp miễn phí tại Nhà hát vòm Shoreline (Shoreline Amphitheatre) ở Bãi đỗ xe A. Hàng ngày Hiệp hội Xe đạp Thung lũng Silicon (Silicon Valley Bicycle Coalition) sẽ cung cấp khu vực trông giữ xe đạp an toàn từ 7 giờ sáng đến khi sự kiện kết thúc. Có hai tuyến đường tiện lợi để người đi xe đạp tới thẳng Nhà hát vòm Shoreline (Shoreline Amphitheatre) là Stevens Creek và Permanente Creek Trail. Hãy kiểm tra Google Maps để tìm tuyến đường và hướng đi tiện lợi nhất cho người đi xe đạp.\n\nTổ chức Ngày Đạp xe đi làm Vùng Vinh (Bay Area Bike to Work Day) lên kế hoạch đạp xe vào ngày thứ Năm, 10 tháng 5. Sẽ có hàng nghìn người đi xe đạp tham gia gần Shoreline và khu vực này có hàng trăm trạm nghỉ chân. Vui lòng truy cập trang web của Tổ chức Ngày Đạp xe đi làm của Thung lũng Silicon (Silicon Valley Bike to Work Day) để biết thêm thông tin chi tiết.</string>
+    <string name="travel_ridesharing_title">Chia sẻ chuyến đi</string>
+    <string name="travel_airport_transfers_title">Xe đưa đón sân bay</string>
+    <string name="travel_what_to_bring_description">Google I/O là một lễ hội ngoài trời. Đây là một yếu tố quan trọng tạo nên nét đặc biệt của sự kiện I/O, đồng thời còn nhắc nhở mọi người cần cân nhắc một số nội dung khác. Các phiên sự kiện sẽ diễn ra bên trong các lều có kiểm soát các yếu tố khí hậu nhưng bạn vẫn nên mang theo kem chống nắng, kính râm và cả áo khoác mỏng nếu định tham gia các sự kiện vào buổi tối. I/O là một sự kiện không quy định trang phục nên hãy lưu ý điều này khi lựa chọn quần áo.</string>
+    <string name="travel_hotels_description">Chúng tôi cũng đặt phòng tại nhiều khách sạn tại địa phương. Danh sách khách sạn và tình trạng còn phòng sẽ được cập nhật thường xuyên. Hãy xem bản đồ dưới đây để tìm khách sạn phù hợp nhất với bạn. &lt;a href="https://www.google.com/maps/d/u/1/viewer?mid=11u43dDY9LID1uf46p4y7ba2_TbE_Y8-W&amp;ll=37.383600316075075%2C-122.07007405000002&amp;z=12"&gt;Bản đồ khách sạn&lt;/a&gt;</string>
+    <string name="travel_getting_to_mountain_view_description">Đây là ba sân bay chính tại Vùng Vịnh có các chuyến bay quốc tế:&lt;br&gt; &lt;a href="https://www.google.com/maps/dir/San+Francisco+International+Airport,+San+Francisco,+CA+94128/Shoreline+Amphitheatre,+Amphitheatre+Parkway,+Mountain+View,+CA/@37.5206703,-122.3803144,11z/data=!3m1!4b1!4m18!4m17!1m5!1m1!1s0x808f778c55555555:0xa4f25c571acded3f!2m2!1d-122.3789554!2d37.6213129!1m5!1m1!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!2m2!1d-122.0807647!2d37.4267703!2m3!6e0!7e2!8j1463556000!3e0?hl=en"&gt;Sân bay quốc tế San Francisco (SFO)&lt;/a&gt; ~39km&lt;br&gt;&lt;br&gt; &lt;a href="https://www.google.com/maps/dir/Oakland+International+Airport,+Oakland,+CA/Shoreline+Amphitheatre,+Amphitheatre+Parkway,+Mountain+View,+CA/@37.5755915,-122.270249,11z/data=!3m1!4b1!4m18!4m17!1m5!1m1!1s0x808f845402c0a641:0xb0630c0f03017460!2m2!1d-122.2197428!2d37.7125689!1m5!1m1!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!2m2!1d-122.0807647!2d37.4267703!2m3!6e0!7e2!8j1463556000!3e0?hl=en"&gt;Sân bay quốc tế Oakland (OAK)&lt;/a&gt; ~51km&lt;br&gt;&lt;br&gt; &lt;a href="https://www.google.com/maps/dir/San+Jose+International+Airport-Sjc,+Airport+Boulevard,+San+Jose,+CA,+United+States/Shoreline+Amphitheatre,+Amphitheatre+Parkway,+Mountain+View,+CA/@37.3954744,-122.0741791,12z/data=!3m1!4b1!4m18!4m17!1m5!1m1!1s0x808fcbc3fab3c59b:0xbcfa443f6df67e3e!2m2!1d-121.9289375!2d37.3639472!1m5!1m1!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!2m2!1d-122.0807647!2d37.4267703!2m3!6e0!7e2!8j1463556000!3e0?hl=en"&gt;Sân bay quốc tế San Jose (SJC)&lt;/a&gt; ~19km</string>
+    <string name="travel_getting_to_shoreline_description">Nhằm giảm tắc nghẽn giao thông và phát thải các-bon, Google I/O 2019 cam kết trở thành “Sự kiện không có bãi đỗ xe*.” Quyết định này đã được cân nhắc kỹ lưỡng và chúng tôi sẽ cung cấp những phương án di chuyển đến sự kiện mà không cần phương tiện cá nhân.&lt;br&gt;&lt;br&gt;Chúng tôi sẽ cung cấp thêm thông tin vào thời điểm gần diễn ra sự kiện.&lt;br&gt;&lt;br&gt;*Có khu vực đỗ xe dành cho người khuyết tật.</string>
+    <string name="travel_shuttle_service_description">Nhằm giảm tắc nghẽn giao thông và phát thải các-bon, Google I/O 2019 cam kết trở thành “Sự kiện không có bãi đỗ xe*.” Quyết định này đã được cân nhắc kỹ lưỡng và chúng tôi sẽ cung cấp những phương án di chuyển đến sự kiện mà không cần phương tiện cá nhân.&lt;br&gt;&lt;br&gt;Chúng tôi sẽ cung cấp thêm thông tin vào thời điểm gần diễn ra sự kiện.&lt;br&gt;&lt;br&gt;*Có khu vực đỗ xe dành cho người khuyết tật.</string>
+    <string name="travel_off_site_parking_description">Sẽ có chỗ đỗ xe miễn phí tại &lt;a href="https://www.sjearthquakes.com/avayastadium/parking-directions"&gt;Sân vận động Avaya&lt;/a&gt;. Sẽ có xe đưa đón giữa Avaya và Google I/O.&lt;br&gt;&lt;br&gt; Vui lòng ghi rõ trên phiếu đăng ký nếu bạn có bất kỳ yêu cầu hỗ trợ đặc biệt nào hoặc có yêu cầu theo Ðạo luật người khuyết tật Hoa Kỳ (ADA) và bộ phận kế hoạch sẽ trực tiếp hỗ trợ bạn.</string>
+    <string name="travel_for_public_transportation_description">Chúng tôi cũng bán thẻ và vé trả trước cho những phương tiện công cộng tham gia đưa đón trong suốt thời gian trước khi đăng ký tham gia sự kiện. Bạn có thể dùng phương tiện công cộng để đến khu vực này:&lt;br&gt;&lt;br&gt; &lt;a href="http://www.caltrain.com/"&gt;Caltrain&lt;/a&gt;: Hệ thống đường sắt trong khu vực&lt;br&gt;&lt;br&gt; &lt;a href="http://www.vta.org/getting-around/interactive-light-rail-map"&gt;VTA&lt;/a&gt;: Hệ thống đường sắt hạng nhẹ phục vụ Vịnh phía nam&lt;br&gt;&lt;br&gt; &lt;a href="https://www.bart.gov/"&gt;BART&lt;/a&gt;: Phương tiện công cộng nhanh tại Vùng Vịnh&lt;br&gt;&lt;br&gt; &lt;a href="https://www.amtrak.com/home.html"&gt;AMTRAK&lt;/a&gt;: Hệ thống đường sắt khu vực&lt;br&gt;&lt;br&gt; Không có phương tiện công cộng đi thẳng tới sự kiện Google I/O. Hãy chú ý theo dõi vị trí chính xác các điểm đỗ của xe đưa đón tại sự kiện Google I/O.</string>
+    <string name="travel_biking_description">Có khu vực trông giữ xe đạp miễn phí tại Nhà hát Shoreline Amphitheatre ở Bãi đỗ xe A. Hàng ngày Hiệp hội Xe đạp Thung lũng Silicon (Silicon Valley Bicycle Coalition) sẽ cung cấp khu vực trông giữ xe đạp an toàn từ 7 giờ sáng đến khi sự kiện kết thúc.&lt;br&gt;&lt;br&gt; Hãy kiểm tra Google Maps để tìm tuyến đường và hướng đi tiện lợi nhất cho người đi xe đạp. Có hai tuyến đường tiện lợi để người đi xe đạp tới thẳng Nhà hát Shoreline Amphitheatre là Stevens Creek Trail và Permanente Creek Trail.</string>
+    <string name="travel_ridesharing_description">Sẽ có xe đưa đón tới sân bay SFO và SJC từ Google I/O vào ngày cuối cùng của sự kiện. Sẽ KHÔNG có xe đưa đón sân bay vào bất kỳ ngày nào khác.</string>
+    <string name="travel_airport_transfers_description">Sẽ có xe đưa đón tới sân bay SFO và SJC từ Google I/O vào ngày cuối cùng của sự kiện. Sẽ KHÔNG có xe đưa đón sân bay vào bất kỳ ngày nào khác.</string>
+    <string name="faq_when_and_where_title">Google I/O 2019 diễn ra ở đâu và vào lúc nào?</string>
+    <string name="faq_how_can_i_stay_informed_title">Làm cách nào để tôi nhận những thông tin mới nhất về Google I/O?</string>
+    <string name="faq_will_the_sessions_be_english_title">Có phải tất cả các phiên sự kiện đều sử dụng tiếng Anh?</string>
+    <string name="faq_can_i_reserve_sessions_ahead_of_time_title">Tôi có thể đặt chỗ trước tại các phiên sự kiện không?</string>
+    <string name="faq_best_way_to_get_to_shoreline_title">Cách tốt nhất để đến Nhà hát Shoreline Amphitheatre?</string>
+    <string name="faq_where_and_when_can_i_pick_up_badge_title">Tôi có thể nhận huy hiệu tham dự sự kiện của mình ở đâu và khi nào?</string>
+    <string name="faq_want_a_front_row_seat_at_keynote_title">Tôi thực sự muốn được ngồi hàng đầu để lắng nghe bài phát biểu. Tôi phải làm thế nào?</string>
+    <string name="faq_what_should_i_wear_title">Tôi nên mặc gì?</string>
+    <string name="faq_onsite_food_options_title">Tôi thích ăn vặt. Ở sự kiện này, tôi có thể ăn gì?</string>
+    <string name="faq_if_i_lose_something_onsite_title">Nếu bị mất đồ tại sự kiện, tôi có thể tìm đồ thất lạc ở đâu?</string>
+    <string name="faq_after_dark_program_title">Các chương trình Buổi tối có vẻ rất thú vị. Tôi có nên tham gia không?</string>
+    <string name="faq_accessibility_needs_title">Bạn có thể hỗ trợ nhu cầu đi lại của tôi không?</string>
+    <string name="faq_support_for_expectant_mothers_parents_title">Phụ nữ có thai và những người mang theo con nhỏ được hỗ trợ như thế nào khi tham gia I/O?</string>
+    <string name="faq_community_guidelines_and_policy_title">Nguyên tắc cộng đồng về sự kiện và Chính sách chống quấy rối của Google</string>
+    <string name="faq_sessions_be_live_streamed_question_title">Các phiên sự kiện có được phát trực tiếp không? Nếu tôi không thể theo dõi sự kiện theo thời gian thực thì sao?</string>
+    <string name="faq_want_to_celebrate_i_o_title">Tôi muốn ăn mừng sự kiện I/O với cộng đồng của mình!  Google có ý tưởng nào không?</string>
+    <string name="faq_when_and_where_description">Để cập nhật những thông tin mới nhất về các phiên sự kiện, diễn giả và các hoạt động chung, đừng quên thường xuyên truy cập &lt;a href="https://events.google.com/io/"&gt;trang web của sự kiện Google I/O 2019&lt;/a&gt;, &lt;a href="http://googledevelopers.blogspot.com/"&gt;Blog của Google Developers&lt;/a&gt; và theo dõi chúng tôi trên &lt;a href="https://twitter.com/googledevs"&gt;Twitter&lt;/a&gt; and &lt;a href="https://www.facebook.com/Google-Developers-967415219957038/"&gt;Facebook&lt;/a&gt;. Bạn cũng có thể theo dõi và tham gia cuộc trò chuyện trên mạng xã hội về Google I/O 2019 qua hashtag chính thức &lt;a href="https://twitter.com/search?q=%23io19&amp;src=typd"&gt;#io19&lt;/a&gt;. Ngoài ra, chúng tôi sẽ gửi email thông báo những thông tin quan trọng cho tất cả những người tham dự đã đăng ký, cùng với hướng dẫn làm thủ tục đăng ký ghi tên trước khi tham gia liên hoan này.</string>
+    <string name="faq_how_can_i_stay_informed_description">Để cập nhật những thông tin mới nhất về các phiên sự kiện, diễn giả và các hoạt động chung, đừng quên thường xuyên truy cập &lt;a href="https://events.google.com/io/"&gt;trang web của sự kiện Google I/O 2019&lt;/a&gt;, &lt;a href="http://googledevelopers.blogspot.com/"&gt;Blog của Google Developers&lt;/a&gt; và theo dõi chúng tôi trên &lt;a href="https://twitter.com/googledevs"&gt;Twitter&lt;/a&gt; and &lt;a href="https://www.facebook.com/Google-Developers-967415219957038/"&gt;Facebook&lt;/a&gt;. Bạn cũng có thể theo dõi và tham gia cuộc trò chuyện trên mạng xã hội về Google I/O 2019 qua hashtag chính thức &lt;a href="https://twitter.com/search?q=%23io19&amp;src=typd"&gt;#io19&lt;/a&gt;. Ngoài ra, chúng tôi sẽ gửi email thông báo những thông tin quan trọng cho tất cả những người tham dự đã đăng ký, cùng với hướng dẫn làm thủ tục đăng ký ghi tên trước khi tham gia liên hoan này.</string>
+    <string name="faq_will_the_sessions_be_english_description">Đúng vậy. Việc sử dụng tiếng Anh sẽ cho phép khán giả toàn cầu cùng đồng hành với sự kiện.</string>
+    <string name="faq_can_i_reserve_sessions_ahead_of_time_description">Các cá nhân tham dự có thể đặt chỗ trước cho các phiên sự kiện ngay từ tháng 4 trên trang web của I/O và trên cả ứng dụng dành cho thiết bị di động của I/O (lưu ý: các phiên sự kiện sẽ dành một phần chỗ ngồi nhất định không cho đặt trước để ưu tiên phục vụ những người đến trước tại địa điểm tổ chức). Việc tham dự Lớp học mã, Đánh giá ứng dụng và Sự kiện chính thức cũng dựa trên tiêu chí ưu tiên người đến trước.</string>
+    <string name="faq_best_way_to_get_to_shoreline_description">Xem mục Di chuyển để biết tất cả những thông tin di chuyển cần thiết, bao gồm thông tin về xe đưa đón của sự kiện, tuyến đường dành cho ô tô và xe đạp, cách đi chung xe và nhiều thông tin khác!</string>
+    <string name="faq_where_and_when_can_i_pick_up_badge_description">Để giải quyết nhanh thủ tục đăng ký ghi tên tham dự sự kiện, chúng tôi sẽ bắt đầu phát huy hiệu tham dự sự kiện vào thứ Hai, ngày 6 tháng 5 tại Nhà hát Shoreline Amphitheatre. Để phát huy hiệu tham dự sự kiện Google I/O cho bạn, chúng tôi sẽ cần:&lt;br&gt; - Xác minh các giấy tờ tùy thân có dán ảnh của bạn. Chúng tôi chấp nhận các giấy phép do chính phủ cấp, hộ chiếu và các hình thức giấy tờ tùy thân khác. Nếu bạn không có giấy tờ tùy thân phù hợp, bạn sẽ không thể nhận được huy hiệu tham dự sự kiện và sẽ không được tham dự hội nghị. Tên trên giấy tờ tùy thân của bạn phải khớp chính xác với hồ sơ đăng ký. Nếu bạn là Đại biểu từ các cơ sở giáo dục, vui lòng mang theo các giấy tờ liên quan.&lt;br&gt; - Quét mã QR đăng ký bạn nhận được qua email. Bạn có thể quét mã QR này trên điện thoại và không cần in email ra! #bảovệmôitrường &lt;br&gt;&lt;br&gt;Vui lòng lưu ý rằng bạn không thể chia sẻ, cung cấp hay đưa huy hiệu tham dự sự kiện của mình cho bất kỳ người nào. Vì huy hiệu tham dự sự kiện Google I/O không thể thay thế bằng giấy tờ nào khác, nên bạn đừng làm mất, nếu không bạn sẽ không được tham dự hội nghị. Bạn phải đeo huy hiệu tham dự sự kiện Google I/O để được phép tham dự Google I/O, bao gồm các Phiên sự kiện, Hộp cát và Sự kiện sau giờ làm việc. Nếu bộ phận an ninh yêu cầu, vui lòng xuất trình thêm giấy tờ tùy thân. Huy hiệu tham dự sự kiện Google I/O có thể ghi tên của bạn, công ty hoặc tổ chức (nếu có) và dán ảnh của bạn.</string>
+    <string name="faq_want_a_front_row_seat_at_keynote_description">Mọi người đều được đảm bảo có chỗ ngồi để nghe bài phát biểu nhưng những chỗ ngồi đẹp nhất sẽ dành cho những người đến sớm trong thời gian phát huy hiệu diễn ra từ 7 giờ sáng ngày 6 tháng 5. Vì vậy, hãy đảm bảo là bạn sẽ đến thật sớm!</string>
+    <string name="faq_what_should_i_wear_description">Google I/O là một sự kiện ngoài trời dành cho các nhà phát triển, vì vậy hãy mặc trang phục thật thoải mái. Không có yêu cầu về trang phục. Vùng Vịnh có thể rất nóng vào ban ngày và khá lạnh vào buổi tối nên hãy cân nhắc mang theo trang phục phù hợp.</string>
+    <string name="faq_onsite_food_options_description">Tin tốt là chúng tôi cũng thích ăn uống!  Những người tham dự được phục vụ bữa sáng, bữa trưa và bữa phụ miễn phí trong cả ba ngày diễn ra hội nghị. Cũng sẽ có bữa tối vào ngày thứ nhất và thứ hai trong các sự kiện sau giờ làm việc.</string>
+    <string name="faq_if_i_lose_something_onsite_description">Bạn không cần phải lo! Quầy đồ thất lạc sẽ đặt tại Bàn thông tin của hội nghị trong suốt thời gian diễn ra sự kiện. Bất kỳ món đồ nào bị bỏ quên qua đêm sẽ được chuyển đến Bộ phận an ninh của hội nghị. Vui lòng lưu ý rằng: bạn KHÔNG thể thay thế huy hiệu tham dự sự kiện Google I/O bằng bất kỳ giấy tờ nào khác. Do đó, đừng làm mất huy hiệu của mình, nếu không bạn sẽ không được tham dự hội nghị.</string>
+    <string name="faq_after_dark_program_description">Đây là hai đêm mà bạn sẽ không muốn bỏ lỡ! Những người tham dự được mời tới thưởng thức âm nhạc, game và nhiều hoạt động khác vào tối ngày 8 tháng 5 và một buổi hòa nhạc độc đáo tại Nhà hát Amphitheatre vào ngày 9 tháng 5. Cả hai tối đều có thức ăn và đồ uống (đồ uống có cồn chỉ dành cho người từ 21 tuổi trở lên). Cả hai sự kiện sau giờ làm việc đều được tổ chức tại Nhà hát Shoreline Amphitheatre. Bạn cần xuất trình huy hiệu của người tham dự tại lối ra vào.</string>
+    <string name="faq_accessibility_needs_description">Chúng tôi có chỗ đỗ xe dành cho phụ nữ mang thai trong bãi đỗ xe dành cho người khuyết tật.&lt;br&gt; Những bà mẹ đang cho con bú cũng được hoan nghênh tham dự hội nghị cùng với con của mình. Sẽ có bốn phòng dành cho các bà mẹ đang cho con bú mở cửa từ 8 giờ sáng đến 8 giờ tối vào hai ngày 7 và 8 tháng 5 và mở cửa từ 8 giờ sáng đến 4 giờ chiều ngày 9 tháng 5. Sẽ có bảng đăng ký tại trước cửa phòng dành cho các bà mẹ đang cho con bú. Việc sử dụng phòng ưu tiên người đến trước. Vui lòng xem thêm thông tin tại quầy trợ giúp của hội nghị.&lt;br&gt;&lt;br&gt; Chi phí trông trẻ là 100 USD một ngày (nhưng tổng cộng không vượt quá 300 USD). Những người tham dự mang theo con nhỏ quan tâm đến dịch vụ trông trẻ cần điền vào biểu mẫu đăng ký. Dịch vụ này được cung cấp theo tiêu chí ai đến trước được phục vụ trước. Dịch vụ trông trẻ do một bên thứ ba cung cấp. Nếu yêu cầu dịch vụ trông trẻ của bạn được chúng tôi chấp thuận qua email trước khi diễn ra hội nghị và có xác nhận bạn tham dự trực tiếp sự kiện, thì nhà cung cấp dịch vụ của chúng tôi sẽ liên hệ với bạn để thực hiện các bước tiếp theo trong vòng 7 ngày làm việc sau sự kiện Google I/O. Nhà cung cấp dịch vụ sẽ xử lý toàn bộ việc thu phí dịch vụ trông trẻ.</string>
+    <string name="faq_support_for_expectant_mothers_parent_description">Chúng tôi có chỗ đỗ xe dành cho phụ nữ mang thai trong bãi đỗ xe dành cho người khuyết tật.&lt;br&gt; Những bà mẹ đang cho con bú cũng được hoan nghênh tham dự hội nghị cùng với con của mình. Sẽ có bốn phòng dành cho các bà mẹ đang cho con bú mở cửa từ 8 giờ sáng đến 8 giờ tối vào hai ngày 7 và 8 tháng 5 và mở cửa từ 8 giờ sáng đến 4 giờ chiều ngày 9 tháng 5. Sẽ có bảng đăng ký tại trước cửa phòng dành cho các bà mẹ đang cho con bú. Việc sử dụng phòng ưu tiên người đến trước. Vui lòng xem thêm thông tin tại quầy trợ giúp của hội nghị.&lt;br&gt;&lt;br&gt; Chi phí trông trẻ là 100 USD một ngày (nhưng tổng cộng không vượt quá 300 USD). Những người tham dự mang theo con nhỏ quan tâm đến dịch vụ trông trẻ cần điền vào biểu mẫu đăng ký. Dịch vụ này được cung cấp theo tiêu chí ai đến trước được phục vụ trước. Dịch vụ trông trẻ do một bên thứ ba cung cấp. Nếu yêu cầu dịch vụ trông trẻ của bạn được chúng tôi chấp thuận qua email trước khi diễn ra hội nghị và có xác nhận bạn tham dự trực tiếp sự kiện, thì nhà cung cấp dịch vụ của chúng tôi sẽ liên hệ với bạn để thực hiện các bước tiếp theo trong vòng 7 ngày làm việc sau sự kiện Google I/O. Nhà cung cấp dịch vụ sẽ xử lý toàn bộ việc thu phí dịch vụ trông trẻ.</string>
+    <string name="faq_community_guidelines_and_policy_description">Google nỗ lực hết sức để mang đến trải nghiệm sự kiện dành cho tất cả mọi người và không xảy ra tình trạng quấy rối cho dù họ có nhận thức về giới tính, biểu hiện giới, xu hướng tình dục, khuyết tật, chứng đa dạng thần kinh, ngoại hình, kích thước cơ thể, quốc tịch, dân tộc, tuổi tác, tôn giáo nào hoặc thuộc danh mục được bảo vệ khác. Cố gắng tối đa để tổ chức một sự kiện dành cho tất cả mọi người, chúng tôi cung cấp nhà vệ sinh không phân biệt giới tính ở khắp các vị trí của địa điểm tổ chức sự kiện.&lt;br&gt;&lt;br&gt; Chúng tôi không dung túng cho hành vi quấy rối ở bất kỳ hình thức nào của những người tham dự sự kiện.&lt;br&gt; Google sẽ xem xét nghiêm túc những trường hợp vi phạm chính sách của chúng tôi và có phản ứng phù hợp. Xem thêm thông tin về Nguyên tắc cộng đồng về sự kiện và Chính sách chống quấy rối của Google tại &lt;a href="https://www.google.com/events/policy/anti-harassmentpolicy.html"&gt;here&lt;/a&gt;.</string>
+    <string name="faq_sessions_be_live_streamed_question_description">Hai bài phát biểu và tất các phiên tại sự kiện sẽ được phát trực tiếp trên trang chủ của sự kiện trong suốt ba ngày diễn ra sự kiện. Nếu bạn bận làm việc hoặc sinh sống tại một khu vực lệch múi giờ, bạn có thể xem bản ghi hình các phiên sự kiện sau trên &lt;a href="https://www.youtube.com/user/GoogleDevelopers"&gt;kênh YouTube của Google Developers&lt;/a&gt;.</string>
+    <string name="faq_want_to_celebrate_i_o_description">Có! Hàng năm, các nhà phát triển trên toàn thế giới tổ chức &lt;a href="https://events.google.com/io/extended"&gt;các sự kiện Google I/O Mở rộng&lt;/a&gt;. Trong suốt những sự kiện này, các nhà tổ chức có thể phát trực tiếp sự kiện và tổ chức những phiên sự kiện của riêng mình, như sự kiện hackathon, các lớp học mã, các buổi giới thiệu minh họa và nhiều sự kiện khác.&lt;br&gt; Nếu bạn định tham gia với tư cách người đăng cai tổ chức sự kiện I/O Mở rộng năm nay, thì hãy làm theo các bước sau đây để bắt đầu:&lt;br&gt;&lt;br&gt; Vui lòng đọc kỹ &lt;a href="https://docs.google.com/presentation/d/e/2PACX–1vReWDtj-yASOho5q7XC6lYY8af9wRa13-81mPaoSRodiRoCw4MKJnQExQ8GxyNyCQiPZpBprznPG4ex/pub?slide=id.g62811f3b0_18"&gt;Hướng dẫn tổ chức&lt;/a&gt; để xem các mẹo và gợi ý về cách tổ chức một sự kiện thành công.&lt;br&gt;&lt;br&gt; &lt;a href="https://events.google.com/io/extended/form"&gt;Đăng ký&lt;/a&gt; trên trang web I/O để có thêm nhiều người biết tới sự kiện công khai của bạn.&lt;br&gt;&lt;br&gt; Sử dụng hashtag chính thức #io19extended trong tất cả các bài đăng trên mạng xã hội có liên quan đến sự kiện I/O Mở rộng để mọi người có thể dễ dàng tìm thấy sự kiện hơn.&lt;br&gt;&lt;br&gt; Lưu ý: Những người tổ chức sự kiện I/O Mở rộng có quyền yêu cầu xóa dữ liệu sự kiện và/hoặc dữ liệu cá nhân sau khi sự kiện kết thúc bằng cách gửi email tới địa chỉ io19@google.com.&lt;br&gt; Nếu bạn chỉ muốn tham dự sự kiện I/O Mở rộng, hãy duyệt qua &lt;a href="https://events.google.com/io/extended"&gt;bản đồ của chúng tôi&lt;/a&gt; để tìm sự kiện ở gần khu vực của bạn và trả lời thư mời!&lt;br&gt; Nếu có thắc mắc về chương trình I/O Mở rộng, vui lòng liên hệ với chúng tôi theo địa chỉ io19extended\-external@google.com.</string>
     <string name="view_sessions_text">Xem các phiên sự kiện</string>
-    <string name="view_codelabs_text">Xem các phòng thí nghiệm lập trình</string>
-    <string name="view_events_text">Xem sự kiện</string>
-    <string name="view_map_text">Xem bản đồ</string>
-    <string name="wifi_network_label">Mạng Wi-Fi</string>
-    <string name="wifi_password_label">Mật khẩu:</string>
     <string name="wifi_install_success">Đã lưu mạng wifi</string>
-    <string name="wifi_install_error_message">Rất tiếc, không thể lưu mạng wifi</string>
+    <string name="wifi_install_clipboard_message">Không thể lưu mạng wifi.\nVì vậy, chúng tôi đã lưu mật khẩu vào khay nhớ tạm.</string>
     <string name="event_sessions_title">Số phiên</string>
     <string name="event_sandbox_title">Hộp cát</string>
     <string name="event_codelabs_title">Phòng thí nghiệm lập trình</string>
     <string name="event_officehours_title">Giờ làm việc và Đánh giá ứng dụng</string>
     <string name="event_afterhours_title">Sau giờ làm việc</string>
     <string name="event_meals_title">Bữa ăn</string>
+    <string name="event_sessions_description">Các cá nhân tham dự có thể đặt chỗ trước cho các phiên sự kiện ngay từ tháng 4 trên trang web của I/O và trên cả ứng dụng dành cho thiết bị di động của I/O (lưu ý: các phiên sự kiện sẽ dành một phần chỗ ngồi nhất định không cho đặt trước để ưu tiên phục vụ những người đến trước tại địa điểm tổ chức). Việc tham dự Lớp học mã, Đánh giá ứng dụng và Sự kiện chính thức cũng dựa trên tiêu chí ưu tiên người đến trước.</string>
     <string name="event_sandbox_description">Không gian thiết kế dành riêng để khám phá, tìm hiểu và chơi thử các sản phẩm và nền tảng mới nhất của chúng tôi thông qua các bản demo tương tác, cài đặt vật lý và nhiều hơn thế nữa.</string>
     <string name="event_codelabs_description">Trải nghiệm thực tế tại các quầy sẵn sàng lập mã của chúng tôi. Tại đây, bạn sẽ có mọi thứ cần thiết để tìm hiểu về các công nghệ mới nhất và tuyệt vời nhất của Google thông qua các hướng dẫn tự phát hoặc mang theo máy của riêng bạn và mang công việc về nhà với bạn. Nhân viên của Google sẽ có mặt sẵn sàng cung cấp những lời khuyên hữu ích và chỉ dẫn nếu bạn gặp khó khăn.</string>
     <string name="event_officehours_description">Giờ làm việc là cơ hội bạn có thể gặp mặt trực tiếp các chuyên gia của Google để đặt những câu hỏi kỹ thuật và Đánh giá ứng dụng sẽ cho bạn có hội nhận được lời khuyên và tư vấn cho các dự án liên quan đến ứng dụng cụ thể của bạn.</string>
     <string name="event_afterhours_description">Sau khi kết thúc Phiên sự kiện trong ngày, hãy lưu lại Shoreline hai đêm để thưởng thức ẩm thực và vui vẻ. Vào đêm đầu tiên, bữa tiệc sẽ được tổ chức trên không gian Hộp cát và vào đêm thứ hai, chúng tôi sẽ tổ chức một buổi hòa nhạc độc đáo tại Nhà hát vòm.</string>
+    <string name="event_meals_description">Người tham dự được phục vụ bữa sáng, bữa trưa và bữa phụ miễn phí trong cả ba ngày diễn ra hội nghị. Cũng sẽ có bữa tối vào ngày thứ nhất và thứ hai trong các sự kiện sau giờ làm việc.</string>
     <string name="wifi_header">Wi-Fi</string>
+    <string name="related_apps_header">Ứng dụng liên quan</string>
     <string name="event_types_header">Loại sự kiện</string>
     <string name="settings_time_zone_label">Sự kiện ở múi giờ chuẩn Thái Bình Dương (UTC-8)</string>
+    <string name="settings_enable_notifications">Bật thông báo</string>
     <string name="settings_send_anonymous_usage_statistics">Gửi số liệu thống kê sử dụng ẩn danh</string>
     <string name="settings_tos">Điều khoản dịch vụ</string>
-    <string name="settings_privacy_policy">Chính sách bảo mật</string>
+    <string name="settings_privacy_policy">Chính sách quyền riêng tư</string>
     <string name="settings_oss_licenses">Giấy phép mã nguồn mở</string>
-    <string name="settings_version_label">Phiên bản %1$s, bản dựng %2$s</string>
-    <string name="built_with_material_content_description">Được dựng với các Thành phần quan trọng.</string>
-    <string name="day1">Ngày 1</string>
-    <string name="day2">Ngày 2</string>
-    <string name="day3">Ngày 3</string>
-    <string name="day1_date">Ngày 8/5</string>
-    <string name="day2_date">Ngày 9/5</string>
-    <string name="day3_date">Ngày 10/5</string>
+    <string name="settings_theme_title">Chọn giao diện</string>
+    <string name="settings_theme_system">Mặc định hệ thống</string>
+    <string name="settings_theme_light">Nhẹ</string>
+    <string name="settings_theme_dark">Tối</string>
+    <string name="settings_theme_battery">Đặt theo Trình tiết kiệm pin</string>
+    <string name="built_with_material_components">Được thiết kế với Material Components.</string>
+    <string name="wifi_network_and_password">Mạng: %1$s\nMật khẩu: %2$s</string>
+    <string name="join_network">Vào mạng</string>
+    <string name="assistant_app_description">Chỉ cần nói: "Hey Google, talk to Google I/O 19"!</string>
+    <string name="assistant_app_description2">Chỉ cần nói: "Hey Google, talk to Google I/O 19"!</string>
+    <string name="speaker_link_website">Trang web</string>
+    <string name="speaker_link_twitter">Twitter</string>
+    <string name="speaker_link_github">GitHub</string>
+    <string name="speaker_link_linkedin">LinkedIn</string>
+    <string name="speaker_events_subhead">Sự kiện</string>
+    <string name="no_network_connection">Không có kết nối internet.</string>
+    <string name="navigate_up">Di chuyển lên</string>
+    <string name="no_network_description">Để sử dụng tính năng Khám phá I/O, hãy thử:\n\n - Tắt chế độ trên máy bay\n\n - Bật dữ liệu di động hoặc Wi-Fi\n\n - Kiểm tra tín hiệu trong khu vực của bạn</string>
+    <string name="phone_does_not_support_arcore_title">Điện thoại của bạn không hỗ trợ ARCore</string>
+    <string name="phone_does_not_support_arcore_message">Thử dùng thiết bị khác hoặc mượn thiết bị của bạn bè</string>
+    <string name="codelabs_information">Hãy tìm hiểu những công nghệ mới nhất và tuyệt vời nhất của Google qua hướng dẫn tùy chỉnh theo tốc độ bạn muốn tại các quầy lập trình có sẵn đầy đủ trang bị hoặc đem theo máy của chính bạn và mang thành quả của bạn về nhà. Những quầy này mở cửa hàng ngày, trừ khoảng thời gian diễn ra bài phát biểu đầu tiên.</string>
+    <string name="codelabs_building">Tòa nhà của Lớp học mã</string>
+    <string name="codelabs_website">Trang web của Lớp học mã</string>
+    <string name="codelab_duration">Thời lượng: %1$d phút</string>
+    <string name="start_codelab">Bắt đầu lớp học mã</string>
 </resources>

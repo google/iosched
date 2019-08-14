@@ -16,6 +16,8 @@
 
 package com.google.samples.apps.iosched
 
+import android.os.StrictMode
+import android.os.StrictMode.ThreadPolicy.Builder
 import com.google.samples.apps.iosched.di.DaggerAppComponent
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.util.CrashlyticsTree
@@ -33,6 +35,13 @@ class MainApplication : DaggerApplication() {
     @Inject lateinit var analyticsHelper: AnalyticsHelper
 
     override fun onCreate() {
+        // ThreeTenBP for times and dates, called before super to be available for objects
+        AndroidThreeTen.init(this)
+
+        // Enable strict mode before Dagger creates graph
+        if (BuildConfig.DEBUG) {
+            enableStrictMode()
+        }
         super.onCreate()
 
         if (BuildConfig.DEBUG) {
@@ -40,9 +49,6 @@ class MainApplication : DaggerApplication() {
         } else {
             Timber.plant(CrashlyticsTree())
         }
-
-        // ThreeTenBP for times and dates
-        AndroidThreeTen.init(this)
     }
 
     /**
@@ -52,5 +58,16 @@ class MainApplication : DaggerApplication() {
      */
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
         return DaggerAppComponent.builder().create(this)
+    }
+
+    private fun enableStrictMode() {
+        StrictMode.setThreadPolicy(
+            Builder()
+                .detectDiskReads()
+                .detectDiskWrites()
+                .detectNetwork()
+                .penaltyLog()
+                .build()
+        )
     }
 }

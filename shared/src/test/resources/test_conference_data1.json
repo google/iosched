@@ -220,5 +220,30 @@
       "color": "#31E7B6",
       "fontColor": "#202124"
     }
+  ],
+  "codelabs": [
+    {
+      "id": "codelab0",
+      "title": "Flutter is Cool",
+      "description": "Build a Flutter app in 5 minutes!",
+      "duration": 5,
+      "icon": "",
+      "link": "",
+      "priority": "1",
+      "tagNames": [
+        "topic_flutter"
+      ]
+    },{
+      "comment": "priority intentionally omitted for test",
+      "id": "codelab1",
+      "title": "Cloud frameworks",
+      "description": "Should you use Cirrus, Stratus, or Cumulonimbus for your new cloud service?",
+      "duration": 37,
+      "icon": "",
+      "link": "",
+      "tagNames": [
+        "topic_cloud"
+      ]
+    }
   ]
 }

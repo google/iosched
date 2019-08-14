@@ -20,10 +20,14 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.accessibility.AccessibilityEvent
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.AccessibilityDelegateCompat
+import androidx.core.view.ViewCompat
 import androidx.core.view.postDelayed
 import com.airbnb.lottie.LottieAnimationView
-import com.airbnb.lottie.LottieAnimationView.CacheStrategy.Strong
+import com.airbnb.lottie.LottieComposition
+import com.airbnb.lottie.LottieCompositionFactory
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.Duration
@@ -38,49 +42,108 @@ class CountdownView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
+    private val compositions = CompositionSet()
+
     private val root: View = LayoutInflater.from(context).inflate(R.layout.countdown, this, true)
-    private var days1 by AnimateDigitDelegate { root.findViewById(R.id.countdown_days_1) }
-    private var days2 by AnimateDigitDelegate { root.findViewById(R.id.countdown_days_2) }
-    private var hours1 by AnimateDigitDelegate { root.findViewById(R.id.countdown_hours_1) }
-    private var hours2 by AnimateDigitDelegate { root.findViewById(R.id.countdown_hours_2) }
-    private var mins1 by AnimateDigitDelegate { root.findViewById(R.id.countdown_mins_1) }
-    private var mins2 by AnimateDigitDelegate { root.findViewById(R.id.countdown_mins_2) }
-    private var secs1 by AnimateDigitDelegate { root.findViewById(R.id.countdown_secs_1) }
-    private var secs2 by AnimateDigitDelegate { root.findViewById(R.id.countdown_secs_2) }
+    private var days1 by AnimateDigitDelegate(compositions) {
+        root.findViewById(R.id.countdown_days_1)
+    }
+    private var days2 by AnimateDigitDelegate(compositions) {
+        root.findViewById(R.id.countdown_days_2)
+    }
+    private var hours1 by AnimateDigitDelegate(compositions) {
+        root.findViewById(R.id.countdown_hours_1)
+    }
+    private var hours2 by AnimateDigitDelegate(compositions) {
+        root.findViewById(R.id.countdown_hours_2)
+    }
+    private var mins1 by AnimateDigitDelegate(compositions) {
+        root.findViewById(R.id.countdown_mins_1)
+    }
+    private var mins2 by AnimateDigitDelegate(compositions) {
+        root.findViewById(R.id.countdown_mins_2)
+    }
+    private var secs1 by AnimateDigitDelegate(compositions) {
+        root.findViewById(R.id.countdown_secs_1)
+    }
+    private var secs2 by AnimateDigitDelegate(compositions) {
+        root.findViewById(R.id.countdown_secs_2)
+    }
+
+    private val conferenceStart = TimeUtils.ConferenceDays.first().start.plusHours(3L)
+
+    data class Countdown(
+        val days: Int,
+        val hours: Int,
+        val minutes: Int,
+        val seconds: Int
+    ) {
+        companion object {
+            fun until(time: ZonedDateTime): Countdown? {
+                var duration = Duration.between(ZonedDateTime.now(), time)
+                if (duration.isNegative) {
+                    return null
+                }
+                val days = duration.toDays()
+                duration = duration.minusDays(days)
+                val hours = duration.toHours()
+                duration = duration.minusHours(hours)
+                val mins = duration.toMinutes()
+                duration = duration.minusMinutes(mins)
+                val secs = duration.seconds
+                return Countdown(days.toInt(), hours.toInt(), mins.toInt(), secs.toInt())
+            }
+        }
+    }
+
+    init {
+        isFocusableInTouchMode = true
+        ViewCompat.setAccessibilityDelegate(this, object : AccessibilityDelegateCompat() {
+            override fun dispatchPopulateAccessibilityEvent(
+                host: View?,
+                event: AccessibilityEvent?
+            ): Boolean {
+                return if (event != null) {
+                    val countdown = Countdown.until(conferenceStart)
+                    if (countdown != null) {
+                        val res = context.resources
+                        event.text.add(res.getQuantityString(
+                            R.plurals.duration_days, countdown.days, countdown.days))
+                        event.text.add(res.getQuantityString(
+                            R.plurals.duration_hours, countdown.hours, countdown.hours))
+                        event.text.add(res.getQuantityString(
+                            R.plurals.duration_minutes, countdown.minutes, countdown.minutes))
+                        event.text.add(res.getQuantityString(
+                            R.plurals.duration_seconds, countdown.seconds, countdown.seconds))
+                    }
+                    true
+                } else {
+                    super.dispatchPopulateAccessibilityEvent(host, event)
+                }
+            }
+        })
+    }
 
     private val updateTime: Runnable = object : Runnable {
 
-        // todo: verify Keynote start time
-        private val conferenceStart = TimeUtils.ConferenceDays.first().start.plusHours(3L)
-
         override fun run() {
-            var timeUntilConf = Duration.between(ZonedDateTime.now(), conferenceStart)
+            val countdown = Countdown.until(conferenceStart) ?: return
 
-            if (timeUntilConf.isNegative) {
-                // stop the countdown once conf starts
-                return
+            compositions.doOnReady {
+                days1 = (countdown.days / 10)
+                days2 = (countdown.days % 10)
+
+                hours1 = (countdown.hours / 10)
+                hours2 = (countdown.hours % 10)
+
+                mins1 = (countdown.minutes / 10)
+                mins2 = (countdown.minutes % 10)
+
+                secs1 = (countdown.seconds / 10)
+                secs2 = (countdown.seconds % 10)
+
+                handler?.postDelayed(this, 1_000L) // Run self every second
             }
-
-            val days = timeUntilConf.toDays()
-            days1 = (days / 10).toInt()
-            days2 = (days % 10).toInt()
-            timeUntilConf = timeUntilConf.minusDays(days)
-
-            val hours = timeUntilConf.toHours()
-            hours1 = (hours / 10).toInt()
-            hours2 = (hours % 10).toInt()
-            timeUntilConf = timeUntilConf.minusHours(hours)
-
-            val mins = timeUntilConf.toMinutes()
-            mins1 = (mins / 10).toInt()
-            mins2 = (mins % 10).toInt()
-            timeUntilConf = timeUntilConf.minusMinutes(mins)
-
-            val secs = timeUntilConf.seconds
-            secs1 = (secs / 10).toInt()
-            secs2 = (secs % 10).toInt()
-
-            handler?.postDelayed(this, 1_000L) // Run self every second
         }
     }
 
@@ -88,12 +151,14 @@ class CountdownView @JvmOverloads constructor(
         super.onAttachedToWindow()
         Timber.d("Starting countdown")
         handler?.post(updateTime)
+        compositions.load(context)
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         Timber.d("Stopping countdown")
         handler?.removeCallbacks(updateTime)
+        compositions.clear()
     }
 
     /**
@@ -101,6 +166,7 @@ class CountdownView @JvmOverloads constructor(
      * [viewProvider]
      */
     private class AnimateDigitDelegate(
+        private val compositions: CompositionSet,
         private val viewProvider: () -> LottieAnimationView
     ) : ObservableProperty<Int>(-1) {
         override fun afterChange(property: KProperty<*>, oldValue: Int, newValue: Int) {
@@ -114,7 +180,7 @@ class CountdownView @JvmOverloads constructor(
                 val view = viewProvider()
                 if (oldValue != -1) {
                     // Animate out the prev digit i.e play the second half of it's comp
-                    view.setAnimation("anim/$oldValue.json", Strong)
+                    compositions[oldValue]?.let { view.setComposition(it) }
                     view.setMinAndMaxProgress(0.5f, 1f)
                     // Some issues scheduling & playing 2 * 500ms comps every 1s. Speed up the
                     // outward anim slightly to give us some headroom ¯\_(ツ)_/¯
@@ -122,18 +188,60 @@ class CountdownView @JvmOverloads constructor(
                     view.playAnimation()
 
                     view.postDelayed(500L) {
-                        view.setAnimation("anim/$newValue.json", Strong)
+                        compositions[newValue]?.let { view.setComposition(it) }
                         view.setMinAndMaxProgress(0f, 0.5f)
                         view.speed = 1f
                         view.playAnimation()
                     }
                 } else {
                     // Initial show, just animate in the desired digit
-                    view.setAnimation("anim/$newValue.json", Strong)
+                    compositions[newValue]?.let { view.setComposition(it) }
                     view.setMinAndMaxProgress(0f, 0.5f)
                     view.playAnimation()
                 }
             }
         }
+    }
+}
+
+private class CompositionSet {
+
+    private val _compositions = arrayOfNulls<LottieComposition?>(10)
+
+    private var doOnReadyCallback: (() -> Unit)? = null
+
+    val ready: Boolean
+        get() = _compositions.all { it != null }
+
+    fun load(context: Context) {
+        for (i in 0..9) {
+            LottieCompositionFactory.fromAsset(context, "anim/$i.json").addListener { composition ->
+                _compositions[i] = composition
+                if (ready) {
+                    doOnReadyCallback?.let {
+                        it()
+                        doOnReadyCallback = null
+                    }
+                }
+            }
+        }
+    }
+
+    fun doOnReady(body: () -> Unit) {
+        if (ready) {
+            body()
+        } else {
+            doOnReadyCallback = body
+        }
+    }
+
+    fun clear() {
+        for (i in 0..9) {
+            _compositions[i] = null
+        }
+    }
+
+    operator fun get(i: Int): LottieComposition? {
+        return _compositions[i]
     }
 }

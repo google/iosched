@@ -16,57 +16,104 @@
   -->
 
 <resources>
+    <!-- Common dimensions -->
     <dimen name="margin_normal">16dp</dimen>
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_large">32dp</dimen>
     <dimen name="spacing_normal">8dp</dimen>
     <dimen name="spacing_micro">4dp</dimen>
 
-    <dimen name="divider">1dp</dimen>
-    <item name="text_line_spacing" format="float" type="dimen">1.2</item>
-
-    <dimen name="speaker_headshot_size">40dp</dimen>
-    <dimen name="speaker_large_headshot_size">112dp</dimen>
-    <dimen name="session_keyline">64dp</dimen>
-
-    <dimen name="time_header_hour_text_size">24sp</dimen>
-    <dimen name="time_header_hour_min_text_size">20sp</dimen>
-    <dimen name="time_header_meridiem_text_size">12sp</dimen>
-    <dimen name="time_header_padding_top">4dp</dimen>
-
-    <dimen name="agenda_item_stroke">2dp</dimen>
-    <dimen name="agenda_block_padding_vert">12dp</dimen>
-    <dimen name="agenda_icon_width">56dp</dimen>
-
-    <dimen name="onboarding_actions_height">112dp</dimen>
-    <dimen name="onboarding_margins">48dp</dimen>
-    <dimen name="onboarding_animation_padding">40dp</dimen>
+    <dimen name="text_size_h1">22sp</dimen>
+    <dimen name="text_size_h2">20sp</dimen>
+    <dimen name="text_size_h3">18sp</dimen>
 
     <dimen name="a11y_min_touch_target">48dp</dimen>
 
-    <dimen name="app_bar_height">200dp</dimen>
-    <dimen name="bottom_navigation_height">56dp</dimen>
     <dimen name="bottom_sheet_elevation">8dp</dimen>
     <dimen name="bottom_sheet_corner_radius">16dp</dimen>
-    <dimen name="bottom_sheet_peek_height">@dimen/a11y_min_touch_target</dimen>
-    <dimen name="schedule_page_padding_bottom">56dp</dimen> <!-- bottom_sheet_peek_height + 8dp -->
 
-    <dimen name="dialog_rounded_corner">8dp</dimen>
-    <dimen name="dialog_vertical_margin">32dp</dimen>
-    <dimen name="dialog_horizontal_margin">32dp</dimen>
-    <dimen name="dialog_elevation">24dp</dimen>
-    <dimen name="padding_borderless_button">16dp</dimen>
+    <!-- Dialogs -->
+    <dimen name="dialog_corner_radius">8dp</dimen>
+    <dimen name="dialogPreferredPadding">24dp</dimen>
+    <dimen name="dialogPreferredPaddingLarge">36dp</dimen> <!-- dialogPreferredPadding + 12dp -->
 
-    <dimen name="event_logo_end_margin">48dp</dimen>
-    <dimen name="event_logo_top_margin">32dp</dimen>
-    <dimen name="info_event_buttons_margin">40dp</dimen>
-
-    <dimen name="countdown_height">300dp</dimen>
-
+    <!-- Snackbars -->
     <dimen name="snackbar_width">@dimen/match_parent</dimen>
     <dimen name="snackbar_margin_end_fab">0dp</dimen>
     <dimen name="snackbar_margin_bottom_fab">72dp</dimen>
     <dimen name="snackbar_margin_bottom_bab">84dp</dimen>
+
+    <!-- Navigation -->
+    <dimen name="nav_drawer_width">@dimen/match_parent</dimen>
+    <dimen name="nav_account_image_size">32dp</dimen>
+    <dimen name="nav_header_logo_size">36dp</dimen>
+    <dimen name="nav_item_horizontal_padding">24dp</dimen>
+    <!-- Intrinsic height may vary. Use a large radius to ensure a semicircle. -->
+    <dimen name="nav_item_background_corner_radius_left">0dp</dimen>
+    <dimen name="nav_item_background_corner_radius_right">100dp</dimen>
+    <dimen name="nav_item_background_inset_left">0dp</dimen>
+    <dimen name="nav_item_background_inset_right">8dp</dimen>>
+
+    <!-- Speaker -->
+    <dimen name="speaker_headshot_size">40dp</dimen>
+    <dimen name="speaker_large_headshot_size">112dp</dimen>
+
+    <!-- Schedule -->
+    <dimen name="schedule_bottom_sheet_peek_height">@dimen/a11y_min_touch_target</dimen>
+    <dimen name="schedule_page_padding_bottom">56dp</dimen> <!-- bottom_sheet_peek_height + 8dp -->
+    <dimen name="session_keyline">64dp</dimen>
+    <dimen name="schedule_item_padding_vertical">8dp</dimen>
+
+    <!-- Use dp because the time decoration has constrained width and we don't want it to grow if
+         the user sets large text scale in the system settings.
+    -->
+    <dimen name="time_header_time_text_size">20dp</dimen>
+    <dimen name="time_header_meridiem_text_size">14dp</dimen>
+
+    <dimen name="day_header_text_size">@dimen/text_size_h3</dimen>
+    <dimen name="day_header_decor_width">300dp</dimen>
+    <dimen name="day_header_decor_height">72dp</dimen>
+
+    <item name="tag_letter_spacing" type="dimen" format="float">-0.06</item>
+
+    <!-- Agenda -->
+    <dimen name="agenda_item_stroke_width">2dp</dimen>
+    <dimen name="agenda_block_padding_vertical">12dp</dimen>
+    <dimen name="agenda_icon_width">56dp</dimen>
+
+    <!-- Search -->
+    <dimen name="search_result_icon_size">24dp</dimen>
+
+    <!-- Feed -->
+    <dimen name="feed_card_corner_radius">8dp</dimen>
+    <dimen name="feed_header_cta_icon_size">24dp</dimen>
+    <dimen name="feed_header_cta_icon_padding">4dp</dimen>
+    <dimen name="feed_session_dimension">200dp</dimen>
+    <dimen name="feed_session_badge_icon_size">24dp</dimen>
+    <dimen name="feed_announcement_min_height">96dp</dimen>
+    <item name="feed_announcement_image_width_percent" format="float" type="dimen">0.3</item>
+    <dimen name="feed_moment_height">250dp</dimen>
+    <dimen name="countdown_height">300dp</dimen>
+
+    <!-- Onboarding -->
+    <dimen name="onboarding_actions_height">112dp</dimen>
+    <dimen name="onboarding_margins">48dp</dimen>
+    <dimen name="onboarding_animation_padding">40dp</dimen>
+    <dimen name="padding_onboarding_button">12dp</dimen>
+
+    <!-- Map -->
+    <dimen name="map_bottom_sheet_peek_height">56dp</dimen>
+
+    <!-- Info -->
+    <dimen name="info_page_margin">17dp</dimen>
+
+    <!-- Profile dialog -->
+    <dimen name="profile_dialog_account_image_size">36dp</dimen>
+    <!-- This is the avatar size + paddingTop + paddingBottom (36 + 16 + 16). This ensures the
+         avatar and text in the dialog header both have at least 16dp "margin" on top and bottom
+         regardless of the user's text scale setting.
+    -->
+    <dimen name="profile_dialog_header_height">68dp</dimen>
 
     <!-- per android.view.ViewGroup.LayoutParams -->
     <item name="match_parent" format="integer" type="dimen">-1</item>

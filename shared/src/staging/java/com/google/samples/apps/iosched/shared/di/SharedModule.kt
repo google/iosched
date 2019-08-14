@@ -18,10 +18,20 @@ package com.google.samples.apps.iosched.shared.di
 
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.FakeAnnouncementDataSource
+import com.google.samples.apps.iosched.shared.data.FakeAppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
-import com.google.samples.apps.iosched.shared.data.FakeLogisticsDataSource
-import com.google.samples.apps.iosched.shared.data.logistics.LogisticsDataSource
-import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
+import com.google.samples.apps.iosched.shared.data.FakeFeedbackEndpoint
+import com.google.samples.apps.iosched.shared.data.ar.ArDebugFlagEndpoint
+import com.google.samples.apps.iosched.shared.data.ar.FakeArDebugFlagEndpoint
+import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
+import com.google.samples.apps.iosched.shared.data.db.AppDatabase
+import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
+import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
+import com.google.samples.apps.iosched.shared.data.feed.FakeMomentDataSource
+import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
+import com.google.samples.apps.iosched.shared.data.feed.MomentDataSource
+import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
@@ -63,9 +73,10 @@ class SharedModule {
     @Provides
     fun provideConferenceDataRepository(
         @Named("remoteConfDatasource") remoteDataSource: ConferenceDataSource,
-        @Named("bootstrapConfDataSource") boostrapDataSource: ConferenceDataSource
+        @Named("bootstrapConfDataSource") boostrapDataSource: ConferenceDataSource,
+        appDatabase: AppDatabase
     ): ConferenceDataRepository {
-        return ConferenceDataRepository(remoteDataSource, boostrapDataSource)
+        return ConferenceDataRepository(remoteDataSource, boostrapDataSource, appDatabase)
     }
 
     @Singleton
@@ -84,11 +95,20 @@ class SharedModule {
 
     @Singleton
     @Provides
+    fun provideFeedbackEndpoint(): FeedbackEndpoint {
+        return FakeFeedbackEndpoint
+    }
+
+    @Singleton
+    @Provides
     fun provideSessionAndUserEventRepository(
         userEventDataSource: UserEventDataSource,
         sessionRepository: SessionRepository
     ): SessionAndUserEventRepository {
-        return DefaultSessionAndUserEventRepository(userEventDataSource, sessionRepository)
+        return DefaultSessionAndUserEventRepository(
+            userEventDataSource,
+            sessionRepository
+        )
     }
 
     @Singleton
@@ -99,16 +119,8 @@ class SharedModule {
 
     @Singleton
     @Provides
-    fun provideLogisticsRepository(
-        logisticsDataSource: LogisticsDataSource
-    ): LogisticsRepository {
-        return LogisticsRepository(logisticsDataSource)
-    }
-
-    @Singleton
-    @Provides
-    fun provideLogisticsDataSource(): LogisticsDataSource {
-        return FakeLogisticsDataSource()
+    fun provideAppConfigDataSource(): AppConfigDataSource {
+        return FakeAppConfigDataSource()
     }
 
     @Singleton
@@ -116,5 +128,32 @@ class SharedModule {
     fun provideTimeProvider(): TimeProvider {
         // TODO: Make the time configurable
         return DefaultTimeProvider
+    }
+
+    @Singleton
+    @Provides
+    fun provideAnnouncementDataSource(): AnnouncementDataSource {
+        return FakeAnnouncementDataSource
+    }
+
+    @Singleton
+    @Provides
+    fun provideMomentDataSource(): MomentDataSource {
+        return FakeMomentDataSource
+    }
+
+    @Singleton
+    @Provides
+    fun provideFeedRepository(
+        announcementDataSource: AnnouncementDataSource,
+        momentDataSource: MomentDataSource
+    ): FeedRepository {
+        return DefaultFeedRepository(announcementDataSource, momentDataSource)
+    }
+
+    @Singleton
+    @Provides
+    fun provideArDebugFlagEndpoint(): ArDebugFlagEndpoint {
+        return FakeArDebugFlagEndpoint
     }
 }

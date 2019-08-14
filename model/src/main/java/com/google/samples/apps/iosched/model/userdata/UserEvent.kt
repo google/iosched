@@ -161,6 +161,10 @@ data class UserEvent(
             r == SWAP_DENIED_CUTOFF || r == SWAP_DENIED_UNKNOWN
     }
 
+    fun isPreSessionNotificationRequired(): Boolean {
+        return isStarred || isReserved()
+    }
+
     /**
      * The source of truth for a reservation status.
      */

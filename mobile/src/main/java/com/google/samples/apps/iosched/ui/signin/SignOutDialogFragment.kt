@@ -16,32 +16,31 @@
 
 package com.google.samples.apps.iosched.ui.signin
 
-import android.content.Context
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isGone
+import androidx.databinding.BindingAdapter
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.databinding.DialogSignOutBinding
-import com.google.samples.apps.iosched.shared.result.EventObserver
+import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignOut
+import com.google.samples.apps.iosched.util.executeAfter
 import com.google.samples.apps.iosched.util.signin.SignInHandler
-import com.google.samples.apps.iosched.widget.CustomDimDialogFragment
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.AndroidSupportInjection
-import dagger.android.support.HasSupportFragmentInjector
+import dagger.android.support.DaggerAppCompatDialogFragment
 import javax.inject.Inject
 
 /**
  * Dialog that confirms that a user wishes to sign out.
  */
-class SignOutDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInjector {
-
-    @Inject
-    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
+class SignOutDialogFragment : DaggerAppCompatDialogFragment() {
 
     @Inject
     lateinit var signInHandler: SignInHandler
@@ -49,15 +48,14 @@ class SignOutDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInjec
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var signOutViewModel: SignInViewModel
+    private lateinit var signInViewModel: SignInViewModel
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
-        return fragmentInjector
-    }
+    private lateinit var binding: DialogSignOutBinding
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        AndroidSupportInjection.inject(this)
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        // We want to create a dialog, but we also want to use DataBinding for the content view.
+        // We can do that by making an empty dialog and adding the content later.
+        return MaterialAlertDialogBuilder(requireContext()).create()
     }
 
     override fun onCreateView(
@@ -65,20 +63,43 @@ class SignOutDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInjec
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        signOutViewModel = viewModelProvider(viewModelFactory)
-        val binding = DialogSignOutBinding.inflate(inflater, container, false).apply {
-            viewModel = signOutViewModel
-        }
+        // In case we are showing as a dialog, use getLayoutInflater() instead.
+        binding = DialogSignOutBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
 
-        signOutViewModel.performSignInEvent.observe(this, EventObserver { signInRequest ->
-            if (signInRequest == RequestSignOut) {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        signInViewModel = viewModelProvider(viewModelFactory)
+        signInViewModel.performSignInEvent.observe(this, Observer { request ->
+            if (request.peekContent() == RequestSignOut) {
+                request.getContentIfNotHandled()
                 signInHandler.signOut(requireContext())
+                dismiss()
             }
         })
 
-        signOutViewModel.dismissDialogAction.observe(this, EventObserver {
-            dismiss()
-        })
-        return binding.root
+        binding.executeAfter {
+            viewModel = signInViewModel
+            lifecycleOwner = viewLifecycleOwner
+        }
+
+        if (showsDialog) {
+            (requireDialog() as AlertDialog).setView(binding.root)
+        }
     }
+}
+
+@BindingAdapter("username")
+fun setUsername(textView: TextView, userInfo: AuthenticatedUserInfo?) {
+    val displayName = userInfo?.getDisplayName()
+    textView.text = displayName
+    textView.isGone = displayName.isNullOrEmpty()
+}
+
+@BindingAdapter("userEmail")
+fun setUserEmail(textView: TextView, userInfo: AuthenticatedUserInfo?) {
+    val email = userInfo?.getEmail()
+    textView.text = email
+    textView.isGone = email.isNullOrEmpty()
 }

@@ -23,10 +23,9 @@ import android.graphics.Outline
 import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.Paint.Style.STROKE
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import android.os.Build.VERSION.SDK_INT
-import android.os.Build.VERSION_CODES.M
-import android.text.Layout.Alignment.ALIGN_NORMAL
+import android.text.Layout.Alignment.ALIGN_CENTER
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.AttributeSet
@@ -44,7 +43,9 @@ import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.withScale
 import androidx.core.graphics.withTranslation
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.util.isRtl
 import com.google.samples.apps.iosched.util.lerp
+import com.google.samples.apps.iosched.util.newStaticLayout
 import com.google.samples.apps.iosched.util.textWidth
 
 /**
@@ -57,7 +58,7 @@ class EventFilterView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr), Checkable {
 
-    var color: Int = 0xffff00ff.toInt()
+    var color: Int = 0
         set(value) {
             if (field != value) {
                 field = value
@@ -66,16 +67,22 @@ class EventFilterView @JvmOverloads constructor(
             }
         }
 
-    var selectedTextColor: Int? = null
+    var selectedTextColor: Int = 0
+        set(value) {
+            field = value
+            if (value != 0) {
+                clear.mutate().setTint(value)
+            }
+        }
 
-    var text: CharSequence? = null
+    var text: CharSequence = ""
         set(value) {
             field = value
             updateContentDescription()
             requestLayout()
         }
 
-    var showIcons: Boolean = true
+    private var showIcons: Boolean = true
         set(value) {
             if (field != value) {
                 field = value
@@ -106,12 +113,16 @@ class EventFilterView @JvmOverloads constructor(
 
     private val touchFeedback: Drawable
 
+    private val cornerRadius: Float
+
     private lateinit var textLayout: StaticLayout
 
     private var progressAnimator: ValueAnimator? = null
 
     private val interp =
         AnimationUtils.loadInterpolator(context, android.R.interpolator.fast_out_slow_in)
+
+    private var chipHeight = 0
 
     @ColorInt private val defaultTextColor: Int
 
@@ -131,6 +142,8 @@ class EventFilterView @JvmOverloads constructor(
         textPaint = TextPaint(ANTI_ALIAS_FLAG).apply {
             color = defaultTextColor
             textSize = a.getDimensionOrThrow(R.styleable.EventFilterView_android_textSize)
+            typeface = Typeface.MONOSPACE
+            letterSpacing = a.getFloat(R.styleable.EventFilterView_android_letterSpacing, 0f)
         }
         dotPaint = Paint(ANTI_ALIAS_FLAG)
         clear = a.getDrawableOrThrow(R.styleable.EventFilterView_clearIcon).apply {
@@ -144,6 +157,7 @@ class EventFilterView @JvmOverloads constructor(
         padding = a.getDimensionPixelSizeOrThrow(R.styleable.EventFilterView_android_padding)
         isChecked = a.getBoolean(R.styleable.EventFilterView_android_checked, false)
         showIcons = a.getBoolean(R.styleable.EventFilterView_showIcons, true)
+        cornerRadius = a.getDimension(R.styleable.EventFilterView_cornerRadius, 0f)
         a.recycle()
         clipToOutline = true
     }
@@ -155,26 +169,41 @@ class EventFilterView @JvmOverloads constructor(
         val availableTextWidth = when (MeasureSpec.getMode(widthMeasureSpec)) {
             MeasureSpec.EXACTLY -> MeasureSpec.getSize(widthMeasureSpec) - nonTextWidth
             MeasureSpec.AT_MOST -> MeasureSpec.getSize(widthMeasureSpec) - nonTextWidth
-            MeasureSpec.UNSPECIFIED -> Int.MAX_VALUE
-            else -> Int.MAX_VALUE
+            // StaticLayout breaks when given extremely large values. 1000 pixels should be enough.
+            MeasureSpec.UNSPECIFIED -> 1000
+            else -> 1000
         }
+
         createLayout(availableTextWidth)
+        chipHeight = padding + textLayout.height + padding
+
         val w = nonTextWidth + textLayout.textWidth()
-        val h = padding + textLayout.height + padding
+        val h = chipHeight.coerceAtLeast(suggestedMinimumHeight)
         setMeasuredDimension(w, h)
+
+        touchFeedback.setBounds(0, 0, w, chipHeight)
         outlineProvider = object : ViewOutlineProvider() {
             override fun getOutline(view: View, outline: Outline) {
-                outline.setRoundRect(0, 0, w, h, h / 2f)
+                val rounding = cornerRadius.coerceAtMost(chipHeight / 2f)
+                val top = ((view.height - chipHeight) / 2).coerceAtLeast(0)
+                outline.setRoundRect(0, top, view.width, top + chipHeight, rounding)
             }
         }
-        touchFeedback.setBounds(0, 0, w, h)
     }
 
     override fun onDraw(canvas: Canvas) {
+        val ty = ((height - chipHeight) / 2f).coerceAtLeast(0f)
+        canvas.withTranslation(y = ty) {
+            drawChip(canvas)
+        }
+    }
+
+    private fun drawChip(canvas: Canvas) {
         val strokeWidth = outlinePaint.strokeWidth
         val iconRadius = clear.intrinsicWidth / 2f
         val halfStroke = strokeWidth / 2f
-        val rounding = (height - strokeWidth) / 2f
+        val rounding = cornerRadius.coerceAtMost((chipHeight - strokeWidth) / 2f)
+        val isRtl = isRtl()
 
         // Outline
         if (progress < 1f) {
@@ -182,7 +211,7 @@ class EventFilterView @JvmOverloads constructor(
                 halfStroke,
                 halfStroke,
                 width - halfStroke,
-                height - halfStroke,
+                chipHeight - halfStroke,
                 rounding,
                 rounding,
                 outlinePaint
@@ -197,13 +226,19 @@ class EventFilterView @JvmOverloads constructor(
                 width.toFloat(),
                 progress
             )
-            canvas.drawCircle(strokeWidth + padding + iconRadius, height / 2f, dotRadius, dotPaint)
+            val dotCenterX = strokeWidth + padding + iconRadius
+            canvas.drawCircle(
+                if (isRtl) width - dotCenterX else dotCenterX,
+                chipHeight / 2f,
+                dotRadius,
+                dotPaint
+            )
         } else {
             canvas.drawRoundRect(
                 halfStroke,
                 halfStroke,
                 width - halfStroke,
-                height - halfStroke,
+                chipHeight - halfStroke,
                 rounding,
                 rounding,
                 dotPaint
@@ -211,33 +246,35 @@ class EventFilterView @JvmOverloads constructor(
         }
 
         // Text
-        val textX = if (showIcons) {
-            lerp(
-                strokeWidth + padding + clear.intrinsicWidth + padding,
-                strokeWidth + padding * 2f,
-                progress
-            )
+        val textLayoutDiff = (textLayout.width - textLayout.textWidth()) / 2
+        val textBaseOffset = strokeWidth + padding * 2f
+        val textAnimOffset = if (showIcons) {
+            val offsetProgress = if (isRtl) progress else 1f - progress
+            clear.intrinsicWidth * offsetProgress
         } else {
-            strokeWidth + padding * 2f
+            0f
         }
+        val textX = textBaseOffset + textAnimOffset - textLayoutDiff
+
         val selectedColor = selectedTextColor
-        textPaint.color = if (selectedColor != null && selectedColor != 0 && progress > 0) {
+        textPaint.color = if (selectedColor != 0 && progress > 0) {
             ColorUtils.blendARGB(defaultTextColor, selectedColor, progress)
         } else {
             defaultTextColor
         }
         canvas.withTranslation(
             x = textX,
-            y = (height - textLayout.height) / 2f
+            y = (chipHeight - textLayout.height) / 2f
         ) {
             textLayout.draw(canvas)
         }
 
         // Clear icon
         if (showIcons && progress > 0f) {
+            val iconX = width - strokeWidth - padding - iconRadius
             canvas.withTranslation(
-                x = width - strokeWidth - padding - iconRadius,
-                y = height / 2f
+                x = if (isRtl) width - iconX else iconX,
+                y = chipHeight / 2f
             ) {
                 canvas.withScale(progress, progress) {
                     clear.draw(canvas)
@@ -281,7 +318,7 @@ class EventFilterView @JvmOverloads constructor(
         progress = if (checked) 1f else 0f
     }
 
-    override fun verifyDrawable(who: Drawable?): Boolean {
+    override fun verifyDrawable(who: Drawable): Boolean {
         return super.verifyDrawable(who) || who == touchFeedback
     }
 
@@ -301,11 +338,7 @@ class EventFilterView @JvmOverloads constructor(
     }
 
     private fun createLayout(textWidth: Int) {
-        textLayout = if (SDK_INT >= M) {
-            StaticLayout.Builder.obtain(text, 0, text?.length!!, textPaint, textWidth).build()
-        } else {
-            StaticLayout(text, textPaint, textWidth, ALIGN_NORMAL, 1f, 0f, true)
-        }
+        textLayout = newStaticLayout(text, textPaint, textWidth, ALIGN_CENTER, 1f, 0f, true)
     }
 
     private fun updateContentDescription() {

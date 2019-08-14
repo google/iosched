@@ -26,6 +26,7 @@ import dagger.multibindings.IntoMap
  * Module that provides classes needed for SharedPreference.
  */
 @Module
+@Suppress("UNUSED")
 internal abstract class PreferenceModule {
 
     /**

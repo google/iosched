@@ -20,9 +20,8 @@ import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
 
-open class GetNotificationsSettingUseCase @Inject constructor(private val preferenceStorage: PreferenceStorage) :
-    UseCase<Unit, Boolean>() {
-
-    override fun execute(parameters: Unit) =
-        preferenceStorage.preferToReceiveNotifications
+open class GetNotificationsSettingUseCase @Inject constructor(
+    private val preferenceStorage: PreferenceStorage
+) : UseCase<Unit, Boolean>() {
+    override fun execute(parameters: Unit) = preferenceStorage.preferToReceiveNotifications
 }

@@ -16,29 +16,34 @@
 
 package com.google.samples.apps.iosched.shared.domain.search
 
-import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.domain.UseCase
+import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSession
 import timber.log.Timber
 import javax.inject.Inject
 
 /**
  * Performs a search from a query string.
  *
- * A session is returned in the results if the title, abstract, or tag matches the query parameter.
+ * A session is returned in the results if the title, description, or tag matches the query parameter.
  */
 class SearchUseCase @Inject constructor(
     private val repository: SessionRepository
-) : UseCase<String, List<Session>>() {
+) : UseCase<String, List<Searchable>>() {
 
-    override fun execute(parameters: String): List<Session> {
+    override fun execute(parameters: String): List<Searchable> {
         Timber.d("Performing a search for any sessions that contain `$parameters`")
         val query = parameters.toLowerCase()
         return repository.getSessions()
             .filter { session ->
                 session.title.toLowerCase().contains(query) ||
-                    session.abstract.toLowerCase().contains(query) ||
-                    session.tags.any { tag -> query.contains(tag.name.toLowerCase()) }
+                    session.description.toLowerCase().contains(query) ||
+                    session.tags.any { tag ->
+                        query.contains(tag.displayName.toLowerCase())
+                    }
             }
+            // Keynotes come first, followed by sessions, app reviews, game reviews ...
+            .sortedBy { it.type }
+            .map { SearchedSession(it) }
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
   ~ limitations under the License.
 -->
 <resources>
-    <string name="playstore_title">Google I/O 2018</string>
+
     <string name="playstore_tagline">現地での参加、リモートでの参加を問わず、I/O をナビゲートしてくれるアシスタントです。</string>
-    <string name="playstore_description">Google I/O 2018 カンファレンスの公式アプリは、現地での参加、リモートでの参加を問わず、カンファレンスをナビゲートしてくれるあなたのアシスタントです。このアプリでは次の操作を行うことができます:\n\n• トピックや講演者に関する詳細情報を含む、カンファレンスのスケジュールを参照する\n• スケジュールに保存したイベントが始まる前にリマインダーを受信する\n• お使いのすべての端末と I/O ウェブサイトの間でカスタム スケジュールを同期させる\n• ベクターベースのカンファレンスの地図を使用してガイドにする\n• イベント、スケジュール、移動、時間外イベント、セッションの録画などに関する重要な通知の受信を有効にする\n\n現地参加者限定の機能:\n• イベント前に Wi-Fi を設定して簡単に利用する\n• イベントの座席を事前に予約する\n\nアプリのソースコードを I/O の直後に入手できるようにする</string>
+
     <string name="playstore_change">Google I/O 2018 用の更新\n• イベントの座席を事前に予約する\n• イベント、来場方法の詳細、よくある質問に関する重要な情報を見る</string>
     <string name="playstore_required_permissions">必要な権限</string>
     <string name="playstore_optional_permissions">オプションの権限</string>

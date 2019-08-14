@@ -34,17 +34,17 @@ open class LoadUserSessionsUseCase @Inject constructor(
     override fun execute(parameters: Pair<String?, Set<String>>) {
         val (userId, eventIds) = parameters
         // Observe *all* user events
-        val userSessions = userEventRepository.getObservableUserEvents(userId)
+        val userSessionsObservable = userEventRepository.getObservableUserEvents(userId)
 
-        result.removeSource(userSessions)
+        result.removeSource(userSessionsObservable)
         result.value = null
-        result.addSource(userSessions) {
+        result.addSource(userSessionsObservable) { observableResult ->
             DefaultScheduler.execute {
-                when (it) {
+                when (observableResult) {
                     is Result.Success -> {
                         // Filter down to events for sessions we're interested in
-                        val relevantUserSessions = it.data.userSessionsPerDay
-                            .flatMap { it.value.filter { it.session.id in eventIds } }
+                        val relevantUserSessions = observableResult.data.userSessions
+                            .filter { it.session.id in eventIds }
                             .sortedBy { it.session.startTime }
                         if (relevantUserSessions.isNotEmpty()) {
                             val useCaseResult = LoadUserSessionsUseCaseResult(relevantUserSessions)
@@ -52,16 +52,11 @@ open class LoadUserSessionsUseCase @Inject constructor(
                         }
                     }
                     is Result.Error -> {
-                        result.postValue(it)
+                        result.postValue(observableResult)
                     }
                 }
             }
         }
-    }
-
-    fun onCleared() {
-        // This use case is no longer going to be used so remove subscriptions
-        userEventRepository.clearSingleEventSubscriptions()
     }
 }
 

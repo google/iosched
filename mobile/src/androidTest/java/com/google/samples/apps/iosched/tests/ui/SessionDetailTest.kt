@@ -17,15 +17,15 @@
 package com.google.samples.apps.iosched.tests.ui
 
 import android.content.Intent
-import androidx.test.InstrumentationRegistry
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
 import com.google.samples.apps.iosched.tests.FixedTimeRule
@@ -63,7 +63,7 @@ class SessionDetailTest {
             override fun getActivityIntent(): Intent {
                 // Open the developer keynote
                 return SessionDetailActivity.starterIntent(
-                    InstrumentationRegistry.getTargetContext(),
+                    ApplicationProvider.getApplicationContext(),
                     FakeConferenceDataSource.FAKE_SESSION_ID
                 )
             }
@@ -100,7 +100,7 @@ class SessionDetailTest {
             .perform(RecyclerViewActions.scrollToPosition<SessionDetailViewHolder>(4))
 
         // Check that the title is correct
-        onView(allOf(withId(R.id.title), withText("First session day 3")))
+        onView(allOf(withId(R.id.session_detail_title), withText("Fake session on day 1")))
             .check(matches(isDisplayed()))
     }
 }

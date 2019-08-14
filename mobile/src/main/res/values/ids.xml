@@ -17,4 +17,20 @@
 
 <resources>
     <item name="tag_speaker_id" type="id" />
+    <!-- These ids are used in both the menu (navigation.xml) and the nav graph (nav_graph.xml).
+         Each menu item and nav graph fragment represent the same logical item. -->
+    <item name="navigation_agenda" type="id" />
+    <item name="navigation_codelabs" type="id" />
+    <item name="navigation_explore_ar" type="id" />
+    <item name="navigation_feed" type="id" />
+    <item name="navigation_info" type="id" />
+    <item name="navigation_map" type="id" />
+    <item name="navigation_map_sublevel" type="id" />
+    <item name="navigation_schedule" type="id" />
+    <item name="navigation_settings" type="id" />
+    <item name="navigation_session_detail" type="id" />
+    <item name="navigation_speaker_detail" type="id" />
+    <item name="navigation_search" type="id" />
+    <item name="navigation_no_network_ar" type="id" />
+    <item name="navigation_phone_does_not_support_arcore" type="id" />
 </resources>

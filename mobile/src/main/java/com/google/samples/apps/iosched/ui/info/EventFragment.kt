@@ -24,22 +24,34 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.view.updatePaddingRelative
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentInfoEventBinding
+import com.google.samples.apps.iosched.model.ConferenceWifiInfo
+import com.google.samples.apps.iosched.shared.di.AssistantAppEnabledFlag
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.setUpSnackbar
+import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.widget.FadingSnackbar
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 class EventFragment : DaggerFragment() {
+
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
+
+    @Inject
+    @JvmField
+    @AssistantAppEnabledFlag
+    var assistantAppEnabled = false
+
     private lateinit var eventInfoViewModel: EventInfoViewModel
 
     override fun onCreateView(
@@ -52,34 +64,18 @@ class EventFragment : DaggerFragment() {
 
         val binding = FragmentInfoEventBinding.inflate(inflater, container, false).apply {
             viewModel = eventInfoViewModel
-            setLifecycleOwner(this@EventFragment)
+            showAssistantApp = assistantAppEnabled
+            lifecycleOwner = viewLifecycleOwner
         }
+
+        // Pad the bottom of the content so that it is above the nav bar
+        binding.content.doOnApplyWindowInsets { v, insets, padding ->
+            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+        }
+
         val snackbarLayout = requireActivity().findViewById<FadingSnackbar>(R.id.snackbar)
         setUpSnackbar(eventInfoViewModel.snackBarMessage, snackbarLayout, snackbarMessageManager)
 
-        // TODO: launch filtered schedule
-        // TODO: launch map
-        // TODO: launch codelabs
-        binding.eventSandbox.apply {
-            onViewSessionsClicked = { _, _ -> Unit }
-            onViewMapClicked = { _, _ -> Unit }
-            onViewCodelabsClicked = { _, _ -> Unit }
-        }
-        binding.eventCodelabs.apply {
-            onViewSessionsClicked = { _, _ -> Unit }
-            onViewMapClicked = { _, _ -> Unit }
-            onViewCodelabsClicked = { _, _ -> Unit }
-        }
-        binding.eventOfficehours.apply {
-            onViewSessionsClicked = { _, _ -> Unit }
-            onViewMapClicked = { _, _ -> Unit }
-            onViewCodelabsClicked = { _, _ -> Unit }
-        }
-        binding.eventAfterhours.apply {
-            onViewSessionsClicked = { _, _ -> Unit }
-            onViewMapClicked = { _, _ -> Unit }
-            onViewCodelabsClicked = { _, _ -> Unit }
-        }
         return binding.root
     }
 
@@ -94,5 +90,15 @@ class EventFragment : DaggerFragment() {
 
 @BindingAdapter("countdownVisibility")
 fun countdownVisibility(countdown: View, ignored: Boolean?) {
+    // TODO Remove this method since ignored is unused
     countdown.visibility = if (TimeUtils.conferenceHasStarted()) GONE else VISIBLE
+}
+
+@BindingAdapter("wifiInfo")
+fun bindWifiInfo(textView: TextView, wifiInfo: ConferenceWifiInfo?) {
+    textView.text = if (wifiInfo == null) null else {
+        textView.resources.getString(
+            R.string.wifi_network_and_password, wifiInfo.ssid, wifiInfo.password
+        )
+    }
 }

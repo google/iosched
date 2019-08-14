@@ -17,4 +17,23 @@
 
 <resources>
     <string name="app_name" translatable="false">Google I/O</string>
+    <string name="feature_explore_io" translation_description="The feature module name for exploring I/O venue in Augmented Readlity">Explore I/O</string>
+
+    <string name="day1" translation_description="Label for the first day of the conference. Please make this as short as possible.">Day 1</string>
+    <string name="day2" translation_description="Label for the second day of the conference. Please make this as short as possible.">Day 2</string>
+    <string name="day3" translation_description="Label for the third day of the conference. Please make this as short as possible.">Day 3</string>
+    <string name="day1_date" translation_description="Actual date of the first day of the conference. Please make this as short as possible.">May 7</string>
+    <string name="day2_date" translation_description="Actual date of the second day of the conference. Please make this as short as possible.">May 8</string>
+    <string name="day3_date" translation_description="Actual date of the third day of the conference. Please make this as short as possible.">May 9</string>
+
+    <string name="day0" translation_description="Label for the day before the conference.">The day before</string>
+    <string name="day0_day_date" translation_description="Actual day and date of the first day of the conference.">Monday, May 6</string>
+    <string name="day1_day_date" translation_description="Actual day and date of the first day of the conference.">Tuesday, May 7</string>
+    <string name="day2_day_date" translation_description="Actual day and date of the second day of the conference.">Wednesday, May 8</string>
+    <string name="day3_day_date" translation_description="Actual day and date of the third day of the conference.">Thursday, May 9</string>
+
+    <string name="session_notifications" translation_description="Title for notification channel that upcoming talk notifications will be sent to. [CHAR_LIMIT=50]">Upcoming sessions</string>
+    <string name="session_feedback_notifications" translation_description="Title of notification channel for asking user to rate a session. [CHAR_LIMIT=50]">Session feedback</string>
+    <string name="starting_soon" translation_description="displayed as subtext of session title" translatable="false">Session is starting soon!</string>
+    <string name="please_rate_session" translation_description="displayed as subtext of session title for a notification to ask the user to rate the session [CHAR_LIMIT=50]">Please rate session</string>
 </resources>

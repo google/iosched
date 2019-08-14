@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,60 +16,52 @@
 
 package com.google.samples.apps.iosched.ui.reservation
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
-import com.google.samples.apps.iosched.shared.result.Event
-import timber.log.Timber
+import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import javax.inject.Inject
 
-/**
- * ViewModel for the dialog when the user is about to remove the reservation.
- */
 class RemoveReservationViewModel @Inject constructor(
+    signInViewModelDelegate: SignInViewModelDelegate,
+    private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val reservationActionUseCase: ReservationActionUseCase
-) : ViewModel(), RemoveReservationListener {
+) : ViewModel(), SignInViewModelDelegate by signInViewModelDelegate {
 
-    var userId: String? = null
+    private val _sessionId = MutableLiveData<SessionId>()
 
-    var sessionId: String? = null
+    private val loadUserSessionResult = loadUserSessionUseCase.observe()
 
-    var sessionTitle: String? = null
-
-    /**
-     * Event to dismiss the opening dialog. We only want to consume the event, the
-     * Boolean value isn't used.
-     */
-    private val _dismissDialogAction = MutableLiveData<Event<Boolean>>()
-    val dismissDialogAction: LiveData<Event<Boolean>>
-        get() = _dismissDialogAction
-
-    override fun onRemoveClicked() {
-        _dismissDialogAction.value = Event(true)
-
-        val immutableUserId = userId
-        val immutableSessionId = sessionId
-        // The user should be logged in at this point.
-        if (immutableUserId == null || immutableSessionId == null) {
-            Timber.e("Tried to remove a reservation with a null user or session ID")
-            return
+    private val _userSession = loadUserSessionResult.map { result ->
+        if (result is Result.Success) {
+            result.data.userSession
+        } else {
+            null
         }
+    }
+
+    fun setSessionId(sessionId: SessionId) {
+        _sessionId.value = sessionId
+        loadUserSessionUseCase.execute(getUserId() to sessionId)
+    }
+
+    fun removeReservation() {
+        val userId = getUserId() ?: return
+        val sessionId = _sessionId.value ?: return
+        val userSession = _userSession.value
         reservationActionUseCase.execute(
-            ReservationRequestParameters(immutableUserId, immutableSessionId, CancelAction())
+            ReservationRequestParameters(
+                userId,
+                sessionId,
+                ReservationRequestAction.CancelAction(),
+                userSession
+            )
         )
     }
-
-    override fun onCancelClicked() {
-        _dismissDialogAction.value = Event(true)
-    }
-}
-
-interface RemoveReservationListener {
-
-    fun onRemoveClicked()
-
-    fun onCancelClicked()
 }

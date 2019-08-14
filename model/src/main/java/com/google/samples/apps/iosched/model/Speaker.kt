@@ -45,7 +45,7 @@ data class Speaker(
     /**
      * Text describing this speaker in detail.
      */
-    val abstract: String,
+    val biography: String,
 
     /**
      * Full URL of the speaker's website.
@@ -67,9 +67,5 @@ data class Speaker(
      */
     val linkedInUrl: String? = null
 ) {
-    val hasCompany
-        get() = company.isNotEmpty()
-
-    val hasAbstract
-        get() = abstract.isNotEmpty()
+    val hasCompany inline get() = company.isNotEmpty()
 }

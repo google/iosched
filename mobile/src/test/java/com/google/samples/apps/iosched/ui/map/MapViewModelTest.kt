@@ -19,9 +19,17 @@ package com.google.samples.apps.iosched.ui.map
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.android.gms.maps.model.LatLng
+import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.shared.domain.prefs.MyLocationOptedInUseCase
+import com.google.samples.apps.iosched.shared.domain.prefs.OptIntoMyLocationUseCase
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
+import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
+import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -37,19 +45,58 @@ class MapViewModelTest {
     // Executes tasks in a synchronous [TaskScheduler]
     @get:Rule var syncTaskExecutorRule = SyncTaskExecutorRule()
 
+    private val storage = FakePreferenceStorage()
+    private val signInViewModelDelegate = FakeSignInViewModelDelegate()
+    private lateinit var viewModel: MapViewModel
+
+    @Before
+    fun createViewModel() {
+        // Create ViewModel with the test data
+        viewModel = MapViewModel(
+            LoadGeoJsonFeaturesUseCase(mock(Context::class.java)),
+            FakeAnalyticsHelper(),
+            signInViewModelDelegate,
+            OptIntoMyLocationUseCase(storage),
+            MyLocationOptedInUseCase(storage)
+        )
+    }
+
     @Test
     fun testDataIsLoaded() {
-        // Create ViewModel with the test data
-        val viewModel = MapViewModel(
-            LoadMapTileProviderUseCase(mock(Context::class.java)),
-            LoadGeoJsonFeaturesUseCase(mock(Context::class.java)),
-            FakeAnalyticsHelper()
-        )
         assertTrue(
             viewModel.conferenceLocationBounds.contains(
                 // conference center
                 LatLng(37.425842, -122.079933)
             )
         )
+    }
+
+    @Test
+    fun myLocation() {
+        signInViewModelDelegate.injectIsRegistered = true // On-site attendee
+        signInViewModelDelegate.loadUser("1")
+        assertNotNull(LiveDataTestUtil.getValue(viewModel.currentUserInfo))
+        assertFalse(storage.myLocationOptedIn)
+        assertTrue(LiveDataTestUtil.getValue(viewModel.showMyLocationOption)!!)
+        viewModel.optIntoMyLocation()
+        // The button is gone after opt-in
+        assertFalse(LiveDataTestUtil.getValue(viewModel.showMyLocationOption)!!)
+        // This happens when user revokes the permission on system settings.
+        viewModel.optIntoMyLocation(false)
+        assertTrue(LiveDataTestUtil.getValue(viewModel.showMyLocationOption)!!)
+    }
+
+    @Test
+    fun myLocation_notSignedIn() {
+        signInViewModelDelegate.injectIsSignedIn = false
+        signInViewModelDelegate.loadUser("1")
+        assertFalse(LiveDataTestUtil.getValue(viewModel.showMyLocationOption)!!)
+    }
+
+    @Test
+    fun myLocation_notRegistered() {
+        signInViewModelDelegate.injectIsRegistered = false
+        signInViewModelDelegate.loadUser("1")
+        assertFalse(LiveDataTestUtil.getValue(viewModel.showMyLocationOption)!!)
     }
 }

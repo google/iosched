@@ -20,16 +20,24 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
+import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.shared.data.userevent.ObservableUserEvents
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
+import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
+import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.doNothing
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Assert
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -50,7 +58,7 @@ class ReservationActionUseCaseTest {
 
     @Test
     fun sessionIsRequestedSuccessfully() {
-        val useCase = ReservationActionUseCase(TestUserEventRepository)
+        val useCase = ReservationActionUseCase(TestUserEventRepository, createFakeUpdater())
 
         val resultLiveData = useCase.observe()
 
@@ -58,7 +66,8 @@ class ReservationActionUseCaseTest {
             ReservationRequestParameters(
                 "userTest",
                 TestData.session0.id,
-                RequestAction()
+                RequestAction(),
+                null
             )
         )
 
@@ -68,14 +77,15 @@ class ReservationActionUseCaseTest {
 
     @Test
     fun sessionIsCanceledSuccessfully() {
-        val useCase = ReservationActionUseCase(TestUserEventRepository)
+        val useCase = ReservationActionUseCase(TestUserEventRepository, createFakeUpdater())
 
         val resultLiveData = useCase.observe()
 
         useCase.execute(
             ReservationRequestParameters(
                 "userTest", TestData.session0.id,
-                CancelAction()
+                CancelAction(),
+                null
             )
         )
 
@@ -85,14 +95,15 @@ class ReservationActionUseCaseTest {
 
     @Test
     fun requestFails() {
-        val useCase = ReservationActionUseCase(FailingUserEventRepository)
+        val useCase = ReservationActionUseCase(FailingUserEventRepository, createFakeUpdater())
 
         val resultLiveData = useCase.observe()
 
         useCase.execute(
             ReservationRequestParameters(
                 "userTest", TestData.session0.id,
-                CancelAction()
+                CancelAction(),
+                null
             )
         )
 
@@ -104,7 +115,7 @@ class ReservationActionUseCaseTest {
 object TestUserEventRepository : SessionAndUserEventRepository {
     override fun getObservableUserEvents(
         userId: String?
-    ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
+    ): LiveData<Result<ObservableUserEvents>> {
         TODO("not implemented")
     }
 
@@ -119,6 +130,10 @@ object TestUserEventRepository : SessionAndUserEventRepository {
         userId: String,
         userEvent: UserEvent
     ): LiveData<Result<StarUpdatedStatus>> {
+        TODO("not implemented")
+    }
+
+    override fun recordFeedbackSent(userId: String, userEvent: UserEvent): LiveData<Result<Unit>> {
         TODO("not implemented")
     }
 
@@ -149,12 +164,20 @@ object TestUserEventRepository : SessionAndUserEventRepository {
     }
 
     override fun clearSingleEventSubscriptions() {}
+
+    override fun getConferenceDays(): List<ConferenceDay> {
+        TODO("not implemented")
+    }
+
+    override fun getUserSession(userId: String, sessionId: SessionId): UserSession {
+        TODO("not implemented")
+    }
 }
 
 object FailingUserEventRepository : SessionAndUserEventRepository {
     override fun getObservableUserEvents(
         userId: String?
-    ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
+    ): LiveData<Result<ObservableUserEvents>> {
         TODO("not implemented")
     }
 
@@ -169,6 +192,10 @@ object FailingUserEventRepository : SessionAndUserEventRepository {
         userId: String,
         userEvent: UserEvent
     ): LiveData<Result<StarUpdatedStatus>> {
+        TODO("not implemented")
+    }
+
+    override fun recordFeedbackSent(userId: String, userEvent: UserEvent): LiveData<Result<Unit>> {
         TODO("not implemented")
     }
 
@@ -193,4 +220,18 @@ object FailingUserEventRepository : SessionAndUserEventRepository {
     }
 
     override fun clearSingleEventSubscriptions() {}
+
+    override fun getConferenceDays(): List<ConferenceDay> {
+        TODO("not implemented")
+    }
+
+    override fun getUserSession(userId: String, sessionId: SessionId): UserSession {
+        TODO("not implemented")
+    }
+}
+
+private fun createFakeUpdater(): StarReserveNotificationAlarmUpdater {
+    val alarmManager: SessionAlarmManager = mock()
+    doNothing().whenever(alarmManager).cancelAlarmForSession(any())
+    return StarReserveNotificationAlarmUpdater(alarmManager)
 }

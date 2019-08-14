@@ -33,7 +33,7 @@ object BootstrapConferenceDataSource : ConferenceDataSource {
 
     fun loadAndParseBootstrapData(): ConferenceData {
 
-        val conferenceDataStream = this.javaClass.classLoader
+        val conferenceDataStream = this.javaClass.classLoader!!
             .getResource(BuildConfig.BOOTSTRAP_CONF_DATA_FILENAME).openStream()
 
         return ConferenceDataJsonParser.parseConferenceData(conferenceDataStream)

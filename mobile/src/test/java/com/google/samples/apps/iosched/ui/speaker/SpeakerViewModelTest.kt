@@ -25,13 +25,15 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCase
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakeEventActionsViewModelDelegate
+import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
-import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
+import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import org.junit.Assert.assertEquals
@@ -95,9 +97,11 @@ class SpeakerViewModelTest {
         loadSpeakerUseCase: LoadSpeakerUseCase = LoadSpeakerUseCase(TestDataRepository),
         loadSpeakerSessionsUseCase: LoadUserSessionsUseCase = LoadUserSessionsUseCase(
             DefaultSessionAndUserEventRepository(
-                TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
+                TestUserEventDataSource(),
+                DefaultSessionRepository(TestDataRepository)
             )
         ),
+        getTimeZoneUseCase: GetTimeZoneUseCase = GetTimeZoneUseCase(FakePreferenceStorage()),
         signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate().apply {
             loadUser("123")
         },
@@ -107,6 +111,7 @@ class SpeakerViewModelTest {
         return SpeakerViewModel(
             loadSpeakerUseCase,
             loadSpeakerSessionsUseCase,
+            getTimeZoneUseCase,
             signInViewModelDelegate,
             eventActionsDelegate,
             analyticsHelper

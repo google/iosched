@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,11 +16,13 @@
 -->
 <resources>
     <string name="title_schedule">Расписание</string>
+    <string name="title_home">Главная</string>
     <string name="title_map">Схема места проведения</string>
+    <string name="title_explore_io">Тур по фестивалю в дополненной реальности</string>
+    <string name="title_info">Информация</string>
     <string name="filters">Фильтры</string>
     <string name="category_heading_tracks">Темы</string>
     <string name="category_heading_types">Типы</string>
-    <string name="clear_all">Удалить все</string>
     <string name="reset">Сбросить</string>
     <plurals name="filter_event_count">
         <item quantity="one">%1$d мероприятие</item>
@@ -28,14 +30,18 @@
         <item quantity="many">%1$d мероприятий</item>
         <item quantity="other">%1$d мероприятия</item>
     </plurals>
+    <string name="starred_and_reserved">Сохраненные мероприятия</string>
+    <string name="starred_and_reserved_short">Мои мероприятия</string>
+    <string name="search_schedule_hint">Поиск по расписанию</string>
+    <string name="search_schedule_no_results">Ничего не найдено</string>
     <string name="agenda">Расписание</string>
     <string name="event_starred">Мероприятие добавлено в ваше расписание</string>
     <string name="event_unstarred">Мероприятие удалено из вашего расписания.</string>
     <string name="event_star_error">Не удалось добавить мероприятие в расписание.</string>
     <string name="reservation_error">Не удалось изменить бронирование. Дождитесь подтверждения предыдущих запросов или повторите попытку позже.</string>
     <string name="reservation_request_succeeded">Запрос на бронирование места отправлен.</string>
-    <string name="reservation_cancel_succeeded">Бронирование места на сессии \"&lt;b&gt;%s&lt;/b&gt;\" отменено.</string>
-    <string name="reservation_new">Место на сессии \"&lt;b&gt;%s&lt;/b&gt;\" забронировано.</string>
+    <string name="reservation_cancel_succeeded">Бронирование места на сессии "&lt;b&gt;%s&lt;/b&gt;" отменено.</string>
+    <string name="reservation_new">Место на сессии "&lt;b&gt;%s&lt;/b&gt;" забронировано.</string>
     <string name="reservation_replaced">Мероприятие заменено.</string>
     <string name="waitlist_new">Вы добавлены в список ожидания.</string>
     <string name="waitlist_cancel_succeeded">Вы удалены из списка ожидания.</string>
@@ -46,28 +52,43 @@
     <string name="reservation_denied_unknown">Запрос на бронирование отклонен из-за неизвестной ошибки.</string>
     <string name="cancellation_denied_cutoff">Запрос на отмену бронирования отклонен, так как до сессии осталось слишком мало времени.</string>
     <string name="cancellation_denied_unknown">Запрос на отмену бронирования отклонен из-за неизвестной ошибки.</string>
-    <string name="schedule_filters_empty">Сегодня у вас нет сохраненных мероприятий и сессий, на которые вы забронировали место.</string>
+    <string name="schedule_filters_empty">Мероприятий нет.</string>
     <string name="reservation_reservable">Забронировать место</string>
     <string name="reservation_reserved">Место забронировано</string>
     <string name="reservation_waitlisted">В списке ожидания</string>
     <string name="reservation_waitlist_available">Отправить запрос на добавление в список ожидания</string>
     <string name="reservation_disabled">Бронирование недоступно</string>
+    <string name="reservation_pending">Запрос на бронирование рассматривается</string>
     <string name="schedule_hint_title">Составьте свое расписание</string>
-    <string name="schedule_hint_view_only_your_events">Показать только сохраненные мероприятия</string>
     <string name="schedule_hint_star_event">Добавить в расписание</string>
     <string name="schedule_hint_reserve_session_seat">Забронировать место на сессии</string>
-    <string name="schedule_hint_star_event_content_description">Значок для добавления мероприятия в расписание</string>
-    <string name="schedule_hint_reserve_session_seat_content_description">Значок для бронирования места на сессии</string>
     <string name="rate_session">Оценить сессию</string>
     <string name="menu_item_session_location">Место проведения сессии</string>
     <string name="menu_item_session_star">Добавить сессию в расписание</string>
+    <string name="menu_item_calendar">Добавить в календарь</string>
+    <string name="speaker_delimiter">,</string>
     <string name="session_detail_speakers_header">Выступающие</string>
     <string name="session_detail_related_header">Похожие мероприятия</string>
+    <string name="feedback_submit">Отправить</string>
+    <string name="feedback_thank_you">Благодарим за отзыв!</string>
+    <string name="feedback_q1_text">Как бы Вы оценили мероприятие в целом?</string>
+    <string name="feedback_q2_text">Насколько мероприятие, которое Вы посетили, соответствовало Вашим ожиданиям и информации о нем?</string>
+    <string name="feedback_q3_text">Насколько то, что Вы узнали, поможет Вам в реализации проектов?</string>
+    <string name="feedback_q4_text">Насколько то, что Вы узнали, поможет Вам в реализации проектов?</string>
+    <string name="feedback_q1_label_start">Обычное</string>
+    <string name="feedback_q2_label_start">Не оправдало ожиданий</string>
+    <string name="feedback_q3_label_start">Плохо</string>
+    <string name="feedback_q4_label_start">Почти не поможет</string>
+    <string name="feedback_q1_label_end">Потрясающе</string>
+    <string name="feedback_q2_label_end">Превзошло ожидания</string>
+    <string name="feedback_q3_label_end">Значительно поможет</string>
+    <string name="feedback_q4_label_end">Значительно поможет</string>
+    <string name="a11y_show_navigation">Показать меню навигации</string>
     <string name="a11y_collapse_filters_sheet">Свернуть список фильтров</string>
     <string name="a11y_clear_tag_filters">Удалить фильтры</string>
-    <string name="a11y_revert_pinned">Показать все сессии</string>
+    <string name="a11y_filter_applied">Применен фильтр: %1s</string>
+    <string name="a11y_filter_not_applied">Фильтр "%1s" не применен</string>
     <string name="a11y_reservation_available">Забронировать место на мероприятии</string>
-    <string name="a11y_reservation_working">Запрос на бронирование обрабатывается…</string>
     <string name="a11y_reservation_reserved">Место забронировано</string>
     <string name="a11y_reservation_disabled">Бронирование недоступно</string>
     <string name="a11y_reservation_wait_list_available">Отправить запрос на добавление в список ожидания</string>
@@ -77,24 +98,44 @@
     <string name="a11y_unstarred">Мероприятие не добавлено в закладки</string>
     <string name="a11y_star">Добавить в расписание или удалить из него</string>
     <string name="a11y_play">Посмотреть видео</string>
-    <string name="dialog_sign_in_title">Войдите в аккаунт</string>
+    <string name="a11y_select_map_mode">Задать параметры карты</string>
+    <string name="a11y_search_schedule">Поиск расписания</string>
+    <string name="welcome">Добро пожаловать!</string>
+    <string name="a11y_signed_in_content_description">Вы вошли в аккаунт %s.</string>
+    <string name="a11y_signed_out_content_description">Нажмите, чтобы войти.</string>
     <string name="dialog_sign_in_content">Тогда вы сможете добавлять мероприятия в свое расписание, бронировать места и оценивать сессии. Сведения обо всех действиях, которые вы выполните в аккаунте, будут доступны как в приложении, так и на сайте.</string>
-    <string name="not_now">Не сейчас</string>
     <string name="sign_in">Войти</string>
-    <string name="dialog_sign_out_title">Выйти из аккаунта?</string>
+    <string name="firebase_auth_no_network_connection">Нет подключения к Интернету.</string>
+    <string name="firebase_auth_unknown_error">Неизвестная ошибка.</string>
     <string name="dialog_sign_out_content">Данные о ваших оценках, добавленных в расписание мероприятиях и забронированных местах будут сохранены.</string>
     <string name="sign_out">Выйти</string>
+    <string name="manage_google_account">Настроить аккаунт Google</string>
     <string name="remove_reservation_title">Отменить бронирование?</string>
-    <string name="remove_reservation_content">Если вы сделаете это, занять место на сессии \"%1$s\" можно будет только в порядке живой очереди.</string>
+    <string name="remove_reservation_content">Если вы сделаете это, занять место на сессии "%1$s" можно будет только в порядке живой очереди.</string>
     <string name="cancel">Отменить</string>
     <string name="remove">Удалить</string>
     <string name="swap_reservation_title">Заменить бронирование?</string>
-    <string name="swap_reservation_content">Ранее вы уже забронировали место на сессии \"%1$s\", которая будет проходить в то же время, что и сессия \"%2$s\". Если вы подадите заявку на участие в последнем мероприятии, предыдущая броня будет снята.</string>
+    <string name="swap_reservation_content">Ранее вы уже забронировали место на сессии "%1$s", которая будет проходить в то же время, что и сессия "%2$s". Если вы подадите заявку на участие в последнем мероприятии, предыдущая броня будет снята.</string>
     <string name="swap">Заменить</string>
     <string name="notifications_preference_dialog_title">Уведомления о фестивале</string>
-    <string name="notifications_preference_dialog_content">Если вы включите уведомления, мы будем сообщать вам о начале сессий и появлении записей с них, а также о развлекательных мероприятиях и других важных новостях фестиваля. Изменить параметры уведомлений можно будет в любое время в разделе \"Информация\" в настройках.</string>
+    <string name="notifications_preference_dialog_content">Если вы включите уведомления, мы будем сообщать вам о начале сессий и появлении записей с них, а также о развлекательных мероприятиях и других важных новостях фестиваля. Изменить параметры уведомлений можно будет в любое время в разделе "Информация" в настройках.</string>
     <string name="no">Нет</string>
     <string name="yes">Да</string>
+    <string name="feed_not_available">Новостей нет.</string>
+    <string name="feed_loading_error">Не удалось загрузить фид. Повторите попытку позже.</string>
+    <string name="feed_announcement_title">Новости</string>
+    <string name="feed_upcoming_events">Предстоящие мероприятия</string>
+    <string name="feed_saved_events">Сохраненные мероприятия</string>
+    <string name="feed_no_saved_events">У вас нет сохраненных мероприятий</string>
+    <string name="feed_view_all_events">Показать все мероприятия</string>
+    <string name="feed_view_your_schedule">Посмотреть расписание</string>
+    <string name="feed_watch_live_stream">Смотреть трансляцию</string>
+    <plurals name="duration_days">
+        <item quantity="one">%s день</item>
+        <item quantity="few">%s дня</item>
+        <item quantity="many">%s дней</item>
+        <item quantity="other">%s дня</item>
+    </plurals>
     <plurals name="duration_hours">
         <item quantity="one">%s час</item>
         <item quantity="few">%s часа</item>
@@ -107,20 +148,31 @@
         <item quantity="many">%s минут</item>
         <item quantity="other">%s минуты</item>
     </plurals>
+    <plurals name="duration_seconds">
+        <item quantity="one">%s секунда</item>
+        <item quantity="few">%s секунды</item>
+        <item quantity="many">%s секунд</item>
+        <item quantity="other">%s секунды</item>
+    </plurals>
     <string name="menu_item_share_session">Поделиться сессией</string>
-    <string name="share_text_session_detail">Узнайте о сессии \"%1$s\" на фестивале #io18 %2$s</string>
+    <string name="share_text_session_detail">Узнайте о сессии "%1$s" на фестивале #io19 %2$s</string>
     <string name="intent_chooser_session_detail">Поделиться</string>
+    <string name="map_variant_after_dark">Ночной режим</string>
+    <string name="map_variant_concert">Концерт</string>
+    <string name="map_variant_daytime">Дневной режим</string>
+    <string name="enable_my_location">Открыть доступ к геоданным</string>
+    <string name="my_location_rationale">Разрешите доступ к своему местоположению, чтобы мы могли показывать вам его на карте.</string>
     <string name="onboarding_get_started">Начать</string>
     <string name="onboarding_welcome_to_google_i_o">Добро пожаловать на фестиваль Google I/O</string>
-    <string name="onboarding_date_location">8–10 мая 2018 г.,\nМаунтин-Вью, Калифорния</string>
-    <string name="onboarding_build_schedule">Составьте свое расписание</string>
-    <string name="onboarding_build_sched_benefits">Выберите, чем хотите заняться на фестивале I/O и забронируйте места на интересных вам сессиях.</string>
-    <string name="onboarding_watch_live">Прямая трансляция фестиваля I/O</string>
-    <string name="onboarding_join_online">Присоединяйтесь к нам через Интернет: мы будем транслировать ключевые моменты выступлений и большинство сессий.</string>
+    <string name="onboarding_date_location">7–9 мая 2019 г.,\nМаунтин-Вью, Калифорния</string>
     <string name="onboarding_label_days">д.</string>
     <string name="onboarding_label_hours">ч.</string>
     <string name="onboarding_label_mins">м.</string>
     <string name="onboarding_label_seconds">с.</string>
+    <string name="onboarding_welcome_google_io_pre">Фестиваль Google I/O начнется совсем скоро</string>
+    <string name="onboarding_welcome_google_io_during">Google I/O</string>
+    <string name="onboarding_welcome_google_io_post">Посмотрите резюме Google I/O 2019 и узнайте, что говорят о конференции в социальных сетях, с помощью хештега #io19</string>
+    <string name="onboarding_signin">Войдите в аккаунт, чтобы получать уведомления о фестивале и бронировать места на мероприятия.</string>
     <plurals name="session_starting_in">
         <item quantity="one">Сессия начнется через %1$s минуту</item>
         <item quantity="few">Сессия начнется через %1$s минуты</item>
@@ -129,53 +181,110 @@
     </plurals>
     <string name="expanded">Развернуто</string>
     <string name="collapsed">Свернуто</string>
-    <string name="info_title">Информация</string>
     <string name="event_title">Мероприятие</string>
     <string name="travel_title">Полезные сведения</string>
+    <string name="faq_title">Часто задаваемые вопросы</string>
     <string name="settings_title">Настройки</string>
-    <string name="travel_directions_title">Схема проезда</string>
-    <string name="travel_shuttle_title">Трансфер (рекомендуется)</string>
-    <string name="travel_carpool_parking_title">Карпулинг и парковка</string>
-    <string name="travel_ride_sharing_title">Райдшеринг</string>
-    <string name="travel_public_transportation_title">Общественный транспорт</string>
+    <string name="about_title">О нас</string>
+    <string name="travel_what_to_bring_title">Что взять на фестиваль</string>
+    <string name="travel_hotels_title">Отели</string>
+    <string name="travel_getting_to_mountain_view_title">Как добраться до Маунтин-Вью</string>
+    <string name="travel_getting_to_shoreline_title">Как добраться до Маунтин-Вью</string>
+    <string name="travel_shuttle_service_title">Трансфер</string>
+    <string name="travel_off_site_parking_title">Парковка за пределами площадки фестиваля</string>
+    <string name="travel_for_public_transportation_title">Общественный транспорт</string>
     <string name="travel_biking_title">Велосипеды</string>
-    <string name="travel_directions_description">Фестиваль будет проходить по адресу 1 Amphitheatre Parkway, Mountain View, CA 94043, США. Информацию о том, как добраться, можно посмотреть в <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Картах</a> или приложении <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a>.</string>
-    <string name="travel_shuttle_description">Бесплатный трансфер на фестиваль Google I/O будет предоставлен тем его участникам, которые остановятся в рекомендованных отелях, а также тем, кто проживает в Сан-Франциско и других крупных городах полуострова. Воспользоваться трансфером можно только после предъявления значка участника Google I/O.\n\nЕсли вам необходимы особая помощь или транспортное средство для перевозки людей с ограниченными возможностями, укажите это в форме регистрации. Наши специалисты по планированию мероприятий свяжутся с вами напрямую.</string>
-    <string name="travel_carpool_parking_description">Поскольку количество парковочных мест ограничено, а большинство из них отведено для автомобилей с двумя или более пассажирами, рекомендуем вам найти попутчиков среди других участников фестиваля. Оставлять автомобили можно только на специальных местах вдоль бульвара Shoreline Boulevard, на противоположной стороне от здания Shoreline Amphitheatre. Вдоль аллеи Amphitheatre Parkway и улицы Charleston Road парковаться нельзя.</string>
-    <string name="travel_ride_sharing_description"><b>Приложение Waze Carpool</b>\nБлагодаря этому сервису добраться до места проведения фестиваля значительно проще. Для водителей предусмотрено приложение <a href="http://Waze.com/get">Waze</a>, а для тех, кто ищет попутчиков, – <a href="http://Waze.com/carpool">Waze Carpool</a>. Для участников фестиваля предусмотрены промокоды. Подробнее о них мы расскажем позже.\n\n<b>Сервис Lyft Line</b>\nПриложение Lyft – отличный способ найти попутчиков и сэкономить на плате за проезд.\n<b>Промокод для скидки:</b> Googleio18\nКод можно применять с 8 по 10 мая 2018 года только при поездках с пунктом отправления или назначения в Shoreline Amphitheatre. Стоимость поездки не должна превышать 10 долларов США. Воспользоваться промокодом могут не более 250 человек в день.</string>
-    <string name="travel_public_transportation_description">Прямых маршрутов до места проведения фестиваля нет, поэтому будет организован трансфер. Подробнее о нем мы сообщим позже. Следите за новостями!</string>
-    <string name="travel_biking_description">Велосипедисты могут добраться до амфитеатра по одной из двух дорожек: Stevens Creek Trail или Permanente Creek Trail. Посмотреть, где они расположены, можно в сервисе \"Google Карты\". В зоне A у здания Shoreline Amphitheatre расположена бесплатная велопарковка. Кроме того, ежедневно с 7 часов утра и до окончания мероприятий будет работать пункт парковки от организации Silicon Valley Bicycle Coalition.\n\n10 мая в Области залива Сан-Франциско состоится акция \"На работу на велосипеде\". В ней примут участие сотни велосипедистов. На маршруте будут организованы пункты питания. С подробной информацией можно ознакомиться на сайте мероприятия.</string>
+    <string name="travel_ridesharing_title">Совместные поездки</string>
+    <string name="travel_airport_transfers_title">Трансфер в аэропорт</string>
+    <string name="travel_what_to_bring_description">Фестиваль Google I/O проходит под открытым небом. Благодаря этому на конференции царит непринужденная атмосфера. Мероприятия будут проходить в шатрах с управляемыми микроклиматом, но в остальное время рекомендуем носить солнцезащитные очки и пользоваться кремами с SPF даже вечером. На фестивале нет дресс-кода, однако при выборе одежды не забывайте учесть погоду Калифорнии.</string>
+    <string name="travel_hotels_description">У вас будет возможность остановиться в одном из отелей поблизости. Список гостиниц и сведения о наличии мест будут постоянно обновляться. Вы можете выбрать удобный для вас отель с помощью карты ниже. &lt;a href="https://www.google.com/maps/d/u/1/viewer?mid=11u43dDY9LID1uf46p4y7ba2_TbE_Y8-W&amp;ll=37.383600316075075%2C-122.07007405000002&amp;z=12"&gt;Карта&lt;/a&gt;</string>
+    <string name="travel_getting_to_mountain_view_description">Добраться до города Маунтин-Вью можно самолетом. Удобнее всего прилетать в следующие международные аэропорты, расположенные в области Южного залива Сан-Франциско:&lt;br&gt; &lt;a href="https://www.google.com/maps/dir/San+Francisco+International+Airport,+San+Francisco,+CA+94128/Shoreline+Amphitheatre,+Amphitheatre+Parkway,+Mountain+View,+CA/@37.5206703,-122.3803144,11z/data=!3m1!4b1!4m18!4m17!1m5!1m1!1s0x808f778c55555555:0xa4f25c571acded3f!2m2!1d-122.3789554!2d37.6213129!1m5!1m1!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!2m2!1d-122.0807647!2d37.4267703!2m3!6e0!7e2!8j1463556000!3e0?hl=en"&gt;Аэропорт Сан-Франциско (SFO)&lt;/a&gt; около 39 км&lt;br&gt;&lt;br&gt; &lt;a href="https://www.google.com/maps/dir/Oakland+International+Airport,+Oakland,+CA/Shoreline+Amphitheatre,+Amphitheatre+Parkway,+Mountain+View,+CA/@37.5755915,-122.270249,11z/data=!3m1!4b1!4m18!4m17!1m5!1m1!1s0x808f845402c0a641:0xb0630c0f03017460!2m2!1d-122.2197428!2d37.7125689!1m5!1m1!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!2m2!1d-122.0807647!2d37.4267703!2m3!6e0!7e2!8j1463556000!3e0?hl=en"&gt;Аэропорт Окленда (OAK)&lt;/a&gt; около 52 км&lt;br&gt;&lt;br&gt; &lt;a href="https://www.google.com/maps/dir/San+Jose+International+Airport-Sjc,+Airport+Boulevard,+San+Jose,+CA,+United+States/Shoreline+Amphitheatre,+Amphitheatre+Parkway,+Mountain+View,+CA/@37.3954744,-122.0741791,12z/data=!3m1!4b1!4m18!4m17!1m5!1m1!1s0x808fcbc3fab3c59b:0xbcfa443f6df67e3e!2m2!1d-121.9289375!2d37.3639472!1m5!1m1!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!2m2!1d-122.0807647!2d37.4267703!2m3!6e0!7e2!8j1463556000!3e0?hl=en"&gt;Аэропорт Сан-Хосе (SJC)&lt;/a&gt; около 19 км</string>
+    <string name="travel_getting_to_shoreline_description">Чтобы избежать скопления транспорта и сократить выбросы углекислого газа в атмосферу, мы объявляем Google I/O 2019 мероприятием, для которого не будет организована парковка*. Это обдуманное решение, и в качестве альтернативы мы предлагаем несколько способов добраться до места проведения фестиваля бесплатно и без автомобиля.&lt;br&gt;&lt;br&gt;Более подробную информацию об этом мы предоставим ближе ко дню начала фестиваля.&lt;br&gt;&lt;br&gt;*Парковочные места будут доступны только для людей с ограниченными возможностями и беременных женщин.</string>
+    <string name="travel_shuttle_service_description">Чтобы избежать скопления транспорта и сократить выбросы углекислого газа в атмосферу, мы объявляем Google I/O 2019 мероприятием, для которого не будет организована парковка*. Это обдуманное решение, и в качестве альтернативы мы предлагаем несколько способов добраться до места проведения фестиваля бесплатно и без автомобиля.&lt;br&gt;&lt;br&gt;Более подробную информацию об этом мы предоставим ближе ко дню начала фестиваля.&lt;br&gt;&lt;br&gt;*Парковочные места будут доступны только для людей с ограниченными возможностями и беременных женщин.</string>
+    <string name="travel_off_site_parking_description">Участники фестиваля смогут бесплатно пользоваться парковкой стадиона &lt;a href="https://www.sjearthquakes.com/avayastadium/parking-directions"&gt;Avaya Stadium&lt;/a&gt;. От стадиона до места проведения фестиваля будет организован трансфер.&lt;br&gt;&lt;br&gt; Если вам необходимы особая помощь или транспортное средство для перевозки людей с ограниченными возможностями, укажите это в форме регистрации. Наши специалисты по планированию мероприятий свяжутся с вами напрямую.</string>
+    <string name="travel_for_public_transportation_description">Во время предварительной регистрации можно получить проездной билет. Добраться до фестиваля на общественном транспорте можно несколькими способами:&lt;br&gt;&lt;br&gt;&lt;a href="http://www.caltrain.com/"&gt;Caltrain&lt;/a&gt;. Региональная система пригородных поездов.&lt;br&gt;&lt;br&gt;&lt;a href="http://www.vta.org/getting-around/interactive-light-rail-map"&gt;VTA&lt;/a&gt;. Легкорельсовая транспортная система, обслуживающая область Южного залива Лос-Анджелеса.&lt;br&gt;&lt;br&gt;&lt;a href="https://www.bart.gov/"&gt;BART&lt;/a&gt;. Система скоростных электропоездов в области залива Сан-Франциско.&lt;br&gt;&lt;br&gt;&lt;a href="https://www.amtrak.com/home.html"&gt;AMTRAK&lt;/a&gt;. Региональная железнодорожная система.&lt;br&gt;&lt;br&gt;Прямых маршрутов до места проведения фестиваля нет, поэтому будет организован трансфер. Позже мы расскажем о нем подробнее. Следите за новостями!</string>
+    <string name="travel_biking_description">Велосипедисты могут добраться до амфитеатра по одной из двух дорожек: Stevens Creek Trail или Permanente Creek Trail. Посмотреть, где они находятся, можно в Google Картах.&lt;br&gt;&lt;br&gt;Кроме того, ежедневно с 7 часов утра и до окончания мероприятий будет работать пункт парковки от организации Silicon Valley Bicycle Coalition.</string>
+    <string name="travel_ridesharing_description">В последний день фестиваля участникам будет предоставляться трансфер в аэропорты Сан-Франциско (SFO) и Сан-Хосе (SJC). В другие дни он не предусмотрен.</string>
+    <string name="travel_airport_transfers_description">В последний день фестиваля участникам будет предоставляться трансфер в аэропорты Сан-Франциско (SFO) и Сан-Хосе (SJC). В другие дни он не предусмотрен.</string>
+    <string name="faq_when_and_where_title">Где и когда будет проходить фестиваль?</string>
+    <string name="faq_how_can_i_stay_informed_title">Где можно узнать последние новости о фестивале Google I/O?</string>
+    <string name="faq_will_the_sessions_be_english_title">Все ли сессии будут проходить на английском языке?</string>
+    <string name="faq_can_i_reserve_sessions_ahead_of_time_title">Можно ли бронировать места на мероприятия до начала конференции?</string>
+    <string name="faq_best_way_to_get_to_shoreline_title">Как удобнее всего добираться до Shoreline Amphitheatre?</string>
+    <string name="faq_where_and_when_can_i_pick_up_badge_title">Где и когда можно получить значок участника?</string>
+    <string name="faq_want_a_front_row_seat_at_keynote_title">На презентации я хочу сидеть в первом ряду. Что вы мне посоветуете?</string>
+    <string name="faq_what_should_i_wear_title">Будет ли на фестивале дресс-код?</string>
+    <string name="faq_onsite_food_options_title">Чем можно будет перекусить в ходе мероприятий?</string>
+    <string name="faq_if_i_lose_something_onsite_title">Будет ли работать бюро находок?</string>
+    <string name="faq_after_dark_program_title">Что входит в программу развлекательных мероприятий?</string>
+    <string name="faq_accessibility_needs_title">Как обеспечивается доступность фестиваля для участников с ограниченными возможностями?</string>
+    <string name="faq_support_for_expectant_mothers_parents_title">Предусмотрены ли на фестивале удобства для беременных женщин и родителей с маленькими детьми?</string>
+    <string name="faq_community_guidelines_and_policy_title">Правила Google в отношении неподобающего поведения и проведения мероприятий</string>
+    <string name="faq_sessions_be_live_streamed_question_title">У меня не получится посетить интересную сессию. Можно ли будет посмотреть ее в записи?</string>
+    <string name="faq_want_to_celebrate_i_o_title">Я хочу принять активное участие в фестивале вместе со своей командой.  Можно ли это сделать?</string>
+    <string name="faq_when_and_where_description">Расписание мероприятий и информация о них есть на &lt;a href="https://events.google.com/io/"&gt;сайте фестиваля&lt;/a&gt;, в &lt;a href="http://googledevelopers.blogspot.com/"&gt;блоге для разработчиков&lt;/a&gt; и в социальных сетях &lt;a href="https://twitter.com/googledevs"&gt;Твиттер&lt;/a&gt; и &lt;a href="https://www.facebook.com/Google-Developers-967415219957038/"&gt;Facebook&lt;/a&gt;. Найти записи о фестивале можно по хештегу &lt;a href="https://twitter.com/search?q=%23io19&amp;src=typd"&gt;#io19&lt;/a&gt;. Помимо этого, незадолго до конференции участникам придут письма со всей необходимой информацией, в том числе о том, как пройти регистрацию.</string>
+    <string name="faq_how_can_i_stay_informed_description">Расписание мероприятий и информация о них есть на &lt;a href="https://events.google.com/io/"&gt;сайте фестиваля&lt;/a&gt;, в &lt;a href="http://googledevelopers.blogspot.com/"&gt;блоге для разработчиков&lt;/a&gt; и в социальных сетях &lt;a href="https://twitter.com/googledevs"&gt;Твиттер&lt;/a&gt; и &lt;a href="https://www.facebook.com/Google-Developers-967415219957038/"&gt;Facebook&lt;/a&gt;. Найти записи о фестивале можно по хештегу &lt;a href="https://twitter.com/search?q=%23io19&amp;src=typd"&gt;#io19&lt;/a&gt;. Помимо этого, незадолго до конференции участникам придут письма со всей необходимой информацией, в том числе о том, как пройти регистрацию.</string>
+    <string name="faq_will_the_sessions_be_english_description">Да. Поскольку английский – международный язык, все ведущие будут выступать именно на нем.</string>
+    <string name="faq_can_i_reserve_sessions_ahead_of_time_description">Если вы планируете посетить фестиваль лично, забронировать места на сессиях можно уже в апреле на нашем сайте или в приложении. Обратите внимание, что часть мест будет продана непосредственно перед сессиями. Бронирование мест на занятия в формате Codelab и персональные консультации не предусмотрено: регистрация на них проходит в порядке живой очереди.</string>
+    <string name="faq_best_way_to_get_to_shoreline_description">Ответ на этот вопрос можно найти в разделе "Полезные сведения". Там же представлены информация о трансфере, схема проезда на автомобиле и велосипеде, а также сведения о райдшеринге.</string>
+    <string name="faq_where_and_when_can_i_pick_up_badge_description">Получить значок участника фестиваля Google I/O вы сможете в здании Shoreline Amphitheatre начиная с 6 мая. Вот как это будет происходить:&lt;br&gt; – Во-первых, потребуется ваше удостоверение личности. В документе должна быть ваша фотография, а указанное в нем имя должно совпадать с именем, предоставленным при регистрации. Это обязательное условие, чтобы попасть на фестиваль. Студентам и сотрудникам учебных заведений также необходимо будет показать удостоверение, подтверждающее этот статус.&lt;br&gt; – Вам также понадобится QR-код, который мы отправили на ваш адрес электронной почты после регистрации. Мы можем считать код с экрана вашего телефона, поэтому распечатывать письмо не нужно. #бережемприроду &lt;br&gt;&lt;br&gt;Значок не подлежит передаче другим лицам, а в случае потери его нельзя восстановить или заменить. Участники фестиваля должны иметь при себе значок при посещении всех мероприятий, в том числе сессий, тестирований и развлекательных программ, и предъявлять его по требованию службы безопасности. На значке Google I/O могут быть напечатаны ваше имя, фотография и название компании, в которой вы работаете.</string>
+    <string name="faq_want_a_front_row_seat_at_keynote_description">Мы советуем приходить на регистрацию заранее. Дело в том, что лучшие места на презентации можно забронировать при получении значка участника. Регистрация начнется 6 мая в 07:00 и будет проходить в порядке живой очереди.</string>
+    <string name="faq_what_should_i_wear_description">Дресс-код для участников фестиваля не предусмотрен. Однако, поскольку мероприятия будут проходить на улице, мы советуем учесть, что днем в области залива Сан-Франциско очень жарко, а вечером прохладно.</string>
+    <string name="faq_onsite_food_options_description">Беспокоиться о питании не стоит.  Участникам предлагаются бесплатные завтрак, обед и закуски на протяжении всех трех дней фестиваля. В первые два дня в рамках развлекательной программы также будет организован ужин.</string>
+    <string name="faq_if_i_lose_something_onsite_description">Да, но только во время проведения мероприятий. Оно будет расположено в справочном центре фестиваля. Все потерянные вещи, которые владельцы не заберут в течение дня, будут переданы в службу безопасности. Обратите внимание, что значок участника восстановлению не подлежит. Если вы потеряете его, то не сможете попасть на площадку фестиваля.</string>
+    <string name="faq_after_dark_program_description">8 и 9 мая для участников фестиваля предусмотрена вечерняя развлекательная программа в здании Shoreline Amphitheatre. Посетителям будут предоставлены еда и напитки, в том числе алкогольные (только тем, кому уже исполнился 21 год). При посещении мероприятий необходимо иметь при себе значок.</string>
+    <string name="faq_accessibility_needs_description">Беременные женщины могут оставить автомобили в зоне парковки для людей с ограниченными возможностями.&lt;br&gt;Для посетителей с маленькими детьми выделены четыре отдельных комнаты. Вот часы их работы: 7 и 8 мая с 08:00 до 20:00, 9 мая с 08:00 до 16:00. Посещение осуществляется по предварительной записи в порядке живой очереди. Записаться можно у входа в комнату. Более подробную информацию об этом предоставляют в справочном центре.&lt;br&gt;&lt;br&gt;Заполняя регистрационную форму, родители могут указать, что хотят получить возмещение расходов на уход за детьми. За каждый день мероприятия мы предлагаем сумму в размере 100 долл. США (всего не более 300 долл. США). Возместить расходы могут только те родители, чья заявка будет одобрена по электронной почте до начала конференции, и чье присутствие на ней подтвердится. Всеми выплатами будет заниматься сторонняя компания. В течение семи дней после завершения конференции ее сотрудники свяжутся с вами и передадут дальнейшие инструкции.</string>
+    <string name="faq_support_for_expectant_mothers_parent_description">Беременные женщины могут оставить автомобили в зоне парковки для людей с ограниченными возможностями.&lt;br&gt;Для посетителей с маленькими детьми выделены четыре отдельных комнаты. Вот часы их работы: 7 и 8 мая с 08:00 до 20:00, 9 мая с 08:00 до 16:00. Посещение осуществляется по предварительной записи в порядке живой очереди. Записаться можно у входа в комнату. Более подробную информацию об этом предоставляют в справочном центре.&lt;br&gt;&lt;br&gt;Заполняя регистрационную форму, родители могут указать, что хотят получить возмещение расходов на уход за детьми. За каждый день мероприятия мы предлагаем сумму в размере 100 долл. США (всего не более 300 долл. США). Возместить расходы могут только те родители, чья заявка будет одобрена по электронной почте до начала конференции, и чье присутствие на ней подтвердится. Всеми выплатами будет заниматься сторонняя компания. В течение семи дней после завершения конференции ее сотрудники свяжутся с вами и передадут дальнейшие инструкции.</string>
+    <string name="faq_community_guidelines_and_policy_description">На мероприятиях Google нет места неподобающему поведению. Мы стремимся к тому, чтобы каждый посетитель чувствовал себя комфортно, вне зависимости от его половой идентификации, сексуальной ориентации, уровня трудоспособности, принадлежности к аутическому спектру, внешнего вида, этнической принадлежности, расы, возраста, религиозных убеждений и других особенностей. Как и в прошлом году, на территории фестиваля есть гендерно-нейтральные уборные.&lt;br&gt;&lt;br&gt;Мы категорически не допускаем проявления агрессии в отношении посетителей мероприятия.&lt;br&gt;Если мы выявим любое нарушение, то примем соответствующие меры. Узнать больше о Правилах Google в отношении проведения мероприятий и неподобающего поведения можно на &lt;a href="https://www.google.com/events/policy/anti-harassmentpolicy.html"&gt;этой странице&lt;/a&gt;.</string>
+    <string name="faq_sessions_be_live_streamed_question_description">У вас нет возможности посетить фестиваль лично? Ничего страшного. Присоединяйтесь к нам через Интернет. Две презентации и все сессии можно будет посмотреть в прямом эфире на сайте I/O. Сессии также будут доступны в записи на канале YouTube &lt;a href="https://www.youtube.com/user/GoogleDevelopers"&gt;Google Developers&lt;/a&gt;.</string>
+    <string name="faq_want_to_celebrate_i_o_description">Да! Каждый год разработчики со всего мира организовывают &lt;a href="https://events.google.com/io/extended"&gt;мероприятия Google I/O Extended&lt;/a&gt;, в рамках которых они проводят собственные сессии и смотрят прямые трансляции фестиваля. &lt;br&gt; Хотите стать ведущим такого события? &lt;br&gt;&lt;br&gt;Ознакомьтесь с &lt;a href="https://docs.google.com/presentation/d/e/2PACX–1vReWDtj-yASOho5q7XC6lYY8af9wRa13-81mPaoSRodiRoCw4MKJnQExQ8GxyNyCQiPZpBprznPG4ex/pub?slide=id.g62811f3b0_18"&gt;этими материалами&lt;/a&gt;. Там вы найдете советы о том, что нужно сделать, чтобы провести успешное мероприятие.&lt;br&gt;&lt;br&gt; Далее &lt;a href="https://events.google.com/io/extended/form"&gt;зарегистрируйте&lt;/a&gt; свое событие на сайте конференции.&lt;br&gt;&lt;br&gt; Кроме того, продвигайте мероприятие в социальных сетях, используя официальный хештэг фестиваля #io19extended специально для Google I/O Extended.&lt;br&gt;&lt;br&gt; Примечание. Организаторы I/O Extended могут попросить компанию Google удалить их личные данные или сведения о мероприятии после его завершения. Для этого нужно написать нам на адрес io19@google.com.&lt;br&gt; Хотите просто поучаствовать в таком мероприятии? Откройте &lt;a href="https://events.google.com/io/extended"&gt;эту карту&lt;/a&gt;, найдите событие рядом с вами и зарегистрируйтесь.&lt;br&gt; Остались вопросы о программе I/O Extended? Напишите нам на адрес io19extended\-external@google.com.</string>
     <string name="view_sessions_text">Показать сессии</string>
-    <string name="view_codelabs_text">Показать занятия в формате Codelab</string>
-    <string name="view_events_text">Показать все мероприятия</string>
-    <string name="view_map_text">Показать карту</string>
-    <string name="wifi_network_label">Название сети Wi-Fi:</string>
-    <string name="wifi_password_label">Пароль:</string>
     <string name="wifi_install_success">Сеть Wi-Fi сохранена.</string>
-    <string name="wifi_install_error_message">Не удалось сохранить сеть Wi-Fi.</string>
+    <string name="wifi_install_clipboard_message">Не удалось сохранить сеть Wi-Fi.\nПароль от сети Wi-Fi скопирован в буфер обмена.</string>
     <string name="event_sessions_title">Сеансы</string>
     <string name="event_sandbox_title">Тестирования</string>
     <string name="event_codelabs_title">Мероприятия в формате Codelab</string>
     <string name="event_officehours_title">Персональные консультации</string>
     <string name="event_afterhours_title">Развлекательные мероприятия</string>
     <string name="event_meals_title">Питание</string>
+    <string name="event_sessions_description">Бронировать места на сессиях можно уже в апреле через наш сайт или мобильное приложение. Обратите внимание, что часть мест будет продана непосредственно перед сессиями. Бронирование мест на занятия в формате Codelab и персональные консультации не предусмотрено: регистрация на них проходит в порядке живой очереди.</string>
     <string name="event_sandbox_description">В специально оборудованных для этого помещениях мы покажем, как работают наши новейшие технологические достижения.</string>
     <string name="event_codelabs_description">Вы сможете самостоятельно протестировать наши новейшие разработки используя готовые коды, а если потребуется, обратиться за помощью к нашим специалистам.</string>
     <string name="event_officehours_description">Вы сможете обсудить со специалистами Google технические аспекты создания приложений, узнать авторитетное мнение о своих проектах и получить советы о том, как их улучшить.</string>
     <string name="event_afterhours_description">Для участников фестиваля предусмотрена развлекательная программа. В первый день вы сможете посетить вечеринку в пространстве для тестирования, а во второй – концерт в здании амфитеатра.</string>
+    <string name="event_meals_description">Участникам предлагаются бесплатные завтрак, обед и закуски на протяжении всех трех дней фестиваля. В первые два дня в рамках развлекательной программы также будет организован ужин.</string>
     <string name="wifi_header">Сведения о Wi-Fi</string>
+    <string name="related_apps_header">Похожие приложения</string>
     <string name="event_types_header">Типы мероприятий</string>
     <string name="settings_time_zone_label">Тихоокеанский часовой пояс (UTC-8)</string>
+    <string name="settings_enable_notifications">Включить уведомления</string>
     <string name="settings_send_anonymous_usage_statistics">Отправлять анонимную статистику использования</string>
     <string name="settings_tos">Условия использования</string>
     <string name="settings_privacy_policy">Политика конфиденциальности</string>
     <string name="settings_oss_licenses">Посмотреть лицензии ПО с открытым исходным кодом</string>
-    <string name="settings_version_label">Версия %1$s, сборка %2$s</string>
-    <string name="built_with_material_content_description">В приложении использованы элементы Material Design.</string>
-    <string name="day1">День 1</string>
-    <string name="day2">День 2</string>
-    <string name="day3">День 3</string>
-    <string name="day1_date">8 мая</string>
-    <string name="day2_date">9 мая</string>
-    <string name="day3_date">10 мая</string>
+    <string name="settings_theme_title">Выберите тему</string>
+    <string name="settings_theme_system">Системное значение по умолчанию</string>
+    <string name="settings_theme_light">Светлый режим</string>
+    <string name="settings_theme_dark">Ночной режим</string>
+    <string name="settings_theme_battery">Учитывать режим энергосбережения</string>
+    <string name="built_with_material_components">В приложении использованы элементы Material Design.</string>
+    <string name="wifi_network_and_password">Название сети Wi-Fi: %1$s\nПароль: %2$s</string>
+    <string name="join_network">Присоединиться к сети</string>
+    <string name="assistant_app_description">Просто скажите: "Окей, Google, открой Google I/O 19".</string>
+    <string name="assistant_app_description2">Просто скажите: "Окей, Google, открой Google I/O 19".</string>
+    <string name="speaker_link_website">Сайт</string>
+    <string name="speaker_link_twitter">Твиттер</string>
+    <string name="speaker_link_github">GitHub</string>
+    <string name="speaker_link_linkedin">LinkedIn</string>
+    <string name="speaker_events_subhead">Мероприятия</string>
+    <string name="no_network_connection">Нет подключения к Интернету.</string>
+    <string name="navigate_up">Перейти вверх</string>
+    <string name="no_network_description">Чтобы запустить экскурсию по фестивалю в дополненной реальности, попробуйте сделать следующее:\n\n - Отключите режим полета.\n\n - Включите передачу мобильных данных или настройте соединение с Wi-Fi.\n\n - Убедитесь, что уровень сигнала достаточный.</string>
+    <string name="phone_does_not_support_arcore_title">На вашем телефоне приложение ARCore не поддерживается</string>
+    <string name="phone_does_not_support_arcore_message">Попробуйте использовать другое устройство.</string>
+    <string name="codelabs_information">Вы сможете самостоятельно протестировать наши новейшие разработки, используя готовые коды. Работать можно как на нашем оборудовании, так и на своих устройствах. Все материалы можно при желании забрать с собой. Возможность поработать с кодами доступна во все дни фестиваля, кроме времени проведения первой презентации.</string>
+    <string name="codelabs_building">Мероприятия в формате Codelabs</string>
+    <string name="codelabs_website">Сайт занятий в формате Codelab</string>
+    <string name="codelab_duration">Продолжительность: %1$d мин.</string>
+    <string name="start_codelab">Начать практическую работу</string>
 </resources>

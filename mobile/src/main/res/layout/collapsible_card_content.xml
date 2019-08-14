@@ -28,51 +28,52 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/title_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
-            android:minHeight="?android:listPreferredItemHeightSmall">
+            android:gravity="center_vertical"
+            android:minHeight="?android:listPreferredItemHeightSmall"
+            android:orientation="horizontal"
+            android:paddingEnd="@dimen/margin_normal"
+            android:paddingStart="@dimen/margin_normal">
 
             <TextView
                 android:id="@+id/card_title"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
+                android:layout_weight="1"
                 android:paddingBottom="@dimen/spacing_micro"
-                android:paddingEnd="@dimen/margin_normal"
-                android:paddingStart="@dimen/margin_normal"
                 android:paddingTop="@dimen/spacing_micro"
+                android:textAlignment="viewStart"
                 android:textAppearance="@style/TextAppearance.IOSched.CollapsibleCard"
-                tools:text="@string/travel_shuttle_title" />
+                tools:text="@string/travel_shuttle_service_title" />
 
             <ImageView
                 android:id="@+id/expand_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/margin_normal"
+                android:layout_marginStart="@dimen/margin_normal"
                 android:importantForAccessibility="no"
-                android:src="@drawable/ic_expand_more"
-                android:tint="@color/collapsing_section"
-                android:tintMode="src_in" />
+                android:src="@drawable/ic_expand_more" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
-        <com.google.samples.apps.iosched.widget.HtmlTextView
+        <TextView
             android:id="@+id/card_description"
+            style="@style/Widget.IOSched.MultilineBody"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/margin_normal"
             android:paddingEnd="@dimen/margin_normal"
             android:paddingStart="@dimen/margin_normal"
             android:paddingTop="@dimen/spacing_normal"
+            android:textAlignment="viewStart"
             android:textColor="?android:textColorPrimary"
             android:visibility="gone"
-            tools:text="This is a card description" />
+            tools:text="@string/travel_shuttle_service_description"
+            tools:visibility="visible" />
 
     </LinearLayout>
 

@@ -33,6 +33,10 @@
         <variable
             name="descriptionAlpha"
             type="androidx.databinding.ObservableFloat" />
+
+        <variable
+            name="recyclerviewAlpha"
+            type="androidx.databinding.ObservableFloat" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,10 +44,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/filters_sheet_background"
+        android:backgroundTint="?attr/colorSurface"
         android:clickable="true"
         android:elevation="@dimen/bottom_sheet_elevation"
         android:focusable="true"
-        android:orientation="vertical"
         tools:ignore="Overdraw">
 
         <androidx.constraintlayout.widget.Guideline
@@ -51,24 +55,25 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="@dimen/bottom_sheet_peek_height" />
+            app:layout_constraintGuide_begin="@dimen/schedule_bottom_sheet_peek_height" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview"
+            android:id="@+id/recyclerview_filter"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:alpha="@{recyclerviewAlpha}"
             android:clipToPadding="false"
             android:nestedScrollingEnabled="false"
             android:orientation="vertical"
             android:paddingHorizontal="@dimen/margin_normal"
-            android:paddingVertical="@dimen/margin_normal"
+            android:paddingVertical="@dimen/spacing_normal"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"
+            app:layoutManager="GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guide_peek_height"
-            app:layoutManager="GridLayoutManager"
             app:spanCount="2"
             tools:listitem="@layout/item_event_filter"
             tools:targetApi="o" />
@@ -86,6 +91,7 @@
             android:alpha="0"
             android:background="@drawable/filters_sheet_header_shadow"
             android:stateListAnimator="@animator/active_alpha"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guide_peek_height" />
 
         <!-- Description view shown when tag filters are active -->
@@ -120,7 +126,6 @@
             android:contentDescription="@string/a11y_clear_tag_filters"
             android:onClick="@{(v) -> viewModel.clearFilters()}"
             android:scaleType="center"
-            android:tint="@color/dark_gray"
             app:layout_constraintBottom_toTopOf="@id/guide_peek_height"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -144,7 +149,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:alpha="@{headerAlpha}"
-            android:textAppearance="?android:textAppearanceMedium"
+            android:textAppearance="@style/TextAppearance.IOSched.FiltersLabel"
             android:textColor="?android:textColorPrimary"
             app:layout_constraintBottom_toTopOf="@id/guide_peek_height"
             app:layout_constraintEnd_toEndOf="parent"
@@ -156,21 +161,21 @@
 
         <Button
             android:id="@+id/reset"
-            style="@style/Widget.IOSched.BorderlessButton"
+            style="?borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|start"
+            android:layout_marginStart="@dimen/spacing_normal"
             android:alpha="@{headerAlpha}"
             android:clickable="@{headerAlpha > 0f}"
             android:minWidth="0dp"
-            android:paddingHorizontal="@dimen/margin_normal"
-            android:paddingVertical="0dp"
+            android:paddingStart="@dimen/margin_normal"
+            android:paddingEnd="@dimen/margin_normal"
             android:text="@string/reset"
             app:layout_constraintBottom_toTopOf="@id/guide_peek_height"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:animatedOnClick="@{() -> viewModel.clearFilters()}"
-            app:eventFilters="@{recyclerview}"
+            app:eventFilters="@{recyclerviewFilter}"
             app:goneUnless="@{viewModel.hasAnyFilters}"
             tools:targetApi="o"
             tools:visibility="visible" />
@@ -185,11 +190,11 @@
             android:clickable="@{headerAlpha > 0f}"
             android:contentDescription="@string/a11y_collapse_filters_sheet"
             android:scaleType="center"
-            android:tint="@color/dark_gray"
+            android:tint="?attr/colorControlNormal"
             app:layout_constraintBottom_toTopOf="@id/guide_peek_height"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_chevron_collapse" />
+            app:srcCompat="@drawable/ic_expand_more" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

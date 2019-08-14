@@ -1,0 +1,55 @@
+{
+  "comment": "Sample codelab data for use with tools:... attributes in layouts",
+  "codelabs": [
+    {
+      "title": "Accelerated Mobile Pages Foundations",
+      "description": "In this codelab, you'll learn how to build Accelerated Mobile Pages, or AMP for short. You will implement a simple news article web page that conforms to the AMP specifications while incorporating several typical web features commonly used on mobile news sites.",
+      "duration": "39 min"
+    },
+    {
+      "title": "Add Voice Interactions to Your App",
+      "description": "In this codelab, you'll learn how to add voice interactions to your app with the Voice Interaction API. The Voice Interaction API allows users of your app to confirm actions and select from a list of options using only their voice.",
+      "duration": "19 min"
+    },
+    {
+      "title": "Android Data Binding codelab",
+      "description": "In this codelab you'll learn how to set up Data Binding, use layout expressions, work with observable objects and create custom Binding Adapters to reduce boilerplate to a minimum.",
+      "duration": "45 min"
+    },
+    {
+      "title": "Android Persistence codelab",
+      "description": "In this codelab, you begin with a sample app and add code through a series of steps, integrating the various persistence components as you progress.",
+      "duration": "50 min"
+    },
+    {
+      "title": "Android & TensorFlow: Artistic Style Transfer",
+      "description": "This codelab will walk you through the process of using an artistic style transfer neural network in an Android app in just 9 lines of code. You can also use the techniques outlined in this codelab to implement any TensorFlow network you have already trained.",
+      "duration": "22 min"
+    },
+    {
+      "title": "Building Beautiful UIs with Flutter",
+      "description": "Learn how to write a Flutter app that looks natural on both iOS and Android; how to debug your Flutter app; and how to run your Flutter app on a simulator/emulator and on a device.",
+      "duration": "90 min"
+    },
+    {
+      "title": "Build a Fast Checkout Experience on the Web with Google Pay",
+      "description": "This codelab walks you through integrating Google Pay into an existing site, including determining whether a user is able to pay using a payment method supported by Google Pay, the placement and design of the payment button and the execution of the transaction",
+      "duration": "30 min:"
+    },
+    {
+      "title": "Build Actions for the Google Assistant (Level 1)",
+      "description": "In this codelab, you'll build a simple conversational Action. This codelab covers beginner-level concepts for developing with Actions on Google. You do not need to have any prior experience with the platform to follow this codelab.",
+      "duration": "50 min"
+    },
+    {
+      "title": "Cloud Functions for Firebase",
+      "description": "In this codelab, you'll learn how to use the Firebase SDK for Google Cloud Functions to improve a Chat Web app and how to use Cloud Functions to send notifications to users of the Chat app.",
+      "duration": "62 min"
+    },
+    {
+      "title": "Enable Deep Linking to your App",
+      "description": "In this codelab, you'll learn how to handle deep links in a sample Android app. You'll be able to play with the sample app to simulate deep linking from search results on your own Android device.",
+      "duration": "14 min"
+    }
+  ]
+}

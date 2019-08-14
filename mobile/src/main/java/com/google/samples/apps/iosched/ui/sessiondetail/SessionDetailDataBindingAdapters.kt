@@ -21,72 +21,90 @@ import android.view.View.VISIBLE
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Session
-import com.google.samples.apps.iosched.model.SessionType
-import com.google.samples.apps.iosched.model.SessionType.AFTER_HOURS
+import com.google.samples.apps.iosched.model.SessionType.AFTER_DARK
 import com.google.samples.apps.iosched.model.SessionType.APP_REVIEW
-import com.google.samples.apps.iosched.model.SessionType.CODELAB
+import com.google.samples.apps.iosched.model.SessionType.GAME_REVIEW
+import com.google.samples.apps.iosched.model.SessionType.KEYNOTE
 import com.google.samples.apps.iosched.model.SessionType.OFFICE_HOURS
-import com.google.samples.apps.iosched.model.SessionType.SANDBOX
 import com.google.samples.apps.iosched.model.SessionType.SESSION
-import com.google.samples.apps.iosched.model.SessionType.UNKNOWN
 import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.ui.reservation.ReservationViewState
 import com.google.samples.apps.iosched.ui.reservation.ReservationViewState.RESERVABLE
 import com.google.samples.apps.iosched.ui.reservation.StarReserveFab
-import com.google.samples.apps.iosched.util.drawable.HeaderGridDrawable
 import org.threeten.bp.Duration
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 
-@Suppress("unused")
-@BindingAdapter("headerImage")
-fun headerImage(imageView: ImageView, photoUrl: String?) {
-    if (!photoUrl.isNullOrEmpty()) {
+/* Narrow headers used for events that have neither a photo nor video url. */
+@BindingAdapter("eventNarrowHeader")
+fun eventNarrowHeaderImage(imageView: ImageView, session: Session?) {
+    session ?: return
+
+    val resId = when (session.type) {
+        KEYNOTE -> R.drawable.event_narrow_keynote
+        // For the next few types, we choose a random image, but we should use the same image for a
+        // given event, so use the id to pick.
+        SESSION -> when (session.id.hashCode() % 4) {
+            0 -> R.drawable.event_narrow_session1
+            1 -> R.drawable.event_narrow_session2
+            2 -> R.drawable.event_narrow_session3
+            else -> R.drawable.event_narrow_session4
+        }
+        OFFICE_HOURS -> when (session.id.hashCode() % 3) {
+            0 -> R.drawable.event_narrow_office_hours1
+            1 -> R.drawable.event_narrow_office_hours2
+            else -> R.drawable.event_narrow_office_hours3
+        }
+        APP_REVIEW -> when (session.id.hashCode() % 3) {
+            0 -> R.drawable.event_narrow_app_reviews1
+            1 -> R.drawable.event_narrow_app_reviews2
+            else -> R.drawable.event_narrow_app_reviews3
+        }
+        GAME_REVIEW -> when (session.id.hashCode() % 3) {
+            0 -> R.drawable.event_narrow_game_reviews1
+            1 -> R.drawable.event_narrow_game_reviews2
+            else -> R.drawable.event_narrow_game_reviews3
+        }
+        AFTER_DARK -> R.drawable.event_narrow_afterhours
+        else -> R.drawable.event_narrow_other
+    }
+    imageView.setImageResource(resId)
+}
+
+/* Photos are used if the event has a photo and/or a video url. */
+@BindingAdapter("eventPhoto")
+fun eventPhoto(imageView: ImageView, session: Session?) {
+    session ?: return
+
+    val resId = when (session.type) {
+        KEYNOTE -> R.drawable.event_placeholder_keynote
+        // Choose a random image, but we should use the same image for a given session, so use ID to
+        // pick.
+        SESSION -> when (session.id.hashCode() % 4) {
+            0 -> R.drawable.event_placeholder_session1
+            1 -> R.drawable.event_placeholder_session2
+            2 -> R.drawable.event_placeholder_session3
+            else -> R.drawable.event_placeholder_session4
+        }
+        // Other event types probably won't have photos or video, but just in case...
+        else -> R.drawable.event_placeholder_keynote
+    }
+
+    if (session.hasPhoto) {
         Glide.with(imageView)
-            .load(photoUrl)
-            .apply(RequestOptions().placeholder(HeaderGridDrawable(imageView.context)))
+            .load(session.photoUrl)
+            .apply(RequestOptions().placeholder(resId))
             .into(imageView)
     } else {
-        imageView.setImageDrawable(HeaderGridDrawable(imageView.context))
+        imageView.setImageResource(resId)
     }
 }
 
-@Suppress("unused")
-@BindingAdapter("eventType")
-fun headerLogoImage(imageView: ImageView, eventType: SessionType?) {
-    val resId = when (eventType) {
-        AFTER_HOURS -> R.drawable.event_header_afterhours
-        APP_REVIEW -> R.drawable.event_header_office_hours
-        CODELAB -> R.drawable.event_header_codelabs
-        OFFICE_HOURS -> R.drawable.event_header_office_hours
-        SANDBOX -> R.drawable.event_header_sandbox
-        SESSION -> R.drawable.event_header_sessions
-        UNKNOWN -> R.drawable.event_header_sessions
-        else -> R.drawable.event_header_sessions
-    }
-    imageView.setImageDrawable(imageView.context.getDrawable(resId))
-}
-
-@Suppress("unused")
-@BindingAdapter("eventHeaderAnim")
-fun eventHeaderAnim(lottieView: LottieAnimationView, session: Session?) {
-    val anim = when (session?.type) {
-        AFTER_HOURS -> "anim/event_details_after_hours.json"
-        CODELAB -> "anim/event_details_codelabs.json"
-        OFFICE_HOURS -> "anim/event_details_office_hours.json"
-        SANDBOX -> "anim/event_details_sandbox.json"
-        else -> "anim/event_details_session.json" // default to session anim
-    }
-    lottieView.setAnimation(anim)
-}
-
-@Suppress("unused")
 @BindingAdapter(
     value = ["sessionDetailStartTime", "sessionDetailEndTime", "timeZoneId"], requireAll = true
 )

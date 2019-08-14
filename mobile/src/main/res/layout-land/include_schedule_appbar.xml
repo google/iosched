@@ -15,48 +15,36 @@
   ~ limitations under the License.
   -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <data>
-
-        <variable
-            name="viewModel"
-            type="com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel" />
-
-    </data>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
-        style="@style/Widget.AppBar"
+        style="@style/Widget.IOSched.AppBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
 
-        <FrameLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/margin_normal">
+            android:layout_height="?actionBarSize"
+            app:navigationContentDescription="@string/a11y_show_navigation"
+            app:navigationIcon="@drawable/ic_menu"
+            app:title="@string/title_schedule"
+            app:titleMarginEnd="@dimen/margin_large">
 
-            <!-- TODO Replace the placeholder with the actual asset -->
-            <ImageView
-                android:id="@+id/profile_button"
-                android:layout_width="@dimen/a11y_min_touch_target"
-                android:layout_height="@dimen/a11y_min_touch_target"
-                android:layout_gravity="center_vertical|start"
-                android:contentDescription="@{context.getString(viewModel.profileContentDesc)}"
-                android:foreground="?selectableItemBackground"
-                android:onClick="@{() -> viewModel.onProfileClicked()}"
-                android:padding="@dimen/spacing_normal"
-                app:clipToCircle="@{true}"
-                app:imageUri="@{viewModel.currentUserImageUri}"
-                app:placeholder="@{@drawable/ic_account_circle}" />
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/day_indicators"
                 android:layout_width="wrap_content"
-                android:layout_height="?actionBarSize"
-                android:layout_gravity="center" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layoutManager="LinearLayoutManager"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_schedule_day_indicator" />
 
-        </FrameLayout>
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 </layout>

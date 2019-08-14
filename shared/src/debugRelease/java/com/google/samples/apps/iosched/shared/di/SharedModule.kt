@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.shared.di
 import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.samples.apps.iosched.shared.BuildConfig
@@ -27,9 +28,19 @@ import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.NetworkConferenceDataSource
-import com.google.samples.apps.iosched.shared.data.logistics.LogisticsDataSource
-import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
-import com.google.samples.apps.iosched.shared.data.logistics.RemoteConfigLogisticsDataSource
+import com.google.samples.apps.iosched.shared.data.ar.ArDebugFlagEndpoint
+import com.google.samples.apps.iosched.shared.data.ar.DefaultArDebugFlagEndpoint
+import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
+import com.google.samples.apps.iosched.shared.data.config.RemoteAppConfigDataSource
+import com.google.samples.apps.iosched.shared.data.db.AppDatabase
+import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
+import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
+import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
+import com.google.samples.apps.iosched.shared.data.feed.FirestoreAnnouncementDataSource
+import com.google.samples.apps.iosched.shared.data.feedback.DefaultFeedbackEndpoint
+import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
+import com.google.samples.apps.iosched.shared.data.feed.FirestoreMomentDataSource
+import com.google.samples.apps.iosched.shared.data.feed.MomentDataSource
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
@@ -75,9 +86,31 @@ class SharedModule {
     @Provides
     fun provideConferenceDataRepository(
         @Named("remoteConfDatasource") remoteDataSource: ConferenceDataSource,
-        @Named("bootstrapConfDataSource") boostrapDataSource: ConferenceDataSource
+        @Named("bootstrapConfDataSource") boostrapDataSource: ConferenceDataSource,
+        appDatabase: AppDatabase
     ): ConferenceDataRepository {
-        return ConferenceDataRepository(remoteDataSource, boostrapDataSource)
+        return ConferenceDataRepository(remoteDataSource, boostrapDataSource, appDatabase)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAnnouncementDataSource(firestore: FirebaseFirestore): AnnouncementDataSource {
+        return FirestoreAnnouncementDataSource(firestore)
+    }
+
+    @Singleton
+    @Provides
+    fun provideMomentsDataSource(firestore: FirebaseFirestore): MomentDataSource {
+        return FirestoreMomentDataSource(firestore)
+    }
+
+    @Singleton
+    @Provides
+    fun provideFeedRepository(
+        dataSource: AnnouncementDataSource,
+        momentsDataSource: MomentDataSource
+    ): FeedRepository {
+        return DefaultFeedRepository(dataSource, momentsDataSource)
     }
 
     @Singleton
@@ -96,11 +129,20 @@ class SharedModule {
 
     @Singleton
     @Provides
+    fun provideFeedbackEndpoint(functions: FirebaseFunctions): FeedbackEndpoint {
+        return DefaultFeedbackEndpoint(functions)
+    }
+
+    @Singleton
+    @Provides
     fun provideSessionAndUserEventRepository(
         userEventDataSource: UserEventDataSource,
         sessionRepository: SessionRepository
     ): SessionAndUserEventRepository {
-        return DefaultSessionAndUserEventRepository(userEventDataSource, sessionRepository)
+        return DefaultSessionAndUserEventRepository(
+            userEventDataSource,
+            sessionRepository
+        )
     }
 
     @Singleton
@@ -111,8 +153,21 @@ class SharedModule {
             // This is to enable the offline data
             // https://firebase.google.com/docs/firestore/manage-data/enable-offline
             .setPersistenceEnabled(true)
+            .setTimestampsInSnapshotsEnabled(true)
             .build()
         return firestore
+    }
+
+    @Singleton
+    @Provides
+    fun provideFirebaseFunctions(): FirebaseFunctions {
+        return FirebaseFunctions.getInstance()
+    }
+
+    @Singleton
+    @Provides
+    fun provideArDebugFlagEndpoint(functions: FirebaseFunctions): ArDebugFlagEndpoint {
+        return DefaultArDebugFlagEndpoint(functions)
     }
 
     @Singleton
@@ -123,11 +178,18 @@ class SharedModule {
 
     @Singleton
     @Provides
-    fun provideFirebaseRemoteConfig(): FirebaseRemoteConfig {
-        val remoteConfig = FirebaseRemoteConfig.getInstance()
-        val configSettings = FirebaseRemoteConfigSettings.Builder()
+    fun provideFirebaseRemoteConfigSettings(): FirebaseRemoteConfigSettings {
+        return FirebaseRemoteConfigSettings.Builder()
             .setDeveloperModeEnabled(BuildConfig.DEBUG)
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideFirebaseRemoteConfig(
+        configSettings: FirebaseRemoteConfigSettings
+    ): FirebaseRemoteConfig {
+        val remoteConfig = FirebaseRemoteConfig.getInstance()
         remoteConfig.setConfigSettings(configSettings)
         remoteConfig.setDefaults(R.xml.remote_config_defaults)
         return remoteConfig
@@ -135,16 +197,11 @@ class SharedModule {
 
     @Singleton
     @Provides
-    fun provideLogisticsDataSource(remoteConfig: FirebaseRemoteConfig): LogisticsDataSource {
-        return RemoteConfigLogisticsDataSource(remoteConfig)
-    }
-
-    @Singleton
-    @Provides
-    fun provideLogisticsRepository(
-        logisticsDataSource: LogisticsDataSource
-    ): LogisticsRepository {
-        return LogisticsRepository(logisticsDataSource)
+    fun provideAppConfigDataSource(
+        remoteConfig: FirebaseRemoteConfig,
+        configSettings: FirebaseRemoteConfigSettings
+    ): AppConfigDataSource {
+        return RemoteAppConfigDataSource(remoteConfig, configSettings)
     }
 
     @Singleton

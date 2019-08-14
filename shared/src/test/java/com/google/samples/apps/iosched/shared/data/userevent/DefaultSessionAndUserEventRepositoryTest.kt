@@ -18,15 +18,14 @@ package com.google.samples.apps.iosched.shared.data.userevent
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
-import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
-import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.test.data.TestData
 import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.instanceOf
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsInstanceOf
 import org.junit.Assert.assertThat
@@ -56,29 +55,44 @@ class DefaultSessionAndUserEventRepositoryTest {
         val userEvents = LiveDataTestUtil.getValue(repository.getObservableUserEvents("user"))
 
         assertThat(userEvents, `is`(IsInstanceOf(Result.Success::class.java)))
+        val successResult = userEvents as Result.Success
 
         assertThat(
-            (userEvents as Result.Success).data.userSessionsPerDay.keys.size,
-            `is`(equalTo(TestData.sessionsMap.keys.size))
+            successResult.data.userSessions.size,
+            `is`(equalTo(TestData.userSessionList.size))
         )
-
-        val sessionsFirstDay: List<UserSession>? =
-            userEvents.data.userSessionsPerDay[TimeUtils.ConferenceDays.first()]
 
         // Starred session
         assertThat(
-            sessionsFirstDay?.get(0)?.userEvent?.isStarred,
+            successResult.data.userSessions[0].userEvent.isStarred,
             `is`(equalTo(TestData.userEvents[0].isStarred))
         )
 
         // Non-starred session
         assertThat(
-            sessionsFirstDay?.get(1)?.userEvent?.isStarred,
+            successResult.data.userSessions[1].userEvent.isStarred,
             `is`(equalTo(TestData.userEvents[1].isStarred))
         )
 
         // Session info gets merged too
-        assertThat(sessionsFirstDay?.get(0)?.session, `is`(equalTo(TestData.session0)))
+        assertThat(successResult.data.userSessions[0].session, `is`(equalTo(TestData.session0)))
+    }
+
+    @Test
+    fun observableUserEvent() {
+        val repository = DefaultSessionAndUserEventRepository(
+            userEventDataSource = TestUserEventDataSource(),
+            sessionRepository = DefaultSessionRepository(TestDataRepository)
+        )
+        val userEvent = LiveDataTestUtil.getValue(repository.getObservableUserEvent("user", "2"))
+
+        assertThat(userEvent, `is`(instanceOf(Result.Success::class.java)))
+
+        (userEvent as Result.Success).data.userSession.let { userSession ->
+            assertThat(userSession.session.id, `is`(equalTo("2")))
+            assertThat(userSession.userEvent.isStarred, `is`(true))
+            assertThat(userSession.userEvent.isReviewed, `is`(false))
+        }
     }
 
     // TODO: Test error cases

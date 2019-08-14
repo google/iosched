@@ -20,7 +20,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.google.samples.apps.iosched.databinding.ItemSessionTagBinding
+import com.google.samples.apps.iosched.databinding.ItemInlineTagBinding
 import com.google.samples.apps.iosched.model.Tag
 
 class TagAdapter : RecyclerView.Adapter<TagViewHolder>() {
@@ -31,7 +31,7 @@ class TagAdapter : RecyclerView.Adapter<TagViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagViewHolder {
         return TagViewHolder(
-            ItemSessionTagBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemInlineTagBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
@@ -40,7 +40,7 @@ class TagAdapter : RecyclerView.Adapter<TagViewHolder>() {
     }
 }
 
-class TagViewHolder(private val binding: ItemSessionTagBinding) : ViewHolder(binding.root) {
+class TagViewHolder(private val binding: ItemInlineTagBinding) : ViewHolder(binding.root) {
     fun bind(tag: Tag) {
         binding.tag = tag
         binding.executePendingBindings()

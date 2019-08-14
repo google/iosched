@@ -36,12 +36,12 @@
             type="LiveData&lt;Boolean&gt;" />
 
         <variable
-            name="alwaysShowDate"
-            type="Boolean" />
-
-        <variable
             name="timeZoneId"
             type="LiveData&lt;org.threeten.bp.ZoneId&gt;" />
+
+        <variable
+            name="showTime"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,25 +49,33 @@
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
         android:onClick="@{() -> eventListener.openEventDetail(userSession.session.id)}"
-        android:paddingEnd="@dimen/spacing_normal"
-        android:paddingVertical="@dimen/spacing_normal"
+        android:paddingBottom="@dimen/schedule_item_padding_vertical"
+        android:paddingTop="@dimen/schedule_item_padding_vertical"
         tools:targetApi="o">
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/keyline"
+            android:id="@+id/guideline_start"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="vertical"
             app:layout_constraintGuide_begin="?sessionListKeyline" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/margin_small" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{userSession.session.title}"
-            android:textAppearance="@style/TextAppearance.IOSched.SessionTitle"
+            android:textAlignment="viewStart"
+            android:textAppearance="?textAppearanceListItem"
             app:layout_constraintEnd_toStartOf="@+id/bookmark_session"
-            app:layout_constraintStart_toEndOf="@id/keyline"
+            app:layout_constraintStart_toEndOf="@id/guideline_start"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="What's new in Android" />
 
@@ -85,14 +93,13 @@
 
         <com.google.samples.apps.iosched.ui.reservation.ReservationTextView
             android:id="@+id/reservation_status"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_micro"
             android:drawablePadding="@dimen/spacing_normal"
             android:gravity="center_vertical"
             android:textAppearance="@style/TextAppearance.IOSched.ReservationStatus"
-            app:layout_constraintEnd_toEndOf="@id/title"
-            app:layout_constraintStart_toEndOf="@id/keyline"
+            app:layout_constraintStart_toEndOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/title"
             app:isReservable="@{userSession.session.isReservable}"
             app:reservationStatus="@{userSession.userEvent}"
@@ -110,7 +117,7 @@
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@id/tags_barrier"
             app:layout_constraintEnd_toStartOf="@id/length_location"
-            app:layout_constraintStart_toEndOf="@id/keyline"
+            app:layout_constraintStart_toEndOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/reservation_status"
             app:goneUnless="@{userSession.session.isLivestream}"
             app:srcCompat="@drawable/ic_livestreamed" />
@@ -119,17 +126,16 @@
             android:id="@+id/length_location"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.IOSched.ListSecondary"
+            android:textAlignment="viewStart"
             app:layout_constraintBottom_toTopOf="@id/tags_barrier"
-            app:layout_constraintEnd_toEndOf="@id/title"
+            app:layout_constraintEnd_toStartOf="@id/guideline_end"
             app:layout_constraintStart_toEndOf="@id/livestream_icon"
             app:layout_constraintTop_toBottomOf="@id/reservation_status"
-            app:alwaysShowDate="@{alwaysShowDate}"
-            app:sessionEnd="@{userSession.session.endTime}"
+            app:showTime="@{showTime}"
             app:sessionRoom="@{userSession.session.room}"
             app:sessionStart="@{userSession.session.startTime}"
             app:timeZoneId="@{timeZoneId}"
-            tools:text="1 hour / Amphitheatre" />
+            tools:text="May 7 / Amphitheatre" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/tags_barrier"
@@ -138,18 +144,18 @@
             app:barrierDirection="bottom"
             app:constraint_referenced_ids="livestream_icon,length_location" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.google.samples.apps.iosched.widget.NoTouchRecyclerView
             android:id="@+id/tags"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/spacing_normal"
             android:orientation="horizontal"
-            android:paddingBottom="@dimen/spacing_micro"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/keyline"
+            app:layout_constraintEnd_toStartOf="@id/guideline_end"
+            app:layout_constraintStart_toEndOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/tags_barrier"
-            app:sessionTags="@{userSession.session.displayTags}"
-            tools:listitem="@layout/item_session_tag" />
+            app:topicTags="@{userSession.session.displayTags}"
+            tools:itemCount="3"
+            tools:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/item_inline_tag" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

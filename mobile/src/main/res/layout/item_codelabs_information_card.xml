@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="actionHandler"
+            type="com.google.samples.apps.iosched.ui.codelabs.CodelabsActionsHandler" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_marginEnd="?listPreferredItemPaddingEnd"
+        android:layout_marginStart="?listPreferredItemPaddingStart"
+        android:layout_marginTop="@dimen/margin_small"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:contentPaddingBottom="@dimen/margin_small"
+        app:contentPaddingLeft="@dimen/margin_normal"
+        app:contentPaddingRight="@dimen/margin_normal"
+        app:contentPaddingTop="@dimen/margin_normal"
+        app:strokeColor="?colorControlLight"
+        app:strokeWidth="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Widget.IOSched.MultilineBody"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/codelabs_information" />
+
+            <Button
+                android:id="@+id/dismiss_card"
+                style="?borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/margin_small"
+                android:onClick="@{() -> actionHandler.dismissCodelabsInfoCard()}"
+                android:text="@string/got_it" />
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

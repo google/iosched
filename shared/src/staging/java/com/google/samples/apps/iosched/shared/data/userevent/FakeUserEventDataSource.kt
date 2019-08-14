@@ -86,6 +86,12 @@ object FakeUserEventDataSource : UserEventDataSource {
         return result
     }
 
+    override fun recordFeedbackSent(userId: String, userEvent: UserEvent): LiveData<Result<Unit>> {
+        val result = MutableLiveData<Result<Unit>>()
+        result.postValue(Result.Success(Unit))
+        return result
+    }
+
     override fun requestReservation(
         userId: String,
         session: Session,
@@ -113,6 +119,10 @@ object FakeUserEventDataSource : UserEventDataSource {
         val result = MutableLiveData<Result<SwapRequestAction>>()
         result.postValue(Result.Success(SwapRequestAction()))
         return result
+    }
+
+    override fun getUserEvent(userId: String, eventId: SessionId): UserEvent? {
+        return userEvents.firstOrNull { it.id == eventId }
     }
 
     override fun clearSingleEventSubscriptions() {}

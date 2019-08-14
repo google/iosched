@@ -32,6 +32,12 @@ import java.util.concurrent.TimeUnit
  */
 class IoschedFirebaseMessagingService : DaggerFirebaseMessagingService() {
 
+    override fun onNewToken(token: String?) {
+        super.onNewToken(token)
+        Timber.d("New firebase token: $token")
+        // Nothing to do, we update the user's firebase token via FirebaseAuthStateUserDataSource
+    }
+
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         Timber.d("Message data payload: ${remoteMessage?.data}")
         val data = remoteMessage?.data ?: return
@@ -67,9 +73,9 @@ class IoschedFirebaseMessagingService : DaggerFirebaseMessagingService() {
         private const val TRIGGER_EVENT_DATA_SYNC_key = "action"
 
         // Some latency to avoid load spikes
-        private val MINIMUM_LATENCY = TimeUnit.SECONDS.toSeconds(5)
+        private val MINIMUM_LATENCY = TimeUnit.SECONDS.toMillis(5)
 
         // Job scheduled to run only with Wi-Fi but with a deadline
-        private val OVERRIDE_DEADLINE = TimeUnit.SECONDS.toMinutes(15)
+        private val OVERRIDE_DEADLINE = TimeUnit.MINUTES.toMillis(15)
     }
 }

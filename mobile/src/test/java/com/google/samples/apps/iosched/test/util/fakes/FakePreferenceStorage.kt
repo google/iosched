@@ -25,10 +25,13 @@ class FakePreferenceStorage(
     override var scheduleUiHintsShown: Boolean = false,
     override var notificationsPreferenceShown: Boolean = false,
     override var preferToReceiveNotifications: Boolean = false,
+    override var myLocationOptedIn: Boolean = false,
     override var snackbarIsStopped: Boolean = false,
-    override var observableSnackbarIsStopped: LiveData<Boolean> =
-        MutableLiveData(),
+    override var observableSnackbarIsStopped: LiveData<Boolean> = MutableLiveData(),
     override var preferConferenceTimeZone: Boolean = true,
     override var sendUsageStatistics: Boolean = false,
-    override var selectedFilters: String? = null
+    override var selectedFilters: String? = null,
+    override var selectedTheme: String? = null,
+    override var observableSelectedTheme: LiveData<String> = MutableLiveData(),
+    override var codelabsInfoShown: Boolean = true
 ) : PreferenceStorage

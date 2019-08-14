@@ -16,63 +16,34 @@
 
 package com.google.samples.apps.iosched.ui.schedule
 
-import android.content.Context
+import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
-import com.google.samples.apps.iosched.widget.CustomDimDialogFragment
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.AndroidSupportInjection
-import dagger.android.support.HasSupportFragmentInjector
+import com.google.samples.apps.iosched.shared.domain.invoke
+import com.google.samples.apps.iosched.shared.domain.prefs.MarkScheduleUiHintsShownUseCase
+import dagger.android.support.DaggerAppCompatDialogFragment
 import javax.inject.Inject
 
 /**
  * Dialog that shows the hints for the schedule.
  */
-class ScheduleUiHintsDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInjector {
+class ScheduleUiHintsDialogFragment : DaggerAppCompatDialogFragment() {
 
     @Inject
-    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
+    lateinit var markScheduleUiHintsShownUseCase: MarkScheduleUiHintsShownUseCase
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private lateinit var viewModel: ScheduleUiHintsDialogViewModel
-
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
-        return fragmentInjector
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.schedule_hint_title)
+            .setView(R.layout.dialog_schedule_hints)
+            .setPositiveButton(R.string.got_it, null)
+            .create()
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        AndroidSupportInjection.inject(this)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.dialog_schedule_hints, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel = viewModelProvider(viewModelFactory)
-        view.findViewById<View>(R.id.schedule_hint_button_dismiss).setOnClickListener {
-            dismiss()
-        }
-    }
-
-    override fun onDismiss(dialog: DialogInterface?) {
+    override fun onDismiss(dialog: DialogInterface) {
+        markScheduleUiHintsShownUseCase()
         super.onDismiss(dialog)
-        viewModel.onDismissed()
     }
 }

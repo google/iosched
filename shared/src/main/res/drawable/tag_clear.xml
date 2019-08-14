@@ -20,13 +20,9 @@
     android:height="@dimen/tag_dot_size"
     android:viewportWidth="24.0"
     android:viewportHeight="24.0">
+    <!-- Tinted at runtime -->
     <path
-        android:fillAlpha="0.8"
-        android:fillColor="#fff"
-        android:pathData="M12,0 A12,12, 0 1,1 12,24 A12,12, 0 1,1 12,0 z" />
-    <path
-        android:pathData="M7,7L17,17M17,7L7,17Z"
-        android:strokeAlpha="0.5"
+        android:pathData="M4,4L20,20M20,4L4,20Z"
         android:strokeColor="#000"
-        android:strokeWidth="2" />
+        android:strokeWidth="3" />
 </vector>

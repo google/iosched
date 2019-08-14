@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,24 +16,29 @@
 -->
 <resources>
     <string name="title_schedule">กำหนดการ</string>
+    <string name="title_home">หน้าแรก</string>
     <string name="title_map">แผนที่</string>
+    <string name="title_explore_io">สำรวจ I/O</string>
+    <string name="title_info">ข้อมูล</string>
     <string name="filters">ตัวกรอง</string>
     <string name="category_heading_tracks">หัวข้อ</string>
     <string name="category_heading_types">ประเภท</string>
-    <string name="clear_all">ล้างทั้งหมด</string>
     <string name="reset">รีเซ็ต</string>
     <plurals name="filter_event_count">
-        <item quantity="one">%1$d กิจกรรม</item>
         <item quantity="other">%1$d กิจกรรม</item>
     </plurals>
+    <string name="starred_and_reserved">กิจกรรมที่ติดดาวและจองไว้</string>
+    <string name="starred_and_reserved_short">กิจกรรมของคุณ</string>
+    <string name="search_schedule_hint">ค้นหากำหนดการ</string>
+    <string name="search_schedule_no_results">ไม่พบผลลัพธ์</string>
     <string name="agenda">กำหนดการ</string>
     <string name="event_starred">เพิ่มกิจกรรมลงในรายการที่ติดดาวแล้ว</string>
     <string name="event_unstarred">นำกิจกรรมออกจากรายการที่ติดดาวแล้ว</string>
     <string name="event_star_error">เกิดข้อผิดพลาดในการเพิ่มกิจกรรมไปยังรายการที่ติดดาว</string>
     <string name="reservation_error">เกิดข้อผิดพลาดในการแก้ไขการจอง โปรดรอให้คำขอก่อนหน้าเสร็จสิ้นหรือลองอีกครั้งภายหลัง</string>
     <string name="reservation_request_succeeded">ส่งคำขอการจองแล้ว</string>
-    <string name="reservation_cancel_succeeded">การจองที่ยกเลิก: \"&lt;b&gt;%s&lt;/b&gt;\"</string>
-    <string name="reservation_new">ระบบได้จองที่นั่งสำหรับ \"&lt;b&gt;%s&lt;/b&gt;\" แล้ว</string>
+    <string name="reservation_cancel_succeeded">การจองที่ยกเลิก: "&lt;b&gt;%s&lt;/b&gt;"</string>
+    <string name="reservation_new">ระบบได้จองที่นั่งสำหรับ "&lt;b&gt;%s&lt;/b&gt;" แล้ว</string>
     <string name="reservation_replaced">แทนที่กิจกรรมแล้ว</string>
     <string name="waitlist_new">คุณอยู่ในรายชื่อรอเรียกแล้ว</string>
     <string name="waitlist_cancel_succeeded">นำออกจากรายชื่อรอเรียกแล้ว</string>
@@ -44,28 +49,43 @@
     <string name="reservation_denied_unknown">การจองถูกปฏิเสธ: เกิดข้อผิดพลาดที่ไม่รู้จัก</string>
     <string name="cancellation_denied_cutoff">การยกเลิกถูกปฏิเสธ: ใกล้กับเวลาเริ่มต้นเกินไป</string>
     <string name="cancellation_denied_unknown">การยกเลิกถูกปฏิเสธ: เกิดข้อผิดพลาดที่ไม่รู้จัก</string>
-    <string name="schedule_filters_empty">คุณไม่มีกิจกรรมที่ติดดาวหรือจองไว้ในวันนี้</string>
+    <string name="schedule_filters_empty">ไม่พบกิจกรรม</string>
     <string name="reservation_reservable">จองที่นั่ง</string>
     <string name="reservation_reserved">จองแล้ว</string>
     <string name="reservation_waitlisted">อยู่ในรายชื่อรอเรียก</string>
     <string name="reservation_waitlist_available">เข้าร่วมรายชื่อรอเรียก</string>
     <string name="reservation_disabled">การจองไม่พร้อมใช้งาน</string>
+    <string name="reservation_pending">การจองรอดำเนินการ</string>
     <string name="schedule_hint_title">ปรับแต่งกำหนดการ</string>
-    <string name="schedule_hint_view_only_your_events">ดูเฉพาะกิจกรรมของคุณ</string>
     <string name="schedule_hint_star_event">เพิ่มไปยังกิจกรรมที่ติดดาว</string>
     <string name="schedule_hint_reserve_session_seat">จองที่นั่งสำหรับเข้าชม</string>
-    <string name="schedule_hint_star_event_content_description">รูปภาพที่ใช้ติดดาวกิจกรรม</string>
-    <string name="schedule_hint_reserve_session_seat_content_description">รูปภาพที่ใช้จองที่นั่งสำหรับเข้าชม</string>
     <string name="rate_session">ให้คะแนนเซสชัน</string>
     <string name="menu_item_session_location">ตำแหน่งที่ตั้งของเซสชัน</string>
     <string name="menu_item_session_star">ติดดาวเซสชัน</string>
+    <string name="menu_item_calendar">เพิ่มในปฏิทิน</string>
+    <string name="speaker_delimiter">,</string>
     <string name="session_detail_speakers_header">ลำโพง</string>
     <string name="session_detail_related_header">กิจกรรมที่เกี่ยวข้อง</string>
+    <string name="feedback_submit">ส่ง</string>
+    <string name="feedback_thank_you">ขอขอบคุณสำหรับความคิดเห็นของคุณ</string>
+    <string name="feedback_q1_text">คุณจะให้คะแนนคุณภาพโดยรวมของเซสชันเท่าใด</string>
+    <string name="feedback_q2_text">คุณจะอธิบายถึงเนื้อหาของเซสชันโดยอ้างอิงตามความคาดหวัง/คำอธิบายของเซสชันอย่างไร</string>
+    <string name="feedback_q3_text">เซสชันมีความเกี่ยวข้องกับโปรเจ็กต์ของคุณอย่างไร</string>
+    <string name="feedback_q4_text">เซสชันมีความเกี่ยวข้องกับโปรเจ็กต์ของคุณอย่างไร</string>
+    <string name="feedback_q1_label_start">ธรรมดามาก</string>
+    <string name="feedback_q2_label_start">แย่</string>
+    <string name="feedback_q3_label_start">แย่</string>
+    <string name="feedback_q4_label_start">ไม่เกี่ยวข้องมากนัก</string>
+    <string name="feedback_q1_label_end">ยอดเยี่ยมมาก</string>
+    <string name="feedback_q2_label_end">ยอดเยี่ยมมาก</string>
+    <string name="feedback_q3_label_end">เกี่ยวข้องมากที่สุด</string>
+    <string name="feedback_q4_label_end">เกี่ยวข้องมาก</string>
+    <string name="a11y_show_navigation">แสดงเมนูการนำทาง</string>
     <string name="a11y_collapse_filters_sheet">เลื่อนแถบตัวกรองลง</string>
     <string name="a11y_clear_tag_filters">ล้างตัวกรอง</string>
-    <string name="a11y_revert_pinned">แสดงเซสชันทั้งหมด</string>
+    <string name="a11y_filter_applied">ใช้ตัวกรอง %1s แล้ว</string>
+    <string name="a11y_filter_not_applied">ไม่ได้ใช้ตัวกรอง %1s</string>
     <string name="a11y_reservation_available">จองกิจกรรม</string>
-    <string name="a11y_reservation_working">กำลังจองกิจกรรม</string>
     <string name="a11y_reservation_reserved">จองกิจกรรมแล้ว</string>
     <string name="a11y_reservation_disabled">การจองไม่พร้อมใช้งาน</string>
     <string name="a11y_reservation_wait_list_available">เข้าร่วมรายชื่อรอเรียกสำหรับกิจกรรม</string>
@@ -75,99 +95,178 @@
     <string name="a11y_unstarred">ยังไม่บุ๊กมาร์กกิจกรรม</string>
     <string name="a11y_star">ดาว</string>
     <string name="a11y_play">เล่นวิดีโอ</string>
-    <string name="dialog_sign_in_title">ลงชื่อเข้าใช้เพื่อปรับแต่งกำหนดการ</string>
+    <string name="a11y_select_map_mode">เลือกโหมดแผนที่</string>
+    <string name="a11y_search_schedule">ค้นหากำหนดการ</string>
+    <string name="welcome">ยินดีต้อนรับ</string>
+    <string name="a11y_signed_in_content_description">ลงชื่อเข้าใช้ด้วย %s</string>
+    <string name="a11y_signed_out_content_description">แตะเพื่อลงชื่อเข้าใช้</string>
     <string name="dialog_sign_in_content">ลงชื่อเข้าใช้เพื่อบันทึกกิจกรรม จองที่นั่ง และให้คะแนนเซสชัน (หากเป็นผู้เข้าร่วม) การดำเนินการจะได้รับการซิงค์จากบัญชีไปยังแอปและเว็บไซต์</string>
-    <string name="not_now">ไม่ใช่ตอนนี้</string>
     <string name="sign_in">ลงชื่อเข้าใช้</string>
-    <string name="dialog_sign_out_title">ออกจากระบบไหม</string>
+    <string name="firebase_auth_no_network_connection">ไม่มีการเชื่อมต่ออินเทอร์เน็ต</string>
+    <string name="firebase_auth_unknown_error">ข้อผิดพลาดที่ไม่รู้จัก</string>
     <string name="dialog_sign_out_content">กิจกรรม การจองที่นั่ง และการให้คะแนนเซสชัน (หากเป็นผู้เข้าร่วม) ทั้งหมดจะยังซิงค์กับบัญชี</string>
     <string name="sign_out">ออกจากระบบ</string>
+    <string name="manage_google_account">จัดการบัญชี Google</string>
     <string name="remove_reservation_title">นำการจองออกไหม</string>
-    <string name="remove_reservation_content">คุณกำลังจะยกเลิกที่นั่งสำหรับ \"%1$s\" หากคุณตัดสินใจที่จะไม่จองที่นั่งแต่ยังต้องการเข้าร่วม เซสชันทั้งหมดจะยังมีที่นั่งจำนวนหนึ่งที่ให้สิทธิ์ผู้ที่มาก่อนได้ก่อน</string>
+    <string name="remove_reservation_content">คุณกำลังจะยกเลิกที่นั่งสำหรับ "%1$s" หากคุณตัดสินใจที่จะไม่จองที่นั่งแต่ยังต้องการเข้าร่วม เซสชันทั้งหมดจะยังมีที่นั่งจำนวนหนึ่งที่ให้สิทธิ์ผู้ที่มาก่อนได้ก่อน</string>
     <string name="cancel">ยกเลิก</string>
     <string name="remove">ลบ</string>
     <string name="swap_reservation_title">สลับการจองไหม</string>
-    <string name="swap_reservation_content">คุณมีการจอง/อยู่ในรายชื่อรอเรียกสำหรับ \"%1$s\" แล้วใช่ไหม ระบบอนุญาตให้มีการจองเพียง 1 ครั้งต่อช่วงเวลาเท่านั้น คุณต้องการสลับเป็น \"%2$s\" ไหม</string>
+    <string name="swap_reservation_content">คุณมีการจอง/อยู่ในรายชื่อรอเรียกสำหรับ "%1$s" แล้วใช่ไหม ระบบอนุญาตให้มีการจองเพียง 1 ครั้งต่อช่วงเวลาเท่านั้น คุณต้องการสลับเป็น "%2$s" ไหม</string>
     <string name="swap">สลับ</string>
     <string name="notifications_preference_dialog_title">การแจ้งเตือน I/O</string>
-    <string name="notifications_preference_dialog_content">คุณต้องการรับการแจ้งเตือนเกี่ยวกับ I/O ไหม เราจะส่งข้อมูลเกี่ยวกับเวลาเริ่มต้นของเซสชัน กิจกรรมหลังเซสชัน การบันทึกเซสชัน และอื่นๆ ให้ คุณเปลี่ยนการตั้งค่านี้ใน \"ข้อมูล &gt; การตั้งค่า\" ได้ทุกเมื่อ</string>
+    <string name="notifications_preference_dialog_content">คุณต้องการรับการแจ้งเตือนเกี่ยวกับ I/O ไหม เราจะส่งข้อมูลเกี่ยวกับเวลาเริ่มต้นของเซสชัน กิจกรรมหลังเซสชัน การบันทึกเซสชัน และอื่นๆ ให้ คุณเปลี่ยนการตั้งค่านี้ใน "ข้อมูล &gt; การตั้งค่า" ได้ทุกเมื่อ</string>
     <string name="no">ไม่</string>
     <string name="yes">ใช่</string>
+    <string name="feed_not_available">ไม่พบประกาศ</string>
+    <string name="feed_loading_error">โหลดฟีดไม่ได้ ลองอีกครั้งในภายหลัง</string>
+    <string name="feed_announcement_title">ประกาศ</string>
+    <string name="feed_upcoming_events">กิจกรรมที่กำลังจะมีขึ้น</string>
+    <string name="feed_saved_events">กิจกรรมที่บันทึกไว้</string>
+    <string name="feed_no_saved_events">ไม่มีกิจกรรมที่บันทึกไว้</string>
+    <string name="feed_view_all_events">ดูกิจกรรมทั้งหมด</string>
+    <string name="feed_view_your_schedule">ดูกำหนดการ</string>
+    <string name="feed_watch_live_stream">ดูสตรีมแบบสด</string>
+    <plurals name="duration_days">
+        <item quantity="other">%s วัน</item>
+    </plurals>
     <plurals name="duration_hours">
-        <item quantity="one">%s ชั่วโมง</item>
         <item quantity="other">%s ชั่วโมง</item>
     </plurals>
     <plurals name="duration_minutes">
-        <item quantity="one">%s นาที</item>
         <item quantity="other">%s นาที</item>
     </plurals>
+    <plurals name="duration_seconds">
+        <item quantity="other">%s วินาที</item>
+    </plurals>
     <string name="menu_item_share_session">แชร์เซสชัน</string>
-    <string name="share_text_session_detail">ลองดู \"%1$s\" ที่ #io18 %2$s</string>
+    <string name="share_text_session_detail">ลองดู "%1$s" ที่ #io19 %2$s</string>
     <string name="intent_chooser_session_detail">แชร์</string>
+    <string name="map_variant_after_dark">ภาคดึก</string>
+    <string name="map_variant_concert">คอนเสิร์ต</string>
+    <string name="map_variant_daytime">กลางวัน</string>
+    <string name="enable_my_location">เปิดใช้ตำแหน่งของฉัน</string>
+    <string name="my_location_rationale">แอปจำเป็นต้องมีสิทธิ์เข้าถึงตำแหน่งเพื่อแสดงตำแหน่งของคุณบนแผนที่</string>
     <string name="onboarding_get_started">เริ่มต้นใช้งาน</string>
     <string name="onboarding_welcome_to_google_i_o">ยินดีต้อนรับสู่ Google I/O</string>
-    <string name="onboarding_date_location">วันที 8-10 พฤษภาคม\n2018 Mountain View, CA</string>
-    <string name="onboarding_build_schedule">สร้างกำหนดการของคุณเอง</string>
-    <string name="onboarding_build_sched_benefits">สร้างประสบการณ์ I/O ที่คุณกำหนดเอง และจองที่นั่งหากเป็นผู้เข้าร่วม</string>
-    <string name="onboarding_watch_live">ดู I/O แบบสดๆ</string>
-    <string name="onboarding_join_online">เข้าร่วมกับเราในโลกออนไลน์ เราจะสตรีมเกี่ยวกับประเด็นสำคัญและเซสชันส่วนใหญ่กันแบบสดๆ</string>
+    <string name="onboarding_date_location">วันที่ 7-9 พฤษภาคม 2019\nMountain View, CA</string>
     <string name="onboarding_label_days">วัน</string>
     <string name="onboarding_label_hours">ชม.</string>
     <string name="onboarding_label_mins">นาที</string>
     <string name="onboarding_label_seconds">วินาที</string>
+    <string name="onboarding_welcome_google_io_pre">เตรียมพบกับ Google I/O</string>
+    <string name="onboarding_welcome_google_io_during">Google I/O</string>
+    <string name="onboarding_welcome_google_io_post">รับชมสรุปงาน I/O \'19 และดู #io19 ในโซเชียล</string>
+    <string name="onboarding_signin">ลงชื่อเข้าใช้เพื่อรับการแจ้งเตือนเกี่ยวกับ I/O โดยผู้เข้าร่วมจะจองที่นั่งสำหรับเซสชันได้</string>
     <plurals name="session_starting_in">
-        <item quantity="one">เซสชันจะเริ่มในอีก %1$s นาที</item>
         <item quantity="other">เซสชันจะเริ่มในอีก %1$s นาที</item>
     </plurals>
     <string name="expanded">ขยาย</string>
     <string name="collapsed">ยุบ</string>
-    <string name="info_title">ข้อมูล</string>
     <string name="event_title">กิจกรรม</string>
     <string name="travel_title">การท่องเที่ยว</string>
+    <string name="faq_title">คำถามที่พบบ่อย</string>
     <string name="settings_title">การตั้งค่า</string>
-    <string name="travel_directions_title">เส้นทางการขับขี่</string>
-    <string name="travel_shuttle_title">บริการรถรับส่ง (แนะนำ)</string>
-    <string name="travel_carpool_parking_title">ที่จอดรถและการโดยสารรถร่วมกัน</string>
-    <string name="travel_ride_sharing_title">บริการร่วมเดินทาง</string>
-    <string name="travel_public_transportation_title">การขนส่งมวลชน</string>
+    <string name="about_title">เกี่ยวกับ</string>
+    <string name="travel_what_to_bring_title">สิ่งที่ต้องนำมาสำหรับกิจกรรม</string>
+    <string name="travel_hotels_title">โรงแรม</string>
+    <string name="travel_getting_to_mountain_view_title">การเดินทางไปยัง Mountain View</string>
+    <string name="travel_getting_to_shoreline_title">การเดินทางไปยัง Mountain View</string>
+    <string name="travel_shuttle_service_title">บริการรถรับส่ง</string>
+    <string name="travel_off_site_parking_title">ที่จอดรถนอกงาน</string>
+    <string name="travel_for_public_transportation_title">ขนส่งมวลชน</string>
     <string name="travel_biking_title">ขี่จักรยาน</string>
-    <string name="travel_directions_description">ค้นหาเส้นทางใน <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> หรือ <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a> ไปยัง 1 Amphitheatre Pkwy, Mountain View, CA 94043</string>
-    <string name="travel_shuttle_description">มีรถรับส่งให้กับผู้เข้าร่วมกิจกรรม Google I/O ทุกคนจากโรงแรมที่ Google แนะนำโดยไม่มีค่าใช้จ่าย นอกจากนี้ยังมีบริการรับส่งจากซานฟรานซิสโกและสถานที่อื่นๆ ตามคาบสมุทร คุณต้องแสดงอีเมลยืนยันจาก Google I/O หรือป้ายการประชุมเพื่อขึ้นรถรับส่งของกิจกรรม Google I/O ทั้งหมด\n\nในแต่ละจุดรับส่งมีรถที่เป็นไปตามข้อกำหนด ADA โปรดระบุในแบบฟอร์มลงทะเบียนหากคุณต้องการความช่วยเหลือด้าน ADA หรือความช่วยเหลือพิเศษใดๆ และทีมวางแผนจะติดตามผลกับคุณโดยตรง</string>
-    <string name="travel_carpool_parking_description">ที่จอดรถมีจำนวนจำกัดและมีเฉพาะในสถานที่ที่ Google I/O กำหนดไว้ซึ่งตั้งอยู่ระหว่าง Shoreline Amphitheatre บริเวณ Shoreline Boulevard เท่านั้น ไม่มีที่จอดรถสำหรับกิจกรรมใน Amphitheatre Parkway หรือ Charleston Road หากคุณจะเดินทางด้วยรถยนต์ส่วนตัว เราแนะนำให้โดยสารร่วมกับผู้เข้าร่วมคนอื่น เนื่องจากที่จอดรถจะเปิดให้บริการสำหรับรถที่มีผู้โดยสารอย่างน้อย 2 คนขึ้นไป</string>
-    <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\nWaze Carpool เป็นชุมชนของคนขับรถและผู้โดยสารที่น่าเชื่อถือ ซึ่งพร้อมให้บริการเพื่อให้การเดินทางมาที่ Google I/O เป็นเรื่องสนุก รวดเร็วและประหยัดเงิน หากคุณมีรถ ลองเปิด <a href="http://Waze.com/get">Waze</a> เมื่อคุณมาถึง Bay Area หรือหากคุณกำลังมองหาคนขับ ลองติดตั้ง <a href="http://Waze.com/carpool">Waze Carpool</a> ก่อนที่จะเดินทาง แล้วกลับมาดูที่นี่ในอีกไม่กี่สัปดาห์ข้างหน้าเพื่อรับรหัสส่วนลดสำหรับการโดยสารรถร่วมกันพิเศษสำหรับผู้เข้าร่วม Google I/O\n\n<b>Lyft Line</b>\nดาวน์โหลดแอป Lyft จาก Google Play แล้วใช้ Lyft Line เพื่อโดยสารรถร่วมกับผู้อื่นที่ไปทางเดียวกันในราคาที่ถูกลง\n<b>รหัสส่วนลด</b>: Googleio18\nรหัสนี้ใช้ได้ตั้งแต่ 8-10 พฤษภาคม 2018 สำหรับการโดยสารรถร่วมกันผ่าน Lyft Line โดยใช้แลกสิทธิ์ได้ไม่เกิน $10 ต่อการเดินทาง และไม่เกิน 250 คนในแต่ละวัน การเดินทางจะต้องเริ่มหรือสิ้นสุดที่ Shoreline Amphitheatre</string>
-    <string name="travel_public_transportation_description">การขนส่งสาธารณะให้บริการไม่ถึงงาน Google I/O โปรดติดตามเพื่อดูตำแหน่งที่ให้บริการการเดินทางโดยรถรับส่งสำหรับกิจกรรม Google I/O</string>
-    <string name="travel_biking_description">มีที่จอดรถจักรยานฟรีที่ Shoreline Amphitheatre ใน Parking Lot A โดย Silicon Valley Bicycle Coalition ให้บริการรับจอดรถจักรยานที่ปลอดภัยตั้งแต่เวลา 7.00 น. จนถึงเวลาที่กิจกรรมสิ้นสุดในแต่ละวัน มีทางจักรยาน 2 ทางคือ Stevens Creek Trail และ Permanente Creek Trail ที่อำนวยความสะดวกให้กับผู้ที่จะเดินทางด้วยจักรยานมายัง Shoreline Amphitheatre ตรวจสอบ Google Maps เพื่อดูเส้นทางการเดินทางด้วยจักรยานที่ดีที่สุด\n\nงาน Bay Area Bike to Work Day จะมีขึ้นในวันพฤหัสบดีที่ 10 พฤษภาคมโดยจะมีนักปั่นจักรยานหลายพันคนเข้าร่วมงานใกล้กับ Shoreline และจะมีจุดพักหลายร้อยจุดทั่วทั้งบริเวณงาน โปรดดูเว็บไซต์ Silicon Valley Bike to Work Day สำหรับข้อมูลเพิ่มเติม</string>
+    <string name="travel_ridesharing_title">บริการร่วมเดินทาง</string>
+    <string name="travel_airport_transfers_title">รถรับส่งสนามบิน</string>
+    <string name="travel_what_to_bring_description">Google I/O เป็นเทศกาลกลางแจ้ง ซึ่งแม้ว่าจะเป็นส่วนสำคัญที่ทำให้ I/O เป็นงานที่พิเศษ แต่ก็หมายความว่าคุณจะต้องพิจารณาปัจจัยบางอย่างด้วย เซสชันจะจัดขึ้นภายในเต็นท์ที่ได้รับการควบคุมอุณหภูมิ แต่เราขอแนะนำให้คุณนำครีมกันแดด แว่นกันแดด และเสื้อคลุมสำหรับสวมทับในยามเย็นติดตัวมาด้วย ทั้งนี้ I/O เป็นกิจกรรมที่มีบรรยากาศเป็นกันเอง อย่าลืมคำนึงถึงเรื่องนี้เมื่อเลือกชุดที่จะใส่มาร่วมงาน</string>
+    <string name="travel_hotels_description">เราได้จองห้องพักของโรงแรมในพื้นที่ไว้หลายแห่ง โดยจะอัปเดตรายการโรงแรมและห้องว่างอยู่เป็นประจำ โปรดใช้แผนที่ด้านล่างเพื่อค้นหาโรงแรมที่คุณต้องการเข้าพัก &lt;a href="https://www.google.com/maps/d/u/1/viewer?mid=11u43dDY9LID1uf46p4y7ba2_TbE_Y8-W&amp;ll=37.383600316075075%2C-122.07007405000002&amp;z=12"&gt;แผนที่โรงแรม&lt;/a&gt;</string>
+    <string name="travel_getting_to_mountain_view_description">3 สนามบินหลักใน Bay Area ที่มีบริการของสายการบินระหว่างประเทศมีดังนี้&lt;br&gt; &lt;a href="https://www.google.com/maps/dir/San+Francisco+International+Airport,+San+Francisco,+CA+94128/Shoreline+Amphitheatre,+Amphitheatre+Parkway,+Mountain+View,+CA/@37.5206703,-122.3803144,11z/data=!3m1!4b1!4m18!4m17!1m5!1m1!1s0x808f778c55555555:0xa4f25c571acded3f!2m2!1d-122.3789554!2d37.6213129!1m5!1m1!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!2m2!1d-122.0807647!2d37.4267703!2m3!6e0!7e2!8j1463556000!3e0?hl=en"&gt;สนามบินนานาชาติซานฟรานซิสโก (SFO)&lt;/a&gt; ห่างจากสถานที่จัดงานประมาณ 24 ไมล์&lt;br&gt;&lt;br&gt; &lt;a href="https://www.google.com/maps/dir/Oakland+International+Airport,+Oakland,+CA/Shoreline+Amphitheatre,+Amphitheatre+Parkway,+Mountain+View,+CA/@37.5755915,-122.270249,11z/data=!3m1!4b1!4m18!4m17!1m5!1m1!1s0x808f845402c0a641:0xb0630c0f03017460!2m2!1d-122.2197428!2d37.7125689!1m5!1m1!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!2m2!1d-122.0807647!2d37.4267703!2m3!6e0!7e2!8j1463556000!3e0?hl=en"&gt;สนามบินนานาชาติโอ๊กแลนด์ (OAK)&lt;/a&gt; ห่างจากสถานที่จัดงานประมาณ 32 ไมล์&lt;br&gt;&lt;br&gt; &lt;a href="https://www.google.com/maps/dir/San+Jose+International+Airport-Sjc,+Airport+Boulevard,+San+Jose,+CA,+United+States/Shoreline+Amphitheatre,+Amphitheatre+Parkway,+Mountain+View,+CA/@37.3954744,-122.0741791,12z/data=!3m1!4b1!4m18!4m17!1m5!1m1!1s0x808fcbc3fab3c59b:0xbcfa443f6df67e3e!2m2!1d-121.9289375!2d37.3639472!1m5!1m1!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!2m2!1d-122.0807647!2d37.4267703!2m3!6e0!7e2!8j1463556000!3e0?hl=en"&gt;สนามบินนานาชาติแซนโฮเซ (SJC)&lt;/a&gt; ห่างจากสถานที่จัดงานประมาณ 12 ไมล์</string>
+    <string name="travel_getting_to_shoreline_description">Google I/O 2019 มุ่งมั่นที่จะเป็น "กิจกรรมที่ไม่มีที่จอดรถ*” เพื่อลดปัญหาการจราจรแออัดและการปล่อยคาร์บอน เราได้พิจารณาการตัดสินใจดังกล่าวอย่างถี่ถ้วนและเสนอทางเลือกในการเดินทางมาที่งานให้กับคุณโดยไม่ต้องเสียค่าใช้จ่ายและไม่ต้องนำยานพาหนะมาเอง&lt;br&gt;&lt;br&gt; เราจะให้ข้อมูลเพิ่มเติมเมื่อใกล้ถึงวันงาน&lt;br&gt;&lt;br&gt;*มีที่จอดรถให้บริการแก่ผู้ที่ต้องการความช่วยเหลือพิเศษ</string>
+    <string name="travel_shuttle_service_description">Google I/O 2019 มุ่งมั่นที่จะเป็น "กิจกรรมที่ไม่มีที่จอดรถ*” เพื่อลดปัญหาการจราจรแออัดและการปล่อยคาร์บอน เราได้พิจารณาการตัดสินใจดังกล่าวอย่างถี่ถ้วนและเสนอทางเลือกในการเดินทางมาที่งานให้กับคุณโดยไม่ต้องเสียค่าใช้จ่ายและไม่ต้องนำยานพาหนะมาเอง&lt;br&gt;&lt;br&gt; เราจะให้ข้อมูลเพิ่มเติมเมื่อใกล้ถึงวันงาน&lt;br&gt;&lt;br&gt;*มีที่จอดรถให้บริการแก่ผู้ที่ต้องการความช่วยเหลือพิเศษ</string>
+    <string name="travel_off_site_parking_description">เรามีที่จอดรถนอกงานให้บริการฟรีที่&lt;a href="https://www.sjearthquakes.com/avayastadium/parking-directions"&gt;Avaya Stadium&lt;/a&gt; รวมถึงรถรับส่งจาก Avaya ไป/กลับ Google I/O&lt;br&gt;&lt;br&gt; โปรดระบุในแบบฟอร์มลงทะเบียนหากคุณต้องการความช่วยเหลือด้าน ADA หรือความช่วยเหลือพิเศษ และทีมวางแผนจะติดตามผลกับคุณโดยตรง</string>
+    <string name="travel_for_public_transportation_description">เราจะมอบบัตรขนส่งสาธารณะแบบเติมเงินให้คุณมารับในช่วงลงทะเบียนล่วงหน้า บริการขนส่งมวลชนสำหรับเดินทางไปยังพื้นที่จัดงานมีดังนี้&lt;br&gt;&lt;br&gt; &lt;a href="http://www.caltrain.com/"&gt;Caltrain&lt;/a&gt;: ระบบรถไฟของภูมิภาค&lt;br&gt;&lt;br&gt; &lt;a href="http://www.vta.org/getting-around/interactive-light-rail-map"&gt;VTA&lt;/a&gt;: ระบบรถรางขนาดเล็กที่ให้บริการในบริเวณ South Bay&lt;br&gt;&lt;br&gt; &lt;a href="https://www.bart.gov/"&gt;BART&lt;/a&gt;: ระบบขนส่งมวลชนในเขต Bay Area&lt;br&gt;&lt;br&gt; &lt;a href="https://www.amtrak.com/home.html"&gt;AMTRAK&lt;/a&gt;: ระบบรถไฟของภูมิภาค&lt;br&gt;&lt;br&gt; ทั้งนี้ คุณเดินทางไปยังงาน Google I/O โดยตรงด้วยขนส่งสาธารณะไม่ได้ โปรดติดตามเพื่อดูข้อมูลเกี่ยวกับจุดให้บริการรถรับส่งไปยังกิจกรรม Google I/O</string>
+    <string name="travel_biking_description">มีที่จอดรถจักรยานฟรีที่ Shoreline Amphitheatre ใน Parking Lot A โดย Silicon Valley Bicycle Coalition จะให้บริการที่จอดรถจักรยานที่ปลอดภัยตั้งแต่เวลา 7.00 น. จนถึงเวลาที่กิจกรรมสิ้นสุดในแต่ละวัน&lt;br&gt;&lt;br&gt; โปรดดู Google Maps สำหรับเส้นทางการเดินทางด้วยจักรยานที่ดีที่สุด มีทางจักรยาน 2 ทางคือ Stevens Creek Trail และ Permanente Creek Trail ที่อำนวยความสะดวกให้กับผู้ที่จะเดินทางด้วยจักรยานมายัง Shoreline Amphitheatre</string>
+    <string name="travel_ridesharing_description">เราจะมีรถรับส่งสนามบินจาก Google I/O ไปยัง SFO และ SJC ให้บริการในวันสุดท้ายของกิจกรรม รถรับส่งสนามบินจะไม่มีให้บริการในวันอื่นๆ นอกเหนือจากนี้</string>
+    <string name="travel_airport_transfers_description">เราจะมีรถรับส่งสนามบินจาก Google I/O ไปยัง SFO และ SJC ให้บริการในวันสุดท้ายของกิจกรรม รถรับส่งสนามบินจะไม่มีให้บริการในวันอื่นๆ นอกเหนือจากนี้</string>
+    <string name="faq_when_and_where_title">Google I/O 2019 จัดขึ้นที่ไหนและเมื่อใด</string>
+    <string name="faq_how_can_i_stay_informed_title">ฉันจะคอยรับข้อมูลอัปเดตล่าสุดจาก Google I/O ได้อย่างไร</string>
+    <string name="faq_will_the_sessions_be_english_title">ทุกเซสชันจะใช้ภาษาอังกฤษใช่ไหม</string>
+    <string name="faq_can_i_reserve_sessions_ahead_of_time_title">ฉันจองที่นั่งสำหรับเซสชันล่วงหน้าก่อนวันงานได้ไหม</string>
+    <string name="faq_best_way_to_get_to_shoreline_title">วิธีใดเป็นวิธีที่ดีที่สุดในการเดินทางไปยัง Shoreline Amphitheatre</string>
+    <string name="faq_where_and_when_can_i_pick_up_badge_title">ฉันจะรับป้ายได้ที่ไหนและเมื่อใด</string>
+    <string name="faq_want_a_front_row_seat_at_keynote_title">ฉันอยากได้ที่นั่งแถวหน้าสำหรับช่วงประเด็นสำคัญจังเลย มีเคล็ดลับไหม</string>
+    <string name="faq_what_should_i_wear_title">ฉันควรจะแต่งกายอย่างไรดี</string>
+    <string name="faq_onsite_food_options_title">ฉันชอบทานอาหารว่าง ที่งานมีอาหารอะไรบ้าง</string>
+    <string name="faq_if_i_lose_something_onsite_title">ถ้าทำของหายในงาน ฉันจะหาได้จากที่ไหน</string>
+    <string name="faq_after_dark_program_title">กิจกรรมภาคดึกฟังดูน่าสนุกจังเลย ฉันควรเข้าร่วมดีไหม</string>
+    <string name="faq_accessibility_needs_title">คุณรองรับความต้องการการช่วยเหลือพิเศษได้ไหม</string>
+    <string name="faq_support_for_expectant_mothers_parents_title">คุณจะสนับสนุนคุณแม่ที่กำลังตั้งครรภ์และผู้ปกครองที่เข้าร่วมงาน I/O อย่างไร</string>
+    <string name="faq_community_guidelines_and_policy_title">หลักเกณฑ์ของชุมชนสำหรับกิจกรรมของ Google และนโยบายต่อต้านการล่วงละเมิด</string>
+    <string name="faq_sessions_be_live_streamed_question_title">จะมีการถ่ายทอดสดเซสชันไหม ฉันควรทำอย่างไรหากติดตามกิจกรรมแบบเรียลไทม์ไม่ได้</string>
+    <string name="faq_want_to_celebrate_i_o_title">ฉันอยากฉลอง I/O กับชุมชนของฉัน  คุณมีไอเดียอะไรไหม</string>
+    <string name="faq_when_and_where_description">อัปเดตข้อมูลล่าสุดเกี่ยวกับเซสชัน ผู้บรรยาย และกิจกรรมโดยรวมได้โดยไปที่&lt;a href="https://events.google.com/io/"&gt;เว็บไซต์ Google I/O 2019&lt;/a&gt; &lt;a href="http://googledevelopers.blogspot.com/"&gt;บล็อก Google Developers&lt;/a&gt; และติดตามเราได้ใน &lt;a href="https://twitter.com/googledevs"&gt;Twitter&lt;/a&gt; และ &lt;a href="https://www.facebook.com/Google-Developers-967415219957038/"&gt;Facebook&lt;/a&gt; คุณยังติดตามและเข้าร่วมการสนทนาบนโลกโซเชียลเกี่ยวกับ Google I/O 2019 ได้ผ่านแฮชแท็กอย่างเป็นทางการ &lt;a href="https://twitter.com/search?q=%23io19&amp;src=typd"&gt;#io19&lt;/a&gt; นอกจากนี้ เราจะส่งอีเมลข้อมูลที่สำคัญให้กับผู้เข้าร่วมที่ลงทะเบียนทั้งหมดพร้อมวิธีการเช็คอินก่อนเริ่มงานเทศกาล</string>
+    <string name="faq_how_can_i_stay_informed_description">อัปเดตข้อมูลล่าสุดเกี่ยวกับเซสชัน ผู้บรรยาย และกิจกรรมโดยรวมได้โดยไปที่&lt;a href="https://events.google.com/io/"&gt;เว็บไซต์ Google I/O 2019&lt;/a&gt; &lt;a href="http://googledevelopers.blogspot.com/"&gt;บล็อก Google Developers&lt;/a&gt; และติดตามเราได้ใน &lt;a href="https://twitter.com/googledevs"&gt;Twitter&lt;/a&gt; และ &lt;a href="https://www.facebook.com/Google-Developers-967415219957038/"&gt;Facebook&lt;/a&gt; คุณยังติดตามและเข้าร่วมการสนทนาบนโลกโซเชียลเกี่ยวกับ Google I/O 2019 ได้ผ่านแฮชแท็กอย่างเป็นทางการ &lt;a href="https://twitter.com/search?q=%23io19&amp;src=typd"&gt;#io19&lt;/a&gt; นอกจากนี้ เราจะส่งอีเมลข้อมูลที่สำคัญให้กับผู้เข้าร่วมที่ลงทะเบียนทั้งหมดพร้อมวิธีการเช็คอินก่อนเริ่มงานเทศกาล</string>
+    <string name="faq_will_the_sessions_be_english_description">ใช่ ผู้ชมจากทั่วทุกมุมโลกจะได้ติดตามงานได้</string>
+    <string name="faq_can_i_reserve_sessions_ahead_of_time_description">ตั้งแต่เดือนเมษายนเป็นต้นไป ผู้ที่เดินทางมาร่วมงานด้วยตนเองจะจองที่นั่งสำหรับเซสชันได้ก่อนที่กิจกรรมจะเริ่มขึ้นผ่านเว็บไซต์ I/O และแอป I/O บนอุปกรณ์เคลื่อนที่ (หมายเหตุ: ที่นั่งบางส่วนของเซสชันจะไม่มีการเปิดให้จองล่วงหน้า โดยจะให้สิทธิ์กับผู้ที่มาเข้าร่วมในงานก่อนได้ก่อน) ทั้งนี้ การเข้าร่วมที่ Codelabs, App Reviews และ Office Hours จะให้สิทธิ์กับผู้ที่มาเข้าร่วมในงานก่อนได้ก่อน</string>
+    <string name="faq_best_way_to_get_to_shoreline_description">ตรวจสอบหัวข้อการเดินทางเพื่อดูเคล็ดลับทั้งหมดเกี่ยวกับการเดินทางที่คุณต้องรู้ รวมถึงข้อมูลรถรับส่ง เส้นทางการขับขี่และจักรยาน เคล็ดลับสำหรับการร่วมเดินทาง และอีกมากมาย</string>
+    <string name="faq_where_and_when_can_i_pick_up_badge_description">เราจะเริ่มให้รับป้ายในวันจันทร์ที่ 6 พฤษภาคมที่ Shoreline Amphitheatre เพื่อประหยัดเวลาในขั้นตอนเช็คอิน โดยสิ่งที่เราต้องทำก่อนที่จะมอบป้าย Google I/O ให้กับคุณมีดังนี้&lt;br&gt; - ยืนยันบัตรประจำตัวที่มีรูปถ่ายของคุณ โดยจะเป็นใบอนุญาตที่ออกโดยหน่วยงานรัฐ หนังสือเดินทาง และเอกสารยืนยันตนในรูปแบบอื่นก็ได้ หากไม่มีเอกสารยืนยันตนที่เหมาะสม เราจะมอบป้ายให้กับคุณไม่ได้ และคุณก็จะเข้าร่วมงานไม่ได้เช่นกัน ทั้งนี้ ชื่อบนบัตรประจำตัวของคุณต้องตรงกับโปรไฟล์ที่ใช้ลงทะเบียนทุกประการ หากคุณเป็นผู้เข้าร่วมจากสถานศึกษา โปรดนำหลักฐานเพื่อยืนยันสิทธิ์มาด้วย&lt;br&gt; - สแกนคิวอาร์โค้ดสำหรับลงทะเบียนที่ได้รับผ่านอีเมล โดยคุณสแกนได้จากโทรศัพท์ ซึ่งไม่จำเป็นต้องพิมพ์อีเมลออกมา #ลดการใช้กระดาษ &lt;br&gt;&lt;br&gt;โปรดทราบว่า เราไม่อนุญาตให้คุณแชร์ มอบ หรือให้ป้ายแก่ผู้อื่นไม่ว่าจะด้วยวิธีใดก็ตาม คุณจะขอรับป้าย Google I/O ใหม่ไม่ได้ ดังนั้นคุณจึงควรเก็บรักษาเอาไว้ให้ดี มิฉะนั้นจะเข้าร่วมงานอีกครั้งไม่ได้ คุณต้องติดป้าย Google I/O เพื่อให้มีสิทธิ์เข้าร่วมงาน Google I/O รวมไปถึงเซสชัน แซนด์บ็อกซ์ และกิจกรรมหลังจบเซสชัน โปรดแสดงหรือระบุเอกสารยืนยันตัวตนเพิ่มเติมหากเจ้าหน้าที่รักษาความปลอดภัยขอตรวจสอบ ป้าย Google I/O อาจมีชื่อของคุณ บริษัทหรือองค์กร (หากระบุไว้) และรูปถ่ายของคุณอยู่</string>
+    <string name="faq_want_a_front_row_seat_at_keynote_description">ผู้เข้าร่วมทุกคนจะมีที่นั่งสำหรับเข้าร่วมชมประเด็นสำคัญอย่างแน่นอน แต่ที่นั่งที่ดีที่สุดจะกำหนดโดยผู้ที่มาก่อนจะได้เลือกก่อนในระหว่างการรับป้ายที่จะเริ่มต้นในเวลา 7.00 น. วันที่ 6 พฤษภาคม ดังนั้นก็อย่าลืมมาแต่เช้า</string>
+    <string name="faq_what_should_i_wear_description">Google I/O เป็นกิจกรรมสำหรับนักพัฒนาซอฟต์แวร์ที่จัดกลางแจ้ง ดังนั้นโปรดแต่งตัวสบายๆ และเป็นกันเอง กิจกรรมนี้ไม่มีระเบียบการแต่งกาย เนื่องจาก Bay Area มีอากาศร้อนในช่วงกลางวัน และอากาศเย็นในช่วงกลางคืน ดังนั้นคุณจึงควรพิจารณาเรื่องสภาพอากาศเมื่อเลือกเครื่องแต่งกายสำหรับงาน</string>
+    <string name="faq_onsite_food_options_description">ข่าวดี เราก็ชอบทานอาหารด้วยเช่นกัน  ผู้เข้าร่วมจะได้รับบริการอาหารเช้า อาหารกลางวัน และอาหารว่างฟรีตลอดทั้ง 3 วันที่เข้าร่วมประชุม ส่วนอาหารเย็นจะมีให้บริการในวันที่ 1 และวันที่ 2 ในช่วงกิจกรรมหลังจบเซสชัน</string>
+    <string name="faq_if_i_lose_something_onsite_description">เราจะช่วยเหลือคุณเอง ซุ้ม Lost &amp; Found จะอยู่ที่โต๊ะประชาสัมพันธ์ของงานในระหว่างเวลาจัดงาน สิ่งของใดๆ ที่ทิ้งไว้ข้ามคืนจะส่งไปยังสำนักงานรักษาความปลอดภัยของการประชุม ข้อสำคัญอย่างหนึ่งก็คือ คุณจะขอป้าย Google I/O ใหม่ไม่ได้ ดังนั้นคุณจึงควรเก็บรักษาเอาไว้ให้ดี มิฉะนั้นคุณจะเข้าร่วมงานอีกครั้งไม่ได้</string>
+    <string name="faq_after_dark_program_description">เรามี 2 ค่ำคืนที่ไม่อยากให้คุณพลาด ผู้เข้าร่วมจะได้รับเชิญให้เข้าร่วมงานเพื่อเพลิดเพลินไปกับเสียงเพลง เกม และอื่นๆ ในช่วงค่ำของวันที่ 8 พฤษภาคม รวมถึงคอนเสิร์ตสุดพิเศษที่ Amphitheatre ในวันที่ 9 พฤษภาคม อาหารและเครื่องดื่มจะมีให้บริการทั้ง 2 คืน (มีเครื่องดื่มแอลกอฮอล์สำหรับผู้ที่มีอายุ 21 ปีขึ้นไป) กิจกรรมหลังจบเซสชันทั้ง 2 กิจกรรมจะจัดขึ้นที่ Shoreline Amphitheatre โดยคุณต้องแสดงป้ายผู้เข้าร่วมเพื่อเข้าร่วมงาน</string>
+    <string name="faq_accessibility_needs_description">เราจะมีที่จอดรถสำหรับคุณแม่ที่กำลังตั้งครรภ์ในพื้นที่ ADA&lt;br&gt; เรายินดีต้อนรับคุณแม่ที่กำลังให้นมบุตรให้เข้าร่วมงานประชุมพร้อมกับลูกได้ เรามีห้องสำหรับคุณแม่ 4 ห้องโดยจะเปิดให้บริการในวันที่ 7 และ 8 พฤษภาคม ตั้งแต่ 8.00 น. ถึง 20.00 น. และในวันที่ 9 พฤษภาคม ตั้งแต่ 8.00 น. ถึง 16.00 น. ชีตลงทะเบียนจะอยู่หน้าห้องสำหรับคุณแม่ โดยจะให้สิทธิ์การใช้ห้องกับผู้ที่มาก่อน โปรดติตด่อแผนกช่วยเหลือของงานเพื่อสอบถามข้อมูลเพิ่มเติม&lt;br&gt;&lt;br&gt; เราจะชำระเงินค่ารับเลี้ยงเด็กจำนวน USD $100 ต่อวัน (รวมแล้วไม่เกิน USD $300) คืนให้กับผู้ปกครองที่เข้าร่วมงานและแสดงความสนใจเกี่ยวกับการรับเลี้ยงเด็กผ่านแบบฟอร์มลงทะเบียนของเรา โดยจะให้สิทธิ์ตามลำดับผู้ที่มาก่อน โดยจะชำระเงินดังกล่าวคืนผ่านผู้ให้บริการบุคคลที่สาม หากเราอนุมัติคำขอเกี่ยวกับการรับเลี้ยงเด็กของคุณผ่านอีเมลก่อนที่การประชุมจะเริ่มต้นขึ้น และคุณได้รับการยืนยันการเข้าร่วมงาน ผู้ให้บริการของเราจะติดต่อคุณพร้อมแจ้งขั้นตอนถัดไปภายใน 7 วันทำการหลังจบงาน Google I/O โดยผู้ให้บริการจะจัดการการชำระเงินทั้งหมดที่เกี่ยวกับการชำระเงินค่ารับเลี้ยงเด็กของเรา</string>
+    <string name="faq_support_for_expectant_mothers_parent_description">เราจะมีที่จอดรถสำหรับคุณแม่ที่กำลังตั้งครรภ์ในพื้นที่ ADA&lt;br&gt; เรายินดีต้อนรับคุณแม่ที่กำลังให้นมบุตรให้เข้าร่วมงานประชุมพร้อมกับลูกได้ เรามีห้องสำหรับคุณแม่ 4 ห้องโดยจะเปิดให้บริการในวันที่ 7 และ 8 พฤษภาคม ตั้งแต่ 8.00 น. ถึง 20.00 น. และในวันที่ 9 พฤษภาคม ตั้งแต่ 8.00 น. ถึง 16.00 น. ชีตลงทะเบียนจะอยู่หน้าห้องสำหรับคุณแม่ โดยจะให้สิทธิ์การใช้ห้องกับผู้ที่มาก่อน โปรดติตด่อแผนกช่วยเหลือของงานเพื่อสอบถามข้อมูลเพิ่มเติม&lt;br&gt;&lt;br&gt; เราจะชำระเงินค่ารับเลี้ยงเด็กจำนวน USD $100 ต่อวัน (รวมแล้วไม่เกิน USD $300) คืนให้กับผู้ปกครองที่เข้าร่วมงานและแสดงความสนใจเกี่ยวกับการรับเลี้ยงเด็กผ่านแบบฟอร์มลงทะเบียนของเรา โดยจะให้สิทธิ์ตามลำดับผู้ที่มาก่อน โดยจะชำระเงินดังกล่าวคืนผ่านผู้ให้บริการบุคคลที่สาม หากเราอนุมัติคำขอเกี่ยวกับการรับเลี้ยงเด็กของคุณผ่านอีเมลก่อนที่การประชุมจะเริ่มต้นขึ้น และคุณได้รับการยืนยันการเข้าร่วมงาน ผู้ให้บริการของเราจะติดต่อคุณพร้อมแจ้งขั้นตอนถัดไปภายใน 7 วันทำการหลังจบงาน Google I/O โดยผู้ให้บริการจะจัดการการชำระเงินทั้งหมดที่เกี่ยวกับการชำระเงินค่ารับเลี้ยงเด็กของเรา</string>
+    <string name="faq_community_guidelines_and_policy_description">Google มุ่งมั่นที่จะมอบประสบการณ์กิจกรรมที่ปราศจากการล่วงละเมิดและให้ความเท่าเทียมกับทุกคนโดยไม่คำนึงถึงอัตลักษณ์ทางเพศและการแสดงออกทางเพศ รสนิยมทางเพศ ความพิการ ความหลากหลายของสภาวะทางระบบสมอง รูปร่างลักษณะภายนอก ขนาดตัว ชาติพันธุ์ สัญชาติ เชื้อชาติ อายุ ศาสนา หรือหมวดหมู่อื่นๆ ที่คุ้มครอง เรามีห้องน้ำเพศกลางให้บริการรอบสถานที่จัดงานเพื่อทำให้กิจกรรมในครั้งนี้เกิดความเท่าเทียมมากที่สุดเท่าที่จะเป็นไปได้&lt;br&gt;&lt;br&gt; เราจะไม่ยอมให้เกิดการล่วงละเมิดทุกรูปแบบกับผู้เข้าร่วมกิจกรรม&lt;br&gt; Google จัดการกับการละเมิดนโยบายอย่างจริงจังและจะตอบสนองตามความเหมาะสม ดูข้อมูลเพิ่มเติมเกี่ยวกับหลักเกณฑ์ของชุมชนสำหรับกิจกรรมของ Google และนโยบายต่อต้านการล่วงละเมิดได้&lt;a href="https://www.google.com/events/policy/anti-harassmentpolicy.html"&gt;ที่นี่&lt;/a&gt;</string>
+    <string name="faq_sessions_be_live_streamed_question_description">ประเด็นสำคัญ 2 ประเด็นและเซสชันทั้งหมดจะมีการสตรีมแบบสดผ่านหน้าแรกของเว็บไซต์กิจกรรมในวันงานทั้ง 3 วัน หากคุณไม่ว่างหรืออยู่อีกซีกโลกหนึ่งซึ่งมีความต่างกันเรื่องเวลา คุณจะรับชมบันทึกของเซสชันภายหลังได้ที่&lt;a href="https://www.youtube.com/user/GoogleDevelopers"&gt;ช่อง Google Developers ใน YouTube&lt;/a&gt;</string>
+    <string name="faq_want_to_celebrate_i_o_description">ได้ ในทุกๆ ปี นักพัฒนาซอฟต์แวร์ทั่วโลกจะจัด&lt;a href="https://events.google.com/io/extended"&gt;กิจกรรม Google I/O Extended&lt;/a&gt; ขึ้น ระหว่างงาน ทางผู้จัดจะแสดงสตรีมแบบสดของกิจกรรมและจัดเซสชันขึ้นเอง ได้แก่ แฮ็กกาธอน, Codelabs, การสาธิต และอื่นๆ อีกมากมาย&lt;br&gt; หากเข้าร่วมเป็นผู้จัดงาน I/O Extended กับเราในปีนี้ คุณควรทำตามขั้นตอนเริ่มต้นดังนี้&lt;br&gt;&lt;br&gt; อ่าน&lt;a href="https://docs.google.com/presentation/d/e/2PACX–1vReWDtj-yASOho5q7XC6lYY8af9wRa13-81mPaoSRodiRoCw4MKJnQExQ8GxyNyCQiPZpBprznPG4ex/pub?slide=id.g62811f3b0_18"&gt;คู่มือสำหรับผู้จัด&lt;/a&gt;เพื่อดูเคล็ดลับและคำแนะนำต่างๆ เกี่ยวกับวิธีจัดกิจกรรมให้ประสบความสำเร็จ&lt;br&gt;&lt;br&gt; &lt;a href="https://events.google.com/io/extended/form"&gt;ลงทะเบียน&lt;/a&gt;กิจกรรมสาธารณะในเว็บไซต์ I/O เพื่อให้ผู้คนรู้จักมากขึ้น&lt;br&gt;&lt;br&gt; ติดแฮชแท็กอย่างเป็นทางการ #io19extended ในโพสต์บนโซเชียลเน็ตเวิร์กทั้งหมดที่เกี่ยวข้องกับ I/O Extended เพื่อให้ผู้คนค้นพบกิจกรรมได้ง่ายขึ้น&lt;br&gt;&lt;br&gt; หมายเหตุ: ผู้จัด I/O Extended จะส่งคำขอให้ลบข้อมูลส่วนตัวและ/หรือข้อมูลกิจกรรมหลังจบกิจกรรมได้โดยส่งอีเมลไปที่ io19@google.com&lt;br&gt; หากคุณเพียงต้องการเข้าร่วมกิจกรรม I/O Extended โปรดเรียกดู&lt;a href="https://events.google.com/io/extended"&gt;แผนที่ของเรา&lt;/a&gt;เพื่อค้นหากิจกรรมใกล้คุณและตอบกลับคำเชิญเข้าร่วมกิจกรรม&lt;br&gt; หากมีคำถามเพิ่มเติมเกี่ยวกับโปรแกรม I/O Extended โปรดติดต่อเราที่ io19extended\-external@google.com</string>
     <string name="view_sessions_text">ดูเซสชัน</string>
-    <string name="view_codelabs_text">ดู Codelabs</string>
-    <string name="view_events_text">ดูกิจกรรม</string>
-    <string name="view_map_text">ดูแผนที่</string>
-    <string name="wifi_network_label">เครือข่าย WiFi</string>
-    <string name="wifi_password_label">รหัสผ่าน</string>
     <string name="wifi_install_success">บันทึกเครือข่าย WiFi แล้ว</string>
-    <string name="wifi_install_error_message">ขออภัย ระบบบันทึกเครือข่าย WiFi ไม่สำเร็จ</string>
+    <string name="wifi_install_clipboard_message">บันทึกเครือข่าย Wi-Fi ไม่ได้\nบันทึกรหัสผ่านไปยังคลิปบอร์ดแทน</string>
     <string name="event_sessions_title">เซสชัน</string>
     <string name="event_sandbox_title">แซนด์บ็อกซ์</string>
     <string name="event_codelabs_title">Codelabs</string>
     <string name="event_officehours_title">Office Hours และ App Reviews</string>
     <string name="event_afterhours_title">หลังเซสชัน</string>
     <string name="event_meals_title">อาหาร</string>
+    <string name="event_sessions_description">ตั้งแต่เดือนเมษายนเป็นต้นไป ผู้ที่เดินทางมาร่วมงานด้วยตนเองจะจองที่นั่งสำหรับเซสชันได้ก่อนที่กิจกรรมจะเริ่มขึ้นผ่านเว็บไซต์ I/O และแอป I/O บนอุปกรณ์เคลื่อนที่ (หมายเหตุ: ที่นั่งบางส่วนของเซสชันจะไม่มีการเปิดให้จองล่วงหน้า โดยจะให้สิทธิ์กับผู้ที่มาเข้าร่วมในงานก่อนได้ก่อน) ทั้งนี้ การเข้าร่วมที่ Codelabs, App Reviews และ Office Hours จะให้สิทธิ์กับผู้ที่มาเข้าร่วมในงานก่อนได้ก่อน</string>
     <string name="event_sandbox_description">พื้นที่ที่สร้างขึ้นเพื่อการสำรวจ เรียนรู้ และเล่นผลิตภัณฑ์และแพลตฟอร์มล่าสุดของเราผ่านการสาธิตเชิงโต้ตอบ การติดตั้ง และอื่นๆ</string>
     <string name="event_codelabs_description">สัมผัสประสบการณ์ที่ได้ลงมือทำจริงในคีออสก์ที่พร้อมโค้ด ที่นี่เรามีทุกอย่างที่คุณต้องใช้ในการเรียนรู้เกี่ยวกับเทคโนโลยีล่าสุดและยิ่งใหญ่ที่สุดของ Google ผ่านบทแนะนำที่คุณเลือกได้ด้วยตนเอง หรือนำเครื่องของคุณเองมาแล้วนำผลงานกลับบ้าน พนักงานของ Google พร้อมให้คำแนะนำดีๆ และให้คำปรึกษาหากคุณพบปัญหา</string>
     <string name="event_officehours_description">Office Hours เป็นโอกาสที่คุณจะได้พบกับผู้เชี่ยวชาญ Google ตัวต่อตัวเพื่อสอบถามปัญหาทางเทคนิคทั้งหมด ส่วน App Reviews จะเปิดโอกาสให้คุณได้รับคำแนะนำและเคล็ดลับสำหรับโครงการแอปของคุณแบบเจาะจง</string>
     <string name="event_afterhours_description">ปิดท้ายวันด้วยกิจกรรมหลังเซสชัน พักผ่อนบริเวณ Shoreline ต่อเพื่อรับประทานอาหาร เครื่องดื่ม และสัมผัสกับความสนุกอีก 2 วัน โดยคืนแรกจะมีการจัดปาร์ตี้ขึ้นบริเวณ Sandbox และคืนที่ 2 จะมีคอนเสิร์ตสุดพิเศษใน Amphitheatre</string>
+    <string name="event_meals_description">ผู้เข้าร่วมจะได้รับบริการอาหารเช้า อาหารกลางวัน และอาหารว่างฟรีตลอดทั้ง 3 วันที่เข้าร่วมประชุม ส่วนอาหารเย็นจะมีให้บริการในวันที่ 1 และวันที่ 2 ในช่วงกิจกรรมหลังจบเซสชัน</string>
     <string name="wifi_header">Wi-Fi</string>
+    <string name="related_apps_header">แอปที่เกี่ยวข้อง</string>
     <string name="event_types_header">ประเภทกิจกรรม</string>
     <string name="settings_time_zone_label">กิจกรรมในเขตเวลาแปซิฟิก (UTC-8)</string>
+    <string name="settings_enable_notifications">เปิดใช้การแจ้งเตือน</string>
     <string name="settings_send_anonymous_usage_statistics">ส่งสถิติการใช้งานแบบไม่ระบุตัวตน</string>
     <string name="settings_tos">ข้อกำหนดในการให้บริการ</string>
     <string name="settings_privacy_policy">นโยบายความเป็นส่วนตัว</string>
     <string name="settings_oss_licenses">ใบอนุญาตโอเพนซอร์ส</string>
-    <string name="settings_version_label">เวอร์ชัน %1$s, บิวด์ %2$s</string>
-    <string name="built_with_material_content_description">สร้างด้วย Material Components</string>
-    <string name="day1">วันที่ 1</string>
-    <string name="day2">วันที่ 2</string>
-    <string name="day3">วันที่ 3</string>
-    <string name="day1_date">8 พฤษภาคม</string>
-    <string name="day2_date">9 พฤษภาคม</string>
-    <string name="day3_date">10 พฤษภาคม</string>
+    <string name="settings_theme_title">เลือกธีม</string>
+    <string name="settings_theme_system">ค่าเริ่มต้นของระบบ</string>
+    <string name="settings_theme_light">สว่าง</string>
+    <string name="settings_theme_dark">สีเข้ม</string>
+    <string name="settings_theme_battery">ตั้งตามโหมดประหยัดแบตเตอรี่</string>
+    <string name="built_with_material_components">สร้างด้วย Material Components</string>
+    <string name="wifi_network_and_password">เครือข่าย: %1$s\nรหัสผ่าน: %2$s</string>
+    <string name="join_network">เข้าร่วมเครือข่าย</string>
+    <string name="assistant_app_description">ลองพูดว่า "Hey Google พูดกับ Google I/O 19"</string>
+    <string name="assistant_app_description2">ลองพูดว่า "Hey Google พูดกับ Google I/O 19"</string>
+    <string name="speaker_link_website">เว็บไซต์</string>
+    <string name="speaker_link_twitter">Twitter</string>
+    <string name="speaker_link_github">GitHub</string>
+    <string name="speaker_link_linkedin">LinkedIn</string>
+    <string name="speaker_events_subhead">กิจกรรม</string>
+    <string name="no_network_connection">ไม่มีการเชื่อมต่ออินเทอร์เน็ต</string>
+    <string name="navigate_up">นำทางขึ้น</string>
+    <string name="no_network_description">หากต้องการใช้ Explore I/O ลองทำดังนี้\n\n - ปิดโหมดเครื่องบิน\n\n - เปิดเน็ตมือถือหรือ Wi-Fi\n\n - ตรวจสอบสัญญาณในพื้นที่</string>
+    <string name="phone_does_not_support_arcore_title">โทรศัพท์ของคุณไม่รองรับ ARCore</string>
+    <string name="phone_does_not_support_arcore_message">ลองเปลี่ยนอุปกรณ์หรือยืมอุปกรณ์ของเพื่อน</string>
+    <string name="codelabs_information">ดูข้อมูลเกี่ยวกับเทคโนโลยีล่าสุดและยิ่งใหญ่ที่สุดของ Google ผ่านบทแนะนำที่คุณเลือกได้ด้วยตนเองในคีออสก์พร้อมโค้ดของเรา หรือจะนำเครื่องของคุณมาเองแล้วนำผลงานกลับบ้านก็ได้ คีออสก์พร้อมให้บริการทุกวัน ยกเว้นในระหว่างช่วงประเด็นสำคัญครั้งแรก</string>
+    <string name="codelabs_building">อาคาร Codelabs</string>
+    <string name="codelabs_website">เว็บไซต์ Codelabs</string>
+    <string name="codelab_duration">ระยะเวลา: %1$d นาที</string>
+    <string name="start_codelab">เริ่มใช้ Codelab</string>
 </resources>

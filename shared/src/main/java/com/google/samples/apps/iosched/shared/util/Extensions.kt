@@ -16,18 +16,12 @@
 
 package com.google.samples.apps.iosched.shared.util
 
-import android.content.Context
-import android.os.Bundle
 import android.os.Parcel
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.AttrRes
-import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
-import androidx.core.content.ContextCompat
+import androidx.core.os.ParcelCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -41,14 +35,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.samples.apps.iosched.shared.BuildConfig
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
-
-/**
- * Implementation of lazy that is not thread safe. Useful when you know what thread you will be
- * executing on and are not worried about synchronization.
- */
-fun <T> lazyFast(operation: () -> T): Lazy<T> = lazy(LazyThreadSafetyMode.NONE) {
-    operation()
-}
 
 /** Convenience for callbacks/listeners whose return value indicates an event was consumed. */
 inline fun consume(f: () -> Unit): Boolean {
@@ -118,23 +104,11 @@ inline fun <reified VM : ViewModel> Fragment.parentViewModelProvider(
 // endregion
 // region Parcelables, Bundles
 
-/** Write an enum value to a Parcel */
-fun <T : Enum<T>> Parcel.writeEnum(value: T) = writeString(value.name)
+/** Write a boolean to a Parcel. */
+fun Parcel.writeBooleanUsingCompat(value: Boolean) = ParcelCompat.writeBoolean(this, value)
 
-/** Read an enum value from a Parcel */
-inline fun <reified T : Enum<T>> Parcel.readEnum(): T = enumValueOf(readString())
-
-/** Write an enum value to a Bundle */
-fun <T : Enum<T>> Bundle.putEnum(key: String, value: T) = putString(key, value.name)
-
-/** Read an enum value from a Bundle */
-inline fun <reified T : Enum<T>> Bundle.getEnum(key: String): T = enumValueOf(getString(key))
-
-/** Write a boolean to a Parcel (copied from Parcel, where this is @hidden). */
-fun Parcel.writeBoolean(value: Boolean) = writeInt(if (value) 1 else 0)
-
-/** Read a boolean from a Parcel (copied from Parcel, where this is @hidden). */
-fun Parcel.readBoolean() = readInt() != 0
+/** Read a boolean from a Parcel. */
+fun Parcel.readBooleanUsingCompat() = ParcelCompat.readBoolean(this)
 
 // endregion
 // region LiveData
@@ -144,18 +118,10 @@ fun <X, Y> LiveData<X>.map(body: (X) -> Y): LiveData<Y> {
     return Transformations.map(this, body)
 }
 
-/** Uses `Transformations.switchMap` on a LiveData */
-fun <X, Y> LiveData<X>.switchMap(body: (X) -> LiveData<Y>): LiveData<Y> {
-    return Transformations.switchMap(this, body)
-}
-
 fun <T> MutableLiveData<T>.setValueIfNew(newValue: T) {
     if (this.value != newValue) value = newValue
 }
 
-fun <T> MutableLiveData<T>.postValueIfNew(newValue: T) {
-    if (this.value != newValue) postValue(newValue)
-}
 // endregion
 
 // region ZonedDateTime
@@ -182,23 +148,6 @@ val <T> T.checkAllMatched: T
     get() = this
 
 // region UI utils
-
-/**
- * Retrieves a color from the theme by attributes. If the attribute is not defined, a fall back
- * color will be returned.
- */
-@ColorInt
-fun Context.getThemeColor(
-    @AttrRes attrResId: Int,
-    @ColorRes fallbackColorResId: Int
-): Int {
-    val tv = TypedValue()
-    return if (theme.resolveAttribute(attrResId, tv, true)) {
-        tv.data
-    } else {
-        ContextCompat.getColor(this, fallbackColorResId)
-    }
-}
 
 // endregion
 

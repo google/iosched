@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.speaker
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,12 +26,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.databinding.ItemGenericSectionHeaderBinding
 import com.google.samples.apps.iosched.databinding.ItemSessionBinding
 import com.google.samples.apps.iosched.databinding.ItemSpeakerInfoBinding
 import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.ui.SectionHeader
 import com.google.samples.apps.iosched.ui.speaker.SpeakerViewHolder.HeaderViewHolder
 import com.google.samples.apps.iosched.ui.speaker.SpeakerViewHolder.SpeakerInfoViewHolder
 import com.google.samples.apps.iosched.ui.speaker.SpeakerViewHolder.SpeakerSessionViewHolder
+import com.google.samples.apps.iosched.util.executeAfter
 import java.util.Collections.emptyList
 
 /**
@@ -40,17 +44,16 @@ import java.util.Collections.emptyList
 class SpeakerAdapter(
     private val lifecycleOwner: LifecycleOwner,
     private val speakerViewModel: SpeakerViewModel,
-    private val imageLoadListener: ImageLoadListener,
     private val tagRecycledViewPool: RecycledViewPool
 ) : RecyclerView.Adapter<SpeakerViewHolder>() {
+
+    private val differ = AsyncListDiffer<Any>(this, DiffCallback)
 
     var speakerSessions: List<UserSession> = emptyList()
         set(value) {
             field = value
             differ.submitList(buildMergedList(sessions = value))
         }
-
-    private val differ = AsyncListDiffer<Any>(this, DiffCallback)
 
     init {
         differ.submitList(buildMergedList())
@@ -62,13 +65,13 @@ class SpeakerAdapter(
             R.layout.item_speaker_info -> SpeakerInfoViewHolder(
                 ItemSpeakerInfoBinding.inflate(inflater, parent, false)
             )
-            R.layout.item_speaker_events_header -> HeaderViewHolder(
-                inflater.inflate(viewType, parent, false)
-            )
             R.layout.item_session -> SpeakerSessionViewHolder(
                 ItemSessionBinding.inflate(inflater, parent, false).apply {
                     tags.setRecycledViewPool(tagRecycledViewPool)
                 }
+            )
+            R.layout.item_generic_section_header -> HeaderViewHolder(
+                ItemGenericSectionHeaderBinding.inflate(inflater, parent, false)
             )
             else -> throw IllegalStateException("Unknown viewType $viewType")
         }
@@ -76,27 +79,28 @@ class SpeakerAdapter(
 
     override fun onBindViewHolder(holder: SpeakerViewHolder, position: Int) {
         when (holder) {
-            is SpeakerInfoViewHolder -> holder.binding.apply {
+            is SpeakerInfoViewHolder -> holder.binding.executeAfter {
                 viewModel = speakerViewModel
-                headshotLoadListener = imageLoadListener
-                setLifecycleOwner(lifecycleOwner)
-                executePendingBindings()
+                lifecycleOwner = this@SpeakerAdapter.lifecycleOwner
             }
-            is SpeakerSessionViewHolder -> holder.binding.apply {
+            is SpeakerSessionViewHolder -> holder.binding.executeAfter {
                 userSession = differ.currentList[position] as UserSession
                 eventListener = speakerViewModel
-                setLifecycleOwner(lifecycleOwner)
-                executePendingBindings()
+                timeZoneId = speakerViewModel.timeZoneId
+                showTime = true
+                lifecycleOwner = this@SpeakerAdapter.lifecycleOwner
             }
-            is HeaderViewHolder -> Unit // no-op
+            is HeaderViewHolder -> holder.binding.executeAfter {
+                sectionHeader = differ.currentList[position] as SectionHeader
+            }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (differ.currentList[position]) {
             SpeakerItem -> R.layout.item_speaker_info
-            SpeakerEventsHeaderItem -> R.layout.item_speaker_events_header
             is UserSession -> R.layout.item_session
+            is SectionHeader -> R.layout.item_generic_section_header
             else -> throw IllegalStateException("Unknown view type at position $position")
         }
     }
@@ -114,33 +118,33 @@ class SpeakerAdapter(
     ): List<Any> {
         val merged = mutableListOf<Any>(SpeakerItem)
         if (sessions.isNotEmpty()) {
-            merged += SpeakerEventsHeaderItem
+            merged += SectionHeader(R.string.speaker_events_subhead)
             merged.addAll(sessions)
         }
         return merged
     }
 }
 
-// Marker objects for use in our merged representation.
-
+// Marker object for use in our merged representation.
 object SpeakerItem
-
-object SpeakerEventsHeaderItem
 
 /**
  * Diff items presented by this adapter.
  */
 object DiffCallback : DiffUtil.ItemCallback<Any>() {
+
     override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
         return when {
             oldItem === SpeakerItem && newItem === SpeakerItem -> true
-            oldItem === SpeakerEventsHeaderItem && newItem === SpeakerEventsHeaderItem -> true
+            oldItem is SectionHeader && newItem is SectionHeader -> oldItem == newItem
             oldItem is UserSession && newItem is UserSession ->
                 oldItem.session.id == newItem.session.id
             else -> false
         }
     }
 
+    @SuppressLint("DiffUtilEquals")
+    // Workaround of https://issuetracker.google.com/issues/122928037
     override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
         return when {
             oldItem is UserSession && newItem is UserSession -> oldItem == newItem
@@ -163,6 +167,6 @@ sealed class SpeakerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVie
     ) : SpeakerViewHolder(binding.root)
 
     class HeaderViewHolder(
-        itemView: View
-    ) : SpeakerViewHolder(itemView)
+        val binding: ItemGenericSectionHeaderBinding
+    ) : SpeakerViewHolder(binding.root)
 }

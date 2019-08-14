@@ -71,7 +71,7 @@ class OnboardingFragment : DaggerFragment() {
 
         binding = FragmentOnboardingBinding.inflate(inflater, container, false).apply {
             viewModel = onboardingViewModel
-            setLifecycleOwner(this@OnboardingFragment)
+            lifecycleOwner = viewLifecycleOwner
             pager.adapter = OnboardingAdapter(childFragmentManager)
             pagerPager = ViewPagerPager(pager)
             // If user touches pager then stop auto advance
@@ -91,7 +91,7 @@ class OnboardingFragment : DaggerFragment() {
         return binding.root
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         handler.postDelayed(advancePager, INITIAL_ADVANCE_DELAY)
     }
@@ -105,16 +105,22 @@ class OnboardingFragment : DaggerFragment() {
 class OnboardingAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
 
     // Don't show then countdown fragment if the conference has already started
-    private val fragments = if (TimeUtils.conferenceHasStarted()) {
+    private val fragments = if (!TimeUtils.conferenceHasStarted()) {
+        // Before the conference
         arrayOf(
-            WelcomeFragment(),
-            CustomizeScheduleFragment()
+            WelcomePreConferenceFragment(),
+            OnboardingSignInFragment()
+        )
+    } else if (TimeUtils.conferenceHasStarted() && !TimeUtils.conferenceHasEnded()) {
+        // During the conference
+        arrayOf(
+            WelcomeDuringConferenceFragment(),
+            OnboardingSignInFragment()
         )
     } else {
+        // Post the conference
         arrayOf(
-            WelcomeFragment(),
-            CustomizeScheduleFragment(),
-            CountdownFragment()
+            WelcomePostConferenceFragment()
         )
     }
 

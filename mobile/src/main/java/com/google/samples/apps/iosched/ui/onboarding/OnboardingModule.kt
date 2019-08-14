@@ -29,6 +29,7 @@ import dagger.multibindings.IntoMap
  * Module where classes needed to create the [OnboardingFragment] are defined.
  */
 @Module
+@Suppress("UNUSED")
 internal abstract class OnboardingModule {
 
     /**
@@ -37,6 +38,28 @@ internal abstract class OnboardingModule {
     @FragmentScoped
     @ContributesAndroidInjector
     internal abstract fun contributeOnboardingFragment(): OnboardingFragment
+
+    /**
+     * Generates an [AndroidInjector] for the [WelcomePreConferenceFragment].
+     */
+    @FragmentScoped
+    @ContributesAndroidInjector
+    internal abstract fun contributeWelcomePreConferenceFragment(): WelcomePreConferenceFragment
+
+    /**
+     * Generates an [AndroidInjector] for the [WelcomeDuringConferenceFragment].
+     */
+    @FragmentScoped
+    @ContributesAndroidInjector
+    internal abstract fun contributeWelcomeDuringConferenceFragment():
+            WelcomeDuringConferenceFragment
+
+    /**
+     * Generates an [AndroidInjector] for the [OnboardingSignInFragment].
+     */
+    @FragmentScoped
+    @ContributesAndroidInjector
+    internal abstract fun contributeOnboardingSignInFragment(): OnboardingSignInFragment
 
     /**
      * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we

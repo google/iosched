@@ -17,17 +17,17 @@
 package com.google.samples.apps.iosched.shared.domain.logistics
 
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
-import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
+import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 open class LoadWifiInfoUseCase @Inject constructor(
-    private val logisticsRepository: LogisticsRepository
+    private val appConfigDataSource: AppConfigDataSource
 ) : UseCase<Unit, ConferenceWifiInfo>() {
 
     override fun execute(parameters: Unit): ConferenceWifiInfo {
-        return logisticsRepository.getWifiInfo()
+        return appConfigDataSource.getWifiInfo()
     }
 }

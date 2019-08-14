@@ -16,32 +16,28 @@
 
 package com.google.samples.apps.iosched.tests.ui
 
+import android.content.Context
 import android.provider.Settings
 import android.view.View
-import androidx.test.InstrumentationRegistry
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
-import androidx.test.espresso.matcher.ViewMatchers.hasFocus
 import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.tests.FixedTimeRule
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
 import com.google.samples.apps.iosched.tests.SyncTaskExecutorRule
-import com.google.samples.apps.iosched.ui.MainActivity
-import com.google.samples.apps.iosched.ui.schedule.day.SessionViewHolder
+import com.google.samples.apps.iosched.ui.schedule.SessionViewHolder
 import com.google.samples.apps.iosched.ui.schedule.filters.ScheduleFilterAdapter
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import org.hamcrest.CoreMatchers.not
@@ -58,7 +54,7 @@ import org.junit.runner.RunWith
 class ScheduleTest {
 
     @get:Rule
-    var activityRule = ActivityTestRule<MainActivity>(MainActivity::class.java)
+    var activityRule = MainActivityTestRule(R.id.navigation_schedule)
 
     // Executes tasks in a synchronous [TaskScheduler]
     @get:Rule
@@ -72,7 +68,7 @@ class ScheduleTest {
     @get:Rule
     var preferencesRule = SetPreferencesRule()
 
-    private val resources = InstrumentationRegistry.getTargetContext().resources
+    private val resources = ApplicationProvider.getApplicationContext<Context>().resources
 
     @Before
     fun disableBottomSheetAnimations() {
@@ -83,34 +79,17 @@ class ScheduleTest {
     }
 
     @Test
-    fun clickOnAgenda_showsAgenda() {
-        onView(withText(R.string.agenda)).perform(click())
-        onView(withText("Breakfast")).check(matches(isDisplayed()))
+    fun showFirstDay_sessionOnFirstDayShown() {
+        onView(withText(FAKE_SESSION_ON_DAY1))
+            .check(matches(isDisplayed()))
     }
 
     @Test
-    fun allDays_areClicked_showsSessions() {
-        // Each of the days should be displayed
-        ConferenceDays.forEachIndexed { i, conferenceDay ->
-            val dayTitle = conferenceDay.formatMonthDay()
-            onView(withText(dayTitle)).perform(click())
-            onView(withText("First session day ${i + 1}"))
-                .check(matches(isDisplayed()))
-        }
-    }
-
-    @Test
-    fun clickOnFirstItem_detailsShow() {
-        onView(allOf(withId(R.id.recyclerview), hasFocus()))
+    fun clickOnFirstItem_detailsShown() {
+        onView(withId(R.id.recyclerview_schedule))
             .perform(RecyclerViewActions.actionOnItemAtPosition<SessionViewHolder>(0, click()))
 
-        onView(
-            allOf(
-                withId(R.id.session_detail_with_video_title),
-                withText("First session day 1")
-            )
-        )
-            .check(matches(isDisplayed()))
+        onView(withId(R.id.session_detail_title)).check(matches(isDisplayed()))
     }
 
     /**
@@ -128,10 +107,10 @@ class ScheduleTest {
             getActiveFilterContDesc(FakeConferenceDataSource.FAKE_SESSION_TAG_NAME)
 
         // Scroll to the filter
-        onView(allOf(withId(R.id.recyclerview), withParent(withId(R.id.filter_sheet))))
+        onView(allOf(withId(R.id.recyclerview_filter), withParent(withId(R.id.filter_sheet))))
             .perform(
                 RecyclerViewActions.scrollTo<ScheduleFilterAdapter.FilterViewHolder>(
-                    hasDescendant(withContentDescription(uncheckedFilterContentDesc))
+                    withContentDescription(uncheckedFilterContentDesc)
                 )
             )
 
@@ -179,7 +158,7 @@ class ScheduleTest {
                 withContentDescription(getActiveFilterContDesc(filter)),
                 withParent(withId(R.id.filter_description_tags))
             )
-        ).check(matches(not(isCompletelyDisplayed())))
+        ).check(matches(isCompletelyDisplayed()))
     }
 
     private fun applyFilter(filter: String) {
@@ -190,14 +169,14 @@ class ScheduleTest {
         val uncheckedFilterContentDesc =
             resources.getString(R.string.a11y_filter_not_applied, filter)
 
-        onView(allOf(withId(R.id.recyclerview), withParent(withId(R.id.filter_sheet))))
+        onView(allOf(withId(R.id.recyclerview_filter), withParent(withId(R.id.filter_sheet))))
             .check(matches(isDisplayed()))
 
         // Scroll to the filter
-        onView(allOf(withId(R.id.recyclerview), withParent(withId(R.id.filter_sheet))))
+        onView(allOf(withId(R.id.recyclerview_filter), withParent(withId(R.id.filter_sheet))))
             .perform(
                 RecyclerViewActions.scrollTo<ScheduleFilterAdapter.FilterViewHolder>(
-                    hasDescendant(withContentDescription(uncheckedFilterContentDesc))
+                    withContentDescription(uncheckedFilterContentDesc)
                 )
             )
 
@@ -217,7 +196,7 @@ class ScheduleTest {
 
     private fun checkAnimationsDisabled() {
         val scale = Settings.Global.getFloat(
-            InstrumentationRegistry.getTargetContext().contentResolver,
+            ApplicationProvider.getApplicationContext<Context>().contentResolver,
             Settings.Global.ANIMATOR_DURATION_SCALE,
             1f
         )
@@ -228,5 +207,9 @@ class ScheduleTest {
                     "Developer options -> Animator duration scale"
             )
         }
+    }
+
+    companion object {
+        private const val FAKE_SESSION_ON_DAY1 = "Fake session on day 1"
     }
 }

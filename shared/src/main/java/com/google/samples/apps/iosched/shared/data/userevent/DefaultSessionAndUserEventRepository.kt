@@ -28,7 +28,6 @@ import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.SwapAction
@@ -36,7 +35,6 @@ import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -50,7 +48,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
     private val sessionRepository: SessionRepository
 ) : SessionAndUserEventRepository {
 
-    private val sessionsByDayResult = MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>()
+    private val sessionsResult = MediatorLiveData<Result<ObservableUserEvents>>()
 
     // Keep a reference to the observable for a single event (from the details screen) so we can
     // stop observing when done.
@@ -58,25 +56,31 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
     override fun getObservableUserEvents(
         userId: String?
-    ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
+    ): LiveData<Result<ObservableUserEvents>> {
         // If there is no logged-in user, return the map with null UserEvents
         if (userId == null) {
-            Timber.d("EventRepository: No user logged in, returning sessions without user events.")
-            val allSessions = sessionRepository.getSessions()
-            val userSessionsPerDay = mapUserDataAndSessions(null, allSessions)
-            sessionsByDayResult.value = Result.Success(
-                LoadUserSessionsByDayUseCaseResult(
-                    userSessionsPerDay = userSessionsPerDay,
-                    userMessage = null,
-                    userSessionCount = allSessions.size
+            DefaultScheduler.execute {
+                Timber.d(
+                        """EventRepository: No user logged in,
+                            |returning sessions without user events.""".trimMargin()
                 )
-            )
-            return sessionsByDayResult
+                val allSessions = sessionRepository.getSessions()
+                val userSessions = mergeUserDataAndSessions(null, allSessions)
+                sessionsResult.postValue(
+                        Result.Success(
+                                ObservableUserEvents(
+                                        userSessions = userSessions
+                                )
+                        )
+                )
+            }
+            return sessionsResult
         }
+
         // Observes the user events and merges them with session data.
         val observableUserEvents = userEventDataSource.getObservableUserEvents(userId)
-        sessionsByDayResult.removeSource(observableUserEvents)
-        sessionsByDayResult.addSource(observableUserEvents) { userEvents ->
+        sessionsResult.removeSource(observableUserEvents)
+        sessionsResult.addSource(observableUserEvents) { userEvents ->
             DefaultScheduler.execute {
                 try {
                     // Not update the result when userEvents is null, otherwise the count of the
@@ -91,29 +95,27 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
                     // Get the sessions, synchronously
                     val allSessions = sessionRepository.getSessions()
+                    val userSessions = mergeUserDataAndSessions(userEvents, allSessions)
 
-                    // Merges sessions with user data and emits the result
+                    // TODO(b/122306429) expose user events messages separately
                     val userEventsMessageSession = allSessions.firstOrNull {
                         it.id == userEvents.userEventsMessage?.sessionId
                     }
-                    sessionsByDayResult.postValue(
+                    sessionsResult.postValue(
                         Result.Success(
-                            LoadUserSessionsByDayUseCaseResult(
-                                userSessionsPerDay = mapUserDataAndSessions(
-                                    userEvents, allSessions
-                                ),
+                            ObservableUserEvents(
+                                userSessions = userSessions,
                                 userMessage = userEvents.userEventsMessage,
-                                userMessageSession = userEventsMessageSession,
-                                userSessionCount = allSessions.size
+                                userMessageSession = userEventsMessageSession
                             )
                         )
                     )
                 } catch (e: Exception) {
-                    sessionsByDayResult.postValue(Result.Error(e))
+                    sessionsResult.postValue(Result.Error(e))
                 }
             }
         }
-        return sessionsByDayResult
+        return sessionsResult
     }
 
     override fun getObservableUserEvent(
@@ -124,16 +126,18 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
         // If there is no logged-in user, return the session with a null UserEvent
         if (userId == null) {
-            Timber.d("EventRepository: No user logged in, returning session without user event.")
-            val session = sessionRepository.getSession(eventId)
-            sessionResult.postValue(
-                Result.Success(
-                    LoadUserSessionUseCaseResult(
-                        userSession = UserSession(session, createDefaultUserEvent(session)),
-                        userMessage = null
+            DefaultScheduler.execute {
+                Timber.d("EventRepository: No user logged in, returning session without user event")
+                val session = sessionRepository.getSession(eventId)
+                sessionResult.postValue(
+                    Result.Success(
+                        LoadUserSessionUseCaseResult(
+                            userSession = UserSession(session, createDefaultUserEvent(session)),
+                            userMessage = null
+                        )
                     )
                 )
-            )
+            }
             return sessionResult
         }
 
@@ -142,7 +146,9 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         sessionResult.removeSource(newObservableUserEvent) // Avoid multiple subscriptions
         sessionResult.value = null // Prevent old data from being emitted
         sessionResult.addSource(newObservableUserEvent) { userEventResult ->
-
+            if (userEventResult?.userEvent == null) {
+                return@addSource
+            }
             DefaultScheduler.execute {
                 try {
                     Timber.d("EventRepository: Received user event changes")
@@ -152,13 +158,13 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                     // Merges session with user data and emits the result
                     val userSession = UserSession(
                         event,
-                        userEventResult?.userEvent ?: createDefaultUserEvent(event)
+                        userEventResult.userEvent
                     )
                     sessionResult.postValue(
                         Result.Success(
                             LoadUserSessionUseCaseResult(
                                 userSession = userSession,
-                                userMessage = userEventResult?.userEventMessage
+                                userMessage = userEventResult.userEventMessage
                             )
                         )
                     )
@@ -175,11 +181,25 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         return userEventDataSource.getUserEvents(userId ?: "")
     }
 
+    override fun getUserSession(userId: String, sessionId: SessionId): UserSession {
+        val session = sessionRepository.getSession(sessionId)
+        val userEvent = userEventDataSource.getUserEvent(userId, sessionId)
+                ?: throw Exception("UserEvent not found")
+
+        return UserSession(
+                session = session,
+                userEvent = userEvent
+        )
+    }
     override fun starEvent(
         userId: String,
         userEvent: UserEvent
     ): LiveData<Result<StarUpdatedStatus>> {
         return userEventDataSource.starEvent(userId, userEvent)
+    }
+
+    override fun recordFeedbackSent(userId: String, userEvent: UserEvent): LiveData<Result<Unit>> {
+        return userEventDataSource.recordFeedbackSent(userId, userEvent)
     }
 
     override fun changeReservation(
@@ -250,52 +270,38 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
      * Merges user data with sessions.
      */
     @WorkerThread
-    private fun mapUserDataAndSessions(
+    private fun mergeUserDataAndSessions(
         userData: UserEventsResult?,
         allSessions: List<Session>
-    ): Map<ConferenceDay, List<UserSession>> {
-
+    ): List<UserSession> {
         // If there is no logged-in user, return the map with null UserEvents
         if (userData == null) {
-            return ConferenceDays.map { day ->
-                day to allSessions
-                    .filter { day.contains(it) }
-                    .map { session -> UserSession(session, createDefaultUserEvent(session)) }
-            }.toMap()
+            return allSessions.map { UserSession(it, createDefaultUserEvent(it)) }
         }
 
         val (userEvents, _) = userData
-
-        val eventIdToUserEvent: Map<String, UserEvent?> = userEvents.map { it.id to it }.toMap()
-        val allUserSessions = allSessions.map {
-            UserSession(
-                it,
-                eventIdToUserEvent[it.id] ?: createDefaultUserEvent(it)
-            )
+        val eventIdToUserEvent = userEvents.associateBy { it.id }
+        return allSessions.map {
+            UserSession(it, eventIdToUserEvent[it.id] ?: createDefaultUserEvent(it))
         }
-
-        return ConferenceDays.map { day ->
-            day to allUserSessions
-                .filter { day.contains(it.session) }
-                .map { userSession ->
-                    UserSession(userSession.session, userSession.userEvent)
-                }
-                .sortedBy { it.session.startTime }
-        }.toMap()
     }
 
     override fun clearSingleEventSubscriptions() {
         // The UserEvent data source can stop observing user data
         userEventDataSource.clearSingleEventSubscriptions()
     }
+
+    override fun getConferenceDays(): List<ConferenceDay> = sessionRepository.getConferenceDays()
 }
 
 interface SessionAndUserEventRepository {
 
+    // TODO(b/122112739): Repository should not have source dependency on UseCase result
     fun getObservableUserEvents(
         userId: String?
-    ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>>
+    ): LiveData<Result<ObservableUserEvents>>
 
+    // TODO(b/122112739): Repository should not have source dependency on UseCase result
     fun getObservableUserEvent(
         userId: String?,
         eventId: SessionId
@@ -317,5 +323,24 @@ interface SessionAndUserEventRepository {
 
     fun starEvent(userId: String, userEvent: UserEvent): LiveData<Result<StarUpdatedStatus>>
 
+    fun recordFeedbackSent(
+        userId: String,
+        userEvent: UserEvent
+    ): LiveData<Result<Unit>>
+
     fun clearSingleEventSubscriptions()
+
+    fun getConferenceDays(): List<ConferenceDay>
+
+    fun getUserSession(userId: String, sessionId: SessionId): UserSession
 }
+
+data class ObservableUserEvents(
+    val userSessions: List<UserSession>,
+
+    /** A message to show to the user with important changes like reservation confirmations */
+    val userMessage: UserEventMessage? = null,
+
+    /** The session the user message is about, if any. */
+    val userMessageSession: Session? = null
+)

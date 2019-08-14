@@ -18,11 +18,19 @@ package com.google.samples.apps.iosched.di
 
 import android.content.ClipboardManager
 import android.content.Context
+import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
 import com.google.samples.apps.iosched.MainApplication
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
+import com.google.samples.apps.iosched.shared.data.agenda.AgendaRepository
+import com.google.samples.apps.iosched.shared.data.agenda.DefaultAgendaRepository
+import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
+import com.google.samples.apps.iosched.shared.data.db.AppDatabase
+import com.google.samples.apps.iosched.shared.di.MainThreadHandler
+import com.google.samples.apps.iosched.shared.domain.internal.IOSchedHandler
+import com.google.samples.apps.iosched.shared.domain.internal.IOSchedMainHandler
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.FirebaseAnalyticsHelper
 import dagger.Module
@@ -53,9 +61,19 @@ class AppModule {
         context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
 
     @Provides
+    fun providesConnectivityManager(context: Context): ConnectivityManager =
+        context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE)
+                as ConnectivityManager
+
+    @Provides
     fun providesClipboardManager(context: Context): ClipboardManager =
         context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE)
             as ClipboardManager
+
+    @Singleton
+    @Provides
+    @MainThreadHandler
+    fun providesMainThreadHandler(): IOSchedHandler = IOSchedMainHandler()
 
     @Singleton
     @Provides
@@ -64,4 +82,13 @@ class AppModule {
         signInDelegate: SignInViewModelDelegate,
         preferenceStorage: PreferenceStorage
     ): AnalyticsHelper = FirebaseAnalyticsHelper(context, signInDelegate, preferenceStorage)
+
+    @Singleton
+    @Provides
+    fun provideAgendaRepository(appConfigDataSource: AppConfigDataSource): AgendaRepository =
+            DefaultAgendaRepository(appConfigDataSource)
+
+    @Singleton
+    @Provides
+    fun providesAppDatabase(context: Context): AppDatabase = AppDatabase.buildDatabase(context)
 }

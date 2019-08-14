@@ -29,6 +29,7 @@ import dagger.multibindings.IntoMap
  * Module where classes needed to create the [MapFragment] are defined.
  */
 @Module
+@Suppress("UNUSED")
 internal abstract class MapModule {
     /**
      * Generates an [AndroidInjector] for the [MapFragment] as a Dagger subcomponent.
@@ -36,6 +37,10 @@ internal abstract class MapModule {
     @FragmentScoped
     @ContributesAndroidInjector
     internal abstract fun contributeMapFragment(): MapFragment
+
+    @FragmentScoped
+    @ContributesAndroidInjector
+    internal abstract fun contributeMapVariantSelectionFragment(): MapVariantSelectionDialogFragment
 
     /**
      * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we

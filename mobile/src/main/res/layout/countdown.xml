@@ -23,7 +23,7 @@
     <Space
         android:id="@+id/spacer_top"
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="@dimen/margin_normal"
         app:layout_constraintBottom_toTopOf="@id/countdown_days_1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="spread_inside" />
@@ -86,7 +86,7 @@
         android:layout_height="wrap_content"
         android:importantForAccessibility="no"
         android:text="@string/onboarding_label_days"
-        android:textAppearance="@style/TextAppearance.IOSched.OnboardingDeck"
+        android:textAppearance="@style/TextAppearance.IOSched.CountdownLabel"
         app:layout_constraintStart_toStartOf="@id/countdown_days_1"
         app:layout_constraintTop_toBottomOf="@id/countdown_days_1" />
 
@@ -96,7 +96,7 @@
         android:layout_height="wrap_content"
         android:importantForAccessibility="no"
         android:text="@string/onboarding_label_hours"
-        android:textAppearance="@style/TextAppearance.IOSched.OnboardingDeck"
+        android:textAppearance="@style/TextAppearance.IOSched.CountdownLabel"
         app:layout_constraintStart_toStartOf="@id/countdown_hours_1"
         app:layout_constraintTop_toBottomOf="@id/countdown_hours_1" />
 
@@ -172,7 +172,7 @@
         android:layout_height="wrap_content"
         android:importantForAccessibility="no"
         android:text="@string/onboarding_label_mins"
-        android:textAppearance="@style/TextAppearance.IOSched.OnboardingDeck"
+        android:textAppearance="@style/TextAppearance.IOSched.CountdownLabel"
         app:layout_constraintStart_toStartOf="@id/countdown_mins_1"
         app:layout_constraintTop_toBottomOf="@id/countdown_mins_1" />
 
@@ -182,7 +182,7 @@
         android:layout_height="wrap_content"
         android:importantForAccessibility="no"
         android:text="@string/onboarding_label_seconds"
-        android:textAppearance="@style/TextAppearance.IOSched.OnboardingDeck"
+        android:textAppearance="@style/TextAppearance.IOSched.CountdownLabel"
         app:layout_constraintStart_toStartOf="@id/countdown_secs_1"
         app:layout_constraintTop_toBottomOf="@id/countdown_secs_1" />
 </merge>
