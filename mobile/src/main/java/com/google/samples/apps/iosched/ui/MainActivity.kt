@@ -18,91 +18,52 @@ package com.google.samples.apps.iosched.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.view.View
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.firebase.ui.auth.IdpResponse
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.shared.util.consume
-import com.google.samples.apps.iosched.shared.util.inTransaction
+import com.google.samples.apps.iosched.shared.util.setupWithNavController
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
-import com.google.samples.apps.iosched.ui.agenda.AgendaFragment
-import com.google.samples.apps.iosched.ui.info.InfoFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
-import com.google.samples.apps.iosched.ui.schedule.ScheduleFragment
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
-import com.google.samples.apps.iosched.ui.search.SearchFragment
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.navigation
 import timber.log.Timber
 import java.util.UUID
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
-    companion object {
-        private const val FRAGMENT_ID = R.id.fragment_container
-    }
 
     @Inject
     lateinit var snackbarMessageManager: SnackbarMessageManager
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var currentFragment: MainNavigationFragment
+    private var navHostFragment: NavHostFragment? = null
+
+    private var currentNavController: LiveData<NavController>? = null
+
+    private val currentFragment: MainNavigationFragment?
+        get() {
+            return navHostFragment
+                ?.childFragmentManager
+                ?.primaryNavigationFragment as? MainNavigationFragment
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        if (savedInstanceState == null) {
+            setupBottomNavigationBar()
+        } // Else, need to wait for onRestoreInstanceState
+
         // This VM instance is shared between activity and fragments, as it's scoped to MainActivity
         val scheduleViewModel: ScheduleViewModel = viewModelProvider(viewModelFactory)
-
-        navigation.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.navigation_schedule -> consume { replaceFragment(ScheduleFragment()) }
-                R.id.navigation_info -> consume {
-                    // Scroll to current event next time the schedule is opened.
-                    scheduleViewModel.userHasInteracted = false
-                    replaceFragment(InfoFragment())
-                }
-                R.id.navigation_agenda -> consume {
-                    // Scroll to current event next time the schedule is opened.
-                    scheduleViewModel.userHasInteracted = false
-                    replaceFragment(AgendaFragment())
-                }
-                else -> false
-            }
-        }
-
-        // TODO: temp until we add navigation
-        scheduleViewModel.navigateToSearchAction.observe(this, EventObserver {
-            supportFragmentManager.inTransaction {
-                val fragment = SearchFragment()
-                currentFragment = fragment
-                addToBackStack(null)
-                replace(FRAGMENT_ID, fragment)
-            }
-        })
-
-        // Add a listener to prevent reselects from being treated as selects.
-        navigation.setOnNavigationItemReselectedListener {}
-
-        if (savedInstanceState == null) {
-            // Show Schedule on first creation
-            if (navigation.selectedItemId == R.id.navigation_schedule) {
-                // We need to add the fragment ourselves.
-                replaceFragment(ScheduleFragment())
-            } else {
-                // This will replace the current fragemnt.
-                navigation.selectedItemId = R.id.navigation_schedule
-            }
-        } else {
-            // Find the current fragment
-            currentFragment =
-                supportFragmentManager.findFragmentById(FRAGMENT_ID) as? MainNavigationFragment
-                ?: throw IllegalStateException("Activity recreated, but no fragment found!")
-        }
 
         // Refresh conference data on launch
         if (savedInstanceState == null) {
@@ -111,10 +72,19 @@ class MainActivity : DaggerAppCompatActivity() {
         }
     }
 
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        // Now that BottomNavigationBar has restored its instance state
+        // and its selectedItemId, we can proceed with setting up the
+        // BottomNavigationBar with Navigation
+        setupBottomNavigationBar()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        // Handle errors coming from Firebase Auth - e.g. user cancels flow
         if (resultCode == Activity.RESULT_CANCELED) {
-            Timber.d("An activity returned RESULT_CANCELED")
+            Timber.d("Main Activity: An activity returned RESULT_CANCELED")
             val response = IdpResponse.fromResultIntent(data)
             response?.error?.let {
                 snackbarMessageManager.addMessage(
@@ -127,21 +97,43 @@ class MainActivity : DaggerAppCompatActivity() {
         }
     }
 
-    private fun <F> replaceFragment(fragment: F) where F : Fragment, F : MainNavigationFragment {
-        supportFragmentManager.inTransaction {
-            currentFragment = fragment
-            replace(FRAGMENT_ID, fragment)
+    /**
+     * Called on first creation and when restoring state.
+     */
+    private fun setupBottomNavigationBar() {
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.navigation)
+
+        val navGraphIds = listOf(
+            R.navigation.nav_schedule,
+            R.navigation.nav_info,
+            R.navigation.nav_agenda
+        )
+
+        // Setup the bottom navigation view with a list of navigation graphs
+        val controller = bottomNavigationView.setupWithNavController(
+            navGraphIds = navGraphIds,
+            fragmentManager = supportFragmentManager,
+            containerId = R.id.nav_host_fragment,
+            intent = intent
+        )
+
+        // Choose when to show/hide the Bottom Navigation View
+        // TODO: trying out keeping it visible all the time to gather feedback
+        controller.value?.addOnDestinationChangedListener { _, destination, _ ->
+            bottomNavigationView.visibility = when (destination.id) {
+                R.id.scheduleFragment -> View.VISIBLE
+                else -> View.VISIBLE
+            }
         }
+        currentNavController = controller
     }
 
-    override fun onBackPressed() {
-        if (!currentFragment.onBackPressed()) {
-            super.onBackPressed()
-        }
+    override fun onSupportNavigateUp(): Boolean {
+        return currentNavController?.value?.navigateUp() ?: false
     }
 
     override fun onUserInteraction() {
         super.onUserInteraction()
-        currentFragment.onUserInteraction()
+        currentFragment?.onUserInteraction()
     }
 }

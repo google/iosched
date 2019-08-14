@@ -86,7 +86,9 @@
             android:alpha="0"
             android:background="@drawable/filters_sheet_header_shadow"
             android:stateListAnimator="@animator/active_alpha"
-            app:layout_constraintTop_toBottomOf="@id/guide_peek_height" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
 
         <!-- Description view shown when tag filters are active -->
         <androidx.recyclerview.widget.RecyclerView

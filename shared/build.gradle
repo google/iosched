@@ -88,6 +88,8 @@ dependencies {
     implementation "androidx.room:room-ktx:$rootProject.roomVersion"
     implementation "androidx.room:room-runtime:$rootProject.roomVersion"
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
 
     // Coroutines
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutinesVersion"
@@ -134,5 +136,5 @@ dependencies {
     testImplementation "com.nhaarman:mockito-kotlin:$rootProject.mockitoKotlinVersion"
 
     // unit tests livedata
-    testImplementation "androidx.arch.core:core-testing:$rootProject.lifecycleVersion"
+    testImplementation "androidx.arch.core:core-testing:$rootProject.archCoreTestingVersion"
 }

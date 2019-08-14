@@ -16,25 +16,22 @@
 
 package com.google.samples.apps.iosched.ui.sessiondetail
 
-import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.app.NavUtils
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.net.toUri
 import androidx.core.view.doOnLayout
 import androidx.core.view.forEach
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSessionDetailBinding
 import com.google.samples.apps.iosched.model.Room
-import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
@@ -46,7 +43,6 @@ import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment.Companion.DIALOG_NOTIFICATIONS_PREFERENCE
-import com.google.samples.apps.iosched.ui.speaker.SpeakerActivity
 import dagger.android.support.DaggerFragment
 import timber.log.Timber
 import javax.inject.Inject
@@ -72,6 +68,9 @@ class SessionDetailFragment : DaggerFragment() {
 
     lateinit var sessionTitle: String
 
+    private val sessionId: String?
+        get() = arguments?.let { SessionDetailFragmentArgs.fromBundle(it).sessionId }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -84,9 +83,9 @@ class SessionDetailFragment : DaggerFragment() {
 
         val binding = FragmentSessionDetailBinding.inflate(inflater, container, false).apply {
             viewModel = sessionDetailViewModel
-            setLifecycleOwner(this@SessionDetailFragment)
+            lifecycleOwner = this@SessionDetailFragment
             up.setOnClickListener {
-                NavUtils.navigateUpFromSameTask(requireActivity())
+                findNavController().navigateUp()
             }
         }
 
@@ -125,7 +124,9 @@ class SessionDetailFragment : DaggerFragment() {
         })
 
         sessionDetailViewModel.navigateToSessionAction.observe(this, EventObserver { sessionId ->
-            startActivity(SessionDetailActivity.starterIntent(requireContext(), sessionId))
+            val action = SessionDetailFragmentDirections
+                .actionSessionDetailFragmentToSpeakerFragment(sessionId)
+            findNavController().navigate(action)
         })
 
         val snackbarPreferenceViewModel: SnackbarPreferenceViewModel =
@@ -155,14 +156,19 @@ class SessionDetailFragment : DaggerFragment() {
         })
 
         sessionDetailViewModel.navigateToSpeakerDetail.observe(this, EventObserver { speakerId ->
-            requireActivity().run {
-                val sharedElement =
-                    findSpeakerHeadshot(binding.sessionDetailRecyclerView, speakerId)
-                val options = ActivityOptions.makeSceneTransitionAnimation(
-                    this, sharedElement, getString(R.string.speaker_headshot_transition)
-                )
-                startActivity(SpeakerActivity.starterIntent(this, speakerId), options.toBundle())
-            }
+            // TODO(jalc): Add shared transition here
+            val action = SessionDetailFragmentDirections
+                .actionSessionDetailFragmentToSpeakerFragment(speakerId)
+            findNavController().navigate(action)
+
+//            requireActivity().let {
+//                val sharedElement =
+//                    findSpeakerHeadshot(binding.sessionDetailRecyclerView, speakerId)
+//                val options = ActivityOptions.makeSceneTransitionAnimation(
+//                    it, sharedElement, it.getString(R.string.speaker_headshot_transition)
+//                )
+//                it.startActivity(SpeakerActivity.starterIntent(it, speakerId), options.toBundle())
+//            }
         })
 
         return binding.root
@@ -171,7 +177,8 @@ class SessionDetailFragment : DaggerFragment() {
     override fun onStart() {
         super.onStart()
         Timber.d("Loading details for session $arguments")
-        sessionDetailViewModel.setSessionId(requireNotNull(arguments).getString(EXTRA_SESSION_ID))
+
+        sessionDetailViewModel.setSessionId(sessionId)
     }
 
     override fun onStop() {
@@ -211,14 +218,5 @@ class SessionDetailFragment : DaggerFragment() {
         }
         Timber.e("Could not find view for speaker id $speakerId")
         return speakers
-    }
-
-    companion object {
-        private const val EXTRA_SESSION_ID = "SESSION_ID"
-
-        fun newInstance(sessionId: SessionId): SessionDetailFragment {
-            val bundle = Bundle().apply { putString(EXTRA_SESSION_ID, sessionId) }
-            return SessionDetailFragment().apply { arguments = bundle }
-        }
     }
 }

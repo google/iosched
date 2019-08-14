@@ -133,6 +133,8 @@
             android:id="@+id/spacer"
             android:layout_width="0dp"
             android:layout_height="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/detail_image" />
 
         <!-- Title below header: shown if there is a photo header or video. -->

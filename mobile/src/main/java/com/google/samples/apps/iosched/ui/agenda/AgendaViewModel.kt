@@ -46,7 +46,7 @@ class AgendaViewModel @Inject constructor(
         }
     }
 
-    fun initializeTimeZone() {
+    init {
         viewModelScope.launch {
             preferConferenceTimeZoneResult.value = getTimeZoneUseCase(Unit).data ?: true
         }

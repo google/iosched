@@ -166,7 +166,7 @@ class AlarmBroadcastReceiver : DaggerBroadcastReceiver() {
 
         val intent = Intent(
             ACTION_VIEW,
-            "adssched://sessions?$QUERY_SESSION_ID=${session.id}".toUri()
+            "adssched://sessions/${session.id}".toUri()
         )
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 

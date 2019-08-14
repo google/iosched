@@ -298,6 +298,8 @@ class ScheduleViewModel @Inject constructor(
         currentEvent = loadSessionsResult.map { result ->
             (result as? Success)?.data?.firstUnfinishedSession
         }
+
+        initializeTimeZone()
     }
 
     /**

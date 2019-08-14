@@ -242,6 +242,10 @@ class SessionDetailViewModel @Inject constructor(
 
     // TODO: write tests b/74611561
     fun setSessionId(newSessionId: SessionId?) {
+        if (newSessionId == null) {
+            Timber.e("Session ID is null")
+            return
+        }
         sessionId.setValueIfNew(newSessionId)
     }
 

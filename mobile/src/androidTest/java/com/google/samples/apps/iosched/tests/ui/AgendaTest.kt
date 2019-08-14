@@ -23,8 +23,8 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.R.id
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
@@ -43,7 +43,7 @@ import org.junit.runner.RunWith
 class AgendaTest {
 
     @get:Rule
-    var activityRule = ActivityTestRule<MainActivity>(MainActivity::class.java)
+    var activityRule = ActivityTestRule(MainActivity::class.java)
 
     // Executes tasks in a synchronous [TaskScheduler]
     @get:Rule

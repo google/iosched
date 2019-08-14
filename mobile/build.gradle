@@ -19,6 +19,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -115,14 +116,16 @@ dependencies {
     implementation "com.google.android:flexbox:$rootProject.flexboxVersion"
 
     // Architecture Components
-    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleAlphaVersion"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.lifecycleAlphaVersion"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleAlphaVersion"
-    kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleAlphaVersion"
-    testImplementation "androidx.arch.core:core-testing:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"
+    implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentVersion"
     implementation "androidx.room:room-ktx:$rootProject.roomVersion"
     implementation "androidx.room:room-runtime:$rootProject.roomVersion"
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+    testImplementation "androidx.arch.core:core-testing:$rootProject.archCoreTestingVersion"
 
     // Dagger
     implementation "com.google.dagger:dagger-android:$rootProject.dagger"
@@ -149,8 +152,10 @@ dependencies {
     // Instrumentation tests
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$rootProject.espressoVersion"
+    androidTestImplementation "androidx.test.ext:junit:$rootProject.testExtVersion"
     androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
     androidTestImplementation "androidx.test:rules:$rootProject.rulesVersion"
+    stagingImplementation "androidx.fragment:fragment-testing:$rootProject.fragmentVersion"
 
     // Local unit tests
     testImplementation "junit:junit:$rootProject.junitVersion"

@@ -36,6 +36,7 @@ import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -91,7 +92,11 @@ class SpeakerViewModel @Inject constructor(
     /**
      * Provides the speaker ID which initiates all data loading.
      */
-    fun setSpeakerId(id: SpeakerId) {
+    fun setSpeakerId(id: SpeakerId?) {
+        if (id == null) {
+            Timber.e("Speaker ID is null")
+            return
+        }
         viewModelScope.launch {
             loadSpeakerUseCase(id).updateOnSuccess(loadSpeakerUseCaseResult)
         }

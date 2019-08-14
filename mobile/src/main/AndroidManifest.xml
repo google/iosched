@@ -60,30 +60,15 @@
 
         <activity
             android:name=".ui.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" >
+
+            <!-- Added to handle deep links -->
+            <nav-graph android:value="@navigation/nav_schedule" />
+        </activity>
 
         <activity
             android:name=".ui.onboarding.OnboardingActivity"
             android:theme="@style/AppTheme.Onboarding" />
-
-        <activity
-            android:name=".ui.sessiondetail.SessionDetailActivity"
-            android:parentActivityName=".ui.MainActivity"
-            android:theme="@style/AppTheme.SessionDetails">
-
-            <intent-filter android:label="Session detail">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <!-- Accepts URIs that begin with "adssched://sessionId” -->
-                <data android:scheme="adssched"
-                    android:host="sessions" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".ui.speaker.SpeakerActivity"
-            android:parentActivityName=".ui.MainActivity"
-            android:theme="@style/AppTheme.Speaker" />
 
         <!-- This activity alias lets us change the main entry point without breaking launcher
              shortcuts. DO NOT change its android:name attribute. -->

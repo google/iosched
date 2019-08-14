@@ -16,22 +16,24 @@
 
 package com.google.samples.apps.iosched.tests.ui
 
-import android.content.Intent
-import androidx.test.InstrumentationRegistry
+import android.view.View
+import androidx.navigation.findNavController
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource.FAKE_SESSION_ID
 import com.google.samples.apps.iosched.tests.FixedTimeRule
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
 import com.google.samples.apps.iosched.tests.SyncTaskExecutorRule
-import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
+import com.google.samples.apps.iosched.ui.MainActivity
+import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentDirections
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewHolder
 import org.hamcrest.CoreMatchers.allOf
 import org.junit.Rule
@@ -42,6 +44,7 @@ import org.junit.runner.RunWith
  * Espresso tests for the details screen.
  *
  * TODO
+ * * Make this work with launchFragmentInContainer
  * * Youtube intent
  * * Information is correct, titles, tags, date and time
  * * Start event
@@ -58,16 +61,7 @@ import org.junit.runner.RunWith
 class SessionDetailTest {
 
     @get:Rule
-    var activityRule =
-        object : ActivityTestRule<SessionDetailActivity>(SessionDetailActivity::class.java) {
-            override fun getActivityIntent(): Intent {
-                // Open the developer keynote
-                return SessionDetailActivity.starterIntent(
-                    InstrumentationRegistry.getTargetContext(),
-                    FakeConferenceDataSource.FAKE_SESSION_ID
-                )
-            }
-        }
+    var activityRule = ActivityTestRule(MainActivity::class.java)
 
     // Executes tasks in a synchronous [TaskScheduler]
     @get:Rule
@@ -83,6 +77,8 @@ class SessionDetailTest {
 
     @Test
     fun details_basicViewsDisplayed() {
+        navigateToDetails()
+
         // On the details screen, scroll down to the speaker
         onView(withId(R.id.session_detail_recycler_view))
             .perform(RecyclerViewActions.scrollToPosition<SessionDetailViewHolder>(2))
@@ -102,5 +98,13 @@ class SessionDetailTest {
         // Check that the title is correct
         onView(allOf(withId(R.id.title), withText("First session day 2")))
             .check(matches(isDisplayed()))
+    }
+
+    private fun navigateToDetails() {
+        val action = ScheduleFragmentDirections.actionScheduleFragmentToSessionDetailFragment(
+            FAKE_SESSION_ID
+        )
+        activityRule.activity.findViewById<View>(R.id.nav_host_fragment)
+            .findNavController().navigate(action)
     }
 }

@@ -86,7 +86,7 @@ class ScheduleDayFragment : DaggerFragment() {
         // VM shared across the [MainActivity], [ScheduleFragment] and the [ScheduleDayFragment]s.
         viewModel = activityViewModelProvider(viewModelFactory)
         binding = FragmentScheduleDayBinding.inflate(inflater, container, false).apply {
-            setLifecycleOwner(this@ScheduleDayFragment)
+            lifecycleOwner = this@ScheduleDayFragment
             viewModel = this@ScheduleDayFragment.viewModel
         }
         return binding.root

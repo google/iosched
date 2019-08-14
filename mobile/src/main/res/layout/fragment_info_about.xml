@@ -77,9 +77,9 @@
             <TextView
                 android:id="@+id/version_build_number"
                 style="@style/TextAppearance.ADSSched.SettingsSwitch"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/open_source_license"
+                app:layout_constraintTop_toBottomOf="@+id/open_source_license"
                 tools:text="Version X.X, build X" />
 
             <ImageView

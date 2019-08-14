@@ -26,14 +26,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSearchBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
-import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
-import com.google.samples.apps.iosched.ui.speaker.SpeakerActivity
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_search.view.searchView
@@ -63,20 +62,22 @@ class SearchFragment : DaggerFragment(), MainNavigationFragment {
         binding.viewModel = viewModel
 
         viewModel.navigateToSessionAction.observe(this, EventObserver { sessionId ->
-            // TODO: temp until we add navigation
-            startActivity(SessionDetailActivity.starterIntent(requireContext(), sessionId))
+            val action =
+                SearchFragmentDirections.actionSearchFragmentToSessionDetailFragment(sessionId)
+            findNavController().navigate(action)
         })
         viewModel.navigateToSpeakerAction.observe(this, EventObserver { speakerId ->
-            // TODO: temp until we add navigation
-            startActivity(SpeakerActivity.starterIntent(requireContext(), speakerId))
+            val action =
+                SearchFragmentDirections.actionSearchFragmentToSpeakerFragment(speakerId)
+            findNavController().navigate(action)
         })
+
         analyticsHelper.sendScreenView("Search", requireActivity())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO: Does not work in landscape
         binding.toolbar.searchView.apply {
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {

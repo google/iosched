@@ -74,7 +74,9 @@ class InfoFragment : DaggerFragment(), MainNavigationFragment {
     /**
      * Adapter that builds a page for each info screen.
      */
-    inner class InfoAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+    inner class InfoAdapter(
+        fm: FragmentManager
+    ) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getCount() = INFO_PAGES.size
 

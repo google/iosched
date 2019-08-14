@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
@@ -27,6 +28,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -45,13 +47,14 @@ import com.google.samples.apps.iosched.ui.dialogs.SignInDialogDispatcher
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
 import com.google.samples.apps.iosched.ui.schedule.day.ScheduleDayFragment
-import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.util.fabVisibility
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_COLLAPSED
+import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_DRAGGING
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_EXPANDED
+import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_HALF_EXPANDED
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_HIDDEN
 import com.google.samples.apps.iosched.widget.FadingSnackbar
 import dagger.android.support.DaggerFragment
@@ -86,6 +89,17 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     // Stores the labels of the viewpager to avoid unnecessary recreation
     private var labelsForDays: List<Int>? = null
 
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            onBackPressed()
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -115,6 +129,10 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
 
         scheduleViewModel.navigateToSignInDialogAction.observe(this, EventObserver {
             openSignInDialog()
+        })
+
+        scheduleViewModel.navigateToSearchAction.observe(this, EventObserver {
+            openSearch()
         })
 
         scheduleViewModel.navigateToSignOutDialogAction.observe(this, EventObserver {
@@ -149,6 +167,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
                 }
             }
         })
+
         return binding.root
     }
 
@@ -178,12 +197,17 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
                 }
                 viewPager.importantForAccessibility = a11yState
                 appbar.importantForAccessibility = a11yState
+                onBackPressedCallback.isEnabled = when (newState) {
+                    STATE_DRAGGING, STATE_EXPANDED, STATE_HALF_EXPANDED -> true
+                    else -> false
+                }
             }
         })
 
         scheduleViewModel.labelsForDays.observe(this, Observer<List<Int>> {
             it ?: return@Observer
-            if (it != labelsForDays) { // Avoid unnecessary recreation.
+            if (it != labelsForDays || viewPager.adapter == null) { // Avoid unnecessary recreation.
+                // Note that recreating the adapter doesn't mean fragments are recreated
                 viewPager.adapter = ScheduleAdapter(childFragmentManager, it)
                 labelsForDays = it
             }
@@ -211,7 +235,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
         }
     }
 
-    override fun onBackPressed(): Boolean {
+    private fun onBackPressed() {
         if (::bottomSheetBehavior.isInitialized && bottomSheetBehavior.state == STATE_EXPANDED) {
             // collapse or hide the sheet
             if (bottomSheetBehavior.isHideable && bottomSheetBehavior.skipCollapsed) {
@@ -219,9 +243,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
             } else {
                 bottomSheetBehavior.state = STATE_COLLAPSED
             }
-            return true
         }
-        return super.onBackPressed()
     }
 
     override fun onUserInteraction() {
@@ -233,16 +255,17 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     }
 
     private fun openSessionDetail(id: SessionId) {
-        startActivity(SessionDetailActivity.starterIntent(requireContext(), id))
+        val action = ScheduleFragmentDirections.actionScheduleFragmentToSessionDetailFragment(id)
+        findNavController().navigate(action)
+    }
+
+    private fun openSearch() {
+        val action = ScheduleFragmentDirections.actionScheduleFragmentToSearchFragment()
+        findNavController().navigate(action)
     }
 
     private fun openSignInDialog() {
         signInDialogDispatcher.openSignInDialog(requireActivity())
-    }
-
-    override fun onStart() {
-        super.onStart()
-        scheduleViewModel.initializeTimeZone()
     }
 
     private fun logAnalyticsPageView(position: Int) {
@@ -253,7 +276,7 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
      * Adapter that builds a page for each conference day.
      */
     inner class ScheduleAdapter(fm: FragmentManager, private val labelsForDays: List<Int>) :
-        FragmentPagerAdapter(fm) {
+        FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getCount() = COUNT
 

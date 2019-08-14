@@ -33,7 +33,8 @@ buildscript {
 
         // App dependencies
         aiaVersion = '1.1.0'
-        androidGradlePluginVersion = '3.2.0'
+        archCoreTestingVersion = '2.1.0-rc01'
+        androidGradlePluginVersion = '3.4.2'
         appcompatVersion = '1.0.0-beta01'
         browserVersion = '1.0.0-beta01'
         constraintLayoutVersion = '1.1.2'
@@ -50,6 +51,7 @@ buildscript {
         firebaseMessagingVersion = '17.3.3'
         firebaseUiVersion = "3.3.1"
         flexboxVersion = "0.3.2"
+        fragmentVersion = "1.1.0-rc04"
         glideVersion = "4.6.1"
         googleServicesVersion = "3.2.0"
         gsonVersion = "2.8.1"
@@ -59,16 +61,17 @@ buildscript {
         ktlintVersion = '0.33.0'
         ktxVersion = "1.0.0"
         legacySupportVersion = '1.0.0-alpha1'
-        lifecycleVersion = '2.0.0'
-        lifecycleAlphaVersion = '2.2.0-alpha02'
+        lifecycleVersion = '2.2.0-alpha02'
         materialVersion = '1.0.0'
         mockitoVersion = "2.8.9"
         mockitoKotlinVersion = "1.5.0"
+        navigationVersion = "2.1.0-rc01"
         okhttpVersion = "3.10.0"
         okioVersion = '1.14.0'
         roomVersion = '2.1.0-alpha06'
-        rulesVersion = '1.1.0-alpha1'
-        runnerVersion = '1.1.0-alpha1'
+        rulesVersion = '1.1.1'
+        runnerVersion = '1.1.1'
+        testExtVersion = '1.1.0'
         threetenabpVersion = "1.0.5"
         threetenbpVersion = "1.3.6"
         timberVersion = "4.7.1"
@@ -89,6 +92,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "com.google.gms:google-services:$googleServicesVersion"
         classpath "io.fabric.tools:gradle:$fabricVersion"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

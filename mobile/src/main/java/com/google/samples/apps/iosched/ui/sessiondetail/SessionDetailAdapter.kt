@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.sessiondetail
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +41,7 @@ import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewHolder.
  * session, any speakers plus any related events.
  */
 class SessionDetailAdapter(
-    private val lifecycleOwner: LifecycleOwner,
+    private val adapterLifecycleOwner: LifecycleOwner,
     private val sessionDetailViewModel: SessionDetailViewModel,
     private val tagRecycledViewPool: RecycledViewPool
 ) : RecyclerView.Adapter<SessionDetailViewHolder>() {
@@ -92,21 +93,21 @@ class SessionDetailAdapter(
             is SessionInfoViewHolder -> holder.binding.apply {
                 viewModel = sessionDetailViewModel
                 tagViewPool = tagRecycledViewPool
-                setLifecycleOwner(lifecycleOwner)
+                lifecycleOwner = adapterLifecycleOwner
                 executePendingBindings()
             }
             is SpeakerViewHolder -> holder.binding.apply {
                 val presenter = differ.currentList[position] as Speaker
                 speaker = presenter
                 eventListener = sessionDetailViewModel
-                setLifecycleOwner(lifecycleOwner)
+                lifecycleOwner = adapterLifecycleOwner
                 root.setTag(R.id.tag_speaker_id, presenter.id) // Used to identify clicked view
                 executePendingBindings()
             }
             is RelatedViewHolder -> holder.binding.apply {
                 userSession = differ.currentList[position] as UserSession
                 eventListener = sessionDetailViewModel
-                setLifecycleOwner(lifecycleOwner)
+                lifecycleOwner = adapterLifecycleOwner
                 executePendingBindings()
             }
             is HeaderViewHolder -> Unit // no-op
@@ -173,6 +174,7 @@ object DiffCallback : DiffUtil.ItemCallback<Any>() {
         }
     }
 
+    @SuppressLint("DiffUtilEquals")
     override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
         return when {
             oldItem is Speaker && newItem is Speaker -> oldItem == newItem

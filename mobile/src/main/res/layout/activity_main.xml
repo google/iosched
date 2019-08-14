@@ -23,8 +23,8 @@
     android:layout_height="match_parent"
     tools:context="com.google.samples.apps.iosched.ui.MainActivity">
 
-    <FrameLayout
-        android:id="@+id/fragment_container"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/navigation"

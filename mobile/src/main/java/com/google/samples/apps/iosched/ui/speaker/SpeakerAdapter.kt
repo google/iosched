@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.speaker
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +39,7 @@ import java.util.Collections.emptyList
  * speaker and any sessions that the speaker presents.
  */
 class SpeakerAdapter(
-    private val lifecycleOwner: LifecycleOwner,
+    private val adapterLifecycleOwner: LifecycleOwner,
     private val speakerViewModel: SpeakerViewModel,
     private val imageLoadListener: ImageLoadListener,
     private val tagRecycledViewPool: RecycledViewPool
@@ -79,13 +80,13 @@ class SpeakerAdapter(
             is SpeakerInfoViewHolder -> holder.binding.apply {
                 viewModel = speakerViewModel
                 headshotLoadListener = imageLoadListener
-                setLifecycleOwner(lifecycleOwner)
+                setLifecycleOwner(adapterLifecycleOwner)
                 executePendingBindings()
             }
             is SpeakerSessionViewHolder -> holder.binding.apply {
                 userSession = differ.currentList[position] as UserSession
                 eventListener = speakerViewModel
-                setLifecycleOwner(lifecycleOwner)
+                setLifecycleOwner(adapterLifecycleOwner)
                 executePendingBindings()
             }
             is HeaderViewHolder -> Unit // no-op
@@ -141,6 +142,7 @@ object DiffCallback : DiffUtil.ItemCallback<Any>() {
         }
     }
 
+    @SuppressLint("DiffUtilEquals")
     override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
         return when {
             oldItem is UserSession && newItem is UserSession -> oldItem == newItem

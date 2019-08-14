@@ -55,11 +55,6 @@ class AgendaFragment : DaggerFragment(), MainNavigationFragment {
         viewModel = activityViewModelProvider(viewModelFactory)
         binding.viewModel = viewModel
     }
-
-    override fun onStart() {
-        super.onStart()
-        viewModel.initializeTimeZone()
-    }
 }
 
 @BindingAdapter(value = ["agendaItems", "timeZoneId"])

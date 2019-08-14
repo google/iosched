@@ -46,7 +46,8 @@
             android:transitionName="@string/speaker_headshot_transition"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:speakerImage="@{speaker}" />
+            app:speakerImage="@{speaker}"
+            app:transitionName="@{speaker.id}" />
 
         <TextView
             android:id="@+id/speaker_item_name"
