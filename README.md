@@ -1,5 +1,6 @@
 Google I/O Android App
 ======================
+[![Build Status](https://travis-ci.org/google/iosched.svg?branch=master)](https://travis-ci.org/google/iosched)
 
 Google I/O is a developer conference held each year with three days of deep
 technical content featuring technical sessions and hundreds of demonstrations
