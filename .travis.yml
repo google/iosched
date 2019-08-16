@@ -11,25 +11,23 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 language: android
-
 android:
   components:
-    - build-tools-21.1.2
-    - android-21
-    - addon-google_apis-google-21
+    - tools
+    - platform-tools
+    - build-tools-28.0.3
+    - android-29
+    - addon-google_apis-google-29
     - extra-google-m2repository
     - extra-android-m2repository
-    - sys-img-armeabi-v7a-addon-google_apis-google-21
+script:
+  - ./gradlew test
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+cache:
+  directories:
+    - $HOME/.m2
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
 
-notifications:
-  email: false
-
-before_install:
-  - echo no | android create avd --force -n test -t "Google Inc.:Google APIs:21" --abi google_apis/armeabi-v7a
-  - emulator -avd test -no-skin -no-audio -no-window &
-
-before_script:
-  - ./scripts/wait_for_emulator.sh
-  - adb shell input keyevent 82 &
