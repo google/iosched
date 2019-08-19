@@ -8,7 +8,7 @@ from developers showcasing their technologies.
 
 This project is the Android app for the conference.
 
-For a simpler fork of the app, check out the [Android Dev Summit App in the adssched branch](https://github.com/google/iosched/tree/adssched). In this variant some features are removed, such as reservations and the map screen, and new features are added: notifications, Instant App support and more modern dependencies. 
+For a simpler fork of the app, check out the [Android Dev Summit App in the adssched branch](https://github.com/google/iosched/tree/adssched). In this variant some features are removed, such as reservations and the map screen, and Instant App support is added. 
 
 # Features
 
