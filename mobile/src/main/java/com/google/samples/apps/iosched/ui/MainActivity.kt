@@ -75,7 +75,7 @@ class MainActivity : DaggerAppCompatActivity() {
             }
         }
 
-        //TODO: temp until we add navigation
+        // TODO: temp until we add navigation
         scheduleViewModel.navigateToSearchAction.observe(this, EventObserver {
             supportFragmentManager.inTransaction {
                 val fragment = SearchFragment()

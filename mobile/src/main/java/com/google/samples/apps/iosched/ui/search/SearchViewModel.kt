@@ -45,7 +45,7 @@ class SearchViewModel @Inject constructor(
     private val loadDbSearchResultsUseCase: SearchDbUseCase
 ) : ViewModel(), SearchResultActionHandler {
 
-    //TODO: Add Dagger Flags
+    // TODO: Add Dagger Flags
 //    @Inject
 //    @JvmField
 //    @SearchUsingRoomEnabledFlag

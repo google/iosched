@@ -32,8 +32,8 @@ android {
         vectorDrawables.useSupportLibrary true
 
         manifestPlaceholders = [crashlyticsEnabled: true]
-
     }
+
     buildTypes {
         release {
             minifyEnabled true

@@ -24,7 +24,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.NavUtils
-import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.net.toUri
 import androidx.core.view.doOnLayout
@@ -54,7 +53,6 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class SessionDetailFragment : DaggerFragment() {
-
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 

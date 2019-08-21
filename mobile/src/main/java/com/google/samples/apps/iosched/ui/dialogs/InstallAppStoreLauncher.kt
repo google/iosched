@@ -48,4 +48,3 @@ class InstallAppStoreLauncher @Inject constructor() {
         private val REQUEST_CODE = 1
     }
 }
-

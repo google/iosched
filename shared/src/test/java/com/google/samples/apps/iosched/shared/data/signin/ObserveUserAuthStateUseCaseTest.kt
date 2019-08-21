@@ -123,7 +123,6 @@ class ObserveUserAuthStateUseCaseTest {
     }
 }
 
-
 class FakeAuthStateUserDataSource(
     private val isAnonymous: Boolean,
     private val successFirebaseUser: Boolean,

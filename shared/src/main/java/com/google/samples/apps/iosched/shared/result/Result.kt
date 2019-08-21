@@ -45,7 +45,7 @@ fun <T> Result<T>.successOr(fallback: T): T {
     return (this as? Success<T>)?.data ?: fallback
 }
 
-val <T> Result<T>.data : T?
+val <T> Result<T>.data: T?
     get() = (this as? Success)?.data
 
 /**

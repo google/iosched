@@ -34,7 +34,7 @@ object MobileTestData {
 
     val tagFiltersList = listOf(
         androidTag, webTag, cloudTag, // TOPIC
-        sessionsTag, codelabsTag      // TYPE
+        sessionsTag, codelabsTag // TYPE
     ).map { TagFilter(it, false) }
 }
 

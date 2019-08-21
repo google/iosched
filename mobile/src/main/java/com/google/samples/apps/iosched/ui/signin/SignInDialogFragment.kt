@@ -80,7 +80,6 @@ class SignInDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInject
                         dismiss()
                     })
                 }
-
             }
         })
 

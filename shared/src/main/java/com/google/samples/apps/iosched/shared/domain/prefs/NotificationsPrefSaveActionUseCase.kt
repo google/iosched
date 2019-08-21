@@ -29,7 +29,7 @@ open class NotificationsPrefSaveActionUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
 ) : UseCase<Boolean, Boolean>(defaultDispatcher) {
-    
+
     override fun execute(parameters: Boolean): Boolean {
         preferenceStorage.preferToReceiveNotifications = parameters
         return preferenceStorage.preferToReceiveNotifications

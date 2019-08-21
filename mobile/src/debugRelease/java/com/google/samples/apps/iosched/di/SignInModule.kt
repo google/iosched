@@ -60,7 +60,7 @@ internal class SignInModule {
     fun providesAuthIdDataSource(
         firebaseAuth: FirebaseAuth
     ): AuthIdDataSource {
-        return object: AuthIdDataSource {
+        return object : AuthIdDataSource {
             override fun getUserId() = firebaseAuth.currentUser?.uid
         }
     }

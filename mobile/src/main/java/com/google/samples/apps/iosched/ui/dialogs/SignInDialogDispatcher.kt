@@ -45,4 +45,3 @@ class SignInDialogDispatcher @Inject constructor() {
         const val DIALOG_CONFIRM_SIGN_OUT = "dialog_confirm_sign_out"
     }
 }
-

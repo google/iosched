@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.shared.domain.search
 
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
-import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSession

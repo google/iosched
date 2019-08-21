@@ -222,8 +222,8 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
     }
 
     private fun mergeUserEventsAndSessions(
-            userEvents: List<UserEvent>,
-            allSessions: List<Session>
+        userEvents: List<UserEvent>,
+        allSessions: List<Session>
     ): List<UserSession> {
         val eventIdToUserEvent: Map<String, UserEvent?> = userEvents.map { it.id to it }.toMap()
         return allSessions.map {

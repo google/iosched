@@ -29,7 +29,7 @@ open class ScheduleUiHintsShowActionUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
 ) : UseCase<Boolean, Unit>(defaultDispatcher) {
-    
+
     override fun execute(parameters: Boolean) {
         preferenceStorage.scheduleUiHintsShown = parameters
     }

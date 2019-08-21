@@ -66,7 +66,7 @@ class SpeakerViewModelTest {
         assertEquals(TestData.speaker1, LiveDataTestUtil.getValue(viewModel.speaker))
     }
 
-//TODO: fixed with notifications CL
+// TODO: fixed with notifications CL
 //    @Test
 //    fun setSpeakerId_loadsSpeakersEvents_singleEvent() {
 //        // Given a speaker view model

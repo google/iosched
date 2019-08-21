@@ -63,11 +63,11 @@ class SearchFragment : DaggerFragment(), MainNavigationFragment {
         binding.viewModel = viewModel
 
         viewModel.navigateToSessionAction.observe(this, EventObserver { sessionId ->
-            //TODO: temp until we add navigation
+            // TODO: temp until we add navigation
             startActivity(SessionDetailActivity.starterIntent(requireContext(), sessionId))
         })
         viewModel.navigateToSpeakerAction.observe(this, EventObserver { speakerId ->
-            //TODO: temp until we add navigation
+            // TODO: temp until we add navigation
             startActivity(SpeakerActivity.starterIntent(requireContext(), speakerId))
         })
         analyticsHelper.sendScreenView("Search", requireActivity())

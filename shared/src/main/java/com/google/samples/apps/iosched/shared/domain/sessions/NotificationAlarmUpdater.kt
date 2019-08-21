@@ -98,7 +98,6 @@ class NotificationAlarmUpdater @Inject constructor(
         repository.getObservableUserEvents(null).observeForever(newObserver)
         cancelObserver = newObserver
         clear()
-
     }
 
     private fun cancelAllSessions(sessions: LoadUserSessionsByDayUseCaseResult) {

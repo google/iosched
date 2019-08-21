@@ -83,11 +83,11 @@ class SessionHeaderIndexerTest {
         val session = TestData.session1
         val start = ZonedDateTime.parse(startTimeString)
         val sessions = listOf(
-            session.copy(startTime = start),                // 10PM
-            session.copy(startTime = start.plusHours(1)),   // 11PM
-            session.copy(startTime = start.plusHours(2)),   // Midnight
-            session.copy(startTime = start.plusHours(3)),   // 1AM
-            session.copy(startTime = start.plusHours(4))    // 2AM
+            session.copy(startTime = start), // 10PM
+            session.copy(startTime = start.plusHours(1)), // 11PM
+            session.copy(startTime = start.plusHours(2)), // Midnight
+            session.copy(startTime = start.plusHours(3)), // 1AM
+            session.copy(startTime = start.plusHours(4)) // 2AM
         )
 
         // Process this list to group by start time, keyed on index

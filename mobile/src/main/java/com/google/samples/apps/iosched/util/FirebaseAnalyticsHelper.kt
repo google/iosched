@@ -46,7 +46,6 @@ class FirebaseAnalyticsHelper(
     private val UPROP_USER_REGISTERED = "user_registered"
     private val TYPE_DEPLOYMENT = "deployment"
 
-
     private var firebaseAnalytics: FirebaseAnalytics
 
     /**
@@ -145,7 +144,7 @@ class FirebaseAnalyticsHelper(
             }
         }
 
-        DefaultScheduler.execute {  // Prevent access to preferences on main thread
+        DefaultScheduler.execute { // Prevent access to preferences on main thread
             SharedPreferenceStorage(context).registerOnPreferenceChangeListener(listener)
         }
         prefListener = listener

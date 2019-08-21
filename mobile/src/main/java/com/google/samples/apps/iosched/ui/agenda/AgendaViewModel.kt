@@ -32,7 +32,7 @@ import javax.inject.Inject
 class AgendaViewModel @Inject constructor(
     loadAgendaUseCase: LoadAgendaUseCase,
     private val getTimeZoneUseCase: GetTimeZoneUseCase
-): ViewModel() {
+) : ViewModel() {
 
     private val loadAgendaResult = liveData { emit(loadAgendaUseCase(Unit)) }
     val agenda = loadAgendaResult.map { it.data ?: emptyList() }

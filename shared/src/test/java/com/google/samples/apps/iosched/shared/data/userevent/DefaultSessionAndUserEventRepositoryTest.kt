@@ -48,7 +48,7 @@ class DefaultSessionAndUserEventRepositoryTest {
 
     @Test
     fun observableUserEvents_areMappedCorrectly() {
-        val repository = object: DefaultSessionAndUserEventRepository(
+        val repository = object : DefaultSessionAndUserEventRepository(
             userEventDataSource = TestUserEventDataSource(),
             sessionRepository = DefaultSessionRepository(TestDataRepository)
         ) {

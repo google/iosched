@@ -228,7 +228,7 @@ class ScheduleTest {
         }
     }
 
-    private fun getDayTitles(): List<String>{
+    private fun getDayTitles(): List<String> {
         return InstrumentationRegistry.getTargetContext().let { context ->
             listOf(
                 context.getString(R.string.day1_date),

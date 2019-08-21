@@ -52,9 +52,8 @@ internal class SignInModule {
 
     @Singleton
     @Provides
-    fun providesAuthIdDataSource(
-    ): AuthIdDataSource {
-        return object: AuthIdDataSource {
+    fun providesAuthIdDataSource(): AuthIdDataSource {
+        return object : AuthIdDataSource {
             override fun getUserId() = "StagingTest"
         }
     }

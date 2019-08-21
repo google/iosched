@@ -42,8 +42,8 @@ object TimeUtils {
 
     /** Determine whether the current time is before, during, or after a Session's time slot **/
     fun getSessionState(
-            session: Session?,
-            currentTime: ZonedDateTime = ZonedDateTime.now()
+        session: Session?,
+        currentTime: ZonedDateTime = ZonedDateTime.now()
     ): SessionRelativeTimeState {
         return when {
             session == null -> SessionRelativeTimeState.UNKNOWN
