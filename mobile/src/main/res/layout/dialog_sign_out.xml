@@ -26,7 +26,7 @@
     </data>
 
     <LinearLayout
-        style="@style/Widget.ADSSched.Dialog"
+        style="@style/Widget.IOSched.Dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -38,7 +38,7 @@
             android:layout_marginTop="@dimen/margin_large"
             android:paddingHorizontal="@dimen/margin_large"
             android:text="@string/dialog_sign_out_title"
-            android:textAppearance="@style/TextAppearance.ADSSched.DialogTitle" />
+            android:textAppearance="@style/TextAppearance.IOSched.DialogTitle" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
             android:layout_marginTop="@dimen/spacing_normal"
             android:paddingHorizontal="@dimen/margin_large"
             android:text="@string/dialog_sign_out_content"
-            android:textAppearance="@style/TextAppearance.ADSSched.DialogContent" />
+            android:textAppearance="@style/TextAppearance.IOSched.DialogContent" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -56,7 +56,7 @@
             android:orientation="horizontal">
 
             <Button
-                style="@style/Widget.ADSSched.BorderlessButton"
+                style="@style/Widget.IOSched.BorderlessButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_normal"
@@ -66,7 +66,7 @@
                 android:text="@string/not_now" />
 
             <Button
-                style="@style/Widget.ADSSched.RaisedButton"
+                style="@style/Widget.IOSched.RaisedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_normal"

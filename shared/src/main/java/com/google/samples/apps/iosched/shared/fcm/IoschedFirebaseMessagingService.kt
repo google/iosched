@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Receives Firebase Cloud Messages and starts a [ConferenceDataService] to download new data.
  */
-class AdsschedFirebaseMessagingService : DaggerFirebaseMessagingService() {
+class IoschedFirebaseMessagingService : DaggerFirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         Timber.d("Message data payload: ${remoteMessage?.data}")

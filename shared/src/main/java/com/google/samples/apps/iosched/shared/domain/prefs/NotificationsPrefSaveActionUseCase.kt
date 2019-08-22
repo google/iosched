@@ -23,7 +23,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 /**
- * Records the user preference if the user wants to receive notifications from adssched.
+ * Records the user preference if the user wants to receive notifications.
  */
 open class NotificationsPrefSaveActionUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage,

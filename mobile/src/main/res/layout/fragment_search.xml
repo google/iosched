@@ -79,7 +79,7 @@
 
         <TextView
             android:id="@+id/empty"
-            style="@style/Widget.ADSSched.EmptyResults"
+            style="@style/Widget.IOSched.EmptyResults"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

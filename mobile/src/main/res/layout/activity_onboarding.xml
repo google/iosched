@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:text="@string/onboarding_welcome_to_conference"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.ADSSched.H1"
+            android:textAppearance="@style/TextAppearance.IOSched.H1"
             app:layout_constraintBottom_toTopOf="@id/date_location"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -73,7 +73,7 @@
 
         <TextView
             android:id="@+id/date_location"
-            style="@style/Widget.ADSSched.OnboardingDeck"
+            style="@style/Widget.IOSched.OnboardingDeck"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal"
@@ -86,7 +86,7 @@
 
         <Button
             android:id="@+id/get_started"
-            style="@style/Widget.ADSSched.RaisedButton"
+            style="@style/Widget.IOSched.RaisedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="119dp"

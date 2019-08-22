@@ -45,7 +45,7 @@
                 android:paddingEnd="@dimen/margin_normal"
                 android:paddingStart="@dimen/margin_normal"
                 android:paddingTop="@dimen/spacing_micro"
-                android:textAppearance="@style/TextAppearance.ADSSched.CollapsibleCard"
+                android:textAppearance="@style/TextAppearance.IOSched.CollapsibleCard"
                 tools:text="@string/travel_shuttle_title" />
 
             <ImageView

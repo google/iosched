@@ -34,7 +34,7 @@ import com.google.samples.apps.iosched.R
 /**
  * Dialog with custom background dim.
  */
-class CustomDimDialog(context: Context?) : AppCompatDialog(context, R.style.Theme_ADSSched_Dialog) {
+class CustomDimDialog(context: Context?) : AppCompatDialog(context, R.style.Theme_IOSched_Dialog) {
 
     init {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)

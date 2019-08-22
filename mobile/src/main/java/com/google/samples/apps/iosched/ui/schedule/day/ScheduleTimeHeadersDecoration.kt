@@ -65,7 +65,7 @@ class ScheduleTimeHeadersDecoration(
 
     init {
         val attrs = context.obtainStyledAttributes(
-            R.style.Widget_ADSSched_TimeHeaders,
+            R.style.Widget_IOSched_TimeHeaders,
             R.styleable.TimeHeader
         )
         paint = TextPaint(ANTI_ALIAS_FLAG).apply {

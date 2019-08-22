@@ -38,7 +38,7 @@
 
             <Button
                 android:id="@+id/faq_link"
-                style="@style/Widget.ADSSched.AboutButtons"
+                style="@style/Widget.IOSched.AboutButtons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_normal"
@@ -48,7 +48,7 @@
 
             <Button
                 android:id="@+id/terms_of_service"
-                style="@style/Widget.ADSSched.AboutButtons"
+                style="@style/Widget.IOSched.AboutButtons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_tos"
@@ -57,7 +57,7 @@
 
             <Button
                 android:id="@+id/privacy_policy"
-                style="@style/Widget.ADSSched.AboutButtons"
+                style="@style/Widget.IOSched.AboutButtons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_privacy_policy"
@@ -66,7 +66,7 @@
 
             <Button
                 android:id="@+id/open_source_license"
-                style="@style/Widget.ADSSched.AboutButtons"
+                style="@style/Widget.IOSched.AboutButtons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_oss_licenses"
@@ -76,7 +76,7 @@
 
             <TextView
                 android:id="@+id/version_build_number"
-                style="@style/TextAppearance.ADSSched.SettingsSwitch"
+                style="@style/TextAppearance.IOSched.SettingsSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/open_source_license"
