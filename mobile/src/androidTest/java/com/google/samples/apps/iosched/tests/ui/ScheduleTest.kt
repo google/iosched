@@ -22,7 +22,6 @@ import androidx.test.InstrumentationRegistry
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
@@ -32,13 +31,14 @@ import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.rule.ActivityTestRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.rule.ActivityTestRule
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
 import com.google.samples.apps.iosched.tests.FixedTimeRule
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
 import com.google.samples.apps.iosched.tests.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.tests.hasItemCount
 import com.google.samples.apps.iosched.ui.MainActivity
 import com.google.samples.apps.iosched.ui.schedule.day.SessionViewHolder
 import com.google.samples.apps.iosched.ui.schedule.filters.ScheduleFilterAdapter
@@ -167,17 +167,14 @@ class ScheduleTest {
 
         val filter = FakeConferenceDataSource.FAKE_SESSION_TAG_NAME
         applyFilter(filter)
+        //  Check that a filter tag is present
+        onView(withId(R.id.filter_description_tags)).check(hasItemCount(1))
 
         // Clear
         onView(withId(R.id.clear_filters_shortcut)).perform(click())
 
-        onView(
-            allOf(
-                withId(R.id.filter_label),
-                withContentDescription(getActiveFilterContDesc(filter)),
-                withParent(withId(R.id.filter_description_tags))
-            )
-        ).check(doesNotExist())
+        // Check that there are no items
+        onView(withId(R.id.filter_description_tags)).check(hasItemCount(0))
     }
 
     private fun applyFilter(filter: String) {

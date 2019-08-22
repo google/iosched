@@ -123,6 +123,7 @@ allprojects {
     spotless {
         kotlin {
             target "**/*.kt"
+            targetExclude ".idea/"
             ktlint(ktlintVersion)
         }
     }
