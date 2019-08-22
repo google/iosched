@@ -66,9 +66,7 @@ class CollapsibleCard @JvmOverloads constructor(
         }
         setTitleContentDescription(cardTitle)
         cardDescriptionView = root.findViewById<TextView>(R.id.card_description).apply {
-            if (cardDescription != null) {
-                text = HtmlCompat.fromHtml(cardDescription, HtmlCompat.FROM_HTML_MODE_COMPACT)
-            }
+            text = HtmlCompat.fromHtml(cardDescription, HtmlCompat.FROM_HTML_MODE_COMPACT)
             movementMethod = LinkMovementMethod.getInstance()
         }
 
@@ -122,7 +120,7 @@ class CollapsibleCard @JvmOverloads constructor(
             expanded = source.readByte().toInt() != 0
         }
 
-        constructor(superState: Parcelable?) : super(superState)
+        constructor(superState: Parcelable) : super(superState)
 
         override fun writeToParcel(out: Parcel, flags: Int) {
             super.writeToParcel(out, flags)
