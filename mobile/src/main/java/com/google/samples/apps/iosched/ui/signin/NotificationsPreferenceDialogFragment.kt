@@ -16,35 +16,23 @@
 
 package com.google.samples.apps.iosched.ui.signin
 
-import android.content.Context
+import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.common.wrappers.InstantApps
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.databinding.DialogNotificationsPreferenceBinding
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.dialogs.InstallAppStoreLauncher
-import com.google.samples.apps.iosched.widget.CustomDimDialogFragment
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.AndroidSupportInjection
-import dagger.android.support.HasSupportFragmentInjector
+import dagger.android.support.DaggerAppCompatDialogFragment
 import javax.inject.Inject
 
 /**
  * Dialog that asks for the user's notifications preference.
  */
-class NotificationsPreferenceDialogFragment : CustomDimDialogFragment(),
-    HasSupportFragmentInjector {
-
-    @Inject
-    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
+class NotificationsPreferenceDialogFragment : DaggerAppCompatDialogFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -54,45 +42,31 @@ class NotificationsPreferenceDialogFragment : CustomDimDialogFragment(),
 
     private lateinit var viewModel: NotificationsPreferenceViewModel
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
-        return fragmentInjector
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        AndroidSupportInjection.inject(this)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val isInstantApp = InstantApps.isInstantApp(requireContext())
-
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         viewModel = viewModelProvider(viewModelFactory)
-        val binding = DialogNotificationsPreferenceBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
-
-        // The dialog for the instant app is slightly different
-        if (isInstantApp) {
-            binding.dialogContent.text =
-                    resources.getString(R.string.notifications_preference_dialog_content_instant)
-            binding.notificationsPrefButtonYes.visibility = View.GONE
-            binding.notificationsInstalledButton.visibility = View.VISIBLE
-        }
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         viewModel.installAppEvent.observe(this, EventObserver {
             installAppStoreLauncher.showDialog(requireActivity())
         })
         viewModel.dismissDialogEvent.observe(this, EventObserver {
             dismiss()
         })
+
+        val isInstantApp = InstantApps.isInstantApp(requireContext())
+        return if (isInstantApp) {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.notifications_preference_dialog_title)
+                .setMessage(R.string.notifications_preference_dialog_content_instant)
+                .setNegativeButton(R.string.no) { _, _ -> viewModel.onNoClicked() }
+                .setNegativeButton(R.string.installApp) { _, _ -> viewModel.onInstallClicked() }
+                .create()
+        } else {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.notifications_preference_dialog_title)
+                .setMessage(R.string.notifications_preference_dialog_content)
+                .setNegativeButton(R.string.no) { _, _ -> viewModel.onNoClicked() }
+                .setPositiveButton(R.string.yes) { _, _ -> viewModel.onYesClicked() }
+                .create()
+        }
     }
 
     override fun onDismiss(dialog: DialogInterface) {
