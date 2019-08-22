@@ -16,10 +16,11 @@
 
 package com.google.samples.apps.iosched.ui.agenda
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
+import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.data
@@ -30,12 +31,12 @@ import org.threeten.bp.ZoneId
 import javax.inject.Inject
 
 class AgendaViewModel @Inject constructor(
-    loadAgendaUseCase: LoadAgendaUseCase,
+    private val loadAgendaUseCase: LoadAgendaUseCase,
     private val getTimeZoneUseCase: GetTimeZoneUseCase
 ) : ViewModel() {
 
-    private val loadAgendaResult = liveData { emit(loadAgendaUseCase(Unit)) }
-    val agenda = loadAgendaResult.map { it.data ?: emptyList() }
+    private val _agenda = MutableLiveData<List<Block>>()
+    val agenda: LiveData<List<Block>> = _agenda
 
     private val preferConferenceTimeZoneResult = MutableLiveData<Boolean>()
     val timeZoneId = preferConferenceTimeZoneResult.map { inConferenceTimeZone ->
@@ -49,6 +50,17 @@ class AgendaViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             preferConferenceTimeZoneResult.value = getTimeZoneUseCase(Unit).data ?: true
+        }
+        viewModelScope.launch {
+            _agenda.value = loadAgendaUseCase(false).data
+        }
+    }
+
+    fun refreshAgenda() {
+        // Agenda is lightweight and it's not possible to observe the changes with Remote Config,
+        // we refresh the agenda on fragment start
+        viewModelScope.launch {
+            _agenda.value = loadAgendaUseCase(true).data
         }
     }
 }

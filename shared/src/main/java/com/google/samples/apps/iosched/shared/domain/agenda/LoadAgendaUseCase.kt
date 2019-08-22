@@ -17,16 +17,21 @@
 package com.google.samples.apps.iosched.shared.domain.agenda
 
 import com.google.samples.apps.iosched.model.Block
-import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaRepository
+import com.google.samples.apps.iosched.shared.data.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
-import com.google.samples.apps.iosched.shared.domain.UseCase
+import com.google.samples.apps.iosched.shared.domain.SuspendUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
+/**
+ * Loads the agenda. When the parameter is passed as true, it's guaranteed the data
+ * loaded from this use case is up to date with the remote data source (Remote Config)
+ */
 open class LoadAgendaUseCase @Inject constructor(
     private val repository: AgendaRepository,
     @IoDispatcher ioDispatcher: CoroutineDispatcher
-) : UseCase<Unit, List<Block>>(ioDispatcher) {
+) : SuspendUseCase<Boolean, List<Block>>(ioDispatcher) {
 
-    override fun execute(parameters: Unit) = repository.getAgenda()
+    override suspend fun execute(parameters: Boolean): List<Block> =
+        repository.getAgenda(parameters)
 }
