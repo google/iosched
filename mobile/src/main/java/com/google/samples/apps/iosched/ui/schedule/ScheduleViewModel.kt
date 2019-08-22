@@ -31,10 +31,10 @@ import com.google.samples.apps.iosched.shared.domain.prefs.LoadSelectedFiltersUs
 import com.google.samples.apps.iosched.shared.domain.prefs.SaveSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ConferenceDayIndexer
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsParameters
-import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsResult
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
@@ -102,9 +102,11 @@ class ScheduleViewModel @Inject constructor(
         get() = _scheduleUiData
 
     // Cached list of TagFilters returned by the use case. Only Result.Success modifies it.
-    private var cachedEventFilters = emptyList<EventFilter>()
+    private var cachedEventFilters = mutableListOf<EventFilter>()
 
+    private val _eventFilters = MediatorLiveData<List<EventFilter>>()
     val eventFilters: LiveData<List<EventFilter>>
+        get() = _eventFilters
     private val _selectedFilters = MutableLiveData<List<EventFilter>>()
     val selectedFilters: LiveData<List<EventFilter>>
         get() = _selectedFilters
@@ -197,25 +199,23 @@ class ScheduleViewModel @Inject constructor(
             }
         }
 
-        eventFilters = loadEventFiltersResult.map {
+        _eventFilters.addSource(loadEventFiltersResult) {
             if (it is Success) {
-                cachedEventFilters = it.data
+                cachedEventFilters = it.data.toMutableList()
                 updateFilterStateObservables()
             }
-            // TODO handle Error result
-            cachedEventFilters
         }
 
         // Show an error message if a star request fails
         _snackBarMessage.addSource(starEventUseCase.observe()) {
             if (it is Result.Error) {
                 _snackBarMessage.postValue(
-                        Event(
-                                SnackbarMessage(
-                                        messageId = R.string.event_star_error,
-                                        longDuration = true
-                                )
+                    Event(
+                        SnackbarMessage(
+                            messageId = R.string.event_star_error,
+                            longDuration = true
                         )
+                    )
                 )
             }
         }
@@ -226,12 +226,12 @@ class ScheduleViewModel @Inject constructor(
                 it.data.userMessage?.type?.stringRes()?.let { messageId ->
                     // There is a message to display:
                     snackbarMessageManager.addMessage(
-                            SnackbarMessage(
-                                    messageId = messageId,
-                                    longDuration = true,
-                                    session = it.data.userMessageSession,
-                                    requestChangeId = it.data.userMessage?.changeRequestId
-                            )
+                        SnackbarMessage(
+                            messageId = messageId,
+                            longDuration = true,
+                            session = it.data.userMessageSession,
+                            requestChangeId = it.data.userMessage?.changeRequestId
+                        )
                     )
                 }
             }
@@ -268,15 +268,15 @@ class ScheduleViewModel @Inject constructor(
 
         _scheduleUiData.addSource(timeZoneId) {
             _scheduleUiData.value = _scheduleUiData.value?.copy(
-                    timeZoneId = it
+                timeZoneId = it
             ) ?: ScheduleUiData(timeZoneId = it)
         }
         _scheduleUiData.addSource(loadSessionsResult) {
             val data = (it as? Result.Success)?.data ?: return@addSource
             dayIndexer = data.dayIndexer
             _scheduleUiData.value = _scheduleUiData.value?.copy(
-                    list = data.userSessions,
-                    dayIndexer = data.dayIndexer
+                list = data.userSessions,
+                dayIndexer = data.dayIndexer
             ) ?: ScheduleUiData(list = data.userSessions, dayIndexer = data.dayIndexer)
         }
 
@@ -297,7 +297,7 @@ class ScheduleViewModel @Inject constructor(
         _scrollToEvent.addSource(loadSessionsResult) { result ->
             if (!userHasInteracted) {
                 val index =
-                        (result as? Success)?.data?.firstUnfinishedSessionIndex ?: return@addSource
+                    (result as? Success)?.data?.firstUnfinishedSessionIndex ?: return@addSource
                 if (index != -1) {
                     _scrollToEvent.value = Event(ScheduleScrollEvent(index))
                 }
@@ -326,7 +326,8 @@ class ScheduleViewModel @Inject constructor(
         }
         if (changed) {
             // Actually toggle the filter
-            filter.isChecked.set(enabled)
+            val index = cachedEventFilters.indexOf(filter)
+            cachedEventFilters[index] = filter.copy(enabled)
             // Persist the filters
             saveSelectedFiltersUseCase(userSessionMatcher)
             // Update observables
@@ -346,7 +347,9 @@ class ScheduleViewModel @Inject constructor(
 
     override fun clearFilters() {
         if (userSessionMatcher.clearAll()) {
-            eventFilters.value?.forEach { it.isChecked.set(false) }
+            cachedEventFilters = cachedEventFilters.mapTo(mutableListOf()) {
+                if (it.isSelected) it.copy(false) else it
+            }
             saveSelectedFiltersUseCase(userSessionMatcher)
             updateFilterStateObservables()
             refreshUserSessions()
@@ -360,7 +363,8 @@ class ScheduleViewModel @Inject constructor(
     private fun updateFilterStateObservables() {
         val hasAnyFilters = userSessionMatcher.hasAnyFilters()
         _hasAnyFilters.value = hasAnyFilters
-        _selectedFilters.value = cachedEventFilters.filter { it.isChecked.get() }
+        _eventFilters.value = cachedEventFilters
+        _selectedFilters.value = cachedEventFilters.filter { it.isSelected }
     }
 
     fun onSwipeRefresh() {
@@ -410,7 +414,8 @@ class ScheduleViewModel @Inject constructor(
                 StarEventParameter(
                     it,
                     userSession.copy(
-                        userEvent = userSession.userEvent.copy(isStarred = newIsStarredState))
+                        userEvent = userSession.userEvent.copy(isStarred = newIsStarredState)
+                    )
                 )
             )
         }

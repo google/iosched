@@ -18,13 +18,11 @@ package com.google.samples.apps.iosched.ui.schedule.filters
 
 import android.graphics.Color
 import androidx.annotation.StringRes
-import androidx.databinding.ObservableBoolean
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Tag
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.EventFilterCategory.NONE
-import com.google.samples.apps.iosched.util.hasSameValue
 
-sealed class EventFilter(isChecked: Boolean) {
+sealed class EventFilter(val isSelected: Boolean) {
 
     enum class EventFilterCategory(@StringRes val labelResId: Int) {
         NONE(0),
@@ -32,7 +30,8 @@ sealed class EventFilter(isChecked: Boolean) {
         EVENT_TYPES(R.string.category_heading_types)
     }
 
-    val isChecked = ObservableBoolean(isChecked)
+    /** Create a copy of this filter with the specified selected state. */
+    abstract fun copy(isSelected: Boolean): EventFilter
 
     /** Determines the category heading to show in the filters sheet. */
     abstract fun getFilterCategory(): EventFilterCategory
@@ -56,7 +55,9 @@ sealed class EventFilter(isChecked: Boolean) {
     open fun getShortText(): String = ""
 
     /** Filter for user's starred and reserved events. */
-    class MyEventsFilter(isChecked: Boolean) : EventFilter(isChecked) {
+    class MyEventsFilter(isSelected: Boolean) : EventFilter(isSelected) {
+
+        override fun copy(isSelected: Boolean): EventFilter = MyEventsFilter(isSelected)
 
         override fun getFilterCategory(): EventFilterCategory = NONE
 
@@ -72,13 +73,15 @@ sealed class EventFilter(isChecked: Boolean) {
 
         // This class isn't used for a key for a collection, overriding hashCode for removing a
         // lint warning
-        override fun hashCode(): Int {
-            return javaClass.hashCode()
-        }
+        override fun hashCode(): Int = javaClass.hashCode()
+
+        fun isUiContentEqual(other: MyEventsFilter) = isSelected == other.isSelected
     }
 
     /** Filter for event tags. */
-    class TagFilter(val tag: Tag, isChecked: Boolean) : EventFilter(isChecked) {
+    class TagFilter(val tag: Tag, isSelected: Boolean) : EventFilter(isSelected) {
+
+        override fun copy(isSelected: Boolean): EventFilter = TagFilter(tag, isSelected)
 
         override fun getFilterCategory(): EventFilterCategory {
             return when (tag.category) {
@@ -107,6 +110,6 @@ sealed class EventFilter(isChecked: Boolean) {
 
         // for DiffCallback
         fun isUiContentEqual(other: TagFilter) =
-            tag.isUiContentEqual(other.tag) && isChecked.hasSameValue(other.isChecked)
+            tag.isUiContentEqual(other.tag) && isSelected == other.isSelected
     }
 }
