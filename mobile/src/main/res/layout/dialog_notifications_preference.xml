@@ -24,7 +24,7 @@
     </data>
 
     <LinearLayout
-        style="@style/Widget.ADSSched.Dialog"
+        style="@style/Widget.IOSched.Dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -36,7 +36,7 @@
             android:layout_marginTop="@dimen/margin_large"
             android:paddingHorizontal="@dimen/margin_large"
             android:text="@string/notifications_preference_dialog_title"
-            android:textAppearance="@style/TextAppearance.ADSSched.DialogTitle" />
+            android:textAppearance="@style/TextAppearance.IOSched.DialogTitle" />
 
         <TextView
             android:id="@+id/dialog_content"
@@ -46,7 +46,7 @@
             android:layout_marginTop="@dimen/spacing_normal"
             android:paddingHorizontal="@dimen/margin_large"
             android:text="@string/notifications_preference_dialog_content"
-            android:textAppearance="@style/TextAppearance.ADSSched.DialogContent" />
+            android:textAppearance="@style/TextAppearance.IOSched.DialogContent" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -56,7 +56,7 @@
 
             <Button
                 android:id="@+id/notifications_pref_button_no"
-                style="@style/Widget.ADSSched.BorderlessButton"
+                style="@style/Widget.IOSched.BorderlessButton"
                 android:onClick="@{() -> viewModel.onNoClicked()}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
 
             <Button
                 android:id="@+id/notifications_pref_button_yes"
-                style="@style/Widget.ADSSched.RaisedButton"
+                style="@style/Widget.IOSched.RaisedButton"
                 android:onClick="@{() -> viewModel.onYesClicked()}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
 
             <Button
                 android:id="@+id/notifications_installed_button"
-                style="@style/Widget.ADSSched.RaisedButton"
+                style="@style/Widget.IOSched.RaisedButton"
                 android:visibility="gone"
                 android:onClick="@{() -> viewModel.onInstallClicked()}"
                 android:layout_width="wrap_content"

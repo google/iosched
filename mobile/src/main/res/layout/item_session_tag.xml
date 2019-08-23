@@ -28,7 +28,7 @@
     </data>
 
     <TextView
-        style="@style/Widget.ADSSched.Tag.Inline"
+        style="@style/Widget.IOSched.Tag.Inline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_normal"

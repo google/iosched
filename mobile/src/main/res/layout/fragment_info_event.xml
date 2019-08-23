@@ -64,7 +64,7 @@
                     android:layout_marginStart="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_normal"
                     android:text="@string/wifi_header"
-                    android:textAppearance="@style/TextAppearance.ADSSched.Subhead"
+                    android:textAppearance="@style/TextAppearance.IOSched.Subhead"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toTopOf="parent"
@@ -139,7 +139,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_large"
                     android:text="@string/event_types_header"
-                    android:textAppearance="@style/TextAppearance.ADSSched.Subhead"
+                    android:textAppearance="@style/TextAppearance.IOSched.Subhead"
                     app:layout_constraintStart_toStartOf="@+id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@+id/wifi_password_label" />
 

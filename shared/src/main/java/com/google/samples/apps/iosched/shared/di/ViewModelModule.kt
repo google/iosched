@@ -22,12 +22,12 @@ import dagger.Module
 
 /**
  * Module used to define the connection between the framework's [ViewModelProvider.Factory] and
- * our own implementation: [ADSSchedViewModelFactory].
+ * our own implementation: [IOSchedViewModelFactory].
  */
 @Module
 abstract class ViewModelModule {
 
     @Binds
-    internal abstract fun bindViewModelFactory(factory: ADSSchedViewModelFactory):
+    internal abstract fun bindViewModelFactory(factory: IOSchedViewModelFactory):
         ViewModelProvider.Factory
 }

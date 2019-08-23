@@ -45,7 +45,7 @@
             <!--TODO: make button ripple the entire width of row for switches-->
             <Switch
                 android:id="@+id/settings_time_zone"
-                style="@style/TextAppearance.ADSSched.SettingsSwitch"
+                style="@style/TextAppearance.IOSched.SettingsSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_normal"
@@ -57,7 +57,7 @@
 
             <Switch
                 android:id="@+id/settings_enable_notifications"
-                style="@style/TextAppearance.ADSSched.SettingsSwitch"
+                style="@style/TextAppearance.IOSched.SettingsSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checked="@{viewModel.enableNotifications}"
@@ -67,7 +67,7 @@
 
             <Switch
                 android:id="@+id/settings_send_anonymous_usage_statistics"
-                style="@style/TextAppearance.ADSSched.SettingsSwitch"
+                style="@style/TextAppearance.IOSched.SettingsSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checked="@{viewModel.sendUsageStatistics}"

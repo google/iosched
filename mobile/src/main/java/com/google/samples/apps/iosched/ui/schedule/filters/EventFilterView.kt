@@ -120,7 +120,7 @@ class EventFilterView @JvmOverloads constructor(
             attrs,
             R.styleable.EventFilterView,
             R.attr.eventFilterViewStyle,
-            R.style.Widget_ADSSched_EventFilters
+            R.style.Widget_IOSched_EventFilters
         )
         outlinePaint = Paint(ANTI_ALIAS_FLAG).apply {
             color = a.getColorOrThrow(R.styleable.EventFilterView_android_strokeColor)

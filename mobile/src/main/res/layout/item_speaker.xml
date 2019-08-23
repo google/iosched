@@ -56,7 +56,7 @@
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginStart="@dimen/margin_normal"
             android:text="@{speaker.name}"
-            android:textAppearance="@style/TextAppearance.ADSSched.SpeakerTitle"
+            android:textAppearance="@style/TextAppearance.IOSched.SpeakerTitle"
             app:layout_constraintBottom_toTopOf="@id/speaker_item_company"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/speaker_item_headshot"

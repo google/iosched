@@ -82,7 +82,7 @@
 
         <TextView
             android:id="@+id/speaker_name"
-            style="@style/Widget.ADSSched.SessionDetailTitle"
+            style="@style/Widget.IOSched.SessionDetailTitle"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:paddingBottom="@dimen/margin_normal"
@@ -107,7 +107,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/margin_normal"
-            android:textAppearance="@style/TextAppearance.ADSSched.Links"
+            android:textAppearance="@style/TextAppearance.IOSched.Links"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/spacer"

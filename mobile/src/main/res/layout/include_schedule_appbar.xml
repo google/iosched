@@ -58,7 +58,7 @@
                 android:gravity="center"
                 android:minHeight="?actionBarSize"
                 android:text="@string/title_schedule"
-                android:textAppearance="@style/TextAppearance.ADSSched.ToolbarTitle" />
+                android:textAppearance="@style/TextAppearance.IOSched.ToolbarTitle" />
 
 <!--todo: fix lint on foreground-->
             <ImageView

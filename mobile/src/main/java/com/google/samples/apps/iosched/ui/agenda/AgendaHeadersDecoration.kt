@@ -63,7 +63,7 @@ class AgendaHeadersDecoration(
 
     init {
         val attrs = context.obtainStyledAttributes(
-            R.style.Widget_ADSSched_DateHeaders,
+            R.style.Widget_IOSched_DateHeaders,
             R.styleable.DateHeader
         )
         paint = TextPaint(ANTI_ALIAS_FLAG).apply {

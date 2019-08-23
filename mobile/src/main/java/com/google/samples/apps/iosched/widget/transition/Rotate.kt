@@ -74,7 +74,7 @@ class Rotate : Transition {
 
     companion object {
 
-        private const val PROP_ROTATION = "adssched:rotate:rotation"
+        private const val PROP_ROTATION = "iosched:rotate:rotation"
         private val TRANSITION_PROPERTIES = arrayOf(PROP_ROTATION)
     }
 }

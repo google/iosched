@@ -34,12 +34,12 @@
                 android:layout_height="?actionBarSize"
                 android:gravity="center"
                 android:text="@string/title_info"
-                android:textAppearance="@style/TextAppearance.ADSSched.ToolbarTitle"
+                android:textAppearance="@style/TextAppearance.IOSched.ToolbarTitle"
                 app:layout_scrollFlags="scroll|snap|exitUntilCollapsed" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
-                style="@style/Widget.ADSSched.Tabs"
+                style="@style/Widget.IOSched.Tabs"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize" />
 

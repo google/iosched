@@ -21,7 +21,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 /**
  * Service that receives new FCM ID Tokens.
  */
-class AdsschedFirebaseInstanceIDService : DaggerFirebaseInstanceIdService() {
+class IoschedFirebaseInstanceIDService : DaggerFirebaseInstanceIdService() {
     override fun onTokenRefresh() {
         super.onTokenRefresh()
         val token = FirebaseInstanceId.getInstance().token
