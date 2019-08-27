@@ -62,7 +62,7 @@ buildscript {
         ktxVersion = "1.0.0"
         legacySupportVersion = '1.0.0-alpha1'
         lifecycleVersion = '2.2.0-alpha03'
-        materialVersion = '1.0.0'
+        materialVersion = '1.1.0-alpha09'
         mockitoVersion = "2.8.9"
         mockitoKotlinVersion = "1.5.0"
         navigationVersion = "2.1.0-rc01"

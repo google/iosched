@@ -51,10 +51,8 @@
     <dimen name="bottom_sheet_peek_height">@dimen/a11y_min_touch_target</dimen>
     <dimen name="schedule_page_padding_bottom">56dp</dimen> <!-- bottom_sheet_peek_height + 8dp -->
 
-    <dimen name="dialog_rounded_corner">8dp</dimen>
-    <dimen name="dialog_vertical_margin">32dp</dimen>
-    <dimen name="dialog_horizontal_margin">32dp</dimen>
-    <dimen name="dialog_elevation">24dp</dimen>
+    <dimen name="dialog_corner_radius">8dp</dimen>
+    <dimen name="dialog_preferred_padding">24dp</dimen>
     <dimen name="padding_borderless_button">16dp</dimen>
 
     <dimen name="event_logo_end_margin">48dp</dimen>

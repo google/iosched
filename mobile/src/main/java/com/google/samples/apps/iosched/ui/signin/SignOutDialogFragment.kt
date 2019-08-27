@@ -16,34 +16,23 @@
 
 package com.google.samples.apps.iosched.ui.signin
 
-import android.content.Context
+import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.samples.apps.iosched.databinding.DialogSignOutBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
-import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignOut
 import com.google.samples.apps.iosched.util.signin.SignInHandler
-import com.google.samples.apps.iosched.widget.CustomDimDialogFragment
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.AndroidSupportInjection
-import dagger.android.support.HasSupportFragmentInjector
+import dagger.android.support.DaggerAppCompatDialogFragment
 import javax.inject.Inject
 
 /**
  * Dialog that confirms that a user wishes to sign out.
  */
-class SignOutDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInjector {
-
-    @Inject
-    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
+class SignOutDialogFragment : DaggerAppCompatDialogFragment() {
 
     @Inject
     lateinit var signInHandler: SignInHandler
@@ -51,28 +40,11 @@ class SignOutDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInjec
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var signOutViewModel: SignInViewModel
+    private lateinit var signInViewModel: SignInViewModel
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
-        return fragmentInjector
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        AndroidSupportInjection.inject(this)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        signOutViewModel = viewModelProvider(viewModelFactory)
-        val binding = DialogSignOutBinding.inflate(inflater, container, false).apply {
-            viewModel = signOutViewModel
-        }
-
-        signOutViewModel.performSignInEvent.observe(this, Observer { request ->
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        signInViewModel = viewModelProvider(viewModelFactory)
+        signInViewModel.performSignInEvent.observe(this, Observer { request ->
             if (request.peekContent() == RequestSignOut) {
                 request.getContentIfNotHandled()
                 context?.let {
@@ -84,10 +56,13 @@ class SignOutDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInjec
                 }
             }
         })
-
-        signOutViewModel.dismissDialogAction.observe(this, EventObserver {
-            dismiss()
-        })
-        return binding.root
+        return MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.dialog_sign_out_title)
+            .setMessage(R.string.dialog_sign_out_content)
+            .setNegativeButton(R.string.not_now, null)
+            .setPositiveButton(R.string.sign_out) { _, _ ->
+                signInViewModel.onSignOut()
+            }
+            .create()
     }
 }
