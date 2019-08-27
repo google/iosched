@@ -20,7 +20,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Session
@@ -32,6 +31,7 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
@@ -48,10 +48,12 @@ import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.cancelIfActive
 import com.google.samples.apps.iosched.util.ignoreFirst
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
+import kotlinx.coroutines.withContext
 import org.threeten.bp.Duration
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
@@ -69,7 +71,8 @@ class SessionDetailViewModel @Inject constructor(
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val loadRelatedSessionUseCase: LoadUserSessionsUseCase,
     private val starEventUseCase: StarEventAndNotifyUseCase,
-    getTimeZoneUseCase: GetTimeZoneUseCase,
+    observeConferenceDataUseCase: ObserveConferenceDataUseCase,
+    private val getTimeZoneUseCase: GetTimeZoneUseCase,
     timeProvider: TimeProvider,
     private val analyticsHelper: AnalyticsHelper
 ) : ViewModel(), SessionDetailEventListener, EventActions,
@@ -83,17 +86,8 @@ class SessionDetailViewModel @Inject constructor(
 
     private val sessionTimeRelativeState: LiveData<TimeUtils.SessionRelativeTimeState>
 
-    private val preferConferenceTimeZoneResult = liveData { emit(getTimeZoneUseCase(Unit)) }
-    private val showInConferenceTimeZone = preferConferenceTimeZoneResult.map {
-        (it as? Result.Success<Boolean>)?.data ?: true
-    }
-    val timeZoneId = showInConferenceTimeZone.map { inConferenceTimeZone ->
-        if (inConferenceTimeZone) {
-            TimeUtils.CONFERENCE_TIMEZONE
-        } else {
-            ZoneId.systemDefault()
-        }
-    }
+    private val _timeZoneId = MutableLiveData(ZoneId.systemDefault())
+    val timeZoneId: LiveData<ZoneId> = _timeZoneId
 
     private val _errorMessage = MediatorLiveData<Event<String>>()
     val errorMessage: LiveData<Event<String>>
@@ -148,6 +142,14 @@ class SessionDetailViewModel @Inject constructor(
         viewModelScope.launch {
             currentFirebaseUser.ignoreFirst().collect {
                 Timber.d("CurrentFirebaseUser changed, refreshing")
+                refreshUserSession()
+            }
+        }
+
+        viewModelScope.launch {
+            // Refresh screen if conference data changes.
+            observeConferenceDataUseCase(Any()).collect {
+                Timber.d("Detected new data in conference data repository")
                 refreshUserSession()
             }
         }
@@ -294,6 +296,8 @@ class SessionDetailViewModel @Inject constructor(
         loadUserSessionJob.cancelIfActive()
 
         loadUserSessionJob = viewModelScope.launch {
+            // Fech the time zone in case it's the cause of the data refresh.
+            fetchTimeZone()
             loadUserSessionUseCase(getUserId() to sessionId).collect { loadResult ->
                 // If there's a new result with data, update the session
                 loadResult.data?.userSession?.session?.let { session ->
@@ -313,6 +317,19 @@ class SessionDetailViewModel @Inject constructor(
                     if (related.isNotEmpty()) {
                         listenForRelatedSessions(related)
                     }
+                }
+            }
+        }
+    }
+
+    private suspend fun fetchTimeZone() {
+        val result = getTimeZoneUseCase(Unit)
+        withContext(Dispatchers.Main) {
+            result.data?.let { inConferenceTimeZone ->
+                _timeZoneId.value = if (inConferenceTimeZone) {
+                    TimeUtils.CONFERENCE_TIMEZONE
+                } else {
+                    ZoneId.systemDefault()
                 }
             }
         }
