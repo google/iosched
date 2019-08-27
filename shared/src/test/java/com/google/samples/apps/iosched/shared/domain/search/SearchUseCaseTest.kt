@@ -25,13 +25,14 @@ import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.data.runBlockingTest
+import com.google.samples.apps.iosched.test.util.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase
 import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase.Companion.QUERY_ABSTRACT
 import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase.Companion.QUERY_EMPTY
 import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase.Companion.QUERY_QUESTION
 import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase.Companion.QUERY_SESSION_0
 import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase.Companion.QUERY_TAGNAME
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsCollectionContaining.hasItem
 import org.hamcrest.core.IsCollectionContaining.hasItems
@@ -59,7 +60,9 @@ class SearchUseCaseTest(private val useCase: UseCase<String, List<Searchable>>) 
         fun useCases() = listOf(
             arrayOf(
                 SearchUseCase(
-                    DefaultSessionRepository(TestDataRepository), coroutineRule.testDispatcher
+                    DefaultSessionRepository(TestDataRepository),
+                    FakePreferenceStorage(),
+                    coroutineRule.testDispatcher
                 )
             ),
             arrayOf(
@@ -67,6 +70,7 @@ class SearchUseCaseTest(private val useCase: UseCase<String, List<Searchable>>) 
                     DefaultSessionRepository(TestDataRepository),
                     TestDataRepository,
                     FakeSearchAppDatabase(),
+                    FakePreferenceStorage(),
                     coroutineRule.testDispatcher
                 )
             )

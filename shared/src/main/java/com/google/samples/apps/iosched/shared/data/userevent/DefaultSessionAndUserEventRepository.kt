@@ -44,7 +44,8 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 ) : SessionAndUserEventRepository {
 
     override fun getObservableUserEvents(
-        userId: String?
+        userId: String?,
+        userIsAttendee: Boolean
     ): Flow<Result<LoadUserSessionsByDayUseCaseResult>> {
 
         // If there is no logged-in user, return the map with null UserEvents
@@ -52,7 +53,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
             Timber.d(
                 "EventRepository: No user logged in, returning sessions without user events."
             )
-            val allSessions = sessionRepository.getSessions()
+            val allSessions = sessionRepository.getSessions(userIsAttendee)
             val userSessionsPerDay = mapUserDataAndSessions(null, allSessions)
             return flow {
                 emit(
@@ -72,7 +73,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                 """EventRepository: Received ${userEvents.userEvents.size}
                             |user events changes""".trimMargin()
             )
-            val allSessions = sessionRepository.getSessions()
+            val allSessions = sessionRepository.getSessions(userIsAttendee)
             Result.Success(
                 LoadUserSessionsByDayUseCaseResult(
                     userSessionsPerDay = mapUserDataAndSessions(userEvents, allSessions),
@@ -193,7 +194,10 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
 interface SessionAndUserEventRepository {
 
-    fun getObservableUserEvents(userId: String?): Flow<Result<LoadUserSessionsByDayUseCaseResult>>
+    fun getObservableUserEvents(
+        userId: String?,
+        userIsAttendee: Boolean
+    ): Flow<Result<LoadUserSessionsByDayUseCaseResult>>
 
     fun getObservableUserEvent(
         userId: String?,

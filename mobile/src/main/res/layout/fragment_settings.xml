@@ -79,6 +79,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/settings_time_zone" />
 
             <Switch
+                android:id="@+id/settings_attending_user"
+                style="@style/TextAppearance.IOSched.SettingsSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="@{viewModel.userIsAttending}"
+                android:onCheckedChanged="@{(view, checked) -> viewModel.toggleUserIsAttending(checked)}"
+                android:text="@string/attending_switch_label"
+                app:layout_constraintTop_toBottomOf="@+id/settings_enable_notifications" />
+
+            <Switch
                 android:id="@+id/settings_send_anonymous_usage_statistics"
                 style="@style/TextAppearance.IOSched.SettingsSwitch"
                 android:layout_width="match_parent"
@@ -86,7 +96,7 @@
                 android:checked="@{viewModel.sendUsageStatistics}"
                 android:onCheckedChanged="@{(view, checked) -> viewModel.toggleSendUsageStatistics(checked)}"
                 android:text="@string/settings_send_anonymous_usage_statistics"
-                app:layout_constraintTop_toBottomOf="@+id/settings_enable_notifications" />
+                app:layout_constraintTop_toBottomOf="@+id/settings_attending_user" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

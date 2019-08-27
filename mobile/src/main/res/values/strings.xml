@@ -328,5 +328,10 @@
 
     <string name="navigate_up" translation-description="Arrow at the top left of the screen for navigation">Navigate up</string>
     <string name="installApp">Install App</string>
+    <string name="attending_switch_label">I\'m attending the conference in person</string>
+    <string name="user_attendee_dialog_title">How are you attending the conference?</string>
+    <string name="user_attendee_dialog_description">Show or hide relevant events based on whether you are attending remotely or in person.</string>
+    <string name="user_attendee_dialog_remote">Remotely</string>
+    <string name="user_attendee_dialog_in_person">In person</string>
 
 </resources>

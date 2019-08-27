@@ -56,7 +56,7 @@ class DefaultSessionAndUserEventRepositoryTest {
             override fun getConferenceDays(): List<ConferenceDay> = TestData.TestConferenceDays
         }
 
-        val userEvents = repository.getObservableUserEvents("user").first()
+        val userEvents = repository.getObservableUserEvents("user", true).first()
 
         assertThat(userEvents, `is`(IsInstanceOf(Result.Success::class.java)))
 

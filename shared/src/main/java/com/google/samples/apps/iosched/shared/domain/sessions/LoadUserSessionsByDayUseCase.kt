@@ -18,6 +18,8 @@ package com.google.samples.apps.iosched.shared.domain.sessions
 
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
+import com.google.samples.apps.iosched.shared.data.prefs.UserIsAttendee.REMOTE
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
 import com.google.samples.apps.iosched.shared.domain.FlowUseCase
@@ -35,6 +37,7 @@ import javax.inject.Inject
  */
 open class LoadUserSessionsByDayUseCase @Inject constructor(
     private val userEventRepository: DefaultSessionAndUserEventRepository,
+    private val preferenceStorage: PreferenceStorage,
     @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
 ) : FlowUseCase<LoadUserSessionsByDayUseCaseParameters, LoadUserSessionsByDayUseCaseResult>(
     defaultDispatcher
@@ -44,8 +47,10 @@ open class LoadUserSessionsByDayUseCase @Inject constructor(
         parameters: LoadUserSessionsByDayUseCaseParameters
     ): Flow<Result<LoadUserSessionsByDayUseCaseResult>> {
         val (sessionMatcher, userId) = parameters
+        // Show all events if userIsAttendee is IN_PERSON or NO_ANSWER (means dialog dismissed)
+        val isOnsiteAttendee = preferenceStorage.userIsAttendee != REMOTE
         Timber.d("LoadUserSessionsByDayUseCase: Refreshing sessions with user data")
-        return userEventRepository.getObservableUserEvents(userId).map {
+        return userEventRepository.getObservableUserEvents(userId, isOnsiteAttendee).map {
             when (it) {
                 is Result.Success -> {
                     val userSessions = it.data.userSessionsPerDay.mapValues { (_, sessions) ->

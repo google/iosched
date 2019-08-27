@@ -21,12 +21,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.model.Theme
+import com.google.samples.apps.iosched.shared.data.prefs.UserIsAttendee.IN_PERSON
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefSaveActionUseCase
+import com.google.samples.apps.iosched.shared.domain.prefs.UserIsAttendeePrefSaveActionUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetAnalyticsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetAvailableThemesUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetNotificationsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetUserIsAttendeeSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetAnalyticsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetTimeZoneUseCase
@@ -46,7 +49,9 @@ class SettingsViewModel @Inject constructor(
     getAnalyticsSettingUseCase: GetAnalyticsSettingUseCase,
     val setThemeUseCase: SetThemeUseCase,
     getThemeUseCase: GetThemeUseCase,
-    getAvailableThemesUseCase: GetAvailableThemesUseCase
+    getAvailableThemesUseCase: GetAvailableThemesUseCase,
+    val userIsAttendeePrefSaveActionUseCase: UserIsAttendeePrefSaveActionUseCase,
+    getUserIsAttendeeSettingUseCase: GetUserIsAttendeeSettingUseCase
 ) : ViewModel() {
 
     // Time Zone setting
@@ -83,6 +88,11 @@ class SettingsViewModel @Inject constructor(
     val navigateToThemeSelector: LiveData<Event<Unit>>
         get() = _navigateToThemeSelector
 
+    // User is attending setting
+    private val userIsAttendingResult = MutableLiveData<Boolean>()
+    val userIsAttending: LiveData<Boolean>
+        get() = userIsAttendingResult
+
     init {
         // Executing use cases in parallel
         viewModelScope.launch {
@@ -99,6 +109,9 @@ class SettingsViewModel @Inject constructor(
         }
         viewModelScope.launch {
             _availableThemes.value = getAvailableThemesUseCase(Unit).successOr(emptyList())
+        }
+        viewModelScope.launch {
+            userIsAttendingResult.value = getUserIsAttendeeSettingUseCase(Unit).data == IN_PERSON
         }
     }
 
@@ -132,5 +145,11 @@ class SettingsViewModel @Inject constructor(
 
     fun onThemeSettingClicked() {
         _navigateToThemeSelector.value = Event(Unit)
+    }
+
+    fun toggleUserIsAttending(checked: Boolean) {
+        viewModelScope.launch {
+            userIsAttendeePrefSaveActionUseCase(checked).updateOnSuccess(userIsAttendingResult)
+        }
     }
 }

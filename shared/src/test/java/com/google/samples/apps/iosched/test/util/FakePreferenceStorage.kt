@@ -17,6 +17,8 @@
 package com.google.samples.apps.iosched.test.util
 
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
+import com.google.samples.apps.iosched.shared.data.prefs.UserIsAttendee
+import com.google.samples.apps.iosched.shared.data.prefs.UserIsAttendee.IN_PERSON
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -30,5 +32,6 @@ class FakePreferenceStorage(
     override var sendUsageStatistics: Boolean = false,
     override var selectedFilters: String? = null,
     override var selectedTheme: String? = null,
-    override var observableSelectedTheme: Flow<String?> = flowOf(null)
+    override var observableSelectedTheme: Flow<String?> = flowOf(null),
+    override var userIsAttendee: UserIsAttendee = IN_PERSON
 ) : PreferenceStorage

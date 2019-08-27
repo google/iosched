@@ -116,6 +116,8 @@ class ScheduleViewModelTest {
         viewModelDelegate.closeChannel()
     }
 
+    private val prefs = FakePreferenceStorage()
+
     @Test
     fun testDataIsLoaded_ObservablesUpdated() = coroutineRule.runBlockingTest {
         // Create test use cases with test data
@@ -124,6 +126,7 @@ class ScheduleViewModelTest {
                 TestUserEventDataSource(),
                 DefaultSessionRepository(TestDataRepository)
             ),
+            prefs,
             coroutineRule.testDispatcher
         )
 
@@ -437,7 +440,9 @@ class ScheduleViewModelTest {
             userEventDataSource, sessionRepository
         )
 
-        return LoadUserSessionsByDayUseCase(userEventRepository, coroutineRule.testDispatcher)
+        return LoadUserSessionsByDayUseCase(
+            userEventRepository, prefs, coroutineRule.testDispatcher
+        )
     }
 
     /**

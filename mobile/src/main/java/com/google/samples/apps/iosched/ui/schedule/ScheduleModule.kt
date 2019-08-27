@@ -19,6 +19,9 @@ package com.google.samples.apps.iosched.ui.schedule
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.di.FragmentScoped
 import com.google.samples.apps.iosched.shared.di.ViewModelKey
+import com.google.samples.apps.iosched.ui.MainActivityViewModel
+import com.google.samples.apps.iosched.ui.dialogs.AttendeeDialogFragment
+import com.google.samples.apps.iosched.ui.dialogs.AttendeePreferenceViewModel
 import com.google.samples.apps.iosched.ui.schedule.filters.ScheduleFilterFragment
 import com.google.samples.apps.iosched.ui.sessioncommon.SessionViewPoolModule
 import dagger.Binds
@@ -53,6 +56,13 @@ internal abstract class ScheduleModule {
     internal abstract fun contributeScheduleFilterFragment(): ScheduleFilterFragment
 
     /**
+     * Generates an [AndroidInjector] for the [AttendeeDialogFragment].
+     */
+    @FragmentScoped
+    @ContributesAndroidInjector
+    internal abstract fun contributeAttendeeDialogFragment(): AttendeeDialogFragment
+
+    /**
      * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
      * want to get a [ScheduleViewModel] class.
      */
@@ -63,6 +73,15 @@ internal abstract class ScheduleModule {
 
     /**
      * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
+     * want to get a [MainActivityViewModel] class.
+     */
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainActivityViewModel::class)
+    abstract fun bindMainActivityViewModel(viewModel: MainActivityViewModel): ViewModel
+
+    /**
+     * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
      * want to get a [ScheduleUiHintsDialogViewModel] class.
      */
     @Binds
@@ -70,5 +89,16 @@ internal abstract class ScheduleModule {
     @ViewModelKey(ScheduleUiHintsDialogViewModel::class)
     abstract fun bindScheduleUiHintsDialogViewModel(
         viewModel: ScheduleUiHintsDialogViewModel
+    ): ViewModel
+
+    /**
+     * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
+     * want to get a [AttendeePreferenceViewModel] class.
+     */
+    @Binds
+    @IntoMap
+    @ViewModelKey(AttendeePreferenceViewModel::class)
+    abstract fun bindAttendeePreferenceViewModel(
+        viewModel: AttendeePreferenceViewModel
     ): ViewModel
 }

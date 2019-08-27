@@ -324,7 +324,8 @@ class SessionDetailViewModelTest {
             userEventDataSource,
             sessionRepository
         )
-        return LoadUserSessionsUseCase(userEventRepository, coroutineRule.testDispatcher)
+        val prefs = FakePreferenceStorage()
+        return LoadUserSessionsUseCase(userEventRepository, prefs, coroutineRule.testDispatcher)
     }
 
     private fun createGetTimeZoneUseCase(preferConferenceTimeZone: Boolean) =

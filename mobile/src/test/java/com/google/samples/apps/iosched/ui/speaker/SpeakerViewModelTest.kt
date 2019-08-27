@@ -32,6 +32,7 @@ import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakeEventActionsViewModelDelegate
+import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
@@ -120,6 +121,7 @@ class SpeakerViewModelTest {
                 TestUserEventDataSource(),
                 DefaultSessionRepository(TestDataRepository)
             ),
+            FakePreferenceStorage(),
             coroutineRule.testDispatcher
         ),
         signInViewModelDelegate: SignInViewModelDelegate = viewModelDelegate.apply {
