@@ -89,7 +89,8 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
     // Stores the labels of the viewpager to avoid unnecessary recreation
     private var labelsForDays: List<Int>? = null
 
-    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+    // Back pressed callback initially disabled until the filters sheet is used
+    private val onBackPressedCallback = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
             onBackPressed()
         }
