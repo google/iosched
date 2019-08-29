@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.di
 
+import androidx.work.Configuration
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
@@ -29,6 +30,7 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.data.userevent.FakeUserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
+import com.google.samples.apps.iosched.shared.data.work.IoschedWorkerFactory
 import com.google.samples.apps.iosched.shared.fcm.StagingTopicSubscriber
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
@@ -121,5 +123,15 @@ class SharedModule {
     fun provideTimeProvider(): TimeProvider {
         // TODO: Make the time configurable
         return DefaultTimeProvider
+    }
+
+    @Singleton
+    @Provides
+    fun provideWorkManagerConfiguration(
+        ioschedWorkerFactory: IoschedWorkerFactory
+    ): Configuration {
+        return Configuration.Builder()
+            .setWorkerFactory(ioschedWorkerFactory)
+            .build()
     }
 }

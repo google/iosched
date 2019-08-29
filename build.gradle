@@ -75,6 +75,7 @@ buildscript {
         threetenabpVersion = "1.0.5"
         threetenbpVersion = "1.3.6"
         timberVersion = "4.7.1"
+        workVersion = "2.2.0"
     }
 
     repositories {

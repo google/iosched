@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.shared.di
 
 import android.content.Context
+import androidx.work.Configuration
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -37,6 +38,7 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
+import com.google.samples.apps.iosched.shared.data.work.IoschedWorkerFactory
 import com.google.samples.apps.iosched.shared.fcm.FcmTopicSubscriber
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
@@ -157,5 +159,16 @@ class SharedModule {
     @Provides
     fun provideTimeProvider(): TimeProvider {
         return DefaultTimeProvider
+    }
+
+    @Singleton
+    @Provides
+    fun provideWorkManagerConfiguration(
+        ioschedWorkerFactory: IoschedWorkerFactory
+    ): Configuration {
+        return Configuration.Builder()
+            .setMinimumLoggingLevel(android.util.Log.INFO)
+            .setWorkerFactory(ioschedWorkerFactory)
+            .build()
     }
 }
