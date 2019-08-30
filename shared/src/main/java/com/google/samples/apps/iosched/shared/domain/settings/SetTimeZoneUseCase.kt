@@ -16,19 +16,28 @@
 
 package com.google.samples.apps.iosched.shared.domain.settings
 
+import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import kotlinx.coroutines.CoroutineDispatcher
+import timber.log.Timber
 import javax.inject.Inject
 
 open class SetTimeZoneUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
+    private val conferenceDataRepository: ConferenceDataRepository,
     @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
 ) : UseCase<Boolean, Boolean>(defaultDispatcher) {
 
     override fun execute(parameters: Boolean): Boolean {
         preferenceStorage.preferConferenceTimeZone = parameters
+        // Force an update of the schedule
+        try {
+            conferenceDataRepository.refreshCacheWithRemoteConferenceData()
+        } catch (t: Throwable) {
+            Timber.e(t)
+        }
         return preferenceStorage.preferConferenceTimeZone
     }
 }

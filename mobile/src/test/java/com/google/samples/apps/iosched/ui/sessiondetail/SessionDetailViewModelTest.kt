@@ -20,6 +20,7 @@ package com.google.samples.apps.iosched.ui.sessiondetail
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.androidtest.util.observeForTesting
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
@@ -28,12 +29,14 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import com.google.samples.apps.iosched.shared.util.SetIntervalLiveData
+import com.google.samples.apps.iosched.shared.util.TimeUtils.CONFERENCE_TIMEZONE
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
@@ -45,7 +48,6 @@ import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelega
 import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
 import com.google.samples.apps.iosched.test.util.time.FakeIntervalMapperRule
 import com.google.samples.apps.iosched.test.util.time.FixedTimeExecutorRule
-import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.doReturn
@@ -57,6 +59,7 @@ import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.threeten.bp.ZoneId
 
 /**
  * Unit tests for the [SessionDetailViewModel].
@@ -221,6 +224,36 @@ class SessionDetailViewModelTest {
         assertNull(LiveDataTestUtil.getValue(vm.navigateToYouTubeAction))
     }
 
+    @Test
+    fun viewModel_TimeZoneSettings_systemDefault() = coroutineRule.runBlockingTest {
+        // Create a ViewModel in local timezone
+        val vm = createSessionDetailViewModel(
+            viewModelDelegate,
+            getTimeZoneUseCase = createGetTimeZoneUseCase(false)
+        )
+        vm.session.observeForTesting {
+            vm.setSessionId(testSession.id)
+
+            // Check that the data is exposed in the correct time zone
+            assertEquals(LiveDataTestUtil.getValue(vm.timeZoneId), ZoneId.systemDefault())
+        }
+    }
+    @Test
+    fun viewModel_TimeZoneSettings_conferenceTimeZone() = coroutineRule.runBlockingTest {
+
+        // Create a ViewModel in conference timezone
+        val vm = createSessionDetailViewModel(
+            viewModelDelegate,
+            getTimeZoneUseCase = createGetTimeZoneUseCase(true)
+        )
+        vm.session.observeForTesting {
+            vm.setSessionId(testSession.id)
+
+            // Check that the data is exposed in the correct time zone
+            assertEquals(LiveDataTestUtil.getValue(vm.timeZoneId), CONFERENCE_TIMEZONE)
+        }
+    }
+
     // TODO: Add a test for onReservationClicked
 
     private fun createSessionDetailViewModelWithAuthEnabled(
@@ -239,16 +272,16 @@ class SessionDetailViewModelTest {
         starEventUseCase: StarEventAndNotifyUseCase = FakeStarEventUseCase(
             coroutineRule.testDispatcher
         ),
-        getTimeZoneUseCase: GetTimeZoneUseCase = createGetTimeZoneUseCase(),
-        snackbarMessageManager: SnackbarMessageManager =
-            SnackbarMessageManager(FakePreferenceStorage()),
-        networkUtils: NetworkUtils = mockNetworkUtils,
+        getTimeZoneUseCase: GetTimeZoneUseCase = createGetTimeZoneUseCase(true),
         timeProvider: TimeProvider = DefaultTimeProvider,
-        analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper()
+        analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper(),
+        observeConferenceDataUseCase: ObserveConferenceDataUseCase =
+            createObserveConferenceDataUseCase()
     ): SessionDetailViewModel {
         return SessionDetailViewModel(
             signInViewModelPlugin, loadUserSessionUseCase, loadRelatedSessionsUseCase,
-            starEventUseCase, getTimeZoneUseCase, timeProvider, analyticsHelper
+            starEventUseCase, observeConferenceDataUseCase, getTimeZoneUseCase, timeProvider,
+            analyticsHelper
         )
     }
 
@@ -289,6 +322,12 @@ class SessionDetailViewModelTest {
         return LoadUserSessionsUseCase(userEventRepository, coroutineRule.testDispatcher)
     }
 
-    private fun createGetTimeZoneUseCase() =
-        object : GetTimeZoneUseCase(FakePreferenceStorage(), coroutineRule.testDispatcher) {}
+    private fun createGetTimeZoneUseCase(preferConferenceTimeZone: Boolean) =
+        object : GetTimeZoneUseCase(
+            FakePreferenceStorage(preferConferenceTimeZone = preferConferenceTimeZone),
+            coroutineRule.testDispatcher
+        ) {}
+
+    private fun createObserveConferenceDataUseCase() =
+        object : ObserveConferenceDataUseCase(TestDataRepository, coroutineRule.testDispatcher) {}
 }
