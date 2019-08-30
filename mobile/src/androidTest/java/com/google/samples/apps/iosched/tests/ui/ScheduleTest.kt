@@ -16,9 +16,10 @@
 
 package com.google.samples.apps.iosched.tests.ui
 
+import android.content.Context
 import android.provider.Settings
 import android.view.View
-import androidx.test.InstrumentationRegistry
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
@@ -71,7 +72,7 @@ class ScheduleTest {
     @get:Rule
     var preferencesRule = SetPreferencesRule()
 
-    private val resources = InstrumentationRegistry.getTargetContext().resources
+    private val resources = ApplicationProvider.getApplicationContext<Context>().resources
 
     @Before
     fun disableBottomSheetAnimations() {
@@ -212,7 +213,7 @@ class ScheduleTest {
 
     private fun checkAnimationsDisabled() {
         val scale = Settings.Global.getFloat(
-            InstrumentationRegistry.getTargetContext().contentResolver,
+            ApplicationProvider.getApplicationContext<Context>().contentResolver,
             Settings.Global.ANIMATOR_DURATION_SCALE,
             1f
         )
@@ -226,7 +227,7 @@ class ScheduleTest {
     }
 
     private fun getDayTitles(): List<String> {
-        return InstrumentationRegistry.getTargetContext().let { context ->
+        return ApplicationProvider.getApplicationContext<Context>().let { context ->
             listOf(
                 context.getString(R.string.day1_date),
                 context.getString(R.string.day2_date)

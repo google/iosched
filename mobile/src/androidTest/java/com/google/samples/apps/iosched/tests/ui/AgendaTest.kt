@@ -16,7 +16,8 @@
 
 package com.google.samples.apps.iosched.tests.ui
 
-import androidx.test.InstrumentationRegistry
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -53,7 +54,7 @@ class AgendaTest {
     @get:Rule
     var preferencesRule = SetPreferencesRule()
 
-    private val resources = InstrumentationRegistry.getTargetContext().resources
+    private val resources = ApplicationProvider.getApplicationContext<Context>().resources
 
     @Before
     fun goToAgendaScreen() {
