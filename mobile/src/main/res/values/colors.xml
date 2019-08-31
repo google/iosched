@@ -24,6 +24,10 @@
     <!-- Same value as textColorPrimary disabled -->
     <color name="color_control_light">#39000000</color>
 
+    <color name="color_primary">#589e44</color>
+    <color name="color_primary_dark">#266f17</color>
+    <color name="color_on_secondary">#fff</color>
+
     <color name="transparent">#0fff</color>
 
     <integer-array name="swipe_refresh">

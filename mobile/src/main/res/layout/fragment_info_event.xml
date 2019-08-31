@@ -125,7 +125,7 @@
                     android:minHeight="@dimen/a11y_min_touch_target"
                     android:onClick="@{() -> viewModel.onWifiConnect()}"
                     android:text="@{viewModel.wifiPassword.concat(` ` + @string/tap_to_join_network)}"
-                    android:textColor="@color/google_blue"
+                    android:textColor="?attr/colorSecondary"
                     android:visibility="gone"
                     app:layout_constraintBaseline_toBaselineOf="@id/wifi_password_label"
                     app:layout_constraintEnd_toStartOf="@id/guideline_end"

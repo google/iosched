@@ -304,7 +304,7 @@
     <string name="settings_theme_dark" translation_description="Theme option to use the dark theme">Dark</string>
 
     <string name="faq_label" translation_description="Label for link to FAQ on website.">FAQ</string>
-    <string name="built_with_material_content_description" translation_description="The app was built with Material Components.">Built with Material Components.</string>
+    <string name="built_with_material_components" translation_description="The app was built with Material Components.">Built with Material Components.</string>
     <string name="tap_to_join_network" translation_description="Tap to join Wifi network.">(tap to join network)</string>
 
     <!-- Day labels for schedule -->
