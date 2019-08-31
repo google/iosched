@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.domain.settings
 
+import androidx.core.os.BuildCompat
 import com.google.samples.apps.iosched.model.Theme
 import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
@@ -27,6 +28,10 @@ class GetAvailableThemesUseCase @Inject constructor(
 ) : UseCase<Unit, List<Theme>>(coroutineDispatcher) {
 
     override fun execute(parameters: Unit): List<Theme> {
-        return listOf(Theme.LIGHT, Theme.DARK, Theme.SYSTEM)
+        return if (BuildCompat.isAtLeastQ()) {
+            listOf(Theme.LIGHT, Theme.DARK, Theme.SYSTEM)
+        } else {
+            listOf(Theme.LIGHT, Theme.DARK, Theme.BATTERY_SAVER)
+        }
     }
 }

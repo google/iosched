@@ -302,6 +302,7 @@
     <string name="settings_theme_system" translation_description="Theme option to use the system default">System default</string>
     <string name="settings_theme_light" translation_description="Theme option to use the light theme">Light</string>
     <string name="settings_theme_dark" translation_description="Theme option to use the dark theme">Dark</string>
+    <string name="settings_theme_battery" translation_description="Theme option to use which is set by the device Battery Saver feature being enabled">Set by Battery Saver</string>
 
     <string name="faq_label" translation_description="Label for link to FAQ on website.">FAQ</string>
     <string name="built_with_material_components" translation_description="The app was built with Material Components.">Built with Material Components.</string>

@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.shared.domain.settings
 
 import com.google.samples.apps.iosched.model.Theme
-import com.google.samples.apps.iosched.model.themeFromStorageKey
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
@@ -27,10 +26,9 @@ import javax.inject.Inject
 open class SetThemeUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     @IoDispatcher coroutineDispatcher: CoroutineDispatcher
-) : UseCase<Theme, Theme>(coroutineDispatcher) {
+) : UseCase<Theme, Unit>(coroutineDispatcher) {
 
-    override fun execute(parameters: Theme): Theme {
+    override fun execute(parameters: Theme) {
         preferenceStorage.selectedTheme = parameters.storageKey
-        return themeFromStorageKey(preferenceStorage.selectedTheme)
     }
 }

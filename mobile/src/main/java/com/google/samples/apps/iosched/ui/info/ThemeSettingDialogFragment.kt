@@ -76,6 +76,7 @@ class ThemeSettingDialogFragment : DaggerAppCompatDialogFragment() {
         Theme.LIGHT -> getString(R.string.settings_theme_light)
         Theme.DARK -> getString(R.string.settings_theme_dark)
         Theme.SYSTEM -> getString(R.string.settings_theme_system)
+        Theme.BATTERY_SAVER -> getString(R.string.settings_theme_battery)
     }
 
     companion object {

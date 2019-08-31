@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.domain.settings
 
+import androidx.core.os.BuildCompat
 import com.google.samples.apps.iosched.model.Theme
 import com.google.samples.apps.iosched.model.themeFromStorageKey
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
@@ -29,5 +30,12 @@ open class GetThemeUseCase @Inject constructor(
     @IoDispatcher coroutineDispatcher: CoroutineDispatcher
 ) : UseCase<Unit, Theme>(coroutineDispatcher) {
 
-    override fun execute(parameters: Unit) = themeFromStorageKey(preferenceStorage.selectedTheme)
+    override fun execute(parameters: Unit): Theme {
+        preferenceStorage.selectedTheme?.let {
+            return themeFromStorageKey(it)
+        }
+
+        // We don't currently have a theme set, so provide a default
+        return if (BuildCompat.isAtLeastQ()) Theme.SYSTEM else Theme.BATTERY_SAVER
+    }
 }

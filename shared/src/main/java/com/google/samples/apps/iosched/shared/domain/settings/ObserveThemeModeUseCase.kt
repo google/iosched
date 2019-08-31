@@ -16,7 +16,9 @@
 
 package com.google.samples.apps.iosched.shared.domain.settings
 
+import androidx.core.os.BuildCompat
 import com.google.samples.apps.iosched.model.Theme
+import com.google.samples.apps.iosched.model.Theme.BATTERY_SAVER
 import com.google.samples.apps.iosched.model.themeFromStorageKey
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
@@ -34,7 +36,13 @@ open class ObserveThemeModeUseCase @Inject constructor(
 
     override fun execute(parameters: Unit): Flow<Result<Theme>> {
         return preferenceStorage.observableSelectedTheme.map {
-            Result.Success(themeFromStorageKey(it))
+            val theme = when {
+                it != null -> themeFromStorageKey(it)
+                // Provide defaults for when there is no theme set
+                BuildCompat.isAtLeastQ() -> Theme.SYSTEM
+                else -> BATTERY_SAVER
+            }
+            Result.Success(theme)
         }
     }
 }

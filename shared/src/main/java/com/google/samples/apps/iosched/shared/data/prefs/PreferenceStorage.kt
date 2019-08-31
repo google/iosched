@@ -22,7 +22,6 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import androidx.annotation.WorkerThread
 import androidx.core.content.edit
-import com.google.samples.apps.iosched.model.Theme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
@@ -96,9 +95,7 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
 
     override var selectedFilters by StringPreference(prefs, PREF_SELECTED_FILTERS, null)
 
-    override var selectedTheme by StringPreference(
-        prefs, PREF_DARK_MODE_ENABLED, Theme.SYSTEM.storageKey
-    )
+    override var selectedTheme by StringPreference(prefs, PREF_DARK_MODE_ENABLED, null)
 
     override var observableSelectedTheme: Flow<String?>
         get() = selectedThemeChannel.asFlow()

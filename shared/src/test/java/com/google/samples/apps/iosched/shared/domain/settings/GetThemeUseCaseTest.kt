@@ -41,16 +41,12 @@ class GetThemeUseCaseTest {
         val storage = FakePreferenceStorage()
         val useCase = GetThemeUseCase(storage, coroutineRule.testDispatcher)
 
-        // Initially defaults to system
-        var result = useCase(Unit)
-        assertThat(result, instanceOf(Success::class.java))
-        assertThat(result.data, equalTo(Theme.SYSTEM))
+        for (theme in Theme.values()) {
+            storage.selectedTheme = theme.storageKey
 
-        // Change preference value
-        storage.selectedTheme = Theme.DARK.storageKey
-
-        result = useCase(Unit)
-        assertThat(result, instanceOf(Success::class.java))
-        assertThat(result.data, equalTo(Theme.DARK))
+            val result = useCase(Unit)
+            assertThat(result, instanceOf(Success::class.java))
+            assertThat(result.data, equalTo(theme))
+        }
     }
 }
