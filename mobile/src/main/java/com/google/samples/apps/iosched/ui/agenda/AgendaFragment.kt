@@ -25,7 +25,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.samples.apps.iosched.databinding.FragmentAgendaBinding
 import com.google.samples.apps.iosched.model.Block
-import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
+import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.util.clearDecorations
 import dagger.android.support.DaggerFragment
@@ -52,8 +52,13 @@ class AgendaFragment : DaggerFragment(), MainNavigationFragment {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = activityViewModelProvider(viewModelFactory)
+        viewModel = viewModelProvider(viewModelFactory)
         binding.viewModel = viewModel
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.refreshAgenda()
     }
 }
 

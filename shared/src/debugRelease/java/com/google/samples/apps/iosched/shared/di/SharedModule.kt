@@ -28,6 +28,8 @@ import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.NetworkConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.db.AppDatabase
+import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
+import com.google.samples.apps.iosched.shared.data.config.RemoteAppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsDataSource
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
 import com.google.samples.apps.iosched.shared.data.logistics.RemoteConfigLogisticsDataSource
@@ -44,6 +46,7 @@ import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -129,11 +132,18 @@ class SharedModule {
 
     @Singleton
     @Provides
-    fun provideFirebaseRemoteConfig(): FirebaseRemoteConfig {
-        val remoteConfig = FirebaseRemoteConfig.getInstance()
-        val configSettings = FirebaseRemoteConfigSettings.Builder()
+    fun provideFirebaseRemoteConfigSettings(): FirebaseRemoteConfigSettings {
+        return FirebaseRemoteConfigSettings.Builder()
             .setDeveloperModeEnabled(BuildConfig.DEBUG)
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideFirebaseRemoteConfig(
+        configSettings: FirebaseRemoteConfigSettings
+    ): FirebaseRemoteConfig {
+        val remoteConfig = FirebaseRemoteConfig.getInstance()
         remoteConfig.setConfigSettings(configSettings)
         remoteConfig.setDefaults(R.xml.remote_config_defaults)
         return remoteConfig
@@ -151,6 +161,16 @@ class SharedModule {
         logisticsDataSource: LogisticsDataSource
     ): LogisticsRepository {
         return LogisticsRepository(logisticsDataSource)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAppConfigDataSource(
+        remoteConfig: FirebaseRemoteConfig,
+        configSettings: FirebaseRemoteConfigSettings,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): AppConfigDataSource {
+        return RemoteAppConfigDataSource(remoteConfig, configSettings, ioDispatcher)
     }
 
     @Singleton

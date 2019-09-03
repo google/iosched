@@ -24,6 +24,8 @@ import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmU
 import com.google.samples.apps.iosched.shared.fcm.FcmTokenUpdater
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
@@ -39,6 +41,7 @@ import javax.inject.Inject
  *  * Stores the FCM ID Token in Firestore
  *  * Posts the user ID to the observable
  */
+@ExperimentalCoroutinesApi
 class FirebaseAuthStateUserDataSource @Inject constructor(
     val firebase: FirebaseAuth,
     private val tokenUpdater: FcmTokenUpdater,
@@ -83,6 +86,7 @@ class FirebaseAuthStateUserDataSource @Inject constructor(
 
     // Synchronized method, multiple calls to this method at the same time isn't allowed since
     // isListening is read and can be modified
+    @FlowPreview
     @Synchronized
     override fun getBasicUserInfo(): Flow<Result<AuthenticatedUserInfo>> {
         if (!isListening) {
