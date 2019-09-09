@@ -64,6 +64,10 @@ android {
         }
     }
 
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     lintOptions {
         disable 'InvalidPackage'
     }
@@ -90,6 +94,11 @@ dependencies {
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+    api("androidx.work:work-runtime-ktx:$workVersion") {
+        // WorkManager uses its own version of listenablefuture extracted from guava.
+        // This is required to avoid conflicts.
+        exclude group: 'com.google.guava', module: 'listenablefuture'
+    }
 
     // Coroutines
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutinesVersion"

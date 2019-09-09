@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.job
+package com.google.samples.apps.iosched.shared.data.work
 
-import android.app.job.JobService
-import dagger.android.AndroidInjection
+import androidx.work.DelegatingWorkerFactory
+import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
+import javax.inject.Inject
+import javax.inject.Singleton
 
-/**
- * A [JobService] that injects into [AndroidInjection].
- */
-abstract class DaggerJobService : JobService() {
-    override fun onCreate() {
-        super.onCreate()
-        AndroidInjection.inject(this)
+@Singleton
+class IoschedWorkerFactory @Inject constructor(
+    refreshConferenceDataUseCase: RefreshConferenceDataUseCase
+) : DelegatingWorkerFactory() {
+    init {
+        addFactory(ConferenceDataWorkerFactory(refreshConferenceDataUseCase))
     }
 }

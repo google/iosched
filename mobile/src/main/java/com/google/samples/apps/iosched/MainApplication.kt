@@ -26,13 +26,21 @@ import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import timber.log.Timber
 import javax.inject.Inject
+import androidx.work.Configuration
 
 /**
  * Initialization of libraries.
  */
-class MainApplication : DaggerApplication() {
+class MainApplication : DaggerApplication(), Configuration.Provider {
     // Even if the var isn't used, needs to be initialized at application startup.
     @Inject lateinit var analyticsHelper: AnalyticsHelper
+
+    @Inject lateinit var workerConfiguration: Configuration
+
+    // Setup custom configuration for WorkManager with a DelegatingWorkerFactory
+    override fun getWorkManagerConfiguration(): Configuration {
+        return workerConfiguration
+    }
 
     override fun onCreate() {
         // ThreeTenBP for times and dates, called before super to be available for objects
