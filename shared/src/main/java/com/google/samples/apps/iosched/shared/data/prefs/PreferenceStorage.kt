@@ -22,6 +22,7 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import androidx.annotation.WorkerThread
 import androidx.core.content.edit
+import com.google.samples.apps.iosched.shared.BuildConfig
 import com.google.samples.apps.iosched.shared.data.prefs.UserIsAttendee.IN_PERSON
 import com.google.samples.apps.iosched.shared.data.prefs.UserIsAttendee.NO_ANSWER
 import com.google.samples.apps.iosched.shared.data.prefs.UserIsAttendee.REMOTE
@@ -131,7 +132,7 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
         const val PREF_CONFERENCE_TIME_ZONE = "pref_conference_time_zone"
         const val PREF_SELECTED_FILTERS = "pref_selected_filters"
         const val PREF_DARK_MODE_ENABLED = "pref_dark_mode"
-        const val PREF_USER_IS_ATTENDEE = "pref_user_is_attendee"
+        const val PREF_USER_IS_ATTENDEE = "pref_user_is_attendee_" + BuildConfig.CONFERENCE_YEAR
     }
 
     fun registerOnPreferenceChangeListener(listener: OnSharedPreferenceChangeListener) {
