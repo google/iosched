@@ -20,12 +20,16 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.model.Theme
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
+import com.google.samples.apps.iosched.shared.data.prefs.UserIsAttendee.IN_PERSON
+import com.google.samples.apps.iosched.shared.data.prefs.UserIsAttendee.REMOTE
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefSaveActionUseCase
+import com.google.samples.apps.iosched.shared.domain.prefs.UserIsAttendeePrefSaveActionUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetAnalyticsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetAvailableThemesUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetNotificationsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetUserIsAttendeeSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetAnalyticsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetTimeZoneUseCase
@@ -65,6 +69,26 @@ class SettingsViewModelTest {
         }
     }
 
+    @Test
+    fun `saving IN_PERSON UserIsAttendee updates setting`() = coroutineRule.runBlockingTest {
+        val storage = FakePreferenceStorage()
+
+        val viewModel = createSettingsViewModel(storage)
+        viewModel.toggleUserIsAttending(true)
+
+        assertEquals(storage.userIsAttendee, IN_PERSON)
+    }
+
+    @Test
+    fun `saving REMOTE UserIsAttendee updates setting`() = coroutineRule.runBlockingTest {
+        val storage = FakePreferenceStorage()
+
+        val viewModel = createSettingsViewModel(storage)
+        viewModel.toggleUserIsAttending(false)
+
+        assertEquals(storage.userIsAttendee, REMOTE)
+    }
+
     private fun createSettingsViewModel(
         storage: PreferenceStorage = FakePreferenceStorage()
     ): SettingsViewModel {
@@ -77,7 +101,11 @@ class SettingsViewModelTest {
             GetAnalyticsSettingUseCase(storage, coroutineRule.testDispatcher),
             SetThemeUseCase(storage, coroutineRule.testDispatcher),
             GetThemeUseCase(storage, coroutineRule.testDispatcher),
-            GetAvailableThemesUseCase(coroutineRule.testDispatcher)
+            GetAvailableThemesUseCase(coroutineRule.testDispatcher),
+            UserIsAttendeePrefSaveActionUseCase(
+                storage, TestDataRepository, coroutineRule.testDispatcher
+            ),
+            GetUserIsAttendeeSettingUseCase(storage, coroutineRule.testDispatcher)
         )
     }
 }

@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.tests
 
 import androidx.test.core.app.ApplicationProvider
 import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
+import com.google.samples.apps.iosched.shared.data.prefs.UserIsAttendee.IN_PERSON
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
@@ -36,6 +37,7 @@ class SetPreferencesRule : TestWatcher() {
             selectedFilters = ""
             sendUsageStatistics = false
             notificationsPreferenceShown = true
+            userIsAttendee = IN_PERSON
         }
     }
 }

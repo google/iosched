@@ -46,7 +46,8 @@ class NotificationAlarmUpdater @Inject constructor(
 
     fun updateAll(userId: String) {
         alarmUpdaterScope.launch {
-            val events = repository.getObservableUserEvents(userId).first()
+            val isUserAttendee = true // Do not filter out any sessions
+            val events = repository.getObservableUserEvents(userId, isUserAttendee).first()
             when (events) {
                 is Success -> processEvents(userId, events.data)
                 is Error -> Timber.e(events.cause)
@@ -72,7 +73,8 @@ class NotificationAlarmUpdater @Inject constructor(
 
     fun cancelAll() {
         alarmUpdaterScope.launch {
-            val events = repository.getObservableUserEvents(null).first()
+            val isUserAttendee = true // Do not filter out any sessions
+            val events = repository.getObservableUserEvents(null, isUserAttendee).first()
             when (events) {
                 is Success -> cancelAllSessions(events.data)
                 is Error -> Timber.e(events.cause)

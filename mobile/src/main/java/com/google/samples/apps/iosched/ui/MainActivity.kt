@@ -27,8 +27,11 @@ import androidx.navigation.fragment.NavHostFragment
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.setupWithNavController
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.ui.dialogs.AttendeeDialogFragment
+import com.google.samples.apps.iosched.ui.dialogs.AttendeeDialogFragment.Companion.DIALOG_USER_ATTENDEE_PREFERENCE
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
@@ -66,12 +69,18 @@ class MainActivity : DaggerAppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
+        val mainActivityViewModel: MainActivityViewModel = viewModelProvider(viewModelFactory)
+
         // Refresh conference data on launch
         if (savedInstanceState == null) {
             setupBottomNavigationBar() // otherwise this happens in onRestoreInstanceState
             Timber.d("Refreshing conference data on launch")
             scheduleViewModel.onSwipeRefresh()
         }
+
+        mainActivityViewModel.navigateToUserAttendeeDialogAction.observe(this, EventObserver {
+            openAttendeeDialog()
+        })
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
@@ -137,5 +146,9 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onUserInteraction() {
         super.onUserInteraction()
         currentFragment?.onUserInteraction()
+    }
+
+    private fun openAttendeeDialog() {
+        AttendeeDialogFragment().show(supportFragmentManager, DIALOG_USER_ATTENDEE_PREFERENCE)
     }
 }

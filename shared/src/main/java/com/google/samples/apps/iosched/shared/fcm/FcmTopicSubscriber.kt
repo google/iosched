@@ -34,6 +34,6 @@ class FcmTopicSubscriber : TopicSubscriber {
     }
 
     companion object {
-        private const val CONFERENCE_DATA_UPDATE_TOPIC_KEY = "ADSSCHED_DATA_SYNC_2018"
+        private const val CONFERENCE_DATA_UPDATE_TOPIC_KEY = "ADSSCHED_DATA_SYNC_2019"
     }
 }

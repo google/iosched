@@ -48,6 +48,8 @@ object AnalyticsActions {
     const val SEARCH_QUERY_SUBMIT = "Submitted search query"
     const val SEARCH_RESULT_CLICK = "Clicked on search result"
 
+    const val USER_ATTENDEE_DIALOG_NOT_SHOWN = "Bypassed user attendee dialog"
+
     // Settings Actions
     const val ENABLE = "Enabled"
     const val DISABLE = "Disabled"

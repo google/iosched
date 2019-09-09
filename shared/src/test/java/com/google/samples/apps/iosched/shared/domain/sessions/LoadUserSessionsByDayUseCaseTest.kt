@@ -24,12 +24,13 @@ import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
-import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.runBlockingTest
+import com.google.samples.apps.iosched.test.util.FakePreferenceStorage
 import kotlinx.coroutines.flow.single
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.equalTo
@@ -149,13 +150,15 @@ class LoadUserSessionsByDayUseCaseTest {
             TestUserEventDataSource(),
             repository
         )
-        return LoadUserSessionsByDayUseCase(testUserEventRepository, coroutineRule.testDispatcher)
+        return LoadUserSessionsByDayUseCase(
+            testUserEventRepository, FakePreferenceStorage(), coroutineRule.testDispatcher
+        )
     }
 }
 
 object FailingSessionRepository : SessionRepository {
 
-    override fun getSessions(): List<Session> {
+    override fun getSessions(userIsAttendee: Boolean): List<Session> {
         throw Exception("test")
     }
 

@@ -22,6 +22,9 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import androidx.annotation.WorkerThread
 import androidx.core.content.edit
+import com.google.samples.apps.iosched.shared.data.prefs.UserIsAttendee.IN_PERSON
+import com.google.samples.apps.iosched.shared.data.prefs.UserIsAttendee.NO_ANSWER
+import com.google.samples.apps.iosched.shared.data.prefs.UserIsAttendee.REMOTE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
@@ -46,6 +49,7 @@ interface PreferenceStorage {
     var selectedFilters: String?
     var selectedTheme: String?
     var observableSelectedTheme: Flow<String?>
+    var userIsAttendee: UserIsAttendee
 }
 
 /**
@@ -101,6 +105,21 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
         get() = selectedThemeChannel.asFlow()
         set(_) = throw IllegalAccessException("This property can't be changed")
 
+    override var userIsAttendee: UserIsAttendee
+        get() {
+            if (!prefs.value.contains(PREF_USER_IS_ATTENDEE)) {
+                return NO_ANSWER
+            }
+            return if (prefs.value.getBoolean(PREF_USER_IS_ATTENDEE, true)) {
+                IN_PERSON
+            } else {
+                REMOTE
+            }
+        }
+        set(value) {
+            prefs.value.edit { putBoolean(PREF_USER_IS_ATTENDEE, value == IN_PERSON) }
+        }
+
     companion object {
         const val PREFS_NAME = "adssched"
         const val PREF_ONBOARDING = "pref_onboarding"
@@ -112,6 +131,7 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
         const val PREF_CONFERENCE_TIME_ZONE = "pref_conference_time_zone"
         const val PREF_SELECTED_FILTERS = "pref_selected_filters"
         const val PREF_DARK_MODE_ENABLED = "pref_dark_mode"
+        const val PREF_USER_IS_ATTENDEE = "pref_user_is_attendee"
     }
 
     fun registerOnPreferenceChangeListener(listener: OnSharedPreferenceChangeListener) {
@@ -149,4 +169,10 @@ class StringPreference(
     override fun setValue(thisRef: Any, property: KProperty<*>, value: String?) {
         preferences.value.edit { putString(name, value) }
     }
+}
+
+enum class UserIsAttendee {
+    IN_PERSON,
+    REMOTE,
+    NO_ANSWER // User never answered to this (e.g. 2018 user) or they dismissed the dialog.
 }

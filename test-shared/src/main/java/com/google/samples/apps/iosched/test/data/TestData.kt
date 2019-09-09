@@ -135,7 +135,7 @@ object TestData {
         speakers = setOf(speaker1), relatedSessions = emptySet()
     )
 
-    private val sessionsList = listOf(session0, session1, session2, session3, sessionWithYoutubeUrl)
+    val sessionsList = listOf(session0, session1, session2, session3, sessionWithYoutubeUrl)
 
     private val sessionIDs = sessionsList.map { it.id }.toList()
 

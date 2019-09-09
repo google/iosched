@@ -57,7 +57,7 @@ class SessionDeserializer : JsonDeserializer<SessionTemp> {
             abstract = obj.get("description")?.asString ?: "",
             photoUrl = obj.get("photoUrl")?.asString ?: "",
             liveStreamUrl = "TODO: Set livestream URL", // TODO Set or remove this (b/77292964)
-            isLivestream = obj.get("livestream")?.asBoolean ?: false,
+            isLivestream = obj.get("livestreamed")?.asBoolean ?: false,
             speakers = speakers.toSet(),
             tagNames = tagNames.toList(),
             relatedSessions = relatedSessions.toSet(),

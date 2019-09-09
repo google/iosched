@@ -16,6 +16,8 @@
 
 package com.google.samples.apps.iosched.shared.domain.search
 
+import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
+import com.google.samples.apps.iosched.shared.data.prefs.UserIsAttendee.REMOTE
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
@@ -31,13 +33,16 @@ import javax.inject.Inject
  */
 class SearchUseCase @Inject constructor(
     private val repository: SessionRepository,
+    private val preferenceStorage: PreferenceStorage,
     @IoDispatcher ioDispatcher: CoroutineDispatcher
 ) : UseCase<String, List<Searchable>>(ioDispatcher) {
 
     override fun execute(parameters: String): List<Searchable> {
         Timber.d("Performing a search for any sessions that contain `$parameters`")
         val query = parameters.toLowerCase()
-        return repository.getSessions()
+        // Show all events if userIsAttendee is IN_PERSON or NO_ANSWER (means dialog dismissed)
+        val isOnsiteAttendee = preferenceStorage.userIsAttendee != REMOTE
+        return repository.getSessions(isOnsiteAttendee)
             .filter { session ->
                 session.title.toLowerCase().contains(query) ||
                     session.abstract.toLowerCase().contains(query) ||

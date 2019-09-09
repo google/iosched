@@ -18,6 +18,8 @@ package com.google.samples.apps.iosched.shared.domain.sessions
 
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
+import com.google.samples.apps.iosched.shared.data.prefs.UserIsAttendee.REMOTE
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
 import com.google.samples.apps.iosched.shared.domain.FlowUseCase
@@ -32,6 +34,7 @@ import javax.inject.Inject
  */
 open class LoadUserSessionsUseCase @Inject constructor(
     private val userEventRepository: DefaultSessionAndUserEventRepository,
+    private val preferenceStorage: PreferenceStorage,
     @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
 ) : FlowUseCase<Pair<String?, Set<SessionId>>, LoadUserSessionsUseCaseResult>(defaultDispatcher) {
 
@@ -39,8 +42,10 @@ open class LoadUserSessionsUseCase @Inject constructor(
         parameters: Pair<String?, Set<String>>
     ): Flow<Result<LoadUserSessionsUseCaseResult>> {
         val (userId, eventIds) = parameters
+        // Show all events if userIsAttendee is IN_PERSON or NO_ANSWER (means dialog dismissed)
+        val isOnsiteAttendee = preferenceStorage.userIsAttendee != REMOTE
         // Observe *all* user events
-        return userEventRepository.getObservableUserEvents(userId).map { result ->
+        return userEventRepository.getObservableUserEvents(userId, isOnsiteAttendee).map { result ->
             when (result) {
                 is Result.Success -> {
                     // Filter down to events for sessions we're interested in

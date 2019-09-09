@@ -112,7 +112,8 @@ val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepositor
     ): Result<StarUpdatedStatus> = Result.Error(Exception("Test"))
 
     override fun getObservableUserEvents(
-        userId: String?
+        userId: String?,
+        userIsAttendee: Boolean
     ): Flow<Result<LoadUserSessionsByDayUseCaseResult>> {
         throw NotImplementedError()
     }

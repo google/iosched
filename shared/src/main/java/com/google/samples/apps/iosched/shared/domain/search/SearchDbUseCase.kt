@@ -18,6 +18,8 @@ package com.google.samples.apps.iosched.shared.domain.search
 
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.db.AppDatabase
+import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
+import com.google.samples.apps.iosched.shared.data.prefs.UserIsAttendee.REMOTE
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
@@ -33,6 +35,7 @@ class SearchDbUseCase @Inject constructor(
     private val sessionRepository: SessionRepository,
     private val conferenceRepository: ConferenceDataRepository,
     private val appDatabase: AppDatabase,
+    private val preferenceStorage: PreferenceStorage,
     @IoDispatcher ioDispatcher: CoroutineDispatcher
 ) : UseCase<String, List<Searchable>>(ioDispatcher) {
 
@@ -40,7 +43,9 @@ class SearchDbUseCase @Inject constructor(
         val query = parameters.toLowerCase()
         val sessionResults = appDatabase.sessionFtsDao().searchAllSessions(query).toSet()
         val speakerResults = appDatabase.speakerFtsDao().searchAllSpeakers(query).toSet()
-        val searchedSessions = sessionRepository.getSessions()
+        // Show all events if userIsAttendee is IN_PERSON or NO_ANSWER (means dialog dismissed)
+        val isOnsiteAttendee = preferenceStorage.userIsAttendee != REMOTE
+        val searchedSessions = sessionRepository.getSessions(isOnsiteAttendee)
             .filter { session -> session.id in sessionResults }
             // Keynotes come first, followed by sessions, app reviews, game reviews ...
             .sortedBy { it.type }

@@ -28,7 +28,7 @@ import javax.inject.Inject
  * The session data is loaded from the bootstrap file.
  */
 interface SessionRepository {
-    fun getSessions(): List<Session>
+    fun getSessions(userIsAttendee: Boolean): List<Session>
     fun getSession(eventId: SessionId): Session
     fun getConferenceDays(): List<ConferenceDay>
 }
@@ -37,8 +37,9 @@ class DefaultSessionRepository @Inject constructor(
     private val conferenceDataRepository: ConferenceDataRepository
 ) : SessionRepository {
 
-    override fun getSessions(): List<Session> {
+    override fun getSessions(userIsAttendee: Boolean): List<Session> {
         return conferenceDataRepository.getOfflineConferenceData().sessions
+            .filterWhen(!userIsAttendee) { it.isLivestream }
     }
 
     override fun getSession(eventId: SessionId): Session {
@@ -50,6 +51,11 @@ class DefaultSessionRepository @Inject constructor(
     override fun getConferenceDays(): List<ConferenceDay> {
         return conferenceDataRepository.getConferenceDays()
     }
+}
+
+private fun <E> List<E>.filterWhen(condition: Boolean, predicate: (E) -> Boolean): List<E> {
+    if (!condition) return this
+    return this.filter(predicate)
 }
 
 class SessionNotFoundException : Throwable()

@@ -27,9 +27,9 @@ import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.NetworkConferenceDataSource
-import com.google.samples.apps.iosched.shared.data.db.AppDatabase
 import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.config.RemoteAppConfigDataSource
+import com.google.samples.apps.iosched.shared.data.db.AppDatabase
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsDataSource
 import com.google.samples.apps.iosched.shared.data.logistics.LogisticsRepository
 import com.google.samples.apps.iosched.shared.data.logistics.RemoteConfigLogisticsDataSource

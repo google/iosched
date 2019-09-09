@@ -75,7 +75,7 @@
             "description": "Android Lint already scans your app for hundreds of common issues, contributing to the code warnings that you see in Android Studio. But Lint can do even more for advanced users. Come to this demo-heavy talk to learn about the less common uses of Lint, which may include: \n\n - Writing custom Lint checks for domain- or team-specific needs\n - Using annotations to catch threading bugs *before* they cause UI freezes\n - Enabling off-by-default checks to improve Java/Kotlin interoperability\n - Performance best practices when running Lint on a CI server\n",
             "endTimestamp": 1541619300000,
             "id": "ffe4264b-bc2c-503f-b726-7afbeee75b1a",
-            "livestreamed": true,
+            "livestreamed": false,
             "relatedSessions": [],
             "room": "31156ab0-45fa-54d9-a99e-1606ae89a213",
             "speakers": [
@@ -86,7 +86,7 @@
                 "topic_studio",
                 "type_session"
             ],
-            "title": "Getting the Most Out of Android Lint",
+            "title": "Onsite-only session",
             "type": "Session",
             "youtubeUrl": "https://www.youtube.com/watch?v=ffH-LD5uP4s&t=0s&list=PLWz5rJ2EKKc8WFYCR9esqGGY0vOZm2l6e"
         },
