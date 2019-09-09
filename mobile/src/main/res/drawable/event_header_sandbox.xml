@@ -22,15 +22,15 @@
     android:viewportHeight="30">
     <!--Circle-->
     <path
-        android:fillColor="@color/ads_orange"
+        android:fillColor="@color/android_orange"
         android:pathData="m 20,5 a 5,5 0 0 5 -5,5 5,5 0 0 5 -5,-5 5,5 0 0 5 5,-5 5,5 0 0 5 5,5 z" />
     <!--Square-->
     <path
-        android:fillColor="@color/ads_blue"
+        android:fillColor="@color/android_blue"
         android:pathData="M10,10,20,10,20,20,10,20,10,10" />
     <!--Cheese-->
     <path
-        android:fillColor="@color/ads_yellow"
+        android:fillColor="@color/android_blue_chartreuse"
         android:pathData="m 30,20 h -10 c 0,0 0,-10 10,-10 z" />
 
 

@@ -22,7 +22,7 @@
     android:viewportHeight="30">
     <!--Circle-->
     <path
-        android:fillColor="@color/ads_light_blue"
+        android:fillColor="@color/android_blue_light"
         android:pathData="m 20,15 a 5,5 0 0 5 -5,5 5,5 0 0 5 -5,-5 5,5 0 0 5 5,-5 5,5 0 0 5 5,5 z" />
     <!--Square-->
     <path

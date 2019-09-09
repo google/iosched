@@ -22,16 +22,19 @@
     <color name="grey_600">#747474</color>
     <color name="spacer_grey">#e0e0e0</color>
     <color name="white_90">#e6ffffff</color>
-    <color name="android_green">#76c451</color>
-    <color name="android_green_dark">#37ab10</color>
-    <color name="google_blue_light">#6da1f0</color>
-    <color name="google_blue">#4688f1</color>
-    <color name="ads_yellow">#fdc93e</color>
+
+    <!-- Android colors-->
+    <color name="android_green">#3ddc84</color>
+    <color name="android_green_acc">#1FA85D</color>
+    <color name="android_green_dark">#258353</color>
+    <color name="android_blue">#4285f4</color>
+    <color name="android_navy">#073042</color>
+    <color name="android_orange">#f86734</color>
+    <color name="android_blue_light">#d7effe</color>
+    <color name="android_blue_chartreuse">#eff7cf</color>
+
+    <!-- ADS colors-->
     <color name="ads_gray">#9e9e9e</color>
-    <color name="ads_light_gray">#ededed</color>
-    <color name="ads_blue">#2196f3</color>
-    <color name="ads_orange">#ff7e00</color>
-    <color name="ads_light_blue">#a7d7fe</color>
     <color name="ads_light_green">#c3e3b4</color>
     <color name="ads_lighter_green">#94c27e</color>
 

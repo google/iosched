@@ -30,7 +30,7 @@
         android:pathData="M 20,20 A 10,10 0 0 0 30,10 H 20 Z" />
     <!--Cheese-->
     <path
-        android:fillColor="@color/ads_blue"
+        android:fillColor="@color/android_blue"
         android:pathData="M 20,20 A 10,10 0 0 1 10,10 h 10 z" />
 
 

@@ -19,7 +19,7 @@
     <!-- 18% opacity translucent white -->
     <color name="color_control_light">#2EFFFFFF</color>
 
-    <color name="color_primary">#9cf196</color>
-    <color name="color_primary_dark">#6abe67</color>
+    <color name="color_primary">@color/android_green</color>
+    <color name="color_primary_dark">@color/android_green_dark</color>
     <color name="color_on_secondary">#000</color>
 </resources>

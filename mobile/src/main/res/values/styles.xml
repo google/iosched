@@ -346,13 +346,6 @@
         <item name="android:gravity">start</item>
     </style>
 
-    <style name="Theme.IOSched.Dialog" parent="@style/Theme.MaterialComponents.Light.Dialog">
-        <item name="colorPrimary">@color/google_blue</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:backgroundDimEnabled">false</item>
-        <item name="android:textViewStyle">@style/Widget.IOSched.TextView</item>
-    </style>
-
     <style name="Widget.IOSched.TogglePinnedEventsSwitch" parent="@style/Widget.AppCompat.CompoundButton.Switch">
         <item name="android:thumb">@drawable/btn_pinned_events_thumb</item>
     </style>

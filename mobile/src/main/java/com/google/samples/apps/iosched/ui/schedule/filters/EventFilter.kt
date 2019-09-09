@@ -61,7 +61,7 @@ sealed class EventFilter(val isSelected: Boolean) {
 
         override fun getFilterCategory(): EventFilterCategory = NONE
 
-        override fun getColor(): Int = Color.parseColor("#4688f1") // @color/google_blue
+        override fun getColor(): Int = Color.parseColor("#4285f4") // @color/android_blue
 
         override fun getSelectedTextColor(): Int = Color.WHITE
 

@@ -22,40 +22,40 @@
     android:viewportHeight="288">
     <!--Circle-->
     <path
-        android:fillColor="@color/ads_yellow"
+        android:fillColor="@color/android_blue_chartreuse"
         android:pathData="M 10,0 A 10,10 0 0 0 0,10 h 10 z" />
     <path
-        android:fillColor="@color/ads_orange"
+        android:fillColor="@color/android_orange"
         android:pathData="M 20,20 A 10,10 0 0 1 10,10 h 10 z" />
     <path
-        android:fillColor="@color/ads_blue"
+        android:fillColor="@color/android_blue"
         android:pathData="M 20,20 A 10,10 0 0 0 30,10 H 20 Z" />
     <path
-        android:fillColor="@color/ads_light_blue"
+        android:fillColor="@color/android_blue_light"
         android:pathData="M 10,0 A 10,10 0 0 1 20,10 H 10 Z" />
     <!--Circle-->
     <path
-        android:fillColor="@color/ads_yellow"
+        android:fillColor="@color/android_blue_chartreuse"
         android:pathData="m 180,0 a 10,10 0 0 0 -10,10 h 10 z" />
     <path
-        android:fillColor="@color/ads_orange"
+        android:fillColor="@color/android_orange"
         android:pathData="M 180,20 A 10,10 0 0 0 190,10 H 180 Z" />
     <path
-        android:fillColor="@color/ads_blue"
+        android:fillColor="@color/android_blue"
         android:pathData="M 180,20 A 10,10 0 0 1 170,10 h 10 z" />
     <path
-        android:fillColor="@color/ads_light_blue"
+        android:fillColor="@color/android_blue_light"
         android:pathData="m 180,0 a 10,10 0 0 1 10,10 h -10 z" />
 
 
     <!--TODO <path-->
-        <!--android:fillColor="@color/ads_yellow"-->
+        <!--android:fillColor="@color/android_blue_chartreuse"-->
         <!--android:pathData="m 180,180 a 10,10 0 0 0 -10,10 h 10 z" />-->
     <!--<path-->
-        <!--android:fillColor="@color/ads_light_blue"-->
+        <!--android:fillColor="@color/android_blue_light"-->
         <!--android:pathData="m 180,180 a 10,10 0 0 1 10,10 h -10 z" />-->
 
     <!--<path-->
-        <!--android:fillColor="@color/ads_blue"-->
+        <!--android:fillColor="@color/android_blue"-->
         <!--android:pathData="m 150,40 a -10,10 0 0 1 -10,10 h 10 z" />-->
 </vector>
