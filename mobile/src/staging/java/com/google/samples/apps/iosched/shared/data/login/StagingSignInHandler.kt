@@ -26,8 +26,6 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import com.google.samples.apps.iosched.util.signin.SignInResult
 import com.google.samples.apps.iosched.util.signin.SignInSuccess
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 
 /**
@@ -36,10 +34,10 @@ import timber.log.Timber
  */
 class StagingSignInHandler(val user: StagingAuthenticatedUser) : SignInHandler {
 
-    override fun makeSignInIntent(): Flow<Intent?> {
+    override suspend fun makeSignInIntent(): Intent {
         Timber.d("staging makeSignInIntent called")
         user.signIn()
-        return flow { }
+        return Intent()
     }
 
     override fun signIn(resultCode: Int, data: Intent?, onComplete: (SignInResult) -> Unit) {
@@ -47,7 +45,7 @@ class StagingSignInHandler(val user: StagingAuthenticatedUser) : SignInHandler {
         onComplete(SignInSuccess)
     }
 
-    override fun signOut(context: Context, onComplete: () -> Unit) {
+    override suspend fun signOut(context: Context, onComplete: () -> Unit) {
         Timber.d("staging signIn called")
         onComplete()
         user.signOut()

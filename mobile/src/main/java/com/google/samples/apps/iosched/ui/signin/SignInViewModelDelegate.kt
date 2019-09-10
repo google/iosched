@@ -28,17 +28,13 @@ import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsSh
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
-import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignOut
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
-
-enum class SignInEvent {
-    RequestSignIn, RequestSignOut
-}
 
 /**
  * Interface to implement sign-in functionality in a ViewModel.
@@ -68,7 +64,12 @@ interface SignInViewModelDelegate {
     /**
      * Emits Events when a sign-in event should be attempted
      */
-    val performSignInEvent: MutableLiveData<Event<SignInEvent>>
+    val performSignInEvent: LiveData<Event<Any>>
+
+    /**
+     * Emits Events when a sign-out event should be attempted
+     */
+    val performSignOutEvent: LiveData<Event<Any>>
 
     /**
      * Emits an non-null Event when the dialog to ask the user notifications preference should be
@@ -84,7 +85,7 @@ interface SignInViewModelDelegate {
     /**
      * Emit an Event on performSignInEvent to request sign-out
      */
-    fun emitSignOutRequest()
+    suspend fun emitSignOutRequest()
 
     fun observeSignedInUser(): LiveData<Boolean>
 
@@ -106,7 +107,12 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher
 ) : SignInViewModelDelegate {
 
-    override val performSignInEvent = MutableLiveData<Event<SignInEvent>>()
+    private val _performSignInEvent = MutableLiveData<Event<Any>>()
+    override val performSignInEvent = _performSignInEvent
+
+    private val _performSignOutEvent = MutableLiveData<Event<Any>>()
+    override val performSignOutEvent = _performSignOutEvent
+
     override val currentFirebaseUser: Flow<Result<AuthenticatedUserInfo?>>
 
     private val _currentUserImageUri = MutableLiveData<Uri?>()
@@ -170,13 +176,15 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
             val notificationShown = notificationsPrefIsShownUseCase(Unit)
             withContext(mainDispatcher) {
                 notificationsPrefIsShown.value = notificationShown
-                performSignInEvent.value = Event(SignInEvent.RequestSignIn)
+                _performSignInEvent.value = Event(Any())
             }
         }
     }
 
-    override fun emitSignOutRequest() {
-        performSignInEvent.postValue(Event(RequestSignOut))
+    override suspend fun emitSignOutRequest() {
+        withContext(Dispatchers.Main) {
+            _performSignOutEvent.value = Event(Any())
+        }
     }
 
     override fun isSignedIn(): Boolean {

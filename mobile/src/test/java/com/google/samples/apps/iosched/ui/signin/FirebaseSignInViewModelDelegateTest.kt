@@ -33,6 +33,7 @@ import com.nhaarman.mockito_kotlin.mock
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import kotlinx.coroutines.flow.first
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -124,10 +125,7 @@ class FirebaseSignInViewModelDelegateTest {
         subject.emitSignInRequest()
 
         // Check that the emitted event is a sign in request
-        assertEquals(
-            LiveDataTestUtil.getValue(subject.performSignInEvent)?.peekContent(),
-            SignInEvent.RequestSignIn
-        )
+        assertNotNull(LiveDataTestUtil.getValue(subject.performSignInEvent)?.peekContent())
     }
 
     @Test
@@ -140,11 +138,7 @@ class FirebaseSignInViewModelDelegateTest {
         )
 
         subject.emitSignOutRequest()
-
-        assertEquals(
-            LiveDataTestUtil.getValue(subject.performSignInEvent)?.peekContent(),
-            SignInEvent.RequestSignOut
-        )
+        assertNotNull(LiveDataTestUtil.getValue(subject.performSignOutEvent)?.peekContent())
     }
 
     private fun createNotificationsPrefIsShownUseCase(): NotificationsPrefIsShownUseCase {

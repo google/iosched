@@ -18,15 +18,15 @@ package com.google.samples.apps.iosched.ui.signin
 
 import android.app.Dialog
 import android.os.Bundle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
-import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignOut
+import com.google.samples.apps.iosched.shared.result.EventObserver
+import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import dagger.android.support.DaggerAppCompatDialogFragment
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -43,25 +43,24 @@ class SignOutDialogFragment : DaggerAppCompatDialogFragment() {
     private lateinit var signInViewModel: SignInViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        signInViewModel = viewModelProvider(viewModelFactory)
-        signInViewModel.performSignInEvent.observe(this, Observer { request ->
-            if (request.peekContent() == RequestSignOut) {
-                request.getContentIfNotHandled()
-                context?.let {
-                    DefaultScheduler.execute {
-                        signInHandler.signOut(it) {
-                            dismiss()
-                        }
-                    }
+        // Scoping VM to activity because this fragment might be dismissed too quickly.
+        signInViewModel = activityViewModelProvider(viewModelFactory)
+
+        activity?.let { activity ->
+            signInViewModel.performSignOutEvent.observe(activity, EventObserver { request ->
+                activity.lifecycleScope.launch {
+                    signInHandler.signOut(activity)
                 }
-            }
-        })
+            })
+        }
         return MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.dialog_sign_out_title)
             .setMessage(R.string.dialog_sign_out_content)
             .setNegativeButton(R.string.not_now, null)
             .setPositiveButton(R.string.sign_out) { _, _ ->
-                signInViewModel.onSignOut()
+                activity?.lifecycleScope?.launch {
+                    signInViewModel.onSignOut()
+                }
             }
             .create()
     }

@@ -18,16 +18,14 @@ package com.google.samples.apps.iosched.ui.signin
 
 import android.app.Dialog
 import android.os.Bundle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
-import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignIn
+import com.google.samples.apps.iosched.shared.result.EventObserver
+import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import dagger.android.support.DaggerAppCompatDialogFragment
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -45,25 +43,25 @@ class SignInDialogFragment : DaggerAppCompatDialogFragment() {
     private lateinit var signInViewModel: SignInViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        signInViewModel = viewModelProvider(viewModelFactory)
-        signInViewModel.performSignInEvent.observe(this, Observer { request ->
-            if (request.peekContent() == RequestSignIn) {
-                request.getContentIfNotHandled()
-                activity?.let {
-                    lifecycleScope.launch {
-                        val result = signInHandler.makeSignInIntent().first()
-                        startActivityForResult(result, SIGN_IN_ACTIVITY_REQUEST_CODE)
-                        dismiss()
-                    }
+        // Scoping VM to activity because this fragment might be dismissed too quickly.
+        signInViewModel = activityViewModelProvider(viewModelFactory)
+
+        activity?.let { activity ->
+            signInViewModel.performSignInEvent.observe(activity, EventObserver { request ->
+                activity.lifecycleScope.launch {
+                    val result = signInHandler.makeSignInIntent()
+                    activity.startActivityForResult(result, SIGN_IN_ACTIVITY_REQUEST_CODE)
                 }
-            }
-        })
+            })
+        }
         return MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.dialog_sign_in_title)
             .setMessage(R.string.dialog_sign_in_content)
             .setNegativeButton(R.string.not_now, null)
             .setPositiveButton(R.string.sign_in) { _, _ ->
-                signInViewModel.onSignIn()
+                activity?.lifecycleScope?.launch {
+                    signInViewModel.onSignIn()
+                }
             }
             .create()
     }

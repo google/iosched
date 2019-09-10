@@ -21,7 +21,6 @@ import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.ui.signin.SignInEvent
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
@@ -36,7 +35,8 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
 
     override val currentFirebaseUser: Flow<Result<AuthenticatedUserInfo>> = userChannel.asFlow()
     override val currentUserImageUri = MutableLiveData<Uri?>()
-    override val performSignInEvent = MutableLiveData<Event<SignInEvent>>()
+    override val performSignInEvent = MutableLiveData<Event<Any>>()
+    override val performSignOutEvent = MutableLiveData<Event<Any>>()
     override val shouldShowNotificationsPrefAction = MutableLiveData<Event<Boolean>>()
 
     var injectIsSignedIn = true
@@ -51,7 +51,7 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
         signInRequestsEmitted++
     }
 
-    override fun emitSignOutRequest() {
+    override suspend fun emitSignOutRequest() {
         signOutRequestsEmitted++
     }
 

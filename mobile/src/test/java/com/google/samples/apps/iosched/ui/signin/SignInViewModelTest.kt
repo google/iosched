@@ -21,6 +21,7 @@ import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -52,7 +53,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun signedInUser_signsOut() {
+    fun signedInUser_signsOut() = coroutineRule.testDispatcher.runBlockingTest {
         // Given a view model with a signed in user
         viewModelDelegate.injectIsSignedIn = true
 
@@ -66,7 +67,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun noSignedInUser_signsIn() {
+    fun noSignedInUser_signsIn() = coroutineRule.testDispatcher.runBlockingTest {
         // Given a view model with a signed out user
         viewModelDelegate.injectIsSignedIn = false
 

@@ -22,10 +22,8 @@ import android.content.Intent
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 
 /**
  * Element in the presentation layer that interacts with the Auth provider (Firebase in this case).
@@ -34,43 +32,44 @@ import kotlinx.coroutines.flow.flowOn
  */
 interface SignInHandler {
 
-    fun makeSignInIntent(): Flow<Intent?>
+    suspend fun makeSignInIntent(): Intent
 
     fun signIn(resultCode: Int, data: Intent?, onComplete: (SignInResult) -> Unit)
 
-    fun signOut(context: Context, onComplete: () -> Unit = {})
+    suspend fun signOut(context: Context, onComplete: () -> Unit = {})
 }
 
 /**
  * Implementation of [SignInHandler] that interacts with Firebase Auth.
  */
-class DefaultSignInHandler : SignInHandler {
+class DefaultSignInHandler(
+    private val ioDispatcher: CoroutineDispatcher
+) : SignInHandler {
 
     /**
      * Request a sign in intent.
      *
      * To observe the result you must pass this to startActivityForResult.
      */
-    override fun makeSignInIntent(): Flow<Intent?> = (flow {
+    override suspend fun makeSignInIntent(): Intent {
 
-        // this is mutable because FirebaseUI requires it be mutable
-        val providers = mutableListOf(
-            AuthUI.IdpConfig.GoogleBuilder().setSignInOptions(
-                GoogleSignInOptions.Builder()
-                    .requestId()
-                    .requestEmail()
-                    .build()
-            ).build()
-        )
-
-        emit(
+        // Run on background because AuthUI does I/O operations
+        return withContext(ioDispatcher) {
+            // this is mutable because FirebaseUI requires it to be mutable
+            val providers = mutableListOf(
+                AuthUI.IdpConfig.GoogleBuilder().setSignInOptions(
+                    GoogleSignInOptions.Builder()
+                        .requestId()
+                        .requestEmail()
+                        .build()
+                ).build()
+            )
             AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
                 .build()
-        )
-        // Run on background because AuthUI does I/O operations
-    }).flowOn(Dispatchers.Default)
+        }
+    }
 
     /**
      * Parse the response from a sign in request, helper to call from onActivityResult.
@@ -107,9 +106,11 @@ class DefaultSignInHandler : SignInHandler {
      * @param context any context
      * @param onComplete used to notify of signOut completion.
      */
-    override fun signOut(context: Context, onComplete: () -> Unit) {
-        AuthUI.getInstance()
-            .signOut(context)
-            .addOnCompleteListener { onComplete() }
+    override suspend fun signOut(context: Context, onComplete: () -> Unit) {
+        withContext(ioDispatcher) {
+            AuthUI.getInstance()
+                .signOut(context)
+                .addOnCompleteListener { onComplete() }
+        }
     }
 }

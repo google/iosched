@@ -21,18 +21,22 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthIdDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.FirebaseAuthStateUserDataSource
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.fcm.FcmTokenUpdater
 import com.google.samples.apps.iosched.util.signin.DefaultSignInHandler
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 
 @Module
 internal class SignInModule {
     @Provides
-    fun provideSignInHandler(): SignInHandler = DefaultSignInHandler()
+    fun provideSignInHandler(@IoDispatcher ioDispatcher: CoroutineDispatcher): SignInHandler {
+        return DefaultSignInHandler(ioDispatcher)
+    }
 
     @Singleton
     @Provides
