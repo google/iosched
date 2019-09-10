@@ -47,55 +47,63 @@
             <TextView
                 android:id="@+id/settings_choose_theme"
                 style="@style/Widget.IOSched.Settings"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:focusable="true"
                 android:onClick="@{() -> viewModel.onThemeSettingClicked()}"
                 android:text="@string/settings_theme_title"
                 android:textAppearance="?attr/textAppearanceBody2"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Switch
                 android:id="@+id/settings_time_zone"
                 style="@style/TextAppearance.IOSched.SettingsSwitch"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:checked="@{viewModel.preferConferenceTimeZone}"
                 android:onCheckedChanged="@{(view, checked) -> viewModel.toggleTimeZone(checked)}"
                 android:text="@string/settings_time_zone_label"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/settings_choose_theme" />
 
             <Switch
                 android:id="@+id/settings_enable_notifications"
                 style="@style/TextAppearance.IOSched.SettingsSwitch"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:checked="@{viewModel.enableNotifications}"
                 android:onClick="@{(view) -> viewModel.toggleEnableNotifications(((Switch)view).isChecked, isInstantApp)}"
                 android:text="@string/settings_enable_notifications"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/settings_time_zone" />
 
             <Switch
                 android:id="@+id/settings_attending_user"
                 style="@style/TextAppearance.IOSched.SettingsSwitch"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:checked="@{viewModel.userIsAttending}"
                 android:onCheckedChanged="@{(view, checked) -> viewModel.toggleUserIsAttending(checked)}"
                 android:text="@string/attending_switch_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/settings_enable_notifications" />
 
             <Switch
                 android:id="@+id/settings_send_anonymous_usage_statistics"
                 style="@style/TextAppearance.IOSched.SettingsSwitch"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:checked="@{viewModel.sendUsageStatistics}"
                 android:onCheckedChanged="@{(view, checked) -> viewModel.toggleSendUsageStatistics(checked)}"
                 android:text="@string/settings_send_anonymous_usage_statistics"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/settings_attending_user" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
