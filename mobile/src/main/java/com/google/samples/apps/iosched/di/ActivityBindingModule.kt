@@ -19,6 +19,7 @@ import com.google.samples.apps.iosched.shared.di.ActivityScoped
 import com.google.samples.apps.iosched.ui.LaunchModule
 import com.google.samples.apps.iosched.ui.LauncherActivity
 import com.google.samples.apps.iosched.ui.MainActivity
+import com.google.samples.apps.iosched.ui.MainActivityModule
 import com.google.samples.apps.iosched.ui.agenda.AgendaModule
 import com.google.samples.apps.iosched.ui.info.InfoModule
 import com.google.samples.apps.iosched.ui.onboarding.OnboardingActivity
@@ -56,12 +57,16 @@ abstract class ActivityBindingModule {
     @ActivityScoped
     @ContributesAndroidInjector(
         modules = [
+            // activity
+            MainActivityModule::class,
+            // fragments
             ScheduleModule::class,
             SessionDetailModule::class,
             AgendaModule::class,
             InfoModule::class,
             SearchModule::class,
             SpeakerModule::class,
+            // other
             EventActionsViewModelDelegateModule::class,
             SignInDialogModule::class,
             PreferenceModule::class

@@ -50,7 +50,7 @@ class SearchFragment : DaggerFragment(), MainNavigationFragment {
         val themedInflater =
             inflater.cloneInContext(ContextThemeWrapper(requireActivity(), R.style.AppTheme_Detail))
         binding = FragmentSearchBinding.inflate(themedInflater, container, false)
-        binding.setLifecycleOwner(viewLifecycleOwner)
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 

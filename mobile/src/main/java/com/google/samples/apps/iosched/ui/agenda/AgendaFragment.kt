@@ -45,7 +45,7 @@ class AgendaFragment : DaggerFragment(), MainNavigationFragment {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentAgendaBinding.inflate(inflater, container, false).apply {
-            setLifecycleOwner(this@AgendaFragment)
+            lifecycleOwner = viewLifecycleOwner
         }
         return binding.root
     }

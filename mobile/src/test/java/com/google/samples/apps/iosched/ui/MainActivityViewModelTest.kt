@@ -18,14 +18,18 @@ package com.google.samples.apps.iosched.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.model.TestDataRepository
+import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.prefs.UserIsAttendee.IN_PERSON
 import com.google.samples.apps.iosched.shared.data.prefs.UserIsAttendee.NO_ANSWER
 import com.google.samples.apps.iosched.shared.data.prefs.UserIsAttendee.REMOTE
+import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetUserIsAttendeeSettingUseCase
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
+import com.google.samples.apps.iosched.test.util.fakes.FakeThemedActivityDelegate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -53,12 +57,7 @@ class MainActivityViewModelTest {
     @Test
     fun loadPreferences_userInPerson_doesNotOpenAttendeeDialog() {
         val prefs = FakePreferenceStorage(userIsAttendee = IN_PERSON)
-        val getUserIsAttendeeSettingUseCase =
-            GetUserIsAttendeeSettingUseCase(
-                prefs, coroutineRule.testDispatcher
-            )
-        val viewModel =
-            MainActivityViewModel(getUserIsAttendeeSettingUseCase, FakeAnalyticsHelper())
+        val viewModel = createViewModel(prefs)
 
         // Can't use LiveDataTestUtil here because it would take 2 seconds
         val result = viewModel.navigateToUserAttendeeDialogAction.value
@@ -69,12 +68,7 @@ class MainActivityViewModelTest {
     @Test
     fun loadPreferences_userRemote_doesNotOpenAttendeeDialog() {
         val prefs = FakePreferenceStorage(userIsAttendee = REMOTE)
-        val getUserIsAttendeeSettingUseCase =
-            GetUserIsAttendeeSettingUseCase(
-                prefs, coroutineRule.testDispatcher
-            )
-        val viewModel =
-            MainActivityViewModel(getUserIsAttendeeSettingUseCase, FakeAnalyticsHelper())
+        val viewModel = createViewModel(prefs)
 
         // Can't use LiveDataTestUtil here because it would take 2 seconds
         val result = viewModel.navigateToUserAttendeeDialogAction.value
@@ -85,15 +79,29 @@ class MainActivityViewModelTest {
     @Test
     fun loadPreferences_userNoAnswer_opensAttendeeDialog() {
         val prefs = FakePreferenceStorage(userIsAttendee = NO_ANSWER)
-        val getUserIsAttendeeSettingUseCase =
-            GetUserIsAttendeeSettingUseCase(
-                prefs, coroutineRule.testDispatcher
-            )
-        val viewModel =
-            MainActivityViewModel(getUserIsAttendeeSettingUseCase, FakeAnalyticsHelper())
+        val viewModel = createViewModel(prefs)
 
         val result = LiveDataTestUtil.getValue(viewModel.navigateToUserAttendeeDialogAction)
 
         assertNotNull(result?.getContentIfNotHandled())
+    }
+
+    private fun createViewModel(
+        preferenceStorage: PreferenceStorage = FakePreferenceStorage()
+    ): MainActivityViewModel {
+        val userIsAttendeeSettingUseCase = GetUserIsAttendeeSettingUseCase(
+            preferenceStorage,
+            coroutineRule.testDispatcher
+        )
+        val refreshConferenceDataUseCase = RefreshConferenceDataUseCase(
+            TestDataRepository,
+            coroutineRule.testDispatcher
+        )
+        return MainActivityViewModel(
+            userIsAttendeeSettingUseCase,
+            FakeThemedActivityDelegate(),
+            refreshConferenceDataUseCase,
+            FakeAnalyticsHelper()
+        )
     }
 }

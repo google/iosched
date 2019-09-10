@@ -30,8 +30,8 @@ import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleDayBinding
 import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.lazyFast
+import com.google.samples.apps.iosched.shared.util.parentViewModelProvider
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.ui.schedule.SessionTimeData
 import com.google.samples.apps.iosched.util.clearDecorations
@@ -84,9 +84,9 @@ class ScheduleDayFragment : DaggerFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // VM shared across the [MainActivity], [ScheduleFragment] and the [ScheduleDayFragment]s.
-        viewModel = activityViewModelProvider(viewModelFactory)
+        viewModel = parentViewModelProvider(viewModelFactory)
         binding = FragmentScheduleDayBinding.inflate(inflater, container, false).apply {
-            lifecycleOwner = this@ScheduleDayFragment
+            lifecycleOwner = viewLifecycleOwner
             viewModel = this@ScheduleDayFragment.viewModel
         }
         return binding.root

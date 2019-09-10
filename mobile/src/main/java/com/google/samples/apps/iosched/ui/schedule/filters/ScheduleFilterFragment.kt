@@ -35,7 +35,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleFilterBinding
-import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
+import com.google.samples.apps.iosched.shared.util.parentViewModelProvider
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
@@ -94,7 +94,7 @@ class ScheduleFilterFragment : DaggerFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = activityViewModelProvider(viewModelFactory)
+        viewModel = parentViewModelProvider(viewModelFactory)
         binding.viewModel = viewModel
 
         behavior = BottomSheetBehavior.from(binding.filterSheet)

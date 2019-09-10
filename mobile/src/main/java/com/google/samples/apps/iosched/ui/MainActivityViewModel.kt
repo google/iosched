@@ -23,6 +23,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions.USER_ATTENDEE_DIALOG_NOT_SHOWN
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.prefs.UserIsAttendee.NO_ANSWER
+import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetUserIsAttendeeSettingUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.data
@@ -34,8 +35,10 @@ import javax.inject.Inject
  */
 class MainActivityViewModel @Inject constructor(
     getUserIsAttendeeSettingUseCase: GetUserIsAttendeeSettingUseCase,
+    themedActivityDelegate: ThemedActivityDelegate,
+    private val refreshConferenceDataUseCase: RefreshConferenceDataUseCase,
     private val analyticsHelper: AnalyticsHelper
-) : ViewModel() {
+) : ViewModel(), ThemedActivityDelegate by themedActivityDelegate {
 
     private val _navigateToUserAttendeeDialogAction = MutableLiveData<Event<Unit>>()
     val navigateToUserAttendeeDialogAction: LiveData<Event<Unit>>
@@ -52,6 +55,12 @@ class MainActivityViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    fun refreshConferenceData() {
+        viewModelScope.launch {
+            refreshConferenceDataUseCase(Unit)
         }
     }
 }

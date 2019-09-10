@@ -34,7 +34,6 @@ import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.dialogs.AttendeeDialogFragment
 import com.google.samples.apps.iosched.ui.dialogs.AttendeeDialogFragment.Companion.DIALOG_USER_ATTENDEE_PREFERENCE
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
-import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
 import com.google.samples.apps.iosched.util.updateForTheme
 import dagger.android.support.DaggerAppCompatActivity
@@ -63,9 +62,9 @@ class MainActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // This VM instance is shared between activity and fragments, as it's scoped to MainActivity
-        val scheduleViewModel: ScheduleViewModel = viewModelProvider(viewModelFactory)
-        scheduleViewModel.theme.observe(this, Observer(::updateForTheme))
+
+        val mainActivityViewModel: MainActivityViewModel = viewModelProvider(viewModelFactory)
+        mainActivityViewModel.theme.observe(this, Observer(::updateForTheme))
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
@@ -75,14 +74,11 @@ class MainActivity : DaggerAppCompatActivity() {
         binding.root.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
                 View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-
-        val mainActivityViewModel: MainActivityViewModel = viewModelProvider(viewModelFactory)
-
         // Refresh conference data on launch
         if (savedInstanceState == null) {
             setupBottomNavigationBar() // otherwise this happens in onRestoreInstanceState
             Timber.d("Refreshing conference data on launch")
-            scheduleViewModel.onSwipeRefresh()
+            mainActivityViewModel.refreshConferenceData()
         }
 
         mainActivityViewModel.navigateToUserAttendeeDialogAction.observe(this, EventObserver {

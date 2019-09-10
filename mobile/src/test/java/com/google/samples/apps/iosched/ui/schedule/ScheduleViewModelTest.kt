@@ -423,8 +423,7 @@ class ScheduleViewModelTest {
             observeConferenceDataUseCase = observeConferenceDataUseCase,
             loadSelectedFiltersUseCase = loadSelectedFiltersUseCase,
             saveSelectedFiltersUseCase = saveSelectedFiltersUseCase,
-            analyticsHelper = analyticsHelper,
-            themedActivityDelegate = themedActivityDelegate
+            analyticsHelper = analyticsHelper
         )
     }
 

@@ -52,7 +52,7 @@ class EventFragment : DaggerFragment() {
 
         val binding = FragmentInfoEventBinding.inflate(inflater, container, false).apply {
             viewModel = eventInfoViewModel
-            setLifecycleOwner(this@EventFragment)
+            lifecycleOwner = viewLifecycleOwner
         }
         val snackbarLayout = requireActivity().findViewById<FadingSnackbar>(R.id.snackbar)
         setUpSnackbar(eventInfoViewModel.snackBarMessage, snackbarLayout, snackbarMessageManager)

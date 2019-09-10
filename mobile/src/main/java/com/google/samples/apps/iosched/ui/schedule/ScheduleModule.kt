@@ -19,7 +19,6 @@ package com.google.samples.apps.iosched.ui.schedule
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.di.FragmentScoped
 import com.google.samples.apps.iosched.shared.di.ViewModelKey
-import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.dialogs.AttendeeDialogFragment
 import com.google.samples.apps.iosched.ui.dialogs.AttendeePreferenceViewModel
 import com.google.samples.apps.iosched.ui.schedule.filters.ScheduleFilterFragment
@@ -70,15 +69,6 @@ internal abstract class ScheduleModule {
     @IntoMap
     @ViewModelKey(ScheduleViewModel::class)
     abstract fun bindScheduleViewModel(viewModel: ScheduleViewModel): ViewModel
-
-    /**
-     * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
-     * want to get a [MainActivityViewModel] class.
-     */
-    @Binds
-    @IntoMap
-    @ViewModelKey(MainActivityViewModel::class)
-    abstract fun bindMainActivityViewModel(viewModel: MainActivityViewModel): ViewModel
 
     /**
      * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we

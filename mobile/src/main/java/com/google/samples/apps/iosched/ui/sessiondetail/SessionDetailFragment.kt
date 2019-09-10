@@ -76,7 +76,6 @@ class SessionDetailFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         sessionDetailViewModel = viewModelProvider(viewModelFactory)
 
         val binding = FragmentSessionDetailBinding.inflate(inflater, container, false).apply {
