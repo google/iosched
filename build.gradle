@@ -34,13 +34,13 @@ buildscript {
         // App dependencies
         aiaVersion = '1.1.0'
         archCoreTestingVersion = '2.1.0-rc01'
-        androidGradlePluginVersion = '3.4.2'
+        androidGradlePluginVersion = '3.5.0'
         appcompatVersion = '1.1.0-rc01'
         browserVersion = '1.0.0-beta01'
         constraintLayoutVersion = '1.1.2'
         coroutinesVersion = '1.3.0'
         crashlyticsVersion = '2.9.4'
-        dagger = "2.16"
+        dagger = "2.24"
         dataBindingCompilerVersion = '3.0.1'
         espressoVersion = '3.1.0-alpha1'
         fabricVersion = '1.25.4'
@@ -52,7 +52,7 @@ buildscript {
         firebaseUiVersion = "3.3.1"
         flexboxVersion = "0.3.2"
         fragmentVersion = "1.1.0-rc04"
-        glideVersion = "4.6.1"
+        glideVersion = "4.9.0"
         googleServicesVersion = "3.2.0"
         gsonVersion = "2.8.1"
         hamcrestVersion = '1.3'
@@ -68,7 +68,7 @@ buildscript {
         navigationVersion = "2.1.0-rc01"
         okhttpVersion = "3.10.0"
         okioVersion = '1.14.0'
-        roomVersion = '2.1.0-alpha06'
+        roomVersion = '2.2.0-rc01'
         rulesVersion = '1.1.1'
         runnerVersion = '1.1.1'
         testExtVersion = '1.1.0'
@@ -126,6 +126,12 @@ allprojects {
             target "**/*.kt"
             targetExclude ".idea/"
             ktlint(ktlintVersion)
+        }
+    }
+
+    afterEvaluate {
+        extensions.findByName("kapt")?.arguments {
+            arg("room.incremental", "true")
         }
     }
 }

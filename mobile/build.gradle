@@ -141,7 +141,7 @@ dependencies {
 
     // Glide
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
-    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
 
     // Fabric and Firebase
     implementation "com.firebaseui:firebase-ui-auth:$rootProject.firebaseUiVersion"
