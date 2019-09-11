@@ -59,13 +59,14 @@
 
                 <TextView
                     android:id="@+id/wifi_header"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_normal"
                     android:text="@string/wifi_header"
                     android:textAppearance="@style/TextAppearance.IOSched.Subhead"
                     android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toTopOf="parent"
                     app:goneUnless="@{viewModel.showWifi}" />
@@ -145,9 +146,10 @@
 
                 <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_sessions"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_normal"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/event_types_header"
                     app:eventDescription="@string/event_sessions_description"
@@ -156,8 +158,9 @@
 
                 <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_lightning"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/event_sessions"
                     app:eventDescription="@string/event_lightning_description"
@@ -166,8 +169,9 @@
 
                 <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_codelabs"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/event_lightning"
                     app:eventDescription="@string/event_codelabs_description"
@@ -176,8 +180,9 @@
 
                 <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_officehours"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/event_codelabs"
                     app:eventDescription="@string/event_officehours_description"
@@ -186,8 +191,9 @@
 
                 <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_fireside"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/event_officehours"
                     app:eventDescription="@string/event_fireside_description"
@@ -196,8 +202,9 @@
 
                 <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_meals"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/event_fireside"
                     app:eventDescription="@string/event_meals_description"
