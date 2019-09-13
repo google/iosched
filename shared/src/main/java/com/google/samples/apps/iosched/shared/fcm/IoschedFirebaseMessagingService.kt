@@ -36,8 +36,8 @@ class IoschedFirebaseMessagingService : FirebaseMessagingService() {
         Timber.d("Message data payload: ${remoteMessage?.data}")
         val data = remoteMessage?.data ?: return
         if (data[TRIGGER_EVENT_DATA_SYNC_key] == TRIGGER_EVENT_DATA_SYNC) {
-            // Schedule job on JobScheduler when FCM message with action `TRIGGER_EVENT_DATA_SYNC`
-            // is received.
+            // Schedule a [ConferenceDataWorker] when FCM message with action
+            // `TRIGGER_EVENT_DATA_SYNC` is received.
             scheduleFetchEventData()
         }
     }
