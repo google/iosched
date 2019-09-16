@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.domain.settings
 
-import androidx.core.os.BuildCompat
+import android.os.Build
 import com.google.samples.apps.iosched.model.Theme
 import com.google.samples.apps.iosched.model.Theme.BATTERY_SAVER
 import com.google.samples.apps.iosched.model.themeFromStorageKey
@@ -39,7 +39,7 @@ open class ObserveThemeModeUseCase @Inject constructor(
             val theme = when {
                 it != null -> themeFromStorageKey(it)
                 // Provide defaults for when there is no theme set
-                BuildCompat.isAtLeastQ() -> Theme.SYSTEM
+                Build.VERSION.SDK_INT >= 29 -> Theme.SYSTEM
                 else -> BATTERY_SAVER
             }
             Result.Success(theme)

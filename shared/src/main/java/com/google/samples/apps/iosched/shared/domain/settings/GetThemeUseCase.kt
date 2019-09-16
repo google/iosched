@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.domain.settings
 
-import androidx.core.os.BuildCompat
+import android.os.Build
 import com.google.samples.apps.iosched.model.Theme
 import com.google.samples.apps.iosched.model.themeFromStorageKey
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
@@ -36,6 +36,6 @@ open class GetThemeUseCase @Inject constructor(
         }
 
         // We don't currently have a theme set, so provide a default
-        return if (BuildCompat.isAtLeastQ()) Theme.SYSTEM else Theme.BATTERY_SAVER
+        return if (Build.VERSION.SDK_INT >= 29) Theme.SYSTEM else Theme.BATTERY_SAVER
     }
 }
