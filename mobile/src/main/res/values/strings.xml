@@ -143,7 +143,7 @@
 
     <!-- Onboarding -->
     <string name="onboarding_get_started" translation_description="The label for the button to start using the app.">Get started</string>
-    <string name="onboarding_welcome_to_conference" translation_description="The welcome message shown at the onboarding screen of the app.">Welcome to the Android Dev Summit</string>
+    <string name="onboarding_welcome_to_conference" translation_description="The welcome message shown at the onboarding screen of the app.">Welcome to the\nAndroid Dev Summit</string>
     <string name="onboarding_date_location" translation_description="The date and the place of Android Dev Summit 2019.">October 23–24, 2019\nSunnyvale, CA</string>
     <string name="onboarding_build_schedule" translation_description="The explanation title of the feature where user can choose which sessions to attend.">Build your own schedule</string>
     <string name="onboarding_build_sched_benefits" translation_description="The explanation of the feature where user can choose which sessions to attend.">Build your custom Android Dev Summit experience</string>

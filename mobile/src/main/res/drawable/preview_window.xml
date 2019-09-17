@@ -19,10 +19,4 @@
 
     <item android:drawable="@color/white" />
 
-    <item>
-        <bitmap
-            android:gravity="center"
-            android:src="@drawable/ic_androiddevsummit_icon_grey" />
-    </item>
-
 </layer-list>

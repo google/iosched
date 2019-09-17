@@ -149,8 +149,8 @@
 
     <style name="TextAppearance.IOSched.OnboardingDeck" parent="@style/TextAppearance.AppCompat.Body1">
         <item name="android:fontFamily">@font/google_sans</item>
-        <item name="android:textColor">?android:textColorSecondary</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:lineSpacingMultiplier">@dimen/text_line_spacing</item>
     </style>
 
