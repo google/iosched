@@ -28,7 +28,7 @@ android {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionName rootProject.versionName
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.google.samples.apps.iosched.tests.CustomTestRunner"
 
         vectorDrawables.useSupportLibrary true
 
@@ -162,6 +162,8 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
     androidTestImplementation "androidx.test:rules:$rootProject.rulesVersion"
     stagingImplementation "androidx.fragment:fragment-testing:$rootProject.fragmentVersion"
+    kaptAndroidTest "com.google.dagger:dagger-compiler:$rootProject.dagger"
+    kaptAndroidTest "com.google.dagger:dagger-android-processor:$rootProject.dagger"
 
     // Local unit tests
     testImplementation "junit:junit:$rootProject.junitVersion"

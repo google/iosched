@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched
 
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy.Builder
+import androidx.work.Configuration
 import com.google.samples.apps.iosched.di.DaggerAppComponent
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.util.CrashlyticsTree
@@ -26,12 +27,11 @@ import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import timber.log.Timber
 import javax.inject.Inject
-import androidx.work.Configuration
 
 /**
  * Initialization of libraries.
  */
-class MainApplication : DaggerApplication(), Configuration.Provider {
+open class MainApplication : DaggerApplication(), Configuration.Provider {
     // Even if the var isn't used, needs to be initialized at application startup.
     @Inject lateinit var analyticsHelper: AnalyticsHelper
 

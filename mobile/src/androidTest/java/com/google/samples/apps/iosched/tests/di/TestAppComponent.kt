@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.di
+package com.google.samples.apps.iosched.tests.di
 
 import com.google.samples.apps.iosched.MainApplication
+import com.google.samples.apps.iosched.di.ActivityBindingModule
+import com.google.samples.apps.iosched.di.AppModule
+import com.google.samples.apps.iosched.di.SignInModule
 import com.google.samples.apps.iosched.shared.di.BroadcastReceiverBindingModule
 import com.google.samples.apps.iosched.shared.di.ServiceBindingModule
 import com.google.samples.apps.iosched.shared.di.SharedModule
@@ -29,7 +32,8 @@ import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 /**
- * Main component of the app, created and persisted in the Application class.
+ * Main component of the app for instrumentation tests,
+ * created and persisted in the MainTestApplication class.
  *
  * Whenever a new module is created, it should be added to the list of modules.
  * [AndroidSupportInjectionModule] is the module from Dagger.Android that helps with the
@@ -40,7 +44,8 @@ import javax.inject.Singleton
     modules = [
         AndroidSupportInjectionModule::class,
         AppModule::class,
-        CoroutinesModule::class,
+        // Test Module that overrides CoroutinesModule
+        TestCoroutinesModule::class,
         ActivityBindingModule::class,
         BroadcastReceiverBindingModule::class,
         ViewModelModule::class,
@@ -51,7 +56,7 @@ import javax.inject.Singleton
         ThemedActivityDelegateModule::class
     ]
 )
-interface AppComponent : AndroidInjector<MainApplication> {
+interface TestAppComponent : AndroidInjector<MainApplication> {
     @Component.Builder
     abstract class Builder : AndroidInjector.Builder<MainApplication>()
 }
