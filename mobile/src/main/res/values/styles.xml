@@ -16,48 +16,6 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/color_primary</item>
-        <item name="colorPrimaryDark">@color/color_primary_dark</item>
-        <item name="colorSecondary">?colorPrimary</item>
-        <item name="colorOnSecondary">@color/color_on_secondary</item>
-        <item name="colorControlLight">@color/color_control_light</item>
-
-        <item name="appBarLayoutStyle">@style/Widget.IOSched.AppBar</item>
-        <item name="bottomNavigationStyle">@style/Widget.IOSched.BottomNav</item>
-        <item name="toolbarStyle">@style/Widget.IOSched.Toolbar</item>
-        <item name="tabStyle">@style/Widget.IOSched.Tabs</item>
-
-        <item name="android:textViewStyle">@style/Widget.IOSched.TextView</item>
-        <item name="android:statusBarColor">@color/status_bar</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/use_light_status</item>
-
-        <item name="sessionListKeyline">@dimen/session_keyline</item>
-        <item name="eventFilterViewStyle">@style/Widget.IOSched.EventFilters</item>
-
-        <item name="materialAlertDialogTheme">@style/AlertDialog.Theme</item>
-    </style>
-
-    <style name="AppTheme.Launcher" parent="@style/AppTheme.LightNav">
-        <item name="android:windowBackground">@drawable/preview_window</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.LightNav" parent="AppTheme.NoActionBar" />
-
-    <style name="AppTheme.Onboarding" parent="AppTheme.LightNav">
-        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
-        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
-    </style>
-
-    <style name="AppTheme.PopupTheme" parent="ThemeOverlay.MaterialComponents.Light" />
-
     <style name="AlertDialog.Theme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="alertDialogStyle">@style/AlertDialog.Style</item>
         <item name="buttonBarStyle">@style/AlertDialog.ButtonBar</item>
@@ -357,11 +315,6 @@
         <item name="android:gravity">start|center_vertical</item>
         <item name="android:paddingLeft">@dimen/margin_normal</item>
         <item name="android:paddingRight">@dimen/margin_normal</item>
-    </style>
-
-    <!-- Non-top-level screens should inflate with this theme to replace the keyline. -->
-    <style name="AppTheme.Detail">
-        <item name="sessionListKeyline">@dimen/margin_normal</item>
     </style>
 
     <!-- Misc -->

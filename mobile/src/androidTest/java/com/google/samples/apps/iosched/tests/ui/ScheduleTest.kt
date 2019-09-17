@@ -26,7 +26,6 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
-import androidx.test.espresso.matcher.ViewMatchers.hasFocus
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -87,7 +86,7 @@ class ScheduleTest {
         // Each of the days should be displayed
         getDayTitles().forEachIndexed { i, dayTitle ->
             onView(withText(dayTitle)).perform(click())
-            onView(allOf(withId(R.id.recyclerview), hasFocus()))
+            onView(allOf(withId(R.id.recyclerview), isDisplayed()))
                 .perform(RecyclerViewActions.scrollTo<SessionViewHolder>(
                     hasDescendant(withText("First session day ${i + 1}"))
                 )
@@ -99,7 +98,7 @@ class ScheduleTest {
 
     @Test
     fun clickOnFirstItem_detailsShow() {
-        onView(allOf(withId(R.id.recyclerview), hasFocus()))
+        onView(allOf(withId(R.id.recyclerview), isDisplayed()))
             .perform(RecyclerViewActions.actionOnItemAtPosition<SessionViewHolder>(0, click()))
 
         onView(

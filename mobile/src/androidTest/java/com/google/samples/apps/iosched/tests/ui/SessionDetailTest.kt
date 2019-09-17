@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.tests.ui
 import android.view.View
 import androidx.navigation.findNavController
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.swipeUp
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -78,6 +79,10 @@ class SessionDetailTest {
     @Test
     fun details_basicViewsDisplayed() {
         navigateToDetails()
+
+        // Scroll the app bar so it is collapsed
+        onView(withId(R.id.session_detail_appbar))
+                .perform(swipeUp())
 
         // On the details screen, scroll down to the speaker
         onView(withId(R.id.session_detail_recycler_view))

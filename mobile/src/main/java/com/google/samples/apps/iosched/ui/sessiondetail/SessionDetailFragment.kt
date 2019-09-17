@@ -23,7 +23,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.net.toUri
-import androidx.core.view.doOnLayout
 import androidx.core.view.forEach
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -84,9 +83,10 @@ class SessionDetailFragment : DaggerFragment() {
         val binding = FragmentSessionDetailBinding.inflate(inflater, container, false).apply {
             viewModel = sessionDetailViewModel
             lifecycleOwner = this@SessionDetailFragment
-            up.setOnClickListener {
-                findNavController().navigateUp()
-            }
+        }
+
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
         }
 
         val detailsAdapter = SessionDetailAdapter(this, sessionDetailViewModel, tagRecycledViewPool)
@@ -97,13 +97,6 @@ class SessionDetailFragment : DaggerFragment() {
                 moveDuration = 120L
                 changeDuration = 120L
                 removeDuration = 100L
-            }
-            doOnLayout {
-                addOnScrollListener(
-                    PushUpScrollListener(
-                        binding.up, it, R.id.session_detail_title, R.id.detail_image
-                    )
-                )
             }
         }
 

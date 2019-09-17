@@ -41,7 +41,6 @@ import java.util.Collections.emptyList
 class SpeakerAdapter(
     private val adapterLifecycleOwner: LifecycleOwner,
     private val speakerViewModel: SpeakerViewModel,
-    private val imageLoadListener: ImageLoadListener,
     private val tagRecycledViewPool: RecycledViewPool
 ) : RecyclerView.Adapter<SpeakerViewHolder>() {
 
@@ -79,14 +78,13 @@ class SpeakerAdapter(
         when (holder) {
             is SpeakerInfoViewHolder -> holder.binding.apply {
                 viewModel = speakerViewModel
-                headshotLoadListener = imageLoadListener
-                setLifecycleOwner(adapterLifecycleOwner)
+                lifecycleOwner = adapterLifecycleOwner
                 executePendingBindings()
             }
             is SpeakerSessionViewHolder -> holder.binding.apply {
                 userSession = differ.currentList[position] as UserSession
                 eventListener = speakerViewModel
-                setLifecycleOwner(adapterLifecycleOwner)
+                lifecycleOwner = adapterLifecycleOwner
                 executePendingBindings()
             }
             is HeaderViewHolder -> Unit // no-op
