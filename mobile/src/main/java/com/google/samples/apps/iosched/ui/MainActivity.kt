@@ -63,9 +63,7 @@ class MainActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         // This VM instance is shared between activity and fragments, as it's scoped to MainActivity
         val scheduleViewModel: ScheduleViewModel = viewModelProvider(viewModelFactory)
-        scheduleViewModel.theme.observe(this, Observer {
-            updateForTheme(it)
-        })
+        scheduleViewModel.theme.observe(this, Observer(::updateForTheme))
 
         setContentView(R.layout.activity_main)
 

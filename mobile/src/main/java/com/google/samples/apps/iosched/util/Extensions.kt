@@ -26,7 +26,6 @@ import android.util.TypedValue
 import android.view.View
 import android.view.View.OnAttachStateChangeListener
 import androidx.annotation.DimenRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -211,9 +210,9 @@ data class ViewPaddingState(
 )
 
 @SuppressLint("WrongConstant") // Suppressing warning on MODE_NIGHT_AUTO_BATTERY. b/128789886
-fun AppCompatActivity.updateForTheme(theme: Theme) = when (theme) {
-    Theme.DARK -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
-    Theme.LIGHT -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
-    Theme.SYSTEM -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-    Theme.BATTERY_SAVER -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+fun updateForTheme(theme: Theme) = when (theme) {
+    Theme.DARK -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+    Theme.LIGHT -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+    Theme.SYSTEM -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+    Theme.BATTERY_SAVER -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY)
 }
