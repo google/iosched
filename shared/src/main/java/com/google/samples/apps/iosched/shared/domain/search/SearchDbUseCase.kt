@@ -28,6 +28,7 @@ import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedS
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
+private const val MAX_WORD_COUNT_QUERY = 5
 /**
  * Performs a search in the database from a query string.
  */
@@ -40,7 +41,15 @@ class SearchDbUseCase @Inject constructor(
 ) : UseCase<String, List<Searchable>>(ioDispatcher) {
 
     override fun execute(parameters: String): List<Searchable> {
-        val query = parameters.toLowerCase()
+        // Add '*' the query for FTS with multiple tokens
+        val query = if (parameters.isNotEmpty()) {
+            parameters.split(", ", " ", ",").take(MAX_WORD_COUNT_QUERY).map {
+                "${it.toLowerCase()}*"
+            }.joinToString(" AND ")
+        } else {
+            parameters
+        }
+
         val sessionResults = appDatabase.sessionFtsDao().searchAllSessions(query).toSet()
         val speakerResults = appDatabase.speakerFtsDao().searchAllSpeakers(query).toSet()
         // Show all events if userIsAttendee is IN_PERSON or NO_ANSWER (means dialog dismissed)

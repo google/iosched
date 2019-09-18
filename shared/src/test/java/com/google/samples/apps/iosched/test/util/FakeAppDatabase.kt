@@ -58,12 +58,16 @@ class FakeSearchAppDatabase : AppDatabase() {
 
             override fun searchAllSessions(query: String): List<String> {
                 return when (query) {
-                    QUERY_SESSION_0.toLowerCase() -> listOf(TestData.session0.id)
-                    QUERY_ABSTRACT.toLowerCase() -> listOf(TestData.session0.id)
-                    QUERY_TAGNAME.toLowerCase() -> listOf(
+                    QUERY_SESSION_0.toLowerCase(), QUERY_SESSION_0_WITH_TOKEN -> listOf(
+                            TestData.session0.id
+                    )
+                    QUERY_ABSTRACT.toLowerCase(), QUERY_ABSTRACT_WITH_TOKEN -> listOf(
+                            TestData.session0.id
+                    )
+                    QUERY_TAGNAME.toLowerCase(), QUERY_TAGNAME_WITH_TOKEN -> listOf(
                         TestData.session0.id, TestData.session1.id, TestData.session2.id
                     )
-                    QUERY_QUESTION.toLowerCase() -> listOf(
+                    QUERY_QUESTION.toLowerCase(), QUERY_QUESTION_WITH_TOKEN -> listOf(
                         TestData.session0.id, TestData.session1.id, TestData.session2.id
                     )
                     QUERY_EMPTY.toLowerCase() -> emptyList()
@@ -101,5 +105,10 @@ class FakeSearchAppDatabase : AppDatabase() {
         const val QUERY_TAGNAME = "android"
         const val QUERY_QUESTION = "What are the Android talks"
         const val QUERY_EMPTY = "Invalid search query"
+        const val QUERY_ONLY_SPACES = "  "
+        const val QUERY_SESSION_0_WITH_TOKEN = "session* AND 0*"
+        const val QUERY_ABSTRACT_WITH_TOKEN = "awesome*"
+        const val QUERY_TAGNAME_WITH_TOKEN = "android*"
+        const val QUERY_QUESTION_WITH_TOKEN = "what* AND are* AND the* AND android* AND talks*"
     }
 }
