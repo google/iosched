@@ -55,7 +55,7 @@
             android:layout_marginBottom="@dimen/schedule_page_padding_bottom"
             android:layout_marginHorizontal="@dimen/margin_large"
             android:drawablePadding="@dimen/spacing_normal"
-            android:drawableTop="@drawable/ic_androiddevsummit_icon_grey"
+            android:drawableTop="@drawable/ic_sad"
             android:gravity="center"
             android:text="@string/schedule_filters_empty"
             app:goneUnless="@{isEmpty &amp;&amp; !viewModel.isLoading}"

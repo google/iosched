@@ -20,7 +20,7 @@
     <item android:drawable="?attr/colorSurface" />
 
     <item
-        android:drawable="@drawable/ic_androiddevsummit_icon_grey"
+        android:drawable="@drawable/ic_android_preview"
         android:gravity="center" />
 
 </layer-list>

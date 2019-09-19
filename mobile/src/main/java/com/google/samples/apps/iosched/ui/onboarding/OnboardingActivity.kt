@@ -18,10 +18,12 @@ package com.google.samples.apps.iosched.ui.onboarding
 
 import android.R.interpolator
 import android.content.Intent
+import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.core.view.doOnNextLayout
+import androidx.core.view.postDelayed
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.samples.apps.iosched.R
@@ -84,7 +86,12 @@ class OnboardingActivity : DaggerAppCompatActivity() {
                     .translationY(0f)
                     .scaleX(1f)
                     .scaleY(1f)
-                    .interpolator = interpolator
+                    .setInterpolator(interpolator)
+                    .withEndAction {
+                        postDelayed(1000) {
+                            (binding.logo.drawable as AnimatedVectorDrawable).start()
+                        }
+                    }
             }
         }
     }
