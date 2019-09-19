@@ -23,8 +23,10 @@ import com.google.samples.apps.iosched.test.data.TestData.session1
 import com.google.samples.apps.iosched.test.data.TestData.session3
 import com.google.samples.apps.iosched.test.util.FakeAppDatabase
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.test.util.getValueFromConflatedBroadcastChannel
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.TestCoroutineScope
+import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.core.IsEqual.equalTo
 import org.hamcrest.core.IsNot.not
 import org.hamcrest.core.IsNull.notNullValue
@@ -50,8 +52,10 @@ class ConferenceDataRepositoryTest {
 
     private lateinit var repo: ConferenceDataRepository
 
+    private val coroutineScope = TestCoroutineScope()
+
     @Test
-    fun remotePrevailsOverBootstrap() = runBlocking {
+    fun remotePrevailsOverBootstrap() = coroutineScope.runBlockingTest {
         // Given a repo with a working remote data source that returns session0
         // and a bootstrap that returns session 3
         repo = ConferenceDataRepository(
@@ -77,7 +81,7 @@ class ConferenceDataRepositoryTest {
     }
 
     @Test
-    fun remoteNotAvailable_bootstrapUsed() = runBlocking {
+    fun remoteNotAvailable_bootstrapUsed() = coroutineScope.runBlockingTest {
         // Given a repo with unavailable remote data source
         // and a bootstrap that returns session 3
         repo = ConferenceDataRepository(
@@ -105,7 +109,7 @@ class ConferenceDataRepositoryTest {
     }
 
     @Test
-    fun networkExceptionCacheUnavailable_cacheReturned() = runBlocking {
+    fun networkExceptionCacheUnavailable_cacheReturned() = coroutineScope.runBlockingTest {
         // Given a repo with unavailable remote data (that throws an exception) and no cache
         // and a bootstrap that returns session 1
         repo = ConferenceDataRepository(
@@ -113,6 +117,9 @@ class ConferenceDataRepositoryTest {
             boostrapDataSource = TestConfDataSourceSession1(),
             appDatabase = FakeAppDatabase()
         )
+
+        val initialTimestamp: Long? =
+            repo.dataLastUpdates.getValueFromConflatedBroadcastChannel(coroutineScope)
 
         // Remote conference throws an error
         try {
@@ -130,6 +137,11 @@ class ConferenceDataRepositoryTest {
         assertThat(repo.latestUpdateSource, Is(equalTo(UpdateSource.BOOTSTRAP)))
         assertThat(repo.latestException, Is(notNullValue()))
         assertThat(repo.currentConferenceDataVersion, Is(equalTo(CACHE_DATA_VERSION)))
+        // Last update timestamp should have been updated
+        assertThat(
+            repo.dataLastUpdates.getValueFromConflatedBroadcastChannel(coroutineScope),
+            Is(not(equalTo(initialTimestamp)))
+        )
     }
 }
 

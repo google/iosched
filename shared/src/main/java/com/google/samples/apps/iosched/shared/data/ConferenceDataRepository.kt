@@ -67,11 +67,15 @@ open class ConferenceDataRepository @Inject constructor(
             remoteDataSource.getRemoteConferenceData()
         } catch (e: IOException) {
             latestException = e
+            // Notify in case this is a preferences change and device is offline
+            notifyChangeObservers()
             throw e
         }
         if (conferenceData == null) {
             val e = Exception("Remote returned no conference data")
             latestException = e
+            // Notify in case this is a preferences change and device is offline
+            notifyChangeObservers()
             throw e
         }
 
@@ -84,9 +88,13 @@ open class ConferenceDataRepository @Inject constructor(
 
         // Update meta
         latestException = null
-        _dataLastUpdatedChannel.offer(System.currentTimeMillis())
+        notifyChangeObservers()
         latestUpdateSource = UpdateSource.NETWORK
         latestException = null
+    }
+
+    private fun notifyChangeObservers() {
+        _dataLastUpdatedChannel.offer(System.currentTimeMillis())
     }
 
     fun getOfflineConferenceData(): ConferenceData {
