@@ -19,7 +19,6 @@ package com.google.samples.apps.iosched.shared.data.agenda
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.config.RemoteAppConfigDataSource
-import com.google.samples.apps.iosched.shared.domain.search.SearchUseCaseTest.Companion.coroutineRule
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.runBlockingTest
@@ -55,8 +54,8 @@ class DefaultAgendaRepositoryTest {
 
     // These strings are used for titles in addition to start/end time, but we want only
     // parsable texts for start/end time
-    private val remoteConfigString = "2019-10-23T22:20-08:00"
-    private val updatedString = "2019-10-23T23:20-08:00"
+    private val remoteConfigString = "2019-10-23T22:20-07:00"
+    private val updatedString = "2019-10-23T23:20-07:00"
     private lateinit var mockDataSource: RemoteAppConfigDataSource
 
     @Before

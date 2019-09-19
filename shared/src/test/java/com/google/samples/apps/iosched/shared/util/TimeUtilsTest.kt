@@ -35,9 +35,9 @@ class TimeUtilsTest {
 
     @Before
     fun setup() {
-        time0800 = ZonedDateTime.parse("2018-05-08T08:00:00.000-08:00[America/Los_Angeles]")
-        time1000 = ZonedDateTime.parse("2018-05-08T10:00:00.000-08:00[America/Los_Angeles]")
-        time1300 = ZonedDateTime.parse("2018-05-08T13:00:00.000-08:00[America/Los_Angeles]")
+        time0800 = ZonedDateTime.parse("2018-05-08T08:00:00.000-07:00[America/Los_Angeles]")
+        time1000 = ZonedDateTime.parse("2018-05-08T10:00:00.000-07:00[America/Los_Angeles]")
+        time1300 = ZonedDateTime.parse("2018-05-08T13:00:00.000-07:00[America/Los_Angeles]")
     }
 
     @Test
@@ -150,7 +150,7 @@ class TimeUtilsTest {
             "Tue, May 8, 8:00 - 9:00 AM",
             TimeUtils.timeString(time0800, time0800.plusHours(1))
         )
-        val timeMay10 = ZonedDateTime.parse("2018-05-10T13:00:00.000-08:00[America/Los_Angeles]")
+        val timeMay10 = ZonedDateTime.parse("2018-05-10T13:00:00.000-07:00[America/Los_Angeles]")
         Assert.assertEquals(
             "Thu, May 10, 1:00 - 2:00 PM",
             TimeUtils.timeString(timeMay10, timeMay10.plusHours(1))

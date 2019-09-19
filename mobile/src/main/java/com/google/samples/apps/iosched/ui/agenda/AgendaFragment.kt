@@ -70,6 +70,8 @@ fun agendaItems(recyclerView: RecyclerView, list: List<Block>?, timeZoneId: Zone
     (recyclerView.adapter as AgendaAdapter).apply {
         this.submitList(list ?: emptyList())
         this.timeZoneId = timeZoneId ?: ZoneId.systemDefault()
+        // Force a redraw in case the time zone has changed
+        this.notifyDataSetChanged()
     }
 
     // Recreate the decoration used for the sticky date headers

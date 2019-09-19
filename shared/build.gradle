@@ -50,10 +50,10 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            buildConfigField "String", "CONFERENCE_DATA_URL", "\"https://storage.googleapis.com/adssched-prod.appspot.com/conference_data_2018.json\""
+            buildConfigField "String", "CONFERENCE_DATA_URL", "\"https://storage.googleapis.com/adssched-prod.appspot.com/conference_data_2019.json\""
         }
         debug {
-            buildConfigField "String", "CONFERENCE_DATA_URL", "\"https://storage.googleapis.com/adssched.appspot.com/conference_data_2018.json\""
+            buildConfigField "String", "CONFERENCE_DATA_URL", "\"https://storage.googleapis.com/adssched.appspot.com/conference_data_2019.json\""
         }
         staging {
             initWith debug
