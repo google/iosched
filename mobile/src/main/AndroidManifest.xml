@@ -74,18 +74,6 @@
             android:name=".ui.onboarding.OnboardingActivity"
             android:theme="@style/AppTheme.Onboarding" />
 
-        <!-- This activity alias lets us change the main entry point without breaking launcher
-             shortcuts. DO NOT change its android:name attribute. -->
-        <activity-alias
-            android:name=".Launcher"
-            android:label="@string/app_name"
-            android:targetActivity=".ui.LauncherActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
-
         <!-- By default, these are not exported since they do not have an intent filter.
          However, explicitly saying exported="false" to communicate that these are not for
          other apps to call -->
