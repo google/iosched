@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -18,20 +17,20 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="100dp"
     android:height="100dp"
-    android:viewportWidth="30"
-    android:viewportHeight="30">
-    <!--Circle-->
+    android:viewportWidth="100"
+    android:viewportHeight="100">
     <path
-        android:fillColor="@color/android_orange"
-        android:pathData="m 20,5 a 5,5 0 0 5 -5,5 5,5 0 0 5 -5,-5 5,5 0 0 5 5,-5 5,5 0 0 5 5,5 z" />
-    <!--Square-->
+        android:fillColor="#00000000"
+        android:fillType="evenOdd"
+        android:pathData="M54,98h-0.3C46.67,97.82 41,91.4 41,83.5S46.66,69.18 53.7,69H82c7.18,0 13,6.5 13,14.5S89.18,98 82,98H54z"
+        android:strokeColor="#F86734"
+        android:strokeWidth="3" />
     <path
-        android:fillColor="@color/android_blue"
-        android:pathData="M10,10,20,10,20,20,10,20,10,10" />
-    <!--Cheese-->
+        android:fillColor="#3DDC84"
+        android:fillType="evenOdd"
+        android:pathData="M19.5,98a14.5,14.5 0,1 0,0 -29,14.5 14.5,0 0,0 0,29z" />
     <path
-        android:fillColor="@color/android_blue_chartreuse"
-        android:pathData="m 30,20 h -10 c 0,0 0,-10 10,-10 z" />
-
-
+        android:fillColor="#4285F4"
+        android:fillType="evenOdd"
+        android:pathData="M5,1h91v60H22A17,17 0,0 1,5 44V1z" />
 </vector>
