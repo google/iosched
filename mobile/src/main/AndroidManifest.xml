@@ -51,7 +51,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="http" />
                 <data android:scheme="https" />
-                <data android:host="developer.android.com" />
+                <data android:host="adssched.firebaseapp.com" />
                 <data android:path="/dev-summit" />
                 <data android:path="/dev-summit/" />
                 <data android:path="/dev-summit/schedule" />
@@ -59,7 +59,7 @@
             </intent-filter>
             <meta-data
                 android:name="default-url"
-                android:value="https://developer.android.com/dev-summit" />
+                android:value="https://adssched.firebaseapp.com/dev-summit" />
          </activity>
 
         <activity

@@ -33,7 +33,7 @@ class InstallAppStoreLauncher @Inject constructor() {
          */
         val postInstallIntent = Intent(
             Intent.ACTION_VIEW,
-            Uri.parse("https://developer.android.com/dev-summit")
+            Uri.parse("https://adssched.firebaseapp.com/dev-summit")
         ).addCategory(Intent.CATEGORY_BROWSABLE)
 
         InstantApps.showInstallPrompt(
