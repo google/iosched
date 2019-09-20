@@ -22,11 +22,13 @@
     <color name="scrim">#33000000</color> <!-- 20% black -->
 
     <!-- Same value as textColorPrimary disabled -->
-    <color name="color_control_light">@color/android_blue_light</color>
+    <color name="color_control_light">#39000000</color>
 
     <color name="color_primary">@color/android_blue</color>
     <color name="color_primary_dark">@color/android_navy</color>
     <color name="color_on_secondary">#fff</color>
+
+    <color name="info_event_card_logo_background">@color/android_blue_light</color>
 
     <color name="transparent">#0fff</color>
 
