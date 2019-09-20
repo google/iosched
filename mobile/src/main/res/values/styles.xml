@@ -103,6 +103,7 @@
 
     <style name="TextAppearance.IOSched.ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textSize" tools:ignore="SpUsage">20dp</item>
     </style>
 
     <style name="TextAppearance.IOSched.SessionTitle" parent="@style/TextAppearance.AppCompat.Subhead">
