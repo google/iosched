@@ -47,10 +47,6 @@ class EventView @JvmOverloads constructor(
         val rootView = LayoutInflater.from(context)
             .inflate(R.layout.info_event_content_card_view, this, true)
 
-        rootView.findViewById<ImageView>(R.id.grid).apply {
-            setImageResource(R.drawable.generic_placeholder)
-        }
-
         rootView.findViewById<ImageView>(R.id.event_type_logo).apply {
             setImageDrawable(eventTitleBackground)
         }
