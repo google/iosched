@@ -89,6 +89,7 @@
         <attr name="clearIcon" format="reference" />
         <attr name="foreground" format="reference" />
         <attr name="showIcons" format="boolean" />
+        <attr name="cornerRadius" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="CheckableFab">

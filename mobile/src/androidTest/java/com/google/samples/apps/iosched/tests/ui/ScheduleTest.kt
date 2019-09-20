@@ -129,7 +129,7 @@ class ScheduleTest {
         onView(allOf(withId(R.id.recyclerview), withParent(withId(R.id.filter_sheet))))
             .perform(
                 RecyclerViewActions.scrollTo<ScheduleFilterAdapter.FilterViewHolder>(
-                    hasDescendant(withContentDescription(uncheckedFilterContentDesc))
+                    withContentDescription(uncheckedFilterContentDesc)
                 )
             )
 
@@ -193,7 +193,7 @@ class ScheduleTest {
         onView(allOf(withId(R.id.recyclerview), withParent(withId(R.id.filter_sheet))))
             .perform(
                 RecyclerViewActions.scrollTo<ScheduleFilterAdapter.FilterViewHolder>(
-                    hasDescendant(withContentDescription(uncheckedFilterContentDesc))
+                    withContentDescription(uncheckedFilterContentDesc)
                 )
             )
 
