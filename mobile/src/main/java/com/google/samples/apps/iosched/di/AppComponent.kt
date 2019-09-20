@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.di
 
 import com.google.samples.apps.iosched.MainApplication
 import com.google.samples.apps.iosched.shared.di.BroadcastReceiverBindingModule
-import com.google.samples.apps.iosched.shared.di.ServiceBindingModule
 import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.di.ViewModelModule
 import com.google.samples.apps.iosched.ui.ThemedActivityDelegateModule
@@ -44,7 +43,6 @@ import javax.inject.Singleton
         ActivityBindingModule::class,
         BroadcastReceiverBindingModule::class,
         ViewModelModule::class,
-        ServiceBindingModule::class,
         SharedModule::class,
         SignInModule::class,
         SignInViewModelDelegateModule::class,
