@@ -17,9 +17,13 @@
 
 <!-- ATTENTION: Needs to duplicate entire manifest to instant due to manifest merging issues. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
     package="com.google.samples.apps.iosched"
     android:targetSandboxVersion="2">
     <!-- targetSandBoxVersion="2" is a requirement for instant apps. -->
+
+    <!-- Declare this module to be served as an instant app. -->
+    <dist:module dist:instant="true" />
 
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -82,6 +86,16 @@
             </intent-filter>
         </activity-alias>
 
+        <!-- By default, these are not exported since they do not have an intent filter.
+         However, explicitly saying exported="false" to communicate that these are not for
+         other apps to call -->
+        <receiver
+            android:name=".shared.notifications.AlarmBroadcastReceiver"
+            android:exported="false" />
+        <receiver
+            android:name=".shared.notifications.CancelNotificationBroadcastReceiver"
+            android:exported="false" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
@@ -98,5 +112,4 @@
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
 
     </application>
-
 </manifest>

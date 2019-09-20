@@ -21,10 +21,9 @@ buildscript {
     ext {
         // App version
         versionName = '1.1.5' // X.Y.Z; X = Major, Y = minor, Z = Patch level
-        versionCodeBase = 11500 // XYZZM; M = Module (tv, mobile)
-        versionCodeInstant = versionCodeBase + 1
+        versionCodeBase = 20000 // XYZZM; M = Module (tv, mobile)
         versionCodeTv = versionCodeBase + 2 // Not used at the moment
-        versionCodeMobile = versionCodeBase + 3
+        versionCodeMobile = versionCodeBase + 3 // Leave some space for future-proofing
 
         // SDK and tools
         compileSdkVersion = 29

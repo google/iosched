@@ -28,33 +28,28 @@ $DIR/gradlew clean assemble ${GRADLE_PARAMS}
 BUILD_RESULT=$?
 
 # Debug
-cp $OUTPUTS/apk/installed/debug/mobile-installed-debug.apk $DIST_DIR/mobile_installed_debug.apk
+cp $OUTPUTS/apk/debug/mobile-debug.apk $DIST_DIR/mobile_debug.apk
 
 # Staging
-cp $OUTPUTS/apk/installed/staging/mobile-installed-staging.apk $DIST_DIR/mobile_installed_staging.apk
+cp $OUTPUTS/apk/staging/mobile-staging.apk $DIST_DIR/mobile_staging.apk
 
 # Release
-cp $OUTPUTS/apk/installed/release/mobile-installed-release-unsigned.apk $DIST_DIR/mobile_installed_release.apk
-cp $OUTPUTS/mapping/installed/release/mapping.txt $DIST_DIR/mobile_installed_release_apk_mapping.txt
+cp $OUTPUTS/apk/release/mobile-release-unsigned.apk $DIST_DIR/mobile_release.apk
+cp $OUTPUTS/mapping/release/mapping.txt $DIST_DIR/mobile_release_apk_mapping.txt
 
 # Build App Bundles
 # Don't clean here, otherwise all apks are gone.
 $DIR/gradlew bundle ${GRADLE_PARAMS}
 
 # Debug
-cp $OUTPUTS/bundle/instantDebug/mobile.aab $DIST_DIR/mobile_instant_debug.aab
-cp $OUTPUTS/bundle/installedDebug/mobile.aab $DIST_DIR/mobile_installed_debug.aab
+cp $OUTPUTS/bundle/debug/mobile-debug.aab $DIST_DIR/mobile_debug.aab
 
 # Staging
-cp $OUTPUTS/bundle/instantStaging/mobile.aab $DIST_DIR/mobile_instant_staging.aab
-cp $OUTPUTS/bundle/installedStaging/mobile.aab $DIST_DIR/mobile_installed_staging.aab
+cp $OUTPUTS/bundle/staging/mobile-staging.aab $DIST_DIR/mobile_staging.aab
 
 # Release
-cp $OUTPUTS/bundle/instantRelease/mobile.aab $DIST_DIR/mobile_instant_release.aab
-cp $OUTPUTS/mapping/instant/release/mapping.txt $DIST_DIR/mobile_instant_relase_aab_mapping.txt
-
-cp $OUTPUTS/bundle/installedRelease/mobile.aab $DIST_DIR/mobile_installed_release.aab
-cp $OUTPUTS/mapping/installed/release/mapping.txt $DIST_DIR/mobile_installed_aab_mapping.txt
+cp $OUTPUTS/bundle/release/mobile-release.aab $DIST_DIR/mobile_release.aab
+cp $OUTPUTS/mapping/release/mapping.txt $DIST_DIR/mobile_relase_aab_mapping.txt
 
 BUILD_RESULT=$?
 
