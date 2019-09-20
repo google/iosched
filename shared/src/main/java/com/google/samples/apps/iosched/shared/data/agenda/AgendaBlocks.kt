@@ -67,17 +67,6 @@ import org.threeten.bp.ZonedDateTime
 fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
     return listOf(
         Block(
-            title = dataSource.getString(LABEL_BREAKFAST).value ?: LABEL_BREAKFAST_DEFAULT,
-            type = TYPE_MEAL,
-            color = COLOR_MEAL,
-            startTime = ZonedDateTime.parse(
-                dataSource.getString(BREAKFAST_DAY1_START_TIME).value
-            ),
-            endTime = ZonedDateTime.parse(
-                dataSource.getString(BREAKFAST_DAY1_END_TIME).value
-            )
-        ),
-        Block(
             title = dataSource.getString(LABEL_REGISTRATION).value ?: LABEL_REGISTRATION_DEFAULT,
             type = TYPE_REGISTRATION,
             color = COLOR_REGISTRATION,
@@ -89,9 +78,21 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             )
         ),
         Block(
+            title = dataSource.getString(LABEL_BREAKFAST).value ?: LABEL_BREAKFAST_DEFAULT,
+            type = TYPE_MEAL,
+            color = COLOR_MEAL,
+            startTime = ZonedDateTime.parse(
+                dataSource.getString(BREAKFAST_DAY1_START_TIME).value
+            ),
+            endTime = ZonedDateTime.parse(
+                dataSource.getString(BREAKFAST_DAY1_END_TIME).value
+            )
+        ),
+        Block(
             title = dataSource.getString(LABEL_KEYNOTE).value ?: LABEL_KEYNOTE_DEFAULT,
             type = TYPE_KEYNOTE,
             color = COLOR_KEYNOTE,
+            isDark = true,
             startTime = ZonedDateTime.parse(
                 dataSource.getString(KEYNOTE_START_TIME).value
             ),
@@ -166,18 +167,6 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
                 dataSource.getString(PARTY_END_TIME).value
             )
         ),
-
-        Block(
-            title = dataSource.getString(LABEL_BREAKFAST).value ?: LABEL_BREAKFAST_DEFAULT,
-            type = TYPE_MEAL,
-            color = COLOR_MEAL,
-            startTime = ZonedDateTime.parse(
-                dataSource.getString(BREAKFAST_DAY2_START_TIME).value
-            ),
-            endTime = ZonedDateTime.parse(
-                dataSource.getString(BREAKFAST_DAY2_END_TIME).value
-            )
-        ),
         Block(
             title = dataSource.getString(LABEL_REGISTRATION).value ?: LABEL_REGISTRATION_DEFAULT,
             type = TYPE_REGISTRATION,
@@ -187,6 +176,17 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             ),
             endTime = ZonedDateTime.parse(
                 dataSource.getString(REGISTRATION_DAY2_END_TIME).value
+            )
+        ),
+        Block(
+            title = dataSource.getString(LABEL_BREAKFAST).value ?: LABEL_BREAKFAST_DEFAULT,
+            type = TYPE_MEAL,
+            color = COLOR_MEAL,
+            startTime = ZonedDateTime.parse(
+                dataSource.getString(BREAKFAST_DAY2_START_TIME).value
+            ),
+            endTime = ZonedDateTime.parse(
+                dataSource.getString(BREAKFAST_DAY2_END_TIME).value
             )
         ),
         Block(
@@ -262,8 +262,8 @@ private const val TYPE_SESSIONS = "session"
 private const val TYPE_MEAL = "meal"
 private const val TYPE_AFTER_HOURS = "after_hours"
 
-private const val COLOR_REGISTRATION = 0xffe6e6e6.toInt()
-private const val COLOR_KEYNOTE = 0xfffdc93e.toInt()
-private const val COLOR_SESSIONS = 0xff73bbf5.toInt()
-private const val COLOR_MEAL = 0xff9bdd7c.toInt()
+private const val COLOR_REGISTRATION = 0xffd7effe.toInt()
+private const val COLOR_KEYNOTE = 0xff4285f4.toInt()
+private const val COLOR_SESSIONS = 0xfff86734.toInt()
+private const val COLOR_MEAL = 0xff3ddc84.toInt()
 private const val COLOR_AFTER_HOURS = 0xff202124.toInt()

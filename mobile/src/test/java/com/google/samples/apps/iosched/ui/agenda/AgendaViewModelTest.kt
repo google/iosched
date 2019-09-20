@@ -22,8 +22,8 @@ import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.shared.data.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
-import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
@@ -53,16 +53,56 @@ class AgendaViewModelTest {
 
     @Test
     fun agendaDataIsLoaded() = coroutineRule.runBlockingTest {
+        val repository = FakeAgendaRepository()
         val viewModel = AgendaViewModel(
-            LoadAgendaUseCase(FakeAgendaRepository(), coroutineRule.testDispatcher),
+            LoadAgendaUseCase(
+                repository, coroutineRule.testDispatcher
+            ),
             GetTimeZoneUseCase(FakePreferenceStorage(), coroutineRule.testDispatcher)
         )
         val blocks = LiveDataTestUtil.getValue(viewModel.agenda)
-        assertThat(blocks, isEqualTo(TestData.agenda))
+        assertThat(blocks, isEqualTo(repository.getAgenda(false)))
     }
 
-    internal class FakeAgendaRepository : AgendaRepository {
+    @Test
+    fun agendaDataIsLoaded_refresh() = coroutineRule.runBlockingTest {
+        val repository = FakeAgendaRepository()
+        val viewModel = AgendaViewModel(
+            LoadAgendaUseCase(
+                repository, coroutineRule.testDispatcher
+            ),
+            GetTimeZoneUseCase(FakePreferenceStorage(), coroutineRule.testDispatcher)
+        )
 
-        override suspend fun getAgenda(forceRefresh: Boolean): List<Block> = TestData.agenda
+        viewModel.refreshAgenda()
+
+        val blocks = LiveDataTestUtil.getValue(viewModel.agenda)
+        assertThat(blocks, isEqualTo(repository.getAgenda(true)))
     }
 }
+
+class FakeAgendaRepository : AgendaRepository {
+
+    private val agenda = listOf(validBlock1, validBlock2)
+    private val agendaRefreshed = listOf(validBlock2)
+
+    override suspend fun getAgenda(forceRefresh: Boolean): List<Block> {
+        return if (forceRefresh) agendaRefreshed else agenda
+    }
+}
+
+val validBlock1 = Block(
+    title = "I'm not disabled",
+    type = "meal",
+    color = 0xffff00ff.toInt(),
+    startTime = TimeUtils.ConferenceDays[0].start.plusHours(1L),
+    endTime = TimeUtils.ConferenceDays[0].start.plusHours(2L)
+)
+
+val validBlock2 = Block(
+    title = "I'm not disabled",
+    type = "meal",
+    color = 0xffff00ff.toInt(),
+    startTime = TimeUtils.ConferenceDays[0].start.plusHours(2L),
+    endTime = TimeUtils.ConferenceDays[0].start.plusHours(3L)
+)

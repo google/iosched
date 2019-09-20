@@ -16,12 +16,15 @@
 
 package com.google.samples.apps.iosched.shared.domain.agenda
 
-import com.google.samples.apps.iosched.model.Block
-import com.google.samples.apps.iosched.shared.data.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.result.data
+import com.google.samples.apps.iosched.shared.util.FakeAgendaRepository
+import com.google.samples.apps.iosched.shared.util.afterConferenceBlock
+import com.google.samples.apps.iosched.shared.util.beforeConferenceBlock
+import com.google.samples.apps.iosched.shared.util.disabledBlock
+import com.google.samples.apps.iosched.shared.util.validBlock1
+import com.google.samples.apps.iosched.shared.util.validBlock2
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
-import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.runBlockingTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.core.IsEqual.equalTo
@@ -38,20 +41,98 @@ class LoadAgendaUseCaseTest {
     var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun testLoadAgenda() = coroutineRule.runBlockingTest {
+    fun testLoadAgenda_singleBlock() = coroutineRule.runBlockingTest {
         val useCase = LoadAgendaUseCase(
-            FakeAgendaRepository(),
+            FakeAgendaRepository(validBlock1),
             coroutineRule.testDispatcher
         )
 
         val result = useCase(false)
 
         assertThat(result, instanceOf(Success::class.java))
-        assertThat(result.data, equalTo(TestData.agenda))
+        assertThat(result.data, equalTo(listOf(validBlock1)))
     }
-}
 
-internal class FakeAgendaRepository : AgendaRepository {
+    @Test
+    fun testFakeRepository_distinctBlocks() = coroutineRule.runBlockingTest {
+        val fakeAgendaRepository = FakeAgendaRepository(validBlock1)
+        val useCase = LoadAgendaUseCase(
+            fakeAgendaRepository,
+            coroutineRule.testDispatcher
+        )
 
-    override suspend fun getAgenda(forceRefresh: Boolean): List<Block> = TestData.agenda
+        fakeAgendaRepository.agenda.add(validBlock1)
+
+        val result = useCase(false)
+
+        assertThat(result, instanceOf(Success::class.java))
+        assertThat(result.data, equalTo(listOf(validBlock1)))
+    }
+
+    @Test
+    fun testFakeRepository_multipleBlocks() = coroutineRule.runBlockingTest {
+        val fakeAgendaRepository = FakeAgendaRepository(validBlock1)
+        val useCase = LoadAgendaUseCase(
+            fakeAgendaRepository,
+            coroutineRule.testDispatcher
+        )
+
+        fakeAgendaRepository.agenda.add(validBlock2)
+
+        val result = useCase(false)
+
+        assertThat(result, instanceOf(Success::class.java))
+        assertThat(result.data, equalTo(listOf(validBlock1, validBlock2)))
+    }
+
+    @Test
+    fun testLoadAgenda_withDisabledItem_afterConference() = coroutineRule.runBlockingTest {
+        val fakeAgendaRepository = FakeAgendaRepository(validBlock1)
+        val useCase = LoadAgendaUseCase(
+            fakeAgendaRepository,
+            coroutineRule.testDispatcher
+        )
+
+        fakeAgendaRepository.agenda.add(afterConferenceBlock)
+
+        // Load data
+        val result = useCase(false)
+
+        // Item should not be added
+        assertThat(result.data, equalTo(listOf(validBlock1)))
+    }
+
+    @Test
+    fun testLoadAgenda_withDisabledItem_beforeConference() = coroutineRule.runBlockingTest {
+        val fakeAgendaRepository = FakeAgendaRepository(validBlock1)
+        val useCase = LoadAgendaUseCase(
+            fakeAgendaRepository,
+            coroutineRule.testDispatcher
+        )
+
+        fakeAgendaRepository.agenda.add(beforeConferenceBlock)
+
+        // Load data
+        val result = useCase(false)
+
+        // Item should not be added
+        assertThat(result.data, equalTo(listOf(validBlock1)))
+    }
+
+    @Test
+    fun testLoadAgenda_withDisabledItem_startEndTimesEqual() = coroutineRule.runBlockingTest {
+        val fakeAgendaRepository = FakeAgendaRepository(validBlock1)
+        val useCase = LoadAgendaUseCase(
+            fakeAgendaRepository,
+            coroutineRule.testDispatcher
+        )
+
+        fakeAgendaRepository.agenda.add(disabledBlock)
+
+        // Load data
+        val result = useCase(false)
+
+        // Item should not be added
+        assertThat(result.data, equalTo(listOf(validBlock1)))
+    }
 }

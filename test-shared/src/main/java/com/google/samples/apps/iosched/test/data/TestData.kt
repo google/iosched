@@ -31,11 +31,10 @@ import org.threeten.bp.ZonedDateTime
  * Test data for unit tests.
  */
 object TestData {
-
-    val CONFERENCE_DAY1_START = "2018-05-08T07:00:00-07:00"
-    val CONFERENCE_DAY1_END = "2018-05-08T22:00:01-07:00"
-    val CONFERENCE_DAY2_END = "2018-05-09T22:00:01-07:00"
-    val CONFERENCE_DAY2_START = "2018-05-09T08:00:00-07:00"
+    val CONFERENCE_DAY1_START = "2019-10-23T07:00:00-07:00"
+    val CONFERENCE_DAY1_END = "2019-10-23T22:00:01-07:00"
+    val CONFERENCE_DAY2_START = "2019-10-24T08:00:00-07:00"
+    val CONFERENCE_DAY2_END = "2019-10-24T22:00:01-07:00"
 
     val TestConferenceDays = listOf(
         ConferenceDay(

@@ -49,9 +49,7 @@ class AgendaViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            preferConferenceTimeZoneResult.value = getTimeZoneUseCase(Unit).data ?: true
-        }
-        viewModelScope.launch {
+            refreshConferenceTimeZone()
             _agenda.value = loadAgendaUseCase(false).data
         }
     }
@@ -60,7 +58,12 @@ class AgendaViewModel @Inject constructor(
         // Agenda is lightweight and it's not possible to observe the changes with Remote Config,
         // we refresh the agenda on fragment start
         viewModelScope.launch {
+            refreshConferenceTimeZone()
             _agenda.value = loadAgendaUseCase(true).data
         }
+    }
+
+    private suspend fun refreshConferenceTimeZone() {
+        preferConferenceTimeZoneResult.value = getTimeZoneUseCase(Unit).data ?: true
     }
 }
