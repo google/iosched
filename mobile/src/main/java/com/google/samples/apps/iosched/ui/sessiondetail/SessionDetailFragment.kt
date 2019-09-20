@@ -194,7 +194,9 @@ class SessionDetailFragment : DaggerFragment() {
         sessionDetailViewModel.session.observe(this, Observer {
             if (it != null && !titleUpdated) {
                 sessionTitle = it.title
-                analyticsHelper.sendScreenView("Session Details: $sessionTitle", requireActivity())
+                activity?.let { activity ->
+                    analyticsHelper.sendScreenView("Session Details: $sessionTitle", activity)
+                }
                 titleUpdated = true
             }
         })
