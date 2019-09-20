@@ -28,6 +28,7 @@ android {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionName rootProject.versionName
+        versionCode rootProject.versionCodeMobile
         testInstrumentationRunner "com.google.samples.apps.iosched.tests.CustomTestRunner"
 
         vectorDrawables.useSupportLibrary true
@@ -53,19 +54,6 @@ android {
             // "staging" build type.
             // Used with :test-shared, which doesn't have a staging variant.
             matchingFallbacks = ['debug']
-        }
-    }
-
-    flavorDimensions "servingType"
-
-    productFlavors {
-        installed {
-            dimension "servingType"
-            versionCode rootProject.versionCodeMobile
-        }
-        instant {
-            dimension "servingType"
-            versionCode rootProject.versionCodeInstant
         }
     }
     dataBinding {

@@ -25,7 +25,7 @@ jobs:
       - run:
           name: Build test and lint
           command: |
-            ./gradlew assembleInstalledStaging assembleInstalledStagingAndroidTest testInstalledDebugUnitTest testInstalledReleaseUnitTest lintInstalledDebug
+            ./gradlew assembleStaging assembleStagingAndroidTest testDebugUnitTest testReleaseUnitTest lintDebug
       - run:
           name: Save test results
           command: |
@@ -56,8 +56,8 @@ jobs:
           command: |
             BUILD_DIR=build_${CIRCLE_BUILD_NUM}
             sudo gcloud firebase test android run \
-              --app mobile/build/outputs/apk/installed/staging/mobile-installed-staging.apk \
-              --test mobile/build/outputs/apk/androidTest/installed/staging/mobile-installed-staging-androidTest.apk \
+              --app mobile/build/outputs/apk/staging/mobile-staging.apk \
+              --test mobile/build/outputs/apk/androidTest/staging/mobile-staging-androidTest.apk \
               --results-bucket cloud-test-${GOOGLE_PROJECT_ID}-iosched \
               --results-dir=${BUILD_DIR}
       - run:
