@@ -1940,7 +1940,7 @@
     "tags": [
         {
             "category": "topic",
-            "color": "#3D82EE",
+            "color": "#3d61cd",
             "fontColor": "#FFFFFF",
             "id": "591b24b1-1fa3-5d4c-b404-1f1012d350ed",
             "name": "Keynote",
@@ -1949,7 +1949,7 @@
         },
         {
             "category": "topic",
-            "color": "#cce9c2",
+            "color": "#86e6a9",
             "fontColor": "#202124",
             "id": "bc1340e2-d2f8-570b-8982-83f6a4d5d824",
             "name": "Google Play",
@@ -1958,7 +1958,7 @@
         },
         {
             "category": "topic",
-            "color": "#FDC93E",
+            "color": "#ff6c00",
             "fontColor": "#202124",
             "id": "b4e34828-0116-5b0e-9a95-e366979de8a1",
             "name": "Jetpack",
@@ -1967,7 +1967,7 @@
         },
         {
             "category": "topic",
-            "color": "#FFEAB3",
+            "color": "#ff9e80",
             "fontColor": "#202124",
             "id": "efd3c281-11fb-53af-8002-3f7482febeee",
             "name": "Kotlin",
@@ -1976,8 +1976,8 @@
         },
         {
             "category": "topic",
-            "color": "#FAA44F",
-            "fontColor": "#202124",
+            "color": "#457a97",
+            "fontColor": "#FFFFFF",
             "id": "1602af24-46f8-5659-ab56-482d60047a3e",
             "name": "Platform",
             "order_in_category": 10,
@@ -1985,7 +1985,7 @@
         },
         {
             "category": "topic",
-            "color": "#A7D7FE",
+            "color": "#6DB4FF",
             "fontColor": "#202124",
             "id": "d1f91120-48c3-5495-9605-a2dcd3d6ff18",
             "name": "Android Studio",
@@ -1994,7 +1994,7 @@
         },
         {
             "category": "topic",
-            "color": "#FFCF9F",
+            "color": "#d7effe",
             "fontColor": "#202124",
             "id": "f7ac02bb-6f79-5905-afdb-5e4b6b7e3ddc",
             "name": "Wear OS",
@@ -2003,7 +2003,7 @@
         },
         {
             "category": "topic",
-            "color": "#9BDD7C",
+            "color": "#3ddc84",
             "fontColor": "#202124",
             "id": "7198c6c5-ecc0-5edf-b03f-9a7fd90f5b45",
             "name": "Chrome OS",
@@ -2012,8 +2012,8 @@
         },
         {
             "category": "topic",
-            "color": "#73BBF5",
-            "fontColor": "#202124",
+            "color": "#4285f4",
+            "fontColor": "#FFFFFF",
             "id": "21c49274-8aaa-50d2-8dd4-cc4c54506def",
             "name": "Android Auto",
             "order_in_category": 1,
@@ -2021,7 +2021,7 @@
         },
         {
             "category": "topic",
-            "color": "#60A83E",
+            "color": "#069f86",
             "fontColor": "#FFFFFF",
             "id": "93fc5a41-b825-5527-a80c-e6a0e8635b37",
             "name": "Android TV",
@@ -2030,8 +2030,8 @@
         },
         {
             "category": "topic",
-            "color": "#FF7E00",
-            "fontColor": "#202124",
+            "color": "#083042",
+            "fontColor": "#FFFFFF",
             "id": "81da4222-83da-572f-8f25-9b0b02974685",
             "name": "Material Design",
             "order_in_category": 8,
@@ -2039,7 +2039,7 @@
         },
         {
             "category": "topic",
-            "color": "#CC99FF",
+            "color": "#eff7cf",
             "fontColor": "#202124",
             "id": "72ed0d12-f77a-5805-9f00-d479d0aa918a",
             "name": "Other",
