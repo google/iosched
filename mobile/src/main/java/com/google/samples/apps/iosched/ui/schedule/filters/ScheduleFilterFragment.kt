@@ -220,13 +220,10 @@ fun setResetFiltersClickListener(
 ) {
     reset.setOnClickListener {
         eventFilters.forEach { outer ->
-            if (outer is ViewGroup) {
-                outer.forEach { view ->
-                    if (view is EventFilterView && view.isChecked) {
-                        view.animateCheckedAndInvoke(false) {
-                            listener.onClick(reset)
-                        }
-                    }
+            val eventView = outer.findViewById<EventFilterView>(R.id.filter_label)
+            if (eventView != null && eventView.isChecked) {
+                eventView.animateCheckedAndInvoke(false) {
+                    listener.onClick(reset)
                 }
             }
         }
