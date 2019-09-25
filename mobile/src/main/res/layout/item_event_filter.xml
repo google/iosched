@@ -34,7 +34,7 @@
         android:id="@+id/filter_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:checked="@{eventFilter.isChecked}"
+        android:checked="@{eventFilter.isSelected}"
         android:minHeight="?listPreferredItemHeightSmall"
         app:color="@{eventFilter.getColor()}"
         app:eventFilter="@{eventFilter}"

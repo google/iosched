@@ -129,6 +129,7 @@ class ScheduleFilterFragment : DaggerFragment() {
         binding.recyclerviewFilter.apply {
             adapter = filterAdapter
             setHasFixedSize(true)
+            itemAnimator = null
             (layoutManager as GridLayoutManager).spanSizeLookup =
                 ScheduleFilterSpanSizeLookup(filterAdapter)
             addOnScrollListener(object : OnScrollListener() {
