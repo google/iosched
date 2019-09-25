@@ -125,7 +125,7 @@ class SessionDetailFragment : DaggerFragment() {
 
         sessionDetailViewModel.navigateToSessionAction.observe(this, EventObserver { sessionId ->
             val action = SessionDetailFragmentDirections
-                .actionSessionDetailFragmentToSpeakerFragment(sessionId)
+                .actionSessionDetailFragmentSelf(sessionId)
             findNavController().navigate(action)
         })
 
