@@ -22,21 +22,33 @@
     <fragment
         android:id="@+id/scheduleFragment"
         android:name="com.google.samples.apps.iosched.ui.schedule.ScheduleFragment"
-        android:label="@string/title_schedule" >
+        android:label="@string/title_schedule">
         <action
             android:id="@+id/action_scheduleFragment_to_sessionDetailFragment"
-            app:destination="@id/sessionDetailFragment" />
+            app:destination="@id/sessionDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_scheduleFragment_to_speakerFragment"
-            app:destination="@id/speakerFragment" />
+            app:destination="@id/speakerFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_scheduleFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/sessionDetailFragment"
         android:name="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailFragment"
-        android:label="SessionDetailFragment" >
+        android:label="SessionDetailFragment">
         <argument
             android:name="sessionId"
             app:argType="string" />
@@ -45,31 +57,51 @@
             app:uri="adssched://sessions/{sessionId}" />
         <action
             android:id="@+id/action_sessionDetailFragment_to_speakerFragment"
-            app:destination="@id/speakerFragment" />
+            app:destination="@id/speakerFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/speakerFragment"
         android:name="com.google.samples.apps.iosched.ui.speaker.SpeakerFragment"
-        android:label="SpeakerFragment" >
+        android:label="SpeakerFragment">
         <argument
             android:name="speakerId"
             app:argType="string" />
         <action
             android:id="@+id/action_speakerFragment_self"
-            app:destination="@id/speakerFragment" />
+            app:destination="@id/speakerFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_speakerFragment_to_sessionDetailFragment"
-            app:destination="@id/sessionDetailFragment" />
+            app:destination="@id/sessionDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.google.samples.apps.iosched.ui.search.SearchFragment"
-        android:label="SearchFragment" >
+        android:label="SearchFragment">
         <action
             android:id="@+id/action_searchFragment_to_sessionDetailFragment"
-            app:destination="@id/sessionDetailFragment" />
+            app:destination="@id/sessionDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_searchFragment_to_speakerFragment"
-            app:destination="@id/speakerFragment" />
+            app:destination="@id/speakerFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 </navigation>
