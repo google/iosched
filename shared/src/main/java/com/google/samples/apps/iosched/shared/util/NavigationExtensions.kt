@@ -21,12 +21,14 @@ import android.util.SparseArray
 import androidx.core.util.forEach
 import androidx.core.util.set
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.commit
+import androidx.fragment.app.commitNow
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.samples.apps.iosched.shared.R
 
 /*
  * Extracted from: https://github.com/googlesamples/android-architecture-components/tree/master/NavigationAdvancedSample
@@ -95,8 +97,10 @@ fun BottomNavigationView.setupWithNavController(
             val newlySelectedItemTag = graphIdToTagMap[item.itemId]
             if (selectedItemTag != newlySelectedItemTag) {
                 // Pop everything above the first fragment (the "fixed start destination")
-                fragmentManager.popBackStack(firstFragmentTag,
-                    FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                fragmentManager.popBackStack(
+                        firstFragmentTag,
+                        FragmentManager.POP_BACK_STACK_INCLUSIVE
+                )
                 val selectedFragment = fragmentManager.findFragmentByTag(newlySelectedItemTag)
                     as NavHostFragment
 
@@ -104,25 +108,20 @@ fun BottomNavigationView.setupWithNavController(
                 if (firstFragmentTag != newlySelectedItemTag) {
                     // Commit a transaction that cleans the back stack and adds the first fragment
                     // to it, creating the fixed started destination.
-                    fragmentManager.beginTransaction()
-                        .attach(selectedFragment)
-                        .setPrimaryNavigationFragment(selectedFragment)
-                        .apply {
-                            // Detach all other Fragments
-                            graphIdToTagMap.forEach { _, fragmentTagIter ->
-                                if (fragmentTagIter != newlySelectedItemTag) {
-                                    detach(fragmentManager.findFragmentByTag(firstFragmentTag)!!)
-                                }
+                    fragmentManager.commit {
+                        attach(selectedFragment)
+                        setPrimaryNavigationFragment(selectedFragment)
+
+                        // Detach all other Fragments
+                        graphIdToTagMap.forEach { _, fragmentTagIter ->
+                            if (fragmentTagIter != newlySelectedItemTag) {
+                                detach(fragmentManager.findFragmentByTag(firstFragmentTag)!!)
                             }
                         }
-                        .addToBackStack(firstFragmentTag)
-                        .setCustomAnimations(
-                            R.anim.nav_default_enter_anim,
-                            R.anim.nav_default_exit_anim,
-                            R.anim.nav_default_pop_enter_anim,
-                            R.anim.nav_default_pop_exit_anim)
-                        .setReorderingAllowed(true)
-                        .commit()
+                        addToBackStack(firstFragmentTag)
+                        setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        setReorderingAllowed(true)
+                    }
                 }
                 selectedItemTag = newlySelectedItemTag
                 isOnFirstFragment = selectedItemTag == firstFragmentTag
@@ -201,9 +200,9 @@ private fun detachNavHostFragment(
     fragmentManager: FragmentManager,
     navHostFragment: NavHostFragment
 ) {
-    fragmentManager.beginTransaction()
-        .detach(navHostFragment)
-        .commitNow()
+    fragmentManager.commitNow {
+        detach(navHostFragment)
+    }
 }
 
 private fun attachNavHostFragment(
@@ -211,14 +210,12 @@ private fun attachNavHostFragment(
     navHostFragment: NavHostFragment,
     isPrimaryNavFragment: Boolean
 ) {
-    fragmentManager.beginTransaction()
-        .attach(navHostFragment)
-        .apply {
-            if (isPrimaryNavFragment) {
-                setPrimaryNavigationFragment(navHostFragment)
-            }
+    fragmentManager.commitNow {
+        attach(navHostFragment)
+        if (isPrimaryNavFragment) {
+            setPrimaryNavigationFragment(navHostFragment)
         }
-        .commitNow()
+    }
 }
 
 private fun obtainNavHostFragment(
@@ -229,13 +226,15 @@ private fun obtainNavHostFragment(
 ): NavHostFragment {
     // If the Nav Host fragment exists, return it
     val existingFragment = fragmentManager.findFragmentByTag(fragmentTag) as NavHostFragment?
-    existingFragment?.let { return it }
+    if (existingFragment != null) {
+        return existingFragment
+    }
 
     // Otherwise, create it and return it.
     val navHostFragment = NavHostFragment.create(navGraphId)
-    fragmentManager.beginTransaction()
-        .add(containerId, navHostFragment, fragmentTag)
-        .commitNow()
+    fragmentManager.commitNow {
+        add(containerId, navHostFragment, fragmentTag)
+    }
     return navHostFragment
 }
 
