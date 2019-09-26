@@ -32,6 +32,12 @@ import java.util.concurrent.TimeUnit
  */
 class IoschedFirebaseMessagingService : FirebaseMessagingService() {
 
+    override fun onNewToken(token: String?) {
+        super.onNewToken(token)
+        Timber.d("New firebase token: $token")
+        // Nothing to do, we update the user's firebase token via FirebaseAuthStateUserDataSource
+    }
+
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         Timber.d("Message data payload: ${remoteMessage?.data}")
         val data = remoteMessage?.data ?: return

@@ -34,15 +34,10 @@
             tools:node="remove" />
 
         <service
-            android:name=".fcm.IoschedFirebaseMessagingService">
+            android:name=".fcm.IoschedFirebaseMessagingService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-        <service
-            android:name=".fcm.IoschedFirebaseInstanceIDService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
