@@ -72,6 +72,7 @@
             android:paddingTop="@dimen/spacing_normal"
             android:textColor="?android:textColorPrimary"
             android:visibility="gone"
+            android:textIsSelectable="true"
             tools:text="This is a card description" />
 
     </LinearLayout>

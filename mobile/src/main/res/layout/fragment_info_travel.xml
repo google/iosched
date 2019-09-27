@@ -32,6 +32,28 @@
         android:paddingTop="@dimen/margin_normal"
         android:showDividers="middle">
 
+
+        <com.google.samples.apps.iosched.widget.CollapsibleCard
+            android:id="@+id/dates_location_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardDescription="@string/dates_location_description"
+            app:cardTitle="@string/dates_location_title" />
+
+        <com.google.samples.apps.iosched.widget.CollapsibleCard
+            android:id="@+id/stay_informed_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardDescription="@string/stay_informed_description"
+            app:cardTitle="@string/stay_informed_title" />
+
+        <com.google.samples.apps.iosched.widget.CollapsibleCard
+            android:id="@+id/livestream_recordings_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardDescription="@string/livestream_recordings_description"
+            app:cardTitle="@string/livestream_recordings_title" />
+
         <com.google.samples.apps.iosched.widget.CollapsibleCard
             android:id="@+id/attending_sessions_card"
             android:layout_width="match_parent"
@@ -40,39 +62,25 @@
             app:cardTitle="@string/attending_sessions_title" />
 
         <com.google.samples.apps.iosched.widget.CollapsibleCard
-            android:id="@+id/badges_card"
+            android:id="@+id/bike_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardDescription="@string/badges_description"
-            app:cardTitle="@string/badges_title" />
+            app:cardDescription="@string/bike_description"
+            app:cardTitle="@string/bike_title" />
 
         <com.google.samples.apps.iosched.widget.CollapsibleCard
-            android:id="@+id/directions_parking_card"
+            android:id="@+id/lost_found_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardDescription="@string/travel_directions_description"
-            app:cardTitle="@string/travel_directions_title" />
+            app:cardDescription="@string/lost_found_description"
+            app:cardTitle="@string/lost_found_title" />
 
         <com.google.samples.apps.iosched.widget.CollapsibleCard
-            android:id="@+id/shuttle_card"
+            android:id="@+id/faq_meals_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardDescription="@string/travel_shuttle_description"
-            app:cardTitle="@string/travel_shuttle_title" />
-
-        <com.google.samples.apps.iosched.widget.CollapsibleCard
-            android:id="@+id/public_transportation_card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardDescription="@string/travel_public_transportation_description"
-            app:cardTitle="@string/travel_public_transportation_title" />
-
-        <com.google.samples.apps.iosched.widget.CollapsibleCard
-            android:id="@+id/carpooling_card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardDescription="@string/travel_carpool_parking_description"
-            app:cardTitle="@string/travel_carpool_parking_title" />
+            app:cardDescription="@string/faq_meals_description"
+            app:cardTitle="@string/faq_meals_title" />
 
         <com.google.samples.apps.iosched.widget.CollapsibleCard
             android:id="@+id/afterhours_card"
@@ -82,11 +90,11 @@
             app:cardTitle="@string/event_afterhours_title" />
 
         <com.google.samples.apps.iosched.widget.CollapsibleCard
-            android:id="@+id/accessibility_card"
+            android:id="@+id/badges_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardDescription="@string/accessibility_description"
-            app:cardTitle="@string/accessibility_title" />
+            app:cardDescription="@string/badges_description"
+            app:cardTitle="@string/badges_title" />
 
         <com.google.samples.apps.iosched.widget.CollapsibleCard
             android:id="@+id/attire_card"
@@ -96,11 +104,32 @@
             app:cardTitle="@string/attire_title" />
 
         <com.google.samples.apps.iosched.widget.CollapsibleCard
-            android:id="@+id/travel_card"
+            android:id="@+id/accessibility_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardDescription="@string/travel_childcare"
-            app:cardTitle="@string/travel_childcare_title" />
+            app:cardDescription="@string/accessibility_description"
+            app:cardTitle="@string/accessibility_title" />
+
+        <com.google.samples.apps.iosched.widget.CollapsibleCard
+            android:id="@+id/soliciting_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardDescription="@string/soliciting_description"
+            app:cardTitle="@string/soliciting_title" />
+
+        <com.google.samples.apps.iosched.widget.CollapsibleCard
+            android:id="@+id/youth_attendance_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardDescription="@string/youth_attendance_description"
+            app:cardTitle="@string/youth_attendance_title" />
+
+        <com.google.samples.apps.iosched.widget.CollapsibleCard
+            android:id="@+id/mothers_room_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardDescription="@string/mothers_room_description"
+            app:cardTitle="@string/mothers_room_title" />
 
         <com.google.samples.apps.iosched.widget.CollapsibleCard
             android:id="@+id/prayer_card"
@@ -110,11 +139,18 @@
             app:cardTitle="@string/prayer_title" />
 
         <com.google.samples.apps.iosched.widget.CollapsibleCard
-            android:id="@+id/soliciting_card"
+            android:id="@+id/childcare_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardDescription="@string/soliciting_description"
-            app:cardTitle="@string/soliciting_title" />
+            app:cardDescription="@string/childcare_description"
+            app:cardTitle="@string/childcare_title" />
+
+        <com.google.samples.apps.iosched.widget.CollapsibleCard
+            android:id="@+id/event_conduct_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardDescription="@string/event_conduct_description"
+            app:cardTitle="@string/event_conduct_title" />
 
     </LinearLayout>
 

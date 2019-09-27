@@ -68,12 +68,12 @@ class InfoTest {
     fun info_basicViewsDisplayed() {
         onView(withText(resources.getString(R.string.event_types_header)))
             .check(matches(isDisplayed()))
-        // Travel tab
+        // FAQ tab
         onView(allOf(
             withParent(withClassName(endsWith("TabView"))),
             withText(resources.getString(R.string.travel_title))))
             .perform(click())
-        onView(withText(resources.getString(R.string.travel_directions_title)))
+        onView(withText(resources.getString(R.string.dates_location_title)))
             .check(matches(isDisplayed()))
         // About tab
         onView(withText(resources.getString(R.string.about_title))).perform(click())

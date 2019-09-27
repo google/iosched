@@ -182,43 +182,18 @@
     <string name="accessibility_title">Accessibility Accommodations for Attendees</string>
     <string name="badges_title" translation_description="Header label for badges details.">Badges</string>
     <string name="travel_shuttle_title" translation_description="Header label for shuttle service details.">Shuttles</string>
-    <string name="travel_carpool_parking_title" translation_description="Header label for parking details.">Car and Bike Parking</string>
-    <string name="travel_ride_sharing_title" translation_description="Header label for ride sharing app details (i.e. Lyft Line, Waze Carpool).">Ride Sharing</string>
-    <string name="travel_public_transportation_title" translation_description="Header label for public transportation details.">Public Transportation</string>
-    <string name="travel_biking_title" translation_description="Header label for bicycling details">Biking</string>
-    <string name="travel_childcare_title" translation_description="Header label for Mother's room details">Mother\'s room and childcare</string>
     <string name="prayer_title" translation_description="Header label for Mother's room details">Prayer Room</string>
-
-    <string name="travel_directions_description" translation_description="Instructions on how to find directions to the conference."><![CDATA[
-    TODO
-    ]]></string>
-    <string name="travel_shuttle_description" translation_description="Shuttle service instructions."><![CDATA[
-    <p>TODO: Shuttles will be provided from the Mountain View Caltrain station to the Computer History Museum in the morning and from the Computer History Museum to the Mountain View Caltrain station in the evening.</p><p>Morning Shuttles will run every 15 minutes from 7:00am-10:00am.</p><p>Evening Shuttles will run every 15 minutes from 6:00pm-11:00pm.</p>
-    ]]></string>
-    <string name="travel_carpool_parking_description" translation_description="Carpool and parking instructions."><![CDATA[
-    <p>TODO:There are a limited number of parking spaces available at the Computer History Museum. However, overflow parking will be available on a first-come first-served basis.</p>
-    <p>Bike parking is complimentary for attendees and will be available outside of the venue during event hours. Please note that there is only enough parking for 10 bicycles. Parking will be on a first-come, first-served basis.</p>
-    ]]></string>
-    <string name="travel_public_transportation_description" translation_description="Public transportation instructions."><![CDATA[
-    <p>TODO: Downtown Mountain View Station</p><p>600 W Evelyn Ave, Mountain View, CA 94041. See <a href="http://www.caltrain.com/schedules/weekdaytimetable.html">schedule</a> for current departure and arrival times.
-    ]]></string>
-    <string name="travel_childcare" translation_description="Mother's room and childcare instructions"><![CDATA[
-    Please ask a member of staff at the registration or help desk for the location of each room onsite. We will be offering reimbursement for childcare for those attendees that may require it. To find out more information please email <a href="mailto:android-dev-summit@google.com">android-dev-summit@google.com</a>.
-    ]]></string>
 
     <string name="attending_sessions_description" translation_description="Attending sessions instructions"><![CDATA[
     <p>All presentations will be in English. Attendance at sessions and product demos is on a first-come, first-served basis.</p>
     ]]></string>
     <string name="badges_description" translation_description="Badges instructions"><![CDATA[
-    <p>Badge pickup will be available starting at TODO. Make sure to bring your photo ID along with your registration
-        confirmation email, as we’ll need to verify it prior to assigning
-        you your badge for this event. We’re OK with government issued
-        licenses, passports, and other forms of identification. If you don’t
-        have proper identification, you won’t be able to receive a badge and
-        won’t be admitted into the conference. Everyone is guaranteed a seat
-        for the keynotes but the best seats will be assigned on a first-
-        come, first-served basis. So make sure to arrive to the event on the
-        earlier side!</p>
+    <p>Badge pick up will be available starting at 08:00 AM on Wednesday, October 23.
+        Make sure to bring your photo ID along with your registration confirmation email, as
+        we\'ll need to verify it prior to assigning your badge for this event. We\'re OK
+        with government issued licenses, passports, and other forms of identification.
+        If you don\'t have proper identification, you won\'t be able to receive a badge
+        and won\'t be admitted into the event.</p>
      <p>Please note, you may not share, give, or otherwise provide your
         event badge to anyone. Badges aren’t replaceable, so don’t lose
         yours or you won’t be readmitted to the conference. You must wear
@@ -228,32 +203,18 @@
         and company or organization (if provided).</p>
     ]]></string>
     <string name="accessibility_description"><![CDATA[
-    <p>TODO Google strives to make events open and accessible to everyone,
-        regardless of disability or special needs. Participants with
-        disabilities and/or special needs should provide details in the
-        registration form and/or by emailing us at
-        <a href="https://developer.android.com/dev-summit/faq/android-dev-summit@google.com">
-        android-dev-summit@google.com</a>. This information will be kept
-        private and will be distributed only to the individuals who need to
-        know it to complete accommodation requests. Otherwise, please ask a
-        member of staff at the help desk for assistance or questions about
-        accessibility during the event.</p>
+    <p>Google strives to make events open and accessible to everyone, regardless of disability or
+      special needs. Participants with disabilities and/or special needs should provide details in
+      the registration form and/or by emailing us at android-dev-summit@google.com. This information
+      will be kept private and will be distributed only to the individuals who need to know it to
+      complete accommodation requests. Otherwise, please approach the help desk at the event venue
+      if you need assistance or have questions about accessibility during the event.</p>
     ]]></string>
     <string name="youth_attendance_description"><![CDATA[
-    <p>
-        Attendees must be at least 15 years of age to attend Android Dev Summit
-        2019 unaccompanied. Although 15-, 16- and 17-year-old attendees don’t
-        require an adult to accompany them, they must return a signed parental consent
-        form in advance of the event. Google does not offer chaperone tickets for 15-,
-        16- and 17-year-old attendees. Please contact <a href="https://developer.android.com/dev-summit/faq/android-dev-summit@google.com">
-        android-dev-summit@google.com</a> for more details.
-      </p><p>
-        Attendees younger than 15 years of age require parent or legal guardian to a
-        company them to attend Android Dev Summit 2019. The parent or legal guardian
-        of the minor attendee must return a signed parental consent form in advance of
-        the event. Please contact
-        <a href="https://developer.android.com/dev-summit/faq/android-dev-summit@google.com">android-dev-summit@google.com</a>
-        for more details.
+    <p>Attendees must be at least 15 years old to attend unaccompanied.
+      All attendees under 18 years of age must return a signed parental/guardian consent form in
+      advance of the event. Please contact android-dev-summit@google.com to obtain and submit a
+      consent form prior to attending the event.
       </p>
     ]]></string>
     <string name="attire_description">The event will be held indoors. It’s a developer event with no enforced dress code, so please be comfortable and casual. There will be a free coat check available near registration for your convenience.</string>
@@ -262,7 +223,6 @@
 
     <string name="view_sessions_text" translation_description="Link label for viewing all sessions in schedule.">View Sessions</string>
     <string name="view_codelabs_text" translation_description="Link label for viewing all codelabs.">View Codelabs</string>
-    <string name="view_events_text" translation_description="Link label for viewing all events.">View Events</string>
     <string name="wifi_network_label" translation_description="Label for wifi network name.">Wifi network:</string>
     <string name="wifi_password_label" translation_description="Label for wifi network password">Password:</string>
     <string name="wifi_install_success" translation_description="Snackbar message when wifi network is successfully saved.">Wifi network saved</string>
@@ -276,14 +236,50 @@
     <string name="event_officehours_title" translation_description="Header label for general information on &quot;office hours and app reviews&quot;.">Office Hour Pods</string>
     <string name="event_fireside_title" translation_description="Header label for general information on &quot;after hours&quot;">Fireside chats</string>
     <string name="event_meals_title" translation_description="Header label for general information on &quot;meals&quot;">Meals</string>
+    <string name="dates_location_title" translation_description="Header label for general information on &quot;2019 Dates and location&quot;">2019 Dates and location</string>
+    <string name="stay_informed_title" translation_description="Header label for general information on &quot;Stay informed&quot;">Stay informed</string>
+    <string name="livestream_recordings_title" translation_description="Header label for general information on &quot;Livestream and recordings&quot;">Livestream and recordings</string>
+    <string name="bike_title" translation_description="Header label for general information on &quot;Bike parking&quot;">Bike parking</string>
+    <string name="lost_found_title" translation_description="Header label for general information on &quot;Lost and Found&quot;">Lost and Found</string>
+    <string name="faq_meals_title" translation_description="Header label for general information on &quot;Meals&quot;">Meals</string>
+    <string name="mothers_room_title" translation_description="Header label for general information on &quot;Mother’s room&quot;">Mother’s room</string>
+    <string name="event_conduct_title" translation_description="Header label for general information on &quot;Event conduct&quot;">Event conduct</string>
+    <string name="childcare_title" translation_description="Header label for general information on &quot;Childcare&quot;">Childcare</string>
     <string name="event_sessions_description" translation_description="General information on sessions">Sessions are a chance to learn about Android’s newest technologies directly from Android engineers and leadership. Here you’ll see presentations and demos on our latest features and updates from the staff who helped build them.</string>
     <string name="event_sandbox_description" translation_description="General information on sandboxes.">Dedicated spaces to explore, learn, and play with our latest products and platforms via interactive demos, physical installations, and more.</string>
     <string name="event_codelabs_description" translation_description="General information on codelabs.">Google Developers Codelabs provide a guided, tutorial, hands-on coding experience by stepping you through the process of building a small application, or adding a new feature to an existing application.</string>
     <string name="event_lightning_description" translation_description="General information on Lightning talks.">A lightning talk is very short and focused presentation that lasts only a few minutes, using a format that introduces urgency. This style of micro presentation allows many speakers to present in a single session at a forum, thereby quickly transferring information and avoiding “death by powerpoint” at conferences.</string>
-    <string name="event_afterhours_description" translation_description="General information on after hours.">All registered attendees are invited to the after party on the evening of TODO. Event credentials will be required for entry. Please join us for appetizers, drinks, music, games, and more. Alcoholic beverages will be available for those 21 years of age and over.</string>
+    <string name="event_afterhours_description" translation_description="General information on after hours.">All registered attendees are invited to the party on the evening of October 23. Event credentials will be required for entry. Please join us for food, drinks, music, games, and more. Alcoholic beverages will be available for those 21 years of age and over.</string>
     <string name="event_officehours_description" translation_description="General information on office hours and app reviews.">Office Hour Pods are your chance to meet one-on-one with Android experts to ask all your technical questions! Here, you’ll have an opportunity to receive advice and tips on your specific app-related projects.</string>
     <string name="event_fireside_description" translation_description="General information on Fireside chats.">A fireside chat is an information discussion between a moderator and one or more Android professionals in front of an audience. Although there won’t be a fire to sit beside, the conversational tone of the chat typically evokes an easy and relaxed language that promotes examples and analogies for better understanding. The audience is often invited to ask questions or make remarks either during or after the chat.</string>
     <string name="event_meals_description" translation_description="General information on meals.">Attendees are offered complimentary breakfast, lunch, and snacks on the day of the conference.</string>
+
+    <string name="dates_location_description"><![CDATA[
+    <p>Android Dev Summit 2019 will be held October 23–24, 2019, at the <a href="https://goo.gl/maps/uPCQBxtJasR3hzjn9">Google Event Center (MP7), 1170 Bordeaux Dr, Sunnyvale, CA 94089</a>.
+    </p>]]></string>
+    <string name="stay_informed_description"><![CDATA[
+    <p>For the latest information about sessions, speakers, and activities, visit the <a href="https://developer.android.com/dev-summit/">Android Dev Summit website</a>,
+    follow us on <a href="https://twitter.com/AndroidDev">Twitter</a>, or
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdgYq8FgW9eGyaUqIF7VFkPpvRPTcvjg4meeBOMAe_cGYPywA/viewform">sign up</a> for event updates.
+    You can also follow and join the social conversation about the event via the official <a href="https://twitter.com/hashtag/androiddevsummit">#AndroidDevSummit</a> hashtag.
+    In addition, we will email important information to all accepted applicants, along with check-in instructions prior to the event.</p>
+    ]]></string>
+    <string name="livestream_recordings_description"><![CDATA[
+    <p>If you cannot attend this event in person, then watch the livestream of the
+      keynote and all sessions on the app or on the Android Dev Summit 2019
+      <a href="/dev-summit/">website</a> throughout the event. Sessions will be recorded
+      and available after the event on the
+      <a href="http://www.youtube.com/user/androiddevelopers">Android Developers YouTube Channel</a>.</p>
+    ]]></string>
+    <string name="bike_description">This is complimentary for attendees and will be available outside of the venue during event hours. Parking will be on a first-come, first-served basis.</string>
+    <string name="lost_found_description">For any lost and found, please report to the help desk near registration where any items handed in will be kept safely.</string>
+    <string name="faq_meals_description">Attendees are offered complimentary breakfast, lunch, and snacks each day of the event.</string>
+    <string name="mothers_room_description">Please ask a member of staff at the registration or help desk to be shown the location of the Mother’s room.</string>
+    <string name="event_conduct_description"><![CDATA[
+    <p>Please review our <a href="https://developer.android.com/dev-summit/community-guidelines/">Community Guidelines</a>
+    to ensure that Android Dev Summit 2019 is a harassment-free and inclusive event experience for everyone.</p>
+    ]]></string>
+    <string name="childcare_description">We will be offering reimbursement for childcare for those attendees that may require it. For more information, please email android-dev-summit@google.com.</string>
     <string name="wifi_header" translation_description="Header label for wifi information.">Wifi</string>
     <string name="related_apps_header" translation_description="Header label for related apps.">Related Apps</string>
     <string name="event_types_header" translation_description="Header label for information on the different event types.">Event Types</string>
@@ -304,7 +300,7 @@
     <string name="settings_theme_dark" translation_description="Theme option to use the dark theme">Dark</string>
     <string name="settings_theme_battery" translation_description="Theme option to use which is set by the device Battery Saver feature being enabled">Set by Battery Saver</string>
 
-    <string name="faq_label" translation_description="Label for link to FAQ on website.">FAQ</string>
+    <string name="faq_label" translation_description="Label for link to FAQ on website.">Android Dev Summit website</string>
     <string name="built_with_material_components" translation_description="The app was built with Material Components.">Built with Material Components.</string>
     <string name="tap_to_join_network" translation_description="Tap to join Wifi network.">(tap to join network)</string>
 

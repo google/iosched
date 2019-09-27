@@ -29,7 +29,7 @@ class HtmlTextView @JvmOverloads constructor(
 ) : AppCompatTextView(context, attrs) {
 
     /**
-     * LinkMovementMethod conflicts with text ellipsizing so instead we we listen for touch events
+     * LinkMovementMethod conflicts with text ellipsizing so instead we listen for touch events
      * and implement link detection (logic borrowed from LinkMovementMethod).
      */
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -56,6 +56,6 @@ class HtmlTextView @JvmOverloads constructor(
                 return true
             }
         }
-        return false
+        return super.onTouchEvent(event)
     }
 }
