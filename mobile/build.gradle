@@ -106,8 +106,9 @@ dependencies {
     implementation "com.google.android.material:material:$rootProject.materialVersion"
     implementation "com.google.android:flexbox:$rootProject.flexboxVersion"
 
-    // Architecture Components
+    implementation "androidx.core:core-ktx:$rootProject.coreVersion"
 
+    // Architecture Components
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"

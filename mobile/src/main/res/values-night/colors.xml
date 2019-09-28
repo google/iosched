@@ -24,4 +24,12 @@
     <color name="color_on_secondary">#000</color>
 
     <color name="info_event_card_logo_background">#2EFFFFFF</color>
+
+    <!-- Scrim colors -->
+    <color name="system_ui_scrim_light">#2EFFFFFF</color> <!-- 18% white -->
+    <color name="system_ui_scrim_black">#B3000000</color> <!-- 70% black -->
+
+    <!-- In dark mode without light status bar we can use transparent -->
+    <color name="status_bar_scrim">@color/transparent</color>
+
 </resources>

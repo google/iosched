@@ -37,6 +37,7 @@ buildscript {
         appcompatVersion = '1.1.0-rc01'
         browserVersion = '1.0.0-beta01'
         constraintLayoutVersion = '1.1.2'
+        coreVersion = '1.2.0-alpha04'
         coroutinesVersion = '1.3.0'
         crashlyticsVersion = '2.9.4'
         dagger = "2.24"

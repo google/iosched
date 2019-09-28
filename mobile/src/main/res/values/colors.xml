@@ -16,9 +16,7 @@
   -->
 
 <resources>
-    <color name="status_bar">#202124</color>
     <color name="default_tag_color">#999</color>
-    <color name="highlight_light">#33ffffff</color> <!-- 20% white -->
     <color name="scrim">#33000000</color> <!-- 20% black -->
 
     <!-- Same value as textColorPrimary disabled -->
@@ -30,7 +28,16 @@
 
     <color name="info_event_card_logo_background">@color/android_blue_light</color>
 
-    <color name="transparent">#0fff</color>
+    <color name="transparent">#00000000</color>
+
+    <!-- Scrim colors -->
+    <color name="system_ui_scrim_light">#B3FFFFFF</color> <!-- 70% white -->
+    <color name="system_ui_scrim_black">#66000000</color> <!-- 40% black -->
+
+    <!-- We use a dark scrim by default since light status is API 23+ -->
+    <color name="status_bar_scrim">@color/system_ui_scrim_black</color>
+    <!-- We use a dark scrim by default since light nav bar is API 27+ -->
+    <color name="nav_bar_scrim">@color/system_ui_scrim_black</color>
 
     <integer-array name="swipe_refresh">
         <item>@color/android_blue</item>

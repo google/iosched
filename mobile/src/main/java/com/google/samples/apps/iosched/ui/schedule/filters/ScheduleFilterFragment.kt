@@ -25,6 +25,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.core.view.doOnLayout
 import androidx.core.view.forEach
+import androidx.core.view.updateLayoutParams
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableFloat
 import androidx.lifecycle.Observer
@@ -37,6 +38,7 @@ import com.google.samples.apps.iosched.databinding.FragmentScheduleFilterBinding
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
+import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_COLLAPSED
@@ -83,7 +85,7 @@ class ScheduleFilterFragment : DaggerFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentScheduleFilterBinding.inflate(inflater, container, false).apply {
-            setLifecycleOwner(this@ScheduleFilterFragment)
+            lifecycleOwner = viewLifecycleOwner
             headerAlpha = this@ScheduleFilterFragment.headerAlpha
             descriptionAlpha = this@ScheduleFilterFragment.descriptionAlpha
         }
@@ -111,6 +113,14 @@ class ScheduleFilterFragment : DaggerFragment() {
                     binding.filtersHeaderShadow.isActivated = recyclerView.canScrollVertically(-1)
                 }
             })
+        }
+
+        // Update the margins so that it scrolls and rests within sys ui
+        // We set the bottomMargin to 'grow' the bottom sheet up from the bottom
+        binding.root.doOnApplyWindowInsets { v, insets, _, initialMargin ->
+            v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                bottomMargin = initialMargin.bottom + insets.systemWindowInsetTop
+            }
         }
 
         behavior.addBottomSheetCallback(object : BottomSheetCallback {

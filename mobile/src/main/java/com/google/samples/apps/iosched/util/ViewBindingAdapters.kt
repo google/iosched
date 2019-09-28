@@ -22,9 +22,11 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.net.toUri
+import androidx.core.view.updateLayoutParams
 import androidx.databinding.BindingAdapter
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
@@ -92,4 +94,130 @@ fun imageUrl(imageView: ImageView, imageUrl: String?, placeholder: Drawable?) {
 @BindingAdapter("swipeRefreshColors")
 fun setSwipeRefreshColors(swipeRefreshLayout: CustomSwipeRefreshLayout, colorResIds: IntArray) {
     swipeRefreshLayout.setColorSchemeColors(*colorResIds)
+}
+
+@BindingAdapter("noopInsets")
+fun noopApplyWindowInsets(view: View, enabled: Boolean) {
+    if (enabled) {
+        view.setOnApplyWindowInsetsListener(NoopWindowInsetsListener)
+        view.requestApplyInsetsWhenAttached()
+    } else {
+        view.setOnApplyWindowInsetsListener(null)
+    }
+}
+
+@BindingAdapter(
+        "paddingLeftSystemWindowInsets",
+        "paddingTopSystemWindowInsets",
+        "paddingRightSystemWindowInsets",
+        "paddingBottomSystemWindowInsets",
+        "paddingLeftGestureInsets",
+        "paddingTopGestureInsets",
+        "paddingRightGestureInsets",
+        "paddingBottomGestureInsets",
+        "marginLeftSystemWindowInsets",
+        "marginTopSystemWindowInsets",
+        "marginRightSystemWindowInsets",
+        "marginBottomSystemWindowInsets",
+        "marginLeftGestureInsets",
+        "marginTopGestureInsets",
+        "marginRightGestureInsets",
+        "marginBottomGestureInsets",
+        requireAll = false
+)
+fun applySystemWindows(
+    view: View,
+    padSystemWindowLeft: Boolean,
+    padSystemWindowTop: Boolean,
+    padSystemWindowRight: Boolean,
+    padSystemWindowBottom: Boolean,
+    padGestureLeft: Boolean,
+    padGestureTop: Boolean,
+    padGestureRight: Boolean,
+    padGestureBottom: Boolean,
+    marginSystemWindowLeft: Boolean,
+    marginSystemWindowTop: Boolean,
+    marginSystemWindowRight: Boolean,
+    marginSystemWindowBottom: Boolean,
+    marginGestureLeft: Boolean,
+    marginGestureTop: Boolean,
+    marginGestureRight: Boolean,
+    marginGestureBottom: Boolean
+) {
+    require(((padSystemWindowLeft && padGestureLeft) ||
+            (padSystemWindowTop && padGestureTop) ||
+            (padSystemWindowRight && padGestureRight) ||
+            (padSystemWindowBottom && padGestureBottom) ||
+            (marginSystemWindowLeft && marginGestureLeft) ||
+            (marginSystemWindowTop && marginGestureTop) ||
+            (marginSystemWindowRight && marginGestureRight) ||
+            (marginSystemWindowBottom && marginGestureBottom)).not()) {
+        "Invalid parameters. Can not request system window and gesture inset handling" +
+                " for the same dimension"
+    }
+
+    view.doOnApplyWindowInsets { v, insets, initialPadding, initialMargin ->
+        // Padding handling
+
+        val paddingLeft = when {
+            padGestureLeft -> insets.systemGestureInsets.left
+            padSystemWindowLeft -> insets.systemWindowInsetLeft
+            else -> 0
+        }
+        val paddingTop = when {
+            padGestureTop -> insets.systemGestureInsets.top
+            padSystemWindowTop -> insets.systemWindowInsetTop
+            else -> 0
+        }
+        val paddingRight = when {
+            padGestureRight -> insets.systemGestureInsets.right
+            padSystemWindowRight -> insets.systemWindowInsetRight
+            else -> 0
+        }
+        val paddingBottom = when {
+            padGestureBottom -> insets.systemGestureInsets.bottom
+            padSystemWindowBottom -> insets.systemWindowInsetBottom
+            else -> 0
+        }
+        v.setPadding(
+                initialPadding.left + paddingLeft,
+                initialPadding.top + paddingTop,
+                initialPadding.right + paddingRight,
+                initialPadding.bottom + paddingBottom
+        )
+
+        // Margin handling
+        val marginInsetRequested = marginSystemWindowLeft || marginGestureLeft ||
+                marginSystemWindowTop || marginGestureTop || marginSystemWindowRight ||
+                marginGestureRight || marginSystemWindowBottom || marginGestureBottom
+        require(!(marginInsetRequested && v.layoutParams !is ViewGroup.MarginLayoutParams)) {
+            "Margin inset handling requested but view LayoutParams do not extend MarginLayoutParams"
+        }
+        val marginLeft = when {
+            marginGestureLeft -> insets.systemGestureInsets.left
+            marginSystemWindowLeft -> insets.systemWindowInsetLeft
+            else -> 0
+        }
+        val marginTop = when {
+            marginGestureTop -> insets.systemGestureInsets.top
+            marginSystemWindowTop -> insets.systemWindowInsetTop
+            else -> 0
+        }
+        val marginRight = when {
+            marginGestureRight -> insets.systemGestureInsets.right
+            marginSystemWindowRight -> insets.systemWindowInsetRight
+            else -> 0
+        }
+        val marginBottom = when {
+            marginGestureBottom -> insets.systemGestureInsets.bottom
+            marginSystemWindowBottom -> insets.systemWindowInsetBottom
+            else -> 0
+        }
+        v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+            leftMargin = initialMargin.left + marginLeft
+            topMargin = initialMargin.top + marginTop
+            rightMargin = initialMargin.right + marginRight
+            bottomMargin = initialMargin.bottom + marginBottom
+        }
+    }
 }

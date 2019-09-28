@@ -16,6 +16,6 @@
   -->
 
 <resources>
-    <!-- We use a transparent scrim on API 23+ since we use a light status bar -->
-    <color name="status_bar_scrim">@color/transparent</color>
+    <!-- We can use light navigation bar on v27+ -->
+    <bool name="use_light_navigation">true</bool>
 </resources>

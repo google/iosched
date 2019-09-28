@@ -20,12 +20,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.doOnLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
-import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSpeakerBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.EventObserver
@@ -33,7 +31,6 @@ import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.dialogs.SignInDialogDispatcher
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
-import com.google.samples.apps.iosched.ui.sessiondetail.PushUpScrollListener
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.util.postponeEnterTransition
 import dagger.android.support.DaggerFragment
@@ -74,7 +71,7 @@ class SpeakerFragment : DaggerFragment() {
         activity?.postponeEnterTransition(500L)
 
         val binding = FragmentSpeakerBinding.inflate(inflater, container, false).apply {
-            setLifecycleOwner(this@SpeakerFragment)
+            lifecycleOwner = viewLifecycleOwner
             viewModel = speakerViewModel
         }
         // If speaker does not have a profile image to load, we need to resume
@@ -83,6 +80,10 @@ class SpeakerFragment : DaggerFragment() {
                 activity?.startPostponedEnterTransition()
             }
         })
+
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
 
         speakerViewModel.navigateToEventAction.observe(this, EventObserver { sessionId ->
             val action = SpeakerFragmentDirections
@@ -104,7 +105,7 @@ class SpeakerFragment : DaggerFragment() {
             }
         )
 
-        val headshotLoadListener = object : ImageLoadListener {
+        binding.headshotLoadListener = object : ImageLoadListener {
             override fun onImageLoaded() {
                 activity?.startPostponedEnterTransition()
             }
@@ -113,8 +114,8 @@ class SpeakerFragment : DaggerFragment() {
                 activity?.startPostponedEnterTransition()
             }
         }
-        val speakerAdapter =
-            SpeakerAdapter(this, speakerViewModel, headshotLoadListener, tagRecycledViewPool)
+
+        val speakerAdapter = SpeakerAdapter(this, speakerViewModel, tagRecycledViewPool)
         binding.speakerDetailRecyclerView.run {
             adapter = speakerAdapter
             itemAnimator?.run {
@@ -123,20 +124,11 @@ class SpeakerFragment : DaggerFragment() {
                 changeDuration = 120L
                 removeDuration = 100L
             }
-            doOnLayout {
-                addOnScrollListener(
-                    PushUpScrollListener(binding.up, it, R.id.speaker_name, R.id.speaker_grid_image)
-                )
-            }
         }
 
         speakerViewModel.speakerUserSessions.observe(this, Observer {
             speakerAdapter.speakerSessions = it ?: emptyList()
         })
-
-        binding.up.setOnClickListener {
-            findNavController().navigateUp()
-        }
 
         return binding.root
     }

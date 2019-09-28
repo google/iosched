@@ -27,14 +27,23 @@
 
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <com.google.samples.apps.iosched.widget.InsetDispatchingCoordinatorLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <include
             layout="@layout/include_schedule_appbar"
             app:viewModel="@{viewModel}" />
+
+        <!-- A view to draw above the AppBarLayout to mimic the status bar -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="?attr/colorSurface"
+            android:fitsSystemWindows="true"
+            app:layout_behavior="com.google.samples.apps.iosched.util.StatusBarScrimBehavior" />
 
         <com.google.samples.apps.iosched.widget.CustomSwipeRefreshLayout
             android:layout_width="match_parent"
@@ -81,6 +90,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/margin_normal"
             android:contentDescription="@string/filters"
+            android:fitsSystemWindows="true"
             app:hoveredFocusedTranslationZ="0dp"
             app:pressedTranslationZ="0dp"
             app:srcCompat="@drawable/ic_filter" />
@@ -89,6 +99,7 @@
           ~ We use a margin to prevent the status bar from drawing over the shadow when the sheet
           ~ expands. However, marginTop pushes the sheet down from it's peekHeight when collapsed.
           ~ Using marginBottom achieves the desired effect.
+          ~ This is the first view in the layout to make sure that it receives insets.
           -->
         <fragment
             android:id="@+id/filter_sheet"
@@ -103,6 +114,6 @@
             app:behavior_skipCollapsed="true"
             tools:layout="@layout/fragment_schedule_filter" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </com.google.samples.apps.iosched.widget.InsetDispatchingCoordinatorLayout>
 
 </layout>
