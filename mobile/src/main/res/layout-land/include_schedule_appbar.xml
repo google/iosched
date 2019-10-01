@@ -58,14 +58,14 @@
 <!--todo: fix lint on foreground-->
             <ImageView
                 android:id="@+id/search_button"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/a11y_min_touch_target"
+                android:layout_height="@dimen/a11y_min_touch_target"
                 android:layout_gravity="center_vertical|end"
                 android:contentDescription="@string/search_schedule_hint"
                 android:foreground="?selectableItemBackground"
                 android:onClick="@{() -> viewModel.onSearchClicked()}"
-                android:padding="@dimen/spacing_micro"
-                android:background="@drawable/ic_search"/>
+                android:padding="12dp"
+                app:srcCompat="@drawable/ic_search"/>
 
         </FrameLayout>
 
