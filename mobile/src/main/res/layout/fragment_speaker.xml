@@ -34,6 +34,8 @@
         android:id="@+id/coordinator_layout_session_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:marginLeftSystemWindowInsets="@{true}"
+        app:marginRightSystemWindowInsets="@{true}"
         tools:ignore="MergeRootFrame">
 
         <com.google.android.material.appbar.AppBarLayout

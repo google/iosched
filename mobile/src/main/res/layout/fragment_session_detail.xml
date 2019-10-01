@@ -32,7 +32,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:ignore="MergeRootFrame">
+        tools:ignore="MergeRootFrame"
+        app:marginLeftSystemWindowInsets="@{true}"
+        app:marginRightSystemWindowInsets="@{true}">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/session_detail_appbar"
