@@ -38,15 +38,14 @@
             android:id="@+id/session_detail_appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:fitsSystemWindows="true"
-            app:elevation="0dp">
+            android:fitsSystemWindows="true">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/session_detail_collapsing_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
-                app:layout_scrollFlags="scroll"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:contentScrim="?attr/colorSurface"
                 app:statusBarScrim="?attr/colorSurface">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
