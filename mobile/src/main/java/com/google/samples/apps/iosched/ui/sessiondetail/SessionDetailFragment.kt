@@ -36,6 +36,7 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
+import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.dialogs.SignInDialogDispatcher
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
@@ -76,9 +77,7 @@ class SessionDetailFragment : DaggerFragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        // TODO: Scoping the VM to the activity because of bug
-        // https://issuetracker.google.com/issues/74139250 (fixed in Supportlib 28.0.0-alpha1)
-        sessionDetailViewModel = activityViewModelProvider(viewModelFactory)
+        sessionDetailViewModel = viewModelProvider(viewModelFactory)
 
         val binding = FragmentSessionDetailBinding.inflate(inflater, container, false).apply {
             viewModel = sessionDetailViewModel
