@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.ui.speaker
 
 import android.os.Bundle
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSpeakerBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.EventObserver
@@ -70,7 +72,9 @@ class SpeakerFragment : DaggerFragment() {
         // Delay the Activity enter transition until speaker image has loaded
         activity?.postponeEnterTransition(500L)
 
-        val binding = FragmentSpeakerBinding.inflate(inflater, container, false).apply {
+        val themedInflater = inflater.cloneInContext(
+                ContextThemeWrapper(requireActivity(), R.style.AppTheme_Detail))
+        val binding = FragmentSpeakerBinding.inflate(themedInflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = speakerViewModel
         }
