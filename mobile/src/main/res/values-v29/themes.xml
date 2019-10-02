@@ -17,7 +17,6 @@
 <resources>
 
     <style name="AppTheme" parent="Base.AppTheme">
-        <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:navigationBarColor">@color/transparent</item>
     </style>
 
