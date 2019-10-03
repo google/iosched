@@ -42,7 +42,7 @@ fun sessionLengthLocation(
     room: Room,
     timeZoneId: ZoneId?
 ) {
-    val finalTimeZoneId = timeZoneId ?: ZoneId.systemDefault()
+    val finalTimeZoneId = timeZoneId ?: TimeUtils.CONFERENCE_TIMEZONE
     val localStartTime = TimeUtils.zonedTime(startTime, finalTimeZoneId)
     val localEndTime = TimeUtils.zonedTime(endTime, finalTimeZoneId)
     textView.text = if (alwaysShowDate) {
