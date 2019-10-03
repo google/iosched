@@ -25,7 +25,6 @@
         <item name="colorOnSecondary">@color/color_on_secondary</item>
         <item name="colorControlLight">@color/color_control_light</item>
 
-        <item name="android:statusBarColor">@color/status_bar_scrim</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/use_light_status</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">@bool/use_light_navigation</item>
 
@@ -43,6 +42,7 @@
     </style>
 
     <style name="AppTheme" parent="Base.AppTheme">
+        <item name="android:statusBarColor">@color/status_bar_scrim</item>
         <item name="android:navigationBarColor">@color/nav_bar_scrim</item>
     </style>
 

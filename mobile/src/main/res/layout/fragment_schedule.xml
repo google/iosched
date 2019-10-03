@@ -40,12 +40,13 @@
             app:viewModel="@{viewModel}" />
 
         <!-- A view to draw above the AppBarLayout to mimic the status bar -->
-        <View
+        <com.google.samples.apps.iosched.widget.StatusBarScrim
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:background="?attr/colorSurface"
-            android:fitsSystemWindows="true"
-            app:layout_behavior="com.google.samples.apps.iosched.util.StatusBarScrimBehavior" />
+            android:elevation="@dimen/appbar_elevation"
+            android:outlineProvider="none"
+            android:fitsSystemWindows="true" />
 
         <com.google.samples.apps.iosched.widget.CustomSwipeRefreshLayout
             android:layout_width="match_parent"
