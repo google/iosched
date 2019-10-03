@@ -21,7 +21,6 @@ import android.util.SparseArray
 import androidx.core.util.forEach
 import androidx.core.util.set
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import androidx.fragment.app.commitNow
 import androidx.lifecycle.LiveData
@@ -29,6 +28,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.samples.apps.iosched.shared.R
 
 /*
  * Extracted from: https://github.com/googlesamples/android-architecture-components/tree/master/NavigationAdvancedSample
@@ -109,6 +109,13 @@ fun BottomNavigationView.setupWithNavController(
                     // Commit a transaction that cleans the back stack and adds the first fragment
                     // to it, creating the fixed started destination.
                     fragmentManager.commit {
+                        setCustomAnimations(
+                                R.anim.nav_default_enter_anim,
+                                R.anim.nav_default_exit_anim,
+                                R.anim.nav_default_pop_enter_anim,
+                                R.anim.nav_default_pop_exit_anim
+                        )
+
                         attach(selectedFragment)
                         setPrimaryNavigationFragment(selectedFragment)
 
@@ -119,7 +126,6 @@ fun BottomNavigationView.setupWithNavController(
                             }
                         }
                         addToBackStack(firstFragmentTag)
-                        setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         setReorderingAllowed(true)
                     }
                 }
