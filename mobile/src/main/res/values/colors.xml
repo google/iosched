@@ -34,8 +34,8 @@
     <color name="system_ui_scrim_light">#B3FFFFFF</color> <!-- 70% white -->
     <color name="system_ui_scrim_black">#66000000</color> <!-- 40% black -->
 
-    <!-- As light status is API 23+, we need to contrast white status icons -->
-    <color name="status_bar_scrim">#BDBDBD</color>
+    <!-- We use a dark scrim by default since light status is API 23+ -->
+    <color name="status_bar_scrim">@color/system_ui_scrim_black</color>
     <!-- We use a dark scrim by default since light nav bar is API 27+ -->
     <color name="nav_bar_scrim">@color/system_ui_scrim_black</color>
 

@@ -16,6 +16,6 @@
   -->
 
 <resources>
-    <!-- We use a white scrim on API 23+ since we use a light status bar -->
-    <color name="status_bar_scrim">@color/white</color>
+    <!-- We use a transparent scrim on API 23+ since we use a light status bar -->
+    <color name="status_bar_scrim">@color/transparent</color>
 </resources>

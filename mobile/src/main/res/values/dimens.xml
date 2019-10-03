@@ -45,6 +45,7 @@
     <dimen name="a11y_min_touch_target">48dp</dimen>
 
     <dimen name="app_bar_height">200dp</dimen>
+    <dimen name="appbar_elevation">5dp</dimen>
     <dimen name="bottom_sheet_elevation">8dp</dimen>
     <dimen name="bottom_sheet_corner_radius">16dp</dimen>
     <dimen name="bottom_sheet_peek_height">@dimen/a11y_min_touch_target</dimen>
