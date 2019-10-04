@@ -269,4 +269,6 @@
     <string name="codelabs_website">Trang web của Lớp học mã</string>
     <string name="codelab_duration">Thời lượng: %1$d phút</string>
     <string name="start_codelab">Bắt đầu lớp học mã</string>
+    <string name="ask_question">Hỏi Đáp</string>
+    <string name="version_name">Phiên bản %s</string>
 </resources>
