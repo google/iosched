@@ -40,7 +40,7 @@ class IoschedFirebaseMessagingService : DaggerFirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Timber.d("Message data payload: ${remoteMessage.data}")
-        val data = remoteMessage.data ?: return
+        val data = remoteMessage.data
         if (data[TRIGGER_EVENT_DATA_SYNC_key] == TRIGGER_EVENT_DATA_SYNC) {
             // Schedule job on JobScheduler when FCM message with action `TRIGGER_EVENT_DATA_SYNC`
             // is received.

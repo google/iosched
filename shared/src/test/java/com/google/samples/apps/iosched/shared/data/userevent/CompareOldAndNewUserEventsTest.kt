@@ -284,7 +284,7 @@ class CompareOldAndNewUserEventsTest {
     }
 
     private fun createReservationResult(
-        requestResult: ReservationRequestResult.ReservationRequestStatus? = null,
+        requestResult: ReservationRequestStatus? = null,
         requestId: String = "213",
         timestamp: Long = -1
     ): ReservationRequestResult {

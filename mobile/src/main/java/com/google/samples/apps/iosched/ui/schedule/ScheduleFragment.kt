@@ -178,7 +178,7 @@ class ScheduleFragment : MainNavigationFragment() {
         // Filters sheet configuration
         bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.filter_sheet))
         filtersFab.setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            bottomSheetBehavior.state = STATE_EXPANDED
         }
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetCallback {
             override fun onStateChanged(bottomSheet: View, newState: Int) {

@@ -161,7 +161,7 @@ class TestConfDataSourceSession0 : ConferenceDataSource {
 private class TestConfDataSourceSession1 : ConferenceDataSource {
     override fun getRemoteConferenceData(): ConferenceData? {
         return ConferenceData(
-            sessions = listOf(TestData.session1),
+            sessions = listOf(session1),
             speakers = listOf(TestData.speaker1),
             rooms = emptyList(),
             codelabs = emptyList(),
@@ -172,7 +172,7 @@ private class TestConfDataSourceSession1 : ConferenceDataSource {
 
     override fun getOfflineConferenceData(): ConferenceData? {
         return ConferenceData(
-            sessions = listOf(TestData.session1),
+            sessions = listOf(session1),
             speakers = listOf(TestData.speaker1),
             rooms = emptyList(),
             codelabs = emptyList(),
@@ -189,7 +189,7 @@ class BootstrapDataSourceSession3 : ConferenceDataSource {
 
     override fun getOfflineConferenceData(): ConferenceData? {
         return ConferenceData(
-            sessions = listOf(TestData.session3),
+            sessions = listOf(session3),
             speakers = listOf(TestData.speaker1),
             rooms = emptyList(),
             codelabs = emptyList(),
@@ -206,7 +206,7 @@ private class TestConfDataSourceOnlyCachedSession1 : ConferenceDataSource {
 
     override fun getOfflineConferenceData(): ConferenceData? {
         return ConferenceData(
-            sessions = listOf(TestData.session1),
+            sessions = listOf(session1),
             speakers = listOf(TestData.speaker1),
             rooms = emptyList(),
             codelabs = emptyList(),

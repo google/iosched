@@ -32,7 +32,7 @@ class LoadTagsUseCaseTest {
     @Test
     fun returnsListOfTags() {
         val loadTagsUseCase = LoadTagsUseCase(TagRepository(TestDataRepository))
-        val tags: Result.Success<List<Tag>> =
+        val tags: Success<List<Tag>> =
             loadTagsUseCase.executeNow(Unit) as Success<List<Tag>>
 
         assertEquals(tags.data, TagRepository(TestDataRepository).getTags())

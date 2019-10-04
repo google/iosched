@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.model
+package com.google.samples.apps.iosched.shared.model
 
+import com.google.samples.apps.iosched.model.Tag
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.not
 import org.junit.Assert.assertThat

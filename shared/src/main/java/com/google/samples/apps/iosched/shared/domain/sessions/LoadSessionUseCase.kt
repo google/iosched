@@ -27,7 +27,7 @@ open class LoadSessionUseCase @Inject constructor(private val repository: Sessio
     MediatorUseCase<String, Session>() {
 
     override fun execute(parameters: SessionId) {
-        val session = repository.getSessions().firstOrNull { it -> it.id == parameters }
+        val session = repository.getSessions().firstOrNull { it.id == parameters }
 
         if (session == null) {
             result.postValue(Result.Error(SessionNotFoundException()))
