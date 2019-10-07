@@ -19,6 +19,9 @@
     <!-- 18% opacity translucent white -->
     <color name="color_control_light">#2EFFFFFF</color>
 
+    <!-- Used for detail/speaker header background and other generic placeholder backgrounds -->
+    <color name="generic_placeholder_background">#10FFFFFF</color>
+
     <color name="color_primary">@color/android_green</color>
     <color name="color_primary_dark">@color/android_green_dark</color>
     <color name="color_on_secondary">#000</color>
