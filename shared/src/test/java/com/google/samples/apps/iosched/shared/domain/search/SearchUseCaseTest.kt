@@ -30,6 +30,7 @@ import com.google.samples.apps.iosched.test.util.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase
 import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase.Companion.QUERY_ABSTRACT
 import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase.Companion.QUERY_EMPTY
+import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase.Companion.QUERY_ONLY_SPACES
 import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase.Companion.QUERY_QUESTION
 import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase.Companion.QUERY_SESSION_0
 import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase.Companion.QUERY_TAGNAME
@@ -120,6 +121,15 @@ class SearchUseCaseTest(private val useCase: UseCase<String, List<Searchable>>) 
     @Test
     fun search_returnsEmptyListForInvalidQuery() = coroutineRule.runBlockingTest {
         val result = useCase(parameters = QUERY_EMPTY)
+        assertThat(result, `is`(instanceOf(Result.Success::class.java)))
+
+        val sessions = (result as Result.Success).data
+        assertThat(sessions, `is`(equalTo(emptyList())))
+    }
+
+    @Test
+    fun search_emptyQuery() = coroutineRule.runBlockingTest {
+        val result = useCase(parameters = QUERY_ONLY_SPACES)
         assertThat(result, `is`(instanceOf(Result.Success::class.java)))
 
         val sessions = (result as Result.Success).data

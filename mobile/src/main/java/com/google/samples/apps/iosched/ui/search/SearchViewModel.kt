@@ -93,7 +93,7 @@ class SearchViewModel @Inject constructor(
         if (searchUsingRoomFeatureEnabled) {
             Timber.d("Searching for query using Room: $query")
             viewModelScope.launch {
-                processSearchResult(loadDbSearchResultsUseCase(query))
+                processSearchResult(loadDbSearchResultsUseCase(query.trim()))
             }
         } else {
             Timber.d("Searching for query without using Room: $query")
