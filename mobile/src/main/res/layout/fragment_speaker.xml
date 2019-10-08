@@ -96,11 +96,14 @@
                         android:layout_width="@dimen/speaker_large_headshot_size"
                         android:layout_height="@dimen/speaker_large_headshot_size"
                         android:layout_marginEnd="32dp"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="48dp"
+                        android:layout_marginBottom="24dp"
                         android:transitionName="@string/speaker_headshot_transition"
                         app:layout_constraintDimensionRatio="1:1"
                         app:layout_constraintEnd_toEndOf="@id/header_grid"
                         app:layout_constraintTop_toTopOf="@id/header_grid"
+                        app:layout_constraintBottom_toBottomOf="@id/header_grid"
+                        app:layout_constraintVertical_bias="0"
                         app:listener="@{headshotLoadListener}"
                         app:speakerImage="@{viewModel.speaker}" />
 
