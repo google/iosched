@@ -22,6 +22,9 @@
     <!-- Same value as textColorPrimary disabled -->
     <color name="color_control_light">#39000000</color>
 
+    <!-- Used for detail/speaker header background and other generic placeholder backgrounds -->
+    <color name="generic_placeholder_background">#10000000</color>
+
     <color name="color_primary">@color/android_blue</color>
     <color name="color_primary_dark">@color/android_navy</color>
     <color name="color_on_secondary">#fff</color>
