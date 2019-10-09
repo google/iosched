@@ -58,7 +58,7 @@ android {
             // TODO: b/120517460 shrinkResource can't be used with dynamic-feature at this moment.
             //       Need to ensure the app size has not increased
             manifestPlaceholders = [crashlyticsEnabled: true]
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             resValue "string",
                     "google_maps_key",
                     "AIzaSyD5jqwKMm1SeoYsW25vxCXfTlhDBeZ4H5c"
