@@ -245,8 +245,6 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
 
     private val callbacks: MutableSet<BottomSheetCallback> = mutableSetOf()
 
-    constructor() : super()
-
     @SuppressLint("PrivateResource")
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         // Re-use BottomSheetBehavior's attrs
@@ -289,7 +287,7 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
         isDraggable = ss.isDraggable
         peekHeight = ss.peekHeight
         isFitToContents = ss.isFitToContents
-        isHideable = ss.isHideable
+        isHideable = ss.isHidden
         skipCollapsed = ss.skipCollapsed
 
         // Set state last. Intermediate states are restored as collapsed state.
@@ -827,7 +825,7 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
         @State internal val state: Int
         internal val peekHeight: Int
         internal val isFitToContents: Boolean
-        internal val isHideable: Boolean
+        internal val isHidden: Boolean
         internal val skipCollapsed: Boolean
         internal val isDraggable: Boolean
 
@@ -837,7 +835,7 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
             state = source.readInt()
             peekHeight = source.readInt()
             isFitToContents = source.readBooleanUsingCompat()
-            isHideable = source.readBooleanUsingCompat()
+            isHidden = source.readBooleanUsingCompat()
             skipCollapsed = source.readBooleanUsingCompat()
             isDraggable = source.readBooleanUsingCompat()
         }
@@ -854,7 +852,7 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
             this.state = state
             this.peekHeight = peekHeight
             this.isFitToContents = isFitToContents
-            this.isHideable = isHideable
+            this.isHidden = isHideable
             this.skipCollapsed = skipCollapsed
             this.isDraggable = isDraggable
         }
@@ -865,7 +863,7 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
                 writeInt(state)
                 writeInt(peekHeight)
                 writeBooleanUsingCompat(isFitToContents)
-                writeBooleanUsingCompat(isHideable)
+                writeBooleanUsingCompat(isHidden)
                 writeBooleanUsingCompat(skipCollapsed)
                 writeBooleanUsingCompat(isDraggable)
             }

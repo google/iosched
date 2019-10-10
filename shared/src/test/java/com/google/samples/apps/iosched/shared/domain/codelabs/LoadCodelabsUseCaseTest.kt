@@ -32,7 +32,7 @@ class LoadCodelabsUseCaseTest {
     @Test
     fun loadCodelabsList() {
         val loadCodelabsUseCase = LoadCodelabsUseCase(CodelabsRepository(TestDataRepository))
-        val codelabs: Result.Success<List<Codelab>> =
+        val codelabs: Success<List<Codelab>> =
             loadCodelabsUseCase.executeNow(Unit) as Success<List<Codelab>>
         assertThat(codelabs.data, `is`(equalTo(TestData.codelabsSorted)))
     }

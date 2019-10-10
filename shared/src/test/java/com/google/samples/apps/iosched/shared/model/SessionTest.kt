@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.model
+package com.google.samples.apps.iosched.shared.model
 
 import com.google.samples.apps.iosched.model.SessionType.CODELAB
 import com.google.samples.apps.iosched.model.SessionType.SESSION

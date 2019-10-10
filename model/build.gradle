@@ -24,7 +24,7 @@ dependencies {
     api "org.threeten:threetenbp:$rootProject.threetenbpVersion:no-tzdb"
     implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$rootProject.kotlinVersion"
 }
 
 sourceCompatibility = "1.7"
