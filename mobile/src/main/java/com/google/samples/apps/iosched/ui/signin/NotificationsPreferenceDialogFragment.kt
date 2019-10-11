@@ -56,8 +56,8 @@ class NotificationsPreferenceDialogFragment : DaggerAppCompatDialogFragment() {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.notifications_preference_dialog_title)
                 .setMessage(R.string.notifications_preference_dialog_content_instant)
-                .setNegativeButton(R.string.no) { _, _ -> viewModel.onNoClicked() }
-                .setNegativeButton(R.string.installApp) { _, _ -> viewModel.onInstallClicked() }
+                .setNegativeButton(R.string.installApp_no) { _, _ -> viewModel.onNoClicked() }
+                .setPositiveButton(R.string.installApp) { _, _ -> viewModel.onInstallClicked() }
                 .create()
         } else {
             MaterialAlertDialogBuilder(requireContext())
