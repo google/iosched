@@ -287,7 +287,7 @@
     <string name="agreements_header" translation_description="Header label for links to TOS, privacy policy, OSS licenses.">Agreements</string>
 
     <!--Info pages - Strings ready to translate-->
-    <string name="settings_time_zone_label" translate_description="Set time zone in app to PST.">Events in Pacific Time Zone (UTC-8)</string>
+    <string name="settings_time_zone_label" translate_description="Set time zone in app to PST.">Events in Pacific Time Zone (UTC-7)</string>
     <string name="settings_enable_notifications" translate_description="Turn on notifications.">Enable notifications</string>
     <string name="settings_send_anonymous_usage_statistics" translation_description="Enable sending usage statistics.">Send anonymous usage statistics</string>
     <string name="settings_tos" translation_description="Open link to terms of service.">Terms of service</string>
