@@ -62,6 +62,13 @@
             app:cardTitle="@string/attending_sessions_title" />
 
         <com.google.samples.apps.iosched.widget.CollapsibleCard
+            android:id="@+id/parking_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardDescription="@string/parking_description"
+            app:cardTitle="@string/parking_title" />
+
+        <com.google.samples.apps.iosched.widget.CollapsibleCard
             android:id="@+id/bike_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -130,13 +137,6 @@
             android:layout_height="wrap_content"
             app:cardDescription="@string/mothers_room_description"
             app:cardTitle="@string/mothers_room_title" />
-
-        <com.google.samples.apps.iosched.widget.CollapsibleCard
-            android:id="@+id/prayer_card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardDescription="@string/prayer_description"
-            app:cardTitle="@string/prayer_title" />
 
         <com.google.samples.apps.iosched.widget.CollapsibleCard
             android:id="@+id/childcare_card"
