@@ -177,30 +177,32 @@
     <string name="travel_directions_title" translation_description="Header label for driving directions details.">Driving Directions</string>
     <string name="attending_sessions_title" translation_description="Header label for attending session details.">Sessions Details</string>
     <string name="attire_title">Event attire</string>
-    <string name="soliciting_title">No Soliticing</string>
+    <string name="soliciting_title">Can I promote my business or cause at the summit?</string>
     <string name="youth_attendance_title">Youth Attendance</string>
     <string name="accessibility_title">Accessibility Accommodations for Attendees</string>
     <string name="badges_title" translation_description="Header label for badges details.">Badges</string>
     <string name="travel_shuttle_title" translation_description="Header label for shuttle service details.">Shuttles</string>
-    <string name="prayer_title" translation_description="Header label for Mother's room details">Prayer Room</string>
 
     <string name="attending_sessions_description" translation_description="Attending sessions instructions"><![CDATA[
     <p>All presentations will be in English. Attendance at sessions and product demos is on a first-come, first-served basis.</p>
     ]]></string>
     <string name="badges_description" translation_description="Badges instructions"><![CDATA[
-    <p>Badge pick up will be available starting at 08:00 AM on Wednesday, October 23.
-        Make sure to bring your photo ID along with your registration confirmation email, as
-        we\'ll need to verify it prior to assigning your badge for this event. We\'re OK
-        with government issued licenses, passports, and other forms of identification.
-        If you don\'t have proper identification, you won\'t be able to receive a badge
-        and won\'t be admitted into the event.</p>
-     <p>Please note, you may not share, give, or otherwise provide your
-        event badge to anyone. Badges aren’t replaceable, so don’t lose
-        yours or you won’t be readmitted to the conference. You must wear
-        your badge to gain admission to this event, including the sessions,
-        codelabs, and after hours. If requested by security, please display
-        or provide additional identification. Badges may include your name
-        and company or organization (if provided).</p>
+    <p>The two-day event kicks off on Wednesday, 23 October with badge pick-up and breakfast starting
+    at 8:00 AM and the keynote address at 10:00 AM. We recommend arriving at the Google
+    Event Center (MP7) in time to register, enjoy the complimentary breakfast, and get
+    comfortable before the keynote starts at 10:00 AM.</p>
+
+    <p>Make sure to bring your photo ID along with your registration confirmation email,
+    as we’ll need to verify it prior to assigning your badge for this event. We’re
+    OK with government-issued licenses, passports, and other forms of identification.
+    If you don’t have proper identification, then you won’t receive a badge and you
+    will not be admitted into the conference.</p>
+
+    <p>Please note, you may not share, give, or otherwise provide your event badge to anyone.
+    Badges aren’t replaceable, so don’t lose yours or you won’t be readmitted to the conference.
+    You must wear your badge to gain admission to this event, including the sessions, codelabs,
+    and after hours. If requested by security, please display or provide additional identification.
+    Badges may include your name and company or organization (if provided).</p>
     ]]></string>
     <string name="accessibility_description"><![CDATA[
     <p>Google strives to make events open and accessible to everyone, regardless of disability or
@@ -218,8 +220,7 @@
       </p>
     ]]></string>
     <string name="attire_description">The event will be held indoors. It’s a developer event with no enforced dress code, so please be comfortable and casual. There will be a free coat check available near registration for your convenience.</string>
-    <string name="prayer_description">Please ask a member of staff at the registration or help desk for the location of the Prayer room.</string>
-    <string name="soliciting_description">No solicitation or selling of items or services is allowed at this event. Any attendee conducting these activities might be removed from the event.</string>
+    <string name="soliciting_description">No promotion, soliciting for any cause, lobbying, or selling of items or services is allowed at this event. Any attendee conducting these activities may be removed from the event.</string>
 
     <string name="view_sessions_text" translation_description="Link label for viewing all sessions in schedule.">View Sessions</string>
     <string name="view_codelabs_text" translation_description="Link label for viewing all codelabs.">View Codelabs</string>
@@ -240,9 +241,10 @@
     <string name="stay_informed_title" translation_description="Header label for general information on &quot;Stay informed&quot;">Stay informed</string>
     <string name="livestream_recordings_title" translation_description="Header label for general information on &quot;Livestream and recordings&quot;">Livestream and recordings</string>
     <string name="bike_title" translation_description="Header label for general information on &quot;Bike parking&quot;">Bike parking</string>
+    <string name="parking_title" translation_description="Header label for general information on &quot;Parking&quot;">Car parking</string>
     <string name="lost_found_title" translation_description="Header label for general information on &quot;Lost and Found&quot;">Lost and Found</string>
     <string name="faq_meals_title" translation_description="Header label for general information on &quot;Meals&quot;">Meals</string>
-    <string name="mothers_room_title" translation_description="Header label for general information on &quot;Mother’s room&quot;">Mother’s room</string>
+    <string name="mothers_room_title" translation_description="Header label for general information on &quot;Mother’s room&quot;">Mothers room, multifaith contemplation room, and family lounge</string>
     <string name="event_conduct_title" translation_description="Header label for general information on &quot;Event conduct&quot;">Event conduct</string>
     <string name="childcare_title" translation_description="Header label for general information on &quot;Childcare&quot;">Childcare</string>
     <string name="event_sessions_description" translation_description="General information on sessions">Sessions are a chance to learn about Android’s newest technologies directly from Android engineers and leadership. Here you’ll see presentations and demos on our latest features and updates from the staff who helped build them.</string>
@@ -258,7 +260,7 @@
     <p>Android Dev Summit 2019 will be held October 23–24, 2019, at the <a href="https://goo.gl/maps/uPCQBxtJasR3hzjn9">Google Event Center (MP7), 1170 Bordeaux Dr, Sunnyvale, CA 94089</a>.
     </p>]]></string>
     <string name="stay_informed_description"><![CDATA[
-    <p>For the latest information about sessions, speakers, and activities, visit the <a href="https://developer.android.com/dev-summit/">Android Dev Summit website</a>,
+    <p>For the latest information about sessions, speakers, and activities, visit the <a href="https://developer.android.com/dev-summit/faq">Android Dev Summit website</a>,
     follow us on <a href="https://twitter.com/AndroidDev">Twitter</a>, or
     <a href="https://docs.google.com/forms/d/e/1FAIpQLSdgYq8FgW9eGyaUqIF7VFkPpvRPTcvjg4meeBOMAe_cGYPywA/viewform">sign up</a> for event updates.
     You can also follow and join the social conversation about the event via the official <a href="https://twitter.com/hashtag/androiddevsummit">#AndroidDevSummit</a> hashtag.
@@ -267,19 +269,20 @@
     <string name="livestream_recordings_description"><![CDATA[
     <p>If you cannot attend this event in person, then watch the livestream of the
       keynote and all sessions on the app or on the Android Dev Summit 2019
-      <a href="/dev-summit/">website</a> throughout the event. Sessions will be recorded
+      <a href="https://developer.android.com/dev-summit/faq">website</a> throughout the event. Sessions will be recorded
       and available after the event on the
       <a href="http://www.youtube.com/user/androiddevelopers">Android Developers YouTube Channel</a>.</p>
     ]]></string>
     <string name="bike_description">This is complimentary for attendees and will be available outside of the venue during event hours. Parking will be on a first-come, first-served basis.</string>
+    <string name="parking_description">Free parking will be available to attendees. Please park in Parking Structure A (PSA) located at 1150 Bordeaux Drive. If that is at capacity, additional parking is at Parking Structure C (PSC) located at 1200 Bordeaux Drive. Attendees can then walk to the MP7 venue by following the signage and talking to brand ambassadors.</string>
     <string name="lost_found_description">For any lost and found, please report to the help desk near registration where any items handed in will be kept safely.</string>
     <string name="faq_meals_description">Attendees are offered complimentary breakfast, lunch, and snacks each day of the event.</string>
-    <string name="mothers_room_description">Please ask a member of staff at the registration or help desk to be shown the location of the Mother’s room.</string>
+    <string name="mothers_room_description">There will be a mothers room and a multifaith contemplation room available on site throughout the event. Also, there will be a family lounge where families can sit together to watch the livestream. Please ask the registration staff for information when you check in.</string>
     <string name="event_conduct_description"><![CDATA[
     <p>Please review our <a href="https://developer.android.com/dev-summit/community-guidelines/">Community Guidelines</a>
     to ensure that Android Dev Summit 2019 is a harassment-free and inclusive event experience for everyone.</p>
     ]]></string>
-    <string name="childcare_description">We will be offering reimbursement for childcare for those attendees that may require it. For more information, please email android-dev-summit@google.com.</string>
+    <string name="childcare_description">We do not offer childcare on site. However, we’re excited to offer child-care reimbursement for Android Dev Summit 2019! Children ages 12 years or younger are eligible. Please email us at android-dev-summit@google.com by October 18. Due to limited availability, we might not be able to assist with all requests. To receive reimbursement, a completed W9, final invoice for reimbursement with supporting receipts must be submitted no later than November 22.</string>
     <string name="wifi_header" translation_description="Header label for wifi information.">Wifi</string>
     <string name="related_apps_header" translation_description="Header label for related apps.">Related Apps</string>
     <string name="event_types_header" translation_description="Header label for information on the different event types.">Event Types</string>
