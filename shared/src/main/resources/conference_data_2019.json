@@ -3,29 +3,36 @@
         {
             "filter": "true",
             "id": "31156ab0-45fa-54d9-a99e-1606ae89a213",
-            "name": "Room A"
+            "name": "Main Stage"
         },
         {
             "filter": "true",
             "id": "3ec7bc89-46a6-5480-8c16-98b4e639cf98",
-            "name": "Room B"
+            "name": "Second Stage"
         },
         {
             "filter": "true",
             "id": "5b78492c-f11f-467a-8bf5-8e5dcad0c620",
-            "name": "Room C"
+            "name": "Codelabs Room"
+        },
+        {
+            "filter": "false",
+            "id": "9922c95e-4f68-4925-a5cd-913f7aebeeea",
+            "name": "Second Floor"
         }
     ],
     "sessions": [
         {
-            "description": "Keynote",
+            "description": "Event keynote featuring Dave Burke, VP of Engineering and Steph Cuthbertson, Senior Director of Product Management.",
             "endTimestamp": 1571853600000,
             "id": "3ad04712-d853-5b3a-a54b-f483a63c7b0a",
             "livestreamed": true,
             "relatedSessions": [],
             "room": "31156ab0-45fa-54d9-a99e-1606ae89a213",
             "speakers": [
-                "709c6371-7802-5b4a-895c-8530095ae50f"
+                "93f5c555-015c-5f52-b7e6-71a9eb5f2514",
+                "709c6371-7802-5b4a-895c-8530095ae50f",
+                "083b3363-5d60-5797-a2cf-e3b9fb799a23"
             ],
             "startTimestamp": 1571850000000,
             "tagNames": [
@@ -33,6 +40,30 @@
             ],
             "title": "Keynote",
             "type": "Keynote",
+            "youtubeUrl": ""
+        },
+        {
+            "description": "Meet and talk to the Android Team!\nStop by the 2nd floor for Q and A, demos, or just to chat. Topics and teams will change throughout the day, so plan your ADS agenda to get your most pressing questions answered. Special guests and speakers will be featured in the Speakers' Lounge throughout both days.\n\nAndroid App Bundle and Dynamic Delivery\nAndroid for Cars\nAndroid Jetpack\nAndroid Studio\nAndroid Tablets and Foldables\nAndroid TV\nAndroidX Migration\nArchitecture Components\nBiometrics\nBluetooth\nBuild Speed Clinic\nCameraX\nAndroid for Chrome OS\nCompanion Device Manager\nJetpack Compose\nGSI\nKotlin\nPlay Academy\nPrivacy\nRuntime Performance Clinic\nSecurity\nSystem UI, Notifications\nTelephony\nTreble and Mainline\nWebView\nWindows and Activities",
+            "endTimestamp": 1571868000000,
+            "id": "c64a1ce6-6008-56f8-8b9d-2a80ae70c17b",
+            "livestreamed": false,
+            "relatedSessions": [],
+            "room": "9922c95e-4f68-4925-a5cd-913f7aebeeea",
+            "speakers": [],
+            "startTimestamp": 1571853600000,
+            "tagNames": [
+                "topic_auto",
+                "topic_studio",
+                "topic_tv",
+                "topic_google_play",
+                "topic_jetpack",
+                "topic_kotlin",
+                "topic_performance",
+                "topic_platform",
+                "type_sandbox"
+            ],
+            "title": "Sandbox: Demos and Office Hours - AM Topics",
+            "type": "Sandbox",
             "youtubeUrl": ""
         },
         {
@@ -112,7 +143,7 @@
             "youtubeUrl": ""
         },
         {
-            "description": "Learn what\u2019s new with CameraX since its alpha launch at Google I/O this year, and hear about learnings from teams at Google who have been using CameraX in their apps.",
+            "description": "Learn what\u2019s new with CameraX since its alpha launch at Google I/O this year, and learn from teams at Google who have been using CameraX in their apps.",
             "endTimestamp": 1571858700000,
             "id": "8748a6fd-f9a1-5ce8-a052-cfb8f998d549",
             "livestreamed": false,
@@ -176,7 +207,9 @@
             "relatedSessions": [],
             "room": "5b78492c-f11f-467a-8bf5-8e5dcad0c620",
             "speakers": [
-                "a0c318cc-6785-5449-bb93-d29ee014fd55"
+                "a0c318cc-6785-5449-bb93-d29ee014fd55",
+                "5c6a8332-7b55-564d-a90c-2612963c64c7",
+                "cf8b8a10-7329-59c9-83fa-1f3b141a2f75"
             ],
             "startTimestamp": 1571863200000,
             "tagNames": [
@@ -227,7 +260,7 @@
             "youtubeUrl": ""
         },
         {
-            "description": "LiveData is a simple lifecycle-aware observable, designed for making UIs that react to changes safely and efficiently. It can be used beyond View\u2194\ufe0fViewModel communications and even components like Room support it. However, there's a risk of overuse, especially when dealing with multiple threads. The solution? Instead of expanding its features, LiveData now works seamlessly with Kotlin's coroutines. In this talk, we'll cover the new \"liveData\" coroutine builder, showing when and how to use it and testing patterns and antipatterns to make clean, efficient, and solid reactive UIs.",
+            "description": "LiveData is a simple lifecycle-aware observable, designed for making UIs that react to changes safely and efficiently. It can be used beyond View\u2194\ufe0fViewModel communications and even components like Room support it. However, there's a risk of overuse, especially when dealing with multiple threads. The solution? Instead of expanding its features, LiveData now works seamlessly with Kotlin's coroutines. In this talk, we cover the new \"liveData\" coroutine builder, showing when and how to use it and testing patterns and antipatterns to make clean, efficient, and solid reactive UIs.",
             "endTimestamp": 1571868600000,
             "id": "5ffc5155-7b5f-5459-a76b-478a3f40c8fb",
             "livestreamed": true,
@@ -239,28 +272,10 @@
             ],
             "startTimestamp": 1571867400000,
             "tagNames": [
+                "topic_jetpack",
                 "type_session"
             ],
             "title": "LiveData with Coroutines and Flow",
-            "type": "Session",
-            "youtubeUrl": ""
-        },
-        {
-            "description": "Gradle\u2019s API for task inputs, outputs, and wiring has changed significantly over the last couple of years. In this session we will review the current best practices and how they fit with new upcoming APIs for the Android Gradle Plugin",
-            "endTimestamp": 1571868600000,
-            "id": "2a1d8574-3b74-5ef6-8e44-53f23ecee7cc",
-            "livestreamed": false,
-            "relatedSessions": [],
-            "room": "3ec7bc89-46a6-5480-8c16-98b4e639cf98",
-            "speakers": [
-                "c86f2bc1-461e-561b-acf5-4035dca4be83"
-            ],
-            "startTimestamp": 1571867400000,
-            "tagNames": [
-                "topic_studio",
-                "type_session"
-            ],
-            "title": "DSL and APIs in Android Gradle Plugin",
             "type": "Session",
             "youtubeUrl": ""
         },
@@ -281,7 +296,31 @@
             "youtubeUrl": ""
         },
         {
-            "description": "Learn more about WorkManager, the Jetpack library for background processing. This talk will introduce intermediate and advanced concepts to address common questions, gotchas, and issues you might see when you deploy to a large ecosystem of users and devices.",
+            "description": "Meet and talk to the Android Team!\nStop by the 2nd floor for Q and A, demos, or just to chat. Topics and teams will change throughout the day, so plan your ADS agenda to get your most pressing questions answered. Special guests and speakers will be featured in the Speakers' Lounge throughout both days.\n\n5G\nActions on Google\nAndroid for Cars\nAndroid Framework\nAndroid Jetpack\nAndroid Studio\nAndroid Tablets and Foldables\nAndroid TV\nAnimation\nArchitecture Components\nBuild Speed Clinic\nCameraX\nAndroid for Chrome OS\nJetpack Compose\nFirebase\nGames and Graphics\nIdentity and Autofill\nIn App Updates\nKotlin\nLocation and Content\nMachine Learning on Android\nMedia and Audio in Android 10\nNDK and C++\nPlay Academy\nPrivacy\nRuntime Performance Clinic\nScoped Storage\nSecurity",
+            "endTimestamp": 1571882400000,
+            "id": "dbf83c73-bb9a-526e-8406-c898d8c4701f",
+            "livestreamed": false,
+            "relatedSessions": [],
+            "room": "9922c95e-4f68-4925-a5cd-913f7aebeeea",
+            "speakers": [],
+            "startTimestamp": 1571868000000,
+            "tagNames": [
+                "topic_auto",
+                "topic_studio",
+                "topic_tv",
+                "topic_google_play",
+                "topic_jetpack",
+                "topic_kotlin",
+                "topic_performance",
+                "topic_platform",
+                "type_sandbox"
+            ],
+            "title": "Sandbox: Demos and Office Hours - PM Topics",
+            "type": "Sandbox",
+            "youtubeUrl": ""
+        },
+        {
+            "description": "Learn more about WorkManager, the Jetpack library for background processing. This talk introduces intermediate and advanced concepts to address common questions, gotchas, and issues you might see when you deploy to a large ecosystem of users and devices.",
             "endTimestamp": 1571870100000,
             "id": "119e1af3-f8a6-56cd-b1d3-3ee4b9c06621",
             "livestreamed": true,
@@ -402,7 +441,7 @@
             "youtubeUrl": ""
         },
         {
-            "description": "With new Android Automotive OS based infotainment systems that are built directly into cars, this talk focuses on how to build new apps or adapt existing Android Auto apps to Android Automotive OS. It walks you through how to design, develop, publish, and distribute your media app.",
+            "description": "With the new Android Automotive OS based infotainment systems that are built directly into cars, this talk focuses on how to build new apps or adapt existing apps to Android Automotive OS. It walks you through how to design, develop, publish, and distribute your media app.",
             "endTimestamp": 1571875800000,
             "id": "ac824948-a022-5cd7-bbe0-176f03e1b1f3",
             "livestreamed": false,
@@ -465,7 +504,8 @@
             "relatedSessions": [],
             "room": "5b78492c-f11f-467a-8bf5-8e5dcad0c620",
             "speakers": [
-                "8a0d9096-ae6f-5ddb-b02a-063d46808a8a"
+                "8a0d9096-ae6f-5ddb-b02a-063d46808a8a",
+                "99d87582-3794-590d-9b0a-d52d60d3d814"
             ],
             "startTimestamp": 1571876400000,
             "tagNames": [
@@ -484,6 +524,7 @@
             "room": "31156ab0-45fa-54d9-a99e-1606ae89a213",
             "speakers": [
                 "18171e6d-6a18-5007-abc0-a01d556be237",
+                "93f5c555-015c-5f52-b7e6-71a9eb5f2514",
                 "c86f2bc1-461e-561b-acf5-4035dca4be83",
                 "2dd4dd15-0fd4-5db1-84c7-e4af7b598995",
                 "083b3363-5d60-5797-a2cf-e3b9fb799a23",
@@ -525,7 +566,31 @@
             "youtubeUrl": ""
         },
         {
-            "description": "Plan overview and best practice guide to the new storage model in Android 10 and 11.",
+            "description": "Meet and talk to the Android Team!\nStop by the 2nd floor for Q and A, demos, or just to chat. Topics and teams will change throughout the day, so plan your ADS agenda to get your most pressing questions answered. Special guests and speakers will be featured in the Speakers' Lounge throughout both days.\n\nAccessibility\nAndroid Enterprise\nAndroid for Cars\nAndroid Jetpack\nAndroid Studio\nAndroid Tablets and Foldables\nAndroid TV\nAndroid Testing\nAndroid UI Toolkit\nAndroid app compatibility\nAudio\nArchitecture Components\nBuild Speed Clinic\nCameraX\nAndroid for Chrome OS\nGoogle Play Policy\nJetpack Compose\nKotlin\nMachine Learning on Android\nMedia\nNearby\nNon-SDK API Usage\nPlay Academy\nPower and Battery\nRuntime Performance Clinic\nScoped Storage\nSecurity\nWi-Fi",
+            "endTimestamp": 1571949000000,
+            "id": "fec9d031-6a0c-59ba-90b5-d21f60159125",
+            "livestreamed": false,
+            "relatedSessions": [],
+            "room": "9922c95e-4f68-4925-a5cd-913f7aebeeea",
+            "speakers": [],
+            "startTimestamp": 1571931000000,
+            "tagNames": [
+                "topic_auto",
+                "topic_studio",
+                "topic_tv",
+                "topic_google_play",
+                "topic_jetpack",
+                "topic_kotlin",
+                "topic_performance",
+                "topic_platform",
+                "type_sandbox"
+            ],
+            "title": "Sandbox: Demos and Office Hours - AM Topics",
+            "type": "Sandbox",
+            "youtubeUrl": ""
+        },
+        {
+            "description": "Plan overview and best practice guide to the new storage model in Android 10.",
             "endTimestamp": 1571937000000,
             "id": "3637b080-6d0e-574f-beb9-a377ab4b6725",
             "livestreamed": true,
@@ -540,7 +605,7 @@
                 "topic_platform",
                 "type_session"
             ],
-            "title": "Preparing for Scoped Storage in Android 11",
+            "title": "Android Storage Model Session - TBD",
             "type": "Session",
             "youtubeUrl": ""
         },
@@ -569,13 +634,11 @@
         {
             "description": "Learn the basics of Jetpack Compose, Android's new Kotlin-based declarative toolkit for building UI.",
             "endTimestamp": 1571938800000,
-            "id": "5c2f7622-63c5-53c4-96db-3cea5ae756bd",
+            "id": "5da2cdcc-f31e-5722-a643-ec22bef68c8f",
             "livestreamed": false,
             "relatedSessions": [],
             "room": "5b78492c-f11f-467a-8bf5-8e5dcad0c620",
-            "speakers": [
-                "a0c318cc-6785-5449-bb93-d29ee014fd55"
-            ],
+            "speakers": [],
             "startTimestamp": 1571934600000,
             "tagNames": [
                 "type_codelab"
@@ -599,14 +662,14 @@
                 "topic_performance",
                 "type_session"
             ],
-            "title": "ART: Performance Myth Busters",
+            "title": "Performance Myth Busters",
             "type": "Session",
             "youtubeUrl": ""
         },
         {
             "description": " - Advanced Haptics: The When, What, and How of New Haptic APIs\n - Adopt Wide Color Gamut\n - What's New in C++/Native Support in Android Studio\n - Turning the Page: Migrating to ViewPager2",
             "endTimestamp": 1571940000000,
-            "id": "3297612a-2e81-5094-b186-4e0df435492c",
+            "id": "a150fb02-ca92-5a63-abad-c19947a27eaf",
             "livestreamed": false,
             "relatedSessions": [],
             "room": "3ec7bc89-46a6-5480-8c16-98b4e639cf98",
@@ -626,6 +689,25 @@
             "youtubeUrl": ""
         },
         {
+            "description": "Learn how to create a camera app that uses CameraX to show a viewfinder, take photos and analyze an image stream from the camera.",
+            "endTimestamp": 1571943000000,
+            "id": "6fd0a2c2-cd15-5388-b01b-b58c257284da",
+            "livestreamed": false,
+            "relatedSessions": [],
+            "room": "5b78492c-f11f-467a-8bf5-8e5dcad0c620",
+            "speakers": [
+                "65849c11-ea6b-5a64-bdb4-cc10441b2400",
+                "3aac0967-141a-567f-a958-878087025402"
+            ],
+            "startTimestamp": 1571939100000,
+            "tagNames": [
+                "type_codelab"
+            ],
+            "title": "CameraX Codelab",
+            "type": "Codelab",
+            "youtubeUrl": ""
+        },
+        {
             "description": "Strategies for data encryption on Android using Jetpack Security, key takeaways: learn to encrypt data safely on device and use the AndroidKeyStore.\n\n1. Outline the challenges with data-at-rest encryption.\n2. Best practices for data encryption and key management.\n3. Deep dive into why and how Jetpack Security library was built.",
             "endTimestamp": 1571941800000,
             "id": "97643a57-15ae-5c51-a313-2716a3fb9d98",
@@ -637,7 +719,8 @@
             ],
             "startTimestamp": 1571940600000,
             "tagNames": [
-                "topic_performance",
+                "topic_jetpack",
+                "topic_platform",
                 "type_session"
             ],
             "title": "Secure Your Data - Deep Dive into Encryption and Security",
@@ -662,25 +745,6 @@
             ],
             "title": "Emulator in a Continuous Integration (CI) Environment",
             "type": "Session",
-            "youtubeUrl": ""
-        },
-        {
-            "description": "Learn how to create a camera app that uses CameraX to show a viewfinder, take photos and analyze an image stream from the camera.",
-            "endTimestamp": 1571943000000,
-            "id": "6fd0a2c2-cd15-5388-b01b-b58c257284da",
-            "livestreamed": false,
-            "relatedSessions": [],
-            "room": "5b78492c-f11f-467a-8bf5-8e5dcad0c620",
-            "speakers": [
-                "65849c11-ea6b-5a64-bdb4-cc10441b2400",
-                "3aac0967-141a-567f-a958-878087025402"
-            ],
-            "startTimestamp": 1571937600000,
-            "tagNames": [
-                "type_codelab"
-            ],
-            "title": "CameraX Codelab",
-            "type": "Codelab",
             "youtubeUrl": ""
         },
         {
@@ -724,22 +788,6 @@
             "youtubeUrl": ""
         },
         {
-            "description": "Work at your own pace from a list of codelabs covering a wide variety of Android topics, from Android Jetpack to Android 10.",
-            "endTimestamp": 1571943300000,
-            "id": "84686440-155f-525e-bfd3-136f6e8cf190",
-            "livestreamed": false,
-            "relatedSessions": [],
-            "room": "5b78492c-f11f-467a-8bf5-8e5dcad0c620",
-            "speakers": [],
-            "startTimestamp": 1571942100000,
-            "tagNames": [
-                "type_codelab"
-            ],
-            "title": "Open Codelabs",
-            "type": "Codelab",
-            "youtubeUrl": ""
-        },
-        {
             "description": "This talk dives into some of the details of how the R8 application shrinker shrinks apps to make it easier for developers to use R8.",
             "endTimestamp": 1571949000000,
             "id": "04c5caaa-a52d-521e-8a10-8cdff9b030e4",
@@ -767,7 +815,8 @@
             "relatedSessions": [],
             "room": "3ec7bc89-46a6-5480-8c16-98b4e639cf98",
             "speakers": [
-                "412d63b4-705b-5cb1-87c5-887a55457d78"
+                "412d63b4-705b-5cb1-87c5-887a55457d78",
+                "99d87582-3794-590d-9b0a-d52d60d3d814"
             ],
             "startTimestamp": 1571947800000,
             "tagNames": [
@@ -792,6 +841,30 @@
             ],
             "title": "Open Codelabs",
             "type": "Codelab",
+            "youtubeUrl": ""
+        },
+        {
+            "description": "Meet and talk to the Android Team!\nStop by the 2nd floor for Q and A, demos, or just to chat. Topics and teams will change throughout the day, so plan your ADS agenda to get your most pressing questions answered. Special guests and speakers will be featured in the Speakers' Lounge throughout both days.\n\nActivity Recognition\nAndroid TV\nAndroid for Cars\nAndroid Framework\nAndroid Tablets and Foldables\nAndroid Vitals\nART and OpenJDK Libraries\nArchitecture Components\nBuild Speed Clinic\nCamera\nCameraX\nAndroid for Chrome OS\nJetpack Compose\nDark Theme\nDigital Wellbeing\nForeground Services\nGesture Navigation\nHaptics\nAndroid Jetpack\nKotlin\nMaterial Design\nPermissions\nPlay Academy\nProfilers\nRuntime Performance Clinic\nSystem UI, Notifications\nWindows and Activities",
+            "endTimestamp": 1571965200000,
+            "id": "5060deb8-6cc6-5e65-8374-58d1831aa393",
+            "livestreamed": false,
+            "relatedSessions": [],
+            "room": "9922c95e-4f68-4925-a5cd-913f7aebeeea",
+            "speakers": [],
+            "startTimestamp": 1571949000000,
+            "tagNames": [
+                "topic_auto",
+                "topic_studio",
+                "topic_tv",
+                "topic_google_play",
+                "topic_jetpack",
+                "topic_kotlin",
+                "topic_performance",
+                "topic_platform",
+                "type_sandbox"
+            ],
+            "title": "Sandbox: Demos and Office Hours - PM Topics",
+            "type": "Sandbox",
             "youtubeUrl": ""
         },
         {
@@ -842,6 +915,7 @@
             "relatedSessions": [],
             "room": "5b78492c-f11f-467a-8bf5-8e5dcad0c620",
             "speakers": [
+                "99d87582-3794-590d-9b0a-d52d60d3d814",
                 "cf8b8a10-7329-59c9-83fa-1f3b141a2f75"
             ],
             "startTimestamp": 1571949300000,
@@ -966,7 +1040,7 @@
                 "topic_kotlin",
                 "type_session"
             ],
-            "title": "Java\u2764\ufe0f Kotlin, Happy Together \ud83c\udfb5",
+            "title": "Java \u2764\ufe0f Kotlin, Happy Together \ud83c\udfb5",
             "type": "Session",
             "youtubeUrl": ""
         },
@@ -977,7 +1051,10 @@
             "livestreamed": false,
             "relatedSessions": [],
             "room": "3ec7bc89-46a6-5480-8c16-98b4e639cf98",
-            "speakers": [],
+            "speakers": [
+                "940be27f-35bf-5440-bd6e-5a453a3a6bc6",
+                "224ccd07-7423-5bd1-a07f-1cac4dde5ec4"
+            ],
             "startTimestamp": 1571956500000,
             "tagNames": [
                 "topic_platform",
@@ -988,24 +1065,7 @@
             "youtubeUrl": ""
         },
         {
-            "description": "This talk will provide a deep dive into the new tooling the framework team has been working to allow better understanding permission usage for your app. We will provide specifics around mechanisms for attributing permissions for features in the app which in addition to the tooling to track access can provide insights into private data use. This would enable apps to limit their private data use. We will also present planned permission changes.",
-            "endTimestamp": 1571960400000,
-            "id": "5d705128-22b5-5120-bce4-22d828732137",
-            "livestreamed": true,
-            "relatedSessions": [],
-            "room": "31156ab0-45fa-54d9-a99e-1606ae89a213",
-            "speakers": [],
-            "startTimestamp": 1571958000000,
-            "tagNames": [
-                "topic_platform",
-                "type_session"
-            ],
-            "title": "Permissions on Android",
-            "type": "Session",
-            "youtubeUrl": ""
-        },
-        {
-            "description": " - Performance Analysis Using Systrace\n - Supercharge Sharing to your App\n - The Digital Wellbeing Opportunity\n - Work Profile Compatibility for your App\n - Wait, There Is a UX Team On Android Studio?\n - 64-Bit Tips and Tricks",
+            "description": " - Performance Analysis Using Systrace\n - Supercharge Sharing to your App\n - The Digital Wellbeing Opportunity\n - Get Your App To Work At Work\n - Wait, There Is a UX Team On Android Studio?\n - 64-Bit Tips and Tricks",
             "endTimestamp": 1571960400000,
             "id": "26fffa35-562f-5965-87d3-73018e1ff2e6",
             "livestreamed": false,
@@ -1014,6 +1074,7 @@
             "speakers": [
                 "f398c6c2-84e8-5e47-a1f9-a382c4d7f59f",
                 "61738f00-e3a8-516a-a4d1-7d552f779c2e",
+                "1fef3b16-6396-523b-90c0-8f124101ccda",
                 "5e59b748-c72d-546d-abbe-ed96d9c5b9c9",
                 "aceb3fdf-e4cf-5510-85fe-1da0d1783b75",
                 "a7393afd-e92d-57d5-95d9-df27a59a212d",
@@ -1032,7 +1093,7 @@
             "youtubeUrl": ""
         },
         {
-            "description": "This talk will talk about the benefits of a declarative reactive UI system and how it applies to real problems that Android developers have today. Today Android XML Layouts are declarative but static, meaning all dynamic aspects of the UI must be done programmatically in an imperative style. The result of this is that many UIs have strong but implicit coupling between UI Logic and their corresponding UI Layouts. This talk will show alternative architectures that move the coupling from implicit to explicit, and in the process, make things simpler, easier to navigate, and more understandable",
+            "description": "This talk will talk about the benefits of a declarative reactive UI system like Jetpack Compose and how it applies to real problems that Android developers have today. Today Android XML Layouts are declarative but static, meaning all dynamic aspects of the UI must be done programmatically in an imperative style. The result of this is that many UIs have strong but implicit coupling between UI Logic and their corresponding UI Layouts. This talk will expand on the programming model of Jetpack Compose and architecture approaches that move the coupling from implicit to explicit, and in the process, make things simpler, easier to navigate, and more understandable.",
             "endTimestamp": 1571962200000,
             "id": "24bfc603-0437-5f57-8eaf-f857ab571107",
             "livestreamed": true,
@@ -1055,7 +1116,9 @@
             "livestreamed": false,
             "relatedSessions": [],
             "room": "3ec7bc89-46a6-5480-8c16-98b4e639cf98",
-            "speakers": [],
+            "speakers": [
+                "44896ecd-912b-57b2-9577-fad1fc9522a3"
+            ],
             "startTimestamp": 1571961000000,
             "tagNames": [
                 "topic_google_play",
@@ -1086,7 +1149,7 @@
             "youtubeUrl": ""
         },
         {
-            "description": "Apps using Foreground Services to get foreground privileges such as the ability to access location or record audio/video would need to make their intentions more explicit. We started with such restrictions in Android Q and are continuing to add more restrictions to give users the privacy they expect.",
+            "description": "Apps using Foreground Services to get foreground privileges such as the ability to access location or record audio/video would need to make their intentions more explicit. We started with such restrictions in Android 10 and are continuing to add more restrictions to give users the privacy they expect.",
             "endTimestamp": 1571963700000,
             "id": "0c734279-d8a2-550a-b98c-db5fb2f3e6a7",
             "livestreamed": false,
@@ -1100,7 +1163,7 @@
                 "topic_platform",
                 "type_session"
             ],
-            "title": "Foreground Service Types and Permissions",
+            "title": "Android OS Resilience",
             "type": "Session",
             "youtubeUrl": ""
         }
@@ -1226,6 +1289,26 @@
             },
             "thumbnailUrl": ""
         },
+        "1fef3b16-6396-523b-90c0-8f124101ccda": {
+            "bio": "Coming from a software engineering background and a passion for education, I've been teaching Android Development with Udacity for the past 3 years.",
+            "company": "Google",
+            "id": "1fef3b16-6396-523b-90c0-8f124101ccda",
+            "name": "Aser Samak",
+            "socialLinks": {
+                "twitter": "https://twitter.com/asersamak"
+            },
+            "thumbnailUrl": ""
+        },
+        "224ccd07-7423-5bd1-a07f-1cac4dde5ec4": {
+            "bio": "Shiyu is an engineer lead in ML Kit, where he is passionate about bringing simple-to-use machine learning solutions to mobile developers. Previously at Google he's worked on Android Location and Context, Google Ads Quality and Federated Learning.",
+            "company": "Google",
+            "id": "224ccd07-7423-5bd1-a07f-1cac4dde5ec4",
+            "name": "Shiyu Hu",
+            "socialLinks": {
+                "twitter": ""
+            },
+            "thumbnailUrl": ""
+        },
         "282ccd67-3719-5d1d-8db3-0e22b84d8607": {
             "bio": "Iliyan has been with Android from the very beginning.  He leads the Linux core of the OS and is in charge of Project Treble.  When not obsessing about Linux and updatability, he spends his time promoting Rust and WebAssembly to anyone within earshot.",
             "company": "Google",
@@ -1235,6 +1318,16 @@
                 "twitter": "https://twitter.com/imalchev"
             },
             "thumbnailUrl": "https://storage.googleapis.com/adssched-prod.appspot.com/headshots/malchev.jpg"
+        },
+        "2d31505c-845a-5801-94f8-8831a6f28222": {
+            "bio": "Jonathan is the product manager for Android Bluetooth, a team which owns the core bluetooth stack as well as wireless audio experiences.",
+            "company": "Google",
+            "id": "2d31505c-845a-5801-94f8-8831a6f28222",
+            "name": "Jonathan Hurwitz",
+            "socialLinks": {
+                "twitter": ""
+            },
+            "thumbnailUrl": ""
         },
         "2d3df339-5aff-5215-9ea3-3ba7eb61e676": {
             "bio": "Software Engineer on the Android Toolkit team",
@@ -1313,6 +1406,16 @@
             "name": "Qasid Sadiq",
             "socialLinks": {
                 "twitter": ""
+            },
+            "thumbnailUrl": ""
+        },
+        "44896ecd-912b-57b2-9577-fad1fc9522a3": {
+            "bio": "Almost 20 years working with software engineering, and since 2005 with mobile, Neto Marin is working at Google since 2012 as a Developer Advocate, and now is based in Brazil, supporting Latam top partners adopting cutting edge Android features.",
+            "company": "Google",
+            "id": "44896ecd-912b-57b2-9577-fad1fc9522a3",
+            "name": "Neto Marin",
+            "socialLinks": {
+                "twitter": "https://twitter.com/netomarin"
             },
             "thumbnailUrl": ""
         },
@@ -1585,6 +1688,36 @@
                 "twitter": "https://twitter.com/amsanjeev"
             },
             "thumbnailUrl": "https://storage.googleapis.com/adssched-prod.appspot.com/headshots/amsanjeev.jpg"
+        },
+        "93f5c555-015c-5f52-b7e6-71a9eb5f2514": {
+            "bio": "Dave Burke is Vice President of Engineering at Google where he leads engineering for the Android platform. Android is the largest mobile platform and ecosystem in the world, with over 2 billion active devices spanning smartphones, tablets, wearables, auto, TV, and IOT. Dave joined Google UK in 2007, becoming an engineering site lead and later moving to California in 2011. Prior to Google, Dave cofounded and was CTO of an internet/telecoms voice startup and helped define related Web and Internet standards. Dave holds a BE, MEngSc, and PhD in Electronic Engineering from University College Dublin, Ireland.",
+            "company": "Google",
+            "id": "93f5c555-015c-5f52-b7e6-71a9eb5f2514",
+            "name": "Dave Burke",
+            "socialLinks": {
+                "twitter": ""
+            },
+            "thumbnailUrl": ""
+        },
+        "940be27f-35bf-5440-bd6e-5a453a3a6bc6": {
+            "bio": "App developer, software engineer on ML Kit.",
+            "company": "Google",
+            "id": "940be27f-35bf-5440-bd6e-5a453a3a6bc6",
+            "name": "Julie Zhou",
+            "socialLinks": {
+                "twitter": ""
+            },
+            "thumbnailUrl": ""
+        },
+        "99d87582-3794-590d-9b0a-d52d60d3d814": {
+            "bio": "Lyla is Developer Advocate who works on Android Jetpack, testing and training. Before Google, she worked at Udacity and taught devs from around the world to write Android apps. She's a returned Peace Corps volunteer and has lived on three continents.",
+            "company": "Google",
+            "id": "99d87582-3794-590d-9b0a-d52d60d3d814",
+            "name": "Lyla Fujiwara",
+            "socialLinks": {
+                "twitter": "https://twitter.com/ceruleanotter"
+            },
+            "thumbnailUrl": ""
         },
         "a028e287-20e2-5bec-a5e8-85338e4e1900": {
             "bio": "Oscar is a Developer Advocate based in Tokyo, working with game developers in East Asia, to ensure they make the best games, using the best technology, offering the best developer experience, to delight players over the world.",
@@ -1862,8 +1995,8 @@
             "code": "Android_Auto",
             "color": "#4285f4",
             "fontColor": "#FFFFFF",
-            "id": "21c49274-8aaa-50d2-8dd4-cc4c54506def",
-            "name": "Android Auto",
+            "id": "2317e579-a20d-50c1-8e99-cb456eb3d3fa",
+            "name": "Android for Cars",
             "order_in_category": 1,
             "tag": "topic_auto"
         },
@@ -1975,15 +2108,6 @@
             "category": "type",
             "color": "#aaaaaa",
             "fontColor": "#202124",
-            "id": "02ed0d12-ec41-533e-992c-eb6ea4621667",
-            "name": "Office Hours",
-            "order_in_category": 3,
-            "tag": "type_office_hour"
-        },
-        {
-            "category": "type",
-            "color": "#aaaaaa",
-            "fontColor": "#202124",
             "id": "0125fb41-bdb5-5000-bdc9-aa566192c1a7",
             "name": "Lightning Talk",
             "order_in_category": 2,
@@ -2006,6 +2130,15 @@
             "name": "Fireside Chat",
             "order_in_category": 1,
             "tag": "type_fireside_chat"
+        },
+        {
+            "category": "type",
+            "color": "#aaaaaa",
+            "fontColor": "#202124",
+            "id": "38aa3a15-40d4-5865-8344-9450f9306c25",
+            "name": "Sandbox",
+            "order_in_category": 5,
+            "tag": "type_sandbox"
         }
     ]
 }

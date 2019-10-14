@@ -76,12 +76,12 @@ object FakeConferenceDataSource : ConferenceDataSource {
                     it.startTime >= ConferenceDays.first().start &&
                             it.endTime <= ConferenceDays.last().end
                 }
-        val secondSession = sessionsInRange[1]
+        val secondSession = sessionsInRange[2]
         val secondSessionIndex = sessions.indexOf(secondSession)
 
         // ...also, change its title, id, speaker, related sessions and tags
 
-        val speaker = speakers.first { it.id == secondSession.speakers.toList().first().id }
+        val speaker = speakers.first()
 
         val newTag = Tag(
             displayName = FAKE_SESSION_TAG_NAME, id = "FAKE_TAG", tagName = "topic_staging",
