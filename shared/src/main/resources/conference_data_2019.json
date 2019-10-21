@@ -303,7 +303,7 @@
         {
             "description": "Work at your own pace from a list of codelabs covering a wide variety of Android topics, from Android Jetpack to Android 10.",
             "endTimestamp": 1571870100000,
-            "id": "84686440-155f-525e-bfd3-136f6e8cf190",
+            "id": "ed040ea7-0fa1-5323-ab28-867852d741c5",
             "livestreamed": false,
             "relatedSessions": [],
             "room": "5b78492c-f11f-467a-8bf5-8e5dcad0c620",
@@ -747,6 +747,7 @@
             "relatedSessions": [],
             "room": "31156ab0-45fa-54d9-a99e-1606ae89a213",
             "speakers": [
+                "835b20ac-7189-5aae-bd03-0abdabef3cae",
                 "d794ca78-38ad-5345-9af7-8d27e6fd4ef7"
             ],
             "startTimestamp": 1571940600000,
@@ -863,7 +864,7 @@
         {
             "description": "Work at your own pace from a list of codelabs covering a wide variety of Android topics, from Android Jetpack to Android 10.",
             "endTimestamp": 1571949000000,
-            "id": "84686440-155f-525e-bfd3-136f6e8cf190",
+            "id": "244c7394-96d9-5223-8f7e-fba2e1567445",
             "livestreamed": false,
             "relatedSessions": [],
             "room": "5b78492c-f11f-467a-8bf5-8e5dcad0c620",
@@ -1211,7 +1212,7 @@
             "socialLinks": {
                 "twitter": "https://twitter.com/fabynou"
             },
-            "thumbnailUrl": ""
+            "thumbnailUrl": "https://storage.googleapis.com/adssched-prod.appspot.com/headshots/sanglardf.jpg"
         },
         "00b30d72-15b4-59e6-84c3-11688e038d84": {
             "bio": "TLM on Jetpack Compose and the Android UI toolkit",
@@ -1252,16 +1253,6 @@
                 "twitter": "https://twitter.com/hoitab"
             },
             "thumbnailUrl": "https://storage.googleapis.com/adssched-prod.appspot.com/headshots/hoil.jpg"
-        },
-        "05dd1d3f-a351-5f19-a0bd-80add43373bd": {
-            "bio": "Former captain in the Israeli Air Force who later worked as Drones Systems Engineer and graduated with an MBA from Kellogg School of Management.",
-            "company": "Google",
-            "id": "05dd1d3f-a351-5f19-a0bd-80add43373bd",
-            "name": "Ziv Snai",
-            "socialLinks": {
-                "twitter": ""
-            },
-            "thumbnailUrl": ""
         },
         "083b3363-5d60-5797-a2cf-e3b9fb799a23": {
             "bio": "Romain manages the Android Toolkit team, who responsibilities include Jetpack, Jetpack Compose and the UI Toolkit. He also sometimes contributes code to Filament, a 3D real-time rendering engine.",
@@ -1351,7 +1342,7 @@
             "socialLinks": {
                 "twitter": ""
             },
-            "thumbnailUrl": ""
+            "thumbnailUrl": "https://storage.googleapis.com/adssched-prod.appspot.com/headshots/shiyuh.jpg"
         },
         "282ccd67-3719-5d1d-8db3-0e22b84d8607": {
             "bio": "Iliyan has been with Android from the very beginning.  He leads the Linux core of the OS and is in charge of Project Treble.  When not obsessing about Linux and updatability, he spends his time promoting Rust and WebAssembly to anyone within earshot.",
@@ -1682,6 +1673,16 @@
                 "twitter": ""
             },
             "thumbnailUrl": "https://storage.googleapis.com/adssched-prod.appspot.com/headshots/yiyiyang.jpg"
+        },
+        "835b20ac-7189-5aae-bd03-0abdabef3cae": {
+            "bio": "Jon is a Developer Advocate focusing on Android Security. He helps developers to build safer and more privacy focused apps. Jon is the creator and maintainer of Jetpack Security.",
+            "company": "Google",
+            "id": "835b20ac-7189-5aae-bd03-0abdabef3cae",
+            "name": "Jon Markoff",
+            "socialLinks": {
+                "twitter": "https://twitter.com/jonmarkoff"
+            },
+            "thumbnailUrl": "https://storage.googleapis.com/adssched-prod.appspot.com/headshots/jmarkoff.jpg"
         },
         "83b1fdf1-726e-5199-b246-34e35424ecb8": {
             "bio": "Jamal Eason is a product manager on Android Studio. Prior to Google, he worked on developer tools at Intel, worked as a product manager at a startup, and was an officer in the US Army. He earned a BS in computer science from USMA and a MBA from HBS.",
