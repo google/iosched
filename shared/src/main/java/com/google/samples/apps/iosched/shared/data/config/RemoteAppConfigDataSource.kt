@@ -21,13 +21,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import com.google.samples.apps.iosched.shared.BuildConfig
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.coroutines.resume
 
 /**
  * [AppConfigDataSource] implementation backed by Remote Config.
@@ -129,6 +132,19 @@ open class RemoteAppConfigDataSource @Inject constructor(
         }
     }
 
+    @ExperimentalCoroutinesApi
+    override suspend fun isAutoScrollFlagEnabled(): Boolean {
+        return withContext(Dispatchers.IO) {
+            suspendCancellableCoroutine<Boolean> { continuation ->
+                firebaseRemoteConfig.fetch(FLAG_CACHE_EXPIRATION).addOnSuccessListener {
+                    firebaseRemoteConfig.activateFetched()
+                    if (!continuation.isActive) return@addOnSuccessListener
+                    continuation.resume(firebaseRemoteConfig.getBoolean(AUTOSCROLL_FEATURE_ENABLED))
+                }.addOnFailureListener { continuation.resume(false) }
+            }
+        }
+    }
+
     companion object {
         const val REGISTRATION_DAY1_START_TIME = "registration_day1_start_time"
         const val REGISTRATION_DAY1_END_TIME = "registration_day1_end_time"
@@ -170,6 +186,9 @@ open class RemoteAppConfigDataSource @Inject constructor(
         const val LABEL_TEA_BREAK = "label_tea_break"
         const val LABEL_PARTY = "label_party"
 
+        const val AUTOSCROLL_FEATURE_ENABLED = "autoscroll_feature_enabled"
+
         val DEFAULT_CACHE_EXPIRY_S = TimeUnit.MINUTES.toSeconds(12)
+        val FLAG_CACHE_EXPIRATION = if (BuildConfig.DEBUG) 1L else 900L
     }
 }

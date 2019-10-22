@@ -179,4 +179,8 @@
         <key>label_party</key>
         <value>Party</value>
     </entry>
+    <entry>
+        <key>autoscroll_feature_enabled</key>
+        <value>true</value>
+    </entry>
 </defaultsMap>

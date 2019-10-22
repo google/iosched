@@ -22,6 +22,7 @@ import android.net.Uri
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.androidtest.util.observeForTesting
 import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.MobileTestData
@@ -38,6 +39,7 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
+import com.google.samples.apps.iosched.shared.domain.logistics.LoadAutoScrollFlagUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.LoadSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.SaveSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.GetConferenceDaysUseCase
@@ -49,11 +51,14 @@ import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
+import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
+import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
+import com.google.samples.apps.iosched.test.util.fakes.FakeAppConfigDataSource
 import com.google.samples.apps.iosched.test.util.fakes.FakeAppDatabase
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
@@ -67,9 +72,13 @@ import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter
 import com.google.samples.apps.iosched.ui.schedule.filters.LoadEventFiltersUseCase
 import com.google.samples.apps.iosched.ui.signin.FirebaseSignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.google.samples.apps.iosched.util.DayAfterConferenceClock
+import com.google.samples.apps.iosched.util.DayBeforeConferenceClock
+import com.google.samples.apps.iosched.util.FirstDayConferenceClock
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import org.hamcrest.CoreMatchers.equalTo
@@ -80,6 +89,7 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertThat
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -90,6 +100,7 @@ import org.mockito.Mockito.verify
 /**
  * Unit tests for the [ScheduleViewModel].
  */
+@ExperimentalCoroutinesApi
 class ScheduleViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread
@@ -144,20 +155,21 @@ class ScheduleViewModelTest {
         viewModelDelegate.loadUser("test")
 
         // Observe viewmodel to load sessions
-        viewModel.getSessionTimeDataForDay(0).observeForever {}
+        viewModel.getSessionTimeDataForDay(0).observeForTesting {
 
-        // Check that data were loaded correctly
-        // Sessions
-        TestData.TestConferenceDays.forEachIndexed { index, day ->
-            assertEquals(
-                TestData.userSessionMap[day],
-                LiveDataTestUtil.getValue(viewModel.getSessionTimeDataForDay(index))?.list
-            )
+            // Check that data were loaded correctly
+            // Sessions
+            TestData.TestConferenceDays.forEachIndexed { index, day ->
+                assertEquals(
+                    TestData.userSessionMap[day],
+                    LiveDataTestUtil.getValue(viewModel.getSessionTimeDataForDay(index))?.list
+                )
+            }
+            assertFalse(LiveDataTestUtil.getValue(viewModel.isLoading)!!)
+            // Tags
+            val loadedFilters = LiveDataTestUtil.getValue(viewModel.eventFilters)
+            assertTrue(loadedFilters?.containsAll(MobileTestData.tagFiltersList) ?: false)
         }
-        assertFalse(LiveDataTestUtil.getValue(viewModel.isLoading)!!)
-        // Tags
-        val loadedFilters = LiveDataTestUtil.getValue(viewModel.eventFilters)
-        assertTrue(loadedFilters?.containsAll(MobileTestData.tagFiltersList) ?: false)
     }
 
     @Test
@@ -372,6 +384,87 @@ class ScheduleViewModelTest {
         assertThat(newValue?.list?.first()?.session, `is`(IsEqual.equalTo(TestData.session0)))
     }
 
+    @Test
+    fun autoScrollDuringConference_currentEventUpdated() = coroutineRule.runBlockingTest {
+        val viewModel = createViewModelForDay(FirstDayConferenceClock)
+
+        // Kick off the viewmodel by loading a user.
+        viewModelDelegate.loadUser("test")
+
+        // Observe viewmodel to load sessions
+        viewModel.getSessionTimeDataForDay(0).observeForTesting {
+            assertNotNull(LiveDataTestUtil.getValue(viewModel.currentEvent))
+        }
+    }
+
+    @Test
+    fun autoScrollDuringConference_featureDisabled_currentEventNotUpdated() =
+        coroutineRule.runBlockingTest {
+            val viewModel = createViewModelForDay(FirstDayConferenceClock, scrollEnabled = false)
+
+            // Kick off the viewmodel by loading a user.
+            viewModelDelegate.loadUser("test")
+
+            // Observe viewmodel to load sessions
+            viewModel.getSessionTimeDataForDay(0).observeForTesting {
+                assertNull(viewModel.currentEvent.value)
+            }
+        }
+
+    @Test
+    fun autoScrollBeforeConference_currentEventNotUpdated() = coroutineRule.runBlockingTest {
+        val viewModel = createViewModelForDay(DayBeforeConferenceClock)
+
+        // Kick off the viewmodel by loading a user.
+        viewModelDelegate.loadUser("test")
+
+        // Observe viewmodel to load sessions
+        viewModel.getSessionTimeDataForDay(0).observeForTesting {
+            assertNull(viewModel.currentEvent.value)
+        }
+    }
+
+    @Test
+    fun autoScrollAfterConference_currentEventNotUpdated() = coroutineRule.runBlockingTest {
+        val viewModel = createViewModelForDay(DayAfterConferenceClock)
+
+        // Kick off the viewmodel by loading a user.
+        viewModelDelegate.loadUser("test")
+
+        // Observe viewmodel to load sessions
+        viewModel.getSessionTimeDataForDay(0).observeForTesting {
+            assertNull(viewModel.currentEvent.value)
+        }
+    }
+
+    private fun createViewModelForDay(
+        timeProvider: TimeProvider,
+        scrollEnabled: Boolean = true
+    ): ScheduleViewModel {
+        // Create test use cases with test data
+        val loadSessionsUseCase = LoadUserSessionsByDayUseCase(
+            DefaultSessionAndUserEventRepository(
+                TestUserEventDataSource(),
+                DefaultSessionRepository(TestDataRepository)
+            ),
+            prefs,
+            coroutineRule.testDispatcher
+        )
+
+        val loadTagsUseCase =
+            LoadEventFiltersUseCase(TagRepository(TestDataRepository), coroutineRule.testDispatcher)
+
+        // Create ViewModel with the use cases
+        val viewModel = createScheduleViewModel(
+            loadSessionsUseCase = loadSessionsUseCase,
+            loadTagsUseCase = loadTagsUseCase,
+            signInViewModelDelegate = viewModelDelegate,
+            isScrollEnabled = scrollEnabled,
+            timeProvider = timeProvider
+        )
+        return viewModel
+    }
+
     private fun createTestConferenceDataRepository(): ConferenceDataRepository {
         return object : ConferenceDataRepository(
             remoteDataSource = TestConfDataSourceSession0(),
@@ -405,10 +498,16 @@ class ScheduleViewModelTest {
         saveSelectedFiltersUseCase: SaveSelectedFiltersUseCase =
             SaveSelectedFiltersUseCase(FakePreferenceStorage(), coroutineRule.testDispatcher),
         analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper(),
-        themedActivityDelegate: ThemedActivityDelegate = FakeThemedActivityDelegate()
+        themedActivityDelegate: ThemedActivityDelegate = FakeThemedActivityDelegate(),
+        isScrollEnabled: Boolean = true,
+        timeProvider: TimeProvider = DefaultTimeProvider
     ): ScheduleViewModel {
 
-        val testUseEventDataSource = TestUserEventDataSource()
+        val isScrollFeatureEnabledUseCase: LoadAutoScrollFlagUseCase =
+            LoadAutoScrollFlagUseCase(
+                FakeAppConfigDataSource(isScrollEnabled),
+                coroutineRule.testDispatcher
+            )
 
         return ScheduleViewModel(
             loadUserSessionsByDayUseCase = loadSessionsUseCase,
@@ -423,7 +522,9 @@ class ScheduleViewModelTest {
             observeConferenceDataUseCase = observeConferenceDataUseCase,
             loadSelectedFiltersUseCase = loadSelectedFiltersUseCase,
             saveSelectedFiltersUseCase = saveSelectedFiltersUseCase,
-            analyticsHelper = analyticsHelper
+            analyticsHelper = analyticsHelper,
+            timeProvider = timeProvider,
+            isScrollFeatureEnabledUseCase = isScrollFeatureEnabledUseCase
         )
     }
 

@@ -42,7 +42,7 @@ object FakeConferenceDataSource : ConferenceDataSource {
     }
 
     private fun transformDataForStaging(data: ConferenceData): ConferenceData {
-        val sessions = moveAllSessionsToToday(data.sessions.toMutableList())
+        val sessions = moveAllSessionsToTodayAndLimitDuration(data.sessions.toMutableList())
         val speakers = data.speakers.toMutableSet()
         val tags = data.tags.toMutableList()
 
@@ -52,16 +52,25 @@ object FakeConferenceDataSource : ConferenceDataSource {
         ConferenceDays.forEachIndexed daysForEach@{ index, day ->
             val firstSessionIndex =
                 sessions.indexOfFirst { it.startTime >= day.start && it.endTime <= day.end }
+            val lastSessionIndex =
+                sessions.indexOfLast { it.startTime >= day.start && it.endTime <= day.end }
             if (firstSessionIndex == -1) {
                 Timber.e("Some sessions are set outside of the conference days")
                 return@daysForEach
             }
             val firstSession = sessions[firstSessionIndex]
+            val lastSession = sessions[lastSessionIndex]
 
-            sessions.removeAt(firstSessionIndex)
+            sessions.remove(firstSession)
+            sessions.remove(lastSession)
             sessions.add(
                 firstSessionIndex,
                 firstSession.copy(title = "First session day ${index + 1}")
+            )
+            // Make last session end at the end of the day
+            sessions.add(
+                lastSessionIndex,
+                lastSession.copy(title = "Last session day ${index + 1}", endTime = day.end)
             )
             lastFirstSession = firstSession
         }
@@ -72,10 +81,10 @@ object FakeConferenceDataSource : ConferenceDataSource {
 
         // Give a known ID to an arbitrary session (the second session with tags and speakers)
         val sessionsInRange = sessions
-                .filter {
-                    it.startTime >= ConferenceDays.first().start &&
-                            it.endTime <= ConferenceDays.last().end
-                }
+            .filter {
+                it.startTime >= ConferenceDays.first().start &&
+                    it.endTime <= ConferenceDays.last().end
+            }
         val secondSession = sessionsInRange[2]
         val secondSessionIndex = sessions.indexOf(secondSession)
 
@@ -127,7 +136,9 @@ object FakeConferenceDataSource : ConferenceDataSource {
         )
     }
 
-    private fun moveAllSessionsToToday(sessions: MutableList<Session>): MutableList<Session> {
+    private fun moveAllSessionsToTodayAndLimitDuration(
+        sessions: MutableList<Session>
+    ): MutableList<Session> {
         val conferenceStart = ConferenceDays.first().start
 
         sessions.sortBy { it.startTime }
@@ -138,9 +149,13 @@ object FakeConferenceDataSource : ConferenceDataSource {
 
         sessions.forEach { session ->
             val delta = Duration.between(firstSessionStartTime, session.startTime)
-            val duration = Duration.between(session.startTime, session.endTime)
-            result.add(session.copy(startTime = conferenceStart + delta,
-                    endTime = conferenceStart + delta + duration))
+            val duration = Duration.ofMinutes(20)
+            result.add(
+                session.copy(
+                    startTime = conferenceStart + delta,
+                    endTime = conferenceStart + delta + duration
+                )
+            )
         }
         return result
     }

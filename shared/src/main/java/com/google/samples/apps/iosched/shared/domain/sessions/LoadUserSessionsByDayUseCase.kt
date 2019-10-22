@@ -93,9 +93,11 @@ open class LoadUserSessionsByDayUseCase @Inject constructor(
             var unfinishedDay: ConferenceDay? = null
             var unfinishedSessionIndex = -1
             run loop@{
+                // Take days that haven't ended
                 conferenceDays.filter { now.isBefore(it.end) }
                     .forEach { day ->
                         userSessions[day]?.forEachIndexed { sessionIndex, userSession ->
+                            // Take the first session that hasn't ended yet
                             if (userSession.session.endTime.isAfter(now)) {
                                 unfinishedDay = day
                                 unfinishedSessionIndex = sessionIndex
@@ -118,7 +120,7 @@ data class LoadUserSessionsByDayUseCaseParameters(
 
     val userId: String?,
 
-    val now: ZonedDateTime = ZonedDateTime.now()
+    val now: ZonedDateTime
 )
 
 data class LoadUserSessionsByDayUseCaseResult(

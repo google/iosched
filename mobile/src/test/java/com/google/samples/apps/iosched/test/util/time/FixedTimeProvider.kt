@@ -21,6 +21,7 @@ import com.google.samples.apps.iosched.shared.time.TimeProvider
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 import org.threeten.bp.Instant
+import org.threeten.bp.ZonedDateTime
 
 /**
  * Fix the TimeProvider to a fixed time
@@ -28,9 +29,9 @@ import org.threeten.bp.Instant
 class FixedTimeProvider(var instant: Instant) : TimeProvider {
     constructor(timeInMilis: Long) : this(Instant.ofEpochMilli(timeInMilis))
 
-    override fun now(): Instant {
-        return instant
-    }
+    override fun now(): Instant = instant
+
+    override fun nowZoned(): ZonedDateTime = ZonedDateTime.from(instant)
 }
 
 /**

@@ -129,7 +129,6 @@ class SharedModule {
     @Singleton
     @Provides
     fun provideTimeProvider(): TimeProvider {
-        // TODO: Make the time configurable
         return DefaultTimeProvider
     }
 

@@ -25,8 +25,9 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME
 
-class FakeAppConfigDataSource : AppConfigDataSource {
-
+class FakeAppConfigDataSource(
+    private val autoScrollFlagEnabled: Boolean = true
+) : AppConfigDataSource {
     private val times1: Map<String, MutableLiveData<String>> = mapOf(
         RemoteAppConfigDataSource.REGISTRATION_DAY1_START_TIME to MutableLiveData(),
         RemoteAppConfigDataSource.REGISTRATION_DAY1_END_TIME to MutableLiveData(),
@@ -99,4 +100,6 @@ class FakeAppConfigDataSource : AppConfigDataSource {
         return times1[key] ?: times2[key] ?: labels[key]
             ?: throw NotFoundException("Value for $key not found")
     }
+
+    override suspend fun isAutoScrollFlagEnabled() = autoScrollFlagEnabled
 }

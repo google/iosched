@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data
+package com.google.samples.apps.iosched.test.util.fakes
 
-import com.google.samples.apps.iosched.model.ConferenceWifiInfo
-import com.google.samples.apps.iosched.shared.data.logistics.LogisticsDataSource
+import androidx.lifecycle.LiveData
+import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
 
-/**
- * LogisticsDataSource data source that never touches the network.
- */
-class FakeLogisticsDataSource : LogisticsDataSource {
+class FakeAppConfigDataSource(
+    private val autoScrollFlagEnabled: Boolean = true
+) : AppConfigDataSource {
+    override suspend fun syncStrings() {}
 
-    override fun getWifiInfo(): ConferenceWifiInfo = ConferenceWifiInfo("", "")
+    override fun getString(key: String): LiveData<String> {
+        throw NotImplementedError()
+    }
+
+    override suspend fun isAutoScrollFlagEnabled() = autoScrollFlagEnabled
 }

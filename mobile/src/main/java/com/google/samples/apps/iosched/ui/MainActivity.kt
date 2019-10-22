@@ -24,7 +24,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import com.firebase.ui.auth.IdpResponse
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ActivityMainBinding
@@ -48,17 +47,9 @@ class MainActivity : DaggerAppCompatActivity() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private var navHostFragment: NavHostFragment? = null
-
     private var currentNavController: LiveData<NavController>? = null
 
     private lateinit var binding: ActivityMainBinding
-
-    private val currentFragment: MainNavigationFragment?
-        get() {
-            return navHostFragment?.childFragmentManager
-                ?.primaryNavigationFragment as? MainNavigationFragment
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -144,8 +135,11 @@ class MainActivity : DaggerAppCompatActivity() {
         return currentNavController?.value?.navigateUp() ?: false
     }
 
+    // Disables auto-scroll feature when user has had any interactions with the app.
     override fun onUserInteraction() {
         super.onUserInteraction()
+        val currentFragment = supportFragmentManager.primaryNavigationFragment
+            ?.childFragmentManager?.primaryNavigationFragment as? MainNavigationFragment
         currentFragment?.onUserInteraction()
     }
 

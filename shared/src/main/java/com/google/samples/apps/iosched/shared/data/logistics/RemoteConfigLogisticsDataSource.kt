@@ -22,7 +22,7 @@ import com.google.samples.apps.iosched.shared.BuildConfig
 import javax.inject.Inject
 
 class RemoteConfigLogisticsDataSource @Inject constructor(
-    val firebaseRemoteConfig: FirebaseRemoteConfig
+    private val firebaseRemoteConfig: FirebaseRemoteConfig
 ) : LogisticsDataSource {
 
     override fun getWifiInfo(): ConferenceWifiInfo {
@@ -41,6 +41,7 @@ class RemoteConfigLogisticsDataSource @Inject constructor(
 
     companion object {
         val CACHE_EXPIRATION = if (BuildConfig.DEBUG) 1L else 900L
+
         const val KEY_WIFI_SSID = "wifi_ssid"
         const val KEY_WIFI_PASSWORD = "wifi_password"
     }

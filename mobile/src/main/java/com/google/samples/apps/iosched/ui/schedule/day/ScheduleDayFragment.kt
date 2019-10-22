@@ -27,6 +27,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleDayBinding
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.lazyFast
@@ -112,24 +113,23 @@ class ScheduleDayFragment : DaggerFragment() {
             }
         }
 
-        // Disabled for bugfix release b/143146581
         // During conference, scroll to current event. Do this only once.
-//        viewModel.currentEvent.observe(this, Observer { eventLocation ->
-//            if (eventLocation != null &&
-//                !viewModel.userHasInteracted &&
-//                eventLocation.day == conferenceDay &&
-//                eventLocation.sessionIndex != -1
-//            ) {
-//                binding.recyclerview.run {
-//                    post {
-//                        (layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
-//                            eventLocation.sessionIndex,
-//                            resources.getDimensionPixelSize(R.dimen.margin_normal)
-//                        )
-//                    }
-//                }
-//            }
-//        })
+        viewModel.currentEvent.observe(this, Observer { eventLocation ->
+            if (eventLocation != null &&
+                !viewModel.userHasInteracted &&
+                eventLocation.day == conferenceDay &&
+                eventLocation.sessionIndex != -1
+            ) {
+                binding.recyclerview.run {
+                    post {
+                        (layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
+                            eventLocation.sessionIndex,
+                            resources.getDimensionPixelSize(R.dimen.margin_normal)
+                        )
+                    }
+                }
+            }
+        })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

@@ -27,6 +27,7 @@ object TimeUtils {
 
     val CONFERENCE_TIMEZONE = ZoneId.of(BuildConfig.CONFERENCE_TIMEZONE)
 
+    // In staging, the conference starts today at 7am (LA time) and ends tomorrow at 10pm.
     val ConferenceDays = listOf(
             ConferenceDay(
                     ZonedDateTime.now().withHour(7).withMinute(0),

@@ -18,9 +18,11 @@ package com.google.samples.apps.iosched.tests
 
 import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
 import com.google.samples.apps.iosched.shared.time.TimeProvider
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 import org.threeten.bp.Instant
+import org.threeten.bp.ZonedDateTime
 
 /**
  * Rule to be used in tests that sets the clocked used by DefaultTimeProvider.
@@ -43,10 +45,16 @@ class FixedTimeRule(
 /**
  * Fix the TimeProvider to a fixed time
  */
-class FixedTimeProvider(private var instant: Instant) : TimeProvider {
+class FixedTimeProvider(private var time: ZonedDateTime) : TimeProvider {
     constructor(timeInMilis: Long) : this(Instant.ofEpochMilli(timeInMilis))
+    constructor(instant: Instant) : this(
+        ZonedDateTime.ofInstant(instant, TimeUtils.CONFERENCE_TIMEZONE)
+    )
 
     override fun now(): Instant {
-        return instant
+        return time.toInstant()
+    }
+    override fun nowZoned(): ZonedDateTime {
+        return time
     }
 }

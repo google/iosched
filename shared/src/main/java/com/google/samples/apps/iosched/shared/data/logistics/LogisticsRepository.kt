@@ -25,7 +25,7 @@ import javax.inject.Singleton
  */
 @Singleton
 open class LogisticsRepository @Inject constructor(
-    val logisticsDataSource: LogisticsDataSource
+    private val logisticsDataSource: LogisticsDataSource
 ) {
     fun getWifiInfo(): ConferenceWifiInfo {
         return logisticsDataSource.getWifiInfo()

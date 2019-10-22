@@ -147,27 +147,22 @@ class ScheduleFragment : DaggerFragment(), MainNavigationFragment {
             updateFiltersUi(it ?: return@Observer)
         })
 
-        if (savedInstanceState == null) {
-            // VM outlives the UI, so reset this flag when a new Schedule page is shown
-            scheduleViewModel.userHasInteracted = false
-        }
-        // Disabled for bugfix release b/143146581
-//        scheduleViewModel.currentEvent.observe(this, Observer { eventLocation ->
-//            if (!scheduleViewModel.userHasInteracted) {
-//                if (eventLocation != null) {
-//                    // switch to the current day
-//                    binding.viewpager.run {
-//                        post {
-//                            // this will trigger onPageChanged and log the page view
-//                            currentItem = eventLocation.day
-//                        }
-//                    }
-//                } else {
-//                    // Showing the default page. Log it.
-//                    logAnalyticsPageView(binding.viewpager.currentItem)
-//                }
-//            }
-//        })
+        scheduleViewModel.currentEvent.observe(this, Observer { eventLocation ->
+            if (!scheduleViewModel.userHasInteracted) {
+                if (eventLocation != null) {
+                    // switch to the current day
+                    binding.viewpager.run {
+                        post {
+                            // this will trigger onPageChanged and log the page view
+                            currentItem = eventLocation.day
+                        }
+                    }
+                } else {
+                    // Showing the default page. Log it.
+                    logAnalyticsPageView(binding.viewpager.currentItem)
+                }
+            }
+        })
 
         return binding.root
     }

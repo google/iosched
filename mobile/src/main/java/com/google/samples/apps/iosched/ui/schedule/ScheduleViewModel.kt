@@ -21,6 +21,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
@@ -29,6 +30,7 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
+import com.google.samples.apps.iosched.shared.domain.logistics.LoadAutoScrollFlagUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.LoadSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.SaveSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.EventLocation
@@ -46,8 +48,10 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
+import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.shared.util.switchMap
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter
@@ -84,7 +88,9 @@ class ScheduleViewModel @Inject constructor(
     observeConferenceDataUseCase: ObserveConferenceDataUseCase,
     loadSelectedFiltersUseCase: LoadSelectedFiltersUseCase,
     private val saveSelectedFiltersUseCase: SaveSelectedFiltersUseCase,
-    private val analyticsHelper: AnalyticsHelper
+    private val analyticsHelper: AnalyticsHelper,
+    isScrollFeatureEnabledUseCase: LoadAutoScrollFlagUseCase,
+    private val timeProvider: TimeProvider
 ) : ViewModel(), ScheduleEventListener, SignInViewModelDelegate by signInViewModelDelegate {
 
     // Keeps track of the coroutine that listens for user sessions
@@ -195,12 +201,18 @@ class ScheduleViewModel @Inject constructor(
     private val _navigateToSearchAction = MutableLiveData<Event<Unit>>()
     val navigateToSearchAction: LiveData<Event<Unit>> = _navigateToSearchAction
 
-    // Flags used to indicate if the "scroll to now" feature has been used already.
+    // Flags used to disable the "scroll to now" feature
     var userHasInteracted = false
 
     // The currently happening event
-    val currentEvent: LiveData<EventLocation?> =
-        loadSessionsResult.map { it.data?.firstUnfinishedSession }
+    val currentEvent: LiveData<EventLocation?> = loadSessionsResult.switchMap {
+        liveData {
+            // Only emit if the feature is not remotely disabled
+            if (isScrollFeatureEnabledUseCase(Unit).data == true) {
+                emit(it.data?.firstUnfinishedSession)
+            }
+        }
+    }
 
     init {
         // Load persisted filters to the matcher when the ViewModel starts
@@ -367,7 +379,9 @@ class ScheduleViewModel @Inject constructor(
 
         loadUserSessionsJob = viewModelScope.launch {
             loadUserSessionsByDayUseCase(
-                LoadUserSessionsByDayUseCaseParameters(userSessionMatcher, getUserId())
+                LoadUserSessionsByDayUseCaseParameters(
+                    userSessionMatcher, getUserId(), timeProvider.nowZoned()
+                )
             ).collect {
                 loadSessionsResult.value = it
 

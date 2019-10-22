@@ -29,8 +29,10 @@ import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.data.TestData.TestConferenceDays
 import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.FakePreferenceStorage
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.single
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.equalTo
@@ -42,19 +44,23 @@ import org.junit.Test
 /**
  * Unit tests for [LoadUserSessionsByDayUseCase]
  */
+@ExperimentalCoroutinesApi
 class LoadUserSessionsByDayUseCaseTest {
 
     // Overrides Dispatchers.Main used in Coroutines
     @get:Rule
     var coroutineRule = MainCoroutineRule()
 
+    private val now = TestConferenceDays.first().start.plusHours(4)
+
     @Test
     fun returnsMapOfSessions() = coroutineRule.runBlockingTest {
 
         val useCase = useCaseWithRepository()
 
-        val result = useCase(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1"))
-            .single()
+        val result =
+            useCase(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1", now))
+                .single()
 
         assertThat(TestData.userSessionMap, `is`(equalTo(result.data?.userSessionsPerDay)))
     }
@@ -64,8 +70,9 @@ class LoadUserSessionsByDayUseCaseTest {
 
         val useCase = useCaseWithRepository()
 
-        val result = useCase(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1"))
-            .single()
+        val result =
+            useCase(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1", now))
+                .single()
 
         assertThat(TestData.userSessionMap, `is`(equalTo(result.data?.userSessionsPerDay)))
     }
@@ -75,8 +82,9 @@ class LoadUserSessionsByDayUseCaseTest {
 
         val useCase = useCaseWithRepository(FailingSessionRepository)
 
-        val result = useCase(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1"))
-            .single()
+        val result =
+            useCase(LoadUserSessionsByDayUseCaseParameters(UserSessionMatcher(), "user1", now))
+                .single()
 
         assertThat(result, `is`(instanceOf(Result.Error::class.java)))
     }

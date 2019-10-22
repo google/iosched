@@ -17,9 +17,11 @@
 package com.google.samples.apps.iosched.shared.time
 
 import org.threeten.bp.Instant
+import org.threeten.bp.ZonedDateTime
 
 interface TimeProvider {
     fun now(): Instant
+    fun nowZoned(): ZonedDateTime
 }
 
 object DefaultTimeProvider : TimeProvider {
@@ -32,10 +34,13 @@ object DefaultTimeProvider : TimeProvider {
     override fun now(): Instant {
         return delegate.now()
     }
+    override fun nowZoned(): ZonedDateTime {
+        return delegate.nowZoned()
+    }
 }
 
 internal object WallclockTimeProvider : TimeProvider {
-    override fun now(): Instant {
-        return Instant.now()
-    }
+    override fun nowZoned(): ZonedDateTime = ZonedDateTime.now()
+
+    override fun now(): Instant = Instant.now()
 }

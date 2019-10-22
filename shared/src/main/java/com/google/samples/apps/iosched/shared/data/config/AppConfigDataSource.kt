@@ -30,4 +30,9 @@ interface AppConfigDataSource {
      * Sync the strings with the latest values with Remote Config
      */
     suspend fun syncStrings()
+
+    /**
+     * Get the flag that disables the auto-scroll feature.
+     */
+    suspend fun isAutoScrollFlagEnabled(): Boolean
 }
