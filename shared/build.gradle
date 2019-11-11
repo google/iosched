@@ -34,6 +34,8 @@ android {
         buildConfigField "String", "CONFERENCE_DAY2_START", "\"${conference_day2_start}\""
         buildConfigField "String", "CONFERENCE_DAY2_END", "\"${conference_day2_end}\""
 
+        buildConfigField "String", "CONFERENCE_YEAR", "\"${conference_year}\""
+
         buildConfigField "String",
                 "BOOTSTRAP_CONF_DATA_FILENAME",
                 "\"${bootstrap_conference_data_filename}\""
@@ -48,10 +50,10 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            buildConfigField "String", "CONFERENCE_DATA_URL", "\"https://storage.googleapis.com/adssched-prod.appspot.com/conference_data_2018.json\""
+            buildConfigField "String", "CONFERENCE_DATA_URL", "\"https://storage.googleapis.com/adssched-prod.appspot.com/conference_data_2019.json\""
         }
         debug {
-            buildConfigField "String", "CONFERENCE_DATA_URL", "\"https://storage.googleapis.com/adssched.appspot.com/conference_data_2018.json\""
+            buildConfigField "String", "CONFERENCE_DATA_URL", "\"https://storage.googleapis.com/adssched.appspot.com/conference_data_2019.json\""
         }
         staging {
             initWith debug
@@ -62,6 +64,10 @@ android {
             // Used with :test-shared, which doesn't have a staging variant.
             matchingFallbacks = ['debug']
         }
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 
     lintOptions {
@@ -85,6 +91,20 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata:$rootProject.lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$rootProject.lifecycleVersion"
+    implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    kapt "androidx.room:room-compiler:$rootProject.roomVersion"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+    api("androidx.work:work-runtime-ktx:$workVersion") {
+        // WorkManager uses its own version of listenablefuture extracted from guava.
+        // This is required to avoid conflicts.
+        exclude group: 'com.google.guava', module: 'listenablefuture'
+    }
+
+    // Coroutines
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutinesVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$rootProject.coroutinesVersion"
 
     // Utils
     api "com.jakewharton.timber:timber:$rootProject.timberVersion"
@@ -126,6 +146,9 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation "com.nhaarman:mockito-kotlin:$rootProject.mockitoKotlinVersion"
 
+    // unit tests with Room
+    testImplementation "androidx.room:room-runtime:$rootProject.roomVersion"
+
     // unit tests livedata
-    testImplementation "androidx.arch.core:core-testing:$rootProject.lifecycleVersion"
+    testImplementation "androidx.arch.core:core-testing:$rootProject.archCoreTestingVersion"
 }

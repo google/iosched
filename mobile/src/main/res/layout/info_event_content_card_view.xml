@@ -29,9 +29,11 @@
 
         <ImageView
             android:id="@+id/grid"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="200dp"
             android:importantForAccessibility="no"
+            android:background="@color/info_event_card_logo_background"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,19 +53,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/margin_normal"
-            android:textAppearance="@style/TextAppearance.ADSSched.InfoEventTitle"
+            android:textAppearance="@style/TextAppearance.IOSched.InfoEventTitle"
             app:layout_constraintBottom_toBottomOf="@+id/grid"
             app:layout_constraintStart_toStartOf="@+id/grid"
             tools:text="Office Hours &amp; App Reviews" />
 
         <TextView
             android:id="@+id/event_content_description"
-            style="@style/TextAppearance.ADSSched.InfoEventDescription"
-            android:layout_width="match_parent"
+            style="@style/TextAppearance.IOSched.InfoEventDescription"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_normal"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/grid" />
 

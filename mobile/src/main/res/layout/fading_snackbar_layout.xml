@@ -47,7 +47,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical|end"
             android:paddingHorizontal="@dimen/margin_normal"
-            android:textAppearance="@style/TextAppearance.ADSSched.FadingSnackbarAction"
+            android:textAppearance="@style/TextAppearance.IOSched.FadingSnackbarAction"
             android:visibility="gone"
             tools:targetApi="o" />
 

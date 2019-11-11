@@ -24,16 +24,16 @@
 
         <variable
             name="tag"
-            type="com.google.samples.apps.adssched.model.Tag" />
+            type="com.google.samples.apps.iosched.model.Tag" />
     </data>
 
     <TextView
-        style="@style/Widget.ADSSched.Tag.Inline"
+        style="@style/Widget.IOSched.Tag.Inline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_normal"
         android:layout_marginTop="@dimen/spacing_micro"
-        android:text="@{tag.name}"
+        android:text="@{tag.displayName}"
         app:tagTint="@{tag.color}"
         tools:drawableStart="@drawable/tag_dot"
         tools:drawableTint="#f0f"

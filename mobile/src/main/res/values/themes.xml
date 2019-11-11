@@ -1,0 +1,70 @@
+<!--
+  ~ Copyright 2019 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="Base.AppTheme" parent="Theme.MaterialComponents.DayNight">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorSecondary">?colorPrimary</item>
+        <item name="colorOnSecondary">@color/color_on_secondary</item>
+        <item name="colorControlLight">@color/color_control_light</item>
+
+        <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/use_light_status</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">@bool/use_light_navigation</item>
+
+        <item name="appBarLayoutStyle">@style/Widget.IOSched.AppBar</item>
+        <item name="bottomNavigationStyle">@style/Widget.IOSched.BottomNav</item>
+        <item name="toolbarStyle">@style/Widget.IOSched.Toolbar</item>
+        <item name="tabStyle">@style/Widget.IOSched.Tabs</item>
+
+        <item name="android:textViewStyle">@style/Widget.IOSched.TextView</item>
+
+        <item name="sessionListKeyline">@dimen/session_keyline</item>
+        <item name="eventFilterViewStyle">@style/Widget.IOSched.EventFilters</item>
+
+        <item name="materialAlertDialogTheme">@style/AlertDialog.Theme</item>
+    </style>
+
+    <style name="AppTheme" parent="Base.AppTheme">
+        <item name="android:statusBarColor">@color/status_bar_scrim</item>
+        <item name="android:navigationBarColor">@color/nav_bar_scrim</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.Launcher" parent="AppTheme.NoActionBar">
+        <item name="android:windowBackground">@drawable/preview_window</item>
+    </style>
+
+    <style name="AppTheme.Onboarding" parent="AppTheme.NoActionBar">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
+    <style name="AppTheme.PopupTheme" parent="ThemeOverlay.MaterialComponents.Light" />
+
+    <!-- Non-top-level screens should inflate with this theme to replace the keyline. -->
+    <style name="AppTheme.Detail">
+        <item name="sessionListKeyline">@dimen/margin_normal</item>
+    </style>
+
+</resources>

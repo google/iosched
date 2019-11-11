@@ -17,10 +17,10 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@color/white" />
+    <item android:drawable="?attr/colorSurface" />
 
     <item
-        android:drawable="@drawable/ic_androiddevsummit_icon_grey"
+        android:drawable="@drawable/ic_android_preview"
         android:gravity="center" />
 
 </layer-list>

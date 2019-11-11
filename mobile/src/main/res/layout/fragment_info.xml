@@ -18,15 +18,16 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <com.google.samples.apps.iosched.widget.InsetDispatchingCoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
-            style="@style/Widget.AppBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true">
 
             <TextView
                 android:id="@+id/title"
@@ -34,12 +35,10 @@
                 android:layout_height="?actionBarSize"
                 android:gravity="center"
                 android:text="@string/title_info"
-                android:textAppearance="@style/TextAppearance.ADSSched.ToolbarTitle"
-                app:layout_scrollFlags="scroll|snap|exitUntilCollapsed" />
+                android:textAppearance="@style/TextAppearance.IOSched.ToolbarTitle" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
-                style="@style/Widget.ADSSched.Tabs"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize" />
 
@@ -53,13 +52,13 @@
             app:pageMargin="@{@dimen/spacing_normal}"
             app:pageMarginDrawable="@{@drawable/page_margin}" />
 
-        <com.google.samples.apps.adssched.widget.FadingSnackbar
+        <com.google.samples.apps.iosched.widget.FadingSnackbar
             android:id="@+id/snackbar"
             android:layout_width="@dimen/snackbar_width"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|start"
             android:visibility="gone" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </com.google.samples.apps.iosched.widget.InsetDispatchingCoordinatorLayout>
 
 </layout>

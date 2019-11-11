@@ -28,7 +28,7 @@
 
         <variable
             name="agenda"
-            type="com.google.samples.apps.adssched.model.Block" />
+            type="com.google.samples.apps.iosched.model.Block" />
     </data>
 
     <merge tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
@@ -67,7 +67,7 @@
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginTop="@dimen/agenda_block_padding_vert"
             android:text="@{agenda.title}"
-            android:textAppearance="@style/TextAppearance.ADSSched.AgendaTitle"
+            android:textAppearance="@style/TextAppearance.IOSched.AgendaTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/icon"
             app:layout_constraintTop_toTopOf="parent" />
@@ -77,7 +77,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/agenda_block_padding_vert"
-            android:textAppearance="@style/TextAppearance.ADSSched.ListSecondary"
+            android:textAppearance="@style/TextAppearance.IOSched.ListSecondary"
             app:layout_constraintEnd_toEndOf="@id/agenda_title"
             app:layout_constraintStart_toStartOf="@id/agenda_title"
             app:layout_constraintTop_toBottomOf="@id/agenda_title"

@@ -17,9 +17,13 @@
 
 <!-- ATTENTION: Needs to duplicate entire manifest to instant due to manifest merging issues. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.google.samples.apps.adssched"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    package="com.google.samples.apps.iosched"
     android:targetSandboxVersion="2">
     <!-- targetSandBoxVersion="2" is a requirement for instant apps. -->
+
+    <!-- Declare this module to be served as an instant app. -->
+    <dist:module dist:instant="true" />
 
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -60,42 +64,25 @@
 
         <activity
             android:name=".ui.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" >
+
+            <!-- Added to handle deep links -->
+            <nav-graph android:value="@navigation/nav_schedule" />
+        </activity>
 
         <activity
             android:name=".ui.onboarding.OnboardingActivity"
             android:theme="@style/AppTheme.Onboarding" />
 
-        <activity
-            android:name=".ui.sessiondetail.SessionDetailActivity"
-            android:parentActivityName=".ui.MainActivity"
-            android:theme="@style/AppTheme.SessionDetails">
-
-            <intent-filter android:label="Session detail">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <!-- Accepts URIs that begin with "adssched://sessionId” -->
-                <data android:scheme="adssched"
-                    android:host="sessions" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".ui.speaker.SpeakerActivity"
-            android:parentActivityName=".ui.MainActivity"
-            android:theme="@style/AppTheme.Speaker" />
-
-        <!-- This activity alias lets us change the main entry point without breaking launcher
-             shortcuts. DO NOT change its android:name attribute. -->
-        <activity-alias
-            android:name=".Launcher"
-            android:label="@string/app_name"
-            android:targetActivity=".ui.LauncherActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
+        <!-- By default, these are not exported since they do not have an intent filter.
+         However, explicitly saying exported="false" to communicate that these are not for
+         other apps to call -->
+        <receiver
+            android:name=".shared.notifications.AlarmBroadcastReceiver"
+            android:exported="false" />
+        <receiver
+            android:name=".shared.notifications.CancelNotificationBroadcastReceiver"
+            android:exported="false" />
 
         <meta-data
             android:name="preloaded_fonts"
@@ -113,5 +100,4 @@
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
 
     </application>
-
 </manifest>

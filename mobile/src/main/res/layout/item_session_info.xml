@@ -24,7 +24,7 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.adssched.ui.sessiondetail.SessionDetailViewModel" />
+            type="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewModel" />
 
         <variable
             name="tagViewPool"
@@ -50,102 +50,18 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="@dimen/margin_normal" />
 
-        <ImageView
-            android:id="@+id/detail_image"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:importantForAccessibility="no"
-            android:scaleType="centerCrop"
-            app:layout_constraintDimensionRatio="@string/session_detail_header_aspect"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:headerImage="@{viewModel.session.photoUrl}" />
-
-        <!-- Static header image, shown if there is a photo or video -->
-        <ImageView
-            android:id="@+id/detail_event_type_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/event_logo_end_margin"
-            android:layout_marginTop="@dimen/event_logo_top_margin"
-            android:importantForAccessibility="no"
-            app:layout_constraintEnd_toEndOf="@+id/detail_image"
-            app:layout_constraintTop_toTopOf="@+id/detail_image"
-            app:eventType="@{viewModel.session.type}"
-            app:goneUnless="@{viewModel.hasPhotoOrVideo}" />
-
-        <!-- Play button, shown if there is a recording available -->
-        <ImageButton
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@color/scrim"
-            android:contentDescription="@string/a11y_play"
-            android:foreground="?selectableItemBackground"
-            android:onClick="@{() -> viewModel.onPlayVideo()}"
-            android:scaleType="center"
-            app:layout_constraintBottom_toBottomOf="@id/detail_image"
-            app:layout_constraintEnd_toEndOf="@id/detail_image"
-            app:layout_constraintStart_toStartOf="@id/detail_image"
-            app:layout_constraintTop_toTopOf="@id/detail_image"
-            app:goneUnless="@{viewModel.isPlayable}"
-            app:srcCompat="@drawable/ic_play" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_title_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.65" />
-
-        <!-- Header animation, shown only if there isn't a photo or video -->
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintBottom_toBottomOf="@id/detail_image"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="@id/detail_image"
-            app:layout_constraintStart_toEndOf="@id/guideline_title_end"
-            app:layout_constraintTop_toTopOf="@id/detail_image"
-            app:layout_constraintVertical_bias="0"
-            app:eventHeaderImage="@{viewModel.session}"
-            app:goneUnless="@{!viewModel.hasPhotoOrVideo}" />
-
-        <!-- Title on header: only shown if there isn't a photo header or video. -->
-        <TextView
-            android:id="@+id/session_detail_title"
-            style="@style/Widget.ADSSched.SessionDetailTitle"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:paddingBottom="@dimen/margin_normal"
-            android:paddingTop="72dp"
-            android:text="@{viewModel.session.title}"
-            app:layout_constraintBottom_toBottomOf="@id/detail_image"
-            app:layout_constraintEnd_toEndOf="@id/guideline_title_end"
-            app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toTopOf="@id/detail_image"
-            app:goneUnless="@{!viewModel.hasPhotoOrVideo}"
-            tools:text="Session Title" />
-
-        <Space
-            android:id="@+id/spacer"
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            app:layout_constraintTop_toBottomOf="@id/detail_image" />
-
         <!-- Title below header: shown if there is a photo header or video. -->
         <TextView
             android:id="@+id/session_detail_with_video_title"
-            style="@style/Widget.ADSSched.SessionDetailTitle"
+            style="@style/Widget.IOSched.SessionDetailTitle"
             android:layout_width="0dp"
+            android:layout_marginTop="@dimen/margin_normal"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/margin_normal"
+            android:layout_marginBottom="@dimen/margin_normal"
             android:text="@{viewModel.session.title}"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/spacer"
+            app:layout_constraintTop_toTopOf="parent"
             app:goneUnless="@{viewModel.hasPhotoOrVideo}"
             tools:text="Session Title" />
 
@@ -153,10 +69,12 @@
             android:id="@+id/session_detail_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
             android:textColor="?android:textColorPrimary"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/session_detail_with_video_title"
+            app:layout_goneMarginTop="24dp"
             app:sessionDetailEndTime="@{viewModel.session.endTime}"
             app:sessionDetailStartTime="@{viewModel.session.startTime}"
             app:timeZoneId="@{viewModel.timeZoneId}"

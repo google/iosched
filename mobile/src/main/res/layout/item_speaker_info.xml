@@ -24,11 +24,11 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.adssched.ui.speaker.SpeakerViewModel" />
+            type="com.google.samples.apps.iosched.ui.speaker.SpeakerViewModel" />
 
         <variable
             name="headshotLoadListener"
-            type="com.google.samples.apps.adssched.ui.speaker.ImageLoadListener" />
+            type="com.google.samples.apps.iosched.ui.speaker.ImageLoadListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -50,65 +50,15 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="@dimen/margin_normal" />
 
-        <ImageView
-            android:id="@+id/header_grid"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="@string/session_detail_header_aspect"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:headerImage="@{null}" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_title_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.65" />
-
-        <ImageView
-            android:id="@+id/speaker_grid_image"
-            android:layout_width="@dimen/speaker_large_headshot_size"
-            android:layout_height="@dimen/speaker_large_headshot_size"
-            android:layout_marginEnd="32dp"
-            android:layout_marginTop="24dp"
-            android:transitionName="@string/speaker_headshot_transition"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="@id/header_grid"
-            app:layout_constraintTop_toTopOf="@id/header_grid"
-            app:listener="@{headshotLoadListener}"
-            app:speakerImage="@{viewModel.speaker}" />
-
-        <TextView
-            android:id="@+id/speaker_name"
-            style="@style/Widget.ADSSched.SessionDetailTitle"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:paddingBottom="@dimen/margin_normal"
-            android:paddingTop="72dp"
-            android:text="@{viewModel.speaker.name}"
-            app:layout_constraintBottom_toBottomOf="@id/header_grid"
-            app:layout_constraintEnd_toEndOf="@id/guideline_title_end"
-            app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toTopOf="@id/header_grid"
-            tools:text="Nick Butcher" />
-
-        <Space
-            android:id="@+id/spacer"
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            app:layout_constraintTop_toBottomOf="@id/header_grid" />
-
         <TextView
             android:id="@+id/speaker_links"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/margin_normal"
-            android:textAppearance="@style/TextAppearance.ADSSched.Links"
+            android:textAppearance="@style/TextAppearance.IOSched.Links"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/spacer"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/margin_normal"
             app:githubUrl="@{viewModel.speaker.githubUrl}"
             app:linkedInUrl="@{viewModel.speaker.linkedInUrl}"
             app:twitterUrl="@{viewModel.speaker.twitterUrl}"
@@ -124,6 +74,7 @@
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/speaker_links"
+            android:layout_marginTop="@dimen/margin_normal"
             tools:text="Pixel puppeteer" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

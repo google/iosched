@@ -2,11 +2,11 @@ version: 2
 
 config_android: &config_android
   docker:
-    - image: circleci/android:api-28-alpha
+    - image: circleci/android:api-29
   working_directory: ~/project
   environment:
     JAVA_TOOL_OPTIONS: "-Xmx1024m"
-    GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false"
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process"
     TERM: dumb
 
 setup_ftl: &setup_ftl
@@ -17,15 +17,23 @@ setup_ftl: &setup_ftl
         sudo gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
         sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
 
+update_sdk: &update_sdk
+  run:
+    name: Update SDK
+    command: |
+      yes | sdkmanager --licenses || true
+      sdkmanager "platform-tools" "platforms;android-29"
+
 jobs:
   build_and_setup:
     <<: *config_android
     steps:
+      - <<: *update_sdk
       - checkout
       - run:
           name: Build test and lint
           command: |
-            ./gradlew assembleInstalledStaging assembleInstalledStagingAndroidTest testInstalledDebugUnitTest testInstalledReleaseUnitTest lintInstalledDebug
+            ./gradlew assembleStaging assembleStagingAndroidTest testDebugUnitTest testReleaseUnitTest lintDebug
       - run:
           name: Save test results
           command: |
@@ -56,8 +64,8 @@ jobs:
           command: |
             BUILD_DIR=build_${CIRCLE_BUILD_NUM}
             sudo gcloud firebase test android run \
-              --app mobile/build/outputs/apk/installed/staging/mobile-installed-staging.apk \
-              --test mobile/build/outputs/apk/androidTest/installed/staging/mobile-installed-staging-androidTest.apk \
+              --app mobile/build/outputs/apk/staging/mobile-staging.apk \
+              --test mobile/build/outputs/apk/androidTest/staging/mobile-staging-androidTest.apk \
               --results-bucket cloud-test-${GOOGLE_PROJECT_ID}-iosched \
               --results-dir=${BUILD_DIR}
       - run:

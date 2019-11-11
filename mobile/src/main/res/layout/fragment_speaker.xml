@@ -21,41 +21,137 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="headshotLoadListener"
+            type="com.google.samples.apps.iosched.ui.speaker.ImageLoadListener" />
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.adssched.ui.speaker.SpeakerViewModel" />
+            type="com.google.samples.apps.iosched.ui.speaker.SpeakerViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <com.google.samples.apps.iosched.widget.InsetDispatchingCoordinatorLayout
         android:id="@+id/coordinator_layout_session_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:marginLeftSystemWindowInsets="@{true}"
+        app:marginRightSystemWindowInsets="@{true}"
         tools:ignore="MergeRootFrame">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:fitsSystemWindows="true">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:contentScrim="?attr/colorSurface"
+                app:statusBarScrim="?attr/colorSurface">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/header_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="true"
+                    app:noopInsets="@{true}">
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_begin="@dimen/margin_normal" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_end="@dimen/margin_normal" />
+
+                    <ImageView
+                        android:id="@+id/header_grid"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:headerImage="@{null}" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_title_end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.65" />
+
+                    <ImageView
+                        android:id="@+id/speaker_grid_image"
+                        android:layout_width="@dimen/speaker_large_headshot_size"
+                        android:layout_height="@dimen/speaker_large_headshot_size"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginTop="48dp"
+                        android:layout_marginBottom="24dp"
+                        android:transitionName="@string/speaker_headshot_transition"
+                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintEnd_toEndOf="@id/header_grid"
+                        app:layout_constraintTop_toTopOf="@id/header_grid"
+                        app:layout_constraintBottom_toBottomOf="@id/header_grid"
+                        app:layout_constraintVertical_bias="0"
+                        app:listener="@{headshotLoadListener}"
+                        app:speakerImage="@{viewModel.speaker}" />
+
+                    <TextView
+                        android:id="@+id/speaker_name"
+                        style="@style/Widget.IOSched.SessionDetailTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:paddingBottom="@dimen/margin_normal"
+                        android:paddingTop="72dp"
+                        android:text="@{viewModel.speaker.name}"
+                        app:layout_constraintBottom_toBottomOf="@id/header_grid"
+                        app:layout_constraintEnd_toEndOf="@id/guideline_title_end"
+                        app:layout_constraintStart_toStartOf="@id/guideline_start"
+                        app:layout_constraintTop_toTopOf="@id/header_grid"
+                        tools:text="Nick Butcher" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- Toolbar needs to be on top for the back button to be tappable -->
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
+                    app:layout_collapseMode="pin"
+                    app:navigationContentDescription="@string/navigate_up"
+                    app:navigationIcon="@drawable/ic_arrow_back" />
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/speaker_detail_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
-            app:hasFixedSize="@{true}"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layoutManager="LinearLayoutManager" />
 
-        <ImageButton
-            android:id="@+id/up"
-            android:layout_width="?actionBarSize"
-            android:layout_height="?actionBarSize"
-            android:layout_gravity="start|top"
-            android:background="?selectableItemBackgroundBorderless"
-            app:srcCompat="@drawable/ic_arrow_back" />
-
-        <com.google.samples.apps.adssched.widget.FadingSnackbar
+        <com.google.samples.apps.iosched.widget.FadingSnackbar
             android:id="@+id/snackbar"
             android:layout_width="@dimen/snackbar_width"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|start"
             android:visibility="gone" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </com.google.samples.apps.iosched.widget.InsetDispatchingCoordinatorLayout>
 
 </layout>

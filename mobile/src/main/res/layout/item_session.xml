@@ -25,11 +25,11 @@
 
         <variable
             name="userSession"
-            type="com.google.samples.apps.adssched.model.userdata.UserSession" />
+            type="com.google.samples.apps.iosched.model.userdata.UserSession" />
 
         <variable
             name="eventListener"
-            type="com.google.samples.apps.adssched.ui.sessioncommon.EventActions" />
+            type="com.google.samples.apps.iosched.ui.sessioncommon.EventActions" />
 
         <variable
             name="alwaysShowDate"
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:text="@{userSession.session.title}"
             android:paddingBottom="@dimen/spacing_micro"
-            android:textAppearance="@style/TextAppearance.ADSSched.SessionTitle"
+            android:textAppearance="@style/TextAppearance.IOSched.SessionTitle"
             app:layout_constraintEnd_toStartOf="@+id/bookmark_session"
             app:layout_constraintStart_toEndOf="@id/keyline"
             app:layout_constraintTop_toTopOf="parent"
@@ -98,7 +98,7 @@
             android:id="@+id/length_location"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.ADSSched.ListSecondary"
+            android:textAppearance="@style/TextAppearance.IOSched.ListSecondary"
             app:layout_constraintBottom_toTopOf="@id/tags_barrier"
             app:layout_constraintEnd_toEndOf="@id/title"
             app:layout_constraintStart_toEndOf="@id/livestream_icon"

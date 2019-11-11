@@ -28,7 +28,7 @@
 
         <variable
             name="agenda"
-            type="com.google.samples.apps.adssched.model.Block" />
+            type="com.google.samples.apps.iosched.model.Block" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,6 +37,7 @@
         android:background="?selectableItemBackground"
         android:paddingEnd="@dimen/margin_normal"
         android:paddingVertical="@dimen/spacing_micro"
+        android:theme="@style/ThemeOverlay.AppCompat.Light"
         tools:ignore="RtlSymmetry,UnusedAttribute">
 
         <include

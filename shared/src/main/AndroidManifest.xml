@@ -16,7 +16,8 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.google.samples.apps.adssched.shared">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.google.samples.apps.iosched.shared">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -26,19 +27,17 @@
         android:allowBackup="true"
         android:label="@string/app_name">
 
+        <!-- Remove WorkManager default initialization -->
+        <provider
+            android:name="androidx.work.impl.WorkManagerInitializer"
+            android:authorities="${applicationId}.workmanager-init"
+            tools:node="remove" />
+
         <service
-            android:name=".fcm.AdsschedFirebaseMessagingService">
+            android:name=".fcm.IoschedFirebaseMessagingService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-        <service
-            android:name=".data.job.ConferenceDataService"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-        <service
-            android:name=".fcm.AdsschedFirebaseInstanceIDService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 

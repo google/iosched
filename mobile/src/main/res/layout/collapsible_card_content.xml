@@ -42,10 +42,10 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:paddingBottom="@dimen/spacing_micro"
-                android:paddingEnd="@dimen/margin_normal"
+                android:paddingEnd="@dimen/margin_large"
                 android:paddingStart="@dimen/margin_normal"
                 android:paddingTop="@dimen/spacing_micro"
-                android:textAppearance="@style/TextAppearance.ADSSched.CollapsibleCard"
+                android:textAppearance="@style/TextAppearance.IOSched.CollapsibleCard"
                 tools:text="@string/travel_shuttle_title" />
 
             <ImageView
@@ -62,7 +62,7 @@
 
         </RelativeLayout>
 
-        <com.google.samples.apps.adssched.widget.HtmlTextView
+        <com.google.samples.apps.iosched.widget.HtmlTextView
             android:id="@+id/card_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,6 +72,7 @@
             android:paddingTop="@dimen/spacing_normal"
             android:textColor="?android:textColorPrimary"
             android:visibility="gone"
+            android:textIsSelectable="true"
             tools:text="This is a card description" />
 
     </LinearLayout>

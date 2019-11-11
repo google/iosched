@@ -23,32 +23,23 @@
 
         <variable
             name="eventFilter"
-            type="com.google.samples.apps.adssched.ui.schedule.filters.EventFilter" />
+            type="com.google.samples.apps.iosched.ui.schedule.filters.EventFilter" />
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.adssched.ui.schedule.ScheduleViewModel" />
+            type="com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel" />
     </data>
 
-    <FrameLayout
+    <com.google.samples.apps.iosched.ui.schedule.filters.EventFilterView
+        android:id="@+id/filter_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:minHeight="?android:listPreferredItemHeightSmall">
-
-        <com.google.samples.apps.adssched.ui.schedule.filters.EventFilterView
-            android:id="@+id/filter_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_micro"
-            android:layout_marginTop="@dimen/spacing_micro"
-            android:checked="@{eventFilter.isChecked}"
-            app:color="@{eventFilter.getColor()}"
-            app:eventFilter="@{eventFilter}"
-            app:eventFilterText="@{eventFilter}"
-            app:selectedTextColor="@{eventFilter.getSelectedTextColor()}"
-            app:viewModel="@{viewModel}" />
-
-    </FrameLayout>
+        android:checked="@{eventFilter.isSelected}"
+        android:minHeight="?listPreferredItemHeightSmall"
+        app:color="@{eventFilter.getColor()}"
+        app:eventFilter="@{eventFilter}"
+        app:eventFilterText="@{eventFilter}"
+        app:selectedTextColor="@{eventFilter.getSelectedTextColor()}"
+        app:viewModel="@{viewModel}" />
 
 </layout>

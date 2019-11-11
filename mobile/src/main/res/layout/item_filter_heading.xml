@@ -25,5 +25,5 @@
     android:lines="1"
     android:minHeight="?listPreferredItemHeightSmall"
     android:paddingVertical="@dimen/spacing_normal"
-    android:textAppearance="@style/TextAppearance.ADSSched.Subhead"
+    android:textAppearance="@style/TextAppearance.IOSched.Subhead"
     tools:text="Topics" />

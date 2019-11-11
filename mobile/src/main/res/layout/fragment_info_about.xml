@@ -21,7 +21,7 @@
 
     <data>
 
-        <import type="com.google.samples.apps.adssched.R" />
+        <import type="com.google.samples.apps.iosched.R" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -38,58 +38,73 @@
 
             <Button
                 android:id="@+id/faq_link"
-                style="@style/Widget.ADSSched.AboutButtons"
-                android:layout_width="match_parent"
+                style="@style/Widget.IOSched.AboutButtons"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_normal"
                 android:text="@string/faq_label"
+                android:contentDescription="@string/faq_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:websiteLink="@{@string/faq_url}" />
 
             <Button
                 android:id="@+id/terms_of_service"
-                style="@style/Widget.ADSSched.AboutButtons"
-                android:layout_width="match_parent"
+                style="@style/Widget.IOSched.AboutButtons"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_tos"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/faq_link"
                 app:websiteLink="@{@string/tos_url}" />
 
             <Button
                 android:id="@+id/privacy_policy"
-                style="@style/Widget.ADSSched.AboutButtons"
-                android:layout_width="match_parent"
+                style="@style/Widget.IOSched.AboutButtons"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_privacy_policy"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/terms_of_service"
                 app:websiteLink="@{@string/privacy_policy_url}" />
 
             <Button
                 android:id="@+id/open_source_license"
-                style="@style/Widget.ADSSched.AboutButtons"
-                android:layout_width="match_parent"
+                style="@style/Widget.IOSched.AboutButtons"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_oss_licenses"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/privacy_policy"
                 app:dialogTitle="@{@string/settings_oss_licenses}"
                 app:fileLink="@{@string/oss_file}" />
 
             <TextView
                 android:id="@+id/version_build_number"
-                style="@style/TextAppearance.ADSSched.SettingsSwitch"
-                android:layout_width="wrap_content"
+                style="@style/TextAppearance.IOSched.SettingsSwitch"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/open_source_license"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/open_source_license"
                 tools:text="Version X.X, build X" />
 
-            <ImageView
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_gravity="center"
                 android:layout_marginTop="@dimen/margin_normal"
-                android:contentDescription="@string/built_with_material_content_description"
-                android:scaleType="fitStart"
-                android:src="@drawable/built_with_material"
+                android:drawablePadding="@dimen/margin_small"
+                android:drawableStart="@drawable/ic_logo_components"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/margin_normal"
+                android:text="@string/built_with_material_components"
+                android:textAppearance="?attr/textAppearanceBody1"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/version_build_number" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

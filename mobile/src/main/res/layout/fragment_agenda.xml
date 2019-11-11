@@ -23,18 +23,19 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.adssched.ui.agenda.AgendaViewModel" />
+            type="com.google.samples.apps.iosched.ui.agenda.AgendaViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <com.google.samples.apps.iosched.widget.InsetDispatchingCoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
-            style="@style/Widget.AppBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true">
 
             <TextView
                 android:id="@+id/title"
@@ -42,7 +43,7 @@
                 android:layout_height="?actionBarSize"
                 android:gravity="center"
                 android:text="@string/title_agenda"
-                android:textAppearance="@style/TextAppearance.ADSSched.ToolbarTitle" />
+                android:textAppearance="@style/TextAppearance.IOSched.ToolbarTitle" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -60,6 +61,6 @@
             app:timeZoneId="@{viewModel.timeZoneId}"
             tools:ignore="UnusedAttribute" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </com.google.samples.apps.iosched.widget.InsetDispatchingCoordinatorLayout>
 
 </layout>

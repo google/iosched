@@ -24,52 +24,181 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.adssched.ui.sessiondetail.SessionDetailViewModel" />
+            type="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <com.google.samples.apps.iosched.widget.InsetDispatchingCoordinatorLayout
         android:id="@+id/coordinator_layout_session_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:ignore="MergeRootFrame">
+        android:fitsSystemWindows="true"
+        tools:ignore="MergeRootFrame"
+        app:marginLeftSystemWindowInsets="@{true}"
+        app:marginRightSystemWindowInsets="@{true}">
 
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/session_detail_appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/session_detail_collapsing_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:contentScrim="?attr/colorSurface"
+                app:statusBarScrim="?attr/colorSurface">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/header_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="true"
+                    app:noopInsets="@{true}">
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_begin="@dimen/margin_normal" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_end="@dimen/margin_normal" />
+
+                    <ImageView
+                        android:id="@+id/detail_image"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:importantForAccessibility="no"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:headerImage="@{viewModel.session.photoUrl}" />
+
+                    <!-- Static header image, shown if there is a photo or video -->
+                    <ImageView
+                        android:id="@+id/detail_event_type_logo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/event_logo_end_margin"
+                        android:layout_marginTop="@dimen/event_logo_top_margin"
+                        android:importantForAccessibility="no"
+                        app:layout_constraintEnd_toEndOf="@+id/detail_image"
+                        app:layout_constraintTop_toTopOf="@+id/detail_image"
+                        app:eventType="@{viewModel.session.type}"
+                        app:goneUnless="@{viewModel.hasPhotoOrVideo}" />
+
+                    <!-- Play button, shown if there is a recording available -->
+                    <ImageButton
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@color/scrim"
+                        android:contentDescription="@string/a11y_play"
+                        android:foreground="?selectableItemBackground"
+                        android:onClick="@{() -> viewModel.onPlayVideo()}"
+                        android:scaleType="center"
+                        app:layout_constraintBottom_toBottomOf="@id/detail_image"
+                        app:layout_constraintEnd_toEndOf="@id/detail_image"
+                        app:layout_constraintStart_toStartOf="@id/detail_image"
+                        app:layout_constraintTop_toTopOf="@id/detail_image"
+                        app:goneUnless="@{viewModel.isPlayable}"
+                        app:srcCompat="@drawable/ic_play" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_title_end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.65" />
+
+                    <!-- Header animation, shown only if there isn't a photo or video -->
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginTop="48dp"
+                        android:layout_marginBottom="24dp"
+                        app:layout_constraintBottom_toBottomOf="@id/detail_image"
+                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintEnd_toEndOf="@id/detail_image"
+                        app:layout_constraintStart_toEndOf="@id/guideline_title_end"
+                        app:layout_constraintTop_toTopOf="@id/detail_image"
+                        app:layout_constraintVertical_bias="0"
+                        app:eventHeaderImage="@{viewModel.session}"
+                        app:goneUnless="@{!viewModel.hasPhotoOrVideo}" />
+
+                    <!-- Title on header: only shown if there isn't a photo header or video. -->
+                    <TextView
+                        android:id="@+id/session_detail_title"
+                        style="@style/Widget.IOSched.SessionDetailTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:paddingBottom="@dimen/margin_normal"
+                        android:paddingTop="72dp"
+                        android:text="@{viewModel.session.title}"
+                        app:layout_constraintBottom_toBottomOf="@id/detail_image"
+                        app:layout_constraintEnd_toEndOf="@id/guideline_title_end"
+                        app:layout_constraintStart_toStartOf="@id/guideline_start"
+                        app:layout_constraintTop_toTopOf="@id/detail_image"
+                        app:goneUnless="@{!viewModel.hasPhotoOrVideo}"
+                        tools:text="Session Title" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- Toolbar needs to be on top for the back button to be tappable -->
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
+                    app:layout_collapseMode="pin"
+                    app:navigationContentDescription="@string/navigate_up"
+                    app:navigationIcon="@drawable/ic_arrow_back" />
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!-- Use a large padding bottom so the content scrolls up above the FAB. -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/session_detail_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="@dimen/spacing_normal"
             android:clipToPadding="false"
+            android:paddingBottom="80dp"
             android:scrollbars="vertical"
-            app:hasFixedSize="@{true}"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layoutManager="LinearLayoutManager" />
 
-        <ImageButton
-            android:id="@+id/up"
-            android:layout_width="?actionBarSize"
-            android:layout_height="?actionBarSize"
-            android:layout_gravity="start|top"
-            android:background="?selectableItemBackgroundBorderless"
-            android:contentDescription="@string/navigate_up"
-            app:srcCompat="@drawable/ic_arrow_back" />
-
-        <com.google.samples.apps.adssched.widget.CheckableFab
+        <com.google.samples.apps.iosched.widget.CheckableFab
             android:id="@+id/session_detail_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/padding_borderless_button"
-            app:layout_anchorGravity="bottom|end"
-            app:backgroundTint="@color/white"
+            android:fitsSystemWindows="true"
+            app:backgroundTint="?attr/colorSurface"
             app:contentDescriptionChecked="@string/a11y_starred"
             app:contentDescriptionUnchecked="@string/a11y_unstarred"
             app:eventListener="@{viewModel}"
             app:isSignedIn="@{viewModel.observeSignedInUser}"
+            app:layout_anchorGravity="bottom|end"
+            app:noopInsets="@{true}"
             app:srcCompat="@drawable/asld_star_event"
+            app:tint="?attr/colorOnSurface"
             app:userEvent="@{viewModel.userEvent}" />
 
         <!-- A custom snackbar implementation for more control over positioning i.e. above the FAB,
              and to control its entry/exit animation. -->
-        <com.google.samples.apps.adssched.widget.FadingSnackbar
+        <com.google.samples.apps.iosched.widget.FadingSnackbar
             android:id="@+id/snackbar"
             android:layout_width="@dimen/snackbar_width"
             android:layout_height="wrap_content"
@@ -78,6 +207,6 @@
             android:layout_marginEnd="@dimen/snackbar_margin_end_fab"
             android:visibility="gone" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </com.google.samples.apps.iosched.widget.InsetDispatchingCoordinatorLayout>
 
 </layout>

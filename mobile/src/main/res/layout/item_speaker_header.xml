@@ -24,4 +24,4 @@
     android:paddingLeft="@dimen/margin_normal"
     android:paddingRight="@dimen/margin_normal"
     android:text="@string/session_detail_speakers_header"
-    android:textAppearance="@style/TextAppearance.ADSSched.Subhead" />
+    android:textAppearance="@style/TextAppearance.IOSched.Subhead" />

@@ -19,6 +19,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -27,13 +28,14 @@ android {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionName rootProject.versionName
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        versionCode rootProject.versionCodeMobile
+        testInstrumentationRunner "com.google.samples.apps.iosched.tests.CustomTestRunner"
 
         vectorDrawables.useSupportLibrary true
 
         manifestPlaceholders = [crashlyticsEnabled: true]
-
     }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -54,21 +56,18 @@ android {
             matchingFallbacks = ['debug']
         }
     }
-
-    flavorDimensions "servingType"
-
-    productFlavors {
-        installed {
-            dimension "servingType"
-            versionCode rootProject.versionCodeMobile
-        }
-        instant {
-            dimension "servingType"
-            versionCode rootProject.versionCodeInstant
-        }
-    }
     dataBinding {
         enabled true
+    }
+    kapt {
+        javacOptions {
+            // Increase the max count of errors from annotation processors.
+            // Default is 100.
+            option("-Xmaxerrs", 2000)
+        }
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 
     signingConfigs {
@@ -107,10 +106,21 @@ dependencies {
     implementation "com.google.android.material:material:$rootProject.materialVersion"
     implementation "com.google.android:flexbox:$rootProject.flexboxVersion"
 
+    implementation "androidx.core:core-ktx:$rootProject.coreVersion"
+
     // Architecture Components
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"
+    implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentVersion"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$rootProject.lifecycleVersion"
     kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleVersion"
-    testImplementation "androidx.arch.core:core-testing:$rootProject.lifecycleVersion"
+    implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    kapt "androidx.room:room-compiler:$rootProject.roomVersion"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+    testImplementation "androidx.arch.core:core-testing:$rootProject.archCoreTestingVersion"
 
     // Dagger
     implementation "com.google.dagger:dagger-android:$rootProject.dagger"
@@ -120,7 +130,7 @@ dependencies {
 
     // Glide
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
-    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
 
     // Fabric and Firebase
     implementation "com.firebaseui:firebase-ui-auth:$rootProject.firebaseUiVersion"
@@ -137,11 +147,16 @@ dependencies {
     // Instrumentation tests
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$rootProject.espressoVersion"
+    androidTestImplementation "androidx.test.ext:junit:$rootProject.testExtVersion"
     androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
     androidTestImplementation "androidx.test:rules:$rootProject.rulesVersion"
+    stagingImplementation "androidx.fragment:fragment-testing:$rootProject.fragmentVersion"
+    kaptAndroidTest "com.google.dagger:dagger-compiler:$rootProject.dagger"
+    kaptAndroidTest "com.google.dagger:dagger-android-processor:$rootProject.dagger"
 
     // Local unit tests
     testImplementation "junit:junit:$rootProject.junitVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$rootProject.coroutinesVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation "com.nhaarman:mockito-kotlin:$rootProject.mockitoKotlinVersion"
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"

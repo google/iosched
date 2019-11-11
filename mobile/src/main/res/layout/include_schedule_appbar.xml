@@ -21,21 +21,21 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.adssched.ui.schedule.ScheduleViewModel" />
+            type="com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel" />
 
     </data>
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
-        style="@style/Widget.AppBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/margin_normal"
-            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed|enterAlways">
+            app:layout_scrollFlags="scroll|snap|enterAlways">
 
             <ImageView
                 android:id="@+id/profile_button"
@@ -58,7 +58,19 @@
                 android:gravity="center"
                 android:minHeight="?actionBarSize"
                 android:text="@string/title_schedule"
-                android:textAppearance="@style/TextAppearance.ADSSched.ToolbarTitle" />
+                android:textAppearance="@style/TextAppearance.IOSched.ToolbarTitle" />
+
+<!--todo: fix lint on foreground-->
+            <ImageView
+                android:id="@+id/search_button"
+                android:layout_width="@dimen/a11y_min_touch_target"
+                android:layout_height="@dimen/a11y_min_touch_target"
+                android:layout_gravity="center_vertical|end"
+                android:contentDescription="@string/search_schedule_hint"
+                android:foreground="?selectableItemBackground"
+                android:onClick="@{() -> viewModel.onSearchClicked()}"
+                android:padding="12dp"
+                app:srcCompat="@drawable/ic_search"/>
 
         </FrameLayout>
 

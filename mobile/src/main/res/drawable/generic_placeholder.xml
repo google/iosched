@@ -15,8 +15,7 @@
   ~ limitations under the License.
   -->
 
-<shape
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="@color/very_light_grey" />
+    <solid android:color="@color/generic_placeholder_background" />
 </shape>

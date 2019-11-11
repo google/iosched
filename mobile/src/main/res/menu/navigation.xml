@@ -17,11 +17,6 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/navigation_info"
-        android:icon="@drawable/asld_nav_info"
-        android:title="@string/title_info"
-        app:contentDescription="@string/title_info" />
 
     <item
         android:id="@+id/navigation_schedule"
@@ -34,4 +29,10 @@
         android:icon="@drawable/asld_nav_agenda"
         android:title="@string/title_agenda"
         app:contentDescription="@string/title_agenda" />
+
+    <item
+        android:id="@+id/navigation_info"
+        android:icon="@drawable/asld_nav_info"
+        android:title="@string/title_info"
+        app:contentDescription="@string/title_info" />
 </menu>

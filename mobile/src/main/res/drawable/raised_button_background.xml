@@ -17,10 +17,10 @@
 
 <ripple
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/highlight_light">
+    android:color="@color/android_green">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="?colorPrimary" />
+            <solid android:color="@color/android_navy" />
             <corners android:radius="4dp" />
         </shape>
     </item>

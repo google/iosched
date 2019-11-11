@@ -16,19 +16,35 @@
   -->
 
 <resources>
-    <color name="status_bar">#202124</color>
-    <color name="text_color_tertiary">#dadce0</color>
-    <color name="light_grey">#e6e6e6</color>
-    <color name="very_light_grey">#f9f9f9</color>
     <color name="default_tag_color">#999</color>
-    <color name="highlight_light">#33ffffff</color> <!-- 20% white -->
     <color name="scrim">#33000000</color> <!-- 20% black -->
-    <color name="google_blue_transparent">#e54688f1</color> <!-- 90% blue -->
-    <color name="dark_gray">#ff808080</color>
+
+    <!-- Same value as textColorPrimary disabled -->
+    <color name="color_control_light">#39000000</color>
+
+    <!-- Used for detail/speaker header background and other generic placeholder backgrounds -->
+    <color name="generic_placeholder_background">#10000000</color>
+
+    <color name="color_primary">@color/android_blue</color>
+    <color name="color_primary_dark">@color/android_navy</color>
+    <color name="color_on_secondary">#fff</color>
+
+    <color name="info_event_card_logo_background">@color/android_blue_light</color>
+
+    <color name="transparent">#00000000</color>
+
+    <!-- Scrim colors -->
+    <color name="system_ui_scrim_light">#B3FFFFFF</color> <!-- 70% white -->
+    <color name="system_ui_scrim_black">#66000000</color> <!-- 40% black -->
+
+    <!-- We use a dark scrim by default since light status is API 23+ -->
+    <color name="status_bar_scrim">@color/system_ui_scrim_black</color>
+    <!-- We use a dark scrim by default since light nav bar is API 27+ -->
+    <color name="nav_bar_scrim">@color/system_ui_scrim_black</color>
 
     <integer-array name="swipe_refresh">
-        <item>@color/google_blue</item>
-        <item>@color/ads_yellow</item>
+        <item>@color/android_blue</item>
+        <item>@color/android_orange</item>
         <item>@color/ads_gray</item>
         <item>@color/android_green</item>
         <item>@color/android_green_dark</item>

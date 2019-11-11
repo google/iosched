@@ -23,10 +23,10 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.adssched.ui.info.EventInfoViewModel" />
+            type="com.google.samples.apps.iosched.ui.info.EventInfoViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <com.google.samples.apps.iosched.widget.InsetDispatchingCoordinatorLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -59,13 +59,14 @@
 
                 <TextView
                     android:id="@+id/wifi_header"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_normal"
                     android:layout_marginTop="@dimen/margin_normal"
                     android:text="@string/wifi_header"
-                    android:textAppearance="@style/TextAppearance.ADSSched.Subhead"
+                    android:textAppearance="@style/TextAppearance.IOSched.Subhead"
                     android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toTopOf="parent"
                     app:goneUnless="@{viewModel.showWifi}" />
@@ -125,7 +126,7 @@
                     android:minHeight="@dimen/a11y_min_touch_target"
                     android:onClick="@{() -> viewModel.onWifiConnect()}"
                     android:text="@{viewModel.wifiPassword.concat(` ` + @string/tap_to_join_network)}"
-                    android:textColor="@color/google_blue"
+                    android:textColor="?attr/colorSecondary"
                     android:visibility="gone"
                     app:layout_constraintBaseline_toBaselineOf="@id/wifi_password_label"
                     app:layout_constraintEnd_toStartOf="@id/guideline_end"
@@ -139,65 +140,71 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_large"
                     android:text="@string/event_types_header"
-                    android:textAppearance="@style/TextAppearance.ADSSched.Subhead"
+                    android:textAppearance="@style/TextAppearance.IOSched.Subhead"
                     app:layout_constraintStart_toStartOf="@+id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@+id/wifi_password_label" />
 
-                <com.google.samples.apps.adssched.widget.EventView
+                <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_sessions"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_normal"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/event_types_header"
                     app:eventDescription="@string/event_sessions_description"
                     app:eventTitle="@string/event_sessions_title"
                     app:eventTypeLogo="@drawable/event_header_sessions" />
 
-                <com.google.samples.apps.adssched.widget.EventView
+                <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_lightning"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/event_sessions"
                     app:eventDescription="@string/event_lightning_description"
                     app:eventTitle="@string/event_lightning_title"
                     app:eventTypeLogo="@drawable/event_header_sandbox" />
 
-                <com.google.samples.apps.adssched.widget.EventView
+                <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_codelabs"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/event_lightning"
                     app:eventDescription="@string/event_codelabs_description"
                     app:eventTitle="@string/event_codelabs_title"
                     app:eventTypeLogo="@drawable/event_header_codelabs" />
 
-                <com.google.samples.apps.adssched.widget.EventView
+                <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_officehours"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/event_codelabs"
                     app:eventDescription="@string/event_officehours_description"
                     app:eventTitle="@string/event_officehours_title"
                     app:eventTypeLogo="@drawable/event_header_office_hours" />
 
-                <com.google.samples.apps.adssched.widget.EventView
+                <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_fireside"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/event_officehours"
                     app:eventDescription="@string/event_fireside_description"
                     app:eventTitle="@string/event_fireside_title"
                     app:eventTypeLogo="@drawable/event_header_afterhours" />
 
-                <com.google.samples.apps.adssched.widget.EventView
+                <com.google.samples.apps.iosched.widget.EventView
                     android:id="@+id/event_meals"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/event_fireside"
                     app:eventDescription="@string/event_meals_description"
@@ -208,6 +215,6 @@
 
         </androidx.core.widget.NestedScrollView>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </com.google.samples.apps.iosched.widget.InsetDispatchingCoordinatorLayout>
 
 </layout>
