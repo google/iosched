@@ -2,11 +2,11 @@ version: 2
 
 config_android: &config_android
   docker:
-    - image: circleci/android:api-28-alpha
+    - image: circleci/android:api-29
   working_directory: ~/project
   environment:
-    JAVA_TOOL_OPTIONS: "-Xmx1024m"
-    GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false"
+    JAVA_TOOL_OPTIONS: "-Xmx2048m"
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process"
     TERM: dumb
 
 setup_ftl: &setup_ftl
@@ -17,10 +17,18 @@ setup_ftl: &setup_ftl
         sudo gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
         sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
 
+update_sdk: &update_sdk
+  run:
+    name: Update SDK
+    command: |
+      yes | sdkmanager --licenses || true
+      sdkmanager "platform-tools" "platforms;android-29"
+
 jobs:
   build_and_setup:
     <<: *config_android
     steps:
+      - <<: *update_sdk
       - checkout
       - run:
           name: Build test and lint
