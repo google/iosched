@@ -34,7 +34,7 @@ class ConferenceDataJsonParserTest {
 
     @Test
     fun testFakeData1() {
-        val inputStream = this.javaClass.classLoader.getResource(FILENAME)
+        val inputStream = this.javaClass.classLoader!!.getResource(FILENAME)
             .openStream()
 
         val data = ConferenceDataJsonParser.parseConferenceData(inputStream)
@@ -62,7 +62,7 @@ class ConferenceDataJsonParserTest {
 
     @Test(expected = JsonSyntaxException::class)
     fun testMalformedJson() {
-        val inputStream = this.javaClass.classLoader.getResource(MALFORMED_FILENAME)
+        val inputStream = this.javaClass.classLoader!!.getResource(MALFORMED_FILENAME)
             .openStream()
 
         ConferenceDataJsonParser.parseConferenceData(inputStream)

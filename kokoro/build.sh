@@ -26,8 +26,9 @@ if [[ -n "$GRADLE_DEBUG" ]]; then
 fi
 
 # Workaround of b/123314680
+# We need to update the required dependencies since the Kokoro team stopped updating the custom VM.
 export ANDROID_SDK_HOME=/opt/android-sdk/current
-echo y | ${ANDROID_SDK_HOME}/tools/bin/sdkmanager "build-tools;28.0.3"
+echo y | ${ANDROID_SDK_HOME}/tools/bin/sdkmanager "build-tools;29.0.2"
 
 cd $KOKORO_ARTIFACTS_DIR/git/iosched
 

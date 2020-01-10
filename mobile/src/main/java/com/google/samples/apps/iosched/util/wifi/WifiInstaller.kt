@@ -47,7 +47,7 @@ class WifiInstaller @Inject constructor(
                     "wifi_password",
                     conferenceWifiConfig.unquoteSsidAndPassword().preSharedKey
                 )
-            clipboardManager.primaryClip = clip
+            clipboardManager.setPrimaryClip(clip)
         }
         return success
     }
