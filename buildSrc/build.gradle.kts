@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,10 @@
  * limitations under the License.
  */
 
-apply plugin: 'java-library'
-apply plugin: "kotlin"
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    // ThreeTenBP for the shared module only. Date and time API for Java.
-    api "org.threeten:threetenbp:$rootProject.threetenbpVersion:no-tzdb"
-    implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlinVersion"
+plugins {
+    `kotlin-dsl`
 }
 
-sourceCompatibility = "1.7"
-targetCompatibility = "1.7"
+repositories {
+    gradlePluginPortal()
+}
