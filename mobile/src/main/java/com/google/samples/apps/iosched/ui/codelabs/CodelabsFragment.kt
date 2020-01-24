@@ -43,7 +43,7 @@ import javax.inject.Named
 class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
 
     companion object {
-        private const val CODELABS_WEBSITE = "https://codelabs.developers.google.com"
+        private const val CODELABS_WEBSITE = "https://g.co/io/codelabs"
         private const val PARAM_UTM_SOURCE = "utm_source"
         private const val PARAM_UTM_MEDIUM = "utm_medium"
         private const val VALUE_UTM_SOURCE = "ioapp"
