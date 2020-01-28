@@ -72,4 +72,5 @@ object Libs {
     const val THREETENABP = "com.jakewharton.threetenabp:threetenabp"
     const val THREETENBP = "org.threeten:threetenbp"
     const val TIMBER = "com.jakewharton.timber:timber"
+    const val VIEWPAGER2 = "androidx.viewpager2:viewpager2"
 }
