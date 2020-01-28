@@ -40,13 +40,11 @@
                 app:navigationIcon="@drawable/ic_menu"
                 app:title="@string/title_info" />
 
-            <!-- ViewPager doesn't work in RTL, so force the tabs to layout LTR. -->
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
                 style="@style/Widget.IOSched.Tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layoutDirection="ltr" />
+                android:layout_height="wrap_content" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -58,13 +56,12 @@
             android:fitsSystemWindows="true"
             app:layout_behavior="com.google.samples.apps.iosched.util.StatusBarScrimBehavior" />
 
-        <androidx.viewpager.widget.ViewPager
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:pageMargin="@{@dimen/info_page_margin}"
-            app:pageMarginDrawable="@{@drawable/page_margin}" />
+            app:pageMargin="@{@dimen/info_page_margin}" />
 
         <com.google.samples.apps.iosched.widget.FadingSnackbar
             android:id="@+id/snackbar"
