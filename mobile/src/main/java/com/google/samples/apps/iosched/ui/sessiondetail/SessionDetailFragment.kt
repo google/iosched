@@ -195,15 +195,19 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
             }
         })
 
-        sessionDetailViewModel.navigateToYouTubeAction.observe(viewLifecycleOwner,
+        sessionDetailViewModel.navigateToYouTubeAction.observe(
+            viewLifecycleOwner,
             EventObserver { youtubeUrl ->
                 openYoutubeUrl(youtubeUrl)
-            })
+            }
+        )
 
-        sessionDetailViewModel.navigateToSessionAction.observe(viewLifecycleOwner,
+        sessionDetailViewModel.navigateToSessionAction.observe(
+            viewLifecycleOwner,
             EventObserver { sessionId ->
                 findNavController().navigate(toSessionDetail(sessionId))
-            })
+            }
+        )
 
         val snackbarPreferenceViewModel: SnackbarPreferenceViewModel =
             activityViewModelProvider(viewModelFactory)
@@ -221,38 +225,52 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
             Toast.makeText(this.context, errorMsg, Toast.LENGTH_LONG).show()
         })
 
-        sessionDetailViewModel.navigateToSignInDialogAction.observe(viewLifecycleOwner,
+        sessionDetailViewModel.navigateToSignInDialogAction.observe(
+            viewLifecycleOwner,
             EventObserver {
                 openSignInDialog(requireActivity())
-            })
-        sessionDetailViewModel.navigateToRemoveReservationDialogAction.observe(viewLifecycleOwner,
+            }
+        )
+        sessionDetailViewModel.navigateToRemoveReservationDialogAction.observe(
+            viewLifecycleOwner,
             EventObserver {
                 openRemoveReservationDialog(requireActivity(), it)
-            })
-        sessionDetailViewModel.navigateToSwapReservationDialogAction.observe(viewLifecycleOwner,
+            }
+        )
+        sessionDetailViewModel.navigateToSwapReservationDialogAction.observe(
+            viewLifecycleOwner,
             EventObserver {
                 openSwapReservationDialog(requireActivity(), it)
-            })
+            }
+        )
 
-        sessionDetailViewModel.shouldShowNotificationsPrefAction.observe(viewLifecycleOwner,
+        sessionDetailViewModel.shouldShowNotificationsPrefAction.observe(
+            viewLifecycleOwner,
             EventObserver {
                 if (it) {
                     openNotificationsPreferenceDialog()
                 }
-            })
+            }
+        )
 
-        sessionDetailViewModel.navigateToSpeakerDetail.observe(viewLifecycleOwner,
+        sessionDetailViewModel.navigateToSpeakerDetail.observe(
+            viewLifecycleOwner,
             EventObserver { speakerId ->
-                val sharedElement =
-                    findSpeakerHeadshot(binding.sessionDetailRecyclerView, speakerId)
+                val sharedElement = findSpeakerHeadshot(
+                    binding.sessionDetailRecyclerView,
+                    speakerId
+                )
                 val extras = FragmentNavigatorExtras(sharedElement to sharedElement.transitionName)
                 findNavController().navigate(toSpeakerDetail(speakerId), extras)
-            })
+            }
+        )
 
-        sessionDetailViewModel.navigateToSessionFeedbackAction.observe(viewLifecycleOwner,
+        sessionDetailViewModel.navigateToSessionFeedbackAction.observe(
+            viewLifecycleOwner,
             EventObserver {
                 openFeedbackDialog(it)
-            })
+            }
+        )
 
         // When opened from the post session notification, open the feedback dialog
         requireNotNull(arguments).apply {
@@ -296,16 +314,12 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
         // Observing the changes from Fragment because data binding doesn't work with menu items.
         val menu = binding.sessionDetailBottomAppBar.menu
         val starMenu = menu.findItem(R.id.menu_item_star)
-        sessionDetailViewModel.shouldShowStarInBottomNav.observe(viewLifecycleOwner,
+        sessionDetailViewModel.shouldShowStarInBottomNav.observe(
+            viewLifecycleOwner,
             Observer { showStar ->
-                showStar?.let {
-                    if (it) {
-                        starMenu.setVisible(true)
-                    } else {
-                        starMenu.setVisible(false)
-                    }
-                }
-            })
+                starMenu.isVisible = showStar == true
+            }
+        )
         sessionDetailViewModel.userEvent.observe(viewLifecycleOwner, Observer { userEvent ->
             userEvent?.let {
                 if (it.isStarred) {

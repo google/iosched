@@ -23,12 +23,15 @@ import com.google.samples.apps.iosched.shared.domain.prefs.MarkScheduleUiHintsSh
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Rule
 import org.junit.Test
 
 /**
  * Unit tests for the [ScheduleUiHintsDialogViewModel].
  */
+@ExperimentalCoroutinesApi
 class MarkScheduleUiHintsShownUseCaseTest {
 
     // Executes tasks in the Architecture Components in the same thread
@@ -42,7 +45,7 @@ class MarkScheduleUiHintsShownUseCaseTest {
     @Test
     fun dismissed_navigateUiHintsShowAction() {
         val mockPrefs = mock<PreferenceStorage> {}
-        val useCase = MarkScheduleUiHintsShownUseCase(mockPrefs)
+        val useCase = MarkScheduleUiHintsShownUseCase(mockPrefs, TestCoroutineDispatcher())
 
         useCase.invoke()
         verify(mockPrefs).scheduleUiHintsShown = true

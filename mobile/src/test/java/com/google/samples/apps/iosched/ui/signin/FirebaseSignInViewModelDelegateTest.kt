@@ -29,6 +29,8 @@ import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -36,6 +38,7 @@ import org.junit.Test
 /**
  * Tests for [FirebaseSignInViewModelDelegate]
  */
+@ExperimentalCoroutinesApi
 class FirebaseSignInViewModelDelegateTest {
 
     // Executes tasks in the Architecture Components in the same thread
@@ -160,6 +163,6 @@ class FirebaseSignInViewModelDelegateTest {
     }
 
     private fun createNotificationsPrefIsShownUseCase(): NotificationsPrefIsShownUseCase {
-        return NotificationsPrefIsShownUseCase(FakePreferenceStorage())
+        return NotificationsPrefIsShownUseCase(FakePreferenceStorage(), TestCoroutineDispatcher())
     }
 }

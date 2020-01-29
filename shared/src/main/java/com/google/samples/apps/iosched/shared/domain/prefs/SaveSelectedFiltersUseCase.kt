@@ -17,14 +17,17 @@
 package com.google.samples.apps.iosched.shared.domain.prefs
 
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 
 /** Saves filter selections from a [UserSessionMatcher] to persistent storage. */
 class SaveSelectedFiltersUseCase @Inject constructor(
-    private val preferenceStorage: PreferenceStorage
-) : UseCase<UserSessionMatcher, Unit>() {
+    private val preferenceStorage: PreferenceStorage,
+    @IoDispatcher dispatcher: CoroutineDispatcher
+) : UseCase<UserSessionMatcher, Unit>(dispatcher) {
 
     override fun execute(parameters: UserSessionMatcher) {
         parameters.save(preferenceStorage)

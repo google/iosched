@@ -19,42 +19,47 @@ package com.google.samples.apps.iosched.ui.codelabs
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.samples.apps.iosched.model.Codelab
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.shared.domain.codelabs.GetCodelabsInfoCardShownUseCase
 import com.google.samples.apps.iosched.shared.domain.codelabs.LoadCodelabsUseCase
 import com.google.samples.apps.iosched.shared.domain.codelabs.SetCodelabsInfoCardShownUseCase
-import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.successOr
-import com.google.samples.apps.iosched.util.combine
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 class CodelabsViewModel @Inject constructor(
-    loadCodelabsUseCase: LoadCodelabsUseCase,
-    getCodelabsInfoCardShownUseCase: GetCodelabsInfoCardShownUseCase,
+    private val loadCodelabsUseCase: LoadCodelabsUseCase,
+    private val getCodelabsInfoCardShownUseCase: GetCodelabsInfoCardShownUseCase,
     private val setCodelabsInfoCardShownUseCase: SetCodelabsInfoCardShownUseCase
 ) : ViewModel() {
 
-    private val infoCardShownResult = MutableLiveData<Result<Boolean>>()
-    private val codelabsUseCaseResult = MutableLiveData<Result<List<Codelab>>>()
-    val codelabs: LiveData<List<Any>>
+    private val _codelabs = MutableLiveData<List<Any>>()
+    val codelabs: LiveData<List<Any>> = _codelabs
 
     init {
-        codelabs = infoCardShownResult.combine(codelabsUseCaseResult) { cardShown, codelabs ->
-            val items = mutableListOf<Any>()
-            if (!cardShown.successOr(false)) {
-                items.add(CodelabsInformationCard)
-            }
-            items.add(CodelabsHeaderItem)
-            items.addAll(codelabs.successOr(emptyList()))
-            items
+        viewModelScope.launch {
+            refreshCodelabs()
         }
+    }
 
-        getCodelabsInfoCardShownUseCase(Unit, infoCardShownResult)
-        loadCodelabsUseCase(Unit, codelabsUseCaseResult)
+    private suspend fun refreshCodelabs() {
+        // Refresh codelabs when infoCardShownResult changes.
+        val cardShown = getCodelabsInfoCardShownUseCase(Unit)
+        val codelabs = loadCodelabsUseCase(Unit)
+
+        val items = mutableListOf<Any>()
+        if (!cardShown.successOr(false)) {
+            items.add(CodelabsInformationCard)
+        }
+        items.add(CodelabsHeaderItem)
+        items.addAll(codelabs.successOr(emptyList()))
+        _codelabs.value = items
     }
 
     fun dismissCodelabsInfoCard() {
-        setCodelabsInfoCardShownUseCase(Unit)
-        infoCardShownResult.value = Result.Success(true)
+        viewModelScope.launch {
+            setCodelabsInfoCardShownUseCase(Unit)
+            refreshCodelabs()
+        }
     }
 }

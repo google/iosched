@@ -27,7 +27,7 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCaseResult
-import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCase
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCaseResult
 import com.google.samples.apps.iosched.shared.result.Result
@@ -45,7 +45,7 @@ import org.threeten.bp.ZoneId
 class SpeakerViewModel @Inject constructor(
     private val loadSpeakerUseCase: LoadSpeakerUseCase,
     private val loadSpeakerSessionsUseCase: LoadUserSessionsUseCase,
-    getTimeZoneUseCase: GetTimeZoneUseCase,
+    getTimeZoneUseCase: GetTimeZoneUseCaseLegacy, // TODO(COROUTINES): Migrate
     signInViewModelDelegate: SignInViewModelDelegate,
     private val eventActionsViewModelDelegate: EventActionsViewModelDelegate,
     private val analyticsHelper: AnalyticsHelper

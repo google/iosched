@@ -24,9 +24,11 @@ import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.shared.data.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo as isEqualTo
 import org.junit.Rule
@@ -35,24 +37,29 @@ import org.junit.Test
 /**
  * Unit tests for the [AgendaViewModel].
  */
+@ExperimentalCoroutinesApi
 class AgendaViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    // Executes tasks in a synchronous [TaskScheduler]
+    // Executes tasks in a synchronous [TaskScheduler] TODO(COROUTINES): Remove
     @get:Rule
     var syncTaskExecutorRule = SyncTaskExecutorRule()
+
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
 
     @Test
     fun agendaDataIsLoaded() {
         val viewModel = AgendaViewModel(
-            LoadAgendaUseCase(FakeAgendaRepository()),
-            GetTimeZoneUseCase(FakePreferenceStorage())
+            LoadAgendaUseCase(FakeAgendaRepository(), coroutineRule.testDispatcher),
+            GetTimeZoneUseCase(FakePreferenceStorage(), coroutineRule.testDispatcher)
         )
 
-        val blocks = LiveDataTestUtil.getValue(viewModel.loadAgendaResult)
+        val blocks = LiveDataTestUtil.getValue(viewModel.agenda)
         assertThat(blocks, isEqualTo(TestData.agenda))
     }
 

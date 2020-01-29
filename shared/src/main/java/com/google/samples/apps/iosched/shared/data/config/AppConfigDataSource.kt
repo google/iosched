@@ -21,7 +21,7 @@ import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 
 interface AppConfigDataSource {
 
-    fun getStringLiveData(key: String): LiveData<String>
+    fun getStringLiveData(key: String): LiveData<String> // TODO: change name
     fun syncStringsAsync(changedCallback: StringsChangedCallback?)
     fun getWifiInfo(): ConferenceWifiInfo
     fun isMapFeatureEnabled(): Boolean

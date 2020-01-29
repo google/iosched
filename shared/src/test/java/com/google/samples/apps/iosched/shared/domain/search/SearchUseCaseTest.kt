@@ -23,6 +23,8 @@ import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedS
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.TestData
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsCollectionContaining.hasItem
 import org.hamcrest.core.IsCollectionContaining.hasItems
@@ -36,9 +38,12 @@ class SearchUseCaseTest {
 
     private lateinit var useCase: SearchUseCase
 
+    @ExperimentalCoroutinesApi
+    private val dispatcher = TestCoroutineDispatcher()
+
     @Before
     fun setup() {
-        useCase = SearchUseCase(DefaultSessionRepository(TestDataRepository))
+        useCase = SearchUseCase(DefaultSessionRepository(TestDataRepository), dispatcher)
     }
 
     @Test

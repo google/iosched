@@ -26,16 +26,21 @@ import com.google.samples.apps.iosched.test.data.TestData.androidTag
 import com.google.samples.apps.iosched.test.data.TestData.cloudTag
 import com.google.samples.apps.iosched.test.data.TestData.webTag
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
+@ExperimentalCoroutinesApi
 class LoadEventFiltersUseCaseTest {
 
     @Rule
     @JvmField
     val instantTaskExecutor = InstantTaskExecutorRule()
+
+    private val testDispatcher = TestCoroutineDispatcher()
 
     @Test
     fun interleaveSort() {
@@ -43,7 +48,7 @@ class LoadEventFiltersUseCaseTest {
         val testList = listOf(webTag, cloudTag, androidTag)
         val expected = listOf(androidTag, webTag, cloudTag)
 
-        val useCase = LoadEventFiltersUseCase(TagRepository(TestDataRepository))
+        val useCase = LoadEventFiltersUseCase(TagRepository(TestDataRepository), testDispatcher)
 
         // Items are sorted and interleaved
         assertEquals(expected, useCase.interleaveSort(testList))
@@ -51,7 +56,7 @@ class LoadEventFiltersUseCaseTest {
 
     @Test
     fun loadsFilters() {
-        val useCase = LoadEventFiltersUseCase(TagRepository(TestDataRepository))
+        val useCase = LoadEventFiltersUseCase(TagRepository(TestDataRepository), testDispatcher)
         val result = useCase.executeNow(UserSessionMatcher()) as Success
 
         assertTrue(result.data[0] is MyEventsFilter)

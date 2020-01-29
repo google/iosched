@@ -104,10 +104,12 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
             }
         })
 
-        speakerViewModel.navigateToEventAction.observe(viewLifecycleOwner,
+        speakerViewModel.navigateToEventAction.observe(
+            viewLifecycleOwner,
             EventObserver { sessionId ->
                 findNavController().navigate(toSessionDetail(sessionId))
-            })
+            }
+        )
 
         speakerViewModel.navigateToSignInDialogAction.observe(viewLifecycleOwner, EventObserver {
             val dialog = SignInDialogFragment()

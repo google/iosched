@@ -123,6 +123,10 @@ dependencies {
     // Kotlin
     implementation(Libs.KOTLIN_STDLIB)
 
+    // Coroutines
+    api(Libs.COROUTINES)
+    testImplementation(Libs.COROUTINES_TEST)
+
     // Dagger
     implementation(Libs.DAGGER_ANDROID)
     implementation(Libs.DAGGER_ANDROID_SUPPORT)

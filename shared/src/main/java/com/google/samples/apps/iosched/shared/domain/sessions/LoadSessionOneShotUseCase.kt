@@ -16,22 +16,20 @@
 
 package com.google.samples.apps.iosched.shared.domain.sessions
 
+import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
-import com.google.samples.apps.iosched.model.userdata.UserSession
-import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.domain.UseCase
+import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
+import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 
-/**
- * A [UseCase] that returns the [UserSession]s for a user.
- */
-class LoadUserSessionSyncUseCase @Inject constructor(
-    private val userEventRepository: DefaultSessionAndUserEventRepository
-) : UseCase<Pair<String, SessionId>, UserSession>() {
+open class LoadSessionOneShotUseCase @Inject constructor(
+    private val repository: SessionRepository,
+    @IoDispatcher dispatcher: CoroutineDispatcher
+) : CoroutinesUseCase<SessionId, Session>(dispatcher) {
 
-    override fun execute(parameters: Pair<String, SessionId>): UserSession {
-        val (userId, eventId) = parameters
-
-        return userEventRepository.getUserSession(userId, eventId)
+    override fun execute(parameters: SessionId): Session {
+        return repository.getSession(parameters)
     }
 }

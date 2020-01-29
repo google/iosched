@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.result
 
+import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.result.Result.Success
 
 /**
@@ -45,4 +46,16 @@ val Result<*>.succeeded
 
 fun <T> Result<T>.successOr(fallback: T): T {
     return (this as? Success<T>)?.data ?: fallback
+}
+
+val <T> Result<T>.data: T?
+    get() = (this as? Success)?.data
+
+/**
+ * Updates value of [liveData] if [Result] is of type [Success]
+ */
+inline fun <reified T> Result<T>.updateOnSuccess(liveData: MutableLiveData<T>) {
+    if (this is Success) {
+        liveData.value = data
+    }
 }

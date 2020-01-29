@@ -19,11 +19,13 @@ package com.google.samples.apps.iosched.shared.domain.search
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.db.AppDatabase
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedCodelab
 import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSession
 import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSpeaker
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 
 /**
  * Performs a search in the database from a query string.
@@ -31,8 +33,9 @@ import javax.inject.Inject
 class SearchDbUseCase @Inject constructor(
     private val sessionRepository: SessionRepository,
     private val conferenceRepository: ConferenceDataRepository,
-    private val appDatabase: AppDatabase
-) : UseCase<String, List<Searchable>>() {
+    private val appDatabase: AppDatabase,
+    @IoDispatcher dispatcher: CoroutineDispatcher
+) : UseCase<String, List<Searchable>>(dispatcher) {
 
     override fun execute(parameters: String): List<Searchable> {
         val query = parameters.toLowerCase()

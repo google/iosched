@@ -19,44 +19,42 @@ package com.google.samples.apps.iosched.ui.agenda
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
-import com.google.samples.apps.iosched.shared.domain.invoke
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
-import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 import org.threeten.bp.ZoneId
 
 class AgendaViewModel @Inject constructor(
-    loadAgendaUseCase: LoadAgendaUseCase,
-    getTimeZoneUseCase: GetTimeZoneUseCase
+    private val loadAgendaUseCase: LoadAgendaUseCase,
+    private val getTimeZoneUseCase: GetTimeZoneUseCase
 ) : ViewModel() {
 
-    val loadAgendaResult: LiveData<List<Block>>
+    private val _agenda = MutableLiveData<List<Block>>()
+    val agenda: LiveData<List<Block>> = _agenda
 
-    private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
-    val timeZoneId: LiveData<ZoneId>
+    private val preferConferenceTimeZoneResult = MutableLiveData<Boolean>()
+    val timeZoneId = preferConferenceTimeZoneResult.map { inConferenceTimeZone ->
+        if (inConferenceTimeZone) {
+            TimeUtils.CONFERENCE_TIMEZONE
+        } else {
+            ZoneId.systemDefault()
+        }
+    }
 
     init {
-        val showInConferenceTimeZone = preferConferenceTimeZoneResult.map {
-            (it as? Result.Success<Boolean>)?.data ?: true
+        viewModelScope.launch {
+            refreshConferenceTimeZone()
+            _agenda.value = loadAgendaUseCase(true).data // TODO: compare with adssched
         }
-        timeZoneId = showInConferenceTimeZone.map { inConferenceTimeZone ->
-            if (inConferenceTimeZone) {
-                TimeUtils.CONFERENCE_TIMEZONE
-            } else {
-                ZoneId.systemDefault()
-            }
-        }
+    }
 
-        // Load agenda blocks.
-        getTimeZoneUseCase(preferConferenceTimeZoneResult)
-        val observableAgenda = loadAgendaUseCase.observe()
-        loadAgendaUseCase.execute(Unit)
-        loadAgendaResult = observableAgenda.map {
-            (it as? Result.Success)?.data ?: emptyList()
-        }
+    private suspend fun refreshConferenceTimeZone() {
+        preferConferenceTimeZoneResult.value = getTimeZoneUseCase(Unit).data ?: true
     }
 }

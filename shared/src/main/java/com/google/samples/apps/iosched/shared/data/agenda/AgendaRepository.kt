@@ -398,6 +398,7 @@ class DefaultAgendaRepository(private val appConfigDataSource: AppConfigDataSour
      * the value change in RemoteConfig isn't effective unless restarting the app.
      */
     override fun getObservableAgenda(): LiveData<List<Block>> {
+        // TODO(COROUTINES): Move to liveData{}
         val result: MutableLiveData<List<Block>> = MutableLiveData()
         result.postValue(getAgenda())
         appConfigDataSource.syncStringsAsync(object : StringsChangedCallback {

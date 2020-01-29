@@ -25,7 +25,7 @@ import com.google.samples.apps.iosched.shared.domain.settings.GetAnalyticsSettin
 import com.google.samples.apps.iosched.shared.domain.settings.GetAvailableThemesUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetNotificationsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCase
-import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
 import com.google.samples.apps.iosched.shared.domain.settings.SetAnalyticsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetTimeZoneUseCase
@@ -37,7 +37,7 @@ import javax.inject.Inject
 
 class SettingsViewModel @Inject constructor(
     val setTimeZoneUseCase: SetTimeZoneUseCase,
-    getTimeZoneUseCase: GetTimeZoneUseCase,
+    getTimeZoneUseCase: GetTimeZoneUseCaseLegacy, // TODO(COROUTINES): Migrate
     val notificationsPrefSaveActionUseCase: NotificationsPrefSaveActionUseCase,
     getNotificationsSettingUseCase: GetNotificationsSettingUseCase,
     val setAnalyticsSettingUseCase: SetAnalyticsSettingUseCase,

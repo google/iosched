@@ -72,6 +72,7 @@ class ConferenceDataRepositoryTest {
         assertThat(repo.currentConferenceDataVersion, Is(equalTo(NETWORK_DATA_VERSION)))
     }
 
+    // TODO: Takes 2 seconds
     @Test
     fun remoteNotAvailable_bootstrapUsed() {
         // Given a repo with unavailable remote data source

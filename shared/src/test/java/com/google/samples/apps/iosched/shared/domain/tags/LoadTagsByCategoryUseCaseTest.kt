@@ -28,6 +28,8 @@ import com.google.samples.apps.iosched.test.data.TestData.codelabsTag
 import com.google.samples.apps.iosched.test.data.TestData.intermediateTag
 import com.google.samples.apps.iosched.test.data.TestData.sessionsTag
 import com.google.samples.apps.iosched.test.data.TestData.webTag
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -36,9 +38,12 @@ import org.junit.Test
  */
 class LoadTagsByCategoryUseCaseTest {
 
+    @ExperimentalCoroutinesApi
+    private val dispatcher = TestCoroutineDispatcher()
+
     @Test
     fun returnsOrderedTags() {
-        val useCase = LoadTagsByCategoryUseCase(TagRepository(TestDataRepository))
+        val useCase = LoadTagsByCategoryUseCase(TagRepository(TestDataRepository), dispatcher)
         val tags = useCase.executeNow(Unit) as Result.Success<List<Tag>>
 
         // Expected values to assert

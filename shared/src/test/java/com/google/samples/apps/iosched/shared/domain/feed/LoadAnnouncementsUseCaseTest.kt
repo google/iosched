@@ -26,6 +26,8 @@ import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -42,9 +44,12 @@ class LoadAnnouncementsUseCaseTest {
     @get:Rule
     val syncTaskExecutorRule = SyncTaskExecutorRule()
 
+    @ExperimentalCoroutinesApi
+    private val dispatcher = TestCoroutineDispatcher()
+
     @Test
     fun announcementsLoadedSuccessfully() {
-        val useCase = LoadAnnouncementsUseCase(successfulFeedRepository)
+        val useCase = LoadAnnouncementsUseCase(successfulFeedRepository, dispatcher)
         val resultLivedata = MutableLiveData<Result<List<Announcement>>>()
 
         // Load all items
@@ -57,7 +62,7 @@ class LoadAnnouncementsUseCaseTest {
 
     @Test
     fun announcementsLoadedUnsuccessfully() {
-        val useCase = LoadAnnouncementsUseCase(unsuccessfulFeedRepository)
+        val useCase = LoadAnnouncementsUseCase(unsuccessfulFeedRepository, dispatcher)
         val resultLivedata = MutableLiveData<Result<List<Announcement>>>()
 
         // Time doesn't matter
@@ -69,7 +74,7 @@ class LoadAnnouncementsUseCaseTest {
 
     @Test
     fun announcementsLoaded_filteredByTimestamp() {
-        val useCase = LoadAnnouncementsUseCase(successfulFeedRepository)
+        val useCase = LoadAnnouncementsUseCase(successfulFeedRepository, dispatcher)
         val resultLivedata = MutableLiveData<Result<List<Announcement>>>()
 
         // Load only the first day's items

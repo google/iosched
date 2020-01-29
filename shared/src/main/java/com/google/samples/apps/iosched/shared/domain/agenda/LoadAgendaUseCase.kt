@@ -18,23 +18,37 @@ package com.google.samples.apps.iosched.shared.domain.agenda
 
 import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.shared.data.agenda.AgendaRepository
-import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
-import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
+import com.google.samples.apps.iosched.shared.domain.SuspendUseCase
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 
+/**
+ * Loads the agenda. When the parameter is passed as true, it's guaranteed the data
+ * loaded from this use case is up to date with the remote data source (Remote Config)
+ */
 open class LoadAgendaUseCase @Inject constructor(
-    private val repository: AgendaRepository
-) : MediatorUseCase<Unit, List<Block>>() {
+    private val repository: AgendaRepository,
+    @IoDispatcher ioDispatcher: CoroutineDispatcher
+) : SuspendUseCase<Boolean, List<Block>>(ioDispatcher) {
 
-    override fun execute(parameters: Unit) {
-        try {
-            val observableAgenda = repository.getObservableAgenda()
-            result.removeSource(observableAgenda)
-            result.addSource(observableAgenda) {
-                result.postValue(Result.Success(it))
-            }
-        } catch (e: Exception) {
-            result.postValue(Result.Error(e))
-        }
+    override suspend fun execute(parameters: Boolean): List<Block> =
+        repository.getAgenda() // (parameters) // TODO(COROUTINES): decide if we need parameters
+            .filterNot { it.startTime == it.endTime }
+            .filter { isInConferenceTime(it) }
+            .distinct()
+
+    private fun isInConferenceTime(block: Block): Boolean {
+        // Give some margin in case the agenda shows pre and post-conference
+        val start = TimeUtils.ConferenceDays.first().start.minusHours(PRE_BONUS_HOURS)
+        val end = TimeUtils.ConferenceDays.last().end.plusHours(POST_BONUS_HOURS)
+        return block.startTime.isAfter(start) &&
+            block.endTime.isAfter(start) &&
+            block.startTime.isBefore(end) &&
+            block.endTime.isBefore(end)
     }
 }
+
+private const val PRE_BONUS_HOURS = 4L
+private const val POST_BONUS_HOURS = 10L

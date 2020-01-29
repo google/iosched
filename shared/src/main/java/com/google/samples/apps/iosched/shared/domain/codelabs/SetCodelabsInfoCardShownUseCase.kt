@@ -17,15 +17,18 @@
 package com.google.samples.apps.iosched.shared.domain.codelabs
 
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 
 /**
  * Use case to record that the user has seen the Codelabs information card
  */
 open class SetCodelabsInfoCardShownUseCase @Inject constructor(
-    private val preferenceStorage: PreferenceStorage
-) : UseCase<Unit, Unit>() {
+    private val preferenceStorage: PreferenceStorage,
+    @IoDispatcher dispatcher: CoroutineDispatcher
+) : UseCase<Unit, Unit>(dispatcher) {
     override fun execute(parameters: Unit) {
         preferenceStorage.codelabsInfoShown = true
     }

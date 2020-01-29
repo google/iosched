@@ -33,7 +33,7 @@ import com.google.samples.apps.iosched.shared.domain.feed.LoadCurrentMomentUseCa
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsParameters
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
-import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Loading
@@ -64,7 +64,7 @@ class FeedViewModel @Inject constructor(
     private val loadCurrentMomentUseCase: LoadCurrentMomentUseCase,
     loadAnnouncementsUseCase: LoadAnnouncementsUseCase,
     private val loadFilteredUserSessionsUseCase: LoadFilteredUserSessionsUseCase,
-    getTimeZoneUseCase: GetTimeZoneUseCase,
+    getTimeZoneUseCaseLegacy: GetTimeZoneUseCaseLegacy, // TODO(COROUTINES): Migrate to non-legacy
     conferenceStateLiveData: ConferenceStateLiveData,
     private val timeProvider: TimeProvider,
     private val analyticsHelper: AnalyticsHelper,
@@ -211,8 +211,8 @@ class FeedViewModel @Inject constructor(
                     )
             }
         }
-
-        getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
+        // TODO(COROUTINES): Migrate to GetTimeZoneUseCase
+        getTimeZoneUseCaseLegacy(Unit, preferConferenceTimeZoneResult)
     }
 
     private fun createFeedSessionsContainer(
