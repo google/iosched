@@ -14,16 +14,4 @@
  * limitations under the License.
  */
 
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
-
-dependencies {
-
-    implementation project(":model")
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlinVersion"
-
-    // ThreeTenBP for the shared module only. Date and time API for Java.
-    testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"
-    compileOnly "org.threeten:threetenbp:$rootProject.threetenbpVersion:no-tzdb"
-}
+include(":mobile", ":shared", ":test-shared", ":model", ":androidTest-shared", "ar", "depconstraints")

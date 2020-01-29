@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,4 +14,23 @@
  * limitations under the License.
  */
 
-include ':mobile', ':shared', ':test-shared', ':model', ':androidTest-shared', 'ar'
+plugins {
+    id("java-library")
+    kotlin("jvm")
+}
+
+dependencies {
+    api(platform(project(":depconstraints")))
+
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+    // ThreeTenBP for the shared module only. Date and time API for Java.
+    api("org.threeten:threetenbp:${Versions.THREETENBP}:no-tzdb")
+    implementation(Libs.CORE_KTX)
+
+    implementation(Libs.KOTLIN_STDLIB)
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
+}
