@@ -48,7 +48,8 @@ fun Fragment.setUpSnackbar(
     })
 
     // Important reservations messages are handled with a message manager
-    snackbarMessageManager.observeNextMessage().observe(viewLifecycleOwner,
+    snackbarMessageManager.observeNextMessage().observe(
+        viewLifecycleOwner,
         EventObserver { message ->
             val messageText = HtmlCompat.fromHtml(
                 requireContext().getString(message.messageId, message.session?.title),
@@ -66,5 +67,6 @@ fun Fragment.setUpSnackbar(
                 // are pending messages.
                 dismissListener = { snackbarMessageManager.loadNextMessage() }
             )
-        })
+        }
+    )
 }

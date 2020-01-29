@@ -26,7 +26,7 @@ import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
+import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCaseLegacy
 import com.google.samples.apps.iosched.shared.domain.prefs.LoadSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.SaveSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
@@ -35,7 +35,7 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSe
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
-import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
@@ -73,8 +73,10 @@ class ScheduleViewModel @Inject constructor(
     scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase,
     topicSubscriber: TopicSubscriber,
     private val snackbarMessageManager: SnackbarMessageManager,
-    getTimeZoneUseCase: GetTimeZoneUseCase,
-    private val refreshConferenceDataUseCase: RefreshConferenceDataUseCase,
+    // TODO(COROUTINES): Migrate to non-legacy
+    getTimeZoneUseCase: GetTimeZoneUseCaseLegacy,
+    // TODO(COROUTINES): Migrate to non-legacy
+    private val refreshConferenceDataUseCase: RefreshConferenceDataUseCaseLegacy,
     observeConferenceDataUseCase: ObserveConferenceDataUseCase,
     loadSelectedFiltersUseCase: LoadSelectedFiltersUseCase,
     private val saveSelectedFiltersUseCase: SaveSelectedFiltersUseCase,

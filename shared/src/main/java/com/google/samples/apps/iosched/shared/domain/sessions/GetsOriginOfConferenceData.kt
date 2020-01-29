@@ -18,15 +18,18 @@ package com.google.samples.apps.iosched.shared.domain.sessions
 
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.UpdateSource
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 
 /**
  * Gets offline sessions from the repository.
  */
 open class GetsOriginOfConferenceData @Inject constructor(
-    private val repository: ConferenceDataRepository
-) : UseCase<Unit, UpdateSource>() {
+    private val repository: ConferenceDataRepository,
+    @IoDispatcher dispatcher: CoroutineDispatcher
+) : UseCase<Unit, UpdateSource>(dispatcher) {
 
     override fun execute(parameters: Unit): UpdateSource {
         return repository.latestUpdateSource

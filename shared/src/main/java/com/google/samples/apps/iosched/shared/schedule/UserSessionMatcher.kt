@@ -124,14 +124,16 @@ class UserSessionMatcher {
     fun load(preferenceStorage: PreferenceStorage) {
         val prefValue = preferenceStorage.selectedFilters
         if (prefValue != null) {
-            val state = try {
+            val state: SavedFilterPreferences? = try {
                 gson.fromJson(prefValue, SavedFilterPreferences::class.java)
             } catch (t: Throwable) {
                 Timber.e(t, "Error reading filter preferences")
                 return
             }
-            showPinnedEventsOnly = state.showPinnedEventsOnly
-            selectedTags.addAll(state.tagsAndCategories)
+            showPinnedEventsOnly = state?.showPinnedEventsOnly ?: false
+            state?.let {
+                selectedTags.addAll(state.tagsAndCategories)
+            }
         }
     }
 }

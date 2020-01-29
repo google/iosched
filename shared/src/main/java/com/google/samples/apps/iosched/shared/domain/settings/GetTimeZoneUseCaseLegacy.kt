@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.domain.sessions
+package com.google.samples.apps.iosched.shared.domain.settings
 
-import com.google.samples.apps.iosched.model.Session
-import com.google.samples.apps.iosched.model.SessionId
-import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 
-open class LoadSessionSyncUseCase @Inject constructor(
-    private val repository: SessionRepository
-) : UseCase<SessionId, Session>() {
-
-    override fun execute(parameters: SessionId): Session {
-        return repository.getSession(parameters)
-    }
+// TODO(COROUTINES): Migrate every usage to GetTimeZoneUseCase
+open class GetTimeZoneUseCaseLegacy @Inject constructor(
+    private val preferenceStorage: PreferenceStorage,
+    @IoDispatcher dispatcher: CoroutineDispatcher
+) : UseCase<Unit, Boolean>(dispatcher) {
+    override fun execute(parameters: Unit) = preferenceStorage.preferConferenceTimeZone
 }

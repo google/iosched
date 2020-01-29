@@ -40,14 +40,14 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
-import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
+import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCaseLegacy
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.LoadSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.SaveSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
-import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Event
@@ -68,6 +68,8 @@ import com.google.samples.apps.iosched.ui.signin.FirebaseSignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.core.Is.`is`
@@ -84,6 +86,7 @@ import org.mockito.Mockito.verify
 /**
  * Unit tests for the [ScheduleViewModel].
  */
+@ExperimentalCoroutinesApi
 class ScheduleViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread
@@ -94,6 +97,8 @@ class ScheduleViewModelTest {
     @get:Rule
     var syncTaskExecutorRule = SyncTaskExecutorRule()
 
+    private val testDispatcher = TestCoroutineDispatcher()
+
     @Test
     fun testDataIsLoaded_ObservablesUpdated() { // TODO: Very slow test (1s)
         // Create test use cases with test data
@@ -102,7 +107,8 @@ class ScheduleViewModelTest {
                 TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
             )
         )
-        val loadTagsUseCase = LoadEventFiltersUseCase(TagRepository(TestDataRepository))
+        val loadTagsUseCase =
+            LoadEventFiltersUseCase(TagRepository(TestDataRepository), testDispatcher)
         val signInDelegate = FakeSignInViewModelDelegate()
 
         // Create ViewModel with the use cases
@@ -359,12 +365,13 @@ class ScheduleViewModelTest {
         // Given a view model with a mocked remote data source
         val remoteDataSource = mock<ConferenceDataSource> {}
         val viewModel = createScheduleViewModel(
-            refreshConferenceDataUseCase = RefreshConferenceDataUseCase(
+            refreshConferenceDataUseCase = RefreshConferenceDataUseCaseLegacy(
                 ConferenceDataRepository(
                     remoteDataSource = remoteDataSource,
                     boostrapDataSource = TestDataSource,
                     appDatabase = FakeAppDatabase()
-                )
+                ),
+                testDispatcher
             )
         )
 
@@ -420,16 +427,16 @@ class ScheduleViewModelTest {
         ),
         scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase =
             FakeScheduleUiHintsShownUseCase(),
-        getTimeZoneUseCase: GetTimeZoneUseCase = createGetTimeZoneUseCase(),
+        getTimeZoneUseCaseLegacy: GetTimeZoneUseCaseLegacy = createGetTimeZoneUseCase(),
         topicSubscriber: TopicSubscriber = mock {},
-        refreshConferenceDataUseCase: RefreshConferenceDataUseCase =
-            RefreshConferenceDataUseCase(TestDataRepository),
+        refreshConferenceDataUseCase: RefreshConferenceDataUseCaseLegacy =
+            RefreshConferenceDataUseCaseLegacy(TestDataRepository, testDispatcher),
         observeConferenceDataUseCase: ObserveConferenceDataUseCase =
             ObserveConferenceDataUseCase(TestDataRepository),
         loadSelectedFiltersUseCase: LoadSelectedFiltersUseCase =
-            LoadSelectedFiltersUseCase(FakePreferenceStorage()),
+            LoadSelectedFiltersUseCase(FakePreferenceStorage(), testDispatcher),
         saveSelectedFiltersUseCase: SaveSelectedFiltersUseCase =
-            SaveSelectedFiltersUseCase(FakePreferenceStorage()),
+            SaveSelectedFiltersUseCase(FakePreferenceStorage(), testDispatcher),
         analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper()
     ): ScheduleViewModel {
         return ScheduleViewModel(
@@ -440,7 +447,7 @@ class ScheduleViewModelTest {
             scheduleUiHintsShownUseCase = scheduleUiHintsShownUseCase,
             topicSubscriber = topicSubscriber,
             snackbarMessageManager = snackbarMessageManager,
-            getTimeZoneUseCase = getTimeZoneUseCase,
+            getTimeZoneUseCase = getTimeZoneUseCaseLegacy,
             refreshConferenceDataUseCase = refreshConferenceDataUseCase,
             observeConferenceDataUseCase = observeConferenceDataUseCase,
             loadSelectedFiltersUseCase = loadSelectedFiltersUseCase,
@@ -468,7 +475,7 @@ class ScheduleViewModelTest {
      * Creates a use case that throws an exception.
      */
     private fun createEventFiltersExceptionUseCase(): LoadEventFiltersUseCase {
-        return object : LoadEventFiltersUseCase(TagRepository(TestDataRepository)) {
+        return object : LoadEventFiltersUseCase(TagRepository(TestDataRepository), testDispatcher) {
             override fun execute(parameters: UserSessionMatcher): List<EventFilter> {
                 throw Exception("Testing exception")
             }
@@ -480,7 +487,7 @@ class ScheduleViewModelTest {
     private fun createStarEventUseCase() = FakeStarEventUseCase()
 
     private fun createGetTimeZoneUseCase() =
-        object : GetTimeZoneUseCase(FakePreferenceStorage()) {}
+        object : GetTimeZoneUseCaseLegacy(FakePreferenceStorage(), testDispatcher) {}
 }
 
 class TestRegisteredUserDataSource(private val isRegistered: Result<Boolean?>) :
@@ -514,8 +521,10 @@ class FakeObserveUserAuthStateUseCase(
     mock {}
 )
 
+@ExperimentalCoroutinesApi
 class FakeScheduleUiHintsShownUseCase : ScheduleUiHintsShownUseCase(
-    preferenceStorage = FakePreferenceStorage()
+    preferenceStorage = FakePreferenceStorage(),
+    dispatcher = TestCoroutineDispatcher()
 )
 
 class TestConfDataSourceSession0 : ConferenceDataSource {

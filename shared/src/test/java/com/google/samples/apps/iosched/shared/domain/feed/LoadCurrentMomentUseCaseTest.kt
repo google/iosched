@@ -27,6 +27,8 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -43,6 +45,9 @@ class LoadCurrentMomentUseCaseTest {
 
     @get:Rule
     val syncTaskExecutorRule = SyncTaskExecutorRule()
+
+    @ExperimentalCoroutinesApi
+    private val dispatcher = TestCoroutineDispatcher()
 
     @Test
     fun timeDuringMoment_loadsMoment() {
@@ -67,7 +72,7 @@ class LoadCurrentMomentUseCaseTest {
 
     private fun loadMomentForTime(time: Instant): Moment? {
         // Build use case with the test data
-        val useCase = LoadCurrentMomentUseCase(successfulFeedRepository)
+        val useCase = LoadCurrentMomentUseCase(successfulFeedRepository, dispatcher)
         val resultLivedata = MutableLiveData<Result<Moment?>>()
 
         // Execute the use case
@@ -83,7 +88,7 @@ class LoadCurrentMomentUseCaseTest {
 
     @Test
     fun loadsError() {
-        val useCase = LoadCurrentMomentUseCase(unsuccessfulFeedRepository)
+        val useCase = LoadCurrentMomentUseCase(unsuccessfulFeedRepository, dispatcher)
         val resultLivedata = MutableLiveData<Result<Moment?>>()
 
         // Time doesn't matter

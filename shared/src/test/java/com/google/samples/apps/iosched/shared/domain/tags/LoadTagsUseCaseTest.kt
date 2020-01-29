@@ -21,6 +21,8 @@ import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -29,9 +31,12 @@ import org.junit.Test
  */
 class LoadTagsUseCaseTest {
 
+    @ExperimentalCoroutinesApi
+    private val dispatcher = TestCoroutineDispatcher()
+
     @Test
     fun returnsListOfTags() {
-        val loadTagsUseCase = LoadTagsUseCase(TagRepository(TestDataRepository))
+        val loadTagsUseCase = LoadTagsUseCase(TagRepository(TestDataRepository), dispatcher)
         val tags: Result.Success<List<Tag>> =
             loadTagsUseCase.executeNow(Unit) as Success<List<Tag>>
 

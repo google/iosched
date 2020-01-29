@@ -18,14 +18,14 @@ package com.google.samples.apps.iosched.shared.domain.settings
 
 import androidx.core.os.BuildCompat
 import com.google.samples.apps.iosched.model.Theme
+import com.google.samples.apps.iosched.shared.di.MainImmediateDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
-import com.google.samples.apps.iosched.shared.domain.internal.SyncScheduler
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 
-class GetAvailableThemesUseCase @Inject constructor() : UseCase<Unit, List<Theme>>() {
-    init {
-        taskScheduler = SyncScheduler
-    }
+class GetAvailableThemesUseCase @Inject constructor(
+    @MainImmediateDispatcher dispatcher: CoroutineDispatcher
+) : UseCase<Unit, List<Theme>>(dispatcher) {
 
     override fun execute(parameters: Unit): List<Theme> = when {
         BuildCompat.isAtLeastQ() -> {

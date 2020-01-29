@@ -28,7 +28,7 @@ import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCa
 import com.google.samples.apps.iosched.shared.domain.feed.LoadCurrentMomentUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.IOSchedHandler
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
-import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
@@ -42,6 +42,9 @@ import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
 import com.google.samples.apps.iosched.util.ConferenceStateLiveData
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.instanceOf
@@ -54,6 +57,7 @@ import org.threeten.bp.Instant
 /**
  * Unit tests for the [FeedViewModel]
  */
+@ExperimentalCoroutinesApi
 class FeedViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread
@@ -63,6 +67,8 @@ class FeedViewModelTest {
     // Executes tasks in a synchronous [TaskScheduler]
     @get:Rule
     var syncTaskExecutorRule = SyncTaskExecutorRule()
+
+    private val testDispatcher = TestCoroutineDispatcher()
 
     private val fakeHandler = object : IOSchedHandler {
         override fun post(runnable: Runnable) = true
@@ -98,7 +104,8 @@ class FeedViewModelTest {
     @Test
     fun testDataIsLoaded_Fails() {
         // Create ViewModel with a use case that returns an error
-        val viewModel = createFeedViewModel(loadAnnouncementUseCase = FailingUseCase)
+        val viewModel =
+            createFeedViewModel(loadAnnouncementUseCase = FailingUseCase(testDispatcher))
 
         // Verify that an error was caught
         val errorMessage = LiveDataTestUtil.getValue(viewModel.errorMessage)
@@ -108,8 +115,9 @@ class FeedViewModelTest {
     /**
      * Use case that always returns an error when executed.
      */
-    object FailingUseCase : LoadAnnouncementsUseCase(
-        DefaultFeedRepository(TestAnnouncementDataSource, TestMomentDataSource)
+    class FailingUseCase(coroutineDispatcher: CoroutineDispatcher) : LoadAnnouncementsUseCase(
+        DefaultFeedRepository(TestAnnouncementDataSource, TestMomentDataSource),
+        coroutineDispatcher
     ) {
         override fun execute(parameters: Instant): List<Announcement> {
             throw Exception("Error!")
@@ -118,16 +126,17 @@ class FeedViewModelTest {
 
     private fun createFeedViewModel(
         loadCurrentMomentUseCase: LoadCurrentMomentUseCase =
-            LoadCurrentMomentUseCase(defaultFeedRepository),
+            LoadCurrentMomentUseCase(defaultFeedRepository, testDispatcher),
         loadAnnouncementUseCase: LoadAnnouncementsUseCase =
-            LoadAnnouncementsUseCase(defaultFeedRepository),
+            LoadAnnouncementsUseCase(defaultFeedRepository, testDispatcher),
         loadFilteredSessionsUseCase: LoadFilteredUserSessionsUseCase =
             LoadFilteredUserSessionsUseCase(
                 DefaultSessionAndUserEventRepository(
                     TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
                 )
             ),
-        getTimeZoneUseCase: GetTimeZoneUseCase = GetTimeZoneUseCase(FakePreferenceStorage()),
+        getTimeZoneUseCaseLegacy: GetTimeZoneUseCaseLegacy =
+            GetTimeZoneUseCaseLegacy(FakePreferenceStorage(), testDispatcher),
         conferenceStateLiveData: ConferenceStateLiveData =
             ConferenceStateLiveData(fakeHandler, defaultTimeProvider),
         timeProvider: TimeProvider = defaultTimeProvider,
@@ -140,7 +149,7 @@ class FeedViewModelTest {
             loadCurrentMomentUseCase = loadCurrentMomentUseCase,
             loadAnnouncementsUseCase = loadAnnouncementUseCase,
             loadFilteredUserSessionsUseCase = loadFilteredSessionsUseCase,
-            getTimeZoneUseCase = getTimeZoneUseCase,
+            getTimeZoneUseCaseLegacy = getTimeZoneUseCaseLegacy, // TODO(COROUTINES): Migrate
             conferenceStateLiveData = conferenceStateLiveData,
             timeProvider = timeProvider,
             analyticsHelper = FakeAnalyticsHelper(),

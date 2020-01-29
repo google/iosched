@@ -31,7 +31,7 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotificationAlarmUpdater
-import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
@@ -62,6 +62,8 @@ import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.not
@@ -77,6 +79,7 @@ import org.junit.Test
 /**
  * Unit tests for the [SessionDetailViewModel].
  */
+@ExperimentalCoroutinesApi
 class SessionDetailViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread
@@ -359,7 +362,7 @@ class SessionDetailViewModelTest {
             createTestLoadUserSessionsUseCase(),
         reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase(),
         starEventUseCase: StarEventAndNotifyUseCase = FakeStarEventUseCase(),
-        getTimeZoneUseCase: GetTimeZoneUseCase = createGetTimeZoneUseCase(),
+        getTimeZoneUseCase: GetTimeZoneUseCaseLegacy = createGetTimeZoneUseCase(),
         snackbarMessageManager: SnackbarMessageManager =
             SnackbarMessageManager(FakePreferenceStorage()),
         networkUtils: NetworkUtils = mockNetworkUtils,
@@ -424,5 +427,5 @@ class SessionDetailViewModelTest {
     ) {}
 
     private fun createGetTimeZoneUseCase() =
-        object : GetTimeZoneUseCase(FakePreferenceStorage()) {}
+        object : GetTimeZoneUseCaseLegacy(FakePreferenceStorage(), TestCoroutineDispatcher()) {}
 }

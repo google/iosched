@@ -21,12 +21,14 @@ import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.domain.internal.Scheduler
 import com.google.samples.apps.iosched.shared.result.Result
+import kotlinx.coroutines.CoroutineDispatcher
 import timber.log.Timber
 
 /**
  * Executes business logic synchronously or asynchronously using a [Scheduler].
  */
-abstract class UseCase<in P, R> {
+// TODO(COROUTINES): Refactor all use cases that use this class and move it to CoroutineUseCase
+abstract class UseCase<in P, R>(notUsed: CoroutineDispatcher) {
     protected var taskScheduler: Scheduler = DefaultScheduler
 
     /** Executes the use case asynchronously and places the [Result] in a MutableLiveData

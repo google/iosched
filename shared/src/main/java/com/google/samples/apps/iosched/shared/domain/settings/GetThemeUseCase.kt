@@ -20,12 +20,15 @@ import androidx.core.os.BuildCompat
 import com.google.samples.apps.iosched.model.Theme
 import com.google.samples.apps.iosched.model.themeFromStorageKey
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 
 open class GetThemeUseCase @Inject constructor(
-    private val preferenceStorage: PreferenceStorage
-) : UseCase<Unit, Theme>() {
+    private val preferenceStorage: PreferenceStorage,
+    @IoDispatcher dispatcher: CoroutineDispatcher
+) : UseCase<Unit, Theme>(dispatcher) {
     override fun execute(parameters: Unit): Theme {
         preferenceStorage.selectedTheme?.let { key ->
             return themeFromStorageKey(key)

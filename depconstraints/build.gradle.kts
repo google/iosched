@@ -27,6 +27,8 @@ val arcore = "1.7.0"
 val browser = "1.0.0"
 val constraintLayout = "1.1.3"
 val core = "1.2.0-alpha02"
+val coroutines = "1.3.3"
+val coroutinesTest = "1.3.0"
 val crashlytics = "2.9.8"
 val dagger = "2.24"
 val drawerLayout = "1.1.0-alpha02"
@@ -58,7 +60,7 @@ val okio = "1.14.0"
 val pageIndicator = "1.3.0"
 val room = "2.1.0"
 val rules = "1.1.1"
-val runner = "1.1.1"
+val runner = "1.2.0"
 val threetenabp = "1.0.5"
 val timber = "4.7.1"
 val viewpager2 = "1.0.0"
@@ -73,6 +75,8 @@ dependencies {
         api("${Libs.BROWSER}:$browser")
         api("${Libs.CONSTRAINT_LAYOUT}:$constraintLayout")
         api("${Libs.CORE_KTX}:$core")
+        api("${Libs.COROUTINES}:$coroutines")
+        api("${Libs.COROUTINES_TEST}:$coroutines")
         api("${Libs.CRASHLYTICS}:$crashlytics")
         api("${Libs.DAGGER_ANDROID}:$dagger")
         api("${Libs.DAGGER_ANDROID_SUPPORT}:$dagger")

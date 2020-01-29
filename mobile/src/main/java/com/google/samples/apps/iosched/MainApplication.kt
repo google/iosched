@@ -30,7 +30,7 @@ import timber.log.Timber
 /**
  * Initialization of libraries.
  */
-class MainApplication : DaggerApplication() {
+open class MainApplication : DaggerApplication() {
     // Even if the var isn't used, needs to be initialized at application startup.
     @Inject lateinit var analyticsHelper: AnalyticsHelper
 

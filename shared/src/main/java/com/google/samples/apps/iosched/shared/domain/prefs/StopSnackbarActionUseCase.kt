@@ -17,8 +17,10 @@
 package com.google.samples.apps.iosched.shared.domain.prefs
 
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 
 /**
  * Use case to update the preference whether Snackbar messages should be stopped.
@@ -26,8 +28,9 @@ import javax.inject.Inject
  * of the Snackbars should still show even after setting this preference as true.
  */
 open class StopSnackbarActionUseCase @Inject constructor(
-    private val preferenceStorage: PreferenceStorage
-) : UseCase<Boolean, Unit>() {
+    private val preferenceStorage: PreferenceStorage,
+    @IoDispatcher dispatcher: CoroutineDispatcher
+) : UseCase<Boolean, Unit>(dispatcher) {
     override fun execute(parameters: Boolean) {
         preferenceStorage.snackbarIsStopped = parameters
     }

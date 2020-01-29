@@ -147,13 +147,17 @@ class FeedFragment : MainNavigationFragment() {
             openSessionDetail(sessionId)
         })
 
-        model.navigateToScheduleAction.observe(viewLifecycleOwner,
+        model.navigateToScheduleAction.observe(
+            viewLifecycleOwner,
             EventObserver { withPinnedEvents ->
                 openSchedule(withPinnedEvents)
-            })
+            }
+        )
 
-        model.openSignInDialogAction.observe(viewLifecycleOwner,
-            EventObserver { openSignInDialog() })
+        model.openSignInDialogAction.observe(
+            viewLifecycleOwner,
+            EventObserver { openSignInDialog() }
+        )
 
         model.openLiveStreamAction.observe(viewLifecycleOwner, EventObserver { streamUrl ->
             openLiveStreamUrl(streamUrl)

@@ -20,13 +20,14 @@ package com.google.samples.apps.iosched.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
-import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompletedUseCase
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.ui.LaunchDestination.MAIN_ACTIVITY
 import com.google.samples.apps.iosched.ui.LaunchDestination.ONBOARDING
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.mock
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -34,6 +35,7 @@ import org.junit.Test
 /**
  * Unit tests for the [LaunchViewModel].
  */
+@ExperimentalCoroutinesApi
 class LaunchViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread
@@ -44,13 +46,16 @@ class LaunchViewModelTest {
     @get:Rule
     var syncTaskExecutorRule = SyncTaskExecutorRule()
 
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
+
     @Test
-    fun notCompletedOnboarding_navigatesToOnboarding() {
+    fun notCompletedOnboarding_navigatesToOnboarding() = coroutineRule.runBlockingTest {
         // Given that user has *not* completed onboarding
-        val prefs = mock<PreferenceStorage> {
-            on { onboardingCompleted }.doReturn(false)
-        }
-        val onboardingCompletedUseCase = OnboardingCompletedUseCase(prefs)
+        val prefs = FakePreferenceStorage(onboardingCompleted = false)
+        val onboardingCompletedUseCase =
+            OnboardingCompletedUseCase(prefs, coroutineRule.testDispatcher)
         val viewModel = LaunchViewModel(onboardingCompletedUseCase)
 
         // When launchDestination is observed
@@ -60,12 +65,11 @@ class LaunchViewModelTest {
     }
 
     @Test
-    fun hasCompletedOnboarding_navigatesToMainActivity() {
+    fun hasCompletedOnboarding_navigatesToMainActivity() = coroutineRule.runBlockingTest {
         // Given that user *has* completed onboarding
-        val prefs = mock<PreferenceStorage> {
-            on { onboardingCompleted }.doReturn(true)
-        }
-        val onboardingCompletedUseCase = OnboardingCompletedUseCase(prefs)
+        val prefs = FakePreferenceStorage(onboardingCompleted = true)
+        val onboardingCompletedUseCase =
+            OnboardingCompletedUseCase(prefs, coroutineRule.testDispatcher)
         val viewModel = LaunchViewModel(onboardingCompletedUseCase)
 
         // When launchDestination is observed

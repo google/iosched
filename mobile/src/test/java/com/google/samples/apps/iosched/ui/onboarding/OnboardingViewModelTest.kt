@@ -26,6 +26,8 @@ import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
@@ -33,6 +35,7 @@ import org.junit.Test
 /**
  * Unit tests for the [OnboardingViewModel].
  */
+@ExperimentalCoroutinesApi
 class OnboardingViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread
@@ -43,11 +46,13 @@ class OnboardingViewModelTest {
     @get:Rule
     var syncTaskExecutorRule = SyncTaskExecutorRule()
 
+    private val testDispatcher = TestCoroutineDispatcher()
+
     @Test
     fun onGetStartedClicked_updatesPrefs() {
         // Given an onboarding view model
         val prefs = mock<PreferenceStorage>()
-        val onboardingCompleteActionUseCase = OnboardingCompleteActionUseCase(prefs)
+        val onboardingCompleteActionUseCase = OnboardingCompleteActionUseCase(prefs, testDispatcher)
         val signInDelegate = FakeSignInViewModelDelegate()
         val viewModel = OnboardingViewModel(onboardingCompleteActionUseCase, signInDelegate)
 
@@ -66,7 +71,7 @@ class OnboardingViewModelTest {
     fun onSigninClicked() {
         // Given an onboarding view model
         val prefs = mock<PreferenceStorage>()
-        val onboardingCompleteActionUseCase = OnboardingCompleteActionUseCase(prefs)
+        val onboardingCompleteActionUseCase = OnboardingCompleteActionUseCase(prefs, testDispatcher)
         val signInDelegate = FakeSignInViewModelDelegate()
         val viewModel = OnboardingViewModel(onboardingCompleteActionUseCase, signInDelegate)
 

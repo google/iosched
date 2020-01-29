@@ -17,9 +17,11 @@
 package com.google.samples.apps.iosched.shared.domain.search
 
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSession
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 import timber.log.Timber
 
 /**
@@ -28,8 +30,9 @@ import timber.log.Timber
  * A session is returned in the results if the title, description, or tag matches the query parameter.
  */
 class SearchUseCase @Inject constructor(
-    private val repository: SessionRepository
-) : UseCase<String, List<Searchable>>() {
+    private val repository: SessionRepository,
+    @IoDispatcher dispatcher: CoroutineDispatcher
+) : UseCase<String, List<Searchable>>(dispatcher) {
 
     override fun execute(parameters: String): List<Searchable> {
         Timber.d("Performing a search for any sessions that contain `$parameters`")

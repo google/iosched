@@ -18,9 +18,12 @@ package com.google.samples.apps.iosched.shared.data.job
 
 import android.app.job.JobParameters
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.result.succeeded
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -32,14 +35,16 @@ class ConferenceDataService : DaggerJobService() {
     @Inject
     lateinit var refreshEventDataUseCase: RefreshConferenceDataUseCase
 
+    private val serviceJob = Job()
+    private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
+
     override fun onStartJob(params: JobParameters?): Boolean {
 
         Timber.i("ConferenceDataService triggering refresh conference data.")
 
         // Execute off the main thread
-        DefaultScheduler.execute {
-
-            val result = refreshEventDataUseCase.executeNow(Unit)
+        serviceScope.launch {
+            val result = refreshEventDataUseCase(Unit)
 
             when {
                 result.succeeded -> {
@@ -65,5 +70,10 @@ class ConferenceDataService : DaggerJobService() {
 
     companion object {
         const val JOB_ID = 0xFE0FE0
+    }
+
+    override fun onDestroy() {
+        serviceJob.cancel()
+        super.onDestroy()
     }
 }

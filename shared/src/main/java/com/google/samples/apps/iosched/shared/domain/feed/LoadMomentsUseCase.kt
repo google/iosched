@@ -18,15 +18,18 @@ package com.google.samples.apps.iosched.shared.domain.feed
 
 import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 
 /**
  * Loads all moments into a list.
  */
 open class LoadMomentsUseCase @Inject constructor(
-    private val repository: FeedRepository
-) : UseCase<Unit, List<Moment>>() {
+    private val repository: FeedRepository,
+    @IoDispatcher dispatcher: CoroutineDispatcher
+) : UseCase<Unit, List<Moment>>(dispatcher) {
 
     override fun execute(parameters: Unit): List<Moment> {
         return repository.getMoments()

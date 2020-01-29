@@ -18,11 +18,15 @@ package com.google.samples.apps.iosched.shared.domain.codelabs
 
 import com.google.samples.apps.iosched.model.Codelab
 import com.google.samples.apps.iosched.shared.data.codelabs.CodelabsRepository
-import com.google.samples.apps.iosched.shared.domain.UseCase
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
+import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 
-class LoadCodelabsUseCase @Inject constructor(private val repository: CodelabsRepository) :
-    UseCase<Unit, List<Codelab>>() {
+class LoadCodelabsUseCase @Inject constructor(
+    private val repository: CodelabsRepository,
+    @IoDispatcher ioDispatcher: CoroutineDispatcher
+) : CoroutinesUseCase<Unit, List<Codelab>>(ioDispatcher) {
 
     override fun execute(parameters: Unit): List<Codelab> {
         return repository.getCodelabs()

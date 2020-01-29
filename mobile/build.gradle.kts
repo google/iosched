@@ -31,7 +31,7 @@ android {
         targetSdkVersion(Versions.TARGET_SDK)
         versionCode = Versions.versionCodeMobile
         versionName = Versions.versionName
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.google.samples.apps.iosched.tests.CustomTestRunner"
 
         buildConfigField("com.google.android.gms.maps.model.LatLng",
                 "MAP_VIEWPORT_BOUND_NE",
@@ -161,6 +161,7 @@ dependencies {
     implementation(Libs.INK_PAGE_INDICATOR)
 
     // Architecture Components
+    implementation(Libs.LIFECYCLE_LIVE_DATA_KTX)
     kapt(Libs.LIFECYCLE_COMPILER)
     testImplementation(Libs.ARCH_TESTING)
     implementation(Libs.NAVIGATION_FRAGMENT_KTX)
@@ -176,6 +177,8 @@ dependencies {
     implementation(Libs.DAGGER_ANDROID_SUPPORT)
     kapt(Libs.DAGGER_COMPILER)
     kapt(Libs.DAGGER_ANDROID_PROCESSOR)
+    kaptAndroidTest(Libs.DAGGER_COMPILER)
+    kaptAndroidTest(Libs.DAGGER_ANDROID_PROCESSOR)
 
     // Glide
     implementation(Libs.GLIDE)

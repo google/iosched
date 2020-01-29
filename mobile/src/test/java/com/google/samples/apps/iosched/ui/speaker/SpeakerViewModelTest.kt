@@ -25,7 +25,7 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
-import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCase
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
@@ -36,6 +36,8 @@ import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelega
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -43,6 +45,7 @@ import org.junit.Test
 /**
  * Unit tests for the [SpeakerViewModel].
  */
+@ExperimentalCoroutinesApi
 class SpeakerViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread
@@ -94,14 +97,16 @@ class SpeakerViewModelTest {
     }
 
     private fun createViewModel(
-        loadSpeakerUseCase: LoadSpeakerUseCase = LoadSpeakerUseCase(TestDataRepository),
+        loadSpeakerUseCase: LoadSpeakerUseCase =
+            LoadSpeakerUseCase(TestDataRepository, TestCoroutineDispatcher()),
         loadSpeakerSessionsUseCase: LoadUserSessionsUseCase = LoadUserSessionsUseCase(
             DefaultSessionAndUserEventRepository(
                 TestUserEventDataSource(),
                 DefaultSessionRepository(TestDataRepository)
             )
         ),
-        getTimeZoneUseCase: GetTimeZoneUseCase = GetTimeZoneUseCase(FakePreferenceStorage()),
+        getTimeZoneUseCase: GetTimeZoneUseCaseLegacy =
+            GetTimeZoneUseCaseLegacy(FakePreferenceStorage(), TestCoroutineDispatcher()),
         signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate().apply {
             loadUser("123")
         },

@@ -84,9 +84,11 @@ class ScheduleFragment : MainNavigationFragment() {
         private const val DIALOG_SCHEDULE_HINTS = "dialog_schedule_hints"
     }
 
-    @Inject lateinit var analyticsHelper: AnalyticsHelper
+    @Inject
+    lateinit var analyticsHelper: AnalyticsHelper
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     @Inject
     @field:Named("tagViewPool")
@@ -97,7 +99,8 @@ class ScheduleFragment : MainNavigationFragment() {
     @SearchScheduleEnabledFlag
     var searchScheduleFeatureEnabled: Boolean = false
 
-    @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
+    @Inject
+    lateinit var snackbarMessageManager: SnackbarMessageManager
 
     private lateinit var scheduleViewModel: ScheduleViewModel
 
@@ -252,10 +255,12 @@ class ScheduleFragment : MainNavigationFragment() {
             }
         })
 
-        scheduleViewModel.navigateToSessionAction.observe(viewLifecycleOwner,
+        scheduleViewModel.navigateToSessionAction.observe(
+            viewLifecycleOwner,
             EventObserver { sessionId ->
                 openSessionDetail(sessionId)
-            })
+            }
+        )
 
         scheduleViewModel.navigateToSignInDialogAction.observe(viewLifecycleOwner, EventObserver {
             openSignInDialog()
@@ -269,12 +274,14 @@ class ScheduleFragment : MainNavigationFragment() {
                 openScheduleUiHintsDialog()
             }
         })
-        scheduleViewModel.shouldShowNotificationsPrefAction.observe(viewLifecycleOwner,
+        scheduleViewModel.shouldShowNotificationsPrefAction.observe(
+            viewLifecycleOwner,
             EventObserver {
                 if (it) {
                     openNotificationsPreferenceDialog()
                 }
-            })
+            }
+        )
         scheduleViewModel.hasAnyFilters.observe(viewLifecycleOwner, Observer {
             updateFiltersUi(it ?: return@Observer)
         })
