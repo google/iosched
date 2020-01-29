@@ -20,8 +20,8 @@ import android.app.job.JobParameters
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.result.succeeded
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 /**
  * A Job that refreshes the conference data in the repository (if the app is active) and

@@ -24,8 +24,8 @@ import com.google.samples.apps.iosched.util.CrashlyticsTree
 import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 /**
  * Initialization of libraries.

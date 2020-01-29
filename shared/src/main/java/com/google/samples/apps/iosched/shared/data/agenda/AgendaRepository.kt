@@ -90,8 +90,8 @@ interface AgendaRepository {
     fun getObservableAgenda(): LiveData<List<Block>>
 }
 
-class DefaultAgendaRepository(private val appConfigDataSource: AppConfigDataSource)
-    : AgendaRepository {
+class DefaultAgendaRepository(private val appConfigDataSource: AppConfigDataSource) :
+    AgendaRepository {
 
     private val blocks by lazy {
         generateBlocks(appConfigDataSource)

@@ -21,8 +21,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.content.getSystemService
 import dagger.android.DaggerBroadcastReceiver
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 /**
  * Receives broadcast intents with information to hide notifications.

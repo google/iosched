@@ -42,10 +42,10 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionSyn
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import dagger.android.DaggerBroadcastReceiver
-import org.threeten.bp.Instant
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import org.threeten.bp.Instant
+import timber.log.Timber
 
 /**
  * Receives broadcast intents with information for session notifications.

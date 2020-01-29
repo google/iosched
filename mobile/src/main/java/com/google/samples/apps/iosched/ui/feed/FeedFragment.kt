@@ -46,8 +46,8 @@ import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.openWebsiteUrl
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 class FeedFragment : MainNavigationFragment() {
 

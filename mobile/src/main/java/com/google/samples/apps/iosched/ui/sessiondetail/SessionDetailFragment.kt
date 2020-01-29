@@ -68,9 +68,9 @@ import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment.Companion.
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.openWebsiteUrl
 import com.google.samples.apps.iosched.util.postponeEnterTransition
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
+import timber.log.Timber
 
 class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.Listener {
 

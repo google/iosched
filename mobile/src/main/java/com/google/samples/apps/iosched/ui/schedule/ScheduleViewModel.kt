@@ -55,10 +55,10 @@ import com.google.samples.apps.iosched.ui.schedule.filters.LoadEventFiltersUseCa
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
-import org.threeten.bp.ZoneId
-import timber.log.Timber
 import java.util.UUID
 import javax.inject.Inject
+import org.threeten.bp.ZoneId
+import timber.log.Timber
 
 /**
  * Loads data and exposes it to the view.

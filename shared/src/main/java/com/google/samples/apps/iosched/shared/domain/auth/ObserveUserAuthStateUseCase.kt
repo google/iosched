@@ -23,9 +23,9 @@ import com.google.samples.apps.iosched.shared.data.signin.datasources.Registered
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Result
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
+import timber.log.Timber
 
 /**
  * A [MediatorUseCase] that observes two data sources to generate an [AuthenticatedUserInfo]

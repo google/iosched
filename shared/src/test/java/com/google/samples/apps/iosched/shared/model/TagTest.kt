@@ -16,11 +16,11 @@
 
 package com.google.samples.apps.iosched.model
 
+import org.hamcrest.CoreMatchers.`is` as Is
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.not
 import org.junit.Assert.assertThat
 import org.junit.Test
-import org.hamcrest.CoreMatchers.`is` as Is
 
 class TagTest {
 

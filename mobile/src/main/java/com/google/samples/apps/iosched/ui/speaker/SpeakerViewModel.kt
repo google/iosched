@@ -36,8 +36,8 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
-import org.threeten.bp.ZoneId
 import javax.inject.Inject
+import org.threeten.bp.ZoneId
 
 /**
  * Loads a [Speaker] and their sessions, handles event actions.

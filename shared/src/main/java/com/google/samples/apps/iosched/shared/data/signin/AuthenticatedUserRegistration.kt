@@ -18,11 +18,11 @@ package com.google.samples.apps.iosched.shared.data.signin
 
 import com.google.samples.apps.iosched.shared.BuildConfig
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import java.io.IOException
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
-import java.io.IOException
 
 /**
  * Uses an HTTP client to hit an endpoint when the user changes.

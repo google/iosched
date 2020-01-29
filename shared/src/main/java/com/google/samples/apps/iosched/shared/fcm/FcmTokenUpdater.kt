@@ -22,8 +22,8 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.samples.apps.iosched.shared.data.document2019
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 /**
  * Saves the FCM ID tokens in Firestore.

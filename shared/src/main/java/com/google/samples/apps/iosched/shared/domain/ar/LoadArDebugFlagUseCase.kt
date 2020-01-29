@@ -24,8 +24,8 @@ import javax.inject.Inject
  * UseCase that loads if a signed in user can demo the AR feature (bypass teaser).
  * Should post Result.Success(true) to result when the signed in user can demo the AR feature.
  */
-class LoadArDebugFlagUseCase @Inject constructor(private val endpoint: ArDebugFlagEndpoint)
-    : MediatorUseCase<Unit, Boolean>() {
+class LoadArDebugFlagUseCase @Inject constructor(private val endpoint: ArDebugFlagEndpoint) :
+    MediatorUseCase<Unit, Boolean>() {
 
     override fun execute(parameters: Unit) {
         result.addSource(endpoint.canDemoAr()) {

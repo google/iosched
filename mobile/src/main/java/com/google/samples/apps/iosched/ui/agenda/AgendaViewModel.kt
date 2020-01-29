@@ -26,8 +26,8 @@ import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
-import org.threeten.bp.ZoneId
 import javax.inject.Inject
+import org.threeten.bp.ZoneId
 
 class AgendaViewModel @Inject constructor(
     loadAgendaUseCase: LoadAgendaUseCase,

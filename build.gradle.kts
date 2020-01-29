@@ -64,11 +64,18 @@ allprojects {
 
 subprojects {
     apply(plugin = "com.diffplug.gradle.spotless")
+    val ktlintVer = "0.36.0"
     spotless {
         kotlin {
             target("**/*.kt")
-            ktlint("0.29.0").userData(mapOf("max_line_length" to "100"))
+            ktlint(ktlintVer).userData(mapOf("max_line_length" to "100"))
             licenseHeaderFile(project.rootProject.file("copyright.kt"))
+        }
+        kotlinGradle {
+            // same as kotlin, but for .gradle.kts files (defaults to '*.gradle.kts')
+            target("**/*.gradle.kts")
+            ktlint(ktlintVer)
+            licenseHeaderFile(project.rootProject.file("copyright.kt"), "(plugins |import |include)")
         }
     }
 

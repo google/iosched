@@ -23,10 +23,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.shared.data.document2019
 import com.google.samples.apps.iosched.shared.util.ColorUtils
-import org.threeten.bp.Instant
-import org.threeten.bp.ZoneId
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import org.threeten.bp.Instant
+import org.threeten.bp.ZoneId
 
 interface MomentDataSource {
     fun getMoments(): List<Moment>
