@@ -35,9 +35,9 @@ import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.Result
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
+import timber.log.Timber
 
 /**
  * Single point of access to user events data associated with a user for the presentation layer.

@@ -37,8 +37,8 @@ import com.google.samples.apps.iosched.ui.search.SearchFragmentDirections.Compan
 import com.google.samples.apps.iosched.ui.search.SearchFragmentDirections.Companion.toSpeakerDetail
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.openWebsiteUrl
-import kotlinx.android.synthetic.main.fragment_search.view.searchView
 import javax.inject.Inject
+import kotlinx.android.synthetic.main.fragment_search.view.searchView
 
 class SearchFragment : MainNavigationFragment() {
     @Inject lateinit var analyticsHelper: AnalyticsHelper

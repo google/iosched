@@ -25,9 +25,9 @@ import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
+import javax.inject.Inject
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
-import javax.inject.Inject
 
 /**
  * Loads filtered sessions according to the provided parameters.

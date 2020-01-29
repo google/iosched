@@ -28,9 +28,9 @@ import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.equalTo as isEqualTo
 import org.junit.Rule
 import org.junit.Test
-import org.hamcrest.Matchers.equalTo as isEqualTo
 
 /**
  * Unit tests for the [AgendaViewModel].

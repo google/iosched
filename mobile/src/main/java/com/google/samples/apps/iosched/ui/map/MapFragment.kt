@@ -50,8 +50,8 @@ import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.slideOffsetToAlpha
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
-import org.threeten.bp.Instant
 import javax.inject.Inject
+import org.threeten.bp.Instant
 
 class MapFragment : MainNavigationFragment() {
 

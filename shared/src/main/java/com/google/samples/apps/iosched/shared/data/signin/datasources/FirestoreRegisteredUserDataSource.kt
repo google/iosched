@@ -25,8 +25,8 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.samples.apps.iosched.shared.data.document2019
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.result.Result
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 /**
  * A [RegisteredUserDataSource] that listens to changes in firestore to indicate whether the

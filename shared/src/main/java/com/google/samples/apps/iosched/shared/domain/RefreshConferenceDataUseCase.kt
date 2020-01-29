@@ -17,8 +17,8 @@
 package com.google.samples.apps.iosched.shared.domain
 
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 /**
  * Forces a refresh in the conference data repository.

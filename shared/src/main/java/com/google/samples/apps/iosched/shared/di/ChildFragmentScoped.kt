@@ -16,11 +16,10 @@
 
 package com.google.samples.apps.iosched.shared.di
 
+import javax.inject.Scope
+import kotlin.annotation.AnnotationRetention
 import kotlin.annotation.Retention
 import kotlin.annotation.Target
-import kotlin.annotation.AnnotationRetention
-
-import javax.inject.Scope
 
 /**
  * The ChildFragmentScoped custom scoping annotation specifies that the lifespan of a dependency be

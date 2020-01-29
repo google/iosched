@@ -47,13 +47,13 @@ import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
-import com.google.samples.apps.iosched.util.ConferenceStateLiveData
 import com.google.samples.apps.iosched.util.ConferenceState.ENDED
 import com.google.samples.apps.iosched.util.ConferenceState.UPCOMING
+import com.google.samples.apps.iosched.util.ConferenceStateLiveData
 import com.google.samples.apps.iosched.util.combine
+import javax.inject.Inject
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
-import javax.inject.Inject
 
 /**
  * Loads data and exposes it to the view.

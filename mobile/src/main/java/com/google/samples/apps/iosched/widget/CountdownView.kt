@@ -30,11 +30,11 @@ import com.airbnb.lottie.LottieComposition
 import com.airbnb.lottie.LottieCompositionFactory
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.TimeUtils
+import kotlin.properties.ObservableProperty
+import kotlin.reflect.KProperty
 import org.threeten.bp.Duration
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
-import kotlin.properties.ObservableProperty
-import kotlin.reflect.KProperty
 
 class CountdownView @JvmOverloads constructor(
     context: Context,

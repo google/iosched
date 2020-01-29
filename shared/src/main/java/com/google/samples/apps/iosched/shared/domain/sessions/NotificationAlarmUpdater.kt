@@ -24,9 +24,9 @@ import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
+import timber.log.Timber
 
 /**
  * Sets a notification for each session that is starred or reserved by the user.

@@ -57,12 +57,12 @@ import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.combine
+import java.util.UUID
+import javax.inject.Inject
 import org.threeten.bp.Duration
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
-import java.util.UUID
-import javax.inject.Inject
 
 private const val TEN_SECONDS = 10_000L
 private const val SIXTY_SECONDS = 60_000L

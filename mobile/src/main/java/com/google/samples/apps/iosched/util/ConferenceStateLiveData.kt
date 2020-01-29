@@ -24,8 +24,8 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.util.ConferenceState.ENDED
 import com.google.samples.apps.iosched.util.ConferenceState.STARTED
 import com.google.samples.apps.iosched.util.ConferenceState.UPCOMING
-import org.threeten.bp.Duration
 import javax.inject.Inject
+import org.threeten.bp.Duration
 
 enum class ConferenceState { UPCOMING, STARTED, ENDED }
 

@@ -29,8 +29,8 @@ import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.fcm.FcmTokenUpdater
 import com.google.samples.apps.iosched.shared.result.Result
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 /**
  * An [AuthStateUserDataSource] that listens to changes in [FirebaseAuth].

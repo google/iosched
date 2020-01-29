@@ -17,10 +17,9 @@
 package com.google.samples.apps.iosched.shared.di
 
 import javax.inject.Scope
-
+import kotlin.annotation.AnnotationRetention
 import kotlin.annotation.Retention
 import kotlin.annotation.Target
-import kotlin.annotation.AnnotationRetention
 
 /**
  * The ServiceScoped custom scoping annotation specifies that the lifespan of a dependency be

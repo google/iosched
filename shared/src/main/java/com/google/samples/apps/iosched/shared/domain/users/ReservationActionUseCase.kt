@@ -23,8 +23,8 @@ import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.result.Result
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 /**
  * Sends a request to reserve or cancel a reservation for a session.

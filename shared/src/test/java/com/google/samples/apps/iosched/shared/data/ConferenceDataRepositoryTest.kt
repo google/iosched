@@ -24,6 +24,8 @@ import com.google.samples.apps.iosched.test.data.TestData.session1
 import com.google.samples.apps.iosched.test.data.TestData.session3
 import com.google.samples.apps.iosched.test.util.FakeAppDatabase
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import java.io.IOException
+import org.hamcrest.core.Is.`is` as Is
 import org.hamcrest.core.IsEqual.equalTo
 import org.hamcrest.core.IsNot.not
 import org.hamcrest.core.IsNull.notNullValue
@@ -31,8 +33,6 @@ import org.hamcrest.core.IsNull.nullValue
 import org.junit.Assert.assertThat
 import org.junit.Rule
 import org.junit.Test
-import java.io.IOException
-import org.hamcrest.core.Is.`is` as Is
 
 /**
  * Unit tests for [ConferenceDataRepository].

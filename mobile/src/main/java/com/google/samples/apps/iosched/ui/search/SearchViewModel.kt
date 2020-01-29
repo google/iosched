@@ -37,8 +37,8 @@ import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.ui.search.SearchResultType.CODELAB
 import com.google.samples.apps.iosched.ui.search.SearchResultType.SESSION
 import com.google.samples.apps.iosched.ui.search.SearchResultType.SPEAKER
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 class SearchViewModel @Inject constructor(
     private val analyticsHelper: AnalyticsHelper,

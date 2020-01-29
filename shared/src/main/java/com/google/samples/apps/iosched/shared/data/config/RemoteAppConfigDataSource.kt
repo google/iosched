@@ -23,9 +23,9 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import timber.log.Timber
 
 class RemoteAppConfigDataSource @Inject constructor(
     private val firebaseRemoteConfig: FirebaseRemoteConfig,

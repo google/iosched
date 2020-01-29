@@ -16,9 +16,9 @@
 
 package com.google.samples.apps.iosched.shared.util
 
+import java.lang.IllegalArgumentException
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.lang.IllegalArgumentException
 
 class ColorUtilsTest {
 

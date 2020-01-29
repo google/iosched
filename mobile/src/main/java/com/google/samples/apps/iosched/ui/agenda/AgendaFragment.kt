@@ -33,8 +33,8 @@ import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.clearDecorations
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
-import org.threeten.bp.ZoneId
 import javax.inject.Inject
+import org.threeten.bp.ZoneId
 
 class AgendaFragment : MainNavigationFragment() {
 

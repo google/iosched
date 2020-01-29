@@ -19,10 +19,10 @@ package com.google.samples.apps.iosched.shared.data
 import com.google.gson.JsonSyntaxException
 import com.google.samples.apps.iosched.model.Speaker
 import org.hamcrest.CoreMatchers.hasItem
+import org.hamcrest.core.Is.`is` as Is
 import org.hamcrest.core.IsEqual.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Test
-import org.hamcrest.core.Is.`is` as Is
 
 private const val FILENAME = "test_conference_data1.json"
 private const val MALFORMED_FILENAME = "malformed_conference_data.json"

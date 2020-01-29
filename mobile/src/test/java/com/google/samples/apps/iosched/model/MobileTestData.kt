@@ -33,7 +33,7 @@ object MobileTestData {
 
     val tagFiltersList = listOf(
         androidTag, webTag, cloudTag, // TOPIC
-        sessionsTag                   // TYPE
+        sessionsTag // TYPE
     ).map { TagFilter(it, false) }
 }
 

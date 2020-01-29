@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.shared.data
 import android.content.Context
 import androidx.annotation.WorkerThread
 import com.google.samples.apps.iosched.shared.BuildConfig
+import java.io.IOException
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.HttpUrl
@@ -28,7 +29,6 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
-import java.io.IOException
 
 /**
  * Downloads session data.
