@@ -99,9 +99,8 @@ dependencies {
     testImplementation(project(":androidTest-shared"))
 
     // Architecture Components
-    implementation(Libs.LIFECYCLE_EXTENSIONS)
-    implementation(Libs.LIFECYCLE_LIVE_DATA)
-    implementation(Libs.LIFECYCLE_VIEW_MODEL)
+    implementation(Libs.LIFECYCLE_LIVE_DATA_KTX)
+    implementation(Libs.LIFECYCLE_VIEW_MODEL_KTX)
     implementation(Libs.ROOM_KTX)
     implementation(Libs.ROOM_RUNTIME)
     kapt(Libs.ROOM_COMPILER)
