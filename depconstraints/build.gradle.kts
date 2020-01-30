@@ -48,7 +48,7 @@ val gson = "2.8.6"
 val hamcrest = "1.3"
 val junit = "4.12"
 val junitExt = "1.1.1"
-val lifecycle = "2.1.0-beta01"
+val lifecycle = "2.2.0"
 val lottie = "3.0.0"
 val material = "1.1.0-alpha07"
 val mockito = "2.8.9"
@@ -101,9 +101,8 @@ dependencies {
         api("${Libs.EXT_JUNIT}:$junitExt")
         api("${Libs.KOTLIN_STDLIB}:${Versions.KOTLIN}")
         api("${Libs.LIFECYCLE_COMPILER}:$lifecycle")
-        api("${Libs.LIFECYCLE_EXTENSIONS}:$lifecycle")
-        api("${Libs.LIFECYCLE_LIVE_DATA}:$lifecycle")
-        api("${Libs.LIFECYCLE_VIEW_MODEL}:$lifecycle")
+        api("${Libs.LIFECYCLE_LIVE_DATA_KTX}:$lifecycle")
+        api("${Libs.LIFECYCLE_VIEW_MODEL_KTX}:$lifecycle")
         api("${Libs.LOTTIE}:$lottie")
         api("${Libs.MATERIAL}:$material")
         api("${Libs.MOCKITO_CORE}:$mockito")
