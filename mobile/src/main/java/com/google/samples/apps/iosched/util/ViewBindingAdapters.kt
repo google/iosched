@@ -32,7 +32,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.MarginPageTransformer
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -53,8 +54,8 @@ fun fabVisibility(fab: FloatingActionButton, visible: Boolean) {
 }
 
 @BindingAdapter("pageMargin")
-fun pageMargin(viewPager: ViewPager, pageMargin: Float) {
-    viewPager.pageMargin = pageMargin.toInt()
+fun pageMargin(viewPager: ViewPager2, pageMargin: Float) {
+    viewPager.setPageTransformer(MarginPageTransformer(pageMargin.toInt()))
 }
 
 @BindingAdapter("clipToCircle")

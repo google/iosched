@@ -61,6 +61,7 @@ val rules = "1.1.1"
 val runner = "1.1.1"
 val threetenabp = "1.0.5"
 val timber = "4.7.1"
+val viewpager2 = "1.0.0"
 
 dependencies {
     constraints {
@@ -121,6 +122,7 @@ dependencies {
         api("${Libs.THREETENABP}:$threetenabp")
         api("${Libs.THREETENBP}:${Versions.THREETENBP}")
         api("${Libs.TIMBER}:$timber")
+        api("${Libs.VIEWPAGER2}:$viewpager2")
     }
 }
 
