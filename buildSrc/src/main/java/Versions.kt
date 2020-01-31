@@ -29,7 +29,7 @@ object Versions {
     const val FABRIC = "1.31.2"
     const val GOOGLE_SERVICES = "4.3.3"
     const val KOTLIN = "1.3.61"
-    const val NAVIGATION = "2.0.0"
+    const val NAVIGATION = "2.2.0"
 
     // TODO: Remove this once the version for
     //  "org.threeten:threetenbp:${Versions.threetenbp}:no-tzdb" using java-platform in the

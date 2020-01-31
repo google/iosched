@@ -127,6 +127,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    // To avoid the compile error from AppBarConfiguration
+    // Cannot inline bytecode built with JVM target 1.8 into bytecode that is being built with JVM target 1.6
+    kotlinOptions {
+        val options = this as org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
+        options.jvmTarget = "1.8"
+    }
 }
 
 dependencies {
@@ -155,7 +161,6 @@ dependencies {
     implementation(Libs.INK_PAGE_INDICATOR)
 
     // Architecture Components
-    implementation(Libs.LIFECYCLE_EXTENSIONS)
     kapt(Libs.LIFECYCLE_COMPILER)
     testImplementation(Libs.ARCH_TESTING)
     implementation(Libs.NAVIGATION_FRAGMENT_KTX)

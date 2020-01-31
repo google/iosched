@@ -31,7 +31,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.google.samples.apps.iosched.shared.BuildConfig
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
@@ -71,7 +70,7 @@ inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Fragmen
 inline fun <reified VM : ViewModel> FragmentActivity.viewModelProvider(
     provider: ViewModelProvider.Factory
 ) =
-    ViewModelProviders.of(this, provider).get(VM::class.java)
+    ViewModelProvider(this, provider).get(VM::class.java)
 
 /**
  * For Fragments, allows declarations like
@@ -82,7 +81,7 @@ inline fun <reified VM : ViewModel> FragmentActivity.viewModelProvider(
 inline fun <reified VM : ViewModel> Fragment.viewModelProvider(
     provider: ViewModelProvider.Factory
 ) =
-    ViewModelProviders.of(this, provider).get(VM::class.java)
+    ViewModelProvider(this, provider).get(VM::class.java)
 
 /**
  * Like [Fragment.viewModelProvider] for Fragments that want a [ViewModel] scoped to the Activity.
@@ -90,7 +89,7 @@ inline fun <reified VM : ViewModel> Fragment.viewModelProvider(
 inline fun <reified VM : ViewModel> Fragment.activityViewModelProvider(
     provider: ViewModelProvider.Factory
 ) =
-    ViewModelProviders.of(requireActivity(), provider).get(VM::class.java)
+    ViewModelProvider(requireActivity(), provider).get(VM::class.java)
 
 /**
  * Like [Fragment.viewModelProvider] for Fragments that want a [ViewModel] scoped to the parent
@@ -99,7 +98,7 @@ inline fun <reified VM : ViewModel> Fragment.activityViewModelProvider(
 inline fun <reified VM : ViewModel> Fragment.parentViewModelProvider(
     provider: ViewModelProvider.Factory
 ) =
-    ViewModelProviders.of(parentFragment!!, provider).get(VM::class.java)
+    ViewModelProvider(parentFragment!!, provider).get(VM::class.java)
 
 // endregion
 // region Parcelables, Bundles
