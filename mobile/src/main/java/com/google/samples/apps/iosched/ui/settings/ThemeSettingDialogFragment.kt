@@ -55,14 +55,14 @@ class ThemeSettingDialogFragment : DaggerAppCompatDialogFragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = viewModelProvider(viewModelFactory)
 
-        viewModel.availableThemes.observe(this, Observer { themes ->
+        viewModel.availableThemes.observe(viewLifecycleOwner, Observer { themes ->
             listAdapter.clear()
             listAdapter.addAll(themes.map { theme -> ThemeHolder(theme, getTitleForTheme(theme)) })
 
             updateSelectedItem(viewModel.theme.value)
         })
 
-        viewModel.theme.observe(this, Observer(::updateSelectedItem))
+        viewModel.theme.observe(viewLifecycleOwner, Observer(::updateSelectedItem))
     }
 
     private fun updateSelectedItem(selected: Theme?) {

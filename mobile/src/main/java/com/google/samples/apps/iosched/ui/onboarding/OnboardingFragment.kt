@@ -81,7 +81,7 @@ class OnboardingFragment : DaggerFragment() {
             }
         }
 
-        onboardingViewModel.navigateToMainActivity.observe(this, EventObserver {
+        onboardingViewModel.navigateToMainActivity.observe(viewLifecycleOwner, EventObserver {
             requireActivity().run {
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()

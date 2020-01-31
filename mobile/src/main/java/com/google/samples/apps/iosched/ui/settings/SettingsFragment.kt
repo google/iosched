@@ -48,7 +48,7 @@ class SettingsFragment : MainNavigationFragment() {
     ): View? {
         viewModel = viewModelProvider(viewModelFactory)
 
-        viewModel.navigateToThemeSelector.observe(this, EventObserver {
+        viewModel.navigateToThemeSelector.observe(viewLifecycleOwner, EventObserver {
             ThemeSettingDialogFragment.newInstance()
                     .show(requireFragmentManager(), null)
         })

@@ -57,7 +57,7 @@ class MapVariantSelectionDialogFragment : DaggerAppCompatDialogFragment() {
         view.findViewById<RecyclerView>(R.id.map_variant_list).adapter = adapter
 
         mapViewModel = parentViewModelProvider(viewModelFactory)
-        mapViewModel.mapVariant.observe(this, Observer {
+        mapViewModel.mapVariant.observe(viewLifecycleOwner, Observer {
             adapter.currentSelection = it
         })
     }

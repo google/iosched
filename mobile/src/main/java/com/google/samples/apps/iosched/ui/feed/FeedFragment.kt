@@ -131,7 +131,7 @@ class FeedFragment : MainNavigationFragment() {
 
         setUpSnackbar(model.snackBarMessage, binding.snackbar, snackbarMessageManager)
 
-        model.errorMessage.observe(this, Observer { message ->
+        model.errorMessage.observe(viewLifecycleOwner, Observer { message ->
             val errorMessage = message?.getContentIfNotHandled()
             if (!errorMessage.isNullOrEmpty()) {
                 Toast.makeText(this.context, errorMessage, Toast.LENGTH_SHORT).show()
@@ -139,25 +139,27 @@ class FeedFragment : MainNavigationFragment() {
             }
         })
 
-        model.feed.observe(this, Observer {
+        model.feed.observe(viewLifecycleOwner, Observer {
             showFeedItems(binding.recyclerView, it)
         })
 
-        model.navigateToSessionAction.observe(this, EventObserver { sessionId ->
+        model.navigateToSessionAction.observe(viewLifecycleOwner, EventObserver { sessionId ->
             openSessionDetail(sessionId)
         })
 
-        model.navigateToScheduleAction.observe(this, EventObserver { withPinnedEvents ->
-            openSchedule(withPinnedEvents)
-        })
+        model.navigateToScheduleAction.observe(viewLifecycleOwner,
+            EventObserver { withPinnedEvents ->
+                openSchedule(withPinnedEvents)
+            })
 
-        model.openSignInDialogAction.observe(this, EventObserver { openSignInDialog() })
+        model.openSignInDialogAction.observe(viewLifecycleOwner,
+            EventObserver { openSignInDialog() })
 
-        model.openLiveStreamAction.observe(this, EventObserver { streamUrl ->
+        model.openLiveStreamAction.observe(viewLifecycleOwner, EventObserver { streamUrl ->
             openLiveStreamUrl(streamUrl)
         })
 
-        model.navigateToMapAction.observe(this, EventObserver { moment ->
+        model.navigateToMapAction.observe(viewLifecycleOwner, EventObserver { moment ->
             openMap(moment)
         })
     }

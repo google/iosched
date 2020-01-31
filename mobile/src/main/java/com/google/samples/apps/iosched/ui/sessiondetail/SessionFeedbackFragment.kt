@@ -62,12 +62,12 @@ class SessionFeedbackFragment : DaggerAppCompatDialogFragment() {
             adapter = questionAdapter
         }
         // The lifecycle owner has to be the DialogFragment itself here.
-        viewModel.questions.observe(this, Observer { questions ->
+        viewModel.questions.observe(viewLifecycleOwner, Observer { questions ->
             if (questions != null && questions.isNotEmpty()) {
                 questionAdapter.submitList(questions)
             }
         })
-        viewModel.title.observe(this, Observer { title ->
+        viewModel.title.observe(viewLifecycleOwner, Observer { title ->
             dialog?.setTitle(title)
         })
         return MaterialAlertDialogBuilder(context)

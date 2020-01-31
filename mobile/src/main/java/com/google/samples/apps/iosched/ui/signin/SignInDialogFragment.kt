@@ -69,7 +69,7 @@ class SignInDialogFragment : DaggerAppCompatDialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         signInViewModel = viewModelProvider(viewModelFactory)
-        signInViewModel.performSignInEvent.observe(this, EventObserver { request ->
+        signInViewModel.performSignInEvent.observe(viewLifecycleOwner, EventObserver { request ->
             if (request == RequestSignIn) {
                 activity?.let { activity ->
                     val signInIntent = signInHandler.makeSignInIntent()

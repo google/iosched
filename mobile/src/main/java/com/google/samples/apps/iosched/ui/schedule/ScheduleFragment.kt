@@ -230,13 +230,13 @@ class ScheduleFragment : MainNavigationFragment() {
         dayIndicatorRecyclerView.adapter = dayIndicatorAdapter
 
         // Start observing ViewModels
-        scheduleViewModel.scheduleUiData.observe(this, Observer {
+        scheduleViewModel.scheduleUiData.observe(viewLifecycleOwner, Observer {
             it ?: return@Observer
             updateScheduleUi(it)
         })
 
         // During conference, scroll to current event.
-        scheduleViewModel.scrollToEvent.observe(this, EventObserver { scrollEvent ->
+        scheduleViewModel.scrollToEvent.observe(viewLifecycleOwner, EventObserver { scrollEvent ->
             if (scrollEvent.targetPosition != -1) {
                 scheduleRecyclerView.run {
                     post {
@@ -252,33 +252,35 @@ class ScheduleFragment : MainNavigationFragment() {
             }
         })
 
-        scheduleViewModel.navigateToSessionAction.observe(this, EventObserver { sessionId ->
-            openSessionDetail(sessionId)
-        })
+        scheduleViewModel.navigateToSessionAction.observe(viewLifecycleOwner,
+            EventObserver { sessionId ->
+                openSessionDetail(sessionId)
+            })
 
-        scheduleViewModel.navigateToSignInDialogAction.observe(this, EventObserver {
+        scheduleViewModel.navigateToSignInDialogAction.observe(viewLifecycleOwner, EventObserver {
             openSignInDialog()
         })
 
-        scheduleViewModel.navigateToSignOutDialogAction.observe(this, EventObserver {
+        scheduleViewModel.navigateToSignOutDialogAction.observe(viewLifecycleOwner, EventObserver {
             openSignOutDialog()
         })
-        scheduleViewModel.scheduleUiHintsShown.observe(this, EventObserver {
+        scheduleViewModel.scheduleUiHintsShown.observe(viewLifecycleOwner, EventObserver {
             if (!it) {
                 openScheduleUiHintsDialog()
             }
         })
-        scheduleViewModel.shouldShowNotificationsPrefAction.observe(this, EventObserver {
-            if (it) {
-                openNotificationsPreferenceDialog()
-            }
-        })
-        scheduleViewModel.hasAnyFilters.observe(this, Observer {
+        scheduleViewModel.shouldShowNotificationsPrefAction.observe(viewLifecycleOwner,
+            EventObserver {
+                if (it) {
+                    openNotificationsPreferenceDialog()
+                }
+            })
+        scheduleViewModel.hasAnyFilters.observe(viewLifecycleOwner, Observer {
             updateFiltersUi(it ?: return@Observer)
         })
 
         // Show an error message
-        scheduleViewModel.errorMessage.observe(this, EventObserver { errorMsg ->
+        scheduleViewModel.errorMessage.observe(viewLifecycleOwner, EventObserver { errorMsg ->
             // TODO: Change once there's a way to show errors to the user
             Toast.makeText(this.context, errorMsg, Toast.LENGTH_LONG).show()
         })

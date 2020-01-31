@@ -71,7 +71,7 @@ class SignOutDialogFragment : DaggerAppCompatDialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         signInViewModel = viewModelProvider(viewModelFactory)
-        signInViewModel.performSignInEvent.observe(this, Observer { request ->
+        signInViewModel.performSignInEvent.observe(viewLifecycleOwner, Observer { request ->
             if (request.peekContent() == RequestSignOut) {
                 request.getContentIfNotHandled()
                 signInHandler.signOut(requireContext())
