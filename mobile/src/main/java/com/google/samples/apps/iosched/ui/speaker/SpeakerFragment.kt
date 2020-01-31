@@ -98,17 +98,18 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
         }
 
         // If speaker does not have a profile image to load, we need to resume.
-        speakerViewModel.hasNoProfileImage.observe(this, Observer {
+        speakerViewModel.hasNoProfileImage.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 startPostponedEnterTransition()
             }
         })
 
-        speakerViewModel.navigateToEventAction.observe(this, EventObserver { sessionId ->
-            findNavController().navigate(toSessionDetail(sessionId))
-        })
+        speakerViewModel.navigateToEventAction.observe(viewLifecycleOwner,
+            EventObserver { sessionId ->
+                findNavController().navigate(toSessionDetail(sessionId))
+            })
 
-        speakerViewModel.navigateToSignInDialogAction.observe(this, EventObserver {
+        speakerViewModel.navigateToSignInDialogAction.observe(viewLifecycleOwner, EventObserver {
             val dialog = SignInDialogFragment()
             dialog.show(
                 requireActivity().supportFragmentManager,
@@ -147,7 +148,7 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
             }
         }
 
-        speakerViewModel.speakerUserSessions.observe(this, Observer {
+        speakerViewModel.speakerUserSessions.observe(viewLifecycleOwner, Observer {
             speakerAdapter.speakerSessions = it ?: emptyList()
         })
 
@@ -157,7 +158,7 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        speakerViewModel.speaker.observe(this, Observer {
+        speakerViewModel.speaker.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 val pageName = "Speaker Details: ${it.name}"
                 analyticsHelper.sendScreenView(pageName, requireActivity())

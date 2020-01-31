@@ -81,7 +81,7 @@ class EventFragment : DaggerFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        eventInfoViewModel.openUrlEvent.observe(this, Observer {
+        eventInfoViewModel.openUrlEvent.observe(viewLifecycleOwner, Observer {
             val url = it?.getContentIfNotHandled() ?: return@Observer
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
         })

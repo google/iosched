@@ -266,17 +266,17 @@ class MapFragment : MainNavigationFragment() {
         }
 
         // Observe ViewModel data
-        viewModel.mapVariant.observe(this, Observer {
+        viewModel.mapVariant.observe(viewLifecycleOwner, Observer {
             mapView.getMapAsync { googleMap ->
                 googleMap.clear()
                 viewModel.loadMapFeatures(googleMap)
             }
         })
-        viewModel.geoJsonLayer.observe(this, Observer {
+        viewModel.geoJsonLayer.observe(viewLifecycleOwner, Observer {
             updateMarkers(it ?: return@Observer)
         })
 
-        viewModel.selectedMarkerInfo.observe(this, Observer {
+        viewModel.selectedMarkerInfo.observe(viewLifecycleOwner, Observer {
             updateInfoSheet(it ?: return@Observer)
         })
 

@@ -94,7 +94,7 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
         }
 
         codelabsViewModel = viewModelProvider(viewModelFactory)
-        codelabsViewModel.codelabs.observe(this, Observer {
+        codelabsViewModel.codelabs.observe(viewLifecycleOwner, Observer {
             codelabsAdapter.submitList(it)
         })
 

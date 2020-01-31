@@ -64,13 +64,13 @@ class SearchFragment : MainNavigationFragment() {
         viewModel = viewModelProvider(viewModelFactory)
         binding.viewModel = viewModel
 
-        viewModel.navigateToSessionAction.observe(this, EventObserver { sessionId ->
+        viewModel.navigateToSessionAction.observe(viewLifecycleOwner, EventObserver { sessionId ->
             findNavController().navigate(toSessionDetail(sessionId))
         })
-        viewModel.navigateToSpeakerAction.observe(this, EventObserver { speakerId ->
+        viewModel.navigateToSpeakerAction.observe(viewLifecycleOwner, EventObserver { speakerId ->
             findNavController().navigate(toSpeakerDetail(speakerId))
         })
-        viewModel.navigateToCodelabAction.observe(this, EventObserver { url ->
+        viewModel.navigateToCodelabAction.observe(viewLifecycleOwner, EventObserver { url ->
             openWebsiteUrl(requireActivity(), url)
         })
         analyticsHelper.sendScreenView("Search", requireActivity())
