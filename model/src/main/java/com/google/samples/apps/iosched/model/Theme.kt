@@ -29,6 +29,6 @@ enum class Theme(val storageKey: String) {
 /**
  * Returns the matching [Theme] for the given [storageKey] value.
  */
-fun themeFromStorageKey(storageKey: String): Theme {
-    return Theme.values().first { it.storageKey == storageKey }
+fun themeFromStorageKey(storageKey: String): Theme? {
+    return Theme.values().firstOrNull { it.storageKey == storageKey }
 }
