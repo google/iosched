@@ -17,13 +17,16 @@
 package com.google.samples.apps.iosched.ui.theme
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
 import com.google.samples.apps.iosched.model.Theme
 import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.ObserveThemeModeUseCase
 import com.google.samples.apps.iosched.shared.result.Result.Success
-import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.shared.result.successOr
 import javax.inject.Inject
-import kotlin.LazyThreadSafetyMode.NONE
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 
 /**
  * Interface to implement activity theming via a ViewModel.
@@ -54,9 +57,12 @@ class ThemedActivityDelegateImpl @Inject constructor(
     private val observeThemeUseCase: ObserveThemeModeUseCase,
     private val getThemeUseCase: GetThemeUseCase
 ) : ThemedActivityDelegate {
-    override val theme: LiveData<Theme> by lazy(NONE) {
-        observeThemeUseCase.observe().map {
-            if (it is Success) it.data else Theme.SYSTEM
+
+    @InternalCoroutinesApi
+    @ExperimentalCoroutinesApi
+    override val theme: LiveData<Theme> = liveData {
+        observeThemeUseCase(Unit).collect {
+            emit(it.successOr(Theme.SYSTEM))
         }
     }
 

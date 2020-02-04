@@ -37,6 +37,7 @@ class ThemeSettingDialogFragment : DaggerAppCompatDialogFragment() {
     private lateinit var listAdapter: ArrayAdapter<ThemeHolder>
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+
         listAdapter = ArrayAdapter(requireContext(),
                 android.R.layout.simple_list_item_single_choice)
 
@@ -51,18 +52,19 @@ class ThemeSettingDialogFragment : DaggerAppCompatDialogFragment() {
                 .create()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel = viewModelProvider(viewModelFactory)
 
-        viewModel.availableThemes.observe(viewLifecycleOwner, Observer { themes ->
+        // Note you don't need to use viewLifecycleOwner in DialogFragment.
+        viewModel.availableThemes.observe(this, Observer { themes ->
             listAdapter.clear()
             listAdapter.addAll(themes.map { theme -> ThemeHolder(theme, getTitleForTheme(theme)) })
 
             updateSelectedItem(viewModel.theme.value)
         })
 
-        viewModel.theme.observe(viewLifecycleOwner, Observer(::updateSelectedItem))
+        viewModel.theme.observe(this, Observer(::updateSelectedItem))
     }
 
     private fun updateSelectedItem(selected: Theme?) {
