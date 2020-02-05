@@ -41,6 +41,7 @@ import com.nhaarman.mockito_kotlin.doNothing
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
+import kotlinx.coroutines.flow.Flow
 import org.junit.Assert
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -132,7 +133,7 @@ val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepositor
 
     override fun getObservableUserEvents(
         userId: String?
-    ): LiveData<Result<ObservableUserEvents>> {
+    ): Flow<Result<ObservableUserEvents>> {
         throw NotImplementedError()
     }
 

@@ -43,7 +43,9 @@ import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import com.google.samples.apps.iosched.shared.util.SetIntervalLiveData
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
@@ -62,7 +64,6 @@ import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
@@ -79,7 +80,6 @@ import org.junit.Test
 /**
  * Unit tests for the [SessionDetailViewModel].
  */
-@ExperimentalCoroutinesApi
 class SessionDetailViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread
@@ -93,6 +93,10 @@ class SessionDetailViewModelTest {
 
     // Allows IntervalMapper to execute immediately
     @get:Rule var fakeIntervalMapperRule = FakeIntervalMapperRule()
+
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
 
     private lateinit var viewModel: SessionDetailViewModel
     private val testSession = TestData.session0
@@ -116,7 +120,7 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun testDataIsLoaded_authReady() {
+    fun testDataIsLoaded_authReady() = coroutineRule.runBlockingTest {
         val vm = createSessionDetailViewModelWithAuthEnabled()
         vm.setSessionId(testSession.id)
 
@@ -124,7 +128,7 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun testOnPlayVideo_createsEventForVideo() {
+    fun testOnPlayVideo_createsEventForVideo() = coroutineRule.runBlockingTest {
         val vm = createSessionDetailViewModelWithAuthEnabled()
 
         vm.setSessionId(TestData.sessionWithYoutubeUrl.id)
@@ -139,7 +143,7 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun testReserveEvent() {
+    fun testReserveEvent() = coroutineRule.runBlockingTest {
         val reservationActionUseCaseMock = mock<ReservationActionUseCase> {
             on { observe() }.doReturn(MediatorLiveData())
         }
@@ -216,7 +220,7 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun testCancelEvent() {
+    fun testCancelEvent() = coroutineRule.runBlockingTest {
         val signInDelegate = FakeSignInViewModelDelegate()
         // The session isn't reservable from one hour before the session.
         // So making now as two hours before
@@ -334,7 +338,7 @@ class SessionDetailViewModelTest {
 //    }
 
     @Test
-    fun testOnPlayVideo_doesNotCreateEventForVideo() {
+    fun testOnPlayVideo_doesNotCreateEventForVideo() = coroutineRule.runBlockingTest {
         val sessionWithoutYoutubeUrl = testSession
         val vm = createSessionDetailViewModelWithAuthEnabled()
 
@@ -410,7 +414,7 @@ class SessionDetailViewModelTest {
             userEventDataSource,
             sessionRepository
         )
-        return LoadUserSessionsUseCase(userEventRepository)
+        return LoadUserSessionsUseCase(userEventRepository, TestCoroutineDispatcher())
     }
 
     private fun createFakeUpdater(): StarReserveNotificationAlarmUpdater {

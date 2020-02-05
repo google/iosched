@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.ui.feed
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.model.Moment
@@ -43,7 +44,7 @@ import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.cancel
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.instanceOf
@@ -70,7 +71,7 @@ class FeedViewModelTest {
     @get:Rule
     var coroutineRule = MainCoroutineRule()
 
-    private val testDispatcher = TestCoroutineDispatcher()
+    private val testDispatcher = coroutineRule.testDispatcher
 
     private val defaultFeedRepository =
         DefaultFeedRepository(TestAnnouncementDataSource, TestMomentDataSource)
@@ -93,6 +94,11 @@ class FeedViewModelTest {
         assertThat(feedObservable?.get(1), `is`(instanceOf(FeedSessions::class.java)))
         assertThat(feedObservable?.get(2), `is`(instanceOf(SectionHeader::class.java)))
         assertThat(feedObservable?.get(3) as? Announcement, `is`(equalTo(TestData.feedItem1)))
+
+        // Must cancel because there's a flow in [GetConferenceStateUseCase] that never finishes.
+        viewModel.viewModelScope.cancel()
+        // Cancel is not synchronous so we need to wait for it to avoid leaks.
+        coroutineRule.testDispatcher.advanceUntilIdle()
     }
 
     @Test
@@ -104,6 +110,11 @@ class FeedViewModelTest {
         // Verify that an error was caught
         val errorMessage = LiveDataTestUtil.getValue(viewModel.errorMessage)
         assertTrue(errorMessage?.peekContent()?.isNotEmpty() ?: false)
+
+        // Must cancel because there's a flow in [GetConferenceStateUseCase] that never finishes.
+        viewModel.viewModelScope.cancel()
+        // Cancel is not synchronous so we need to wait for it to avoid leaks.
+        coroutineRule.testDispatcher.advanceUntilIdle()
     }
 
     /**
@@ -127,7 +138,8 @@ class FeedViewModelTest {
             LoadFilteredUserSessionsUseCase(
                 DefaultSessionAndUserEventRepository(
                     TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
-                )
+                ),
+                testDispatcher
             ),
         getTimeZoneUseCaseLegacy: GetTimeZoneUseCaseLegacy =
             GetTimeZoneUseCaseLegacy(FakePreferenceStorage(), testDispatcher),

@@ -24,7 +24,6 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
@@ -41,6 +40,12 @@ import com.google.samples.apps.iosched.shared.result.Result
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import timber.log.Timber
 
 /**
@@ -100,14 +105,42 @@ class FirestoreUserEventDataSource @Inject constructor(
      * This method generates important messages to the user if a reservation is confirmed or
      * waitlisted.
      */
-    override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {
+    override fun getObservableUserEvents(userId: String): Flow<UserEventsResult> {
         if (userId.isEmpty()) {
-            resultEvents.postValue(UserEventsResult(emptyList()))
-            return resultEvents
-        }
+            return flow { emit(UserEventsResult(emptyList())) }
+        } else {
+            return (channelFlow {
+                val eventsCollection = firestore
+                    .document2019()
+                    .collection(USERS_COLLECTION)
+                    .document(userId)
+                    .collection(EVENTS_COLLECTION)
 
-        registerListenerForEvents(resultEvents, userId)
-        return resultEvents
+                var currentValue: UserEventsResult? = null
+
+                // TODO: Flow refactor check addSnapshotListener documentation (null value?)
+                val subscription = eventsCollection.addSnapshotListener { snapshot, _ ->
+                    if (snapshot == null) {
+                        return@addSnapshotListener
+                    }
+
+                    Timber.d("Events changes detected: ${snapshot.documentChanges.size}")
+
+                    // Generate important user messages, like new reservations, if any.
+                    val userMessage = generateReservationChangeMsg(snapshot, currentValue)
+                    val userEventsResult = UserEventsResult(
+                        userEvents = snapshot.documents.map { parseUserEvent(it) },
+                        userEventsMessage = userMessage
+                    )
+                    currentValue = userEventsResult
+                    offer(userEventsResult)
+                }
+
+                // The callback inside awaitClose will be executed when the channel is
+                // either closed or cancelled
+                awaitClose { subscription.remove() }
+            }).flowOn(Dispatchers.Main)
+        }
     }
 
     override fun getObservableUserEvent(
@@ -198,42 +231,6 @@ class FirestoreUserEventDataSource @Inject constructor(
                 .document(eventId).get()
         val snapshot = Tasks.await(task, 20, TimeUnit.SECONDS)
         return parseUserEvent(snapshot)
-    }
-
-    private fun registerListenerForEvents(
-        result: MutableLiveData<UserEventsResult>,
-        userId: String
-    ) {
-        val eventsListener: (QuerySnapshot?, FirebaseFirestoreException?) -> Unit =
-            listener@{ snapshot, _ ->
-                snapshot ?: return@listener
-
-                DefaultScheduler.execute {
-                    Timber.d("Events changes detected: ${snapshot.documentChanges.size}")
-
-                    // Generate important user messages, like new reservations, if any.
-                    val userMessage = generateReservationChangeMsg(snapshot, result.value)
-                    val userEventsResult = UserEventsResult(
-                        userEvents = snapshot.documents.map { parseUserEvent(it) },
-                        userEventsMessage = userMessage
-                    )
-                    result.postValue(userEventsResult)
-                }
-            }
-
-        val eventsCollection = firestore
-            .document2019()
-            .collection(USERS_COLLECTION)
-            .document(userId)
-            .collection(EVENTS_COLLECTION)
-
-        eventsChangedListenerSubscription?.remove() // Remove in case userId changes.
-        // Set a value in case there are no changes to the data on start. This needs to be set to
-        // avoid that the upper layer LiveData detects the old data as a new data. I.e., when
-        // addSource was called in DefaultSessionAndUserEventRepository#getObservableUserEvents,
-        // the old data was considered as a new data even though it's for another user's data.
-        result.postValue(null)
-        eventsChangedListenerSubscription = eventsCollection.addSnapshotListener(eventsListener)
     }
 
     override fun clearSingleEventSubscriptions() {

@@ -27,7 +27,6 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -46,7 +45,6 @@ class LoadCurrentMomentUseCaseTest {
     @get:Rule
     val syncTaskExecutorRule = SyncTaskExecutorRule()
 
-    @ExperimentalCoroutinesApi
     private val dispatcher = TestCoroutineDispatcher()
 
     @Test

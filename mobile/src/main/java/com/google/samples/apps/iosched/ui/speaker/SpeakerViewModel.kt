@@ -17,26 +17,28 @@
 package com.google.samples.apps.iosched.ui.speaker
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
+import androidx.lifecycle.switchMap
 import com.google.samples.apps.iosched.model.Speaker
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCaseResult
-import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCase
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCaseResult
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import javax.inject.Inject
+import kotlinx.coroutines.flow.collect
 import org.threeten.bp.ZoneId
 
 /**
@@ -45,7 +47,7 @@ import org.threeten.bp.ZoneId
 class SpeakerViewModel @Inject constructor(
     private val loadSpeakerUseCase: LoadSpeakerUseCase,
     private val loadSpeakerSessionsUseCase: LoadUserSessionsUseCase,
-    getTimeZoneUseCase: GetTimeZoneUseCaseLegacy, // TODO(COROUTINES): Migrate
+    getTimeZoneUseCase: GetTimeZoneUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
     private val eventActionsViewModelDelegate: EventActionsViewModelDelegate,
     private val analyticsHelper: AnalyticsHelper
@@ -53,56 +55,43 @@ class SpeakerViewModel @Inject constructor(
     SignInViewModelDelegate by signInViewModelDelegate,
     EventActionsViewModelDelegate by eventActionsViewModelDelegate {
 
-    private val loadSpeakerUseCaseResult = MutableLiveData<Result<LoadSpeakerUseCaseResult>>()
+    private val speakerId = MutableLiveData<String>()
 
-    private val loadSpeakerUserSessions: LiveData<Result<LoadUserSessionsUseCaseResult>>
+    private val loadSpeakerUseCaseResult: LiveData<Result<LoadSpeakerUseCaseResult>> =
+        speakerId.switchMap { speakerId ->
+            liveData {
+                emit(loadSpeakerUseCase(speakerId))
+            }
+        }
 
-    private val _speaker = MediatorLiveData<Speaker>()
-    val speaker: LiveData<Speaker>
-        get() = _speaker
+    val speakerUserSessions: LiveData<List<UserSession>> =
+        loadSpeakerUseCaseResult.switchMap { speaker ->
+            liveData {
+                emit(emptyList()) // Reset value
+                speaker.data?.let {
+                    loadSpeakerSessionsUseCase(it.speaker.id to it.sessionIds).collect {
+                        it.data?.let { data ->
+                            emit(data)
+                        }
+                    }
+                }
+            }
+        }
 
-    private val _speakerUserSessions = MediatorLiveData<List<UserSession>>()
-    val speakerUserSessions: LiveData<List<UserSession>>
-        get() = _speakerUserSessions
-
-    val hasNoProfileImage: LiveData<Boolean> = _speaker.map {
-        it?.imageUrl.isNullOrEmpty()
+    val speaker: LiveData<Speaker?> = loadSpeakerUseCaseResult.map {
+        it.data?.speaker
     }
 
-    private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
-    val timeZoneId: LiveData<ZoneId>
+    val hasNoProfileImage: LiveData<Boolean> = loadSpeakerUseCaseResult.map {
+        it.data?.speaker?.imageUrl.isNullOrEmpty()
+    }
 
-    init {
-        loadSpeakerUserSessions = loadSpeakerSessionsUseCase.observe()
-
-        // If there's a new result with data, update speaker
-        _speaker.addSource(loadSpeakerUseCaseResult) {
-            (loadSpeakerUseCaseResult.value as? Result.Success)?.data?.let {
-                _speaker.value = it.speaker
-            }
-        }
-
-        // Also load their sessions
-        loadSpeakerUserSessions.addSource(loadSpeakerUseCaseResult) {
-            (loadSpeakerUseCaseResult.value as? Result.Success)?.data?.let {
-                loadSpeakerSessionsUseCase.execute(getUserId() to it.sessionIds)
-            }
-        }
-
-        // When their sessions load, update speakerUserSessions
-        _speakerUserSessions.addSource(loadSpeakerUserSessions) {
-            (loadSpeakerUserSessions.value as? Result.Success)?.data?.let {
-                _speakerUserSessions.value = it.userSessions
-            }
-        }
-
-        getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
-        timeZoneId = preferConferenceTimeZoneResult.map {
-            if (it.successOr(true)) {
-                TimeUtils.CONFERENCE_TIMEZONE
-            } else {
-                ZoneId.systemDefault()
-            }
+    val timeZoneId = liveData {
+        val timeZone = getTimeZoneUseCase(Unit)
+        if (timeZone.successOr(true)) {
+            emit(TimeUtils.CONFERENCE_TIMEZONE)
+        } else {
+            emit(ZoneId.systemDefault())
         }
     }
 
@@ -110,7 +99,7 @@ class SpeakerViewModel @Inject constructor(
      * Provides the speaker ID which initiates all data loading.
      */
     fun setSpeakerId(id: SpeakerId) {
-        loadSpeakerUseCase(id, loadSpeakerUseCaseResult)
+        speakerId.value = id
     }
 
     override fun onStarClicked(userSession: UserSession) {

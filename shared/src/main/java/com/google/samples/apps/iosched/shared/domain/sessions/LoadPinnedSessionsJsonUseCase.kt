@@ -16,18 +16,20 @@
 
 package com.google.samples.apps.iosched.shared.domain.sessions
 
+import androidx.lifecycle.asLiveData
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.samples.apps.iosched.model.schedule.PinnedSession
 import com.google.samples.apps.iosched.model.schedule.PinnedSessionsSchedule
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.data.userevent.ObservableUserEvents
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import javax.inject.Inject
+import kotlinx.coroutines.flow.map
 
 /**
  * Load a list of pinned (starred or reserved) [UserSession]s for a given user as a json format.
@@ -61,12 +63,9 @@ open class LoadPinnedSessionsJsonUseCase @Inject constructor(
     val gson: Gson = GsonBuilder().create()
 
     override fun execute(parameters: String) {
-        val userSessionsObservable = userEventRepository.getObservableUserEvents(parameters)
-
-        result.removeSource(userSessionsObservable)
-        result.value = null
-        result.addSource(userSessionsObservable) { observableResult ->
-            DefaultScheduler.execute {
+        // TODO(COROUTINES) migrate to couroutines
+        val resultLiveData = userEventRepository.getObservableUserEvents(parameters)
+            .map { observableResult: Result<ObservableUserEvents> ->
                 when (observableResult) {
                     is Result.Success -> {
                         val useCaseResult = observableResult.data.userSessions.filter {
@@ -86,13 +85,14 @@ open class LoadPinnedSessionsJsonUseCase @Inject constructor(
                                 description = session.description)
                         }
                         val jsonResult = gson.toJson(PinnedSessionsSchedule(useCaseResult))
-                        result.postValue(Result.Success(jsonResult))
+                        Result.Success(jsonResult)
                     }
-                    is Result.Error -> {
-                        result.postValue(observableResult)
-                    }
+                    is Result.Error -> Result.Error(observableResult.exception)
+                    is Result.Loading -> observableResult
                 }
-            }
+            }.asLiveData()
+        result.addSource(resultLiveData) {
+            result.value = it
         }
     }
 }

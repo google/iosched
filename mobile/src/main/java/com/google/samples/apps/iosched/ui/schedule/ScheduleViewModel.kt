@@ -20,6 +20,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.liveData
+import androidx.lifecycle.switchMap
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.SessionId
@@ -32,7 +35,6 @@ import com.google.samples.apps.iosched.shared.domain.prefs.SaveSelectedFiltersUs
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ConferenceDayIndexer
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsParameters
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
@@ -42,6 +44,7 @@ import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
+import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils
@@ -95,13 +98,40 @@ class ScheduleViewModel @Inject constructor(
 
     private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
     val isConferenceTimeZone: LiveData<Boolean>
-    val timeZoneId: LiveData<ZoneId>
+    val timeZoneId: LiveData<ZoneId> = preferConferenceTimeZoneResult.map {
+        val preferConferenceTimeZone = it.successOr(true)
+        if (preferConferenceTimeZone) {
+            TimeUtils.CONFERENCE_TIMEZONE
+        } else {
+            ZoneId.systemDefault()
+        }
+    }
 
     private lateinit var dayIndexer: ConferenceDayIndexer
 
-    private val _scheduleUiData = MediatorLiveData<ScheduleUiData>()
-    val scheduleUiData: LiveData<ScheduleUiData>
-        get() = _scheduleUiData
+    private val userSessionsNeedRefresh = MediatorLiveData<Unit>()
+
+    // Refresh sessions when needed
+    private val loadSessionsResult = userSessionsNeedRefresh.switchMap {
+        loadFilteredUserSessionsUseCase(
+            LoadFilteredUserSessionsParameters(userSessionMatcher, getUserId())
+        ).asLiveData()
+    }
+
+    // Expose new UI data when loadSessionsResult changes
+    val scheduleUiData = loadSessionsResult.switchMap { sessions ->
+        liveData {
+            val timeZoneIdValue = timeZoneId.value
+            sessions.data?.let { data ->
+                dayIndexer = data.dayIndexer
+                emit(ScheduleUiData(
+                    list = data.userSessions,
+                    dayIndexer = data.dayIndexer,
+                    timeZoneId = timeZoneIdValue
+                ))
+            }
+        }
+    }
 
     // Cached list of TagFilters returned by the use case. Only Result.Success modifies it.
     private var cachedEventFilters = mutableListOf<EventFilter>()
@@ -116,8 +146,6 @@ class ScheduleViewModel @Inject constructor(
     val hasAnyFilters: LiveData<Boolean>
         get() = _hasAnyFilters
 
-    private val loadSessionsResult: MediatorLiveData<Result<LoadFilteredUserSessionsResult>> =
-        loadFilteredUserSessionsUseCase.observe()
     private val loadEventFiltersResult = MediatorLiveData<Result<List<EventFilter>>>()
     private val swipeRefreshResult = MutableLiveData<Result<Boolean>>()
 
@@ -175,12 +203,21 @@ class ScheduleViewModel @Inject constructor(
         loadSelectedFiltersUseCase(userSessionMatcher, loadSelectedFiltersResult)
 
         // Load sessions when persisted filters are loaded and when there's new conference data
-        loadSessionsResult.addSource(conferenceDataAvailable) {
+        userSessionsNeedRefresh.addSource(conferenceDataAvailable) {
             Timber.d("Detected new data in conference data repository")
             refreshUserSessions()
         }
-        loadSessionsResult.addSource(loadEventFiltersResult) {
+        userSessionsNeedRefresh.addSource(loadEventFiltersResult) {
             Timber.d("Loaded filters from persistent storage")
+            refreshUserSessions()
+        }
+        userSessionsNeedRefresh.addSource(timeZoneId) {
+            Timber.d("Timezone changed")
+            refreshUserSessions()
+        }
+        // Refresh the list of user sessions if the user is updated.
+        userSessionsNeedRefresh.addSource(currentUserInfo) {
+            Timber.d("User change: Loading user session with user ${it?.getUid()}")
             refreshUserSessions()
         }
 
@@ -223,7 +260,7 @@ class ScheduleViewModel @Inject constructor(
         }
 
         // Show a message with the result of a reservation
-        _snackBarMessage.addSource(loadFilteredUserSessionsUseCase.observe()) {
+        _snackBarMessage.addSource(loadSessionsResult) {
             if (it is Result.Success) {
                 it.data.userMessage?.type?.stringRes()?.let { messageId ->
                     // There is a message to display:
@@ -239,12 +276,6 @@ class ScheduleViewModel @Inject constructor(
             }
         }
 
-        // Refresh the list of user sessions if the user is updated.
-        loadSessionsResult.addSource(currentUserInfo) {
-            Timber.d("Loading user session with user ${it?.getUid()}")
-            refreshUserSessions()
-        }
-
         // Show reservation button if not logged in or (logged in && registered)
         showReservations = currentUserInfo.map {
             isRegistered() || !isSignedIn()
@@ -255,33 +286,9 @@ class ScheduleViewModel @Inject constructor(
             Event((it as? Result.Success)?.data == true)
         }
 
-        timeZoneId = preferConferenceTimeZoneResult.map {
-            val preferConferenceTimeZone = it.successOr(true)
-            if (preferConferenceTimeZone) {
-                TimeUtils.CONFERENCE_TIMEZONE
-            } else {
-                ZoneId.systemDefault()
-            }
-        }
-
         isConferenceTimeZone = timeZoneId.map { zoneId ->
             TimeUtils.isConferenceTimeZone(zoneId)
         }
-
-        _scheduleUiData.addSource(timeZoneId) {
-            _scheduleUiData.value = _scheduleUiData.value?.copy(
-                timeZoneId = it
-            ) ?: ScheduleUiData(timeZoneId = it)
-        }
-        _scheduleUiData.addSource(loadSessionsResult) {
-            val data = (it as? Result.Success)?.data ?: return@addSource
-            dayIndexer = data.dayIndexer
-            _scheduleUiData.value = _scheduleUiData.value?.copy(
-                list = data.userSessions,
-                dayIndexer = data.dayIndexer
-            ) ?: ScheduleUiData(list = data.userSessions, dayIndexer = data.dayIndexer)
-        }
-
         swipeRefreshing = swipeRefreshResult.map {
             // Whenever refresh finishes, stop the indicator, whatever the result
             false
@@ -378,10 +385,7 @@ class ScheduleViewModel @Inject constructor(
     }
 
     private fun refreshUserSessions() {
-        Timber.d("ViewModel refreshing user sessions")
-        loadFilteredUserSessionsUseCase.execute(
-            LoadFilteredUserSessionsParameters(userSessionMatcher, getUserId())
-        )
+        userSessionsNeedRefresh.value = Unit
     }
 
     override fun onStarClicked(userSession: UserSession) {

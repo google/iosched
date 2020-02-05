@@ -16,6 +16,7 @@
 
 // Top-level build file where you can add configuration options common to all
 // sub-projects/modules.
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
 
@@ -92,5 +93,15 @@ subprojects {
         if (name == "preBuild") {
             mustRunAfter("spotlessCheck")
         }
+    }
+
+    // TODO: Remove when the Coroutine and Flow APIs leave experimental/internal/preview.
+    tasks.withType<KotlinCompile>().configureEach {
+        kotlinOptions.freeCompilerArgs +=
+            "-Xuse-experimental=" +
+                "kotlin.Experimental," +
+                "kotlinx.coroutines.ExperimentalCoroutinesApi," +
+                "kotlinx.coroutines.InternalCoroutinesApi," +
+                "kotlinx.coroutines.FlowPreview"
     }
 }

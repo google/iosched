@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.shared.domain.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
@@ -33,23 +34,16 @@ import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus.UNS
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.TestData
+import kotlinx.coroutines.flow.flow
 
-class TestUserEventDataSource(
-    private val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData(),
-    private val userEventResult: MutableLiveData<UserEventResult> = MutableLiveData()
-) : UserEventDataSource {
+class TestUserEventDataSource() : UserEventDataSource {
 
-    override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {
-        userEventsResult.postValue(UserEventsResult(TestData.userEvents))
-        return userEventsResult
+    override fun getObservableUserEvents(userId: String) = flow {
+        emit(UserEventsResult(TestData.userEvents))
     }
 
-    override fun getObservableUserEvent(
-        userId: String,
-        eventId: SessionId
-    ): LiveData<UserEventResult> {
-        userEventResult.postValue(UserEventResult(TestData.userEvents.find { it.id == eventId }))
-        return userEventResult
+    override fun getObservableUserEvent(userId: String, eventId: SessionId) = liveData {
+        emit(UserEventResult(TestData.userEvents.find { it.id == eventId }))
     }
 
     override fun starEvent(

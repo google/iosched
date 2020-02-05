@@ -26,14 +26,12 @@ import com.google.samples.apps.iosched.test.data.TestData.androidTag
 import com.google.samples.apps.iosched.test.data.TestData.cloudTag
 import com.google.samples.apps.iosched.test.data.TestData.webTag
 import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
-@ExperimentalCoroutinesApi
 class LoadEventFiltersUseCaseTest {
 
     @Rule

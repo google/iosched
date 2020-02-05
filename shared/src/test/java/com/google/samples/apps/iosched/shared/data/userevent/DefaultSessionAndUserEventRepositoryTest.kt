@@ -23,7 +23,11 @@ import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDat
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.data.runBlockingTest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.instanceOf
 import org.hamcrest.core.Is.`is`
@@ -45,14 +49,18 @@ class DefaultSessionAndUserEventRepositoryTest {
     @get:Rule
     var syncExecutorRule = SyncExecutorRule()
 
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
+
     @Test
-    fun observableUserEvents_areMappedCorrectly() {
+    fun observableUserEvents_areMappedCorrectly() = runBlocking {
         val repository = DefaultSessionAndUserEventRepository(
             userEventDataSource = TestUserEventDataSource(),
             sessionRepository = DefaultSessionRepository(TestDataRepository)
         )
 
-        val userEvents = LiveDataTestUtil.getValue(repository.getObservableUserEvents("user"))
+        val userEvents = repository.getObservableUserEvents("user").first { it is Result.Success }
 
         assertThat(userEvents, `is`(IsInstanceOf(Result.Success::class.java)))
         val successResult = userEvents as Result.Success
@@ -79,7 +87,7 @@ class DefaultSessionAndUserEventRepositoryTest {
     }
 
     @Test
-    fun observableUserEvent() {
+    fun observableUserEvent() = coroutineRule.runBlockingTest {
         val repository = DefaultSessionAndUserEventRepository(
             userEventDataSource = TestUserEventDataSource(),
             sessionRepository = DefaultSessionRepository(TestDataRepository)

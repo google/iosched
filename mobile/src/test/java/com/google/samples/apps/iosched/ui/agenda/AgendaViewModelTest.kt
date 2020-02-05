@@ -28,7 +28,6 @@ import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo as isEqualTo
 import org.junit.Rule
@@ -37,7 +36,6 @@ import org.junit.Test
 /**
  * Unit tests for the [AgendaViewModel].
  */
-@ExperimentalCoroutinesApi
 class AgendaViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread

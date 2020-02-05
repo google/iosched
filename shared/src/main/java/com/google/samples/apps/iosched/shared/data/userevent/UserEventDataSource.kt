@@ -24,10 +24,11 @@ import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAct
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.result.Result
+import kotlinx.coroutines.flow.Flow
 
 interface UserEventDataSource {
 
-    fun getObservableUserEvents(userId: String): LiveData<UserEventsResult>
+    fun getObservableUserEvents(userId: String): Flow<UserEventsResult>
 
     fun getObservableUserEvent(userId: String, eventId: SessionId): LiveData<UserEventResult>
 

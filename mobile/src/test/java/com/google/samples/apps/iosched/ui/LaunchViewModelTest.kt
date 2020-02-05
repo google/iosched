@@ -27,7 +27,6 @@ import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.ui.LaunchDestination.MAIN_ACTIVITY
 import com.google.samples.apps.iosched.ui.LaunchDestination.ONBOARDING
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -35,7 +34,6 @@ import org.junit.Test
 /**
  * Unit tests for the [LaunchViewModel].
  */
-@ExperimentalCoroutinesApi
 class LaunchViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread
