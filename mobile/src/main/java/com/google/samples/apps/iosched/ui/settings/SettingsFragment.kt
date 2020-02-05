@@ -72,6 +72,8 @@ fun createDialogForFile(button: View, dialogTitle: String, fileLink: String) {
     val context = button.context
     button.setOnClickListener {
         val webView = WebView(context).apply { loadUrl(fileLink) }
+        webView.settings.useWideViewPort = true
+        webView.settings.loadWithOverviewMode = true
         AlertDialog.Builder(context)
             .setTitle(dialogTitle)
             .setView(webView)
