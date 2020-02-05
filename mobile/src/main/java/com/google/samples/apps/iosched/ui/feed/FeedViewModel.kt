@@ -20,6 +20,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Announcement
@@ -101,7 +103,19 @@ class FeedViewModel @Inject constructor(
 
     val snackBarMessage: LiveData<Event<SnackbarMessage>>
 
-    private val loadSessionsResult: MediatorLiveData<Result<LoadFilteredUserSessionsResult>>
+    private val loadSessionsResult = signInViewModelDelegate.currentUserInfo.switchMap {
+        // TODO: side effects, check if we can remove them.
+        val sessionMatcher = UserSessionMatcher()
+        if (signInViewModelDelegate.isSignedIn()) {
+            sessionMatcher.setShowPinnedEventsOnly(true)
+        }
+        loadFilteredUserSessionsUseCase(
+            LoadFilteredUserSessionsParameters(
+                sessionMatcher,
+                signInViewModelDelegate.getUserId()
+            )
+        ).asLiveData()
+    }
     private val conferenceStateLiveData = MutableLiveData<ConferenceState>()
 
     private val loadAnnouncementsResult = MutableLiveData<Result<List<Announcement>>>()
@@ -141,12 +155,6 @@ class FeedViewModel @Inject constructor(
         timeZoneId = preferConferenceTimeZoneResult.map {
             if (it.successOr(true)) TimeUtils.CONFERENCE_TIMEZONE else ZoneId.systemDefault()
         }
-
-        loadSessionsResult = loadFilteredUserSessionsUseCase.observe()
-        loadSessionsResult.addSource(signInViewModelDelegate.currentUserInfo) {
-            refreshSessions()
-        }
-
         val sessionContainerLiveData =
             signInViewModelDelegate.currentUserInfo
                 .combine(
@@ -260,19 +268,6 @@ class FeedViewModel @Inject constructor(
             userSessions = upcomingSessions,
             timeZoneId = timeZoneId,
             isLoading = sessionsResult is Loading
-        )
-    }
-
-    private fun refreshSessions() {
-        val sessionMatcher = UserSessionMatcher()
-        if (signInViewModelDelegate.isSignedIn()) {
-            sessionMatcher.setShowPinnedEventsOnly(true)
-        }
-        loadFilteredUserSessionsUseCase.execute(
-            LoadFilteredUserSessionsParameters(
-                sessionMatcher,
-                signInViewModelDelegate.getUserId()
-            )
         )
     }
 

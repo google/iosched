@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.ui.schedule
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
@@ -33,24 +34,23 @@ import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus.UNS
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.TestData
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.merge
 
-class TestUserEventDataSource(
-    private val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData(),
-    private val userEventResult: MutableLiveData<UserEventResult> = MutableLiveData()
-) : UserEventDataSource {
+@FlowPreview
+class TestUserEventDataSource : UserEventDataSource {
 
-    override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {
-        userEventsResult.postValue(UserEventsResult(TestData.userEvents))
-        return userEventsResult
-    }
+    val newObservableUserEvents = ConflatedBroadcastChannel<UserEventsResult>()
 
-    override fun getObservableUserEvent(
-        userId: String,
-        eventId: String
-    ): LiveData<UserEventResult> {
-        userEventResult.postValue(UserEventResult(TestData.userEvents
-            .find { it.id == eventId } ?: TestData.userEvents[0]))
-        return userEventResult
+    override fun getObservableUserEvents(userId: String) = merge(flow {
+        emit(UserEventsResult(TestData.userEvents))
+    }, newObservableUserEvents.asFlow())
+
+    override fun getObservableUserEvent(userId: String, eventId: SessionId) = liveData {
+        emit(UserEventResult(TestData.userEvents.find { it.id == eventId }))
     }
 
     override fun starEvent(
@@ -67,9 +67,7 @@ class TestUserEventDataSource(
     }
 
     override fun recordFeedbackSent(userId: String, userEvent: UserEvent): LiveData<Result<Unit>> {
-        val result = MutableLiveData<Result<Unit>>()
-        result.postValue(Result.Success(Unit))
-        return result
+        return MutableLiveData(Result.Success(Unit))
     }
 
     override fun requestReservation(
@@ -101,6 +99,6 @@ class TestUserEventDataSource(
     override fun clearSingleEventSubscriptions() {}
 
     override fun getUserEvent(userId: String, eventId: SessionId): UserEvent? {
-        TODO("not implemented")
+        throw NotImplementedError()
     }
 }

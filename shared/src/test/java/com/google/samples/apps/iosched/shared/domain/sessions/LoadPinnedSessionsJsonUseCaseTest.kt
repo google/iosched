@@ -17,21 +17,21 @@
 package com.google.samples.apps.iosched.shared.domain.sessions
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
 import com.google.gson.GsonBuilder
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.androidtest.util.observeForTesting
 import com.google.samples.apps.iosched.model.schedule.PinnedSession
 import com.google.samples.apps.iosched.model.schedule.PinnedSessionsSchedule
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
-import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.Matchers.equalTo
 import org.junit.Assert.assertThat
@@ -50,38 +50,41 @@ class LoadPinnedSessionsJsonUseCaseTest {
     // Executes tasks in a synchronous [TaskScheduler]
     @get:Rule var syncExecutorRule = SyncExecutorRule()
 
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
+
     @Test
-    fun returnedUserSessions_areStarredOrReserved() {
+    fun returnedUserSessions_areStarredOrReserved() = coroutineRule.runBlockingTest {
         // Arrange
-        val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
-            TestUserEventDataSource(userEventsResult),
+            TestUserEventDataSource(),
             DefaultSessionRepository(TestDataRepository)
         )
         val useCase = LoadPinnedSessionsJsonUseCase(testUserEventRepository)
         val resultLiveData = useCase.observe()
+        resultLiveData.observeForTesting {
 
-        // Act
-        useCase.execute("user1")
+            // Act
+            useCase.execute("user1")
 
-        // Assert
-        val result = LiveDataTestUtil.getValue(resultLiveData)
-                as Result.Success<String>
-        val expected = PinnedSessionsSchedule(
-            listOf(TestData.session0, TestData.session1, TestData.session2)
-                .map {
-                    PinnedSession(
-                        name = it.title,
-                        location = it.room?.name ?: "",
-                        day = TimeUtils.abbreviatedDayForAr(it.startTime),
-                        time = TimeUtils.abbreviatedTimeForAr(it.startTime),
-                        timestamp = it.startTime.toEpochMilli(),
-                        description = it.description
-                    )
-                }
-        )
+            // Assert
+            val expected = PinnedSessionsSchedule(
+                listOf(TestData.session0, TestData.session1, TestData.session2)
+                    .map {
+                        PinnedSession(
+                            name = it.title,
+                            location = it.room?.name ?: "",
+                            day = TimeUtils.abbreviatedDayForAr(it.startTime),
+                            time = TimeUtils.abbreviatedTimeForAr(it.startTime),
+                            timestamp = it.startTime.toEpochMilli(),
+                            description = it.description
+                        )
+                    }
+            )
 
-        val gson = GsonBuilder().create()
-        assertThat(result.data, `is`(equalTo(gson.toJson(expected))))
+            val gson = GsonBuilder().create()
+            assertThat(resultLiveData.value?.data, `is`(equalTo(gson.toJson(expected))))
+        }
     }
 }

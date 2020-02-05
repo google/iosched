@@ -24,14 +24,12 @@ import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.runBlockingTest
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Rule
 import org.junit.Test
 
-@ExperimentalCoroutinesApi
 class LoadCodelabsUseCaseTest {
 
     // Overrides Dispatchers.Main used in Coroutines

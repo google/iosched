@@ -20,12 +20,15 @@ import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
-import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
+import com.google.samples.apps.iosched.shared.domain.FlowUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
 
@@ -33,47 +36,43 @@ import timber.log.Timber
  * Loads filtered sessions according to the provided parameters.
  */
 open class LoadFilteredUserSessionsUseCase @Inject constructor(
-    private val userEventRepository: DefaultSessionAndUserEventRepository
-) : MediatorUseCase<LoadFilteredUserSessionsParameters, LoadFilteredUserSessionsResult>() {
+    private val userEventRepository: DefaultSessionAndUserEventRepository,
+    @IoDispatcher dispatcher: CoroutineDispatcher
+) : FlowUseCase<LoadFilteredUserSessionsParameters, LoadFilteredUserSessionsResult>(dispatcher) {
 
-    override fun execute(parameters: LoadFilteredUserSessionsParameters) {
+    override fun execute(
+        parameters: LoadFilteredUserSessionsParameters
+    ): Flow<Result<LoadFilteredUserSessionsResult>> {
         val (sessionMatcher, userId) = parameters
 
         Timber.d("LoadFilteredUserSessionsUseCase: Refreshing sessions with user data")
-        result.postValue(Result.Loading)
+        return userEventRepository.getObservableUserEvents(userId).map { observableResult ->
+            when (observableResult) {
+                is Result.Success -> {
+                    val filteredSessions = observableResult.data.userSessions
+                        .filter { sessionMatcher.matches(it) }
+                        .sortedWith(compareBy({ it.session.startTime }, { it.session.type }))
 
-        val userSessionsObservable = userEventRepository.getObservableUserEvents(userId)
+                    // Compute type from tags now so it's done in the background
+                    filteredSessions.forEach { it.session.type }
 
-        // Avoid duplicating sources and trigger an update on the LiveData from the base class.
-        result.removeSource(userSessionsObservable)
-        result.addSource(userSessionsObservable) { observableResult ->
-            DefaultScheduler.execute {
-                when (observableResult) {
-                    is Result.Success -> {
-                        val filteredSessions = observableResult.data.userSessions
-                            .filter { sessionMatcher.matches(it) }
-                            .sortedWith(compareBy({ it.session.startTime }, { it.session.type }))
-
-                        // Compute type from tags now so it's done in the background
-                        filteredSessions.forEach { it.session.type }
-
-                        val usecaseResult = LoadFilteredUserSessionsResult(
-                            userSessions = filteredSessions,
-                            // TODO(b/122306429) expose user events messages separately
-                            userMessage = observableResult.data.userMessage,
-                            userMessageSession = observableResult.data.userMessageSession,
-                            userSessionCount = filteredSessions.size,
-                            firstUnfinishedSessionIndex = findFirstUnfinishedSession(
-                                filteredSessions, parameters.now
-                            ),
-                            dayIndexer = buildConferenceDayIndexer(filteredSessions)
-                        )
-                        result.postValue(Result.Success(usecaseResult))
-                    }
-                    is Result.Error -> {
-                        result.postValue(observableResult)
-                    }
+                    val usecaseResult = LoadFilteredUserSessionsResult(
+                        userSessions = filteredSessions,
+                        // TODO(b/122306429) expose user events messages separately
+                        userMessage = observableResult.data.userMessage,
+                        userMessageSession = observableResult.data.userMessageSession,
+                        userSessionCount = filteredSessions.size,
+                        firstUnfinishedSessionIndex = findFirstUnfinishedSession(
+                            filteredSessions, parameters.now
+                        ),
+                        dayIndexer = buildConferenceDayIndexer(filteredSessions)
+                    )
+                    Result.Success(usecaseResult)
                 }
+                is Result.Error -> {
+                    Result.Error(observableResult.exception)
+                }
+                is Result.Loading -> Result.Loading
             }
         }
     }

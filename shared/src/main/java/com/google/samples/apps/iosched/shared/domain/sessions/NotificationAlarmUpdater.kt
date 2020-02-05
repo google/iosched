@@ -16,16 +16,20 @@
 
 package com.google.samples.apps.iosched.shared.domain.sessions
 
-import androidx.lifecycle.LiveData
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.ObservableUserEvents
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
 import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.result.Result.Success
+import com.google.samples.apps.iosched.shared.result.data
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -34,28 +38,21 @@ import timber.log.Timber
 @Singleton
 class NotificationAlarmUpdater @Inject constructor(
     private val alarmManager: SessionAlarmManager,
-    private val repository: SessionAndUserEventRepository
+    private val repository: SessionAndUserEventRepository,
+    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher
 ) {
-    var observer: ((Result<ObservableUserEvents>) -> Unit)? = null
-    var userEvents: LiveData<Result<ObservableUserEvents>>? = null
 
-    var cancelObserver: ((Result<ObservableUserEvents>) -> Unit)? = null
-    var cancelUserEvents: LiveData<Result<ObservableUserEvents>>? = null
+    // Coroutines scope for NotificationAlarmUpdater background work
+    private val alarmUpdaterScope: CoroutineScope =
+        CoroutineScope(defaultDispatcher + SupervisorJob())
 
     fun updateAll(userId: String) {
-
-        // Go through every UserSession and make sure the alarm is set for the notification.
-
-        val newObserver = { sessions: Result<ObservableUserEvents> ->
-            when (sessions) {
-                is Success -> processEvents(userId, sessions.data)
-                is Error -> Timber.e(sessions.cause)
+        alarmUpdaterScope.launch {
+            val events = repository.getObservableUserEvents(userId).first { it is Result.Success }
+            events.data?.let { data ->
+                processEvents(userId, data)
             }
         }
-        userEvents = repository.getObservableUserEvents(userId).apply {
-            observeForever(newObserver)
-        }
-        observer = newObserver
     }
 
     private fun processEvents(
@@ -70,35 +67,15 @@ class NotificationAlarmUpdater @Inject constructor(
             }
         }
         Timber.d("Work finished in ${System.currentTimeMillis() - startWork} ms")
-        clear()
-    }
-
-    fun clear() {
-        observer?.let {
-            userEvents?.removeObserver(it)
-        }
-        cancelObserver?.let {
-            cancelUserEvents?.removeObserver(it)
-        }
-        observer = null
-        cancelObserver = null
-        userEvents = null
-        cancelUserEvents = null
     }
 
     fun cancelAll() {
-
-        val newObserver = { sessions: Result<ObservableUserEvents> ->
-            when (sessions) {
-                is Success -> DefaultScheduler.execute {
-                    cancelAllSessions(sessions.data)
-                }
-                is Error -> Timber.e(sessions.cause)
+        alarmUpdaterScope.launch {
+            val events = repository.getObservableUserEvents(null).first { it is Result.Success }
+            events.data?.let { data ->
+                cancelAllSessions(data)
             }
         }
-        repository.getObservableUserEvents(null).observeForever(newObserver)
-        cancelObserver = newObserver
-        clear()
     }
 
     private fun cancelAllSessions(sessions: ObservableUserEvents) {

@@ -30,6 +30,8 @@ import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAct
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.result.Result
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 /**
  * Returns data loaded from a local JSON file for development and testing.
@@ -57,10 +59,8 @@ object FakeUserEventDataSource : UserEventDataSource {
         }
     }
 
-    override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {
-        val result = MutableLiveData<UserEventsResult>()
-        result.postValue(UserEventsResult(userEvents))
-        return result
+    override fun getObservableUserEvents(userId: String): Flow<UserEventsResult> {
+        return flow { emit(UserEventsResult(userEvents)) }
     }
 
     override fun getObservableUserEvent(

@@ -104,6 +104,7 @@ dependencies {
     implementation(Libs.ROOM_KTX)
     implementation(Libs.ROOM_RUNTIME)
     kapt(Libs.ROOM_COMPILER)
+    testImplementation(Libs.ARCH_TESTING)
 
     // Maps
     api(Libs.GOOGLE_MAP_UTILS) {

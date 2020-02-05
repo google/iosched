@@ -20,14 +20,17 @@ package com.google.samples.apps.iosched.ui.speaker
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.androidtest.util.observeForTesting
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
-import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCase
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakeEventActionsViewModelDelegate
@@ -36,7 +39,6 @@ import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelega
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -45,7 +47,7 @@ import org.junit.Test
 /**
  * Unit tests for the [SpeakerViewModel].
  */
-@ExperimentalCoroutinesApi
+
 class SpeakerViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread
@@ -54,8 +56,12 @@ class SpeakerViewModelTest {
     // Executes tasks in a synchronous [TaskScheduler]
     @get:Rule var syncTaskExecutorRule = SyncTaskExecutorRule()
 
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
+
     @Test
-    fun setSpeakerId_loadsSpeaker() {
+    fun setSpeakerId_loadsSpeaker() = coroutineRule.runBlockingTest {
         // Given a speaker view model
         val viewModel = createViewModel()
 
@@ -67,33 +73,37 @@ class SpeakerViewModelTest {
     }
 
     @Test
-    fun setSpeakerId_loadsSpeakersEvents_singleEvent() {
+    fun setSpeakerId_loadsSpeakersEvents_singleEvent() = coroutineRule.runBlockingTest {
         // Given a speaker view model
         val viewModel = createViewModel()
 
         // When the ID of a speaker with a single event is set
         viewModel.setSpeakerId(TestData.speaker3.id)
 
-        // Then the speakers event is loaded
-        assertEquals(
-            listOf(TestData.userSession2),
-            LiveDataTestUtil.getValue(viewModel.speakerUserSessions)
-        )
+        viewModel.speakerUserSessions.observeForTesting {
+            // Then the speakers event is loaded
+            assertEquals(
+                listOf(TestData.userSession2),
+                viewModel.speakerUserSessions.value
+            )
+        }
     }
 
     @Test
-    fun setSpeakerId_loadsSpeakersEvents_multipleEvents() {
+    fun setSpeakerId_loadsSpeakersEvents_multipleEvents() = coroutineRule.runBlockingTest {
         // Given a speaker view model
         val viewModel = createViewModel()
 
-        // When the ID of a speaker with multiple events is set
-        viewModel.setSpeakerId(TestData.speaker1.id)
+        viewModel.speakerUserSessions.observeForTesting {
+            // When the ID of a speaker with multiple events is set
+            viewModel.setSpeakerId(TestData.speaker1.id)
 
-        // Then the speakers events are loaded
-        assertEquals(
-            listOf(TestData.userSession0, TestData.userSession3, TestData.userSession4),
-            LiveDataTestUtil.getValue(viewModel.speakerUserSessions)
-        )
+            // Then the speakers events are loaded
+            assertEquals(
+                listOf(TestData.userSession0, TestData.userSession3, TestData.userSession4),
+                viewModel.speakerUserSessions.value
+            )
+        }
     }
 
     private fun createViewModel(
@@ -103,10 +113,11 @@ class SpeakerViewModelTest {
             DefaultSessionAndUserEventRepository(
                 TestUserEventDataSource(),
                 DefaultSessionRepository(TestDataRepository)
-            )
+            ),
+            coroutineRule.testDispatcher
         ),
-        getTimeZoneUseCase: GetTimeZoneUseCaseLegacy =
-            GetTimeZoneUseCaseLegacy(FakePreferenceStorage(), TestCoroutineDispatcher()),
+        getTimeZoneUseCase: GetTimeZoneUseCase =
+            GetTimeZoneUseCase(FakePreferenceStorage(), coroutineRule.testDispatcher),
         signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate().apply {
             loadUser("123")
         },

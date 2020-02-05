@@ -20,6 +20,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
+import androidx.lifecycle.switchMap
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
@@ -32,7 +34,6 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
@@ -43,6 +44,7 @@ import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
@@ -59,6 +61,7 @@ import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.combine
 import java.util.UUID
 import javax.inject.Inject
+import kotlinx.coroutines.flow.collect
 import org.threeten.bp.Duration
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
@@ -87,7 +90,20 @@ class SessionDetailViewModel @Inject constructor(
     private val loadUserSessionResult: MediatorLiveData<Result<LoadUserSessionUseCaseResult>> =
         loadUserSessionUseCase.observe()
 
-    private val loadRelatedUserSessions: LiveData<Result<LoadUserSessionsUseCaseResult>>
+    val relatedUserSessions: LiveData<List<UserSession>> = loadUserSessionResult.switchMap {
+        liveData<List<UserSession>> {
+            it?.data?.let {
+                val related = it.userSession.session.relatedSessions
+                if (related.isNotEmpty()) {
+                    loadRelatedSessionUseCase(getUserId() to related).collect { it
+                        it.data?.let { data ->
+                            emit(data)
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     private val sessionTimeRelativeState: LiveData<TimeUtils.SessionRelativeTimeState>
 
@@ -116,10 +132,6 @@ class SessionDetailViewModel @Inject constructor(
     private val _userEvent = MediatorLiveData<UserEvent>()
     val userEvent: LiveData<UserEvent>
         get() = _userEvent
-
-    private val _relatedUserSessions = MediatorLiveData<List<UserSession>>()
-    val relatedUserSessions: LiveData<List<UserSession>>
-        get() = _relatedUserSessions
 
     val showFeedbackButton: LiveData<Boolean>
     val timeUntilStart: LiveData<Duration?>
@@ -152,8 +164,6 @@ class SessionDetailViewModel @Inject constructor(
         get() = _navigateToSessionFeedbackAction
 
     init {
-
-        loadRelatedUserSessions = loadRelatedSessionUseCase.observe()
 
         getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
 
@@ -191,22 +201,6 @@ class SessionDetailViewModel @Inject constructor(
         _userEvent.addSource(loadUserSessionResult) {
             (loadUserSessionResult.value as? Result.Success)?.data?.userSession?.userEvent?.let {
                 _userEvent.value = it
-            }
-        }
-
-        // If there's a new Session, then load any related sessions
-        loadRelatedUserSessions.addSource(loadUserSessionResult) {
-            (loadUserSessionResult.value as? Result.Success)?.data?.userSession?.session?.let {
-                val related = it.relatedSessions
-                if (related.isNotEmpty()) {
-                    loadRelatedSessionUseCase.execute(getUserId() to related)
-                }
-            }
-        }
-
-        _relatedUserSessions.addSource(loadRelatedUserSessions) {
-            (loadRelatedUserSessions.value as? Result.Success)?.data?.let {
-                _relatedUserSessions.value = it.userSessions
             }
         }
 

@@ -37,6 +37,10 @@ import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.Result
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import timber.log.Timber
 
 /**
@@ -48,74 +52,54 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
     private val sessionRepository: SessionRepository
 ) : SessionAndUserEventRepository {
 
-    private val sessionsResult = MediatorLiveData<Result<ObservableUserEvents>>()
-
     // Keep a reference to the observable for a single event (from the details screen) so we can
     // stop observing when done.
     private var observableUserEvent: LiveData<UserEventResult>? = null
 
+    @WorkerThread
     override fun getObservableUserEvents(
         userId: String?
-    ): LiveData<Result<ObservableUserEvents>> {
-        // If there is no logged-in user, return the map with null UserEvents
-        if (userId == null) {
-            DefaultScheduler.execute {
+    ): Flow<Result<ObservableUserEvents>> {
+        return flow {
+            emit(Result.Loading)
+            // If there is no logged-in user, return the map with null UserEvents
+            if (userId == null) {
                 Timber.d(
-                        """EventRepository: No user logged in,
+                    """EventRepository: No user logged in,
                             |returning sessions without user events.""".trimMargin()
                 )
                 val allSessions = sessionRepository.getSessions()
                 val userSessions = mergeUserDataAndSessions(null, allSessions)
-                sessionsResult.postValue(
-                        Result.Success(
-                                ObservableUserEvents(
-                                        userSessions = userSessions
-                                )
+                emit(
+                    Result.Success(
+                        ObservableUserEvents(
+                            userSessions = userSessions
                         )
+                    )
                 )
-            }
-            return sessionsResult
-        }
-
-        // Observes the user events and merges them with session data.
-        val observableUserEvents = userEventDataSource.getObservableUserEvents(userId)
-        sessionsResult.removeSource(observableUserEvents)
-        sessionsResult.addSource(observableUserEvents) { userEvents ->
-            DefaultScheduler.execute {
-                try {
-                    // Not update the result when userEvents is null, otherwise the count of the
-                    // filtered result in the use case is going to be 0, that results blur when
-                    // the pinned item switch is toggled.
-                    userEvents ?: return@execute
-
+            } else {
+                emitAll(userEventDataSource.getObservableUserEvents(userId).map { userEvents ->
                     Timber.d(
                         """EventRepository: Received ${userEvents.userEvents.size}
                             |user events changes""".trimMargin()
                     )
-
                     // Get the sessions, synchronously
                     val allSessions = sessionRepository.getSessions()
                     val userSessions = mergeUserDataAndSessions(userEvents, allSessions)
-
                     // TODO(b/122306429) expose user events messages separately
                     val userEventsMessageSession = allSessions.firstOrNull {
                         it.id == userEvents.userEventsMessage?.sessionId
                     }
-                    sessionsResult.postValue(
-                        Result.Success(
-                            ObservableUserEvents(
-                                userSessions = userSessions,
-                                userMessage = userEvents.userEventsMessage,
-                                userMessageSession = userEventsMessageSession
-                            )
+                    Result.Success(
+                        ObservableUserEvents(
+                            userSessions = userSessions,
+                            userMessage = userEvents.userEventsMessage,
+                            userMessageSession = userEventsMessageSession
                         )
                     )
-                } catch (e: Exception) {
-                    sessionsResult.postValue(Result.Error(e))
-                }
+                })
             }
         }
-        return sessionsResult
     }
 
     override fun getObservableUserEvent(
@@ -299,7 +283,7 @@ interface SessionAndUserEventRepository {
     // TODO(b/122112739): Repository should not have source dependency on UseCase result
     fun getObservableUserEvents(
         userId: String?
-    ): LiveData<Result<ObservableUserEvents>>
+    ): Flow<Result<ObservableUserEvents>>
 
     // TODO(b/122112739): Repository should not have source dependency on UseCase result
     fun getObservableUserEvent(

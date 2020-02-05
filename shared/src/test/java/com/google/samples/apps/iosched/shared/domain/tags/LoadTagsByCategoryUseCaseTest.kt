@@ -28,7 +28,6 @@ import com.google.samples.apps.iosched.test.data.TestData.codelabsTag
 import com.google.samples.apps.iosched.test.data.TestData.intermediateTag
 import com.google.samples.apps.iosched.test.data.TestData.sessionsTag
 import com.google.samples.apps.iosched.test.data.TestData.webTag
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -37,8 +36,6 @@ import org.junit.Test
  * Unit tests for [LoadTagsByCategoryUseCase]
  */
 class LoadTagsByCategoryUseCaseTest {
-
-    @ExperimentalCoroutinesApi
     private val dispatcher = TestCoroutineDispatcher()
 
     @Test

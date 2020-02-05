@@ -27,7 +27,6 @@ import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertNotNull
 import org.junit.Rule
@@ -36,7 +35,6 @@ import org.junit.Test
 /**
  * Unit tests for the [OnboardingViewModel].
  */
-@ExperimentalCoroutinesApi
 class OnboardingViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread

@@ -38,6 +38,7 @@ import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doNothing
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
+import kotlinx.coroutines.flow.Flow
 import org.junit.Assert
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -115,7 +116,7 @@ class ReservationActionUseCaseTest {
 object TestUserEventRepository : SessionAndUserEventRepository {
     override fun getObservableUserEvents(
         userId: String?
-    ): LiveData<Result<ObservableUserEvents>> {
+    ): Flow<Result<ObservableUserEvents>> {
         TODO("not implemented")
     }
 
@@ -177,7 +178,7 @@ object TestUserEventRepository : SessionAndUserEventRepository {
 object FailingUserEventRepository : SessionAndUserEventRepository {
     override fun getObservableUserEvents(
         userId: String?
-    ): LiveData<Result<ObservableUserEvents>> {
+    ): Flow<Result<ObservableUserEvents>> {
         TODO("not implemented")
     }
 

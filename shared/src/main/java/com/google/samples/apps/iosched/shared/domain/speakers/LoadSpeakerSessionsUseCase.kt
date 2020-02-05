@@ -21,7 +21,7 @@ import com.google.samples.apps.iosched.model.Speaker
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
-import com.google.samples.apps.iosched.shared.domain.UseCase
+import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 
@@ -32,7 +32,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 open class LoadSpeakerUseCase @Inject constructor(
     private val conferenceDataRepository: ConferenceDataRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : UseCase<SpeakerId, LoadSpeakerUseCaseResult>(dispatcher) {
+) : CoroutinesUseCase<SpeakerId, LoadSpeakerUseCaseResult>(dispatcher) {
 
     override fun execute(parameters: SpeakerId): LoadSpeakerUseCaseResult {
         val speaker = conferenceDataRepository.getOfflineConferenceData().speakers
