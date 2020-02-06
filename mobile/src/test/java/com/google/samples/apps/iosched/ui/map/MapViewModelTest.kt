@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.domain.prefs.MyLocationOptedInUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.OptIntoMyLocationUseCase
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
@@ -47,6 +48,8 @@ class MapViewModelTest {
 
     // Executes tasks in a synchronous [TaskScheduler]
     @get:Rule var syncTaskExecutorRule = SyncTaskExecutorRule()
+
+    @get:Rule var coroutineRule = MainCoroutineRule()
 
     private val storage = FakePreferenceStorage()
     private val signInViewModelDelegate = FakeSignInViewModelDelegate()

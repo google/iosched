@@ -21,6 +21,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -34,12 +35,13 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.prefs.MyLocationOptedInUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.OptIntoMyLocationUseCase
 import com.google.samples.apps.iosched.shared.result.Event
-import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.result.Result.Success
+import com.google.samples.apps.iosched.shared.result.successOr
+import com.google.samples.apps.iosched.shared.result.updateOnSuccess
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.combine
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 class MapViewModel @Inject constructor(
     private val loadGeoJsonFeaturesUseCase: LoadGeoJsonFeaturesUseCase,
@@ -64,7 +66,7 @@ class MapViewModel @Inject constructor(
     val mapCenterEvent: LiveData<Event<CameraUpdate>>
         get() = _mapCenterEvent
 
-    private val loadGeoJsonResult = MutableLiveData<Result<GeoJsonData>>()
+    private val loadGeoJsonResult = MutableLiveData<GeoJsonData>()
 
     private val _geoJsonLayer = MediatorLiveData<GeoJsonLayer>()
     val geoJsonLayer: LiveData<GeoJsonLayer>
@@ -84,27 +86,22 @@ class MapViewModel @Inject constructor(
     val selectedMarkerInfo: LiveData<MarkerInfo>
         get() = _selectedMarkerInfo
 
-    private val myLocationOptedIn = MutableLiveData<Result<Boolean>>()
+    private val myLocationOptedIn = MutableLiveData<Boolean>()
 
     val showMyLocationOption = currentUserInfo.combine(myLocationOptedIn) { info, optedIn ->
         // Show the button to enable "My Location" when the user is an on-site attendee and he/she
         // is not opted into the feature yet.
-        info != null &&
-            optedIn != null &&
-            info.isRegistered() &&
-            optedIn is Success &&
-            !optedIn.data
+        info != null && info.isRegistered() && !optedIn
     }
 
     init {
-        myLocationOptedInUseCase(Unit, myLocationOptedIn)
-
-        _geoJsonLayer.addSource(loadGeoJsonResult) { result ->
-            if (result is Success) {
-                hasLoadedFeatures = true
-                setMapFeatures(result.data.featureMap)
-                _geoJsonLayer.value = result.data.geoJsonLayer
-            }
+        viewModelScope.launch {
+            myLocationOptedIn.value = myLocationOptedInUseCase(Unit).successOr(false)
+        }
+        _geoJsonLayer.addSource(loadGeoJsonResult) { data ->
+            hasLoadedFeatures = true
+            setMapFeatures(data.featureMap)
+            _geoJsonLayer.value = data.geoJsonLayer
         }
 
         // When the map variant changes, the selected feature might not be present in the new
@@ -115,7 +112,9 @@ class MapViewModel @Inject constructor(
     }
 
     fun optIntoMyLocation(optIn: Boolean = true) {
-        optIntoMyLocationUseCase(optIn, myLocationOptedIn)
+        viewModelScope.launch {
+            optIntoMyLocationUseCase(optIn).updateOnSuccess(myLocationOptedIn)
+        }
     }
 
     fun setMapVariant(variant: MapVariant) {
@@ -132,10 +131,11 @@ class MapViewModel @Inject constructor(
     fun loadMapFeatures(googleMap: GoogleMap) {
         val variant = _mapVariant.value ?: return
         // Load markers
-        loadGeoJsonFeaturesUseCase(
-            LoadGeoJsonParams(googleMap, variant.markersResId),
-            loadGeoJsonResult
-        )
+        viewModelScope.launch {
+            loadGeoJsonFeaturesUseCase(
+                LoadGeoJsonParams(googleMap, variant.markersResId)
+            ).updateOnSuccess(loadGeoJsonResult)
+        }
     }
 
     private fun setMapFeatures(features: Map<String, GeoJsonFeature>) {
