@@ -18,7 +18,7 @@ package com.google.samples.apps.iosched.shared.domain.search
 
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
-import com.google.samples.apps.iosched.shared.domain.UseCase
+import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
 import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSession
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -32,7 +32,7 @@ import timber.log.Timber
 class SearchUseCase @Inject constructor(
     private val repository: SessionRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : UseCase<String, List<Searchable>>(dispatcher) {
+) : CoroutinesUseCase<String, List<Searchable>>(dispatcher) {
 
     override fun execute(parameters: String): List<Searchable> {
         Timber.d("Performing a search for any sessions that contain `$parameters`")
