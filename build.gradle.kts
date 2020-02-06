@@ -68,7 +68,9 @@ subprojects {
     spotless {
         kotlin {
             target("**/*.kt")
-            ktlint(ktlintVer).userData(mapOf("max_line_length" to "100"))
+            ktlint(ktlintVer).userData(
+                mapOf("max_line_length" to "100", "disabled_rules" to "import-ordering")
+            )
             licenseHeaderFile(project.rootProject.file("copyright.kt"))
         }
         kotlinGradle {
