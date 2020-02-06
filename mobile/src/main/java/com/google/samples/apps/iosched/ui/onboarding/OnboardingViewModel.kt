@@ -19,10 +19,12 @@ package com.google.samples.apps.iosched.ui.onboarding
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompleteActionUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 /**
  * Records that onboarding has been completed and navigates user onward.
@@ -39,8 +41,10 @@ class OnboardingViewModel @Inject constructor(
     val navigateToSignInDialogAction: LiveData<Event<Unit>> = _navigateToSignInDialogAction
 
     fun getStartedClick() {
-        onboardingCompleteActionUseCase(true)
-        _navigateToMainActivity.postValue(Event(Unit))
+        viewModelScope.launch {
+            onboardingCompleteActionUseCase(true)
+            _navigateToMainActivity.postValue(Event(Unit))
+        }
     }
 
     fun onSigninClicked() {
