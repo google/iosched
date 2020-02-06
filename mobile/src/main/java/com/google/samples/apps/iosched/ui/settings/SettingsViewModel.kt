@@ -19,25 +19,28 @@ package com.google.samples.apps.iosched.ui.settings
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.model.Theme
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefSaveActionUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetAnalyticsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetAvailableThemesUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetNotificationsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCase
-import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetAnalyticsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.Event
-import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.result.Result.Success
-import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.shared.result.data
+import com.google.samples.apps.iosched.shared.result.successOr
+import com.google.samples.apps.iosched.shared.result.updateOnSuccess
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SettingsViewModel @Inject constructor(
     val setTimeZoneUseCase: SetTimeZoneUseCase,
-    getTimeZoneUseCase: GetTimeZoneUseCaseLegacy, // TODO(COROUTINES): Migrate
+    getTimeZoneUseCase: GetTimeZoneUseCase,
     val notificationsPrefSaveActionUseCase: NotificationsPrefSaveActionUseCase,
     getNotificationsSettingUseCase: GetNotificationsSettingUseCase,
     val setAnalyticsSettingUseCase: SetAnalyticsSettingUseCase,
@@ -48,70 +51,70 @@ class SettingsViewModel @Inject constructor(
 ) : ViewModel() {
 
     // Time Zone setting
-    private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
+    private val _preferConferenceTimeZone = MutableLiveData<Boolean>()
     val preferConferenceTimeZone: LiveData<Boolean>
+        get() = _preferConferenceTimeZone
 
     // Notifications setting
-    private val enableNotificationsResult = MutableLiveData<Result<Boolean>>()
+    private val _enableNotifications = MutableLiveData<Boolean>()
     val enableNotifications: LiveData<Boolean>
+        get() = _enableNotifications
 
     // Analytics setting
-    private val sendUsageStatisticsResult = MutableLiveData<Result<Boolean>>()
+    private val _sendUsageStatistics = MutableLiveData<Boolean>()
     val sendUsageStatistics: LiveData<Boolean>
+        get() = _sendUsageStatistics
 
     // Theme setting
-    private val themeResult = MutableLiveData<Result<Theme>>()
-    val theme: LiveData<Theme>
+    val theme: LiveData<Theme> = liveData {
+        emit(getThemeUseCase(Unit).successOr(Theme.SYSTEM))
+    }
 
     // Theme setting
-    private val availableThemesResult = MutableLiveData<Result<List<Theme>>>()
-    val availableThemes: LiveData<List<Theme>>
+    val availableThemes: LiveData<List<Theme>> = liveData {
+        emit(getAvailableThemesUseCase(Unit).successOr(emptyList()))
+    }
 
     private val _navigateToThemeSelector = MutableLiveData<Event<Unit>>()
     val navigateToThemeSelector: LiveData<Event<Unit>>
         get() = _navigateToThemeSelector
 
     init {
-        getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
-        preferConferenceTimeZone = preferConferenceTimeZoneResult.map {
-            (it as? Success<Boolean>)?.data ?: true
+        // Executing use cases in parallel
+        viewModelScope.launch {
+            _preferConferenceTimeZone.value = getTimeZoneUseCase(Unit).data ?: true
         }
 
-        getAnalyticsSettingUseCase(Unit, sendUsageStatisticsResult)
-        sendUsageStatistics = sendUsageStatisticsResult.map {
-            (it as? Success<Boolean>)?.data ?: false
+        viewModelScope.launch {
+            _sendUsageStatistics.value = getAnalyticsSettingUseCase(Unit).data ?: false
         }
-
-        getNotificationsSettingUseCase(Unit, enableNotificationsResult)
-        enableNotifications = enableNotificationsResult.map {
-            (it as? Success<Boolean>)?.data ?: false
-        }
-
-        getThemeUseCase(Unit, themeResult)
-        theme = themeResult.map {
-            (it as? Success<Theme>)?.data ?: Theme.SYSTEM
-        }
-
-        getAvailableThemesUseCase(Unit, availableThemesResult)
-        availableThemes = availableThemesResult.map {
-            (it as? Success<List<Theme>>)?.data ?: emptyList()
+        viewModelScope.launch {
+            _enableNotifications.value = getNotificationsSettingUseCase(Unit).data ?: false
         }
     }
 
     fun toggleTimeZone(checked: Boolean) {
-        setTimeZoneUseCase(checked, preferConferenceTimeZoneResult)
+        viewModelScope.launch {
+            setTimeZoneUseCase(checked).updateOnSuccess(_preferConferenceTimeZone)
+        }
     }
 
     fun toggleSendUsageStatistics(checked: Boolean) {
-        setAnalyticsSettingUseCase(checked, sendUsageStatisticsResult)
+        viewModelScope.launch {
+            setAnalyticsSettingUseCase(checked).updateOnSuccess(_sendUsageStatistics)
+        }
     }
 
     fun toggleEnableNotifications(checked: Boolean) {
-        notificationsPrefSaveActionUseCase(checked, enableNotificationsResult)
+        viewModelScope.launch {
+            notificationsPrefSaveActionUseCase(checked).updateOnSuccess(_enableNotifications)
+        }
     }
 
     fun setTheme(theme: Theme) {
-        setThemeUseCase(theme)
+        viewModelScope.launch {
+            setThemeUseCase(theme)
+        }
     }
 
     fun onThemeSettingClicked() {

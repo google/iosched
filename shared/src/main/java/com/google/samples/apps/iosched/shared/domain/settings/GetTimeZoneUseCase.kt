@@ -22,7 +22,7 @@ import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 
-open class GetTimeZoneUseCase @Inject constructor(
+class GetTimeZoneUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : CoroutinesUseCase<Unit, Boolean>(dispatcher) {
