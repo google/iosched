@@ -20,6 +20,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.model.Moment
@@ -28,6 +29,10 @@ import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
+import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState
+import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState.ENDED
+import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState.UPCOMING
+import com.google.samples.apps.iosched.shared.domain.feed.GetConferenceStateUseCase
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
 import com.google.samples.apps.iosched.shared.domain.feed.LoadCurrentMomentUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsParameters
@@ -47,11 +52,11 @@ import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
-import com.google.samples.apps.iosched.util.ConferenceState.ENDED
-import com.google.samples.apps.iosched.util.ConferenceState.UPCOMING
-import com.google.samples.apps.iosched.util.ConferenceStateLiveData
 import com.google.samples.apps.iosched.util.combine
 import javax.inject.Inject
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 
@@ -65,7 +70,7 @@ class FeedViewModel @Inject constructor(
     loadAnnouncementsUseCase: LoadAnnouncementsUseCase,
     private val loadFilteredUserSessionsUseCase: LoadFilteredUserSessionsUseCase,
     getTimeZoneUseCaseLegacy: GetTimeZoneUseCaseLegacy, // TODO(COROUTINES): Migrate to non-legacy
-    conferenceStateLiveData: ConferenceStateLiveData,
+    getConferenceStateUseCase: GetConferenceStateUseCase,
     private val timeProvider: TimeProvider,
     private val analyticsHelper: AnalyticsHelper,
     private val signInViewModelDelegate: SignInViewModelDelegate,
@@ -97,6 +102,7 @@ class FeedViewModel @Inject constructor(
     val snackBarMessage: LiveData<Event<SnackbarMessage>>
 
     private val loadSessionsResult: MediatorLiveData<Result<LoadFilteredUserSessionsResult>>
+    private val conferenceStateLiveData = MutableLiveData<ConferenceState>()
 
     private val loadAnnouncementsResult = MutableLiveData<Result<List<Announcement>>>()
 
@@ -126,6 +132,12 @@ class FeedViewModel @Inject constructor(
     val timeZoneId: LiveData<ZoneId>
 
     init {
+        viewModelScope.launch {
+            getConferenceStateUseCase(Unit)
+                .map { it.successOr(UPCOMING) }
+                .collect { conferenceStateLiveData.value = it }
+        }
+
         timeZoneId = preferConferenceTimeZoneResult.map {
             if (it.successOr(true)) TimeUtils.CONFERENCE_TIMEZONE else ZoneId.systemDefault()
         }
@@ -265,8 +277,10 @@ class FeedViewModel @Inject constructor(
     }
 
     override fun openEventDetail(id: SessionId) {
-        analyticsHelper.logUiEvent("Home to event detail",
-            AnalyticsActions.HOME_TO_SESSION_DETAIL)
+        analyticsHelper.logUiEvent(
+            "Home to event detail",
+            AnalyticsActions.HOME_TO_SESSION_DETAIL
+        )
         _navigateToSessionAction.value = Event(id)
     }
 
