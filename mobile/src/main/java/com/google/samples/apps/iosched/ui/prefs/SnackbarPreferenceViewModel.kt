@@ -17,7 +17,9 @@
 package com.google.samples.apps.iosched.ui.prefs
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.shared.domain.prefs.StopSnackbarActionUseCase
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -28,6 +30,8 @@ class SnackbarPreferenceViewModel @Inject constructor(
 ) : ViewModel() {
 
     fun onStopClicked() {
-        stopSnackbarActionUseCase(true)
+        viewModelScope.launch {
+            stopSnackbarActionUseCase(true)
+        }
     }
 }
