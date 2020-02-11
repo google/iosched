@@ -29,6 +29,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 
 /**
  * Storage for app and user preferences.
@@ -43,17 +48,25 @@ interface PreferenceStorage {
     var observableSnackbarIsStopped: LiveData<Boolean>
     var sendUsageStatistics: Boolean
     var preferConferenceTimeZone: Boolean
-    var selectedFilters: String?
-    var selectedTheme: String?
-    var observableSelectedTheme: LiveData<String>
+    var selectedFilters: String
+    var selectedTheme: String
+    var observableSelectedTheme: Flow<String>
     var codelabsInfoShown: Boolean
 }
 
 /**
  * [PreferenceStorage] impl backed by [android.content.SharedPreferences].
  */
+@FlowPreview
+@ExperimentalCoroutinesApi
 @Singleton
 class SharedPreferenceStorage @Inject constructor(context: Context) : PreferenceStorage {
+
+    private val selectedThemeChannel: ConflatedBroadcastChannel<String> by lazy {
+        ConflatedBroadcastChannel<String>().also { channel ->
+            channel.offer(selectedTheme)
+        }
+    }
 
     private val prefs: Lazy<SharedPreferences> = lazy { // Lazy to prevent IO access to main thread.
         context.applicationContext.getSharedPreferences(
@@ -64,12 +77,11 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
     }
 
     private val observableShowSnackbarResult = MutableLiveData<Boolean>()
-    private val observableSelectedThemeResult = MutableLiveData<String>()
 
     private val changeListener = OnSharedPreferenceChangeListener { _, key ->
         when (key) {
             PREF_SNACKBAR_IS_STOPPED -> observableShowSnackbarResult.value = snackbarIsStopped
-            PREF_DARK_MODE_ENABLED -> observableSelectedThemeResult.value = selectedTheme
+            PREF_DARK_MODE_ENABLED -> selectedThemeChannel.offer(selectedTheme)
         }
     }
 
@@ -100,17 +112,14 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
     override var preferConferenceTimeZone
         by BooleanPreference(prefs, PREF_CONFERENCE_TIME_ZONE, true)
 
-    override var selectedFilters by StringPreference(prefs, PREF_SELECTED_FILTERS, null)
+    override var selectedFilters by StringPreference(prefs, PREF_SELECTED_FILTERS, "")
 
     override var selectedTheme by StringPreference(
         prefs, PREF_DARK_MODE_ENABLED, Theme.SYSTEM.storageKey
     )
 
-    override var observableSelectedTheme: LiveData<String>
-        get() {
-            observableSelectedThemeResult.value = selectedTheme
-            return observableSelectedThemeResult
-        }
+    override var observableSelectedTheme: Flow<String>
+        get() = selectedThemeChannel.asFlow()
         set(_) = throw IllegalAccessException("This property can't be changed")
 
     override var codelabsInfoShown by BooleanPreference(prefs, PREF_CODELABS_INFO_SHOWN, false)
@@ -154,12 +163,12 @@ class BooleanPreference(
 class StringPreference(
     private val preferences: Lazy<SharedPreferences>,
     private val name: String,
-    private val defaultValue: String?
+    private val defaultValue: String
 ) : ReadWriteProperty<Any, String?> {
 
     @WorkerThread
-    override fun getValue(thisRef: Any, property: KProperty<*>): String? {
-        return preferences.value.getString(name, defaultValue)
+    override fun getValue(thisRef: Any, property: KProperty<*>): String {
+        return preferences.value.getString(name, defaultValue) ?: defaultValue
     }
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: String?) {

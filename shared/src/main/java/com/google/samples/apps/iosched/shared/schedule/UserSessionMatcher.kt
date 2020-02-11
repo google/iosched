@@ -123,7 +123,7 @@ class UserSessionMatcher {
 
     fun load(preferenceStorage: PreferenceStorage) {
         val prefValue = preferenceStorage.selectedFilters
-        if (prefValue != null) {
+        if (prefValue.isNotEmpty()) {
             val state: SavedFilterPreferences? = try {
                 gson.fromJson(prefValue, SavedFilterPreferences::class.java)
             } catch (t: Throwable) {
