@@ -17,8 +17,11 @@
 package com.google.samples.apps.iosched.tests.ui
 
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withParent
@@ -52,6 +55,12 @@ class HomeTest {
         // Title
         onView(allOf(instanceOf(TextView::class.java), withParent(withId(R.id.toolbar))))
             .check(matches(withText(R.string.title_home)))
+
+        // For some reason, recycler view auto scrolls to the bottom in espresso test. Preventing
+        // that by scrolling to the top.
+        onView(withId(R.id.recyclerView))
+            .perform(actionOnItemAtPosition<ViewHolder>(0, scrollTo()))
+
         // One of the blocks
         onView(withText(R.string.feed_announcement_title)).check(matches(isDisplayed()))
     }

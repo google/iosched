@@ -302,6 +302,12 @@
         <item name="cardCornerRadius">@dimen/feed_card_corner_radius</item>
     </style>
 
+    <style name="Widget.IOSched.Feed.SocialChannelButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="android:layout_width">@dimen/a11y_min_touch_target</item>
+        <item name="android:layout_height">@dimen/a11y_min_touch_target</item>
+        <item name="elevation">0dp</item>
+    </style>
+
     <!-- Settings -->
     <style name="Widget.IOSched.Settings" />
 
