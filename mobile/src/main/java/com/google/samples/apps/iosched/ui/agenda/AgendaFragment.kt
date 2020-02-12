@@ -67,6 +67,11 @@ class AgendaFragment : MainNavigationFragment() {
             activityViewModelProvider(viewModelFactory), this@AgendaFragment
         )
     }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.refreshAgenda()
+    }
 }
 
 @BindingAdapter(value = ["agendaItems", "timeZoneId"])

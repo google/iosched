@@ -50,7 +50,15 @@ class AgendaViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             refreshConferenceTimeZone()
-            _agenda.value = loadAgendaUseCase(true).data // TODO: compare with adssched
+            _agenda.value = loadAgendaUseCase(false).data
+        }
+    }
+
+    fun refreshAgenda() {
+        // Agenda is lightweight and it's not possible to observe the changes with Remote Config,
+        // we refresh the agenda on fragment start
+        viewModelScope.launch {
+            _agenda.value = loadAgendaUseCase(true).data
         }
     }
 

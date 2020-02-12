@@ -19,17 +19,22 @@ package com.google.samples.apps.iosched.shared.data.config
 import android.content.res.Resources.NotFoundException
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.android.gms.tasks.Task
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import timber.log.Timber
+import kotlin.coroutines.resume
 
 class RemoteAppConfigDataSource @Inject constructor(
     private val firebaseRemoteConfig: FirebaseRemoteConfig,
-    configSettings: FirebaseRemoteConfigSettings
+    configSettings: FirebaseRemoteConfigSettings,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : AppConfigDataSource {
 
     private val _attributesLiveDataMap: Map<String, MutableLiveData<String>> = mapOf(
@@ -120,34 +125,19 @@ class RemoteAppConfigDataSource @Inject constructor(
         }
     }
 
-    override fun syncStringsAsync(changedCallback: StringsChangedCallback?) {
-        val getConfigTask = firebaseRemoteConfig.fetch(cacheExpirySeconds)
-
-        getConfigTask.addOnCompleteListener { task ->
-            onSyncStringsCompleted(task, changedCallback)
-        }
-    }
-
-    private fun onSyncStringsCompleted(task: Task<Void>, changedCallback: StringsChangedCallback?) {
-        if (task.isSuccessful) {
-            val oldStrings = _attributesLiveDataMap.entries.map { e ->
-                Pair(e.key, e.value.value)
-            }.toMap()
-
-            firebaseRemoteConfig.activateFetched()
-            updateStrings()
-
-            val changedKeys = oldStrings.filter { e ->
-                e.value != getStringLiveData(e.key).value
-            }.map {
-                it.key
+    override suspend fun syncStrings() {
+        withContext(ioDispatcher) {
+            val task = firebaseRemoteConfig.fetch(cacheExpirySeconds)
+            suspendCancellableCoroutine<Unit> { continuation ->
+                task.addOnCompleteListener {
+                    firebaseRemoteConfig.activateFetched()
+                    updateStrings()
+                    continuation.resume(Unit)
+                }
+                task.addOnFailureListener { exception ->
+                    Timber.w(exception, "Sync strings failed")
+                }
             }
-
-            changedCallback?.let {
-                changedCallback.onChanged(changedKeys)
-            }
-        } else {
-            Timber.w("syncStrings failed")
         }
     }
 
