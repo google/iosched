@@ -22,7 +22,6 @@ import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.config.RemoteAppConfigDataSource
-import com.google.samples.apps.iosched.shared.data.config.StringsChangedCallback
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME
@@ -121,7 +120,8 @@ class FakeAppConfigDataSource : AppConfigDataSource {
             ?: throw NotFoundException("Value for $key not found")
     }
 
-    override fun syncStringsAsync(changedCallback: StringsChangedCallback?) = Unit
+    override suspend fun syncStrings() {}
+
     override fun getWifiInfo(): ConferenceWifiInfo = ConferenceWifiInfo("", "")
     override fun isMapFeatureEnabled(): Boolean = true
     override fun isExploreArFeatureEnabled(): Boolean = true

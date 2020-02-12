@@ -54,6 +54,7 @@ import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -199,9 +200,10 @@ class SharedModule {
     @Provides
     fun provideAppConfigDataSource(
         remoteConfig: FirebaseRemoteConfig,
-        configSettings: FirebaseRemoteConfigSettings
+        configSettings: FirebaseRemoteConfigSettings,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
     ): AppConfigDataSource {
-        return RemoteAppConfigDataSource(remoteConfig, configSettings)
+        return RemoteAppConfigDataSource(remoteConfig, configSettings, ioDispatcher)
     }
 
     @Singleton

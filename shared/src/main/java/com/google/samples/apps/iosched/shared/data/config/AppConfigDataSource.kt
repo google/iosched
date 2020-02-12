@@ -22,7 +22,10 @@ import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 interface AppConfigDataSource {
 
     fun getStringLiveData(key: String): LiveData<String> // TODO: change name
-    fun syncStringsAsync(changedCallback: StringsChangedCallback?)
+    /**
+     * Sync the strings with the latest values with Remote Config
+     */
+    suspend fun syncStrings()
     fun getWifiInfo(): ConferenceWifiInfo
     fun isMapFeatureEnabled(): Boolean
     fun isExploreArFeatureEnabled(): Boolean
@@ -30,15 +33,4 @@ interface AppConfigDataSource {
     fun isSearchScheduleFeatureEnabled(): Boolean
     fun isSearchUsingRoomFeatureEnabled(): Boolean
     fun isAssistantAppFeatureEnabled(): Boolean
-}
-
-interface StringsChangedCallback {
-
-    /**
-     * Called when any of Strings parameters are changed from the previous values.
-     *
-     * @param changedKeys has the list of key names whose values are changed from the previous
-     * values.
-     */
-    fun onChanged(changedKeys: List<String>)
 }

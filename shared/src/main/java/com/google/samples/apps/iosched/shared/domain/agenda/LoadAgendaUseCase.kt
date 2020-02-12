@@ -34,7 +34,7 @@ open class LoadAgendaUseCase @Inject constructor(
 ) : SuspendUseCase<Boolean, List<Block>>(ioDispatcher) {
 
     override suspend fun execute(parameters: Boolean): List<Block> =
-        repository.getAgenda() // (parameters) // TODO(COROUTINES): decide if we need parameters
+        repository.getAgenda(parameters)
             .filterNot { it.startTime == it.endTime }
             .filter { isInConferenceTime(it) }
             .distinct()
