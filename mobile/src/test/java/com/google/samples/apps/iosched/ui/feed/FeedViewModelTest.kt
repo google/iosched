@@ -24,12 +24,13 @@ import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.domain.feed.GetConferenceStateUseCase
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
 import com.google.samples.apps.iosched.shared.domain.feed.LoadCurrentMomentUseCase
-import com.google.samples.apps.iosched.shared.domain.internal.IOSchedHandler
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
 import com.google.samples.apps.iosched.shared.time.TimeProvider
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
@@ -41,9 +42,7 @@ import com.google.samples.apps.iosched.ui.SectionHeader
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
-import com.google.samples.apps.iosched.util.ConferenceStateLiveData
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.equalTo
@@ -57,7 +56,6 @@ import org.threeten.bp.Instant
 /**
  * Unit tests for the [FeedViewModel]
  */
-@ExperimentalCoroutinesApi
 class FeedViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread
@@ -68,15 +66,11 @@ class FeedViewModelTest {
     @get:Rule
     var syncTaskExecutorRule = SyncTaskExecutorRule()
 
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
+
     private val testDispatcher = TestCoroutineDispatcher()
-
-    private val fakeHandler = object : IOSchedHandler {
-        override fun post(runnable: Runnable) = true
-
-        override fun postDelayed(runnable: Runnable, millis: Long) = true
-
-        override fun removeCallbacks(runnable: Runnable) {}
-    }
 
     private val defaultFeedRepository =
         DefaultFeedRepository(TestAnnouncementDataSource, TestMomentDataSource)
@@ -137,8 +131,8 @@ class FeedViewModelTest {
             ),
         getTimeZoneUseCaseLegacy: GetTimeZoneUseCaseLegacy =
             GetTimeZoneUseCaseLegacy(FakePreferenceStorage(), testDispatcher),
-        conferenceStateLiveData: ConferenceStateLiveData =
-            ConferenceStateLiveData(fakeHandler, defaultTimeProvider),
+        getConferenceStateUseCase: GetConferenceStateUseCase =
+            GetConferenceStateUseCase(testDispatcher, defaultTimeProvider),
         timeProvider: TimeProvider = defaultTimeProvider,
         signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate().apply {
             loadUser("123")
@@ -150,7 +144,7 @@ class FeedViewModelTest {
             loadAnnouncementsUseCase = loadAnnouncementUseCase,
             loadFilteredUserSessionsUseCase = loadFilteredSessionsUseCase,
             getTimeZoneUseCaseLegacy = getTimeZoneUseCaseLegacy, // TODO(COROUTINES): Migrate
-            conferenceStateLiveData = conferenceStateLiveData,
+            getConferenceStateUseCase = getConferenceStateUseCase,
             timeProvider = timeProvider,
             analyticsHelper = FakeAnalyticsHelper(),
             signInViewModelDelegate = signInViewModelDelegate,
