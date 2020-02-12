@@ -26,7 +26,7 @@ object Libs {
     const val CRASHLYTICS = "com.crashlytics.sdk.android:crashlytics"
     const val COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-core"
     const val COROUTINES_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test"
-    const val DAGGER_ANDROID = "com.google.dagger:dagger-android:"
+    const val DAGGER_ANDROID = "com.google.dagger:dagger-android"
     const val DAGGER_ANDROID_PROCESSOR = "com.google.dagger:dagger-android-processor"
     const val DAGGER_ANDROID_SUPPORT = "com.google.dagger:dagger-android-support"
     const val DAGGER_COMPILER = "com.google.dagger:dagger-compiler"
