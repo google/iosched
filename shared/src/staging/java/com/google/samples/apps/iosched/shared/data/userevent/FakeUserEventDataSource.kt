@@ -30,6 +30,7 @@ import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAct
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.Result.Success
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -86,10 +87,11 @@ object FakeUserEventDataSource : UserEventDataSource {
         return result
     }
 
-    override fun recordFeedbackSent(userId: String, userEvent: UserEvent): LiveData<Result<Unit>> {
-        val result = MutableLiveData<Result<Unit>>()
-        result.postValue(Result.Success(Unit))
-        return result
+    override suspend fun recordFeedbackSent(
+        userId: String,
+        userEvent: UserEvent
+    ): Result<Unit> {
+        return Result.Success(Unit)
     }
 
     override fun requestReservation(

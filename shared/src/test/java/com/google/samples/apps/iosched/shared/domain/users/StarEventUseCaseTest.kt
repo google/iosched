@@ -127,7 +127,7 @@ val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepositor
         return result
     }
 
-    override fun recordFeedbackSent(userId: String, userEvent: UserEvent): LiveData<Result<Unit>> {
+    override suspend fun recordFeedbackSent(userId: String, userEvent: UserEvent): Result<Unit> {
         throw NotImplementedError()
     }
 

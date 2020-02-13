@@ -66,8 +66,8 @@ class TestUserEventDataSource : UserEventDataSource {
         return result
     }
 
-    override fun recordFeedbackSent(userId: String, userEvent: UserEvent): LiveData<Result<Unit>> {
-        return MutableLiveData(Result.Success(Unit))
+    override suspend fun recordFeedbackSent(userId: String, userEvent: UserEvent): Result<Unit> {
+        return Result.Success(Unit)
     }
 
     override fun requestReservation(

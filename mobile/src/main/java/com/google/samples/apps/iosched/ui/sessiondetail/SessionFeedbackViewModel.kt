@@ -22,6 +22,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
@@ -29,6 +30,7 @@ import com.google.samples.apps.iosched.shared.domain.users.FeedbackParameter
 import com.google.samples.apps.iosched.shared.domain.users.FeedbackUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SessionFeedbackViewModel @Inject constructor(
@@ -87,12 +89,16 @@ class SessionFeedbackViewModel @Inject constructor(
         val userEvent = (loadUserSessionResult.value as? Result.Success)
             ?.data?.userSession?.userEvent
         if (userId != null && userEvent != null) {
-            feedbackUseCase.execute(FeedbackParameter(
-                userId,
-                userEvent,
-                sessionId,
-                feedbackUpdates
-            ))
+            viewModelScope.launch {
+                feedbackUseCase(
+                    FeedbackParameter(
+                        userId,
+                        userEvent,
+                        sessionId,
+                        feedbackUpdates
+                    )
+                )
+            }
         }
     }
 }
