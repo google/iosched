@@ -134,7 +134,7 @@ object TestUserEventRepository : SessionAndUserEventRepository {
         TODO("not implemented")
     }
 
-    override fun recordFeedbackSent(userId: String, userEvent: UserEvent): LiveData<Result<Unit>> {
+    override suspend fun recordFeedbackSent(userId: String, userEvent: UserEvent): Result<Unit> {
         TODO("not implemented")
     }
 
@@ -196,7 +196,7 @@ object FailingUserEventRepository : SessionAndUserEventRepository {
         TODO("not implemented")
     }
 
-    override fun recordFeedbackSent(userId: String, userEvent: UserEvent): LiveData<Result<Unit>> {
+    override suspend fun recordFeedbackSent(userId: String, userEvent: UserEvent): Result<Unit> {
         TODO("not implemented")
     }
 

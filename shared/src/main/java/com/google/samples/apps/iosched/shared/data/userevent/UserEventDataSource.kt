@@ -45,10 +45,10 @@ interface UserEventDataSource {
      */
     fun starEvent(userId: String, userEvent: UserEvent): LiveData<Result<StarUpdatedStatus>>
 
-    fun recordFeedbackSent(
+    suspend fun recordFeedbackSent(
         userId: String,
         userEvent: UserEvent
-    ): LiveData<Result<Unit>>
+    ): Result<Unit>
 
     fun requestReservation(
         userId: String,

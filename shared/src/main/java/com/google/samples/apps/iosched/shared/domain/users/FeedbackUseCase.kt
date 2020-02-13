@@ -20,29 +20,20 @@ import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
-import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
+import com.google.samples.apps.iosched.shared.domain.SuspendUseCase
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 open class FeedbackUseCase @Inject constructor(
     private val endpoint: FeedbackEndpoint,
-    private val repository: SessionAndUserEventRepository
-) : MediatorUseCase<FeedbackParameter, Unit>() {
+    private val repository: SessionAndUserEventRepository,
+    @IoDispatcher dispatcher: CoroutineDispatcher
+) : SuspendUseCase<FeedbackParameter, Unit>(dispatcher) {
 
-    override fun execute(parameters: FeedbackParameter) {
-        var tasks = 2
-        val taskDone = {
-            tasks -= 1
-            if (tasks <= 0) {
-                result.postValue(Result.Success(Unit))
-            }
-        }
-        result.addSource(endpoint.sendFeedback(parameters.sessionId, parameters.responses)) {
-            taskDone()
-        }
-        result.addSource(repository.recordFeedbackSent(parameters.userId, parameters.userEvent)) {
-            taskDone()
-        }
+    override suspend fun execute(parameters: FeedbackParameter) {
+        endpoint.sendFeedback(parameters.sessionId, parameters.responses)
+        repository.recordFeedbackSent(parameters.userId, parameters.userEvent)
     }
 }
 

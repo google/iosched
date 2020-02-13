@@ -182,7 +182,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         return userEventDataSource.starEvent(userId, userEvent)
     }
 
-    override fun recordFeedbackSent(userId: String, userEvent: UserEvent): LiveData<Result<Unit>> {
+    override suspend fun recordFeedbackSent(userId: String, userEvent: UserEvent): Result<Unit> {
         return userEventDataSource.recordFeedbackSent(userId, userEvent)
     }
 
@@ -307,10 +307,10 @@ interface SessionAndUserEventRepository {
 
     fun starEvent(userId: String, userEvent: UserEvent): LiveData<Result<StarUpdatedStatus>>
 
-    fun recordFeedbackSent(
+    suspend fun recordFeedbackSent(
         userId: String,
         userEvent: UserEvent
-    ): LiveData<Result<Unit>>
+    ): Result<Unit>
 
     fun clearSingleEventSubscriptions()
 

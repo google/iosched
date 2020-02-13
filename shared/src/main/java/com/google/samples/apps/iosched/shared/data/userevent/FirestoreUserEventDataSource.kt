@@ -37,6 +37,8 @@ import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAct
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.Result.Error
+import com.google.samples.apps.iosched.shared.result.Result.Success
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -46,6 +48,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlin.coroutines.resume
+import kotlinx.coroutines.suspendCancellableCoroutine
 import timber.log.Timber
 
 /**
@@ -279,33 +283,37 @@ class FirestoreUserEventDataSource @Inject constructor(
         return result
     }
 
-    override fun recordFeedbackSent(
+    override suspend fun recordFeedbackSent(
         userId: String,
         userEvent: UserEvent
-    ): LiveData<Result<Unit>> {
-        val result = MutableLiveData<Result<Unit>>()
-
+    ): Result<Unit> {
         val data = mapOf(
             ID to userEvent.id,
             "reviewed" to true
         )
 
-        firestore
-            .document2020()
-            .collection(USERS_COLLECTION)
-            .document(userId)
-            .collection(EVENTS_COLLECTION)
-            .document(userEvent.id).set(data, SetOptions.merge())
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    result.postValue(Result.Success(Unit))
-                } else {
-                    result.postValue(
-                        Result.Error(task.exception ?: RuntimeException("Error updating feedback."))
-                    )
+        return suspendCancellableCoroutine<Result<Unit>> { continuation ->
+
+            firestore
+                .document2020()
+                .collection(USERS_COLLECTION)
+                .document(userId)
+                .collection(EVENTS_COLLECTION)
+                .document(userEvent.id).set(data, SetOptions.merge())
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        continuation.resume(Success(Unit))
+                    } else {
+                        continuation.resume(
+                            Error(
+                                task.exception ?: RuntimeException(
+                                    "Error updating feedback."
+                                )
+                            )
+                        )
+                    }
                 }
-            }
-        return result
+        }
     }
 
     /**
