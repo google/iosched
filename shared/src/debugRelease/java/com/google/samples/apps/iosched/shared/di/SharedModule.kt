@@ -55,12 +55,14 @@ import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Named
 import javax.inject.Singleton
 
 /**
  * Module where classes created in the shared module are created.
  */
+@ExperimentalCoroutinesApi
 @Module
 class SharedModule {
 
@@ -124,8 +126,11 @@ class SharedModule {
 
     @Singleton
     @Provides
-    fun provideUserEventDataSource(firestore: FirebaseFirestore): UserEventDataSource {
-        return FirestoreUserEventDataSource(firestore)
+    fun provideUserEventDataSource(
+        firestore: FirebaseFirestore,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): UserEventDataSource {
+        return FirestoreUserEventDataSource(firestore, ioDispatcher)
     }
 
     @Singleton

@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.SessionId
@@ -58,6 +59,7 @@ import com.google.samples.apps.iosched.ui.schedule.filters.LoadEventFiltersUseCa
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import kotlinx.coroutines.launch
 import java.util.UUID
 import javax.inject.Inject
 import org.threeten.bp.ZoneId
@@ -222,7 +224,7 @@ class ScheduleViewModel @Inject constructor(
         }
 
         eventCount = loadSessionsResult.map {
-            (it as? Result.Success)?.data?.userSessionCount ?: 0
+            (it as? Success)?.data?.userSessionCount ?: 0
         }
 
         isLoading = loadSessionsResult.map { it == Result.Loading }
@@ -245,23 +247,9 @@ class ScheduleViewModel @Inject constructor(
             }
         }
 
-        // Show an error message if a star request fails
-        _snackBarMessage.addSource(starEventUseCase.observe()) {
-            if (it is Result.Error) {
-                _snackBarMessage.postValue(
-                    Event(
-                        SnackbarMessage(
-                            messageId = R.string.event_star_error,
-                            longDuration = true
-                        )
-                    )
-                )
-            }
-        }
-
         // Show a message with the result of a reservation
         _snackBarMessage.addSource(loadSessionsResult) {
-            if (it is Result.Success) {
+            if (it is Success) {
                 it.data.userMessage?.type?.stringRes()?.let { messageId ->
                     // There is a message to display:
                     snackbarMessageManager.addMessage(
@@ -283,7 +271,7 @@ class ScheduleViewModel @Inject constructor(
 
         scheduleUiHintsShownUseCase(Unit, scheduleUiHintsShownResult)
         scheduleUiHintsShown = scheduleUiHintsShownResult.map {
-            Event((it as? Result.Success)?.data == true)
+            Event((it as? Success)?.data == true)
         }
 
         isConferenceTimeZone = timeZoneId.map { zoneId ->
@@ -415,15 +403,20 @@ class ScheduleViewModel @Inject constructor(
             )
         )
 
-        getUserId()?.let {
-            starEventUseCase.execute(
-                StarEventParameter(
-                    it,
-                    userSession.copy(
-                        userEvent = userSession.userEvent.copy(isStarred = newIsStarredState)
+        viewModelScope.launch {
+            getUserId()?.let {
+                val result = starEventUseCase(
+                    StarEventParameter(
+                        it, userSession.copy(
+                            userEvent = userSession.userEvent.copy(isStarred = newIsStarredState)
+                        )
                     )
                 )
-            )
+                // Show an error message if a star request fails
+                if (result is Result.Error) {
+                    _snackBarMessage.value = Event(SnackbarMessage(R.string.event_star_error))
+                }
+            }
         }
     }
 

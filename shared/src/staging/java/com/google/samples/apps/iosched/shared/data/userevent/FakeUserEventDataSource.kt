@@ -67,25 +67,17 @@ object FakeUserEventDataSource : UserEventDataSource {
     override fun getObservableUserEvent(
         userId: String,
         eventId: SessionId
-    ): LiveData<UserEventResult> {
-        val result = MutableLiveData<UserEventResult>()
-        result.postValue(UserEventResult(userEvents[0]))
-        return result
+    ) = flow {
+        emit(UserEventResult(userEvents[0]))
     }
 
-    override fun starEvent(
+    override suspend fun starEvent(
         userId: SessionId,
         userEvent: UserEvent
-    ): LiveData<Result<StarUpdatedStatus>> {
-        val result = MutableLiveData<Result<StarUpdatedStatus>>()
-        result.postValue(
-            Result.Success(
-                if (userEvent.isStarred) StarUpdatedStatus.STARRED
-                else StarUpdatedStatus.UNSTARRED
-            )
-        )
-        return result
-    }
+    ) = Result.Success(
+        if (userEvent.isStarred) StarUpdatedStatus.STARRED
+        else StarUpdatedStatus.UNSTARRED
+    )
 
     override suspend fun recordFeedbackSent(
         userId: String,

@@ -490,7 +490,7 @@ class ScheduleViewModelTest {
 
     private fun createSignInViewModelDelegate() = FakeSignInViewModelDelegate()
 
-    private fun createStarEventUseCase() = FakeStarEventUseCase()
+    private fun createStarEventUseCase() = FakeStarEventUseCase(coroutineRule.testDispatcher)
 
     private fun createGetTimeZoneUseCase() =
         object : GetTimeZoneUseCaseLegacy(FakePreferenceStorage(), testDispatcher) {}

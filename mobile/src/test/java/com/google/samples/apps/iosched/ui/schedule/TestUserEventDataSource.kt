@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.ui.schedule
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
@@ -49,22 +48,14 @@ class TestUserEventDataSource : UserEventDataSource {
         emit(UserEventsResult(TestData.userEvents))
     }, newObservableUserEvents.asFlow())
 
-    override fun getObservableUserEvent(userId: String, eventId: SessionId) = liveData {
+    override fun getObservableUserEvent(userId: String, eventId: SessionId) = flow {
         emit(UserEventResult(TestData.userEvents.find { it.id == eventId }))
     }
 
-    override fun starEvent(
+    override suspend fun starEvent(
         userId: String,
         userEvent: UserEvent
-    ): LiveData<Result<StarUpdatedStatus>> {
-        val result = MutableLiveData<Result<StarUpdatedStatus>>()
-        result.postValue(
-            Result.Success(
-                if (userEvent.isStarred) STARRED else UNSTARRED
-            )
-        )
-        return result
-    }
+    ): Result<StarUpdatedStatus> = Result.Success(if (userEvent.isStarred) STARRED else UNSTARRED)
 
     override suspend fun recordFeedbackSent(userId: String, userEvent: UserEvent): Result<Unit> {
         return Result.Success(Unit)

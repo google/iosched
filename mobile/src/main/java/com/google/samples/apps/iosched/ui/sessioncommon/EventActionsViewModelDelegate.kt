@@ -22,12 +22,18 @@ import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.shared.di.MainDispatcher
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.result.Event
+import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import java.util.UUID
 import javax.inject.Inject
 import timber.log.Timber
@@ -45,8 +51,11 @@ interface EventActionsViewModelDelegate : EventActions {
 class DefaultEventActionsViewModelDelegate @Inject constructor(
     signInViewModelDelegate: SignInViewModelDelegate,
     private val starEventUseCase: StarEventAndNotifyUseCase,
-    private val snackbarMessageManager: SnackbarMessageManager
+    private val snackbarMessageManager: SnackbarMessageManager,
+    @MainDispatcher private val mainDispatcher: CoroutineDispatcher
 ) : EventActionsViewModelDelegate, SignInViewModelDelegate by signInViewModelDelegate {
+
+    private val delegateScope = CoroutineScope(mainDispatcher + SupervisorJob())
 
     private val _navigateToEventAction = MutableLiveData<Event<SessionId>>()
     override val navigateToEventAction: LiveData<Event<SessionId>>
@@ -86,13 +95,20 @@ class DefaultEventActionsViewModelDelegate @Inject constructor(
             )
         )
 
-        getUserId()?.let {
-            starEventUseCase.execute(
-                StarEventParameter(
-                    it, userSession.copy(
-                        userEvent = userSession.userEvent.copy(isStarred = newIsStarredState))
+        delegateScope.launch {
+            getUserId()?.let {
+                val result = starEventUseCase(
+                    StarEventParameter(
+                        it, userSession.copy(
+                            userEvent = userSession.userEvent.copy(isStarred = newIsStarredState)
+                        )
+                    )
                 )
-            )
+                // Show an error message if a star request fails
+                if (result is Result.Error) {
+                    _snackBarMessage.value = Event(SnackbarMessage(R.string.event_star_error))
+                }
+            }
         }
     }
 }
