@@ -20,5 +20,5 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 
 fun FirebaseFirestore.document2019(): DocumentReference =
-    // This is a prefix for Firestore document for 2019
-    collection("google_io_events").document("2019")
+    // This is a prefix for Firestore document for this year
+    collection("google_io_events").document("2020")
