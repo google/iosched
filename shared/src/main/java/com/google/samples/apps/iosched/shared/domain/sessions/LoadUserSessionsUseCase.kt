@@ -24,12 +24,14 @@ import com.google.samples.apps.iosched.shared.domain.FlowUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 /**
  * Load [UserSession]s for a given list of sessions.
  */
+@ExperimentalCoroutinesApi
 open class LoadUserSessionsUseCase @Inject constructor(
     private val userEventRepository: DefaultSessionAndUserEventRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher

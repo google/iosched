@@ -30,7 +30,7 @@ interface UserEventDataSource {
 
     fun getObservableUserEvents(userId: String): Flow<UserEventsResult>
 
-    fun getObservableUserEvent(userId: String, eventId: SessionId): LiveData<UserEventResult>
+    fun getObservableUserEvent(userId: String, eventId: SessionId): Flow<UserEventResult>
 
     fun getUserEvents(userId: String): List<UserEvent>
 
@@ -43,7 +43,7 @@ interface UserEventDataSource {
      * @param userEvent the [UserEvent], which isStarred is going to be the updated status
      * @return the LiveData that represents the status of the star operation.
      */
-    fun starEvent(userId: String, userEvent: UserEvent): LiveData<Result<StarUpdatedStatus>>
+    suspend fun starEvent(userId: String, userEvent: UserEvent): Result<StarUpdatedStatus>
 
     suspend fun recordFeedbackSent(
         userId: String,

@@ -123,14 +123,14 @@ object TestUserEventRepository : SessionAndUserEventRepository {
     override fun getObservableUserEvent(
         userId: String?,
         eventId: SessionId
-    ): LiveData<Result<LoadUserSessionUseCaseResult>> {
+    ): Flow<Result<LoadUserSessionUseCaseResult>> {
         TODO("not implemented")
     }
 
-    override fun starEvent(
+    override suspend fun starEvent(
         userId: String,
         userEvent: UserEvent
-    ): LiveData<Result<StarUpdatedStatus>> {
+    ): Result<StarUpdatedStatus> {
         TODO("not implemented")
     }
 
@@ -164,8 +164,6 @@ object TestUserEventRepository : SessionAndUserEventRepository {
         TODO("not implemented")
     }
 
-    override fun clearSingleEventSubscriptions() {}
-
     override fun getConferenceDays(): List<ConferenceDay> {
         TODO("not implemented")
     }
@@ -185,14 +183,14 @@ object FailingUserEventRepository : SessionAndUserEventRepository {
     override fun getObservableUserEvent(
         userId: String?,
         eventId: SessionId
-    ): LiveData<Result<LoadUserSessionUseCaseResult>> {
+    ): Flow<Result<LoadUserSessionUseCaseResult>> {
         TODO("not implemented")
     }
 
-    override fun starEvent(
+    override suspend fun starEvent(
         userId: String,
         userEvent: UserEvent
-    ): LiveData<Result<StarUpdatedStatus>> {
+    ): Result<StarUpdatedStatus> {
         TODO("not implemented")
     }
 
@@ -219,8 +217,6 @@ object FailingUserEventRepository : SessionAndUserEventRepository {
     ): LiveData<Result<SwapRequestAction>> {
         TODO("not implemented")
     }
-
-    override fun clearSingleEventSubscriptions() {}
 
     override fun getConferenceDays(): List<ConferenceDay> {
         TODO("not implemented")

@@ -16,11 +16,13 @@
 
 package com.google.samples.apps.iosched.ui.sessioncommon
 
+import com.google.samples.apps.iosched.shared.di.MainDispatcher
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.CoroutineDispatcher
 
 /**
  * Provides a default implementation of [EventActionsViewModelDelegate].
@@ -32,12 +34,14 @@ internal class EventActionsViewModelDelegateModule {
     fun provideEventActionsViewModelDelegate(
         signInViewModelDelegate: SignInViewModelDelegate,
         starEventUseCase: StarEventAndNotifyUseCase,
-        snackbarMessageManager: SnackbarMessageManager
+        snackbarMessageManager: SnackbarMessageManager,
+        @MainDispatcher mainDispatcher: CoroutineDispatcher
     ): EventActionsViewModelDelegate {
         return DefaultEventActionsViewModelDelegate(
             signInViewModelDelegate,
             starEventUseCase,
-            snackbarMessageManager
+            snackbarMessageManager,
+            mainDispatcher
         )
     }
 }

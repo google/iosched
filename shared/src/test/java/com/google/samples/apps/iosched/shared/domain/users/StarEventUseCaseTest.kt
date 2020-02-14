@@ -16,10 +16,8 @@
 
 package com.google.samples.apps.iosched.shared.domain.users
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
@@ -34,8 +32,9 @@ import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotific
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doNothing
 import com.nhaarman.mockito_kotlin.mock
@@ -52,50 +51,43 @@ import org.junit.Test
  */
 class StarEventAndNotifyUseCaseTest {
 
-    // Executes tasks in the Architecture Components in the same thread
+    // Overrides Dispatchers.Main used in Coroutines
     @get:Rule
-    var instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule
-    var syncExecutorRule = SyncExecutorRule()
+    var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun sessionIsStarredSuccessfully() {
+    fun sessionIsStarredSuccessfully() = coroutineRule.runBlockingTest {
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
             TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
         )
-        val useCase = StarEventAndNotifyUseCase(testUserEventRepository, mock {})
+        val useCase = StarEventAndNotifyUseCase(testUserEventRepository,
+            mock {},
+            coroutineRule.testDispatcher)
 
-        val resultLiveData = useCase.observe()
+        val result = useCase(StarEventParameter("userIdTest", TestData.userSession1))
 
-        useCase.execute(StarEventParameter("userIdTest", TestData.userSession1))
-
-        val result = LiveDataTestUtil.getValue(resultLiveData)
         Assert.assertEquals(result, Result.Success(StarUpdatedStatus.STARRED))
     }
 
     @Test
-    fun sessionIsStarredUnsuccessfully() {
+    fun sessionIsStarredUnsuccessfully() = coroutineRule.runBlockingTest {
         val alarmManager: SessionAlarmManager = mock()
         doNothing().whenever(alarmManager).cancelAlarmForSession(any())
         val alarmUpdater = StarReserveNotificationAlarmUpdater(alarmManager)
 
         val useCase = StarEventAndNotifyUseCase(
             FailingSessionAndUserEventRepository,
-            alarmUpdater
+            alarmUpdater,
+            coroutineRule.testDispatcher
         )
 
-        val resultLiveData = useCase.observe()
+        val result = useCase(StarEventParameter("userIdTest", TestData.userSession3))
 
-        useCase.execute(StarEventParameter("userIdTest", TestData.userSession3))
-
-        val result = LiveDataTestUtil.getValue(resultLiveData)
         assertTrue(result is Result.Error)
     }
 
     @Test
-    fun sessionIsStarredAndNotificationSet() {
+    fun sessionIsStarredAndNotificationSet() = coroutineRule.runBlockingTest {
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
             TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
         )
@@ -103,13 +95,12 @@ class StarEventAndNotifyUseCaseTest {
 
         doNothing().whenever(updater).updateSession(any(), any())
 
-        val useCase = StarEventAndNotifyUseCase(testUserEventRepository, updater)
+        val useCase = StarEventAndNotifyUseCase(
+            testUserEventRepository,
+            updater,
+            coroutineRule.testDispatcher)
 
-        val resultLiveData = useCase.observe()
-
-        useCase.execute(StarEventParameter("userIdTest", TestData.userSession3))
-
-        LiveDataTestUtil.getValue(resultLiveData)
+        useCase(StarEventParameter("userIdTest", TestData.userSession3))
 
         verify(updater).updateSession(TestData.userSession3, false)
     }
@@ -119,13 +110,10 @@ val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepositor
 
     val result = MutableLiveData<Result<StarUpdatedStatus>>()
 
-    override fun starEvent(
+    override suspend fun starEvent(
         userId: String,
         userEvent: UserEvent
-    ): LiveData<Result<StarUpdatedStatus>> {
-        result.postValue(Result.Error(Exception("Test")))
-        return result
-    }
+    ): Result<StarUpdatedStatus> = Result.Error(Exception("Test"))
 
     override suspend fun recordFeedbackSent(userId: String, userEvent: UserEvent): Result<Unit> {
         throw NotImplementedError()
@@ -140,7 +128,7 @@ val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepositor
     override fun getObservableUserEvent(
         userId: String?,
         eventId: SessionId
-    ): LiveData<Result<LoadUserSessionUseCaseResult>> {
+    ): Flow<Result<LoadUserSessionUseCaseResult>> {
         throw NotImplementedError()
     }
 
@@ -167,8 +155,6 @@ val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepositor
     override fun getUserSession(userId: String, sessionId: SessionId): UserSession {
         throw NotImplementedError()
     }
-
-    override fun clearSingleEventSubscriptions() {}
 
     override fun getConferenceDays(): List<ConferenceDay> {
         throw NotImplementedError()

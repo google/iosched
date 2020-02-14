@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.shared.data.userevent
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
@@ -26,6 +25,7 @@ import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.runBlockingTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.Matchers.equalTo
@@ -39,6 +39,7 @@ import org.junit.Test
 /**
  * Unit test for [DefaultSessionAndUserEventRepository].
  */
+@ExperimentalCoroutinesApi
 class DefaultSessionAndUserEventRepositoryTest {
 
     // Executes tasks in the Architecture Components in the same thread
@@ -92,7 +93,7 @@ class DefaultSessionAndUserEventRepositoryTest {
             userEventDataSource = TestUserEventDataSource(),
             sessionRepository = DefaultSessionRepository(TestDataRepository)
         )
-        val userEvent = LiveDataTestUtil.getValue(repository.getObservableUserEvent("user", "2"))
+        val userEvent = repository.getObservableUserEvent("user", "2").first()
 
         assertThat(userEvent, `is`(instanceOf(Result.Success::class.java)))
 

@@ -20,8 +20,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import androidx.lifecycle.switchMap
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
@@ -32,7 +31,6 @@ import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
@@ -58,10 +56,15 @@ import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogPar
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.google.samples.apps.iosched.util.cancelIfActive
 import com.google.samples.apps.iosched.util.combine
 import java.util.UUID
 import javax.inject.Inject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import org.threeten.bp.Duration
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
@@ -73,11 +76,13 @@ private const val SIXTY_SECONDS = 60_000L
 /**
  * Loads [Session] data and exposes it to the session detail view.
  */
+@ExperimentalCoroutinesApi
 class SessionDetailViewModel @Inject constructor(
     private val signInViewModelDelegate: SignInViewModelDelegate,
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val loadRelatedSessionUseCase: LoadUserSessionsUseCase,
     private val starEventUseCase: StarEventAndNotifyUseCase,
+    // TODO: Migrate reservation to coroutines
     private val reservationActionUseCase: ReservationActionUseCase,
     getTimeZoneUseCase: GetTimeZoneUseCaseLegacy, // TODO(COROUTINES): Migrate
     private val snackbarMessageManager: SnackbarMessageManager,
@@ -87,23 +92,15 @@ class SessionDetailViewModel @Inject constructor(
 ) : ViewModel(), SessionDetailEventListener, EventActions,
     SignInViewModelDelegate by signInViewModelDelegate {
 
-    private val loadUserSessionResult: MediatorLiveData<Result<LoadUserSessionUseCaseResult>> =
-        loadUserSessionUseCase.observe()
+    // Keeps track of the coroutine that listens for a user session
+    private var loadUserSessionJob: Job? = null
 
-    val relatedUserSessions: LiveData<List<UserSession>> = loadUserSessionResult.switchMap {
-        liveData<List<UserSession>> {
-            it?.data?.let {
-                val related = it.userSession.session.relatedSessions
-                if (related.isNotEmpty()) {
-                    loadRelatedSessionUseCase(getUserId() to related).collect { it
-                        it.data?.let { data ->
-                            emit(data)
-                        }
-                    }
-                }
-            }
-        }
-    }
+    // Keeps track of the coroutine that listens for related user sessions
+    private var loadRelatedSessionJob: Job? = null
+
+    private val _relatedUserSessions = MediatorLiveData<List<UserSession>>()
+    val relatedUserSessions: LiveData<List<UserSession>>
+        get() = _relatedUserSessions
 
     private val sessionTimeRelativeState: LiveData<TimeUtils.SessionRelativeTimeState>
 
@@ -183,25 +180,11 @@ class SessionDetailViewModel @Inject constructor(
 
         /* Wire result dependencies */
 
-        // If there's a new result with data, update the session
-        _session.addSource(loadUserSessionResult) {
-            (loadUserSessionResult.value as? Result.Success)?.data?.userSession?.session?.let {
-                _session.value = it
-            }
-        }
-
         _shouldShowStarInBottomNav.addSource(session) {
             _shouldShowStarInBottomNav.value = showStarInBottomNav()
         }
         _shouldShowStarInBottomNav.addSource(observeRegisteredUser()) {
             _shouldShowStarInBottomNav.value = showStarInBottomNav()
-        }
-
-        // If there's a new result with data, update the UserEvent
-        _userEvent.addSource(loadUserSessionResult) {
-            (loadUserSessionResult.value as? Result.Success)?.data?.userSession?.userEvent?.let {
-                _userEvent.value = it
-            }
         }
 
         val showInConferenceTimeZone = preferConferenceTimeZoneResult.map {
@@ -253,13 +236,6 @@ class SessionDetailViewModel @Inject constructor(
 
         /* Wiring dependencies for stars and reservation. */
 
-        _snackBarMessage.addSource(starEventUseCase.observe()) { result ->
-            // Show an error message if a star request fails
-            if (result is Result.Error) {
-                _snackBarMessage.postValue(Event(SnackbarMessage(R.string.event_star_error)))
-            }
-        }
-
         // Show an error message if a reservation request fails
         _snackBarMessage.addSource(reservationActionUseCase.observe()) {
             if (it is Result.Error) {
@@ -271,22 +247,6 @@ class SessionDetailViewModel @Inject constructor(
                         )
                     )
                 )
-            }
-        }
-        // Show a message with the result of a reservation
-        _snackBarMessage.addSource(loadUserSessionUseCase.observe()) {
-            if (it is Result.Success) {
-                it.data.userMessage?.type?.stringRes()?.let { messageId ->
-                    // There is a message to display
-                    snackbarMessageManager.addMessage(
-                        SnackbarMessage(
-                            messageId = messageId,
-                            longDuration = true,
-                            session = it.data.userSession.session,
-                            requestChangeId = it.data.userMessage?.changeRequestId
-                        )
-                    )
-                }
             }
         }
 
@@ -306,18 +266,60 @@ class SessionDetailViewModel @Inject constructor(
         }
         getSessionId()?.let {
             Timber.d("Refreshing data with session ID $it and user ${getUserId()}")
-            loadUserSessionUseCase.execute(getUserId() to it)
+            listenForUserSessionChanges(it)
+        }
+    }
+
+    private fun listenForUserSessionChanges(sessionId: SessionId) {
+        // Cancels listening for the old session
+        loadUserSessionJob.cancelIfActive()
+        // Cancels listening for old related user sessions
+        loadRelatedSessionJob.cancelIfActive()
+
+        loadUserSessionJob = viewModelScope.launch {
+            loadUserSessionUseCase(getUserId() to sessionId).collect {
+                val result = it.data ?: return@collect
+                val session = result.userSession.session
+                // At this point the result is guaranteed as Result.Success
+
+                _session.value = session
+                _userEvent.value = result.userSession.userEvent
+                result.userMessage?.type?.stringRes()?.let { messageId ->
+                    // There is a message to display
+                    snackbarMessageManager.addMessage(
+                        SnackbarMessage(
+                            messageId = messageId,
+                            longDuration = true,
+                            session = result.userSession.session,
+                            requestChangeId = result.userMessage?.changeRequestId
+                        )
+                    )
+                }
+                val related = session.relatedSessions
+                if (related.isNotEmpty()) {
+                    listenForRelatedSessions(related)
+                }
+            }
+        }
+    }
+
+    private suspend fun listenForRelatedSessions(related: Set<SessionId>) {
+        // if this fails, we don't want to propagate the error and
+        // stop listening for user session changes
+        supervisorScope {
+            loadRelatedSessionJob = launch {
+                loadRelatedSessionUseCase(getUserId() to related).collect {
+                    it.data?.let { userSessionResult ->
+                        _relatedUserSessions.value = userSessionResult
+                    }
+                }
+            }
         }
     }
 
     // TODO: write tests b/74611561
     fun setSessionId(newSessionId: SessionId?) {
         sessionId.setValueIfNew(newSessionId)
-    }
-
-    override fun onCleared() {
-        // Clear subscriptions that might be leaked or that will not be used in the future.
-        loadUserSessionUseCase.onCleared()
     }
 
     /**
@@ -397,13 +399,7 @@ class SessionDetailViewModel @Inject constructor(
             )
             analyticsHelper.logUiEvent(sessionSnapshot.title, AnalyticsActions.RESERVE_FAILED)
         } else {
-
-            val userSessionResult = loadUserSessionResult.value
-            val userSession = if (userSessionResult is Result.Success) {
-                userSessionResult.data.userSession
-            } else {
-                null
-            }
+            val userSession = UserSession(sessionSnapshot, userEventSnapshot)
             reservationActionUseCase.execute(ReservationRequestParameters(
                 userId,
                 sessionSnapshot.id,
@@ -449,14 +445,20 @@ class SessionDetailViewModel @Inject constructor(
         }
         _snackBarMessage.postValue(Event(snackbarMessage))
 
-        getUserId()?.let {
-            starEventUseCase.execute(
-                StarEventParameter(
-                    it,
-                    userSession.copy(
-                        userEvent = userSession.userEvent.copy(isStarred = newIsStarredState))
+        viewModelScope.launch {
+            getUserId()?.let {
+                val result = starEventUseCase(
+                    StarEventParameter(
+                        it, userSession.copy(
+                            userEvent = userSession.userEvent.copy(isStarred = newIsStarredState)
+                        )
+                    )
                 )
-            )
+                // Show an error message if a star request fails
+                if (result is Result.Error) {
+                    _snackBarMessage.value = Event(SnackbarMessage(R.string.event_star_error))
+                }
+            }
         }
     }
 

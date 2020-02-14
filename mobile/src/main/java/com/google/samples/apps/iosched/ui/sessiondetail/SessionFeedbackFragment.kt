@@ -34,8 +34,10 @@ import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.widget.SimpleRatingBar
 import dagger.android.support.DaggerAppCompatDialogFragment
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 class SessionFeedbackFragment : DaggerAppCompatDialogFragment() {
 
     @Inject
@@ -67,8 +69,8 @@ class SessionFeedbackFragment : DaggerAppCompatDialogFragment() {
                 questionAdapter.submitList(questions)
             }
         })
-        viewModel.title.observe(this, Observer { title ->
-            dialog?.setTitle(title)
+        viewModel.userSession.observe(viewLifecycleOwner, Observer { userSession ->
+            dialog?.setTitle(userSession.session.title)
         })
         return MaterialAlertDialogBuilder(context)
             // The actual title is set asynchronously, but there has to be some title to

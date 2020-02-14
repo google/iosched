@@ -18,37 +18,44 @@ package com.google.samples.apps.iosched.ui.reservation
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
-import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.google.samples.apps.iosched.util.cancelIfActive
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 class RemoveReservationViewModel @Inject constructor(
     signInViewModelDelegate: SignInViewModelDelegate,
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val reservationActionUseCase: ReservationActionUseCase
 ) : ViewModel(), SignInViewModelDelegate by signInViewModelDelegate {
 
+    private var loadUserSessionJob: Job? = null
     private val _sessionId = MutableLiveData<SessionId>()
 
-    private val loadUserSessionResult = loadUserSessionUseCase.observe()
-
-    private val _userSession = loadUserSessionResult.map { result ->
-        if (result is Result.Success) {
-            result.data.userSession
-        } else {
-            null
-        }
-    }
+    private val _userSession = MutableLiveData<UserSession>()
 
     fun setSessionId(sessionId: SessionId) {
         _sessionId.value = sessionId
-        loadUserSessionUseCase.execute(getUserId() to sessionId)
+        loadUserSessionJob.cancelIfActive()
+        loadUserSessionJob = viewModelScope.launch {
+            loadUserSessionUseCase(getUserId() to sessionId).collect { loadResult ->
+                loadResult.data?.userSession?.let {
+                    _userSession.value = it
+                }
+            }
+        }
     }
 
     fun removeReservation() {

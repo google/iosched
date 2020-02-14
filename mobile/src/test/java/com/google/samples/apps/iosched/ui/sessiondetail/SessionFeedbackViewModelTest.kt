@@ -85,7 +85,8 @@ class SessionFeedbackViewModelTest {
 
     @Test
     fun title() {
-        assertEquals(testSession.title, LiveDataTestUtil.getValue(viewModel.title))
+        assertEquals(testSession.title,
+            LiveDataTestUtil.getValue(viewModel.userSession)!!.session.title)
     }
 
     @Test
@@ -118,7 +119,8 @@ class SessionFeedbackViewModelTest {
             DefaultSessionAndUserEventRepository(
                 userEventDataSource,
                 DefaultSessionRepository(TestDataRepository)
-            )
+            ),
+            coroutineRule.testDispatcher
         )
     }
 

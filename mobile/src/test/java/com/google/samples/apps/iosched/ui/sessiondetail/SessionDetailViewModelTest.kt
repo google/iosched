@@ -365,7 +365,8 @@ class SessionDetailViewModelTest {
         loadRelatedSessionsUseCase: LoadUserSessionsUseCase =
             createTestLoadUserSessionsUseCase(),
         reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase(),
-        starEventUseCase: StarEventAndNotifyUseCase = FakeStarEventUseCase(),
+        starEventUseCase: StarEventAndNotifyUseCase =
+            FakeStarEventUseCase(coroutineRule.testDispatcher),
         getTimeZoneUseCase: GetTimeZoneUseCaseLegacy = createGetTimeZoneUseCase(),
         snackbarMessageManager: SnackbarMessageManager =
             SnackbarMessageManager(FakePreferenceStorage()),
@@ -403,7 +404,7 @@ class SessionDetailViewModelTest {
             userEventDataSource,
             sessionRepository
         )
-        return LoadUserSessionUseCase(userEventRepository)
+        return LoadUserSessionUseCase(userEventRepository, coroutineRule.testDispatcher)
     }
 
     private fun createTestLoadUserSessionsUseCase(
