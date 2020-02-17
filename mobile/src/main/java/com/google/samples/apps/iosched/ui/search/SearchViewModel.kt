@@ -20,6 +20,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
@@ -38,6 +39,7 @@ import com.google.samples.apps.iosched.ui.search.SearchResultType.CODELAB
 import com.google.samples.apps.iosched.ui.search.SearchResultType.SESSION
 import com.google.samples.apps.iosched.ui.search.SearchResultType.SPEAKER
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class SearchViewModel @Inject constructor(
@@ -61,55 +63,11 @@ class SearchViewModel @Inject constructor(
     private val _navigateToCodelabAction = MutableLiveData<Event<String>>()
     val navigateToCodelabAction: LiveData<Event<String>> = _navigateToCodelabAction
 
-    private val loadSearchResults = MutableLiveData<Result<List<Searchable>>>()
-
     private val _searchResults = MediatorLiveData<List<SearchResult>>()
     val searchResults: LiveData<List<SearchResult>> = _searchResults
 
     private val _isEmpty = MediatorLiveData<Boolean>()
     val isEmpty: LiveData<Boolean> = _isEmpty
-
-    init {
-        _searchResults.addSource(loadSearchResults) {
-            val result = (it as? Result.Success)?.data ?: emptyList()
-            _searchResults.value = result.map { searched ->
-                when (searched) {
-                    is SearchedSession -> {
-                        val session = searched.session
-                        SearchResult(
-                            session.title,
-                            session.type.displayName,
-                            SESSION,
-                            session.id
-                        )
-                    }
-                    is SearchedSpeaker -> {
-                        val speaker = searched.speaker
-                        SearchResult(
-                            speaker.name,
-                            "Speaker",
-                            SPEAKER,
-                            speaker.id
-                        )
-                    }
-                    is SearchedCodelab -> {
-                        val codelab = searched.codelab
-                        SearchResult(
-                            codelab.title,
-                            "Codelab",
-                            CODELAB,
-                            // This may not be unique, but to navigate to a meaningful page,
-                            // assigning codelabUrl as id
-                            codelab.codelabUrl
-                        )
-                    }
-                }
-            }
-        }
-        _isEmpty.addSource(loadSearchResults) {
-            _isEmpty.value = it.successOr(null).isNullOrEmpty()
-        }
-    }
 
     override fun openSearchResult(searchResult: SearchResult) {
         when (searchResult.type) {
@@ -146,10 +104,14 @@ class SearchViewModel @Inject constructor(
     private fun executeSearch(query: String) {
         if (searchUsingRoomFeatureEnabled) {
             Timber.d("Searching for query using Room: $query")
-            loadDbSearchResultsUseCase(query, loadSearchResults)
+            viewModelScope.launch {
+                processSearchResult(loadDbSearchResultsUseCase(query))
+            }
         } else {
             Timber.d("Searching for query without using Room: $query")
-            loadSearchResultsUseCase(query, loadSearchResults)
+            viewModelScope.launch {
+                processSearchResult(loadSearchResultsUseCase(query))
+            }
         }
     }
 
@@ -157,5 +119,44 @@ class SearchViewModel @Inject constructor(
         _searchResults.value = emptyList()
         // Explicitly set false to not show the "No results" state
         _isEmpty.value = false
+    }
+
+    private fun processSearchResult(searchResult: Result<List<Searchable>>) {
+        val result = (searchResult as? Result.Success)?.data ?: emptyList()
+        _searchResults.value = result.map { searched ->
+            when (searched) {
+                is SearchedSession -> {
+                    val session = searched.session
+                    SearchResult(
+                        session.title,
+                        session.type.displayName,
+                        SESSION,
+                        session.id
+                    )
+                }
+                is SearchedSpeaker -> {
+                    val speaker = searched.speaker
+                    SearchResult(
+                        speaker.name,
+                        "Speaker",
+                        SPEAKER,
+                        speaker.id
+                    )
+                }
+                is SearchedCodelab -> {
+                    val codelab = searched.codelab
+                    SearchResult(
+                        codelab.title,
+                        "Codelab",
+                        CODELAB,
+                        // This may not be unique, but to navigate to a meaningful page,
+                        // assigning codelabUrl as id
+                        codelab.codelabUrl
+                    )
+                }
+            }
+        }
+
+        _isEmpty.value = searchResult.successOr(null).isNullOrEmpty()
     }
 }
