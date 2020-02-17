@@ -21,7 +21,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.samples.apps.iosched.model.Moment
-import com.google.samples.apps.iosched.shared.data.document2019
+import com.google.samples.apps.iosched.shared.data.document2020
 import com.google.samples.apps.iosched.shared.util.ColorUtils
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -41,7 +41,7 @@ class FirestoreMomentDataSource @Inject constructor(
 
     override fun getMoments(): List<Moment> {
         val task = firestore
-            .document2019()
+            .document2020()
             .collection(MOMENT_COLLECTION)
             .get()
         val snapshot = Tasks.await(task, 20, TimeUnit.SECONDS)

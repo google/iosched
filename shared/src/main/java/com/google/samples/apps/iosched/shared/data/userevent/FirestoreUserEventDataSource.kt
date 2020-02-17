@@ -28,7 +28,7 @@ import com.google.firebase.firestore.SetOptions
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
-import com.google.samples.apps.iosched.shared.data.document2019
+import com.google.samples.apps.iosched.shared.data.document2020
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
@@ -111,7 +111,7 @@ class FirestoreUserEventDataSource @Inject constructor(
         } else {
             return (channelFlow {
                 val eventsCollection = firestore
-                    .document2019()
+                    .document2020()
                     .collection(USERS_COLLECTION)
                     .document(userId)
                     .collection(EVENTS_COLLECTION)
@@ -188,7 +188,7 @@ class FirestoreUserEventDataSource @Inject constructor(
             }
 
             val eventDocument = firestore
-                .document2019()
+                .document2020()
                 .collection(USERS_COLLECTION)
                 .document(userId)
                 .collection(EVENTS_COLLECTION)
@@ -210,7 +210,7 @@ class FirestoreUserEventDataSource @Inject constructor(
         }
 
         val task = firestore
-            .document2019()
+            .document2020()
             .collection(USERS_COLLECTION)
             .document(userId)
             .collection(EVENTS_COLLECTION).get()
@@ -224,7 +224,7 @@ class FirestoreUserEventDataSource @Inject constructor(
         }
 
         val task = firestore
-                .document2019()
+                .document2020()
                 .collection(USERS_COLLECTION)
                 .document(userId)
                 .collection(EVENTS_COLLECTION)
@@ -256,7 +256,7 @@ class FirestoreUserEventDataSource @Inject constructor(
         )
 
         firestore
-            .document2019()
+            .document2020()
             .collection(USERS_COLLECTION)
             .document(userId)
             .collection(EVENTS_COLLECTION)
@@ -291,7 +291,7 @@ class FirestoreUserEventDataSource @Inject constructor(
         )
 
         firestore
-            .document2019()
+            .document2020()
             .collection(USERS_COLLECTION)
             .document(userId)
             .collection(EVENTS_COLLECTION)
@@ -335,7 +335,7 @@ class FirestoreUserEventDataSource @Inject constructor(
 
         // Write #1: Mark this session as reserved. This is for clients to track.
         val userSession = firestore
-            .document2019()
+            .document2020()
             .collection(USERS_COLLECTION)
             .document(userId)
             .collection(EVENTS_COLLECTION)
@@ -358,7 +358,7 @@ class FirestoreUserEventDataSource @Inject constructor(
         // success in this reservation only means that the request was accepted. Even offline, this
         // request will succeed.
         val newRequest = firestore
-            .document2019()
+            .document2020()
             .collection(QUEUE_COLLECTION)
             .document(userId)
 
@@ -400,7 +400,7 @@ class FirestoreUserEventDataSource @Inject constructor(
 
         // Write #1: Mark the toSession as reserved. This is for clients to track.
         val toUserSession = firestore
-            .document2019()
+            .document2020()
             .collection(USERS_COLLECTION)
             .document(userId)
             .collection(EVENTS_COLLECTION)
@@ -418,7 +418,7 @@ class FirestoreUserEventDataSource @Inject constructor(
 
         // Write #2: Mark the fromSession as canceled. This is for clients to track.
         val fromUserSession = firestore
-            .document2019()
+            .document2020()
             .collection(USERS_COLLECTION)
             .document(userId)
             .collection(EVENTS_COLLECTION)
@@ -438,7 +438,7 @@ class FirestoreUserEventDataSource @Inject constructor(
         // (from and to). success in this reservation only means that the request was accepted.
         // Even offline, this request will succeed.
         val newRequest = firestore
-            .document2019()
+            .document2020()
             .collection(QUEUE_COLLECTION)
             .document(userId)
 

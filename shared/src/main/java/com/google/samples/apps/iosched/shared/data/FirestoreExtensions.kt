@@ -19,6 +19,6 @@ package com.google.samples.apps.iosched.shared.data
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 
-fun FirebaseFirestore.document2019(): DocumentReference =
+fun FirebaseFirestore.document2020(): DocumentReference =
     // This is a prefix for Firestore document for this year
     collection("google_io_events").document("2020")

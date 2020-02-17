@@ -20,7 +20,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.iid.FirebaseInstanceId
-import com.google.samples.apps.iosched.shared.data.document2019
+import com.google.samples.apps.iosched.shared.data.document2020
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import javax.inject.Inject
 import timber.log.Timber
@@ -43,7 +43,7 @@ class FcmTokenUpdater @Inject constructor(val firestore: FirebaseFirestore) {
             // All Firestore operations start from the main thread to avoid concurrency issues.
             DefaultScheduler.postToMainThread {
                 firestore
-                    .document2019()
+                    .document2020()
                     .collection(USERS_COLLECTION)
                     .document(userId)
                     .collection(FCM_IDS_COLLECTION)
