@@ -22,7 +22,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ListenerRegistration
-import com.google.samples.apps.iosched.shared.data.document2019
+import com.google.samples.apps.iosched.shared.data.document2020
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.result.Result
 import javax.inject.Inject
@@ -88,7 +88,7 @@ class FirestoreRegisteredUserDataSource @Inject constructor(
                 }
             }
         registeredChangedListenerSubscription = firestore
-            .document2019()
+            .document2020()
             .collection(USERS_COLLECTION)
             .document(newUserId)
             .addSnapshotListener(registeredChangedListener)
