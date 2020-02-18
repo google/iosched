@@ -158,12 +158,6 @@ object TestData {
 
     val sessionIDs = sessionsList.map { it.id }.toList()
 
-    val sessionsMap = mapOf(
-        TestConferenceDays[0] to listOf(session0, session1),
-        TestConferenceDays[1] to listOf(session2),
-        TestConferenceDays[2] to listOf(session3, sessionWithYoutubeUrl)
-    )
-
     val block1 = Block(
         title = "Keynote",
         type = "keynote",
@@ -201,7 +195,7 @@ object TestData {
     private val userEvent2 = UserEvent(
         sessionIDs[2], isStarred = true,
         isReviewed = false,
-        reservationStatus = UserEvent.ReservationStatus.NONE,
+        reservationStatus = NONE,
         reservationRequestResult = ReservationRequestResult(
             RESERVE_DENIED_CUTOFF, "123", System.currentTimeMillis()
         )
