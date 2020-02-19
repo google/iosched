@@ -49,7 +49,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.google.samples.apps.iosched.model.Theme
 import dagger.android.support.DaggerFragment
-import kotlinx.coroutines.Job
 
 fun ObservableBoolean.hasSameValue(other: ObservableBoolean) = get() == other.get()
 
@@ -277,15 +276,6 @@ fun View.requestApplyInsetsWhenAttached() {
 
             override fun onViewDetachedFromWindow(v: View) = Unit
         })
-    }
-}
-
-/**
- * Cancel the Job if it's active.
- */
-fun Job?.cancelIfActive() {
-    if (this?.isActive == true) {
-        cancel()
     }
 }
 

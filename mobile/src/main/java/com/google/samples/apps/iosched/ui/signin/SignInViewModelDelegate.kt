@@ -18,17 +18,27 @@ package com.google.samples.apps.iosched.ui.signin
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.liveData
+import androidx.lifecycle.map
+import androidx.lifecycle.switchMap
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
+import com.google.samples.apps.iosched.shared.di.MainDispatcher
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
-import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignOut
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 enum class SignInEvent {
     RequestSignIn, RequestSignOut
@@ -73,12 +83,12 @@ interface SignInViewModelDelegate {
     /**
      * Emit an Event on performSignInEvent to request sign-in
      */
-    fun emitSignInRequest()
+    suspend fun emitSignInRequest()
 
     /**
      * Emit an Event on performSignInEvent to request sign-out
      */
-    fun emitSignOutRequest()
+    suspend fun emitSignOutRequest()
 
     fun observeSignedInUser(): LiveData<Boolean>
 
@@ -99,82 +109,80 @@ interface SignInViewModelDelegate {
  */
 internal class FirebaseSignInViewModelDelegate @Inject constructor(
     observeUserAuthStateUseCase: ObserveUserAuthStateUseCase,
-    private val notificationsPrefIsShownUseCase: NotificationsPrefIsShownUseCase
+    private val notificationsPrefIsShownUseCase: NotificationsPrefIsShownUseCase,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    @MainDispatcher private val mainDispatcher: CoroutineDispatcher
 ) : SignInViewModelDelegate {
 
     override val performSignInEvent = MutableLiveData<Event<SignInEvent>>()
-    override val currentUserInfo: LiveData<AuthenticatedUserInfo?>
-    override val currentUserImageUri: LiveData<Uri?>
-    override val shouldShowNotificationsPrefAction = MediatorLiveData<Event<Boolean>>()
 
-    private val _isRegistered: LiveData<Boolean>
-    private val _isSignedIn: LiveData<Boolean>
-
-    private val notificationsPrefIsShown = MutableLiveData<Result<Boolean>>()
-
-    init {
-        currentUserInfo = observeUserAuthStateUseCase.observe().map { result ->
-            (result as? Success)?.data
+    private val currentFirebaseUser: Flow<Result<AuthenticatedUserInfo?>> =
+        observeUserAuthStateUseCase(Any()).map {
+            if (it is Result.Error) {
+                Timber.e(it.exception)
+            }
+            it
         }
 
-        currentUserImageUri = currentUserInfo.map { user ->
-            user?.getPhotoUrl()
-        }
+    override val currentUserInfo: LiveData<AuthenticatedUserInfo?> = currentFirebaseUser.map {
+        (it as? Success)?.data
+    }.asLiveData()
 
-        _isSignedIn = currentUserInfo.map { isSignedIn() }
-
-        _isRegistered = currentUserInfo.map { isRegistered() }
-
-        observeUserAuthStateUseCase.execute(Any())
-
-        shouldShowNotificationsPrefAction.addSource(notificationsPrefIsShown) {
-            showNotificationPref()
-        }
-
-        shouldShowNotificationsPrefAction.addSource(_isSignedIn) {
-            // Refresh the preferences
-            notificationsPrefIsShown.value = null
-            notificationsPrefIsShownUseCase(Unit, notificationsPrefIsShown)
+    private val notificationsPrefIsShown = currentUserInfo.switchMap {
+        liveData {
+            emit(notificationsPrefIsShownUseCase(Unit))
         }
     }
 
-    private fun showNotificationPref() {
-        val result = (notificationsPrefIsShown.value as? Success)?.data == false && isSignedIn()
+    override val currentUserImageUri: LiveData<Uri?> = currentUserInfo.map {
+        it?.getPhotoUrl()
+    }
+
+    private val isRegistered: LiveData<Boolean> = currentUserInfo.map {
+        it?.isRegistered() ?: false
+    }
+
+    private val isSignedIn: LiveData<Boolean> = currentUserInfo.map {
+        it?.isSignedIn() ?: false
+    }
+
+    override val shouldShowNotificationsPrefAction = notificationsPrefIsShown.map {
+        showNotificationPref(it)
+    }
+
+    private fun showNotificationPref(
+        notificationsPrefIsShownValue: Result<Boolean>
+    ): Event<Boolean> {
+        val shouldShowDialog = notificationsPrefIsShownValue.data == false && isSignedIn()
         // Show the notification if the preference is not set and the event hasn't been handled yet.
-        if (result && (shouldShowNotificationsPrefAction.value == null ||
+        if (shouldShowDialog && (shouldShowNotificationsPrefAction.value == null ||
                 shouldShowNotificationsPrefAction.value?.hasBeenHandled == false)
         ) {
-            shouldShowNotificationsPrefAction.value = Event(true)
+            return Event(true)
+        }
+        return Event(false)
+    }
+
+    override suspend fun emitSignInRequest() = withContext(ioDispatcher) {
+        // Refresh the notificationsPrefIsShown because it's used to indicate if the
+        // notifications preference dialog should be shown
+        notificationsPrefIsShownUseCase(Unit)
+        withContext(mainDispatcher) {
+            performSignInEvent.value = Event(SignInEvent.RequestSignIn)
         }
     }
 
-    override fun emitSignInRequest() {
-        // Refresh the notificationsPrefIsShown because it's used to indicate if the
-        // notifications preference dialog should be shown
-        notificationsPrefIsShownUseCase(Unit, notificationsPrefIsShown)
-
-        performSignInEvent.postValue(Event(SignInEvent.RequestSignIn))
+    override suspend fun emitSignOutRequest() = withContext(mainDispatcher) {
+        performSignInEvent.value = Event(RequestSignOut)
     }
 
-    override fun emitSignOutRequest() {
-        performSignInEvent.postValue(Event(RequestSignOut))
-    }
+    override fun isSignedIn(): Boolean = isSignedIn.value == true
 
-    override fun isSignedIn(): Boolean {
-        return currentUserInfo.value?.isSignedIn() == true
-    }
+    override fun isRegistered(): Boolean = isRegistered.value == true
 
-    override fun isRegistered(): Boolean {
-        return currentUserInfo.value?.isRegistered() == true
-    }
+    override fun observeSignedInUser(): LiveData<Boolean> = isSignedIn
 
-    override fun observeSignedInUser(): LiveData<Boolean> {
-        return _isSignedIn
-    }
-
-    override fun observeRegisteredUser(): LiveData<Boolean> {
-        return _isRegistered
-    }
+    override fun observeRegisteredUser(): LiveData<Boolean> = isRegistered
 
     override fun getUserId(): String? {
         return currentUserInfo.value?.getUid()

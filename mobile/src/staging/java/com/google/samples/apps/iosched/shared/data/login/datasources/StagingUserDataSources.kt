@@ -19,8 +19,6 @@ package com.google.samples.apps.iosched.shared.data.login.datasources
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.UserInfo
 import com.google.samples.apps.iosched.shared.R
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
@@ -29,6 +27,9 @@ import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateU
 import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.result.Result
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
 
 /**
  * A configurable [RegisteredUserDataSource] used for staging.
@@ -36,18 +37,9 @@ import com.google.samples.apps.iosched.shared.result.Result
  * @see LoginModule
  */
 class StagingRegisteredUserDataSource(val isRegistered: Boolean) : RegisteredUserDataSource {
-    val result = MutableLiveData<Result<Boolean?>?>()
-
-    override fun listenToUserChanges(userId: String) {
-        result.postValue(Result.Success(isRegistered))
-    }
-
-    override fun observeResult(): LiveData<Result<Boolean?>?> {
-        return result
-    }
-
-    override fun setAnonymousValue() {
-        // Noop
+    override fun observeUserChanges(userId: String): Flow<Result<Boolean?>> = channelFlow {
+        channel.offer(Result.Success(isRegistered))
+        awaitClose { }
     }
 }
 
@@ -114,30 +106,21 @@ class StagingAuthStateUserDataSource(
     val notificationAlarmUpdater: NotificationAlarmUpdater
 ) : AuthStateUserDataSource {
 
-    val _userId = MutableLiveData<String?>()
-
-    val _firebaseUser = MutableLiveData<Result<AuthenticatedUserInfoBasic?>>()
-
-    val user = StagingAuthenticatedUserInfo(
-        registered = isRegistered,
-        signedIn = isSignedIn, context = context
-    )
-
-    override fun startListening() {
-        _userId.postValue(userId)
-
-        _firebaseUser.postValue(Result.Success(user))
-
+    override fun getBasicUserInfo(): Flow<Result<AuthenticatedUserInfoBasic?>> = channelFlow {
         userId?.let {
             notificationAlarmUpdater.updateAll(userId)
         }
-    }
 
-    override fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfoBasic?>> {
-        return _firebaseUser
-    }
+        channel.offer(
+            Result.Success(
+                StagingAuthenticatedUserInfo(
+                    registered = isRegistered,
+                    signedIn = isSignedIn,
+                    context = context
+                )
+            )
+        )
 
-    override fun clearListener() {
-        // Noop
+        awaitClose { }
     }
 }
