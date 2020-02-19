@@ -38,7 +38,9 @@ internal class SignInModule {
 
     @Singleton
     @Provides
-    fun provideRegisteredUserDataSource(firestore: FirebaseFirestore): RegisteredUserDataSource {
+    fun provideRegisteredUserDataSource(
+        firestore: FirebaseFirestore
+    ): RegisteredUserDataSource {
         return FirestoreRegisteredUserDataSource(firestore)
     }
 

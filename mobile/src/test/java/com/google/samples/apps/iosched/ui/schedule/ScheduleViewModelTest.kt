@@ -19,10 +19,10 @@
 package com.google.samples.apps.iosched.ui.schedule
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.androidtest.util.observeForTesting
 import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.model.MobileTestData
 import com.google.samples.apps.iosched.model.TestDataRepository
@@ -70,7 +70,10 @@ import com.google.samples.apps.iosched.ui.signin.FirebaseSignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.not
@@ -110,7 +113,8 @@ class ScheduleViewModelTest {
         // Create test use cases with test data
         val loadSessionsUseCase = LoadFilteredUserSessionsUseCase(
             DefaultSessionAndUserEventRepository(
-                TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
+                TestUserEventDataSource(),
+                DefaultSessionRepository(TestDataRepository)
             ),
             testDispatcher
         )
@@ -129,18 +133,18 @@ class ScheduleViewModelTest {
         signInDelegate.loadUser("test")
 
         // Observe viewmodel to load sessions
-        viewModel.scheduleUiData.observeForever {}
-
-        // Check that data were loaded correctly
-        // Sessions
-        assertEquals(
-            TestData.userSessionList,
-            LiveDataTestUtil.getValue(viewModel.scheduleUiData)?.list
-        )
-        assertFalse(LiveDataTestUtil.getValue(viewModel.isLoading)!!)
-        // Tags
-        val loadedFilters = LiveDataTestUtil.getValue(viewModel.eventFilters)
-        assertTrue(loadedFilters?.containsAll(MobileTestData.tagFiltersList) ?: false)
+        viewModel.scheduleUiData.observeForTesting {
+            // Check that data were loaded correctly
+            // Sessions
+            assertEquals(
+                TestData.userSessionList,
+                LiveDataTestUtil.getValue(viewModel.scheduleUiData)?.list
+            )
+            assertFalse(LiveDataTestUtil.getValue(viewModel.isLoading)!!)
+            // Tags
+            val loadedFilters = LiveDataTestUtil.getValue(viewModel.eventFilters)
+            assertTrue(loadedFilters?.containsAll(MobileTestData.tagFiltersList) ?: false)
+        }
     }
 
     @Test
@@ -275,7 +279,7 @@ class ScheduleViewModelTest {
 
         // A session goes from not-reserved to reserved
         val oldValue = UserEventsResult(TestData.userEvents)
-        val newValue = oldValue!!.copy(
+        val newValue = oldValue.copy(
             userEventsMessage = UserEventMessage(UserEventMessageChangeType.CHANGES_IN_WAITLIST)
         )
 
@@ -290,7 +294,7 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun noLoggedInUser_showsReservationButton() {
+    fun noLoggedInUser_showsReservationButton() = coroutineRule.runBlockingTest {
         // Given no logged in user
         val noFirebaseUser = null
 
@@ -298,22 +302,29 @@ class ScheduleViewModelTest {
         val observableFirebaseUserUseCase =
             FakeObserveUserAuthStateUseCase(
                 user = Result.Success(noFirebaseUser),
-                isRegistered = Result.Success(false)
+                isRegistered = Result.Success(false),
+                coroutineDispatcher = testDispatcher
             )
         val signInViewModelComponent = FirebaseSignInViewModelDelegate(
             observableFirebaseUserUseCase,
-            mock {})
+            mock {},
+            testDispatcher,
+            testDispatcher
+        )
 
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
-        // Check that reservation buttons are shown
-        assertEquals(true, LiveDataTestUtil.getValue(viewModel.showReservations))
+        viewModel.showReservations.observeForTesting {
+            // Check that reservation buttons are shown
+            assertEquals(true, LiveDataTestUtil.getValue(viewModel.showReservations))
+        }
     }
 
     @Test
-    fun loggedInUser_registered_showsReservationButton() {
+    fun loggedInUser_registered_showsReservationButton() = coroutineRule.runBlockingTest {
         // Given a logged in user
         val mockUser = mock<AuthenticatedUserInfoBasic> {
+            on { getUid() }.doReturn("uuid")
             on { isSignedIn() }.doReturn(true)
         }
 
@@ -321,23 +332,30 @@ class ScheduleViewModelTest {
         val observableFirebaseUserUseCase =
             FakeObserveUserAuthStateUseCase(
                 user = Result.Success(mockUser),
-                isRegistered = Result.Success(true)
+                isRegistered = Result.Success(true),
+                coroutineDispatcher = testDispatcher
             )
         val signInViewModelComponent = FirebaseSignInViewModelDelegate(
             observableFirebaseUserUseCase,
-            mock {})
+            mock {},
+            testDispatcher,
+            testDispatcher
+        )
 
         // Create ViewModel
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
-        // Check that reservation buttons are shown
-        assertEquals(true, LiveDataTestUtil.getValue(viewModel.showReservations))
+        viewModel.showReservations.observeForTesting {
+            // Check that reservation buttons are shown
+            assertEquals(true, LiveDataTestUtil.getValue(viewModel.showReservations))
+        }
     }
 
     @Test
-    fun loggedInUser_notRegistered_hidesReservationButton() {
+    fun loggedInUser_notRegistered_hidesReservationButton() = coroutineRule.runBlockingTest {
         // Given a logged in user
         val mockUser = mock<AuthenticatedUserInfoBasic> {
+            on { getUid() }.doReturn("uuid")
             on { isSignedIn() }.doReturn(true)
         }
 
@@ -345,17 +363,27 @@ class ScheduleViewModelTest {
         val observableFirebaseUserUseCase =
             FakeObserveUserAuthStateUseCase(
                 user = Result.Success(mockUser),
-                isRegistered = Result.Success(false)
+                isRegistered = Result.Success(false),
+                coroutineDispatcher = testDispatcher
             )
         val signInViewModelComponent = FirebaseSignInViewModelDelegate(
             observableFirebaseUserUseCase,
-            mock {})
+            mock {},
+            testDispatcher,
+            testDispatcher
+        )
 
         // Create ViewModel
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
-        // Check that *no* reservation buttons are shown
-        assertEquals(false, LiveDataTestUtil.getValue(viewModel.showReservations))
+        // Observe signIn and registeredUser so messages are received
+        signInViewModelComponent.observeRegisteredUser().observeForever { }
+        signInViewModelComponent.observeSignedInUser().observeForever { }
+
+        viewModel.showReservations.observeForTesting {
+            // Check that *no* reservation buttons are shown
+            assertEquals(false, LiveDataTestUtil.getValue(viewModel.showReservations))
+        }
     }
 
     @Test
@@ -426,7 +454,7 @@ class ScheduleViewModelTest {
         loadFilteredSessionsUseCase: LoadFilteredUserSessionsUseCase =
             createTestLoadUserSessionsByDayUseCase(),
         loadTagsUseCase: LoadEventFiltersUseCase = createEventFiltersExceptionUseCase(),
-        signInViewModelDelegate: SignInViewModelDelegate = createSignInViewModelDelegate(),
+        signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate(),
         starEventUseCase: StarEventAndNotifyUseCase = createStarEventUseCase(),
         snackbarMessageManager: SnackbarMessageManager = SnackbarMessageManager(
             FakePreferenceStorage()
@@ -488,9 +516,7 @@ class ScheduleViewModelTest {
         }
     }
 
-    private fun createSignInViewModelDelegate() = FakeSignInViewModelDelegate()
-
-    private fun createStarEventUseCase() = FakeStarEventUseCase(coroutineRule.testDispatcher)
+    private fun createStarEventUseCase() = FakeStarEventUseCase(testDispatcher)
 
     private fun createGetTimeZoneUseCase() =
         object : GetTimeZoneUseCaseLegacy(FakePreferenceStorage(), testDispatcher) {}
@@ -498,33 +524,28 @@ class ScheduleViewModelTest {
 
 class TestRegisteredUserDataSource(private val isRegistered: Result<Boolean?>) :
     RegisteredUserDataSource {
-    override fun listenToUserChanges(userId: String) {}
-
-    override fun observeResult(): LiveData<Result<Boolean?>?> {
-        return MutableLiveData<Result<Boolean?>?>().apply { value = isRegistered }
+    override fun observeUserChanges(userId: String): Flow<Result<Boolean?>> = flow {
+        emit(isRegistered)
     }
-
-    override fun setAnonymousValue() {}
 }
 
 class TestAuthStateUserDataSource(
-    private val user: Result<AuthenticatedUserInfoBasic?>?
+    private val user: Result<AuthenticatedUserInfoBasic?>
 ) : AuthStateUserDataSource {
-    override fun startListening() {}
-
-    override fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfoBasic?>> =
-        MutableLiveData<Result<AuthenticatedUserInfoBasic?>>().apply { value = user }
-
-    override fun clearListener() {}
+    override fun getBasicUserInfo(): Flow<Result<AuthenticatedUserInfoBasic?>> = flow {
+        emit(user)
+    }
 }
 
 class FakeObserveUserAuthStateUseCase(
-    user: Result<AuthenticatedUserInfoBasic?>?,
-    isRegistered: Result<Boolean?>
+    user: Result<AuthenticatedUserInfoBasic?>,
+    isRegistered: Result<Boolean?>,
+    coroutineDispatcher: CoroutineDispatcher
 ) : ObserveUserAuthStateUseCase(
     TestRegisteredUserDataSource(isRegistered),
     TestAuthStateUserDataSource(user),
-    mock {}
+    mock {},
+    coroutineDispatcher
 )
 
 class FakeScheduleUiHintsShownUseCase : ScheduleUiHintsShownUseCase(
