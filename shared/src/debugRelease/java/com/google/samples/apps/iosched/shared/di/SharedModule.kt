@@ -159,7 +159,6 @@ class SharedModule {
             // This is to enable the offline data
             // https://firebase.google.com/docs/firestore/manage-data/enable-offline
             .setPersistenceEnabled(true)
-            .setTimestampsInSnapshotsEnabled(true)
             .build()
         return firestore
     }
@@ -185,9 +184,11 @@ class SharedModule {
     @Singleton
     @Provides
     fun provideFirebaseRemoteConfigSettings(): FirebaseRemoteConfigSettings {
-        return FirebaseRemoteConfigSettings.Builder()
-            .setDeveloperModeEnabled(BuildConfig.DEBUG)
-            .build()
+        val builder = FirebaseRemoteConfigSettings.Builder()
+        if (BuildConfig.DEBUG) {
+            builder.minimumFetchIntervalInSeconds = 0
+        }
+        return builder.build()
     }
 
     @Singleton
@@ -195,10 +196,10 @@ class SharedModule {
     fun provideFirebaseRemoteConfig(
         configSettings: FirebaseRemoteConfigSettings
     ): FirebaseRemoteConfig {
-        val remoteConfig = FirebaseRemoteConfig.getInstance()
-        remoteConfig.setConfigSettings(configSettings)
-        remoteConfig.setDefaults(R.xml.remote_config_defaults)
-        return remoteConfig
+        return FirebaseRemoteConfig.getInstance().apply {
+            setConfigSettingsAsync(configSettings)
+            setDefaultsAsync(R.xml.remote_config_defaults)
+        }
     }
 
     @Singleton
