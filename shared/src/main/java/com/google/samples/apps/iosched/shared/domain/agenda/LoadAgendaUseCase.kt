@@ -36,12 +36,14 @@ open class LoadAgendaUseCase @Inject constructor(
     override suspend fun execute(parameters: Boolean): List<Block> =
         repository.getAgenda(parameters)
             .filterNot { it.startTime == it.endTime }
-            .filter { isInConferenceTime(it) }
+            .filter { isInAndPreConferenceTime(it) }
             .distinct()
 
-    private fun isInConferenceTime(block: Block): Boolean {
+    private fun isInAndPreConferenceTime(block: Block): Boolean {
         // Give some margin in case the agenda shows pre and post-conference
-        val start = TimeUtils.ConferenceDays.first().start.minusHours(PRE_BONUS_HOURS)
+        val start =
+            // Start day minus one day to show the day0 badge pick-up time
+            TimeUtils.ConferenceDays.first().start.minusDays(1).minusHours(PRE_BONUS_HOURS)
         val end = TimeUtils.ConferenceDays.last().end.plusHours(POST_BONUS_HOURS)
         return block.startTime.isAfter(start) &&
             block.endTime.isAfter(start) &&
