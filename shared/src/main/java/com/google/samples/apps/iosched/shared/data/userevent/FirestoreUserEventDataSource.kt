@@ -26,7 +26,7 @@ import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.shared.data.document2020
-import com.google.samples.apps.iosched.shared.di.MainDispatcher
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
@@ -60,8 +60,7 @@ import kotlin.coroutines.resumeWithException
 @ExperimentalCoroutinesApi
 class FirestoreUserEventDataSource @Inject constructor(
     val firestore: FirebaseFirestore,
-    // TODO: Change this to IoDispatcher once we update the firebase deps and b/116784117 is fixed
-    @MainDispatcher private val mainDispatcher: CoroutineDispatcher
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : UserEventDataSource {
 
     companion object {
@@ -187,7 +186,7 @@ class FirestoreUserEventDataSource @Inject constructor(
                 // The callback inside awaitClose will be executed when the channel is
                 // either closed or cancelled
                 awaitClose { subscription.remove() }
-            }).flowOn(mainDispatcher)
+            }).flowOn(ioDispatcher)
         }
     }
 
@@ -234,7 +233,7 @@ class FirestoreUserEventDataSource @Inject constructor(
     override suspend fun starEvent(
         userId: String,
         userEvent: UserEvent
-    ): Result<StarUpdatedStatus> = withContext(mainDispatcher) {
+    ): Result<StarUpdatedStatus> = withContext(ioDispatcher) {
         // The suspendCancellableCoroutine method suspends a coroutine manually. With the
         // continuation object you receive in the lambda, you can resume the coroutine
         // after the work is done.
