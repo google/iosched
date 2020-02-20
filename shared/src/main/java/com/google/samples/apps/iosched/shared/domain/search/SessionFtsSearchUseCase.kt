@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,35 +16,28 @@
 
 package com.google.samples.apps.iosched.shared.domain.search
 
+import com.google.samples.apps.iosched.shared.data.db.AppDatabase
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
 import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSession
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import timber.log.Timber
+import javax.inject.Inject
 
 /**
- * Performs a search from a query string.
- *
- * A session is returned in the results if the title, description, or tag matches the query parameter.
+ * Searches sessions using FTS.
  */
-class SearchUseCase @Inject constructor(
-    private val repository: SessionRepository,
+class SessionFtsSearchUseCase @Inject constructor(
+    private val sessionRepository: SessionRepository,
+    private val appDatabase: AppDatabase,
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : CoroutinesUseCase<String, List<Searchable>>(dispatcher) {
 
     override fun execute(parameters: String): List<Searchable> {
-        Timber.d("Performing a search for any sessions that contain `$parameters`")
         val query = parameters.toLowerCase()
-        return repository.getSessions()
-            .filter { session ->
-                session.title.toLowerCase().contains(query) ||
-                    session.description.toLowerCase().contains(query) ||
-                    session.tags.any { tag ->
-                        query.contains(tag.displayName.toLowerCase())
-                    }
-            }
+        val sessionResults = appDatabase.sessionFtsDao().searchAllSessions(query).toSet()
+        return sessionRepository.getSessions()
+            .filter { session -> session.id in sessionResults }
             // Keynotes come first, followed by sessions, app reviews, game reviews ...
             .sortedBy { it.type }
             .map { SearchedSession(it) }

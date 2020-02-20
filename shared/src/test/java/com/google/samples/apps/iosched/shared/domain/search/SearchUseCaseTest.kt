@@ -30,7 +30,6 @@ import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsCollectionContaining.hasItem
-import org.hamcrest.core.IsCollectionContaining.hasItems
 import org.hamcrest.core.IsEqual.equalTo
 import org.hamcrest.core.IsInstanceOf.instanceOf
 import org.junit.Assert.assertThat
@@ -50,15 +49,14 @@ class SearchUseCaseTest(private val useCase: CoroutinesUseCase<String, List<Sear
         @Parameterized.Parameters
         fun useCases() = listOf(
             arrayOf(
-                SearchUseCase(
+                SessionSimpleSearchUseCase(
                     DefaultSessionRepository(TestDataRepository),
                     coroutineRule.testDispatcher
                 )
             ),
             arrayOf(
-                SearchDbUseCase(
+                SessionFtsSearchUseCase(
                     DefaultSessionRepository(TestDataRepository),
-                    TestDataRepository,
                     FakeSearchAppDatabase(),
                     coroutineRule.testDispatcher
                 )
@@ -72,7 +70,7 @@ class SearchUseCaseTest(private val useCase: CoroutinesUseCase<String, List<Sear
 
     @Test
     fun search_MatchesOnTitle() = coroutineRule.runBlockingTest {
-        val result = useCase(parameters = FakeSearchAppDatabase.QUERY_SESSION_0)
+        val result = useCase(parameters = FakeSearchAppDatabase.QUERY_TITLE)
         assertThatResultContainsOnlySession0(result)
     }
 
@@ -80,30 +78,6 @@ class SearchUseCaseTest(private val useCase: CoroutinesUseCase<String, List<Sear
     fun search_MatchesOnAbstract() = coroutineRule.runBlockingTest {
         val result = useCase(FakeSearchAppDatabase.QUERY_ABSTRACT)
         assertThatResultContainsOnlySession0(result)
-    }
-
-    @Test
-    fun search_MatchesOnTagName() = coroutineRule.runBlockingTest {
-        val result = useCase(FakeSearchAppDatabase.QUERY_TAGNAME)
-        assertThat(result, `is`(instanceOf(Result.Success::class.java)))
-
-        val sessions = (result as Result.Success).data.map {
-            (it as SearchedSession).session
-        }
-        assertThat(sessions.size, `is`(equalTo(3)))
-        assertThat(sessions, hasItems(TestData.session0, TestData.session1, TestData.session2))
-    }
-
-    @Test
-    fun search_MatchesOnUserQuestion() = coroutineRule.runBlockingTest {
-        val result = useCase(FakeSearchAppDatabase.QUERY_QUESTION)
-        assertThat(result, `is`(instanceOf(Result.Success::class.java)))
-
-        val sessions = (result as Result.Success).data.map {
-            (it as SearchedSession).session
-        }
-        assertThat(sessions.size, `is`(equalTo(3)))
-        assertThat(sessions, hasItems(TestData.session0, TestData.session1, TestData.session2))
     }
 
     @Test
