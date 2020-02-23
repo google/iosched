@@ -109,35 +109,6 @@
             android:layout_marginEnd="@dimen/snackbar_margin_end_fab"
             android:visibility="gone" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/filter_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/margin_normal"
-            android:contentDescription="@string/filters"
-            app:hoveredFocusedTranslationZ="0dp"
-            app:pressedTranslationZ="0dp"
-            app:srcCompat="@drawable/ic_filter" />
-
-        <!--
-          ~ We use a margin to prevent the status bar from drawing over the shadow when the sheet
-          ~ expands. However, marginTop pushes the sheet down from it's peekHeight when collapsed.
-          ~ Using marginBottom achieves the desired effect.
-          -->
-        <fragment
-            android:id="@+id/filter_sheet"
-            android:name="com.google.samples.apps.iosched.ui.schedule.filters.ScheduleFilterFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="4dp"
-            app:layout_behavior="com.google.samples.apps.iosched.widget.BottomSheetBehavior"
-            app:behavior_hideable="true"
-            app:behavior_peekHeight="@dimen/schedule_bottom_sheet_peek_height"
-            app:behavior_skipCollapsed="true"
-            tools:layout="@layout/fragment_schedule_filter" />
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>
