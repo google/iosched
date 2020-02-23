@@ -20,7 +20,6 @@ import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.di.ChildFragmentScoped
 import com.google.samples.apps.iosched.shared.di.FragmentScoped
 import com.google.samples.apps.iosched.shared.di.ViewModelKey
-import com.google.samples.apps.iosched.ui.schedule.filters.ScheduleFilterFragment
 import com.google.samples.apps.iosched.ui.sessioncommon.SessionViewPoolModule
 import dagger.Binds
 import dagger.Module
@@ -45,13 +44,6 @@ internal abstract class ScheduleModule {
         ]
     )
     internal abstract fun contributeScheduleFragment(): ScheduleFragment
-
-    /**
-     * Generates an [AndroidInjector] for the [ScheduleFilterFragment].
-     */
-    @FragmentScoped
-    @ContributesAndroidInjector
-    internal abstract fun contributeScheduleFilterFragment(): ScheduleFilterFragment
 
     /**
      * Generates an [AndroidInjector] for the [ScheduleUiHintsDialogFragment].

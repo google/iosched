@@ -17,32 +17,20 @@
 package com.google.samples.apps.iosched.tests.ui
 
 import android.content.Context
-import android.provider.Settings
-import android.view.View
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
 import com.google.samples.apps.iosched.tests.FixedTimeRule
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
 import com.google.samples.apps.iosched.tests.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.ui.schedule.SessionViewHolder
-import com.google.samples.apps.iosched.ui.schedule.filters.ScheduleFilterAdapter
-import com.google.samples.apps.iosched.widget.BottomSheetBehavior
-import org.hamcrest.CoreMatchers.not
-import org.hamcrest.core.AllOf.allOf
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -70,14 +58,6 @@ class ScheduleTest {
 
     private val resources = ApplicationProvider.getApplicationContext<Context>().resources
 
-    @Before
-    fun disableBottomSheetAnimations() {
-        val behavior = BottomSheetBehavior.from(
-            activityRule.activity.findViewById<View>(R.id.filter_sheet)
-        )
-        behavior.isAnimationDisabled = true
-    }
-
     @Test
     fun showFirstDay_sessionOnFirstDayShown() {
         onView(withText(FAKE_SESSION_ON_DAY1))
@@ -92,9 +72,7 @@ class ScheduleTest {
         onView(withId(R.id.session_detail_title)).check(matches(isDisplayed()))
     }
 
-    /**
-     * This test requires animations to be disabled in the device.
-     */
+/* TODO(jdkoren) move to new schedule screen
     @Test
     fun clickFilters_showFilters() {
         checkAnimationsDisabled()
@@ -208,7 +186,7 @@ class ScheduleTest {
             )
         }
     }
-
+*/
     companion object {
         private const val FAKE_SESSION_ON_DAY1 = "Fake session on day 1"
     }

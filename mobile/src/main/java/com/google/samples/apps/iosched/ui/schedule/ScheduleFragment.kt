@@ -21,9 +21,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.addCallback
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePaddingRelative
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -33,7 +30,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
 import com.google.samples.apps.iosched.model.ConferenceDay
@@ -60,13 +56,7 @@ import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.clearDecorations
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.executeAfter
-import com.google.samples.apps.iosched.util.fabVisibility
 import com.google.samples.apps.iosched.util.requestApplyInsetsWhenAttached
-import com.google.samples.apps.iosched.widget.BottomSheetBehavior
-import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
-import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_COLLAPSED
-import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_EXPANDED
-import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_HIDDEN
 import com.google.samples.apps.iosched.widget.BubbleDecoration
 import com.google.samples.apps.iosched.widget.FadingSnackbar
 import com.google.samples.apps.iosched.widget.JumpSmoothScroller
@@ -104,8 +94,6 @@ class ScheduleFragment : MainNavigationFragment() {
 
     private lateinit var scheduleViewModel: ScheduleViewModel
 
-    private lateinit var filtersFab: FloatingActionButton
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
     private lateinit var snackbar: FadingSnackbar
 
     private lateinit var scheduleRecyclerView: RecyclerView
@@ -121,14 +109,6 @@ class ScheduleFragment : MainNavigationFragment() {
 
     private lateinit var binding: FragmentScheduleBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            onBackPressed()
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -141,7 +121,6 @@ class ScheduleFragment : MainNavigationFragment() {
             viewModel = this@ScheduleFragment.scheduleViewModel
         }
 
-        filtersFab = binding.filterFab
         snackbar = binding.snackbar
         scheduleRecyclerView = binding.recyclerviewSchedule
         dayIndicatorRecyclerView = binding.includeScheduleAppbar.dayIndicators
@@ -177,23 +156,6 @@ class ScheduleFragment : MainNavigationFragment() {
         binding.includeScheduleAppbar.toolbar.setupProfileMenuItem(
             activityViewModelProvider(viewModelFactory), this
         )
-
-        // Filters sheet configuration
-        bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.filter_sheet))
-        filtersFab.setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-        }
-        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetCallback {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                val a11yState = if (newState == STATE_EXPANDED) {
-                    View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
-                } else {
-                    View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
-                }
-                scheduleRecyclerView.importantForAccessibility = a11yState
-                binding.includeScheduleAppbar.appbar.importantForAccessibility = a11yState
-            }
-        })
 
         // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
         binding.recyclerviewSchedule.doOnApplyWindowInsets { v, insets, padding ->
@@ -282,9 +244,6 @@ class ScheduleFragment : MainNavigationFragment() {
                 }
             }
         )
-        scheduleViewModel.hasAnyFilters.observe(viewLifecycleOwner, Observer {
-            updateFiltersUi(it ?: return@Observer)
-        })
 
         // Show an error message
         scheduleViewModel.errorMessage.observe(viewLifecycleOwner, EventObserver { errorMsg ->
@@ -370,27 +329,6 @@ class ScheduleFragment : MainNavigationFragment() {
         dayIndicatorItemDecoration.bubbleRange = bubbleRange
     }
 
-    private fun updateFiltersUi(hasAnyFilters: Boolean) {
-        val showFab = !hasAnyFilters
-
-        fabVisibility(filtersFab, showFab)
-        // Set snackbar position depending whether fab/filters show.
-        snackbar.updateLayoutParams<CoordinatorLayout.LayoutParams> {
-            bottomMargin = resources.getDimensionPixelSize(
-                if (showFab) {
-                    R.dimen.snackbar_margin_bottom_fab
-                } else {
-                    R.dimen.schedule_bottom_sheet_peek_height
-                }
-            )
-        }
-        bottomSheetBehavior.isHideable = showFab
-        bottomSheetBehavior.skipCollapsed = showFab
-        if (showFab && bottomSheetBehavior.state == STATE_COLLAPSED) {
-            bottomSheetBehavior.state = STATE_HIDDEN
-        }
-    }
-
     private fun onScheduleScrolled() {
         val layoutManager = (scheduleRecyclerView.layoutManager) as LinearLayoutManager
         val first = layoutManager.findFirstVisibleItemPosition()
@@ -407,19 +345,6 @@ class ScheduleFragment : MainNavigationFragment() {
             cachedBubbleRange = highlightRange
             rebuildDayIndicators()
         }
-    }
-
-    private fun onBackPressed(): Boolean {
-        if (::bottomSheetBehavior.isInitialized && bottomSheetBehavior.state == STATE_EXPANDED) {
-            // collapse or hide the sheet
-            if (bottomSheetBehavior.isHideable && bottomSheetBehavior.skipCollapsed) {
-                bottomSheetBehavior.state = STATE_HIDDEN
-            } else {
-                bottomSheetBehavior.state = STATE_COLLAPSED
-            }
-            return true
-        }
-        return false
     }
 
     override fun onUserInteraction() {
