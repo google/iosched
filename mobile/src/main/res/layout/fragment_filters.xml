@@ -110,7 +110,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:goneUnless="@{viewModel.hasAnyFilters}"
             app:layoutManager="LinearLayoutManager"
-            app:selectedFilters="@{viewModel.selectedFilters}"
+            app:selectedFilters="@{viewModel.selectedFilterChips}"
             tools:listitem="@layout/item_filter_chip"
             tools:visibility="gone" />
 
@@ -155,7 +155,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:eventCount="@{viewModel.eventCount}"
+            app:resultCount="@{viewModel.resultCount}"
             app:hasFilters="@{viewModel.hasAnyFilters}"
             tools:text="@string/filters" />
 

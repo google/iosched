@@ -17,18 +17,91 @@
 package com.google.samples.apps.iosched.ui.filters
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
+import com.google.samples.apps.iosched.model.filters.Filter
+import com.google.samples.apps.iosched.util.compatRemoveIf
 
 /**
  * Interface to add filters functionality to a screen through a ViewModel.
- * TODO(jdkoren) Add basic implementation for ViewModels to delegate to.
  */
 interface FiltersViewModelDelegate {
-    val eventFilters: LiveData<List<FilterChip>>
-    val selectedFilters: LiveData<List<FilterChip>>
+    val filterChips: LiveData<List<FilterChip>>
+    val selectedFilters: LiveData<List<Filter>>
+    val selectedFilterChips: LiveData<List<FilterChip>>
     val hasAnyFilters: LiveData<Boolean>
-    val eventCount: LiveData<Int>
+    val resultCount: MutableLiveData<Int>
 
-    fun toggleFilter(filter: FilterChip, enabled: Boolean)
+    fun setSupportedFilters(filters: List<Filter>)
+
+    fun toggleFilter(filter: Filter, enabled: Boolean)
 
     fun clearFilters()
+}
+
+class FiltersViewModelDelegateImpl : FiltersViewModelDelegate {
+
+    override val filterChips = MutableLiveData<List<FilterChip>>(emptyList())
+
+    override val selectedFilters = MutableLiveData<List<Filter>>(emptyList())
+
+    override val selectedFilterChips = MutableLiveData<List<FilterChip>>(emptyList())
+
+    override val hasAnyFilters = selectedFilterChips.map { it.isNotEmpty() }
+
+    override val resultCount = MutableLiveData(0)
+
+    // State for internal logic
+    private var _filters = mutableListOf<Filter>()
+    private val _selectedFilters = mutableSetOf<Filter>()
+    private var _filterChips = mutableListOf<FilterChip>()
+    private var _selectedFilterChips = mutableListOf<FilterChip>()
+
+    override fun setSupportedFilters(filters: List<Filter>) {
+        // Remove orphaned filters
+        val selectedChanged = _selectedFilters.compatRemoveIf { it !in filters }
+        _filters = filters.toMutableList()
+        _filterChips = _filters.mapTo(mutableListOf()) {
+            it.asChip(it in _selectedFilters)
+        }
+
+        if (selectedChanged) {
+            _selectedFilterChips = _filterChips.filterTo(mutableListOf()) { it.isSelected }
+        }
+        publish(selectedChanged)
+    }
+
+    private fun publish(selectedChanged: Boolean) {
+        filterChips.value = _filterChips
+        if (selectedChanged) {
+            selectedFilters.value = _selectedFilters.toList()
+            selectedFilterChips.value = _selectedFilterChips
+        }
+    }
+
+    override fun toggleFilter(filter: Filter, enabled: Boolean) {
+        if (filter !in _filters) {
+            throw IllegalArgumentException("Unsupported filter: $filter")
+        }
+        val changed = if (enabled) _selectedFilters.add(filter) else _selectedFilters.remove(filter)
+        if (changed) {
+            _selectedFilterChips = _selectedFilters.mapTo(mutableListOf()) { it.asChip(true) }
+            val index = _filterChips.indexOfFirst { it.filter == filter }
+            _filterChips[index] = filter.asChip(enabled)
+
+            publish(true)
+        }
+    }
+
+    override fun clearFilters() {
+        if (_selectedFilters.isNotEmpty()) {
+            _selectedFilters.clear()
+            _selectedFilterChips.clear()
+            _filterChips = _filterChips.mapTo(mutableListOf()) {
+                if (it.isSelected) it.copy(isSelected = false) else it
+            }
+
+            publish(true)
+        }
+    }
 }
