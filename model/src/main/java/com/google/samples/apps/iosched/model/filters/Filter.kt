@@ -14,21 +14,16 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.filters
+package com.google.samples.apps.iosched.model.filters
 
-import androidx.lifecycle.LiveData
+import com.google.samples.apps.iosched.model.ConferenceDay
+import com.google.samples.apps.iosched.model.Tag
 
-/**
- * Interface to add filters functionality to a screen through a ViewModel.
- * TODO(jdkoren) Add basic implementation for ViewModels to delegate to.
- */
-interface FiltersViewModelDelegate {
-    val eventFilters: LiveData<List<FilterChip>>
-    val selectedFilters: LiveData<List<FilterChip>>
-    val hasAnyFilters: LiveData<Boolean>
-    val eventCount: LiveData<Int>
+sealed class Filter {
 
-    fun toggleFilter(filter: FilterChip, enabled: Boolean)
+    data class TagFilter(val tag: Tag) : Filter()
 
-    fun clearFilters()
+    data class DateFilter(val day: ConferenceDay) : Filter()
+
+    object MyScheduleFilter : Filter()
 }

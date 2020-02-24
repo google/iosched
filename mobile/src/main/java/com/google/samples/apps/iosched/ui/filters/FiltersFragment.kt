@@ -123,14 +123,14 @@ class FiltersFragment : DaggerFragment() {
 
         filterAdapter = SelectableFilterChipAdapter(viewModel)
         viewModel.eventFilters.observe(viewLifecycleOwner, Observer {
-            filterAdapter.submitEventFilterList(it)
+            filterAdapter.submitFilterList(it)
         })
 
         binding.recyclerviewFilters.apply {
             adapter = filterAdapter
             setHasFixedSize(true)
             (layoutManager as GridLayoutManager).spanSizeLookup =
-                EventFilterSpanSizeLookup(filterAdapter)
+                FilterChipSpanSizeLookup(filterAdapter)
             addOnScrollListener(object : OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     binding.filtersHeaderShadow.isActivated = recyclerView.canScrollVertically(-1)
@@ -200,7 +200,7 @@ class FiltersFragment : DaggerFragment() {
 }
 
 @BindingAdapter("selectedFilters")
-fun selectedFilters(recyclerView: RecyclerView, filters: List<EventFilter>?) {
+fun selectedFilters(recyclerView: RecyclerView, filters: List<FilterChip>?) {
     val filterChipAdapter: FilterChipAdapter
     if (recyclerView.adapter == null) {
         filterChipAdapter = FilterChipAdapter()
@@ -256,34 +256,24 @@ fun setResetFiltersClickListener(
 @BindingAdapter("filterChipOnClick", "viewModel", requireAll = true)
 fun setClickListenerForFilterChip(
     view: FilterChipView,
-    eventFilter: EventFilter,
+    filterChip: FilterChip,
     viewModel: FiltersViewModelDelegate
 ) {
     view.setOnClickListener {
         // TODO(jdkoren) restore sign in check if we need it later
         val checked = !view.isChecked
         view.animateCheckedAndInvoke(checked) {
-            viewModel.toggleFilter(eventFilter, checked)
+            viewModel.toggleFilter(filterChip, checked)
         }
     }
 }
 
 @BindingAdapter("filterChipText")
-fun filterChipText(view: FilterChipView, filter: EventFilter) {
-    val text = if (filter.getTextResId() != 0) {
-        view.resources.getText(filter.getTextResId())
+fun filterChipText(view: FilterChipView, filter: FilterChip) {
+    val text = if (filter.textResId != 0) {
+        view.resources.getText(filter.textResId)
     } else {
-        filter.getText()
-    }
-    view.text = text
-}
-
-@BindingAdapter("filterChipTextShort")
-fun filterChipTextShort(view: FilterChipView, filter: EventFilter) {
-    val text = if (filter.getShortTextResId() != 0) {
-        view.resources.getText(filter.getShortTextResId())
-    } else {
-        filter.getShortText()
+        filter.text
     }
     view.text = text
 }

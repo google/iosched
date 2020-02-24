@@ -19,24 +19,11 @@ package com.google.samples.apps.iosched.model
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.data.TestData.androidTag
-import com.google.samples.apps.iosched.test.data.TestData.cloudTag
-import com.google.samples.apps.iosched.test.data.TestData.sessionsTag
-import com.google.samples.apps.iosched.test.data.TestData.webTag
 import com.google.samples.apps.iosched.test.util.fakes.FakeAppDatabase
-import com.google.samples.apps.iosched.ui.filters.EventFilter.TagFilter
 
 /**
  * Test data for unit tests.
  */
-object MobileTestData {
-
-    val tagFiltersList = listOf(
-        androidTag, webTag, cloudTag, // TOPIC
-        sessionsTag // TYPE
-    ).map { TagFilter(it, false) }
-}
-
 object TestDataSource : ConferenceDataSource {
     override fun getRemoteConferenceData(): ConferenceData? {
         return TestData.conferenceData

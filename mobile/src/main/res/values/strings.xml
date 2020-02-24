@@ -23,9 +23,6 @@
     <string name="title_info" translation_description="The title for the info screen where user can see various information, such as FAQ and travel info.">Info</string>
 
     <!-- Schedule -->
-    <string name="filters" translation_description="The label for the button to filter sessions by their topics, room, and so on.">Filters</string>
-    <string name="category_heading_tracks" translation_description="Label in the filters panel above session topics (Android, Cloud, etc.)">Topics</string>
-    <string name="category_heading_types" translation_description="Label in the filters panel above event types (Sessions, Codelabs, etc.)">Types</string>
     <string name="reset" translation_description="The label for the button to reset the filter conditions.">Reset</string>
     <plurals name="filter_event_count" translation_description="A label showing how many events match the current filters">
         <item quantity="one">%1$d Event</item>
@@ -70,6 +67,14 @@
     <string name="schedule_hint_title" translation_description="The title of the schedule hint dialog.">Customize your schedule</string>
     <string name="schedule_hint_star_event" translation_description="The schedule hint for the icon to star an event.">Add to your starred events</string>
     <string name="schedule_hint_reserve_session_seat" translation_description="The schedule hint for the icon to reserve a session.">Reserve a session seat</string>
+
+    <!-- Filters -->
+    <string name="filters" translation_description="The label for the button to filter sessions by their topics, room, and so on.">Filters</string>
+    <string name="category_heading_tracks" translation_description="Label in the filters panel above session topics (Android, Cloud, etc.)">Topics</string>
+    <string name="category_heading_types" translation_description="Label in the filters panel above event types (Sessions, Codelabs, etc.)">Types</string>
+    <string name="category_heading_levels" translation_description="Label in the filters panel above levels (Beginner, Advanced, etc.)">Levels</string>
+    <string name="category_heading_dates" translation_description="Label in the filters panel above dates.">Dates</string>
+    <string name="my_events" translation_description="Label for a button to show only the user's events.">My events</string>
 
     <!-- Session Detail -->
     <string name="ask_question" translation_description="The label for the link to open an input form to ask a question about this session. [CHAR_LIMIT=30]">Q &amp; A</string>
