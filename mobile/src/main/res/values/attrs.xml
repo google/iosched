@@ -40,7 +40,7 @@
 
         <attr name="sessionListKeyline" format="dimension" />
 
-        <attr name="eventFilterViewStyle" format="reference" />
+        <attr name="filterChipViewStyle" format="reference" />
 
         <attr name="eventCardHeaderBackground" format="reference|color" />
 
@@ -86,7 +86,7 @@
         <attr name="cardDescription" format="string" />
     </declare-styleable>
 
-    <declare-styleable name="EventFilterView">
+    <declare-styleable name="FilterChipView">
         <attr name="android:checked" />
         <attr name="android:text" />
         <attr name="android:textColor" />

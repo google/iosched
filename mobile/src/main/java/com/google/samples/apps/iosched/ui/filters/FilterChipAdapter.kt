@@ -43,7 +43,7 @@ class FilterChipAdapter : RecyclerView.Adapter<TagChipViewHolder>() {
 class TagChipViewHolder(private val binding: ItemFilterChipBinding) : ViewHolder(binding.root) {
     fun bind(item: EventFilter) {
         binding.executeAfter {
-            eventFilter = item
+            filterChip = item
         }
     }
 }

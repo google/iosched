@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.databinding.ItemEventFilterBinding
+import com.google.samples.apps.iosched.databinding.ItemFilterChipSelectableBinding
 import com.google.samples.apps.iosched.databinding.ItemGenericSectionHeaderBinding
 import com.google.samples.apps.iosched.shared.util.exceptionInDebug
 import com.google.samples.apps.iosched.ui.SectionHeader
@@ -33,14 +33,14 @@ import com.google.samples.apps.iosched.ui.filters.EventFilter.MyEventsFilter
 import com.google.samples.apps.iosched.ui.filters.EventFilter.TagFilter
 
 /**
- * Adapter for the filters drawer
+ * Adapter for the filters sheet.
  */
-class ScheduleFilterAdapter(val viewModel: FiltersViewModelDelegate) :
+class SelectableFilterChipAdapter(val viewModelDelegate: FiltersViewModelDelegate) :
     ListAdapter<Any, ViewHolder>(EventFilterDiff) {
 
     companion object {
         private const val VIEW_TYPE_HEADING = R.layout.item_generic_section_header
-        private const val VIEW_TYPE_FILTER = R.layout.item_event_filter
+        private const val VIEW_TYPE_FILTER = R.layout.item_filter_chip_selectable
 
         /**
          * Inserts category headings in a list of [EventFilter]s to make a heterogeneous list.
@@ -54,8 +54,8 @@ class ScheduleFilterAdapter(val viewModel: FiltersViewModelDelegate) :
                 val category = it.getFilterCategory()
                 if (category != previousCategory && category != NONE) {
                     newList += SectionHeader(
-                            titleId = category.labelResId,
-                            useHorizontalPadding = false
+                        titleId = category.labelResId,
+                        useHorizontalPadding = false
                     )
                 }
                 newList.add(it)
@@ -106,10 +106,10 @@ class ScheduleFilterAdapter(val viewModel: FiltersViewModelDelegate) :
     }
 
     private fun createFilterViewHolder(parent: ViewGroup): FilterViewHolder {
-        val binding = ItemEventFilterBinding.inflate(
+        val binding = ItemFilterChipSelectableBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         ).apply {
-            viewModel = this@ScheduleFilterAdapter.viewModel
+            viewModel = viewModelDelegate
         }
         return FilterViewHolder(binding)
     }
@@ -133,11 +133,11 @@ class ScheduleFilterAdapter(val viewModel: FiltersViewModelDelegate) :
     }
 
     /** ViewHolder for [TagFilter] items. */
-    class FilterViewHolder(private val binding: ItemEventFilterBinding) :
+    class FilterViewHolder(private val binding: ItemFilterChipSelectableBinding) :
         ViewHolder(binding.root) {
 
         internal fun bind(item: EventFilter) {
-            binding.eventFilter = item
+            binding.filterChip = item
             binding.executePendingBindings()
         }
     }
@@ -153,7 +153,7 @@ internal object EventFilterDiff : DiffUtil.ItemCallback<Any>() {
     }
 }
 
-internal class ScheduleFilterSpanSizeLookup(private val adapter: ScheduleFilterAdapter) :
+internal class EventFilterSpanSizeLookup(private val adapter: SelectableFilterChipAdapter) :
     SpanSizeLookup() {
 
     override fun getSpanSize(position: Int) = adapter.getSpanSize(position)

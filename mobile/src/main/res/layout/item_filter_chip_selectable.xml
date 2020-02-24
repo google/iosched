@@ -22,7 +22,7 @@
     <data>
 
         <variable
-            name="eventFilter"
+            name="filterChip"
             type="com.google.samples.apps.iosched.ui.filters.EventFilter" />
 
         <variable
@@ -30,16 +30,16 @@
             type="com.google.samples.apps.iosched.ui.filters.FiltersViewModelDelegate" />
     </data>
 
-    <com.google.samples.apps.iosched.ui.filters.EventFilterView
+    <com.google.samples.apps.iosched.ui.filters.FilterChipView
         android:id="@+id/filter_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:checked="@{eventFilter.isChecked}"
+        android:checked="@{filterChip.isSelected}"
         android:minHeight="?listPreferredItemHeightSmall"
-        app:color="@{eventFilter.getColor()}"
-        app:eventFilter="@{eventFilter}"
-        app:eventFilterText="@{eventFilter}"
-        app:selectedTextColor="@{eventFilter.getSelectedTextColor()}"
+        app:color="@{filterChip.getColor()}"
+        app:filterChipOnClick="@{filterChip}"
+        app:filterChipText="@{filterChip}"
+        app:selectedTextColor="@{filterChip.getSelectedTextColor()}"
         app:viewModel="@{viewModel}" />
 
 </layout>

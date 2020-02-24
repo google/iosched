@@ -52,7 +52,7 @@ import com.google.samples.apps.iosched.util.textWidth
  * A custom view for displaying filters. Allows a custom presentation of the tag color and selection
  * state.
  */
-class EventFilterView @JvmOverloads constructor(
+class FilterChipView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -129,35 +129,35 @@ class EventFilterView @JvmOverloads constructor(
     init {
         val a = context.obtainStyledAttributes(
             attrs,
-            R.styleable.EventFilterView,
-            R.attr.eventFilterViewStyle,
-            R.style.Widget_IOSched_EventFilters
+            R.styleable.FilterChipView,
+            R.attr.filterChipViewStyle,
+            R.style.Widget_IOSched_FilterChipView
         )
         outlinePaint = Paint(ANTI_ALIAS_FLAG).apply {
-            color = a.getColorOrThrow(R.styleable.EventFilterView_android_strokeColor)
-            strokeWidth = a.getDimensionOrThrow(R.styleable.EventFilterView_outlineWidth)
+            color = a.getColorOrThrow(R.styleable.FilterChipView_android_strokeColor)
+            strokeWidth = a.getDimensionOrThrow(R.styleable.FilterChipView_outlineWidth)
             style = STROKE
         }
-        defaultTextColor = a.getColorOrThrow(R.styleable.EventFilterView_android_textColor)
+        defaultTextColor = a.getColorOrThrow(R.styleable.FilterChipView_android_textColor)
         textPaint = TextPaint(ANTI_ALIAS_FLAG).apply {
             color = defaultTextColor
-            textSize = a.getDimensionOrThrow(R.styleable.EventFilterView_android_textSize)
+            textSize = a.getDimensionOrThrow(R.styleable.FilterChipView_android_textSize)
             typeface = Typeface.MONOSPACE
-            letterSpacing = a.getFloat(R.styleable.EventFilterView_android_letterSpacing, 0f)
+            letterSpacing = a.getFloat(R.styleable.FilterChipView_android_letterSpacing, 0f)
         }
         dotPaint = Paint(ANTI_ALIAS_FLAG)
-        clear = a.getDrawableOrThrow(R.styleable.EventFilterView_clearIcon).apply {
+        clear = a.getDrawableOrThrow(R.styleable.FilterChipView_clearIcon).apply {
             setBounds(
                 -intrinsicWidth / 2, -intrinsicHeight / 2, intrinsicWidth / 2, intrinsicHeight / 2
             )
         }
-        touchFeedback = a.getDrawableOrThrow(R.styleable.EventFilterView_foreground).apply {
-            callback = this@EventFilterView
+        touchFeedback = a.getDrawableOrThrow(R.styleable.FilterChipView_foreground).apply {
+            callback = this@FilterChipView
         }
-        padding = a.getDimensionPixelSizeOrThrow(R.styleable.EventFilterView_android_padding)
-        isChecked = a.getBoolean(R.styleable.EventFilterView_android_checked, false)
-        showIcons = a.getBoolean(R.styleable.EventFilterView_showIcons, true)
-        cornerRadius = a.getDimension(R.styleable.EventFilterView_cornerRadius, 0f)
+        padding = a.getDimensionPixelSizeOrThrow(R.styleable.FilterChipView_android_padding)
+        isChecked = a.getBoolean(R.styleable.FilterChipView_android_checked, false)
+        showIcons = a.getBoolean(R.styleable.FilterChipView_showIcons, true)
+        cornerRadius = a.getDimension(R.styleable.FilterChipView_cornerRadius, 0f)
         a.recycle()
         clipToOutline = true
     }
