@@ -64,14 +64,14 @@ object TestData {
     )
     // region Declarations
 
-    val androidTag = Tag("1", "topic", "track_android", 0, "Android", 0xFFAED581.toInt())
-    val cloudTag = Tag("2", "topic", "track_cloud", 1, "Cloud", 0xFFFFF176.toInt())
-    val webTag = Tag("3", "topic", "track_web", 2, "Web", 0xFFFFF176.toInt())
-    val sessionsTag = Tag("101", "type", "type_sessions", 0, "Sessions", 0)
-    val codelabsTag = Tag("102", "type", "type_codelabs", 1, "Codelabs", 0)
-    val beginnerTag = Tag("201", "level", "level_beginner", 0, "Beginner", 0)
-    val intermediateTag = Tag("202", "level", "level_intermediate", 1, "Intermediate", 0)
-    val advancedTag = Tag("203", "level", "level_advanced", 2, "Advanced", 0)
+    val androidTag = Tag("1", Tag.CATEGORY_TOPIC, "track_android", 0, "Android", 0xFFAED581.toInt())
+    val cloudTag = Tag("2", Tag.CATEGORY_TOPIC, "track_cloud", 1, "Cloud", 0xFFFFF176.toInt())
+    val webTag = Tag("3", Tag.CATEGORY_TOPIC, "track_web", 2, "Web", 0xFFFFF176.toInt())
+    val sessionsTag = Tag("101", Tag.CATEGORY_TYPE, "type_sessions", 0, "Sessions", 0)
+    val codelabsTag = Tag("102", Tag.CATEGORY_TYPE, "type_codelabs", 1, "Codelabs", 0)
+    val beginnerTag = Tag("201", Tag.CATEGORY_LEVEL, "level_beginner", 0, "Beginner", 0)
+    val intermediateTag = Tag("202", Tag.CATEGORY_LEVEL, "level_intermediate", 1, "Intermediate", 0)
+    val advancedTag = Tag("203", Tag.CATEGORY_LEVEL, "level_advanced", 2, "Advanced", 0)
 
     val tagsList = listOf(
         androidTag, cloudTag, webTag, sessionsTag, codelabsTag, beginnerTag,

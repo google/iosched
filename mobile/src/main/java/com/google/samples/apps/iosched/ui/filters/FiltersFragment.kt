@@ -122,7 +122,7 @@ class FiltersFragment : DaggerFragment() {
         behavior = BottomSheetBehavior.from(binding.filterSheet)
 
         filterAdapter = SelectableFilterChipAdapter(viewModel)
-        viewModel.eventFilters.observe(viewLifecycleOwner, Observer {
+        viewModel.filterChips.observe(viewLifecycleOwner, Observer {
             filterAdapter.submitFilterList(it)
         })
 
@@ -220,12 +220,10 @@ fun selectedFilters(recyclerView: RecyclerView, filters: List<FilterChip>?) {
     filterChipAdapter.notifyDataSetChanged()
 }
 
-@BindingAdapter(value = ["hasFilters", "eventCount"], requireAll = true)
-fun filterHeader(textView: TextView, hasFilters: Boolean?, eventCount: Int?) {
-    if (hasFilters == true && eventCount != null) {
-        textView.text = textView.resources.getQuantityString(
-            R.plurals.filter_event_count, eventCount, eventCount
-        )
+@BindingAdapter(value = ["hasFilters", "resultCount"], requireAll = true)
+fun filterHeader(textView: TextView, hasFilters: Boolean?, resultCount: Int?) {
+    if (hasFilters == true && resultCount != null) {
+        textView.text = textView.resources.getString(R.string.result_count, resultCount)
     } else {
         textView.setText(R.string.filters)
     }
@@ -264,7 +262,7 @@ fun setClickListenerForFilterChip(
         // TODO(jdkoren) restore sign in check if we need it later
         val checked = !view.isChecked
         view.animateCheckedAndInvoke(checked) {
-            viewModel.toggleFilter(filterChip, checked)
+            viewModel.toggleFilter(filterChip.filter, checked)
         }
     }
 }

@@ -23,7 +23,6 @@
     <string name="title_info" translation_description="The title for the info screen where user can see various information, such as FAQ and travel info.">Info</string>
 
     <!-- Schedule -->
-    <string name="reset" translation_description="The label for the button to reset the filter conditions.">Reset</string>
     <plurals name="filter_event_count" translation_description="A label showing how many events match the current filters">
         <item quantity="one">%1$d Event</item>
         <item quantity="other">%1$d Events</item>
@@ -75,6 +74,8 @@
     <string name="category_heading_levels" translation_description="Label in the filters panel above levels (Beginner, Advanced, etc.)">Levels</string>
     <string name="category_heading_dates" translation_description="Label in the filters panel above dates.">Dates</string>
     <string name="my_events" translation_description="Label for a button to show only the user's events.">My events</string>
+    <string name="reset" translation_description="The label for the button to reset the filter conditions.">Reset</string>
+    <string name="result_count" translation_description="A label showing how search results match current filters.">Results: %1$d</string>
 
     <!-- Session Detail -->
     <string name="ask_question" translation_description="The label for the link to open an input form to ask a question about this session. [CHAR_LIMIT=30]">Q &amp; A</string>
