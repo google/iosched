@@ -27,7 +27,7 @@
 
         <variable
             name="viewModel"
-            type="com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel" />
+            type="com.google.samples.apps.iosched.ui.schedule.filters.FiltersViewModelDelegate" />
     </data>
 
     <com.google.samples.apps.iosched.ui.schedule.filters.EventFilterView

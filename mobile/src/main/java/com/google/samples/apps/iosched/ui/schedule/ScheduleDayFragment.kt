@@ -262,12 +262,11 @@ class ScheduleDayFragment : MainNavigationFragment() {
 
             // Process arguments to set initial filters
             arguments?.let {
-                if (ScheduleDayFragmentArgs.fromBundle(it).showPinnedEvents) {
-                    scheduleViewModel.clearFilters()
-                    scheduleViewModel.showPinnedEvents()
+                if (ScheduleDayFragmentArgs.fromBundle(it).showMySchedule) {
+                    scheduleViewModel.showMySchedule()
                 }
                 if (ScheduleDayFragmentArgs.fromBundle(it).showAllEvents) {
-                    scheduleViewModel.clearFilters()
+                    scheduleViewModel.showAllEvents()
                 }
             }
         }

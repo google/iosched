@@ -88,7 +88,7 @@ class ScheduleViewModel @Inject constructor(
     private val saveSelectedFiltersUseCase: SaveSelectedFiltersUseCase,
     private val analyticsHelper: AnalyticsHelper
 ) : ViewModel(),
-    ScheduleEventListener,
+    EventActions,
     SignInViewModelDelegate by signInViewModelDelegate {
 
     val isLoading: LiveData<Boolean>
@@ -296,6 +296,11 @@ class ScheduleViewModel @Inject constructor(
         }
     }
 
+    // TODO(jdkoren) support showing all events or just the user's starred/reserved events
+    fun showMySchedule() {}
+
+    fun showAllEvents() {}
+
     fun showPinnedEvents() {
         toggleFilter(MyEventsFilter(true), true)
     }
@@ -304,7 +309,7 @@ class ScheduleViewModel @Inject constructor(
         _navigateToSessionAction.value = Event(id)
     }
 
-    override fun toggleFilter(filter: EventFilter, enabled: Boolean) {
+    fun toggleFilter(filter: EventFilter, enabled: Boolean) {
         val changed = when (filter) {
             is MyEventsFilter -> userSessionMatcher.setShowPinnedEventsOnly(enabled)
             is TagFilter -> {
@@ -335,7 +340,7 @@ class ScheduleViewModel @Inject constructor(
         }
     }
 
-    override fun clearFilters() {
+    fun clearFilters() {
         if (userSessionMatcher.clearAll()) {
             eventFilters.value?.forEach { it.isChecked.set(false) }
             saveSelectedFiltersUseCase(userSessionMatcher)
@@ -424,11 +429,3 @@ data class ScheduleUiData(
 )
 
 data class ScheduleScrollEvent(val targetPosition: Int, val smoothScroll: Boolean = false)
-
-interface ScheduleEventListener : EventActions {
-    /** Called from the UI to enable or disable a particular filter. */
-    fun toggleFilter(filter: EventFilter, enabled: Boolean)
-
-    /** Called from the UI to remove all filters. */
-    fun clearFilters()
-}

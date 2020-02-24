@@ -27,7 +27,7 @@
         android:label="@string/title_schedule"
         tools:layout="@layout/fragment_schedule_day">
         <argument
-            android:name="showPinnedEvents"
+            android:name="showMySchedule"
             android:defaultValue="false"
             app:argType="boolean" />
         <argument
