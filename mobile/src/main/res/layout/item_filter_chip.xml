@@ -23,18 +23,18 @@
     <data>
 
         <variable
-            name="eventFilter"
+            name="filterChip"
             type="com.google.samples.apps.iosched.ui.filters.EventFilter" />
     </data>
 
-    <com.google.samples.apps.iosched.ui.filters.EventFilterView
+    <com.google.samples.apps.iosched.ui.filters.FilterChipView
         android:id="@+id/filter_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="true"
-        app:color="@{eventFilter.getColor()}"
-        app:eventFilterTextShort="@{eventFilter}"
-        app:selectedTextColor="@{eventFilter.getSelectedTextColor()}"
+        app:color="@{filterChip.getColor()}"
+        app:filterChipTextShort="@{filterChip}"
+        app:selectedTextColor="@{filterChip.getSelectedTextColor()}"
         app:showIcons="false"
         tools:text="@sample/tags.json/tags/name" />
 

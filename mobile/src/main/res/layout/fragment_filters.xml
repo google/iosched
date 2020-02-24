@@ -58,7 +58,7 @@
             app:layout_constraintGuide_begin="@dimen/schedule_bottom_sheet_peek_height" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_filter"
+            android:id="@+id/recyclerview_filters"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:alpha="@{recyclerviewAlpha}"
@@ -75,7 +75,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guide_peek_height"
             app:spanCount="2"
-            tools:listitem="@layout/item_event_filter"
+            tools:listitem="@layout/item_filter_chip_selectable"
             tools:targetApi="o" />
 
         <!--
@@ -94,9 +94,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guide_peek_height" />
 
-        <!-- Description view shown when tag filters are active -->
+        <!-- Description view shown when there are active filters -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/filter_description_tags"
+            android:id="@+id/active_filters"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
@@ -111,7 +111,7 @@
             app:goneUnless="@{viewModel.hasAnyFilters}"
             app:layoutManager="LinearLayoutManager"
             app:selectedFilters="@{viewModel.selectedFilters}"
-            tools:listitem="@layout/item_event_filter"
+            tools:listitem="@layout/item_filter_chip"
             tools:visibility="gone" />
 
         <!-- Shortcut for clearing the current filters, shown with the filters description -->
@@ -175,7 +175,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:animatedOnClick="@{() -> viewModel.clearFilters()}"
-            app:eventFilters="@{recyclerviewFilter}"
+            app:filterChips="@{recyclerviewFilters}"
             app:goneUnless="@{viewModel.hasAnyFilters}"
             tools:targetApi="o"
             tools:visibility="visible" />

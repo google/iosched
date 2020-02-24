@@ -37,7 +37,7 @@
         <item name="toolbarStyle">@style/Widget.IOSched.Toolbar</item>
         <item name="tabStyle">@style/Widget.IOSched.Tabs</item>
         <item name="navigationViewStyle">@style/Widget.IOSched.NavigationView</item>
-        <item name="eventFilterViewStyle">@style/Widget.IOSched.EventFilters</item>
+        <item name="filterChipViewStyle">@style/Widget.IOSched.FilterChipView</item>
 
         <!-- Text appearances -->
         <item name="textAppearanceBody2">@style/TextAppearance.IOSched.Body2</item>

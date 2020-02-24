@@ -188,7 +188,7 @@
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
-    <style name="Widget.IOSched.EventFilters">
+    <style name="Widget.IOSched.FilterChipView">
         <item name="android:letterSpacing">@dimen/tag_letter_spacing</item>
         <item name="android:padding">@dimen/spacing_normal</item>
         <item name="android:strokeColor">?colorControlLight</item>
