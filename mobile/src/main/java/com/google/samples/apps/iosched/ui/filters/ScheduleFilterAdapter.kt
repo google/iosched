@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.schedule.filters
+package com.google.samples.apps.iosched.ui.filters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -27,9 +27,10 @@ import com.google.samples.apps.iosched.databinding.ItemEventFilterBinding
 import com.google.samples.apps.iosched.databinding.ItemGenericSectionHeaderBinding
 import com.google.samples.apps.iosched.shared.util.exceptionInDebug
 import com.google.samples.apps.iosched.ui.SectionHeader
-import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.EventFilterCategory
-import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.EventFilterCategory.NONE
-import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.TagFilter
+import com.google.samples.apps.iosched.ui.filters.EventFilter.EventFilterCategory
+import com.google.samples.apps.iosched.ui.filters.EventFilter.EventFilterCategory.NONE
+import com.google.samples.apps.iosched.ui.filters.EventFilter.MyEventsFilter
+import com.google.samples.apps.iosched.ui.filters.EventFilter.TagFilter
 
 /**
  * Adapter for the filters drawer
@@ -99,17 +100,14 @@ class ScheduleFilterAdapter(val viewModel: FiltersViewModelDelegate) :
     private fun createHeadingViewHolder(parent: ViewGroup): HeadingViewHolder {
         return HeadingViewHolder(
             ItemGenericSectionHeaderBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
+                LayoutInflater.from(parent.context), parent, false
             )
         )
     }
 
     private fun createFilterViewHolder(parent: ViewGroup): FilterViewHolder {
         val binding = ItemEventFilterBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent, false
+            LayoutInflater.from(parent.context), parent, false
         ).apply {
             viewModel = this@ScheduleFilterAdapter.viewModel
         }

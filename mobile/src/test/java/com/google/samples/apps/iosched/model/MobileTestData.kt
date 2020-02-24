@@ -24,7 +24,7 @@ import com.google.samples.apps.iosched.test.data.TestData.cloudTag
 import com.google.samples.apps.iosched.test.data.TestData.sessionsTag
 import com.google.samples.apps.iosched.test.data.TestData.webTag
 import com.google.samples.apps.iosched.test.util.fakes.FakeAppDatabase
-import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.TagFilter
+import com.google.samples.apps.iosched.ui.filters.EventFilter.TagFilter
 
 /**
  * Test data for unit tests.
