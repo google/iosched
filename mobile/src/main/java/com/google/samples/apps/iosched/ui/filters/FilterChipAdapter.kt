@@ -25,7 +25,7 @@ import com.google.samples.apps.iosched.util.executeAfter
 
 class FilterChipAdapter : RecyclerView.Adapter<TagChipViewHolder>() {
 
-    var filters = emptyList<EventFilter>()
+    var filters = emptyList<FilterChip>()
 
     override fun getItemCount() = filters.size
 
@@ -41,7 +41,7 @@ class FilterChipAdapter : RecyclerView.Adapter<TagChipViewHolder>() {
 }
 
 class TagChipViewHolder(private val binding: ItemFilterChipBinding) : ViewHolder(binding.root) {
-    fun bind(item: EventFilter) {
+    fun bind(item: FilterChip) {
         binding.executeAfter {
             filterChip = item
         }

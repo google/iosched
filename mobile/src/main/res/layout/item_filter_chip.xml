@@ -24,7 +24,7 @@
 
         <variable
             name="filterChip"
-            type="com.google.samples.apps.iosched.ui.filters.EventFilter" />
+            type="com.google.samples.apps.iosched.ui.filters.FilterChip" />
     </data>
 
     <com.google.samples.apps.iosched.ui.filters.FilterChipView
@@ -32,9 +32,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="true"
-        app:color="@{filterChip.getColor()}"
-        app:filterChipTextShort="@{filterChip}"
-        app:selectedTextColor="@{filterChip.getSelectedTextColor()}"
+        app:color="@{filterChip.color}"
+        app:filterChipText="@{filterChip}"
+        app:selectedTextColor="@{filterChip.selectedTextColor}"
         app:showIcons="false"
         tools:text="@sample/tags.json/tags/name" />
 
