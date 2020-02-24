@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.schedule.filters
+package com.google.samples.apps.iosched.ui.filters
 
 import android.graphics.Color
 import androidx.annotation.StringRes
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Tag
-import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.EventFilterCategory.NONE
+import com.google.samples.apps.iosched.ui.filters.EventFilter.EventFilterCategory.NONE
 
 sealed class EventFilter(val isSelected: Boolean) {
 
