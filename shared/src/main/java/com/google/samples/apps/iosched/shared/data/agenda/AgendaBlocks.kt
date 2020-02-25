@@ -31,7 +31,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = BADGE_PICKUP_TITLE,
             type = BADGE_PICKUP_TYPE,
-            color = 0xffe6e6e6.toInt(),
+            color = BADGE_PICKUP_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.BADGE_PICK_UP_DAY0_START_TIME
@@ -44,7 +44,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = BADGE_PICKUP_TITLE,
             type = BADGE_PICKUP_TYPE,
-            color = 0xffe6e6e6.toInt(),
+            color = BADGE_PICKUP_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.BADGE_PICK_UP_DAY1_START_TIME
@@ -57,7 +57,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = BREAKFAST_TITLE,
             type = MEAL_TYPE,
-            color = 0xfffad2ce.toInt(),
+            color = MEAL_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.BREAKFAST_DAY1_START_TIME
@@ -69,7 +69,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = GOOGLE_KEYNOTE_TITLE,
             type = KEYNOTE_TYPE,
-            color = 0xfffbbc05.toInt(),
+            color = KEYNOTE_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.GOOGLE_KEYNOTE_START_TIME
@@ -81,8 +81,8 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = IO_STORE_TITLE,
             type = STORE_TYPE,
-            color = 0xffffffff.toInt(),
-            strokeColor = 0xffff6c00.toInt(),
+            color = STORE_COLOR.toInt(),
+            strokeColor = STORE_STROKE_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.IO_STORE_DAY1_START_TIME).value),
@@ -93,7 +93,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = LUNCH_TITLE,
             type = MEAL_TYPE,
-            color = 0xfffad2ce.toInt(),
+            color = MEAL_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.LUNCH_DAY1_START_TIME).value),
@@ -103,7 +103,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = DEVELOPER_KEYNOTE_TITLE,
             type = KEYNOTE_TYPE,
-            color = 0xfffbbc05.toInt(),
+            color = KEYNOTE_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.DEVELOPER_KEYNOTE_START_TIME
@@ -117,7 +117,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             title = SESSIONS_TITLE,
             type = SESSIONS_TYPE,
             isDark = true,
-            color = 0xff5bb975.toInt(),
+            color = SESSION_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.SESSIONS_DAY1_START_TIME).value),
@@ -128,7 +128,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = CODELABS_TITLE,
             type = CODELABS_TYPE,
-            color = 0xff4285f4.toInt(),
+            color = OTHER_BOOTH_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
@@ -140,7 +140,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = OFFICE_HOURS_APP_REVIEWS_TITLE,
             type = OFFICE_HOURS_TYPE,
-            color = 0xff4285f4.toInt(),
+            color = OTHER_BOOTH_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
@@ -154,7 +154,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = SANDBOXES_TITLE,
             type = SANDBOXES_TYPE,
-            color = 0xff4285f4.toInt(),
+            color = OTHER_BOOTH_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
@@ -167,7 +167,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = AFTER_DARK_TITLE,
             type = AFTER_HOURS_TYPE,
-            color = 0xff164fa5.toInt(),
+            color = AFTER_DARK_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
@@ -178,7 +178,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = BADGE_PICKUP_TITLE,
             type = BADGE_PICKUP_TYPE,
-            color = 0xffe6e6e6.toInt(),
+            color = BADGE_PICKUP_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource
                     .getStringLiveData(
@@ -193,7 +193,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = BREAKFAST_TITLE,
             type = MEAL_TYPE,
-            color = 0xfffad2ce.toInt(),
+            color = MEAL_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.BREAKFAST_DAY2_START_TIME
@@ -205,8 +205,8 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = IO_STORE_TITLE,
             type = STORE_TYPE,
-            color = 0xffffffff.toInt(),
-            strokeColor = 0xffff6c00.toInt(),
+            color = STORE_COLOR.toInt(),
+            strokeColor = STORE_STROKE_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.IO_STORE_DAY2_START_TIME).value),
@@ -217,7 +217,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = LUNCH_TITLE,
             type = MEAL_TYPE,
-            color = 0xfffad2ce.toInt(),
+            color = MEAL_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.LUNCH_DAY2_START_TIME).value),
@@ -228,7 +228,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             title = SESSIONS_TITLE,
             type = SESSIONS_TYPE,
             isDark = true,
-            color = 0xff5bb975.toInt(),
+            color = SESSION_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.SESSIONS_DAY2_START_TIME).value),
@@ -239,7 +239,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = CODELABS_TITLE,
             type = CODELABS_TYPE,
-            color = 0xff4285f4.toInt(),
+            color = OTHER_BOOTH_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
@@ -251,7 +251,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = OFFICE_HOURS_APP_REVIEWS_TITLE,
             type = OFFICE_HOURS_TYPE,
-            color = 0xff4285f4.toInt(),
+            color = OTHER_BOOTH_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
@@ -265,7 +265,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = SANDBOXES_TITLE,
             type = SANDBOXES_TYPE,
-            color = 0xff4285f4.toInt(),
+            color = OTHER_BOOTH_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
@@ -278,7 +278,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = CONCERT_TITLE,
             type = CONCERT_TYPE,
-            color = 0xff164fa5.toInt(),
+            color = AFTER_DARK_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(RemoteAppConfigDataSource.CONCERT_START_TIME).value),
@@ -288,7 +288,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = BADGE_PICKUP_TITLE,
             type = BADGE_PICKUP_TYPE,
-            color = 0xffe6e6e6.toInt(),
+            color = BADGE_PICKUP_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource
                     .getStringLiveData(
@@ -303,7 +303,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = BREAKFAST_TITLE,
             type = MEAL_TYPE,
-            color = 0xfffad2ce.toInt(),
+            color = MEAL_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.BREAKFAST_DAY3_START_TIME
@@ -315,8 +315,8 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = IO_STORE_TITLE,
             type = STORE_TYPE,
-            color = 0xffffffff.toInt(),
-            strokeColor = 0xffff6c00.toInt(),
+            color = STORE_COLOR.toInt(),
+            strokeColor = STORE_STROKE_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.IO_STORE_DAY3_START_TIME).value),
@@ -327,7 +327,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = LUNCH_TITLE,
             type = MEAL_TYPE,
-            color = 0xfffad2ce.toInt(),
+            color = MEAL_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.LUNCH_DAY3_START_TIME).value),
@@ -339,7 +339,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             title = SESSIONS_TITLE,
             type = SESSIONS_TYPE,
             isDark = true,
-            color = 0xff5bb975.toInt(),
+            color = SESSION_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.SESSIONS_DAY3_START_TIME).value),
@@ -350,7 +350,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = CODELABS_TITLE,
             type = CODELABS_TYPE,
-            color = 0xff4285f4.toInt(),
+            color = OTHER_BOOTH_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
@@ -362,7 +362,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = OFFICE_HOURS_APP_REVIEWS_TITLE,
             type = OFFICE_HOURS_TYPE,
-            color = 0xff4285f4.toInt(),
+            color = OTHER_BOOTH_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
@@ -376,7 +376,7 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
         Block(
             title = SANDBOXES_TITLE,
             type = SANDBOXES_TYPE,
-            color = 0xff4285f4.toInt(),
+            color = OTHER_BOOTH_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
@@ -412,3 +412,12 @@ private const val STORE_TYPE = "store"
 private const val OFFICE_HOURS_TYPE = "office_hours"
 private const val SANDBOXES_TYPE = "sandbox"
 private const val SESSIONS_TYPE = "session"
+
+private const val OTHER_BOOTH_COLOR = 0xff4285f4
+private const val MEAL_COLOR = 0xfffad2ce
+private const val KEYNOTE_COLOR = 0xfffbbc05
+private const val BADGE_PICKUP_COLOR = 0xffe6e6e6
+private const val STORE_COLOR = 0xffffffff
+private const val SESSION_COLOR = 0xff5bb975
+private const val AFTER_DARK_COLOR = 0xff164fa5
+private const val STORE_STROKE_COLOR = 0xffff6c00
