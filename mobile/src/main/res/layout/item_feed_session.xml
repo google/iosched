@@ -46,17 +46,20 @@
         android:onClick="@{() -> eventListener.openEventDetail(userSession.session.id)}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="@dimen/feed_session_dimension"
-            android:layout_height="@dimen/feed_session_dimension">
+            android:layout_width="@dimen/feed_my_day_session_width"
+            android:layout_height="@dimen/feed_my_day_session_height">
 
             <ImageView
                 android:id="@+id/reserved_icon"
                 android:layout_width="@dimen/feed_session_badge_icon_size"
                 android:layout_height="@dimen/feed_session_badge_icon_size"
-                android:layout_marginEnd="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:layout_marginStart="@dimen/margin_small"
                 android:layout_marginTop="@dimen/margin_small"
                 android:contentDescription="@null"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/title"
+                app:layout_constraintEnd_toStartOf="@id/starred_icon"
+                app:layout_constraintHorizontal_bias="1"
                 app:layout_constraintTop_toTopOf="parent"
                 app:goneUnless="@{userSession.userEvent.isReserved}"
                 app:srcCompat="@drawable/ic_reserved" />
@@ -65,10 +68,10 @@
                 android:id="@+id/starred_icon"
                 android:layout_width="@dimen/feed_session_badge_icon_size"
                 android:layout_height="@dimen/feed_session_badge_icon_size"
-                android:layout_marginEnd="@dimen/margin_small"
                 android:layout_marginTop="@dimen/margin_small"
                 android:contentDescription="@null"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/reserved_icon"
+                app:layout_constraintEnd_toEndOf="@id/keyline_right"
                 app:layout_constraintTop_toTopOf="parent"
                 app:goneUnless="@{userSession.userEvent.isStarred &amp;&amp; !userSession.userEvent.isReserved}"
                 app:srcCompat="@drawable/ic_star" />
@@ -88,39 +91,59 @@
                 app:layout_constraintGuide_end="@dimen/margin_normal" />
 
             <TextView
-                android:id="@+id/time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:textAppearance="@style/TextAppearance.IOSched.Feed.Session.Time"
-                app:layout_constraintStart_toStartOf="@id/keyline_left"
-                app:layout_constraintTop_toTopOf="parent"
-                app:startTime="@{userSession.session.startTime}"
-                app:timeZoneId="@{timeZoneId}"
-                tools:text="1:00 pm" />
-
-            <TextView
                 android:id="@+id/title"
                 style="@style/Widget.IOSched.Feed.Session.Title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_small"
                 android:text="@{userSession.session.title}"
-                app:layout_constraintEnd_toEndOf="@id/keyline_right"
+                app:layout_constraintBottom_toTopOf="@id/time"
+                app:layout_constraintEnd_toStartOf="@id/reserved_icon"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintVertical_bias="0"
                 app:layout_constraintStart_toStartOf="@id/keyline_left"
-                app:layout_constraintTop_toBottomOf="@+id/time"
-                tools:text="What's New in Android"/>
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="What's New in Android" />
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:textAppearance="?attr/textAppearanceCaption"
+                app:layout_constraintStart_toStartOf="@id/keyline_left"
+                app:layout_constraintTop_toBottomOf="@+id/title"
+                app:layout_constraintBottom_toTopOf="@id/location"
+                app:feedSessionStartTime="@{userSession.session.startTime}"
+                app:feedSessionEndTime="@{userSession.session.endTime}"
+                app:timeZoneId="@{timeZoneId}"
+                tools:text="1:00 pm" />
 
             <TextView
                 android:id="@+id/location"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_normal"
+                android:layout_height="0dp"
                 android:text="@{userSession.session.room.name}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/map_button"
                 app:layout_constraintEnd_toEndOf="@id/keyline_right"
+                app:layout_constraintTop_toBottomOf="@id/time"
                 app:layout_constraintStart_toStartOf="@id/keyline_left"
                 tools:text="Stage 1" />
+
+            <Button
+                android:id="@+id/map_button"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/feed_session_map_button_title"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:onClick="@{() -> eventListener.openMapForSession(userSession.session)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/keyline_right"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/keyline_left"
+                app:layout_constraintTop_toBottomOf="@id/location"
+                app:icon="@drawable/ic_nav_map" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
