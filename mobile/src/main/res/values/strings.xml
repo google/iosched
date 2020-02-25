@@ -165,16 +165,25 @@
     <string name="feed_not_available" translation_description="Message that is shown when the announcements could not be loaded or are empty.">No announcements found.</string>
     <string name="feed_loading_error" translation_description="Short error message that is displayed in a Snackbar when the feed could not be loaded.">Could not load feed. Try again later.</string>
     <string name="feed_announcement_title" translation_description="The title of the announcements section in feed">Announcements</string>
+    <string name="feed_sessions_title">My day</string>
+    <string name="feed_session_map_button_title">Show on map</string>
+    <string name="feed_view_full_schedule" translation_description="The title of the call to action in sessions section of feed when user is signed in">My full schedule</string>
+    <string name="feed_watch_live_stream" translation_description="The title of the call to action in FeedHeader when the moment contains a livestream">Watch livestream</string>
+    <string name="feed_no_reserved_events" translation_description="Message that is shown when the user hasn't reserved a seat for any event">Your reserved events for today will show up here</string>
+    <string name="feed_no_reserved_events_action" translation_description="Button label for the action on the no reserved events card">Find events to reserve in Schedule</string>
+
+    <string name="feed_social_channels_message" translation_description="The sub-title of the social channels section in feed">See what other people are sharing.</string>
+    <string name="feed_social_twitter_link" translatable="false">https://twitter.com/search?q=googleio</string>
+    <string name="feed_social_instagram_link" translatable="false">https://instagram.com/explore/tags/googleio</string>
+    <string name="feed_social_google_devs_link" translatable="false">https://developers.googleblog.com/</string>
+
+    <!-- [start] TODO(gauravbhola): To be removed -->
     <string name="feed_upcoming_events" translation_description="The title of the sessions section in feed when user is attending">Upcoming events</string>
     <string name="feed_saved_events" translation_description="The title of the sessions section in feed when user is signed in">Saved events</string>
     <string name="feed_no_saved_events" translation_description="The title of the sessions section in feed when user is signed in and they don't have any saved event">No saved events</string>
     <string name="feed_view_all_events" translation_description="The title of the call to action in sessions section of feed when user is signed out">View all events</string>
     <string name="feed_view_your_schedule" translation_description="The title of the call to action in sessions section of feed when user is signed in">View your schedule</string>
-    <string name="feed_watch_live_stream" translation_description="The title of the call to action in FeedHeader when the moment contains a livestream">Watch livestream</string>
-    <string name="feed_social_channels_message" translation_description="The sub-title of the social channels section in feed">See what other people are sharing.</string>
-    <string name="feed_social_twitter_link" translatable="false">https://twitter.com/search?q=googleio</string>
-    <string name="feed_social_instagram_link" translatable="false">https://instagram.com/explore/tags/googleio</string>
-    <string name="feed_social_google_devs_link" translatable="false">https://developers.googleblog.com/</string>
+    <!-- [end] To be removed -->
 
     <plurals name="duration_days">
         <item quantity="one" translation_description="Unit for duration of time by days. Singular.">%s day</item>

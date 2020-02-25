@@ -21,6 +21,7 @@ import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.shared.BuildConfig
 import com.google.samples.apps.iosched.shared.R
+import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider.now
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
@@ -117,9 +118,15 @@ object TimeUtils {
         return DateTimeFormatter.ofPattern("MMM d, h:mm a").format(startTime)
     }
 
-    fun timeString(startTime: ZonedDateTime, endTime: ZonedDateTime): String {
+    fun timeString(
+        startTime: ZonedDateTime,
+        endTime: ZonedDateTime,
+        withDate: Boolean = true
+    ): String {
         val sb = StringBuilder()
-        sb.append(DateTimeFormatter.ofPattern("EEE, MMM d, h:mm ").format(startTime))
+
+        val dateFormat = if (withDate) "EEE, MMM d, h:mm " else "h:mm "
+        sb.append(DateTimeFormatter.ofPattern(dateFormat).format(startTime))
 
         val startTimeMeridiem: String = DateTimeFormatter.ofPattern("a").format(startTime)
         val endTimeMeridiem: String = DateTimeFormatter.ofPattern("a").format(endTime)
@@ -150,6 +157,18 @@ object TimeUtils {
     // TODO(b/132697497) replace with a UseCase
     fun getKeynoteStartTime(): ZonedDateTime {
         return ConferenceDays.first().start.plusHours(3L)
+    }
+
+    /**
+     * @return the current day of the conference. Returns null if the conference is yet to start or
+     * has ended.
+     */
+    fun getCurrentConferenceDay(): ConferenceDay? {
+        val now = ZonedDateTime.now()
+        if (now.isBefore(ConferenceDays.first().start)) {
+            return null
+        }
+        return ConferenceDays.firstOrNull { now.isBefore(it.end) }
     }
 
     fun getConferenceEndTime() = ConferenceDays.last().end

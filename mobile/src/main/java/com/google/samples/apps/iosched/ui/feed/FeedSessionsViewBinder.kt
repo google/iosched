@@ -39,11 +39,9 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.ui.schedule.SessionDiff
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
-import org.threeten.bp.format.DateTimeFormatter
 
 /** A data class representing the state of FeedSEssionsContainer */
 data class FeedSessions(
-    val username: String?,
     @StringRes val titleId: Int,
     @StringRes val actionTextId: Int,
     val userSessions: List<UserSession>,
@@ -121,11 +119,7 @@ class FeedSessionsViewHolder(
         layoutManager = binding.recyclerView.layoutManager
 
         binding.actionButton.setOnClickListener {
-            if (sessions.actionTextId == R.string.feed_view_all_events) {
-                eventListener.openSchedule(false)
-            } else {
-                eventListener.openSchedule(true)
-            }
+            eventListener.openSchedule(true)
         }
         sessionAdapter.submitList(sessions.userSessions)
         if (layoutManagerState != null) {
@@ -169,12 +163,16 @@ class FeedSessionItemViewHolder(
     }
 }
 
-@BindingAdapter("startTime", "timeZoneId")
-fun sessionStartTime(
+@BindingAdapter("feedSessionStartTime", "feedSessionEndTime", "timeZoneId")
+fun sessionTime(
     textView: TextView,
-    startTime: ZonedDateTime,
+    feedSessionStartTime: ZonedDateTime,
+    feedSessionEndTime: ZonedDateTime,
     timeZoneId: ZoneId
 ) {
-    val timePattern = DateTimeFormatter.ofPattern("h:mm a")
-    textView.text = timePattern.format(TimeUtils.zonedTime(startTime, zoneId = timeZoneId))
+    textView.text = TimeUtils.timeString(
+        TimeUtils.zonedTime(feedSessionStartTime, timeZoneId),
+        TimeUtils.zonedTime(feedSessionEndTime, timeZoneId),
+        withDate = false
+    )
 }

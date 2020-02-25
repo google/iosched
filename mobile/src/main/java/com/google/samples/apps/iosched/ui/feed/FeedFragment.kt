@@ -29,15 +29,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.common.collect.ImmutableMap
 import com.google.samples.apps.iosched.databinding.FragmentFeedBinding
-import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
-import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
-import com.google.samples.apps.iosched.ui.feed.FeedFragmentDirections.Companion.toMap
 import com.google.samples.apps.iosched.ui.feed.FeedFragmentDirections.Companion.toSchedule
 import com.google.samples.apps.iosched.ui.feed.FeedFragmentDirections.Companion.toSessionDetail
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
@@ -163,8 +160,8 @@ class FeedFragment : MainNavigationFragment() {
             openLiveStreamUrl(streamUrl)
         })
 
-        model.navigateToMapAction.observe(viewLifecycleOwner, EventObserver { moment ->
-            openMap(moment)
+        model.navigateToMapAction.observe(viewLifecycleOwner, EventObserver { navDirections ->
+            findNavController().navigate(navDirections)
         })
     }
 
@@ -241,12 +238,6 @@ class FeedFragment : MainNavigationFragment() {
     private fun openSignInDialog() {
         SignInDialogFragment().show(
             requireActivity().supportFragmentManager, DIALOG_NEED_TO_SIGN_IN
-        )
-    }
-
-    private fun openMap(moment: Moment) {
-        findNavController().navigate(
-            toMap(featureId = moment.featureId, startTime = moment.startTime.toEpochMilli())
         )
     }
 
