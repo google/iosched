@@ -20,6 +20,8 @@ import com.google.samples.apps.iosched.shared.result.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 /**
@@ -28,11 +30,11 @@ import kotlinx.coroutines.flow.flowOn
  * Handling an exception (emit [Result.Error] to the result) is the subclasses's responsibility.
  */
 abstract class FlowUseCase<in P, R>(private val coroutineDispatcher: CoroutineDispatcher) {
-    operator fun invoke(parameters: P): Flow<Result<R>> {
-        return execute(parameters)
-            .catch { e -> emit(Result.Error(Exception(e))) }
-            .flowOn(coroutineDispatcher)
+    operator fun invoke(parameters: P): Flow<Result<R>> = flow {
+        emitAll(execute(parameters))
     }
+        .catch { e -> emit(Result.Error(Exception(e))) }
+        .flowOn(coroutineDispatcher)
 
-    abstract fun execute(parameters: P): Flow<Result<R>>
+    protected abstract fun execute(parameters: P): Flow<Result<R>>
 }
