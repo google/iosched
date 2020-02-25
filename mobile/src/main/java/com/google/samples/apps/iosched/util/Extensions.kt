@@ -17,7 +17,9 @@
 package com.google.samples.apps.iosched.util
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.res.Resources
+import android.content.res.TypedArray
 import android.graphics.Typeface
 import android.net.wifi.WifiConfiguration
 import android.os.Build
@@ -29,8 +31,10 @@ import android.text.Spanned
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.text.style.StyleSpan
+import android.util.TypedValue
 import android.view.View
 import android.view.View.OnAttachStateChangeListener
+import androidx.annotation.ColorInt
 import androidx.annotation.DimenRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -323,4 +327,16 @@ fun <T> MutableCollection<T>.compatRemoveIf(predicate: (T) -> Boolean): Boolean 
         }
     }
     return removed
+}
+
+/** Reads the color attribute from the theme for given [colorAttributeId] */
+fun Context.getColorFromTheme(colorAttributeId: Int): Int {
+    val typedValue = TypedValue()
+    val typedArray: TypedArray =
+        this.obtainStyledAttributes(
+            typedValue.data, intArrayOf(colorAttributeId)
+        )
+    @ColorInt val color = typedArray.getColor(0, 0)
+    typedArray.recycle()
+    return color
 }

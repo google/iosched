@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2020 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="17"
+    android:viewportHeight="17">
+
+    <group android:translateY="1.5">
+        <path
+            android:fillColor="#ffffff"
+            android:fillType="evenOdd"
+            android:pathData="M17 1.65729C16.3745 1.93839 15.7024 2.12844 14.9968 2.21382C15.7169 1.77645 16.27 1.08375 16.5303 0.258477C15.8565 0.663522 15.1101 0.957602 14.3156 1.11614C13.6794 0.429241 12.773 0 11.7699 0C9.84357 0 8.28199 1.5825 8.28199 3.53425C8.28199 3.81131 8.31283 4.08101 8.37228 4.33967C5.47365 4.19229 2.90372 2.78522 1.18351 0.64695C0.883299 1.16895 0.711303 1.77607 0.711303 2.42378C0.711303 3.64994 1.32703 4.73174 2.26287 5.36558C1.69117 5.34724 1.15336 5.1882 0.683134 4.92348C0.682885 4.93823 0.682823 4.95304 0.682823 4.96791C0.682823 6.68034 1.88505 8.10883 3.48059 8.43354C3.1879 8.51425 2.87978 8.55742 2.56172 8.55742C2.33693 8.55742 2.11849 8.5353 1.90551 8.49403C2.34937 9.8982 3.63741 10.92 5.16361 10.9486C3.9699 11.8965 2.46608 12.4615 0.831998 12.4615C0.550499 12.4615 0.272856 12.4448 0 12.4121C1.54355 13.4149 3.37681 14 5.34643 14C11.7617 14 15.2698 8.61457 15.2698 3.94408C15.2698 3.79083 15.2664 3.63841 15.2597 3.48686C15.9411 2.98856 16.5324 2.36606 17 1.65729Z" />
+    </group>
+</vector>

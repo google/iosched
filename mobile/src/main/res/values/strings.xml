@@ -121,6 +121,10 @@
     <string name="a11y_star" translation_description="Alternate text for a button used for starring or unstarring events">Star</string>
     <string name="a11y_play" translation_description="Alternate text for a button used to play a video">Play video</string>
 
+    <string name="a11y_feed_social_instagram_button" translation_description="Description of the instagram button on the feed.">Open instagram to see what others are sharing</string>
+    <string name="a11y_feed_social_twitter_button" translation_description="Description of the twitter button on the feed.">Open twitter to see what others are sharing</string>
+    <string name="a11y_feed_social_google_devs_button" translation_description="Description of the google developer button on the feed.">Open google developers blog</string>
+
     <string name="a11y_select_map_mode" translation_description="Alternate text for a button used to select the mode on the Map.">Select map mode</string>
     <string name="a11y_search_schedule" translation_description="Alternate text for a button used to search the schedule.">Search schedule</string>
 
@@ -167,6 +171,10 @@
     <string name="feed_view_all_events" translation_description="The title of the call to action in sessions section of feed when user is signed out">View all events</string>
     <string name="feed_view_your_schedule" translation_description="The title of the call to action in sessions section of feed when user is signed in">View your schedule</string>
     <string name="feed_watch_live_stream" translation_description="The title of the call to action in FeedHeader when the moment contains a livestream">Watch livestream</string>
+    <string name="feed_social_channels_message" translation_description="The sub-title of the social channels section in feed">See what other people are sharing.</string>
+    <string name="feed_social_twitter_link" translatable="false">https://twitter.com/search?q=googleio</string>
+    <string name="feed_social_instagram_link" translatable="false">https://instagram.com/explore/tags/googleio</string>
+    <string name="feed_social_google_devs_link" translatable="false">https://developers.googleblog.com/</string>
 
     <plurals name="duration_days">
         <item quantity="one" translation_description="Unit for duration of time by days. Singular.">%s day</item>
