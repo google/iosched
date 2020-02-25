@@ -30,6 +30,10 @@ fi
 export ANDROID_SDK_HOME=/opt/android-sdk/current
 echo y | ${ANDROID_SDK_HOME}/tools/bin/sdkmanager "build-tools;29.0.2"
 
+# Workaround for b/148189425
+# AGP 3.6.0 requires a specific NDK version for running Gradle
+echo y | ${ANDROID_SDK_HOME}/tools/bin/sdkmanager "ndk;20.0.5594570"
+
 cd $KOKORO_ARTIFACTS_DIR/git/iosched
 
 ./gradlew "${GRADLE_FLAGS[@]}" build
