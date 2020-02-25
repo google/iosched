@@ -23,10 +23,10 @@ import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCaseLeg
 import com.google.samples.apps.iosched.shared.domain.settings.ObserveThemeModeUseCase
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.result.successOr
-import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
+import javax.inject.Inject
 
 /**
  * Interface to implement activity theming via a ViewModel.
@@ -74,6 +74,6 @@ class ThemedActivityDelegateImpl @Inject constructor(
 
     init {
         // Observe updates in dark mode setting
-        observeThemeUseCase.execute(Unit)
+        observeThemeUseCase(Unit)
     }
 }
