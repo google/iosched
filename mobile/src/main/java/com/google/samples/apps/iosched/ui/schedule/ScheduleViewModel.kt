@@ -31,8 +31,6 @@ import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCaseLegacy
-import com.google.samples.apps.iosched.shared.domain.prefs.LoadSelectedFiltersUseCase
-import com.google.samples.apps.iosched.shared.domain.prefs.SaveSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ConferenceDayIndexer
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsParameters
@@ -53,10 +51,6 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
-import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter
-import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
-import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.TagFilter
-import com.google.samples.apps.iosched.ui.schedule.filters.LoadEventFiltersUseCase
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
@@ -73,7 +67,6 @@ import javax.inject.Inject
  */
 class ScheduleViewModel @Inject constructor(
     private val loadFilteredUserSessionsUseCase: LoadFilteredUserSessionsUseCase,
-    loadEventFiltersUseCase: LoadEventFiltersUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
     private val starEventUseCase: StarEventAndNotifyUseCase,
     scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase,
@@ -84,8 +77,6 @@ class ScheduleViewModel @Inject constructor(
     // TODO(COROUTINES): Migrate to non-legacy
     private val refreshConferenceDataUseCase: RefreshConferenceDataUseCaseLegacy,
     observeConferenceDataUseCase: ObserveConferenceDataUseCase,
-    loadSelectedFiltersUseCase: LoadSelectedFiltersUseCase,
-    private val saveSelectedFiltersUseCase: SaveSelectedFiltersUseCase,
     private val analyticsHelper: AnalyticsHelper
 ) : ViewModel(),
     EventActions,
@@ -95,9 +86,8 @@ class ScheduleViewModel @Inject constructor(
 
     val swipeRefreshing: LiveData<Boolean>
 
-    // The current UserSessionMatcher, used to filter the events that are shown
+    // TODO(jdkoren): remove when use case is updated
     private val userSessionMatcher = UserSessionMatcher()
-    private val loadSelectedFiltersResult = MutableLiveData<Result<Unit>>()
 
     private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
     val isConferenceTimeZone: LiveData<Boolean>
@@ -136,21 +126,7 @@ class ScheduleViewModel @Inject constructor(
         }
     }
 
-    // Cached list of TagFilters returned by the use case. Only Result.Success modifies it.
-    private var cachedEventFilters = emptyList<EventFilter>()
-
-    val eventFilters: LiveData<List<EventFilter>>
-    private val _selectedFilters = MutableLiveData<List<EventFilter>>()
-    val selectedFilters: LiveData<List<EventFilter>>
-        get() = _selectedFilters
-    private val _hasAnyFilters = MutableLiveData<Boolean>().apply { value = false }
-    val hasAnyFilters: LiveData<Boolean>
-        get() = _hasAnyFilters
-
-    private val loadEventFiltersResult = MediatorLiveData<Result<List<EventFilter>>>()
     private val swipeRefreshResult = MutableLiveData<Result<Boolean>>()
-
-    val eventCount: LiveData<Int>
 
     /** LiveData for Actions and Events **/
 
@@ -190,24 +166,9 @@ class ScheduleViewModel @Inject constructor(
     init {
         val conferenceDataAvailable = observeConferenceDataUseCase.observe()
 
-        // Load EventFilters when persisted filters are loaded and when there's new conference data
-        loadEventFiltersResult.addSource(loadSelectedFiltersResult) {
-            loadEventFiltersUseCase(userSessionMatcher, loadEventFiltersResult)
-        }
-        loadEventFiltersResult.addSource(conferenceDataAvailable) {
-            loadEventFiltersUseCase(userSessionMatcher, loadEventFiltersResult)
-        }
-
-        // Load persisted filters to the matcher
-        loadSelectedFiltersUseCase(userSessionMatcher, loadSelectedFiltersResult)
-
-        // Load sessions when persisted filters are loaded and when there's new conference data
+        // Load sessions when there's new conference data
         userSessionsNeedRefresh.addSource(conferenceDataAvailable) {
             Timber.d("Detected new data in conference data repository")
-            refreshUserSessions()
-        }
-        userSessionsNeedRefresh.addSource(loadEventFiltersResult) {
-            Timber.d("Loaded filters from persistent storage")
             refreshUserSessions()
         }
         userSessionsNeedRefresh.addSource(timeZoneId) {
@@ -220,30 +181,12 @@ class ScheduleViewModel @Inject constructor(
             refreshUserSessions()
         }
 
-        eventCount = loadSessionsResult.map {
-            (it as? Success)?.data?.userSessionCount ?: 0
-        }
-
         isLoading = loadSessionsResult.map { it == Result.Loading }
 
         _errorMessage.addSource(loadSessionsResult) { result ->
             if (result is Result.Error) {
                 _errorMessage.value = Event(content = result.exception.message ?: "Error")
             }
-        }
-        _errorMessage.addSource(loadEventFiltersResult) { result ->
-            if (result is Result.Error) {
-                _errorMessage.value = Event(content = result.exception.message ?: "Error")
-            }
-        }
-
-        eventFilters = loadEventFiltersResult.map {
-            if (it is Success) {
-                cachedEventFilters = it.data
-                updateFilterStateObservables()
-            }
-            // TODO handle Error result
-            cachedEventFilters
         }
 
         // Show a message with the result of a reservation
@@ -301,62 +244,8 @@ class ScheduleViewModel @Inject constructor(
 
     fun showAllEvents() {}
 
-    fun showPinnedEvents() {
-        toggleFilter(MyEventsFilter(true), true)
-    }
-
     override fun openEventDetail(id: SessionId) {
         _navigateToSessionAction.value = Event(id)
-    }
-
-    fun toggleFilter(filter: EventFilter, enabled: Boolean) {
-        val changed = when (filter) {
-            is MyEventsFilter -> userSessionMatcher.setShowPinnedEventsOnly(enabled)
-            is TagFilter -> {
-                if (enabled) {
-                    userSessionMatcher.add(filter.tag)
-                } else {
-                    userSessionMatcher.remove(filter.tag)
-                }
-            }
-        }
-        if (changed) {
-            // Actually toggle the filter
-            filter.isChecked.set(enabled)
-            // Persist the filters
-            saveSelectedFiltersUseCase(userSessionMatcher)
-            // Update observables
-            updateFilterStateObservables()
-            refreshUserSessions()
-
-            // Analytics
-            val filterName = if (filter is MyEventsFilter) {
-                "Starred & Reserved"
-            } else {
-                filter.getText()
-            }
-            val action = if (enabled) AnalyticsActions.ENABLE else AnalyticsActions.DISABLE
-            analyticsHelper.logUiEvent("Filter changed: $filterName", action)
-        }
-    }
-
-    fun clearFilters() {
-        if (userSessionMatcher.clearAll()) {
-            eventFilters.value?.forEach { it.isChecked.set(false) }
-            saveSelectedFiltersUseCase(userSessionMatcher)
-            updateFilterStateObservables()
-            refreshUserSessions()
-
-            analyticsHelper.logUiEvent("Clear filters", AnalyticsActions.CLICK)
-        }
-    }
-
-    // Update all observables related to the filter state. Called from methods that modify
-    // selected filters in the UserSessionMatcher.
-    private fun updateFilterStateObservables() {
-        val hasAnyFilters = userSessionMatcher.hasAnyFilters()
-        _hasAnyFilters.value = hasAnyFilters
-        _selectedFilters.value = cachedEventFilters.filter { it.isChecked.get() }
     }
 
     fun onSwipeRefresh() {
