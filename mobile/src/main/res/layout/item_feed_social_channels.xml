@@ -40,12 +40,12 @@
         <TextView
             android:id="@+id/title"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintHeight_default="wrap"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_large"
             android:textAppearance="?attr/textAppearanceHeadline4"
             tools:text="#GoogleIO"
             app:layout_constraintBottom_toTopOf="@+id/message"
+            app:layout_constrainedHeight="true"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toTopOf="parent" />
@@ -53,13 +53,13 @@
         <TextView
             android:id="@+id/message"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintHeight_default="wrap"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_small"
             android:gravity="start"
             android:text="@string/feed_social_channels_message"
             android:textAppearance="?attr/textAppearanceCaption"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constrainedHeight="true"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@+id/title" />
 
