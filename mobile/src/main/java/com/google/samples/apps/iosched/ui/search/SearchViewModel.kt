@@ -26,26 +26,26 @@ import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.di.SearchUsingRoomEnabledFlag
-import com.google.samples.apps.iosched.shared.domain.search.SearchDbUseCase
-import com.google.samples.apps.iosched.shared.domain.search.SearchUseCase
 import com.google.samples.apps.iosched.shared.domain.search.Searchable
 import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedCodelab
 import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSession
 import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSpeaker
+import com.google.samples.apps.iosched.shared.domain.search.SessionFtsSearchUseCase
+import com.google.samples.apps.iosched.shared.domain.search.SessionSimpleSearchUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.ui.search.SearchResultType.CODELAB
 import com.google.samples.apps.iosched.ui.search.SearchResultType.SESSION
 import com.google.samples.apps.iosched.ui.search.SearchResultType.SPEAKER
-import javax.inject.Inject
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
     private val analyticsHelper: AnalyticsHelper,
-    private val loadSearchResultsUseCase: SearchUseCase,
-    private val loadDbSearchResultsUseCase: SearchDbUseCase
+    private val simpleSearchUseCase: SessionSimpleSearchUseCase,
+    private val ftsSearchUseCase: SessionFtsSearchUseCase
 ) : ViewModel(), SearchResultActionHandler {
 
     @Inject
@@ -105,12 +105,12 @@ class SearchViewModel @Inject constructor(
         if (searchUsingRoomFeatureEnabled) {
             Timber.d("Searching for query using Room: $query")
             viewModelScope.launch {
-                processSearchResult(loadDbSearchResultsUseCase(query))
+                processSearchResult(ftsSearchUseCase(query))
             }
         } else {
             Timber.d("Searching for query without using Room: $query")
             viewModelScope.launch {
-                processSearchResult(loadSearchResultsUseCase(query))
+                processSearchResult(simpleSearchUseCase(query))
             }
         }
     }
