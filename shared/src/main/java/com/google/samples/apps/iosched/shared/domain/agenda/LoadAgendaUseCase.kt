@@ -20,7 +20,6 @@ import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.shared.data.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.SuspendUseCase
-import com.google.samples.apps.iosched.shared.util.TimeUtils
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 
@@ -36,21 +35,5 @@ open class LoadAgendaUseCase @Inject constructor(
     override suspend fun execute(parameters: Boolean): List<Block> =
         repository.getAgenda(parameters)
             .filterNot { it.startTime == it.endTime }
-            .filter { isInAndPreConferenceTime(it) }
             .distinct()
-
-    private fun isInAndPreConferenceTime(block: Block): Boolean {
-        // Give some margin in case the agenda shows pre and post-conference
-        val start =
-            // Start day minus one day to show the day0 badge pick-up time
-            TimeUtils.ConferenceDays.first().start.minusDays(1).minusHours(PRE_BONUS_HOURS)
-        val end = TimeUtils.ConferenceDays.last().end.plusHours(POST_BONUS_HOURS)
-        return block.startTime.isAfter(start) &&
-            block.endTime.isAfter(start) &&
-            block.startTime.isBefore(end) &&
-            block.endTime.isBefore(end)
-    }
 }
-
-private const val PRE_BONUS_HOURS = 4L
-private const val POST_BONUS_HOURS = 10L
