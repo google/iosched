@@ -17,8 +17,6 @@
 package com.google.samples.apps.iosched.shared.data.userevent
 
 import androidx.annotation.WorkerThread
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
@@ -156,11 +154,11 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         return userEventDataSource.recordFeedbackSent(userId, userEvent)
     }
 
-    override fun changeReservation(
+    override suspend fun changeReservation(
         userId: String,
         sessionId: SessionId,
         action: ReservationRequestAction
-    ): LiveData<Result<ReservationRequestAction>> {
+    ): Result<ReservationRequestAction> {
         val sessions = sessionRepository.getSessions().associateBy { it.id }
         val userEvents = getUserEvents(userId)
         val session = sessionRepository.getSession(sessionId)
@@ -168,35 +166,31 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         if (overlappingId != null) {
             // If there is already an overlapping reservation, return the result as
             // SwapAction is needed.
-            val result = MutableLiveData<Result<ReservationRequestAction>>()
             val overlappingSession = sessionRepository.getSession(overlappingId)
             Timber.d(
                 """User is trying to reserve a session that overlaps with the
                 |session id: $overlappingId, title: ${overlappingSession.title}""".trimMargin()
             )
-            result.postValue(
-                Result.Success(
-                    SwapAction(
-                        SwapRequestParameters(
-                            userId,
-                            fromId = overlappingId,
-                            fromTitle = overlappingSession.title,
-                            toId = sessionId,
-                            toTitle = session.title
-                        )
+            return Result.Success(
+                SwapAction(
+                    SwapRequestParameters(
+                        userId,
+                        fromId = overlappingId,
+                        fromTitle = overlappingSession.title,
+                        toId = sessionId,
+                        toTitle = session.title
                     )
                 )
             )
-            return result
         }
         return userEventDataSource.requestReservation(userId, session, action)
     }
 
-    override fun swapReservation(
+    override suspend fun swapReservation(
         userId: String,
         fromId: SessionId,
         toId: SessionId
-    ): LiveData<Result<SwapRequestAction>> {
+    ): Result<SwapRequestAction> {
         val toSession = sessionRepository.getSession(toId)
         val fromSession = sessionRepository.getSession(fromId)
         return userEventDataSource.swapReservation(userId, fromSession, toSession)
@@ -258,17 +252,17 @@ interface SessionAndUserEventRepository {
 
     fun getUserEvents(userId: String?): List<UserEvent>
 
-    fun changeReservation(
+    suspend fun changeReservation(
         userId: String,
         sessionId: SessionId,
         action: ReservationRequestAction
-    ): LiveData<Result<ReservationRequestAction>>
+    ): Result<ReservationRequestAction>
 
-    fun swapReservation(
+    suspend fun swapReservation(
         userId: String,
         fromId: SessionId,
         toId: SessionId
-    ): LiveData<Result<SwapRequestAction>>
+    ): Result<SwapRequestAction>
 
     suspend fun starEvent(userId: String, userEvent: UserEvent): Result<StarUpdatedStatus>
 

@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.shared.data.userevent
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.reservations.ReservationRequestResult
@@ -74,7 +72,7 @@ object FakeUserEventDataSource : UserEventDataSource {
     override suspend fun starEvent(
         userId: SessionId,
         userEvent: UserEvent
-    ) = Result.Success(
+    ) = Success(
         if (userEvent.isStarred) StarUpdatedStatus.STARRED
         else StarUpdatedStatus.UNSTARRED
     )
@@ -82,38 +80,26 @@ object FakeUserEventDataSource : UserEventDataSource {
     override suspend fun recordFeedbackSent(
         userId: String,
         userEvent: UserEvent
-    ): Result<Unit> {
-        return Result.Success(Unit)
-    }
+    ): Result<Unit> = Success(Unit)
 
-    override fun requestReservation(
+    override suspend fun requestReservation(
         userId: String,
         session: Session,
         action: ReservationRequestAction
-    ): LiveData<Result<ReservationRequestAction>> {
-        val result = MutableLiveData<Result<ReservationRequestAction>>()
-        result.postValue(
-            Result.Success(
-                if (action is RequestAction) RequestAction()
-                else CancelAction()
-            )
+    ): Result<ReservationRequestAction> =
+        Success(
+            if (action is RequestAction) RequestAction() else CancelAction()
         )
-        return result
-    }
 
     override fun getUserEvents(userId: String): List<UserEvent> {
         return userEvents
     }
 
-    override fun swapReservation(
+    override suspend fun swapReservation(
         userId: String,
         fromSession: Session,
         toSession: Session
-    ): LiveData<Result<SwapRequestAction>> {
-        val result = MutableLiveData<Result<SwapRequestAction>>()
-        result.postValue(Result.Success(SwapRequestAction()))
-        return result
-    }
+    ): Result<SwapRequestAction> = Success(SwapRequestAction())
 
     override fun getUserEvent(userId: String, eventId: SessionId): UserEvent? {
         return userEvents.firstOrNull { it.id == eventId }

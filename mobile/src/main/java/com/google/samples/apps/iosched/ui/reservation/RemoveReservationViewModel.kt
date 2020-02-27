@@ -19,14 +19,18 @@ package com.google.samples.apps.iosched.ui.reservation
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
+import com.google.samples.apps.iosched.shared.result.Event
+import com.google.samples.apps.iosched.shared.result.Result.Error
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.util.cancelIfActive
+import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -46,6 +50,9 @@ class RemoveReservationViewModel @Inject constructor(
 
     private val _userSession = MutableLiveData<UserSession>()
 
+    private val _snackBarMessage = MutableLiveData<Event<SnackbarMessage>>()
+    val snackBarMessage = _snackBarMessage
+
     fun setSessionId(sessionId: SessionId) {
         _sessionId.value = sessionId
         loadUserSessionJob.cancelIfActive()
@@ -62,13 +69,24 @@ class RemoveReservationViewModel @Inject constructor(
         val userId = getUserId() ?: return
         val sessionId = _sessionId.value ?: return
         val userSession = _userSession.value
-        reservationActionUseCase.execute(
-            ReservationRequestParameters(
-                userId,
-                sessionId,
-                ReservationRequestAction.CancelAction(),
-                userSession
+        viewModelScope.launch {
+            val result = reservationActionUseCase(
+                ReservationRequestParameters(
+                    userId,
+                    sessionId,
+                    ReservationRequestAction.CancelAction(),
+                    userSession
+                )
             )
-        )
+            if (result is Error) {
+                _snackBarMessage.value =
+                    Event(
+                        SnackbarMessage(
+                            messageId = R.string.reservation_error,
+                            longDuration = true
+                        )
+                    )
+            }
+        }
     }
 }

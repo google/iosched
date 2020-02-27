@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.shared.data.userevent
 
-import androidx.lifecycle.LiveData
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
@@ -50,17 +49,17 @@ interface UserEventDataSource {
         userEvent: UserEvent
     ): Result<Unit>
 
-    fun requestReservation(
+    suspend fun requestReservation(
         userId: String,
         session: Session,
         action: ReservationRequestAction
-    ): LiveData<Result<ReservationRequestAction>>
+    ): Result<ReservationRequestAction>
 
-    fun swapReservation(
+    suspend fun swapReservation(
         userId: String,
         fromSession: Session,
         toSession: Session
-    ): LiveData<Result<SwapRequestAction>>
+    ): Result<SwapRequestAction>
 
     fun clearSingleEventSubscriptions()
 }

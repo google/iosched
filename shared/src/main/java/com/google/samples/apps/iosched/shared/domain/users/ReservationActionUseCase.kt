@@ -19,48 +19,42 @@ package com.google.samples.apps.iosched.shared.domain.users
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
+import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.Result.Loading
+import com.google.samples.apps.iosched.shared.result.Result.Success
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
-import timber.log.Timber
 
 /**
  * Sends a request to reserve or cancel a reservation for a session.
  */
+// TODO: Verify after b/149544822 is fixed.
 open class ReservationActionUseCase @Inject constructor(
     private val repository: SessionAndUserEventRepository,
-    private val alarmUpdater: StarReserveNotificationAlarmUpdater
-) : MediatorUseCase<ReservationRequestParameters, ReservationRequestAction>() {
+    private val alarmUpdater: StarReserveNotificationAlarmUpdater,
+    @IoDispatcher ioDispatcher: CoroutineDispatcher
+) : CoroutinesUseCase<ReservationRequestParameters, ReservationRequestAction>(ioDispatcher) {
 
-    override fun execute(parameters: ReservationRequestParameters) {
-
-        DefaultScheduler.execute {
-            try {
-                val (userId, sessionId, action) = parameters
-                val updateResult = repository.changeReservation(userId, sessionId, action)
-
-                DefaultScheduler.postToMainThread {
-                    // Posting this block to main thread because MediatorLiveData#addSource needs
-                    // to be called in the main thread since LiveData#observeForever is called
-                    result.removeSource(updateResult)
-                    result.addSource(updateResult) {
-                        if (it is Result.Success && parameters.userSession != null) {
-                            alarmUpdater.updateSession(
-                                parameters.userSession,
-                                parameters.userSession.userEvent.isStarred ||
-                                    // TODO(b/130515170)
-                                    it.data is ReservationRequestAction.RequestAction
-                            )
-                        }
-                        result.postValue(updateResult.value)
-                    }
+    override suspend fun execute(parameters: ReservationRequestParameters):
+            ReservationRequestAction {
+        val (userId, sessionId, action) = parameters
+        return when (val updateResult = repository.changeReservation(userId, sessionId, action)) {
+            is Success -> {
+                if (parameters.userSession != null) {
+                    alarmUpdater.updateSession(
+                        parameters.userSession,
+                        parameters.userSession.userEvent.isStarred ||
+                                // TODO(b/130515170)
+                                updateResult.data is ReservationRequestAction.RequestAction
+                    )
                 }
-            } catch (e: Exception) {
-                Timber.d("Exception changing reservation")
-                result.postValue(Result.Error(e))
+                updateResult.data
             }
+            is Result.Error -> throw updateResult.exception
+            Loading -> throw IllegalStateException()
         }
     }
 }
