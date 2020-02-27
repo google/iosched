@@ -97,6 +97,7 @@
     <item name="feed_announcement_image_width_percent" format="float" type="dimen">0.3</item>
     <dimen name="feed_moment_height">250dp</dimen>
     <dimen name="countdown_height">300dp</dimen>
+    <dimen name="feed_social_buttons_spacing">12dp</dimen>
 
     <!-- Onboarding -->
     <dimen name="onboarding_actions_height">112dp</dimen>
