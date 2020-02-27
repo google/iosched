@@ -51,7 +51,7 @@ internal abstract class FeedModule {
     @Binds
     @IntoMap
     @ViewModelKey(FeedViewModel::class)
-    abstract fun bindScheduleFragmentViewModel(viewModel: FeedViewModel): ViewModel
+    abstract fun bindFeedViewModel(viewModel: FeedViewModel): ViewModel
 
     /**
      * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
