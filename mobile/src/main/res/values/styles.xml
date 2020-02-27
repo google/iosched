@@ -33,7 +33,7 @@
         <item name="android:lineSpacingExtra">4sp</item>
     </style>
 
-    <style name="AlertDialog.ButtonBar" parent ="@style/Widget.AppCompat.ButtonBar.AlertDialog">
+    <style name="AlertDialog.ButtonBar" parent="@style/Widget.AppCompat.ButtonBar.AlertDialog">
         <item name="android:paddingBottom">@dimen/margin_small</item>
         <item name="android:paddingTop">@dimen/margin_small</item>
     </style>
@@ -136,12 +136,6 @@
     <style name="TextAppearance.IOSched.CountdownLabel" parent="@style/TextAppearance.MaterialComponents.Caption">
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textSize">18sp</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.Feed.Session.Time" parent="TextAppearance.MaterialComponents.Body2">
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="fontFamily">sans-serif-medium</item>
     </style>
 
     <!-- Settings -->
@@ -262,7 +256,8 @@
 
     <style name="Widget.IOSched.AccountDialog.ManageAccountButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textColor">?android:textColorSecondary</item>
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.Chip</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.Chip
+        </item>
     </style>
 
     <!-- Onboarding -->
@@ -292,7 +287,9 @@
     <style name="Widget.IOSched.Feed.Session.Title">
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">3</item>
-        <item name="android:textAppearance">?attr/textAppearanceListItem</item>
+        <item name="android:textSize">18sp</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif</item>
     </style>
 
     <style name="Widget.IOSched.Feed.Card" parent="Widget.MaterialComponents.CardView">
@@ -306,6 +303,14 @@
         <item name="android:layout_width">@dimen/a11y_min_touch_target</item>
         <item name="android:layout_height">@dimen/a11y_min_touch_target</item>
         <item name="elevation">0dp</item>
+    </style>
+
+    <style name="Widget.IOSched.Feed.EmptySessionsMessage">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+        <item name="fontFamily">@font/google_sans</item>
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:maxWidth">@dimen/feed_my_day_empty_sessions_message_max_width</item>
     </style>
 
     <!-- Settings -->
