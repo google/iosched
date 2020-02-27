@@ -160,7 +160,7 @@ class FeedFragment : MainNavigationFragment() {
             openLiveStreamUrl(streamUrl)
         })
 
-        model.navigateToMapAction.observe(viewLifecycleOwner, EventObserver { navDirections ->
+        model.navigateAction.observe(viewLifecycleOwner, EventObserver { navDirections ->
             findNavController().navigate(navDirections)
         })
     }
@@ -187,17 +187,15 @@ class FeedFragment : MainNavigationFragment() {
                 themeLiveData = model.theme
             )
             val sessionsViewBinder = FeedSessionsViewBinder(model)
+            val feedAnnouncementsHeaderViewBinder =
+                AnnouncementsHeaderViewBinder(this, model)
             val announcementViewBinder = AnnouncementViewBinder(model.timeZoneId, this)
             val announcementsEmptyViewBinder = AnnouncementsEmptyViewBinder()
             val announcementsLoadingViewBinder = AnnouncementsLoadingViewBinder()
-            val feedSocialChannelsSectionViewBinder = FeedSocialChannelsSectionViewBinder()
             val feedSustainabilitySectionViewBinder = FeedSustainabilitySectionViewBinder()
+            val feedSocialChannelsSectionViewBinder = FeedSocialChannelsSectionViewBinder()
             @Suppress("UNCHECKED_CAST")
             val viewBinders = ImmutableMap.builder<FeedItemClass, FeedItemBinder>()
-                .put(
-                    announcementViewBinder.modelClass,
-                    announcementViewBinder as FeedItemBinder
-                )
                 .put(
                     sectionHeaderViewBinder.modelClass,
                     sectionHeaderViewBinder as FeedItemBinder
@@ -215,6 +213,14 @@ class FeedFragment : MainNavigationFragment() {
                     sessionsViewBinder as FeedItemBinder
                 )
                 .put(
+                    feedAnnouncementsHeaderViewBinder.modelClass,
+                    feedAnnouncementsHeaderViewBinder as FeedItemBinder
+                )
+                .put(
+                    announcementViewBinder.modelClass,
+                    announcementViewBinder as FeedItemBinder
+                )
+                .put(
                     announcementsEmptyViewBinder.modelClass,
                     announcementsEmptyViewBinder as FeedItemBinder
                 )
@@ -223,12 +229,12 @@ class FeedFragment : MainNavigationFragment() {
                     announcementsLoadingViewBinder as FeedItemBinder
                 )
                 .put(
-                    feedSocialChannelsSectionViewBinder.modelClass,
-                    feedSocialChannelsSectionViewBinder as FeedItemBinder
-                )
-                .put(
                     feedSustainabilitySectionViewBinder.modelClass,
                     feedSustainabilitySectionViewBinder as FeedItemBinder
+                )
+                .put(
+                    feedSocialChannelsSectionViewBinder.modelClass,
+                    feedSocialChannelsSectionViewBinder as FeedItemBinder
                 )
                 .build()
 

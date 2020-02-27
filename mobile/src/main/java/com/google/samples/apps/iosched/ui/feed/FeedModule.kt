@@ -38,6 +38,13 @@ internal abstract class FeedModule {
     internal abstract fun contributeFeedFragment(): FeedFragment
 
     /**
+     * Generates an [AndroidInjector] for the [FeedFragment] as a Dagger subcomponent of the
+     * [MainModule].
+     */
+    @ContributesAndroidInjector
+    internal abstract fun contributeAnnouncementsFragment(): AnnouncementsFragment
+
+    /**
      * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
      * want to get a [FeedViewModel] class.
      */
@@ -45,4 +52,13 @@ internal abstract class FeedModule {
     @IntoMap
     @ViewModelKey(FeedViewModel::class)
     abstract fun bindScheduleFragmentViewModel(viewModel: FeedViewModel): ViewModel
+
+    /**
+     * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
+     * want to get a [AnnouncementsViewModel] class.
+     */
+    @Binds
+    @IntoMap
+    @ViewModelKey(AnnouncementsViewModel::class)
+    abstract fun bindAnnouncementsFragmentViewModel(viewModel: AnnouncementsViewModel): ViewModel
 }
