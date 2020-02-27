@@ -22,6 +22,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
+import com.google.samples.apps.iosched.shared.BuildConfig
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -103,18 +104,17 @@ class RemoteAppConfigDataSource @Inject constructor(
     init {
         // Set cache expiration to 0s when debugging to allow easy testing, otherwise
         // use the default value
-        cacheExpirySeconds = if (configSettings.isDeveloperModeEnabled) {
+        cacheExpirySeconds = if (BuildConfig.DEBUG) {
             0
         } else {
             DEFAULT_CACHE_EXPIRY_S
         }
-        firebaseRemoteConfig.activateFetched() // update active config with the last fetched values
-        updateStrings()
         firebaseRemoteConfig.fetch(cacheExpirySeconds).addOnCompleteListener { task ->
             // Async
             if (task.isSuccessful) {
-                firebaseRemoteConfig.activateFetched()
-                updateStrings()
+                firebaseRemoteConfig.activate().addOnCompleteListener {
+                    updateStrings()
+                }
             }
         }
     }
@@ -130,9 +130,12 @@ class RemoteAppConfigDataSource @Inject constructor(
             val task = firebaseRemoteConfig.fetch(cacheExpirySeconds)
             suspendCancellableCoroutine<Unit> { continuation ->
                 task.addOnCompleteListener {
-                    firebaseRemoteConfig.activateFetched()
-                    updateStrings()
-                    continuation.resume(Unit)
+                    firebaseRemoteConfig.activate().addOnCompleteListener {
+                        updateStrings()
+                        continuation.resume(Unit)
+                    }.addOnFailureListener { exception ->
+                        Timber.w(exception, "Sync strings failed")
+                    }
                 }
                 task.addOnFailureListener { exception ->
                     Timber.w(exception, "Sync strings failed")
