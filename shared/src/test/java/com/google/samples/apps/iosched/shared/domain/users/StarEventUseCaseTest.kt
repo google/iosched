@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.shared.domain.users
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.SessionId
@@ -132,11 +131,11 @@ val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepositor
         throw NotImplementedError()
     }
 
-    override fun changeReservation(
+    override suspend fun changeReservation(
         userId: String,
         sessionId: SessionId,
         action: ReservationRequestAction
-    ): LiveData<Result<ReservationRequestAction>> {
+    ): Result<ReservationRequestAction> {
         throw NotImplementedError()
     }
 
@@ -144,11 +143,11 @@ val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepositor
         throw NotImplementedError()
     }
 
-    override fun swapReservation(
+    override suspend fun swapReservation(
         userId: String,
         fromId: String,
         toId: String
-    ): LiveData<Result<SwapRequestAction>> {
+    ): Result<SwapRequestAction> {
         throw NotImplementedError()
     }
 

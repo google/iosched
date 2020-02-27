@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.shared.data.userevent
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -280,7 +278,7 @@ class FirestoreUserEventDataSource @Inject constructor(
             "reviewed" to true
         )
 
-        return suspendCancellableCoroutine<Result<Unit>> { continuation ->
+        return suspendCancellableCoroutine { continuation ->
 
             firestore
                 .document2020()
@@ -312,14 +310,11 @@ class FirestoreUserEventDataSource @Inject constructor(
      * @return a LiveData indicating whether the request was successful (not whether the event
      * was reserved)
      */
-    override fun requestReservation(
+    override suspend fun requestReservation(
         userId: String,
         session: Session,
         action: ReservationRequestAction
-    ): LiveData<Result<ReservationRequestAction>> {
-
-        val result = MutableLiveData<Result<ReservationRequestAction>>()
-
+    ): Result<ReservationRequestAction> {
         val logCancelOrReservation = if (action is CancelAction) "Cancel" else "Request"
 
         Timber.d("Requesting $logCancelOrReservation for session ${session.id}")
@@ -366,26 +361,25 @@ class FirestoreUserEventDataSource @Inject constructor(
 
         batch.set(newRequest, queueReservationRequest)
 
-        // Commit write batch
-
-        batch.commit().addOnSuccessListener {
-            Timber.d("$logCancelOrReservation request for session ${session.id} succeeded")
-            result.postValue(Success(action))
-        }.addOnFailureListener {
-            Timber.e(it, "$logCancelOrReservation request for session ${session.id} failed")
-            result.postValue(Error(it))
+        return withContext(ioDispatcher) {
+            suspendCancellableCoroutine<Result<ReservationRequestAction>> { continuation ->
+                // Commit write batch
+                batch.commit().addOnSuccessListener {
+                    Timber.d("$logCancelOrReservation request for session ${session.id} succeeded")
+                    continuation.resume(Success(action))
+                }.addOnFailureListener {
+                    Timber.e(it, "$logCancelOrReservation request for session ${session.id} failed")
+                    continuation.resume(Error(it))
+                }
+            }
         }
-
-        return result
     }
 
-    override fun swapReservation(
+    override suspend fun swapReservation(
         userId: String,
         fromSession: Session,
         toSession: Session
-    ): LiveData<Result<SwapRequestAction>> {
-        val result = MutableLiveData<Result<SwapRequestAction>>()
-
+    ): Result<SwapRequestAction> {
         Timber.d("Swapping reservations from: ${fromSession.id} to: ${toSession.id}")
 
         // Get a new write batch. This is a lightweight transaction.
@@ -447,18 +441,24 @@ class FirestoreUserEventDataSource @Inject constructor(
 
         batch.set(newRequest, queueSwapRequest)
 
-        // Commit write batch
-        batch.commit().addOnSuccessListener {
-            Timber.d(
-                "Queueing the swap request from: ${fromSession.id} to: ${toSession.id} succeeded"
-            )
-            result.postValue(Success(SwapRequestAction()))
-        }.addOnFailureListener {
-            Timber.d("Queueing the swap request from: ${fromSession.id} to: ${toSession.id} failed")
-            result.postValue(Error(it))
+        return withContext(ioDispatcher) {
+            suspendCancellableCoroutine<Result<SwapRequestAction>> { continuation ->
+                // Commit write batch
+                batch.commit().addOnSuccessListener {
+                    Timber.d(
+                        """Queueing the swap request from:
+                            |${fromSession.id} to: ${toSession.id} succeeded""".trimMargin()
+                    )
+                    continuation.resume(Success(SwapRequestAction()))
+                }.addOnFailureListener {
+                    Timber.d(
+                        """Queueing the swap request from:
+                            |${fromSession.id} to: ${toSession.id} failed""".trimMargin()
+                    )
+                    continuation.resume(Error(it))
+                }
+            }
         }
-
-        return result
     }
 
     private fun getReservationRequestedEventAction(action: ReservationRequestAction): String =

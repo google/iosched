@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.ui.schedule
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
@@ -61,31 +59,22 @@ class TestUserEventDataSource : UserEventDataSource {
         return Result.Success(Unit)
     }
 
-    override fun requestReservation(
+    override suspend fun requestReservation(
         userId: String,
         session: Session,
         action: ReservationRequestAction
-    ): LiveData<Result<ReservationRequestAction>> {
-        val result = MutableLiveData<Result<ReservationRequestAction>>()
-        result.postValue(
-            Result.Success(
-                if (action is RequestAction) RequestAction() else CancelAction()
-            )
+    ): Result<ReservationRequestAction> =
+        Result.Success(
+            if (action is RequestAction) RequestAction() else CancelAction()
         )
-        return result
-    }
 
     override fun getUserEvents(userId: String): List<UserEvent> = TestData.userEvents
 
-    override fun swapReservation(
+    override suspend fun swapReservation(
         userId: String,
         fromSession: Session,
         toSession: Session
-    ): LiveData<Result<SwapRequestAction>> {
-        val result = MutableLiveData<Result<SwapRequestAction>>()
-        result.postValue(Result.Success(SwapRequestAction()))
-        return result
-    }
+    ): Result<SwapRequestAction> = Result.Success(SwapRequestAction())
 
     override fun clearSingleEventSubscriptions() {}
 
