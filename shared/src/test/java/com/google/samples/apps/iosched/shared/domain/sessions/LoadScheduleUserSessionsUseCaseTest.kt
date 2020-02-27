@@ -27,7 +27,6 @@ import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDat
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.data
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
@@ -38,13 +37,14 @@ import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.Matchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 /**
- * Unit tests for [LoadFilteredUserSessionsUseCase]
+ * Unit tests for [LoadScheduleUserSessionsUseCase]
  */
-class LoadFilteredUserSessionsUseCaseTest {
+class LoadScheduleUserSessionsUseCaseTest {
 
     // Executes tasks in the Architecture Components in the same thread
     @get:Rule
@@ -57,18 +57,21 @@ class LoadFilteredUserSessionsUseCaseTest {
     @get:Rule
     var coroutineRule = MainCoroutineRule()
 
-    @Test
-    fun returnsMapOfSessions() = coroutineRule.runBlockingTest {
+    private lateinit var useCase: LoadScheduleUserSessionsUseCase
 
+    @Before
+    fun setup() {
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
             TestUserEventDataSource(),
             DefaultSessionRepository(TestDataRepository)
         )
+        useCase =
+            LoadScheduleUserSessionsUseCase(testUserEventRepository, coroutineRule.testDispatcher)
+    }
 
-        val useCaseResult: Result<LoadFilteredUserSessionsResult> = LoadFilteredUserSessionsUseCase(
-            testUserEventRepository,
-            coroutineRule.testDispatcher
-        )(LoadFilteredUserSessionsParameters(UserSessionMatcher(), "user1"))
+    @Test
+    fun returnsMapOfSessions() = coroutineRule.runBlockingTest {
+        val useCaseResult = useCase(LoadScheduleUserSessionsParameters("user1"))
             .first { it is Result.Success }
 
         assertThat(TestData.userSessionList, `is`(equalTo(useCaseResult.data?.userSessions)))
@@ -117,15 +120,15 @@ class LoadFilteredUserSessionsUseCaseTest {
 
     @Test
     fun errorCase() = coroutineRule.runBlockingTest {
+        // Use a repository that throws an error
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
             TestUserEventDataSource(),
             FailingSessionRepository
         )
+        val errorUseCase =
+            LoadScheduleUserSessionsUseCase(testUserEventRepository, coroutineRule.testDispatcher)
 
-        val useCaseResult: Result<LoadFilteredUserSessionsResult> = LoadFilteredUserSessionsUseCase(
-            testUserEventRepository,
-            coroutineRule.testDispatcher
-        )(LoadFilteredUserSessionsParameters(UserSessionMatcher(), "user1"))
+        val useCaseResult = errorUseCase(LoadScheduleUserSessionsParameters("user1"))
             .first { it is Result.Error }
 
         assertTrue(useCaseResult is Result.Error)
@@ -133,19 +136,9 @@ class LoadFilteredUserSessionsUseCaseTest {
 
     @Test
     fun returnsCurrentEventIndex() = coroutineRule.runBlockingTest {
-        // Given the use case
-        val testUserEventRepository = DefaultSessionAndUserEventRepository(
-            TestUserEventDataSource(),
-            DefaultSessionRepository(TestDataRepository)
-        )
-
         // When we execute it, passing Day 2 +3hrs as the current time
         val now = TestConferenceDays.first().start.plusHours(3L)
-
-        val useCaseResult: Result<LoadFilteredUserSessionsResult> = LoadFilteredUserSessionsUseCase(
-            testUserEventRepository,
-            coroutineRule.testDispatcher
-        )(LoadFilteredUserSessionsParameters(UserSessionMatcher(), "user1", now))
+        val useCaseResult = useCase(LoadScheduleUserSessionsParameters("user1", now))
             .first { it is Result.Success }
 
         assertThat(useCaseResult.data?.firstUnfinishedSessionIndex, `is`(equalTo(0)))
@@ -153,18 +146,10 @@ class LoadFilteredUserSessionsUseCaseTest {
 
     @Test
     fun midConference_afterDayEnd_returnsCurrentEventIndex() = coroutineRule.runBlockingTest {
-        // Given the use case
-        val testUserEventRepository = DefaultSessionAndUserEventRepository(
-            TestUserEventDataSource(),
-            DefaultSessionRepository(TestDataRepository)
-        )
         // When we execute it, passing Day 2 *after the end of day*
         val now = TestConferenceDays[1].end.plusHours(3L)
 
-        val useCaseResult: Result<LoadFilteredUserSessionsResult> = LoadFilteredUserSessionsUseCase(
-            testUserEventRepository,
-            coroutineRule.testDispatcher
-        )(LoadFilteredUserSessionsParameters(UserSessionMatcher(), "user1", now))
+        val useCaseResult = useCase(LoadScheduleUserSessionsParameters("user1", now))
             .first { it is Result.Success }
 
         assertThat(useCaseResult.data?.firstUnfinishedSessionIndex, `is`(equalTo(3)))
@@ -172,17 +157,9 @@ class LoadFilteredUserSessionsUseCaseTest {
 
     @Test
     fun beforeConference_returnsNoCurrentEventIndex() = coroutineRule.runBlockingTest {
-        // Given the use case
-        val testUserEventRepository = DefaultSessionAndUserEventRepository(
-            TestUserEventDataSource(),
-            DefaultSessionRepository(TestDataRepository)
-        )
         // When we execute it, passing a current time *before* the conference
         val now = TestConferenceDays.first().start.minusDays(2L)
-        val useCaseResult: Result<LoadFilteredUserSessionsResult> = LoadFilteredUserSessionsUseCase(
-            testUserEventRepository,
-            coroutineRule.testDispatcher
-        )(LoadFilteredUserSessionsParameters(UserSessionMatcher(), "user1", now))
+        val useCaseResult = useCase(LoadScheduleUserSessionsParameters("user1", now))
             .first { it is Result.Success }
 
         assertThat(useCaseResult.data?.firstUnfinishedSessionIndex, `is`(equalTo(-1)))
@@ -190,17 +167,9 @@ class LoadFilteredUserSessionsUseCaseTest {
 
     @Test
     fun afterConference_returnsNoCurrentEventIndex() = coroutineRule.runBlockingTest {
-        // Given the use case
-        val testUserEventRepository = DefaultSessionAndUserEventRepository(
-            TestUserEventDataSource(),
-            DefaultSessionRepository(TestDataRepository)
-        )
         // When we execute it, passing a current time *after* the conference
         val now = TestConferenceDays.last().end.plusHours(2L)
-        val useCaseResult: Result<LoadFilteredUserSessionsResult> = LoadFilteredUserSessionsUseCase(
-            testUserEventRepository,
-            coroutineRule.testDispatcher
-        )(LoadFilteredUserSessionsParameters(UserSessionMatcher(), "user1", now))
+        val useCaseResult = useCase(LoadScheduleUserSessionsParameters("user1", now))
             .first { it is Result.Success }
 
         assertThat(useCaseResult.data?.firstUnfinishedSessionIndex, `is`(equalTo(-1)))

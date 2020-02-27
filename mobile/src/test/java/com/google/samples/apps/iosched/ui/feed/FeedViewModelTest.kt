@@ -28,7 +28,7 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.domain.feed.GetConferenceStateUseCase
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
 import com.google.samples.apps.iosched.shared.domain.feed.LoadCurrentMomentUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadStarredAndReservedSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
@@ -137,8 +137,8 @@ class FeedViewModelTest {
             LoadCurrentMomentUseCase(defaultFeedRepository, testDispatcher),
         loadAnnouncementUseCase: LoadAnnouncementsUseCase =
             LoadAnnouncementsUseCase(defaultFeedRepository, testDispatcher),
-        loadFilteredSessionsUseCase: LoadFilteredUserSessionsUseCase =
-            LoadFilteredUserSessionsUseCase(
+        loadStarredAndReservedSessionsUseCase: LoadStarredAndReservedSessionsUseCase =
+            LoadStarredAndReservedSessionsUseCase(
                 DefaultSessionAndUserEventRepository(
                     TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
                 ),
@@ -157,7 +157,7 @@ class FeedViewModelTest {
         return FeedViewModel(
             loadCurrentMomentUseCase = loadCurrentMomentUseCase,
             loadAnnouncementsUseCase = loadAnnouncementUseCase,
-            loadFilteredUserSessionsUseCase = loadFilteredSessionsUseCase,
+            loadStarredAndReservedSessionsUseCase = loadStarredAndReservedSessionsUseCase,
             getTimeZoneUseCaseLegacy = getTimeZoneUseCaseLegacy, // TODO(COROUTINES): Migrate
             getConferenceStateUseCase = getConferenceStateUseCase,
             timeProvider = timeProvider,

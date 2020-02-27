@@ -23,54 +23,50 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.FlowUseCase
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
- * Loads filtered sessions according to the provided parameters.
+ * Loads sorted sessions for the Schedule.
  */
-open class LoadFilteredUserSessionsUseCase @Inject constructor(
+open class LoadScheduleUserSessionsUseCase @Inject constructor(
     private val userEventRepository: DefaultSessionAndUserEventRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : FlowUseCase<LoadFilteredUserSessionsParameters, LoadFilteredUserSessionsResult>(dispatcher) {
+) : FlowUseCase<LoadScheduleUserSessionsParameters, LoadScheduleUserSessionsResult>(dispatcher) {
 
     override fun execute(
-        parameters: LoadFilteredUserSessionsParameters
-    ): Flow<Result<LoadFilteredUserSessionsResult>> {
-        val (sessionMatcher, userId) = parameters
-
+        parameters: LoadScheduleUserSessionsParameters
+    ): Flow<Result<LoadScheduleUserSessionsResult>> {
         Timber.d("LoadFilteredUserSessionsUseCase: Refreshing sessions with user data")
-        return userEventRepository.getObservableUserEvents(userId).map { observableResult ->
-            when (observableResult) {
+        return userEventRepository.getObservableUserEvents(parameters.userId).map { result ->
+            when (result) {
                 is Result.Success -> {
-                    val filteredSessions = observableResult.data.userSessions
-                        .filter { sessionMatcher.matches(it) }
+                    val sortedSessions = result.data.userSessions
                         .sortedWith(compareBy({ it.session.startTime }, { it.session.type }))
 
                     // Compute type from tags now so it's done in the background
-                    filteredSessions.forEach { it.session.type }
+                    sortedSessions.forEach { it.session.type }
 
-                    val usecaseResult = LoadFilteredUserSessionsResult(
-                        userSessions = filteredSessions,
+                    val usecaseResult = LoadScheduleUserSessionsResult(
+                        userSessions = sortedSessions,
                         // TODO(b/122306429) expose user events messages separately
-                        userMessage = observableResult.data.userMessage,
-                        userMessageSession = observableResult.data.userMessageSession,
-                        userSessionCount = filteredSessions.size,
+                        userMessage = result.data.userMessage,
+                        userMessageSession = result.data.userMessageSession,
+                        userSessionCount = sortedSessions.size,
                         firstUnfinishedSessionIndex = findFirstUnfinishedSession(
-                            filteredSessions, parameters.now
+                            sortedSessions, parameters.now
                         ),
-                        dayIndexer = buildConferenceDayIndexer(filteredSessions)
+                        dayIndexer = buildConferenceDayIndexer(sortedSessions)
                     )
                     Result.Success(usecaseResult)
                 }
                 is Result.Error -> {
-                    Result.Error(observableResult.exception)
+                    Result.Error(result.exception)
                 }
                 is Result.Loading -> Result.Loading
             }
@@ -108,15 +104,13 @@ open class LoadFilteredUserSessionsUseCase @Inject constructor(
     }
 }
 
-data class LoadFilteredUserSessionsParameters(
-    val userSessionMatcher: UserSessionMatcher,
-
+data class LoadScheduleUserSessionsParameters(
     val userId: String?,
 
     val now: ZonedDateTime = ZonedDateTime.now()
 )
 
-data class LoadFilteredUserSessionsResult(
+data class LoadScheduleUserSessionsResult(
 
     val userSessions: List<UserSession>,
 
