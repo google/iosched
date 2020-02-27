@@ -102,7 +102,7 @@ class UserSessionMatcher {
     /** Return true if the [UserSession] matches the current filters. */
     @Synchronized
     fun matches(userSession: UserSession): Boolean {
-        if (showPinnedEventsOnly && !userSession.userEvent.isPinned()) {
+        if (showPinnedEventsOnly && !userSession.userEvent.isStarredOrReserved()) {
             return false
         }
         var match = true

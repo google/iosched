@@ -33,9 +33,8 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCaseLegacy
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ConferenceDayIndexer
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsParameters
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsParameters
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsParameters
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
@@ -46,7 +45,6 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.result.successOr
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
@@ -66,7 +64,7 @@ import javax.inject.Inject
  * create the object, so defining a [@Provides] method for this class won't be needed.
  */
 class ScheduleViewModel @Inject constructor(
-    private val loadFilteredUserSessionsUseCase: LoadFilteredUserSessionsUseCase,
+    private val loadScheduleUserSessionsUseCase: LoadScheduleUserSessionsUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
     private val starEventUseCase: StarEventAndNotifyUseCase,
     scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase,
@@ -86,9 +84,6 @@ class ScheduleViewModel @Inject constructor(
 
     val swipeRefreshing: LiveData<Boolean>
 
-    // TODO(jdkoren): remove when use case is updated
-    private val userSessionMatcher = UserSessionMatcher()
-
     private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
     val isConferenceTimeZone: LiveData<Boolean>
     val timeZoneId: LiveData<ZoneId> = preferConferenceTimeZoneResult.map {
@@ -106,8 +101,8 @@ class ScheduleViewModel @Inject constructor(
 
     // Refresh sessions when needed
     private val loadSessionsResult = userSessionsNeedRefresh.switchMap {
-        loadFilteredUserSessionsUseCase(
-            LoadFilteredUserSessionsParameters(userSessionMatcher, getUserId())
+        loadScheduleUserSessionsUseCase(
+            LoadScheduleUserSessionsParameters(getUserId())
         ).asLiveData()
     }
 

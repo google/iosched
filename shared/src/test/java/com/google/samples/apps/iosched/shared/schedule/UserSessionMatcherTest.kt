@@ -245,7 +245,7 @@ class UserSessionMatcherTest {
 
         TestData.userEvents.forEach {
             val userSession = UserSession(session0, it)
-            Assert.assertEquals(it.isPinned(), sessionMatcher.matches(userSession))
+            Assert.assertEquals(it.isStarredOrReserved(), sessionMatcher.matches(userSession))
         }
     }
 

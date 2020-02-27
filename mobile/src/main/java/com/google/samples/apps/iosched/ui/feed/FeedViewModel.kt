@@ -38,15 +38,12 @@ import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState.UPCOMI
 import com.google.samples.apps.iosched.shared.domain.feed.GetConferenceStateUseCase
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
 import com.google.samples.apps.iosched.shared.domain.feed.LoadCurrentMomentUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsParameters
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsResult
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadStarredAndReservedSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Loading
 import com.google.samples.apps.iosched.shared.result.successOr
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
@@ -58,12 +55,12 @@ import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailFragmentDir
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
 import com.google.samples.apps.iosched.util.combine
-import javax.inject.Inject
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
+import javax.inject.Inject
 
 /**
  * Loads data and exposes it to the view.
@@ -73,7 +70,7 @@ import org.threeten.bp.ZonedDateTime
 class FeedViewModel @Inject constructor(
     private val loadCurrentMomentUseCase: LoadCurrentMomentUseCase,
     loadAnnouncementsUseCase: LoadAnnouncementsUseCase,
-    private val loadFilteredUserSessionsUseCase: LoadFilteredUserSessionsUseCase,
+    private val loadStarredAndReservedSessionsUseCase: LoadStarredAndReservedSessionsUseCase,
     getTimeZoneUseCaseLegacy: GetTimeZoneUseCaseLegacy, // TODO(COROUTINES): Migrate to non-legacy
     getConferenceStateUseCase: GetConferenceStateUseCase,
     private val timeProvider: TimeProvider,
@@ -107,17 +104,8 @@ class FeedViewModel @Inject constructor(
     val snackBarMessage: LiveData<Event<SnackbarMessage>>
 
     private val loadSessionsResult = signInViewModelDelegate.currentUserInfo.switchMap {
-        // TODO: side effects, check if we can remove them.
-        val sessionMatcher = UserSessionMatcher()
-        if (signInViewModelDelegate.isSignedIn()) {
-            sessionMatcher.setShowPinnedEventsOnly(true)
-        }
-        loadFilteredUserSessionsUseCase(
-            LoadFilteredUserSessionsParameters(
-                sessionMatcher,
-                signInViewModelDelegate.getUserId()
-            )
-        ).asLiveData()
+        // TODO(jdkoren): might need to show sessions for not signed in users too...
+        loadStarredAndReservedSessionsUseCase(signInViewModelDelegate.getUserId()).asLiveData()
     }
     private val conferenceStateLiveData = MutableLiveData<ConferenceState>()
 
@@ -249,10 +237,10 @@ class FeedViewModel @Inject constructor(
     }
 
     private fun createFeedSessionsContainer(
-        sessionsResult: Result<LoadFilteredUserSessionsResult>,
+        sessionsResult: Result<List<UserSession>>,
         timeZoneId: ZoneId
     ): FeedSessions {
-        val sessions = sessionsResult.successOr(null)?.userSessions ?: emptyList()
+        val sessions = sessionsResult.successOr(emptyList())
         val now = ZonedDateTime.ofInstant(timeProvider.now(), timeZoneId)
 
         // TODO: Making conferenceState a sealed class and moving currentDay in STARTED state might be a better option

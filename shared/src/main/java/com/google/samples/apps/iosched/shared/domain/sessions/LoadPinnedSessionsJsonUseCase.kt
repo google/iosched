@@ -28,8 +28,8 @@ import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
-import javax.inject.Inject
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 /**
  * Load a list of pinned (starred or reserved) [UserSession]s for a given user as a json format.
@@ -69,7 +69,7 @@ open class LoadPinnedSessionsJsonUseCase @Inject constructor(
                 when (observableResult) {
                     is Result.Success -> {
                         val useCaseResult = observableResult.data.userSessions.filter {
-                            it.userEvent.isPinned()
+                            it.userEvent.isStarredOrReserved()
                         }.map {
                             val session = it.session
                             // We assume the conference time zone because only on-site attendees are

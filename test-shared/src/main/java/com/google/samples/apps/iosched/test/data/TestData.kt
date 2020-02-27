@@ -177,7 +177,8 @@ object TestData {
     val agenda = listOf(block1, block2)
 
     private val userEvent0 = UserEvent(
-        sessionIDs[0], isStarred = false,
+        sessionIDs[0],
+        isStarred = false,
         isReviewed = false,
         reservationStatus = UserEvent.ReservationStatus.RESERVED,
         reservationRequestResult = ReservationRequestResult(
@@ -185,7 +186,8 @@ object TestData {
         )
     )
     private val userEvent1 = UserEvent(
-        sessionIDs[1], isStarred = true,
+        sessionIDs[1],
+        isStarred = true,
         isReviewed = true,
         reservationStatus = UserEvent.ReservationStatus.WAITLISTED,
         reservationRequestResult = ReservationRequestResult(
@@ -193,7 +195,8 @@ object TestData {
         )
     )
     private val userEvent2 = UserEvent(
-        sessionIDs[2], isStarred = true,
+        sessionIDs[2],
+        isStarred = true,
         isReviewed = false,
         reservationStatus = NONE,
         reservationRequestResult = ReservationRequestResult(
@@ -201,7 +204,8 @@ object TestData {
         )
     )
     private val userEvent3 = UserEvent(
-        sessionIDs[3], isStarred = false,
+        sessionIDs[3],
+        isStarred = false,
         isReviewed = true,
         reservationStatus = NONE,
         reservationRequestResult = ReservationRequestResult(
@@ -209,7 +213,8 @@ object TestData {
         )
     )
     private val userEvent4 = UserEvent(
-        sessionIDs[4], isStarred = false,
+        sessionIDs[4],
+        isStarred = false,
         isReviewed = true,
         reservationRequest = null
     )
@@ -225,6 +230,12 @@ object TestData {
         userSession2,
         userSession3,
         userSession4
+    )
+
+    val starredOrReservedSessions = listOf(
+        userSession0,
+        userSession1,
+        userSession2
     )
 
     val userEvents = listOf(userEvent0, userEvent1, userEvent2, userEvent3, userEvent4)
