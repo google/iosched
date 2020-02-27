@@ -31,7 +31,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
+import com.google.samples.apps.iosched.databinding.FragmentScheduleDayBinding
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
@@ -45,8 +45,8 @@ import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
-import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentDirections.Companion.toSearch
-import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentDirections.Companion.toSessionDetail
+import com.google.samples.apps.iosched.ui.schedule.ScheduleDayFragmentDirections.Companion.toSearch
+import com.google.samples.apps.iosched.ui.schedule.ScheduleDayFragmentDirections.Companion.toSessionDetail
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment.Companion.DIALOG_NOTIFICATIONS_PREFERENCE
@@ -66,7 +66,7 @@ import javax.inject.Named
 /**
  * The Schedule page of the top-level Activity.
  */
-class ScheduleFragment : MainNavigationFragment() {
+class ScheduleDayFragment : MainNavigationFragment() {
 
     companion object {
         private const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
@@ -107,7 +107,7 @@ class ScheduleFragment : MainNavigationFragment() {
     private lateinit var dayIndexer: ConferenceDayIndexer
     private var cachedBubbleRange: IntRange? = null
 
-    private lateinit var binding: FragmentScheduleBinding
+    private lateinit var binding: FragmentScheduleDayBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -116,9 +116,9 @@ class ScheduleFragment : MainNavigationFragment() {
     ): View? {
         // ViewModel shared with child fragments.
         scheduleViewModel = viewModelProvider(viewModelFactory)
-        binding = FragmentScheduleBinding.inflate(inflater, container, false).apply {
+        binding = FragmentScheduleDayBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
-            viewModel = this@ScheduleFragment.scheduleViewModel
+            viewModel = this@ScheduleDayFragment.scheduleViewModel
         }
 
         snackbar = binding.snackbar
@@ -261,11 +261,11 @@ class ScheduleFragment : MainNavigationFragment() {
 
             // Process arguments to set initial filters
             arguments?.let {
-                if (ScheduleFragmentArgs.fromBundle(it).showPinnedEvents) {
+                if (ScheduleDayFragmentArgs.fromBundle(it).showPinnedEvents) {
                     scheduleViewModel.clearFilters()
                     scheduleViewModel.showPinnedEvents()
                 }
-                if (ScheduleFragmentArgs.fromBundle(it).showAllEvents) {
+                if (ScheduleDayFragmentArgs.fromBundle(it).showAllEvents) {
                     scheduleViewModel.clearFilters()
                 }
             }

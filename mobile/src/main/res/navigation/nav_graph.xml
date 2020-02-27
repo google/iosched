@@ -23,9 +23,9 @@
 
     <fragment
         android:id="@id/navigation_schedule"
-        android:name="com.google.samples.apps.iosched.ui.schedule.ScheduleFragment"
+        android:name="com.google.samples.apps.iosched.ui.schedule.ScheduleDayFragment"
         android:label="@string/title_schedule"
-        tools:layout="@layout/fragment_schedule">
+        tools:layout="@layout/fragment_schedule_day">
         <argument
             android:name="showPinnedEvents"
             android:defaultValue="false"

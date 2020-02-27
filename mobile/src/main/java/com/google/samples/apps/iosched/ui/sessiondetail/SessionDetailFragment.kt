@@ -58,7 +58,7 @@ import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFra
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
 import com.google.samples.apps.iosched.ui.reservation.SwapReservationDialogFragment
 import com.google.samples.apps.iosched.ui.reservation.SwapReservationDialogFragment.Companion.DIALOG_SWAP_RESERVATION
-import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentDirections.Companion.toSessionDetail
+import com.google.samples.apps.iosched.ui.schedule.ScheduleDayFragmentDirections.Companion.toSessionDetail
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailFragmentDirections.Companion.toSpeakerDetail
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment

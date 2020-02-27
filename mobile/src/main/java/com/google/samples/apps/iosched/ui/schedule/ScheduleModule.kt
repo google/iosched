@@ -28,14 +28,14 @@ import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 
 /**
- * Module where classes needed to create the [ScheduleFragment] are defined.
+ * Module where classes needed to create the [ScheduleDayFragment] are defined.
  */
 @Module
 @Suppress("UNUSED")
 internal abstract class ScheduleModule {
 
     /**
-     * Generates an [AndroidInjector] for the [ScheduleFragment].
+     * Generates an [AndroidInjector] for the [ScheduleDayFragment].
      */
     @FragmentScoped
     @ContributesAndroidInjector(
@@ -43,7 +43,7 @@ internal abstract class ScheduleModule {
             SessionViewPoolModule::class
         ]
     )
-    internal abstract fun contributeScheduleFragment(): ScheduleFragment
+    internal abstract fun contributeScheduleDayFragment(): ScheduleDayFragment
 
     /**
      * Generates an [AndroidInjector] for the [ScheduleUiHintsDialogFragment].
