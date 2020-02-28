@@ -22,6 +22,7 @@ import com.google.samples.apps.iosched.shared.di.FeatureFlagsModule
 import com.google.samples.apps.iosched.shared.di.ServiceBindingModule
 import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.di.ViewModelModule
+import com.google.samples.apps.iosched.ui.filters.FiltersViewModelDelegateModule
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegateModule
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegateModule
 import dagger.BindsInstance
@@ -51,7 +52,8 @@ import javax.inject.Singleton
         FeatureFlagsModule::class,
         SignInModule::class,
         SignInViewModelDelegateModule::class,
-        ThemedActivityDelegateModule::class
+        ThemedActivityDelegateModule::class,
+        FiltersViewModelDelegateModule::class
     ]
 )
 interface AppComponent : AndroidInjector<MainApplication> {
