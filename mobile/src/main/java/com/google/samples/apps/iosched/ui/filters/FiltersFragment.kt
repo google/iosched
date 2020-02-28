@@ -24,6 +24,7 @@ import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.doOnLayout
 import androidx.core.view.forEach
 import androidx.core.view.marginBottom
@@ -54,7 +55,7 @@ import javax.inject.Inject
 /**
  * Fragment that shows the list of filters for the Schedule
  */
-class FiltersFragment : DaggerFragment() {
+abstract class FiltersFragment : DaggerFragment() {
 
     companion object {
         // Threshold for when normal header views and description views should "change places".
@@ -92,6 +93,26 @@ class FiltersFragment : DaggerFragment() {
 
     private val contentFadeInterpolator = LinearOutSlowInInterpolator()
 
+    private val backPressedCallback = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            if (::behavior.isInitialized && behavior.state == STATE_EXPANDED) {
+                behavior.state = STATE_HIDDEN
+            }
+        }
+    }
+
+    private var pendingSheetState = -1
+
+    /** Resolve the [FiltersViewModelDelegate] for this instance. */
+    abstract fun resolveViewModelDelegate(
+        viewModelFactory: ViewModelProvider.Factory
+    ): FiltersViewModelDelegate
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this, backPressedCallback)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -112,11 +133,12 @@ class FiltersFragment : DaggerFragment() {
         return binding.root
     }
 
+    // In order to acquire the behavior associated with this sheet, we need to be attached to the
+    // view hierarchy of our parent, otherwise we get an exception that our view is not a child of a
+    // CoordinatorLayout. Therefore we do most initialization here instead of in onViewCreated().
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        // ViewModel is scoped to the parent fragment.
-        // TODO(jdkoren) resolve FiltersViewModelDelegate
-        // viewModel = parentViewModelProvider(viewModelFactory)
+        viewModel = resolveViewModelDelegate(viewModelFactory)
         binding.viewModel = viewModel
 
         behavior = BottomSheetBehavior.from(binding.filterSheet)
@@ -155,6 +177,10 @@ class FiltersFragment : DaggerFragment() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 updateFilterContentsAlpha(slideOffset)
             }
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                updateBackPressedCallbackEnabled(newState)
+            }
         })
 
         binding.collapseArrow.setOnClickListener {
@@ -165,10 +191,6 @@ class FiltersFragment : DaggerFragment() {
             behavior.state = STATE_EXPANDED
         }
 
-        // This fragment is in the layout of a parent fragment, so its view hierarchy is restored
-        // when the parent's hierarchy is restored. However, the dispatch order seems to traverse
-        // child fragments first, meaning the views we care about have not actually been restored
-        // when onViewStateRestored is called (otherwise we would do this there).
         binding.filterSheet.doOnLayout {
             val slideOffset = when (behavior.state) {
                 STATE_EXPANDED -> 1f
@@ -177,6 +199,12 @@ class FiltersFragment : DaggerFragment() {
             }
             updateFilterContentsAlpha(slideOffset)
         }
+
+        if (pendingSheetState != -1) {
+            behavior.state = pendingSheetState
+            pendingSheetState = -1
+        }
+        updateBackPressedCallbackEnabled(behavior.state)
     }
 
     private fun updateFilterContentsAlpha(slideOffset: Float) {
@@ -194,8 +222,33 @@ class FiltersFragment : DaggerFragment() {
         }
         // Due to the content view being visible below the navigation bar, we apply a short alpha
         // transition
-        recyclerviewAlpha.set(lerp(ALPHA_CONTENT_START_ALPHA, ALPHA_CONTENT_END_ALPHA,
-                contentFadeInterpolator.getInterpolation(slideOffset)))
+        recyclerviewAlpha.set(
+            lerp(
+                ALPHA_CONTENT_START_ALPHA,
+                ALPHA_CONTENT_END_ALPHA,
+                contentFadeInterpolator.getInterpolation(slideOffset)
+            )
+        )
+    }
+
+    private fun updateBackPressedCallbackEnabled(state: Int) {
+        backPressedCallback.isEnabled = !(state == STATE_COLLAPSED || state == STATE_HIDDEN)
+    }
+
+    fun showFiltersSheet() {
+        if (::behavior.isInitialized) {
+            behavior.state = STATE_EXPANDED
+        } else {
+            pendingSheetState = STATE_EXPANDED
+        }
+    }
+
+    fun hideFiltersSheet() {
+        if (::behavior.isInitialized) {
+            behavior.state = STATE_HIDDEN
+        } else {
+            pendingSheetState = STATE_HIDDEN
+        }
     }
 }
 
