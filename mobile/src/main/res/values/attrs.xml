@@ -43,6 +43,8 @@
         <attr name="eventFilterViewStyle" format="reference" />
 
         <attr name="eventCardHeaderBackground" format="reference|color" />
+
+        <attr name="colorSurfaceSecondary" format="color" />
     </declare-styleable>
 
     <declare-styleable name="TimeHeader">

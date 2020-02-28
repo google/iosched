@@ -42,40 +42,32 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/margin_normal">
+        android:layout_height="wrap_content">
 
-        <!--Wrapped the image with a card to have corner radius-->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/momentImageCard"
-            style="@style/Widget.IOSched.Feed.Card"
+        <ImageView
+            android:id="@+id/momentImage"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/feed_moment_height"
+            app:layout_constrainedHeight="true"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:scaleType="fitCenter"
+            app:momentImageUrl="@{moment.imageUrl}"
+            app:momentImageUrlDarkTheme="@{moment.imageUrlDarkTheme}"
+            app:momentTheme="@{theme}"
+            android:background="?attr/colorSurfaceSecondary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/momentImage"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/feed_moment_height"
-                android:adjustViewBounds="true"
-                android:contentDescription="@null"
-                android:scaleType="fitCenter"
-                app:momentImageUrl="@{moment.imageUrl}"
-                app:momentImageUrlDarkTheme="@{moment.imageUrlDarkTheme}"
-                app:momentTheme="@{theme}"
-                app:srcCompat="@color/light_grey" />
-
-        </com.google.android.material.card.MaterialCardView>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/actionButton"
             style="?borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/momentImageCard"
-            app:layout_constraintTop_toBottomOf="@+id/momentImageCard"
+            android:layout_margin="@dimen/margin_normal"
+            app:layout_constraintStart_toStartOf="@+id/momentImage"
+            app:layout_constraintTop_toBottomOf="@+id/momentImage"
             app:iconPadding="@dimen/feed_header_cta_icon_padding"
             app:iconSize="@dimen/feed_header_cta_icon_size"
             app:moment="@{moment}"

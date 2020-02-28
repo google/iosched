@@ -177,6 +177,11 @@
     <string name="feed_social_instagram_link" translatable="false">https://instagram.com/explore/tags/googleio</string>
     <string name="feed_social_google_devs_link" translatable="false">https://developers.googleblog.com/</string>
 
+    <string name="feed_sustainability_title" translation_description="The title of the sustainability section in feed">A more sustainable and diverse I/O</string>
+    <string name="feed_sustainability_message" translation_description="The message in the sustainability section in feed">See what I/O is doing this year around sustainability and diversity.</string>
+    <string name="feed_sustainability_action" translation_description="The button label in the sustainability section in feed">Learn more</string>
+    <string name="feed_sustainability_link" translatable="false">https://events.google.com/io/sustainability/</string>
+
     <!-- [start] TODO(gauravbhola): To be removed -->
     <string name="feed_upcoming_events" translation_description="The title of the sessions section in feed when user is attending">Upcoming events</string>
     <string name="feed_saved_events" translation_description="The title of the sessions section in feed when user is signed in">Saved events</string>

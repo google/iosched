@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2020 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="121dp"
+    android:height="127dp"
+    android:viewportWidth="121"
+    android:viewportHeight="127">
+
+    <path
+        android:fillColor="#34A853"
+        android:fillType="evenOdd"
+        android:pathData="M10 16V27.4001C20.8035 27.4134 31.1611 31.7109 38.8003 39.3501C46.4395 46.9893 50.7368 57.3466 50.75 68.1501H51.0996H62.1602H62.4995C62.5127 57.3466 66.8105 46.9893 74.4497 39.3501C82.089 31.7109 92.446 27.4134 103.25 27.4001V16C89.4225 16.0132 76.1658 21.5119 66.3887 31.2891C62.3931 35.2846 59.1121 39.8613 56.628 44.8205C54.143 39.861 50.8611 35.2842 46.8647 31.2886C37.086 21.5117 23.8279 16.0132 10 16ZM10 70.2502V58.8403C23.8288 58.8562 37.0868 64.3568 46.8652 74.1353C50.8561 78.1261 54.1344 82.6966 56.6181 87.6488C59.1024 82.6939 62.3823 78.1211 66.3755 74.1287C76.1567 64.3493 89.4186 58.8509 103.25 58.8403V70.2502C92.4422 70.2555 82.0782 74.55 74.4341 82.1904C66.7899 89.8308 62.4906 100.192 62.48 111H62.1602H51.0801H50.75C50.7394 100.196 46.443 89.8373 38.8032 82.1975C31.1634 74.5577 20.8043 70.2608 10 70.2502Z" />
+</vector>

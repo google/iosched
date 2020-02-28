@@ -41,7 +41,7 @@
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_small"
             android:textAppearance="?attr/textAppearanceHeadline4"
             tools:text="#GoogleIO"
             app:layout_constraintBottom_toTopOf="@+id/message"

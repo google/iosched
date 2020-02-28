@@ -219,6 +219,7 @@ class FeedViewModel @Inject constructor(
             }
             feedItems.plus(SectionHeader(R.string.feed_announcement_title))
                 .plus(announcementItems)
+                .plus(FeedSustainabilitySection)
                 .plus(FeedSocialChannelsSection)
         }
 
