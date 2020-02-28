@@ -27,8 +27,10 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.domain.ar.LoadArDebugFlagUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadPinnedSessionsJsonUseCase
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.test.util.fakes.FakeAppUpdateViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeThemedActivityDelegate
+import com.google.samples.apps.iosched.ui.appupdate.AppUpdateViewModelDelegate
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
@@ -50,11 +52,13 @@ class MainActivityViewModelTest {
 
     private fun createMainActivityViewModel(
         signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate(),
-        themedActivityDelegate: ThemedActivityDelegate = FakeThemedActivityDelegate()
+        themedActivityDelegate: ThemedActivityDelegate = FakeThemedActivityDelegate(),
+        appUpdateViewModelDelegate: AppUpdateViewModelDelegate = FakeAppUpdateViewModelDelegate()
     ): MainActivityViewModel {
         return MainActivityViewModel(
             signInViewModelDelegate = signInViewModelDelegate,
             themedActivityDelegate = themedActivityDelegate,
+            appUpdateViewModelDelegate = appUpdateViewModelDelegate,
             loadPinnedSessionsUseCase = LoadPinnedSessionsJsonUseCase(
                 DefaultSessionAndUserEventRepository(
                     TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
