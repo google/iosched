@@ -191,6 +191,7 @@ class FeedFragment : MainNavigationFragment() {
             val announcementsEmptyViewBinder = AnnouncementsEmptyViewBinder()
             val announcementsLoadingViewBinder = AnnouncementsLoadingViewBinder()
             val feedSocialChannelsSectionViewBinder = FeedSocialChannelsSectionViewBinder()
+            val feedSustainabilitySectionViewBinder = FeedSustainabilitySectionViewBinder()
             @Suppress("UNCHECKED_CAST")
             val viewBinders = ImmutableMap.builder<FeedItemClass, FeedItemBinder>()
                 .put(
@@ -224,6 +225,10 @@ class FeedFragment : MainNavigationFragment() {
                 .put(
                     feedSocialChannelsSectionViewBinder.modelClass,
                     feedSocialChannelsSectionViewBinder as FeedItemBinder
+                )
+                .put(
+                    feedSustainabilitySectionViewBinder.modelClass,
+                    feedSustainabilitySectionViewBinder as FeedItemBinder
                 )
                 .build()
 
