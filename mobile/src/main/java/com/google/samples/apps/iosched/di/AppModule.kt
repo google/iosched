@@ -53,31 +53,31 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun providesPreferenceStorage(context: Context): PreferenceStorage =
+    fun providePreferenceStorage(context: Context): PreferenceStorage =
         SharedPreferenceStorage(context)
 
     @Provides
-    fun providesWifiManager(context: Context): WifiManager =
+    fun provideWifiManager(context: Context): WifiManager =
         context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
 
     @Provides
-    fun providesConnectivityManager(context: Context): ConnectivityManager =
+    fun provideConnectivityManager(context: Context): ConnectivityManager =
         context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE)
                 as ConnectivityManager
 
     @Provides
-    fun providesClipboardManager(context: Context): ClipboardManager =
+    fun provideClipboardManager(context: Context): ClipboardManager =
         context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE)
             as ClipboardManager
 
     @Singleton
     @Provides
     @MainThreadHandler
-    fun providesMainThreadHandler(): IOSchedHandler = IOSchedMainHandler()
+    fun provideMainThreadHandler(): IOSchedHandler = IOSchedMainHandler()
 
     @Singleton
     @Provides
-    fun providesAnalyticsHelper(
+    fun provideAnalyticsHelper(
         context: Context,
         signInDelegate: SignInViewModelDelegate,
         preferenceStorage: PreferenceStorage
@@ -90,5 +90,5 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun providesAppDatabase(context: Context): AppDatabase = AppDatabase.buildDatabase(context)
+    fun provideAppDatabase(context: Context): AppDatabase = AppDatabase.buildDatabase(context)
 }
