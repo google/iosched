@@ -124,6 +124,8 @@
     <string name="a11y_feed_social_instagram_button" translation_description="Description of the instagram button on the feed.">Open instagram to see what others are sharing</string>
     <string name="a11y_feed_social_twitter_button" translation_description="Description of the twitter button on the feed.">Open twitter to see what others are sharing</string>
     <string name="a11y_feed_social_google_devs_button" translation_description="Description of the google developer button on the feed.">Open google developers blog</string>
+    <string name="a11y_feed_social_facebook_button" translation_description="Description of the facebook button on the feed.">Open google developers facebook page</string>
+    <string name="a11y_feed_social_youtube_button" translation_description="Description of the youtube button on the feed.">Open google developers youtube channel</string>
 
     <string name="a11y_select_map_mode" translation_description="Alternate text for a button used to select the mode on the Map.">Select map mode</string>
     <string name="a11y_search_schedule" translation_description="Alternate text for a button used to search the schedule.">Search schedule</string>
@@ -173,9 +175,11 @@
     <string name="feed_no_reserved_events_action" translation_description="Button label for the action on the no reserved events card">Find events to reserve in Schedule</string>
 
     <string name="feed_social_channels_message" translation_description="The sub-title of the social channels section in feed">See what other people are sharing.</string>
-    <string name="feed_social_twitter_link" translatable="false">https://twitter.com/search?q=googleio</string>
-    <string name="feed_social_instagram_link" translatable="false">https://instagram.com/explore/tags/googleio</string>
+    <string name="feed_social_twitter_link" translatable="false">https://twitter.com/googledevs</string>
+    <string name="feed_social_instagram_link" translatable="false">https://www.instagram.com/googledevs</string>
     <string name="feed_social_google_devs_link" translatable="false">https://developers.googleblog.com/</string>
+    <string name="feed_social_facebook_link" translatable="false">https://www.facebook.com/Google-Developers-967415219957038/</string>
+    <string name="feed_social_youtube_link" translatable="false">https://www.youtube.com/googledevelopers</string>
 
     <!-- [start] TODO(gauravbhola): To be removed -->
     <string name="feed_upcoming_events" translation_description="The title of the sessions section in feed when user is attending">Upcoming events</string>

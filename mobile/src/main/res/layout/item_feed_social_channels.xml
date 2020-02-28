@@ -71,35 +71,60 @@
             android:src="@drawable/ic_logo_twitter"
             android:background="@drawable/ic_feed_social_button_bg"
             android:contentDescription="@string/a11y_feed_social_twitter_button"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintEnd_toStartOf="@id/instagram_button"
+            app:layout_constraintEnd_toStartOf="@id/facebook_button"
             app:layout_constraintTop_toBottomOf="@+id/message"
             app:websiteLink="@{@string/feed_social_twitter_link}" />
 
         <ImageButton
-            android:id="@+id/instagram_button"
+            android:id="@+id/facebook_button"
             style="@style/Widget.IOSched.Feed.SocialChannelButton"
-            android:layout_marginStart="@dimen/margin_small"
-            android:src="@drawable/ic_logo_instagram"
+            android:layout_marginStart="@dimen/feed_social_buttons_spacing"
+            android:src="@drawable/ic_logo_facebook"
             android:background="@drawable/ic_feed_social_button_bg"
-            android:contentDescription="@string/a11y_feed_social_instagram_button"
+            android:contentDescription="@string/a11y_feed_social_facebook_button"
             app:layout_constraintBottom_toBottomOf="@id/twitter_button"
             app:layout_constraintStart_toEndOf="@id/twitter_button"
-            app:layout_constraintEnd_toStartOf="@id/google_devs_button"
             app:layout_constraintTop_toTopOf="@id/twitter_button"
-            app:websiteLink="@{@string/feed_social_instagram_link}" />
+            app:websiteLink="@{@string/feed_social_facebook_link}" />
 
         <ImageButton
             android:id="@+id/google_devs_button"
             style="@style/Widget.IOSched.Feed.SocialChannelButton"
-            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginStart="@dimen/feed_social_buttons_spacing"
             android:src="@drawable/ic_logo_google_developers"
             android:background="@drawable/ic_feed_social_button_bg"
             android:contentDescription="@string/a11y_feed_social_google_devs_button"
             app:layout_constraintBottom_toBottomOf="@id/twitter_button"
-            app:layout_constraintStart_toEndOf="@id/instagram_button"
+            app:layout_constraintStart_toEndOf="@id/facebook_button"
             app:layout_constraintTop_toTopOf="@id/twitter_button"
             app:websiteLink="@{@string/feed_social_google_devs_link}" />
+
+        <ImageButton
+            android:id="@+id/instagram_button"
+            style="@style/Widget.IOSched.Feed.SocialChannelButton"
+            android:layout_marginStart="@dimen/feed_social_buttons_spacing"
+            android:src="@drawable/ic_logo_instagram"
+            android:background="@drawable/ic_feed_social_button_bg"
+            android:contentDescription="@string/a11y_feed_social_instagram_button"
+            app:layout_constraintBottom_toBottomOf="@id/twitter_button"
+            app:layout_constraintStart_toEndOf="@id/google_devs_button"
+            app:layout_constraintEnd_toStartOf="@id/youtube_button"
+            app:layout_constraintTop_toTopOf="@id/twitter_button"
+            app:websiteLink="@{@string/feed_social_instagram_link}" />
+
+        <ImageButton
+            android:id="@+id/youtube_button"
+            style="@style/Widget.IOSched.Feed.SocialChannelButton"
+            android:layout_marginStart="@dimen/feed_social_buttons_spacing"
+            android:src="@drawable/ic_logo_youtube"
+            android:background="@drawable/ic_feed_social_button_bg"
+            android:contentDescription="@string/a11y_feed_social_youtube_button"
+            app:layout_constraintBottom_toBottomOf="@id/twitter_button"
+            app:layout_constraintStart_toEndOf="@id/instagram_button"
+            app:layout_constraintTop_toTopOf="@id/twitter_button"
+            app:websiteLink="@{@string/feed_social_youtube_link}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

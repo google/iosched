@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2020 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="12dp"
+    android:height="22dp"
+    android:viewportWidth="12"
+    android:viewportHeight="22">
+
+    <path
+        android:fillColor="#ffffff"
+        android:fillType="evenOdd"
+        android:pathData="M3.17666 21.8801H7.67264V10.9988H10.672L11.0693 7.24943H7.67264L7.67731 5.3721C7.67731 4.39477 7.77064 3.87011 9.17331 3.87011H11.048V0.120117H8.04798C4.44465 0.120117 3.17666 1.93944 3.17666 4.9981V7.24943H0.930664V10.9994H3.17666V21.8801Z" />
+</vector>
