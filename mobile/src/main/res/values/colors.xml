@@ -21,6 +21,7 @@
     <color name="color_on_secondary">@color/white</color>
 
     <color name="color_control_light">#39000000</color> <!-- Same as textColorPrimary disabled -->
+    <color name="color_surface_secondary">#F8F9FA</color> <!-- Same as textColorPrimary disabled -->
 
     <!-- Scrim colors -->
     <color name="system_ui_scrim_light">#B3FFFFFF</color> <!-- 70% white -->

@@ -58,7 +58,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clipToPadding="false"
-            android:paddingTop="@dimen/spacing_normal"
             android:paddingBottom="@dimen/spacing_normal"
             android:scrollbars="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
