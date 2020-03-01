@@ -120,7 +120,7 @@ object TestData {
         startTime = TestConferenceDays[0].start, endTime = TestConferenceDays[0].end,
         isLivestream = false,
         room = room, sessionUrl = "", youTubeUrl = "", photoUrl = "", doryLink = "",
-        tags = listOf(androidTag, webTag, codelabsTag),
+        tags = listOf(androidTag, cloudTag, codelabsTag),
         displayTags = listOf(androidTag, webTag),
         speakers = setOf(speaker2), relatedSessions = emptySet()
     )

@@ -16,9 +16,47 @@
 
 package com.google.samples.apps.iosched.shared.domain.search
 
+import com.google.samples.apps.iosched.model.filters.Filter
 import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.FlowUseCase
+import com.google.samples.apps.iosched.shared.domain.filters.UserSessionFilterMatcher
+import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.Result.Error
+import com.google.samples.apps.iosched.shared.result.Result.Loading
+import com.google.samples.apps.iosched.shared.result.Result.Success
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-data class SessionSearchUseCaseParams(val userId: String?, val query: String)
+data class SessionSearchUseCaseParams(
+    val userId: String?,
+    val query: String,
+    val filters: List<Filter>
+)
 
-typealias SessionSearchUseCase = FlowUseCase<SessionSearchUseCaseParams, List<UserSession>>
+class SessionSearchUseCase @Inject constructor(
+    private val repository: SessionAndUserEventRepository,
+    private val textMatchStrategy: SessionTextMatchStrategy,
+    @IoDispatcher dispatcher: CoroutineDispatcher
+) : FlowUseCase<SessionSearchUseCaseParams, List<UserSession>>(dispatcher) {
+
+    override fun execute(parameters: SessionSearchUseCaseParams): Flow<Result<List<UserSession>>> {
+        val (userId, query, filters) = parameters
+        val filterMatcher = UserSessionFilterMatcher(filters)
+        return repository.getObservableUserEvents(userId).map { result ->
+            when (result) {
+                is Success -> {
+                    val searchResults = textMatchStrategy.searchSessions(
+                        result.data.userSessions, query
+                    ).filter { filterMatcher.matches(it) }
+                    Success(searchResults)
+                }
+                is Loading -> result
+                is Error -> result
+            }
+        }
+    }
+}

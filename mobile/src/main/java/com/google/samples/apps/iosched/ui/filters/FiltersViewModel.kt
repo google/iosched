@@ -26,16 +26,26 @@ import com.google.samples.apps.iosched.util.compatRemoveIf
  * Interface to add filters functionality to a screen through a ViewModel.
  */
 interface FiltersViewModelDelegate {
+    /** The full list of filter chips. */
     val filterChips: LiveData<List<FilterChip>>
+    /** The list of selected filters. */
     val selectedFilters: LiveData<List<Filter>>
+    /** The list of selected filter chips. */
     val selectedFilterChips: LiveData<List<FilterChip>>
+    /** True if there are any selected filters. */
     val hasAnyFilters: LiveData<Boolean>
+    /** Number of results from applying filters. Can be set by implementers. */
     val resultCount: MutableLiveData<Int>
+    /** Whether to show the result count instead of the "Filters" header. */
+    val showResultCount: LiveData<Boolean>
 
+    /** Set the list of filters. */
     fun setSupportedFilters(filters: List<Filter>)
 
+    /** Set the selected state of the filter. Must be one of the supported filters. */
     fun toggleFilter(filter: Filter, enabled: Boolean)
 
+    /** Clear all selected filters. */
     fun clearFilters()
 }
 
@@ -50,6 +60,9 @@ class FiltersViewModelDelegateImpl : FiltersViewModelDelegate {
     override val hasAnyFilters = selectedFilterChips.map { it.isNotEmpty() }
 
     override val resultCount = MutableLiveData(0)
+
+    // Default behavior: show count when there are active filters.
+    override val showResultCount = hasAnyFilters
 
     // State for internal logic
     private var _filters = mutableListOf<Filter>()

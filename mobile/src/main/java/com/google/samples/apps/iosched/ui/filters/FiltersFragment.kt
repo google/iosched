@@ -273,9 +273,9 @@ fun selectedFilters(recyclerView: RecyclerView, filters: List<FilterChip>?) {
     filterChipAdapter.submitList(filters ?: emptyList())
 }
 
-@BindingAdapter(value = ["hasFilters", "resultCount"], requireAll = true)
-fun filterHeader(textView: TextView, hasFilters: Boolean?, resultCount: Int?) {
-    if (hasFilters == true && resultCount != null) {
+@BindingAdapter(value = ["showResultCount", "resultCount"], requireAll = true)
+fun filterHeader(textView: TextView, showResultCount: Boolean?, resultCount: Int?) {
+    if (showResultCount == true && resultCount != null) {
         textView.text = textView.resources.getString(R.string.result_count, resultCount)
     } else {
         textView.setText(R.string.filters)
