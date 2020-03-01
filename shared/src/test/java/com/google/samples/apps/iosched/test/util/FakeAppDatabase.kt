@@ -70,7 +70,7 @@ class FakeSearchAppDatabase : AppDatabase() {
                     QUERY_ABSTRACT.toLowerCase(), QUERY_ABSTRACT_WITH_TOKEN -> listOf(
                         TestData.session0.id
                     )
-                    QUERY_EMPTY.toLowerCase() -> emptyList()
+                    QUERY_WITH_NO_MATCH.toLowerCase() -> emptyList()
                     else -> emptyList()
                 }
             }
@@ -111,7 +111,7 @@ class FakeSearchAppDatabase : AppDatabase() {
     companion object {
         const val QUERY_TITLE = "session 0"
         const val QUERY_ABSTRACT = "Awesome"
-        const val QUERY_EMPTY = "Invalid search query"
+        const val QUERY_WITH_NO_MATCH = "Invalid search query"
         const val QUERY_ONLY_SPACES = "  "
         const val QUERY_TITLE_WITH_TOKEN = "session* AND 0*"
         const val QUERY_ABSTRACT_WITH_TOKEN = "awesome*"

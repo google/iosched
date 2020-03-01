@@ -60,9 +60,9 @@ import com.google.samples.apps.iosched.util.updateForTheme
 import com.google.samples.apps.iosched.widget.HashtagIoDecoration
 import com.google.samples.apps.iosched.widget.NavigationBarContentFrameLayout
 import dagger.android.support.DaggerAppCompatActivity
+import timber.log.Timber
 import java.util.UUID
 import javax.inject.Inject
-import timber.log.Timber
 
 class MainActivity : DaggerAppCompatActivity(), NavigationHost {
 
