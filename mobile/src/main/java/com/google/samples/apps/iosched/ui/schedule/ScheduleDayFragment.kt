@@ -47,6 +47,7 @@ import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
 import com.google.samples.apps.iosched.ui.schedule.ScheduleDayFragmentDirections.Companion.toSearch
 import com.google.samples.apps.iosched.ui.schedule.ScheduleDayFragmentDirections.Companion.toSessionDetail
+import com.google.samples.apps.iosched.ui.sessioncommon.SessionsAdapter
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment.Companion.DIALOG_NOTIFICATIONS_PREFERENCE
@@ -97,7 +98,7 @@ class ScheduleDayFragment : MainNavigationFragment() {
     private lateinit var snackbar: FadingSnackbar
 
     private lateinit var scheduleRecyclerView: RecyclerView
-    private lateinit var scheduleAdapter: ScheduleAdapter
+    private lateinit var sessionsAdapter: SessionsAdapter
     private lateinit var scheduleScroller: JumpSmoothScroller
 
     private lateinit var dayIndicatorRecyclerView: RecyclerView
@@ -163,7 +164,7 @@ class ScheduleDayFragment : MainNavigationFragment() {
         }
 
         // Session list configuration
-        scheduleAdapter = ScheduleAdapter(
+        sessionsAdapter = SessionsAdapter(
             scheduleViewModel,
             tagViewPool,
             scheduleViewModel.showReservations,
@@ -171,7 +172,7 @@ class ScheduleDayFragment : MainNavigationFragment() {
             this
         )
         scheduleRecyclerView.apply {
-            adapter = scheduleAdapter
+            adapter = sessionsAdapter
             (itemAnimator as DefaultItemAnimator).run {
                 supportsChangeAnimations = false
                 addDuration = 160L
@@ -289,7 +290,7 @@ class ScheduleDayFragment : MainNavigationFragment() {
             rebuildDayIndicators()
         }
 
-        scheduleAdapter.submitList(list)
+        sessionsAdapter.submitList(list)
         scheduleRecyclerView.run {
             // Recreate the decoration used for the sticky time headers
             clearDecorations()

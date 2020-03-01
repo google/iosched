@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google LLC
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.search
+package com.google.samples.apps.iosched.shared.domain.search
 
-/**
- * Actions that can be performed on a [SearchResult]
- */
-interface SearchResultActionHandler {
-    fun openSearchResult(searchResult: SearchResult)
-}
+import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.shared.domain.FlowUseCase
+
+data class SessionSearchUseCaseParams(val userId: String?, val query: String)
+
+typealias SessionSearchUseCase = FlowUseCase<SessionSearchUseCaseParams, List<UserSession>>

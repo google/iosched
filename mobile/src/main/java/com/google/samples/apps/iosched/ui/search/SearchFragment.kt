@@ -25,8 +25,10 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import androidx.core.view.updatePadding
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.R.style
 import com.google.samples.apps.iosched.databinding.FragmentSearchBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
@@ -35,16 +37,29 @@ import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.search.SearchFragmentDirections.Companion.toSessionDetail
 import com.google.samples.apps.iosched.ui.search.SearchFragmentDirections.Companion.toSpeakerDetail
+import com.google.samples.apps.iosched.ui.sessioncommon.SessionsAdapter
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.openWebsiteUrl
 import javax.inject.Inject
-import kotlinx.android.synthetic.main.fragment_search.view.searchView
+import javax.inject.Named
 
 class SearchFragment : MainNavigationFragment() {
-    @Inject lateinit var analyticsHelper: AnalyticsHelper
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var analyticsHelper: AnalyticsHelper
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    @field:Named("tagViewPool")
+    lateinit var tagViewPool: RecycledViewPool
+
     private lateinit var binding: FragmentSearchBinding
+
     private lateinit var viewModel: SearchViewModel
+
+    private lateinit var sessionsAdapter: SessionsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,9 +76,10 @@ class SearchFragment : MainNavigationFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = viewModelProvider(viewModelFactory)
-        binding.viewModel = viewModel
 
+        viewModel.searchResults.observe(viewLifecycleOwner, Observer {
+            sessionsAdapter.submitList(it)
+        })
         viewModel.navigateToSessionAction.observe(viewLifecycleOwner, EventObserver { sessionId ->
             findNavController().navigate(toSessionDetail(sessionId))
         })
@@ -78,8 +94,10 @@ class SearchFragment : MainNavigationFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = viewModelProvider(viewModelFactory)
+        binding.viewModel = viewModel
 
-        binding.toolbar.searchView.apply {
+        binding.searchView.apply {
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     dismissKeyboard(this@apply)
@@ -100,13 +118,24 @@ class SearchFragment : MainNavigationFragment() {
             }
             requestFocus()
         }
-        binding.recyclerView.doOnApplyWindowInsets { v, insets, padding ->
-            v.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)
+
+        sessionsAdapter = SessionsAdapter(
+            viewModel,
+            tagViewPool,
+            viewModel.showReservations,
+            viewModel.timeZoneId,
+            this
+        )
+        binding.recyclerView.apply {
+            adapter = sessionsAdapter
+            doOnApplyWindowInsets { v, insets, padding ->
+                v.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)
+            }
         }
     }
 
     override fun onPause() {
-        dismissKeyboard(binding.toolbar.searchView)
+        dismissKeyboard(binding.searchView)
         super.onPause()
     }
 

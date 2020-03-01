@@ -16,30 +16,47 @@
 
 package com.google.samples.apps.iosched.shared.domain.search
 
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.db.AppDatabase
-import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
-import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
-import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSession
+import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.Result.Error
+import com.google.samples.apps.iosched.shared.result.Result.Loading
+import com.google.samples.apps.iosched.shared.result.Result.Success
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
  * Searches sessions using FTS.
  */
 class SessionFtsSearchUseCase @Inject constructor(
-    private val sessionRepository: SessionRepository,
+    private val repository: SessionAndUserEventRepository,
     private val appDatabase: AppDatabase,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : CoroutinesUseCase<String, List<Searchable>>(dispatcher) {
+) : SessionSearchUseCase(dispatcher) {
 
-    override suspend fun execute(parameters: String): List<Searchable> {
-        val query = parameters.toLowerCase()
-        val sessionResults = appDatabase.sessionFtsDao().searchAllSessions(query).toSet()
-        return sessionRepository.getSessions()
-            .filter { session -> session.id in sessionResults }
-            // Keynotes come first, followed by sessions, app reviews, game reviews ...
-            .sortedBy { it.type }
-            .map { SearchedSession(it) }
+    override fun execute(parameters: SessionSearchUseCaseParams): Flow<Result<List<UserSession>>> {
+        val query = parameters.query.toLowerCase()
+        Timber.d("Searching for query using Room: $query")
+        return repository.getObservableUserEvents(parameters.userId).map { result ->
+            when (result) {
+                is Success -> {
+                    val sessionIds =
+                        appDatabase.sessionFtsDao().searchAllSessions(query).toSet()
+                    val matches = result.data.userSessions.filter {
+                        it.session.id in sessionIds
+                    }
+                        // Keynotes come first, then sessions, app reviews, game reviews ...
+                        .sortedBy { it.session.type }
+                    Success(matches)
+                }
+                is Loading -> result
+                is Error -> result
+            }
+        }
     }
 }

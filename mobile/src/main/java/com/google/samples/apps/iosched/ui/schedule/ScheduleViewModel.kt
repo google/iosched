@@ -60,10 +60,10 @@ import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import kotlinx.coroutines.launch
-import java.util.UUID
-import javax.inject.Inject
 import org.threeten.bp.ZoneId
 import timber.log.Timber
+import java.util.UUID
+import javax.inject.Inject
 
 /**
  * Loads data and exposes it to the view.
@@ -167,8 +167,6 @@ class ScheduleViewModel @Inject constructor(
     val snackBarMessage: LiveData<Event<SnackbarMessage>>
         get() = _snackBarMessage
 
-    val showReservations: LiveData<Boolean>
-
     private val _navigateToSignInDialogAction = MutableLiveData<Event<Unit>>()
     val navigateToSignInDialogAction: LiveData<Event<Unit>>
         get() = _navigateToSignInDialogAction
@@ -262,11 +260,6 @@ class ScheduleViewModel @Inject constructor(
                     )
                 }
             }
-        }
-
-        // Show reservation button if not logged in or (logged in && registered)
-        showReservations = currentUserInfo.map {
-            isRegistered() || !isSignedIn()
         }
 
         scheduleUiHintsShownUseCase(Unit, scheduleUiHintsShownResult)

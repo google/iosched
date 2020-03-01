@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.ui.search
 import androidx.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.di.FragmentScoped
 import com.google.samples.apps.iosched.shared.di.ViewModelKey
+import com.google.samples.apps.iosched.ui.sessioncommon.SessionViewPoolModule
 import dagger.Binds
 import dagger.Module
 import dagger.android.AndroidInjector
@@ -36,7 +37,7 @@ internal abstract class SearchModule {
      * Generates an [AndroidInjector] for the [SearchFragment]
      */
     @FragmentScoped
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [SessionViewPoolModule::class])
     internal abstract fun contributeSearchFragment(): SearchFragment
 
     /**

@@ -30,7 +30,7 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.tests.FixedTimeRule
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
 import com.google.samples.apps.iosched.tests.SyncTaskExecutorRule
-import com.google.samples.apps.iosched.ui.schedule.SessionViewHolder
+import com.google.samples.apps.iosched.ui.sessioncommon.SessionViewHolder
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
