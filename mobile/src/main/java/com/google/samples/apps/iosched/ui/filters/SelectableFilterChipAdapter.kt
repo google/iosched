@@ -19,7 +19,6 @@ package com.google.samples.apps.iosched.ui.filters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.samples.apps.iosched.R
@@ -139,8 +138,13 @@ class SelectableFilterChipAdapter(private val viewModelDelegate: FiltersViewMode
     }
 }
 
-internal object FilterChipDiff : DiffUtil.ItemCallback<Any>() {
-    override fun areItemsTheSame(oldItem: Any, newItem: Any) = oldItem == newItem
+private object FilterChipDiff : DiffUtil.ItemCallback<Any>() {
+    override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
+        return when (oldItem) {
+            is FilterChip -> newItem is FilterChip && newItem.filter == oldItem.filter
+            else -> oldItem == newItem // SectionHeader
+        }
+    }
 
     override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
         return when (oldItem) {
@@ -148,10 +152,4 @@ internal object FilterChipDiff : DiffUtil.ItemCallback<Any>() {
             else -> true
         }
     }
-}
-
-internal class FilterChipSpanSizeLookup(private val adapter: SelectableFilterChipAdapter) :
-    SpanSizeLookup() {
-
-    override fun getSpanSize(position: Int) = adapter.getSpanSize(position)
 }

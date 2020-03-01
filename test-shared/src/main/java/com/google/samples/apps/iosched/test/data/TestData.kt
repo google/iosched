@@ -72,10 +72,11 @@ object TestData {
     val beginnerTag = Tag("201", Tag.CATEGORY_LEVEL, "level_beginner", 0, "Beginner", 0)
     val intermediateTag = Tag("202", Tag.CATEGORY_LEVEL, "level_intermediate", 1, "Intermediate", 0)
     val advancedTag = Tag("203", Tag.CATEGORY_LEVEL, "level_advanced", 2, "Advanced", 0)
+    val themeTag = Tag("301", Tag.CATEGORY_THEME, "theme_future", 0, "THE FUTURE", 0)
 
     val tagsList = listOf(
         androidTag, cloudTag, webTag, sessionsTag, codelabsTag, beginnerTag,
-        intermediateTag, advancedTag
+        intermediateTag, advancedTag, themeTag
     )
 
     val speaker1 = Speaker(

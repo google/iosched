@@ -63,5 +63,5 @@ private fun Tag.filterCategoryLabel(): Int = when (this.category) {
     Tag.CATEGORY_TYPE -> R.string.category_heading_types
     Tag.CATEGORY_TOPIC -> R.string.category_heading_tracks
     Tag.CATEGORY_LEVEL -> R.string.category_heading_levels
-    else -> throw IllegalArgumentException("unsupported tag category")
+    else -> 0
 }

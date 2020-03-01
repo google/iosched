@@ -27,6 +27,7 @@ import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.di.SearchUsingRoomEnabledFlag
+import com.google.samples.apps.iosched.shared.domain.search.LoadSearchFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.search.SessionFtsSearchUseCase
 import com.google.samples.apps.iosched.shared.domain.search.SessionSearchUseCaseParams
 import com.google.samples.apps.iosched.shared.domain.search.SessionSimpleSearchUseCase
@@ -49,6 +50,7 @@ class SearchViewModel @Inject constructor(
     simpleSearchUseCase: SessionSimpleSearchUseCase,
     ftsSearchUseCase: SessionFtsSearchUseCase,
     getTimeZoneUseCase: GetTimeZoneUseCase,
+    loadFiltersUseCase: LoadSearchFiltersUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
     filtersViewModelDelegate: FiltersViewModelDelegate,
     @SearchUsingRoomEnabledFlag val searchUsingRoomFeatureEnabled: Boolean
@@ -92,6 +94,10 @@ class SearchViewModel @Inject constructor(
             } else {
                 ZoneId.systemDefault()
             }
+        }
+        // Load filters
+        viewModelScope.launch {
+            setSupportedFilters(loadFiltersUseCase(Unit).successOr(emptyList()))
         }
     }
 

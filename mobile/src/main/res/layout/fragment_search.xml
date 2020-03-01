@@ -36,7 +36,9 @@
             style="@style/Widget.IOSched.AppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:divider="?android:dividerHorizontal"
             android:fitsSystemWindows="true"
+            android:showDividers="middle"
             app:navigationIcon="@drawable/ic_arrow_back">
 
             <androidx.appcompat.widget.Toolbar
@@ -56,8 +58,21 @@
                     tools:targetApi="lollipop_mr1">
 
                 </SearchView>
-
             </androidx.appcompat.widget.Toolbar>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/active_filters"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                app:goneUnless="@{viewModel.hasAnyFilters}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:selectedFilters="@{viewModel.selectedFilterChips}"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_filter_chip"
+                tools:visibility="visible" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

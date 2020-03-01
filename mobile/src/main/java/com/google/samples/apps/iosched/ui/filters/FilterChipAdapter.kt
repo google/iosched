@@ -18,32 +18,38 @@ package com.google.samples.apps.iosched.ui.filters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.samples.apps.iosched.databinding.ItemFilterChipBinding
 import com.google.samples.apps.iosched.util.executeAfter
 
-class FilterChipAdapter : RecyclerView.Adapter<TagChipViewHolder>() {
+// TODO(jdkoren): Maybe combine this with SelectableFilterChipAdapter
+class FilterChipAdapter : ListAdapter<FilterChip, FilterChipViewHolder>(FilterChipDiff2) {
 
-    var filters = emptyList<FilterChip>()
-
-    override fun getItemCount() = filters.size
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagChipViewHolder {
-        return TagChipViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilterChipViewHolder {
+        return FilterChipViewHolder(
             ItemFilterChipBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
-    override fun onBindViewHolder(holder: TagChipViewHolder, position: Int) {
-        holder.bind(filters[position])
+    override fun onBindViewHolder(holder: FilterChipViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 }
 
-class TagChipViewHolder(private val binding: ItemFilterChipBinding) : ViewHolder(binding.root) {
+class FilterChipViewHolder(private val binding: ItemFilterChipBinding) : ViewHolder(binding.root) {
     fun bind(item: FilterChip) {
         binding.executeAfter {
             filterChip = item
         }
     }
+}
+
+private object FilterChipDiff2 : DiffUtil.ItemCallback<FilterChip>() {
+    override fun areItemsTheSame(oldItem: FilterChip, newItem: FilterChip) =
+        oldItem.filter == newItem.filter
+
+    override fun areContentsTheSame(oldItem: FilterChip, newItem: FilterChip): Boolean =
+        oldItem.isSelected == newItem.isSelected
 }
