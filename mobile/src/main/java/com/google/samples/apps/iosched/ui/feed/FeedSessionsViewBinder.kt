@@ -36,7 +36,7 @@ import com.google.samples.apps.iosched.databinding.ItemFeedSessionBinding
 import com.google.samples.apps.iosched.databinding.ItemFeedSessionsContainerBinding
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-import com.google.samples.apps.iosched.ui.schedule.SessionDiff
+import com.google.samples.apps.iosched.ui.sessioncommon.SessionDiff
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 

@@ -23,30 +23,35 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.SpeakerId
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.di.SearchUsingRoomEnabledFlag
-import com.google.samples.apps.iosched.shared.domain.search.Searchable
-import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedCodelab
-import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSession
-import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSpeaker
 import com.google.samples.apps.iosched.shared.domain.search.SessionFtsSearchUseCase
+import com.google.samples.apps.iosched.shared.domain.search.SessionSearchUseCaseParams
 import com.google.samples.apps.iosched.shared.domain.search.SessionSimpleSearchUseCase
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.successOr
-import com.google.samples.apps.iosched.ui.search.SearchResultType.CODELAB
-import com.google.samples.apps.iosched.ui.search.SearchResultType.SESSION
-import com.google.samples.apps.iosched.ui.search.SearchResultType.SPEAKER
+import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
+import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import org.threeten.bp.ZoneId
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
     private val analyticsHelper: AnalyticsHelper,
-    private val simpleSearchUseCase: SessionSimpleSearchUseCase,
-    private val ftsSearchUseCase: SessionFtsSearchUseCase
-) : ViewModel(), SearchResultActionHandler {
+    simpleSearchUseCase: SessionSimpleSearchUseCase,
+    ftsSearchUseCase: SessionFtsSearchUseCase,
+    getTimeZoneUseCase: GetTimeZoneUseCase,
+    signInViewModelDelegate: SignInViewModelDelegate
+) : ViewModel(),
+    EventActions,
+    SignInViewModelDelegate by signInViewModelDelegate {
 
     @Inject
     @JvmField
@@ -63,31 +68,30 @@ class SearchViewModel @Inject constructor(
     private val _navigateToCodelabAction = MutableLiveData<Event<String>>()
     val navigateToCodelabAction: LiveData<Event<String>> = _navigateToCodelabAction
 
-    private val _searchResults = MediatorLiveData<List<SearchResult>>()
-    val searchResults: LiveData<List<SearchResult>> = _searchResults
+    private val _searchResults = MediatorLiveData<List<UserSession>>()
+    val searchResults: LiveData<List<UserSession>> = _searchResults
 
     private val _isEmpty = MediatorLiveData<Boolean>()
     val isEmpty: LiveData<Boolean> = _isEmpty
 
-    override fun openSearchResult(searchResult: SearchResult) {
-        when (searchResult.type) {
-            SESSION -> {
-                val sessionId = searchResult.objectId
-                analyticsHelper.logUiEvent("Session: $sessionId",
-                    AnalyticsActions.SEARCH_RESULT_CLICK)
-                _navigateToSessionAction.value = Event(sessionId)
-            }
-            SPEAKER -> {
-                val speakerId = searchResult.objectId
-                analyticsHelper.logUiEvent("Speaker: $speakerId",
-                    AnalyticsActions.SEARCH_RESULT_CLICK)
-                _navigateToSpeakerAction.value = Event(speakerId)
-            }
-            CODELAB -> {
-                val url = searchResult.objectId
-                analyticsHelper.logUiEvent("Codelab: $url",
-                    AnalyticsActions.SEARCH_RESULT_CLICK)
-                _navigateToCodelabAction.value = Event(url)
+    private val searchUseCase = if (searchUsingRoomFeatureEnabled) {
+        ftsSearchUseCase
+    } else {
+        simpleSearchUseCase
+    }
+    private var searchJob: Job? = null
+
+    private val _timeZoneId = MutableLiveData<ZoneId>()
+    val timeZoneId: LiveData<ZoneId>
+        get() = _timeZoneId
+
+    init {
+        // Load timezone
+        viewModelScope.launch {
+            _timeZoneId.value = if (getTimeZoneUseCase(Unit).successOr(true)) {
+                TimeUtils.CONFERENCE_TIMEZONE
+            } else {
+                ZoneId.systemDefault()
             }
         }
     }
@@ -102,15 +106,10 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun executeSearch(query: String) {
-        if (searchUsingRoomFeatureEnabled) {
-            Timber.d("Searching for query using Room: $query")
-            viewModelScope.launch {
-                processSearchResult(ftsSearchUseCase(query))
-            }
-        } else {
-            Timber.d("Searching for query without using Room: $query")
-            viewModelScope.launch {
-                processSearchResult(simpleSearchUseCase(query))
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            searchUseCase(SessionSearchUseCaseParams(getUserId(), query)).collect {
+                processSearchResult(it)
             }
         }
     }
@@ -121,42 +120,17 @@ class SearchViewModel @Inject constructor(
         _isEmpty.value = false
     }
 
-    private fun processSearchResult(searchResult: Result<List<Searchable>>) {
-        val result = (searchResult as? Result.Success)?.data ?: emptyList()
-        _searchResults.value = result.map { searched ->
-            when (searched) {
-                is SearchedSession -> {
-                    val session = searched.session
-                    SearchResult(
-                        session.title,
-                        session.type.displayName,
-                        SESSION,
-                        session.id
-                    )
-                }
-                is SearchedSpeaker -> {
-                    val speaker = searched.speaker
-                    SearchResult(
-                        speaker.name,
-                        "Speaker",
-                        SPEAKER,
-                        speaker.id
-                    )
-                }
-                is SearchedCodelab -> {
-                    val codelab = searched.codelab
-                    SearchResult(
-                        codelab.title,
-                        "Codelab",
-                        CODELAB,
-                        // This may not be unique, but to navigate to a meaningful page,
-                        // assigning codelabUrl as id
-                        codelab.codelabUrl
-                    )
-                }
-            }
-        }
+    private fun processSearchResult(searchResult: Result<List<UserSession>>) {
+        val sessions = searchResult.successOr(emptyList())
+        _searchResults.value = sessions
+        _isEmpty.value = sessions.isEmpty()
+    }
 
-        _isEmpty.value = searchResult.successOr(null).isNullOrEmpty()
+    override fun openEventDetail(id: SessionId) {
+        _navigateToSessionAction.value = Event(id)
+    }
+
+    override fun onStarClicked(userSession: UserSession) {
+        // TODO(jdkoren) make an EventActionsViewModelDelegate that handles this for everyone
     }
 }

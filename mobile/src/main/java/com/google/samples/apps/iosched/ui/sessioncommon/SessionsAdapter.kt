@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.schedule
+package com.google.samples.apps.iosched.ui.sessioncommon
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -29,8 +29,8 @@ import com.google.samples.apps.iosched.databinding.ItemSessionBinding
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import org.threeten.bp.ZoneId
 
-class ScheduleAdapter(
-    private val eventListener: ScheduleEventListener,
+class SessionsAdapter(
+    private val eventListener: EventActions,
     private val tagViewPool: RecycledViewPool,
     private val showReservations: LiveData<Boolean>,
     private val timeZoneId: LiveData<ZoneId>,
@@ -60,7 +60,7 @@ class ScheduleAdapter(
 
 class SessionViewHolder(
     private val binding: ItemSessionBinding,
-    private val eventListener: ScheduleEventListener,
+    private val eventListener: EventActions,
     private val showReservations: LiveData<Boolean>,
     private val timeZoneId: LiveData<ZoneId>,
     private val lifecycleOwner: LifecycleOwner

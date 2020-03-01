@@ -18,18 +18,21 @@
 
 package com.google.samples.apps.iosched.shared.domain.search
 
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
-import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
-import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSession
+import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.Result.Loading
+import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import org.hamcrest.core.Is.`is`
-import org.hamcrest.core.IsCollectionContaining.hasItem
 import org.hamcrest.core.IsEqual.equalTo
 import org.hamcrest.core.IsInstanceOf.instanceOf
 import org.junit.Assert.assertThat
@@ -40,7 +43,7 @@ import org.junit.runners.Parameterized
 
 @ExperimentalCoroutinesApi
 @RunWith(Parameterized::class)
-class SearchUseCaseTest(private val useCase: CoroutinesUseCase<String, List<Searchable>>) {
+class SearchUseCaseTest(private val useCase: SessionSearchUseCase) {
 
     companion object {
         val coroutineRule = MainCoroutineRule()
@@ -50,13 +53,19 @@ class SearchUseCaseTest(private val useCase: CoroutinesUseCase<String, List<Sear
         fun useCases() = listOf(
             arrayOf(
                 SessionSimpleSearchUseCase(
-                    DefaultSessionRepository(TestDataRepository),
+                    DefaultSessionAndUserEventRepository(
+                        TestUserEventDataSource(),
+                        DefaultSessionRepository(TestDataRepository)
+                    ),
                     coroutineRule.testDispatcher
                 )
             ),
             arrayOf(
                 SessionFtsSearchUseCase(
-                    DefaultSessionRepository(TestDataRepository),
+                    DefaultSessionAndUserEventRepository(
+                        TestUserEventDataSource(),
+                        DefaultSessionRepository(TestDataRepository)
+                    ),
                     FakeSearchAppDatabase(),
                     coroutineRule.testDispatcher
                 )
@@ -69,43 +78,47 @@ class SearchUseCaseTest(private val useCase: CoroutinesUseCase<String, List<Sear
     var coroutineRule = Companion.coroutineRule
 
     @Test
-    fun search_MatchesOnTitle() = coroutineRule.runBlockingTest {
-        val result = useCase(parameters = FakeSearchAppDatabase.QUERY_TITLE)
-        assertThatResultContainsOnlySession0(result)
+    fun `match on title`() = coroutineRule.runBlockingTest {
+        val result = useCase(
+            SessionSearchUseCaseParams("user1", FakeSearchAppDatabase.QUERY_TITLE)
+        ).first { it !is Loading }
+
+        assertSearchResults(result, listOf(TestData.userSession0))
     }
 
     @Test
-    fun search_MatchesOnAbstract() = coroutineRule.runBlockingTest {
-        val result = useCase(FakeSearchAppDatabase.QUERY_ABSTRACT)
-        assertThatResultContainsOnlySession0(result)
+    fun `match on description`() = coroutineRule.runBlockingTest {
+        val result = useCase(
+            SessionSearchUseCaseParams("user1", FakeSearchAppDatabase.QUERY_ABSTRACT)
+        ).first { it !is Loading }
+
+        assertSearchResults(result, listOf(TestData.userSession0))
     }
 
     @Test
-    fun search_returnsEmptyListForInvalidQuery() = coroutineRule.runBlockingTest {
-        val result = useCase(FakeSearchAppDatabase.QUERY_EMPTY)
-        assertThat(result, `is`(instanceOf(Result.Success::class.java)))
+    fun `invalid query returns no results`() = coroutineRule.runBlockingTest {
+        val result = useCase(
+            SessionSearchUseCaseParams("user1", FakeSearchAppDatabase.QUERY_EMPTY)
+        ).first { it !is Loading }
 
-        val sessions = (result as Result.Success).data
-        assertThat(sessions, `is`(equalTo(emptyList())))
+        assertSearchResults(result, emptyList())
     }
 
     @Test
-    fun search_emptyQuery() = coroutineRule.runBlockingTest {
-        val result = useCase(FakeSearchAppDatabase.QUERY_ONLY_SPACES)
-        assertThat(result, `is`(instanceOf(Result.Success::class.java)))
+    fun `blank query returns no results`() = coroutineRule.runBlockingTest {
+        val result = useCase(
+            SessionSearchUseCaseParams("user1", FakeSearchAppDatabase.QUERY_ONLY_SPACES)
+        ).first { it !is Loading }
 
-        val sessions = (result as Result.Success).data
-        assertThat(sessions, `is`(equalTo(emptyList())))
+        assertSearchResults(result, emptyList())
     }
 
-    private fun assertThatResultContainsOnlySession0(result: Result<List<Searchable>>) =
-        coroutineRule.runBlockingTest {
-            assertThat(result, `is`(instanceOf(Result.Success::class.java)))
-
-            val sessions = (result as Result.Success).data.map {
-                (it as SearchedSession).session
-            }
-            assertThat(sessions.size, `is`(equalTo(1)))
-            assertThat(sessions, hasItem(TestData.session0))
-        }
+    private fun assertSearchResults(
+        result: Result<List<UserSession>>,
+        expectedSessions: List<UserSession>
+    ) {
+        assertThat(result, `is`(instanceOf(Success::class.java)))
+        val sessions = (result as Success).data
+        assertThat(sessions, `is`(equalTo(expectedSessions)))
+    }
 }

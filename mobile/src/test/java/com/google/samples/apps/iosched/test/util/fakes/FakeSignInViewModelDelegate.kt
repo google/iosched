@@ -31,6 +31,7 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
     override val currentUserImageUri = MutableLiveData<Uri?>()
     override val performSignInEvent = MutableLiveData<Event<SignInEvent>>()
     override val shouldShowNotificationsPrefAction = MutableLiveData<Event<Boolean>>()
+    override val showReservations = MutableLiveData<Boolean>()
 
     var injectIsSignedIn = true
     var injectIsRegistered = false

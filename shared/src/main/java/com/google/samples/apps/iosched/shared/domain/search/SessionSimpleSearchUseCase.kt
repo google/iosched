@@ -16,30 +16,44 @@
 
 package com.google.samples.apps.iosched.shared.domain.search
 
-import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
-import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
-import com.google.samples.apps.iosched.shared.domain.search.Searchable.SearchedSession
+import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.Result.Error
+import com.google.samples.apps.iosched.shared.result.Result.Loading
+import com.google.samples.apps.iosched.shared.result.Result.Success
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
  * Searches sessions by simple string comparison against title and description.
  */
 class SessionSimpleSearchUseCase @Inject constructor(
-    private val repository: SessionRepository,
+    private val repository: SessionAndUserEventRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : CoroutinesUseCase<String, List<Searchable>>(dispatcher) {
+) : SessionSearchUseCase(dispatcher) {
 
-    override suspend fun execute(parameters: String): List<Searchable> {
-        val query = parameters.toLowerCase()
-        return repository.getSessions()
-            .filter { session ->
-                session.title.toLowerCase().contains(query) ||
-                    session.description.toLowerCase().contains(query)
+    override fun execute(parameters: SessionSearchUseCaseParams): Flow<Result<List<UserSession>>> {
+        val query = parameters.query.toLowerCase()
+        Timber.d("Searching for query without using Room: $query")
+        return repository.getObservableUserEvents(parameters.userId).map { result ->
+            when (result) {
+                is Success -> {
+                    val matches = result.data.userSessions.filter {
+                        it.session.title.toLowerCase().contains(query) ||
+                            it.session.description.toLowerCase().contains(query)
+                    }
+                        // Keynotes come first, then sessions, app reviews, game reviews ...
+                        .sortedBy { it.session.type }
+                    Success(matches)
+                }
+                is Loading -> result
+                is Error -> result
             }
-            // Keynotes come first, followed by sessions, app reviews, game reviews ...
-            .sortedBy { it.type }
-            .map { SearchedSession(it) }
+        }
     }
 }

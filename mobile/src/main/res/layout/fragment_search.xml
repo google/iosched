@@ -73,8 +73,7 @@
             android:scrollbars="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layoutManager="LinearLayoutManager"
-            app:searchResultItems="@{viewModel.searchResults}"
-            app:searchViewModel="@{viewModel}"/>
+            app:goneUnless="@{!viewModel.isEmpty}" />
 
         <TextView
             android:id="@+id/empty"

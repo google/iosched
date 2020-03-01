@@ -81,6 +81,11 @@ interface SignInViewModelDelegate {
     val shouldShowNotificationsPrefAction: LiveData<Event<Boolean>>
 
     /**
+     * Emits whether or not to show reservations for the current user
+     */
+    val showReservations: LiveData<Boolean>
+
+    /**
      * Emit an Event on performSignInEvent to request sign-in
      */
     suspend fun emitSignInRequest()
@@ -148,6 +153,10 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
 
     override val shouldShowNotificationsPrefAction = notificationsPrefIsShown.map {
         showNotificationPref(it)
+    }
+
+    override val showReservations: LiveData<Boolean> = currentUserInfo.map {
+        isRegistered() || !isSignedIn()
     }
 
     private fun showNotificationPref(
