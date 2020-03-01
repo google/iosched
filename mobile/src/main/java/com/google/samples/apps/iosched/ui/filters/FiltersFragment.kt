@@ -35,9 +35,9 @@ import androidx.databinding.ObservableFloat
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import com.google.android.flexbox.FlexboxItemDecoration
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentFiltersBinding
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
@@ -152,13 +152,17 @@ abstract class FiltersFragment : DaggerFragment() {
             adapter = filterAdapter
             setHasFixedSize(true)
             itemAnimator = null
-            (layoutManager as GridLayoutManager).spanSizeLookup =
-                FilterChipSpanSizeLookup(filterAdapter)
             addOnScrollListener(object : OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     binding.filtersHeaderShadow.isActivated = recyclerView.canScrollVertically(-1)
                 }
             })
+            addItemDecoration(
+                FlexboxItemDecoration(context).apply {
+                    setDrawable(context.getDrawable(R.drawable.divider_empty_margin_small))
+                    setOrientation(FlexboxItemDecoration.VERTICAL)
+                }
+            )
         }
 
         // Update the peek and margins so that it scrolls and rests within sys ui
@@ -260,17 +264,13 @@ fun selectedFilters(recyclerView: RecyclerView, filters: List<FilterChip>?) {
         filterChipAdapter = FilterChipAdapter()
         recyclerView.apply {
             adapter = filterChipAdapter
-            addItemDecoration(
-                SpaceDecoration(
-                    end = resources.getDimensionPixelSize(R.dimen.spacing_normal)
-                )
-            )
+            val space = resources.getDimensionPixelSize(R.dimen.spacing_micro)
+            addItemDecoration(SpaceDecoration(start = space, end = space))
         }
     } else {
         filterChipAdapter = recyclerView.adapter as FilterChipAdapter
     }
-    filterChipAdapter.filters = filters ?: emptyList()
-    filterChipAdapter.notifyDataSetChanged()
+    filterChipAdapter.submitList(filters ?: emptyList())
 }
 
 @BindingAdapter(value = ["hasFilters", "resultCount"], requireAll = true)

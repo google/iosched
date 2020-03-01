@@ -32,7 +32,7 @@
 
     <com.google.samples.apps.iosched.ui.filters.FilterChipView
         android:id="@+id/filter_label"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="@{filterChip.isSelected}"
         android:minHeight="?listPreferredItemHeightSmall"
