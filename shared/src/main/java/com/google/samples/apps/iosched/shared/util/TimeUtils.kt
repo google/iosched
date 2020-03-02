@@ -146,6 +146,12 @@ object TimeUtils {
         return DateTimeFormatter.ofPattern("HH:mm").format(startTime)
     }
 
+    fun abbreviatedTimeForAnnouncements(startTime: ZonedDateTime): String {
+        val now = ZonedDateTime.now(startTime.zone)
+        val dateFormat = if (startTime.dayOfMonth == now.dayOfMonth) "h:mm a" else "MMM d, h:mm a"
+        return DateTimeFormatter.ofPattern(dateFormat).format(startTime)
+    }
+
     fun conferenceHasStarted(): Boolean {
         return ZonedDateTime.now().isAfter(ConferenceDays.first().start)
     }

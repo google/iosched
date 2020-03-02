@@ -19,13 +19,70 @@ package com.google.samples.apps.iosched.ui.feed
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemFeedAnnouncementBinding
+import com.google.samples.apps.iosched.databinding.ItemFeedAnnouncementsHeaderBinding
 import com.google.samples.apps.iosched.model.Announcement
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.ZoneId
+import org.threeten.bp.ZonedDateTime
+
+/** A data class representing the state of the announcements header card on feed */
+data class AnnouncementsHeader(
+    val showPastNotificationsButton: Boolean
+)
+
+class AnnouncementsHeaderViewBinder(
+    private val lifecycleOwner: LifecycleOwner,
+    private val eventListener: FeedEventListener
+) : FeedItemViewBinder<AnnouncementsHeader, AnnouncementsPreviewViewHolder>(
+    AnnouncementsHeader::class.java
+) {
+
+    override fun createViewHolder(parent: ViewGroup) =
+        AnnouncementsPreviewViewHolder(
+            ItemFeedAnnouncementsHeaderBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            ),
+            lifecycleOwner,
+            eventListener
+        )
+
+    override fun bindViewHolder(
+        model: AnnouncementsHeader,
+        viewHolder: AnnouncementsPreviewViewHolder
+    ) = viewHolder.bind(model)
+
+    override fun getFeedItemType() = R.layout.item_feed_announcements_header
+
+    override fun areItemsTheSame(
+        oldItem: AnnouncementsHeader,
+        newItem: AnnouncementsHeader
+    ) = true
+
+    override fun areContentsTheSame(
+        oldItem: AnnouncementsHeader,
+        newItem: AnnouncementsHeader
+    ) = oldItem == newItem
+}
+
+class AnnouncementsPreviewViewHolder(
+    private val binding: ItemFeedAnnouncementsHeaderBinding,
+    private val lifecycleOwner: LifecycleOwner,
+    private val eventListener: FeedEventListener
+) : ViewHolder(binding.root) {
+
+    fun bind(model: AnnouncementsHeader) {
+        binding.announcementsHeaderState = model
+        binding.lifecycleOwner = lifecycleOwner
+        binding.eventListener = eventListener
+    }
+}
 
 // For Announcement items
 class AnnouncementViewBinder(
@@ -115,4 +172,16 @@ class AnnouncementsEmptyViewBinder : FeedItemViewBinder<AnnouncementsEmpty, Empt
     override fun areItemsTheSame(oldItem: AnnouncementsEmpty, newItem: AnnouncementsEmpty) = true
 
     override fun areContentsTheSame(oldItem: AnnouncementsEmpty, newItem: AnnouncementsEmpty) = true
+}
+
+@BindingAdapter("announcementTime", "timeZoneId")
+fun announcementTime(
+    textView: TextView,
+    announcementTime: ZonedDateTime,
+    timeZoneId: ZoneId?
+) {
+    timeZoneId ?: return
+    // TODO(gauravbhola): Show relative time '2 minutes ago', '1 hour ago' etc
+    textView.text =
+        TimeUtils.abbreviatedTimeForAnnouncements(TimeUtils.zonedTime(announcementTime, timeZoneId))
 }

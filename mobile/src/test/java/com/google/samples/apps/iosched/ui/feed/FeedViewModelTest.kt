@@ -39,7 +39,6 @@ import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeThemedActivityDelegate
 import com.google.samples.apps.iosched.test.util.time.FixedTimeProvider
-import com.google.samples.apps.iosched.ui.SectionHeader
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
@@ -91,7 +90,10 @@ class FeedViewModelTest {
         // Add two more for the Sessions carousel and the "Announcements' heading.
         assertThat(feedObservable?.size, `is`(equalTo(5)))
         assertThat(feedObservable?.get(0) as? Moment, `is`(equalTo(TestData.moment1)))
-        assertThat(feedObservable?.get(1), `is`(instanceOf(SectionHeader::class.java)))
+        assertThat(
+            feedObservable?.get(1) as? AnnouncementsHeader,
+            `is`(equalTo(AnnouncementsHeader(false)))
+        )
         assertThat(feedObservable?.get(2) as? Announcement, `is`(equalTo(TestData.feedItem1)))
         assertThat(feedObservable?.get(3), `is`(instanceOf(FeedSustainabilitySection::class.java)))
         assertThat(feedObservable?.get(4), `is`(instanceOf(FeedSocialChannelsSection::class.java)))

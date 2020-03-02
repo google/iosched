@@ -52,7 +52,6 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
-import com.google.samples.apps.iosched.ui.SectionHeader
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailFragmentDirections
@@ -130,9 +129,9 @@ class FeedViewModel @Inject constructor(
     val navigateToSessionAction: LiveData<Event<String>>
         get() = _navigateToSessionAction
 
-    private val _navigateToMapAction = MutableLiveData<Event<NavDirections>>()
-    val navigateToMapAction: LiveData<Event<NavDirections>>
-        get() = _navigateToMapAction
+    private val _navigateAction = MutableLiveData<Event<NavDirections>>()
+    val navigateAction: LiveData<Event<NavDirections>>
+        get() = _navigateAction
 
     private val _openSignInDialogAction = MutableLiveData<Event<Unit>>()
     val openSignInDialogAction: LiveData<Event<Unit>>
@@ -180,12 +179,17 @@ class FeedViewModel @Inject constructor(
                 }
 
         loadAnnouncementsUseCase(timeProvider.now(), loadAnnouncementsResult)
-        val announcements: LiveData<List<Any>> = loadAnnouncementsResult.map {
+        val announcementsPreviewLiveData: LiveData<List<Any>> = loadAnnouncementsResult.map {
+            val announcementsHeader = AnnouncementsHeader(
+                showPastNotificationsButton = it.successOr(emptyList()).size > 1
+            )
             if (it is Loading) {
-                listOf(LoadingIndicator)
+                listOf(announcementsHeader, LoadingIndicator)
             } else {
-                val items = it.successOr(emptyList())
-                if (items.isNotEmpty()) items else listOf(AnnouncementsEmpty)
+                listOf(
+                    announcementsHeader,
+                    it.successOr(emptyList()).firstOrNull() ?: AnnouncementsEmpty
+                )
             }
         }
 
@@ -208,8 +212,8 @@ class FeedViewModel @Inject constructor(
         // Compose feed
         feed = currentFeedHeader.combine(
             sessionContainerLiveData,
-            announcements
-        ) { feedHeader, sessionContainer, announcementItems ->
+            announcementsPreviewLiveData
+        ) { feedHeader, sessionContainer, announcementsPreview ->
             val feedItems = mutableListOf<Any>()
             if (feedHeader != NoHeader) {
                 feedItems.add(feedHeader)
@@ -217,8 +221,8 @@ class FeedViewModel @Inject constructor(
             if (sessionContainer != NoSessionsContainer) {
                 feedItems.add(sessionContainer)
             }
-            feedItems.plus(SectionHeader(R.string.feed_announcement_title))
-                .plus(announcementItems)
+            feedItems
+                .plus(announcementsPreview)
                 .plus(FeedSustainabilitySection)
                 .plus(FeedSocialChannelsSection)
         }
@@ -301,7 +305,7 @@ class FeedViewModel @Inject constructor(
 
     override fun openMap(moment: Moment) {
         analyticsHelper.logUiEvent(moment.title.toString(), AnalyticsActions.HOME_TO_MAP)
-        _navigateToMapAction.value = Event(
+        _navigateAction.value = Event(
             SessionDetailFragmentDirections.toMap(
                 featureId = moment.featureId,
                 startTime = moment.startTime.toEpochMilli()
@@ -320,7 +324,14 @@ class FeedViewModel @Inject constructor(
             featureId = session?.room?.id,
             startTime = session?.startTime?.toEpochMilli() ?: 0L
         )
-        _navigateToMapAction.value = Event(directions)
+        _navigateAction.value = Event(directions)
+    }
+
+    override fun openPastAnnouncements() {
+        analyticsHelper.logUiEvent("", AnalyticsActions.HOME_TO_ANNOUNCEMENTS)
+        _navigateAction.value = Event(
+            FeedFragmentDirections.toAnnouncementsFragment()
+        )
     }
 }
 
@@ -330,4 +341,5 @@ interface FeedEventListener : EventActions {
     fun openMap(moment: Moment)
     fun openLiveStream(liveStreamUrl: String)
     fun openMapForSession(session: Session)
+    fun openPastAnnouncements()
 }

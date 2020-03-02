@@ -56,6 +56,8 @@ object AnalyticsActions {
     const val HOME_TO_SIGN_IN = "Home to Sign In transition"
     const val HOME_TO_LIVESTREAM = "Home to Live stream transition"
 
+    const val HOME_TO_ANNOUNCEMENTS = "Home to Announcements transition"
+
     // Settings Actions
     const val ENABLE = "Enabled"
     const val DISABLE = "Disabled"
