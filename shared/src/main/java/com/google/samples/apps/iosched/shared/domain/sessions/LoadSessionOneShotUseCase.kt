@@ -29,7 +29,7 @@ open class LoadSessionOneShotUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : CoroutinesUseCase<SessionId, Session>(dispatcher) {
 
-    override fun execute(parameters: SessionId): Session {
+    override suspend fun execute(parameters: SessionId): Session {
         return repository.getSession(parameters)
     }
 }

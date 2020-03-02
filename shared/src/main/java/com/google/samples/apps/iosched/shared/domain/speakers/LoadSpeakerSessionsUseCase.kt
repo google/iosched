@@ -34,7 +34,7 @@ open class LoadSpeakerUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : CoroutinesUseCase<SpeakerId, LoadSpeakerUseCaseResult>(dispatcher) {
 
-    override fun execute(parameters: SpeakerId): LoadSpeakerUseCaseResult {
+    override suspend fun execute(parameters: SpeakerId): LoadSpeakerUseCaseResult {
         val speaker = conferenceDataRepository.getOfflineConferenceData().speakers
             .firstOrNull { it.id == parameters }
             ?: throw SpeakerNotFoundException("No speaker found with id $parameters")

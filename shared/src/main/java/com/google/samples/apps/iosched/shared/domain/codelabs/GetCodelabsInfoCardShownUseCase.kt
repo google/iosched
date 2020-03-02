@@ -27,5 +27,5 @@ open class GetCodelabsInfoCardShownUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : CoroutinesUseCase<Unit, Boolean>(dispatcher) {
 
-    override fun execute(parameters: Unit) = preferenceStorage.codelabsInfoShown
+    override suspend fun execute(parameters: Unit) = preferenceStorage.codelabsInfoShown
 }

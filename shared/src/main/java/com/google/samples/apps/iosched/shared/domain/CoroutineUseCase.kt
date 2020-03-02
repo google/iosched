@@ -53,5 +53,5 @@ abstract class CoroutinesUseCase<in P, R>(private val coroutineDispatcher: Corou
      * Override this to set the code to be executed.
      */
     @Throws(RuntimeException::class)
-    protected abstract fun execute(parameters: P): R
+    protected abstract suspend fun execute(parameters: P): R
 }

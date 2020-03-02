@@ -29,5 +29,5 @@ open class OnboardingCompletedUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : CoroutinesUseCase<Unit, Boolean>(dispatcher) {
-    override fun execute(parameters: Unit): Boolean = preferenceStorage.onboardingCompleted
+    override suspend fun execute(parameters: Unit): Boolean = preferenceStorage.onboardingCompleted
 }
