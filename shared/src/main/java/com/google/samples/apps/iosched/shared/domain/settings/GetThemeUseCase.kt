@@ -30,7 +30,7 @@ class GetThemeUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : CoroutinesUseCase<Unit, Theme>(dispatcher) {
-    override fun execute(parameters: Unit): Theme {
+    override suspend fun execute(parameters: Unit): Theme {
         val selectedTheme = preferenceStorage.selectedTheme
         return themeFromStorageKey(selectedTheme)
             ?: when {

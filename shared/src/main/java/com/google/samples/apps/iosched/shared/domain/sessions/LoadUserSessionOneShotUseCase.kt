@@ -33,7 +33,7 @@ class LoadUserSessionOneShotUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : CoroutinesUseCase<Pair<String, SessionId>, UserSession>(dispatcher) {
 
-    override fun execute(parameters: Pair<String, SessionId>): UserSession {
+    override suspend fun execute(parameters: Pair<String, SessionId>): UserSession {
         val (userId, eventId) = parameters
 
         return userEventRepository.getUserSession(userId, eventId)

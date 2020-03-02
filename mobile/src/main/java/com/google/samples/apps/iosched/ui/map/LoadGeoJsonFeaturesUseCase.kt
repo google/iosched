@@ -41,7 +41,7 @@ class LoadGeoJsonFeaturesUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : CoroutinesUseCase<LoadGeoJsonParams, GeoJsonData>(dispatcher) {
 
-    override fun execute(parameters: LoadGeoJsonParams): GeoJsonData {
+    override suspend fun execute(parameters: LoadGeoJsonParams): GeoJsonData {
         val (googleMap, markersRes) = parameters
         val layer = GeoJsonLayer(googleMap, markersRes, context)
         processGeoJsonLayer(layer, context)

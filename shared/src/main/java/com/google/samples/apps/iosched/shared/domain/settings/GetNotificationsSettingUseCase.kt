@@ -26,5 +26,5 @@ class GetNotificationsSettingUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : CoroutinesUseCase<Unit, Boolean>(dispatcher) {
-    override fun execute(parameters: Unit) = preferenceStorage.preferToReceiveNotifications
+    override suspend fun execute(parameters: Unit) = preferenceStorage.preferToReceiveNotifications
 }

@@ -21,7 +21,7 @@ import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
-import com.google.samples.apps.iosched.shared.domain.SuspendUseCase
+import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
@@ -29,7 +29,7 @@ open class FeedbackUseCase @Inject constructor(
     private val endpoint: FeedbackEndpoint,
     private val repository: SessionAndUserEventRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : SuspendUseCase<FeedbackParameter, Unit>(dispatcher) {
+) : CoroutinesUseCase<FeedbackParameter, Unit>(dispatcher) {
 
     override suspend fun execute(parameters: FeedbackParameter) {
         endpoint.sendFeedback(parameters.sessionId, parameters.responses)

@@ -31,7 +31,7 @@ class SessionSimpleSearchUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : CoroutinesUseCase<String, List<Searchable>>(dispatcher) {
 
-    override fun execute(parameters: String): List<Searchable> {
+    override suspend fun execute(parameters: String): List<Searchable> {
         val query = parameters.toLowerCase()
         return repository.getSessions()
             .filter { session ->

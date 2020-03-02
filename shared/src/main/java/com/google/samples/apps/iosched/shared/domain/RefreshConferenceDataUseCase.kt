@@ -30,7 +30,7 @@ open class RefreshConferenceDataUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : CoroutinesUseCase<Any, Boolean>(dispatcher) {
 
-    override fun execute(parameters: Any): Boolean {
+    override suspend fun execute(parameters: Any): Boolean {
         try {
             repository.refreshCacheWithRemoteConferenceData()
         } catch (e: Exception) {

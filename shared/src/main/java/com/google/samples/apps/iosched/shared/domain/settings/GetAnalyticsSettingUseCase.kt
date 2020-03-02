@@ -26,5 +26,5 @@ class GetAnalyticsSettingUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : CoroutinesUseCase<Unit, Boolean>(dispatcher) {
-    override fun execute(parameters: Unit) = preferenceStorage.sendUsageStatistics
+    override suspend fun execute(parameters: Unit) = preferenceStorage.sendUsageStatistics
 }
