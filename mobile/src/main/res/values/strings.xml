@@ -177,6 +177,7 @@
 
     <string name="feed_social_channels_message" translation_description="The sub-title of the social channels section in feed">See what other people are sharing.</string>
     <string name="feed_social_twitter_link" translatable="false">https://twitter.com/googledevs</string>
+    <string name="feed_social_twitter_hashtag_link" translatable="false">https://twitter.com/hashtag/googleio</string>
     <string name="feed_social_instagram_link" translatable="false">https://www.instagram.com/googledevs</string>
     <string name="feed_social_google_devs_link" translatable="false">https://developers.googleblog.com/</string>
     <string name="feed_social_facebook_link" translatable="false">https://www.facebook.com/Google-Developers-967415219957038/</string>
