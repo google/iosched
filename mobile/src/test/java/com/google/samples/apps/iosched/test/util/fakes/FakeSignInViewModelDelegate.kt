@@ -47,11 +47,11 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
 
     override fun isRegistered(): Boolean = injectIsRegistered
 
-    override fun emitSignInRequest() {
+    override suspend fun emitSignInRequest() {
         signInRequestsEmitted++
     }
 
-    override fun emitSignOutRequest() {
+    override suspend fun emitSignOutRequest() {
         signOutRequestsEmitted++
     }
 
@@ -67,6 +67,6 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
             on { this@on.isRegistered() }.doReturn(injectIsRegistered)
             on { isRegistrationDataReady() }.doReturn(true)
         }
-        currentUserInfo.postValue(mockUser)
+        currentUserInfo.value = mockUser
     }
 }

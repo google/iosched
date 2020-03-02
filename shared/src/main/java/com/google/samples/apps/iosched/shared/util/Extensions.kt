@@ -32,6 +32,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.samples.apps.iosched.shared.BuildConfig
+import kotlinx.coroutines.Job
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
 
@@ -145,6 +146,19 @@ fun ZonedDateTime.toEpochMilli() = this.toInstant().toEpochMilli()
  */
 val <T> T.checkAllMatched: T
     get() = this
+
+// region Coroutines
+
+/**
+ * Cancel the Job if it's active.
+ */
+fun Job?.cancelIfActive() {
+    if (this?.isActive == true) {
+        cancel()
+    }
+}
+
+// endregion
 
 // region UI utils
 
