@@ -48,7 +48,8 @@
             app:layout_constrainedHeight="true"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:websiteLink="@{@string/feed_social_twitter_hashtag_link}" />
 
         <TextView
             android:id="@+id/message"
