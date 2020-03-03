@@ -27,7 +27,7 @@ class GetAvailableThemesUseCase @Inject constructor(
     @MainImmediateDispatcher dispatcher: CoroutineDispatcher
 ) : CoroutinesUseCase<Unit, List<Theme>>(dispatcher) {
 
-    override fun execute(parameters: Unit): List<Theme> = when {
+    override suspend fun execute(parameters: Unit): List<Theme> = when {
         BuildCompat.isAtLeastQ() -> {
             listOf(Theme.LIGHT, Theme.DARK, Theme.SYSTEM)
         }

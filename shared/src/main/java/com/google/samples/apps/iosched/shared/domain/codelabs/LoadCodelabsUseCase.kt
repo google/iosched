@@ -28,7 +28,7 @@ class LoadCodelabsUseCase @Inject constructor(
     @IoDispatcher ioDispatcher: CoroutineDispatcher
 ) : CoroutinesUseCase<Unit, List<Codelab>>(ioDispatcher) {
 
-    override fun execute(parameters: Unit): List<Codelab> {
+    override suspend fun execute(parameters: Unit): List<Codelab> {
         return repository.getCodelabs()
             .sortedWith(compareByDescending<Codelab> { it.sortPriority }.thenBy { it.title })
     }

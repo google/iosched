@@ -26,7 +26,7 @@ open class OptIntoMyLocationUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : CoroutinesUseCase<Boolean, Boolean>(dispatcher) {
-    override fun execute(parameters: Boolean): Boolean {
+    override suspend fun execute(parameters: Boolean): Boolean {
         preferenceStorage.myLocationOptedIn = parameters
         return parameters
     }

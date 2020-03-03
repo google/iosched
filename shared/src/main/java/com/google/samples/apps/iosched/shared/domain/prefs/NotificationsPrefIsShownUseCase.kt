@@ -29,5 +29,6 @@ open class NotificationsPrefIsShownUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : CoroutinesUseCase<Unit, Boolean>(dispatcher) {
-    override fun execute(parameters: Unit): Boolean = preferenceStorage.notificationsPreferenceShown
+    override suspend fun execute(parameters: Unit): Boolean =
+        preferenceStorage.notificationsPreferenceShown
 }

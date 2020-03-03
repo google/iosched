@@ -27,7 +27,7 @@ open class SetThemeUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : CoroutinesUseCase<Theme, Unit>(dispatcher) {
-    override fun execute(parameters: Theme) {
+    override suspend fun execute(parameters: Theme) {
         preferenceStorage.selectedTheme = parameters.storageKey
     }
 }

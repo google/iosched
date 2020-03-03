@@ -27,5 +27,5 @@ open class MyLocationOptedInUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : CoroutinesUseCase<Unit, Boolean>(dispatcher) {
 
-    override fun execute(parameters: Unit) = preferenceStorage.myLocationOptedIn
+    override suspend fun execute(parameters: Unit) = preferenceStorage.myLocationOptedIn
 }

@@ -30,7 +30,7 @@ open class LoadWifiInfoUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : CoroutinesUseCase<Unit, ConferenceWifiInfo>(dispatcher) {
 
-    override fun execute(parameters: Unit): ConferenceWifiInfo {
+    override suspend fun execute(parameters: Unit): ConferenceWifiInfo {
         return appConfigDataSource.getWifiInfo()
     }
 }
