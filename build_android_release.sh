@@ -42,13 +42,13 @@ cp $MOBILE_OUT/mapping/release/mapping.txt $DIST_DIR/mobile-release-apk-mapping.
 $DIR/gradlew bundle ${GRADLE_PARAMS}
 
 # Debug
-cp $MOBILE_OUT/bundle/debug/mobile.aab $DIST_DIR/mobile-debug.aab
+cp $MOBILE_OUT/bundle/debug/mobile-debug.aab $DIST_DIR/mobile-debug.aab
 
 # Staging
-cp $MOBILE_OUT/bundle/staging/mobile.aab $DIST_DIR/mobile-staging.aab
+cp $MOBILE_OUT/bundle/staging/mobile-staging.aab $DIST_DIR/mobile-staging.aab
 
 # Release
-cp $MOBILE_OUT/bundle/release/mobile.aab $DIST_DIR/mobile-release.aab
+cp $MOBILE_OUT/bundle/release/mobile-release.aab $DIST_DIR/mobile-release.aab
 cp $MOBILE_OUT/mapping/release/mapping.txt $DIST_DIR/mobile-release-aab-mapping.txt
 BUILD_RESULT=$?
 
