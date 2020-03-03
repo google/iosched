@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.appupdate
+package com.google.samples.apps.iosched.di
 
 import android.content.Context
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.samples.apps.iosched.ui.appupdate.AppUpdateViewModelDelegate
+import com.google.samples.apps.iosched.ui.appupdate.AppUpdateViewModelImpl
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -34,8 +36,9 @@ class AppUpdateModule {
 
     @Singleton
     @Provides
-    fun provideAppUpdateViewModelDelegate(appUpdateManager: AppUpdateManager):
-        AppUpdateViewModelDelegate {
+    fun provideAppUpdateViewModelDelegate(
+        appUpdateManager: AppUpdateManager
+    ): AppUpdateViewModelDelegate {
         return AppUpdateViewModelImpl(appUpdateManager)
     }
 }
