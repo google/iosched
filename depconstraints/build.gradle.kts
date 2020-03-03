@@ -59,6 +59,7 @@ val mockitoKotlin = "1.5.0"
 val okhttp = "3.10.0"
 val okio = "1.14.0"
 val pageIndicator = "1.3.0"
+val playCore = "1.6.5"
 val room = "2.1.0"
 val rules = "1.1.1"
 val runner = "1.2.0"
@@ -121,6 +122,7 @@ dependencies {
         api("${Libs.OKHTTP_LOGGING_INTERCEPTOR}:$okhttp")
         api("${Libs.OKIO}:$okio")
         api("${Libs.INK_PAGE_INDICATOR}:$pageIndicator")
+        api("${Libs.PLAYCORE_KTX}:$playCore")
         api("${Libs.RULES}:$rules")
         api("${Libs.RUNNER}:$runner")
         api("${Libs.THREETENABP}:$threetenabp")
