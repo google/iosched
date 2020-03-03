@@ -22,7 +22,6 @@ import com.google.samples.apps.iosched.shared.di.FeatureFlagsModule
 import com.google.samples.apps.iosched.shared.di.ServiceBindingModule
 import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.shared.di.ViewModelModule
-import com.google.samples.apps.iosched.ui.appupdate.AppUpdateModule
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegateModule
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegateModule
 import dagger.BindsInstance
