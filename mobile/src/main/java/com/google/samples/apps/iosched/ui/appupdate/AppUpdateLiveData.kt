@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.ui.appupdate
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.ktx.AppUpdateResult
@@ -34,4 +35,9 @@ class AppUpdateViewModelImpl @Inject constructor(
 
     override val appUpdateResult: LiveData<AppUpdateResult> =
         appUpdateManager.requestUpdateFlow().asLiveData()
+}
+
+object FakeAppUpdateViewModelImpl : AppUpdateViewModelDelegate {
+    override val appUpdateResult: LiveData<AppUpdateResult> =
+        MutableLiveData(AppUpdateResult.NotAvailable)
 }
