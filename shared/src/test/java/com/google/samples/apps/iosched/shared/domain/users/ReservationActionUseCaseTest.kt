@@ -17,9 +17,6 @@
 package com.google.samples.apps.iosched.shared.domain.users
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
@@ -33,7 +30,9 @@ import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAct
 import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doNothing
 import com.nhaarman.mockito_kotlin.mock
@@ -57,13 +56,19 @@ class ReservationActionUseCaseTest {
     @get:Rule
     var syncExecutorRule = SyncExecutorRule()
 
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
+
     @Test
-    fun sessionIsRequestedSuccessfully() {
-        val useCase = ReservationActionUseCase(TestUserEventRepository, createFakeUpdater())
+    fun sessionIsRequestedSuccessfully() = coroutineRule.runBlockingTest {
+        val useCase = ReservationActionUseCase(
+            TestUserEventRepository,
+            createFakeUpdater(),
+            coroutineRule.testDispatcher
+        )
 
-        val resultLiveData = useCase.observe()
-
-        useCase.execute(
+        val result = useCase(
             ReservationRequestParameters(
                 "userTest",
                 TestData.session0.id,
@@ -71,18 +76,17 @@ class ReservationActionUseCaseTest {
                 null
             )
         )
-
-        val result = LiveDataTestUtil.getValue(resultLiveData)
         Assert.assertEquals(result, Result.Success(RequestAction()))
     }
 
     @Test
-    fun sessionIsCanceledSuccessfully() {
-        val useCase = ReservationActionUseCase(TestUserEventRepository, createFakeUpdater())
+    fun sessionIsCanceledSuccessfully() = coroutineRule.runBlockingTest {
+        val useCase = ReservationActionUseCase(
+            TestUserEventRepository,
+            createFakeUpdater(),
+            coroutineRule.testDispatcher)
 
-        val resultLiveData = useCase.observe()
-
-        useCase.execute(
+        val result = useCase(
             ReservationRequestParameters(
                 "userTest", TestData.session0.id,
                 CancelAction(),
@@ -90,25 +94,23 @@ class ReservationActionUseCaseTest {
             )
         )
 
-        val result = LiveDataTestUtil.getValue(resultLiveData)
         Assert.assertEquals(result, Result.Success(CancelAction()))
     }
 
     @Test
-    fun requestFails() {
-        val useCase = ReservationActionUseCase(FailingUserEventRepository, createFakeUpdater())
+    fun requestFails() = coroutineRule.runBlockingTest {
+        val useCase = ReservationActionUseCase(
+            FailingUserEventRepository,
+            createFakeUpdater(),
+            coroutineRule.testDispatcher)
 
-        val resultLiveData = useCase.observe()
-
-        useCase.execute(
+        val result = useCase(
             ReservationRequestParameters(
                 "userTest", TestData.session0.id,
                 CancelAction(),
                 null
             )
         )
-
-        val result = LiveDataTestUtil.getValue(resultLiveData)
         assertTrue(result is Result.Error)
     }
 }
@@ -138,29 +140,24 @@ object TestUserEventRepository : SessionAndUserEventRepository {
         TODO("not implemented")
     }
 
-    override fun changeReservation(
+    override suspend fun changeReservation(
         userId: String,
         sessionId: SessionId,
         action: ReservationRequestAction
-    ): LiveData<Result<ReservationRequestAction>> {
-        val result = MutableLiveData<Result<ReservationRequestAction>>()
-        result.postValue(
-            Result.Success(
-                if (action is RequestAction) RequestAction() else CancelAction()
-            )
+    ): Result<ReservationRequestAction> =
+        Result.Success(
+            if (action is RequestAction) RequestAction() else CancelAction()
         )
-        return result
-    }
 
     override fun getUserEvents(userId: String?): List<UserEvent> {
         TODO("not implemented")
     }
 
-    override fun swapReservation(
+    override suspend fun swapReservation(
         userId: String,
         fromId: SessionId,
         toId: SessionId
-    ): LiveData<Result<SwapRequestAction>> {
+    ): Result<SwapRequestAction> {
         TODO("not implemented")
     }
 
@@ -198,11 +195,11 @@ object FailingUserEventRepository : SessionAndUserEventRepository {
         TODO("not implemented")
     }
 
-    override fun changeReservation(
+    override suspend fun changeReservation(
         userId: String,
         sessionId: SessionId,
         action: ReservationRequestAction
-    ): LiveData<Result<ReservationRequestAction>> {
+    ): Result<ReservationRequestAction> {
         throw Exception("Test")
     }
 
@@ -210,11 +207,11 @@ object FailingUserEventRepository : SessionAndUserEventRepository {
         TODO("not implemented")
     }
 
-    override fun swapReservation(
+    override suspend fun swapReservation(
         userId: String,
         fromId: SessionId,
         toId: SessionId
-    ): LiveData<Result<SwapRequestAction>> {
+    ): Result<SwapRequestAction> {
         TODO("not implemented")
     }
 

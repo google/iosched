@@ -18,34 +18,29 @@ package com.google.samples.apps.iosched.shared.domain.users
 
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
-import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
+import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
+import com.google.samples.apps.iosched.shared.result.Result.Error
+import com.google.samples.apps.iosched.shared.result.Result.Loading
+import com.google.samples.apps.iosched.shared.result.Result.Success
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
-import timber.log.Timber
 
 /**
  * Sends a request to replace reservations.
  */
 open class SwapActionUseCase @Inject constructor(
-    private val repository: SessionAndUserEventRepository
-) : MediatorUseCase<SwapRequestParameters, SwapRequestAction>() {
+    private val repository: SessionAndUserEventRepository,
+    @IoDispatcher ioDispatcher: CoroutineDispatcher
+) : CoroutinesUseCase<SwapRequestParameters, SwapRequestAction>(ioDispatcher) {
 
-    override fun execute(parameters: SwapRequestParameters) {
-
-        DefaultScheduler.execute {
-            try {
-                val (userId, sessionId, _, toId) = parameters
-                val updateResult = repository.swapReservation(userId, sessionId, toId)
-
-                result.removeSource(updateResult)
-                result.addSource(updateResult) {
-                    result.postValue(updateResult.value)
-                }
-            } catch (e: Exception) {
-                Timber.d("Exception in Swapping reservations")
-                result.postValue(Result.Error(e))
-            }
+    override suspend fun execute(parameters: SwapRequestParameters): SwapRequestAction {
+        val (userId, sessionId, _, toId) = parameters
+        return when (val updateResult =
+            repository.swapReservation(userId, sessionId, toId)) {
+            is Success -> updateResult.data
+            is Error -> throw updateResult.exception
+            Loading -> throw IllegalStateException()
         }
     }
 }

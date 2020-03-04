@@ -34,6 +34,7 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUse
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.SwapAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
@@ -42,6 +43,8 @@ import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.Result.Error
+import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.time.TimeProvider
@@ -58,8 +61,6 @@ import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.combine
-import java.util.UUID
-import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -69,6 +70,8 @@ import org.threeten.bp.Duration
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
+import java.util.UUID
+import javax.inject.Inject
 
 private const val TEN_SECONDS = 10_000L
 private const val SIXTY_SECONDS = 60_000L
@@ -82,7 +85,6 @@ class SessionDetailViewModel @Inject constructor(
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val loadRelatedSessionUseCase: LoadUserSessionsUseCase,
     private val starEventUseCase: StarEventAndNotifyUseCase,
-    // TODO: Migrate reservation to coroutines
     private val reservationActionUseCase: ReservationActionUseCase,
     getTimeZoneUseCase: GetTimeZoneUseCaseLegacy, // TODO(COROUTINES): Migrate
     private val snackbarMessageManager: SnackbarMessageManager,
@@ -101,6 +103,8 @@ class SessionDetailViewModel @Inject constructor(
     private val _relatedUserSessions = MediatorLiveData<List<UserSession>>()
     val relatedUserSessions: LiveData<List<UserSession>>
         get() = _relatedUserSessions
+
+    private val reservationActionResult = MutableLiveData<ReservationRequestAction>()
 
     private val sessionTimeRelativeState: LiveData<TimeUtils.SessionRelativeTimeState>
 
@@ -188,7 +192,7 @@ class SessionDetailViewModel @Inject constructor(
         }
 
         val showInConferenceTimeZone = preferConferenceTimeZoneResult.map {
-            (it as? Result.Success<Boolean>)?.data ?: true
+            it.successOr(true)
         }
 
         timeZoneId = showInConferenceTimeZone.map { inConferenceTimeZone ->
@@ -234,24 +238,8 @@ class SessionDetailViewModel @Inject constructor(
                 }
             }
 
-        /* Wiring dependencies for stars and reservation. */
-
-        // Show an error message if a reservation request fails
-        _snackBarMessage.addSource(reservationActionUseCase.observe()) {
-            if (it is Result.Error) {
-                _snackBarMessage.postValue(
-                    Event(
-                        SnackbarMessage(
-                            messageId = R.string.reservation_error,
-                            longDuration = true
-                        )
-                    )
-                )
-            }
-        }
-
-        _navigateToSwapReservationDialogAction.addSource(reservationActionUseCase.observe()) {
-            (it?.successOr(null) as? SwapAction)?.let { swap ->
+        _navigateToSwapReservationDialogAction.addSource(reservationActionResult) {
+            (it as? SwapAction)?.let { swap ->
                 _navigateToSwapReservationDialogAction.postValue(Event(swap.parameters))
             }
         }
@@ -400,12 +388,27 @@ class SessionDetailViewModel @Inject constructor(
             analyticsHelper.logUiEvent(sessionSnapshot.title, AnalyticsActions.RESERVE_FAILED)
         } else {
             val userSession = UserSession(sessionSnapshot, userEventSnapshot)
-            reservationActionUseCase.execute(ReservationRequestParameters(
-                userId,
-                sessionSnapshot.id,
-                RequestAction(),
-                userSession
-            ))
+
+            viewModelScope.launch {
+                val result = reservationActionUseCase(ReservationRequestParameters(
+                    userId,
+                    sessionSnapshot.id,
+                    RequestAction(),
+                    userSession
+                ))
+                when (result) {
+                    is Success -> reservationActionResult.value = result.data
+                    is Error -> {
+                        _snackBarMessage.value =
+                            Event(
+                                SnackbarMessage(
+                                    messageId = R.string.reservation_error,
+                                    longDuration = true
+                                )
+                            )
+                    }
+                }
+            }
             analyticsHelper.logUiEvent(sessionSnapshot.title, AnalyticsActions.RESERVE)
         }
     }
@@ -455,7 +458,7 @@ class SessionDetailViewModel @Inject constructor(
                     )
                 )
                 // Show an error message if a star request fails
-                if (result is Result.Error) {
+                if (result is Error) {
                     _snackBarMessage.value = Event(SnackbarMessage(R.string.event_star_error))
                 }
             }

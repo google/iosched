@@ -22,10 +22,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.util.makeBold
 import dagger.android.support.DaggerAppCompatDialogFragment
@@ -87,6 +89,15 @@ class RemoveReservationDialogFragment : DaggerAppCompatDialogFragment() {
             viewModel.setSessionId(sessionId)
         }
         return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.snackBarMessage.observe(viewLifecycleOwner, EventObserver {
+            // Using Toast instead of Snackbar as it's easier for DialogFragment
+            Toast.makeText(view.context, it.messageId,
+                if (it.longDuration) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
+        })
     }
 
     private fun formatRemoveReservationMessage(
