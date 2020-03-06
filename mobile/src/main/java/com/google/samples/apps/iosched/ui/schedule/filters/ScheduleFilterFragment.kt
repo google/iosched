@@ -39,9 +39,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleFilterBinding
-import com.google.samples.apps.iosched.shared.util.parentViewModelProvider
-import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
-import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter.MyEventsFilter
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.lerp
 import com.google.samples.apps.iosched.util.slideOffsetToAlpha
@@ -81,7 +78,7 @@ class ScheduleFilterFragment : DaggerFragment() {
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var viewModel: ScheduleViewModel
+    private lateinit var viewModel: FiltersViewModelDelegate
 
     private lateinit var filterAdapter: ScheduleFilterAdapter
 
@@ -118,7 +115,8 @@ class ScheduleFilterFragment : DaggerFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         // ViewModel is scoped to the parent fragment.
-        viewModel = parentViewModelProvider(viewModelFactory)
+        // TODO(jdkoren) resolve FiltersViewModelDelegate
+        // viewModel = parentViewModelProvider(viewModelFactory)
         binding.viewModel = viewModel
 
         behavior = BottomSheetBehavior.from(binding.filterSheet)
@@ -237,16 +235,13 @@ fun filterHeader(textView: TextView, hasFilters: Boolean?, eventCount: Int?) {
 fun setClickListenerForFilter(
     filter: EventFilterView,
     eventFilter: EventFilter,
-    viewModel: ScheduleViewModel
+    viewModel: FiltersViewModelDelegate
 ) {
     filter.setOnClickListener {
-        if (eventFilter is MyEventsFilter && !viewModel.isSignedIn()) {
-            viewModel.onSignInRequired()
-        } else {
-            val checked = !filter.isChecked
-            filter.animateCheckedAndInvoke(checked) {
-                viewModel.toggleFilter(eventFilter, checked)
-            }
+        // TODO(jdkoren) restore sign in check if we need it later
+        val checked = !filter.isChecked
+        filter.animateCheckedAndInvoke(checked) {
+            viewModel.toggleFilter(eventFilter, checked)
         }
     }
 }
