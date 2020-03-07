@@ -36,7 +36,6 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
-import com.google.android.play.core.ktx.AppUpdateResult
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.ar.ArActivity
 import com.google.samples.apps.iosched.databinding.NavigationHeaderBinding
@@ -262,15 +261,16 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
             Timber.d("Signed in user can demo ar = $it")
             canSignedInUserDemoAr = it
         })
-        viewModel.appUpdateAvailability.observe(this, Observer {
-            when (it) {
-                is AppUpdateResult.Available -> TODO()
-                is AppUpdateResult.InProgress -> Unit // do nothing
-                is AppUpdateResult.Downloaded -> TODO()
-                AppUpdateResult.NotAvailable ->
-                    Timber.d("No App Update available at this time.")
-            }
-        })
+        // TODO(b/150719453)
+//        viewModel.appUpdateAvailability.observe(this, Observer {
+//            when (it) {
+//                is AppUpdateResult.Available -> TODO()
+//                is AppUpdateResult.InProgress -> Unit // do nothing
+//                is AppUpdateResult.Downloaded -> TODO()
+//                AppUpdateResult.NotAvailable ->
+//                    Timber.d("No App Update available at this time.")
+//            }
+//        })
     }
 
     override fun registerToolbarWithNavigation(toolbar: Toolbar) {
