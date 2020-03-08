@@ -74,8 +74,6 @@
     <dimen name="day_header_decor_width">300dp</dimen>
     <dimen name="day_header_decor_height">72dp</dimen>
 
-    <item name="tag_letter_spacing" type="dimen" format="float">-0.06</item>
-
     <!-- Agenda -->
     <dimen name="agenda_item_stroke_width">2dp</dimen>
     <dimen name="agenda_block_padding_vertical">12dp</dimen>

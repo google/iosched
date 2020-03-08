@@ -210,19 +210,6 @@
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
-    <style name="Widget.IOSched.FilterChipView">
-        <item name="android:letterSpacing">@dimen/tag_letter_spacing</item>
-        <item name="android:padding">@dimen/spacing_normal</item>
-        <item name="android:strokeColor">?colorControlLight</item>
-        <item name="android:textColor">?android:textColorPrimary</item>
-        <item name="android:textSize">14sp</item>
-        <item name="outlineWidth">1dp</item>
-        <item name="clearIcon">@drawable/tag_clear</item>
-        <item name="foreground">?selectableItemBackground</item>
-        <item name="showIcons">true</item>
-        <item name="cornerRadius">8dp</item>
-    </style>
-
     <style name="Widget.IOSched.TimeHeaders">
         <item name="android:width">@dimen/session_keyline</item>
         <item name="android:fontFamily">@font/google_sans</item>
