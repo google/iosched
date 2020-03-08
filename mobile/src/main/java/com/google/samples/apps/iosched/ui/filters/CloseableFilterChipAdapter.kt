@@ -21,35 +21,45 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.google.samples.apps.iosched.databinding.ItemFilterChipBinding
+import com.google.samples.apps.iosched.databinding.ItemFilterChipCloseableBinding
+import com.google.samples.apps.iosched.ui.filters.CloseableFilterChipAdapter.FilterChipViewHolder
 import com.google.samples.apps.iosched.util.executeAfter
 
 // TODO(jdkoren): Maybe combine this with SelectableFilterChipAdapter
-class FilterChipAdapter : ListAdapter<FilterChip, FilterChipViewHolder>(FilterChipDiff2) {
+/** Adapter for closeable filters, e.g. those shown above search results. */
+class CloseableFilterChipAdapter(
+    private val viewModelDelegate: FiltersViewModelDelegate
+) : ListAdapter<FilterChip, FilterChipViewHolder>(FilterChipDiff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilterChipViewHolder {
         return FilterChipViewHolder(
-            ItemFilterChipBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemFilterChipCloseableBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            ).apply {
+                viewModel = viewModelDelegate
+            }
         )
     }
 
     override fun onBindViewHolder(holder: FilterChipViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
-}
 
-class FilterChipViewHolder(private val binding: ItemFilterChipBinding) : ViewHolder(binding.root) {
-    fun bind(item: FilterChip) {
-        binding.executeAfter {
-            filterChip = item
+    class FilterChipViewHolder(
+        private val binding: ItemFilterChipCloseableBinding
+    ) : ViewHolder(binding.root) {
+        fun bind(item: FilterChip) {
+            binding.executeAfter {
+                filterChip = item
+            }
         }
     }
 }
 
-private object FilterChipDiff2 : DiffUtil.ItemCallback<FilterChip>() {
+private object FilterChipDiff : DiffUtil.ItemCallback<FilterChip>() {
     override fun areItemsTheSame(oldItem: FilterChip, newItem: FilterChip) =
         oldItem.filter == newItem.filter
 
-    override fun areContentsTheSame(oldItem: FilterChip, newItem: FilterChip): Boolean =
+    override fun areContentsTheSame(oldItem: FilterChip, newItem: FilterChip) =
         oldItem.isSelected == newItem.isSelected
 }

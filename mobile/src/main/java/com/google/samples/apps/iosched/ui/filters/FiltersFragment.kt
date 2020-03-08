@@ -19,20 +19,14 @@ package com.google.samples.apps.iosched.ui.filters
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
-import android.widget.Button
-import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.doOnLayout
-import androidx.core.view.forEach
 import androidx.core.view.marginBottom
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePaddingRelative
-import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableFloat
-import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -41,14 +35,12 @@ import com.google.android.flexbox.FlexboxItemDecoration
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentFiltersBinding
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
-import com.google.samples.apps.iosched.util.lerp
 import com.google.samples.apps.iosched.util.slideOffsetToAlpha
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_COLLAPSED
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_EXPANDED
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_HIDDEN
-import com.google.samples.apps.iosched.widget.SpaceDecoration
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -58,23 +50,14 @@ import javax.inject.Inject
 abstract class FiltersFragment : DaggerFragment() {
 
     companion object {
-        // Threshold for when normal header views and description views should "change places".
+        // Threshold for when the filter sheet content should become invisible.
         // This should be a value between 0 and 1, coinciding with a point between the bottom
         // sheet's collapsed (0) and expanded (1) states.
-        private const val ALPHA_CHANGEOVER = 0.33f
-        // Threshold for when description views reach maximum alpha. Should be a value between
-        // 0 and [ALPHA_CHANGEOVER], inclusive.
-        private const val ALPHA_DESC_MAX = 0f
-        // Threshold for when normal header views reach maximum alpha. Should be a value between
-        // [ALPHA_CHANGEOVER] and 1, inclusive.
-        private const val ALPHA_HEADER_MAX = 0.67f
-        // Threshold for when the filter list content reach maximum alpha. Should be a value between
-        // 0 and [ALPHA_CHANGEOVER], inclusive.
-        private const val ALPHA_CONTENT_END_ALPHA = 1f
-        // Threshold for when the filter list content should starting changing alpha state
+        private const val ALPHA_CONTENT_START = 0.1f
+        // Threshold for when the filter sheet content should become visible.
         // This should be a value between 0 and 1, coinciding with a point between the bottom
         // sheet's collapsed (0) and expanded (1) states.
-        private const val ALPHA_CONTENT_START_ALPHA = 0.2f
+        private const val ALPHA_CONTENT_END = 0.3f
     }
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -87,11 +70,7 @@ abstract class FiltersFragment : DaggerFragment() {
 
     private lateinit var behavior: BottomSheetBehavior<*>
 
-    private var headerAlpha = ObservableFloat(1f)
-    private var descriptionAlpha = ObservableFloat(1f)
-    private var recyclerviewAlpha = ObservableFloat(1f)
-
-    private val contentFadeInterpolator = LinearOutSlowInInterpolator()
+    private var contentAlpha = ObservableFloat(1f)
 
     private val backPressedCallback = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
@@ -120,9 +99,7 @@ abstract class FiltersFragment : DaggerFragment() {
     ): View? {
         binding = FragmentFiltersBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
-            headerAlpha = this@FiltersFragment.headerAlpha
-            descriptionAlpha = this@FiltersFragment.descriptionAlpha
-            recyclerviewAlpha = this@FiltersFragment.recyclerviewAlpha
+            contentAlpha = this@FiltersFragment.contentAlpha
         }
 
         // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
@@ -192,10 +169,6 @@ abstract class FiltersFragment : DaggerFragment() {
             behavior.state = if (behavior.skipCollapsed) STATE_HIDDEN else STATE_COLLAPSED
         }
 
-        binding.expand.setOnClickListener {
-            behavior.state = STATE_EXPANDED
-        }
-
         binding.filterSheet.doOnLayout {
             val slideOffset = when (behavior.state) {
                 STATE_EXPANDED -> 1f
@@ -213,26 +186,9 @@ abstract class FiltersFragment : DaggerFragment() {
     }
 
     private fun updateFilterContentsAlpha(slideOffset: Float) {
-        if (viewModel.hasAnyFilters.value == true) {
-            // If we have filter set, we will crossfade the header and description views.
-            // Alpha of normal header views increases as the sheet expands, while alpha of
-            // description views increases as the sheet collapses. To prevent overlap, we use
-            // a threshold at which the views "trade places".
-            headerAlpha.set(slideOffsetToAlpha(slideOffset, ALPHA_CHANGEOVER, ALPHA_HEADER_MAX))
-            descriptionAlpha.set(slideOffsetToAlpha(slideOffset, ALPHA_CHANGEOVER, ALPHA_DESC_MAX))
-        } else {
-            // Otherwise we just show the header view
-            headerAlpha.set(1f)
-            descriptionAlpha.set(0f)
-        }
-        // Due to the content view being visible below the navigation bar, we apply a short alpha
-        // transition
-        recyclerviewAlpha.set(
-            lerp(
-                ALPHA_CONTENT_START_ALPHA,
-                ALPHA_CONTENT_END_ALPHA,
-                contentFadeInterpolator.getInterpolation(slideOffset)
-            )
+        // Since the content is visible behind the navigation bar, apply a short alpha transition.
+        contentAlpha.set(
+            slideOffsetToAlpha(slideOffset, ALPHA_CONTENT_START, ALPHA_CONTENT_END)
         )
     }
 
@@ -255,77 +211,4 @@ abstract class FiltersFragment : DaggerFragment() {
             pendingSheetState = STATE_HIDDEN
         }
     }
-}
-
-@BindingAdapter("selectedFilters")
-fun selectedFilters(recyclerView: RecyclerView, filters: List<FilterChip>?) {
-    val filterChipAdapter: FilterChipAdapter
-    if (recyclerView.adapter == null) {
-        filterChipAdapter = FilterChipAdapter()
-        recyclerView.apply {
-            adapter = filterChipAdapter
-            val space = resources.getDimensionPixelSize(R.dimen.spacing_micro)
-            addItemDecoration(SpaceDecoration(start = space, end = space))
-        }
-    } else {
-        filterChipAdapter = recyclerView.adapter as FilterChipAdapter
-    }
-    filterChipAdapter.submitList(filters ?: emptyList())
-}
-
-@BindingAdapter(value = ["showResultCount", "resultCount"], requireAll = true)
-fun filterHeader(textView: TextView, showResultCount: Boolean?, resultCount: Int?) {
-    if (showResultCount == true && resultCount != null) {
-        textView.text = textView.resources.getString(R.string.result_count, resultCount)
-    } else {
-        textView.setText(R.string.filters)
-    }
-}
-
-/**
- * Sets up the `onClickListener` for the filter reset button, so that it calls the given
- * [listener] with the side effect of animating deselecting any filters.
- */
-@BindingAdapter(value = ["filterChips", "animatedOnClick"], requireAll = false)
-fun setResetFiltersClickListener(
-    reset: Button,
-    filterChips: ViewGroup,
-    listener: OnClickListener
-) {
-    reset.setOnClickListener {
-        filterChips.forEach { child ->
-            child.findViewById<FilterChipView>(R.id.filter_label)?.let { filterView ->
-                if (filterView.isChecked) {
-                    filterView.animateCheckedAndInvoke(false) {
-                        listener.onClick(reset)
-                    }
-                }
-            }
-        }
-    }
-}
-
-@BindingAdapter("filterChipOnClick", "viewModel", requireAll = true)
-fun setClickListenerForFilterChip(
-    view: FilterChipView,
-    filterChip: FilterChip,
-    viewModel: FiltersViewModelDelegate
-) {
-    view.setOnClickListener {
-        // TODO(jdkoren) restore sign in check if we need it later
-        val checked = !view.isChecked
-        view.animateCheckedAndInvoke(checked) {
-            viewModel.toggleFilter(filterChip.filter, checked)
-        }
-    }
-}
-
-@BindingAdapter("filterChipText")
-fun filterChipText(view: FilterChipView, filter: FilterChip) {
-    val text = if (filter.textResId != 0) {
-        view.resources.getText(filter.textResId)
-    } else {
-        filter.text
-    }
-    view.text = text
 }

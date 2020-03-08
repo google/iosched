@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2020 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,9 +15,13 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <dimen name="tag_dot_size">8dp</dimen>
-    <dimen name="tag_hz_padding">12dp</dimen>
-    <dimen name="tag_vert_padding">6dp</dimen>
-    <dimen name="tag_corner_radius">100dp</dimen> <!-- Large value ensures the 'pill' shape -->
-</resources>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24.0"
+    android:viewportHeight="24.0">
+    <path
+        android:pathData="M6,6L18,18M18,6L6,18Z"
+        android:strokeColor="#000"
+        android:strokeWidth="2" />
+</vector>

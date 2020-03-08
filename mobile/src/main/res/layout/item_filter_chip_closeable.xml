@@ -15,8 +15,7 @@
   ~ limitations under the License.
   -->
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -25,17 +24,23 @@
         <variable
             name="filterChip"
             type="com.google.samples.apps.iosched.ui.filters.FilterChip" />
+
+        <variable
+            name="viewModel"
+            type="com.google.samples.apps.iosched.ui.filters.FiltersViewModelDelegate" />
     </data>
 
-    <com.google.samples.apps.iosched.ui.filters.FilterChipView
+    <com.google.android.material.chip.Chip
         android:id="@+id/filter_label"
+        style="@style/Widget.IOSched.FilterChip.Closeable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="true"
-        app:color="@{filterChip.color}"
+        app:filterChipOnClose="@{filterChip}"
         app:filterChipText="@{filterChip}"
-        app:selectedTextColor="@{filterChip.selectedTextColor}"
-        app:showIcons="false"
-        tools:text="@sample/tags.json/tags/name" />
+        app:filterChipTint="@{filterChip.color}"
+        app:viewModel="@{viewModel}"
+        tools:text="@sample/tags.json/tags/name"
+        tools:chipIconTint="@sample/tags.json/tags/color" />
 
 </layout>

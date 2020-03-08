@@ -27,11 +27,10 @@ import com.google.samples.apps.iosched.databinding.ItemGenericSectionHeaderBindi
 import com.google.samples.apps.iosched.shared.util.exceptionInDebug
 import com.google.samples.apps.iosched.ui.SectionHeader
 
-/**
- * Adapter for the filters sheet.
- */
-class SelectableFilterChipAdapter(private val viewModelDelegate: FiltersViewModelDelegate) :
-    ListAdapter<Any, ViewHolder>(FilterChipDiff) {
+/** Adapter for selectable filters, e.g. ones shown in the filter sheet. */
+class SelectableFilterChipAdapter(
+    private val viewModelDelegate: FiltersViewModelDelegate
+) : ListAdapter<Any, ViewHolder>(FilterChipAndHeadingDiff) {
 
     companion object {
         private const val VIEW_TYPE_HEADING = R.layout.item_generic_section_header
@@ -78,10 +77,6 @@ class SelectableFilterChipAdapter(private val viewModelDelegate: FiltersViewMode
             is FilterChip -> VIEW_TYPE_FILTER
             else -> throw IllegalArgumentException("Unknown item type")
         }
-    }
-
-    fun getSpanSize(position: Int): Int {
-        return if (getItem(position) is FilterChip) 1 else 2
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -138,7 +133,7 @@ class SelectableFilterChipAdapter(private val viewModelDelegate: FiltersViewMode
     }
 }
 
-private object FilterChipDiff : DiffUtil.ItemCallback<Any>() {
+private object FilterChipAndHeadingDiff : DiffUtil.ItemCallback<Any>() {
     override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
         return when (oldItem) {
             is FilterChip -> newItem is FilterChip && newItem.filter == oldItem.filter

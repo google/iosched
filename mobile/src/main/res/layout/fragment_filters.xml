@@ -27,15 +27,7 @@
             type="com.google.samples.apps.iosched.ui.filters.FiltersViewModelDelegate" />
 
         <variable
-            name="headerAlpha"
-            type="androidx.databinding.ObservableFloat" />
-
-        <variable
-            name="descriptionAlpha"
-            type="androidx.databinding.ObservableFloat" />
-
-        <variable
-            name="recyclerviewAlpha"
+            name="contentAlpha"
             type="androidx.databinding.ObservableFloat" />
     </data>
 
@@ -50,7 +42,7 @@
         tools:ignore="Overdraw">
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guide_peek_height"
+            android:id="@+id/guide_header_height"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="horizontal"
@@ -60,7 +52,7 @@
             android:id="@+id/recyclerview_filters"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:alpha="@{recyclerviewAlpha}"
+            android:alpha="@{contentAlpha}"
             android:clipToPadding="false"
             android:nestedScrollingEnabled="false"
             android:orientation="horizontal"
@@ -72,15 +64,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guide_peek_height"
+            app:layout_constraintTop_toBottomOf="@id/guide_header_height"
             tools:listitem="@layout/item_filter_chip_selectable"
             tools:targetApi="o" />
 
         <!--
           ~ Mimics raising the elevation of a container around the header elements (like when an
-          ~ AppBarLayout reaches the collapsed state). We fake this because (a) there is no
-          ~ container view around these views, and (b) the extra elevation shows along the top of
-          ~ the sheet, particularly around the rounded corners, and doesn't look good.
+          ~ AppBarLayout reaches the collapsed state). We fake this instead of using a container
+          ~ view around header views because the extra elevation would show along the top of the
+          ~ sheet, particularly around corners, and wouldn't look good.
           -->
         <View
             android:id="@+id/filters_header_shadow"
@@ -90,66 +82,18 @@
             android:background="@drawable/filters_sheet_header_shadow"
             android:stateListAnimator="@animator/active_alpha"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guide_peek_height" />
+            app:layout_constraintTop_toBottomOf="@id/guide_header_height" />
 
-        <!-- Description view shown when there are active filters -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/active_filters"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_normal"
-            android:alpha="@{descriptionAlpha}"
-            android:fadingEdgeLength="@dimen/margin_large"
-            android:orientation="horizontal"
-            android:requiresFadingEdge="horizontal"
-            app:layout_constraintBottom_toTopOf="@id/guide_peek_height"
-            app:layout_constraintEnd_toStartOf="@id/clear_filters_shortcut"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:goneUnless="@{viewModel.hasAnyFilters}"
-            app:layoutManager="LinearLayoutManager"
-            app:selectedFilters="@{viewModel.selectedFilterChips}"
-            tools:listitem="@layout/item_filter_chip"
-            tools:visibility="gone" />
-
-        <!-- Shortcut for clearing the current filters, shown with the filters description -->
-        <ImageButton
-            android:id="@+id/clear_filters_shortcut"
-            android:layout_width="@dimen/a11y_min_touch_target"
-            android:layout_height="@dimen/a11y_min_touch_target"
-            android:layout_marginEnd="@dimen/margin_small"
-            android:alpha="@{descriptionAlpha}"
-            android:background="?selectableItemBackgroundBorderless"
-            android:clickable="@{descriptionAlpha > 0f}"
-            android:contentDescription="@string/a11y_clear_tag_filters"
-            android:onClick="@{(v) -> viewModel.clearFilters()}"
-            android:scaleType="center"
-            app:layout_constraintBottom_toTopOf="@id/guide_peek_height"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:goneUnless="@{viewModel.hasAnyFilters}"
-            app:srcCompat="@drawable/ic_clear_all"
-            tools:visibility="gone" />
-
-        <View
-            android:id="@+id/expand"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/guide_peek_height"
-            app:layout_constraintEnd_toStartOf="@id/clear_filters_shortcut"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- Header views shown when the sheet is expanded -->
+        <!-- Header views -->
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:alpha="@{headerAlpha}"
+            android:alpha="@{contentAlpha}"
             android:textAppearance="@style/TextAppearance.IOSched.FiltersLabel"
             android:textColor="?android:textColorPrimary"
-            app:layout_constraintBottom_toTopOf="@id/guide_peek_height"
+            app:layout_constraintBottom_toTopOf="@id/guide_header_height"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -163,17 +107,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_normal"
-            android:alpha="@{headerAlpha}"
-            android:clickable="@{headerAlpha > 0f}"
+            android:alpha="@{contentAlpha}"
+            android:clickable="@{contentAlpha > 0f}"
             android:minWidth="0dp"
+            android:onClick="@{() -> viewModel.clearFilters()}"
             android:paddingStart="@dimen/margin_normal"
             android:paddingEnd="@dimen/margin_normal"
             android:text="@string/reset"
-            app:layout_constraintBottom_toTopOf="@id/guide_peek_height"
+            app:layout_constraintBottom_toTopOf="@id/guide_header_height"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:animatedOnClick="@{() -> viewModel.clearFilters()}"
-            app:filterChips="@{recyclerviewFilters}"
             app:goneUnless="@{viewModel.hasAnyFilters}"
             tools:targetApi="o"
             tools:visibility="visible" />
@@ -183,13 +126,13 @@
             android:layout_width="@dimen/a11y_min_touch_target"
             android:layout_height="@dimen/a11y_min_touch_target"
             android:layout_marginEnd="@dimen/margin_small"
-            android:alpha="@{headerAlpha}"
+            android:alpha="@{contentAlpha}"
             android:background="?selectableItemBackgroundBorderless"
-            android:clickable="@{headerAlpha > 0f}"
+            android:clickable="@{contentAlpha > 0f}"
             android:contentDescription="@string/a11y_collapse_filters_sheet"
             android:scaleType="center"
             android:tint="?attr/colorControlNormal"
-            app:layout_constraintBottom_toTopOf="@id/guide_peek_height"
+            app:layout_constraintBottom_toTopOf="@id/guide_header_height"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_expand_more" />

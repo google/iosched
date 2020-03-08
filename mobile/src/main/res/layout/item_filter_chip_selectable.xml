@@ -30,17 +30,17 @@
             type="com.google.samples.apps.iosched.ui.filters.FiltersViewModelDelegate" />
     </data>
 
-    <com.google.samples.apps.iosched.ui.filters.FilterChipView
+    <com.google.android.material.chip.Chip
         android:id="@+id/filter_label"
+        style="@style/Widget.IOSched.FilterChip.Selectable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="@{filterChip.isSelected}"
-        android:minHeight="?listPreferredItemHeightSmall"
-        app:color="@{filterChip.color}"
         app:filterChipOnClick="@{filterChip}"
         app:filterChipText="@{filterChip}"
-        app:selectedTextColor="@{filterChip.selectedTextColor}"
+        app:filterChipTint="@{filterChip.color}"
         app:viewModel="@{viewModel}"
-        tools:text="@sample/tags.json/tags/name" />
+        tools:text="@sample/tags.json/tags/name"
+        tools:chipIconTint="@sample/tags.json/tags/color" />
 
 </layout>
