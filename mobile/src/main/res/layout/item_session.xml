@@ -148,6 +148,7 @@
             android:id="@+id/tags"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_micro"
             android:orientation="horizontal"
             app:layout_constraintEnd_toStartOf="@id/guideline_end"
             app:layout_constraintStart_toEndOf="@id/guideline_start"

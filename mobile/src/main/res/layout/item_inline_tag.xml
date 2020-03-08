@@ -32,7 +32,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_normal"
-        android:layout_marginTop="@dimen/spacing_micro"
         android:text="@{tag.displayName}"
         app:tagTint="@{tag.color}"
         tools:drawableStart="@drawable/tag_dot"

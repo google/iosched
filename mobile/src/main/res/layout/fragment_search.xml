@@ -66,12 +66,14 @@
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
                 android:orientation="horizontal"
-                android:padding="12dp"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="@dimen/spacing_micro"
+                app:activeFilters="@{viewModel.selectedFilterChips}"
                 app:goneUnless="@{viewModel.hasAnyFilters}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:selectedFilters="@{viewModel.selectedFilterChips}"
+                app:viewModel="@{viewModel}"
                 tools:itemCount="3"
-                tools:listitem="@layout/item_filter_chip"
+                tools:listitem="@layout/item_filter_chip_closeable"
                 tools:visibility="visible" />
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -96,8 +98,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/schedule_page_padding_bottom"
             android:layout_marginHorizontal="@dimen/margin_large"
+            android:layout_marginTop="?actionBarSize"
             android:text="@string/search_schedule_no_results"
             app:goneUnless="@{viewModel.isEmpty}"
             tools:targetApi="o"

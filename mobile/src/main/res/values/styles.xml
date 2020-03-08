@@ -98,15 +98,14 @@
         <item name="textAllCaps">false</item>
     </style>
 
+    <!-- Filters -->
+    <style name="TextAppearance.IOSched.FilterChip.Selectable" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <!-- Schedule -->
     <style name="TextAppearance.IOSched.ReservationStatus" parent="@style/TextAppearance.IOSched.Body2">
         <item name="android:textAllCaps">true</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.Tag" parent="@style/TextAppearance.IOSched.Body2">
-        <item name="android:fontFamily">monospace</item>
-        <item name="android:letterSpacing">@dimen/tag_letter_spacing</item>
-        <item name="fontFamily">monospace</item>
     </style>
 
     <style name="TextAppearance.IOSched.FiltersLabel" parent="TextAppearance.IOSched.H2">
@@ -175,11 +174,34 @@
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
+    <!-- Filters -->
+    <!-- Easier to extend Chip.Choice because it includes some desired color effects. -->
+    <style name="Widget.IOSched.FilterChip" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textAppearance">@style/TextAppearance.IOSched.FilterChip.Selectable</item>
+        <item name="chipBackgroundColor">@color/chip_bg</item>
+        <item name="chipIcon">@drawable/asld_chip_icon</item>
+        <item name="chipIconVisible">true</item>
+        <item name="chipStrokeColor">@color/chip_stroke</item>
+        <item name="textStartPadding">0dp</item>
+    </style>
+
+    <style name="Widget.IOSched.FilterChip.Selectable">
+        <item name="chipStrokeWidth">1dp</item>
+    </style>
+
+    <!-- Active filters show a close shortcut and no checkmark. -->
+    <style name="Widget.IOSched.FilterChip.Closeable">
+        <item name="android:clickable">false</item>
+        <item name="chipIcon">@drawable/chip_dot</item>
+        <item name="closeIcon">@drawable/ic_filter_clear</item>
+        <item name="closeIconVisible">true</item>
+        <item name="textEndPadding">2dp</item>
+    </style>
+
     <!-- Schedule -->
     <style name="Widget.IOSched.Tag">
         <item name="android:gravity">center_vertical</item>
         <item name="android:lines">1</item>
-        <item name="android:textAppearance">@style/TextAppearance.IOSched.Tag</item>
     </style>
 
     <style name="Widget.IOSched.Tag.Inline">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2020 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -14,10 +14,19 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:drawable="@drawable/chip_dot">
 
-<resources>
-    <dimen name="tag_dot_size">8dp</dimen>
-    <dimen name="tag_hz_padding">12dp</dimen>
-    <dimen name="tag_vert_padding">6dp</dimen>
-    <dimen name="tag_corner_radius">100dp</dimen> <!-- Large value ensures the 'pill' shape -->
-</resources>
+    <target android:name="icon_path">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="300"
+                android:propertyName="pathData"
+                android:valueFrom="@string/chip_dot_path"
+                android:valueTo="@string/chip_check_path"
+                android:valueType="pathType" />
+        </aapt:attr>
+    </target>
+
+</animated-vector>

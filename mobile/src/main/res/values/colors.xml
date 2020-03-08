@@ -45,6 +45,8 @@
     <color name="event_card_header_background_light">#f8f9fa</color>
     <color name="event_card_header_background_dark">#252729</color>
 
+    <item name="chip_bg_alpha_checked" format="float" type="dimen">0.18</item>
+
     <integer-array name="swipe_refresh">
         <item>@color/deep_sky_blue</item>
         <item>@color/teal</item>
