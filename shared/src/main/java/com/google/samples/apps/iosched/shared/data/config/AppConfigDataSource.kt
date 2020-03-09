@@ -33,4 +33,5 @@ interface AppConfigDataSource {
     fun isSearchScheduleFeatureEnabled(): Boolean
     fun isSearchUsingRoomFeatureEnabled(): Boolean
     fun isAssistantAppFeatureEnabled(): Boolean
+    fun isReservationFeatureEnabled(): Boolean
 }

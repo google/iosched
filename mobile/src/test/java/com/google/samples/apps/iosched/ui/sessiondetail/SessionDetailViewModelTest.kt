@@ -173,7 +173,7 @@ class SessionDetailViewModelTest {
         viewModel.setSessionId(TestData.session3.id)
         LiveDataTestUtil.getValue(viewModel.session)
         LiveDataTestUtil.getValue(viewModel.userEvent)
-        LiveDataTestUtil.getValue(viewModel.isReservationDisabled)
+        LiveDataTestUtil.getValue(viewModel.isReservationDeniedByCutoff)
 
         viewModel.onReservationClicked()
 
@@ -245,7 +245,7 @@ class SessionDetailViewModelTest {
         viewModel.setSessionId(TestData.session1.id)
         LiveDataTestUtil.getValue(viewModel.session)
         LiveDataTestUtil.getValue(viewModel.userEvent)
-        LiveDataTestUtil.getValue(viewModel.isReservationDisabled)
+        LiveDataTestUtil.getValue(viewModel.isReservationDeniedByCutoff)
 
         viewModel.onReservationClicked()
 
