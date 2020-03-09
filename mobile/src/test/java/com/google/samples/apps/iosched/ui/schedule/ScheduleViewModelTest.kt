@@ -478,7 +478,7 @@ class ScheduleViewModelTest {
     private fun createExceptionUseCase(): LoadFilteredUserSessionsUseCase {
         return object : LoadFilteredUserSessionsUseCase(mock {}, testDispatcher) {
             override fun execute(parameters: LoadFilteredUserSessionsParameters):
-                Flow<Result<LoadFilteredUserSessionsResult>> {
+                Flow<Result<LoadFilteredUserSessionsResult>> = flow {
                 throw Exception("Loading failed")
             }
         }
