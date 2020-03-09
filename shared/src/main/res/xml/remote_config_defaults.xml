@@ -48,6 +48,10 @@
         <value>false</value>
     </entry>
     <entry>
+        <key>reservation_enabled</key>
+        <value>false</value>
+    </entry>
+    <entry>
         <key>badge_pick_up_day0_start_time</key>
         <value>2019-05-06T07:00-07:00</value>
     </entry>

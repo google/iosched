@@ -149,8 +149,8 @@
             app:backgroundTint="?attr/colorSurface"
             app:eventListener="@{viewModel}"
             app:isRegistered="@{viewModel.observeRegisteredUser}"
-            app:isReservable="@{viewModel.session.isReservable}"
-            app:isReservationDisabled="@{viewModel.isReservationDisabled}"
+            app:isReservable="@{viewModel.isReservable}"
+            app:isReservationDeniedByCutoff="@{viewModel.isReservationDeniedByCutoff}"
             app:isSignedIn="@{viewModel.observeSignedInUser}"
             app:tint="?attr/colorOnSurface"
             app:userEvent="@{viewModel.userEvent}" />

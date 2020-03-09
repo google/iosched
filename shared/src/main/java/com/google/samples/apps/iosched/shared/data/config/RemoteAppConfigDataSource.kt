@@ -172,6 +172,9 @@ class RemoteAppConfigDataSource @Inject constructor(
     override fun isAssistantAppFeatureEnabled(): Boolean =
         firebaseRemoteConfig.getBoolean(ASSISTANT_APP_FEATURE_ENABLED)
 
+    override fun isReservationFeatureEnabled(): Boolean =
+        firebaseRemoteConfig.getBoolean(RESERVATION_FEATURE_ENABLED)
+
     companion object {
         const val WIFI_SSID_KEY = "wifi_ssid"
         const val WIFI_PASSWORD_KEY = "wifi_password"
@@ -240,6 +243,7 @@ class RemoteAppConfigDataSource @Inject constructor(
         const val SEARCH_SCHEDULE_FEATURE_ENABLED = "search_schedule_enabled"
         const val SEARCH_USING_ROOM_FEATURE_ENABLED = "search_using_room_enabled"
         const val ASSISTANT_APP_FEATURE_ENABLED = "io_assistant_app_enabled"
+        const val RESERVATION_FEATURE_ENABLED = "reservation_enabled"
 
         val DEFAULT_CACHE_EXPIRY_S = TimeUnit.MINUTES.toSeconds(12)
     }

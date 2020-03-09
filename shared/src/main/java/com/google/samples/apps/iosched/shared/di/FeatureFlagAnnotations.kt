@@ -64,3 +64,11 @@ annotation class SearchUsingRoomEnabledFlag
     AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.FIELD
 )
 annotation class AssistantAppEnabledFlag
+
+// Whether or not the reservation feature is enabled
+@Qualifier
+@Target(
+    AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER,
+    AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.FIELD
+)
+annotation class ReservationEnabledFlag
