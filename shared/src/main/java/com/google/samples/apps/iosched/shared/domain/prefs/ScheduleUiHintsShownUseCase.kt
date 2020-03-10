@@ -18,7 +18,7 @@ package com.google.samples.apps.iosched.shared.domain.prefs
 
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
-import com.google.samples.apps.iosched.shared.domain.UseCase
+import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 
@@ -28,6 +28,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 open class ScheduleUiHintsShownUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : UseCase<Unit, Boolean>(dispatcher) {
-    override fun execute(parameters: Unit): Boolean = preferenceStorage.scheduleUiHintsShown
+) : CoroutinesUseCase<Unit, Boolean>(dispatcher) {
+    override suspend fun execute(parameters: Unit): Boolean = preferenceStorage.scheduleUiHintsShown
 }

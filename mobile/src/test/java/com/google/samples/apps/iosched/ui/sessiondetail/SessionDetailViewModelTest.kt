@@ -31,7 +31,7 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotificationAlarmUpdater
-import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
@@ -373,7 +373,7 @@ class SessionDetailViewModelTest {
         reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase(),
         starEventUseCase: StarEventAndNotifyUseCase =
             FakeStarEventUseCase(coroutineRule.testDispatcher),
-        getTimeZoneUseCase: GetTimeZoneUseCaseLegacy = createGetTimeZoneUseCase(),
+        getTimeZoneUseCase: GetTimeZoneUseCase = createGetTimeZoneUseCase(),
         snackbarMessageManager: SnackbarMessageManager =
             SnackbarMessageManager(FakePreferenceStorage()),
         networkUtils: NetworkUtils = mockNetworkUtils,
@@ -440,5 +440,5 @@ class SessionDetailViewModelTest {
     ) {}
 
     private fun createGetTimeZoneUseCase() =
-        object : GetTimeZoneUseCaseLegacy(FakePreferenceStorage(), TestCoroutineDispatcher()) {}
+        GetTimeZoneUseCase(FakePreferenceStorage(), coroutineRule.testDispatcher)
 }
