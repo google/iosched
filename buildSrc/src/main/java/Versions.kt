@@ -28,7 +28,7 @@ object Versions {
     const val ANDROID_GRADLE_PLUGIN = "3.6.1"
     const val FABRIC = "1.31.2"
     const val GOOGLE_SERVICES = "4.3.3"
-    const val KOTLIN = "1.3.61"
+    const val KOTLIN = "1.3.70"
     const val NAVIGATION = "2.2.0"
 
     // TODO: Remove this once the version for
