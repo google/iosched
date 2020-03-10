@@ -40,9 +40,9 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCaseLegacy
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsParameters
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsResult
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsParameters
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsResult
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
@@ -128,7 +128,7 @@ class ScheduleViewModelTest {
     fun testDataIsLoaded_Fails() = coroutineRule.runBlockingTest {
         // Create ViewModel
         val viewModel = createScheduleViewModel(
-            loadFilteredSessionsUseCase = createExceptionUseCase()
+            loadScheduleSessionsUseCase = createExceptionUseCase()
         )
         val errorMsg = LiveDataTestUtil.getValue(viewModel.errorMessage)
         assertTrue(errorMsg?.peekContent()?.isNotEmpty() ?: false)
@@ -202,7 +202,7 @@ class ScheduleViewModelTest {
         val signInDelegate = FakeSignInViewModelDelegate()
         val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
         val viewModel = createScheduleViewModel(
-            loadFilteredSessionsUseCase = loadSessionsUseCase,
+            loadScheduleSessionsUseCase = loadSessionsUseCase,
             signInViewModelDelegate = signInDelegate,
             snackbarMessageManager = snackbarMessageManager
         )
@@ -241,7 +241,7 @@ class ScheduleViewModelTest {
         val signInDelegate = FakeSignInViewModelDelegate()
         val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
         val viewModel = createScheduleViewModel(
-            loadFilteredSessionsUseCase = loadSessionsUseCase,
+            loadScheduleSessionsUseCase = loadSessionsUseCase,
             signInViewModelDelegate = signInDelegate,
             snackbarMessageManager = snackbarMessageManager
         )
@@ -406,7 +406,7 @@ class ScheduleViewModelTest {
             conferenceDataRepo = repo
         )
         val viewModel = createScheduleViewModel(
-            loadFilteredSessionsUseCase = loadUserSessionsByDayUseCase,
+            loadScheduleSessionsUseCase = loadUserSessionsByDayUseCase,
             observeConferenceDataUseCase = ObserveConferenceDataUseCase(repo)
         )
 
@@ -426,7 +426,7 @@ class ScheduleViewModelTest {
     }
 
     private fun createScheduleViewModel(
-        loadFilteredSessionsUseCase: LoadFilteredUserSessionsUseCase =
+        loadScheduleSessionsUseCase: LoadScheduleUserSessionsUseCase =
             createTestLoadUserSessionsByDayUseCase(),
         signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate(),
         starEventUseCase: StarEventAndNotifyUseCase = createStarEventUseCase(),
@@ -444,7 +444,7 @@ class ScheduleViewModelTest {
         analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper()
     ): ScheduleViewModel {
         return ScheduleViewModel(
-            loadFilteredUserSessionsUseCase = loadFilteredSessionsUseCase,
+            loadScheduleUserSessionsUseCase = loadScheduleSessionsUseCase,
             signInViewModelDelegate = signInViewModelDelegate,
             starEventUseCase = starEventUseCase,
             scheduleUiHintsShownUseCase = scheduleUiHintsShownUseCase,
@@ -458,27 +458,27 @@ class ScheduleViewModelTest {
     }
 
     /**
-     * Creates a test [LoadFilteredUserSessionsUseCase].
+     * Creates a test [LoadScheduleUserSessionsUseCase].
      */
     private fun createTestLoadUserSessionsByDayUseCase(
         userEventDataSource: UserEventDataSource = TestUserEventDataSource(),
         conferenceDataRepo: ConferenceDataRepository = TestDataRepository
-    ): LoadFilteredUserSessionsUseCase {
+    ): LoadScheduleUserSessionsUseCase {
         val sessionRepository = DefaultSessionRepository(conferenceDataRepo)
         val userEventRepository = DefaultSessionAndUserEventRepository(
             userEventDataSource, sessionRepository
         )
 
-        return LoadFilteredUserSessionsUseCase(userEventRepository, testDispatcher)
+        return LoadScheduleUserSessionsUseCase(userEventRepository, testDispatcher)
     }
 
     /**
      * Creates a use case that throws an exception.
      */
-    private fun createExceptionUseCase(): LoadFilteredUserSessionsUseCase {
-        return object : LoadFilteredUserSessionsUseCase(mock {}, testDispatcher) {
-            override fun execute(parameters: LoadFilteredUserSessionsParameters):
-                Flow<Result<LoadFilteredUserSessionsResult>> = flow {
+    private fun createExceptionUseCase(): LoadScheduleUserSessionsUseCase {
+        return object : LoadScheduleUserSessionsUseCase(mock {}, testDispatcher) {
+            override fun execute(parameters: LoadScheduleUserSessionsParameters):
+                Flow<Result<LoadScheduleUserSessionsResult>> = flow {
                 throw Exception("Loading failed")
             }
         }

@@ -50,19 +50,19 @@ class UserEventTest {
     @Test
     fun starred_isPinned() {
         val userEvent = createTestEvent(isStarred = true, status = NONE)
-        assertTrue(userEvent.isPinned())
+        assertTrue(userEvent.isStarredOrReserved())
     }
 
     @Test
     fun notStarred_waitlisted_isPinned() {
         val waitlisted = createTestEvent(isStarred = false, status = WAITLISTED)
-        assertTrue(waitlisted.isPinned())
+        assertTrue(waitlisted.isStarredOrReserved())
     }
 
     @Test
     fun notStarred_reserved_isPinned() {
         val reserved = createTestEvent(isStarred = false, status = RESERVED)
-        assertTrue(reserved.isPinned())
+        assertTrue(reserved.isStarredOrReserved())
     }
 
     @Test

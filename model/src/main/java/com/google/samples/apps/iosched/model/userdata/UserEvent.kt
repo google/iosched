@@ -59,7 +59,7 @@ data class UserEvent(
     /** Stores the user's latest reservation action  */
     private val reservationRequest: ReservationRequest? = null
 ) {
-    fun isPinned(): Boolean {
+    fun isStarredOrReserved(): Boolean {
         return isStarred || isReserved() || isWaitlisted()
     }
 
