@@ -18,9 +18,10 @@ package com.google.samples.apps.iosched.ui
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
+import androidx.lifecycle.switchMap
 import com.google.android.play.core.ktx.AppUpdateResult
 import com.google.samples.apps.iosched.shared.domain.ar.LoadArDebugFlagUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadPinnedSessionsJsonUseCase
@@ -30,6 +31,7 @@ import com.google.samples.apps.iosched.ui.appupdate.AppUpdateViewModelDelegate
 import com.google.samples.apps.iosched.ui.ar.ArCoreAvailabilityLiveData
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 class MainActivityViewModel @Inject constructor(
@@ -51,35 +53,36 @@ class MainActivityViewModel @Inject constructor(
     val navigateToSignOutDialogAction: LiveData<Event<Unit>>
         get() = _navigateToSignOutDialogAction
 
-    private val _pinnedSessionsJson = MediatorLiveData<String>()
-    val pinnedSessionsJson = _pinnedSessionsJson
+    val pinnedSessionsJson: LiveData<String> = currentUserInfo.switchMap { user ->
+        val uid = user?.getUid()
+        liveData {
+            if (uid != null) {
+                loadPinnedSessionsUseCase(uid).collect { result ->
+                    if (result is Result.Success) {
+                        emit(result.data)
+                    }
+                }
+            } else {
+                emit("")
+            }
+        }
+    }
 
-    private val _canSignedInUserDemoAr = MediatorLiveData<Boolean>()
-    val canSignedInUserDemoAr = _canSignedInUserDemoAr
+    val canSignedInUserDemoAr: LiveData<Boolean> = currentUserInfo.switchMap {
+        liveData {
+            emit(false)
+            loadArDebugFlagUseCase(Unit).collect { result ->
+                if (result is Result.Success) {
+                    emit(result.data)
+                }
+            }
+        }
+    }
 
     val arCoreAvailability = ArCoreAvailabilityLiveData(context)
 
     val appUpdateAvailability: LiveData<AppUpdateResult> =
         appUpdateViewModelDelegate.appUpdateResult
-
-    init {
-        _pinnedSessionsJson.addSource(currentUserInfo) { user ->
-            _pinnedSessionsJson.value = null
-            val uid = user?.getUid() ?: return@addSource
-            loadPinnedSessionsUseCase.execute(uid)
-        }
-        _pinnedSessionsJson.addSource(loadPinnedSessionsUseCase.observe()) { result ->
-            val data = (result as? Result.Success)?.data ?: return@addSource
-            _pinnedSessionsJson.value = data
-        }
-        _canSignedInUserDemoAr.addSource(currentUserInfo) {
-            _canSignedInUserDemoAr.value = false
-            loadArDebugFlagUseCase.execute(Unit)
-        }
-        _canSignedInUserDemoAr.addSource(loadArDebugFlagUseCase.observe()) {
-            _canSignedInUserDemoAr.value = (it as? Result.Success)?.data == true
-        }
-    }
 
     fun onProfileClicked() {
         if (isSignedIn()) {

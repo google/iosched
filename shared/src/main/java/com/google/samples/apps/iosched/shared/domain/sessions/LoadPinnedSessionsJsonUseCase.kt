@@ -16,18 +16,19 @@
 
 package com.google.samples.apps.iosched.shared.domain.sessions
 
-import androidx.lifecycle.asLiveData
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.google.samples.apps.iosched.model.schedule.PinnedSession
 import com.google.samples.apps.iosched.model.schedule.PinnedSessionsSchedule
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.ObservableUserEvents
-import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
+import com.google.samples.apps.iosched.shared.domain.FlowUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -57,14 +58,13 @@ import javax.inject.Inject
  * }
  */
 open class LoadPinnedSessionsJsonUseCase @Inject constructor(
-    private val userEventRepository: DefaultSessionAndUserEventRepository
-) : MediatorUseCase<String, String>() {
+    private val userEventRepository: DefaultSessionAndUserEventRepository,
+    private val gson: Gson,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+) : FlowUseCase<String, String>(ioDispatcher) {
 
-    val gson: Gson = GsonBuilder().create()
-
-    override fun execute(parameters: String) {
-        // TODO(COROUTINES) migrate to couroutines
-        val resultLiveData = userEventRepository.getObservableUserEvents(parameters)
+    override fun execute(parameters: String): Flow<Result<String>> {
+        return userEventRepository.getObservableUserEvents(parameters)
             .map { observableResult: Result<ObservableUserEvents> ->
                 when (observableResult) {
                     is Result.Success -> {
@@ -75,14 +75,18 @@ open class LoadPinnedSessionsJsonUseCase @Inject constructor(
                             // We assume the conference time zone because only on-site attendees are
                             // going to use the feature
                             val zonedTime =
-                                TimeUtils.zonedTime(session.startTime,
-                                    TimeUtils.CONFERENCE_TIMEZONE)
-                            PinnedSession(name = session.title,
+                                TimeUtils.zonedTime(
+                                    session.startTime,
+                                    TimeUtils.CONFERENCE_TIMEZONE
+                                )
+                            PinnedSession(
+                                name = session.title,
                                 location = session.room?.name ?: "",
                                 day = TimeUtils.abbreviatedDayForAr(zonedTime),
                                 time = TimeUtils.abbreviatedTimeForAr(zonedTime),
                                 timestamp = session.startTime.toEpochMilli(),
-                                description = session.description)
+                                description = session.description
+                            )
                         }
                         val jsonResult = gson.toJson(PinnedSessionsSchedule(useCaseResult))
                         Result.Success(jsonResult)
@@ -90,9 +94,6 @@ open class LoadPinnedSessionsJsonUseCase @Inject constructor(
                     is Result.Error -> Result.Error(observableResult.exception)
                     is Result.Loading -> observableResult
                 }
-            }.asLiveData()
-        result.addSource(resultLiveData) {
-            result.value = it
-        }
+            }
     }
 }

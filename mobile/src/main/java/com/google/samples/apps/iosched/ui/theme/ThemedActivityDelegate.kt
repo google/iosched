@@ -19,13 +19,14 @@ package com.google.samples.apps.iosched.ui.theme
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.google.samples.apps.iosched.model.Theme
-import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCaseLegacy
+import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.ObserveThemeModeUseCase
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.result.successOr
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 /**
@@ -55,8 +56,7 @@ interface ThemedActivityDelegate {
 
 class ThemedActivityDelegateImpl @Inject constructor(
     private val observeThemeUseCase: ObserveThemeModeUseCase,
-    // TODO(COROUTINES): Migrate to GetThemeUseCase
-    private val getThemeUseCase: GetThemeUseCaseLegacy
+    private val getThemeUseCase: GetThemeUseCase
 ) : ThemedActivityDelegate {
 
     @InternalCoroutinesApi
@@ -68,12 +68,9 @@ class ThemedActivityDelegateImpl @Inject constructor(
     }
 
     override val currentTheme: Theme
-        get() = getThemeUseCase.executeNow(Unit).let {
-            if (it is Success) it.data else Theme.SYSTEM
+        get() = runBlocking { // Using runBlocking to execute this coroutine synchronously
+            getThemeUseCase(Unit).let {
+                if (it is Success) it.data else Theme.SYSTEM
+            }
         }
-
-    init {
-        // Observe updates in dark mode setting
-        observeThemeUseCase(Unit)
-    }
 }
