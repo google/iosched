@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.schedule.filters
+package com.google.samples.apps.iosched.ui.filters
 
 import androidx.lifecycle.LiveData
 
