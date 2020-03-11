@@ -31,24 +31,20 @@ import kotlinx.coroutines.asCoroutineDispatcher
 object TestCoroutinesModule {
 
     @DefaultDispatcher
-    @JvmStatic
     @Provides
     fun providesDefaultDispatcher(): CoroutineDispatcher =
         AsyncTask.THREAD_POOL_EXECUTOR.asCoroutineDispatcher()
 
     @IoDispatcher
-    @JvmStatic
     @Provides
     fun providesIoDispatcher(): CoroutineDispatcher =
         AsyncTask.THREAD_POOL_EXECUTOR.asCoroutineDispatcher()
 
     @MainDispatcher
-    @JvmStatic
     @Provides
     fun providesMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
 
     @MainImmediateDispatcher
-    @JvmStatic
     @Provides
     fun providesMainImmediateDispatcher(): CoroutineDispatcher = Dispatchers.Main.immediate
 }
