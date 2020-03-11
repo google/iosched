@@ -29,10 +29,11 @@ import com.google.samples.apps.iosched.shared.domain.feed.GetConferenceStateUseC
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
 import com.google.samples.apps.iosched.shared.domain.feed.LoadCurrentMomentUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadStarredAndReservedSessionsUseCase
-import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
@@ -80,7 +81,7 @@ class FeedViewModelTest {
         FixedTimeProvider(TestData.TestConferenceDays[0].start.plusHours(4).toInstant())
 
     @Test
-    fun testDataIsLoaded_ObservablesUpdated() {
+    fun testDataIsLoaded_ObservablesUpdated() = coroutineRule.runBlockingTest {
         // Create ViewModel with the use case and load the feed.
         val viewModel = createFeedViewModel()
         val feedObservable = LiveDataTestUtil.getValue(viewModel.feed)
@@ -105,10 +106,11 @@ class FeedViewModelTest {
     }
 
     @Test
-    fun testDataIsLoaded_Fails() {
+    fun testDataIsLoaded_Fails() = coroutineRule.runBlockingTest {
         // Create ViewModel with a use case that returns an error
-        val viewModel =
-            createFeedViewModel(loadAnnouncementUseCase = FailingUseCase(testDispatcher))
+        val viewModel = createFeedViewModel(
+            loadAnnouncementUseCase = FailingUseCase(testDispatcher)
+        )
 
         // Verify that an error was caught
         val errorMessage = LiveDataTestUtil.getValue(viewModel.errorMessage)
@@ -116,6 +118,7 @@ class FeedViewModelTest {
 
         // Must cancel because there's a flow in [GetConferenceStateUseCase] that never finishes.
         viewModel.viewModelScope.cancel()
+
         // Cancel is not synchronous so we need to wait for it to avoid leaks.
         coroutineRule.testDispatcher.advanceUntilIdle()
     }
@@ -127,7 +130,7 @@ class FeedViewModelTest {
         DefaultFeedRepository(TestAnnouncementDataSource, TestMomentDataSource),
         coroutineDispatcher
     ) {
-        override fun execute(parameters: Instant): List<Announcement> {
+        override suspend fun execute(parameters: Instant): List<Announcement> {
             throw Exception("Error!")
         }
     }
@@ -144,8 +147,8 @@ class FeedViewModelTest {
                 ),
                 testDispatcher
             ),
-        getTimeZoneUseCaseLegacy: GetTimeZoneUseCaseLegacy =
-            GetTimeZoneUseCaseLegacy(FakePreferenceStorage(), testDispatcher),
+        getTimeZoneUseCase: GetTimeZoneUseCase =
+            GetTimeZoneUseCase(FakePreferenceStorage(), testDispatcher),
         getConferenceStateUseCase: GetConferenceStateUseCase =
             GetConferenceStateUseCase(testDispatcher, defaultTimeProvider),
         timeProvider: TimeProvider = defaultTimeProvider,
@@ -158,7 +161,7 @@ class FeedViewModelTest {
             loadCurrentMomentUseCase = loadCurrentMomentUseCase,
             loadAnnouncementsUseCase = loadAnnouncementUseCase,
             loadStarredAndReservedSessionsUseCase = loadStarredAndReservedSessionsUseCase,
-            getTimeZoneUseCaseLegacy = getTimeZoneUseCaseLegacy, // TODO(COROUTINES): Migrate
+            getTimeZoneUseCase = getTimeZoneUseCase,
             getConferenceStateUseCase = getConferenceStateUseCase,
             timeProvider = timeProvider,
             analyticsHelper = FakeAnalyticsHelper(),

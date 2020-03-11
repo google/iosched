@@ -17,15 +17,12 @@
 package com.google.samples.apps.iosched.ui.feed
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.samples.apps.iosched.model.Announcement
+import androidx.lifecycle.liveData
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
-import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.Result.Loading
-import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.successOr
-import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.ZoneId
@@ -33,28 +30,30 @@ import javax.inject.Inject
 
 class AnnouncementsViewModel @Inject constructor(
     loadAnnouncementsUseCase: LoadAnnouncementsUseCase,
-    getTimeZoneUseCaseLegacy: GetTimeZoneUseCaseLegacy, // TODO(COROUTINES): Migrate to non-legacy
+    getTimeZoneUseCase: GetTimeZoneUseCase,
     timeProvider: TimeProvider
 ) : ViewModel() {
-    val announcements: LiveData<List<Any>>
-    val timeZoneId: LiveData<ZoneId>
 
-    init {
-        val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
-        getTimeZoneUseCaseLegacy(Unit, preferConferenceTimeZoneResult)
-        timeZoneId = preferConferenceTimeZoneResult.map {
-            if (it.successOr(true)) TimeUtils.CONFERENCE_TIMEZONE else ZoneId.systemDefault()
-        }
-
-        val loadAnnouncementsResult = MutableLiveData<Result<List<Announcement>>>()
-        loadAnnouncementsUseCase(timeProvider.now(), loadAnnouncementsResult)
-        announcements = loadAnnouncementsResult.map {
-            if (it is Loading) {
-                listOf(LoadingIndicator)
+    val announcements: LiveData<List<Any>> = liveData {
+        val loadAnnouncementsResult = loadAnnouncementsUseCase(timeProvider.now())
+        if (loadAnnouncementsResult is Loading) {
+            emit(listOf(LoadingIndicator))
+        } else {
+            val items = loadAnnouncementsResult.successOr(emptyList())
+            if (items.isNotEmpty()) {
+                emit(items)
             } else {
-                val items = it.successOr(emptyList())
-                if (items.isNotEmpty()) items else listOf(AnnouncementsEmpty)
+                emit(listOf(AnnouncementsEmpty))
             }
+        }
+    }
+
+    val timeZoneId: LiveData<ZoneId> = liveData {
+        val timeZoneResult = getTimeZoneUseCase(Unit)
+        if (timeZoneResult.successOr(true)) {
+            emit(TimeUtils.CONFERENCE_TIMEZONE)
+        } else {
+            emit(ZoneId.systemDefault())
         }
     }
 }
