@@ -17,10 +17,10 @@
 package com.google.samples.apps.iosched.ui.feed
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
@@ -39,7 +39,7 @@ import com.google.samples.apps.iosched.shared.domain.feed.GetConferenceStateUseC
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
 import com.google.samples.apps.iosched.shared.domain.feed.LoadCurrentMomentUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadStarredAndReservedSessionsUseCase
-import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Loading
@@ -71,7 +71,7 @@ class FeedViewModel @Inject constructor(
     private val loadCurrentMomentUseCase: LoadCurrentMomentUseCase,
     loadAnnouncementsUseCase: LoadAnnouncementsUseCase,
     private val loadStarredAndReservedSessionsUseCase: LoadStarredAndReservedSessionsUseCase,
-    getTimeZoneUseCaseLegacy: GetTimeZoneUseCaseLegacy, // TODO(COROUTINES): Migrate to non-legacy
+    getTimeZoneUseCase: GetTimeZoneUseCase,
     getConferenceStateUseCase: GetConferenceStateUseCase,
     private val timeProvider: TimeProvider,
     private val analyticsHelper: AnalyticsHelper,
@@ -97,21 +97,18 @@ class FeedViewModel @Inject constructor(
         private object NoSessionsContainer
     }
 
-    val errorMessage: LiveData<Event<String>>
-
     val feed: LiveData<List<Any>>
 
-    val snackBarMessage: LiveData<Event<SnackbarMessage>>
+    val timeZoneId: LiveData<ZoneId> = liveData {
+        val result = getTimeZoneUseCase(Unit)
+        emit(if (result.successOr(true)) TimeUtils.CONFERENCE_TIMEZONE else ZoneId.systemDefault())
+    }
 
     private val loadSessionsResult = signInViewModelDelegate.currentUserInfo.switchMap {
         // TODO(jdkoren): might need to show sessions for not signed in users too...
         loadStarredAndReservedSessionsUseCase(signInViewModelDelegate.getUserId()).asLiveData()
     }
     private val conferenceStateLiveData = MutableLiveData<ConferenceState>()
-
-    private val loadAnnouncementsResult = MutableLiveData<Result<List<Announcement>>>()
-
-    private val currentMomentResult = MediatorLiveData<Result<Moment?>>()
 
     private val _navigateToSessionAction = MutableLiveData<Event<String>>()
     val navigateToSessionAction: LiveData<Event<String>>
@@ -133,8 +130,49 @@ class FeedViewModel @Inject constructor(
     val navigateToScheduleAction: LiveData<Event<Boolean>>
         get() = _navigateToScheduleAction
 
-    private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
-    val timeZoneId: LiveData<ZoneId>
+    private val currentMomentResult: LiveData<Result<Moment?>> = conferenceStateLiveData.switchMap {
+        liveData {
+            emit(loadCurrentMomentUseCase(timeProvider.now()))
+        }
+    }
+
+    private val loadAnnouncementsResult: LiveData<Result<List<Announcement>>> = liveData {
+        emit(loadAnnouncementsUseCase(timeProvider.now()))
+    }
+
+    private val announcementsPreviewLiveData: LiveData<List<Any>> = loadAnnouncementsResult.map {
+        val announcementsHeader = AnnouncementsHeader(
+            showPastNotificationsButton = it.successOr(emptyList()).size > 1
+        )
+        if (it is Loading) {
+            listOf(announcementsHeader, LoadingIndicator)
+        } else {
+            listOf(
+                announcementsHeader,
+                it.successOr(emptyList()).firstOrNull() ?: AnnouncementsEmpty
+            )
+        }
+    }
+
+    val errorMessage: LiveData<Event<String>> = loadAnnouncementsResult.map {
+        Event(content = (it as? Result.Error)?.exception?.message ?: "")
+    }
+
+    val snackBarMessage: LiveData<Event<SnackbarMessage>> = loadAnnouncementsResult.switchMap {
+        liveData {
+            // Show an error message if the feed could not be loaded.
+            if (it is Result.Error) {
+                emit(
+                    Event(
+                        SnackbarMessage(
+                            messageId = R.string.feed_loading_error,
+                            longDuration = true
+                        )
+                    )
+                )
+            }
+        }
+    }
 
     init {
         viewModelScope.launch {
@@ -143,9 +181,6 @@ class FeedViewModel @Inject constructor(
                 .collect { conferenceStateLiveData.value = it }
         }
 
-        timeZoneId = preferConferenceTimeZoneResult.map {
-            if (it.successOr(true)) TimeUtils.CONFERENCE_TIMEZONE else ZoneId.systemDefault()
-        }
         val sessionContainerLiveData =
             loadSessionsResult
                 .combine(
@@ -165,26 +200,6 @@ class FeedViewModel @Inject constructor(
                     else
                         NoSessionsContainer
                 }
-
-        loadAnnouncementsUseCase(timeProvider.now(), loadAnnouncementsResult)
-        val announcementsPreviewLiveData: LiveData<List<Any>> = loadAnnouncementsResult.map {
-            val announcementsHeader = AnnouncementsHeader(
-                showPastNotificationsButton = it.successOr(emptyList()).size > 1
-            )
-            if (it is Loading) {
-                listOf(announcementsHeader, LoadingIndicator)
-            } else {
-                listOf(
-                    announcementsHeader,
-                    it.successOr(emptyList()).firstOrNull() ?: AnnouncementsEmpty
-                )
-            }
-        }
-
-        currentMomentResult.addSource(conferenceStateLiveData) {
-            // This will change to the first moment when the Keynote starts
-            loadCurrentMomentUseCase(timeProvider.now(), currentMomentResult)
-        }
 
         val currentFeedHeader = conferenceStateLiveData.combine(
             currentMomentResult
@@ -214,26 +229,6 @@ class FeedViewModel @Inject constructor(
                 .plus(FeedSustainabilitySection)
                 .plus(FeedSocialChannelsSection)
         }
-
-        errorMessage = loadAnnouncementsResult.map {
-            Event(content = (it as? Result.Error)?.exception?.message ?: "")
-        }
-
-        // Show an error message if the feed could not be loaded.
-        snackBarMessage = MediatorLiveData()
-        snackBarMessage.addSource(loadAnnouncementsResult) {
-            if (it is Result.Error) {
-                snackBarMessage.value =
-                    Event(
-                        SnackbarMessage(
-                            messageId = R.string.feed_loading_error,
-                            longDuration = true
-                        )
-                    )
-            }
-        }
-        // TODO(COROUTINES): Migrate to GetTimeZoneUseCase
-        getTimeZoneUseCaseLegacy(Unit, preferConferenceTimeZoneResult)
     }
 
     private fun createFeedSessionsContainer(
@@ -309,8 +304,8 @@ class FeedViewModel @Inject constructor(
     override fun openMapForSession(session: Session) {
         analyticsHelper.logUiEvent(session.id, AnalyticsActions.HOME_TO_MAP)
         val directions = SessionDetailFragmentDirections.toMap(
-            featureId = session?.room?.id,
-            startTime = session?.startTime?.toEpochMilli() ?: 0L
+            featureId = session.room?.id,
+            startTime = session.startTime.toEpochMilli()
         )
         _navigateAction.value = Event(directions)
     }

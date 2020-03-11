@@ -17,16 +17,15 @@
 package com.google.samples.apps.iosched.shared.domain.feed
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
-import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -37,49 +36,49 @@ import org.threeten.bp.Instant
  * Unit tests for [LoadAnnouncementsUseCase]
  */
 class LoadAnnouncementsUseCaseTest {
+
     @get:Rule
     val instantRule = InstantTaskExecutorRule()
 
     @get:Rule
     val syncTaskExecutorRule = SyncTaskExecutorRule()
 
-    private val dispatcher = TestCoroutineDispatcher()
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun announcementsLoadedSuccessfully() {
-        val useCase = LoadAnnouncementsUseCase(successfulFeedRepository, dispatcher)
-        val resultLivedata = MutableLiveData<Result<List<Announcement>>>()
+    fun announcementsLoadedSuccessfully() = coroutineRule.runBlockingTest {
+        val useCase =
+            LoadAnnouncementsUseCase(successfulFeedRepository, coroutineRule.testDispatcher)
 
         // Load all items
         val time = TestData.TestConferenceDays.last().end.toInstant()
-        useCase(time, resultLivedata)
+        val result = useCase(time)
 
-        val result = LiveDataTestUtil.getValue(resultLivedata)
         assertEquals(result, Result.Success(TestData.announcements))
     }
 
     @Test
-    fun announcementsLoadedUnsuccessfully() {
-        val useCase = LoadAnnouncementsUseCase(unsuccessfulFeedRepository, dispatcher)
-        val resultLivedata = MutableLiveData<Result<List<Announcement>>>()
+    fun announcementsLoadedUnsuccessfully() = coroutineRule.runBlockingTest {
+        val useCase =
+            LoadAnnouncementsUseCase(unsuccessfulFeedRepository, coroutineRule.testDispatcher)
 
         // Time doesn't matter
-        useCase(Instant.now(), resultLivedata)
+        val result = useCase(Instant.now())
 
-        val result = LiveDataTestUtil.getValue(resultLivedata)
         assertTrue(result is Result.Error)
     }
 
     @Test
-    fun announcementsLoaded_filteredByTimestamp() {
-        val useCase = LoadAnnouncementsUseCase(successfulFeedRepository, dispatcher)
-        val resultLivedata = MutableLiveData<Result<List<Announcement>>>()
+    fun announcementsLoaded_filteredByTimestamp() = coroutineRule.runBlockingTest {
+        val useCase =
+            LoadAnnouncementsUseCase(successfulFeedRepository, coroutineRule.testDispatcher)
 
         // Load only the first day's items
         val time = TestData.TestConferenceDays.first().end.plusMinutes(1).toInstant()
-        useCase(time, resultLivedata)
+        val result = useCase(time)
 
-        val result = LiveDataTestUtil.getValue(resultLivedata)
         assertEquals(result, Result.Success(TestData.announcements.subList(0, 2)))
     }
 }
