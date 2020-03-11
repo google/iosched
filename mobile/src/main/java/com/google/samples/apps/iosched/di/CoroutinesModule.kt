@@ -29,22 +29,18 @@ import kotlinx.coroutines.Dispatchers
 object CoroutinesModule {
 
     @DefaultDispatcher
-    @JvmStatic
     @Provides
     fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 
     @IoDispatcher
-    @JvmStatic
     @Provides
     fun providesIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
 
     @MainDispatcher
-    @JvmStatic
     @Provides
     fun providesMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
 
     @MainImmediateDispatcher
-    @JvmStatic
     @Provides
     fun providesMainImmediateDispatcher(): CoroutineDispatcher = Dispatchers.Main.immediate
 }
