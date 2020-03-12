@@ -30,6 +30,7 @@ import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.di.ReservationEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
@@ -136,7 +137,7 @@ class SessionDetailViewModel @Inject constructor(
 
     val showFeedbackButton: LiveData<Boolean>
     val timeUntilStart: LiveData<Duration?>
-    val isReservationDisabled: LiveData<Boolean>
+    val isReservationDeniedByCutoff: LiveData<Boolean>
     private val _shouldShowStarInBottomNav = MediatorLiveData<Boolean>()
     val shouldShowStarInBottomNav: LiveData<Boolean> = _shouldShowStarInBottomNav
 
@@ -163,6 +164,15 @@ class SessionDetailViewModel @Inject constructor(
     private val _navigateToSessionFeedbackAction = MutableLiveData<Event<SessionId>>()
     val navigateToSessionFeedbackAction: LiveData<Event<SessionId>>
         get() = _navigateToSessionFeedbackAction
+
+    @Inject
+    @JvmField
+    @ReservationEnabledFlag
+    var isReservationEnabledByRemoteConfig: Boolean = false
+
+    val isReservable: LiveData<Boolean> = session.map {
+        it.isReservable && isReservationEnabledByRemoteConfig
+    }
 
     init {
 
@@ -230,7 +240,7 @@ class SessionDetailViewModel @Inject constructor(
             }
         }
 
-        isReservationDisabled =
+        isReservationDeniedByCutoff =
             DefaultIntervalMapper.mapAtInterval(session, SIXTY_SECONDS) { session ->
                 session?.startTime?.let { startTime ->
                     // Only allow reservations if the sessions starts more than an hour from now
@@ -348,7 +358,7 @@ class SessionDetailViewModel @Inject constructor(
 
         val userEventSnapshot = userEvent.value ?: return
         val sessionSnapshot = session.value ?: return
-        val isReservationDisabledSnapshot = isReservationDisabled.value ?: return
+        val isReservationDeniedByCutoffSnapshot = isReservationDeniedByCutoff.value ?: return
 
         val userId = getUserId() ?: return
 
@@ -357,7 +367,7 @@ class SessionDetailViewModel @Inject constructor(
             userEventSnapshot.isReservationPending() ||
             userEventSnapshot.isCancelPending() // Just in case
         ) {
-            if (isReservationDisabledSnapshot) {
+            if (isReservationDeniedByCutoffSnapshot) {
                 _snackBarMessage.postValue(
                     Event(
                         SnackbarMessage(R.string.cancellation_denied_cutoff, longDuration = true)
@@ -379,7 +389,7 @@ class SessionDetailViewModel @Inject constructor(
             }
             return
         }
-        if (isReservationDisabledSnapshot) {
+        if (isReservationDeniedByCutoffSnapshot) {
             _snackBarMessage.postValue(
                 Event(
                     SnackbarMessage(R.string.reservation_denied_cutoff, longDuration = true)

@@ -287,8 +287,9 @@ class ScheduleViewModelTest {
             mock {},
             testDispatcher,
             testDispatcher
-        )
-
+        ).apply {
+            isReservationEnabledByRemoteConfig = true
+        }
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
         viewModel.showReservations.observeForTesting {
@@ -316,8 +317,9 @@ class ScheduleViewModelTest {
             mock {},
             testDispatcher,
             testDispatcher
-        )
-
+        ).apply {
+            isReservationEnabledByRemoteConfig = true
+        }
         // Create ViewModel
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 

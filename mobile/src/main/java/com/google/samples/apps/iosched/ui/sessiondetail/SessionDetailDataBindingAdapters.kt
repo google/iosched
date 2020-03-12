@@ -142,7 +142,7 @@ fun sessionStartCountdown(view: TextView, timeUntilStart: Duration?) {
     "isSignedIn",
     "isRegistered",
     "isReservable",
-    "isReservationDisabled",
+    "isReservationDeniedByCutoff",
     "eventListener",
     requireAll = true
 )
@@ -152,7 +152,7 @@ fun assignFab(
     isSignedIn: Boolean,
     isRegistered: Boolean,
     isReservable: Boolean,
-    isReservationDisabled: Boolean,
+    isReservationDeniedByCutoff: Boolean,
     eventListener: SessionDetailEventListener
 ) {
     when {
@@ -167,7 +167,7 @@ fun assignFab(
         isRegistered && isReservable -> {
             fab.reservationStatus = ReservationViewState.fromUserEvent(
                 userEvent,
-                isReservationDisabled
+                isReservationDeniedByCutoff
             )
             fab.setOnClickListener { eventListener.onReservationClicked() }
         }

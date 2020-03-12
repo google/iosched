@@ -26,6 +26,7 @@ import androidx.lifecycle.switchMap
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.di.MainDispatcher
+import com.google.samples.apps.iosched.shared.di.ReservationEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.iosched.shared.result.Event
@@ -155,8 +156,13 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
         showNotificationPref(it)
     }
 
+    @Inject
+    @JvmField
+    @ReservationEnabledFlag
+    var isReservationEnabledByRemoteConfig: Boolean = false
+
     override val showReservations: LiveData<Boolean> = currentUserInfo.map {
-        isRegistered() || !isSignedIn()
+        (isRegistered() || !isSignedIn()) && isReservationEnabledByRemoteConfig
     }
 
     private fun showNotificationPref(
