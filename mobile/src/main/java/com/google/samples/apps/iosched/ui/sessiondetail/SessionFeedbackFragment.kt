@@ -69,7 +69,7 @@ class SessionFeedbackFragment : DaggerAppCompatDialogFragment() {
                 questionAdapter.submitList(questions)
             }
         })
-        viewModel.userSession.observe(viewLifecycleOwner, Observer { userSession ->
+        viewModel.userSession.observe(this, Observer { userSession ->
             dialog?.setTitle(userSession.session.title)
         })
         return MaterialAlertDialogBuilder(context)
