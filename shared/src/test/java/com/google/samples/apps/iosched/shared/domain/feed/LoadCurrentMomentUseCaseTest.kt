@@ -17,17 +17,16 @@
 package com.google.samples.apps.iosched.shared.domain.feed
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.successOr
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
-import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -39,61 +38,62 @@ import org.threeten.bp.Instant
  * Unit tests for [LoadCurrentMomentUseCase]
  */
 class LoadCurrentMomentUseCaseTest {
+
     @get:Rule
     val instantRule = InstantTaskExecutorRule()
 
     @get:Rule
     val syncTaskExecutorRule = SyncTaskExecutorRule()
 
-    private val dispatcher = TestCoroutineDispatcher()
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun timeDuringMoment_loadsMoment() {
+    fun timeDuringMoment_loadsMoment() = coroutineRule.runBlockingTest {
         val time = TestData.TestConferenceDays.first().start.plusHours(3).toInstant()
         val moment = loadMomentForTime(time)
         assertEquals(moment, TestData.moment1)
     }
 
     @Test
-    fun timeBeforeFirstMoment_loadsNull() {
+    fun timeBeforeFirstMoment_loadsNull() = coroutineRule.runBlockingTest {
         val time = TestData.TestConferenceDays.first().start.minusMinutes(1).toInstant()
         val moment = loadMomentForTime(time)
         assertNull(moment)
     }
 
     @Test
-    fun timeAfterLastMoment_loadsNull() {
+    fun timeAfterLastMoment_loadsNull() = coroutineRule.runBlockingTest {
         val time = TestData.TestConferenceDays.last().end.plusMinutes(1).toInstant()
         val moment = loadMomentForTime(time)
         assertNull(moment)
     }
 
-    private fun loadMomentForTime(time: Instant): Moment? {
+    @Test
+    fun loadsError() = coroutineRule.runBlockingTest {
+        val useCase =
+            LoadCurrentMomentUseCase(unsuccessfulFeedRepository, coroutineRule.testDispatcher)
+
+        // Time doesn't matter
+        val result = useCase(Instant.now())
+
+        assertTrue(result is Result.Error)
+    }
+
+    private suspend fun loadMomentForTime(time: Instant): Moment? {
         // Build use case with the test data
-        val useCase = LoadCurrentMomentUseCase(successfulFeedRepository, dispatcher)
-        val resultLivedata = MutableLiveData<Result<Moment?>>()
+        val useCase =
+            LoadCurrentMomentUseCase(successfulFeedRepository, coroutineRule.testDispatcher)
 
         // Execute the use case
-        useCase(time, resultLivedata)
+        val result = useCase(time)
 
         // Verify successful execution
-        val result = LiveDataTestUtil.getValue(resultLivedata)
         assertTrue(result is Result.Success)
 
         // Previous assert ensures this is actually a success
-        return result?.successOr(null)
-    }
-
-    @Test
-    fun loadsError() {
-        val useCase = LoadCurrentMomentUseCase(unsuccessfulFeedRepository, dispatcher)
-        val resultLivedata = MutableLiveData<Result<Moment?>>()
-
-        // Time doesn't matter
-        useCase(Instant.now(), resultLivedata)
-
-        val result = LiveDataTestUtil.getValue(resultLivedata)
-        assertTrue(result is Result.Error)
+        return result.successOr(null)
     }
 }
 
