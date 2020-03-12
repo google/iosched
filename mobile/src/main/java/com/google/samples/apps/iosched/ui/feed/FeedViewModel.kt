@@ -32,6 +32,8 @@ import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
+import com.google.samples.apps.iosched.shared.di.ReservationEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState
 import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState.ENDED
 import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState.UPCOMING
@@ -96,6 +98,16 @@ class FeedViewModel @Inject constructor(
         // over.
         private object NoSessionsContainer
     }
+
+    @Inject
+    @JvmField
+    @ReservationEnabledFlag
+    var isReservationEnabledByRemoteConfig: Boolean = false
+
+    @Inject
+    @JvmField
+    @MapFeatureEnabledFlag
+    var isMapEnabledByRemoteConfig: Boolean = false
 
     val feed: LiveData<List<Any>>
 
@@ -195,7 +207,8 @@ class FeedViewModel @Inject constructor(
                 ) { sessionsContainer, conferenceState, userInfo ->
                     val isSignedIn = userInfo?.isSignedIn() ?: false
                     val isRegistered = userInfo?.isRegistered() ?: false
-                    if (conferenceState != ENDED && isSignedIn && isRegistered)
+                    if (conferenceState != ENDED && isSignedIn && isRegistered &&
+                        isReservationEnabledByRemoteConfig)
                         sessionsContainer
                     else
                         NoSessionsContainer
@@ -260,7 +273,8 @@ class FeedViewModel @Inject constructor(
             actionTextId = actionId,
             userSessions = upcomingReservedSessions,
             timeZoneId = timeZoneId,
-            isLoading = sessionsResult is Loading
+            isLoading = sessionsResult is Loading,
+            isMapFeatureEnabled = isMapEnabledByRemoteConfig
         )
     }
 

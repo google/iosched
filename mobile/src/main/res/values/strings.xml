@@ -168,12 +168,13 @@
     <string name="feed_loading_error" translation_description="Short error message that is displayed in a Snackbar when the feed could not be loaded.">Could not load feed. Try again later.</string>
     <string name="feed_announcement_title" translation_description="The title of the announcements section in feed">Announcements</string>
     <string name="feed_past_announcements" translation_description="The label of the button to see all the past announcements">Past announcements</string>
-    <string name="feed_sessions_title">My day</string>
+    <string name="feed_sessions_title" translation_description="The title for the list of reserved sessions on the Feed.">My reservations</string>
     <string name="feed_session_map_button_title">Show on map</string>
     <string name="feed_view_full_schedule" translation_description="The title of the call to action in sessions section of feed when user is signed in">My full schedule</string>
     <string name="feed_watch_live_stream" translation_description="The title of the call to action in FeedHeader when the moment contains a livestream">Watch livestream</string>
     <string name="feed_no_reserved_events" translation_description="Message that is shown when the user hasn't reserved a seat for any event">Your reserved events for today will show up here</string>
     <string name="feed_no_reserved_events_action" translation_description="Button label for the action on the no reserved events card">Find events to reserve in Schedule</string>
+    <string name="feed_session_details_button_title" translation_description="Label for the button that takes the user to the session details.">See details</string>
 
     <string name="feed_social_channels_message" translation_description="The sub-title of the social channels section in feed">See what other people are sharing.</string>
     <string name="feed_social_twitter_link" translatable="false">https://twitter.com/googledevs</string>
