@@ -286,10 +286,9 @@ class ScheduleViewModelTest {
             observableFirebaseUserUseCase,
             mock {},
             testDispatcher,
-            testDispatcher
-        ).apply {
-            isReservationEnabledByRemoteConfig = true
-        }
+            testDispatcher,
+            true
+        )
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
         viewModel.showReservations.observeForTesting {
@@ -316,10 +315,9 @@ class ScheduleViewModelTest {
             observableFirebaseUserUseCase,
             mock {},
             testDispatcher,
-            testDispatcher
-        ).apply {
-            isReservationEnabledByRemoteConfig = true
-        }
+            testDispatcher,
+            true
+        )
         // Create ViewModel
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
@@ -347,7 +345,8 @@ class ScheduleViewModelTest {
             observableFirebaseUserUseCase,
             mock {},
             testDispatcher,
-            testDispatcher
+            testDispatcher,
+            true
         )
 
         // Create ViewModel
