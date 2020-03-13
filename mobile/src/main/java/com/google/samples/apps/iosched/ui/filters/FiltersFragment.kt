@@ -38,7 +38,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.databinding.FragmentScheduleFilterBinding
+import com.google.samples.apps.iosched.databinding.FragmentFiltersBinding
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.lerp
 import com.google.samples.apps.iosched.util.slideOffsetToAlpha
@@ -54,7 +54,7 @@ import javax.inject.Inject
 /**
  * Fragment that shows the list of filters for the Schedule
  */
-class ScheduleFilterFragment : DaggerFragment() {
+class FiltersFragment : DaggerFragment() {
 
     companion object {
         // Threshold for when normal header views and description views should "change places".
@@ -80,9 +80,9 @@ class ScheduleFilterFragment : DaggerFragment() {
 
     private lateinit var viewModel: FiltersViewModelDelegate
 
-    private lateinit var filterAdapter: ScheduleFilterAdapter
+    private lateinit var filterAdapter: SelectableFilterChipAdapter
 
-    private lateinit var binding: FragmentScheduleFilterBinding
+    private lateinit var binding: FragmentFiltersBinding
 
     private lateinit var behavior: BottomSheetBehavior<*>
 
@@ -97,15 +97,15 @@ class ScheduleFilterFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentScheduleFilterBinding.inflate(inflater, container, false).apply {
+        binding = FragmentFiltersBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
-            headerAlpha = this@ScheduleFilterFragment.headerAlpha
-            descriptionAlpha = this@ScheduleFilterFragment.descriptionAlpha
-            recyclerviewAlpha = this@ScheduleFilterFragment.recyclerviewAlpha
+            headerAlpha = this@FiltersFragment.headerAlpha
+            descriptionAlpha = this@FiltersFragment.descriptionAlpha
+            recyclerviewAlpha = this@FiltersFragment.recyclerviewAlpha
         }
 
         // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
-        binding.recyclerviewFilter.doOnApplyWindowInsets { v, insets, padding ->
+        binding.recyclerviewFilters.doOnApplyWindowInsets { v, insets, padding ->
             v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
 
@@ -121,17 +121,17 @@ class ScheduleFilterFragment : DaggerFragment() {
 
         behavior = BottomSheetBehavior.from(binding.filterSheet)
 
-        filterAdapter = ScheduleFilterAdapter(viewModel)
+        filterAdapter = SelectableFilterChipAdapter(viewModel)
         viewModel.eventFilters.observe(viewLifecycleOwner, Observer {
             filterAdapter.submitEventFilterList(it)
         })
 
-        binding.recyclerviewFilter.apply {
+        binding.recyclerviewFilters.apply {
             adapter = filterAdapter
             setHasFixedSize(true)
             itemAnimator = null
             (layoutManager as GridLayoutManager).spanSizeLookup =
-                ScheduleFilterSpanSizeLookup(filterAdapter)
+                EventFilterSpanSizeLookup(filterAdapter)
             addOnScrollListener(object : OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     binding.filtersHeaderShadow.isActivated = recyclerView.canScrollVertically(-1)
@@ -231,34 +231,19 @@ fun filterHeader(textView: TextView, hasFilters: Boolean?, eventCount: Int?) {
     }
 }
 
-@BindingAdapter("eventFilter", "viewModel", requireAll = true)
-fun setClickListenerForFilter(
-    filter: EventFilterView,
-    eventFilter: EventFilter,
-    viewModel: FiltersViewModelDelegate
-) {
-    filter.setOnClickListener {
-        // TODO(jdkoren) restore sign in check if we need it later
-        val checked = !filter.isChecked
-        filter.animateCheckedAndInvoke(checked) {
-            viewModel.toggleFilter(eventFilter, checked)
-        }
-    }
-}
-
 /**
  * Sets up the `onClickListener` for the filter reset button, so that it calls the given
  * [listener] with the side effect of animating deselecting any filters.
  */
-@BindingAdapter(value = ["eventFilters", "animatedOnClick"], requireAll = false)
+@BindingAdapter(value = ["filterChips", "animatedOnClick"], requireAll = false)
 fun setResetFiltersClickListener(
     reset: Button,
-    eventFilters: ViewGroup,
+    filterChips: ViewGroup,
     listener: OnClickListener
 ) {
     reset.setOnClickListener {
-        eventFilters.forEach { child ->
-            child.findViewById<EventFilterView>(R.id.filter_label)?.let { filterView ->
+        filterChips.forEach { child ->
+            child.findViewById<FilterChipView>(R.id.filter_label)?.let { filterView ->
                 if (filterView.isChecked) {
                     filterView.animateCheckedAndInvoke(false) {
                         listener.onClick(reset)
@@ -269,8 +254,23 @@ fun setResetFiltersClickListener(
     }
 }
 
-@BindingAdapter("eventFilterText")
-fun eventFilterText(view: EventFilterView, filter: EventFilter) {
+@BindingAdapter("filterChipOnClick", "viewModel", requireAll = true)
+fun setClickListenerForFilterChip(
+    view: FilterChipView,
+    eventFilter: EventFilter,
+    viewModel: FiltersViewModelDelegate
+) {
+    view.setOnClickListener {
+        // TODO(jdkoren) restore sign in check if we need it later
+        val checked = !view.isChecked
+        view.animateCheckedAndInvoke(checked) {
+            viewModel.toggleFilter(eventFilter, checked)
+        }
+    }
+}
+
+@BindingAdapter("filterChipText")
+fun filterChipText(view: FilterChipView, filter: EventFilter) {
     val text = if (filter.getTextResId() != 0) {
         view.resources.getText(filter.getTextResId())
     } else {
@@ -279,8 +279,8 @@ fun eventFilterText(view: EventFilterView, filter: EventFilter) {
     view.text = text
 }
 
-@BindingAdapter("eventFilterTextShort")
-fun eventFilterTextShort(view: EventFilterView, filter: EventFilter) {
+@BindingAdapter("filterChipTextShort")
+fun filterChipTextShort(view: FilterChipView, filter: EventFilter) {
     val text = if (filter.getShortTextResId() != 0) {
         view.resources.getText(filter.getShortTextResId())
     } else {
