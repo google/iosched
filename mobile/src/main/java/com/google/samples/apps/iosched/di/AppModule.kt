@@ -20,6 +20,8 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.samples.apps.iosched.MainApplication
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.agenda.AgendaRepository
@@ -91,4 +93,10 @@ class AppModule {
     @Singleton
     @Provides
     fun provideAppDatabase(context: Context): AppDatabase = AppDatabase.buildDatabase(context)
+
+    @Singleton
+    @Provides
+    fun provideGson(): Gson {
+        return GsonBuilder().create()
+    }
 }

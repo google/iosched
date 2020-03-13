@@ -18,13 +18,13 @@ package com.google.samples.apps.iosched.shared.domain.sessions
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.GsonBuilder
-import com.google.samples.apps.iosched.androidtest.util.observeForTesting
 import com.google.samples.apps.iosched.model.schedule.PinnedSession
 import com.google.samples.apps.iosched.model.schedule.PinnedSessionsSchedule
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
+import com.google.samples.apps.iosched.shared.result.Result.Loading
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
 import com.google.samples.apps.iosched.shared.util.TimeUtils
@@ -32,8 +32,11 @@ import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.runBlockingTest
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.toList
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.instanceOf
 import org.junit.Assert.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -57,34 +60,35 @@ class LoadPinnedSessionsJsonUseCaseTest {
     @Test
     fun returnedUserSessions_areStarredOrReserved() = coroutineRule.runBlockingTest {
         // Arrange
+        val gson = GsonBuilder().create()
+
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
             TestUserEventDataSource(),
             DefaultSessionRepository(TestDataRepository)
         )
-        val useCase = LoadPinnedSessionsJsonUseCase(testUserEventRepository)
-        val resultLiveData = useCase.observe()
-        resultLiveData.observeForTesting {
+        val useCase = LoadPinnedSessionsJsonUseCase(
+            testUserEventRepository, gson, coroutineRule.testDispatcher
+        )
 
-            // Act
-            useCase.execute("user1")
+        // Act
+        val results = useCase("user1").take(2).toList()
 
-            // Assert
-            val expected = PinnedSessionsSchedule(
-                listOf(TestData.session0, TestData.session1, TestData.session2)
-                    .map {
-                        PinnedSession(
-                            name = it.title,
-                            location = it.room?.name ?: "",
-                            day = TimeUtils.abbreviatedDayForAr(it.startTime),
-                            time = TimeUtils.abbreviatedTimeForAr(it.startTime),
-                            timestamp = it.startTime.toEpochMilli(),
-                            description = it.description
-                        )
-                    }
-            )
+        // Assert
+        val expected = PinnedSessionsSchedule(
+            listOf(TestData.session0, TestData.session1, TestData.session2)
+                .map {
+                    PinnedSession(
+                        name = it.title,
+                        location = it.room?.name ?: "",
+                        day = TimeUtils.abbreviatedDayForAr(it.startTime),
+                        time = TimeUtils.abbreviatedTimeForAr(it.startTime),
+                        timestamp = it.startTime.toEpochMilli(),
+                        description = it.description
+                    )
+                }
+        )
 
-            val gson = GsonBuilder().create()
-            assertThat(resultLiveData.value?.data, `is`(equalTo(gson.toJson(expected))))
-        }
+        assertThat(results[0], `is`(instanceOf(Loading::class.java)))
+        assertThat(results[1].data, `is`(equalTo(gson.toJson(expected))))
     }
 }
