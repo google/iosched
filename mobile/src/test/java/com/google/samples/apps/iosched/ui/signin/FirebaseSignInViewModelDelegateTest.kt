@@ -21,6 +21,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.androidtest.util.observeForTesting
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfoBasic
+import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
@@ -32,6 +33,7 @@ import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
+import kotlinx.coroutines.CoroutineDispatcher
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -55,15 +57,12 @@ class FirebaseSignInViewModelDelegateTest {
 
     @Test
     fun testSignedOut() = coroutineRule.runBlockingTest {
-        val subject = FirebaseSignInViewModelDelegate(
-            FakeObserveUserAuthStateUseCase(
+        val subject = createFirebaseSignInViewModelDelegate(
+            observeUserAuthStateUseCase = FakeObserveUserAuthStateUseCase(
                 user = Result.Success(null),
                 isRegistered = Result.Success(false),
                 coroutineDispatcher = coroutineRule.testDispatcher
-            ),
-            createNotificationsPrefIsShownUseCase(),
-            coroutineRule.testDispatcher,
-            coroutineRule.testDispatcher
+            )
         )
 
         subject.currentUserInfo.observeForTesting {
@@ -95,11 +94,8 @@ class FirebaseSignInViewModelDelegateTest {
             coroutineDispatcher = coroutineRule.testDispatcher
         )
 
-        val subject = FirebaseSignInViewModelDelegate(
-            fakeObserveUserAuthStateUseCase,
-            createNotificationsPrefIsShownUseCase(),
-            coroutineRule.testDispatcher,
-            coroutineRule.testDispatcher
+        val subject = createFirebaseSignInViewModelDelegate(
+            observeUserAuthStateUseCase = fakeObserveUserAuthStateUseCase
         )
 
         // Observe signIn and registeredUser so messages are received
@@ -132,11 +128,8 @@ class FirebaseSignInViewModelDelegateTest {
             coroutineDispatcher = coroutineRule.testDispatcher
         )
 
-        val subject = FirebaseSignInViewModelDelegate(
-            fakeObserveUserAuthStateUseCase,
-            createNotificationsPrefIsShownUseCase(),
-            coroutineRule.testDispatcher,
-            coroutineRule.testDispatcher
+        val subject = createFirebaseSignInViewModelDelegate(
+            observeUserAuthStateUseCase = fakeObserveUserAuthStateUseCase
         )
 
         // Observe signIn and registeredUser so messages are received
@@ -157,15 +150,12 @@ class FirebaseSignInViewModelDelegateTest {
 
     @Test
     fun testPostSignIn() = coroutineRule.runBlockingTest {
-        val subject = FirebaseSignInViewModelDelegate(
-            FakeObserveUserAuthStateUseCase(
+        val subject = createFirebaseSignInViewModelDelegate(
+            observeUserAuthStateUseCase = FakeObserveUserAuthStateUseCase(
                 user = Result.Success(null),
                 isRegistered = Result.Success(false),
                 coroutineDispatcher = coroutineRule.testDispatcher
-            ),
-            createNotificationsPrefIsShownUseCase(),
-            coroutineRule.testDispatcher,
-            coroutineRule.testDispatcher
+            )
         )
 
         subject.emitSignInRequest()
@@ -179,15 +169,12 @@ class FirebaseSignInViewModelDelegateTest {
 
     @Test
     fun testPostSignOut() = coroutineRule.runBlockingTest {
-        val subject = FirebaseSignInViewModelDelegate(
-            FakeObserveUserAuthStateUseCase(
+        val subject = createFirebaseSignInViewModelDelegate(
+            observeUserAuthStateUseCase = FakeObserveUserAuthStateUseCase(
                 user = Result.Success(null),
                 isRegistered = Result.Success(false),
                 coroutineDispatcher = coroutineRule.testDispatcher
-            ),
-            createNotificationsPrefIsShownUseCase(),
-            coroutineRule.testDispatcher,
-            coroutineRule.testDispatcher
+            )
         )
 
         subject.emitSignOutRequest()
@@ -202,6 +189,27 @@ class FirebaseSignInViewModelDelegateTest {
         return NotificationsPrefIsShownUseCase(
             FakePreferenceStorage(),
             coroutineRule.testDispatcher
+        )
+    }
+
+    private fun createFirebaseSignInViewModelDelegate(
+        observeUserAuthStateUseCase: ObserveUserAuthStateUseCase =
+            FakeObserveUserAuthStateUseCase(
+            user = Result.Success(null),
+            isRegistered = Result.Success(true),
+            coroutineDispatcher = coroutineRule.testDispatcher),
+        notificationsPrefIsShownUseCase: NotificationsPrefIsShownUseCase =
+            createNotificationsPrefIsShownUseCase(),
+        ioDispatcher: CoroutineDispatcher = coroutineRule.testDispatcher,
+        mainDispatcher: CoroutineDispatcher = coroutineRule.testDispatcher,
+        isReservationEnabledByRemoteConfig: Boolean = true
+    ): FirebaseSignInViewModelDelegate {
+        return FirebaseSignInViewModelDelegate(
+            observeUserAuthStateUseCase,
+            notificationsPrefIsShownUseCase,
+            ioDispatcher,
+            mainDispatcher,
+            isReservationEnabledByRemoteConfig
         )
     }
 }

@@ -117,7 +117,8 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
     observeUserAuthStateUseCase: ObserveUserAuthStateUseCase,
     private val notificationsPrefIsShownUseCase: NotificationsPrefIsShownUseCase,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-    @MainDispatcher private val mainDispatcher: CoroutineDispatcher
+    @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
+    @ReservationEnabledFlag val isReservationEnabledByRemoteConfig: Boolean
 ) : SignInViewModelDelegate {
 
     override val performSignInEvent = MutableLiveData<Event<SignInEvent>>()
@@ -155,11 +156,6 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
     override val shouldShowNotificationsPrefAction = notificationsPrefIsShown.map {
         showNotificationPref(it)
     }
-
-    @Inject
-    @JvmField
-    @ReservationEnabledFlag
-    var isReservationEnabledByRemoteConfig: Boolean = false
 
     override val showReservations: LiveData<Boolean> = currentUserInfo.map {
         (isRegistered() || !isSignedIn()) && isReservationEnabledByRemoteConfig

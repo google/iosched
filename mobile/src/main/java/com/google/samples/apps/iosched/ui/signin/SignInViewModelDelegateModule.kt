@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.ui.signin
 
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.di.MainDispatcher
+import com.google.samples.apps.iosched.shared.di.ReservationEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import dagger.Module
@@ -34,13 +35,15 @@ class SignInViewModelDelegateModule {
         dataSource: ObserveUserAuthStateUseCase,
         notificationsPrefIsShownUseCase: NotificationsPrefIsShownUseCase,
         @IoDispatcher ioDispatcher: CoroutineDispatcher,
-        @MainDispatcher mainDispatcher: CoroutineDispatcher
+        @MainDispatcher mainDispatcher: CoroutineDispatcher,
+        @ReservationEnabledFlag isReservationEnabledByRemoteConfig: Boolean
     ): SignInViewModelDelegate {
         return FirebaseSignInViewModelDelegate(
             observeUserAuthStateUseCase = dataSource,
             notificationsPrefIsShownUseCase = notificationsPrefIsShownUseCase,
             ioDispatcher = ioDispatcher,
-            mainDispatcher = mainDispatcher
+            mainDispatcher = mainDispatcher,
+            isReservationEnabledByRemoteConfig = isReservationEnabledByRemoteConfig
         )
     }
 }
