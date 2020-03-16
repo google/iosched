@@ -22,12 +22,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
-import com.google.android.play.core.ktx.AppUpdateResult
 import com.google.samples.apps.iosched.shared.domain.ar.LoadArDebugFlagUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadPinnedSessionsJsonUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.ui.appupdate.AppUpdateViewModelDelegate
 import com.google.samples.apps.iosched.ui.ar.ArCoreAvailabilityLiveData
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
@@ -37,7 +35,6 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(
     signInViewModelDelegate: SignInViewModelDelegate,
     themedActivityDelegate: ThemedActivityDelegate,
-    appUpdateViewModelDelegate: AppUpdateViewModelDelegate,
     loadPinnedSessionsUseCase: LoadPinnedSessionsJsonUseCase,
     loadArDebugFlagUseCase: LoadArDebugFlagUseCase,
     context: Context
@@ -80,9 +77,6 @@ class MainActivityViewModel @Inject constructor(
     }
 
     val arCoreAvailability = ArCoreAvailabilityLiveData(context)
-
-    val appUpdateAvailability: LiveData<AppUpdateResult> =
-        appUpdateViewModelDelegate.appUpdateResult
 
     fun onProfileClicked() {
         if (isSignedIn()) {

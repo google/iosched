@@ -19,7 +19,6 @@ package com.google.samples.apps.iosched.tests.di
 import com.google.samples.apps.iosched.MainApplication
 import com.google.samples.apps.iosched.di.ActivityBindingModule
 import com.google.samples.apps.iosched.di.AppModule
-import com.google.samples.apps.iosched.di.AppUpdateModule
 import com.google.samples.apps.iosched.di.SignInModule
 import com.google.samples.apps.iosched.shared.di.BroadcastReceiverBindingModule
 import com.google.samples.apps.iosched.shared.di.FeatureFlagsModule
@@ -46,7 +45,6 @@ import javax.inject.Singleton
     modules = [
         AndroidSupportInjectionModule::class,
         AppModule::class,
-        AppUpdateModule::class,
         // Test Module that overrides CoroutinesModule
         TestCoroutinesModule::class,
         ActivityBindingModule::class,
