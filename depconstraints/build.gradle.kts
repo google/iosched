@@ -122,7 +122,6 @@ dependencies {
         api("${Libs.OKHTTP_LOGGING_INTERCEPTOR}:$okhttp")
         api("${Libs.OKIO}:$okio")
         api("${Libs.INK_PAGE_INDICATOR}:$pageIndicator")
-        api("${Libs.PLAYCORE_KTX}:$playCore")
         api("${Libs.RULES}:$rules")
         api("${Libs.RUNNER}:$runner")
         api("${Libs.THREETENABP}:$threetenabp")

@@ -261,16 +261,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
             Timber.d("Signed in user can demo ar = $it")
             canSignedInUserDemoAr = it
         })
-        // TODO(b/150719453)
-//        viewModel.appUpdateAvailability.observe(this, Observer {
-//            when (it) {
-//                is AppUpdateResult.Available -> TODO()
-//                is AppUpdateResult.InProgress -> Unit // do nothing
-//                is AppUpdateResult.Downloaded -> TODO()
-//                AppUpdateResult.NotAvailable ->
-//                    Timber.d("No App Update available at this time.")
-//            }
-//        })
     }
 
     override fun registerToolbarWithNavigation(toolbar: Toolbar) {
