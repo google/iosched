@@ -16,8 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.annotation.VisibleForTesting
 import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.shared.data.db.AppDatabase
@@ -25,6 +24,10 @@ import com.google.samples.apps.iosched.shared.data.db.CodelabFtsEntity
 import com.google.samples.apps.iosched.shared.data.db.SessionFtsEntity
 import com.google.samples.apps.iosched.shared.data.db.SpeakerFtsEntity
 import com.google.samples.apps.iosched.shared.util.TimeUtils
+import kotlinx.coroutines.channels.BroadcastChannel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Named
@@ -54,15 +57,19 @@ open class ConferenceDataRepository @Inject constructor(
     var latestUpdateSource: UpdateSource = UpdateSource.NONE
         private set
 
-    private val _dataLastUpdatedObservable = MutableLiveData<Long>()
-    val dataLastUpdatedObservable: LiveData<Long>
-        get() = _dataLastUpdatedObservable
+    private val dataLastUpdatedChannel = BroadcastChannel<Long>(Channel.CONFLATED)
+    val dataLastUpdatedObservable: Flow<Long> = dataLastUpdatedChannel.asFlow()
 
     // Prevents multiple consumers requesting data at the same time
     private val loadConfDataLock = Any()
 
-    fun refreshCacheWithRemoteConferenceData() {
+    @VisibleForTesting
+    // Exposing the close method for the channel to make sure the channel is closed in every test
+    fun closeDataLastUpdatedChannel() {
+        dataLastUpdatedChannel.close()
+    }
 
+    fun refreshCacheWithRemoteConferenceData() {
         val conferenceData = try {
             remoteDataSource.getRemoteConferenceData()
         } catch (e: IOException) {
@@ -84,7 +91,7 @@ open class ConferenceDataRepository @Inject constructor(
 
         // Update meta
         latestException = null
-        _dataLastUpdatedObservable.postValue(System.currentTimeMillis())
+        dataLastUpdatedChannel.offer(System.currentTimeMillis())
         latestUpdateSource = UpdateSource.NETWORK
         latestException = null
     }

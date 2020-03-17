@@ -56,16 +56,16 @@ class GetConferenceStateUseCase @Inject constructor(
 
     private fun getNextStateWithDelay(): Pair<ConferenceState, Long?> {
         val timeUntilStart = Duration.between(timeProvider.now(), TimeUtils.getKeynoteStartTime())
-        if (timeUntilStart.isNegative) {
+        return if (timeUntilStart.isNegative) {
             val timeUntilEnd =
                 Duration.between(timeProvider.now(), TimeUtils.getConferenceEndTime())
             if (timeUntilEnd.isNegative) {
-                return Pair(ENDED, null)
+                Pair(ENDED, null)
             } else {
-                return Pair(STARTED, timeUntilEnd.toMillis())
+                Pair(STARTED, timeUntilEnd.toMillis())
             }
         } else {
-            return Pair(UPCOMING, timeUntilStart.toMillis())
+            Pair(UPCOMING, timeUntilStart.toMillis())
         }
     }
 }

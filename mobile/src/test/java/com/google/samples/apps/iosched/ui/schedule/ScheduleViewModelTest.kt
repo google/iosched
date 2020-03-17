@@ -37,14 +37,14 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
-import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCaseLegacy
+import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsParameters
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
-import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Event
@@ -130,8 +130,10 @@ class ScheduleViewModelTest {
         val viewModel = createScheduleViewModel(
             loadScheduleSessionsUseCase = createExceptionUseCase()
         )
-        val errorMsg = LiveDataTestUtil.getValue(viewModel.errorMessage)
-        assertTrue(errorMsg?.peekContent()?.isNotEmpty() ?: false)
+        viewModel.errorMessage.observeForTesting {
+            val errorMsg = LiveDataTestUtil.getValue(viewModel.errorMessage)
+            assertTrue(errorMsg?.peekContent()?.isNotEmpty() ?: false)
+        }
     }
 
     /** Starring **/
@@ -363,19 +365,20 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun scheduleHints_notShown_on_launch() {
+    fun scheduleHints_notShown_on_launch() = coroutineRule.runBlockingTest {
         val viewModel = createScheduleViewModel()
-
-        val event = LiveDataTestUtil.getValue(viewModel.scheduleUiHintsShown)
-        assertEquals(event?.getContentIfNotHandled(), false)
+        viewModel.scheduleUiHintsShown.observeForTesting {
+            val event = LiveDataTestUtil.getValue(viewModel.scheduleUiHintsShown)
+            assertEquals(event?.getContentIfNotHandled(), false)
+        }
     }
 
     @Test
-    fun swipeRefresh_refreshesRemoteConfData() {
+    fun swipeRefresh_refreshesRemoteConfData() = coroutineRule.runBlockingTest {
         // Given a view model with a mocked remote data source
         val remoteDataSource = mock<ConferenceDataSource> {}
         val viewModel = createScheduleViewModel(
-            refreshConferenceDataUseCase = RefreshConferenceDataUseCaseLegacy(
+            refreshConferenceDataUseCase = RefreshConferenceDataUseCase(
                 ConferenceDataRepository(
                     remoteDataSource = remoteDataSource,
                     boostrapDataSource = TestDataSource,
@@ -391,8 +394,10 @@ class ScheduleViewModelTest {
         // Then the remote data source attempts to fetch new data
         verify(remoteDataSource).getRemoteConferenceData()
 
-        // And the swipe refreshing status is set to false
-        assertEquals(false, LiveDataTestUtil.getValue(viewModel.swipeRefreshing))
+        viewModel.swipeRefreshing.observeForTesting {
+            // And the swipe refreshing status is set to false
+            assertEquals(false, LiveDataTestUtil.getValue(viewModel.swipeRefreshing))
+        }
     }
 
     @Test
@@ -408,7 +413,7 @@ class ScheduleViewModelTest {
         )
         val viewModel = createScheduleViewModel(
             loadScheduleSessionsUseCase = loadUserSessionsByDayUseCase,
-            observeConferenceDataUseCase = ObserveConferenceDataUseCase(repo)
+            observeConferenceDataUseCase = ObserveConferenceDataUseCase(repo, testDispatcher)
         )
 
         // Observe viewmodel to load sessions
@@ -436,12 +441,12 @@ class ScheduleViewModelTest {
         ),
         scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase =
             FakeScheduleUiHintsShownUseCase(),
-        getTimeZoneUseCaseLegacy: GetTimeZoneUseCaseLegacy = createGetTimeZoneUseCase(),
+        getTimeZoneUseCase: GetTimeZoneUseCase = createGetTimeZoneUseCase(),
         topicSubscriber: TopicSubscriber = mock {},
-        refreshConferenceDataUseCase: RefreshConferenceDataUseCaseLegacy =
-            RefreshConferenceDataUseCaseLegacy(TestDataRepository, testDispatcher),
+        refreshConferenceDataUseCase: RefreshConferenceDataUseCase =
+            RefreshConferenceDataUseCase(TestDataRepository, testDispatcher),
         observeConferenceDataUseCase: ObserveConferenceDataUseCase =
-            ObserveConferenceDataUseCase(TestDataRepository),
+            ObserveConferenceDataUseCase(TestDataRepository, testDispatcher),
         analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper()
     ): ScheduleViewModel {
         return ScheduleViewModel(
@@ -451,7 +456,7 @@ class ScheduleViewModelTest {
             scheduleUiHintsShownUseCase = scheduleUiHintsShownUseCase,
             topicSubscriber = topicSubscriber,
             snackbarMessageManager = snackbarMessageManager,
-            getTimeZoneUseCase = getTimeZoneUseCaseLegacy,
+            getTimeZoneUseCase = getTimeZoneUseCase,
             refreshConferenceDataUseCase = refreshConferenceDataUseCase,
             observeConferenceDataUseCase = observeConferenceDataUseCase,
             analyticsHelper = analyticsHelper
@@ -488,7 +493,7 @@ class ScheduleViewModelTest {
     private fun createStarEventUseCase() = FakeStarEventUseCase(testDispatcher)
 
     private fun createGetTimeZoneUseCase() =
-        object : GetTimeZoneUseCaseLegacy(FakePreferenceStorage(), testDispatcher) {}
+        GetTimeZoneUseCase(FakePreferenceStorage(), testDispatcher)
 }
 
 class TestRegisteredUserDataSource(private val isRegistered: Result<Boolean?>) :

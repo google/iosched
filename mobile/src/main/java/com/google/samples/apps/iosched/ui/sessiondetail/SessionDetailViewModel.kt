@@ -20,6 +20,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Session
@@ -33,7 +34,7 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.di.ReservationEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
-import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCaseLegacy
+import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
@@ -43,7 +44,6 @@ import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUse
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.result.Event
-import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Error
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.result.data
@@ -87,7 +87,7 @@ class SessionDetailViewModel @Inject constructor(
     private val loadRelatedSessionUseCase: LoadUserSessionsUseCase,
     private val starEventUseCase: StarEventAndNotifyUseCase,
     private val reservationActionUseCase: ReservationActionUseCase,
-    getTimeZoneUseCase: GetTimeZoneUseCaseLegacy, // TODO(COROUTINES): Migrate
+    getTimeZoneUseCase: GetTimeZoneUseCase,
     private val snackbarMessageManager: SnackbarMessageManager,
     timeProvider: TimeProvider,
     private val networkUtils: NetworkUtils,
@@ -108,41 +108,71 @@ class SessionDetailViewModel @Inject constructor(
 
     private val reservationActionResult = MutableLiveData<ReservationRequestAction>()
 
-    private val sessionTimeRelativeState: LiveData<TimeUtils.SessionRelativeTimeState>
-
-    private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
-
-    val timeZoneId: LiveData<ZoneId>
-
     private val _errorMessage = MediatorLiveData<Event<String>>()
-    val errorMessage: LiveData<Event<String>>
-        get() = _errorMessage
+    val errorMessage: LiveData<Event<String>> = _errorMessage
 
     private val _snackBarMessage = MediatorLiveData<Event<SnackbarMessage>>()
-    val snackBarMessage: LiveData<Event<SnackbarMessage>>
-        get() = _snackBarMessage
+    val snackBarMessage: LiveData<Event<SnackbarMessage>> = _snackBarMessage
 
     private val _navigateToSignInDialogAction = MutableLiveData<Event<Unit>>()
-    val navigateToSignInDialogAction: LiveData<Event<Unit>>
-        get() = _navigateToSignInDialogAction
+    val navigateToSignInDialogAction: LiveData<Event<Unit>> = _navigateToSignInDialogAction
 
     val navigateToYouTubeAction = MutableLiveData<Event<String>>()
 
     private val _session = MediatorLiveData<Session>()
-    val session: LiveData<Session>
-        get() = _session
+    val session: LiveData<Session> = _session
 
     private val _userEvent = MediatorLiveData<UserEvent>()
-    val userEvent: LiveData<UserEvent>
-        get() = _userEvent
+    val userEvent: LiveData<UserEvent> = _userEvent
 
-    val showFeedbackButton: LiveData<Boolean>
-    val timeUntilStart: LiveData<Duration?>
-    val isReservationDeniedByCutoff: LiveData<Boolean>
-    private val _shouldShowStarInBottomNav = MediatorLiveData<Boolean>()
+    val showFeedbackButton: LiveData<Boolean> = userEvent.combine(session) {
+            userEvent, currentSession ->
+        isSignedIn() &&
+                !userEvent.isReviewed &&
+                currentSession.type == SessionType.SESSION &&
+                TimeUtils.getSessionState(currentSession, ZonedDateTime.now()) ==
+                TimeUtils.SessionRelativeTimeState.AFTER
+    }
+    // Updates periodically with a special [IntervalLiveData]
+    val timeUntilStart: LiveData<Duration?> =
+        DefaultIntervalMapper.mapAtInterval(session, TEN_SECONDS) { session ->
+            session?.startTime?.let { startTime ->
+                val duration = Duration.between(timeProvider.now(), startTime)
+                when (duration.toMinutes()) {
+                    in 1..5 -> duration
+                    else -> null
+                }
+            }
+        }
+    val isReservationDeniedByCutoff: LiveData<Boolean> =
+        DefaultIntervalMapper.mapAtInterval(session, SIXTY_SECONDS) { session ->
+            session?.startTime?.let { startTime ->
+                // Only allow reservations if the sessions starts more than an hour from now
+                Duration.between(timeProvider.now(), startTime).toMinutes() <= 60
+            }
+        }
+    private val _shouldShowStarInBottomNav = MediatorLiveData<Boolean>().apply {
+        addSource(session) {
+            value = showStarInBottomNav()
+        }
+        addSource(observeRegisteredUser()) {
+            value = showStarInBottomNav()
+        }
+    }
     val shouldShowStarInBottomNav: LiveData<Boolean> = _shouldShowStarInBottomNav
 
     private val sessionId = MutableLiveData<SessionId?>()
+
+    private val showInConferenceTimeZone: LiveData<Boolean> = liveData {
+        emit(getTimeZoneUseCase(Unit).successOr(true))
+    }
+    val timeZoneId: LiveData<ZoneId> = showInConferenceTimeZone.map { inConferenceTimeZone ->
+            if (inConferenceTimeZone) {
+                TimeUtils.CONFERENCE_TIMEZONE
+            } else {
+                ZoneId.systemDefault()
+            }
+        }
 
     private val _navigateToRemoveReservationDialogAction =
         MutableLiveData<Event<RemoveReservationDialogParameters>>()
@@ -150,7 +180,13 @@ class SessionDetailViewModel @Inject constructor(
         get() = _navigateToRemoveReservationDialogAction
 
     private val _navigateToSwapReservationDialogAction =
-        MediatorLiveData<Event<SwapRequestParameters>>()
+        MediatorLiveData<Event<SwapRequestParameters>>().apply {
+            addSource(reservationActionResult) {
+                (it as? SwapAction)?.let { swap ->
+                    value = Event(swap.parameters)
+                }
+            }
+        }
     val navigateToSwapReservationDialogAction: LiveData<Event<SwapRequestParameters>>
         get() = _navigateToSwapReservationDialogAction
 
@@ -171,83 +207,15 @@ class SessionDetailViewModel @Inject constructor(
     }
 
     init {
-
-        getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
-
-        /* Wire observable dependencies */
-
         // If the user changes, load new data for them
         _userEvent.addSource(currentUserInfo) {
             Timber.d("CurrentFirebaseUser changed, refreshing")
             refreshUserSession()
         }
-
         // If the session ID changes, load new data for it
         _session.addSource(sessionId) {
             Timber.d("SessionId changed, refreshing")
             refreshUserSession()
-        }
-
-        /* Wire result dependencies */
-
-        _shouldShowStarInBottomNav.addSource(session) {
-            _shouldShowStarInBottomNav.value = showStarInBottomNav()
-        }
-        _shouldShowStarInBottomNav.addSource(observeRegisteredUser()) {
-            _shouldShowStarInBottomNav.value = showStarInBottomNav()
-        }
-
-        val showInConferenceTimeZone = preferConferenceTimeZoneResult.map {
-            it.successOr(true)
-        }
-
-        timeZoneId = showInConferenceTimeZone.map { inConferenceTimeZone ->
-            if (inConferenceTimeZone) {
-                TimeUtils.CONFERENCE_TIMEZONE
-            } else {
-                ZoneId.systemDefault()
-            }
-        }
-
-        /* Wire observables exposed for UI elements */
-
-        // TODO this should also be called when session state is stale (b/74242921)
-        // If there's a new session, update the relative time status (before, during, after...)
-        sessionTimeRelativeState = session.map { currentSession ->
-            TimeUtils.getSessionState(currentSession, ZonedDateTime.now())
-        }
-
-        showFeedbackButton = userEvent.combine(session) { userEvent, currentSession ->
-            isSignedIn() &&
-                !userEvent.isReviewed &&
-                currentSession.type == SessionType.SESSION &&
-                TimeUtils.getSessionState(currentSession, ZonedDateTime.now()) ==
-                TimeUtils.SessionRelativeTimeState.AFTER
-        }
-
-        // Updates periodically with a special [IntervalLiveData]
-        timeUntilStart = DefaultIntervalMapper.mapAtInterval(session, TEN_SECONDS) { session ->
-            session?.startTime?.let { startTime ->
-                val duration = Duration.between(timeProvider.now(), startTime)
-                when (duration.toMinutes()) {
-                    in 1..5 -> duration
-                    else -> null
-                }
-            }
-        }
-
-        isReservationDeniedByCutoff =
-            DefaultIntervalMapper.mapAtInterval(session, SIXTY_SECONDS) { session ->
-                session?.startTime?.let { startTime ->
-                    // Only allow reservations if the sessions starts more than an hour from now
-                    Duration.between(timeProvider.now(), startTime).toMinutes() <= 60
-                }
-            }
-
-        _navigateToSwapReservationDialogAction.addSource(reservationActionResult) {
-            (it as? SwapAction)?.let { swap ->
-                _navigateToSwapReservationDialogAction.postValue(Event(swap.parameters))
-            }
         }
     }
 
