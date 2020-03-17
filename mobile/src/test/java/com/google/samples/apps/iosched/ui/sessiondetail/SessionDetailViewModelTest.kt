@@ -378,12 +378,13 @@ class SessionDetailViewModelTest {
             SnackbarMessageManager(FakePreferenceStorage()),
         networkUtils: NetworkUtils = mockNetworkUtils,
         timeProvider: TimeProvider = DefaultTimeProvider,
-        analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper()
+        analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper(),
+        isReservationEnabledByRemoteConfig: Boolean = true
     ): SessionDetailViewModel {
         return SessionDetailViewModel(
             signInViewModelPlugin, loadUserSessionUseCase, loadRelatedSessionsUseCase,
             starEventUseCase, reservationActionUseCase, getTimeZoneUseCase, snackbarMessageManager,
-            timeProvider, networkUtils, analyticsHelper
+            timeProvider, networkUtils, analyticsHelper, isReservationEnabledByRemoteConfig
         )
     }
 

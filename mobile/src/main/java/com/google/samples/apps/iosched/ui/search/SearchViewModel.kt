@@ -48,15 +48,11 @@ class SearchViewModel @Inject constructor(
     simpleSearchUseCase: SessionSimpleSearchUseCase,
     ftsSearchUseCase: SessionFtsSearchUseCase,
     getTimeZoneUseCase: GetTimeZoneUseCase,
-    signInViewModelDelegate: SignInViewModelDelegate
+    signInViewModelDelegate: SignInViewModelDelegate,
+    @SearchUsingRoomEnabledFlag val searchUsingRoomFeatureEnabled: Boolean
 ) : ViewModel(),
     EventActions,
     SignInViewModelDelegate by signInViewModelDelegate {
-
-    @Inject
-    @JvmField
-    @SearchUsingRoomEnabledFlag
-    var searchUsingRoomFeatureEnabled: Boolean = false
 
     private val _navigateToSessionAction = MutableLiveData<Event<SessionId>>()
     val navigateToSessionAction: LiveData<Event<SessionId>> = _navigateToSessionAction

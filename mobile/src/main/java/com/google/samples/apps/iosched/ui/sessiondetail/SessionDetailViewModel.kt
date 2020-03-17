@@ -91,7 +91,8 @@ class SessionDetailViewModel @Inject constructor(
     private val snackbarMessageManager: SnackbarMessageManager,
     timeProvider: TimeProvider,
     private val networkUtils: NetworkUtils,
-    private val analyticsHelper: AnalyticsHelper
+    private val analyticsHelper: AnalyticsHelper,
+    @ReservationEnabledFlag val isReservationEnabledByRemoteConfig: Boolean
 ) : ViewModel(), SessionDetailEventListener, EventActions,
     SignInViewModelDelegate by signInViewModelDelegate {
 
@@ -164,11 +165,6 @@ class SessionDetailViewModel @Inject constructor(
     private val _navigateToSessionFeedbackAction = MutableLiveData<Event<SessionId>>()
     val navigateToSessionFeedbackAction: LiveData<Event<SessionId>>
         get() = _navigateToSessionFeedbackAction
-
-    @Inject
-    @JvmField
-    @ReservationEnabledFlag
-    var isReservationEnabledByRemoteConfig: Boolean = false
 
     val isReservable: LiveData<Boolean> = session.map {
         it.isReservable && isReservationEnabledByRemoteConfig
