@@ -213,7 +213,6 @@ dependencies {
     implementation(Libs.GSON)
 
     implementation(Libs.ARCORE)
-    implementation(Libs.PLAYCORE_KTX)
 }
 
 apply(plugin = "com.google.gms.google-services")
