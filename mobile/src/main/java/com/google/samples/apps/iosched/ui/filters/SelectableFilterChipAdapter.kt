@@ -27,34 +27,30 @@ import com.google.samples.apps.iosched.databinding.ItemFilterChipSelectableBindi
 import com.google.samples.apps.iosched.databinding.ItemGenericSectionHeaderBinding
 import com.google.samples.apps.iosched.shared.util.exceptionInDebug
 import com.google.samples.apps.iosched.ui.SectionHeader
-import com.google.samples.apps.iosched.ui.filters.EventFilter.EventFilterCategory
-import com.google.samples.apps.iosched.ui.filters.EventFilter.EventFilterCategory.NONE
-import com.google.samples.apps.iosched.ui.filters.EventFilter.MyEventsFilter
-import com.google.samples.apps.iosched.ui.filters.EventFilter.TagFilter
 
 /**
  * Adapter for the filters sheet.
  */
-class SelectableFilterChipAdapter(val viewModelDelegate: FiltersViewModelDelegate) :
-    ListAdapter<Any, ViewHolder>(EventFilterDiff) {
+class SelectableFilterChipAdapter(private val viewModelDelegate: FiltersViewModelDelegate) :
+    ListAdapter<Any, ViewHolder>(FilterChipDiff) {
 
     companion object {
         private const val VIEW_TYPE_HEADING = R.layout.item_generic_section_header
         private const val VIEW_TYPE_FILTER = R.layout.item_filter_chip_selectable
 
         /**
-         * Inserts category headings in a list of [EventFilter]s to make a heterogeneous list.
-         * Assumes the items are already sorted by the value of [EventFilter.getFilterCategory],
-         * with items belonging to [NONE] first.
+         * Inserts category headings in a list of [FilterChip]s to make a heterogeneous list.
+         * Assumes the items are already grouped by [FilterChip.categoryLabel], beginning with
+         * categoryLabel == '0'.
          */
-        private fun insertCategoryHeadings(list: List<EventFilter>?): List<Any> {
+        private fun insertCategoryHeadings(list: List<FilterChip>?): List<Any> {
             val newList = mutableListOf<Any>()
-            var previousCategory: EventFilterCategory = NONE
+            var previousCategory = 0
             list?.forEach {
-                val category = it.getFilterCategory()
-                if (category != previousCategory && category != NONE) {
+                val category = it.categoryLabel
+                if (category != previousCategory && category != 0) {
                     newList += SectionHeader(
-                        titleId = category.labelResId,
+                        titleId = category,
                         useHorizontalPadding = false
                     )
                 }
@@ -73,20 +69,20 @@ class SelectableFilterChipAdapter(val viewModelDelegate: FiltersViewModelDelegat
     }
 
     /** Prefer this method over [submitList] to add category headings. */
-    fun submitEventFilterList(list: List<EventFilter>?) {
+    fun submitFilterList(list: List<FilterChip>?) {
         super.submitList(insertCategoryHeadings(list))
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
             is SectionHeader -> VIEW_TYPE_HEADING
-            is EventFilter -> VIEW_TYPE_FILTER
+            is FilterChip -> VIEW_TYPE_FILTER
             else -> throw IllegalArgumentException("Unknown item type")
         }
     }
 
     fun getSpanSize(position: Int): Int {
-        return if (getItem(position) is TagFilter) 1 else 2
+        return if (getItem(position) is FilterChip) 1 else 2
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -117,7 +113,7 @@ class SelectableFilterChipAdapter(val viewModelDelegate: FiltersViewModelDelegat
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (holder) {
             is HeadingViewHolder -> holder.bind(getItem(position) as SectionHeader)
-            is FilterViewHolder -> holder.bind(getItem(position) as EventFilter)
+            is FilterViewHolder -> holder.bind(getItem(position) as FilterChip)
         }
     }
 
@@ -132,30 +128,29 @@ class SelectableFilterChipAdapter(val viewModelDelegate: FiltersViewModelDelegat
         }
     }
 
-    /** ViewHolder for [TagFilter] items. */
+    /** ViewHolder for [FilterChip] items. */
     class FilterViewHolder(private val binding: ItemFilterChipSelectableBinding) :
         ViewHolder(binding.root) {
 
-        internal fun bind(item: EventFilter) {
+        internal fun bind(item: FilterChip) {
             binding.filterChip = item
             binding.executePendingBindings()
         }
     }
 }
 
-internal object EventFilterDiff : DiffUtil.ItemCallback<Any>() {
+internal object FilterChipDiff : DiffUtil.ItemCallback<Any>() {
     override fun areItemsTheSame(oldItem: Any, newItem: Any) = oldItem == newItem
 
     override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
         return when (oldItem) {
-            is MyEventsFilter -> oldItem.isUiContentEqual(newItem as MyEventsFilter)
-            is TagFilter -> oldItem.isUiContentEqual(newItem as TagFilter)
+            is FilterChip -> oldItem.isSelected == (newItem as FilterChip).isSelected
             else -> true
         }
     }
 }
 
-internal class EventFilterSpanSizeLookup(private val adapter: SelectableFilterChipAdapter) :
+internal class FilterChipSpanSizeLookup(private val adapter: SelectableFilterChipAdapter) :
     SpanSizeLookup() {
 
     override fun getSpanSize(position: Int) = adapter.getSpanSize(position)

@@ -15,15 +15,15 @@
   ~ limitations under the License.
   -->
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="filterChip"
-            type="com.google.samples.apps.iosched.ui.filters.EventFilter" />
+            type="com.google.samples.apps.iosched.ui.filters.FilterChip" />
 
         <variable
             name="viewModel"
@@ -36,10 +36,11 @@
         android:layout_height="wrap_content"
         android:checked="@{filterChip.isSelected}"
         android:minHeight="?listPreferredItemHeightSmall"
-        app:color="@{filterChip.getColor()}"
+        app:color="@{filterChip.color}"
         app:filterChipOnClick="@{filterChip}"
         app:filterChipText="@{filterChip}"
-        app:selectedTextColor="@{filterChip.getSelectedTextColor()}"
-        app:viewModel="@{viewModel}" />
+        app:selectedTextColor="@{filterChip.selectedTextColor}"
+        app:viewModel="@{viewModel}"
+        tools:text="@sample/tags.json/tags/name" />
 
 </layout>
