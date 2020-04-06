@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.ui.search
 
 import androidx.lifecycle.ViewModel
+import com.google.samples.apps.iosched.shared.di.ChildFragmentScoped
 import com.google.samples.apps.iosched.shared.di.FragmentScoped
 import com.google.samples.apps.iosched.shared.di.ViewModelKey
 import com.google.samples.apps.iosched.ui.sessioncommon.SessionViewPoolModule
@@ -48,4 +49,11 @@ internal abstract class SearchModule {
     @IntoMap
     @ViewModelKey(SearchViewModel::class)
     internal abstract fun bindSearchViewModel(viewmodel: SearchViewModel): ViewModel
+
+    /**
+     * Generates an [AndroidInjector] for the [SearchFilterFragment]
+     */
+    @ChildFragmentScoped
+    @ContributesAndroidInjector
+    internal abstract fun contributeSearchFilterFragment(): SearchFilterFragment
 }

@@ -35,6 +35,7 @@ import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.ui.filters.FiltersViewModelDelegate
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import kotlinx.coroutines.Job
@@ -49,10 +50,12 @@ class SearchViewModel @Inject constructor(
     ftsSearchUseCase: SessionFtsSearchUseCase,
     getTimeZoneUseCase: GetTimeZoneUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
+    filtersViewModelDelegate: FiltersViewModelDelegate,
     @SearchUsingRoomEnabledFlag val searchUsingRoomFeatureEnabled: Boolean
 ) : ViewModel(),
     EventActions,
-    SignInViewModelDelegate by signInViewModelDelegate {
+    SignInViewModelDelegate by signInViewModelDelegate,
+    FiltersViewModelDelegate by filtersViewModelDelegate {
 
     private val _navigateToSessionAction = MutableLiveData<Event<SessionId>>()
     val navigateToSessionAction: LiveData<Event<SessionId>> = _navigateToSessionAction

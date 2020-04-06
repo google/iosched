@@ -29,7 +29,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
-import com.google.samples.apps.iosched.R.style
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSearchBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.EventObserver
@@ -67,7 +67,7 @@ class SearchFragment : MainNavigationFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val themedInflater =
-            inflater.cloneInContext(ContextThemeWrapper(requireActivity(), style.AppTheme_Detail))
+            inflater.cloneInContext(ContextThemeWrapper(requireActivity(), R.style.AppTheme_Detail))
         binding = FragmentSearchBinding.inflate(themedInflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
         }
@@ -96,6 +96,18 @@ class SearchFragment : MainNavigationFragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = viewModelProvider(viewModelFactory)
         binding.viewModel = viewModel
+
+        binding.toolbar.apply {
+            inflateMenu(R.menu.search_menu)
+            setOnMenuItemClickListener {
+                if (it.itemId == R.id.action_open_filters) {
+                    findFiltersFragment().showFiltersSheet()
+                    true
+                } else {
+                    false
+                }
+            }
+        }
 
         binding.searchView.apply {
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -132,6 +144,11 @@ class SearchFragment : MainNavigationFragment() {
                 v.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)
             }
         }
+
+        if (savedInstanceState == null) {
+            // On first entry, show the filters.
+            findFiltersFragment().showFiltersSheet()
+        }
     }
 
     override fun onPause() {
@@ -147,5 +164,9 @@ class SearchFragment : MainNavigationFragment() {
     private fun dismissKeyboard(view: View) {
         val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    private fun findFiltersFragment(): SearchFilterFragment {
+        return childFragmentManager.findFragmentById(R.id.filter_sheet) as SearchFilterFragment
     }
 }

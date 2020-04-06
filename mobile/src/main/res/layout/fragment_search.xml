@@ -15,10 +15,9 @@
   ~ limitations under the License.
   -->
 
-<layout
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -52,8 +51,8 @@
                     android:iconifiedByDefault="false"
                     android:queryBackground="@color/transparent"
                     android:queryHint="@string/search_schedule_hint"
-                    android:searchIcon="@null"
                     android:searchHintIcon="@null"
+                    android:searchIcon="@null"
                     tools:targetApi="lollipop_mr1">
 
                 </SearchView>
@@ -72,8 +71,9 @@
             android:paddingTop="@dimen/spacing_normal"
             android:scrollbars="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:goneUnless="@{!viewModel.isEmpty}"
             app:layoutManager="LinearLayoutManager"
-            app:goneUnless="@{!viewModel.isEmpty}" />
+            tools:listitem="@layout/item_session" />
 
         <TextView
             android:id="@+id/empty"
@@ -87,6 +87,20 @@
             app:goneUnless="@{viewModel.isEmpty}"
             tools:targetApi="o"
             tools:visibility="visible" />
+
+        <fragment
+            android:id="@+id/filter_sheet"
+            android:name="com.google.samples.apps.iosched.ui.search.SearchFilterFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="?actionBarSize"
+            app:layout_behavior="com.google.samples.apps.iosched.widget.BottomSheetBehavior"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="0dp"
+            app:behavior_skipCollapsed="true"
+            tools:ignore="FragmentTagUsage"
+            tools:layout="@layout/fragment_filters" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
