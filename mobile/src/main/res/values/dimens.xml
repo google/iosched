@@ -89,7 +89,7 @@
     <dimen name="feed_header_cta_icon_size">24dp</dimen>
     <dimen name="feed_header_cta_icon_padding">4dp</dimen>
     <dimen name="feed_my_day_session_width">300dp</dimen>
-    <dimen name="feed_my_day_session_height">160dp</dimen>
+    <dimen name="feed_my_day_session_height">180dp</dimen>
     <dimen name="feed_my_day_empty_sessions_message_max_width">250dp</dimen>
     <dimen name="feed_session_dimension">200dp</dimen>
     <dimen name="feed_session_badge_icon_size">24dp</dimen>

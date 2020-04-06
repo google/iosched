@@ -46,6 +46,7 @@ data class FeedSessions(
     @StringRes val actionTextId: Int,
     val userSessions: List<UserSession>,
     val timeZoneId: ZoneId = ZoneId.systemDefault(),
+    val isMapFeatureEnabled: Boolean,
     val isLoading: Boolean
 )
 
@@ -111,7 +112,11 @@ class FeedSessionsViewHolder(
         binding.sessionContainerState = sessions
         binding.eventListener = eventListener
         val sessionAdapter =
-            FeedSessionAdapter(eventListener = eventListener, timeZoneId = sessions.timeZoneId)
+            FeedSessionAdapter(
+                eventListener = eventListener,
+                timeZoneId = sessions.timeZoneId,
+                isMapFeatureEnabled = sessions.isMapFeatureEnabled
+            )
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
             adapter = sessionAdapter
@@ -135,14 +140,15 @@ class FeedSessionsViewHolder(
 /** Adapter which provides views for sessions inside the FeedSessionsContainer */
 class FeedSessionAdapter(
     private val eventListener: FeedEventListener,
-    private val timeZoneId: ZoneId
+    private val timeZoneId: ZoneId,
+    private val isMapFeatureEnabled: Boolean
 ) : ListAdapter<UserSession, FeedSessionItemViewHolder>(SessionDiff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedSessionItemViewHolder {
         val binding = ItemFeedSessionBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
-        return FeedSessionItemViewHolder(binding, eventListener, timeZoneId)
+        return FeedSessionItemViewHolder(binding, eventListener, timeZoneId, isMapFeatureEnabled)
     }
 
     override fun onBindViewHolder(holder: FeedSessionItemViewHolder, position: Int) {
@@ -154,12 +160,14 @@ class FeedSessionAdapter(
 class FeedSessionItemViewHolder(
     private val binding: ItemFeedSessionBinding,
     private val eventListener: FeedEventListener,
-    private val timeZoneId: ZoneId
+    private val timeZoneId: ZoneId,
+    private val isMapFeatureEnabled: Boolean
 ) : ViewHolder(binding.root) {
     fun bind(userSession: UserSession) {
         binding.userSession = userSession
         binding.eventListener = eventListener
         binding.timeZoneId = timeZoneId
+        binding.isMapFeatureEnabled = isMapFeatureEnabled
     }
 }
 
