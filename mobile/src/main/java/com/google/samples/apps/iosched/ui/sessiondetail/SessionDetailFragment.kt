@@ -127,7 +127,7 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
             setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.menu_item_share -> {
-                        ShareCompat.IntentBuilder.from(activity)
+                        ShareCompat.IntentBuilder.from(requireActivity())
                             .setType("text/plain")
                             .setText(shareString)
                             .setChooserTitle(R.string.intent_chooser_session_detail)
