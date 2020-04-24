@@ -24,6 +24,7 @@ val activity = "1.0.0-beta01"
 val cardview = "1.0.0"
 val archTesting = "2.0.0"
 val arcore = "1.7.0"
+val benchmark = "1.0.0"
 val browser = "1.0.0"
 val constraintLayout = "1.1.3"
 val core = "1.2.0"
@@ -73,6 +74,7 @@ dependencies {
         api("${Libs.CARDVIEW}:$cardview")
         api("${Libs.ARCH_TESTING}:$archTesting")
         api("${Libs.ARCORE}:$arcore")
+        api("${Libs.BENCHMARK}:$benchmark")
         api("${Libs.BROWSER}:$browser")
         api("${Libs.CONSTRAINT_LAYOUT}:$constraintLayout")
         api("${Libs.CORE_KTX}:$core")

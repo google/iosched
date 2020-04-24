@@ -26,6 +26,7 @@ object Versions {
     // Versions that are used for classpath (and library) dependencies
     // b/146592586 prevents updating the AGP to 4.0
     const val ANDROID_GRADLE_PLUGIN = "4.0.0-rc01"
+    const val BENCHMARK = "1.0.0"
     const val FABRIC = "1.31.2"
     const val GOOGLE_SERVICES = "4.3.3"
     const val KOTLIN = "1.3.70"
