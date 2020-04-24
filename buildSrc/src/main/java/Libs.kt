@@ -19,6 +19,7 @@ object Libs {
     const val APPCOMPAT = "androidx.appcompat:appcompat"
     const val ARCH_TESTING = "androidx.arch.core:core-testing"
     const val ARCORE = "com.google.ar:core"
+    const val BENCHMARK = "androidx.benchmark:benchmark-junit4"
     const val BROWSER = "androidx.browser:browser"
     const val CARDVIEW = "androidx.cardview:cardview"
     const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout"

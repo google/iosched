@@ -14,4 +14,13 @@
  * limitations under the License.
  */
 
-include(":mobile", ":shared", ":test-shared", ":model", ":androidTest-shared", "ar", "depconstraints")
+include(
+  ":mobile",
+  ":shared",
+  ":test-shared",
+  ":model",
+  ":androidTest-shared",
+  "ar",
+  "benchmark",
+  "depconstraints"
+)
