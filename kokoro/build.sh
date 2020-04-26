@@ -32,9 +32,9 @@ echo "Installing build-tools..."
 echo y | ${ANDROID_SDK_HOME}/tools/bin/sdkmanager "build-tools;29.0.2" > /dev/null
 
 # Workaround for b/148189425
-# AGP 3.6.0 requires a specific NDK version for running Gradle
+# AGP requires a specific NDK version for running Gradle
 echo "Installing NDK that matches the current version of AGP ..."
-echo y | ${ANDROID_SDK_HOME}/tools/bin/sdkmanager "ndk;20.0.5594570" > /dev/null
+echo y | ${ANDROID_SDK_HOME}/tools/bin/sdkmanager "ndk;21.0.6113669" > /dev/null
 
 cd $KOKORO_ARTIFACTS_DIR/git/iosched
 
