@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.shared.data.signin.datasources
 
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GetTokenResult
@@ -27,11 +26,12 @@ import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmU
 import com.google.samples.apps.iosched.shared.fcm.FcmTokenUpdater
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
+import com.google.samples.apps.iosched.shared.util.suspendAndWait
 import javax.inject.Inject
-import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.map
 import timber.log.Timber
 
 /**
@@ -61,55 +61,57 @@ class FirebaseAuthStateUserDataSource @Inject constructor(
     private var lastUid: String? = null
 
     override fun getBasicUserInfo(): Flow<Result<AuthenticatedUserInfoBasic?>> {
-        return channelFlow {
-            val authStateListener: ((FirebaseAuth) -> Unit) = generateAuthStateListener()
+        return channelFlow<FirebaseAuth> {
+            val authStateListener: ((FirebaseAuth) -> Unit) = { auth ->
+                // This callback gets always executed on the main thread because of Firebase
+                channel.offer(auth)
+            }
             firebase.addAuthStateListener(authStateListener)
             awaitClose { firebase.removeAuthStateListener(authStateListener) }
+        }.map { authState ->
+            // This map gets executed in the Flow's context
+            processAuthState(authState)
         }
     }
 
-    private fun ProducerScope<Result<AuthenticatedUserInfoBasic?>>.generateAuthStateListener():
-        (FirebaseAuth) -> Unit {
+    private suspend fun processAuthState(auth: FirebaseAuth): Result<AuthenticatedUserInfoBasic?> {
         // Listener that saves the [FirebaseUser], fetches the ID token
         // and updates the user ID observable.
-        return { auth ->
-            Timber.d("Received a FirebaseAuth update.")
+        Timber.d("Received a FirebaseAuth update.")
 
-            auth.currentUser?.let { currentUser ->
-                // Get the ID token (force refresh)
-                val tokenTask = currentUser.getIdToken(true)
-                try {
-                    // Do this synchronously
-                    val await: GetTokenResult = Tasks.await(tokenTask)
-                    await.token?.let {
-                        // Call registration point to generate a result in Firestore
-                        Timber.d("User authenticated, hitting registration endpoint")
-                        AuthenticatedUserRegistration.callRegistrationEndpoint(it)
-                    }
-                } catch (e: Exception) {
-                    Timber.e(e)
-                    return@let
+        auth.currentUser?.let { currentUser ->
+            // Get the ID token (force refresh)
+            val tokenTask = currentUser.getIdToken(true)
+            try {
+                val tokenResult: GetTokenResult = tokenTask.suspendAndWait()
+                tokenResult.token?.let {
+                    // Call registration point to generate a result in Firestore
+                    Timber.d("User authenticated, hitting registration endpoint")
+                    AuthenticatedUserRegistration.callRegistrationEndpoint(it)
                 }
-                // Save the FCM ID token in firestore
-                tokenUpdater.updateTokenForUser(currentUser.uid)
+            } catch (e: Exception) {
+                Timber.e(e)
+                return@let
             }
-
-            if (auth.currentUser == null) {
-                // Logout, cancel all alarms
-                notificationAlarmUpdater.cancelAll()
-            }
-
-            auth.currentUser?.let {
-                if (lastUid != auth.uid) { // Prevent duplicates
-                    notificationAlarmUpdater.updateAll(it.uid)
-                }
-            }
-
-            // Save the last UID to prevent setting too many alarms.
-            lastUid = auth.uid
-
-            // Send the current user for observers
-            channel.offer(Success(FirebaseUserInfo(auth.currentUser)))
+            // Save the FCM ID token in firestore
+            tokenUpdater.updateTokenForUser(currentUser.uid)
         }
+
+        if (auth.currentUser == null) {
+            // Logout, cancel all alarms
+            notificationAlarmUpdater.cancelAll()
+        }
+
+        auth.currentUser?.let {
+            if (lastUid != auth.uid) { // Prevent duplicates
+                notificationAlarmUpdater.updateAll(it.uid)
+            }
+        }
+
+        // Save the last UID to prevent setting too many alarms.
+        lastUid = auth.uid
+
+        // Send the current user for observers
+        return Success(FirebaseUserInfo(auth.currentUser))
     }
 }
