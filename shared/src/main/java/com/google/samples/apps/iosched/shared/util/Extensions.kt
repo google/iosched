@@ -31,10 +31,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.tasks.Task
 import com.google.samples.apps.iosched.shared.BuildConfig
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.suspendCancellableCoroutine
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 /** Convenience for callbacks/listeners whose return value indicates an event was consumed. */
 inline fun consume(f: () -> Unit): Boolean {
@@ -162,6 +166,21 @@ fun Job?.cancelIfActive() {
 
 // region UI utils
 
+// endregion
+
+// region Firebase
+suspend fun <T> Task<T>.suspendAndWait(): T =
+    suspendCancellableCoroutine { continuation ->
+        addOnSuccessListener { result ->
+            continuation.resume(result)
+        }
+        addOnFailureListener { exception ->
+            continuation.resumeWithException(exception)
+        }
+        addOnCanceledListener {
+            continuation.resumeWithException(Exception("Firebase Task was cancelled"))
+        }
+    }
 // endregion
 
 /**
