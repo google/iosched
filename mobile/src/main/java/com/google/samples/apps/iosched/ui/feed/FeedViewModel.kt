@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.feed
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -69,7 +70,7 @@ import javax.inject.Inject
  * By annotating the constructor with [@Inject], Dagger will use that constructor when needing to
  * create the object, so defining a [@Provides] method for this class won't be needed.
  */
-class FeedViewModel @Inject constructor(
+class FeedViewModel @ViewModelInject constructor(
     private val loadCurrentMomentUseCase: LoadCurrentMomentUseCase,
     loadAnnouncementsUseCase: LoadAnnouncementsUseCase,
     private val loadStarredAndReservedSessionsUseCase: LoadStarredAndReservedSessionsUseCase,

@@ -30,7 +30,6 @@ val core = "1.2.0"
 val coroutines = "1.3.4"
 val coroutinesTest = "1.3.4"
 val crashlytics = "2.9.8"
-val dagger = "2.26"
 val drawerLayout = "1.1.0-beta01"
 val espresso = "3.1.1"
 val firebaseAnalytics = "17.2.2"
@@ -49,7 +48,9 @@ val googlePlayServicesMaps = "16.0.0"
 val googlePlayServicesVision = "17.0.2"
 val gson = "2.8.6"
 val hamcrest = "1.3"
-val junit = "4.12"
+val hilt = Versions.HILT
+val hiltJetPack = "1.0.0-SNAPSHOT"
+val junit = "4.13"
 val junitExt = "1.1.1"
 val lifecycle = "2.2.0"
 val lottie = "3.0.0"
@@ -70,6 +71,7 @@ val viewpager2 = "1.0.0"
 dependencies {
     constraints {
         api("${Libs.ACTIVITY_KTX}:$activity")
+        api("${Libs.ANDROIDX_HILT_COMPILER}:$hiltJetPack")
         api("${Libs.APPCOMPAT}:$appcompat")
         api("${Libs.CARDVIEW}:$cardview")
         api("${Libs.ARCH_TESTING}:$archTesting")
@@ -80,10 +82,6 @@ dependencies {
         api("${Libs.COROUTINES}:$coroutines")
         api("${Libs.COROUTINES_TEST}:$coroutines")
         api("${Libs.CRASHLYTICS}:$crashlytics")
-        api("${Libs.DAGGER_ANDROID}:$dagger")
-        api("${Libs.DAGGER_ANDROID_SUPPORT}:$dagger")
-        api("${Libs.DAGGER_COMPILER}:$dagger")
-        api("${Libs.DAGGER_ANDROID_PROCESSOR}:$dagger")
         api("${Libs.DRAWER_LAYOUT}:$drawerLayout")
         api("${Libs.ESPRESSO_CORE}:$espresso")
         api("${Libs.ESPRESSO_CONTRIB}:$espresso")
@@ -103,6 +101,10 @@ dependencies {
         api("${Libs.GOOGLE_PLAY_SERVICES_VISION}:$googlePlayServicesVision")
         api("${Libs.GSON}:$gson")
         api("${Libs.HAMCREST}:$hamcrest")
+        api("${Libs.HILT_ANDROID}:$hilt")
+        api("${Libs.HILT_COMPILER}:$hilt")
+        api("${Libs.HILT_TESTING}:$hilt")
+        api("${Libs.HILT_VIEWMODEL}:$hiltJetPack")
         api("${Libs.JUNIT}:$junit")
         api("${Libs.EXT_JUNIT}:$junitExt")
         api("${Libs.KOTLIN_STDLIB}:${Versions.KOTLIN}")

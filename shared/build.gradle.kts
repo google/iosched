@@ -19,6 +19,7 @@ plugins {
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -111,6 +112,9 @@ dependencies {
     testImplementation(project(":test-shared"))
     testImplementation(project(":androidTest-shared"))
 
+    // AppCompat
+    implementation(Libs.APPCOMPAT)
+
     // Architecture Components
     implementation(Libs.LIFECYCLE_LIVE_DATA_KTX)
     implementation(Libs.LIFECYCLE_VIEW_MODEL_KTX)
@@ -141,11 +145,9 @@ dependencies {
     api(Libs.COROUTINES)
     testImplementation(Libs.COROUTINES_TEST)
 
-    // Dagger
-    implementation(Libs.DAGGER_ANDROID)
-    implementation(Libs.DAGGER_ANDROID_SUPPORT)
-    kapt(Libs.DAGGER_COMPILER)
-    kapt(Libs.DAGGER_ANDROID_PROCESSOR)
+    // Dagger Hilt
+    implementation(Libs.HILT_ANDROID)
+    kapt(Libs.HILT_COMPILER)
 
     // Firebase
     api(Libs.FIREBASE_AUTH)

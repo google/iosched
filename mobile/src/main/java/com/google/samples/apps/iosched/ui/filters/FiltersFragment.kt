@@ -27,8 +27,8 @@ import androidx.core.view.marginBottom
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePaddingRelative
 import androidx.databinding.ObservableFloat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.google.android.flexbox.FlexboxItemDecoration
@@ -41,13 +41,11 @@ import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCal
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_COLLAPSED
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_EXPANDED
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_HIDDEN
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
 
 /**
  * Fragment that shows the list of filters for the Schedule
  */
-abstract class FiltersFragment : DaggerFragment() {
+abstract class FiltersFragment : Fragment() {
 
     companion object {
         // Threshold for when the filter sheet content should become invisible.
@@ -59,8 +57,6 @@ abstract class FiltersFragment : DaggerFragment() {
         // sheet's collapsed (0) and expanded (1) states.
         private const val ALPHA_CONTENT_END = 0.3f
     }
-
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var viewModel: FiltersViewModelDelegate
 
@@ -83,9 +79,7 @@ abstract class FiltersFragment : DaggerFragment() {
     private var pendingSheetState = -1
 
     /** Resolve the [FiltersViewModelDelegate] for this instance. */
-    abstract fun resolveViewModelDelegate(
-        viewModelFactory: ViewModelProvider.Factory
-    ): FiltersViewModelDelegate
+    abstract fun resolveViewModelDelegate(): FiltersViewModelDelegate
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,7 +109,7 @@ abstract class FiltersFragment : DaggerFragment() {
     // CoordinatorLayout. Therefore we do most initialization here instead of in onViewCreated().
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = resolveViewModelDelegate(viewModelFactory)
+        viewModel = resolveViewModelDelegate()
         binding.viewModel = viewModel
 
         behavior = BottomSheetBehavior.from(binding.filterSheet)

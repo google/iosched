@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.reservation
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -32,14 +33,13 @@ import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.util.cancelIfActive
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
-import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
-class RemoveReservationViewModel @Inject constructor(
+class RemoveReservationViewModel @ViewModelInject constructor(
     signInViewModelDelegate: SignInViewModelDelegate,
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val reservationActionUseCase: ReservationActionUseCase

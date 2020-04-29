@@ -21,6 +21,7 @@ plugins {
     kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("io.fabric")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -172,13 +173,14 @@ dependencies {
     testImplementation(Libs.ROOM_KTX)
     testImplementation(Libs.ROOM_RUNTIME)
 
-    // Dagger
-    implementation(Libs.DAGGER_ANDROID)
-    implementation(Libs.DAGGER_ANDROID_SUPPORT)
-    kapt(Libs.DAGGER_COMPILER)
-    kapt(Libs.DAGGER_ANDROID_PROCESSOR)
-    kaptAndroidTest(Libs.DAGGER_COMPILER)
-    kaptAndroidTest(Libs.DAGGER_ANDROID_PROCESSOR)
+    // Dagger Hilt
+    implementation(Libs.HILT_ANDROID)
+    implementation(Libs.HILT_VIEWMODEL)
+    androidTestImplementation(Libs.HILT_TESTING)
+    kapt(Libs.HILT_COMPILER)
+    kapt(Libs.ANDROIDX_HILT_COMPILER)
+    kaptAndroidTest(Libs.HILT_COMPILER)
+    kaptAndroidTest(Libs.ANDROIDX_HILT_COMPILER)
 
     // Glide
     implementation(Libs.GLIDE)

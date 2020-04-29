@@ -22,12 +22,13 @@ import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.core.view.updatePadding
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -46,7 +47,6 @@ import com.google.samples.apps.iosched.shared.di.ExploreArEnabledFlag
 import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.ar.ArConstants
 import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
@@ -59,12 +59,13 @@ import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverte
 import com.google.samples.apps.iosched.util.updateForTheme
 import com.google.samples.apps.iosched.widget.HashtagIoDecoration
 import com.google.samples.apps.iosched.widget.NavigationBarContentFrameLayout
-import dagger.android.support.DaggerAppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.util.UUID
 import javax.inject.Inject
 
-class MainActivity : DaggerAppCompatActivity(), NavigationHost {
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity(), NavigationHost {
 
     companion object {
         /** Key for an int extra defining the initial navigation target. */
@@ -90,9 +91,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
     lateinit var snackbarMessageManager: SnackbarMessageManager
 
     @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    @Inject
     lateinit var connectivityManager: ConnectivityManager
 
     @Inject
@@ -113,7 +111,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
     @ExploreArEnabledFlag
     var exploreArFeatureEnabled: Boolean = false
 
-    private lateinit var viewModel: MainActivityViewModel
+    private val viewModel: MainActivityViewModel by viewModels()
 
     private lateinit var content: FrameLayout
     private lateinit var drawer: DrawerLayout
@@ -133,7 +131,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationHost {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = viewModelProvider(viewModelFactory)
         // Update for Dark Mode straight away
         updateForTheme(viewModel.currentTheme)
 

@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.settings
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -36,9 +37,8 @@ import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.result.updateOnSuccess
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class SettingsViewModel @Inject constructor(
+class SettingsViewModel @ViewModelInject constructor(
     val setTimeZoneUseCase: SetTimeZoneUseCase,
     getTimeZoneUseCase: GetTimeZoneUseCase,
     val notificationsPrefSaveActionUseCase: NotificationsPrefSaveActionUseCase,

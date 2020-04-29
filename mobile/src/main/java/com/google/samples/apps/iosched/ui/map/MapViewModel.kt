@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.map
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -40,10 +41,9 @@ import com.google.samples.apps.iosched.shared.result.updateOnSuccess
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.combine
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
-import javax.inject.Inject
 import kotlinx.coroutines.launch
 
-class MapViewModel @Inject constructor(
+class MapViewModel @ViewModelInject constructor(
     private val loadGeoJsonFeaturesUseCase: LoadGeoJsonFeaturesUseCase,
     private val analyticsHelper: AnalyticsHelper,
     private val signInViewModelDelegate: SignInViewModelDelegate,

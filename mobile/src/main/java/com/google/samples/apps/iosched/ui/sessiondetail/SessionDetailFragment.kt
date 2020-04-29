@@ -29,8 +29,9 @@ import androidx.core.net.toUri
 import androidx.core.view.forEach
 import androidx.core.view.updatePadding
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
@@ -47,9 +48,7 @@ import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.notifications.AlarmBroadcastReceiver
 import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
@@ -67,20 +66,21 @@ import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment.Companion.DIALOG_SIGN_IN
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.openWebsiteUrl
-import com.google.samples.apps.iosched.util.postponeEnterTransition
+import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
-import timber.log.Timber
 
+@AndroidEntryPoint
 class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.Listener {
 
     private var shareString = ""
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-
     @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
 
-    private lateinit var sessionDetailViewModel: SessionDetailViewModel
+    private val sessionDetailViewModel: SessionDetailViewModel by viewModels()
+    private val snackbarPrefsViewModel: SnackbarPreferenceViewModel by activityViewModels()
 
     @Inject lateinit var analyticsHelper: AnalyticsHelper
 
@@ -104,12 +104,10 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        sessionDetailViewModel = viewModelProvider(viewModelFactory)
-
         sharedElementReturnTransition =
             TransitionInflater.from(context).inflateTransition(R.transition.speaker_shared_enter)
         // Delay the enter transition until speaker image has loaded.
-        postponeEnterTransition(500L)
+        postponeEnterTransition(500L, TimeUnit.MILLISECONDS)
 
         val themedInflater =
             inflater.cloneInContext(ContextThemeWrapper(requireActivity(), style.AppTheme_Detail))
@@ -209,14 +207,12 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
             }
         )
 
-        val snackbarPreferenceViewModel: SnackbarPreferenceViewModel =
-            activityViewModelProvider(viewModelFactory)
         setUpSnackbar(
             sessionDetailViewModel.snackBarMessage,
             binding.snackbar,
             snackbarMessageManager,
             actionClickListener = {
-                snackbarPreferenceViewModel.onStopClicked()
+                snackbarPrefsViewModel.onStopClicked()
             }
         )
 

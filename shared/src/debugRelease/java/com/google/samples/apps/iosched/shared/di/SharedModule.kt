@@ -57,15 +57,17 @@ import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Named
 import javax.inject.Singleton
 
 /**
  * Module where classes created in the shared module are created.
  */
-@ExperimentalCoroutinesApi
+@InstallIn(ApplicationComponent::class)
 @Module
 class SharedModule {
 
@@ -75,7 +77,7 @@ class SharedModule {
     @Provides
     @Named("remoteConfDatasource")
     fun provideConferenceDataSource(
-        context: Context,
+        @ApplicationContext context: Context,
         networkUtils: NetworkUtils
     ): ConferenceDataSource {
         return NetworkConferenceDataSource(context, networkUtils)
