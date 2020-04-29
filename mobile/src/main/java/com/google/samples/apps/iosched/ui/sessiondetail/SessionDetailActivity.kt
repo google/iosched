@@ -20,36 +20,36 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.firebase.ui.auth.IdpResponse
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.notifications.AlarmBroadcastReceiver
 import com.google.samples.apps.iosched.shared.notifications.AlarmBroadcastReceiver.Companion.QUERY_SESSION_ID
 import com.google.samples.apps.iosched.shared.util.inTransaction
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.theme.ThemeViewModel
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
 import com.google.samples.apps.iosched.util.updateForTheme
-import dagger.android.support.DaggerAppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.util.UUID
 import javax.inject.Inject
-import timber.log.Timber
 
-class SessionDetailActivity : DaggerAppCompatActivity() {
+@AndroidEntryPoint
+class SessionDetailActivity : AppCompatActivity() {
 
     @Inject
     lateinit var snackbarMessageManager: SnackbarMessageManager
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel: ThemeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val viewModel: ThemeViewModel = viewModelProvider(viewModelFactory)
         updateForTheme(viewModel.currentTheme)
 
         setContentView(R.layout.activity_session_detail)

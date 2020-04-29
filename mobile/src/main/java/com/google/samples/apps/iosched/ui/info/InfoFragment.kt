@@ -22,26 +22,28 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.updatePaddingRelative
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentInfoBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
+import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class InfoFragment : MainNavigationFragment() {
 
     @Inject lateinit var analyticsHelper: AnalyticsHelper
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-
     private lateinit var binding: FragmentInfoBinding
+
+    private val viewModel: MainActivityViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,9 +62,7 @@ class InfoFragment : MainNavigationFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.run {
-            toolbar.setupProfileMenuItem(
-                activityViewModelProvider(viewModelFactory), this@InfoFragment
-            )
+            toolbar.setupProfileMenuItem(viewModel, this@InfoFragment)
 
             viewpager.offscreenPageLimit = INFO_PAGES.size
             viewpager.adapter = InfoAdapter(this@InfoFragment)

@@ -25,31 +25,29 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import androidx.core.view.updatePadding
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSearchBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.search.SearchFragmentDirections.Companion.toSessionDetail
 import com.google.samples.apps.iosched.ui.search.SearchFragmentDirections.Companion.toSpeakerDetail
 import com.google.samples.apps.iosched.ui.sessioncommon.SessionsAdapter
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.openWebsiteUrl
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import javax.inject.Named
 
+@AndroidEntryPoint
 class SearchFragment : MainNavigationFragment() {
 
     @Inject
     lateinit var analyticsHelper: AnalyticsHelper
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     @Inject
     @field:Named("tagViewPool")
@@ -57,7 +55,7 @@ class SearchFragment : MainNavigationFragment() {
 
     private lateinit var binding: FragmentSearchBinding
 
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel: SearchViewModel by viewModels()
 
     private lateinit var sessionsAdapter: SessionsAdapter
 
@@ -94,7 +92,6 @@ class SearchFragment : MainNavigationFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = viewModelProvider(viewModelFactory)
         binding.viewModel = viewModel
 
         binding.includeSearchAppbar.toolbar.apply {

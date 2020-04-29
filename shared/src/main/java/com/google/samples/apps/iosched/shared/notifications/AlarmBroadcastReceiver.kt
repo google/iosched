@@ -21,6 +21,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.TaskStackBuilder
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
@@ -40,9 +41,7 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionOneShot
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionOneShotUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
-import dagger.android.DaggerBroadcastReceiver
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -51,11 +50,14 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.threeten.bp.Instant
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 /**
  * Receives broadcast intents with information for session notifications.
  */
-class AlarmBroadcastReceiver : DaggerBroadcastReceiver() {
+@AndroidEntryPoint
+class AlarmBroadcastReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var sharedPreferencesStorage: SharedPreferenceStorage
@@ -77,7 +79,6 @@ class AlarmBroadcastReceiver : DaggerBroadcastReceiver() {
         CoroutineScope(Dispatchers.Default + SupervisorJob())
 
     override fun onReceive(context: Context, intent: Intent) {
-        super.onReceive(context, intent)
         Timber.d("Alarm received")
 
         val sessionId = intent.getStringExtra(EXTRA_SESSION_ID) ?: return

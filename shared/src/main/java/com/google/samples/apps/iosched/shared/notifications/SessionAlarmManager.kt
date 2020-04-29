@@ -29,16 +29,17 @@ import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
+import dagger.hilt.android.qualifiers.ApplicationContext
 import org.threeten.bp.Instant
 import org.threeten.bp.temporal.ChronoUnit
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 /**
  * Manages setting and cancelling alarms for sessions.
  */
-open class SessionAlarmManager @Inject constructor(val context: Context) {
+open class SessionAlarmManager @Inject constructor(@ApplicationContext val context: Context) {
 
     private val systemAlarmManager: AlarmManager? = context.getSystemService()
 

@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.schedule
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -56,14 +57,13 @@ import kotlinx.coroutines.launch
 import org.threeten.bp.ZoneId
 import timber.log.Timber
 import java.util.UUID
-import javax.inject.Inject
 
 /**
  * Loads data and exposes it to the view.
  * By annotating the constructor with [@Inject], Dagger will use that constructor when needing to
  * create the object, so defining a [@Provides] method for this class won't be needed.
  */
-class ScheduleViewModel @Inject constructor(
+class ScheduleViewModel @ViewModelInject constructor(
     private val loadScheduleUserSessionsUseCase: LoadScheduleUserSessionsUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
     private val starEventUseCase: StarEventAndNotifyUseCase,

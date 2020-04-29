@@ -23,7 +23,6 @@ import android.content.res.TypedArray
 import android.graphics.Typeface
 import android.net.wifi.WifiConfiguration
 import android.os.Build
-import android.os.Handler
 import android.text.Layout.Alignment
 import android.text.Spannable
 import android.text.SpannableString
@@ -48,7 +47,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.google.samples.apps.iosched.model.Theme
-import dagger.android.support.DaggerFragment
 
 fun ObservableBoolean.hasSameValue(other: ObservableBoolean) = get() == other.get()
 
@@ -59,14 +57,6 @@ fun View.isRtl() = layoutDirection == View.LAYOUT_DIRECTION_RTL
 inline fun <T : ViewDataBinding> T.executeAfter(block: T.() -> Unit) {
     block()
     executePendingBindings()
-}
-
-/**
- * An extension to `postponeEnterTransition` which will resume after a timeout.
- */
-fun DaggerFragment.postponeEnterTransition(timeout: Long) {
-    postponeEnterTransition()
-    Handler().postDelayed({ startPostponedEnterTransition() }, timeout)
 }
 
 /**

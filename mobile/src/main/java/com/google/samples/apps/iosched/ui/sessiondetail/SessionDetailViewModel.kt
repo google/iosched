@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.sessiondetail
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -72,7 +73,6 @@ import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
 import java.util.UUID
-import javax.inject.Inject
 
 private const val TEN_SECONDS = 10_000L
 private const val SIXTY_SECONDS = 60_000L
@@ -81,7 +81,7 @@ private const val SIXTY_SECONDS = 60_000L
  * Loads [Session] data and exposes it to the session detail view.
  */
 @ExperimentalCoroutinesApi
-class SessionDetailViewModel @Inject constructor(
+class SessionDetailViewModel @ViewModelInject constructor(
     private val signInViewModelDelegate: SignInViewModelDelegate,
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val loadRelatedSessionUseCase: LoadUserSessionsUseCase,

@@ -19,15 +19,16 @@ package com.google.samples.apps.iosched.shared.data
 import android.content.Context
 import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
+import dagger.hilt.android.qualifiers.ApplicationContext
+import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
-import timber.log.Timber
 
 /**
  * Downloads and parses conference data.
  */
 class NetworkConferenceDataSource @Inject constructor(
-    val context: Context,
+    @ApplicationContext val context: Context,
     private val networkUtils: NetworkUtils
 ) : ConferenceDataSource {
 

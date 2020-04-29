@@ -22,11 +22,14 @@ import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
 import kotlinx.coroutines.CoroutineDispatcher
 
 /**
  * Provides a default implementation of [EventActionsViewModelDelegate].
  */
+@InstallIn(ActivityComponent::class)
 @Module
 internal class EventActionsViewModelDelegateModule {
 

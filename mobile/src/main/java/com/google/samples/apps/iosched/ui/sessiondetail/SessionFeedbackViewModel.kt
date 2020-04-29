@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.ui.sessiondetail
 
 import androidx.annotation.IntRange
 import androidx.annotation.StringRes
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -30,14 +31,13 @@ import com.google.samples.apps.iosched.shared.domain.users.FeedbackUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.cancelIfActive
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
-import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
-class SessionFeedbackViewModel @Inject constructor(
+class SessionFeedbackViewModel @ViewModelInject constructor(
     private val signInViewModelDelegate: SignInViewModelDelegate,
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val feedbackUseCase: FeedbackUseCase

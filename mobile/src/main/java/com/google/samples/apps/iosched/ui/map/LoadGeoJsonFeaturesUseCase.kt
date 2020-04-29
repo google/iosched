@@ -23,8 +23,9 @@ import com.google.maps.android.data.geojson.GeoJsonFeature
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
-import javax.inject.Inject
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
+import javax.inject.Inject
 
 /** Parameters for this use case. */
 typealias LoadGeoJsonParams = Pair<GoogleMap, Int>
@@ -37,7 +38,7 @@ data class GeoJsonData(
 
 /** Use case that loads a GeoJsonLayer and its features. */
 class LoadGeoJsonFeaturesUseCase @Inject constructor(
-    private val context: Context,
+    @ApplicationContext private val context: Context,
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : CoroutinesUseCase<LoadGeoJsonParams, GeoJsonData>(dispatcher) {
 

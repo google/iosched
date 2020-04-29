@@ -20,19 +20,18 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Theme
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
-import dagger.android.support.DaggerAppCompatDialogFragment
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
-class ThemeSettingDialogFragment : DaggerAppCompatDialogFragment() {
+@AndroidEntryPoint
+class ThemeSettingDialogFragment : AppCompatDialogFragment() {
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: SettingsViewModel
+    private val viewModel: SettingsViewModel by viewModels()
 
     private lateinit var listAdapter: ArrayAdapter<ThemeHolder>
 
@@ -54,7 +53,6 @@ class ThemeSettingDialogFragment : DaggerAppCompatDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = viewModelProvider(viewModelFactory)
 
         // Note you don't need to use viewLifecycleOwner in DialogFragment.
         viewModel.availableThemes.observe(this, Observer { themes ->

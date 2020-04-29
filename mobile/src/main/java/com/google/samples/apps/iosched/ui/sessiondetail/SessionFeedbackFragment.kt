@@ -20,8 +20,9 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -31,23 +32,18 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSessionFeedbackBinding
 import com.google.samples.apps.iosched.databinding.ItemQuestionBinding
 import com.google.samples.apps.iosched.model.SessionId
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.widget.SimpleRatingBar
-import dagger.android.support.DaggerAppCompatDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
-class SessionFeedbackFragment : DaggerAppCompatDialogFragment() {
+@AndroidEntryPoint
+class SessionFeedbackFragment : AppCompatDialogFragment() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private lateinit var viewModel: SessionFeedbackViewModel
+    private val viewModel: SessionFeedbackViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = viewModelProvider(viewModelFactory)
         val sessionId = arguments?.getString(ARG_SESSION_ID)
         if (sessionId == null) {
             dismiss()

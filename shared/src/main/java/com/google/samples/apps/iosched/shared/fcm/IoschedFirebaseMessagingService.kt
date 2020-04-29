@@ -22,15 +22,18 @@ import android.app.job.JobScheduler.RESULT_FAILURE
 import android.app.job.JobScheduler.RESULT_SUCCESS
 import android.content.ComponentName
 import android.content.Context
+import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.samples.apps.iosched.shared.data.job.ConferenceDataService
-import java.util.concurrent.TimeUnit
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 /**
  * Receives Firebase Cloud Messages and starts a [ConferenceDataService] to download new data.
  */
-class IoschedFirebaseMessagingService : DaggerFirebaseMessagingService() {
+@AndroidEntryPoint
+class IoschedFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)

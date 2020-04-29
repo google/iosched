@@ -16,19 +16,19 @@
 
 package com.google.samples.apps.iosched.ui.signin
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.shared.result.Event
-import javax.inject.Inject
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
  * ViewModel for *both* the sign in & sign out dialogs.
  */
-class SignInViewModel @Inject constructor(
+class SignInViewModel @ViewModelInject constructor(
     signInViewModelDelegate: SignInViewModelDelegate
 ) : ViewModel(), SignInViewModelDelegate by signInViewModelDelegate {
 

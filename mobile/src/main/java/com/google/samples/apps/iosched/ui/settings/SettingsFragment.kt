@@ -25,28 +25,27 @@ import android.webkit.WebView
 import android.widget.TextView
 import androidx.core.view.updatePaddingRelative
 import androidx.databinding.BindingAdapter
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSettingsBinding
 import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SettingsFragment : MainNavigationFragment() {
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var viewModel: SettingsViewModel
+    private val viewModel: SettingsViewModel by viewModels()
+    private val mainActivityViewModel: MainActivityViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = viewModelProvider(viewModelFactory)
 
         viewModel.navigateToThemeSelector.observe(viewLifecycleOwner, EventObserver {
             ThemeSettingDialogFragment.newInstance()
@@ -57,7 +56,7 @@ class SettingsFragment : MainNavigationFragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        binding.toolbar.setupProfileMenuItem(activityViewModelProvider(viewModelFactory), this)
+        binding.toolbar.setupProfileMenuItem(mainActivityViewModel, this)
 
         binding.settingsScroll.doOnApplyWindowInsets { v, insets, padding ->
             v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)

@@ -19,29 +19,24 @@ package com.google.samples.apps.iosched.ui.onboarding
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updatePadding
-import androidx.lifecycle.ViewModelProvider
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.inTransaction
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
-import dagger.android.support.DaggerAppCompatActivity
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
-class OnboardingActivity : DaggerAppCompatActivity() {
+@AndroidEntryPoint
+class OnboardingActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private lateinit var viewModel: OnboardingViewModel
+    private val viewModel: OnboardingViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_onboarding)
-
-        viewModel = viewModelProvider(viewModelFactory)
 
         // immersive mode so images can draw behind the status bar
         val decor = window.decorView
