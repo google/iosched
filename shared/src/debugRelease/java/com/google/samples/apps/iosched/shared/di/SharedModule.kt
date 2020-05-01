@@ -18,10 +18,15 @@ package com.google.samples.apps.iosched.shared.di
 
 import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.firestoreSettings
 import com.google.firebase.functions.FirebaseFunctions
+import com.google.firebase.functions.ktx.functions
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.samples.apps.iosched.shared.BuildConfig
 import com.google.samples.apps.iosched.shared.R
 import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
@@ -157,19 +162,17 @@ class SharedModule {
     @Singleton
     @Provides
     fun provideFirebaseFireStore(): FirebaseFirestore {
-        val firestore = FirebaseFirestore.getInstance()
-        firestore.firestoreSettings = FirebaseFirestoreSettings.Builder()
+        return Firebase.firestore.apply {
             // This is to enable the offline data
             // https://firebase.google.com/docs/firestore/manage-data/enable-offline
-            .setPersistenceEnabled(true)
-            .build()
-        return firestore
+            firestoreSettings = firestoreSettings { isPersistenceEnabled = true }
+        }
     }
 
     @Singleton
     @Provides
     fun provideFirebaseFunctions(): FirebaseFunctions {
-        return FirebaseFunctions.getInstance()
+        return Firebase.functions
     }
 
     @Singleton
@@ -187,11 +190,11 @@ class SharedModule {
     @Singleton
     @Provides
     fun provideFirebaseRemoteConfigSettings(): FirebaseRemoteConfigSettings {
-        val builder = FirebaseRemoteConfigSettings.Builder()
-        if (BuildConfig.DEBUG) {
-            builder.minimumFetchIntervalInSeconds = 0
+        return if (BuildConfig.DEBUG) {
+            remoteConfigSettings { minimumFetchIntervalInSeconds = 0 }
+        } else {
+            remoteConfigSettings { }
         }
-        return builder.build()
     }
 
     @Singleton
@@ -199,7 +202,7 @@ class SharedModule {
     fun provideFirebaseRemoteConfig(
         configSettings: FirebaseRemoteConfigSettings
     ): FirebaseRemoteConfig {
-        return FirebaseRemoteConfig.getInstance().apply {
+        return Firebase.remoteConfig.apply {
             setConfigSettingsAsync(configSettings)
             setDefaultsAsync(R.xml.remote_config_defaults)
         }
