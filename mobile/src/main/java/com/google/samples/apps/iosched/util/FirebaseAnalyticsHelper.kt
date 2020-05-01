@@ -19,9 +19,11 @@ package com.google.samples.apps.iosched.util
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Bundle
 import android.preference.PreferenceManager
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
@@ -39,7 +41,7 @@ class FirebaseAnalyticsHelper(
     preferenceStorage: PreferenceStorage
 ) : AnalyticsHelper {
 
-    private var firebaseAnalytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
+    private var firebaseAnalytics = Firebase.analytics
 
     /**
      * stores a strong reference to preference change][PreferenceManager]
@@ -81,24 +83,22 @@ class FirebaseAnalyticsHelper(
     }
 
     override fun sendScreenView(screenName: String, activity: Activity) {
-        val params = Bundle().apply {
-            putString(FirebaseAnalytics.Param.ITEM_ID, screenName)
-            putString(FirebaseAnalytics.Param.CONTENT_TYPE, FA_CONTENT_TYPE_SCREENVIEW)
-        }
         firebaseAnalytics.run {
             setCurrentScreen(activity, screenName, null)
-            logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, params)
+            logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
+                param(FirebaseAnalytics.Param.ITEM_ID, screenName)
+                param(FirebaseAnalytics.Param.CONTENT_TYPE, FA_CONTENT_TYPE_SCREENVIEW)
+            }
             Timber.d("Screen View recorded: $screenName")
         }
     }
 
     override fun logUiEvent(itemId: String, action: String) {
-        val params = Bundle().apply {
-            putString(FirebaseAnalytics.Param.ITEM_ID, itemId)
-            putString(FirebaseAnalytics.Param.CONTENT_TYPE, FA_CONTENT_TYPE_UI_EVENT)
-            putString(FA_KEY_UI_ACTION, action)
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
+            param(FirebaseAnalytics.Param.ITEM_ID, itemId)
+            param(FirebaseAnalytics.Param.CONTENT_TYPE, FA_CONTENT_TYPE_UI_EVENT)
+            param(FA_KEY_UI_ACTION, action)
         }
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, params)
         Timber.d("Event recorded for $itemId, $action")
     }
 

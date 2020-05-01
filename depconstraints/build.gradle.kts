@@ -33,13 +33,12 @@ val crashlytics = "2.9.8"
 val dagger = "2.26"
 val drawerLayout = "1.1.0-beta01"
 val espresso = "3.1.1"
-val firebaseAnalytics = "17.2.2"
-val firebaseAuth = "19.2.0"
-val firebaseConfig = "19.1.1"
-val firebaseCore = "17.2.2"
-val firebaseFirestore = "21.4.0"
+val firebaseAnalytics = "17.4.0"
+val firebaseAuth = "19.3.1"
+val firebaseConfig = "19.1.4"
+val firebaseFirestore = "21.4.3"
 val firebaseFunctions = "19.0.2"
-val firebaseMessaging = "20.1.0"
+val firebaseMessaging = "20.1.6"
 val firebaseUi = "4.0.0"
 val flexbox = "1.1.0"
 val fragment = "1.1.0-beta01"
@@ -89,7 +88,7 @@ dependencies {
         api("${Libs.ESPRESSO_CONTRIB}:$espresso")
         api("${Libs.FIREBASE_AUTH}:$firebaseAuth")
         api("${Libs.FIREBASE_CONFIG}:$firebaseConfig")
-        api("${Libs.FIREBASE_CORE}:$firebaseCore")
+        api("${Libs.FIREBASE_ANALYTICS}:$firebaseAnalytics")
         api("${Libs.FIREBASE_FIRESTORE}:$firebaseFirestore")
         api("${Libs.FIREBASE_FUNCTIONS}:$firebaseFunctions")
         api("${Libs.FIREBASE_MESSAGING}:$firebaseMessaging")
