@@ -53,6 +53,12 @@ android {
         manifestPlaceholders = mapOf("crashlyticsEnabled" to true)
 
         vectorDrawables.useSupportLibrary = true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments["room.incremental"] = "true"
+            }
+        }
     }
     buildTypes {
         getByName("release") {
