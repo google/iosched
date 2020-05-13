@@ -48,6 +48,12 @@ android {
                 "CONFERENCE_WIFI_OFFERING_START", properties["conference_wifi_offering_start"] as String)
 
         consumerProguardFiles("consumer-proguard-rules.pro")
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments["room.incremental"] = "true"
+            }
+        }
     }
 
     buildTypes {
