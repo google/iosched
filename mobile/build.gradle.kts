@@ -88,8 +88,9 @@ android {
             matchingFallbacks = listOf("debug")
         }
     }
-    dataBinding {
-        isEnabled = true
+
+    buildFeatures {
+        dataBinding = true
     }
 
     signingConfigs {
