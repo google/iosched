@@ -97,7 +97,7 @@ class SearchFragment : MainNavigationFragment() {
         viewModel = viewModelProvider(viewModelFactory)
         binding.viewModel = viewModel
 
-        binding.toolbar.apply {
+        binding.includeSearchAppbar.toolbar.apply {
             inflateMenu(R.menu.search_menu)
             setOnMenuItemClickListener {
                 if (it.itemId == R.id.action_open_filters) {
@@ -109,7 +109,7 @@ class SearchFragment : MainNavigationFragment() {
             }
         }
 
-        binding.searchView.apply {
+        binding.includeSearchAppbar.searchView.apply {
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     dismissKeyboard(this@apply)
@@ -152,7 +152,7 @@ class SearchFragment : MainNavigationFragment() {
     }
 
     override fun onPause() {
-        dismissKeyboard(binding.searchView)
+        dismissKeyboard(binding.includeSearchAppbar.searchView)
         super.onPause()
     }
 

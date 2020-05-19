@@ -31,53 +31,10 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar"
-            style="@style/Widget.IOSched.AppBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="?android:dividerHorizontal"
-            android:fitsSystemWindows="true"
-            android:showDividers="middle"
-            app:navigationIcon="@drawable/ic_arrow_back">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize">
-
-                <SearchView
-                    android:id="@+id/searchView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:iconifiedByDefault="false"
-                    android:imeOptions="actionDone|flagNoExtractUi"
-                    android:queryBackground="@color/transparent"
-                    android:queryHint="@string/search_schedule_hint"
-                    android:searchHintIcon="@null"
-                    android:searchIcon="@null"
-                    tools:targetApi="lollipop_mr1">
-
-                </SearchView>
-            </androidx.appcompat.widget.Toolbar>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/active_filters"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:orientation="horizontal"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="@dimen/spacing_micro"
-                app:activeFilters="@{viewModel.selectedFilterChips}"
-                app:goneUnless="@{viewModel.hasAnyFilters}"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:viewModel="@{viewModel}"
-                tools:itemCount="3"
-                tools:listitem="@layout/item_filter_chip_closeable"
-                tools:visibility="visible" />
-
-        </com.google.android.material.appbar.AppBarLayout>
+        <include
+            android:id="@+id/include_search_appbar"
+            layout="@layout/include_search_appbar"
+            app:viewModel="@{viewModel}"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
