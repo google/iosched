@@ -51,6 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:iconifiedByDefault="false"
+                    android:imeOptions="actionDone|flagNoExtractUi"
                     android:queryBackground="@color/transparent"
                     android:queryHint="@string/search_schedule_hint"
                     android:searchHintIcon="@null"
