@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2020 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.google.samples.apps.iosched.ui.search.SearchViewModel" />
+    </data>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        style="@style/Widget.IOSched.AppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="?android:dividerHorizontal"
+        android:fitsSystemWindows="true"
+        android:showDividers="middle"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        tools:parentTag="androidx.coordinatorlayout.widget.CoordinatorLayout">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize">
+
+            <SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:iconifiedByDefault="false"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:queryBackground="@color/transparent"
+                android:queryHint="@string/search_schedule_hint"
+                android:searchHintIcon="@null"
+                android:searchIcon="@null"
+                tools:targetApi="lollipop_mr1">
+
+            </SearchView>
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/active_filters"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="@dimen/spacing_micro"
+            app:activeFilters="@{viewModel.selectedFilterChips}"
+            app:goneUnless="@{viewModel.hasAnyFilters}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:viewModel="@{viewModel}"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_filter_chip_closeable"
+            tools:visibility="visible" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+</layout>
