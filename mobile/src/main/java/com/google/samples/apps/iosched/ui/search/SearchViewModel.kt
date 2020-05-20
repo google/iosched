@@ -129,16 +129,18 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun executeSearch() {
+        // Cancel any in-flight searches
+        searchJob?.cancel()
+
         val filters = selectedFilters.value ?: emptyList()
         if (textQuery.isEmpty() && filters.isEmpty()) {
             clearSearchResults()
             return
         }
 
-        // The user could be typing or toggling filters in quick succession. Giving the search job
-        // a slight delay and cancelling it on each call to this method effectively debounces.
-        searchJob?.cancel()
         searchJob = viewModelScope.launch {
+            // The user could be typing or toggling filters rapidly. Giving the search job
+            // a slight delay and cancelling it on each call to this method effectively debounces.
             delay(500)
             searchUseCase(
                 SessionSearchUseCaseParams(getUserId(), textQuery, filters)
