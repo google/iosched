@@ -29,6 +29,8 @@ import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.db.AppDatabase
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
+import com.google.samples.apps.iosched.shared.di.ApplicationScope
+import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
 import com.google.samples.apps.iosched.shared.di.MainThreadHandler
 import com.google.samples.apps.iosched.shared.domain.internal.IOSchedHandler
 import com.google.samples.apps.iosched.shared.domain.internal.IOSchedMainHandler
@@ -39,6 +41,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import javax.inject.Singleton
 
 /**
@@ -63,12 +68,19 @@ class AppModule {
     @Provides
     fun provideConnectivityManager(@ApplicationContext context: Context): ConnectivityManager =
         context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE)
-                as ConnectivityManager
+            as ConnectivityManager
 
     @Provides
     fun provideClipboardManager(@ApplicationContext context: Context): ClipboardManager =
         context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE)
             as ClipboardManager
+
+    @ApplicationScope
+    @Singleton
+    @Provides
+    fun providesApplicationScope(
+        @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
+    ): CoroutineScope = CoroutineScope(SupervisorJob() + defaultDispatcher)
 
     @Singleton
     @Provides
@@ -78,15 +90,17 @@ class AppModule {
     @Singleton
     @Provides
     fun provideAnalyticsHelper(
+        @ApplicationScope applicationScope: CoroutineScope,
         @ApplicationContext context: Context,
         signInDelegate: SignInViewModelDelegate,
         preferenceStorage: PreferenceStorage
-    ): AnalyticsHelper = FirebaseAnalyticsHelper(context, signInDelegate, preferenceStorage)
+    ): AnalyticsHelper =
+        FirebaseAnalyticsHelper(applicationScope, context, signInDelegate, preferenceStorage)
 
     @Singleton
     @Provides
     fun provideAgendaRepository(appConfigDataSource: AppConfigDataSource): AgendaRepository =
-            DefaultAgendaRepository(appConfigDataSource)
+        DefaultAgendaRepository(appConfigDataSource)
 
     @Singleton
     @Provides

@@ -25,6 +25,9 @@ import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateU
 import com.google.samples.apps.iosched.shared.data.signin.datasources.FirebaseAuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.FirestoreRegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
+import com.google.samples.apps.iosched.shared.di.ApplicationScope
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
+import com.google.samples.apps.iosched.shared.di.MainDispatcher
 import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.fcm.FcmTokenUpdater
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthSignInHandler
@@ -33,13 +36,18 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import javax.inject.Singleton
 
 @InstallIn(ApplicationComponent::class)
 @Module
 internal class SignInModule {
+
     @Provides
-    fun provideSignInHandler(): SignInHandler = FirebaseAuthSignInHandler()
+    fun provideSignInHandler(
+        @ApplicationScope applicationScope: CoroutineScope
+    ): SignInHandler = FirebaseAuthSignInHandler(applicationScope)
 
     @Singleton
     @Provides
@@ -54,13 +62,17 @@ internal class SignInModule {
     fun provideAuthStateUserDataSource(
         firebase: FirebaseAuth,
         firestore: FirebaseFirestore,
-        notificationAlarmUpdater: NotificationAlarmUpdater
+        notificationAlarmUpdater: NotificationAlarmUpdater,
+        @ApplicationScope applicationScope: CoroutineScope,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher,
+        @MainDispatcher mainDispatcher: CoroutineDispatcher
     ): AuthStateUserDataSource {
 
         return FirebaseAuthStateUserDataSource(
             firebase,
-            FcmTokenUpdater(firestore),
-            notificationAlarmUpdater
+            FcmTokenUpdater(applicationScope, mainDispatcher, firestore),
+            notificationAlarmUpdater,
+            ioDispatcher
         )
     }
 

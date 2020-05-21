@@ -24,9 +24,9 @@ import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfoB
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.test.data.CoroutineScope
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.runBlockingTest
-import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.ui.schedule.FakeObserveUserAuthStateUseCase
 import com.nhaarman.mockito_kotlin.doReturn
@@ -47,10 +47,6 @@ class FirebaseSignInViewModelDelegateTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule
-    var syncTaskExecutorRule = SyncTaskExecutorRule()
-
     // Overrides Dispatchers.Main used in Coroutines
     @get:Rule
     var coroutineRule = MainCoroutineRule()
@@ -61,6 +57,7 @@ class FirebaseSignInViewModelDelegateTest {
             observeUserAuthStateUseCase = FakeObserveUserAuthStateUseCase(
                 user = Result.Success(null),
                 isRegistered = Result.Success(false),
+                coroutineScope = coroutineRule.CoroutineScope(),
                 coroutineDispatcher = coroutineRule.testDispatcher
             )
         )
@@ -91,6 +88,7 @@ class FirebaseSignInViewModelDelegateTest {
         val fakeObserveUserAuthStateUseCase = FakeObserveUserAuthStateUseCase(
             user = Result.Success(user),
             isRegistered = Result.Success(true),
+            coroutineScope = coroutineRule.CoroutineScope(),
             coroutineDispatcher = coroutineRule.testDispatcher
         )
 
@@ -125,6 +123,7 @@ class FirebaseSignInViewModelDelegateTest {
         val fakeObserveUserAuthStateUseCase = FakeObserveUserAuthStateUseCase(
             user = Result.Success(user),
             isRegistered = Result.Success(false),
+            coroutineScope = coroutineRule.CoroutineScope(),
             coroutineDispatcher = coroutineRule.testDispatcher
         )
 
@@ -154,6 +153,7 @@ class FirebaseSignInViewModelDelegateTest {
             observeUserAuthStateUseCase = FakeObserveUserAuthStateUseCase(
                 user = Result.Success(null),
                 isRegistered = Result.Success(false),
+                coroutineScope = coroutineRule.CoroutineScope(),
                 coroutineDispatcher = coroutineRule.testDispatcher
             )
         )
@@ -173,6 +173,7 @@ class FirebaseSignInViewModelDelegateTest {
             observeUserAuthStateUseCase = FakeObserveUserAuthStateUseCase(
                 user = Result.Success(null),
                 isRegistered = Result.Success(false),
+                coroutineScope = coroutineRule.CoroutineScope(),
                 coroutineDispatcher = coroutineRule.testDispatcher
             )
         )
@@ -197,6 +198,7 @@ class FirebaseSignInViewModelDelegateTest {
             FakeObserveUserAuthStateUseCase(
             user = Result.Success(null),
             isRegistered = Result.Success(true),
+                coroutineScope = coroutineRule.CoroutineScope(),
             coroutineDispatcher = coroutineRule.testDispatcher),
         notificationsPrefIsShownUseCase: NotificationsPrefIsShownUseCase =
             createNotificationsPrefIsShownUseCase(),

@@ -30,7 +30,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.di.CoroutinesModule
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
-import com.google.samples.apps.iosched.tests.SyncTaskExecutorRule
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
@@ -47,10 +46,6 @@ class HomeTest {
 
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
-
-    // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule(order = 1)
-    var syncTaskExecutorRule = SyncTaskExecutorRule()
 
     // Sets the preferences so no welcome screens are shown
     @get:Rule(order = 1)

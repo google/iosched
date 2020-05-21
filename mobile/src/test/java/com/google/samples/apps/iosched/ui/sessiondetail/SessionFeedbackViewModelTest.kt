@@ -30,9 +30,7 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
-import com.google.samples.apps.iosched.test.util.time.FakeIntervalMapperRule
 import com.google.samples.apps.iosched.test.util.time.FixedTimeExecutorRule
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
@@ -52,17 +50,9 @@ class SessionFeedbackViewModelTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule
-    var syncTaskExecutorRule = SyncTaskExecutorRule()
-
     // Allows explicit setting of "now"
     @get:Rule
     var fixedTimeExecutorRule = FixedTimeExecutorRule()
-
-    // Allows IntervalMapper to execute immediately
-    @get:Rule
-    var fakeIntervalMapperRule = FakeIntervalMapperRule()
 
     // Overrides Dispatchers.Main used in Coroutines
     @get:Rule

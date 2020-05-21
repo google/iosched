@@ -37,14 +37,13 @@ import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.R
 import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthIdDataSource
+import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionOneShotUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionOneShotUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -74,9 +73,9 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
     @Inject
     lateinit var authIdDataSource: AuthIdDataSource
 
-    // Coroutines scope for AlarmBroadcastReceiver background work
-    private val alarmScope: CoroutineScope =
-        CoroutineScope(Dispatchers.Default + SupervisorJob())
+    @ApplicationScope
+    @Inject
+    lateinit var externalScope: CoroutineScope
 
     override fun onReceive(context: Context, intent: Intent) {
         Timber.d("Alarm received")
@@ -90,12 +89,12 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
         val channel = intent.getStringExtra(EXTRA_NOTIFICATION_CHANNEL)
         when (channel) {
             CHANNEL_ID_UPCOMING -> {
-                alarmScope.launch {
+                externalScope.launch {
                     checkThenShowPreSessionNotification(context, sessionId, userId)
                 }
             }
             CHANNEL_ID_FEEDBACK -> {
-                alarmScope.launch {
+                externalScope.launch {
                     checkThenShowPostSessionNotification(context, sessionId, userId)
                 }
             }

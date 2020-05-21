@@ -31,7 +31,6 @@ import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCase
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.runBlockingTest
-import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakeEventActionsViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
@@ -52,9 +51,6 @@ class SpeakerViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread
     @get:Rule var instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule var syncTaskExecutorRule = SyncTaskExecutorRule()
 
     // Overrides Dispatchers.Main used in Coroutines
     @get:Rule

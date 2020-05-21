@@ -40,17 +40,14 @@ import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
-import com.google.samples.apps.iosched.shared.util.SetIntervalLiveData
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.runBlockingTest
-import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
-import com.google.samples.apps.iosched.test.util.time.FakeIntervalMapperRule
 import com.google.samples.apps.iosched.test.util.time.FixedTimeExecutorRule
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
@@ -65,6 +62,7 @@ import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.validateMockitoUsage
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
@@ -79,6 +77,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+private const val TEN_SECONDS = 10_000L
+
 /**
  * Unit tests for the [SessionDetailViewModel].
  */
@@ -87,14 +87,8 @@ class SessionDetailViewModelTest {
     // Executes tasks in the Architecture Components in the same thread
     @get:Rule var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule var syncTaskExecutorRule = SyncTaskExecutorRule()
-
     // Allows explicit setting of "now"
     @get:Rule var fixedTimeExecutorRule = FixedTimeExecutorRule()
-
-    // Allows IntervalMapper to execute immediately
-    @get:Rule var fakeIntervalMapperRule = FakeIntervalMapperRule()
 
     // Overrides Dispatchers.Main used in Coroutines
     @get:Rule
@@ -121,7 +115,7 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun testAnonymous_dataReady() {
+    fun testAnonymous_dataReady() = coroutineRule.runBlockingTest {
         // Even with a session ID set, data is null if no user is available
         assertNotEquals(null, LiveDataTestUtil.getValue(viewModel.session))
     }
@@ -183,7 +177,7 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun testReserveEvent_notLoggedIn() {
+    fun testReserveEvent_notLoggedIn() = coroutineRule.runBlockingTest {
         // Create test use cases with test data
         val signInDelegate = FakeSignInViewModelDelegate()
         signInDelegate.injectIsSignedIn = false
@@ -205,7 +199,7 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun testReserveEvent_noInternet() {
+    fun testReserveEvent_noInternet() = coroutineRule.runBlockingTest {
         // Create test use cases with test data
         val signInDelegate = FakeSignInViewModelDelegate()
         signInDelegate.injectIsSignedIn = false
@@ -265,10 +259,10 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun testStartsInTenMinutes_thenHasNullTimeUntilStart() {
+    fun testStartsInTenMinutes_thenHasNullTimeUntilStart() = coroutineRule.runBlockingTest {
         val vm = createSessionDetailViewModelWithAuthEnabled()
         fixedTimeExecutorRule.time = testSession.startTime.minusMinutes(10).toInstant()
-        forceTimeUntilStartIntervalUpdate(vm)
+        coroutineRule.testDispatcher.advanceTimeBy(TEN_SECONDS)
         assertEquals(null, LiveDataTestUtil.getValue(vm.timeUntilStart))
     }
 
@@ -292,18 +286,18 @@ class SessionDetailViewModelTest {
 //    }
 
     @Test
-    fun testStartsIn0Minutes_thenHasNullTimeUntilStart() {
+    fun testStartsIn0Minutes_thenHasNullTimeUntilStart() = coroutineRule.runBlockingTest {
         val vm = createSessionDetailViewModelWithAuthEnabled()
         fixedTimeExecutorRule.time = testSession.startTime.minusSeconds(30).toInstant()
-        forceTimeUntilStartIntervalUpdate(vm)
+        coroutineRule.testDispatcher.advanceTimeBy(TEN_SECONDS)
         assertEquals(null, LiveDataTestUtil.getValue(vm.timeUntilStart))
     }
 
     @Test
-    fun testStarts10MinutesAgo_thenHasNullTimeUntilStart() {
+    fun testStarts10MinutesAgo_thenHasNullTimeUntilStart() = coroutineRule.runBlockingTest {
         val vm = createSessionDetailViewModelWithAuthEnabled()
         fixedTimeExecutorRule.time = testSession.startTime.plusMinutes(10).toInstant()
-        forceTimeUntilStartIntervalUpdate(vm)
+        coroutineRule.testDispatcher.advanceTimeBy(TEN_SECONDS)
         assertEquals(null, LiveDataTestUtil.getValue(vm.timeUntilStart))
     }
 
@@ -379,17 +373,15 @@ class SessionDetailViewModelTest {
         networkUtils: NetworkUtils = mockNetworkUtils,
         timeProvider: TimeProvider = DefaultTimeProvider,
         analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper(),
-        isReservationEnabledByRemoteConfig: Boolean = true
+        isReservationEnabledByRemoteConfig: Boolean = true,
+        defaultDispatcher: CoroutineDispatcher = coroutineRule.testDispatcher
     ): SessionDetailViewModel {
         return SessionDetailViewModel(
             signInViewModelPlugin, loadUserSessionUseCase, loadRelatedSessionsUseCase,
             starEventUseCase, reservationActionUseCase, getTimeZoneUseCase, snackbarMessageManager,
-            timeProvider, networkUtils, analyticsHelper, isReservationEnabledByRemoteConfig
+            timeProvider, networkUtils, analyticsHelper, isReservationEnabledByRemoteConfig,
+            defaultDispatcher
         )
-    }
-
-    private fun forceTimeUntilStartIntervalUpdate(vm: SessionDetailViewModel) {
-        (vm.timeUntilStart as SetIntervalLiveData<*, *>).updateValue()
     }
 
     private fun createSessionWithUrl(youtubeUrl: String) =

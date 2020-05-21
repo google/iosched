@@ -17,7 +17,8 @@
 package com.google.samples.apps.iosched.shared.data.signin
 
 import com.google.samples.apps.iosched.shared.BuildConfig
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import java.io.IOException
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -38,8 +39,8 @@ object AuthenticatedUserRegistration {
             .build()
     }
 
-    fun callRegistrationEndpoint(token: String) {
-        DefaultScheduler.execute {
+    suspend fun callRegistrationEndpoint(token: String, coroutineDispatcher: CoroutineDispatcher) {
+        withContext(coroutineDispatcher) {
             val request = Request.Builder()
                 .header("Authorization", "Bearer $token")
                 .url(BuildConfig.REGISTRATION_ENDPOINT_URL)
@@ -50,13 +51,13 @@ object AuthenticatedUserRegistration {
                 client.newCall(request).execute()
             } catch (e: IOException) {
                 Timber.e(e)
-                return@execute
+                return@withContext
             }
             val body = response.body()?.string() ?: ""
 
             if (body.isEmpty() || !response.isSuccessful) {
                 Timber.e("Network error calling registration point (response ${response.code()} )")
-                return@execute
+                return@withContext
             }
             Timber.d("Registration point called, user is registered: $body")
             response.body()?.close()

@@ -21,14 +21,22 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.samples.apps.iosched.shared.data.document2020
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.di.ApplicationScope
+import com.google.samples.apps.iosched.shared.di.MainDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import timber.log.Timber
 
 /**
  * Saves the FCM ID tokens in Firestore.
  */
-class FcmTokenUpdater @Inject constructor(val firestore: FirebaseFirestore) {
+class FcmTokenUpdater @Inject constructor(
+    @ApplicationScope private val externalScope: CoroutineScope,
+    @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
+    val firestore: FirebaseFirestore
+) {
 
     fun updateTokenForUser(userId: String) {
         FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { instanceIdResult ->
@@ -41,7 +49,7 @@ class FcmTokenUpdater @Inject constructor(val firestore: FirebaseFirestore) {
             )
 
             // All Firestore operations start from the main thread to avoid concurrency issues.
-            DefaultScheduler.postToMainThread {
+            externalScope.launch(mainDispatcher) {
                 firestore
                     .document2020()
                     .collection(USERS_COLLECTION)

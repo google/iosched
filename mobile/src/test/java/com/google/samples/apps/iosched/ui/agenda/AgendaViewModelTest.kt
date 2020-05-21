@@ -24,7 +24,6 @@ import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo as isEqualTo
@@ -39,10 +38,6 @@ class AgendaViewModelTest {
     // Executes tasks in the Architecture Components in the same thread
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    // Executes tasks in a synchronous [TaskScheduler] TODO(COROUTINES): Remove
-    @get:Rule
-    var syncTaskExecutorRule = SyncTaskExecutorRule()
 
     // Overrides Dispatchers.Main used in Coroutines
     @get:Rule

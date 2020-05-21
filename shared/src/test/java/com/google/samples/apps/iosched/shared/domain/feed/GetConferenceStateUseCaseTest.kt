@@ -26,7 +26,6 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import java.util.concurrent.TimeUnit
@@ -53,9 +52,6 @@ private val INSTANT_AFTER_CONFERENCE_END: Instant =
 class GetConferenceStateUseCaseTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    @get:Rule
-    var syncTaskExecutorRule = SyncTaskExecutorRule()
 
     @get:Rule
     var coroutineRule = MainCoroutineRule()

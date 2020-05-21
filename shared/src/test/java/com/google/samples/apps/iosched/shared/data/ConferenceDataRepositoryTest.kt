@@ -24,7 +24,6 @@ import com.google.samples.apps.iosched.test.data.TestData.session1
 import com.google.samples.apps.iosched.test.data.TestData.session3
 import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.FakeAppDatabase
-import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import kotlinx.coroutines.flow.first
 import java.io.IOException
 import org.hamcrest.core.Is.`is` as Is
@@ -45,10 +44,6 @@ class ConferenceDataRepositoryTest {
     // Executes tasks in the Architecture Components in the same thread
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule
-    var syncTaskExecutorRule = SyncTaskExecutorRule()
 
     // Overrides Dispatchers.Main used in Coroutines
     @get:Rule

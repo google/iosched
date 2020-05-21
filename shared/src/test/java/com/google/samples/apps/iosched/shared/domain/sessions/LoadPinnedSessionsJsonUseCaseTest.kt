@@ -26,7 +26,6 @@ import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDat
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result.Loading
 import com.google.samples.apps.iosched.shared.result.data
-import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
@@ -49,9 +48,6 @@ class LoadPinnedSessionsJsonUseCaseTest {
     // Executes tasks in the Architecture Components in the same thread
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule var syncExecutorRule = SyncExecutorRule()
 
     // Overrides Dispatchers.Main used in Coroutines
     @get:Rule

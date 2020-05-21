@@ -49,10 +49,10 @@ import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUse
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.test.data.CoroutineScope
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.runBlockingTest
-import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakeAppDatabase
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
@@ -65,6 +65,7 @@ import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -91,10 +92,6 @@ class ScheduleViewModelTest {
     // Executes tasks in the Architecture Components in the same thread
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule
-    var syncTaskExecutorRule = SyncTaskExecutorRule()
 
     // Overrides Dispatchers.Main used in Coroutines
     @get:Rule
@@ -282,6 +279,7 @@ class ScheduleViewModelTest {
         val observableFirebaseUserUseCase = FakeObserveUserAuthStateUseCase(
             user = Result.Success(noFirebaseUser),
             isRegistered = Result.Success(false),
+            coroutineScope = coroutineRule.CoroutineScope(),
             coroutineDispatcher = testDispatcher
         )
         val signInViewModelComponent = FirebaseSignInViewModelDelegate(
@@ -311,6 +309,7 @@ class ScheduleViewModelTest {
         val observableFirebaseUserUseCase = FakeObserveUserAuthStateUseCase(
             user = Result.Success(mockUser),
             isRegistered = Result.Success(true),
+            coroutineScope = coroutineRule.CoroutineScope(),
             coroutineDispatcher = testDispatcher
         )
         val signInViewModelComponent = FirebaseSignInViewModelDelegate(
@@ -341,6 +340,7 @@ class ScheduleViewModelTest {
         val observableFirebaseUserUseCase = FakeObserveUserAuthStateUseCase(
             user = Result.Success(mockUser),
             isRegistered = Result.Success(false),
+            coroutineScope = coroutineRule.CoroutineScope(),
             coroutineDispatcher = testDispatcher
         )
         val signInViewModelComponent = FirebaseSignInViewModelDelegate(
@@ -514,11 +514,13 @@ class TestAuthStateUserDataSource(
 class FakeObserveUserAuthStateUseCase(
     user: Result<AuthenticatedUserInfoBasic?>,
     isRegistered: Result<Boolean?>,
+    coroutineScope: CoroutineScope,
     coroutineDispatcher: CoroutineDispatcher
 ) : ObserveUserAuthStateUseCase(
     TestRegisteredUserDataSource(isRegistered),
     TestAuthStateUserDataSource(user),
     mock {},
+    coroutineScope,
     coroutineDispatcher
 )
 
