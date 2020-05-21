@@ -26,6 +26,7 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefSaveActionUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefShownActionUseCase
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -58,7 +59,9 @@ class NotificationsPreferenceDialogFragment : AppCompatDialogFragment() {
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        notificationsPrefShownActionUseCase(true)
+        GlobalScope.launch {
+            notificationsPrefShownActionUseCase(true)
+        }
         super.onDismiss(dialog)
     }
 
