@@ -19,7 +19,7 @@ package com.google.samples.apps.iosched.shared.domain.users
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
-import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
+import com.google.samples.apps.iosched.shared.domain.UseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.result.Result
 import kotlinx.coroutines.CoroutineDispatcher
@@ -29,7 +29,7 @@ open class StarEventAndNotifyUseCase @Inject constructor(
     private val repository: SessionAndUserEventRepository,
     private val alarmUpdater: StarReserveNotificationAlarmUpdater,
     @IoDispatcher ioDispatcher: CoroutineDispatcher
-) : CoroutinesUseCase<StarEventParameter, StarUpdatedStatus>(ioDispatcher) {
+) : UseCase<StarEventParameter, StarUpdatedStatus>(ioDispatcher) {
 
     override suspend fun execute(parameters: StarEventParameter): StarUpdatedStatus {
         return when (val result = repository.starEvent(

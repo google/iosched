@@ -20,14 +20,14 @@ import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
-import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
+import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 
 open class LoadSessionOneShotUseCase @Inject constructor(
     private val repository: SessionRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : CoroutinesUseCase<SessionId, Session>(dispatcher) {
+) : UseCase<SessionId, Session>(dispatcher) {
 
     override suspend fun execute(parameters: SessionId): Session {
         return repository.getSession(parameters)

@@ -19,7 +19,7 @@ package com.google.samples.apps.iosched.shared.domain.feed
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
-import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
+import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import org.threeten.bp.Instant
@@ -32,7 +32,7 @@ import org.threeten.bp.ZonedDateTime
 open class LoadAnnouncementsUseCase @Inject constructor(
     private val repository: FeedRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : CoroutinesUseCase<Instant, List<Announcement>>(dispatcher) {
+) : UseCase<Instant, List<Announcement>>(dispatcher) {
 
     override suspend fun execute(parameters: Instant): List<Announcement> {
         val announcements = repository.getAnnouncements()

@@ -28,7 +28,7 @@ import timber.log.Timber
 open class RefreshConferenceDataUseCase @Inject constructor(
     private val repository: ConferenceDataRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : CoroutinesUseCase<Any, Boolean>(dispatcher) {
+) : UseCase<Any, Boolean>(dispatcher) {
 
     override suspend fun execute(parameters: Any): Boolean {
         try {

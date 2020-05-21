@@ -22,14 +22,14 @@ import com.google.samples.apps.iosched.model.Theme.BATTERY_SAVER
 import com.google.samples.apps.iosched.model.themeFromStorageKey
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
-import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
+import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 
 class GetThemeUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : CoroutinesUseCase<Unit, Theme>(dispatcher) {
+) : UseCase<Unit, Theme>(dispatcher) {
     override suspend fun execute(parameters: Unit): Theme {
         val selectedTheme = preferenceStorage.selectedTheme
         return themeFromStorageKey(selectedTheme)
