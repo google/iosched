@@ -23,7 +23,7 @@ import com.google.samples.apps.iosched.model.filters.Filter.TagFilter
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
-import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
+import com.google.samples.apps.iosched.shared.domain.UseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
@@ -38,7 +38,7 @@ class LoadSearchFiltersUseCase @Inject constructor(
     private val conferenceRepository: ConferenceDataRepository,
     private val tagRepository: TagRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : CoroutinesUseCase<Unit, List<Filter>>(dispatcher) {
+) : UseCase<Unit, List<Filter>>(dispatcher) {
 
     override suspend fun execute(parameters: Unit): List<Filter> {
         val filters = mutableListOf<Filter>()

@@ -22,7 +22,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.maps.android.data.geojson.GeoJsonFeature
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
-import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
+import com.google.samples.apps.iosched.shared.domain.UseCase
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
@@ -40,7 +40,7 @@ data class GeoJsonData(
 class LoadGeoJsonFeaturesUseCase @Inject constructor(
     @ApplicationContext private val context: Context,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : CoroutinesUseCase<LoadGeoJsonParams, GeoJsonData>(dispatcher) {
+) : UseCase<LoadGeoJsonParams, GeoJsonData>(dispatcher) {
 
     override suspend fun execute(parameters: LoadGeoJsonParams): GeoJsonData {
         val (googleMap, markersRes) = parameters

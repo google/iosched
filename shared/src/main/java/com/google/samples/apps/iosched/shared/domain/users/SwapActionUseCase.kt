@@ -19,7 +19,7 @@ package com.google.samples.apps.iosched.shared.domain.users
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
-import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
+import com.google.samples.apps.iosched.shared.domain.UseCase
 import com.google.samples.apps.iosched.shared.result.Result.Error
 import com.google.samples.apps.iosched.shared.result.Result.Loading
 import com.google.samples.apps.iosched.shared.result.Result.Success
@@ -32,7 +32,7 @@ import javax.inject.Inject
 open class SwapActionUseCase @Inject constructor(
     private val repository: SessionAndUserEventRepository,
     @IoDispatcher ioDispatcher: CoroutineDispatcher
-) : CoroutinesUseCase<SwapRequestParameters, SwapRequestAction>(ioDispatcher) {
+) : UseCase<SwapRequestParameters, SwapRequestAction>(ioDispatcher) {
 
     override suspend fun execute(parameters: SwapRequestParameters): SwapRequestAction {
         val (userId, sessionId, _, toId) = parameters

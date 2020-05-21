@@ -24,8 +24,7 @@ import timber.log.Timber
 /**
  * Executes business logic synchronously or asynchronously using Coroutines.
  */
-// TODO(COROUTINES): Rename to UseCase when the coroutines migration is done
-abstract class CoroutinesUseCase<in P, R>(private val coroutineDispatcher: CoroutineDispatcher) {
+abstract class UseCase<in P, R>(private val coroutineDispatcher: CoroutineDispatcher) {
 
     /** Executes the use case asynchronously and returns a [Result].
      *

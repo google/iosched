@@ -19,7 +19,7 @@ package com.google.samples.apps.iosched.shared.domain.agenda
 import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.shared.data.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
-import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
+import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 
@@ -30,7 +30,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 open class LoadAgendaUseCase @Inject constructor(
     private val repository: AgendaRepository,
     @IoDispatcher ioDispatcher: CoroutineDispatcher
-) : CoroutinesUseCase<Boolean, List<Block>>(ioDispatcher) {
+) : UseCase<Boolean, List<Block>>(ioDispatcher) {
 
     override suspend fun execute(parameters: Boolean): List<Block> =
         repository.getAgenda(parameters)

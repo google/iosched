@@ -20,7 +20,7 @@ import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
-import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
+import com.google.samples.apps.iosched.shared.domain.UseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Loading
@@ -36,7 +36,7 @@ open class ReservationActionUseCase @Inject constructor(
     private val repository: SessionAndUserEventRepository,
     private val alarmUpdater: StarReserveNotificationAlarmUpdater,
     @IoDispatcher ioDispatcher: CoroutineDispatcher
-) : CoroutinesUseCase<ReservationRequestParameters, ReservationRequestAction>(ioDispatcher) {
+) : UseCase<ReservationRequestParameters, ReservationRequestAction>(ioDispatcher) {
 
     override suspend fun execute(parameters: ReservationRequestParameters):
             ReservationRequestAction {
