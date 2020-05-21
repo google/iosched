@@ -21,12 +21,11 @@ import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.CoroutinesUseCase
-import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 
 /**
- * A [UseCase] that returns the [UserSession]s for a user.
+ * A [CoroutinesUseCase] that returns the [UserSession]s for a user.
  */
 class LoadUserSessionOneShotUseCase @Inject constructor(
     private val userEventRepository: DefaultSessionAndUserEventRepository,
