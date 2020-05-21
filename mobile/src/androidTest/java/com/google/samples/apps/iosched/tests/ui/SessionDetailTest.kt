@@ -31,7 +31,6 @@ import com.google.samples.apps.iosched.di.CoroutinesModule
 import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
 import com.google.samples.apps.iosched.tests.FixedTimeRule
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
-import com.google.samples.apps.iosched.tests.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewHolder
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -65,10 +64,6 @@ class SessionDetailTest {
 
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
-
-    // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule(order = 1)
-    var syncTaskExecutorRule = SyncTaskExecutorRule()
 
     // Sets the time to before the conference
     @get:Rule(order = 1)

@@ -24,7 +24,6 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.runBlockingTest
@@ -40,10 +39,6 @@ class FeedbackUseCaseTest {
     // Executes tasks in the Architecture Components in the same thread
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule
-    var syncExecutorRule = SyncExecutorRule()
 
     // Overrides Dispatchers.Main used in Coroutines
     @get:Rule

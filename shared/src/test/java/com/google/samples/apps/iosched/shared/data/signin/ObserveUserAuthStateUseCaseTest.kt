@@ -23,6 +23,7 @@ import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUs
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.data
+import com.google.samples.apps.iosched.test.data.CoroutineScope
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.nhaarman.mockito_kotlin.doReturn
@@ -185,6 +186,7 @@ class ObserveUserAuthStateUseCaseTest {
             registeredUserDataSource,
             authStateUserDataSource,
             topicSubscriber,
+            coroutineRule.CoroutineScope(),
             coroutineRule.testDispatcher
         )
     }

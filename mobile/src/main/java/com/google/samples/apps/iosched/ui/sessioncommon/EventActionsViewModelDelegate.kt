@@ -22,6 +22,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.shared.di.MainDispatcher
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
@@ -32,11 +33,10 @@ import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.UUID
 import javax.inject.Inject
-import timber.log.Timber
 
 /**
  * A delegate providing common functionality for displaying a list of events and responding to
@@ -52,10 +52,9 @@ class DefaultEventActionsViewModelDelegate @Inject constructor(
     signInViewModelDelegate: SignInViewModelDelegate,
     private val starEventUseCase: StarEventAndNotifyUseCase,
     private val snackbarMessageManager: SnackbarMessageManager,
+    @ApplicationScope private val externalScope: CoroutineScope,
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher
 ) : EventActionsViewModelDelegate, SignInViewModelDelegate by signInViewModelDelegate {
-
-    private val delegateScope = CoroutineScope(mainDispatcher + SupervisorJob())
 
     private val _navigateToEventAction = MutableLiveData<Event<SessionId>>()
     override val navigateToEventAction: LiveData<Event<SessionId>>
@@ -95,7 +94,7 @@ class DefaultEventActionsViewModelDelegate @Inject constructor(
             )
         )
 
-        delegateScope.launch {
+        externalScope.launch(mainDispatcher) {
             getUserId()?.let {
                 val result = starEventUseCase(
                     StarEventParameter(

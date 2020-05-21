@@ -32,6 +32,7 @@ import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
 import com.google.samples.apps.iosched.shared.di.ReservationEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
@@ -50,8 +51,8 @@ import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.time.TimeProvider
+import com.google.samples.apps.iosched.shared.util.IntervalMediatorLiveData
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
-import com.google.samples.apps.iosched.shared.util.SetIntervalLiveData.DefaultIntervalMapper
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.cancelIfActive
 import com.google.samples.apps.iosched.shared.util.map
@@ -63,6 +64,7 @@ import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.combine
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -92,7 +94,8 @@ class SessionDetailViewModel @ViewModelInject constructor(
     timeProvider: TimeProvider,
     private val networkUtils: NetworkUtils,
     private val analyticsHelper: AnalyticsHelper,
-    @ReservationEnabledFlag val isReservationEnabledByRemoteConfig: Boolean
+    @ReservationEnabledFlag val isReservationEnabledByRemoteConfig: Boolean,
+    @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
 ) : ViewModel(), SessionDetailEventListener, EventActions,
     SignInViewModelDelegate by signInViewModelDelegate {
 
@@ -125,27 +128,31 @@ class SessionDetailViewModel @ViewModelInject constructor(
     private val _userEvent = MediatorLiveData<UserEvent>()
     val userEvent: LiveData<UserEvent> = _userEvent
 
-    val showFeedbackButton: LiveData<Boolean> = userEvent.combine(session) {
-            userEvent, currentSession ->
-        isSignedIn() &&
+    val showFeedbackButton: LiveData<Boolean> =
+        userEvent.combine(session) { userEvent, currentSession ->
+            isSignedIn() &&
                 !userEvent.isReviewed &&
                 currentSession.type == SessionType.SESSION &&
                 TimeUtils.getSessionState(currentSession, ZonedDateTime.now()) ==
                 TimeUtils.SessionRelativeTimeState.AFTER
-    }
-    // Updates periodically with a special [IntervalLiveData]
-    val timeUntilStart: LiveData<Duration?> =
-        DefaultIntervalMapper.mapAtInterval(session, TEN_SECONDS) { session ->
-            session?.startTime?.let { startTime ->
-                val duration = Duration.between(timeProvider.now(), startTime)
-                when (duration.toMinutes()) {
-                    in 1..5 -> duration
-                    else -> null
-                }
+        }
+
+    // Updates periodically with a special [IntervalMediatorLiveData]
+    val timeUntilStart = IntervalMediatorLiveData(
+        source = session, dispatcher = defaultDispatcher, intervalMs = TEN_SECONDS
+    ) { session ->
+        session?.startTime?.let { startTime ->
+            val duration = Duration.between(timeProvider.now(), startTime)
+            when (duration.toMinutes()) {
+                in 1..5 -> duration
+                else -> null
             }
         }
-    val isReservationDeniedByCutoff: LiveData<Boolean> =
-        DefaultIntervalMapper.mapAtInterval(session, SIXTY_SECONDS) { session ->
+    }
+    val isReservationDeniedByCutoff =
+        IntervalMediatorLiveData(
+            source = session, dispatcher = defaultDispatcher, intervalMs = SIXTY_SECONDS
+        ) { session ->
             session?.startTime?.let { startTime ->
                 // Only allow reservations if the sessions starts more than an hour from now
                 Duration.between(timeProvider.now(), startTime).toMinutes() <= 60
@@ -167,12 +174,12 @@ class SessionDetailViewModel @ViewModelInject constructor(
         emit(getTimeZoneUseCase(Unit).successOr(true))
     }
     val timeZoneId: LiveData<ZoneId> = showInConferenceTimeZone.map { inConferenceTimeZone ->
-            if (inConferenceTimeZone) {
-                TimeUtils.CONFERENCE_TIMEZONE
-            } else {
-                ZoneId.systemDefault()
-            }
+        if (inConferenceTimeZone) {
+            TimeUtils.CONFERENCE_TIMEZONE
+        } else {
+            ZoneId.systemDefault()
         }
+    }
 
     private val _navigateToRemoveReservationDialogAction =
         MutableLiveData<Event<RemoveReservationDialogParameters>>()
@@ -364,12 +371,14 @@ class SessionDetailViewModel @ViewModelInject constructor(
             val userSession = UserSession(sessionSnapshot, userEventSnapshot)
 
             viewModelScope.launch {
-                val result = reservationActionUseCase(ReservationRequestParameters(
-                    userId,
-                    sessionSnapshot.id,
-                    RequestAction(),
-                    userSession
-                ))
+                val result = reservationActionUseCase(
+                    ReservationRequestParameters(
+                        userId,
+                        sessionSnapshot.id,
+                        RequestAction(),
+                        userSession
+                    )
+                )
                 when (result) {
                     is Success -> reservationActionResult.value = result.data
                     is Error -> {

@@ -23,7 +23,8 @@ import com.google.samples.apps.iosched.shared.result.succeeded
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -38,14 +39,12 @@ class ConferenceDataService : JobService() {
     @Inject
     lateinit var refreshEventDataUseCase: RefreshConferenceDataUseCase
 
-    private val serviceJob = Job()
-    private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
+    private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     override fun onStartJob(params: JobParameters?): Boolean {
 
         Timber.i("ConferenceDataService triggering refresh conference data.")
 
-        // Execute off the main thread
         serviceScope.launch {
             val result = refreshEventDataUseCase(Unit)
 
@@ -71,12 +70,12 @@ class ConferenceDataService : JobService() {
         return true
     }
 
-    companion object {
-        const val JOB_ID = 0xFE0FE0
+    override fun onDestroy() {
+        serviceScope.cancel()
+        super.onDestroy()
     }
 
-    override fun onDestroy() {
-        serviceJob.cancel()
-        super.onDestroy()
+    companion object {
+        const val JOB_ID = 0xFE0FE0
     }
 }

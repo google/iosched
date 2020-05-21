@@ -28,14 +28,17 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
  * Firebase Analytics implementation of AnalyticsHelper
  */
 class FirebaseAnalyticsHelper(
+    @ApplicationScope private val externalScope: CoroutineScope,
     context: Context,
     signInViewModelDelegate: SignInViewModelDelegate,
     preferenceStorage: PreferenceStorage
@@ -60,8 +63,7 @@ class FirebaseAnalyticsHelper(
      * (possible except on first run), initialize analytics Immediately.
      */
     init {
-
-        DefaultScheduler.execute { // Prevent access to preferences on main thread
+        externalScope.launch { // Prevent access to preferences on main thread
             analyticsEnabled = preferenceStorage.sendUsageStatistics
         }
 
@@ -131,7 +133,7 @@ class FirebaseAnalyticsHelper(
             }
         }
 
-        DefaultScheduler.execute { // Prevent access to preferences on main thread
+        externalScope.launch { // Prevent access to preferences on main thread
             SharedPreferenceStorage(context).registerOnPreferenceChangeListener(listener)
         }
         prefListener = listener

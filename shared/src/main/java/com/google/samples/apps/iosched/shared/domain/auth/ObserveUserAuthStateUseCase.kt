@@ -21,6 +21,7 @@ import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfoB
 import com.google.samples.apps.iosched.shared.data.signin.FirebaseRegisteredUserInfo
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
+import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.FlowUseCase
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
@@ -33,7 +34,6 @@ import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -53,10 +53,10 @@ open class ObserveUserAuthStateUseCase @Inject constructor(
     private val registeredUserDataSource: RegisteredUserDataSource,
     private val authStateUserDataSource: AuthStateUserDataSource,
     private val topicSubscriber: TopicSubscriber,
+    @ApplicationScope private val externalScope: CoroutineScope,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : FlowUseCase<Any, AuthenticatedUserInfo>(ioDispatcher) {
 
-    private val useCaseScope = CoroutineScope(SupervisorJob() + ioDispatcher)
     private var observeUserRegisteredChangesJob: Job? = null
 
     override fun execute(parameters: Any): Flow<Result<AuthenticatedUserInfo>> {
@@ -107,7 +107,7 @@ open class ObserveUserAuthStateUseCase @Inject constructor(
         // Observing the user registration changes from another scope as doing it using a
         // supervisorScope was keeping the coroutine busy and updates to
         // authStateUserDataSource.getBasicUserInfo() were ignored
-        observeUserRegisteredChangesJob = useCaseScope.launch {
+        observeUserRegisteredChangesJob = externalScope.launch(ioDispatcher) {
             // Start observing the user in Firestore to fetch the `registered` flag
             registeredUserDataSource.observeUserChanges(userId).collect { result ->
                 val isRegisteredValue: Boolean? = result.data

@@ -25,7 +25,6 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.runBlockingTest
-import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -39,9 +38,6 @@ class LoadAnnouncementsUseCaseTest {
 
     @get:Rule
     val instantRule = InstantTaskExecutorRule()
-
-    @get:Rule
-    val syncTaskExecutorRule = SyncTaskExecutorRule()
 
     // Overrides Dispatchers.Main used in Coroutines
     @get:Rule
