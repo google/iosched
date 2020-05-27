@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.search
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -46,9 +47,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.threeten.bp.ZoneId
-import javax.inject.Inject
 
-class SearchViewModel @Inject constructor(
+class SearchViewModel @ViewModelInject constructor(
     private val analyticsHelper: AnalyticsHelper,
     private val searchUseCase: SessionSearchUseCase,
     getTimeZoneUseCase: GetTimeZoneUseCase,

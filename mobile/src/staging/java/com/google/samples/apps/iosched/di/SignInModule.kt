@@ -28,25 +28,31 @@ import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmU
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Singleton
 
+@InstallIn(ApplicationComponent::class)
 @Module
 internal class SignInModule {
     @Provides
-    fun provideSignInHandler(context: Context): SignInHandler {
+    fun provideSignInHandler(@ApplicationContext context: Context): SignInHandler {
         return StagingSignInHandler(StagingAuthenticatedUser(context))
     }
 
     @Singleton
     @Provides
-    fun provideRegisteredUserDataSource(context: Context): RegisteredUserDataSource {
+    fun provideRegisteredUserDataSource(
+        @ApplicationContext context: Context
+    ): RegisteredUserDataSource {
         return StagingRegisteredUserDataSource(true)
     }
 
     @Singleton
     @Provides
     fun provideAuthStateUserDataSource(
-        context: Context,
+        @ApplicationContext context: Context,
         notificationAlarmUpdater: NotificationAlarmUpdater
     ): AuthStateUserDataSource {
         return StagingAuthStateUserDataSource(

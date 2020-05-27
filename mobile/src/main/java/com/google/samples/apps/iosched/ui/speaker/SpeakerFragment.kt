@@ -22,8 +22,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.updatePadding
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import androidx.transition.TransitionInflater
@@ -33,7 +34,6 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSpeakerBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
@@ -41,16 +41,16 @@ import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.speaker.SpeakerFragmentDirections.Companion.toSessionDetail
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
-import com.google.samples.apps.iosched.util.postponeEnterTransition
+import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
 
 /**
  * Fragment displaying speaker details and their events.
  */
+@AndroidEntryPoint
 class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
-
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
     @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
 
@@ -60,7 +60,8 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
     @field:Named("tagViewPool")
     lateinit var tagRecycledViewPool: RecycledViewPool
 
-    private lateinit var speakerViewModel: SpeakerViewModel
+    private val speakerViewModel: SpeakerViewModel by viewModels()
+    private val snackbarPrefsViewModel: SnackbarPreferenceViewModel by activityViewModels()
 
     private lateinit var binding: FragmentSpeakerBinding
 
@@ -71,13 +72,12 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        speakerViewModel = viewModelProvider(viewModelFactory)
         speakerViewModel.setSpeakerId(SpeakerFragmentArgs.fromBundle(requireArguments()).speakerId)
 
         sharedElementEnterTransition =
             TransitionInflater.from(context).inflateTransition(R.transition.speaker_shared_enter)
         // Delay the enter transition until speaker image has loaded.
-        postponeEnterTransition(500L)
+        postponeEnterTransition(500L, TimeUnit.MILLISECONDS)
 
         val imageLoadListener = object : ImageLoadListener {
             override fun onImageLoaded() {
@@ -119,13 +119,12 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
             )
         })
 
-        val snackbarPrefViewModel: SnackbarPreferenceViewModel = viewModelProvider(viewModelFactory)
         setUpSnackbar(
             speakerViewModel.snackBarMessage,
             binding.snackbar,
             snackbarMessageManager,
             actionClickListener = {
-                snackbarPrefViewModel.onStopClicked()
+                snackbarPrefsViewModel.onStopClicked()
             }
         )
         val speakerAdapter = SpeakerAdapter(

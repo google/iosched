@@ -16,13 +16,13 @@
 
 package com.google.samples.apps.iosched.ui.theme
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
-import javax.inject.Inject
 
 /**
  * Thin ViewModel for themed Activities that don't have another ViewModel to use with
  * [ThemedActivityDelegate].
  */
-class ThemeViewModel @Inject constructor(
+class ThemeViewModel @ViewModelInject constructor(
     themedActivityDelegate: ThemedActivityDelegate
 ) : ViewModel(), ThemedActivityDelegate by themedActivityDelegate

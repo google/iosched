@@ -21,11 +21,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.updatePaddingRelative
+import androidx.fragment.app.Fragment
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
-import dagger.android.support.DaggerFragment
+import dagger.hilt.android.AndroidEntryPoint
 
-class FaqFragment : DaggerFragment() {
+@AndroidEntryPoint
+class FaqFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -16,13 +16,13 @@
 
 package com.google.samples.apps.iosched.ui.theme
 
-import androidx.lifecycle.ViewModel
-import com.google.samples.apps.iosched.shared.di.ViewModelKey
 import dagger.Binds
 import dagger.Module
-import dagger.multibindings.IntoMap
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import javax.inject.Singleton
 
+@InstallIn(ApplicationComponent::class)
 @Module
 @Suppress("UNUSED")
 abstract class ThemedActivityDelegateModule {
@@ -32,9 +32,4 @@ abstract class ThemedActivityDelegateModule {
     abstract fun provideThemedActivityDelegate(
         impl: ThemedActivityDelegateImpl
     ): ThemedActivityDelegate
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(ThemeViewModel::class)
-    abstract fun provideThemeViewModel(viewModel: ThemeViewModel): ViewModel
 }

@@ -17,20 +17,23 @@
 package com.google.samples.apps.iosched.shared.data.job
 
 import android.app.job.JobParameters
+import android.app.job.JobService
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.result.succeeded
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * A Job that refreshes the conference data in the repository (if the app is active) and
  * in the cache (if the app is not active).
  */
-class ConferenceDataService : DaggerJobService() {
+@AndroidEntryPoint
+class ConferenceDataService : JobService() {
 
     @Inject
     lateinit var refreshEventDataUseCase: RefreshConferenceDataUseCase

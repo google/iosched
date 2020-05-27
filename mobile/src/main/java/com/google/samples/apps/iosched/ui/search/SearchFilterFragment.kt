@@ -16,13 +16,18 @@
 
 package com.google.samples.apps.iosched.ui.search
 
-import androidx.lifecycle.ViewModelProvider.Factory
-import com.google.samples.apps.iosched.shared.util.parentViewModelProvider
+import androidx.fragment.app.viewModels
 import com.google.samples.apps.iosched.ui.filters.FiltersFragment
 import com.google.samples.apps.iosched.ui.filters.FiltersViewModelDelegate
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchFilterFragment : FiltersFragment() {
-    override fun resolveViewModelDelegate(viewModelFactory: Factory): FiltersViewModelDelegate {
-        return parentViewModelProvider<SearchViewModel>(viewModelFactory)
+
+    private val viewModel: SearchViewModel by viewModels(
+        ownerProducer = { requireParentFragment() }
+    )
+    override fun resolveViewModelDelegate(): FiltersViewModelDelegate {
+        return viewModel
     }
 }

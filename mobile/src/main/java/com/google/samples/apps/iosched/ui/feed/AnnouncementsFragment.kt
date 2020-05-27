@@ -22,27 +22,28 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.view.updatePaddingRelative
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.google.common.collect.ImmutableMap
 import com.google.samples.apps.iosched.databinding.FragmentAnnouncementsBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class AnnouncementsFragment : MainNavigationFragment() {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     @Inject
     lateinit var analyticsHelper: AnalyticsHelper
 
-    private lateinit var model: AnnouncementsViewModel
+    private val model: AnnouncementsViewModel by viewModels()
+    private val mainActivityViewModel: MainActivityViewModel by activityViewModels()
+
     private lateinit var binding: FragmentAnnouncementsBinding
     private lateinit var adapter: FeedAdapter
 
@@ -51,7 +52,6 @@ class AnnouncementsFragment : MainNavigationFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        model = viewModelProvider(viewModelFactory)
         binding = FragmentAnnouncementsBinding.inflate(inflater, container, false)
             .apply {
                 lifecycleOwner = viewLifecycleOwner
@@ -66,7 +66,7 @@ class AnnouncementsFragment : MainNavigationFragment() {
         super.onViewCreated(view, savedInstanceState)
         analyticsHelper.sendScreenView("Announcements", requireActivity())
 
-        binding.toolbar.setupProfileMenuItem(activityViewModelProvider(viewModelFactory), this)
+        binding.toolbar.setupProfileMenuItem(mainActivityViewModel, this)
 
         binding.root.doOnApplyWindowInsets { _, insets, _ ->
             binding.statusBar.run {

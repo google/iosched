@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.onboarding
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,13 +24,12 @@ import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompleteActionUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
-import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 /**
  * Records that onboarding has been completed and navigates user onward.
  */
-class OnboardingViewModel @Inject constructor(
+class OnboardingViewModel @ViewModelInject constructor(
     private val onboardingCompleteActionUseCase: OnboardingCompleteActionUseCase,
     signInViewModelDelegate: SignInViewModelDelegate
 ) : ViewModel(), SignInViewModelDelegate by signInViewModelDelegate {

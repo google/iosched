@@ -22,8 +22,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.updatePaddingRelative
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,8 +41,7 @@ import com.google.samples.apps.iosched.shared.di.SearchScheduleEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.sessions.ConferenceDayIndexer
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
@@ -61,12 +61,14 @@ import com.google.samples.apps.iosched.util.requestApplyInsetsWhenAttached
 import com.google.samples.apps.iosched.widget.BubbleDecoration
 import com.google.samples.apps.iosched.widget.FadingSnackbar
 import com.google.samples.apps.iosched.widget.JumpSmoothScroller
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import javax.inject.Named
 
 /**
  * The Schedule page of the top-level Activity.
  */
+@AndroidEntryPoint
 class ScheduleDayFragment : MainNavigationFragment() {
 
     companion object {
@@ -77,9 +79,6 @@ class ScheduleDayFragment : MainNavigationFragment() {
 
     @Inject
     lateinit var analyticsHelper: AnalyticsHelper
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     @Inject
     @field:Named("tagViewPool")
@@ -93,7 +92,9 @@ class ScheduleDayFragment : MainNavigationFragment() {
     @Inject
     lateinit var snackbarMessageManager: SnackbarMessageManager
 
-    private lateinit var scheduleViewModel: ScheduleViewModel
+    private val scheduleViewModel: ScheduleViewModel by viewModels()
+    private val snackbarPrefsViewModel: SnackbarPreferenceViewModel by activityViewModels()
+    private val mainActivityViewModel: MainActivityViewModel by activityViewModels()
 
     private lateinit var snackbar: FadingSnackbar
 
@@ -116,7 +117,6 @@ class ScheduleDayFragment : MainNavigationFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // ViewModel shared with child fragments.
-        scheduleViewModel = viewModelProvider(viewModelFactory)
         binding = FragmentScheduleDayBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = this@ScheduleDayFragment.scheduleViewModel
@@ -147,16 +147,13 @@ class ScheduleDayFragment : MainNavigationFragment() {
         }
 
         // Snackbar configuration
-        val snackbarPrefViewModel: SnackbarPreferenceViewModel = viewModelProvider(viewModelFactory)
         setUpSnackbar(scheduleViewModel.snackBarMessage, snackbar, snackbarMessageManager,
             actionClickListener = {
-                snackbarPrefViewModel.onStopClicked()
+                snackbarPrefsViewModel.onStopClicked()
             }
         )
 
-        binding.includeScheduleAppbar.toolbar.setupProfileMenuItem(
-            activityViewModelProvider(viewModelFactory), this
-        )
+        binding.includeScheduleAppbar.toolbar.setupProfileMenuItem(mainActivityViewModel, this)
 
         // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
         binding.recyclerviewSchedule.doOnApplyWindowInsets { v, insets, padding ->
@@ -348,11 +345,7 @@ class ScheduleDayFragment : MainNavigationFragment() {
     }
 
     override fun onUserInteraction() {
-        // Guard against a crash.
-        // Rarely observed the method was called before the ViewModel was initialized.
-        if (::scheduleViewModel.isInitialized) {
-            scheduleViewModel.userHasInteracted = true
-        }
+        scheduleViewModel.userHasInteracted = true
     }
 
     private fun openSessionDetail(id: SessionId) {

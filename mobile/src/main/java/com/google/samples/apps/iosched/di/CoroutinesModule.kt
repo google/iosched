@@ -22,9 +22,12 @@ import com.google.samples.apps.iosched.shared.di.MainDispatcher
 import com.google.samples.apps.iosched.shared.di.MainImmediateDispatcher
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
+@InstallIn(ApplicationComponent::class)
 @Module
 object CoroutinesModule {
 

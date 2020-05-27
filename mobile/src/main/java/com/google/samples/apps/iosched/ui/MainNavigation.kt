@@ -20,8 +20,8 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import com.google.samples.apps.iosched.R
-import dagger.android.support.DaggerFragment
 
 /**
  * To be implemented by components that host top-level navigation destinations.
@@ -45,7 +45,7 @@ interface NavigationDestination {
  * Fragment representing a main navigation destination. This class handles wiring up the [Toolbar]
  * navigation icon if the fragment is attached to a [NavigationHost].
  */
-open class MainNavigationFragment : DaggerFragment(), NavigationDestination {
+open class MainNavigationFragment : Fragment(), NavigationDestination {
 
     protected var navigationHost: NavigationHost? = null
 

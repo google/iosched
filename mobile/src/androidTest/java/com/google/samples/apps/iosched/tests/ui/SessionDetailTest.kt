@@ -27,12 +27,16 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.di.CoroutinesModule
 import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
 import com.google.samples.apps.iosched.tests.FixedTimeRule
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
 import com.google.samples.apps.iosched.tests.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewHolder
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import org.hamcrest.CoreMatchers.allOf
 import org.junit.Rule
 import org.junit.Test
@@ -54,8 +58,13 @@ import org.junit.runner.RunWith
  * * Navigate to speaker
  *
  */
+@HiltAndroidTest
+@UninstallModules(CoroutinesModule::class)
 @RunWith(AndroidJUnit4::class)
 class SessionDetailTest {
+
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
 
     @get:Rule
     var activityRule =
