@@ -47,10 +47,10 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class ScheduleTest {
 
-    @get:Rule
+    @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
 
-    @get:Rule
+    @get:Rule(order = 1)
     var activityRule = MainActivityTestRule(R.id.navigation_schedule)
 
     // Executes tasks in a synchronous [TaskScheduler]
