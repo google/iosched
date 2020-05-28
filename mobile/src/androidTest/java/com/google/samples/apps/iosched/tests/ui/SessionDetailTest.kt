@@ -66,7 +66,19 @@ class SessionDetailTest {
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
 
+    // Executes tasks in a synchronous [TaskScheduler]
     @get:Rule(order = 1)
+    var syncTaskExecutorRule = SyncTaskExecutorRule()
+
+    // Sets the time to before the conference
+    @get:Rule(order = 1)
+    var timeProviderRule = FixedTimeRule()
+
+    // Sets the preferences so no welcome screens are shown
+    @get:Rule(order = 1)
+    var preferencesRule = SetPreferencesRule()
+
+    @get:Rule(order = 2)
     var activityRule =
         object : ActivityTestRule<SessionDetailActivity>(SessionDetailActivity::class.java) {
             override fun getActivityIntent(): Intent {
@@ -77,18 +89,6 @@ class SessionDetailTest {
                 )
             }
         }
-
-    // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule
-    var syncTaskExecutorRule = SyncTaskExecutorRule()
-
-    // Sets the time to before the conference
-    @get:Rule
-    var timeProviderRule = FixedTimeRule()
-
-    // Sets the preferences so no welcome screens are shown
-    @get:Rule
-    var preferencesRule = SetPreferencesRule()
 
     @Test
     fun details_basicViewsDisplayed() {
