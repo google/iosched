@@ -50,20 +50,20 @@ class ScheduleTest {
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
 
-    @get:Rule(order = 1)
-    var activityRule = MainActivityTestRule(R.id.navigation_schedule)
-
     // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule
+    @get:Rule(order = 1)
     var syncTaskExecutorRule = SyncTaskExecutorRule()
 
     // Sets the time to before the conference
-    @get:Rule
+    @get:Rule(order = 1)
     var timeProviderRule = FixedTimeRule()
 
     // Sets the preferences so no welcome screens are shown
-    @get:Rule
+    @get:Rule(order = 1)
     var preferencesRule = SetPreferencesRule()
+
+    @get:Rule(order = 2)
+    var activityRule = MainActivityTestRule(R.id.navigation_schedule)
 
     private val resources = ApplicationProvider.getApplicationContext<Context>().resources
 
