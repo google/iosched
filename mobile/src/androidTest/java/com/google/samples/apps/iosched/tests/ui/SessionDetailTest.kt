@@ -63,10 +63,10 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class SessionDetailTest {
 
-    @get:Rule
+    @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
 
-    @get:Rule
+    @get:Rule(order = 1)
     var activityRule =
         object : ActivityTestRule<SessionDetailActivity>(SessionDetailActivity::class.java) {
             override fun getActivityIntent(): Intent {
