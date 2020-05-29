@@ -109,7 +109,7 @@ class FakeAppConfigDataSource : AppConfigDataSource {
         times: Map<String, MutableLiveData<String>>
     ) {
         times.values.forEachIndexed { index, mutableLiveData ->
-            mutableLiveData.postValue(
+            mutableLiveData.setValue(
                 startTimeDay.plusMinutes(index.toLong()).format(ISO_OFFSET_DATE_TIME)
             )
         }

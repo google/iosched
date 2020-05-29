@@ -20,13 +20,13 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-import com.google.samples.apps.iosched.shared.util.map
 import kotlinx.coroutines.launch
 import org.threeten.bp.ZoneId
 
@@ -39,17 +39,16 @@ class AgendaViewModel @ViewModelInject constructor(
     val agenda: LiveData<List<Block>> = _agenda
 
     private val preferConferenceTimeZoneResult = MutableLiveData<Boolean>()
-    val timeZoneId = preferConferenceTimeZoneResult.map { inConferenceTimeZone ->
-        if (inConferenceTimeZone) {
-            TimeUtils.CONFERENCE_TIMEZONE
+    val timeZoneId = liveData {
+        if (getTimeZoneUseCase(Unit).data == true) {
+            emit(TimeUtils.CONFERENCE_TIMEZONE)
         } else {
-            ZoneId.systemDefault()
+            emit(ZoneId.systemDefault())
         }
     }
 
     init {
         viewModelScope.launch {
-            refreshConferenceTimeZone()
             _agenda.value = loadAgendaUseCase(false).data
         }
     }
@@ -60,9 +59,5 @@ class AgendaViewModel @ViewModelInject constructor(
         viewModelScope.launch {
             _agenda.value = loadAgendaUseCase(true).data
         }
-    }
-
-    private suspend fun refreshConferenceTimeZone() {
-        preferConferenceTimeZoneResult.value = getTimeZoneUseCase(Unit).data ?: true
     }
 }
