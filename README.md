@@ -2,7 +2,13 @@ Google I/O Android App
 ======================
 [![Build Status](https://travis-ci.org/google/iosched.svg?branch=master)](https://travis-ci.org/google/iosched)
 
-Google I/O is a developer conference held each year with three days of deep
+**Due to global events, Google I/O 2020 was canceled and thus an Android app
+update was not released to Google Play. However, prior to the cancellation, the
+team implemented several architecture improvements, reflected in the code
+published in June, 2020. The general look and feel of the app is unchanged, and
+the app still uses the data from Google I/O 2019.**
+
+Google I/O is a developer conference with several days of deep
 technical content featuring technical sessions and hundreds of demonstrations
 from developers showcasing their technologies.
 
@@ -31,14 +37,13 @@ during the conference in Home.
 The app is written entirely in Kotlin and uses the Gradle build system.
 
 To build the app, use the `gradlew build` command or use "Import Project" in
-Android Studio. A canary or stable version >= 3.4 of Android Studio is
+Android Studio. A canary or stable version of Android Studio 4.0 or newer is
 required and may be downloaded
 [here](https://developer.android.com/studio/).
 
 # Architecture
 
-The 2019 version of the app is built on top of the last year's app. The
-architecture is built around
+The architecture is built around
 [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/).
 
 We followed the recommendations laid out in the
@@ -75,14 +80,41 @@ We used [Room](https://developer.android.com/jetpack/androidx/releases/room)
 for Full Text Search using [Fts4](https://developer.android.com/reference/androidx/room/Fts4)
 to search for a session, speaker, or codelab.
 
-We used [Dagger2](https://github.com/google/dagger) for dependency injection
-and we heavily relied on
-[dagger-android](https://google.github.io/dagger/android.html) to abstract away
-boiler-plate code.
-
 We used [Espresso](https://developer.android.com/training/testing/espresso/)
 for basic instrumentation tests and JUnit and
 [Mockito](https://github.com/mockito/mockito) for unit testing.
+
+For 2020, we added several Jetpack libraries:
+
+- We added the
+[Jetpack Benchmark library](https://developer.android.com/studio/profile/benchmark).
+The Benchmark library makes it easy to benchmark your code from within Android Studio.
+The library handles warmup, measures your code performance, and outputs benchmarking
+results to the Android Studio console. We added a few benchmark tests around
+critical paths during app startup - in particular, the parsing of the bootstrap
+data. This enables us to automate measuring and monitoring initial startup time.
+Here is an example from a benchmark run:
+
+```
+Started running tests
+
+Connected to process 30763 on device 'google-pixel_3'.
+benchmark:
+benchmark:    76,076,101 ns BootstrapConferenceDataSourceBenchmark.benchmark_json_parsing
+Tests ran to completion.
+```
+
+- We migrated from [dagger-android](https://google.github.io/dagger/android.html) to
+[Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
+for dependency injection. This allowed us to remove 75% of the dependency
+injection code, and also resulted in a 13% build time improvement.
+
+- We migrated to
+[ViewPager2](https://developer.android.com/training/animation/screen-slide-2)
+for our view paging needs. ViewPager2 offers enhanced functionality over the
+original ViewPager library, such as right-to-left and vertical orientation support.
+For more details on migrating from ViewPager to ViewPager2, please see this
+[migration guide](https://developer.android.com/training/animation/vp2-migration).
 
 ## Firebase
 
@@ -100,6 +132,12 @@ let us inform the app about changes to conference data on our server.
 - [Remote Config](https://firebase.google.com/docs/remote-config/) helped us
 manage in-app constants.
 
+For 2020, we migrated to the Firebase Kotlin extension (KTX) libraries to
+write more idiomatic Kotlin code when calling Firebase APIs. To learn more,
+read this
+[Firebase blog article](https://firebase.googleblog.com/2020/03/firebase-kotlin-ga.html)
+on the Firebase KTX libraries.
+
 ## Kotlin
 
 We made an early decision to rewrite the app from scratch to bring it in line
@@ -110,6 +148,11 @@ nullability and immutability made our code more resilient; and we leveraged the
 enhanced functionality provided by
 [Android Ktx extensions](https://developer.android.com/kotlin/ktx).
 
+For 2020, we migrated to
+[coroutines](https://developer.android.com/kotlin/coroutines)
+for asynchronous tasks. Coroutines is the recommended way to do asynchronous
+programming in Kotlin. We also migrated our build scripts to
+[Kotlin DSL](https://docs.gradle.org/current/userguide/kotlin_dsl.html).
 
 # Copyright
 
