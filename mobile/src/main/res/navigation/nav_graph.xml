@@ -23,9 +23,9 @@
 
     <fragment
         android:id="@id/navigation_schedule"
-        android:name="com.google.samples.apps.iosched.ui.schedule.ScheduleDayFragment"
+        android:name="com.google.samples.apps.iosched.ui.schedule.ScheduleFragment"
         android:label="@string/title_schedule"
-        tools:layout="@layout/fragment_schedule_day">
+        tools:layout="@layout/fragment_schedule">
         <argument
             android:name="showMySchedule"
             android:defaultValue="false"
