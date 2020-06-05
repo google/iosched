@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.domain.search
 
+import androidx.core.os.trace
 import com.google.samples.apps.iosched.model.filters.Filter
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
@@ -45,17 +46,19 @@ class SessionSearchUseCase @Inject constructor(
 
     override fun execute(parameters: SessionSearchUseCaseParams): Flow<Result<List<UserSession>>> {
         val (userId, query, filters) = parameters
-        val filterMatcher = UserSessionFilterMatcher(filters)
-        return repository.getObservableUserEvents(userId).map { result ->
-            when (result) {
-                is Success -> {
-                    val searchResults = textMatchStrategy.searchSessions(
-                        result.data.userSessions, query
-                    ).filter { filterMatcher.matches(it) }
-                    Success(searchResults)
+        trace("search-path-usecase") {
+            val filterMatcher = UserSessionFilterMatcher(filters)
+            return repository.getObservableUserEvents(userId).map { result ->
+                when (result) {
+                    is Success -> {
+                        val searchResults = textMatchStrategy.searchSessions(
+                            result.data.userSessions, query
+                        ).filter { filterMatcher.matches(it) }
+                        Success(searchResults)
+                    }
+                    is Loading -> result
+                    is Error -> result
                 }
-                is Loading -> result
-                is Error -> result
             }
         }
     }
