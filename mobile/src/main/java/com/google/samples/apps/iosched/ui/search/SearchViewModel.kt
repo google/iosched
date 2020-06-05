@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.search
 
+import androidx.core.os.trace
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -142,10 +143,12 @@ class SearchViewModel @ViewModelInject constructor(
             // The user could be typing or toggling filters rapidly. Giving the search job
             // a slight delay and cancelling it on each call to this method effectively debounces.
             delay(500)
-            searchUseCase(
-                SessionSearchUseCaseParams(getUserId(), textQuery, filters)
-            ).collect {
-                processSearchResult(it)
+            trace("search-path-viewmodel") {
+                searchUseCase(
+                    SessionSearchUseCaseParams(getUserId(), textQuery, filters)
+                ).collect {
+                    processSearchResult(it)
+                }
             }
         }
     }

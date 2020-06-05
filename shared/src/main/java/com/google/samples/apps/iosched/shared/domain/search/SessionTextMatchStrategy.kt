@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.domain.search
 
+import androidx.core.os.trace
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.db.AppDatabase
 import javax.inject.Inject
@@ -31,13 +32,15 @@ object SimpleMatchStrategy : SessionTextMatchStrategy {
         userSessions: List<UserSession>,
         query: String
     ): List<UserSession> {
-        if (query.isEmpty()) {
-            return userSessions
-        }
-        val lowercaseQuery = query.toLowerCase()
-        return userSessions.filter {
-            it.session.title.toLowerCase().contains(lowercaseQuery) ||
-                it.session.description.toLowerCase().contains(lowercaseQuery)
+        trace("search-path-simplematchstrategy") {
+            if (query.isEmpty()) {
+                return userSessions
+            }
+            val lowercaseQuery = query.toLowerCase()
+            return userSessions.filter {
+                it.session.title.toLowerCase().contains(lowercaseQuery) ||
+                    it.session.description.toLowerCase().contains(lowercaseQuery)
+            }
         }
     }
 }
@@ -51,10 +54,14 @@ class FtsMatchStrategy @Inject constructor(
         userSessions: List<UserSession>,
         query: String
     ): List<UserSession> {
-        if (query.isEmpty()) {
-            return userSessions
+        trace("search-path-ftsmatchstrategy") {
+            if (query.isEmpty()) {
+                return userSessions
+            }
+            val sessionIds = trace("search-path-roomquery") {
+                appDatabase.sessionFtsDao().searchAllSessions(query.toLowerCase()).toSet()
+            }
+            return userSessions.filter { it.session.id in sessionIds }
         }
-        val sessionIds = appDatabase.sessionFtsDao().searchAllSessions(query.toLowerCase()).toSet()
-        return userSessions.filter { it.session.id in sessionIds }
     }
 }
