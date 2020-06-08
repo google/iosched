@@ -27,8 +27,8 @@ object Versions {
     const val BENCHMARK = "1.0.0"
     const val FABRIC = "1.31.2"
     const val GOOGLE_SERVICES = "4.3.3"
-    const val KOTLIN = "1.3.70"
-    const val NAVIGATION = "2.2.0"
+    const val KOTLIN = "1.3.72"
+    const val NAVIGATION = "2.2.2"
     const val HILT = "2.28-alpha"
 
     // TODO: Remove this once the version for
