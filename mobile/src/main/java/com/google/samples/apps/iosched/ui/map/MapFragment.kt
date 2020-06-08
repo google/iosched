@@ -418,7 +418,7 @@ class MapFragment : MainNavigationFragment() {
             return MaterialAlertDialogBuilder(context)
                 .setMessage(R.string.my_location_rationale)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
-                    parentFragment!!.requestPermissions(
+                    requireParentFragment().requestPermissions(
                         arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                         REQUEST_LOCATION_PERMISSION)
                 }
