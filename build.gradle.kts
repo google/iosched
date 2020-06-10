@@ -27,8 +27,6 @@ buildscript {
         maven { url = uri("https://maven.fabric.io/public") }
         // Android Build Server
         maven { url = uri("../iosched-prebuilts/m2repository") }
-        // Hilt Jetpack integrations
-        maven { url = uri("https://androidx.dev/snapshots/builds/6515566/artifacts/repository") }
     }
     dependencies {
         classpath("com.android.tools.build:gradle:${Versions.ANDROID_GRADLE_PLUGIN}")
@@ -60,8 +58,6 @@ allprojects {
         maven {
             url = uri("${project.rootDir}/../../../prebuilts/fullsdk/linux/extras/support/m2repository")
         }
-        // Hilt Jetpack integrations
-        maven { url = uri("https://androidx.dev/snapshots/builds/6515566/artifacts/repository") }
 
         flatDir {
             dirs = setOf(file("libs"), project(":ar").file("libs"))
