@@ -122,7 +122,7 @@ class CollapsibleCard @JvmOverloads constructor(
             expanded = source.readByte().toInt() != 0
         }
 
-        constructor(superState: Parcelable?) : super(superState)
+        constructor(superState: Parcelable) : super(superState)
 
         override fun writeToParcel(out: Parcel, flags: Int) {
             super.writeToParcel(out, flags)

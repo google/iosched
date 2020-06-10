@@ -37,7 +37,7 @@ class ConferenceDataJsonParserTest {
         val inputStream = this.javaClass.classLoader!!.getResource(FILENAME)
             .openStream()
 
-        val data = ConferenceDataJsonParser.parseConferenceData(inputStream!!)
+        val data = ConferenceDataJsonParser.parseConferenceData(inputStream)
 
         assertThat(data.sessions.size, Is(equalTo(3)))
         assertThat(data.rooms.size, Is(equalTo(2)))
@@ -65,6 +65,6 @@ class ConferenceDataJsonParserTest {
         val inputStream = this.javaClass.classLoader!!.getResource(MALFORMED_FILENAME)
             .openStream()
 
-        ConferenceDataJsonParser.parseConferenceData(inputStream!!)
+        ConferenceDataJsonParser.parseConferenceData(inputStream)
     }
 }

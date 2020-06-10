@@ -170,12 +170,12 @@ class ScheduleViewModel @ViewModelInject constructor(
                 it.data.userMessage?.type?.stringRes()?.let { messageId ->
                     // There is a message to display:
                     snackbarMessageManager.addMessage(
-                            SnackbarMessage(
-                                    messageId = messageId,
-                                    longDuration = true,
-                                    session = it.data.userMessageSession,
-                                    requestChangeId = it.data.userMessage?.changeRequestId
-                            )
+                        SnackbarMessage(
+                            messageId = messageId,
+                            longDuration = true,
+                            session = it.data.userMessageSession,
+                            requestChangeId = it.data.userMessage?.changeRequestId
+                        )
                     )
                 }
             }
@@ -206,7 +206,7 @@ class ScheduleViewModel @ViewModelInject constructor(
         addSource(loadSessionsResult) { result ->
             if (!userHasInteracted) {
                 val index =
-                        (result as? Success)?.data?.firstUnfinishedSessionIndex ?: return@addSource
+                    (result as? Success)?.data?.firstUnfinishedSessionIndex ?: return@addSource
                 if (index != -1) {
                     value = Event(ScheduleScrollEvent(index))
                 }
