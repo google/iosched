@@ -17,20 +17,18 @@
 package com.google.samples.apps.iosched.ui.agenda
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.shared.data.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.equalTo as isEqualTo
 import org.junit.Rule
 import org.junit.Test
-import org.hamcrest.Matchers.equalTo as isEqualTo
 
 /**
  * Unit tests for the [AgendaViewModel].
@@ -41,29 +39,23 @@ class AgendaViewModelTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    // Executes tasks in a synchronous [TaskScheduler]
+    // Overrides Dispatchers.Main used in Coroutines
     @get:Rule
-    var syncTaskExecutorRule = SyncTaskExecutorRule()
+    var coroutineRule = MainCoroutineRule()
 
     @Test
     fun agendaDataIsLoaded() {
         val viewModel = AgendaViewModel(
-            LoadAgendaUseCase(FakeAgendaRepository()),
-            GetTimeZoneUseCase(FakePreferenceStorage())
+            LoadAgendaUseCase(FakeAgendaRepository(), coroutineRule.testDispatcher),
+            GetTimeZoneUseCase(FakePreferenceStorage(), coroutineRule.testDispatcher)
         )
 
-        val blocks = LiveDataTestUtil.getValue(viewModel.loadAgendaResult)
+        val blocks = LiveDataTestUtil.getValue(viewModel.agenda)
         assertThat(blocks, isEqualTo(TestData.agenda))
     }
 
     internal class FakeAgendaRepository : AgendaRepository {
 
-        override fun getObservableAgenda(): LiveData<List<Block>> {
-            val result: MutableLiveData<List<Block>> = MutableLiveData()
-            result.postValue(TestData.agenda)
-            return result
-        }
-
-        override fun getAgenda(): List<Block> = TestData.agenda
+        override suspend fun getAgenda(forceRefresh: Boolean): List<Block> = TestData.agenda
     }
 }

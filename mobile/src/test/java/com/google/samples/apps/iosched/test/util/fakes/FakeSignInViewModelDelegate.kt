@@ -31,6 +31,7 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
     override val currentUserImageUri = MutableLiveData<Uri?>()
     override val performSignInEvent = MutableLiveData<Event<SignInEvent>>()
     override val shouldShowNotificationsPrefAction = MutableLiveData<Event<Boolean>>()
+    override val showReservations = MutableLiveData<Boolean>()
 
     var injectIsSignedIn = true
     var injectIsRegistered = false
@@ -47,11 +48,11 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
 
     override fun isRegistered(): Boolean = injectIsRegistered
 
-    override fun emitSignInRequest() {
+    override suspend fun emitSignInRequest() {
         signInRequestsEmitted++
     }
 
-    override fun emitSignOutRequest() {
+    override suspend fun emitSignOutRequest() {
         signOutRequestsEmitted++
     }
 
@@ -67,6 +68,6 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
             on { this@on.isRegistered() }.doReturn(injectIsRegistered)
             on { isRegistrationDataReady() }.doReturn(true)
         }
-        currentUserInfo.postValue(mockUser)
+        currentUserInfo.value = mockUser
     }
 }

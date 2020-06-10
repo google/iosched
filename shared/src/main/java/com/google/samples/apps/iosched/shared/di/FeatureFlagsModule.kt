@@ -19,8 +19,11 @@ package com.google.samples.apps.iosched.shared.di
 import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import javax.inject.Singleton
 
+@InstallIn(ApplicationComponent::class)
 @Module
 class FeatureFlagsModule {
 
@@ -59,5 +62,11 @@ class FeatureFlagsModule {
     @AssistantAppEnabledFlag
     fun provideAssistantAppEnabledFlag(appConfig: AppConfigDataSource): Boolean {
         return appConfig.isAssistantAppFeatureEnabled()
+    }
+
+    @Provides
+    @ReservationEnabledFlag
+    fun provideReservationEnabledFlag(appConfig: AppConfigDataSource): Boolean {
+        return appConfig.isReservationFeatureEnabled()
     }
 }

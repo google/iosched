@@ -17,11 +17,14 @@
 package com.google.samples.apps.iosched.shared.domain.settings
 
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 
-open class GetAnalyticsSettingUseCase @Inject constructor(
-    private val preferenceStorage: PreferenceStorage
-) : UseCase<Unit, Boolean>() {
-    override fun execute(parameters: Unit) = preferenceStorage.sendUsageStatistics
+class GetAnalyticsSettingUseCase @Inject constructor(
+    private val preferenceStorage: PreferenceStorage,
+    @IoDispatcher dispatcher: CoroutineDispatcher
+) : UseCase<Unit, Boolean>(dispatcher) {
+    override suspend fun execute(parameters: Unit) = preferenceStorage.sendUsageStatistics
 }

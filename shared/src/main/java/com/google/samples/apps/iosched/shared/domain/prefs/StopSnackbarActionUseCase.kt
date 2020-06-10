@@ -17,7 +17,9 @@
 package com.google.samples.apps.iosched.shared.domain.prefs
 
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 /**
@@ -26,9 +28,10 @@ import javax.inject.Inject
  * of the Snackbars should still show even after setting this preference as true.
  */
 open class StopSnackbarActionUseCase @Inject constructor(
-    private val preferenceStorage: PreferenceStorage
-) : UseCase<Boolean, Unit>() {
-    override fun execute(parameters: Boolean) {
+    private val preferenceStorage: PreferenceStorage,
+    @IoDispatcher dispatcher: CoroutineDispatcher
+) : UseCase<Boolean, Unit>(dispatcher) {
+    override suspend fun execute(parameters: Boolean) {
         preferenceStorage.snackbarIsStopped = parameters
     }
 }

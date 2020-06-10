@@ -22,25 +22,25 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.updatePaddingRelative
 import androidx.databinding.BindingAdapter
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.samples.apps.iosched.databinding.FragmentAgendaBinding
 import com.google.samples.apps.iosched.model.Block
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.clearDecorations
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import dagger.hilt.android.AndroidEntryPoint
 import org.threeten.bp.ZoneId
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class AgendaFragment : MainNavigationFragment() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: AgendaViewModel
+    private val viewModel: AgendaViewModel by viewModels()
+    private val mainActivityViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var binding: FragmentAgendaBinding
 
     override fun onCreateView(
@@ -60,12 +60,14 @@ class AgendaFragment : MainNavigationFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = viewModelProvider(viewModelFactory)
 
         binding.viewModel = viewModel
-        binding.toolbar.setupProfileMenuItem(
-            activityViewModelProvider(viewModelFactory), this@AgendaFragment
-        )
+        binding.toolbar.setupProfileMenuItem(mainActivityViewModel, this@AgendaFragment)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.refreshAgenda()
     }
 }
 

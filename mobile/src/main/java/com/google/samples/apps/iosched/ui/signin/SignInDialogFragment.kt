@@ -23,30 +23,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.databinding.DialogSignInBinding
 import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignIn
 import com.google.samples.apps.iosched.util.executeAfter
 import com.google.samples.apps.iosched.util.signin.SignInHandler
-import dagger.android.support.DaggerAppCompatDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /**
  * Dialog that tells the user to sign in to continue the operation.
  */
-class SignInDialogFragment : DaggerAppCompatDialogFragment() {
+@AndroidEntryPoint
+class SignInDialogFragment : AppCompatDialogFragment() {
 
     @Inject
     lateinit var signInHandler: SignInHandler
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private lateinit var signInViewModel: SignInViewModel
+    private val signInViewModel: SignInViewModel by viewModels()
 
     private lateinit var binding: DialogSignInBinding
 
@@ -68,8 +66,7 @@ class SignInDialogFragment : DaggerAppCompatDialogFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        signInViewModel = viewModelProvider(viewModelFactory)
-        signInViewModel.performSignInEvent.observe(this, EventObserver { request ->
+        signInViewModel.performSignInEvent.observe(viewLifecycleOwner, EventObserver { request ->
             if (request == RequestSignIn) {
                 activity?.let { activity ->
                     val signInIntent = signInHandler.makeSignInIntent()

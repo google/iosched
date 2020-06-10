@@ -22,8 +22,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.updatePadding
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.databinding.FragmentCodelabsBinding
@@ -31,26 +32,25 @@ import com.google.samples.apps.iosched.model.Codelab
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
-import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.openWebsiteUri
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import javax.inject.Named
 
+@AndroidEntryPoint
 class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
 
     companion object {
-        private const val CODELABS_WEBSITE = "https://codelabs.developers.google.com"
+        private const val CODELABS_WEBSITE = "https://g.co/io/codelabs"
         private const val PARAM_UTM_SOURCE = "utm_source"
         private const val PARAM_UTM_MEDIUM = "utm_medium"
         private const val VALUE_UTM_SOURCE = "ioapp"
         private const val VALUE_UTM_MEDIUM = "android"
     }
-
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
     @Inject
     @field:Named("tagViewPool")
@@ -64,7 +64,8 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
     @Inject lateinit var analyticsHelper: AnalyticsHelper
 
     private lateinit var binding: FragmentCodelabsBinding
-    private lateinit var codelabsViewModel: CodelabsViewModel
+    private val codelabsViewModel: CodelabsViewModel by viewModels()
+    private val mainActivityViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var codelabsAdapter: CodelabsAdapter
 
     override fun onCreateView(
@@ -78,7 +79,7 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.setupProfileMenuItem(activityViewModelProvider(viewModelFactory), this)
+        binding.toolbar.setupProfileMenuItem(mainActivityViewModel, this)
 
         codelabsAdapter = CodelabsAdapter(
             this,
@@ -93,8 +94,7 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
             v.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
 
-        codelabsViewModel = viewModelProvider(viewModelFactory)
-        codelabsViewModel.codelabs.observe(this, Observer {
+        codelabsViewModel.codelabs.observe(viewLifecycleOwner, Observer {
             codelabsAdapter.submitList(it)
         })
 

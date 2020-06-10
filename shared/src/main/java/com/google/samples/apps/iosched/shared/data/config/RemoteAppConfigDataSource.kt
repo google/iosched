@@ -19,17 +19,23 @@ package com.google.samples.apps.iosched.shared.data.config
 import android.content.res.Resources.NotFoundException
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.android.gms.tasks.Task
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
+import com.google.samples.apps.iosched.shared.BuildConfig
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.coroutines.resume
 
 class RemoteAppConfigDataSource @Inject constructor(
     private val firebaseRemoteConfig: FirebaseRemoteConfig,
-    configSettings: FirebaseRemoteConfigSettings
+    configSettings: FirebaseRemoteConfigSettings,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : AppConfigDataSource {
 
     private val _attributesLiveDataMap: Map<String, MutableLiveData<String>> = mapOf(
@@ -98,18 +104,17 @@ class RemoteAppConfigDataSource @Inject constructor(
     init {
         // Set cache expiration to 0s when debugging to allow easy testing, otherwise
         // use the default value
-        cacheExpirySeconds = if (configSettings.isDeveloperModeEnabled) {
+        cacheExpirySeconds = if (BuildConfig.DEBUG) {
             0
         } else {
             DEFAULT_CACHE_EXPIRY_S
         }
-        firebaseRemoteConfig.activateFetched() // update active config with the last fetched values
-        updateStrings()
         firebaseRemoteConfig.fetch(cacheExpirySeconds).addOnCompleteListener { task ->
             // Async
             if (task.isSuccessful) {
-                firebaseRemoteConfig.activateFetched()
-                updateStrings()
+                firebaseRemoteConfig.activate().addOnCompleteListener {
+                    updateStrings()
+                }
             }
         }
     }
@@ -120,34 +125,22 @@ class RemoteAppConfigDataSource @Inject constructor(
         }
     }
 
-    override fun syncStringsAsync(changedCallback: StringsChangedCallback?) {
-        val getConfigTask = firebaseRemoteConfig.fetch(cacheExpirySeconds)
-
-        getConfigTask.addOnCompleteListener { task ->
-            onSyncStringsCompleted(task, changedCallback)
-        }
-    }
-
-    private fun onSyncStringsCompleted(task: Task<Void>, changedCallback: StringsChangedCallback?) {
-        if (task.isSuccessful) {
-            val oldStrings = _attributesLiveDataMap.entries.map { e ->
-                Pair(e.key, e.value.value)
-            }.toMap()
-
-            firebaseRemoteConfig.activateFetched()
-            updateStrings()
-
-            val changedKeys = oldStrings.filter { e ->
-                e.value != getStringLiveData(e.key).value
-            }.map {
-                it.key
+    override suspend fun syncStrings() {
+        withContext(ioDispatcher) {
+            val task = firebaseRemoteConfig.fetch(cacheExpirySeconds)
+            suspendCancellableCoroutine<Unit> { continuation ->
+                task.addOnCompleteListener {
+                    firebaseRemoteConfig.activate().addOnCompleteListener {
+                        updateStrings()
+                        continuation.resume(Unit)
+                    }.addOnFailureListener { exception ->
+                        Timber.w(exception, "Sync strings failed")
+                    }
+                }
+                task.addOnFailureListener { exception ->
+                    Timber.w(exception, "Sync strings failed")
+                }
             }
-
-            changedCallback?.let {
-                changedCallback.onChanged(changedKeys)
-            }
-        } else {
-            Timber.w("syncStrings failed")
         }
     }
 
@@ -178,6 +171,9 @@ class RemoteAppConfigDataSource @Inject constructor(
 
     override fun isAssistantAppFeatureEnabled(): Boolean =
         firebaseRemoteConfig.getBoolean(ASSISTANT_APP_FEATURE_ENABLED)
+
+    override fun isReservationFeatureEnabled(): Boolean =
+        firebaseRemoteConfig.getBoolean(RESERVATION_FEATURE_ENABLED)
 
     companion object {
         const val WIFI_SSID_KEY = "wifi_ssid"
@@ -247,6 +243,7 @@ class RemoteAppConfigDataSource @Inject constructor(
         const val SEARCH_SCHEDULE_FEATURE_ENABLED = "search_schedule_enabled"
         const val SEARCH_USING_ROOM_FEATURE_ENABLED = "search_using_room_enabled"
         const val ASSISTANT_APP_FEATURE_ENABLED = "io_assistant_app_enabled"
+        const val RESERVATION_FEATURE_ENABLED = "reservation_enabled"
 
         val DEFAULT_CACHE_EXPIRY_S = TimeUnit.MINUTES.toSeconds(12)
     }

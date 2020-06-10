@@ -34,31 +34,34 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePaddingRelative
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.MapView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentMapBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.slideOffsetToAlpha
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
+import dagger.hilt.android.AndroidEntryPoint
 import org.threeten.bp.Instant
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class MapFragment : MainNavigationFragment() {
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var analyticsHelper: AnalyticsHelper
 
-    private lateinit var viewModel: MapViewModel
+    private val viewModel: MapViewModel by viewModels()
+    private val mainActivityViewModel: MainActivityViewModel by activityViewModels()
+
     private var mapViewBundle: Bundle? = null
     private lateinit var mapView: MapView
 
@@ -112,7 +115,6 @@ class MapFragment : MainNavigationFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = viewModelProvider(viewModelFactory)
         binding = FragmentMapBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = this@MapFragment.viewModel
@@ -145,7 +147,7 @@ class MapFragment : MainNavigationFragment() {
         fabBaseMarginBottom = binding.mapModeFab.marginBottom
 
         binding.toolbar.run {
-            setupProfileMenuItem(activityViewModelProvider(viewModelFactory), this@MapFragment)
+            setupProfileMenuItem(mainActivityViewModel, this@MapFragment)
 
             menu.findItem(R.id.action_my_location)?.let { item ->
                 viewModel.showMyLocationOption.observe(viewLifecycleOwner, Observer { option ->
@@ -266,17 +268,17 @@ class MapFragment : MainNavigationFragment() {
         }
 
         // Observe ViewModel data
-        viewModel.mapVariant.observe(this, Observer {
+        viewModel.mapVariant.observe(viewLifecycleOwner, Observer {
             mapView.getMapAsync { googleMap ->
                 googleMap.clear()
                 viewModel.loadMapFeatures(googleMap)
             }
         })
-        viewModel.geoJsonLayer.observe(this, Observer {
+        viewModel.geoJsonLayer.observe(viewLifecycleOwner, Observer {
             updateMarkers(it ?: return@Observer)
         })
 
-        viewModel.selectedMarkerInfo.observe(this, Observer {
+        viewModel.selectedMarkerInfo.observe(viewLifecycleOwner, Observer {
             updateInfoSheet(it ?: return@Observer)
         })
 
@@ -416,7 +418,7 @@ class MapFragment : MainNavigationFragment() {
             return MaterialAlertDialogBuilder(context)
                 .setMessage(R.string.my_location_rationale)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
-                    parentFragment!!.requestPermissions(
+                    requireParentFragment().requestPermissions(
                         arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                         REQUEST_LOCATION_PERMISSION)
                 }

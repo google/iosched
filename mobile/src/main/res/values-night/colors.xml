@@ -21,6 +21,7 @@
     <color name="color_on_secondary">@color/black</color>
 
     <color name="color_control_light">#2EFFFFFF</color> <!-- 18% white -->
+    <color name="color_surface_secondary">#2a2b2e</color>
 
     <!-- Scrim colors -->
     <color name="system_ui_scrim_light">#2EFFFFFF</color> <!-- 18% white -->
@@ -33,4 +34,6 @@
     <color name="wifi_card_background">#263238</color>
     <color name="event_card_header_background">@color/event_card_header_background_dark</color>
     <color name="list_divider">#1fffffff</color>
+
+    <item name="chip_bg_alpha_checked" format="float" type="dimen">0.27</item>
 </resources>

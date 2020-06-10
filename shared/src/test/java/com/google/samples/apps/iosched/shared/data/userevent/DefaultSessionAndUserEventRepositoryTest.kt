@@ -17,13 +17,16 @@
 package com.google.samples.apps.iosched.shared.data.userevent
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.data.runBlockingTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.instanceOf
 import org.hamcrest.core.Is.`is`
@@ -35,24 +38,25 @@ import org.junit.Test
 /**
  * Unit test for [DefaultSessionAndUserEventRepository].
  */
+@ExperimentalCoroutinesApi
 class DefaultSessionAndUserEventRepositoryTest {
 
     // Executes tasks in the Architecture Components in the same thread
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    // Executes tasks in a synchronous [TaskScheduler]
+    // Overrides Dispatchers.Main used in Coroutines
     @get:Rule
-    var syncExecutorRule = SyncExecutorRule()
+    var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun observableUserEvents_areMappedCorrectly() {
+    fun observableUserEvents_areMappedCorrectly() = runBlocking {
         val repository = DefaultSessionAndUserEventRepository(
             userEventDataSource = TestUserEventDataSource(),
             sessionRepository = DefaultSessionRepository(TestDataRepository)
         )
 
-        val userEvents = LiveDataTestUtil.getValue(repository.getObservableUserEvents("user"))
+        val userEvents = repository.getObservableUserEvents("user").first { it is Result.Success }
 
         assertThat(userEvents, `is`(IsInstanceOf(Result.Success::class.java)))
         val successResult = userEvents as Result.Success
@@ -79,12 +83,12 @@ class DefaultSessionAndUserEventRepositoryTest {
     }
 
     @Test
-    fun observableUserEvent() {
+    fun observableUserEvent() = coroutineRule.runBlockingTest {
         val repository = DefaultSessionAndUserEventRepository(
             userEventDataSource = TestUserEventDataSource(),
             sessionRepository = DefaultSessionRepository(TestDataRepository)
         )
-        val userEvent = LiveDataTestUtil.getValue(repository.getObservableUserEvent("user", "2"))
+        val userEvent = repository.getObservableUserEvent("user", "2").first()
 
         assertThat(userEvent, `is`(instanceOf(Result.Success::class.java)))
 

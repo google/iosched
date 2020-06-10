@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="filterChip"
+            type="com.google.samples.apps.iosched.ui.filters.FilterChip" />
+
+        <variable
+            name="viewModel"
+            type="com.google.samples.apps.iosched.ui.filters.FiltersViewModelDelegate" />
+    </data>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/filter_label"
+        style="@style/Widget.IOSched.FilterChip.Selectable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="@{filterChip.isSelected}"
+        app:filterChipOnClick="@{filterChip}"
+        app:filterChipText="@{filterChip}"
+        app:filterChipTint="@{filterChip.color}"
+        app:viewModel="@{viewModel}"
+        tools:text="@sample/tags.json/tags/name"
+        tools:chipIconTint="@sample/tags.json/tags/color" />
+
+</layout>

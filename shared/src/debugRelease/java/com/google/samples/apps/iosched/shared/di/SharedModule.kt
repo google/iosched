@@ -18,10 +18,15 @@ package com.google.samples.apps.iosched.shared.di
 
 import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.firestoreSettings
 import com.google.firebase.functions.FirebaseFunctions
+import com.google.firebase.functions.ktx.functions
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.samples.apps.iosched.shared.BuildConfig
 import com.google.samples.apps.iosched.shared.R
 import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
@@ -37,16 +42,19 @@ import com.google.samples.apps.iosched.shared.data.feed.AnnouncementDataSource
 import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.shared.data.feed.FirestoreAnnouncementDataSource
-import com.google.samples.apps.iosched.shared.data.feedback.DefaultFeedbackEndpoint
-import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.feed.FirestoreMomentDataSource
 import com.google.samples.apps.iosched.shared.data.feed.MomentDataSource
+import com.google.samples.apps.iosched.shared.data.feedback.DefaultFeedbackEndpoint
+import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
+import com.google.samples.apps.iosched.shared.domain.search.FtsMatchStrategy
+import com.google.samples.apps.iosched.shared.domain.search.SessionTextMatchStrategy
+import com.google.samples.apps.iosched.shared.domain.search.SimpleMatchStrategy
 import com.google.samples.apps.iosched.shared.fcm.FcmTopicSubscriber
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
@@ -54,12 +62,17 @@ import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Named
 import javax.inject.Singleton
 
 /**
  * Module where classes created in the shared module are created.
  */
+@InstallIn(ApplicationComponent::class)
 @Module
 class SharedModule {
 
@@ -69,7 +82,7 @@ class SharedModule {
     @Provides
     @Named("remoteConfDatasource")
     fun provideConferenceDataSource(
-        context: Context,
+        @ApplicationContext context: Context,
         networkUtils: NetworkUtils
     ): ConferenceDataSource {
         return NetworkConferenceDataSource(context, networkUtils)
@@ -123,8 +136,11 @@ class SharedModule {
 
     @Singleton
     @Provides
-    fun provideUserEventDataSource(firestore: FirebaseFirestore): UserEventDataSource {
-        return FirestoreUserEventDataSource(firestore)
+    fun provideUserEventDataSource(
+        firestore: FirebaseFirestore,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): UserEventDataSource {
+        return FirestoreUserEventDataSource(firestore, ioDispatcher)
     }
 
     @Singleton
@@ -148,20 +164,17 @@ class SharedModule {
     @Singleton
     @Provides
     fun provideFirebaseFireStore(): FirebaseFirestore {
-        val firestore = FirebaseFirestore.getInstance()
-        firestore.firestoreSettings = FirebaseFirestoreSettings.Builder()
+        return Firebase.firestore.apply {
             // This is to enable the offline data
             // https://firebase.google.com/docs/firestore/manage-data/enable-offline
-            .setPersistenceEnabled(true)
-            .setTimestampsInSnapshotsEnabled(true)
-            .build()
-        return firestore
+            firestoreSettings = firestoreSettings { isPersistenceEnabled = true }
+        }
     }
 
     @Singleton
     @Provides
     fun provideFirebaseFunctions(): FirebaseFunctions {
-        return FirebaseFunctions.getInstance()
+        return Firebase.functions
     }
 
     @Singleton
@@ -179,9 +192,11 @@ class SharedModule {
     @Singleton
     @Provides
     fun provideFirebaseRemoteConfigSettings(): FirebaseRemoteConfigSettings {
-        return FirebaseRemoteConfigSettings.Builder()
-            .setDeveloperModeEnabled(BuildConfig.DEBUG)
-            .build()
+        return if (BuildConfig.DEBUG) {
+            remoteConfigSettings { minimumFetchIntervalInSeconds = 0 }
+        } else {
+            remoteConfigSettings { }
+        }
     }
 
     @Singleton
@@ -189,24 +204,34 @@ class SharedModule {
     fun provideFirebaseRemoteConfig(
         configSettings: FirebaseRemoteConfigSettings
     ): FirebaseRemoteConfig {
-        val remoteConfig = FirebaseRemoteConfig.getInstance()
-        remoteConfig.setConfigSettings(configSettings)
-        remoteConfig.setDefaults(R.xml.remote_config_defaults)
-        return remoteConfig
+        return Firebase.remoteConfig.apply {
+            setConfigSettingsAsync(configSettings)
+            setDefaultsAsync(R.xml.remote_config_defaults)
+        }
     }
 
     @Singleton
     @Provides
     fun provideAppConfigDataSource(
         remoteConfig: FirebaseRemoteConfig,
-        configSettings: FirebaseRemoteConfigSettings
+        configSettings: FirebaseRemoteConfigSettings,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
     ): AppConfigDataSource {
-        return RemoteAppConfigDataSource(remoteConfig, configSettings)
+        return RemoteAppConfigDataSource(remoteConfig, configSettings, ioDispatcher)
     }
 
     @Singleton
     @Provides
     fun provideTimeProvider(): TimeProvider {
         return DefaultTimeProvider
+    }
+
+    @Singleton
+    @Provides
+    fun provideSessionTextMatchStrategy(
+        @SearchUsingRoomEnabledFlag useRoom: Boolean,
+        appDatabase: AppDatabase
+    ): SessionTextMatchStrategy {
+        return if (useRoom) FtsMatchStrategy(appDatabase) else SimpleMatchStrategy
     }
 }

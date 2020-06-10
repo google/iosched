@@ -16,18 +16,16 @@
 
 package com.google.samples.apps.iosched.shared.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
 import com.google.samples.apps.iosched.shared.result.Result
 
 object FakeFeedbackEndpoint : FeedbackEndpoint {
 
-    override fun sendFeedback(
+    override suspend fun sendFeedback(
         sessionId: SessionId,
         responses: Map<String, Int>
-    ): LiveData<Result<Unit>> {
-        return MutableLiveData(Result.Success(Unit))
+    ): Result<Unit> {
+        return Result.Success(Unit)
     }
 }

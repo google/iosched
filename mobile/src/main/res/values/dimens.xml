@@ -74,8 +74,6 @@
     <dimen name="day_header_decor_width">300dp</dimen>
     <dimen name="day_header_decor_height">72dp</dimen>
 
-    <item name="tag_letter_spacing" type="dimen" format="float">-0.06</item>
-
     <!-- Agenda -->
     <dimen name="agenda_item_stroke_width">2dp</dimen>
     <dimen name="agenda_block_padding_vertical">12dp</dimen>
@@ -88,12 +86,16 @@
     <dimen name="feed_card_corner_radius">8dp</dimen>
     <dimen name="feed_header_cta_icon_size">24dp</dimen>
     <dimen name="feed_header_cta_icon_padding">4dp</dimen>
+    <dimen name="feed_my_day_session_width">300dp</dimen>
+    <dimen name="feed_my_day_session_height">180dp</dimen>
+    <dimen name="feed_my_day_empty_sessions_message_max_width">250dp</dimen>
     <dimen name="feed_session_dimension">200dp</dimen>
     <dimen name="feed_session_badge_icon_size">24dp</dimen>
     <dimen name="feed_announcement_min_height">96dp</dimen>
     <item name="feed_announcement_image_width_percent" format="float" type="dimen">0.3</item>
     <dimen name="feed_moment_height">250dp</dimen>
     <dimen name="countdown_height">300dp</dimen>
+    <dimen name="feed_social_buttons_spacing">12dp</dimen>
 
     <!-- Onboarding -->
     <dimen name="onboarding_actions_height">112dp</dimen>

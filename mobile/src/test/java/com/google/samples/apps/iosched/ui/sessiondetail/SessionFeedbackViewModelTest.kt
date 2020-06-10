@@ -17,8 +17,6 @@
 package com.google.samples.apps.iosched.ui.sessiondetail
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.TestDataRepository
@@ -30,10 +28,9 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUse
 import com.google.samples.apps.iosched.shared.domain.users.FeedbackUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
-import com.google.samples.apps.iosched.test.util.time.FakeIntervalMapperRule
 import com.google.samples.apps.iosched.test.util.time.FixedTimeExecutorRule
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
@@ -53,17 +50,13 @@ class SessionFeedbackViewModelTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule
-    var syncTaskExecutorRule = SyncTaskExecutorRule()
-
     // Allows explicit setting of "now"
     @get:Rule
     var fixedTimeExecutorRule = FixedTimeExecutorRule()
 
-    // Allows IntervalMapper to execute immediately
+    // Overrides Dispatchers.Main used in Coroutines
     @get:Rule
-    var fakeIntervalMapperRule = FakeIntervalMapperRule()
+    var coroutineRule = MainCoroutineRule()
 
     private lateinit var viewModel: SessionFeedbackViewModel
     private val testSession = TestData.session0
@@ -82,7 +75,8 @@ class SessionFeedbackViewModelTest {
 
     @Test
     fun title() {
-        assertEquals(testSession.title, LiveDataTestUtil.getValue(viewModel.title))
+        assertEquals(testSession.title,
+            LiveDataTestUtil.getValue(viewModel.userSession)!!.session.title)
     }
 
     @Test
@@ -115,7 +109,8 @@ class SessionFeedbackViewModelTest {
             DefaultSessionAndUserEventRepository(
                 userEventDataSource,
                 DefaultSessionRepository(TestDataRepository)
-            )
+            ),
+            coroutineRule.testDispatcher
         )
     }
 
@@ -124,17 +119,18 @@ class SessionFeedbackViewModelTest {
     ): FeedbackUseCase {
         return FeedbackUseCase(
             object : FeedbackEndpoint {
-                override fun sendFeedback(
+                override suspend fun sendFeedback(
                     sessionId: SessionId,
                     responses: Map<String, Int>
-                ): LiveData<Result<Unit>> {
-                    return MutableLiveData(Result.Success(Unit))
+                ): Result<Unit> {
+                    return Result.Success(Unit)
                 }
             },
             DefaultSessionAndUserEventRepository(
                 userEventDataSource,
                 DefaultSessionRepository(TestDataRepository)
-            )
+            ),
+            coroutineRule.testDispatcher
         )
     }
 }

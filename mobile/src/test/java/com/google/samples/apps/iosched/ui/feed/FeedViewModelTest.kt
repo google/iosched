@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.ui.feed
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.model.Moment
@@ -24,24 +25,25 @@ import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.data.feed.DefaultFeedRepository
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.domain.feed.GetConferenceStateUseCase
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
 import com.google.samples.apps.iosched.shared.domain.feed.LoadCurrentMomentUseCase
-import com.google.samples.apps.iosched.shared.domain.internal.IOSchedHandler
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadStarredAndReservedSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.time.TimeProvider
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeThemedActivityDelegate
 import com.google.samples.apps.iosched.test.util.time.FixedTimeProvider
-import com.google.samples.apps.iosched.ui.SectionHeader
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
-import com.google.samples.apps.iosched.util.ConferenceStateLiveData
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.cancel
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.instanceOf
@@ -60,17 +62,11 @@ class FeedViewModelTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    // Executes tasks in a synchronous [TaskScheduler]
+    // Overrides Dispatchers.Main used in Coroutines
     @get:Rule
-    var syncTaskExecutorRule = SyncTaskExecutorRule()
+    var coroutineRule = MainCoroutineRule()
 
-    private val fakeHandler = object : IOSchedHandler {
-        override fun post(runnable: Runnable) = true
-
-        override fun postDelayed(runnable: Runnable, millis: Long) = true
-
-        override fun removeCallbacks(runnable: Runnable) {}
-    }
+    private val testDispatcher = coroutineRule.testDispatcher
 
     private val defaultFeedRepository =
         DefaultFeedRepository(TestAnnouncementDataSource, TestMomentDataSource)
@@ -80,7 +76,7 @@ class FeedViewModelTest {
         FixedTimeProvider(TestData.TestConferenceDays[0].start.plusHours(4).toInstant())
 
     @Test
-    fun testDataIsLoaded_ObservablesUpdated() {
+    fun testDataIsLoaded_ObservablesUpdated() = coroutineRule.runBlockingTest {
         // Create ViewModel with the use case and load the feed.
         val viewModel = createFeedViewModel()
         val feedObservable = LiveDataTestUtil.getValue(viewModel.feed)
@@ -88,48 +84,68 @@ class FeedViewModelTest {
         // Check that data was loaded correctly.
         // At the specified time, the Moment is relevant and there is one Announcement.
         // Add two more for the Sessions carousel and the "Announcements' heading.
-        assertThat(feedObservable?.size, `is`(equalTo(4)))
+        assertThat(feedObservable?.size, `is`(equalTo(5)))
         assertThat(feedObservable?.get(0) as? Moment, `is`(equalTo(TestData.moment1)))
-        assertThat(feedObservable?.get(1), `is`(instanceOf(FeedSessions::class.java)))
-        assertThat(feedObservable?.get(2), `is`(instanceOf(SectionHeader::class.java)))
-        assertThat(feedObservable?.get(3) as? Announcement, `is`(equalTo(TestData.feedItem1)))
+        assertThat(
+            feedObservable?.get(1) as? AnnouncementsHeader,
+            `is`(equalTo(AnnouncementsHeader(false)))
+        )
+        assertThat(feedObservable?.get(2) as? Announcement, `is`(equalTo(TestData.feedItem1)))
+        assertThat(feedObservable?.get(3), `is`(instanceOf(FeedSustainabilitySection::class.java)))
+        assertThat(feedObservable?.get(4), `is`(instanceOf(FeedSocialChannelsSection::class.java)))
+
+        // Must cancel because there's a flow in [GetConferenceStateUseCase] that never finishes.
+        viewModel.viewModelScope.cancel()
+        // Cancel is not synchronous so we need to wait for it to avoid leaks.
+        coroutineRule.testDispatcher.advanceUntilIdle()
     }
 
     @Test
-    fun testDataIsLoaded_Fails() {
+    fun testDataIsLoaded_Fails() = coroutineRule.runBlockingTest {
         // Create ViewModel with a use case that returns an error
-        val viewModel = createFeedViewModel(loadAnnouncementUseCase = FailingUseCase)
+        val viewModel = createFeedViewModel(
+            loadAnnouncementUseCase = FailingUseCase(testDispatcher)
+        )
 
         // Verify that an error was caught
         val errorMessage = LiveDataTestUtil.getValue(viewModel.errorMessage)
         assertTrue(errorMessage?.peekContent()?.isNotEmpty() ?: false)
+
+        // Must cancel because there's a flow in [GetConferenceStateUseCase] that never finishes.
+        viewModel.viewModelScope.cancel()
+
+        // Cancel is not synchronous so we need to wait for it to avoid leaks.
+        coroutineRule.testDispatcher.advanceUntilIdle()
     }
 
     /**
      * Use case that always returns an error when executed.
      */
-    object FailingUseCase : LoadAnnouncementsUseCase(
-        DefaultFeedRepository(TestAnnouncementDataSource, TestMomentDataSource)
+    class FailingUseCase(coroutineDispatcher: CoroutineDispatcher) : LoadAnnouncementsUseCase(
+        DefaultFeedRepository(TestAnnouncementDataSource, TestMomentDataSource),
+        coroutineDispatcher
     ) {
-        override fun execute(parameters: Instant): List<Announcement> {
+        override suspend fun execute(parameters: Instant): List<Announcement> {
             throw Exception("Error!")
         }
     }
 
     private fun createFeedViewModel(
         loadCurrentMomentUseCase: LoadCurrentMomentUseCase =
-            LoadCurrentMomentUseCase(defaultFeedRepository),
+            LoadCurrentMomentUseCase(defaultFeedRepository, testDispatcher),
         loadAnnouncementUseCase: LoadAnnouncementsUseCase =
-            LoadAnnouncementsUseCase(defaultFeedRepository),
-        loadFilteredSessionsUseCase: LoadFilteredUserSessionsUseCase =
-            LoadFilteredUserSessionsUseCase(
+            LoadAnnouncementsUseCase(defaultFeedRepository, testDispatcher),
+        loadStarredAndReservedSessionsUseCase: LoadStarredAndReservedSessionsUseCase =
+            LoadStarredAndReservedSessionsUseCase(
                 DefaultSessionAndUserEventRepository(
                     TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
-                )
+                ),
+                testDispatcher
             ),
-        getTimeZoneUseCase: GetTimeZoneUseCase = GetTimeZoneUseCase(FakePreferenceStorage()),
-        conferenceStateLiveData: ConferenceStateLiveData =
-            ConferenceStateLiveData(fakeHandler, defaultTimeProvider),
+        getTimeZoneUseCase: GetTimeZoneUseCase =
+            GetTimeZoneUseCase(FakePreferenceStorage(), testDispatcher),
+        getConferenceStateUseCase: GetConferenceStateUseCase =
+            GetConferenceStateUseCase(testDispatcher, defaultTimeProvider),
         timeProvider: TimeProvider = defaultTimeProvider,
         signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate().apply {
             loadUser("123")
@@ -139,9 +155,9 @@ class FeedViewModelTest {
         return FeedViewModel(
             loadCurrentMomentUseCase = loadCurrentMomentUseCase,
             loadAnnouncementsUseCase = loadAnnouncementUseCase,
-            loadFilteredUserSessionsUseCase = loadFilteredSessionsUseCase,
+            loadStarredAndReservedSessionsUseCase = loadStarredAndReservedSessionsUseCase,
             getTimeZoneUseCase = getTimeZoneUseCase,
-            conferenceStateLiveData = conferenceStateLiveData,
+            getConferenceStateUseCase = getConferenceStateUseCase,
             timeProvider = timeProvider,
             analyticsHelper = FakeAnalyticsHelper(),
             signInViewModelDelegate = signInViewModelDelegate,

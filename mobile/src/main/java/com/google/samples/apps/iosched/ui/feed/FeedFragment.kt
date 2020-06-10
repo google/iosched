@@ -23,21 +23,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.view.updatePaddingRelative
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.common.collect.ImmutableMap
 import com.google.samples.apps.iosched.databinding.FragmentFeedBinding
-import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
-import com.google.samples.apps.iosched.shared.util.toEpochMilli
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
-import com.google.samples.apps.iosched.ui.feed.FeedFragmentDirections.Companion.toMap
 import com.google.samples.apps.iosched.ui.feed.FeedFragmentDirections.Companion.toSchedule
 import com.google.samples.apps.iosched.ui.feed.FeedFragmentDirections.Companion.toSessionDetail
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
@@ -46,9 +43,11 @@ import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.openWebsiteUrl
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class FeedFragment : MainNavigationFragment() {
 
     companion object {
@@ -57,15 +56,14 @@ class FeedFragment : MainNavigationFragment() {
     }
 
     @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    @Inject
     lateinit var snackbarMessageManager: SnackbarMessageManager
 
     @Inject
     lateinit var analyticsHelper: AnalyticsHelper
 
-    private lateinit var model: FeedViewModel
+    private val model: FeedViewModel by viewModels()
+    private val mainActivityViewModel: MainActivityViewModel by activityViewModels()
+
     private lateinit var binding: FragmentFeedBinding
     private var adapter: FeedAdapter? = null
     private lateinit var sessionsViewBinder: FeedSessionsViewBinder
@@ -75,7 +73,6 @@ class FeedFragment : MainNavigationFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        model = viewModelProvider(viewModelFactory)
 
         binding = FragmentFeedBinding.inflate(
             inflater, container, false
@@ -101,7 +98,7 @@ class FeedFragment : MainNavigationFragment() {
         super.onViewCreated(view, savedInstanceState)
         analyticsHelper.sendScreenView("Home", requireActivity())
 
-        binding.toolbar.setupProfileMenuItem(activityViewModelProvider(viewModelFactory), this)
+        binding.toolbar.setupProfileMenuItem(mainActivityViewModel, this)
 
         binding.root.doOnApplyWindowInsets { _, insets, _ ->
             binding.statusBar.run {
@@ -131,7 +128,7 @@ class FeedFragment : MainNavigationFragment() {
 
         setUpSnackbar(model.snackBarMessage, binding.snackbar, snackbarMessageManager)
 
-        model.errorMessage.observe(this, Observer { message ->
+        model.errorMessage.observe(viewLifecycleOwner, Observer { message ->
             val errorMessage = message?.getContentIfNotHandled()
             if (!errorMessage.isNullOrEmpty()) {
                 Toast.makeText(this.context, errorMessage, Toast.LENGTH_SHORT).show()
@@ -139,26 +136,32 @@ class FeedFragment : MainNavigationFragment() {
             }
         })
 
-        model.feed.observe(this, Observer {
+        model.feed.observe(viewLifecycleOwner, Observer {
             showFeedItems(binding.recyclerView, it)
         })
 
-        model.navigateToSessionAction.observe(this, EventObserver { sessionId ->
+        model.navigateToSessionAction.observe(viewLifecycleOwner, EventObserver { sessionId ->
             openSessionDetail(sessionId)
         })
 
-        model.navigateToScheduleAction.observe(this, EventObserver { withPinnedEvents ->
-            openSchedule(withPinnedEvents)
-        })
+        model.navigateToScheduleAction.observe(
+            viewLifecycleOwner,
+            EventObserver { withPinnedEvents ->
+                openSchedule(withPinnedEvents)
+            }
+        )
 
-        model.openSignInDialogAction.observe(this, EventObserver { openSignInDialog() })
+        model.openSignInDialogAction.observe(
+            viewLifecycleOwner,
+            EventObserver { openSignInDialog() }
+        )
 
-        model.openLiveStreamAction.observe(this, EventObserver { streamUrl ->
+        model.openLiveStreamAction.observe(viewLifecycleOwner, EventObserver { streamUrl ->
             openLiveStreamUrl(streamUrl)
         })
 
-        model.navigateToMapAction.observe(this, EventObserver { moment ->
-            openMap(moment)
+        model.navigateAction.observe(viewLifecycleOwner, EventObserver { navDirections ->
+            findNavController().navigate(navDirections)
         })
     }
 
@@ -184,15 +187,15 @@ class FeedFragment : MainNavigationFragment() {
                 themeLiveData = model.theme
             )
             val sessionsViewBinder = FeedSessionsViewBinder(model)
+            val feedAnnouncementsHeaderViewBinder =
+                AnnouncementsHeaderViewBinder(this, model)
             val announcementViewBinder = AnnouncementViewBinder(model.timeZoneId, this)
             val announcementsEmptyViewBinder = AnnouncementsEmptyViewBinder()
             val announcementsLoadingViewBinder = AnnouncementsLoadingViewBinder()
+            val feedSustainabilitySectionViewBinder = FeedSustainabilitySectionViewBinder()
+            val feedSocialChannelsSectionViewBinder = FeedSocialChannelsSectionViewBinder()
             @Suppress("UNCHECKED_CAST")
             val viewBinders = ImmutableMap.builder<FeedItemClass, FeedItemBinder>()
-                .put(
-                    announcementViewBinder.modelClass,
-                    announcementViewBinder as FeedItemBinder
-                )
                 .put(
                     sectionHeaderViewBinder.modelClass,
                     sectionHeaderViewBinder as FeedItemBinder
@@ -210,12 +213,28 @@ class FeedFragment : MainNavigationFragment() {
                     sessionsViewBinder as FeedItemBinder
                 )
                 .put(
+                    feedAnnouncementsHeaderViewBinder.modelClass,
+                    feedAnnouncementsHeaderViewBinder as FeedItemBinder
+                )
+                .put(
+                    announcementViewBinder.modelClass,
+                    announcementViewBinder as FeedItemBinder
+                )
+                .put(
                     announcementsEmptyViewBinder.modelClass,
                     announcementsEmptyViewBinder as FeedItemBinder
                 )
                 .put(
                     announcementsLoadingViewBinder.modelClass,
                     announcementsLoadingViewBinder as FeedItemBinder
+                )
+                .put(
+                    feedSustainabilitySectionViewBinder.modelClass,
+                    feedSustainabilitySectionViewBinder as FeedItemBinder
+                )
+                .put(
+                    feedSocialChannelsSectionViewBinder.modelClass,
+                    feedSocialChannelsSectionViewBinder as FeedItemBinder
                 )
                 .build()
 
@@ -230,12 +249,6 @@ class FeedFragment : MainNavigationFragment() {
     private fun openSignInDialog() {
         SignInDialogFragment().show(
             requireActivity().supportFragmentManager, DIALOG_NEED_TO_SIGN_IN
-        )
-    }
-
-    private fun openMap(moment: Moment) {
-        findNavController().navigate(
-            toMap(featureId = moment.featureId, startTime = moment.startTime.toEpochMilli())
         )
     }
 

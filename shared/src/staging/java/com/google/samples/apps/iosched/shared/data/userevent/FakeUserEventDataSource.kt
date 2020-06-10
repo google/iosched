@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.shared.data.userevent
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.reservations.ReservationRequestResult
@@ -30,6 +28,9 @@ import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAct
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.Result.Success
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 /**
  * Returns data loaded from a local JSON file for development and testing.
@@ -57,69 +58,48 @@ object FakeUserEventDataSource : UserEventDataSource {
         }
     }
 
-    override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {
-        val result = MutableLiveData<UserEventsResult>()
-        result.postValue(UserEventsResult(userEvents))
-        return result
+    override fun getObservableUserEvents(userId: String): Flow<UserEventsResult> {
+        return flow { emit(UserEventsResult(userEvents)) }
     }
 
     override fun getObservableUserEvent(
         userId: String,
         eventId: SessionId
-    ): LiveData<UserEventResult> {
-        val result = MutableLiveData<UserEventResult>()
-        result.postValue(UserEventResult(userEvents[0]))
-        return result
+    ) = flow {
+        emit(UserEventResult(userEvents[0]))
     }
 
-    override fun starEvent(
+    override suspend fun starEvent(
         userId: SessionId,
         userEvent: UserEvent
-    ): LiveData<Result<StarUpdatedStatus>> {
-        val result = MutableLiveData<Result<StarUpdatedStatus>>()
-        result.postValue(
-            Result.Success(
-                if (userEvent.isStarred) StarUpdatedStatus.STARRED
-                else StarUpdatedStatus.UNSTARRED
-            )
-        )
-        return result
-    }
+    ) = Success(
+        if (userEvent.isStarred) StarUpdatedStatus.STARRED
+        else StarUpdatedStatus.UNSTARRED
+    )
 
-    override fun recordFeedbackSent(userId: String, userEvent: UserEvent): LiveData<Result<Unit>> {
-        val result = MutableLiveData<Result<Unit>>()
-        result.postValue(Result.Success(Unit))
-        return result
-    }
+    override suspend fun recordFeedbackSent(
+        userId: String,
+        userEvent: UserEvent
+    ): Result<Unit> = Success(Unit)
 
-    override fun requestReservation(
+    override suspend fun requestReservation(
         userId: String,
         session: Session,
         action: ReservationRequestAction
-    ): LiveData<Result<ReservationRequestAction>> {
-        val result = MutableLiveData<Result<ReservationRequestAction>>()
-        result.postValue(
-            Result.Success(
-                if (action is RequestAction) RequestAction()
-                else CancelAction()
-            )
+    ): Result<ReservationRequestAction> =
+        Success(
+            if (action is RequestAction) RequestAction() else CancelAction()
         )
-        return result
-    }
 
     override fun getUserEvents(userId: String): List<UserEvent> {
         return userEvents
     }
 
-    override fun swapReservation(
+    override suspend fun swapReservation(
         userId: String,
         fromSession: Session,
         toSession: Session
-    ): LiveData<Result<SwapRequestAction>> {
-        val result = MutableLiveData<Result<SwapRequestAction>>()
-        result.postValue(Result.Success(SwapRequestAction()))
-        return result
-    }
+    ): Result<SwapRequestAction> = Success(SwapRequestAction())
 
     override fun getUserEvent(userId: String, eventId: SessionId): UserEvent? {
         return userEvents.firstOrNull { it.id == eventId }

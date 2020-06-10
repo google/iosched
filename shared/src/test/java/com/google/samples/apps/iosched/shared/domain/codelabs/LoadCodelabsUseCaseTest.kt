@@ -21,19 +21,28 @@ import com.google.samples.apps.iosched.shared.data.codelabs.CodelabsRepository
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
+import org.junit.Rule
 import org.junit.Test
 
 class LoadCodelabsUseCaseTest {
 
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
+
     @Test
-    fun loadCodelabsList() {
-        val loadCodelabsUseCase = LoadCodelabsUseCase(CodelabsRepository(TestDataRepository))
+    fun loadCodelabsList() = coroutineRule.runBlockingTest {
+        val loadCodelabsUseCase = LoadCodelabsUseCase(
+            CodelabsRepository(TestDataRepository), coroutineRule.testDispatcher
+        )
         val codelabs: Result.Success<List<Codelab>> =
-            loadCodelabsUseCase.executeNow(Unit) as Success<List<Codelab>>
+            loadCodelabsUseCase(Unit) as Success<List<Codelab>>
         assertThat(codelabs.data, `is`(equalTo(TestData.codelabsSorted)))
     }
 }

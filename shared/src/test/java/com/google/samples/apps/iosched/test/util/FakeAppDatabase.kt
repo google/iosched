@@ -21,8 +21,13 @@ import androidx.room.InvalidationTracker
 import androidx.sqlite.db.SupportSQLiteOpenHelper
 import com.google.samples.apps.iosched.shared.data.db.AppDatabase
 import com.google.samples.apps.iosched.shared.data.db.CodelabFtsDao
+import com.google.samples.apps.iosched.shared.data.db.CodelabFtsEntity
 import com.google.samples.apps.iosched.shared.data.db.SessionFtsDao
+import com.google.samples.apps.iosched.shared.data.db.SessionFtsEntity
 import com.google.samples.apps.iosched.shared.data.db.SpeakerFtsDao
+import com.google.samples.apps.iosched.shared.data.db.SpeakerFtsEntity
+import com.google.samples.apps.iosched.test.data.TestData
+import com.nhaarman.mockito_kotlin.mock
 import org.mockito.Mockito
 
 class FakeAppDatabase : AppDatabase() {
@@ -47,4 +52,68 @@ class FakeAppDatabase : AppDatabase() {
     }
 
     override fun clearAllTables() {}
+}
+
+/**
+ * A fake [AppDatabase] used in `SearchUseCaseTest`.
+ */
+class FakeSearchAppDatabase : AppDatabase() {
+    override fun sessionFtsDao(): SessionFtsDao {
+        return object : SessionFtsDao {
+            override fun insertAll(sessions: List<SessionFtsEntity>) { TODO("not implemented") }
+
+            override fun searchAllSessions(query: String): List<String> {
+                return when (query) {
+                    QUERY_TITLE.toLowerCase(), QUERY_TITLE_WITH_TOKEN -> listOf(
+                        TestData.session0.id
+                    )
+                    QUERY_ABSTRACT.toLowerCase(), QUERY_ABSTRACT_WITH_TOKEN -> listOf(
+                        TestData.session0.id
+                    )
+                    QUERY_WITH_NO_MATCH.toLowerCase() -> emptyList()
+                    else -> emptyList()
+                }
+            }
+        }
+    }
+
+    override fun speakerFtsDao(): SpeakerFtsDao {
+        return object : SpeakerFtsDao {
+            override fun insertAll(speakers: List<SpeakerFtsEntity>) { TODO("not implemented") }
+            override fun searchAllSpeakers(query: String): List<String> {
+                return emptyList()
+            }
+        }
+    }
+
+    override fun codelabFtsDao(): CodelabFtsDao {
+        return object : CodelabFtsDao {
+            override fun insertAll(codelabs: List<CodelabFtsEntity>) { TODO("not implemented") }
+            override fun searchAllCodelabs(query: String): List<String> {
+                return emptyList()
+            }
+        }
+    }
+
+    override fun createOpenHelper(config: DatabaseConfiguration?): SupportSQLiteOpenHelper {
+        TODO("not implemented")
+    }
+
+    override fun createInvalidationTracker(): InvalidationTracker {
+        // No-op
+        return mock {}
+    }
+
+    override fun clearAllTables() {
+        TODO("not implemented")
+    }
+
+    companion object {
+        const val QUERY_TITLE = "session 0"
+        const val QUERY_ABSTRACT = "Awesome"
+        const val QUERY_WITH_NO_MATCH = "Invalid search query"
+        const val QUERY_ONLY_SPACES = "  "
+        const val QUERY_TITLE_WITH_TOKEN = "session* AND 0*"
+        const val QUERY_ABSTRACT_WITH_TOKEN = "awesome*"
+    }
 }

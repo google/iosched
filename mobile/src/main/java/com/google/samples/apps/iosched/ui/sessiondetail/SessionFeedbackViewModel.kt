@@ -18,20 +18,26 @@ package com.google.samples.apps.iosched.ui.sessiondetail
 
 import androidx.annotation.IntRange
 import androidx.annotation.StringRes
-import androidx.lifecycle.LiveData
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.FeedbackParameter
 import com.google.samples.apps.iosched.shared.domain.users.FeedbackUseCase
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.util.cancelIfActive
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
-import javax.inject.Inject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
-class SessionFeedbackViewModel @Inject constructor(
+@ExperimentalCoroutinesApi
+class SessionFeedbackViewModel @ViewModelInject constructor(
     private val signInViewModelDelegate: SignInViewModelDelegate,
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val feedbackUseCase: FeedbackUseCase
@@ -63,13 +69,12 @@ class SessionFeedbackViewModel @Inject constructor(
         )
     }
 
+    private var loadUserSessionJob: Job? = null
+
     private var _sessionId: SessionId? = null
 
-    private val loadUserSessionResult = loadUserSessionUseCase.observe()
-
-    val title: LiveData<String> = Transformations.map(loadUserSessionResult) { result ->
-        (result as? Result.Success)?.data?.userSession?.session?.title
-    }
+    private val _userSession = MutableLiveData<UserSession>()
+    val userSession = _userSession
 
     val questions = MutableLiveData<List<Question>>(MESSAGES.map { (key, value) ->
         val (text, start, end) = value
@@ -78,21 +83,29 @@ class SessionFeedbackViewModel @Inject constructor(
 
     fun setSessionId(sessionId: SessionId) {
         _sessionId = sessionId
-        loadUserSessionUseCase.execute(getUserId() to sessionId)
+        loadUserSessionJob.cancelIfActive()
+        loadUserSessionJob = viewModelScope.launch {
+            loadUserSessionUseCase(getUserId() to sessionId).collect { result ->
+                _userSession.value = (result as? Result.Success)?.data?.userSession
+            }
+        }
     }
 
     fun submit(feedbackUpdates: Map<String, Int>) {
         val sessionId = _sessionId ?: return
         val userId = getUserId()
-        val userEvent = (loadUserSessionResult.value as? Result.Success)
-            ?.data?.userSession?.userEvent
+        val userEvent = _userSession.value?.userEvent
         if (userId != null && userEvent != null) {
-            feedbackUseCase.execute(FeedbackParameter(
-                userId,
-                userEvent,
-                sessionId,
-                feedbackUpdates
-            ))
+            viewModelScope.launch {
+                feedbackUseCase(
+                    FeedbackParameter(
+                        userId,
+                        userEvent,
+                        sessionId,
+                        feedbackUpdates
+                    )
+                )
+            }
         }
     }
 }

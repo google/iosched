@@ -64,18 +64,19 @@ object TestData {
     )
     // region Declarations
 
-    val androidTag = Tag("1", "topic", "track_android", 0, "Android", 0xFFAED581.toInt())
-    val cloudTag = Tag("2", "topic", "track_cloud", 1, "Cloud", 0xFFFFF176.toInt())
-    val webTag = Tag("3", "topic", "track_web", 2, "Web", 0xFFFFF176.toInt())
-    val sessionsTag = Tag("101", "type", "type_sessions", 0, "Sessions", 0)
-    val codelabsTag = Tag("102", "type", "type_codelabs", 1, "Codelabs", 0)
-    val beginnerTag = Tag("201", "level", "level_beginner", 0, "Beginner", 0)
-    val intermediateTag = Tag("202", "level", "level_intermediate", 1, "Intermediate", 0)
-    val advancedTag = Tag("203", "level", "level_advanced", 2, "Advanced", 0)
+    val androidTag = Tag("1", Tag.CATEGORY_TOPIC, "track_android", 0, "Android", 0xFFAED581.toInt())
+    val cloudTag = Tag("2", Tag.CATEGORY_TOPIC, "track_cloud", 1, "Cloud", 0xFFFFF176.toInt())
+    val webTag = Tag("3", Tag.CATEGORY_TOPIC, "track_web", 2, "Web", 0xFFFFF176.toInt())
+    val sessionsTag = Tag("101", Tag.CATEGORY_TYPE, "type_sessions", 0, "Sessions", 0)
+    val codelabsTag = Tag("102", Tag.CATEGORY_TYPE, "type_codelabs", 1, "Codelabs", 0)
+    val beginnerTag = Tag("201", Tag.CATEGORY_LEVEL, "level_beginner", 0, "Beginner", 0)
+    val intermediateTag = Tag("202", Tag.CATEGORY_LEVEL, "level_intermediate", 1, "Intermediate", 0)
+    val advancedTag = Tag("203", Tag.CATEGORY_LEVEL, "level_advanced", 2, "Advanced", 0)
+    val themeTag = Tag("301", Tag.CATEGORY_THEME, "theme_future", 0, "THE FUTURE", 0)
 
     val tagsList = listOf(
         androidTag, cloudTag, webTag, sessionsTag, codelabsTag, beginnerTag,
-        intermediateTag, advancedTag
+        intermediateTag, advancedTag, themeTag
     )
 
     val speaker1 = Speaker(
@@ -119,7 +120,7 @@ object TestData {
         startTime = TestConferenceDays[0].start, endTime = TestConferenceDays[0].end,
         isLivestream = false,
         room = room, sessionUrl = "", youTubeUrl = "", photoUrl = "", doryLink = "",
-        tags = listOf(androidTag, webTag, codelabsTag),
+        tags = listOf(androidTag, cloudTag, codelabsTag),
         displayTags = listOf(androidTag, webTag),
         speakers = setOf(speaker2), relatedSessions = emptySet()
     )
@@ -158,12 +159,6 @@ object TestData {
 
     val sessionIDs = sessionsList.map { it.id }.toList()
 
-    val sessionsMap = mapOf(
-        TestConferenceDays[0] to listOf(session0, session1),
-        TestConferenceDays[1] to listOf(session2),
-        TestConferenceDays[2] to listOf(session3, sessionWithYoutubeUrl)
-    )
-
     val block1 = Block(
         title = "Keynote",
         type = "keynote",
@@ -183,7 +178,8 @@ object TestData {
     val agenda = listOf(block1, block2)
 
     private val userEvent0 = UserEvent(
-        sessionIDs[0], isStarred = false,
+        sessionIDs[0],
+        isStarred = false,
         isReviewed = false,
         reservationStatus = UserEvent.ReservationStatus.RESERVED,
         reservationRequestResult = ReservationRequestResult(
@@ -191,7 +187,8 @@ object TestData {
         )
     )
     private val userEvent1 = UserEvent(
-        sessionIDs[1], isStarred = true,
+        sessionIDs[1],
+        isStarred = true,
         isReviewed = true,
         reservationStatus = UserEvent.ReservationStatus.WAITLISTED,
         reservationRequestResult = ReservationRequestResult(
@@ -199,15 +196,17 @@ object TestData {
         )
     )
     private val userEvent2 = UserEvent(
-        sessionIDs[2], isStarred = true,
+        sessionIDs[2],
+        isStarred = true,
         isReviewed = false,
-        reservationStatus = UserEvent.ReservationStatus.NONE,
+        reservationStatus = NONE,
         reservationRequestResult = ReservationRequestResult(
             RESERVE_DENIED_CUTOFF, "123", System.currentTimeMillis()
         )
     )
     private val userEvent3 = UserEvent(
-        sessionIDs[3], isStarred = false,
+        sessionIDs[3],
+        isStarred = false,
         isReviewed = true,
         reservationStatus = NONE,
         reservationRequestResult = ReservationRequestResult(
@@ -215,7 +214,8 @@ object TestData {
         )
     )
     private val userEvent4 = UserEvent(
-        sessionIDs[4], isStarred = false,
+        sessionIDs[4],
+        isStarred = false,
         isReviewed = true,
         reservationRequest = null
     )
@@ -231,6 +231,12 @@ object TestData {
         userSession2,
         userSession3,
         userSession4
+    )
+
+    val starredOrReservedSessions = listOf(
+        userSession0,
+        userSession1,
+        userSession2
     )
 
     val userEvents = listOf(userEvent0, userEvent1, userEvent2, userEvent3, userEvent4)

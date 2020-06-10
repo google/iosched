@@ -21,12 +21,12 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.samples.apps.iosched.model.Announcement
-import com.google.samples.apps.iosched.shared.data.document2019
+import com.google.samples.apps.iosched.shared.data.document2020
 import com.google.samples.apps.iosched.shared.util.ColorUtils
-import org.threeten.bp.Instant
-import org.threeten.bp.ZoneOffset.UTC
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import org.threeten.bp.Instant
+import org.threeten.bp.ZoneOffset.UTC
 
 interface AnnouncementDataSource {
     fun getAnnouncements(): List<Announcement>
@@ -41,7 +41,7 @@ class FirestoreAnnouncementDataSource @Inject constructor(
 
     override fun getAnnouncements(): List<Announcement> {
         val task = firestore
-            .document2019()
+            .document2020()
             .collection(FEED_COLLECTION)
             .whereEqualTo(ACTIVE, true)
             .get()

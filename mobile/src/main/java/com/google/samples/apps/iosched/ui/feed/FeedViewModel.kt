@@ -16,41 +16,51 @@
 
 package com.google.samples.apps.iosched.ui.feed
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.liveData
+import androidx.lifecycle.switchMap
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavDirections
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.model.Moment
+import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
+import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
+import com.google.samples.apps.iosched.shared.di.ReservationEnabledFlag
+import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState
+import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState.ENDED
+import com.google.samples.apps.iosched.shared.domain.feed.ConferenceState.UPCOMING
+import com.google.samples.apps.iosched.shared.domain.feed.GetConferenceStateUseCase
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
 import com.google.samples.apps.iosched.shared.domain.feed.LoadCurrentMomentUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsParameters
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsResult
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadFilteredUserSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadStarredAndReservedSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Loading
 import com.google.samples.apps.iosched.shared.result.successOr
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.shared.util.map
-import com.google.samples.apps.iosched.ui.SectionHeader
+import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
+import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailFragmentDirections
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
-import com.google.samples.apps.iosched.util.ConferenceStateLiveData
-import com.google.samples.apps.iosched.util.ConferenceState.ENDED
-import com.google.samples.apps.iosched.util.ConferenceState.UPCOMING
 import com.google.samples.apps.iosched.util.combine
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
@@ -60,12 +70,12 @@ import javax.inject.Inject
  * By annotating the constructor with [@Inject], Dagger will use that constructor when needing to
  * create the object, so defining a [@Provides] method for this class won't be needed.
  */
-class FeedViewModel @Inject constructor(
+class FeedViewModel @ViewModelInject constructor(
     private val loadCurrentMomentUseCase: LoadCurrentMomentUseCase,
     loadAnnouncementsUseCase: LoadAnnouncementsUseCase,
-    private val loadFilteredUserSessionsUseCase: LoadFilteredUserSessionsUseCase,
+    private val loadStarredAndReservedSessionsUseCase: LoadStarredAndReservedSessionsUseCase,
     getTimeZoneUseCase: GetTimeZoneUseCase,
-    conferenceStateLiveData: ConferenceStateLiveData,
+    getConferenceStateUseCase: GetConferenceStateUseCase,
     private val timeProvider: TimeProvider,
     private val analyticsHelper: AnalyticsHelper,
     private val signInViewModelDelegate: SignInViewModelDelegate,
@@ -90,25 +100,36 @@ class FeedViewModel @Inject constructor(
         private object NoSessionsContainer
     }
 
-    val errorMessage: LiveData<Event<String>>
+    @Inject
+    @JvmField
+    @ReservationEnabledFlag
+    var isReservationEnabledByRemoteConfig: Boolean = false
+
+    @Inject
+    @JvmField
+    @MapFeatureEnabledFlag
+    var isMapEnabledByRemoteConfig: Boolean = false
 
     val feed: LiveData<List<Any>>
 
-    val snackBarMessage: LiveData<Event<SnackbarMessage>>
+    val timeZoneId: LiveData<ZoneId> = liveData {
+        val result = getTimeZoneUseCase(Unit)
+        emit(if (result.successOr(true)) TimeUtils.CONFERENCE_TIMEZONE else ZoneId.systemDefault())
+    }
 
-    private val loadSessionsResult: MediatorLiveData<Result<LoadFilteredUserSessionsResult>>
-
-    private val loadAnnouncementsResult = MutableLiveData<Result<List<Announcement>>>()
-
-    private val currentMomentResult = MediatorLiveData<Result<Moment?>>()
+    private val loadSessionsResult = signInViewModelDelegate.currentUserInfo.switchMap {
+        // TODO(jdkoren): might need to show sessions for not signed in users too...
+        loadStarredAndReservedSessionsUseCase(signInViewModelDelegate.getUserId()).asLiveData()
+    }
+    private val conferenceStateLiveData = MutableLiveData<ConferenceState>()
 
     private val _navigateToSessionAction = MutableLiveData<Event<String>>()
     val navigateToSessionAction: LiveData<Event<String>>
         get() = _navigateToSessionAction
 
-    private val _navigateToMapAction = MutableLiveData<Event<Moment>>()
-    val navigateToMapAction: LiveData<Event<Moment>>
-        get() = _navigateToMapAction
+    private val _navigateAction = MutableLiveData<Event<NavDirections>>()
+    val navigateAction: LiveData<Event<NavDirections>>
+        get() = _navigateAction
 
     private val _openSignInDialogAction = MutableLiveData<Event<Unit>>()
     val openSignInDialogAction: LiveData<Event<Unit>>
@@ -122,50 +143,77 @@ class FeedViewModel @Inject constructor(
     val navigateToScheduleAction: LiveData<Event<Boolean>>
         get() = _navigateToScheduleAction
 
-    private val preferConferenceTimeZoneResult = MutableLiveData<Result<Boolean>>()
-    val timeZoneId: LiveData<ZoneId>
+    private val currentMomentResult: LiveData<Result<Moment?>> = conferenceStateLiveData.switchMap {
+        liveData {
+            emit(loadCurrentMomentUseCase(timeProvider.now()))
+        }
+    }
+
+    private val loadAnnouncementsResult: LiveData<Result<List<Announcement>>> = liveData {
+        emit(loadAnnouncementsUseCase(timeProvider.now()))
+    }
+
+    private val announcementsPreviewLiveData: LiveData<List<Any>> = loadAnnouncementsResult.map {
+        val announcementsHeader = AnnouncementsHeader(
+            showPastNotificationsButton = it.successOr(emptyList()).size > 1
+        )
+        if (it is Loading) {
+            listOf(announcementsHeader, LoadingIndicator)
+        } else {
+            listOf(
+                announcementsHeader,
+                it.successOr(emptyList()).firstOrNull() ?: AnnouncementsEmpty
+            )
+        }
+    }
+
+    val errorMessage: LiveData<Event<String>> = loadAnnouncementsResult.map {
+        Event(content = (it as? Result.Error)?.exception?.message ?: "")
+    }
+
+    val snackBarMessage: LiveData<Event<SnackbarMessage>> = loadAnnouncementsResult.switchMap {
+        liveData {
+            // Show an error message if the feed could not be loaded.
+            if (it is Result.Error) {
+                emit(
+                    Event(
+                        SnackbarMessage(
+                            messageId = R.string.feed_loading_error,
+                            longDuration = true
+                        )
+                    )
+                )
+            }
+        }
+    }
 
     init {
-        timeZoneId = preferConferenceTimeZoneResult.map {
-            if (it.successOr(true)) TimeUtils.CONFERENCE_TIMEZONE else ZoneId.systemDefault()
-        }
-
-        loadSessionsResult = loadFilteredUserSessionsUseCase.observe()
-        loadSessionsResult.addSource(signInViewModelDelegate.currentUserInfo) {
-            refreshSessions()
+        viewModelScope.launch {
+            getConferenceStateUseCase(Unit)
+                .map { it.successOr(UPCOMING) }
+                .collect { conferenceStateLiveData.value = it }
         }
 
         val sessionContainerLiveData =
-            signInViewModelDelegate.currentUserInfo
+            loadSessionsResult
                 .combine(
-                    loadSessionsResult,
                     timeZoneId
-                ) { userInfo, sessions, timeZone ->
-                    createFeedSessionsContainer(userInfo, sessions, timeZone)
+                ) { sessions, timeZone ->
+                    createFeedSessionsContainer(sessions, timeZone)
                 }
-                // Further combine with conferenceState and decide if the
+                // Further combine with conferenceState and userInfo and decide if the
                 // feedSessionsContainer should be shown or not.
-                .combine(conferenceStateLiveData) { sessionsContainer, conferenceState ->
-                    if (conferenceState == ENDED)
-                        NoSessionsContainer
-                    else
+                .combine(
+                    conferenceStateLiveData, signInViewModelDelegate.currentUserInfo
+                ) { sessionsContainer, conferenceState, userInfo ->
+                    val isSignedIn = userInfo?.isSignedIn() ?: false
+                    val isRegistered = userInfo?.isRegistered() ?: false
+                    if (conferenceState != ENDED && isSignedIn && isRegistered &&
+                        isReservationEnabledByRemoteConfig)
                         sessionsContainer
+                    else
+                        NoSessionsContainer
                 }
-
-        loadAnnouncementsUseCase(timeProvider.now(), loadAnnouncementsResult)
-        val announcements: LiveData<List<Any>> = loadAnnouncementsResult.map {
-            if (it is Loading) {
-                listOf(LoadingIndicator)
-            } else {
-                val items = it.successOr(emptyList())
-                if (items.isNotEmpty()) items else listOf(AnnouncementsEmpty)
-            }
-        }
-
-        currentMomentResult.addSource(conferenceStateLiveData) {
-            // This will change to the first moment when the Keynote starts
-            loadCurrentMomentUseCase(timeProvider.now(), currentMomentResult)
-        }
 
         val currentFeedHeader = conferenceStateLiveData.combine(
             currentMomentResult
@@ -181,8 +229,8 @@ class FeedViewModel @Inject constructor(
         // Compose feed
         feed = currentFeedHeader.combine(
             sessionContainerLiveData,
-            announcements
-        ) { feedHeader, sessionContainer, announcementItems ->
+            announcementsPreviewLiveData
+        ) { feedHeader, sessionContainer, announcementsPreview ->
             val feedItems = mutableListOf<Any>()
             if (feedHeader != NoHeader) {
                 feedItems.add(feedHeader)
@@ -190,83 +238,52 @@ class FeedViewModel @Inject constructor(
             if (sessionContainer != NoSessionsContainer) {
                 feedItems.add(sessionContainer)
             }
-            feedItems.plus(SectionHeader(R.string.feed_announcement_title))
-                .plus(announcementItems)
+            feedItems
+                .plus(announcementsPreview)
+                .plus(FeedSustainabilitySection)
+                .plus(FeedSocialChannelsSection)
         }
-
-        errorMessage = loadAnnouncementsResult.map {
-            Event(content = (it as? Result.Error)?.exception?.message ?: "")
-        }
-
-        // Show an error message if the feed could not be loaded.
-        snackBarMessage = MediatorLiveData()
-        snackBarMessage.addSource(loadAnnouncementsResult) {
-            if (it is Result.Error) {
-                snackBarMessage.value =
-                    Event(
-                        SnackbarMessage(
-                            messageId = R.string.feed_loading_error,
-                            longDuration = true
-                        )
-                    )
-            }
-        }
-
-        getTimeZoneUseCase(Unit, preferConferenceTimeZoneResult)
     }
 
     private fun createFeedSessionsContainer(
-        userInfo: AuthenticatedUserInfo?,
-        sessionsResult: Result<LoadFilteredUserSessionsResult>,
+        sessionsResult: Result<List<UserSession>>,
         timeZoneId: ZoneId
     ): FeedSessions {
-        val isSignedIn = userInfo?.isSignedIn() ?: false
-        val isRegistered = userInfo?.isRegistered() ?: false
-        val sessions = sessionsResult.successOr(null)?.userSessions ?: emptyList()
-        val hasSessions = sessions.isEmpty()
+        val sessions = sessionsResult.successOr(emptyList())
         val now = ZonedDateTime.ofInstant(timeProvider.now(), timeZoneId)
-        val upcomingSessions = sessions
-            .filter { it.session.endTime.isAfter(now) }
+
+        // TODO: Making conferenceState a sealed class and moving currentDay in STARTED state might be a better option
+        val currentDayEndTime = TimeUtils.getCurrentConferenceDay()?.end
+        // Treat start of the conference as endTime as sessions shouldn't be shown if the
+        // currentConferenceDay is null
+            ?: ConferenceDays.first().start
+
+        val upcomingReservedSessions = sessions
+            .filter {
+                it.userEvent.isReserved() &&
+                    it.session.endTime.isAfter(now) &&
+                    it.session.endTime.isBefore(currentDayEndTime)
+            }
             .take(MAX_SESSIONS)
 
-        val username = userInfo?.getDisplayName()?.split(" ")?.get(0)
-        val titleId = when {
-            isSignedIn && !hasSessions -> R.string.feed_no_saved_events
-            isSignedIn && isRegistered -> R.string.feed_upcoming_events
-            isSignedIn -> R.string.feed_saved_events
-            else -> R.string.title_schedule
-        }
-        val actionId = when {
-            isSignedIn && hasSessions -> R.string.feed_view_your_schedule
-            else -> R.string.feed_view_all_events
-        }
+        val titleId = R.string.feed_sessions_title
+        val actionId = R.string.feed_view_full_schedule
 
         return FeedSessions(
-            username = username,
             titleId = titleId,
             actionTextId = actionId,
-            userSessions = upcomingSessions,
+            userSessions = upcomingReservedSessions,
             timeZoneId = timeZoneId,
-            isLoading = sessionsResult is Loading
-        )
-    }
-
-    private fun refreshSessions() {
-        val sessionMatcher = UserSessionMatcher()
-        if (signInViewModelDelegate.isSignedIn()) {
-            sessionMatcher.setShowPinnedEventsOnly(true)
-        }
-        loadFilteredUserSessionsUseCase.execute(
-            LoadFilteredUserSessionsParameters(
-                sessionMatcher,
-                signInViewModelDelegate.getUserId()
-            )
+            isLoading = sessionsResult is Loading,
+            isMapFeatureEnabled = isMapEnabledByRemoteConfig
         )
     }
 
     override fun openEventDetail(id: SessionId) {
-        analyticsHelper.logUiEvent("Home to event detail",
-            AnalyticsActions.HOME_TO_SESSION_DETAIL)
+        analyticsHelper.logUiEvent(
+            "Home to event detail",
+            AnalyticsActions.HOME_TO_SESSION_DETAIL
+        )
         _navigateToSessionAction.value = Event(id)
     }
 
@@ -286,12 +303,33 @@ class FeedViewModel @Inject constructor(
 
     override fun openMap(moment: Moment) {
         analyticsHelper.logUiEvent(moment.title.toString(), AnalyticsActions.HOME_TO_MAP)
-        _navigateToMapAction.value = Event(moment)
+        _navigateAction.value = Event(
+            SessionDetailFragmentDirections.toMap(
+                featureId = moment.featureId,
+                startTime = moment.startTime.toEpochMilli()
+            )
+        )
     }
 
     override fun openLiveStream(liveStreamUrl: String) {
         analyticsHelper.logUiEvent(liveStreamUrl, AnalyticsActions.HOME_TO_LIVESTREAM)
         _openLiveStreamAction.value = Event(liveStreamUrl)
+    }
+
+    override fun openMapForSession(session: Session) {
+        analyticsHelper.logUiEvent(session.id, AnalyticsActions.HOME_TO_MAP)
+        val directions = SessionDetailFragmentDirections.toMap(
+            featureId = session.room?.id,
+            startTime = session.startTime.toEpochMilli()
+        )
+        _navigateAction.value = Event(directions)
+    }
+
+    override fun openPastAnnouncements() {
+        analyticsHelper.logUiEvent("", AnalyticsActions.HOME_TO_ANNOUNCEMENTS)
+        _navigateAction.value = Event(
+            FeedFragmentDirections.toAnnouncementsFragment()
+        )
     }
 }
 
@@ -300,4 +338,6 @@ interface FeedEventListener : EventActions {
     fun signIn()
     fun openMap(moment: Moment)
     fun openLiveStream(liveStreamUrl: String)
+    fun openMapForSession(session: Session)
+    fun openPastAnnouncements()
 }

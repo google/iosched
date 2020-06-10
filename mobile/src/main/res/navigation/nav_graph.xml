@@ -27,7 +27,7 @@
         android:label="@string/title_schedule"
         tools:layout="@layout/fragment_schedule">
         <argument
-            android:name="showPinnedEvents"
+            android:name="showMySchedule"
             android:defaultValue="false"
             app:argType="boolean" />
         <argument
@@ -93,6 +93,10 @@
                 android:defaultValue="0L"
                 app:argType="long" />
         </action>
+        <action
+            android:id="@+id/to_announcements_fragment"
+            app:destination="@id/announcements_fragment"
+            app:popUpTo="@id/navigation_feed" />
     </fragment>
 
     <fragment
@@ -218,4 +222,9 @@
         android:name="com.google.samples.apps.iosched.ui.ar.ArCoreNotSupportedFragment"
         android:label="@string/phone_does_not_support_arcore_title"
         tools:layout="@layout/fragment_arcore_not_supported" />
+    <fragment
+        android:id="@+id/announcements_fragment"
+        android:name="com.google.samples.apps.iosched.ui.feed.AnnouncementsFragment"
+        android:label="@string/feed_announcement_title"
+        tools:layout="@layout/fragment_announcements" />
 </navigation>

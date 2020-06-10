@@ -19,18 +19,22 @@ package com.google.samples.apps.iosched.ui.reservation
 import android.app.Dialog
 import android.content.res.Resources
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.lifecycle.coroutineScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.domain.users.SwapActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.util.makeBold
-import dagger.android.support.DaggerAppCompatDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
  * Dialog that confirms the user wants to replace their reservations
  */
-class SwapReservationDialogFragment : DaggerAppCompatDialogFragment() {
+@AndroidEntryPoint
+class SwapReservationDialogFragment : AppCompatDialogFragment() {
 
     companion object {
         const val DIALOG_SWAP_RESERVATION = "dialog_swap_reservation"
@@ -69,9 +73,11 @@ class SwapReservationDialogFragment : DaggerAppCompatDialogFragment() {
             .setMessage(formatSwapReservationMessage(context.resources, fromTitle, toTitle))
             .setNegativeButton(R.string.cancel, null)
             .setPositiveButton(R.string.swap) { _, _ ->
-                swapActionUseCase.execute(
-                    SwapRequestParameters(userId, fromId, fromTitle, toId, toTitle)
-                )
+                viewLifecycleOwner.lifecycle.coroutineScope.launch {
+                    swapActionUseCase(
+                        SwapRequestParameters(userId, fromId, fromTitle, toId, toTitle)
+                    )
+                }
             }
             .create()
     }

@@ -45,7 +45,7 @@ class CollapsibleCard @JvmOverloads constructor(
 
     private var expanded = false
     private val cardTitleView: TextView
-    private val cardDescriptionView: TextView
+    private lateinit var cardDescriptionView: TextView
     private val expandIcon: ImageView
     private val titleContainer: View
     private val toggle: Transition
@@ -65,11 +65,11 @@ class CollapsibleCard @JvmOverloads constructor(
             text = cardTitle
         }
         setTitleContentDescription(cardTitle)
-        cardDescriptionView = root.findViewById<TextView>(R.id.card_description).apply {
-            if (cardDescription != null) {
-                text = HtmlCompat.fromHtml(cardDescription, HtmlCompat.FROM_HTML_MODE_COMPACT)
+        cardDescription?.let {
+            cardDescriptionView = root.findViewById<TextView>(R.id.card_description).apply {
+                text = HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_COMPACT)
+                movementMethod = LinkMovementMethod.getInstance()
             }
-            movementMethod = LinkMovementMethod.getInstance()
         }
 
         expandIcon = root.findViewById(R.id.expand_icon)
@@ -99,7 +99,7 @@ class CollapsibleCard @JvmOverloads constructor(
     }
 
     override fun onSaveInstanceState(): Parcelable {
-        val savedState = SavedState(super.onSaveInstanceState())
+        val savedState = SavedState(super.onSaveInstanceState()!!)
         savedState.expanded = expanded
         return savedState
     }
@@ -122,7 +122,7 @@ class CollapsibleCard @JvmOverloads constructor(
             expanded = source.readByte().toInt() != 0
         }
 
-        constructor(superState: Parcelable?) : super(superState)
+        constructor(superState: Parcelable) : super(superState)
 
         override fun writeToParcel(out: Parcel, flags: Int) {
             super.writeToParcel(out, flags)

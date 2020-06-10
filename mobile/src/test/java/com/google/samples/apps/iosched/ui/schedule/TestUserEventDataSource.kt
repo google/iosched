@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.ui.schedule
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
@@ -33,74 +31,54 @@ import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus.UNS
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.TestData
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.merge
 
-class TestUserEventDataSource(
-    private val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData(),
-    private val userEventResult: MutableLiveData<UserEventResult> = MutableLiveData()
-) : UserEventDataSource {
+@FlowPreview
+class TestUserEventDataSource : UserEventDataSource {
 
-    override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {
-        userEventsResult.postValue(UserEventsResult(TestData.userEvents))
-        return userEventsResult
+    val newObservableUserEvents = ConflatedBroadcastChannel<UserEventsResult>()
+
+    override fun getObservableUserEvents(userId: String) = merge(flow {
+        emit(UserEventsResult(TestData.userEvents))
+    }, newObservableUserEvents.asFlow())
+
+    override fun getObservableUserEvent(userId: String, eventId: SessionId) = flow {
+        emit(UserEventResult(TestData.userEvents.find { it.id == eventId }))
     }
 
-    override fun getObservableUserEvent(
-        userId: String,
-        eventId: String
-    ): LiveData<UserEventResult> {
-        userEventResult.postValue(UserEventResult(TestData.userEvents
-            .find { it.id == eventId } ?: TestData.userEvents[0]))
-        return userEventResult
-    }
-
-    override fun starEvent(
+    override suspend fun starEvent(
         userId: String,
         userEvent: UserEvent
-    ): LiveData<Result<StarUpdatedStatus>> {
-        val result = MutableLiveData<Result<StarUpdatedStatus>>()
-        result.postValue(
-            Result.Success(
-                if (userEvent.isStarred) STARRED else UNSTARRED
-            )
-        )
-        return result
+    ): Result<StarUpdatedStatus> = Result.Success(if (userEvent.isStarred) STARRED else UNSTARRED)
+
+    override suspend fun recordFeedbackSent(userId: String, userEvent: UserEvent): Result<Unit> {
+        return Result.Success(Unit)
     }
 
-    override fun recordFeedbackSent(userId: String, userEvent: UserEvent): LiveData<Result<Unit>> {
-        val result = MutableLiveData<Result<Unit>>()
-        result.postValue(Result.Success(Unit))
-        return result
-    }
-
-    override fun requestReservation(
+    override suspend fun requestReservation(
         userId: String,
         session: Session,
         action: ReservationRequestAction
-    ): LiveData<Result<ReservationRequestAction>> {
-        val result = MutableLiveData<Result<ReservationRequestAction>>()
-        result.postValue(
-            Result.Success(
-                if (action is RequestAction) RequestAction() else CancelAction()
-            )
+    ): Result<ReservationRequestAction> =
+        Result.Success(
+            if (action is RequestAction) RequestAction() else CancelAction()
         )
-        return result
-    }
 
     override fun getUserEvents(userId: String): List<UserEvent> = TestData.userEvents
 
-    override fun swapReservation(
+    override suspend fun swapReservation(
         userId: String,
         fromSession: Session,
         toSession: Session
-    ): LiveData<Result<SwapRequestAction>> {
-        val result = MutableLiveData<Result<SwapRequestAction>>()
-        result.postValue(Result.Success(SwapRequestAction()))
-        return result
-    }
+    ): Result<SwapRequestAction> = Result.Success(SwapRequestAction())
 
     override fun clearSingleEventSubscriptions() {}
 
     override fun getUserEvent(userId: String, eventId: SessionId): UserEvent? {
-        TODO("not implemented")
+        throw NotImplementedError()
     }
 }

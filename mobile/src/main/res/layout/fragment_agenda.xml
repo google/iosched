@@ -24,10 +24,6 @@
         <variable
             name="viewModel"
             type="com.google.samples.apps.iosched.ui.agenda.AgendaViewModel" />
-
-        <variable
-            name="activityViewModel"
-            type="com.google.samples.apps.iosched.ui.MainActivityViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -62,7 +58,7 @@
             android:paddingTop="@dimen/spacing_normal"
             android:scrollbars="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:agendaItems="@{viewModel.loadAgendaResult}"
+            app:agendaItems="@{viewModel.agenda}"
             app:layoutManager="LinearLayoutManager"
             app:timeZoneId="@{viewModel.timeZoneId}"
             tools:ignore="UnusedAttribute" />

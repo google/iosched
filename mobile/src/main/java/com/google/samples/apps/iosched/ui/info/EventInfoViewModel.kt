@@ -17,23 +17,23 @@
 package com.google.samples.apps.iosched.ui.info
 
 import android.net.wifi.WifiConfiguration
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.logistics.LoadWifiInfoUseCase
 import com.google.samples.apps.iosched.shared.result.Event
-import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.result.successOr
+import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.util.wifi.WifiInstaller
-import javax.inject.Inject
 
-class EventInfoViewModel @Inject constructor(
+class EventInfoViewModel @ViewModelInject constructor(
     loadWifiInfoUseCase: LoadWifiInfoUseCase,
     private val wifiInstaller: WifiInstaller,
     private val analyticsHelper: AnalyticsHelper
@@ -44,9 +44,11 @@ class EventInfoViewModel @Inject constructor(
             "https://assistant.google.com/services/invoke/uid/0000009fca77b068"
     }
 
-    private val _wifiConfig = MutableLiveData<Result<ConferenceWifiInfo>>()
-    val wifiConfig: LiveData<ConferenceWifiInfo?>
-    val showWifi: LiveData<Boolean>
+    private val _wifiConfig = liveData { emit(loadWifiInfoUseCase(Unit)) }
+    val wifiConfig: LiveData<ConferenceWifiInfo?> = _wifiConfig.map { it.data }
+    val showWifi: LiveData<Boolean> = wifiConfig.map {
+        it?.ssid?.isNotBlank() == true && it.password.isNotBlank()
+    }
 
     private val _snackbarMessage = MutableLiveData<Event<SnackbarMessage>>()
     val snackBarMessage: LiveData<Event<SnackbarMessage>>
@@ -55,16 +57,6 @@ class EventInfoViewModel @Inject constructor(
     private val _openUrlEvent = MutableLiveData<Event<String>>()
     val openUrlEvent: LiveData<Event<String>>
         get() = _openUrlEvent
-
-    init {
-        loadWifiInfoUseCase(Unit, _wifiConfig)
-        wifiConfig = _wifiConfig.map {
-            it.successOr(null)
-        }
-        showWifi = wifiConfig.map {
-            it != null && it.ssid.isNotBlank() && it.password.isNotBlank()
-        }
-    }
 
     fun onWifiConnect() {
         val config = wifiConfig.value ?: return

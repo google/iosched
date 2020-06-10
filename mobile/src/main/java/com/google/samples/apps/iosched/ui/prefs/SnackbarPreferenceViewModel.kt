@@ -16,18 +16,22 @@
 
 package com.google.samples.apps.iosched.ui.prefs
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.shared.domain.prefs.StopSnackbarActionUseCase
-import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 /**
  * ViewModel for the dialog to ask the user whether they want to stop showing Snackbars.
  */
-class SnackbarPreferenceViewModel @Inject constructor(
+class SnackbarPreferenceViewModel @ViewModelInject constructor(
     private val stopSnackbarActionUseCase: StopSnackbarActionUseCase
 ) : ViewModel() {
 
     fun onStopClicked() {
-        stopSnackbarActionUseCase(true)
+        viewModelScope.launch {
+            stopSnackbarActionUseCase(true)
+        }
     }
 }

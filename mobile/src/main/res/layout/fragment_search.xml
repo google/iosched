@@ -15,10 +15,9 @@
   ~ limitations under the License.
   -->
 
-<layout
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -32,35 +31,10 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar"
-            style="@style/Widget.IOSched.AppBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            app:navigationIcon="@drawable/ic_arrow_back">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize">
-
-                <SearchView
-                    android:id="@+id/searchView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:iconifiedByDefault="false"
-                    android:queryBackground="@color/transparent"
-                    android:queryHint="@string/search_schedule_hint"
-                    android:searchIcon="@null"
-                    android:searchHintIcon="@null"
-                    tools:targetApi="lollipop_mr1">
-
-                </SearchView>
-
-            </androidx.appcompat.widget.Toolbar>
-
-        </com.google.android.material.appbar.AppBarLayout>
+        <include
+            android:id="@+id/include_search_appbar"
+            layout="@layout/include_search_appbar"
+            app:viewModel="@{viewModel}"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -72,9 +46,9 @@
             android:paddingTop="@dimen/spacing_normal"
             android:scrollbars="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:goneUnless="@{!viewModel.isEmpty}"
             app:layoutManager="LinearLayoutManager"
-            app:searchResultItems="@{viewModel.searchResults}"
-            app:searchViewModel="@{viewModel}"/>
+            tools:listitem="@layout/item_session" />
 
         <TextView
             android:id="@+id/empty"
@@ -82,12 +56,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/schedule_page_padding_bottom"
             android:layout_marginHorizontal="@dimen/margin_large"
+            android:layout_marginTop="?actionBarSize"
             android:text="@string/search_schedule_no_results"
             app:goneUnless="@{viewModel.isEmpty}"
             tools:targetApi="o"
             tools:visibility="visible" />
+
+        <fragment
+            android:id="@+id/filter_sheet"
+            android:name="com.google.samples.apps.iosched.ui.search.SearchFilterFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="?actionBarSize"
+            app:layout_behavior="com.google.samples.apps.iosched.widget.BottomSheetBehavior"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="0dp"
+            app:behavior_skipCollapsed="true"
+            tools:ignore="FragmentTagUsage"
+            tools:layout="@layout/fragment_filters" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

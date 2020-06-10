@@ -60,7 +60,7 @@ enum class ReservationViewState(
     );
 
     companion object {
-        fun fromUserEvent(userEvent: UserEvent?, unavailable: Boolean): ReservationViewState {
+        fun fromUserEvent(userEvent: UserEvent?, deniedByCutoff: Boolean): ReservationViewState {
             return when {
                 // Order is significant, e.g. a pending cancellation is also reserved.
                 userEvent?.isReservationPending() == true ||
@@ -72,7 +72,7 @@ enum class ReservationViewState(
                 userEvent?.isReserved() == true -> RESERVED
                 userEvent?.isWaitlisted() == true -> WAIT_LISTED
                 // TODO ?? -> WAIT_LIST_AVAILABLE
-                unavailable -> RESERVATION_DISABLED
+                deniedByCutoff -> RESERVATION_DISABLED
                 else -> RESERVABLE
             }
         }

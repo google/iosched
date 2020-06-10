@@ -22,10 +22,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.domain.prefs.MyLocationOptedInUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.OptIntoMyLocationUseCase
-import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
@@ -42,22 +43,23 @@ class MapViewModelTest {
     // Executes tasks in the Architecture Components in the same thread
     @get:Rule var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule var syncTaskExecutorRule = SyncTaskExecutorRule()
+    @get:Rule var coroutineRule = MainCoroutineRule()
 
     private val storage = FakePreferenceStorage()
     private val signInViewModelDelegate = FakeSignInViewModelDelegate()
     private lateinit var viewModel: MapViewModel
 
+    private val testDispatcher = TestCoroutineDispatcher()
+
     @Before
     fun createViewModel() {
         // Create ViewModel with the test data
         viewModel = MapViewModel(
-            LoadGeoJsonFeaturesUseCase(mock(Context::class.java)),
+            LoadGeoJsonFeaturesUseCase(mock(Context::class.java), testDispatcher),
             FakeAnalyticsHelper(),
             signInViewModelDelegate,
-            OptIntoMyLocationUseCase(storage),
-            MyLocationOptedInUseCase(storage)
+            OptIntoMyLocationUseCase(storage, testDispatcher),
+            MyLocationOptedInUseCase(storage, testDispatcher)
         )
     }
 

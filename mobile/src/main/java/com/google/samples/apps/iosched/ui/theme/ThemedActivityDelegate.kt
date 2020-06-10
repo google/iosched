@@ -17,13 +17,17 @@
 package com.google.samples.apps.iosched.ui.theme
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
 import com.google.samples.apps.iosched.model.Theme
 import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.ObserveThemeModeUseCase
 import com.google.samples.apps.iosched.shared.result.Result.Success
-import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.shared.result.successOr
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
-import kotlin.LazyThreadSafetyMode.NONE
 
 /**
  * Interface to implement activity theming via a ViewModel.
@@ -54,19 +58,19 @@ class ThemedActivityDelegateImpl @Inject constructor(
     private val observeThemeUseCase: ObserveThemeModeUseCase,
     private val getThemeUseCase: GetThemeUseCase
 ) : ThemedActivityDelegate {
-    override val theme: LiveData<Theme> by lazy(NONE) {
-        observeThemeUseCase.observe().map {
-            if (it is Success) it.data else Theme.SYSTEM
+
+    @InternalCoroutinesApi
+    @ExperimentalCoroutinesApi
+    override val theme: LiveData<Theme> = liveData {
+        observeThemeUseCase(Unit).collect {
+            emit(it.successOr(Theme.SYSTEM))
         }
     }
 
     override val currentTheme: Theme
-        get() = getThemeUseCase.executeNow(Unit).let {
-            if (it is Success) it.data else Theme.SYSTEM
+        get() = runBlocking { // Using runBlocking to execute this coroutine synchronously
+            getThemeUseCase(Unit).let {
+                if (it is Success) it.data else Theme.SYSTEM
+            }
         }
-
-    init {
-        // Observe updates in dark mode setting
-        observeThemeUseCase.execute(Unit)
-    }
 }

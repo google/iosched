@@ -17,23 +17,25 @@
 package com.google.samples.apps.iosched.shared.domain.sessions
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
 import com.google.gson.GsonBuilder
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.schedule.PinnedSession
 import com.google.samples.apps.iosched.model.schedule.PinnedSessionsSchedule
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
-import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
+import com.google.samples.apps.iosched.shared.result.Result.Loading
+import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.data.runBlockingTest
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.toList
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.instanceOf
 import org.junit.Assert.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -47,26 +49,27 @@ class LoadPinnedSessionsJsonUseCaseTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule var syncExecutorRule = SyncExecutorRule()
+    // Overrides Dispatchers.Main used in Coroutines
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun returnedUserSessions_areStarredOrReserved() {
+    fun returnedUserSessions_areStarredOrReserved() = coroutineRule.runBlockingTest {
         // Arrange
-        val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
+        val gson = GsonBuilder().create()
+
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
-            TestUserEventDataSource(userEventsResult),
+            TestUserEventDataSource(),
             DefaultSessionRepository(TestDataRepository)
         )
-        val useCase = LoadPinnedSessionsJsonUseCase(testUserEventRepository)
-        val resultLiveData = useCase.observe()
+        val useCase = LoadPinnedSessionsJsonUseCase(
+            testUserEventRepository, gson, coroutineRule.testDispatcher
+        )
 
         // Act
-        useCase.execute("user1")
+        val results = useCase("user1").take(2).toList()
 
         // Assert
-        val result = LiveDataTestUtil.getValue(resultLiveData)
-                as Result.Success<String>
         val expected = PinnedSessionsSchedule(
             listOf(TestData.session0, TestData.session1, TestData.session2)
                 .map {
@@ -81,7 +84,7 @@ class LoadPinnedSessionsJsonUseCaseTest {
                 }
         )
 
-        val gson = GsonBuilder().create()
-        assertThat(result.data, `is`(equalTo(gson.toJson(expected))))
+        assertThat(results[0], `is`(instanceOf(Loading::class.java)))
+        assertThat(results[1].data, `is`(equalTo(gson.toJson(expected))))
     }
 }

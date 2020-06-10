@@ -17,41 +17,54 @@
 package com.google.samples.apps.iosched.tests.ui
 
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.di.CoroutinesModule
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
-import com.google.samples.apps.iosched.tests.SyncTaskExecutorRule
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+@HiltAndroidTest
+@UninstallModules(CoroutinesModule::class)
 @RunWith(AndroidJUnit4::class)
 class HomeTest {
 
-    @get:Rule
-    var activityRule = MainActivityTestRule(R.id.navigation_feed)
-
-    // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule
-    var syncTaskExecutorRule = SyncTaskExecutorRule()
+    @get:Rule(order = 0)
+    var hiltRule = HiltAndroidRule(this)
 
     // Sets the preferences so no welcome screens are shown
-    @get:Rule
+    @get:Rule(order = 1)
     var preferencesRule = SetPreferencesRule()
+
+    @get:Rule(order = 2)
+    var activityRule = MainActivityTestRule(R.id.navigation_feed)
 
     @Test
     fun home_basicViewsDisplayed() {
         // Title
         onView(allOf(instanceOf(TextView::class.java), withParent(withId(R.id.toolbar))))
             .check(matches(withText(R.string.title_home)))
+
+        // For some reason, recycler view auto scrolls to the bottom in espresso test. Preventing
+        // that by scrolling to the top.
+        onView(withId(R.id.recyclerView))
+            .perform(actionOnItemAtPosition<ViewHolder>(0, scrollTo()))
+
         // One of the blocks
         onView(withText(R.string.feed_announcement_title)).check(matches(isDisplayed()))
     }

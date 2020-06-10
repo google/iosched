@@ -24,7 +24,8 @@ import androidx.lifecycle.MutableLiveData
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 /**
  * Element in the presentation layer that interacts with the Auth provider (Firebase in this case).
@@ -43,7 +44,7 @@ interface SignInHandler {
 /**
  * Implementation of [SignInHandler] that interacts with Firebase Auth.
  */
-class FirebaseAuthSignInHandler : SignInHandler {
+class FirebaseAuthSignInHandler(private val externalScope: CoroutineScope) : SignInHandler {
 
     /**
      * Request a sign in intent.
@@ -55,7 +56,7 @@ class FirebaseAuthSignInHandler : SignInHandler {
         val result = MutableLiveData<Intent?>()
 
         // Run on background because AuthUI does I/O operations.
-        DefaultScheduler.execute {
+        externalScope.launch {
             // this is mutable because FirebaseUI requires it be mutable
             val providers = mutableListOf(
                 AuthUI.IdpConfig.GoogleBuilder().setSignInOptions(

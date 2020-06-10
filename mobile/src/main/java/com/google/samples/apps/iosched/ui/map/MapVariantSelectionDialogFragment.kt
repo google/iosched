@@ -24,20 +24,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.core.view.updateLayoutParams
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.util.parentViewModelProvider
-import dagger.android.support.DaggerAppCompatDialogFragment
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
-class MapVariantSelectionDialogFragment : DaggerAppCompatDialogFragment() {
+@AndroidEntryPoint
+class MapVariantSelectionDialogFragment : AppCompatDialogFragment() {
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val mapViewModel: MapViewModel by viewModels(
+        ownerProducer = { requireParentFragment() }
+    )
 
-    private lateinit var mapViewModel: MapViewModel
     private lateinit var adapter: MapVariantAdapter
 
     // Normally we would implement onCreateDialog using a MaterialAlertDialogBuilder, but that
@@ -56,8 +57,7 @@ class MapVariantSelectionDialogFragment : DaggerAppCompatDialogFragment() {
         adapter = MapVariantAdapter(::selectMapVariant)
         view.findViewById<RecyclerView>(R.id.map_variant_list).adapter = adapter
 
-        mapViewModel = parentViewModelProvider(viewModelFactory)
-        mapViewModel.mapVariant.observe(this, Observer {
+        mapViewModel.mapVariant.observe(viewLifecycleOwner, Observer {
             adapter.currentSelection = it
         })
     }

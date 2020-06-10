@@ -17,11 +17,12 @@
 package com.google.samples.apps.iosched.util
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.res.Resources
+import android.content.res.TypedArray
 import android.graphics.Typeface
 import android.net.wifi.WifiConfiguration
 import android.os.Build
-import android.os.Handler
 import android.text.Layout.Alignment
 import android.text.Spannable
 import android.text.SpannableString
@@ -29,8 +30,10 @@ import android.text.Spanned
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.text.style.StyleSpan
+import android.util.TypedValue
 import android.view.View
 import android.view.View.OnAttachStateChangeListener
+import androidx.annotation.ColorInt
 import androidx.annotation.DimenRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -44,7 +47,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.google.samples.apps.iosched.model.Theme
-import dagger.android.support.DaggerFragment
 
 fun ObservableBoolean.hasSameValue(other: ObservableBoolean) = get() == other.get()
 
@@ -55,14 +57,6 @@ fun View.isRtl() = layoutDirection == View.LAYOUT_DIRECTION_RTL
 inline fun <T : ViewDataBinding> T.executeAfter(block: T.() -> Unit) {
     block()
     executePendingBindings()
-}
-
-/**
- * An extension to `postponeEnterTransition` which will resume after a timeout.
- */
-fun DaggerFragment.postponeEnterTransition(timeout: Long) {
-    postponeEnterTransition()
-    Handler().postDelayed({ startPostponedEnterTransition() }, timeout)
 }
 
 /**
@@ -313,4 +307,16 @@ fun <T> MutableCollection<T>.compatRemoveIf(predicate: (T) -> Boolean): Boolean 
         }
     }
     return removed
+}
+
+/** Reads the color attribute from the theme for given [colorAttributeId] */
+fun Context.getColorFromTheme(colorAttributeId: Int): Int {
+    val typedValue = TypedValue()
+    val typedArray: TypedArray =
+        this.obtainStyledAttributes(
+            typedValue.data, intArrayOf(colorAttributeId)
+        )
+    @ColorInt val color = typedArray.getColor(0, 0)
+    typedArray.recycle()
+    return color
 }

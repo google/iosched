@@ -29,7 +29,7 @@ data class UserSession(
 
     fun isPostSessionNotificationRequired(): Boolean {
         return userEvent.isReserved() &&
-                !userEvent.isReviewed &&
-                session.type == SessionType.SESSION
+            !userEvent.isReviewed &&
+            session.type == SessionType.SESSION
     }
 }

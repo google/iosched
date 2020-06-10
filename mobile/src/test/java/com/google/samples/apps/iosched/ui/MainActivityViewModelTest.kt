@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.ui
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.firebase.functions.FirebaseFunctions
+import com.google.gson.GsonBuilder
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.data.ar.DefaultArDebugFlagEndpoint
@@ -26,7 +27,8 @@ import com.google.samples.apps.iosched.shared.data.session.DefaultSessionReposit
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.ar.LoadArDebugFlagUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadPinnedSessionsJsonUseCase
-import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeThemedActivityDelegate
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
@@ -44,9 +46,9 @@ class MainActivityViewModelTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    // Executes tasks in a synchronous [TaskScheduler]
+    // Overrides Dispatchers.Main used in Coroutines
     @get:Rule
-    var syncTaskExecutorRule = SyncTaskExecutorRule()
+    var coroutineRule = MainCoroutineRule()
 
     private fun createMainActivityViewModel(
         signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate(),
@@ -58,17 +60,21 @@ class MainActivityViewModelTest {
             loadPinnedSessionsUseCase = LoadPinnedSessionsJsonUseCase(
                 DefaultSessionAndUserEventRepository(
                     TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
-                )
+                ),
+                GsonBuilder().create(),
+                coroutineRule.testDispatcher
             ),
             loadArDebugFlagUseCase = LoadArDebugFlagUseCase(
                 DefaultArDebugFlagEndpoint(
-                    mock(FirebaseFunctions::class.java))),
+                    mock(FirebaseFunctions::class.java)
+                ), coroutineRule.testDispatcher
+            ),
             context = mock(Context::class.java)
         )
     }
 
     @Test
-    fun notLoggedIn_profileClicked_showsSignInDialog() {
+    fun notLoggedIn_profileClicked_showsSignInDialog() = coroutineRule.runBlockingTest {
         // Given a ViewModel with a signed out user
         val signInViewModelDelegate = FakeSignInViewModelDelegate().apply {
             injectIsSignedIn = false
@@ -85,7 +91,7 @@ class MainActivityViewModelTest {
     }
 
     @Test
-    fun loggedIn_profileClicked_showsSignOutDialog() {
+    fun loggedIn_profileClicked_showsSignOutDialog() = coroutineRule.runBlockingTest {
         // Given a ViewModel with a signed in user
         val signInViewModelDelegate = FakeSignInViewModelDelegate().apply {
             injectIsSignedIn = true

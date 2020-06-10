@@ -19,27 +19,32 @@ package com.google.samples.apps.iosched.util
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Bundle
 import android.preference.PreferenceManager
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
  * Firebase Analytics implementation of AnalyticsHelper
  */
 class FirebaseAnalyticsHelper(
+    @ApplicationScope private val externalScope: CoroutineScope,
     context: Context,
     signInViewModelDelegate: SignInViewModelDelegate,
     preferenceStorage: PreferenceStorage
 ) : AnalyticsHelper {
 
-    private var firebaseAnalytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
+    private var firebaseAnalytics = Firebase.analytics
 
     /**
      * stores a strong reference to preference change][PreferenceManager]
@@ -58,8 +63,7 @@ class FirebaseAnalyticsHelper(
      * (possible except on first run), initialize analytics Immediately.
      */
     init {
-
-        DefaultScheduler.execute { // Prevent access to preferences on main thread
+        externalScope.launch { // Prevent access to preferences on main thread
             analyticsEnabled = preferenceStorage.sendUsageStatistics
         }
 
@@ -81,24 +85,22 @@ class FirebaseAnalyticsHelper(
     }
 
     override fun sendScreenView(screenName: String, activity: Activity) {
-        val params = Bundle().apply {
-            putString(FirebaseAnalytics.Param.ITEM_ID, screenName)
-            putString(FirebaseAnalytics.Param.CONTENT_TYPE, FA_CONTENT_TYPE_SCREENVIEW)
-        }
         firebaseAnalytics.run {
             setCurrentScreen(activity, screenName, null)
-            logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, params)
+            logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
+                param(FirebaseAnalytics.Param.ITEM_ID, screenName)
+                param(FirebaseAnalytics.Param.CONTENT_TYPE, FA_CONTENT_TYPE_SCREENVIEW)
+            }
             Timber.d("Screen View recorded: $screenName")
         }
     }
 
     override fun logUiEvent(itemId: String, action: String) {
-        val params = Bundle().apply {
-            putString(FirebaseAnalytics.Param.ITEM_ID, itemId)
-            putString(FirebaseAnalytics.Param.CONTENT_TYPE, FA_CONTENT_TYPE_UI_EVENT)
-            putString(FA_KEY_UI_ACTION, action)
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
+            param(FirebaseAnalytics.Param.ITEM_ID, itemId)
+            param(FirebaseAnalytics.Param.CONTENT_TYPE, FA_CONTENT_TYPE_UI_EVENT)
+            param(FA_KEY_UI_ACTION, action)
         }
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, params)
         Timber.d("Event recorded for $itemId, $action")
     }
 
@@ -131,7 +133,7 @@ class FirebaseAnalyticsHelper(
             }
         }
 
-        DefaultScheduler.execute { // Prevent access to preferences on main thread
+        externalScope.launch { // Prevent access to preferences on main thread
             SharedPreferenceStorage(context).registerOnPreferenceChangeListener(listener)
         }
         prefListener = listener

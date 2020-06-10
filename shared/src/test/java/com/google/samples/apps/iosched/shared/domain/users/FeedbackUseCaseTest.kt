@@ -17,9 +17,6 @@
 package com.google.samples.apps.iosched.shared.domain.users
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
@@ -27,9 +24,10 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import org.junit.Assert.assertEquals
+import com.google.samples.apps.iosched.test.data.runBlockingTest
+import junit.framework.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 
@@ -42,34 +40,35 @@ class FeedbackUseCaseTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    // Executes tasks in a synchronous [TaskScheduler]
+    // Overrides Dispatchers.Main used in Coroutines
     @get:Rule
-    var syncExecutorRule = SyncExecutorRule()
+    var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun submit() {
+    fun submit() = coroutineRule.runBlockingTest {
         val testFeedbackEndpoint = object : FeedbackEndpoint {
-            override fun sendFeedback(
+            override suspend fun sendFeedback(
                 sessionId: SessionId,
                 responses: Map<String, Int>
-            ): LiveData<Result<Unit>> {
-                return MutableLiveData(Result.Success(Unit))
+            ): Result<Unit> {
+                return Result.Success(Unit)
             }
         }
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
             TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
         )
-        val useCase = FeedbackUseCase(testFeedbackEndpoint, testUserEventRepository)
 
-        val resultLiveData = useCase.observe()
-        useCase.execute(FeedbackParameter(
+        val result = FeedbackUseCase(
+            testFeedbackEndpoint,
+            testUserEventRepository,
+            coroutineRule.testDispatcher
+        )(FeedbackParameter(
             "userIdTest",
             TestData.userEvents[0],
             TestData.userEvents[0].id,
             mapOf("q1" to 1)
         ))
 
-        val result = LiveDataTestUtil.getValue(resultLiveData)
         assertEquals(Result.Success(Unit), result)
     }
 }

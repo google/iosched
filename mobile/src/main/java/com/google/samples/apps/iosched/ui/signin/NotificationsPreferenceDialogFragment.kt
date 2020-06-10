@@ -19,17 +19,22 @@ package com.google.samples.apps.iosched.ui.signin
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefSaveActionUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefShownActionUseCase
-import dagger.android.support.DaggerAppCompatDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
  * Dialog that asks for the user's notifications preference.
  */
-class NotificationsPreferenceDialogFragment : DaggerAppCompatDialogFragment() {
+@AndroidEntryPoint
+class NotificationsPreferenceDialogFragment : AppCompatDialogFragment() {
 
     @Inject
     lateinit var notificationsPrefSaveActionUseCase: NotificationsPrefSaveActionUseCase
@@ -40,13 +45,23 @@ class NotificationsPreferenceDialogFragment : DaggerAppCompatDialogFragment() {
         return MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.notifications_preference_dialog_title)
             .setMessage(R.string.notifications_preference_dialog_content)
-            .setNegativeButton(R.string.no) { _, _ -> notificationsPrefSaveActionUseCase(false) }
-            .setPositiveButton(R.string.yes) { _, _ -> notificationsPrefSaveActionUseCase(true) }
+            .setNegativeButton(R.string.no) { _, _ ->
+                lifecycleScope.launch {
+                    notificationsPrefSaveActionUseCase(false)
+                }
+            }
+            .setPositiveButton(R.string.yes) { _, _ ->
+                lifecycleScope.launch {
+                    notificationsPrefSaveActionUseCase(true)
+                }
+            }
             .create()
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        notificationsPrefShownActionUseCase(true)
+        GlobalScope.launch {
+            notificationsPrefShownActionUseCase(true)
+        }
         super.onDismiss(dialog)
     }
 

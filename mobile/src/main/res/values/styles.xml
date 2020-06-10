@@ -33,7 +33,7 @@
         <item name="android:lineSpacingExtra">4sp</item>
     </style>
 
-    <style name="AlertDialog.ButtonBar" parent ="@style/Widget.AppCompat.ButtonBar.AlertDialog">
+    <style name="AlertDialog.ButtonBar" parent="@style/Widget.AppCompat.ButtonBar.AlertDialog">
         <item name="android:paddingBottom">@dimen/margin_small</item>
         <item name="android:paddingTop">@dimen/margin_small</item>
     </style>
@@ -98,15 +98,14 @@
         <item name="textAllCaps">false</item>
     </style>
 
+    <!-- Filters -->
+    <style name="TextAppearance.IOSched.FilterChip.Selectable" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <!-- Schedule -->
     <style name="TextAppearance.IOSched.ReservationStatus" parent="@style/TextAppearance.IOSched.Body2">
         <item name="android:textAllCaps">true</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.Tag" parent="@style/TextAppearance.IOSched.Body2">
-        <item name="android:fontFamily">monospace</item>
-        <item name="android:letterSpacing">@dimen/tag_letter_spacing</item>
-        <item name="fontFamily">monospace</item>
     </style>
 
     <style name="TextAppearance.IOSched.FiltersLabel" parent="TextAppearance.IOSched.H2">
@@ -136,12 +135,6 @@
     <style name="TextAppearance.IOSched.CountdownLabel" parent="@style/TextAppearance.MaterialComponents.Caption">
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textSize">18sp</item>
-    </style>
-
-    <style name="TextAppearance.IOSched.Feed.Session.Time" parent="TextAppearance.MaterialComponents.Body2">
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="fontFamily">sans-serif-medium</item>
     </style>
 
     <!-- Settings -->
@@ -181,30 +174,40 @@
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
+    <!-- Filters -->
+    <!-- Easier to extend Chip.Choice because it includes some desired color effects. -->
+    <style name="Widget.IOSched.FilterChip" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textAppearance">@style/TextAppearance.IOSched.FilterChip.Selectable</item>
+        <item name="chipBackgroundColor">@color/chip_bg</item>
+        <item name="chipIcon">@drawable/asld_chip_icon</item>
+        <item name="chipIconVisible">true</item>
+        <item name="chipStrokeColor">@color/chip_stroke</item>
+        <item name="textStartPadding">0dp</item>
+    </style>
+
+    <style name="Widget.IOSched.FilterChip.Selectable">
+        <item name="chipStrokeWidth">1dp</item>
+    </style>
+
+    <!-- Active filters show a close shortcut and no checkmark. -->
+    <style name="Widget.IOSched.FilterChip.Closeable">
+        <item name="android:clickable">false</item>
+        <item name="chipIcon">@drawable/chip_dot</item>
+        <item name="closeIcon">@drawable/ic_filter_clear</item>
+        <item name="closeIconVisible">true</item>
+        <item name="textEndPadding">2dp</item>
+    </style>
+
     <!-- Schedule -->
     <style name="Widget.IOSched.Tag">
         <item name="android:gravity">center_vertical</item>
         <item name="android:lines">1</item>
-        <item name="android:textAppearance">@style/TextAppearance.IOSched.Tag</item>
     </style>
 
     <style name="Widget.IOSched.Tag.Inline">
         <item name="android:drawablePadding">@dimen/spacing_micro</item>
         <item name="android:drawableStart">@drawable/tag_dot</item>
         <item name="android:textColor">?android:textColorSecondary</item>
-    </style>
-
-    <style name="Widget.IOSched.EventFilters">
-        <item name="android:letterSpacing">@dimen/tag_letter_spacing</item>
-        <item name="android:padding">@dimen/spacing_normal</item>
-        <item name="android:strokeColor">?colorControlLight</item>
-        <item name="android:textColor">?android:textColorPrimary</item>
-        <item name="android:textSize">14sp</item>
-        <item name="outlineWidth">1dp</item>
-        <item name="clearIcon">@drawable/tag_clear</item>
-        <item name="foreground">?selectableItemBackground</item>
-        <item name="showIcons">true</item>
-        <item name="cornerRadius">8dp</item>
     </style>
 
     <style name="Widget.IOSched.TimeHeaders">
@@ -262,7 +265,8 @@
 
     <style name="Widget.IOSched.AccountDialog.ManageAccountButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textColor">?android:textColorSecondary</item>
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.Chip</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.Chip
+        </item>
     </style>
 
     <!-- Onboarding -->
@@ -292,7 +296,9 @@
     <style name="Widget.IOSched.Feed.Session.Title">
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">3</item>
-        <item name="android:textAppearance">?attr/textAppearanceListItem</item>
+        <item name="android:textSize">18sp</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif</item>
     </style>
 
     <style name="Widget.IOSched.Feed.Card" parent="Widget.MaterialComponents.CardView">
@@ -300,6 +306,20 @@
         <item name="strokeColor">?android:attr/colorControlHighlight</item>
         <item name="strokeWidth">1dp</item>
         <item name="cardCornerRadius">@dimen/feed_card_corner_radius</item>
+    </style>
+
+    <style name="Widget.IOSched.Feed.SocialChannelButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="android:layout_width">@dimen/a11y_min_touch_target</item>
+        <item name="android:layout_height">@dimen/a11y_min_touch_target</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <style name="Widget.IOSched.Feed.EmptySessionsMessage">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+        <item name="fontFamily">@font/google_sans</item>
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:maxWidth">@dimen/feed_my_day_empty_sessions_message_max_width</item>
     </style>
 
     <!-- Settings -->

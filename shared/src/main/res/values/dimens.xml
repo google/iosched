@@ -16,8 +16,5 @@
   -->
 
 <resources>
-    <dimen name="tag_dot_size">12dp</dimen>
-    <dimen name="tag_hz_padding">12dp</dimen>
-    <dimen name="tag_vert_padding">6dp</dimen>
-    <dimen name="tag_corner_radius">100dp</dimen> <!-- Large value ensures the 'pill' shape -->
+    <dimen name="tag_dot_size">8dp</dimen>
 </resources>

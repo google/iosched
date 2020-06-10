@@ -16,19 +16,31 @@
 
 package com.google.samples.apps.iosched.shared.domain.settings
 
+import android.os.Build
 import com.google.samples.apps.iosched.model.Theme
+import com.google.samples.apps.iosched.model.Theme.BATTERY_SAVER
 import com.google.samples.apps.iosched.model.themeFromStorageKey
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
-import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
+import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
+import com.google.samples.apps.iosched.shared.domain.FlowUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 open class ObserveThemeModeUseCase @Inject constructor(
-    private val preferenceStorage: PreferenceStorage
-) : MediatorUseCase<Unit, Theme>() {
-    override fun execute(parameters: Unit) {
-        result.addSource(preferenceStorage.observableSelectedTheme) {
-            result.postValue(Result.Success(themeFromStorageKey(it)))
+    private val preferenceStorage: PreferenceStorage,
+    @DefaultDispatcher dispatcher: CoroutineDispatcher
+) : FlowUseCase<Unit, Theme>(dispatcher) {
+    override fun execute(parameters: Unit): Flow<Result<Theme>> {
+        return preferenceStorage.observableSelectedTheme.map {
+            val theme = themeFromStorageKey(it)
+                ?: when {
+                    Build.VERSION.SDK_INT >= 29 -> Theme.SYSTEM
+                    else -> BATTERY_SAVER
+                }
+            Result.Success(theme)
         }
     }
 }

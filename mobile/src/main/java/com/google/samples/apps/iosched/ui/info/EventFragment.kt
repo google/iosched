@@ -27,24 +27,24 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.updatePaddingRelative
 import androidx.databinding.BindingAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentInfoEventBinding
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 import com.google.samples.apps.iosched.shared.di.AssistantAppEnabledFlag
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.widget.FadingSnackbar
-import dagger.android.support.DaggerFragment
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-class EventFragment : DaggerFragment() {
+@AndroidEntryPoint
+class EventFragment : Fragment() {
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
 
     @Inject
@@ -52,7 +52,7 @@ class EventFragment : DaggerFragment() {
     @AssistantAppEnabledFlag
     var assistantAppEnabled = false
 
-    private lateinit var eventInfoViewModel: EventInfoViewModel
+    private val eventInfoViewModel: EventInfoViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,7 +60,6 @@ class EventFragment : DaggerFragment() {
         savedInstanceState: Bundle?
     ): View? {
         context ?: return null
-        eventInfoViewModel = viewModelProvider(viewModelFactory)
 
         val binding = FragmentInfoEventBinding.inflate(inflater, container, false).apply {
             viewModel = eventInfoViewModel
@@ -81,7 +80,7 @@ class EventFragment : DaggerFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        eventInfoViewModel.openUrlEvent.observe(this, Observer {
+        eventInfoViewModel.openUrlEvent.observe(viewLifecycleOwner, Observer {
             val url = it?.getContentIfNotHandled() ?: return@Observer
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
         })

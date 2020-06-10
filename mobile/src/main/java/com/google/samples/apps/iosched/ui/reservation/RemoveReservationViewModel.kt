@@ -16,52 +16,77 @@
 
 package com.google.samples.apps.iosched.ui.reservation
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
-import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.shared.result.Event
+import com.google.samples.apps.iosched.shared.result.Result.Error
+import com.google.samples.apps.iosched.shared.result.data
+import com.google.samples.apps.iosched.shared.util.cancelIfActive
+import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
-import javax.inject.Inject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
-class RemoveReservationViewModel @Inject constructor(
+@ExperimentalCoroutinesApi
+class RemoveReservationViewModel @ViewModelInject constructor(
     signInViewModelDelegate: SignInViewModelDelegate,
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val reservationActionUseCase: ReservationActionUseCase
 ) : ViewModel(), SignInViewModelDelegate by signInViewModelDelegate {
 
+    private var loadUserSessionJob: Job? = null
     private val _sessionId = MutableLiveData<SessionId>()
 
-    private val loadUserSessionResult = loadUserSessionUseCase.observe()
+    private val _userSession = MutableLiveData<UserSession>()
 
-    private val _userSession = loadUserSessionResult.map { result ->
-        if (result is Result.Success) {
-            result.data.userSession
-        } else {
-            null
-        }
-    }
+    private val _snackBarMessage = MutableLiveData<Event<SnackbarMessage>>()
+    val snackBarMessage = _snackBarMessage
 
     fun setSessionId(sessionId: SessionId) {
         _sessionId.value = sessionId
-        loadUserSessionUseCase.execute(getUserId() to sessionId)
+        loadUserSessionJob.cancelIfActive()
+        loadUserSessionJob = viewModelScope.launch {
+            loadUserSessionUseCase(getUserId() to sessionId).collect { loadResult ->
+                loadResult.data?.userSession?.let {
+                    _userSession.value = it
+                }
+            }
+        }
     }
 
     fun removeReservation() {
         val userId = getUserId() ?: return
         val sessionId = _sessionId.value ?: return
         val userSession = _userSession.value
-        reservationActionUseCase.execute(
-            ReservationRequestParameters(
-                userId,
-                sessionId,
-                ReservationRequestAction.CancelAction(),
-                userSession
+        viewModelScope.launch {
+            val result = reservationActionUseCase(
+                ReservationRequestParameters(
+                    userId,
+                    sessionId,
+                    ReservationRequestAction.CancelAction(),
+                    userSession
+                )
             )
-        )
+            if (result is Error) {
+                _snackBarMessage.value =
+                    Event(
+                        SnackbarMessage(
+                            messageId = R.string.reservation_error,
+                            longDuration = true
+                        )
+                    )
+            }
+        }
     }
 }

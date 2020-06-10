@@ -21,7 +21,10 @@ import android.text.TextUtils
 import com.google.android.gms.maps.GoogleMap
 import com.google.maps.android.data.geojson.GeoJsonFeature
 import com.google.maps.android.data.geojson.GeoJsonLayer
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 /** Parameters for this use case. */
@@ -35,10 +38,11 @@ data class GeoJsonData(
 
 /** Use case that loads a GeoJsonLayer and its features. */
 class LoadGeoJsonFeaturesUseCase @Inject constructor(
-    private val context: Context
-) : UseCase<LoadGeoJsonParams, GeoJsonData>() {
+    @ApplicationContext private val context: Context,
+    @IoDispatcher dispatcher: CoroutineDispatcher
+) : UseCase<LoadGeoJsonParams, GeoJsonData>(dispatcher) {
 
-    override fun execute(parameters: LoadGeoJsonParams): GeoJsonData {
+    override suspend fun execute(parameters: LoadGeoJsonParams): GeoJsonData {
         val (googleMap, markersRes) = parameters
         val layer = GeoJsonLayer(googleMap, markersRes, context)
         processGeoJsonLayer(layer, context)

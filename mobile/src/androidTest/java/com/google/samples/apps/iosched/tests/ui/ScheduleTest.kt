@@ -17,32 +17,23 @@
 package com.google.samples.apps.iosched.tests.ui
 
 import android.content.Context
-import android.provider.Settings
-import android.view.View
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
+import com.google.samples.apps.iosched.di.CoroutinesModule
 import com.google.samples.apps.iosched.tests.FixedTimeRule
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
-import com.google.samples.apps.iosched.tests.SyncTaskExecutorRule
-import com.google.samples.apps.iosched.ui.schedule.SessionViewHolder
-import com.google.samples.apps.iosched.ui.schedule.filters.ScheduleFilterAdapter
-import com.google.samples.apps.iosched.widget.BottomSheetBehavior
-import org.hamcrest.CoreMatchers.not
-import org.hamcrest.core.AllOf.allOf
-import org.junit.Before
+import com.google.samples.apps.iosched.ui.sessioncommon.SessionViewHolder
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -50,33 +41,26 @@ import org.junit.runner.RunWith
 /**
  * Basic Espresso tests for the schedule screen.
  */
+@HiltAndroidTest
+@UninstallModules(CoroutinesModule::class)
 @RunWith(AndroidJUnit4::class)
 class ScheduleTest {
 
-    @get:Rule
-    var activityRule = MainActivityTestRule(R.id.navigation_schedule)
-
-    // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule
-    var syncTaskExecutorRule = SyncTaskExecutorRule()
+    @get:Rule(order = 0)
+    var hiltRule = HiltAndroidRule(this)
 
     // Sets the time to before the conference
-    @get:Rule
+    @get:Rule(order = 1)
     var timeProviderRule = FixedTimeRule()
 
     // Sets the preferences so no welcome screens are shown
-    @get:Rule
+    @get:Rule(order = 1)
     var preferencesRule = SetPreferencesRule()
 
-    private val resources = ApplicationProvider.getApplicationContext<Context>().resources
+    @get:Rule(order = 2)
+    var activityRule = MainActivityTestRule(R.id.navigation_schedule)
 
-    @Before
-    fun disableBottomSheetAnimations() {
-        val behavior = BottomSheetBehavior.from(
-            activityRule.activity.findViewById<View>(R.id.filter_sheet)
-        )
-        behavior.isAnimationDisabled = true
-    }
+    private val resources = ApplicationProvider.getApplicationContext<Context>().resources
 
     @Test
     fun showFirstDay_sessionOnFirstDayShown() {
@@ -92,9 +76,7 @@ class ScheduleTest {
         onView(withId(R.id.session_detail_title)).check(matches(isDisplayed()))
     }
 
-    /**
-     * This test requires animations to be disabled in the device.
-     */
+/* TODO(jdkoren) move to new schedule screen
     @Test
     fun clickFilters_showFilters() {
         checkAnimationsDisabled()
@@ -208,7 +190,7 @@ class ScheduleTest {
             )
         }
     }
-
+*/
     companion object {
         private const val FAKE_SESSION_ON_DAY1 = "Fake session on day 1"
     }

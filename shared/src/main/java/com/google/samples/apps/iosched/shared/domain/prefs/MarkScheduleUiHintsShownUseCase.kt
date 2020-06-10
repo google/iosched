@@ -17,16 +17,19 @@
 package com.google.samples.apps.iosched.shared.domain.prefs
 
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 
 /**
  * Use case when the schedule UI hints are shown
  */
-open class MarkScheduleUiHintsShownUseCase @Inject constructor(
-    private val preferenceStorage: PreferenceStorage
-) : UseCase<Unit, Unit>() {
-    override fun execute(parameters: Unit) {
+class MarkScheduleUiHintsShownUseCase @Inject constructor(
+    private val preferenceStorage: PreferenceStorage,
+    @IoDispatcher dispatcher: CoroutineDispatcher
+) : UseCase<Unit, Unit>(dispatcher) {
+    override suspend fun execute(parameters: Unit) {
         preferenceStorage.scheduleUiHintsShown = true
     }
 }

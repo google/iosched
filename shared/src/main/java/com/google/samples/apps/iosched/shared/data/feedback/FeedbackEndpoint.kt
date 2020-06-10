@@ -16,40 +16,42 @@
 
 package com.google.samples.apps.iosched.shared.data.feedback
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.result.Result
 import javax.inject.Inject
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
 interface FeedbackEndpoint {
-    fun sendFeedback(sessionId: SessionId, responses: Map<String, Int>): LiveData<Result<Unit>>
+    suspend fun sendFeedback(sessionId: SessionId, responses: Map<String, Int>): Result<Unit>
 }
 
 class DefaultFeedbackEndpoint @Inject constructor(
     private val functions: FirebaseFunctions
 ) : FeedbackEndpoint {
 
-    override fun sendFeedback(
+    override suspend fun sendFeedback(
         sessionId: SessionId,
         responses: Map<String, Int>
-    ): LiveData<Result<Unit>> {
-        val result = MutableLiveData<Result<Unit>>()
-        functions
-            .getHttpsCallable("sendFeedback")
-            .call(hashMapOf(
-                "sessionId" to sessionId,
-                "responses" to responses,
-                "client" to "ANDROID"
-            ))
-            .addOnCompleteListener { task ->
-                result.postValue(if (task.isSuccessful) {
-                    Result.Success(Unit)
-                } else {
-                    Result.Error(RuntimeException(task.exception))
-                })
+    ): Result<Unit> {
+        return suspendCancellableCoroutine { continuation ->
+                functions
+                    .getHttpsCallable("sendFeedback")
+                    .call(
+                        hashMapOf(
+                            "sessionId" to sessionId,
+                            "responses" to responses,
+                            "client" to "ANDROID"
+                        )
+                    )
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            continuation.resume(Result.Success(Unit))
+                        } else {
+                            continuation.resume(Result.Error(RuntimeException(task.exception)))
+                        }
+                    }
             }
-        return result
-    }
+        }
 }

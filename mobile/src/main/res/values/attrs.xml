@@ -40,9 +40,9 @@
 
         <attr name="sessionListKeyline" format="dimension" />
 
-        <attr name="eventFilterViewStyle" format="reference" />
-
         <attr name="eventCardHeaderBackground" format="reference|color" />
+
+        <attr name="colorSurfaceSecondary" format="color" />
     </declare-styleable>
 
     <declare-styleable name="TimeHeader">
@@ -82,22 +82,6 @@
     <declare-styleable name="CollapsibleCard">
         <attr name="cardTitle" format="string" />
         <attr name="cardDescription" format="string" />
-    </declare-styleable>
-
-    <declare-styleable name="EventFilterView">
-        <attr name="android:checked" />
-        <attr name="android:text" />
-        <attr name="android:textColor" />
-        <attr name="android:textSize" />
-        <attr name="android:color" />
-        <attr name="android:padding" />
-        <attr name="android:strokeColor" />
-        <attr name="android:letterSpacing" />
-        <attr name="outlineWidth" format="dimension" />
-        <attr name="clearIcon" format="reference" />
-        <attr name="foreground" format="reference" />
-        <attr name="showIcons" format="boolean" />
-        <attr name="cornerRadius" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="DayIndicatorDecoration">

@@ -21,8 +21,8 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
-import android.view.WindowInsets
 import android.view.Window
+import android.view.WindowInsets
 import android.widget.FrameLayout
 import com.google.samples.apps.iosched.R
 import kotlin.LazyThreadSafetyMode.NONE

@@ -31,10 +31,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.tasks.Task
 import com.google.samples.apps.iosched.shared.BuildConfig
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.suspendCancellableCoroutine
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 /** Convenience for callbacks/listeners whose return value indicates an event was consumed. */
 inline fun consume(f: () -> Unit): Boolean {
@@ -71,7 +75,7 @@ inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Fragmen
 inline fun <reified VM : ViewModel> FragmentActivity.viewModelProvider(
     provider: ViewModelProvider.Factory
 ) =
-    ViewModelProviders.of(this, provider).get(VM::class.java)
+    ViewModelProvider(this, provider).get(VM::class.java)
 
 /**
  * For Fragments, allows declarations like
@@ -82,7 +86,7 @@ inline fun <reified VM : ViewModel> FragmentActivity.viewModelProvider(
 inline fun <reified VM : ViewModel> Fragment.viewModelProvider(
     provider: ViewModelProvider.Factory
 ) =
-    ViewModelProviders.of(this, provider).get(VM::class.java)
+    ViewModelProvider(this, provider).get(VM::class.java)
 
 /**
  * Like [Fragment.viewModelProvider] for Fragments that want a [ViewModel] scoped to the Activity.
@@ -90,7 +94,7 @@ inline fun <reified VM : ViewModel> Fragment.viewModelProvider(
 inline fun <reified VM : ViewModel> Fragment.activityViewModelProvider(
     provider: ViewModelProvider.Factory
 ) =
-    ViewModelProviders.of(requireActivity(), provider).get(VM::class.java)
+    ViewModelProvider(requireActivity(), provider).get(VM::class.java)
 
 /**
  * Like [Fragment.viewModelProvider] for Fragments that want a [ViewModel] scoped to the parent
@@ -99,7 +103,7 @@ inline fun <reified VM : ViewModel> Fragment.activityViewModelProvider(
 inline fun <reified VM : ViewModel> Fragment.parentViewModelProvider(
     provider: ViewModelProvider.Factory
 ) =
-    ViewModelProviders.of(parentFragment!!, provider).get(VM::class.java)
+    ViewModelProvider(parentFragment!!, provider).get(VM::class.java)
 
 // endregion
 // region Parcelables, Bundles
@@ -147,8 +151,36 @@ fun ZonedDateTime.toEpochMilli() = this.toInstant().toEpochMilli()
 val <T> T.checkAllMatched: T
     get() = this
 
+// region Coroutines
+
+/**
+ * Cancel the Job if it's active.
+ */
+fun Job?.cancelIfActive() {
+    if (this?.isActive == true) {
+        cancel()
+    }
+}
+
+// endregion
+
 // region UI utils
 
+// endregion
+
+// region Firebase
+suspend fun <T> Task<T>.suspendAndWait(): T =
+    suspendCancellableCoroutine { continuation ->
+        addOnSuccessListener { result ->
+            continuation.resume(result)
+        }
+        addOnFailureListener { exception ->
+            continuation.resumeWithException(exception)
+        }
+        addOnCanceledListener {
+            continuation.resumeWithException(Exception("Firebase Task was cancelled"))
+        }
+    }
 // endregion
 
 /**
