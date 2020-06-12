@@ -51,6 +51,14 @@ class MainActivityViewModel @ViewModelInject constructor(
     val navigateToSignOutDialogAction: LiveData<Event<Unit>>
         get() = _navigateToSignOutDialogAction
 
+    private val _fullyDrawn = MutableLiveData<Event<Boolean>>()
+    val fullyDrawn: LiveData<Event<Boolean>>
+        get() = _fullyDrawn
+
+    fun reportFullyDrawn() {
+        _fullyDrawn.value = Event(true)
+    }
+
     val pinnedSessionsJson: LiveData<String> = currentUserInfo.switchMap { user ->
         val uid = user?.getUid()
         liveData {

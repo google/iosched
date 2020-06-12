@@ -21,6 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.core.view.updatePaddingRelative
 import androidx.fragment.app.activityViewModels
@@ -244,6 +245,11 @@ class FeedFragment : MainNavigationFragment() {
             recyclerView.adapter = adapter
         }
         (recyclerView.adapter as FeedAdapter).submitList(list ?: emptyList())
+        // After submitting the list to the adapter, the recycler view starts measuring and drawing
+        // so let's wait for the layout to be drawn before reporting fully drawn.
+        binding.recyclerView.doOnLayout {
+            mainActivityViewModel.reportFullyDrawn()
+        }
     }
 
     private fun openSignInDialog() {

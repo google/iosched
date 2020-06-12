@@ -46,6 +46,7 @@ import com.google.samples.apps.iosched.shared.di.CodelabsEnabledFlag
 import com.google.samples.apps.iosched.shared.di.ExploreArEnabledFlag
 import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.ar.ArConstants
+import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
@@ -135,6 +136,15 @@ class MainActivity : AppCompatActivity(), NavigationHost {
         updateForTheme(viewModel.currentTheme)
 
         setContentView(R.layout.activity_main)
+
+        viewModel.fullyDrawn.observe(this, Observer<Event<Boolean>> { fullyDrawn ->
+            if (fullyDrawn.getContentIfNotHandled() == true) {
+                // reportFullyDrawn() prints `I/ActivityTaskManager: Fully drawn {activity} {time}`
+                // to logcat. The framework ensures that the statement is printed only once, so
+                // there is no need to add the logic to only report once from the app.
+                reportFullyDrawn()
+            }
+        })
 
         val drawerContainer: NavigationBarContentFrameLayout = findViewById(R.id.drawer_container)
         // Let's consume any
