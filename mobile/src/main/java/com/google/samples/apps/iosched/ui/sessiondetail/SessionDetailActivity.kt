@@ -28,6 +28,7 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.notifications.AlarmBroadcastReceiver
 import com.google.samples.apps.iosched.shared.notifications.AlarmBroadcastReceiver.Companion.QUERY_SESSION_ID
+import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
@@ -72,8 +73,8 @@ class SessionDetailActivity : AppCompatActivity() {
         }
 
         themeViewModel.theme.observe(this, Observer(::updateForTheme))
-        activityViewModel.fullyDrawn.observe(this, Observer { fullyDrawn ->
-            if (fullyDrawn.getContentIfNotHandled() == true) {
+        activityViewModel.fullyDrawn.observe(this, EventObserver { fullyDrawn ->
+            if (fullyDrawn) {
                 // If this activity was launched from a deeplink, then the logcat statement is
                 // printed. Otherwise, the SessionDetailFragment is started from the MainActivity
                 // which would have already reported fully drawn to the framework.
