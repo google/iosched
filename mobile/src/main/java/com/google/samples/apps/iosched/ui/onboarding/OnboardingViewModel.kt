@@ -40,14 +40,6 @@ class OnboardingViewModel @ViewModelInject constructor(
     private val _navigateToSignInDialogAction = MutableLiveData<Event<Unit>>()
     val navigateToSignInDialogAction: LiveData<Event<Unit>> = _navigateToSignInDialogAction
 
-    private val _fullyDrawn = MutableLiveData<Event<Boolean>>()
-    val fullyDrawn: LiveData<Event<Boolean>>
-        get() = _fullyDrawn
-
-    fun reportFullyDrawn() {
-        _fullyDrawn.value = Event(true)
-    }
-
     fun getStartedClick() {
         viewModelScope.launch {
             onboardingCompleteActionUseCase(true)

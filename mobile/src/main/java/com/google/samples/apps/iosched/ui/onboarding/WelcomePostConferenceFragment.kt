@@ -30,8 +30,6 @@ import com.google.samples.apps.iosched.R
  */
 class WelcomePostConferenceFragment : Fragment() {
 
-    private val viewModel: OnboardingViewModel by activityViewModels()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,7 +40,7 @@ class WelcomePostConferenceFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         view.doOnLayout {
-            viewModel.reportFullyDrawn()
+            activity?.reportFullyDrawn()
         }
     }
 }

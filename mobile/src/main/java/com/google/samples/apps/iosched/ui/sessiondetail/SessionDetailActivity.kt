@@ -48,8 +48,6 @@ class SessionDetailActivity : AppCompatActivity() {
 
     private val themeViewModel: ThemeViewModel by viewModels()
 
-    private val activityViewModel: SessionDetailActivityViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -73,14 +71,6 @@ class SessionDetailActivity : AppCompatActivity() {
         }
 
         themeViewModel.theme.observe(this, Observer(::updateForTheme))
-        activityViewModel.fullyDrawn.observe(this, EventObserver { fullyDrawn ->
-            if (fullyDrawn) {
-                // If this activity was launched from a deeplink, then the logcat statement is
-                // printed. Otherwise, the SessionDetailFragment is started from the MainActivity
-                // which would have already reported fully drawn to the framework.
-                reportFullyDrawn()
-            }
-        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

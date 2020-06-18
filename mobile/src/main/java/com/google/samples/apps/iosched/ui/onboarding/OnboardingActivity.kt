@@ -59,12 +59,6 @@ class OnboardingActivity : AppCompatActivity() {
         viewModel.navigateToSignInDialogAction.observe(this, EventObserver {
             openSignInDialog()
         })
-
-        viewModel.fullyDrawn.observe(this, EventObserver { fullyDrawn ->
-            if (fullyDrawn) {
-                reportFullyDrawn()
-            }
-        })
     }
 
     private fun openSignInDialog() {

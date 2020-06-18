@@ -51,7 +51,7 @@ class WelcomeDuringConferenceFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         binding.activityViewModel = viewModel
         binding.buttonSignin.doOnLayout {
-            viewModel.reportFullyDrawn()
+            activity?.reportFullyDrawn()
         }
     }
 }

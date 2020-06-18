@@ -82,7 +82,6 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
 
     private val sessionDetailViewModel: SessionDetailViewModel by viewModels()
     private val snackbarPrefsViewModel: SnackbarPreferenceViewModel by activityViewModels()
-    private val activityViewModel: SessionDetailActivityViewModel by activityViewModels()
 
     @Inject lateinit var analyticsHelper: AnalyticsHelper
 
@@ -197,7 +196,10 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
             // obtain a stable start up times by not including the network call to download images,
             // which can vary greatly based on uncontrollable factors, mainly network speed.
             binding.sessionDetailRecyclerView.doOnLayout {
-                activityViewModel.reportFullyDrawn()
+                // If this activity was launched from a deeplink, then the logcat statement is
+                // printed. Otherwise, SessionDetailFragment is started from the MainActivity which
+                // would have already reported fully drawn to the framework.
+                activity?.reportFullyDrawn()
             }
         })
 

@@ -137,15 +137,6 @@ class MainActivity : AppCompatActivity(), NavigationHost {
 
         setContentView(R.layout.activity_main)
 
-        viewModel.fullyDrawn.observe(this, EventObserver { fullyDrawn ->
-            if (fullyDrawn) {
-                // reportFullyDrawn() prints `I/ActivityTaskManager: Fully drawn {activity} {time}`
-                // to logcat. The framework ensures that the statement is printed only once for the
-                // activity, so there is no need to add the logic to only report once from the app.
-                reportFullyDrawn()
-            }
-        })
-
         val drawerContainer: NavigationBarContentFrameLayout = findViewById(R.id.drawer_container)
         // Let's consume any
         drawerContainer.setOnApplyWindowInsetsListener { v, insets ->

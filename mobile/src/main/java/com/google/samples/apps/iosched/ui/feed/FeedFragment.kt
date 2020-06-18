@@ -248,7 +248,10 @@ class FeedFragment : MainNavigationFragment() {
         // After submitting the list to the adapter, the recycler view starts measuring and drawing
         // so let's wait for the layout to be drawn before reporting fully drawn.
         binding.recyclerView.doOnLayout {
-            mainActivityViewModel.reportFullyDrawn()
+            // reportFullyDrawn() prints `I/ActivityTaskManager: Fully drawn {activity} {time}`
+            // to logcat. The framework ensures that the statement is printed only once for the
+            // activity, so there is no need to add dedupping logic to the app.
+            activity?.reportFullyDrawn()
         }
     }
 
