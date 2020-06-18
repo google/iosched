@@ -100,8 +100,7 @@ class SessionDetailActivity : AppCompatActivity() {
     }
 
     private fun getSessionId(intent: Intent): String? {
-        return intent.data?.lastPathSegment // for iosched://sessions/{id}
-            ?: intent.data?.getQueryParameter(QUERY_SESSION_ID) // for iosched://sessions?session_id={id}
+        return intent.data?.getQueryParameter(QUERY_SESSION_ID) // for iosched://sessions/{id}
             ?: intent.getStringExtra(EXTRA_SESSION_ID)
     }
 

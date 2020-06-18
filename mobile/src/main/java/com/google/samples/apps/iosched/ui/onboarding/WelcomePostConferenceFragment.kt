@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.samples.apps.iosched.R
@@ -40,6 +41,8 @@ class WelcomePostConferenceFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.reportFullyDrawn()
+        view.doOnLayout {
+            viewModel.reportFullyDrawn()
+        }
     }
 }
