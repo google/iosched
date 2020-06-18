@@ -140,8 +140,8 @@ class MainActivity : AppCompatActivity(), NavigationHost {
         viewModel.fullyDrawn.observe(this, EventObserver { fullyDrawn ->
             if (fullyDrawn) {
                 // reportFullyDrawn() prints `I/ActivityTaskManager: Fully drawn {activity} {time}`
-                // to logcat. The framework ensures that the statement is printed only once, so
-                // there is no need to add the logic to only report once from the app.
+                // to logcat. The framework ensures that the statement is printed only once for the
+                // activity, so there is no need to add the logic to only report once from the app.
                 reportFullyDrawn()
             }
         })
