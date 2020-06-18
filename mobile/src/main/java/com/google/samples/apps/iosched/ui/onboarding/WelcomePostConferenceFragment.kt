@@ -21,6 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.google.samples.apps.iosched.R
 
 /**
@@ -28,11 +29,17 @@ import com.google.samples.apps.iosched.R
  */
 class WelcomePostConferenceFragment : Fragment() {
 
+    private val viewModel: OnboardingViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_onboarding_welcome_post, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        viewModel.reportFullyDrawn()
     }
 }
