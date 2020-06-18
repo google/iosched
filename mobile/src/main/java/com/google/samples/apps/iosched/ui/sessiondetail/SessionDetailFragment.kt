@@ -26,6 +26,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ShareCompat
 import androidx.core.net.toUri
+import androidx.core.view.doOnLayout
 import androidx.core.view.forEach
 import androidx.core.view.updatePadding
 import androidx.fragment.app.FragmentActivity
@@ -81,6 +82,7 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
 
     private val sessionDetailViewModel: SessionDetailViewModel by viewModels()
     private val snackbarPrefsViewModel: SnackbarPreferenceViewModel by activityViewModels()
+    private val activityViewModel: SessionDetailActivityViewModel by activityViewModels()
 
     @Inject lateinit var analyticsHelper: AnalyticsHelper
 
@@ -176,10 +178,6 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
             }
         }
 
-        sessionDetailViewModel.session.observe(viewLifecycleOwner, Observer {
-            detailsAdapter.speakers = it?.speakers?.toList() ?: emptyList()
-        })
-
         sessionDetailViewModel.relatedUserSessions.observe(viewLifecycleOwner, Observer {
             detailsAdapter.related = it ?: emptyList()
         })
@@ -190,6 +188,16 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
                 ""
             } else {
                 getString(R.string.share_text_session_detail, it.title, it.sessionUrl)
+            }
+            detailsAdapter.speakers = it?.speakers?.toList() ?: emptyList()
+            // ViewBinding is binding the session so we should wait until after the session has been
+            // laid out to report fully drawn. Note that we are *not* waiting for the speaker images
+            // to be downloaded and displayed because we are showing a placeholder image. Thus the
+            // screen appears fully drawn to the user. In terms of performance, this allows us to
+            // obtain a stable start up times by not including the network call to download images,
+            // which can vary greatly based on uncontrollable factors, mainly network speed.
+            binding.sessionDetailRecyclerView.doOnLayout {
+                activityViewModel.reportFullyDrawn()
             }
         })
 
@@ -293,7 +301,6 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
             // added from the navigation controller.
             val sessionId = getString(EXTRA_SESSION_ID)
                 ?: SessionDetailFragmentArgs.fromBundle(this).sessionId
-
             sessionDetailViewModel.setSessionId(sessionId)
         }
     }

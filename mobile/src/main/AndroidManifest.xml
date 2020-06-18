@@ -66,7 +66,11 @@
             <intent-filter android:label="Session detail">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <!-- Accepts URIs that begin with "iosched://sessionId” -->
+                <!-- Accepts URIs that begin with "iosched://sessions” -->
+                <!-- Example: iosched://sessions/{id}
+                To test from adb, use this command but replace {id} with a valid session id.
+                adb shell am start -a android.intent.action.VIEW -n com.google.samples.apps.iosched/.ui.sessiondetail.SessionDetailActivity -d iosched://sessions/{id}}
+                -->
                 <data android:scheme="iosched"
                     android:host="sessions" />
             </intent-filter>
