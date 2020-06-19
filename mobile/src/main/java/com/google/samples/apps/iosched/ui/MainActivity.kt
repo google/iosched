@@ -46,7 +46,6 @@ import com.google.samples.apps.iosched.shared.di.CodelabsEnabledFlag
 import com.google.samples.apps.iosched.shared.di.ExploreArEnabledFlag
 import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.ar.ArConstants
-import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
