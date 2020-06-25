@@ -66,7 +66,7 @@
             <intent-filter android:label="Session detail">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <!-- Accepts URIs that begin with "iosched://sessionId” -->
+                <!-- Accepts URIs that begin with "iosched://sessions” -->
                 <data android:scheme="iosched"
                     android:host="sessions" />
             </intent-filter>
