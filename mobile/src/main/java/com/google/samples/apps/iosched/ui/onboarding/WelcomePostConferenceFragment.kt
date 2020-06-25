@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import com.google.samples.apps.iosched.R
 
@@ -34,5 +35,11 @@ class WelcomePostConferenceFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_onboarding_welcome_post, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        view.doOnLayout {
+            activity?.reportFullyDrawn()
+        }
     }
 }

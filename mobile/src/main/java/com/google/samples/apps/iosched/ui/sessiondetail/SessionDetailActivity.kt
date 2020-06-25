@@ -45,12 +45,12 @@ class SessionDetailActivity : AppCompatActivity() {
     @Inject
     lateinit var snackbarMessageManager: SnackbarMessageManager
 
-    private val viewModel: ThemeViewModel by viewModels()
+    private val themeViewModel: ThemeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        updateForTheme(viewModel.currentTheme)
+        updateForTheme(themeViewModel.currentTheme)
 
         setContentView(R.layout.activity_session_detail)
 
@@ -69,7 +69,7 @@ class SessionDetailActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.theme.observe(this, Observer(::updateForTheme))
+        themeViewModel.theme.observe(this, Observer(::updateForTheme))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -90,7 +90,7 @@ class SessionDetailActivity : AppCompatActivity() {
 
     private fun getSessionId(intent: Intent): String? {
         return intent.data?.getQueryParameter(QUERY_SESSION_ID) // for iosched://sessions/{id}
-                ?: intent.getStringExtra(EXTRA_SESSION_ID)
+            ?: intent.getStringExtra(EXTRA_SESSION_ID)
     }
 
     companion object {
