@@ -181,6 +181,7 @@ dependencies {
     testImplementation(Libs.ROOM_RUNTIME)
 
     // Dagger Hilt
+    implementation(Libs.DEPENDENCY_PROPERTY)
     implementation(Libs.HILT_ANDROID)
     implementation(Libs.HILT_VIEWMODEL)
     androidTestImplementation(Libs.HILT_TESTING)

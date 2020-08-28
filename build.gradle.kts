@@ -48,6 +48,7 @@ allprojects {
         google()
         mavenCentral()
         jcenter()
+        maven { url = uri("https://jitpack.io/") }
 
         // For Android Build Server
         // - Material Design Components

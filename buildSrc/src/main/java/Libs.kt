@@ -28,6 +28,7 @@ object Libs {
     const val CRASHLYTICS = "com.crashlytics.sdk.android:crashlytics"
     const val COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-core"
     const val COROUTINES_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test"
+    const val DEPENDENCY_PROPERTY = "com.github.wada811:DependencyProperty"
     const val DRAWER_LAYOUT = "androidx.drawerlayout:drawerlayout"
     const val ESPRESSO_CONTRIB = "androidx.test.espresso:espresso-contrib"
     const val ESPRESSO_CORE = "androidx.test.espresso:espresso-core"

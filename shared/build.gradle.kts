@@ -152,6 +152,7 @@ dependencies {
     testImplementation(Libs.COROUTINES_TEST)
 
     // Dagger Hilt
+    implementation(Libs.DEPENDENCY_PROPERTY)
     implementation(Libs.HILT_ANDROID)
     kapt(Libs.HILT_COMPILER)
 
