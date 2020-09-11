@@ -50,9 +50,9 @@ class InfoFragment : MainNavigationFragment() {
     private val viewModel: MainActivityViewModel by viewModels()
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         binding = FragmentInfoBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
@@ -93,7 +93,6 @@ class InfoFragment : MainNavigationFragment() {
         }
     }
 
-
     private fun openSignInDialog() {
         val dialog = SignInDialogFragment()
         dialog.show(requireActivity().supportFragmentManager, InfoFragment.DIALOG_NEED_TO_SIGN_IN)
@@ -124,17 +123,16 @@ class InfoFragment : MainNavigationFragment() {
         private const val DIALOG_CONFIRM_SIGN_OUT = "dialog_confirm_sign_out"
         private const val DIALOG_SCHEDULE_HINTS = "dialog_schedule_hints"
 
-
         private val INFO_TITLES = arrayOf(
-                R.string.event_title,
-                R.string.travel_title,
-                R.string.faq_title
+            R.string.event_title,
+            R.string.travel_title,
+            R.string.faq_title
         )
         private val INFO_PAGES = arrayOf(
-                { EventFragment() },
-                { TravelFragment() },
-                { FaqFragment() }
-                // TODO: Track the InfoPage performance b/130335745
+            { EventFragment() },
+            { TravelFragment() },
+            { FaqFragment() }
+            // TODO: Track the InfoPage performance b/130335745
         )
     }
 }

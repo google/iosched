@@ -51,14 +51,14 @@ class SettingsFragment : MainNavigationFragment() {
     private val mainActivityViewModel: MainActivityViewModel by viewModels()
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
 
         viewModel.navigateToThemeSelector.observe(viewLifecycleOwner, EventObserver {
             ThemeSettingDialogFragment.newInstance()
-                    .show(requireFragmentManager(), null)
+                .show(requireFragmentManager(), null)
         })
 
         val binding = FragmentSettingsBinding.inflate(inflater, container, false)
@@ -70,25 +70,31 @@ class SettingsFragment : MainNavigationFragment() {
         binding.settingsScroll.doOnApplyWindowInsets { v, insets, padding ->
             v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
-        mainActivityViewModel.navigateToSignInDialogAction.observe(viewLifecycleOwner, EventObserver {
-            openSignInDialog()
-        })
+        mainActivityViewModel.navigateToSignInDialogAction.observe(
+            viewLifecycleOwner, EventObserver {
+                openSignInDialog()
+            })
 
-        mainActivityViewModel.navigateToSignOutDialogAction.observe(viewLifecycleOwner, EventObserver {
-            openSignOutDialog()
-        })
+        mainActivityViewModel.navigateToSignOutDialogAction.observe(
+            viewLifecycleOwner, EventObserver {
+                openSignOutDialog()
+            })
 
         return binding.root
     }
 
     private fun openSignInDialog() {
         val dialog = SignInDialogFragment()
-        dialog.show(requireActivity().supportFragmentManager, SettingsFragment.DIALOG_NEED_TO_SIGN_IN)
+        dialog.show(
+            requireActivity().supportFragmentManager, SettingsFragment.DIALOG_NEED_TO_SIGN_IN
+        )
     }
 
     private fun openSignOutDialog() {
         val dialog = SignOutDialogFragment()
-        dialog.show(requireActivity().supportFragmentManager, SettingsFragment.DIALOG_CONFIRM_SIGN_OUT)
+        dialog.show(
+            requireActivity().supportFragmentManager, SettingsFragment.DIALOG_CONFIRM_SIGN_OUT
+        )
     }
 }
 
@@ -100,10 +106,10 @@ fun createDialogForFile(button: View, dialogTitle: String, fileLink: String) {
         webView.settings.useWideViewPort = true
         webView.settings.loadWithOverviewMode = true
         AlertDialog.Builder(context)
-                .setTitle(dialogTitle)
-                .setView(webView)
-                .create()
-                .show()
+            .setTitle(dialogTitle)
+            .setView(webView)
+            .create()
+            .show()
     }
 }
 
