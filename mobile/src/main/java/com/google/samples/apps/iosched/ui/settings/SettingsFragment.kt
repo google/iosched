@@ -31,6 +31,9 @@ import com.google.samples.apps.iosched.databinding.FragmentSettingsBinding
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
+import com.google.samples.apps.iosched.ui.info.InfoFragment
+import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
+import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,13 +41,19 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SettingsFragment : MainNavigationFragment() {
 
+    companion object {
+        private const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
+        private const val DIALOG_CONFIRM_SIGN_OUT = "dialog_confirm_sign_out"
+        private const val DIALOG_SCHEDULE_HINTS = "dialog_schedule_hints"
+    }
+
     private val viewModel: SettingsViewModel by viewModels()
     private val mainActivityViewModel: MainActivityViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
 
         viewModel.navigateToThemeSelector.observe(viewLifecycleOwner, EventObserver {
@@ -61,8 +70,25 @@ class SettingsFragment : MainNavigationFragment() {
         binding.settingsScroll.doOnApplyWindowInsets { v, insets, padding ->
             v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
+        mainActivityViewModel.navigateToSignInDialogAction.observe(viewLifecycleOwner, EventObserver {
+            openSignInDialog()
+        })
+
+        mainActivityViewModel.navigateToSignOutDialogAction.observe(viewLifecycleOwner, EventObserver {
+            openSignOutDialog()
+        })
 
         return binding.root
+    }
+
+    private fun openSignInDialog() {
+        val dialog = SignInDialogFragment()
+        dialog.show(requireActivity().supportFragmentManager, SettingsFragment.DIALOG_NEED_TO_SIGN_IN)
+    }
+
+    private fun openSignOutDialog() {
+        val dialog = SignOutDialogFragment()
+        dialog.show(requireActivity().supportFragmentManager, SettingsFragment.DIALOG_CONFIRM_SIGN_OUT)
     }
 }
 
@@ -74,10 +100,10 @@ fun createDialogForFile(button: View, dialogTitle: String, fileLink: String) {
         webView.settings.useWideViewPort = true
         webView.settings.loadWithOverviewMode = true
         AlertDialog.Builder(context)
-            .setTitle(dialogTitle)
-            .setView(webView)
-            .create()
-            .show()
+                .setTitle(dialogTitle)
+                .setView(webView)
+                .create()
+                .show()
     }
 }
 

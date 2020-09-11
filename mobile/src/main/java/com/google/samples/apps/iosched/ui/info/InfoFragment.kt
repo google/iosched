@@ -29,8 +29,12 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentInfoBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
+import com.google.samples.apps.iosched.ui.schedule.ScheduleFragment
+import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
+import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,17 +42,17 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class InfoFragment : MainNavigationFragment() {
-
-    @Inject lateinit var analyticsHelper: AnalyticsHelper
+    @Inject
+    lateinit var analyticsHelper: AnalyticsHelper
 
     private lateinit var binding: FragmentInfoBinding
 
     private val viewModel: MainActivityViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         binding = FragmentInfoBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
@@ -56,6 +60,14 @@ class InfoFragment : MainNavigationFragment() {
         binding.viewpager.doOnApplyWindowInsets { v, insets, padding ->
             v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
+
+        viewModel.navigateToSignInDialogAction.observe(viewLifecycleOwner, EventObserver {
+            openSignInDialog()
+        })
+
+        viewModel.navigateToSignOutDialogAction.observe(viewLifecycleOwner, EventObserver {
+            openSignOutDialog()
+        })
         return binding.root
     }
 
@@ -81,6 +93,17 @@ class InfoFragment : MainNavigationFragment() {
         }
     }
 
+
+    private fun openSignInDialog() {
+        val dialog = SignInDialogFragment()
+        dialog.show(requireActivity().supportFragmentManager, InfoFragment.DIALOG_NEED_TO_SIGN_IN)
+    }
+
+    private fun openSignOutDialog() {
+        val dialog = SignOutDialogFragment()
+        dialog.show(requireActivity().supportFragmentManager, InfoFragment.DIALOG_CONFIRM_SIGN_OUT)
+    }
+
     private fun trackInfoScreenView(position: Int) {
         val pageName = getString(INFO_TITLES[position])
         analyticsHelper.sendScreenView("Info - $pageName", requireActivity())
@@ -97,16 +120,21 @@ class InfoFragment : MainNavigationFragment() {
 
     companion object {
 
+        private const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
+        private const val DIALOG_CONFIRM_SIGN_OUT = "dialog_confirm_sign_out"
+        private const val DIALOG_SCHEDULE_HINTS = "dialog_schedule_hints"
+
+
         private val INFO_TITLES = arrayOf(
-            R.string.event_title,
-            R.string.travel_title,
-            R.string.faq_title
+                R.string.event_title,
+                R.string.travel_title,
+                R.string.faq_title
         )
         private val INFO_PAGES = arrayOf(
-            { EventFragment() },
-            { TravelFragment() },
-            { FaqFragment() }
-        // TODO: Track the InfoPage performance b/130335745
+                { EventFragment() },
+                { TravelFragment() },
+                { FaqFragment() }
+                // TODO: Track the InfoPage performance b/130335745
         )
     }
 }
