@@ -44,7 +44,6 @@ class SettingsFragment : MainNavigationFragment() {
     companion object {
         private const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
         private const val DIALOG_CONFIRM_SIGN_OUT = "dialog_confirm_sign_out"
-        private const val DIALOG_SCHEDULE_HINTS = "dialog_schedule_hints"
     }
 
     private val viewModel: SettingsViewModel by viewModels()

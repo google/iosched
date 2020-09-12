@@ -42,8 +42,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class InfoFragment : MainNavigationFragment() {
-    @Inject
-    lateinit var analyticsHelper: AnalyticsHelper
+    @Inject lateinit var analyticsHelper: AnalyticsHelper
 
     private lateinit var binding: FragmentInfoBinding
 
@@ -121,7 +120,6 @@ class InfoFragment : MainNavigationFragment() {
 
         private const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
         private const val DIALOG_CONFIRM_SIGN_OUT = "dialog_confirm_sign_out"
-        private const val DIALOG_SCHEDULE_HINTS = "dialog_schedule_hints"
 
         private val INFO_TITLES = arrayOf(
             R.string.event_title,
