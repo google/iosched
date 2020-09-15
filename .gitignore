@@ -39,3 +39,4 @@ _sandbox
 
 # Android Studio captures folder
 captures/
+tools/iosched-codestyle.xml
