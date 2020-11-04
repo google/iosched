@@ -40,7 +40,7 @@ android {
             // plugin should try to use when a dependency does not include a
             // "staging" build type.
             // Used with :test-shared, which doesn't have a staging variant.
-            matchingFallbacks = listOf("debug")
+            setMatchingFallbacks(listOf("debug"))
         }
     }
 

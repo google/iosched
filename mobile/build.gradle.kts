@@ -20,7 +20,7 @@ plugins {
     kotlin("android.extensions")
     kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
-    id("io.fabric")
+    id("com.google.firebase.crashlytics")
     id("dagger.hilt.android.plugin")
 }
 
@@ -51,7 +51,7 @@ android {
         resValue("dimen", "map_viewport_min_zoom", properties["map_viewport_min_zoom"] as String)
         resValue("dimen", "map_viewport_max_zoom", properties["map_viewport_max_zoom"] as String)
 
-        manifestPlaceholders = mapOf("crashlyticsEnabled" to true)
+        manifestPlaceholders["crashlyticsEnabled"] = true
 
         vectorDrawables.useSupportLibrary = true
 
@@ -66,7 +66,7 @@ android {
             isMinifyEnabled = true
             // TODO: b/120517460 shrinkResource can't be used with dynamic-feature at this moment.
             //       Need to ensure the app size has not increased
-            manifestPlaceholders = mapOf("crashlyticsEnabled" to true)
+            manifestPlaceholders["crashlyticsEnabled"] = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             resValue("string",
                     "google_maps_key",
@@ -76,7 +76,7 @@ android {
         }
         getByName("debug") {
             versionNameSuffix = "-debug"
-            manifestPlaceholders = mapOf("crashlyticsEnabled" to false)
+            manifestPlaceholders["crashlyticsEnabled"] = false
             resValue("string",
                     "google_maps_key",
                     "AIzaSyAhJx57ikQH9rYc8IT8W3d2As5cGHMBvuo")
@@ -92,7 +92,7 @@ android {
             // plugin should try to use when a dependency does not include a
             // "staging" build type.
             // Used with :test-shared, which doesn't have a staging variant.
-            matchingFallbacks = listOf("debug")
+            setMatchingFallbacks(listOf("debug"))
         }
     }
 
@@ -146,6 +146,7 @@ android {
 dependencies {
     api(platform(project(":depconstraints")))
     kapt(platform(project(":depconstraints")))
+    androidTestApi(platform(project(":depconstraints")))
 
     implementation(project(":shared"))
     implementation(project(":ar"))

@@ -25,7 +25,7 @@ object Libs {
     const val CARDVIEW = "androidx.cardview:cardview"
     const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout"
     const val CORE_KTX = "androidx.core:core-ktx"
-    const val CRASHLYTICS = "com.crashlytics.sdk.android:crashlytics"
+    const val CRASHLYTICS = "com.google.firebase:firebase-crashlytics"
     const val COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-core"
     const val COROUTINES_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test"
     const val DRAWER_LAYOUT = "androidx.drawerlayout:drawerlayout"

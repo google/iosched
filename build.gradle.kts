@@ -24,7 +24,6 @@ buildscript {
         google()
         mavenCentral()
         jcenter()
-        maven { url = uri("https://maven.fabric.io/public") }
         // Android Build Server
         maven { url = uri("../iosched-prebuilts/m2repository") }
     }
@@ -34,7 +33,7 @@ buildscript {
         classpath("com.google.gms:google-services:${Versions.GOOGLE_SERVICES}")
         classpath("androidx.benchmark:benchmark-gradle-plugin:${Versions.BENCHMARK}")
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.NAVIGATION}")
-        classpath("io.fabric.tools:gradle:${Versions.FABRIC}")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:${Versions.FIREBASE_CRASHLYTICS}")
         classpath("com.google.dagger:hilt-android-gradle-plugin:${Versions.HILT}")
     }
 }

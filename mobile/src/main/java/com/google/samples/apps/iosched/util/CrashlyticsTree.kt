@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.util
 
 import android.util.Log
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import timber.log.Timber
 
 class CrashlyticsTree : Timber.Tree() {
@@ -26,15 +26,15 @@ class CrashlyticsTree : Timber.Tree() {
         if (priority == Log.VERBOSE || priority == Log.DEBUG || priority == Log.INFO) {
             return
         }
-
-        Crashlytics.setInt(CRASHLYTICS_KEY_PRIORITY, priority)
-        Crashlytics.setString(CRASHLYTICS_KEY_TAG, tag)
-        Crashlytics.setString(CRASHLYTICS_KEY_MESSAGE, message)
+        val crashlytics = FirebaseCrashlytics.getInstance()
+        crashlytics.setCustomKey(CRASHLYTICS_KEY_PRIORITY, priority)
+        crashlytics.setCustomKey(CRASHLYTICS_KEY_TAG, tag ?: "")
+        crashlytics.setCustomKey(CRASHLYTICS_KEY_MESSAGE, message)
 
         if (t == null) {
-            Crashlytics.logException(Exception(message))
+            crashlytics.recordException(Exception(message))
         } else {
-            Crashlytics.logException(t)
+            crashlytics.recordException(t)
         }
     }
 
