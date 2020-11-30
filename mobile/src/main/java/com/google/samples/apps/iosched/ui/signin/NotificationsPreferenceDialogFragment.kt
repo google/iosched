@@ -23,10 +23,11 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefSaveActionUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefShownActionUseCase
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -38,8 +39,13 @@ class NotificationsPreferenceDialogFragment : AppCompatDialogFragment() {
 
     @Inject
     lateinit var notificationsPrefSaveActionUseCase: NotificationsPrefSaveActionUseCase
+
     @Inject
     lateinit var notificationsPrefShownActionUseCase: NotificationsPrefShownActionUseCase
+
+    @Inject
+    @ApplicationScope
+    lateinit var applicationScope: CoroutineScope
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return MaterialAlertDialogBuilder(requireContext())
@@ -59,7 +65,7 @@ class NotificationsPreferenceDialogFragment : AppCompatDialogFragment() {
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        GlobalScope.launch {
+        applicationScope.launch {
             notificationsPrefShownActionUseCase(true)
         }
         super.onDismiss(dialog)

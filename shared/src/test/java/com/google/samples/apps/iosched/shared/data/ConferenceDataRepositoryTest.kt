@@ -31,7 +31,6 @@ import org.hamcrest.core.IsEqual.equalTo
 import org.hamcrest.core.IsNot.not
 import org.hamcrest.core.IsNull.notNullValue
 import org.hamcrest.core.IsNull.nullValue
-import org.junit.After
 import org.junit.Assert.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -52,11 +51,6 @@ class ConferenceDataRepositoryTest {
     private lateinit var repo: ConferenceDataRepository
 
     private val testDispatcher = coroutineRule.testDispatcher
-
-    @After
-    fun tearDown() {
-        repo.closeDataLastUpdatedChannel()
-    }
 
     @Test
     fun remotePrevailsOverBootstrap() = coroutineRule.runBlockingTest {

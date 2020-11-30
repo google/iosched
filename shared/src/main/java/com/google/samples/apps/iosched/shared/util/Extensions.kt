@@ -34,6 +34,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.tasks.Task
 import com.google.samples.apps.iosched.shared.BuildConfig
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
@@ -160,6 +161,15 @@ fun Job?.cancelIfActive() {
     if (this?.isActive == true) {
         cancel()
     }
+}
+
+/**
+ * Tries to send an element to a Channel and ignores the exception.
+ */
+fun <E> SendChannel<E>.tryOffer(element: E): Boolean = try {
+    offer(element)
+} catch (t: Throwable) {
+    false // Ignore
 }
 
 // endregion

@@ -66,7 +66,6 @@ import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -86,7 +85,6 @@ import org.mockito.Mockito.verify
 /**
  * Unit tests for the [ScheduleViewModel].
  */
-@FlowPreview
 class ScheduleViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread
@@ -222,7 +220,7 @@ class ScheduleViewModelTest {
                 UserEventMessageChangeType.CHANGES_IN_RESERVATIONS
             )
         )
-        source.newObservableUserEvents.offer(newValue)
+        source.newObservableUserEvents.value = newValue
 
         val reservationMessage: Event<SnackbarMessage>? =
             LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
@@ -260,7 +258,7 @@ class ScheduleViewModelTest {
             userEventsMessage = UserEventMessage(UserEventMessageChangeType.CHANGES_IN_WAITLIST)
         )
 
-        source.newObservableUserEvents.offer(newValue)
+        source.newObservableUserEvents.value = newValue
 
         val waitlistMessage: Event<SnackbarMessage>? =
             LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())

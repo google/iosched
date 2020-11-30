@@ -24,7 +24,6 @@ import com.google.samples.apps.iosched.shared.domain.settings.ObserveThemeModeUs
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.result.successOr
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -59,7 +58,6 @@ class ThemedActivityDelegateImpl @Inject constructor(
     private val getThemeUseCase: GetThemeUseCase
 ) : ThemedActivityDelegate {
 
-    @InternalCoroutinesApi
     @ExperimentalCoroutinesApi
     override val theme: LiveData<Theme> = liveData {
         observeThemeUseCase(Unit).collect {

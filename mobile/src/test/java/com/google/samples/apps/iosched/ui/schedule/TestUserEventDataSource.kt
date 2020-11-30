@@ -31,20 +31,14 @@ import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus.UNS
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.TestData
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.merge
 
-@FlowPreview
 class TestUserEventDataSource : UserEventDataSource {
 
-    val newObservableUserEvents = ConflatedBroadcastChannel<UserEventsResult>()
+    val newObservableUserEvents = MutableStateFlow(UserEventsResult(TestData.userEvents))
 
-    override fun getObservableUserEvents(userId: String) = merge(flow {
-        emit(UserEventsResult(TestData.userEvents))
-    }, newObservableUserEvents.asFlow())
+    override fun getObservableUserEvents(userId: String) = newObservableUserEvents
 
     override fun getObservableUserEvent(userId: String, eventId: SessionId) = flow {
         emit(UserEventResult(TestData.userEvents.find { it.id == eventId }))

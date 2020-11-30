@@ -27,10 +27,8 @@ import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.Theme
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.properties.ReadWriteProperty
@@ -58,17 +56,14 @@ interface PreferenceStorage {
 /**
  * [PreferenceStorage] impl backed by [android.content.SharedPreferences].
  */
-@FlowPreview
 @ExperimentalCoroutinesApi
 @Singleton
 class SharedPreferenceStorage @Inject constructor(
     @ApplicationContext context: Context
 ) : PreferenceStorage {
 
-    private val selectedThemeChannel: ConflatedBroadcastChannel<String> by lazy {
-        ConflatedBroadcastChannel<String>().also { channel ->
-            channel.offer(selectedTheme)
-        }
+    private val selectedThemeFlow: MutableStateFlow<String> by lazy {
+        MutableStateFlow(selectedTheme)
     }
 
     private val prefs: Lazy<SharedPreferences> = lazy { // Lazy to prevent IO access to main thread.
@@ -84,7 +79,7 @@ class SharedPreferenceStorage @Inject constructor(
     private val changeListener = OnSharedPreferenceChangeListener { _, key ->
         when (key) {
             PREF_SNACKBAR_IS_STOPPED -> observableShowSnackbarResult.value = snackbarIsStopped
-            PREF_DARK_MODE_ENABLED -> selectedThemeChannel.offer(selectedTheme)
+            PREF_DARK_MODE_ENABLED -> selectedThemeFlow.value = selectedTheme
         }
     }
 
@@ -122,7 +117,7 @@ class SharedPreferenceStorage @Inject constructor(
     )
 
     override var observableSelectedTheme: Flow<String>
-        get() = selectedThemeChannel.asFlow()
+        get() = selectedThemeFlow
         set(_) = throw IllegalAccessException("This property can't be changed")
 
     override var codelabsInfoShown by BooleanPreference(prefs, PREF_CODELABS_INFO_SHOWN, false)

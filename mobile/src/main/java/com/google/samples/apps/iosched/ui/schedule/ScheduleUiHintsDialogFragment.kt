@@ -22,9 +22,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.shared.domain.prefs.MarkScheduleUiHintsShownUseCase
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,6 +38,10 @@ class ScheduleUiHintsDialogFragment : AppCompatDialogFragment() {
     @Inject
     lateinit var markScheduleUiHintsShownUseCase: MarkScheduleUiHintsShownUseCase
 
+    @Inject
+    @ApplicationScope
+    lateinit var applicationScope: CoroutineScope
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.schedule_hint_title)
@@ -46,7 +51,7 @@ class ScheduleUiHintsDialogFragment : AppCompatDialogFragment() {
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        GlobalScope.launch {
+        applicationScope.launch {
             markScheduleUiHintsShownUseCase(Unit)
         }
         super.onDismiss(dialog)

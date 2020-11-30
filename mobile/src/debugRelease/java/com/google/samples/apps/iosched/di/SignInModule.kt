@@ -72,6 +72,7 @@ internal class SignInModule {
             firebase,
             FcmTokenUpdater(applicationScope, mainDispatcher, firestore),
             notificationAlarmUpdater,
+            applicationScope,
             ioDispatcher
         )
     }

@@ -22,19 +22,25 @@ import com.google.firebase.auth.GetTokenResult
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfoBasic
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserRegistration
 import com.google.samples.apps.iosched.shared.data.signin.FirebaseUserInfo
+import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.fcm.FcmTokenUpdater
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.util.suspendAndWait
+import com.google.samples.apps.iosched.shared.util.tryOffer
 import kotlinx.coroutines.CoroutineDispatcher
-import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.shareIn
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * An [AuthStateUserDataSource] that listens to changes in [FirebaseAuth].
@@ -55,6 +61,7 @@ class FirebaseAuthStateUserDataSource @Inject constructor(
     val firebase: FirebaseAuth,
     private val tokenUpdater: FcmTokenUpdater,
     private val notificationAlarmUpdater: NotificationAlarmUpdater,
+    @ApplicationScope private val externalScope: CoroutineScope,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : AuthStateUserDataSource {
 
@@ -63,19 +70,33 @@ class FirebaseAuthStateUserDataSource @Inject constructor(
     @Volatile
     private var lastUid: String? = null
 
-    override fun getBasicUserInfo(): Flow<Result<AuthenticatedUserInfoBasic?>> {
-        return channelFlow<FirebaseAuth> {
+    /**
+     * The `shareIn` operator lets us reuse the flow when multiple subscribers collect at the same
+     * time. With the `SharingStarted.WhileSubscribed()` policy, the flow starts when the first
+     * subscriber appears and stops when there are no subscribers. This optimizes the implementation
+     * of the flow since we'll have **only one** authStateListener added to Firebase when there is
+     * at least one subscriber, and no listeners in Firebase when there are no subscribers.
+     */
+    private val basicUserInfo: SharedFlow<Result<AuthenticatedUserInfoBasic?>> =
+        callbackFlow<FirebaseAuth> {
             val authStateListener: ((FirebaseAuth) -> Unit) = { auth ->
                 // This callback gets always executed on the main thread because of Firebase
-                channel.offer(auth)
+                tryOffer(auth)
             }
             firebase.addAuthStateListener(authStateListener)
             awaitClose { firebase.removeAuthStateListener(authStateListener) }
-        }.map { authState ->
-            // This map gets executed in the Flow's context
-            processAuthState(authState)
         }
-    }
+            .map { authState ->
+                // This map gets executed in the Flow's context
+                processAuthState(authState)
+            }
+            .shareIn(
+                scope = externalScope,
+                replay = 1,
+                started = SharingStarted.WhileSubscribed()
+            )
+
+    override fun getBasicUserInfo(): Flow<Result<AuthenticatedUserInfoBasic?>> = basicUserInfo
 
     private suspend fun processAuthState(auth: FirebaseAuth): Result<AuthenticatedUserInfoBasic?> {
         // Listener that saves the [FirebaseUser], fetches the ID token

@@ -27,9 +27,9 @@ import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateU
 import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
 import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.result.Result
-import kotlinx.coroutines.channels.awaitClose
+import com.google.samples.apps.iosched.shared.result.Result.Success
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
  * A configurable [RegisteredUserDataSource] used for staging.
@@ -37,10 +37,9 @@ import kotlinx.coroutines.flow.channelFlow
  * @see LoginModule
  */
 class StagingRegisteredUserDataSource(val isRegistered: Boolean) : RegisteredUserDataSource {
-    override fun observeUserChanges(userId: String): Flow<Result<Boolean?>> = channelFlow {
-        channel.offer(Result.Success(isRegistered))
-        awaitClose { }
-    }
+    private val userChanges = MutableStateFlow(Success(isRegistered))
+
+    override fun observeUserChanges(userId: String): Flow<Result<Boolean?>> = userChanges
 }
 
 /**
@@ -106,21 +105,20 @@ class StagingAuthStateUserDataSource(
     val notificationAlarmUpdater: NotificationAlarmUpdater
 ) : AuthStateUserDataSource {
 
-    override fun getBasicUserInfo(): Flow<Result<AuthenticatedUserInfoBasic?>> = channelFlow {
+    private val userInfo = MutableStateFlow(
+        Success(
+            StagingAuthenticatedUserInfo(
+                registered = isRegistered,
+                signedIn = isSignedIn,
+                context = context
+            )
+        )
+    )
+    override fun getBasicUserInfo(): Flow<Result<AuthenticatedUserInfoBasic?>> {
         userId?.let {
             notificationAlarmUpdater.updateAll(userId)
         }
 
-        channel.offer(
-            Result.Success(
-                StagingAuthenticatedUserInfo(
-                    registered = isRegistered,
-                    signedIn = isSignedIn,
-                    context = context
-                )
-            )
-        )
-
-        awaitClose { }
+        return userInfo
     }
 }

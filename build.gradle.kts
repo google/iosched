@@ -99,10 +99,6 @@ subprojects {
     // TODO: Remove when the Coroutine and Flow APIs leave experimental/internal/preview.
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions.freeCompilerArgs +=
-            "-Xuse-experimental=" +
-                "kotlin.Experimental," +
-                "kotlinx.coroutines.ExperimentalCoroutinesApi," +
-                "kotlinx.coroutines.InternalCoroutinesApi," +
-                "kotlinx.coroutines.FlowPreview"
+            "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi"
     }
 }

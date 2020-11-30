@@ -21,12 +21,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.samples.apps.iosched.shared.data.document2020
 import com.google.samples.apps.iosched.shared.result.Result
-import javax.inject.Inject
+import com.google.samples.apps.iosched.shared.util.tryOffer
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * A [RegisteredUserDataSource] that listens to changes in firestore to indicate whether the
@@ -42,18 +43,18 @@ class FirestoreRegisteredUserDataSource @Inject constructor(
     }
 
     override fun observeUserChanges(userId: String): Flow<Result<Boolean?>> {
-        return channelFlow<Result<Boolean?>> {
+        return callbackFlow<Result<Boolean?>> {
             // Watch the document
             val registeredChangedListener =
                 { snapshot: DocumentSnapshot?, _: FirebaseFirestoreException? ->
                     if (snapshot == null || !snapshot.exists()) {
                         // When the account signs in for the first time, the document doesn't exist
                         Timber.d("Document for snapshot $userId doesn't exist")
-                        channel.offer(Result.Success(false))
+                        tryOffer(Result.Success(false))
                     } else {
                         val isRegistered: Boolean? = snapshot.get(REGISTERED_KEY) as? Boolean
                         Timber.d("Received registered flag: $isRegistered")
-                        channel.offer(Result.Success(isRegistered))
+                        tryOffer(Result.Success(isRegistered))
                     }
                     Unit // Avoids returning the Boolean from channel.offer
                 }

@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.shared.data
 
-import androidx.annotation.VisibleForTesting
 import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.shared.data.db.AppDatabase
@@ -24,10 +23,8 @@ import com.google.samples.apps.iosched.shared.data.db.CodelabFtsEntity
 import com.google.samples.apps.iosched.shared.data.db.SessionFtsEntity
 import com.google.samples.apps.iosched.shared.data.db.SpeakerFtsEntity
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-import kotlinx.coroutines.channels.BroadcastChannel
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Named
@@ -57,17 +54,12 @@ open class ConferenceDataRepository @Inject constructor(
     var latestUpdateSource: UpdateSource = UpdateSource.NONE
         private set
 
-    private val dataLastUpdatedChannel = BroadcastChannel<Long>(Channel.CONFLATED)
-    val dataLastUpdatedObservable: Flow<Long> = dataLastUpdatedChannel.asFlow()
+    // Using a SharedFlow instead of StateFlow as there isn't an initial value to be emitted
+    private val dataLastUpdatedFlow = MutableSharedFlow<Long>(replay = 1)
+    val dataLastUpdatedObservable: Flow<Long> = dataLastUpdatedFlow
 
     // Prevents multiple consumers requesting data at the same time
     private val loadConfDataLock = Any()
-
-    @VisibleForTesting
-    // Exposing the close method for the channel to make sure the channel is closed in every test
-    fun closeDataLastUpdatedChannel() {
-        dataLastUpdatedChannel.close()
-    }
 
     fun refreshCacheWithRemoteConferenceData() {
         val conferenceData = try {
@@ -91,7 +83,7 @@ open class ConferenceDataRepository @Inject constructor(
 
         // Update meta
         latestException = null
-        dataLastUpdatedChannel.offer(System.currentTimeMillis())
+        dataLastUpdatedFlow.tryEmit(System.currentTimeMillis())
         latestUpdateSource = UpdateSource.NETWORK
         latestException = null
     }

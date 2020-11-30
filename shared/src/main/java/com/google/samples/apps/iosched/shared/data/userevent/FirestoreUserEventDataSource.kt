@@ -34,19 +34,20 @@ import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Error
 import com.google.samples.apps.iosched.shared.result.Result.Success
+import com.google.samples.apps.iosched.shared.util.tryOffer
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -108,7 +109,7 @@ class FirestoreUserEventDataSource @Inject constructor(
         if (userId.isEmpty()) {
             return flow { emit(UserEventsResult(emptyList())) }
         } else {
-            return (channelFlow {
+            return (callbackFlow<UserEventsResult> {
                 val eventsCollection = firestore
                     .document2020()
                     .collection(USERS_COLLECTION)
@@ -133,13 +134,14 @@ class FirestoreUserEventDataSource @Inject constructor(
                         userEventsMessage = userMessage
                     )
                     currentValue = userEventsResult
-                    offer(userEventsResult)
+                    tryOffer(userEventsResult)
                 }
 
-                // The callback inside awaitClose will be executed when the channel is
+                // The callback inside awaitClose will be executed when the flow is
                 // either closed or cancelled
                 awaitClose { subscription.remove() }
-            }).flowOn(Dispatchers.Main)
+            })
+                .flowOn(Dispatchers.Main)
         }
     }
 
@@ -152,7 +154,7 @@ class FirestoreUserEventDataSource @Inject constructor(
                 emit(UserEventResult(userEvent = null))
             }
         } else {
-            (channelFlow<UserEventResult> {
+            (callbackFlow<UserEventResult> {
                 val eventDocument = firestore
                     .document2020()
                     .collection(USERS_COLLECTION)
@@ -179,12 +181,13 @@ class FirestoreUserEventDataSource @Inject constructor(
                         userEventMessage = userMessage
                     )
                     currentValue = userEventResult
-                    channel.offer(userEventResult)
+                    tryOffer(userEventResult)
                 }
-                // The callback inside awaitClose will be executed when the channel is
+                // The callback inside awaitClose will be executed when the flow is
                 // either closed or cancelled
                 awaitClose { subscription.remove() }
-            }).flowOn(ioDispatcher)
+            })
+                .flowOn(ioDispatcher)
         }
     }
 
