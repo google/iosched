@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.ui
 
 import android.content.Context
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,10 +29,13 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.ui.ar.ArCoreAvailabilityLiveData
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
+import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.collect
+import javax.inject.Inject
 
-class MainActivityViewModel @ViewModelInject constructor(
+@HiltViewModel
+class MainActivityViewModel @Inject constructor(
     signInViewModelDelegate: SignInViewModelDelegate,
     themedActivityDelegate: ThemedActivityDelegate,
     loadPinnedSessionsUseCase: LoadPinnedSessionsJsonUseCase,

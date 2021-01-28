@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.ui.feed
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -58,6 +57,7 @@ import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailFragmentDir
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
 import com.google.samples.apps.iosched.util.combine
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -70,7 +70,8 @@ import javax.inject.Inject
  * By annotating the constructor with [@Inject], Dagger will use that constructor when needing to
  * create the object, so defining a [@Provides] method for this class won't be needed.
  */
-class FeedViewModel @ViewModelInject constructor(
+@HiltViewModel
+class FeedViewModel @Inject constructor(
     private val loadCurrentMomentUseCase: LoadCurrentMomentUseCase,
     loadAnnouncementsUseCase: LoadAnnouncementsUseCase,
     private val loadStarredAndReservedSessionsUseCase: LoadStarredAndReservedSessionsUseCase,

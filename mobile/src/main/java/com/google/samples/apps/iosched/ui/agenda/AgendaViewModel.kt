@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.ui.agenda
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,10 +26,13 @@ import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.util.TimeUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.threeten.bp.ZoneId
+import javax.inject.Inject
 
-class AgendaViewModel @ViewModelInject constructor(
+@HiltViewModel
+class AgendaViewModel @Inject constructor(
     private val loadAgendaUseCase: LoadAgendaUseCase,
     private val getTimeZoneUseCase: GetTimeZoneUseCase
 ) : ViewModel() {

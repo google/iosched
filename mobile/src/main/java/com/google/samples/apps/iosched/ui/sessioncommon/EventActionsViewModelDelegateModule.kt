@@ -24,14 +24,14 @@ import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.components.ViewModelComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 
 /**
  * Provides a default implementation of [EventActionsViewModelDelegate].
  */
-@InstallIn(ActivityComponent::class)
+@InstallIn(ViewModelComponent::class)
 @Module
 internal class EventActionsViewModelDelegateModule {
 

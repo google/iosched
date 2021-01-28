@@ -16,17 +16,19 @@
 
 package com.google.samples.apps.iosched.ui
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompletedUseCase
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.data
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 /**
  * Logic for determining which screen to send users to on app launch.
  */
-class LaunchViewModel @ViewModelInject constructor(
+@HiltViewModel
+class LaunchViewModel @Inject constructor(
     onboardingCompletedUseCase: OnboardingCompletedUseCase
 ) : ViewModel() {
     val launchDestination = liveData {

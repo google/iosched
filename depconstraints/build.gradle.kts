@@ -49,7 +49,6 @@ val googlePlayServicesVision = "17.0.2"
 val gson = "2.8.6"
 val hamcrest = "1.3"
 val hilt = Versions.HILT
-val hiltJetPack = "1.0.0-alpha01"
 val junit = "4.13"
 val junitExt = "1.1.1"
 val lifecycle = "2.2.0"
@@ -71,7 +70,6 @@ val viewpager2 = "1.0.0"
 dependencies {
     constraints {
         api("${Libs.ACTIVITY_KTX}:$activity")
-        api("${Libs.ANDROIDX_HILT_COMPILER}:$hiltJetPack")
         api("${Libs.APPCOMPAT}:$appcompat")
         api("${Libs.CARDVIEW}:$cardview")
         api("${Libs.ARCH_TESTING}:$archTesting")
@@ -105,7 +103,6 @@ dependencies {
         api("${Libs.HILT_ANDROID}:$hilt")
         api("${Libs.HILT_COMPILER}:$hilt")
         api("${Libs.HILT_TESTING}:$hilt")
-        api("${Libs.HILT_VIEWMODEL}:$hiltJetPack")
         api("${Libs.JUNIT}:$junit")
         api("${Libs.EXT_JUNIT}:$junitExt")
         api("${Libs.KOTLIN_STDLIB}:${Versions.KOTLIN}")

@@ -29,11 +29,9 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.R.id
-import com.google.samples.apps.iosched.di.CoroutinesModule
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import dagger.hilt.android.testing.UninstallModules
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.Rule
@@ -44,7 +42,6 @@ import org.junit.runner.RunWith
  * Espresso tests for the Info screen, covering main use case.
  */
 @HiltAndroidTest
-@UninstallModules(CoroutinesModule::class)
 @RunWith(AndroidJUnit4::class)
 class InfoTest {
 

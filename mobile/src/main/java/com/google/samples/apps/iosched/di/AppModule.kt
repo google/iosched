@@ -39,8 +39,8 @@ import com.google.samples.apps.iosched.util.FirebaseAnalyticsHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -52,7 +52,7 @@ import javax.inject.Singleton
  * Define here all objects that are shared throughout the app, like SharedPreferences, navigators or
  * others. If some of those objects are singletons, they should be annotated with `@Singleton`.
  */
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module
 class AppModule {
 

@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.ui.feed
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
@@ -26,9 +25,12 @@ import com.google.samples.apps.iosched.shared.result.Result.Loading
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.TimeUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
 import org.threeten.bp.ZoneId
+import javax.inject.Inject
 
-class AnnouncementsViewModel @ViewModelInject constructor(
+@HiltViewModel
+class AnnouncementsViewModel @Inject constructor(
     loadAnnouncementsUseCase: LoadAnnouncementsUseCase,
     getTimeZoneUseCase: GetTimeZoneUseCase,
     timeProvider: TimeProvider

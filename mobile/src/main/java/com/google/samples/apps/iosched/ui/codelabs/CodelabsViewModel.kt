@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.ui.codelabs
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,9 +24,12 @@ import com.google.samples.apps.iosched.shared.domain.codelabs.GetCodelabsInfoCar
 import com.google.samples.apps.iosched.shared.domain.codelabs.LoadCodelabsUseCase
 import com.google.samples.apps.iosched.shared.domain.codelabs.SetCodelabsInfoCardShownUseCase
 import com.google.samples.apps.iosched.shared.result.successOr
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CodelabsViewModel @ViewModelInject constructor(
+@HiltViewModel
+class CodelabsViewModel @Inject constructor(
     private val loadCodelabsUseCase: LoadCodelabsUseCase,
     private val getCodelabsInfoCardShownUseCase: GetCodelabsInfoCardShownUseCase,
     private val setCodelabsInfoCardShownUseCase: SetCodelabsInfoCardShownUseCase

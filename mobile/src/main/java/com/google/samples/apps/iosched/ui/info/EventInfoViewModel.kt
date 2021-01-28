@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.ui.info
 
 import android.net.wifi.WifiConfiguration
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -32,8 +31,11 @@ import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.util.wifi.WifiInstaller
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class EventInfoViewModel @ViewModelInject constructor(
+@HiltViewModel
+class EventInfoViewModel @Inject constructor(
     loadWifiInfoUseCase: LoadWifiInfoUseCase,
     private val wifiInstaller: WifiInstaller,
     private val analyticsHelper: AnalyticsHelper

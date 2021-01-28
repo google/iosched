@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.ui.sessiondetail
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -64,8 +63,8 @@ import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.combine
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -75,6 +74,7 @@ import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
 import java.util.UUID
+import javax.inject.Inject
 
 private const val TEN_SECONDS = 10_000L
 private const val SIXTY_SECONDS = 60_000L
@@ -82,8 +82,8 @@ private const val SIXTY_SECONDS = 60_000L
 /**
  * Loads [Session] data and exposes it to the session detail view.
  */
-@ExperimentalCoroutinesApi
-class SessionDetailViewModel @ViewModelInject constructor(
+@HiltViewModel
+class SessionDetailViewModel @Inject constructor(
     private val signInViewModelDelegate: SignInViewModelDelegate,
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val loadRelatedSessionUseCase: LoadUserSessionsUseCase,

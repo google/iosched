@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.ui.speaker
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -38,13 +37,16 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import org.threeten.bp.ZoneId
+import javax.inject.Inject
 
 /**
  * Loads a [Speaker] and their sessions, handles event actions.
  */
-class SpeakerViewModel @ViewModelInject constructor(
+@HiltViewModel
+class SpeakerViewModel @Inject constructor(
     private val loadSpeakerUseCase: LoadSpeakerUseCase,
     private val loadSpeakerSessionsUseCase: LoadUserSessionsUseCase,
     getTimeZoneUseCase: GetTimeZoneUseCase,

@@ -183,12 +183,9 @@ dependencies {
 
     // Dagger Hilt
     implementation(Libs.HILT_ANDROID)
-    implementation(Libs.HILT_VIEWMODEL)
     androidTestImplementation(Libs.HILT_TESTING)
     kapt(Libs.HILT_COMPILER)
-    kapt(Libs.ANDROIDX_HILT_COMPILER)
     kaptAndroidTest(Libs.HILT_COMPILER)
-    kaptAndroidTest(Libs.ANDROIDX_HILT_COMPILER)
 
     // Glide
     implementation(Libs.GLIDE)
