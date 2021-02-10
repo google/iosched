@@ -66,7 +66,7 @@ allprojects {
 
 subprojects {
     apply(plugin = "com.diffplug.gradle.spotless")
-    val ktlintVer = "0.36.0"
+    val ktlintVer = "0.40.0"
     spotless {
         kotlin {
             target("**/*.kt")
