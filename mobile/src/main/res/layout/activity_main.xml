@@ -36,7 +36,7 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true">
 
-            <fragment
+            <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/nav_host_fragment"
                 android:name="com.google.samples.apps.iosched.ui.DispatchInsetsNavHostFragment"
                 android:layout_width="match_parent"
