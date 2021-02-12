@@ -98,6 +98,11 @@ android {
 
     buildFeatures {
         dataBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = Versions.COMPOSE
     }
 
     signingConfigs {
@@ -180,6 +185,16 @@ dependencies {
     kapt(Libs.ROOM_COMPILER)
     testImplementation(Libs.ROOM_KTX)
     testImplementation(Libs.ROOM_RUNTIME)
+
+    // Compose
+    implementation(Libs.ACTIVITY_COMPOSE)
+    implementation(Libs.COMPOSE_ANIMATION)
+    implementation(Libs.COMPOSE_MATERIAL)
+    implementation(Libs.COMPOSE_RUNTIME)
+    implementation(Libs.COMPOSE_THEME_ADAPTER)
+    implementation(Libs.COMPOSE_TOOLING)
+    implementation(Libs.VIEWMODEL_COMPOSE)
+    androidTestImplementation(Libs.COMPOSE_TEST)
 
     // Dagger Hilt
     implementation(Libs.HILT_ANDROID)

@@ -15,6 +15,7 @@
  */
 
 object Libs {
+    const val ACTIVITY_COMPOSE = "androidx.activity:activity-compose"
     const val ACTIVITY_KTX = "androidx.activity:activity-ktx"
     const val APPCOMPAT = "androidx.appcompat:appcompat"
     const val ARCH_TESTING = "androidx.arch.core:core-testing"
@@ -25,6 +26,12 @@ object Libs {
     const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout"
     const val CORE_KTX = "androidx.core:core-ktx"
     const val CRASHLYTICS = "com.google.firebase:firebase-crashlytics"
+    const val COMPOSE_ANIMATION = "androidx.compose.animation:animation"
+    const val COMPOSE_MATERIAL = "androidx.compose.material:material"
+    const val COMPOSE_RUNTIME = "androidx.compose.runtime:runtime"
+    const val COMPOSE_TEST = "androidx.compose.ui:ui-test-junit4"
+    const val COMPOSE_THEME_ADAPTER = "com.google.android.material:compose-theme-adapter"
+    const val COMPOSE_TOOLING = "androidx.compose.ui:ui-tooling"
     const val COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-core"
     const val COROUTINES_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test"
     const val DRAWER_LAYOUT = "androidx.drawerlayout:drawerlayout"
@@ -73,5 +80,6 @@ object Libs {
     const val THREETENABP = "com.jakewharton.threetenabp:threetenabp"
     const val THREETENBP = "org.threeten:threetenbp"
     const val TIMBER = "com.jakewharton.timber:timber"
+    const val VIEWMODEL_COMPOSE = "androidx.lifecycle:lifecycle-viewmodel-compose"
     const val VIEWPAGER2 = "androidx.viewpager2:viewpager2"
 }

@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity(), NavigationHost {
     private lateinit var navigation: NavigationView
     private lateinit var navHeaderBinding: NavigationHeaderBinding
     private lateinit var navController: NavController
-    private var navHostFragment: NavHostFragment? = null
+    private lateinit var navHostFragment: NavHostFragment
 
     private lateinit var statusScrim: View
 
@@ -171,9 +171,9 @@ class MainActivity : AppCompatActivity(), NavigationHost {
         }
 
         navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 
-        navController = findNavController(R.id.nav_host_fragment)
+        navController = navHostFragment.navController
         navController.addOnDestinationChangedListener { _, destination, _ ->
             currentNavId = destination.id
             val isTopLevelDestination = TOP_LEVEL_DESTINATIONS.contains(destination.id)

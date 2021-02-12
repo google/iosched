@@ -20,14 +20,16 @@ plugins {
 }
 
 val appcompat = "1.1.0"
-val activity = "1.0.0"
+val activity = "1.2.0-rc01"
+val activityCompose = "1.3.0-alpha02"
 val cardview = "1.0.0"
 val archTesting = "2.0.0"
 val arcore = "1.7.0"
 val benchmark = "1.0.0"
 val browser = "1.0.0"
+val compose = Versions.COMPOSE
 val constraintLayout = "1.1.3"
-val core = "1.2.0"
+val core = "1.3.2"
 val coroutines = "1.4.2"
 val coroutinesTest = "1.3.4"
 val crashlytics = "17.2.2"
@@ -51,7 +53,7 @@ val hamcrest = "1.3"
 val hilt = Versions.HILT
 val junit = "4.13"
 val junitExt = "1.1.1"
-val lifecycle = "2.2.0"
+val lifecycle = "2.3.0-rc01"
 val lottie = "3.0.0"
 val material = "1.1.0"
 val mockito = "3.3.1"
@@ -66,9 +68,11 @@ val runner = "1.2.0"
 val threetenabp = "1.0.5"
 val timber = "4.7.1"
 val viewpager2 = "1.0.0"
+val viewModelCompose = "1.0.0-alpha01"
 
 dependencies {
     constraints {
+        api("${Libs.ACTIVITY_COMPOSE}:$activityCompose")
         api("${Libs.ACTIVITY_KTX}:$activity")
         api("${Libs.APPCOMPAT}:$appcompat")
         api("${Libs.CARDVIEW}:$cardview")
@@ -76,6 +80,12 @@ dependencies {
         api("${Libs.ARCORE}:$arcore")
         api("${Libs.BENCHMARK}:$benchmark")
         api("${Libs.BROWSER}:$browser")
+        api("${Libs.COMPOSE_ANIMATION}:$compose")
+        api("${Libs.COMPOSE_MATERIAL}:$compose")
+        api("${Libs.COMPOSE_RUNTIME}:$compose")
+        api("${Libs.COMPOSE_TEST}:$compose")
+        api("${Libs.COMPOSE_THEME_ADAPTER}:$compose")
+        api("${Libs.COMPOSE_TOOLING}:$compose")
         api("${Libs.CONSTRAINT_LAYOUT}:$constraintLayout")
         api("${Libs.CORE_KTX}:$core")
         api("${Libs.COROUTINES}:$coroutines")
@@ -128,6 +138,7 @@ dependencies {
         api("${Libs.THREETENBP}:${Versions.THREETENBP}")
         api("${Libs.TIMBER}:$timber")
         api("${Libs.VIEWPAGER2}:$viewpager2")
+        api("${Libs.VIEWMODEL_COMPOSE}:$viewModelCompose")
     }
 }
 
