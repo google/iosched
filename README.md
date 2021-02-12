@@ -126,7 +126,7 @@ automatic sync  and also seamlessly managed offline functionality
 for us.
 - [Firebase Cloud Functions](https://firebase.google.com/docs/functions/)
 allowed us to run backend code. The reservations feature heavily depended on Cloud
-Functions working in conjuction with Firestore.
+Functions working in conjunction with Firestore.
 - [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging/concept-options)
 let us inform the app about changes to conference data on our server.
 - [Remote Config](https://firebase.google.com/docs/remote-config/) helped us
