@@ -47,10 +47,13 @@ class SettingsFragment : MainNavigationFragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        viewModel.navigateToThemeSelector.observe(viewLifecycleOwner, EventObserver {
-            ThemeSettingDialogFragment.newInstance()
+        viewModel.navigateToThemeSelector.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                ThemeSettingDialogFragment.newInstance()
                     .show(requireFragmentManager(), null)
-        })
+            }
+        )
 
         val binding = FragmentSettingsBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel

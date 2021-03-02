@@ -57,7 +57,8 @@ class LoadAgendaUseCaseBenchmark {
         // occurs before measuring to focus the benchmark on the creation of the agenda.
         val useCase = LoadAgendaUseCase(
             DefaultAgendaRepository(FakeAppConfigDataSource()),
-            coroutineRule.testDispatcher)
+            coroutineRule.testDispatcher
+        )
 
         benchmarkRule.measureRepeated {
             coroutineRule.testDispatcher.runBlockingTest {

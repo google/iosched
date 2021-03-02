@@ -47,8 +47,10 @@ class FirestoreAnnouncementDataSource @Inject constructor(
             .get()
         val snapshot = Tasks.await(task, 20, TimeUnit.SECONDS)
         return snapshot.documents.map { parseFeedItem(it) }
-            .sortedWith(compareByDescending<Announcement> { it.priority }
-            .thenByDescending { it.timestamp })
+            .sortedWith(
+                compareByDescending<Announcement> { it.priority }
+                    .thenByDescending { it.timestamp }
+            )
     }
 
     private fun parseFeedItem(snapshot: DocumentSnapshot): Announcement {

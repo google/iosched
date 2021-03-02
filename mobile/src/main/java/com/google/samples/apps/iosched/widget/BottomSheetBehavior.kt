@@ -70,12 +70,14 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
         private const val HIDE_FRICTION = 0.1f
 
         @IntDef(
-            value = [STATE_DRAGGING,
+            value = [
+                STATE_DRAGGING,
                 STATE_SETTLING,
                 STATE_EXPANDED,
                 STATE_COLLAPSED,
                 STATE_HIDDEN,
-                STATE_HALF_EXPANDED]
+                STATE_HALF_EXPANDED
+            ]
         )
         @Retention(AnnotationRetention.SOURCE)
         annotation class State
@@ -578,9 +580,11 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
     ): Boolean {
         return isDraggable &&
             target == nestedScrollingChildRef?.get() &&
-            (state != STATE_EXPANDED || super.onNestedPreFling(
-                coordinatorLayout, child, target, velocityX, velocityY
-            ))
+            (
+                state != STATE_EXPANDED || super.onNestedPreFling(
+                    coordinatorLayout, child, target, velocityX, velocityY
+                )
+                )
     }
 
     private fun clearNestedScroll() {
@@ -743,11 +747,11 @@ class BottomSheetBehavior<V : View> : Behavior<V> {
 
         override fun tryCaptureView(child: View, pointerId: Int): Boolean {
             when {
-            // Sanity check
+                // Sanity check
                 state == STATE_DRAGGING -> return false
-            // recapture a settling sheet
+                // recapture a settling sheet
                 dragHelper.viewDragState == ViewDragHelper.STATE_SETTLING -> return true
-            // let nested scroll handle this
+                // let nested scroll handle this
                 nestedScrollingChildRef?.get() != null -> return false
             }
 

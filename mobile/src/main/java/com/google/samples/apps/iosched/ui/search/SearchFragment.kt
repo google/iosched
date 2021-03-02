@@ -75,18 +75,30 @@ class SearchFragment : MainNavigationFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.searchResults.observe(viewLifecycleOwner, Observer {
-            sessionsAdapter.submitList(it)
-        })
-        viewModel.navigateToSessionAction.observe(viewLifecycleOwner, EventObserver { sessionId ->
-            findNavController().navigate(toSessionDetail(sessionId))
-        })
-        viewModel.navigateToSpeakerAction.observe(viewLifecycleOwner, EventObserver { speakerId ->
-            findNavController().navigate(toSpeakerDetail(speakerId))
-        })
-        viewModel.navigateToCodelabAction.observe(viewLifecycleOwner, EventObserver { url ->
-            openWebsiteUrl(requireActivity(), url)
-        })
+        viewModel.searchResults.observe(
+            viewLifecycleOwner,
+            Observer {
+                sessionsAdapter.submitList(it)
+            }
+        )
+        viewModel.navigateToSessionAction.observe(
+            viewLifecycleOwner,
+            EventObserver { sessionId ->
+                findNavController().navigate(toSessionDetail(sessionId))
+            }
+        )
+        viewModel.navigateToSpeakerAction.observe(
+            viewLifecycleOwner,
+            EventObserver { speakerId ->
+                findNavController().navigate(toSpeakerDetail(speakerId))
+            }
+        )
+        viewModel.navigateToCodelabAction.observe(
+            viewLifecycleOwner,
+            EventObserver { url ->
+                openWebsiteUrl(requireActivity(), url)
+            }
+        )
         analyticsHelper.sendScreenView("Search", requireActivity())
     }
 

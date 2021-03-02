@@ -75,8 +75,10 @@ class SessionFeedbackViewModelTest {
 
     @Test
     fun title() {
-        assertEquals(testSession.title,
-            LiveDataTestUtil.getValue(viewModel.userSession)!!.session.title)
+        assertEquals(
+            testSession.title,
+            LiveDataTestUtil.getValue(viewModel.userSession)!!.session.title
+        )
     }
 
     @Test

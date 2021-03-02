@@ -120,9 +120,13 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
         binding.sessionDetailBottomAppBar.run {
             inflateMenu(R.menu.session_detail_menu)
             menu.findItem(R.id.menu_item_map)?.isVisible = isMapEnabled
-            sessionDetailViewModel.session.observe(viewLifecycleOwner, Observer { session ->
-                menu.findItem(R.id.menu_item_ask_question).isVisible = session.doryLink.isNotBlank()
-            })
+            sessionDetailViewModel.session.observe(
+                viewLifecycleOwner,
+                Observer { session ->
+                    menu.findItem(R.id.menu_item_ask_question).isVisible =
+                        session.doryLink.isNotBlank()
+                }
+            )
             setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.menu_item_share -> {
@@ -177,31 +181,38 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
             }
         }
 
-        sessionDetailViewModel.relatedUserSessions.observe(viewLifecycleOwner, Observer {
-            detailsAdapter.related = it ?: emptyList()
-        })
+        sessionDetailViewModel.relatedUserSessions.observe(
+            viewLifecycleOwner,
+            Observer {
+                detailsAdapter.related = it ?: emptyList()
+            }
+        )
 
-        sessionDetailViewModel.session.observe(viewLifecycleOwner, Observer {
-            session = it
-            shareString = if (it == null) {
-                ""
-            } else {
-                getString(R.string.share_text_session_detail, it.title, it.sessionUrl)
+        sessionDetailViewModel.session.observe(
+            viewLifecycleOwner,
+            Observer {
+                session = it
+                shareString = if (it == null) {
+                    ""
+                } else {
+                    getString(R.string.share_text_session_detail, it.title, it.sessionUrl)
+                }
+                detailsAdapter.speakers = it?.speakers?.toList() ?: emptyList()
+                // ViewBinding is binding the session so we should wait until after the session has
+                // been laid out to report fully drawn. Note that we are *not* waiting for the
+                // speaker images to be downloaded and displayed because we are showing a
+                // placeholder image. Thus the screen appears fully drawn to the user. In terms of
+                // performance, this allows us to obtain a stable start up times by not including
+                // the network call to download images, which can vary greatly based on
+                // uncontrollable factors, mainly network speed.
+                binding.sessionDetailRecyclerView.doOnLayout {
+                    // If this activity was launched from a deeplink, then the logcat statement is
+                    // printed. Otherwise, SessionDetailFragment is started from the MainActivity
+                    // which would have already reported fully drawn to the framework.
+                    activity?.reportFullyDrawn()
+                }
             }
-            detailsAdapter.speakers = it?.speakers?.toList() ?: emptyList()
-            // ViewBinding is binding the session so we should wait until after the session has been
-            // laid out to report fully drawn. Note that we are *not* waiting for the speaker images
-            // to be downloaded and displayed because we are showing a placeholder image. Thus the
-            // screen appears fully drawn to the user. In terms of performance, this allows us to
-            // obtain a stable start up times by not including the network call to download images,
-            // which can vary greatly based on uncontrollable factors, mainly network speed.
-            binding.sessionDetailRecyclerView.doOnLayout {
-                // If this activity was launched from a deeplink, then the logcat statement is
-                // printed. Otherwise, SessionDetailFragment is started from the MainActivity which
-                // would have already reported fully drawn to the framework.
-                activity?.reportFullyDrawn()
-            }
-        })
+        )
 
         sessionDetailViewModel.navigateToYouTubeAction.observe(
             viewLifecycleOwner,
@@ -226,10 +237,13 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
             }
         )
 
-        sessionDetailViewModel.errorMessage.observe(viewLifecycleOwner, EventObserver { errorMsg ->
-            // TODO: Change once there's a way to show errors to the user
-            Toast.makeText(this.context, errorMsg, Toast.LENGTH_LONG).show()
-        })
+        sessionDetailViewModel.errorMessage.observe(
+            viewLifecycleOwner,
+            EventObserver { errorMsg ->
+                // TODO: Change once there's a way to show errors to the user
+                Toast.makeText(this.context, errorMsg, Toast.LENGTH_LONG).show()
+            }
+        )
 
         sessionDetailViewModel.navigateToSignInDialogAction.observe(
             viewLifecycleOwner,
@@ -281,14 +295,17 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
         // When opened from the post session notification, open the feedback dialog
         requireNotNull(arguments).apply {
             val sessionId = getString(EXTRA_SESSION_ID)
-                    ?: SessionDetailFragmentArgs.fromBundle(this).sessionId
+                ?: SessionDetailFragmentArgs.fromBundle(this).sessionId
             val openRateSession =
                 arguments?.getBoolean(AlarmBroadcastReceiver.EXTRA_SHOW_RATE_SESSION_FLAG) ?: false
-            sessionDetailViewModel.showFeedbackButton.observe(viewLifecycleOwner, Observer {
-                if (it == true && openRateSession) {
-                    openFeedbackDialog(sessionId)
+            sessionDetailViewModel.showFeedbackButton.observe(
+                viewLifecycleOwner,
+                Observer {
+                    if (it == true && openRateSession) {
+                        openFeedbackDialog(sessionId)
+                    }
                 }
-            })
+            )
         }
         return binding.root
     }
@@ -325,26 +342,32 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
                 starMenu.isVisible = showStar == true
             }
         )
-        sessionDetailViewModel.userEvent.observe(viewLifecycleOwner, Observer { userEvent ->
-            userEvent?.let {
-                if (it.isStarred) {
-                    starMenu.setIcon(R.drawable.ic_star)
-                } else {
-                    starMenu.setIcon(R.drawable.ic_star_border)
+        sessionDetailViewModel.userEvent.observe(
+            viewLifecycleOwner,
+            Observer { userEvent ->
+                userEvent?.let {
+                    if (it.isStarred) {
+                        starMenu.setIcon(R.drawable.ic_star)
+                    } else {
+                        starMenu.setIcon(R.drawable.ic_star_border)
+                    }
                 }
             }
-        })
+        )
 
         var titleUpdated = false
-        sessionDetailViewModel.session.observe(viewLifecycleOwner, Observer {
-            if (it != null && !titleUpdated) {
-                sessionTitle = it.title
-                activity?.let { activity ->
-                    analyticsHelper.sendScreenView("Session Details: $sessionTitle", activity)
+        sessionDetailViewModel.session.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it != null && !titleUpdated) {
+                    sessionTitle = it.title
+                    activity?.let { activity ->
+                        analyticsHelper.sendScreenView("Session Details: $sessionTitle", activity)
+                    }
+                    titleUpdated = true
                 }
-                titleUpdated = true
             }
-        })
+        )
     }
 
     override fun onFeedbackSubmitted() {
@@ -396,10 +419,13 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
             .setData(CalendarContract.Events.CONTENT_URI)
             .putExtra(CalendarContract.Events.TITLE, session.title)
             .putExtra(CalendarContract.Events.EVENT_LOCATION, session.room?.name)
-            .putExtra(CalendarContract.Events.DESCRIPTION, session.getCalendarDescription(
-                getString(R.string.paragraph_delimiter),
-                getString(R.string.speaker_delimiter)
-            ))
+            .putExtra(
+                CalendarContract.Events.DESCRIPTION,
+                session.getCalendarDescription(
+                    getString(R.string.paragraph_delimiter),
+                    getString(R.string.speaker_delimiter)
+                )
+            )
             .putExtra(
                 CalendarContract.EXTRA_EVENT_BEGIN_TIME,
                 session.startTime.toEpochMilli()

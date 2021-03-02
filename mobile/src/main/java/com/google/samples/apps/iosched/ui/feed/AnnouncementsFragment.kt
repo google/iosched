@@ -80,9 +80,12 @@ class AnnouncementsFragment : MainNavigationFragment() {
             v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
 
-        model.announcements.observe(viewLifecycleOwner, Observer {
-            (binding.recyclerView.adapter as FeedAdapter).submitList(it)
-        })
+        model.announcements.observe(
+            viewLifecycleOwner,
+            Observer {
+                (binding.recyclerView.adapter as FeedAdapter).submitList(it)
+            }
+        )
     }
 
     private fun createAdapter(): FeedAdapter {

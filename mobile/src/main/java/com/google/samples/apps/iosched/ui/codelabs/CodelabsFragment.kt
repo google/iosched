@@ -94,9 +94,12 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
             v.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
 
-        codelabsViewModel.codelabs.observe(viewLifecycleOwner, Observer {
-            codelabsAdapter.submitList(it)
-        })
+        codelabsViewModel.codelabs.observe(
+            viewLifecycleOwner,
+            Observer {
+                codelabsAdapter.submitList(it)
+            }
+        )
 
         analyticsHelper.sendScreenView("Codelabs", requireActivity())
     }

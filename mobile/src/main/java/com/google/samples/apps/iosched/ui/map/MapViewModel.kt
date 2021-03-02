@@ -70,8 +70,8 @@ class MapViewModel @Inject constructor(
 
     private val loadGeoJsonResult = MutableLiveData<GeoJsonData>()
 
-    private val _geoJsonLayer = MediatorLiveData<GeoJsonLayer>()
-    val geoJsonLayer: LiveData<GeoJsonLayer>
+    private val _geoJsonLayer = MediatorLiveData<GeoJsonLayer?>()
+    val geoJsonLayer: LiveData<GeoJsonLayer?>
         get() = _geoJsonLayer
 
     private val featureLookup: MutableMap<String, GeoJsonFeature> = mutableMapOf()
@@ -84,8 +84,8 @@ class MapViewModel @Inject constructor(
     private val _bottomSheetStateEvent = MediatorLiveData<Event<Int>>()
     val bottomSheetStateEvent: LiveData<Event<Int>>
         get() = _bottomSheetStateEvent
-    private val _selectedMarkerInfo = MutableLiveData<MarkerInfo>()
-    val selectedMarkerInfo: LiveData<MarkerInfo>
+    private val _selectedMarkerInfo = MutableLiveData<MarkerInfo?>()
+    val selectedMarkerInfo: LiveData<MarkerInfo?>
         get() = _selectedMarkerInfo
 
     private val myLocationOptedIn = MutableLiveData<Boolean>()

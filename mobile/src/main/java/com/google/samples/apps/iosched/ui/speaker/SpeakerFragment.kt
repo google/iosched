@@ -98,11 +98,14 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
         }
 
         // If speaker does not have a profile image to load, we need to resume.
-        speakerViewModel.hasNoProfileImage.observe(viewLifecycleOwner, Observer {
-            if (it == true) {
-                startPostponedEnterTransition()
+        speakerViewModel.hasNoProfileImage.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it == true) {
+                    startPostponedEnterTransition()
+                }
             }
-        })
+        )
 
         speakerViewModel.navigateToEventAction.observe(
             viewLifecycleOwner,
@@ -111,13 +114,16 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
             }
         )
 
-        speakerViewModel.navigateToSignInDialogAction.observe(viewLifecycleOwner, EventObserver {
-            val dialog = SignInDialogFragment()
-            dialog.show(
-                requireActivity().supportFragmentManager,
-                SignInDialogFragment.DIALOG_SIGN_IN
-            )
-        })
+        speakerViewModel.navigateToSignInDialogAction.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val dialog = SignInDialogFragment()
+                dialog.show(
+                    requireActivity().supportFragmentManager,
+                    SignInDialogFragment.DIALOG_SIGN_IN
+                )
+            }
+        )
 
         setUpSnackbar(
             speakerViewModel.snackBarMessage,
@@ -149,9 +155,12 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
             }
         }
 
-        speakerViewModel.speakerUserSessions.observe(viewLifecycleOwner, Observer {
-            speakerAdapter.speakerSessions = it ?: emptyList()
-        })
+        speakerViewModel.speakerUserSessions.observe(
+            viewLifecycleOwner,
+            Observer {
+                speakerAdapter.speakerSessions = it ?: emptyList()
+            }
+        )
 
         return binding.root
     }
@@ -159,12 +168,15 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        speakerViewModel.speaker.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                val pageName = "Speaker Details: ${it.name}"
-                analyticsHelper.sendScreenView(pageName, requireActivity())
+        speakerViewModel.speaker.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it != null) {
+                    val pageName = "Speaker Details: ${it.name}"
+                    analyticsHelper.sendScreenView(pageName, requireActivity())
+                }
             }
-        })
+        )
     }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {

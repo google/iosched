@@ -57,9 +57,12 @@ class MapVariantSelectionDialogFragment : AppCompatDialogFragment() {
         adapter = MapVariantAdapter(::selectMapVariant)
         view.findViewById<RecyclerView>(R.id.map_variant_list).adapter = adapter
 
-        mapViewModel.mapVariant.observe(viewLifecycleOwner, Observer {
-            adapter.currentSelection = it
-        })
+        mapViewModel.mapVariant.observe(
+            viewLifecycleOwner,
+            Observer {
+                adapter.currentSelection = it
+            }
+        )
     }
 
     @SuppressLint("RtlHardcoded")

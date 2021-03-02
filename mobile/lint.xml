@@ -45,4 +45,7 @@
         <!-- Map markers are referenced by name at runtime -->
         <ignore regexp="res/drawable/map_marker_.+\.xml" />
     </issue>
+
+    <!-- TODO: remove this check (b/181732250) -->
+    <issue id="NullSafeMutableLiveData" severity="warning" />
 </lint>

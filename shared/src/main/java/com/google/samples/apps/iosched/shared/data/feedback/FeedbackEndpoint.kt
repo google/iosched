@@ -36,22 +36,22 @@ class DefaultFeedbackEndpoint @Inject constructor(
         responses: Map<String, Int>
     ): Result<Unit> {
         return suspendCancellableCoroutine { continuation ->
-                functions
-                    .getHttpsCallable("sendFeedback")
-                    .call(
-                        hashMapOf(
-                            "sessionId" to sessionId,
-                            "responses" to responses,
-                            "client" to "ANDROID"
-                        )
+            functions
+                .getHttpsCallable("sendFeedback")
+                .call(
+                    hashMapOf(
+                        "sessionId" to sessionId,
+                        "responses" to responses,
+                        "client" to "ANDROID"
                     )
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            continuation.resume(Result.Success(Unit))
-                        } else {
-                            continuation.resume(Result.Error(RuntimeException(task.exception)))
-                        }
+                )
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        continuation.resume(Result.Success(Unit))
+                    } else {
+                        continuation.resume(Result.Error(RuntimeException(task.exception)))
                     }
-            }
+                }
         }
+    }
 }

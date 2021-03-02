@@ -113,7 +113,8 @@ class FeedFragment : MainNavigationFragment() {
             // Initialising sessionsViewBinder here to handle config change.
             sessionsViewBinder =
                 FeedSessionsViewBinder(
-                    model, savedInstanceState?.getParcelable(
+                    model,
+                    savedInstanceState?.getParcelable(
                         BUNDLE_KEY_SESSIONS_LAYOUT_MANAGER_STATE
                     )
                 )
@@ -129,21 +130,30 @@ class FeedFragment : MainNavigationFragment() {
 
         setUpSnackbar(model.snackBarMessage, binding.snackbar, snackbarMessageManager)
 
-        model.errorMessage.observe(viewLifecycleOwner, Observer { message ->
-            val errorMessage = message?.getContentIfNotHandled()
-            if (!errorMessage.isNullOrEmpty()) {
-                Toast.makeText(this.context, errorMessage, Toast.LENGTH_SHORT).show()
-                Timber.e(errorMessage)
+        model.errorMessage.observe(
+            viewLifecycleOwner,
+            Observer { message ->
+                val errorMessage = message?.getContentIfNotHandled()
+                if (!errorMessage.isNullOrEmpty()) {
+                    Toast.makeText(this.context, errorMessage, Toast.LENGTH_SHORT).show()
+                    Timber.e(errorMessage)
+                }
             }
-        })
+        )
 
-        model.feed.observe(viewLifecycleOwner, Observer {
-            showFeedItems(binding.recyclerView, it)
-        })
+        model.feed.observe(
+            viewLifecycleOwner,
+            Observer {
+                showFeedItems(binding.recyclerView, it)
+            }
+        )
 
-        model.navigateToSessionAction.observe(viewLifecycleOwner, EventObserver { sessionId ->
-            openSessionDetail(sessionId)
-        })
+        model.navigateToSessionAction.observe(
+            viewLifecycleOwner,
+            EventObserver { sessionId ->
+                openSessionDetail(sessionId)
+            }
+        )
 
         model.navigateToScheduleAction.observe(
             viewLifecycleOwner,
@@ -157,13 +167,19 @@ class FeedFragment : MainNavigationFragment() {
             EventObserver { openSignInDialog() }
         )
 
-        model.openLiveStreamAction.observe(viewLifecycleOwner, EventObserver { streamUrl ->
-            openLiveStreamUrl(streamUrl)
-        })
+        model.openLiveStreamAction.observe(
+            viewLifecycleOwner,
+            EventObserver { streamUrl ->
+                openLiveStreamUrl(streamUrl)
+            }
+        )
 
-        model.navigateAction.observe(viewLifecycleOwner, EventObserver { navDirections ->
-            findNavController().navigate(navDirections)
-        })
+        model.navigateAction.observe(
+            viewLifecycleOwner,
+            EventObserver { navDirections ->
+                findNavController().navigate(navDirections)
+            }
+        )
     }
 
     private fun openSessionDetail(id: SessionId) {

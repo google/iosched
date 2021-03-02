@@ -37,8 +37,8 @@ class AgendaViewModel @Inject constructor(
     private val getTimeZoneUseCase: GetTimeZoneUseCase
 ) : ViewModel() {
 
-    private val _agenda = MutableLiveData<List<Block>>()
-    val agenda: LiveData<List<Block>> = _agenda
+    private val _agenda = MutableLiveData<List<Block>?>()
+    val agenda: LiveData<List<Block>?> = _agenda
 
     private val preferConferenceTimeZoneResult = MutableLiveData<Boolean>()
     val timeZoneId = liveData {

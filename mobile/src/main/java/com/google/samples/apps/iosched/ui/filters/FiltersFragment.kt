@@ -115,9 +115,12 @@ abstract class FiltersFragment : Fragment() {
         behavior = BottomSheetBehavior.from(binding.filterSheet)
 
         filterAdapter = SelectableFilterChipAdapter(viewModel)
-        viewModel.filterChips.observe(viewLifecycleOwner, Observer {
-            filterAdapter.submitFilterList(it)
-        })
+        viewModel.filterChips.observe(
+            viewLifecycleOwner,
+            Observer {
+                filterAdapter.submitFilterList(it)
+            }
+        )
 
         binding.recyclerviewFilters.apply {
             adapter = filterAdapter

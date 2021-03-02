@@ -36,8 +36,10 @@ open class SwapActionUseCase @Inject constructor(
 
     override suspend fun execute(parameters: SwapRequestParameters): SwapRequestAction {
         val (userId, sessionId, _, toId) = parameters
-        return when (val updateResult =
-            repository.swapReservation(userId, sessionId, toId)) {
+        return when (
+            val updateResult =
+                repository.swapReservation(userId, sessionId, toId)
+        ) {
             is Success -> updateResult.data
             is Error -> throw updateResult.exception
             Loading -> throw IllegalStateException()

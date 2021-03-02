@@ -24,21 +24,29 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils
  * Returns hardcoded data for development and testing.
  */
 object FakeAnnouncementDataSource : AnnouncementDataSource {
-    private val feedItem1 = Announcement(id = "0", title = "Item 1", message = "First item",
-            timestamp = TimeUtils.ConferenceDays[0].start, imageUrl = "", color = 0,
-            category = "", priority = false, emergency = false)
+    private val feedItem1 = Announcement(
+        id = "0", title = "Item 1", message = "First item",
+        timestamp = TimeUtils.ConferenceDays[0].start, imageUrl = "", color = 0,
+        category = "", priority = false, emergency = false
+    )
 
-    private val feedItem2 = Announcement(id = "1", title = "Item 2", message = "Second item",
-            timestamp = TimeUtils.ConferenceDays[0].end, imageUrl = "", color = 0,
-            category = "", priority = true, emergency = true)
+    private val feedItem2 = Announcement(
+        id = "1", title = "Item 2", message = "Second item",
+        timestamp = TimeUtils.ConferenceDays[0].end, imageUrl = "", color = 0,
+        category = "", priority = true, emergency = true
+    )
 
-    private val feedItem3 = Announcement(id = "2", title = "Item 3", message = "Third item",
-            timestamp = TimeUtils.ConferenceDays[1].start, imageUrl = "", color = 0,
-            category = "", priority = false, emergency = false)
+    private val feedItem3 = Announcement(
+        id = "2", title = "Item 3", message = "Third item",
+        timestamp = TimeUtils.ConferenceDays[1].start, imageUrl = "", color = 0,
+        category = "", priority = false, emergency = false
+    )
 
-    private val feedItem4 = Announcement(id = "3", title = "Item 4", message = "Fourth item",
-            timestamp = TimeUtils.ConferenceDays[1].end, imageUrl = "", color = 0,
-            category = "", priority = false, emergency = false)
+    private val feedItem4 = Announcement(
+        id = "3", title = "Item 4", message = "Fourth item",
+        timestamp = TimeUtils.ConferenceDays[1].end, imageUrl = "", color = 0,
+        category = "", priority = false, emergency = false
+    )
 
     private val feed = listOf(feedItem1, feedItem2, feedItem3, feedItem4)
 

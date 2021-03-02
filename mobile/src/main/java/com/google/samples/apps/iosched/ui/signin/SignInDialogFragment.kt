@@ -66,21 +66,24 @@ class SignInDialogFragment : AppCompatDialogFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        signInViewModel.performSignInEvent.observe(viewLifecycleOwner, EventObserver { request ->
-            if (request == RequestSignIn) {
-                activity?.let { activity ->
-                    val signInIntent = signInHandler.makeSignInIntent()
-                    val observer = object : Observer<Intent?> {
-                        override fun onChanged(it: Intent?) {
-                            activity.startActivityForResult(it, REQUEST_CODE_SIGN_IN)
-                            signInIntent.removeObserver(this)
+        signInViewModel.performSignInEvent.observe(
+            viewLifecycleOwner,
+            EventObserver { request ->
+                if (request == RequestSignIn) {
+                    activity?.let { activity ->
+                        val signInIntent = signInHandler.makeSignInIntent()
+                        val observer = object : Observer<Intent?> {
+                            override fun onChanged(it: Intent?) {
+                                activity.startActivityForResult(it, REQUEST_CODE_SIGN_IN)
+                                signInIntent.removeObserver(this)
+                            }
                         }
+                        signInIntent.observeForever(observer)
                     }
-                    signInIntent.observeForever(observer)
+                    dismiss()
                 }
-                dismiss()
             }
-        })
+        )
 
         binding.executeAfter {
             viewModel = signInViewModel

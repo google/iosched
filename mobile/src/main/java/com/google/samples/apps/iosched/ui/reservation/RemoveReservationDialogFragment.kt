@@ -89,11 +89,16 @@ class RemoveReservationDialogFragment : AppCompatDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.snackBarMessage.observe(viewLifecycleOwner, EventObserver {
-            // Using Toast instead of Snackbar as it's easier for DialogFragment
-            Toast.makeText(view.context, it.messageId,
-                if (it.longDuration) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
-        })
+        viewModel.snackBarMessage.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                // Using Toast instead of Snackbar as it's easier for DialogFragment
+                Toast.makeText(
+                    view.context, it.messageId,
+                    if (it.longDuration) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
+                ).show()
+            }
+        )
     }
 
     private fun formatRemoveReservationMessage(

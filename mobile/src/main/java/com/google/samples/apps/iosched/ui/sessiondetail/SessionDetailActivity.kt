@@ -63,8 +63,10 @@ class SessionDetailActivity : AppCompatActivity() {
         } else {
             if (savedInstanceState == null) {
                 supportFragmentManager.inTransaction {
-                    add(R.id.session_detail_container,
-                        SessionDetailFragment.newInstance(sessionId, openRateSession))
+                    add(
+                        R.id.session_detail_container,
+                        SessionDetailFragment.newInstance(sessionId, openRateSession)
+                    )
                 }
             }
         }

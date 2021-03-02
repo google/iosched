@@ -109,14 +109,18 @@ open class SessionAlarmManager @Inject constructor(@ApplicationContext val conte
 
     private fun scheduleAlarmForPreSession(pendingIntent: PendingIntent, session: Session) {
         val triggerAtMillis = session.startTime.toEpochMilli() - alarmTimeDelta
-        scheduleAlarmFor(pendingIntent, session, triggerAtMillis,
-            AlarmBroadcastReceiver.CHANNEL_ID_UPCOMING)
+        scheduleAlarmFor(
+            pendingIntent, session, triggerAtMillis,
+            AlarmBroadcastReceiver.CHANNEL_ID_UPCOMING
+        )
     }
 
     private fun scheduleAlarmForPostSession(pendingIntent: PendingIntent, session: Session) {
         val triggerAtMillis = session.endTime.toEpochMilli() + alarmTimeDelta
-        scheduleAlarmFor(pendingIntent, session, triggerAtMillis,
-            AlarmBroadcastReceiver.CHANNEL_ID_FEEDBACK)
+        scheduleAlarmFor(
+            pendingIntent, session, triggerAtMillis,
+            AlarmBroadcastReceiver.CHANNEL_ID_FEEDBACK
+        )
     }
 
     private fun scheduleAlarmFor(
@@ -132,7 +136,8 @@ open class SessionAlarmManager @Inject constructor(@ApplicationContext val conte
                 triggerAtMillis,
                 pendingIntent
             )
-            Timber.d("""Scheduled alarm for session ${session.title} at $triggerAtMillis
+            Timber.d(
+                """Scheduled alarm for session ${session.title} at $triggerAtMillis
                 |for channel: $channel""".trimMargin()
             )
         }
@@ -142,7 +147,8 @@ open class SessionAlarmManager @Inject constructor(@ApplicationContext val conte
         systemAlarmManager?.let {
             val intent = Intent(context, CancelNotificationBroadcastReceiver::class.java)
             intent.putExtra(
-                CancelNotificationBroadcastReceiver.NOTIFICATION_ID_EXTRA, notificationId)
+                CancelNotificationBroadcastReceiver.NOTIFICATION_ID_EXTRA, notificationId
+            )
             val pendingIntent = PendingIntent.getBroadcast(context, notificationId, intent, 0)
             val triggerAtMillis = Instant.now().plus(5, ChronoUnit.MINUTES).toEpochMilli()
             AlarmManagerCompat.setExactAndAllowWhileIdle(

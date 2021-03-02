@@ -39,24 +39,27 @@ open class ReservationActionUseCase @Inject constructor(
 ) : UseCase<ReservationRequestParameters, ReservationRequestAction>(ioDispatcher) {
 
     override suspend fun execute(parameters: ReservationRequestParameters):
-            ReservationRequestAction {
-        val (userId, sessionId, action) = parameters
-        return when (val updateResult = repository.changeReservation(userId, sessionId, action)) {
-            is Success -> {
-                if (parameters.userSession != null) {
-                    alarmUpdater.updateSession(
-                        parameters.userSession,
-                        parameters.userSession.userEvent.isStarred ||
+        ReservationRequestAction {
+            val (userId, sessionId, action) = parameters
+            return when (
+                val updateResult =
+                    repository.changeReservation(userId, sessionId, action)
+            ) {
+                is Success -> {
+                    if (parameters.userSession != null) {
+                        alarmUpdater.updateSession(
+                            parameters.userSession,
+                            parameters.userSession.userEvent.isStarred ||
                                 // TODO(b/130515170)
                                 updateResult.data is ReservationRequestAction.RequestAction
-                    )
+                        )
+                    }
+                    updateResult.data
                 }
-                updateResult.data
+                is Result.Error -> throw updateResult.exception
+                Loading -> throw IllegalStateException()
             }
-            is Result.Error -> throw updateResult.exception
-            Loading -> throw IllegalStateException()
         }
-    }
 }
 
 data class ReservationRequestParameters(

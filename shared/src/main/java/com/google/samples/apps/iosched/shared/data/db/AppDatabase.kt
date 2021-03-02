@@ -24,13 +24,15 @@ import androidx.room.RoomDatabase
 /**
  * The [Room] database for this app.
  */
-@Database(entities = [
-    SessionFtsEntity::class,
-    SpeakerFtsEntity::class,
-    CodelabFtsEntity::class
-],
+@Database(
+    entities = [
+        SessionFtsEntity::class,
+        SpeakerFtsEntity::class,
+        CodelabFtsEntity::class
+    ],
     version = 3,
-    exportSchema = false)
+    exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun sessionFtsDao(): SessionFtsDao
     abstract fun speakerFtsDao(): SpeakerFtsDao

@@ -123,7 +123,8 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
         if (userEvent is Success) {
             val event = userEvent.data.userEvent
             if (event.isPreSessionNotificationRequired() &&
-                isSessionCurrent(userEvent.data.session)) {
+                isSessionCurrent(userEvent.data.session)
+            ) {
                 try {
                     val notificationId = showPreSessionNotification(context, userEvent.data.session)
                     // Dismiss in any case
@@ -158,7 +159,8 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
         val userSession = (userEvent as? Success<UserSession>)?.data ?: return
         val now = Instant.now()
         if (userSession.isPostSessionNotificationRequired() &&
-            now.isAfter(userSession.session.endTime.toInstant())) {
+            now.isAfter(userSession.session.endTime.toInstant())
+        ) {
             try {
                 showPostSessionNotification(context, userEvent.data.session)
             } catch (ex: Exception) {
@@ -242,7 +244,7 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
     @WorkerThread
     private fun showPostSessionNotification(context: Context, session: Session): Int {
         val notificationManager: NotificationManager = context.getSystemService()
-                ?: throw Exception("Notification Manager not found.")
+            ?: throw Exception("Notification Manager not found.")
 
         if (VERSION.SDK_INT >= VERSION_CODES.O) {
             makeNotificationChannelForPostSession(context, notificationManager)

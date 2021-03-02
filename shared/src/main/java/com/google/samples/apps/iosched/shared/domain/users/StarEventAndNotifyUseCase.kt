@@ -32,9 +32,11 @@ open class StarEventAndNotifyUseCase @Inject constructor(
 ) : UseCase<StarEventParameter, StarUpdatedStatus>(ioDispatcher) {
 
     override suspend fun execute(parameters: StarEventParameter): StarUpdatedStatus {
-        return when (val result = repository.starEvent(
-            parameters.userId, parameters.userSession.userEvent
-        )) {
+        return when (
+            val result = repository.starEvent(
+                parameters.userId, parameters.userSession.userEvent
+            )
+        ) {
             is Result.Success -> {
                 val updateResult = result.data
                 alarmUpdater.updateSession(

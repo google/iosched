@@ -38,6 +38,13 @@ echo y | ${ANDROID_SDK_HOME}/tools/bin/sdkmanager "ndk;21.0.6113669" > /dev/null
 
 cd $KOKORO_ARTIFACTS_DIR/git/iosched
 
+# Use Java 11 (b/181627163)
+# This needs to be set after sdkmanager runs, as sdkmanager errors using Java 11
+export JAVA_HOME=${KOKORO_GFILE_DIR}
+export PATH="$JAVA_HOME/bin:$PATH"
+
+$JAVA_HOME/bin/javac -version
+
 ./gradlew "${GRADLE_FLAGS[@]}" build
 
 

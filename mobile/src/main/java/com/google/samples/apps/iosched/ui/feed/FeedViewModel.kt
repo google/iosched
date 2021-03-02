@@ -210,7 +210,8 @@ class FeedViewModel @Inject constructor(
                     val isSignedIn = userInfo?.isSignedIn() ?: false
                     val isRegistered = userInfo?.isRegistered() ?: false
                     if (conferenceState != ENDED && isSignedIn && isRegistered &&
-                        isReservationEnabledByRemoteConfig)
+                        isReservationEnabledByRemoteConfig
+                    )
                         sessionsContainer
                     else
                         NoSessionsContainer
@@ -255,8 +256,8 @@ class FeedViewModel @Inject constructor(
 
         // TODO: Making conferenceState a sealed class and moving currentDay in STARTED state might be a better option
         val currentDayEndTime = TimeUtils.getCurrentConferenceDay()?.end
-        // Treat start of the conference as endTime as sessions shouldn't be shown if the
-        // currentConferenceDay is null
+            // Treat start of the conference as endTime as sessions shouldn't be shown if the
+            // currentConferenceDay is null
             ?: ConferenceDays.first().start
 
         val upcomingReservedSessions = sessions

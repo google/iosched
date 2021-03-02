@@ -35,11 +35,13 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.BADGE_PICK_UP_DAY0_START_TIME
-                ).value),
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.BADGE_PICK_UP_DAY0_END_TIME
-                ).value)
+                ).value
+            )
         ),
         Block(
             title = BADGE_PICKUP_TITLE,
@@ -48,11 +50,13 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.BADGE_PICK_UP_DAY1_START_TIME
-                ).value),
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.BADGE_PICK_UP_DAY1_END_TIME
-                ).value)
+                ).value
+            )
         ),
         Block(
             title = BREAKFAST_TITLE,
@@ -61,10 +65,13 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.BREAKFAST_DAY1_START_TIME
-                ).value),
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.BREAKFAST_DAY1_END_TIME).value)
+                    RemoteAppConfigDataSource.BREAKFAST_DAY1_END_TIME
+                ).value
+            )
         ),
         Block(
             title = GOOGLE_KEYNOTE_TITLE,
@@ -73,10 +80,13 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.GOOGLE_KEYNOTE_START_TIME
-                ).value),
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.GOOGLE_KEYNOTE_END_TIME).value)
+                    RemoteAppConfigDataSource.GOOGLE_KEYNOTE_END_TIME
+                ).value
+            )
         ),
         Block(
             title = IO_STORE_TITLE,
@@ -85,10 +95,14 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             strokeColor = STORE_STROKE_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.IO_STORE_DAY1_START_TIME).value),
+                    RemoteAppConfigDataSource.IO_STORE_DAY1_START_TIME
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.IO_STORE_DAY1_END_TIME).value)
+                    RemoteAppConfigDataSource.IO_STORE_DAY1_END_TIME
+                ).value
+            )
         ),
         Block(
             title = LUNCH_TITLE,
@@ -96,9 +110,12 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = MEAL_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.LUNCH_DAY1_START_TIME).value),
+                    RemoteAppConfigDataSource.LUNCH_DAY1_START_TIME
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(RemoteAppConfigDataSource.LUNCH_DAY1_END_TIME).value)
+                dataSource.getStringLiveData(RemoteAppConfigDataSource.LUNCH_DAY1_END_TIME).value
+            )
         ),
         Block(
             title = DEVELOPER_KEYNOTE_TITLE,
@@ -107,11 +124,13 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.DEVELOPER_KEYNOTE_START_TIME
-                ).value),
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.DEVELOPER_KEYNOTE_END_TIME
-                ).value)
+                ).value
+            )
         ),
         Block(
             title = SESSIONS_TITLE,
@@ -120,10 +139,14 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = SESSION_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.SESSIONS_DAY1_START_TIME).value),
+                    RemoteAppConfigDataSource.SESSIONS_DAY1_START_TIME
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.SESSIONS_DAY1_END_TIME).value)
+                    RemoteAppConfigDataSource.SESSIONS_DAY1_END_TIME
+                ).value
+            )
         ),
         Block(
             title = CODELABS_TITLE,
@@ -132,10 +155,14 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             isDark = true,
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.CODELABS_DAY1_START_TIME).value),
+                    RemoteAppConfigDataSource.CODELABS_DAY1_START_TIME
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.CODELABS_DAY1_END_TIME).value)
+                    RemoteAppConfigDataSource.CODELABS_DAY1_END_TIME
+                ).value
+            )
         ),
         Block(
             title = OFFICE_HOURS_APP_REVIEWS_TITLE,
@@ -145,11 +172,13 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.OFFICE_HOURS_DAY1_START_TIME
-                ).value),
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.OFFICE_HOURS_DAY1_END_TIME
-                ).value)
+                ).value
+            )
         ),
         Block(
             title = SANDBOXES_TITLE,
@@ -159,10 +188,13 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.SANDBOXES_DAY1_START_TIME
-                ).value),
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.SANDBOXES_DAY1_END_TIME).value)
+                    RemoteAppConfigDataSource.SANDBOXES_DAY1_END_TIME
+                ).value
+            )
         ),
         Block(
             title = AFTER_DARK_TITLE,
@@ -171,9 +203,12 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             isDark = true,
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.AFTER_DARK_START_TIME).value),
+                    RemoteAppConfigDataSource.AFTER_DARK_START_TIME
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(RemoteAppConfigDataSource.AFTER_DARK_END_TIME).value)
+                dataSource.getStringLiveData(RemoteAppConfigDataSource.AFTER_DARK_END_TIME).value
+            )
         ),
         Block(
             title = BADGE_PICKUP_TITLE,
@@ -183,12 +218,14 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
                 dataSource
                     .getStringLiveData(
                         RemoteAppConfigDataSource.BADGE_DEVICE_PICK_UP_DAY2_START_TIME
-                    ).value),
+                    ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource
                     .getStringLiveData(
                         RemoteAppConfigDataSource.BADGE_DEVICE_PICK_UP_DAY2_END_TIME
-                    ).value)
+                    ).value
+            )
         ),
         Block(
             title = BREAKFAST_TITLE,
@@ -197,10 +234,13 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.BREAKFAST_DAY2_START_TIME
-                ).value),
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.BREAKFAST_DAY2_END_TIME).value)
+                    RemoteAppConfigDataSource.BREAKFAST_DAY2_END_TIME
+                ).value
+            )
         ),
         Block(
             title = IO_STORE_TITLE,
@@ -209,10 +249,14 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             strokeColor = STORE_STROKE_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.IO_STORE_DAY2_START_TIME).value),
+                    RemoteAppConfigDataSource.IO_STORE_DAY2_START_TIME
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.IO_STORE_DAY2_END_TIME).value)
+                    RemoteAppConfigDataSource.IO_STORE_DAY2_END_TIME
+                ).value
+            )
         ),
         Block(
             title = LUNCH_TITLE,
@@ -220,9 +264,12 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = MEAL_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.LUNCH_DAY2_START_TIME).value),
+                    RemoteAppConfigDataSource.LUNCH_DAY2_START_TIME
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(RemoteAppConfigDataSource.LUNCH_DAY2_END_TIME).value)
+                dataSource.getStringLiveData(RemoteAppConfigDataSource.LUNCH_DAY2_END_TIME).value
+            )
         ),
         Block(
             title = SESSIONS_TITLE,
@@ -231,10 +278,14 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = SESSION_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.SESSIONS_DAY2_START_TIME).value),
+                    RemoteAppConfigDataSource.SESSIONS_DAY2_START_TIME
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.SESSIONS_DAY2_END_TIME).value)
+                    RemoteAppConfigDataSource.SESSIONS_DAY2_END_TIME
+                ).value
+            )
         ),
         Block(
             title = CODELABS_TITLE,
@@ -243,10 +294,14 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             isDark = true,
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.CODELABS_DAY2_START_TIME).value),
+                    RemoteAppConfigDataSource.CODELABS_DAY2_START_TIME
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.CODELABS_DAY2_END_TIME).value)
+                    RemoteAppConfigDataSource.CODELABS_DAY2_END_TIME
+                ).value
+            )
         ),
         Block(
             title = OFFICE_HOURS_APP_REVIEWS_TITLE,
@@ -256,11 +311,13 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.OFFICE_HOURS_DAY2_START_TIME
-                ).value),
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.OFFICE_HOURS_DAY2_END_TIME
-                ).value)
+                ).value
+            )
         ),
         Block(
             title = SANDBOXES_TITLE,
@@ -270,10 +327,13 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.SANDBOXES_DAY2_START_TIME
-                ).value),
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.SANDBOXES_DAY2_END_TIME).value)
+                    RemoteAppConfigDataSource.SANDBOXES_DAY2_END_TIME
+                ).value
+            )
         ),
         Block(
             title = CONCERT_TITLE,
@@ -281,9 +341,11 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = AFTER_DARK_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(RemoteAppConfigDataSource.CONCERT_START_TIME).value),
+                dataSource.getStringLiveData(RemoteAppConfigDataSource.CONCERT_START_TIME).value
+            ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(RemoteAppConfigDataSource.CONCERT_END_TIME).value)
+                dataSource.getStringLiveData(RemoteAppConfigDataSource.CONCERT_END_TIME).value
+            )
         ),
         Block(
             title = BADGE_PICKUP_TITLE,
@@ -293,12 +355,14 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
                 dataSource
                     .getStringLiveData(
                         RemoteAppConfigDataSource.BADGE_DEVICE_PICK_UP_DAY3_START_TIME
-                    ).value),
+                    ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource
                     .getStringLiveData(
                         RemoteAppConfigDataSource.BADGE_DEVICE_PICK_UP_DAY3_END_TIME
-                    ).value)
+                    ).value
+            )
         ),
         Block(
             title = BREAKFAST_TITLE,
@@ -307,10 +371,13 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.BREAKFAST_DAY3_START_TIME
-                ).value),
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.BREAKFAST_DAY3_END_TIME).value)
+                    RemoteAppConfigDataSource.BREAKFAST_DAY3_END_TIME
+                ).value
+            )
         ),
         Block(
             title = IO_STORE_TITLE,
@@ -319,10 +386,14 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             strokeColor = STORE_STROKE_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.IO_STORE_DAY3_START_TIME).value),
+                    RemoteAppConfigDataSource.IO_STORE_DAY3_START_TIME
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.IO_STORE_DAY3_END_TIME).value)
+                    RemoteAppConfigDataSource.IO_STORE_DAY3_END_TIME
+                ).value
+            )
         ),
         Block(
             title = LUNCH_TITLE,
@@ -330,10 +401,14 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = MEAL_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.LUNCH_DAY3_START_TIME).value),
+                    RemoteAppConfigDataSource.LUNCH_DAY3_START_TIME
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.LUNCH_DAY3_END_TIME).value)
+                    RemoteAppConfigDataSource.LUNCH_DAY3_END_TIME
+                ).value
+            )
         ),
         Block(
             title = SESSIONS_TITLE,
@@ -342,10 +417,14 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = SESSION_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.SESSIONS_DAY3_START_TIME).value),
+                    RemoteAppConfigDataSource.SESSIONS_DAY3_START_TIME
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.SESSIONS_DAY3_END_TIME).value)
+                    RemoteAppConfigDataSource.SESSIONS_DAY3_END_TIME
+                ).value
+            )
         ),
         Block(
             title = CODELABS_TITLE,
@@ -354,10 +433,14 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             isDark = true,
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.CODELABS_DAY3_START_TIME).value),
+                    RemoteAppConfigDataSource.CODELABS_DAY3_START_TIME
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.CODELABS_DAY3_END_TIME).value)
+                    RemoteAppConfigDataSource.CODELABS_DAY3_END_TIME
+                ).value
+            )
         ),
         Block(
             title = OFFICE_HOURS_APP_REVIEWS_TITLE,
@@ -367,11 +450,13 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.OFFICE_HOURS_DAY3_START_TIME
-                ).value),
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.OFFICE_HOURS_DAY3_END_TIME
-                ).value)
+                ).value
+            )
         ),
         Block(
             title = SANDBOXES_TITLE,
@@ -381,10 +466,13 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             startTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
                     RemoteAppConfigDataSource.SANDBOXES_DAY3_START_TIME
-                ).value),
+                ).value
+            ),
             endTime = ZonedDateTime.parse(
                 dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.SANDBOXES_DAY3_END_TIME).value)
+                    RemoteAppConfigDataSource.SANDBOXES_DAY3_END_TIME
+                ).value
+            )
         )
     )
 }

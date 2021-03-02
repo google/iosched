@@ -196,10 +196,11 @@ class FirebaseSignInViewModelDelegateTest {
     private fun createFirebaseSignInViewModelDelegate(
         observeUserAuthStateUseCase: ObserveUserAuthStateUseCase =
             FakeObserveUserAuthStateUseCase(
-            user = Result.Success(null),
-            isRegistered = Result.Success(true),
+                user = Result.Success(null),
+                isRegistered = Result.Success(true),
                 coroutineScope = coroutineRule.CoroutineScope(),
-            coroutineDispatcher = coroutineRule.testDispatcher),
+                coroutineDispatcher = coroutineRule.testDispatcher
+            ),
         notificationsPrefIsShownUseCase: NotificationsPrefIsShownUseCase =
             createNotificationsPrefIsShownUseCase(),
         ioDispatcher: CoroutineDispatcher = coroutineRule.testDispatcher,

@@ -65,14 +65,17 @@ class FeedSocialChannelsSectionViewHolder(val binding: ItemFeedSocialChannelsBin
     fun bind() {
         val titleText = SpannableStringBuilder()
             .append(SpannableString("#Google"))
-            .append(SpannableString("IO")
-                .apply {
-                    setSpan(
-                        ForegroundColorSpan(
-                            binding.root.context.getColorFromTheme(R.attr.colorPrimary)
-                        ), 0, length, Spanned.SPAN_INCLUSIVE_INCLUSIVE
-                    )
-                })
+            .append(
+                SpannableString("IO")
+                    .apply {
+                        setSpan(
+                            ForegroundColorSpan(
+                                binding.root.context.getColorFromTheme(R.attr.colorPrimary)
+                            ),
+                            0, length, Spanned.SPAN_INCLUSIVE_INCLUSIVE
+                        )
+                    }
+            )
         binding.title.text = titleText
     }
 }

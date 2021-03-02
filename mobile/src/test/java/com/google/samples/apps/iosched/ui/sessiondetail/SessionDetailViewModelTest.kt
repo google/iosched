@@ -148,7 +148,8 @@ class SessionDetailViewModelTest {
         val mockRepository = mock<SessionAndUserEventRepository>()
         val mockAlarmUpdater = mock<StarReserveNotificationAlarmUpdater>()
         val reservationActionUseCase = ReservationActionUseCase(
-            mockRepository, mockAlarmUpdater, coroutineRule.testDispatcher)
+            mockRepository, mockAlarmUpdater, coroutineRule.testDispatcher
+        )
         val signInDelegate = FakeSignInViewModelDelegate()
         // The session isn't reservable from one hour before the session.
         // So making now as two hours before
@@ -248,7 +249,8 @@ class SessionDetailViewModelTest {
         )
             ?.getContentIfNotHandled()
         assertThat(
-            parameters, `is`(
+            parameters,
+            `is`(
                 RemoveReservationDialogParameters(
                     testUid,
                     TestData.session1.id,

@@ -483,8 +483,8 @@ class ScheduleViewModelTest {
         return object : LoadScheduleUserSessionsUseCase(mock {}, testDispatcher) {
             override fun execute(parameters: LoadScheduleUserSessionsParameters):
                 Flow<Result<LoadScheduleUserSessionsResult>> = flow {
-                throw Exception("Loading failed")
-            }
+                    throw Exception("Loading failed")
+                }
         }
     }
 

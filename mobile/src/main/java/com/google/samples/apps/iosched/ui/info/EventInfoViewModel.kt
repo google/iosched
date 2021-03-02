@@ -62,10 +62,12 @@ class EventInfoViewModel @Inject constructor(
 
     fun onWifiConnect() {
         val config = wifiConfig.value ?: return
-        val success = wifiInstaller.installConferenceWifi(WifiConfiguration().apply {
-            SSID = config.ssid
-            preSharedKey = config.password
-        })
+        val success = wifiInstaller.installConferenceWifi(
+            WifiConfiguration().apply {
+                SSID = config.ssid
+                preSharedKey = config.password
+            }
+        )
         val snackbarMessage = if (success) {
             SnackbarMessage(R.string.wifi_install_success)
         } else {

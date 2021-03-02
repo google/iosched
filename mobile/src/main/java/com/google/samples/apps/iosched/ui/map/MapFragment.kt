@@ -150,9 +150,12 @@ class MapFragment : MainNavigationFragment() {
             setupProfileMenuItem(mainActivityViewModel, this@MapFragment)
 
             menu.findItem(R.id.action_my_location)?.let { item ->
-                viewModel.showMyLocationOption.observe(viewLifecycleOwner, Observer { option ->
-                    item.isVisible = (option == true)
-                })
+                viewModel.showMyLocationOption.observe(
+                    viewLifecycleOwner,
+                    Observer { option ->
+                        item.isVisible = (option == true)
+                    }
+                )
             }
             setOnMenuItemClickListener { item ->
                 if (item.itemId == R.id.action_my_location) {
@@ -230,7 +233,8 @@ class MapFragment : MainNavigationFragment() {
             }
 
             binding.descriptionScrollview.updatePaddingRelative(
-                    bottom = insets.systemWindowInsetBottom)
+                bottom = insets.systemWindowInsetBottom
+            )
 
             // The peek height should use the bottom system gesture inset since it is a scrolling
             // widget
@@ -268,19 +272,28 @@ class MapFragment : MainNavigationFragment() {
         }
 
         // Observe ViewModel data
-        viewModel.mapVariant.observe(viewLifecycleOwner, Observer {
-            mapView.getMapAsync { googleMap ->
-                googleMap.clear()
-                viewModel.loadMapFeatures(googleMap)
+        viewModel.mapVariant.observe(
+            viewLifecycleOwner,
+            Observer {
+                mapView.getMapAsync { googleMap ->
+                    googleMap.clear()
+                    viewModel.loadMapFeatures(googleMap)
+                }
             }
-        })
-        viewModel.geoJsonLayer.observe(viewLifecycleOwner, Observer {
-            updateMarkers(it ?: return@Observer)
-        })
+        )
+        viewModel.geoJsonLayer.observe(
+            viewLifecycleOwner,
+            Observer {
+                updateMarkers(it ?: return@Observer)
+            }
+        )
 
-        viewModel.selectedMarkerInfo.observe(viewLifecycleOwner, Observer {
-            updateInfoSheet(it ?: return@Observer)
-        })
+        viewModel.selectedMarkerInfo.observe(
+            viewLifecycleOwner,
+            Observer {
+                updateInfoSheet(it ?: return@Observer)
+            }
+        )
 
         analyticsHelper.sendScreenView("Map", requireActivity())
     }
@@ -369,7 +382,8 @@ class MapFragment : MainNavigationFragment() {
     private fun requestLocationPermission() {
         val context = context ?: return
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) ==
-            PackageManager.PERMISSION_GRANTED) {
+            PackageManager.PERMISSION_GRANTED
+        ) {
             return
         }
         if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -377,8 +391,10 @@ class MapFragment : MainNavigationFragment() {
                 .show(childFragmentManager, FRAGMENT_MY_LOCATION_RATIONALE)
             return
         }
-        requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-            REQUEST_LOCATION_PERMISSION)
+        requestPermissions(
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            REQUEST_LOCATION_PERMISSION
+        )
     }
 
     override fun onRequestPermissionsResult(
@@ -420,7 +436,8 @@ class MapFragment : MainNavigationFragment() {
                 .setPositiveButton(android.R.string.ok) { _, _ ->
                     requireParentFragment().requestPermissions(
                         arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                        REQUEST_LOCATION_PERMISSION)
+                        REQUEST_LOCATION_PERMISSION
+                    )
                 }
                 .setNegativeButton(android.R.string.cancel, null) // Give up
                 .create()

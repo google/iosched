@@ -43,12 +43,13 @@ class LoadSearchFiltersUseCase @Inject constructor(
     override suspend fun execute(parameters: Unit): List<Filter> {
         val filters = mutableListOf<Filter>()
         filters.addAll(conferenceRepository.getConferenceDays().map { DateFilter(it) })
-        filters.addAll(tagRepository.getTags()
-            .filter { it.category in FILTER_CATEGORIES }
-            .sortedWith(
-                compareBy({ FILTER_CATEGORIES.indexOf(it.category) }, { it.orderInCategory })
-            )
-            .map { TagFilter(it) }
+        filters.addAll(
+            tagRepository.getTags()
+                .filter { it.category in FILTER_CATEGORIES }
+                .sortedWith(
+                    compareBy({ FILTER_CATEGORIES.indexOf(it.category) }, { it.orderInCategory })
+                )
+                .map { TagFilter(it) }
         )
         return filters
     }

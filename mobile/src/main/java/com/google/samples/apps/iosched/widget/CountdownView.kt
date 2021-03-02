@@ -98,30 +98,45 @@ class CountdownView @JvmOverloads constructor(
 
     init {
         isFocusableInTouchMode = true
-        ViewCompat.setAccessibilityDelegate(this, object : AccessibilityDelegateCompat() {
-            override fun dispatchPopulateAccessibilityEvent(
-                host: View?,
-                event: AccessibilityEvent?
-            ): Boolean {
-                return if (event != null) {
-                    val countdown = Countdown.until(conferenceStart)
-                    if (countdown != null) {
-                        val res = context.resources
-                        event.text.add(res.getQuantityString(
-                            R.plurals.duration_days, countdown.days, countdown.days))
-                        event.text.add(res.getQuantityString(
-                            R.plurals.duration_hours, countdown.hours, countdown.hours))
-                        event.text.add(res.getQuantityString(
-                            R.plurals.duration_minutes, countdown.minutes, countdown.minutes))
-                        event.text.add(res.getQuantityString(
-                            R.plurals.duration_seconds, countdown.seconds, countdown.seconds))
+        ViewCompat.setAccessibilityDelegate(
+            this,
+            object : AccessibilityDelegateCompat() {
+                override fun dispatchPopulateAccessibilityEvent(
+                    host: View?,
+                    event: AccessibilityEvent?
+                ): Boolean {
+                    return if (event != null) {
+                        val countdown = Countdown.until(conferenceStart)
+                        if (countdown != null) {
+                            val res = context.resources
+                            event.text.add(
+                                res.getQuantityString(
+                                    R.plurals.duration_days, countdown.days, countdown.days
+                                )
+                            )
+                            event.text.add(
+                                res.getQuantityString(
+                                    R.plurals.duration_hours, countdown.hours, countdown.hours
+                                )
+                            )
+                            event.text.add(
+                                res.getQuantityString(
+                                    R.plurals.duration_minutes, countdown.minutes, countdown.minutes
+                                )
+                            )
+                            event.text.add(
+                                res.getQuantityString(
+                                    R.plurals.duration_seconds, countdown.seconds, countdown.seconds
+                                )
+                            )
+                        }
+                        true
+                    } else {
+                        super.dispatchPopulateAccessibilityEvent(host, event)
                     }
-                    true
-                } else {
-                    super.dispatchPopulateAccessibilityEvent(host, event)
                 }
             }
-        })
+        )
     }
 
     private val updateTime: Runnable = object : Runnable {

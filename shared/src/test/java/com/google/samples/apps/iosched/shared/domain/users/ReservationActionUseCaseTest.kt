@@ -79,7 +79,8 @@ class ReservationActionUseCaseTest {
         val useCase = ReservationActionUseCase(
             TestUserEventRepository,
             createFakeUpdater(),
-            coroutineRule.testDispatcher)
+            coroutineRule.testDispatcher
+        )
 
         val result = useCase(
             ReservationRequestParameters(
@@ -97,7 +98,8 @@ class ReservationActionUseCaseTest {
         val useCase = ReservationActionUseCase(
             FailingUserEventRepository,
             createFakeUpdater(),
-            coroutineRule.testDispatcher)
+            coroutineRule.testDispatcher
+        )
 
         val result = useCase(
             ReservationRequestParameters(

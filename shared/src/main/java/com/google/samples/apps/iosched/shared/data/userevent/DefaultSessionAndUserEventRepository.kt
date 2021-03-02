@@ -72,26 +72,28 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                     )
                 )
             } else {
-                emitAll(userEventDataSource.getObservableUserEvents(userId).map { userEvents ->
-                    Timber.d(
-                        """EventRepository: Received ${userEvents.userEvents.size}
+                emitAll(
+                    userEventDataSource.getObservableUserEvents(userId).map { userEvents ->
+                        Timber.d(
+                            """EventRepository: Received ${userEvents.userEvents.size}
                             |user events changes""".trimMargin()
-                    )
-                    // Get the sessions, synchronously
-                    val allSessions = sessionRepository.getSessions()
-                    val userSessions = mergeUserDataAndSessions(userEvents, allSessions)
-                    // TODO(b/122306429) expose user events messages separately
-                    val userEventsMessageSession = allSessions.firstOrNull {
-                        it.id == userEvents.userEventsMessage?.sessionId
-                    }
-                    Result.Success(
-                        ObservableUserEvents(
-                            userSessions = userSessions,
-                            userMessage = userEvents.userEventsMessage,
-                            userMessageSession = userEventsMessageSession
                         )
-                    )
-                })
+                        // Get the sessions, synchronously
+                        val allSessions = sessionRepository.getSessions()
+                        val userSessions = mergeUserDataAndSessions(userEvents, allSessions)
+                        // TODO(b/122306429) expose user events messages separately
+                        val userEventsMessageSession = allSessions.firstOrNull {
+                            it.id == userEvents.userEventsMessage?.sessionId
+                        }
+                        Result.Success(
+                            ObservableUserEvents(
+                                userSessions = userSessions,
+                                userMessage = userEvents.userEventsMessage,
+                                userMessageSession = userEventsMessageSession
+                            )
+                        )
+                    }
+                )
             }
         }
     }
@@ -102,17 +104,17 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
     ): Flow<Result<LoadUserSessionUseCaseResult>> {
         // If there is no logged-in user, return the session with a null UserEvent
         if (userId == null) {
-                Timber.d("EventRepository: No user logged in, returning session without user event")
-                val session = sessionRepository.getSession(eventId)
-                return flow {
-                    emit(
-                        Result.Success(
-                            LoadUserSessionUseCaseResult(
-                                userSession = UserSession(session, createDefaultUserEvent(session))
-                            )
+            Timber.d("EventRepository: No user logged in, returning session without user event")
+            val session = sessionRepository.getSession(eventId)
+            return flow {
+                emit(
+                    Result.Success(
+                        LoadUserSessionUseCaseResult(
+                            userSession = UserSession(session, createDefaultUserEvent(session))
                         )
                     )
-                }
+                )
+            }
         }
 
         // Observes the user events and merges them with session data.
@@ -138,11 +140,11 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
     override fun getUserSession(userId: String, sessionId: SessionId): UserSession {
         val session = sessionRepository.getSession(sessionId)
         val userEvent = userEventDataSource.getUserEvent(userId, sessionId)
-                ?: throw Exception("UserEvent not found")
+            ?: throw Exception("UserEvent not found")
 
         return UserSession(
-                session = session,
-                userEvent = userEvent
+            session = session,
+            userEvent = userEvent
         )
     }
     override suspend fun starEvent(

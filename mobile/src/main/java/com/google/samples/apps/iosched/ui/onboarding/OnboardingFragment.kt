@@ -77,12 +77,15 @@ class OnboardingFragment : Fragment() {
             }
         }
 
-        onboardingViewModel.navigateToMainActivity.observe(viewLifecycleOwner, EventObserver {
-            requireActivity().run {
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
+        onboardingViewModel.navigateToMainActivity.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                requireActivity().run {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                }
             }
-        })
+        )
 
         return binding.root
     }

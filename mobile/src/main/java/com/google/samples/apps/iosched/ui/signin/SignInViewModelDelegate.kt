@@ -166,8 +166,10 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
     ): Event<Boolean> {
         val shouldShowDialog = notificationsPrefIsShownValue.data == false && isSignedIn()
         // Show the notification if the preference is not set and the event hasn't been handled yet.
-        if (shouldShowDialog && (shouldShowNotificationsPrefAction.value == null ||
-                shouldShowNotificationsPrefAction.value?.hasBeenHandled == false)
+        if (shouldShowDialog && (
+            shouldShowNotificationsPrefAction.value == null ||
+                shouldShowNotificationsPrefAction.value?.hasBeenHandled == false
+            )
         ) {
             return Event(true)
         }

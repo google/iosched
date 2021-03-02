@@ -43,7 +43,8 @@ class LoadSearchFiltersUseCaseTest {
         val useCase = LoadSearchFiltersUseCase(
             TestDataRepository,
             TagRepository(TestDataRepository),
-            coroutineRule.testDispatcher)
+            coroutineRule.testDispatcher
+        )
         val filters = useCase(Unit).successOr(emptyList()) // empty list will fail assert
 
         // Expected values to assert

@@ -37,30 +37,40 @@ class ThemeSettingDialogFragment : AppCompatDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        listAdapter = ArrayAdapter(requireContext(),
-                android.R.layout.simple_list_item_single_choice)
+        listAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_list_item_single_choice
+        )
 
         return MaterialAlertDialogBuilder(context)
-                .setTitle(R.string.settings_theme_title)
-                .setSingleChoiceItems(listAdapter, 0) { dialog, position ->
-                    listAdapter.getItem(position)?.theme?.let {
-                        viewModel.setTheme(it)
-                    }
-                    dialog.dismiss()
+            .setTitle(R.string.settings_theme_title)
+            .setSingleChoiceItems(listAdapter, 0) { dialog, position ->
+                listAdapter.getItem(position)?.theme?.let {
+                    viewModel.setTheme(it)
                 }
-                .create()
+                dialog.dismiss()
+            }
+            .create()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Note you don't need to use viewLifecycleOwner in DialogFragment.
-        viewModel.availableThemes.observe(this, Observer { themes ->
-            listAdapter.clear()
-            listAdapter.addAll(themes.map { theme -> ThemeHolder(theme, getTitleForTheme(theme)) })
+        viewModel.availableThemes.observe(
+            this,
+            Observer { themes ->
+                listAdapter.clear()
+                listAdapter.addAll(
+                    themes.map {
+                        theme ->
+                        ThemeHolder(theme, getTitleForTheme(theme))
+                    }
+                )
 
-            updateSelectedItem(viewModel.theme.value)
-        })
+                updateSelectedItem(viewModel.theme.value)
+            }
+        )
 
         viewModel.theme.observe(this, Observer(::updateSelectedItem))
     }

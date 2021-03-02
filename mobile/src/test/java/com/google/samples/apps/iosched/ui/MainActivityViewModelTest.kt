@@ -67,7 +67,8 @@ class MainActivityViewModelTest {
             loadArDebugFlagUseCase = LoadArDebugFlagUseCase(
                 DefaultArDebugFlagEndpoint(
                     mock(FirebaseFunctions::class.java)
-                ), coroutineRule.testDispatcher
+                ),
+                coroutineRule.testDispatcher
             ),
             context = mock(Context::class.java)
         )

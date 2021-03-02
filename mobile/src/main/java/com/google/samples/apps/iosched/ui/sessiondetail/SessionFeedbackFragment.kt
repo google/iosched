@@ -60,14 +60,20 @@ class SessionFeedbackFragment : AppCompatDialogFragment() {
             adapter = questionAdapter
         }
         // The lifecycle owner has to be the DialogFragment itself here.
-        viewModel.questions.observe(this, Observer { questions ->
-            if (questions != null && questions.isNotEmpty()) {
-                questionAdapter.submitList(questions)
+        viewModel.questions.observe(
+            this,
+            Observer { questions ->
+                if (questions != null && questions.isNotEmpty()) {
+                    questionAdapter.submitList(questions)
+                }
             }
-        })
-        viewModel.userSession.observe(this, Observer { userSession ->
-            dialog?.setTitle(userSession.session.title)
-        })
+        )
+        viewModel.userSession.observe(
+            this,
+            Observer { userSession ->
+                dialog?.setTitle(userSession.session.title)
+            }
+        )
         return MaterialAlertDialogBuilder(context)
             // The actual title is set asynchronously, but there has to be some title to
             // initialize the view first.
@@ -103,8 +109,10 @@ class QuestionAdapter : ListAdapter<Question, QuestionViewHolder>(DIFF_CALLBACK)
     val feedbackUpdates = mutableMapOf<String, Int>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionViewHolder {
-        return QuestionViewHolder(ItemQuestionBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false)
+        return QuestionViewHolder(
+            ItemQuestionBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
         )
     }
 

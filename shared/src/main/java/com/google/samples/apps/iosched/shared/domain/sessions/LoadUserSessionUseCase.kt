@@ -37,16 +37,16 @@ open class LoadUserSessionUseCase @Inject constructor(
 ) : FlowUseCase<Pair<String?, SessionId>, LoadUserSessionUseCaseResult>(ioDispatcher) {
 
     override fun execute(parameters: Pair<String?, SessionId>):
-            Flow<Result<LoadUserSessionUseCaseResult>> {
-        val (userId, eventId) = parameters
-        return userEventRepository.getObservableUserEvent(userId, eventId).map {
-            if (it is Success) {
-                Success(LoadUserSessionUseCaseResult(userSession = it.data.userSession))
-            } else {
-                it
+        Flow<Result<LoadUserSessionUseCaseResult>> {
+            val (userId, eventId) = parameters
+            return userEventRepository.getObservableUserEvent(userId, eventId).map {
+                if (it is Success) {
+                    Success(LoadUserSessionUseCaseResult(userSession = it.data.userSession))
+                } else {
+                    it
+                }
             }
         }
-    }
 }
 
 data class LoadUserSessionUseCaseResult(

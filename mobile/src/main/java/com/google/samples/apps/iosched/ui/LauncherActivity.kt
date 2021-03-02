@@ -38,12 +38,15 @@ class LauncherActivity : AppCompatActivity() {
 
         val viewModel: LaunchViewModel by viewModels()
 
-        viewModel.launchDestination.observe(this, EventObserver { destination ->
-            when (destination) {
-                MAIN_ACTIVITY -> startActivity(Intent(this, MainActivity::class.java))
-                ONBOARDING -> startActivity(Intent(this, OnboardingActivity::class.java))
-            }.checkAllMatched
-            finish()
-        })
+        viewModel.launchDestination.observe(
+            this,
+            EventObserver { destination ->
+                when (destination) {
+                    MAIN_ACTIVITY -> startActivity(Intent(this, MainActivity::class.java))
+                    ONBOARDING -> startActivity(Intent(this, OnboardingActivity::class.java))
+                }.checkAllMatched
+                finish()
+            }
+        )
     }
 }

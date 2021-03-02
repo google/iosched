@@ -30,7 +30,6 @@ import androidx.core.view.updatePadding
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -156,8 +155,8 @@ class MainActivity : AppCompatActivity(), NavigationHost {
 
         content = findViewById(R.id.content_container)
         content.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         // Make the content ViewGroup ignore insets so that it does not use the default padding
         content.setOnApplyWindowInsetsListener(NoopWindowInsetsListener)
 
@@ -211,13 +210,17 @@ class MainActivity : AppCompatActivity(), NavigationHost {
                     if (connectivityManager.activeNetworkInfo?.isConnected == true) {
                         if (viewModel.arCoreAvailability.value?.isSupported == true) {
                             analyticsHelper
-                                .logUiEvent("Navigate to Explore I/O ARCore supported",
-                                    AnalyticsActions.CLICK)
+                                .logUiEvent(
+                                    "Navigate to Explore I/O ARCore supported",
+                                    AnalyticsActions.CLICK
+                                )
                             openExploreAr()
                         } else {
                             analyticsHelper
-                                .logUiEvent("Navigate to Explore I/O ARCore NOT supported",
-                                    AnalyticsActions.CLICK)
+                                .logUiEvent(
+                                    "Navigate to Explore I/O ARCore NOT supported",
+                                    AnalyticsActions.CLICK
+                                )
                             openArCoreNotSupported()
                         }
                     } else {
@@ -239,25 +242,40 @@ class MainActivity : AppCompatActivity(), NavigationHost {
 
         viewModel.theme.observe(this, Observer(::updateForTheme))
 
-        viewModel.navigateToSignInDialogAction.observe(this, EventObserver {
-            openSignInDialog()
-        })
+        viewModel.navigateToSignInDialogAction.observe(
+            this,
+            EventObserver {
+                openSignInDialog()
+            }
+        )
 
-        viewModel.navigateToSignOutDialogAction.observe(this, EventObserver {
-            openSignOutDialog()
-        })
-        viewModel.arCoreAvailability.observe(this, Observer {
-            // Start observing ArCoreAvailability otherwise the value isn't updated
-            Timber.d("ArCoreAvailability = $it")
-        })
-        viewModel.pinnedSessionsJson.observe(this, Observer {
-            // Need to observe the pinnedSessions otherwise it's considered as inactive
-            pinnedSessionsJson = it
-        })
-        viewModel.canSignedInUserDemoAr.observe(this, Observer {
-            Timber.d("Signed in user can demo ar = $it")
-            canSignedInUserDemoAr = it
-        })
+        viewModel.navigateToSignOutDialogAction.observe(
+            this,
+            EventObserver {
+                openSignOutDialog()
+            }
+        )
+        viewModel.arCoreAvailability.observe(
+            this,
+            Observer {
+                // Start observing ArCoreAvailability otherwise the value isn't updated
+                Timber.d("ArCoreAvailability = $it")
+            }
+        )
+        viewModel.pinnedSessionsJson.observe(
+            this,
+            Observer {
+                // Need to observe the pinnedSessions otherwise it's considered as inactive
+                pinnedSessionsJson = it
+            }
+        )
+        viewModel.canSignedInUserDemoAr.observe(
+            this,
+            Observer {
+                Timber.d("Signed in user can demo ar = $it")
+                canSignedInUserDemoAr = it
+            }
+        )
     }
 
     override fun registerToolbarWithNavigation(toolbar: Toolbar) {

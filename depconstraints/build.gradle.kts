@@ -21,7 +21,7 @@ plugins {
 
 val appcompat = "1.1.0"
 val activity = "1.2.0-rc01"
-val activityCompose = "1.3.0-alpha02"
+val activityCompose = "1.3.0-alpha03"
 val cardview = "1.0.0"
 val archTesting = "2.0.0"
 val arcore = "1.7.0"
@@ -53,7 +53,7 @@ val hamcrest = "1.3"
 val hilt = Versions.HILT
 val junit = "4.13"
 val junitExt = "1.1.1"
-val lifecycle = "2.3.0-rc01"
+val lifecycle = "2.3.0"
 val lottie = "3.0.0"
 val material = "1.1.0"
 val mockito = "3.3.1"
@@ -68,7 +68,7 @@ val runner = "1.2.0"
 val threetenabp = "1.0.5"
 val timber = "4.7.1"
 val viewpager2 = "1.0.0"
-val viewModelCompose = "1.0.0-alpha01"
+val viewModelCompose = "1.0.0-alpha02"
 
 dependencies {
     constraints {

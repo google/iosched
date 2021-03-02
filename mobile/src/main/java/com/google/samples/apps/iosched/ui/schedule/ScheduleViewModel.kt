@@ -136,11 +136,13 @@ class ScheduleViewModel @Inject constructor(
             val timeZoneIdValue = timeZoneId.value
             sessions.data?.let { data ->
                 dayIndexer = data.dayIndexer
-                emit(ScheduleUiData(
-                    list = data.userSessions,
-                    dayIndexer = data.dayIndexer,
-                    timeZoneId = timeZoneIdValue
-                ))
+                emit(
+                    ScheduleUiData(
+                        list = data.userSessions,
+                        dayIndexer = data.dayIndexer,
+                        timeZoneId = timeZoneIdValue
+                    )
+                )
             }
         }
     }
@@ -272,7 +274,8 @@ class ScheduleViewModel @Inject constructor(
             getUserId()?.let {
                 val result = starEventUseCase(
                     StarEventParameter(
-                        it, userSession.copy(
+                        it,
+                        userSession.copy(
                             userEvent = userSession.userEvent.copy(isStarred = newIsStarredState)
                         )
                     )

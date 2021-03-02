@@ -108,13 +108,18 @@ class SessionTest {
 
     @Test
     fun testDescription() {
-        assertThat(TestData.session0.getCalendarDescription("\n\n", ", "), `is`(equalTo(
-            """
+        assertThat(
+            TestData.session0.getCalendarDescription("\n\n", ", "),
+            `is`(
+                equalTo(
+                    """
                 This session is awesome
 
                 Troy McClure
-            """.trimIndent()
-        )))
+                    """.trimIndent()
+                )
+            )
+        )
     }
 
     private fun testIsOverlapping(

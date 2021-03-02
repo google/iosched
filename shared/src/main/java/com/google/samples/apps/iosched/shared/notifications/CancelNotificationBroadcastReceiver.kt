@@ -42,7 +42,8 @@ class CancelNotificationBroadcastReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         val notificationId = intent.getIntExtra(
-            NOTIFICATION_ID_EXTRA, 0)
+            NOTIFICATION_ID_EXTRA, 0
+        )
         Timber.d("Hiding notification for $notificationId")
 
         val notificationManger: NotificationManager = context.getSystemService()

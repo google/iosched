@@ -106,7 +106,7 @@ class InfoFragment : MainNavigationFragment() {
             { EventFragment() },
             { TravelFragment() },
             { FaqFragment() }
-        // TODO: Track the InfoPage performance b/130335745
+            // TODO: Track the InfoPage performance b/130335745
         )
     }
 }

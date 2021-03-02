@@ -98,7 +98,8 @@ class DefaultEventActionsViewModelDelegate @Inject constructor(
             getUserId()?.let {
                 val result = starEventUseCase(
                     StarEventParameter(
-                        it, userSession.copy(
+                        it,
+                        userSession.copy(
                             userEvent = userSession.userEvent.copy(isStarred = newIsStarredState)
                         )
                     )

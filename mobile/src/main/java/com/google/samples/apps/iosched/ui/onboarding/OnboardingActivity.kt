@@ -56,9 +56,12 @@ class OnboardingActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.navigateToSignInDialogAction.observe(this, EventObserver {
-            openSignInDialog()
-        })
+        viewModel.navigateToSignInDialogAction.observe(
+            this,
+            EventObserver {
+                openSignInDialog()
+            }
+        )
     }
 
     private fun openSignInDialog() {

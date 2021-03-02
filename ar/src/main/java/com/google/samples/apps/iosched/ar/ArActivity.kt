@@ -61,7 +61,7 @@ class ArActivity : AppCompatActivity() {
         super.onStop()
         val addOverlayScript =
             "if (window.app && window.app.addIntroOverlay) " +
-                    "window.app.addIntroOverlay();"
+                "window.app.addIntroOverlay();"
         arWebView.evaluateJavascript(addOverlayScript) {}
     }
 
@@ -84,11 +84,11 @@ class ArActivity : AppCompatActivity() {
             super.onPageFinished(view, url)
             val evalAgendaScript =
                 "if (window.app && window.app.sendIOAppUserAgenda) " +
-                        "window.app.sendIOAppUserAgenda('$json');"
+                    "window.app.sendIOAppUserAgenda('$json');"
             view?.evaluateJavascript(evalAgendaScript) {}
             if (canDemoAr) {
                 val evalSetDebugUserScript = "if (window.app && window.app.setDebugUser) " +
-                        "window.app.setDebugUser()"
+                    "window.app.setDebugUser()"
                 view?.evaluateJavascript(evalSetDebugUserScript) {}
             }
         }

@@ -68,13 +68,16 @@ class SignOutDialogFragment : AppCompatDialogFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        signInViewModel.performSignInEvent.observe(viewLifecycleOwner, Observer { request ->
-            if (request.peekContent() == RequestSignOut) {
-                request.getContentIfNotHandled()
-                signInHandler.signOut(requireContext())
-                dismiss()
+        signInViewModel.performSignInEvent.observe(
+            viewLifecycleOwner,
+            Observer { request ->
+                if (request.peekContent() == RequestSignOut) {
+                    request.getContentIfNotHandled()
+                    signInHandler.signOut(requireContext())
+                    dismiss()
+                }
             }
-        })
+        )
 
         binding.executeAfter {
             viewModel = signInViewModel

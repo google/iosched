@@ -62,12 +62,14 @@ class FeedbackUseCaseTest {
             testFeedbackEndpoint,
             testUserEventRepository,
             coroutineRule.testDispatcher
-        )(FeedbackParameter(
-            "userIdTest",
-            TestData.userEvents[0],
-            TestData.userEvents[0].id,
-            mapOf("q1" to 1)
-        ))
+        )(
+            FeedbackParameter(
+                "userIdTest",
+                TestData.userEvents[0],
+                TestData.userEvents[0].id,
+                mapOf("q1" to 1)
+            )
+        )
 
         assertEquals(Result.Success(Unit), result)
     }

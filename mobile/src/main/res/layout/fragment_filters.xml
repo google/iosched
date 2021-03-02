@@ -131,11 +131,11 @@
             android:clickable="@{contentAlpha > 0f}"
             android:contentDescription="@string/a11y_collapse_filters_sheet"
             android:scaleType="center"
-            android:tint="?attr/colorControlNormal"
             app:layout_constraintBottom_toTopOf="@id/guide_header_height"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_expand_more" />
+            app:srcCompat="@drawable/ic_expand_more"
+            app:tint="?attr/colorControlNormal" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

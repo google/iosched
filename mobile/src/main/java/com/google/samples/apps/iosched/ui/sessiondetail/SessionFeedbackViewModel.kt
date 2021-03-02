@@ -76,10 +76,12 @@ class SessionFeedbackViewModel @Inject constructor(
     private val _userSession = MutableLiveData<UserSession>()
     val userSession = _userSession
 
-    val questions = MutableLiveData<List<Question>>(MESSAGES.map { (key, value) ->
-        val (text, start, end) = value
-        Question(key, text, 0, start, end)
-    })
+    val questions = MutableLiveData<List<Question>>(
+        MESSAGES.map { (key, value) ->
+            val (text, start, end) = value
+            Question(key, text, 0, start, end)
+        }
+    )
 
     fun setSessionId(sessionId: SessionId) {
         _sessionId = sessionId

@@ -146,7 +146,8 @@ class ScheduleFragment : MainNavigationFragment() {
         }
 
         // Snackbar configuration
-        setUpSnackbar(scheduleViewModel.snackBarMessage, snackbar, snackbarMessageManager,
+        setUpSnackbar(
+            scheduleViewModel.snackBarMessage, snackbar, snackbarMessageManager,
             actionClickListener = {
                 snackbarPrefsViewModel.onStopClicked()
             }
@@ -192,27 +193,33 @@ class ScheduleFragment : MainNavigationFragment() {
         dayIndicatorRecyclerView.adapter = dayIndicatorAdapter
 
         // Start observing ViewModels
-        scheduleViewModel.scheduleUiData.observe(viewLifecycleOwner, Observer {
-            it ?: return@Observer
-            updateScheduleUi(it)
-        })
+        scheduleViewModel.scheduleUiData.observe(
+            viewLifecycleOwner,
+            Observer {
+                it ?: return@Observer
+                updateScheduleUi(it)
+            }
+        )
 
         // During conference, scroll to current event.
-        scheduleViewModel.scrollToEvent.observe(viewLifecycleOwner, EventObserver { scrollEvent ->
-            if (scrollEvent.targetPosition != -1) {
-                scheduleRecyclerView.run {
-                    post {
-                        val lm = layoutManager as LinearLayoutManager
-                        if (scrollEvent.smoothScroll) {
-                            scheduleScroller.targetPosition = scrollEvent.targetPosition
-                            lm.startSmoothScroll(scheduleScroller)
-                        } else {
-                            lm.scrollToPositionWithOffset(scrollEvent.targetPosition, 0)
+        scheduleViewModel.scrollToEvent.observe(
+            viewLifecycleOwner,
+            EventObserver { scrollEvent ->
+                if (scrollEvent.targetPosition != -1) {
+                    scheduleRecyclerView.run {
+                        post {
+                            val lm = layoutManager as LinearLayoutManager
+                            if (scrollEvent.smoothScroll) {
+                                scheduleScroller.targetPosition = scrollEvent.targetPosition
+                                lm.startSmoothScroll(scheduleScroller)
+                            } else {
+                                lm.scrollToPositionWithOffset(scrollEvent.targetPosition, 0)
+                            }
                         }
                     }
                 }
             }
-        })
+        )
 
         scheduleViewModel.navigateToSessionAction.observe(
             viewLifecycleOwner,
@@ -221,18 +228,27 @@ class ScheduleFragment : MainNavigationFragment() {
             }
         )
 
-        scheduleViewModel.navigateToSignInDialogAction.observe(viewLifecycleOwner, EventObserver {
-            openSignInDialog()
-        })
-
-        scheduleViewModel.navigateToSignOutDialogAction.observe(viewLifecycleOwner, EventObserver {
-            openSignOutDialog()
-        })
-        scheduleViewModel.scheduleUiHintsShown.observe(viewLifecycleOwner, EventObserver {
-            if (!it) {
-                openScheduleUiHintsDialog()
+        scheduleViewModel.navigateToSignInDialogAction.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                openSignInDialog()
             }
-        })
+        )
+
+        scheduleViewModel.navigateToSignOutDialogAction.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                openSignOutDialog()
+            }
+        )
+        scheduleViewModel.scheduleUiHintsShown.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                if (!it) {
+                    openScheduleUiHintsDialog()
+                }
+            }
+        )
         scheduleViewModel.shouldShowNotificationsPrefAction.observe(
             viewLifecycleOwner,
             EventObserver {
@@ -243,18 +259,24 @@ class ScheduleFragment : MainNavigationFragment() {
         )
 
         // Show an error message
-        scheduleViewModel.errorMessage.observe(viewLifecycleOwner, EventObserver { errorMsg ->
-            // TODO: Change once there's a way to show errors to the user
-            Toast.makeText(this.context, errorMsg, Toast.LENGTH_LONG).show()
-        })
+        scheduleViewModel.errorMessage.observe(
+            viewLifecycleOwner,
+            EventObserver { errorMsg ->
+                // TODO: Change once there's a way to show errors to the user
+                Toast.makeText(this.context, errorMsg, Toast.LENGTH_LONG).show()
+            }
+        )
 
         if (savedInstanceState == null) {
             // VM outlives the UI, so reset this flag when a new Schedule page is shown
             scheduleViewModel.userHasInteracted = false
 
-            binding.coordinatorLayout.postDelayed({
-                binding.coordinatorLayout.requestApplyInsetsWhenAttached()
-            }, 500)
+            binding.coordinatorLayout.postDelayed(
+                {
+                    binding.coordinatorLayout.requestApplyInsetsWhenAttached()
+                },
+                500
+            )
 
             // Process arguments to set initial filters
             arguments?.let {

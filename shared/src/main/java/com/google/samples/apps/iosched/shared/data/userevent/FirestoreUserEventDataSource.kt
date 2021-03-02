@@ -109,38 +109,40 @@ class FirestoreUserEventDataSource @Inject constructor(
         if (userId.isEmpty()) {
             return flow { emit(UserEventsResult(emptyList())) }
         } else {
-            return (callbackFlow<UserEventsResult> {
-                val eventsCollection = firestore
-                    .document2020()
-                    .collection(USERS_COLLECTION)
-                    .document(userId)
-                    .collection(EVENTS_COLLECTION)
+            return (
+                callbackFlow<UserEventsResult> {
+                    val eventsCollection = firestore
+                        .document2020()
+                        .collection(USERS_COLLECTION)
+                        .document(userId)
+                        .collection(EVENTS_COLLECTION)
 
-                var currentValue: UserEventsResult? = null
+                    var currentValue: UserEventsResult? = null
 
-                // TODO: Flow refactor check addSnapshotListener documentation (null value?)
-                val subscription = eventsCollection.addSnapshotListener { snapshot, _ ->
-                    if (snapshot == null) {
-                        return@addSnapshotListener
+                    // TODO: Flow refactor check addSnapshotListener documentation (null value?)
+                    val subscription = eventsCollection.addSnapshotListener { snapshot, _ ->
+                        if (snapshot == null) {
+                            return@addSnapshotListener
+                        }
+
+                        Timber.d("Events changes detected: ${snapshot.documentChanges.size}")
+
+                        // Generate important user messages, like new reservations, if any.
+                        val userMessage =
+                            generateReservationChangeMsg(snapshot, currentValue)
+                        val userEventsResult = UserEventsResult(
+                            userEvents = snapshot.documents.map { parseUserEvent(it) },
+                            userEventsMessage = userMessage
+                        )
+                        currentValue = userEventsResult
+                        tryOffer(userEventsResult)
                     }
 
-                    Timber.d("Events changes detected: ${snapshot.documentChanges.size}")
-
-                    // Generate important user messages, like new reservations, if any.
-                    val userMessage =
-                        generateReservationChangeMsg(snapshot, currentValue)
-                    val userEventsResult = UserEventsResult(
-                        userEvents = snapshot.documents.map { parseUserEvent(it) },
-                        userEventsMessage = userMessage
-                    )
-                    currentValue = userEventsResult
-                    tryOffer(userEventsResult)
+                    // The callback inside awaitClose will be executed when the flow is
+                    // either closed or cancelled
+                    awaitClose { subscription.remove() }
                 }
-
-                // The callback inside awaitClose will be executed when the flow is
-                // either closed or cancelled
-                awaitClose { subscription.remove() }
-            })
+                )
                 .flowOn(Dispatchers.Main)
         }
     }
@@ -154,39 +156,41 @@ class FirestoreUserEventDataSource @Inject constructor(
                 emit(UserEventResult(userEvent = null))
             }
         } else {
-            (callbackFlow<UserEventResult> {
-                val eventDocument = firestore
-                    .document2020()
-                    .collection(USERS_COLLECTION)
-                    .document(userId)
-                    .collection(EVENTS_COLLECTION)
-                    .document(eventId)
-                var currentValue: UserEventResult? = null
-                val subscription = eventDocument.addSnapshotListener { snapshot, _ ->
-                    if (snapshot == null) {
-                        return@addSnapshotListener
-                    }
-                    Timber.d("Event changes detected on session: $eventId")
-                    val userEvent = if (snapshot.exists()) {
-                        parseUserEvent(snapshot)
-                    } else {
-                        UserEvent(id = eventId)
-                    }
-                    val userMessage = currentValue?.userEvent?.let {
-                        getUserMessageFromChange(it, snapshot, eventId)
-                    }
+            (
+                callbackFlow<UserEventResult> {
+                    val eventDocument = firestore
+                        .document2020()
+                        .collection(USERS_COLLECTION)
+                        .document(userId)
+                        .collection(EVENTS_COLLECTION)
+                        .document(eventId)
+                    var currentValue: UserEventResult? = null
+                    val subscription = eventDocument.addSnapshotListener { snapshot, _ ->
+                        if (snapshot == null) {
+                            return@addSnapshotListener
+                        }
+                        Timber.d("Event changes detected on session: $eventId")
+                        val userEvent = if (snapshot.exists()) {
+                            parseUserEvent(snapshot)
+                        } else {
+                            UserEvent(id = eventId)
+                        }
+                        val userMessage = currentValue?.userEvent?.let {
+                            getUserMessageFromChange(it, snapshot, eventId)
+                        }
 
-                    val userEventResult = UserEventResult(
-                        userEvent = userEvent,
-                        userEventMessage = userMessage
-                    )
-                    currentValue = userEventResult
-                    tryOffer(userEventResult)
+                        val userEventResult = UserEventResult(
+                            userEvent = userEvent,
+                            userEventMessage = userMessage
+                        )
+                        currentValue = userEventResult
+                        tryOffer(userEventResult)
+                    }
+                    // The callback inside awaitClose will be executed when the flow is
+                    // either closed or cancelled
+                    awaitClose { subscription.remove() }
                 }
-                // The callback inside awaitClose will be executed when the flow is
-                // either closed or cancelled
-                awaitClose { subscription.remove() }
-            })
+                )
                 .flowOn(ioDispatcher)
         }
     }
@@ -211,11 +215,11 @@ class FirestoreUserEventDataSource @Inject constructor(
         }
 
         val task = firestore
-                .document2020()
-                .collection(USERS_COLLECTION)
-                .document(userId)
-                .collection(EVENTS_COLLECTION)
-                .document(eventId).get()
+            .document2020()
+            .collection(USERS_COLLECTION)
+            .document(userId)
+            .collection(EVENTS_COLLECTION)
+            .document(eventId).get()
         val snapshot = Tasks.await(task, 20, TimeUnit.SECONDS)
         return parseUserEvent(snapshot)
     }

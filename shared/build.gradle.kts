@@ -42,11 +42,15 @@ android {
         buildConfigField("String", "CONFERENCE_DAY1_AFTERHOURS_START", properties["conference_day1_afterhours_start"] as String)
         buildConfigField("String", "CONFERENCE_DAY2_CONCERT_START", properties["conference_day2_concert_start"] as String)
 
-        buildConfigField("String",
-                "BOOTSTRAP_CONF_DATA_FILENAME", properties["bootstrap_conference_data_filename"] as String)
+        buildConfigField(
+            "String",
+            "BOOTSTRAP_CONF_DATA_FILENAME", properties["bootstrap_conference_data_filename"] as String
+        )
 
-        buildConfigField("String",
-                "CONFERENCE_WIFI_OFFERING_START", properties["conference_wifi_offering_start"] as String)
+        buildConfigField(
+            "String",
+            "CONFERENCE_WIFI_OFFERING_START", properties["conference_wifi_offering_start"] as String
+        )
 
         consumerProguardFiles("consumer-proguard-rules.pro")
 

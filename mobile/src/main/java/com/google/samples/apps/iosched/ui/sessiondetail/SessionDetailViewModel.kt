@@ -96,7 +96,9 @@ class SessionDetailViewModel @Inject constructor(
     private val analyticsHelper: AnalyticsHelper,
     @ReservationEnabledFlag val isReservationEnabledByRemoteConfig: Boolean,
     @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
-) : ViewModel(), SessionDetailEventListener, EventActions,
+) : ViewModel(),
+    SessionDetailEventListener,
+    EventActions,
     SignInViewModelDelegate by signInViewModelDelegate {
 
     // Keeps track of the coroutine that listens for a user session
@@ -435,7 +437,8 @@ class SessionDetailViewModel @Inject constructor(
             getUserId()?.let {
                 val result = starEventUseCase(
                     StarEventParameter(
-                        it, userSession.copy(
+                        it,
+                        userSession.copy(
                             userEvent = userSession.userEvent.copy(isStarred = newIsStarredState)
                         )
                     )

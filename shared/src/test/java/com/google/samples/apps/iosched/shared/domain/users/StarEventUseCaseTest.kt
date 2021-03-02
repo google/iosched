@@ -59,9 +59,11 @@ class StarEventAndNotifyUseCaseTest {
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
             TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
         )
-        val useCase = StarEventAndNotifyUseCase(testUserEventRepository,
+        val useCase = StarEventAndNotifyUseCase(
+            testUserEventRepository,
             mock {},
-            coroutineRule.testDispatcher)
+            coroutineRule.testDispatcher
+        )
 
         val result = useCase(StarEventParameter("userIdTest", TestData.userSession1))
 
@@ -97,7 +99,8 @@ class StarEventAndNotifyUseCaseTest {
         val useCase = StarEventAndNotifyUseCase(
             testUserEventRepository,
             updater,
-            coroutineRule.testDispatcher)
+            coroutineRule.testDispatcher
+        )
 
         useCase(StarEventParameter("userIdTest", TestData.userSession3))
 
