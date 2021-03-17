@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePaddingRelative
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
@@ -47,27 +48,25 @@ class AgendaFragment : MainNavigationFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentAgendaBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
         }
         // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
         binding.recyclerView.doOnApplyWindowInsets { v, insets, padding ->
-            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+            v.updatePaddingRelative(
+                bottom =
+                padding.bottom + insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+            )
         }
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.viewModel = viewModel
         binding.toolbar.setupProfileMenuItem(mainActivityViewModel, this@AgendaFragment)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        viewModel.refreshAgenda()
     }
 }
 
