@@ -431,7 +431,7 @@ class MapFragment : MainNavigationFragment() {
 
     class MyLocationRationaleFragment : DialogFragment() {
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-            return MaterialAlertDialogBuilder(context)
+            return MaterialAlertDialogBuilder(requireContext())
                 .setMessage(R.string.my_location_rationale)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
                     requireParentFragment().requestPermissions(

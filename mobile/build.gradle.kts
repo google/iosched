@@ -207,6 +207,7 @@ dependencies {
     implementation(Libs.COMPOSE_THEME_ADAPTER)
     implementation(Libs.COMPOSE_TOOLING)
     implementation(Libs.VIEWMODEL_COMPOSE)
+    implementation(Libs.MDC_COMPOSE_THEME_ADAPTER)
     androidTestImplementation(Libs.COMPOSE_TEST)
 
     // Dagger Hilt

@@ -17,7 +17,7 @@
 
 <resources>
     <color name="color_primary">@color/carolina_blue</color>
-    <color name="color_primary_dark">@color/cornflower_blue</color>
+    <color name="color_primary_variant">@color/cornflower_blue</color>
     <color name="color_on_secondary">@color/black</color>
 
     <color name="color_control_light">#2EFFFFFF</color> <!-- 18% white -->

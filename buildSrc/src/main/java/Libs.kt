@@ -65,6 +65,7 @@ object Libs {
     const val LIFECYCLE_VIEW_MODEL_KTX = "androidx.lifecycle:lifecycle-viewmodel-ktx"
     const val LOTTIE = "com.airbnb.android:lottie"
     const val MATERIAL = "com.google.android.material:material"
+    const val MDC_COMPOSE_THEME_ADAPTER = "com.google.android.material:compose-theme-adapter"
     const val MOCKITO_CORE = "org.mockito:mockito-core"
     const val MOCKITO_KOTLIN = "com.nhaarman:mockito-kotlin"
     const val NAVIGATION_FRAGMENT_KTX = "androidx.navigation:navigation-fragment-ktx"

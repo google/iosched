@@ -74,7 +74,7 @@ class SessionFeedbackFragment : AppCompatDialogFragment() {
                 dialog?.setTitle(userSession.session.title)
             }
         )
-        return MaterialAlertDialogBuilder(context)
+        return MaterialAlertDialogBuilder(requireContext())
             // The actual title is set asynchronously, but there has to be some title to
             // initialize the view first.
             .setTitle("-")

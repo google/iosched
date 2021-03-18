@@ -42,7 +42,7 @@ class ThemeSettingDialogFragment : AppCompatDialogFragment() {
             android.R.layout.simple_list_item_single_choice
         )
 
-        return MaterialAlertDialogBuilder(context)
+        return MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.settings_theme_title)
             .setSingleChoiceItems(listAdapter, 0) { dialog, position ->
                 listAdapter.getItem(position)?.theme?.let {

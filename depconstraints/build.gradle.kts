@@ -55,7 +55,7 @@ val junit = "4.13"
 val junitExt = "1.1.1"
 val lifecycle = "2.3.0"
 val lottie = "3.0.0"
-val material = "1.1.0"
+val material = "1.3.0"
 val mockito = "3.3.1"
 val mockitoKotlin = "1.5.0"
 val okhttp = "3.10.0"
@@ -121,6 +121,7 @@ dependencies {
         api("${Libs.LIFECYCLE_VIEW_MODEL_KTX}:$lifecycle")
         api("${Libs.LOTTIE}:$lottie")
         api("${Libs.MATERIAL}:$material")
+        api("${Libs.MDC_COMPOSE_THEME_ADAPTER}:$compose")
         api("${Libs.MOCKITO_CORE}:$mockito")
         api("${Libs.MOCKITO_KOTLIN}:$mockitoKotlin")
         api("${Libs.NAVIGATION_FRAGMENT_KTX}:${Versions.NAVIGATION}")

@@ -17,7 +17,7 @@
 
 <resources>
     <color name="color_primary">@color/deep_sky_blue</color>
-    <color name="color_primary_dark">@color/warm_blue</color>
+    <color name="color_primary_variant">@color/warm_blue</color>
     <color name="color_on_secondary">@color/white</color>
 
     <color name="color_control_light">#39000000</color> <!-- Same as textColorPrimary disabled -->

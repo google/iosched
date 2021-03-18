@@ -28,7 +28,6 @@ import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.browser.customtabs.CustomTabsService
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
@@ -36,6 +35,7 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Theme
@@ -157,8 +157,12 @@ fun openWebsiteUrl(context: Context, url: String) {
 fun openWebsiteUri(context: Context, uri: Uri) {
     if (context.isChromeCustomTabsSupported()) {
         CustomTabsIntent.Builder()
-            .setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary))
-            .setSecondaryToolbarColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
+            .setToolbarColor(
+                MaterialColors.getColor(context, R.attr.colorPrimary, null)
+            )
+            .setSecondaryToolbarColor(
+                MaterialColors.getColor(context, R.attr.colorPrimaryVariant, null)
+            )
             .build()
             .launchUrl(context, uri)
     } else {

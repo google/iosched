@@ -21,7 +21,7 @@
     <style name="Base.AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/color_primary</item>
-        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorPrimaryVariant">@color/color_primary_variant</item>
         <item name="colorSecondary">?attr/colorPrimary</item>
         <item name="colorOnSecondary">@color/color_on_secondary</item>
         <item name="colorControlLight">@color/color_control_light</item>
@@ -54,12 +54,12 @@
 
     <style name="ThemeOverlay.IOSched.Light" parent="ThemeOverlay.MaterialComponents.Light">
         <item name="colorPrimary">@color/deep_sky_blue</item>
-        <item name="colorPrimaryDark">@color/warm_blue</item>
+        <item name="colorPrimaryVariant">@color/warm_blue</item>
     </style>
 
     <style name="ThemeOverlay.IOSched.Dark" parent="ThemeOverlay.MaterialComponents.Dark">
         <item name="colorPrimary">@color/carolina_blue</item>
-        <item name="colorPrimaryDark">@color/cornflower_blue</item>
+        <item name="colorPrimaryVariant">@color/cornflower_blue</item>
     </style>
 
     <style name="AppTheme" parent="Base.AppTheme" />
