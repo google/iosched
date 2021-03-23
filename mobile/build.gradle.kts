@@ -237,6 +237,9 @@ dependencies {
     androidTestImplementation(Libs.EXT_JUNIT)
     androidTestImplementation(Libs.RUNNER)
     androidTestImplementation(Libs.RULES)
+    androidTestImplementation(Libs.FRAGMENT_TEST)
+    debugImplementation(Libs.FRAGMENT_TEST)
+    add("stagingImplementation", Libs.FRAGMENT_TEST)
 
     // Local unit tests
     testImplementation(Libs.JUNIT)

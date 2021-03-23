@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.tests.ui
 
-import android.content.Intent
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
@@ -25,16 +23,18 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
 import com.google.samples.apps.iosched.tests.FixedTimeRule
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
-import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
+import com.google.samples.apps.iosched.tests.di.launchFragmentInHiltContainer
+import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailFragment
+import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailFragmentArgs
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailViewHolder
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.CoreMatchers.allOf
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -70,17 +70,12 @@ class SessionDetailTest {
     @get:Rule(order = 1)
     var preferencesRule = SetPreferencesRule()
 
-    @get:Rule(order = 2)
-    var activityRule =
-        object : ActivityTestRule<SessionDetailActivity>(SessionDetailActivity::class.java) {
-            override fun getActivityIntent(): Intent {
-                // Open the developer keynote
-                return SessionDetailActivity.starterIntent(
-                    ApplicationProvider.getApplicationContext(),
-                    FakeConferenceDataSource.FAKE_SESSION_ID
-                )
-            }
-        }
+    @Before
+    fun launchScreen() {
+        val fragmentArgs =
+            SessionDetailFragmentArgs(FakeConferenceDataSource.FAKE_SESSION_ID).toBundle()
+        launchFragmentInHiltContainer<SessionDetailFragment>(fragmentArgs, R.style.AppTheme)
+    }
 
     @Test
     fun details_basicViewsDisplayed() {

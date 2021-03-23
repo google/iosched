@@ -18,16 +18,23 @@ package com.google.samples.apps.iosched.test.util.fakes
 
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asFlow
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.ui.signin.SignInEvent
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 class FakeSignInViewModelDelegate : SignInViewModelDelegate {
 
-    override val currentUserInfo = MutableLiveData<AuthenticatedUserInfo?>()
+    override val currentUserInfo = MutableLiveData<AuthenticatedUserInfo?>() // Remove
+    private val currentUserInfoFlow = MutableStateFlow<AuthenticatedUserInfo?>(null)
     override val currentUserImageUri = MutableLiveData<Uri?>()
     override val performSignInEvent = MutableLiveData<Event<SignInEvent>>()
     override val shouldShowNotificationsPrefAction = MutableLiveData<Event<Boolean>>()
@@ -42,9 +49,9 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
 
     override fun observeSignedInUser() = TODO("Not implemented")
 
-    override fun observeRegisteredUser() = MutableLiveData<Boolean>().apply {
-        value = injectIsSignedIn
-    }
+    override fun observeRegisteredUser() = MutableLiveData(injectIsSignedIn)
+
+    override val userIsRegistered: Flow<Boolean> = observeRegisteredUser().asFlow()
 
     override fun isRegistered(): Boolean = injectIsRegistered
 
@@ -69,5 +76,9 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
             on { isRegistrationDataReady() }.doReturn(true)
         }
         currentUserInfo.value = mockUser
+        currentUserInfoFlow.value = mockUser
     }
+
+    override fun observeUserId(): Flow<String?> =
+        flow { emitAll(currentUserInfoFlow.map { it?.getUid() }) }
 }

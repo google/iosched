@@ -47,6 +47,9 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <!-- Accept URIs that begin with "iosched://sessions” -->
+                <data android:scheme="iosched"
+                    android:host="sessions" />
             </intent-filter>
          </activity>
 
@@ -56,21 +59,6 @@
         <activity
             android:name=".ui.onboarding.OnboardingActivity"
             android:theme="@style/AppTheme.Onboarding" />
-
-        <activity
-            android:name=".ui.sessiondetail.SessionDetailActivity"
-            android:parentActivityName=".ui.MainActivity"
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme.Detail">
-
-            <intent-filter android:label="Session detail">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <!-- Accepts URIs that begin with "iosched://sessions” -->
-                <data android:scheme="iosched"
-                    android:host="sessions" />
-            </intent-filter>
-        </activity>
 
         <meta-data
             android:name="preloaded_fonts"

@@ -17,12 +17,12 @@
 package com.google.samples.apps.iosched.ui.sessiondetail
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.R.string
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.SessionType
@@ -31,44 +31,60 @@ import com.google.samples.apps.iosched.model.userdata.UserEvent
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
 import com.google.samples.apps.iosched.shared.di.ReservationEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.SwapAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
-import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
-import com.google.samples.apps.iosched.shared.result.Event
+import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Error
+import com.google.samples.apps.iosched.shared.result.Result.Loading
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.time.TimeProvider
-import com.google.samples.apps.iosched.shared.util.IntervalMediatorLiveData
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-import com.google.samples.apps.iosched.shared.util.cancelIfActive
-import com.google.samples.apps.iosched.shared.util.map
-import com.google.samples.apps.iosched.shared.util.setValueIfNew
+import com.google.samples.apps.iosched.shared.util.tryOffer
 import com.google.samples.apps.iosched.ui.SnackbarMessage
-import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
+import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToSession
+import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToSessionFeedback
+import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToSignInDialogAction
+import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToSpeakerDetail
+import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToSwapReservationDialogAction
+import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToYoutube
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
-import com.google.samples.apps.iosched.util.combine
+import com.google.samples.apps.iosched.util.WhileViewSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.channels.BufferOverflow.DROP_LATEST
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.Channel.Factory.CONFLATED
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted.Companion.Eagerly
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.combineTransform
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.transform
+import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.supervisorScope
 import org.threeten.bp.Duration
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
@@ -84,222 +100,164 @@ private const val SIXTY_SECONDS = 60_000L
  */
 @HiltViewModel
 class SessionDetailViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val signInViewModelDelegate: SignInViewModelDelegate,
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val loadRelatedSessionUseCase: LoadUserSessionsUseCase,
     private val starEventUseCase: StarEventAndNotifyUseCase,
     private val reservationActionUseCase: ReservationActionUseCase,
     getTimeZoneUseCase: GetTimeZoneUseCase,
-    private val snackbarMessageManager: SnackbarMessageManager,
-    timeProvider: TimeProvider,
+    private val timeProvider: TimeProvider,
     private val networkUtils: NetworkUtils,
     private val analyticsHelper: AnalyticsHelper,
-    @ReservationEnabledFlag val isReservationEnabledByRemoteConfig: Boolean,
-    @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
+    @ReservationEnabledFlag val isReservationEnabledByRemoteConfig: Boolean
 ) : ViewModel(),
     SessionDetailEventListener,
     EventActions,
     SignInViewModelDelegate by signInViewModelDelegate {
 
-    // Keeps track of the coroutine that listens for a user session
-    private var loadUserSessionJob: Job? = null
+    // TODO: remove hardcoded string when https://issuetracker.google.com/136967621 is available
+    private val sessionId = savedStateHandle.get<SessionId>("session_id")
 
-    // Keeps track of the coroutine that listens for related user sessions
-    private var loadRelatedSessionJob: Job? = null
+    // Start observing the user ID right away from the SignInViewModelDelegate
+    private val userIdFlow: StateFlow<Result<String?>> = observeUserId().map { Success(it) }
+        .stateIn(viewModelScope, started = Eagerly, initialValue = Loading)
 
-    private val _relatedUserSessions = MediatorLiveData<List<UserSession>>()
-    val relatedUserSessions: LiveData<List<UserSession>>
-        get() = _relatedUserSessions
+    // SIDE EFFECTS: Snackbar messages
+    // Guard against too many Snackbar messages by limiting to 3, keeping the oldest.
+    private val _snackBarMessages = Channel<SnackbarMessage>(3, DROP_LATEST)
+    val snackBarMessages: Flow<SnackbarMessage> =
+        _snackBarMessages.receiveAsFlow().shareIn(viewModelScope, WhileViewSubscribed)
 
-    private val reservationActionResult = MutableLiveData<ReservationRequestAction>()
-
-    private val _errorMessage = MediatorLiveData<Event<String>>()
-    val errorMessage: LiveData<Event<String>> = _errorMessage
-
-    private val _snackBarMessage = MediatorLiveData<Event<SnackbarMessage>>()
-    val snackBarMessage: LiveData<Event<SnackbarMessage>> = _snackBarMessage
-
-    private val _navigateToSignInDialogAction = MutableLiveData<Event<Unit>>()
-    val navigateToSignInDialogAction: LiveData<Event<Unit>> = _navigateToSignInDialogAction
-
-    val navigateToYouTubeAction = MutableLiveData<Event<String>>()
-
-    private val _session = MediatorLiveData<Session>()
-    val session: LiveData<Session> = _session
-
-    private val _userEvent = MediatorLiveData<UserEvent>()
-    val userEvent: LiveData<UserEvent> = _userEvent
-
-    val showFeedbackButton: LiveData<Boolean> =
-        userEvent.combine(session) { userEvent, currentSession ->
-            isSignedIn() &&
-                !userEvent.isReviewed &&
-                currentSession.type == SessionType.SESSION &&
-                TimeUtils.getSessionState(currentSession, ZonedDateTime.now()) ==
-                TimeUtils.SessionRelativeTimeState.AFTER
-        }
-
-    // Updates periodically with a special [IntervalMediatorLiveData]
-    val timeUntilStart = IntervalMediatorLiveData(
-        source = session, dispatcher = defaultDispatcher, intervalMs = TEN_SECONDS
-    ) { session ->
-        session?.startTime?.let { startTime ->
-            val duration = Duration.between(timeProvider.now(), startTime)
-            when (duration.toMinutes()) {
-                in 1..5 -> duration
-                else -> null
-            }
-        }
-    }
-    val isReservationDeniedByCutoff =
-        IntervalMediatorLiveData(
-            source = session, dispatcher = defaultDispatcher, intervalMs = SIXTY_SECONDS
-        ) { session ->
-            session?.startTime?.let { startTime ->
-                // Only allow reservations if the sessions starts more than an hour from now
-                Duration.between(timeProvider.now(), startTime).toMinutes() <= 60
-            }
-        }
-    private val _shouldShowStarInBottomNav = MediatorLiveData<Boolean>().apply {
-        addSource(session) {
-            value = showStarInBottomNav()
-        }
-        addSource(observeRegisteredUser()) {
-            value = showStarInBottomNav()
-        }
-    }
-    val shouldShowStarInBottomNav: LiveData<Boolean> = _shouldShowStarInBottomNav
-
-    private val sessionId = MutableLiveData<SessionId?>()
-
-    private val showInConferenceTimeZone: LiveData<Boolean> = liveData {
-        emit(getTimeZoneUseCase(Unit).successOr(true))
-    }
-    val timeZoneId: LiveData<ZoneId> = showInConferenceTimeZone.map { inConferenceTimeZone ->
-        if (inConferenceTimeZone) {
-            TimeUtils.CONFERENCE_TIMEZONE
+    // Session & UserData are updated with new user IDs
+    private val sessionUserData = userIdFlow.transformLatest { userId ->
+        if (sessionId != null) {
+            emitAll(loadUserSessionUseCase(userId.data to sessionId))
         } else {
-            ZoneId.systemDefault()
+            Timber.e("Session ID is null")
+            emit(Error(Exception("Session not found")))
         }
-    }
-
-    private val _navigateToRemoveReservationDialogAction =
-        MutableLiveData<Event<RemoveReservationDialogParameters>>()
-    val navigateToRemoveReservationDialogAction: LiveData<Event<RemoveReservationDialogParameters>>
-        get() = _navigateToRemoveReservationDialogAction
-
-    private val _navigateToSwapReservationDialogAction =
-        MediatorLiveData<Event<SwapRequestParameters>>().apply {
-            addSource(reservationActionResult) {
-                (it as? SwapAction)?.let { swap ->
-                    value = Event(swap.parameters)
-                }
-            }
-        }
-    val navigateToSwapReservationDialogAction: LiveData<Event<SwapRequestParameters>>
-        get() = _navigateToSwapReservationDialogAction
-
-    private val _navigateToSessionAction = MutableLiveData<Event<SessionId>>()
-    val navigateToSessionAction: LiveData<Event<SessionId>>
-        get() = _navigateToSessionAction
-
-    private val _navigateToSpeakerDetail = MutableLiveData<Event<SpeakerId>>()
-    val navigateToSpeakerDetail: LiveData<Event<SpeakerId>>
-        get() = _navigateToSpeakerDetail
-
-    private val _navigateToSessionFeedbackAction = MutableLiveData<Event<SessionId>>()
-    val navigateToSessionFeedbackAction: LiveData<Event<SessionId>>
-        get() = _navigateToSessionFeedbackAction
-
-    val isReservable: LiveData<Boolean> = session.map {
-        it.isReservable && isReservationEnabledByRemoteConfig
-    }
+    }.stateIn(viewModelScope, WhileViewSubscribed, Loading)
+    // WhileViewSubscribed cancels the subscription to loadUserSessionUseCase when it's not needed.
 
     init {
-        // If the user changes, load new data for them
-        _userEvent.addSource(currentUserInfo) {
-            Timber.d("CurrentFirebaseUser changed, refreshing")
-            refreshUserSession()
-        }
-        // If the session ID changes, load new data for it
-        _session.addSource(sessionId) {
-            Timber.d("SessionId changed, refreshing")
-            refreshUserSession()
-        }
-    }
-
-    private fun refreshUserSession() {
-        val registrationDataReady = currentUserInfo.value?.isRegistrationDataReady()
-        if (registrationDataReady == false) {
-            // No registration information provided by [SignInViewModelDelegate] yet.
-            Timber.d("No registration information yet, not refreshing")
-            return
-        }
-        getSessionId()?.let {
-            Timber.d("Refreshing data with session ID $it and user ${getUserId()}")
-            listenForUserSessionChanges(it)
-        }
-    }
-
-    private fun listenForUserSessionChanges(sessionId: SessionId) {
-        // Cancels listening for the old session
-        loadUserSessionJob.cancelIfActive()
-        // Cancels listening for old related user sessions
-        loadRelatedSessionJob.cancelIfActive()
-
-        loadUserSessionJob = viewModelScope.launch {
-            loadUserSessionUseCase(getUserId() to sessionId).collect {
-                val result = it.data ?: return@collect
-                val session = result.userSession.session
-                // At this point the result is guaranteed as Result.Success
-
-                _session.value = session
-                _userEvent.value = result.userSession.userEvent
-                result.userMessage?.type?.stringRes()?.let { messageId ->
-                    // There is a message to display
-                    snackbarMessageManager.addMessage(
+        // SIDE EFFECTS: show Snackbar when there's a message in user data
+        sessionUserData.onEach { result ->
+            result.data?.let { userData ->
+                userData.userMessage?.type?.stringRes()?.let { messageId ->
+                    _snackBarMessages.tryOffer(
                         SnackbarMessage(
                             messageId = messageId,
                             longDuration = true,
-                            session = result.userSession.session,
-                            requestChangeId = result.userMessage?.changeRequestId
+                            session = userData.userSession.session,
+                            requestChangeId = userData.userMessage?.changeRequestId
                         )
                     )
                 }
-                val related = session.relatedSessions
-                if (related.isNotEmpty()) {
-                    listenForRelatedSessions(related)
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    // UserEvent is exposed as a StateFlow to the view. It's extracted from sessionUserData.
+    val userEvent: StateFlow<UserEvent?> = sessionUserData.transform { sessionUser ->
+        sessionUser.data?.userSession?.userEvent?.let { emit(it) }
+    }.stateIn(viewModelScope, started = WhileViewSubscribed, initialValue = null)
+
+    // Session data is exposed as a StateFlow to the view. It's extracted from sessionUserData.
+    val session: StateFlow<Session?> = sessionUserData.transform { sessionUser ->
+        sessionUser.data?.userSession?.session?.let { emit(it) }
+    }.stateIn(viewModelScope, started = WhileViewSubscribed, initialValue = null)
+
+    // Related user sessions are exposed as a StateFlow and depend on the current session
+    // and user (for favorites).
+    val relatedUserSessions: StateFlow<Result<List<UserSession>>> =
+        session.combineTransform(userIdFlow) { session, userId ->
+            session?.relatedSessions?.let { related ->
+                emitAll(loadRelatedSessionUseCase(userId.data to related))
+            }
+        }.stateIn(viewModelScope, started = WhileViewSubscribed, initialValue = Loading)
+
+    // Exposed to the view to decide whether the feedback button should be visible or not.
+    val showFeedbackButton: StateFlow<Boolean> =
+        sessionUserData.mapLatest { sessionUser ->
+            val currentSession = sessionUser.data?.userSession?.session
+            val userEvent = sessionUser.data?.userSession?.userEvent
+            isSignedIn() &&
+                userEvent?.isReviewed == false &&
+                currentSession?.type == SessionType.SESSION &&
+                (
+                    TimeUtils.getSessionState(currentSession, ZonedDateTime.now()) ==
+                        TimeUtils.SessionRelativeTimeState.AFTER
+                    )
+        }.stateIn(viewModelScope, started = WhileViewSubscribed, initialValue = false)
+
+    // Exposed to the view to show the  Duration until session start, if applicable.
+    val timeUntilStart: LiveData<Duration?> = session.transformLatest { session ->
+        while (true) { // Emit periodically
+            session?.startTime?.let { startTime ->
+                val duration = Duration.between(timeProvider.now(), startTime)
+                when (duration.toMinutes()) {
+                    in 1..5 -> emit(duration)
+                    else -> emit(null)
                 }
             }
+            delay(TEN_SECONDS)
+        }
+    }.asLiveData() // TODO: Used by Data Binding https://issuetracker.google.com/184935697
+
+    // Exposed to the view to prevent reservations.
+    val isReservationDeniedByCutoff = session.transformLatest { session ->
+        while (true) { // Emit periodically
+            // Only allow reservations if the sessions starts more than an hour from now
+            checkReservationDeniedByCutoff(session)?.let { isDisabled ->
+                emit(isDisabled)
+            }
+            delay(SIXTY_SECONDS)
+        }
+    }.asLiveData() // TODO: Used by Data Binding https://issuetracker.google.com/184935697
+
+    private fun checkReservationDeniedByCutoff(session: Session?): Boolean? {
+        return session?.startTime?.let { startTime ->
+            Duration.between(timeProvider.now(), startTime).toMinutes() <= 60
         }
     }
 
-    private suspend fun listenForRelatedSessions(related: Set<SessionId>) {
-        // if this fails, we don't want to propagate the error and
-        // stop listening for user session changes
-        supervisorScope {
-            loadRelatedSessionJob = launch {
-                loadRelatedSessionUseCase(getUserId() to related).collect {
-                    it.data?.let { userSessionResult ->
-                        _relatedUserSessions.value = userSessionResult
-                    }
-                }
-            }
-        }
+    // Show the star in bottom nav instead of the FAB if the FAB shows the reservation button.
+    val shouldShowStarInBottomNav = session.combine(userIsRegistered) { session, isRegistered ->
+        isRegistered && session?.isReservable == true
     }
 
-    // TODO: write tests b/74611561
-    fun setSessionId(newSessionId: SessionId?) {
-        sessionId.setValueIfNew(newSessionId)
-    }
+    // Exposed to the view to indicate whether the session can be reserved.
+    val isReservable: StateFlow<Boolean> = session.map {
+        it?.isReservable == true && isReservationEnabledByRemoteConfig
+    }.stateIn(viewModelScope, WhileViewSubscribed, false)
+
+    // Exposed to the view as a StateFlow but it's a one-shot operation.
+    // TODO: Rename with timeZoneId when ScheduleViewModel is migrated
+    val timeZoneIdFlow = flow<ZoneId> {
+        if (getTimeZoneUseCase(Unit).successOr(true)) {
+            emit(TimeUtils.CONFERENCE_TIMEZONE)
+        } else {
+            emit(ZoneId.systemDefault())
+        }
+    }.stateIn(viewModelScope, WhileViewSubscribed, TimeUtils.CONFERENCE_TIMEZONE)
+
+    // TODO: Replace with timeZoneIdFlow when ScheduleViewModel is migrated
+    val timeZoneId = timeZoneIdFlow.asLiveData()
+
+    // SIDE EFFECTS: Navigation actions
+    private val _navigationActions = Channel<SessionDetailNavigationAction>(capacity = CONFLATED)
+    // Exposed with receiveAsFlow to make sure that only one observer receives updates.
+    val navigationActions = _navigationActions.receiveAsFlow()
 
     /**
-     * Called by the UI when play button is clicked
+     * Methods called by the UI
      */
+
     fun onPlayVideo() {
         session.value?.let {
             if (it.hasVideo) {
-                navigateToYouTubeAction.value = Event(it.youTubeUrl)
+                _navigationActions.tryOffer(NavigateToYoutube(it.youTubeUrl))
             }
         }
     }
@@ -313,27 +271,26 @@ class SessionDetailViewModel @Inject constructor(
     override fun onReservationClicked() {
         if (!networkUtils.hasNetworkConnection()) {
             Timber.d("No network connection, ignoring reserve click.")
-            _snackBarMessage.postValue(
-                Event(
-                    SnackbarMessage(
-                        messageId = R.string.no_network_connection,
-                        requestChangeId = UUID.randomUUID().toString()
-                    )
+            _snackBarMessages.tryOffer(
+                SnackbarMessage(
+                    messageId = R.string.no_network_connection,
+                    requestChangeId = UUID.randomUUID().toString()
                 )
             )
             return
         }
         if (!isSignedIn()) {
             Timber.d("Showing Sign-in dialog after reserve click")
-            _navigateToSignInDialogAction.value = Event(Unit)
+            _navigationActions.tryOffer(NavigateToSignInDialogAction)
             return
         }
 
         val userEventSnapshot = userEvent.value ?: return
         val sessionSnapshot = session.value ?: return
-        val isReservationDeniedByCutoffSnapshot = isReservationDeniedByCutoff.value ?: return
+        val isReservationDeniedByCutoffSnapshot =
+            checkReservationDeniedByCutoff(sessionSnapshot) ?: return
 
-        val userId = getUserId() ?: return
+        val userId = userIdFlow.value.data ?: return
 
         if (userEventSnapshot.isReserved() ||
             userEventSnapshot.isWaitlisted() ||
@@ -341,21 +298,21 @@ class SessionDetailViewModel @Inject constructor(
             userEventSnapshot.isCancelPending() // Just in case
         ) {
             if (isReservationDeniedByCutoffSnapshot) {
-                _snackBarMessage.postValue(
-                    Event(
-                        SnackbarMessage(R.string.cancellation_denied_cutoff, longDuration = true)
-                    )
+                _snackBarMessages.tryOffer(
+                    SnackbarMessage(R.string.cancellation_denied_cutoff, longDuration = true)
                 )
                 analyticsHelper.logUiEvent(
                     sessionSnapshot.title, AnalyticsActions.RES_CANCEL_FAILED
                 )
             } else {
                 // Open the dialog to confirm if the user really wants to remove their reservation
-                _navigateToRemoveReservationDialogAction.value = Event(
-                    RemoveReservationDialogParameters(
-                        userId,
-                        sessionSnapshot.id,
-                        sessionSnapshot.title
+                _navigationActions.tryOffer(
+                    SessionDetailNavigationAction.RemoveReservationDialogAction(
+                        RemoveReservationDialogParameters(
+                            userId,
+                            sessionSnapshot.id,
+                            sessionSnapshot.title
+                        )
                     )
                 )
                 analyticsHelper.logUiEvent(sessionSnapshot.title, AnalyticsActions.RES_CANCEL)
@@ -363,13 +320,13 @@ class SessionDetailViewModel @Inject constructor(
             return
         }
         if (isReservationDeniedByCutoffSnapshot) {
-            _snackBarMessage.postValue(
-                Event(
-                    SnackbarMessage(R.string.reservation_denied_cutoff, longDuration = true)
-                )
+            _snackBarMessages.tryOffer(
+                SnackbarMessage(R.string.reservation_denied_cutoff, longDuration = true)
             )
             analyticsHelper.logUiEvent(sessionSnapshot.title, AnalyticsActions.RESERVE_FAILED)
         } else {
+            // New reservation
+
             val userSession = UserSession(sessionSnapshot, userEventSnapshot)
 
             viewModelScope.launch {
@@ -382,16 +339,25 @@ class SessionDetailViewModel @Inject constructor(
                     )
                 )
                 when (result) {
-                    is Success -> reservationActionResult.value = result.data
-                    is Error -> {
-                        _snackBarMessage.value =
-                            Event(
-                                SnackbarMessage(
-                                    messageId = R.string.reservation_error,
-                                    longDuration = true
+                    is Success -> {
+                        val reservationActionResult = result.data
+                        if (reservationActionResult is SwapAction) {
+                            _navigationActions.tryOffer(
+                                NavigateToSwapReservationDialogAction(
+                                    reservationActionResult.parameters
                                 )
                             )
+                        }
                     }
+                    is Error -> {
+                        _snackBarMessages.tryOffer(
+                            SnackbarMessage(
+                                messageId = string.reservation_error,
+                                longDuration = true
+                            )
+                        )
+                    }
+                    Loading -> throw IllegalStateException()
                 }
             }
             analyticsHelper.logUiEvent(sessionSnapshot.title, AnalyticsActions.RESERVE)
@@ -401,19 +367,18 @@ class SessionDetailViewModel @Inject constructor(
     override fun onLoginClicked() {
         if (!isSignedIn()) {
             Timber.d("Showing Sign-in dialog")
-            _navigateToSignInDialogAction.value = Event(Unit)
+            _navigationActions.tryOffer(NavigateToSignInDialogAction)
         }
     }
 
-    // copied from SchedVM, TODO refactor
     override fun openEventDetail(id: SessionId) {
-        _navigateToSessionAction.value = Event(id)
+        _navigationActions.tryOffer(NavigateToSession(id))
     }
 
     override fun onStarClicked(userSession: UserSession) {
         if (!isSignedIn()) {
             Timber.d("Showing Sign-in dialog after star click")
-            _navigateToSignInDialogAction.value = Event(Unit)
+            _navigationActions.tryOffer(NavigateToSignInDialogAction)
             return
         }
         val newIsStarredState = !userSession.userEvent.isStarred
@@ -431,7 +396,7 @@ class SessionDetailViewModel @Inject constructor(
         } else {
             SnackbarMessage(R.string.event_unstarred)
         }
-        _snackBarMessage.postValue(Event(snackbarMessage))
+        _snackBarMessages.tryOffer(snackbarMessage)
 
         viewModelScope.launch {
             getUserId()?.let {
@@ -445,32 +410,20 @@ class SessionDetailViewModel @Inject constructor(
                 )
                 // Show an error message if a star request fails
                 if (result is Error) {
-                    _snackBarMessage.value = Event(SnackbarMessage(R.string.event_star_error))
+                    _snackBarMessages.tryOffer(SnackbarMessage(R.string.event_star_error))
                 }
             }
         }
     }
 
     override fun onSpeakerClicked(speakerId: SpeakerId) {
-        _navigateToSpeakerDetail.postValue(Event(speakerId))
+        _navigationActions.tryOffer(NavigateToSpeakerDetail(speakerId))
     }
 
     override fun onFeedbackClicked() {
-        val sessionId = getSessionId()
-        if (sessionId != null) {
-            _navigateToSessionFeedbackAction.postValue(Event(sessionId))
+        session.value?.id?.let { sessionId ->
+            _navigationActions.tryOffer(NavigateToSessionFeedback(sessionId))
         }
-    }
-
-    /**
-     * Returns the current session ID or null if not available.
-     */
-    private fun getSessionId(): SessionId? {
-        return sessionId.value
-    }
-
-    private fun showStarInBottomNav(): Boolean {
-        return observeRegisteredUser().value == true && session.value?.isReservable == true
     }
 }
 

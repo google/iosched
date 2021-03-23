@@ -47,6 +47,7 @@ object Libs {
     const val FIREBASE_UI_AUTH = "com.firebaseui:firebase-ui-auth"
     const val FLEXBOX = "com.google.android:flexbox"
     const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx"
+    const val FRAGMENT_TEST = "androidx.fragment:fragment-testing"
     const val GLIDE = "com.github.bumptech.glide:glide"
     const val GLIDE_COMPILER = "com.github.bumptech.glide:compiler"
     const val GOOGLE_MAP_UTILS_KTX = "com.google.maps.android:maps-utils-ktx"

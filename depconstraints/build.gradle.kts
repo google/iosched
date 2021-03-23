@@ -102,6 +102,7 @@ dependencies {
         api("${Libs.FIREBASE_UI_AUTH}:$firebaseUi")
         api("${Libs.FLEXBOX}:$flexbox")
         api("${Libs.FRAGMENT_KTX}:$fragment")
+        api("${Libs.FRAGMENT_TEST}:$fragment")
         api("${Libs.GLIDE}:$glide")
         api("${Libs.GLIDE_COMPILER}:$glide")
         api("${Libs.GOOGLE_MAP_UTILS_KTX}:$googlePlayServicesMapsKtx")

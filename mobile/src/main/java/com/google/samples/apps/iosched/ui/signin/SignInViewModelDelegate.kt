@@ -34,12 +34,12 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignOut
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import javax.inject.Inject
 
 enum class SignInEvent {
     RequestSignIn, RequestSignOut
@@ -100,14 +100,19 @@ interface SignInViewModelDelegate {
 
     fun observeRegisteredUser(): LiveData<Boolean>
 
-    fun isSignedIn(): Boolean
+    val userIsRegistered: Flow<Boolean> // TODO: Rename, make property?
+
+    fun isSignedIn(): Boolean // Make property flow?
 
     fun isRegistered(): Boolean
 
     /**
      * Returns the current user ID or null if not available.
      */
+    @Deprecated("Use [observeUserId]")
     fun getUserId(): String?
+
+    fun observeUserId(): Flow<String?>
 }
 
 /**
@@ -133,7 +138,7 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
 
     override val currentUserInfo: LiveData<AuthenticatedUserInfo?> = currentFirebaseUser.map {
         (it as? Success)?.data
-    }.asLiveData()
+    }.asLiveData() // TODO: Remove
 
     private val notificationsPrefIsShown = currentUserInfo.switchMap {
         liveData {
@@ -197,7 +202,12 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
 
     override fun observeRegisteredUser(): LiveData<Boolean> = isRegistered
 
+    override val userIsRegistered: Flow<Boolean> =
+        currentFirebaseUser.map { it.data?.isRegistered() == true }
+
     override fun getUserId(): String? {
         return currentUserInfo.value?.getUid()
     }
+
+    override fun observeUserId(): Flow<String?> = currentFirebaseUser.map { it.data?.getUid() }
 }
