@@ -37,9 +37,11 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.MapView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.maps.android.data.geojson.GeoJsonLayer
+import com.google.maps.android.ktx.awaitMap
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentMapBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
@@ -51,6 +53,7 @@ import com.google.samples.apps.iosched.util.slideOffsetToAlpha
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import org.threeten.bp.Instant
 import javax.inject.Inject
 
@@ -84,6 +87,7 @@ class MapFragment : MainNavigationFragment() {
         // between 0 and 1, inclusive, coinciding with a point between the bottom sheet's
         // collapsed (0) and expanded (1) states.
         private const val ALPHA_TRANSITION_END = 0.5f
+
         // Threshold for when the marker description reaches minimum alpha. Should be a value
         // between 0 and 1, inclusive, coinciding with a point between the bottom sheet's
         // collapsed (0) and expanded (1) states.
@@ -224,8 +228,9 @@ class MapFragment : MainNavigationFragment() {
             binding.statusBar.requestLayout()
 
             // Update the Map padding so that the copyright, etc is not displayed in nav bar
-            binding.map.getMapAsync {
-                it.setPadding(0, 0, 0, insets.systemWindowInsetBottom)
+            lifecycleScope.launchWhenCreated {
+                val map = binding.map.awaitMap()
+                map.setPadding(0, 0, 0, insets.systemWindowInsetBottom)
             }
 
             binding.mapModeFab.updateLayoutParams<MarginLayoutParams> {
@@ -261,39 +266,33 @@ class MapFragment : MainNavigationFragment() {
         }
 
         // Initialize MapView
-        mapView.getMapAsync { googleMap ->
-            googleMap.apply {
+        lifecycleScope.launchWhenCreated {
+            mapView.awaitMap().apply {
                 setOnMapClickListener { viewModel.dismissFeatureDetails() }
                 setOnCameraMoveListener {
-                    viewModel.onZoomChanged(googleMap.cameraPosition.zoom)
+                    viewModel.onZoomChanged(cameraPosition.zoom)
                 }
-                enableMyLocation(false)
+                enableMyLocation()
             }
         }
 
         // Observe ViewModel data
-        viewModel.mapVariant.observe(
-            viewLifecycleOwner,
-            Observer {
-                mapView.getMapAsync { googleMap ->
-                    googleMap.clear()
-                    viewModel.loadMapFeatures(googleMap)
+        viewModel.mapVariant.observe(viewLifecycleOwner) {
+            lifecycleScope.launchWhenCreated {
+                mapView.awaitMap().apply {
+                    clear()
+                    viewModel.loadMapFeatures(this)
                 }
             }
-        )
-        viewModel.geoJsonLayer.observe(
-            viewLifecycleOwner,
-            Observer {
-                updateMarkers(it ?: return@Observer)
-            }
-        )
+        }
 
-        viewModel.selectedMarkerInfo.observe(
-            viewLifecycleOwner,
-            Observer {
-                updateInfoSheet(it ?: return@Observer)
-            }
-        )
+        viewModel.geoJsonLayer.observe(viewLifecycleOwner) {
+            updateMarkers(it ?: return@observe)
+        }
+
+        viewModel.selectedMarkerInfo.observe(viewLifecycleOwner) {
+            updateInfoSheet(it ?: return@observe)
+        }
 
         analyticsHelper.sendScreenView("Map", requireActivity())
     }
@@ -419,8 +418,9 @@ class MapFragment : MainNavigationFragment() {
         when {
             ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED -> {
-                mapView.getMapAsync {
-                    it.isMyLocationEnabled = true
+                lifecycleScope.launch {
+                    val map = mapView.awaitMap()
+                    map.isMyLocationEnabled = true
                 }
                 viewModel.optIntoMyLocation()
             }

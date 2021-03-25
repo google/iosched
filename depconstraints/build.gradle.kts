@@ -45,8 +45,7 @@ val firebaseUi = "4.0.0"
 val flexbox = "1.1.0"
 val fragment = "1.2.4"
 val glide = "4.9.0"
-val googleMapUtils = "0.5"
-val googlePlayServicesMaps = "16.0.0"
+val googlePlayServicesMapsKtx = "3.0.0"
 val googlePlayServicesVision = "17.0.2"
 val gson = "2.8.6"
 val hamcrest = "1.3"
@@ -105,8 +104,8 @@ dependencies {
         api("${Libs.FRAGMENT_KTX}:$fragment")
         api("${Libs.GLIDE}:$glide")
         api("${Libs.GLIDE_COMPILER}:$glide")
-        api("${Libs.GOOGLE_MAP_UTILS}:$googleMapUtils")
-        api("${Libs.GOOGLE_PLAY_SERVICES_MAPS}:$googlePlayServicesMaps")
+        api("${Libs.GOOGLE_MAP_UTILS_KTX}:$googlePlayServicesMapsKtx")
+        api("${Libs.GOOGLE_PLAY_SERVICES_MAPS_KTX}:$googlePlayServicesMapsKtx")
         api("${Libs.GOOGLE_PLAY_SERVICES_VISION}:$googlePlayServicesVision")
         api("${Libs.GSON}:$gson")
         api("${Libs.HAMCREST}:$hamcrest")

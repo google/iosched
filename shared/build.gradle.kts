@@ -134,10 +134,10 @@ dependencies {
     testImplementation(Libs.ARCH_TESTING)
 
     // Maps
-    api(Libs.GOOGLE_MAP_UTILS) {
+    api(Libs.GOOGLE_MAP_UTILS_KTX) {
         exclude(group = "com.google.android.gms")
     }
-    api(Libs.GOOGLE_PLAY_SERVICES_MAPS)
+    api(Libs.GOOGLE_PLAY_SERVICES_MAPS_KTX)
 
     // Utils
     api(Libs.TIMBER)
