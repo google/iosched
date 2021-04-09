@@ -34,7 +34,7 @@ buildscript {
         classpath("androidx.benchmark:benchmark-gradle-plugin:${Versions.BENCHMARK}")
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.NAVIGATION}")
         classpath("com.google.firebase:firebase-crashlytics-gradle:${Versions.FIREBASE_CRASHLYTICS}")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:${Versions.HILT}")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:${Versions.HILT_AGP}")
     }
 }
 

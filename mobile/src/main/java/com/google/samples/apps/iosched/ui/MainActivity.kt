@@ -283,7 +283,7 @@ class MainActivity : AppCompatActivity(), NavigationHost {
         toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         currentNavId = navigation.checkedItem?.itemId ?: NAV_ID_NONE
     }

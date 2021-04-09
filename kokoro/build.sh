@@ -27,14 +27,15 @@ fi
 
 # Workaround of b/123314680
 # We need to update the required dependencies since the Kokoro team stopped updating the custom VM.
-export ANDROID_SDK_HOME=/opt/android-sdk/current
+export ANDROID_HOME=/opt/android-sdk/current
 echo "Installing build-tools..."
-echo y | ${ANDROID_SDK_HOME}/tools/bin/sdkmanager "build-tools;29.0.2" > /dev/null
+echo y | ${ANDROID_HOME}/tools/bin/sdkmanager "build-tools;30.0.3" > /dev/null
+echo y | ${ANDROID_HOME}/tools/bin/sdkmanager --licenses
 
 # Workaround for b/148189425
 # AGP requires a specific NDK version for running Gradle
 echo "Installing NDK that matches the current version of AGP ..."
-echo y | ${ANDROID_SDK_HOME}/tools/bin/sdkmanager "ndk;21.0.6113669" > /dev/null
+echo y | ${ANDROID_HOME}/tools/bin/sdkmanager "ndk;21.0.6113669" > /dev/null
 
 cd $KOKORO_ARTIFACTS_DIR/git/iosched
 
