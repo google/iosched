@@ -18,7 +18,7 @@ package com.google.samples.apps.iosched.ui.feed
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.viewModelScope
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.model.Moment
 import com.google.samples.apps.iosched.model.TestDataRepository
@@ -44,11 +44,13 @@ import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runBlockingTest
+import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.instanceOf
-import org.junit.Assert.assertThat
-import org.junit.Assert.assertTrue
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.threeten.bp.Instant
@@ -79,7 +81,7 @@ class FeedViewModelTest {
     fun testDataIsLoaded_ObservablesUpdated() = coroutineRule.runBlockingTest {
         // Create ViewModel with the use case and load the feed.
         val viewModel = createFeedViewModel()
-        val feedObservable = LiveDataTestUtil.getValue(viewModel.feed)
+        val feedObservable = viewModel.feed.first()
 
         // Check that data was loaded correctly.
         // At the specified time, the Moment is relevant and there is one Announcement.
@@ -107,9 +109,12 @@ class FeedViewModelTest {
             loadAnnouncementUseCase = FailingUseCase(testDispatcher)
         )
 
+        // Observe feed to generate an error
+        val feed = viewModel.feed.first()
+
         // Verify that an error was caught
-        val errorMessage = LiveDataTestUtil.getValue(viewModel.errorMessage)
-        assertTrue(errorMessage?.peekContent()?.isNotEmpty() ?: false)
+        val msg = viewModel.snackBarMessages.first().messageId
+        assertEquals(R.string.feed_loading_error, msg)
 
         // Must cancel because there's a flow in [GetConferenceStateUseCase] that never finishes.
         viewModel.viewModelScope.cancel()

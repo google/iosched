@@ -64,6 +64,7 @@ interface SignInViewModelDelegate {
      * Live updated value of the current firebase user
      */
     val currentUserInfo: LiveData<AuthenticatedUserInfo?>
+    val currentUserInfoFlow: Flow<AuthenticatedUserInfo?> // TODO rename and remove LiveData
 
     /**
      * Live updated value of the current firebase users image url
@@ -139,6 +140,10 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
     override val currentUserInfo: LiveData<AuthenticatedUserInfo?> = currentFirebaseUser.map {
         (it as? Success)?.data
     }.asLiveData() // TODO: Remove
+
+    override val currentUserInfoFlow: Flow<AuthenticatedUserInfo?> = currentFirebaseUser.map {
+        (it as? Success)?.data
+    }
 
     private val notificationsPrefIsShown = currentUserInfo.switchMap {
         liveData {

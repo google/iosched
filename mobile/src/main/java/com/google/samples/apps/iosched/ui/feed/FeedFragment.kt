@@ -20,24 +20,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.core.view.updatePaddingRelative
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.common.collect.ImmutableMap
 import com.google.samples.apps.iosched.databinding.FragmentFeedBinding
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.feed.FeedFragmentDirections.Companion.toSchedule
 import com.google.samples.apps.iosched.ui.feed.FeedFragmentDirections.Companion.toSessionDetail
+import com.google.samples.apps.iosched.ui.feed.FeedNavigationAction.NavigateAction
+import com.google.samples.apps.iosched.ui.feed.FeedNavigationAction.NavigateToScheduleAction
+import com.google.samples.apps.iosched.ui.feed.FeedNavigationAction.NavigateToSession
+import com.google.samples.apps.iosched.ui.feed.FeedNavigationAction.OpenLiveStreamAction
+import com.google.samples.apps.iosched.ui.feed.FeedNavigationAction.OpenSignInDialogAction
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
@@ -45,7 +48,7 @@ import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.openWebsiteUrl
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -128,58 +131,27 @@ class FeedFragment : MainNavigationFragment() {
             v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
 
-        setUpSnackbar(model.snackBarMessage, binding.snackbar, snackbarMessageManager)
+        setUpSnackbar(model.snackBarMessages, binding.snackbar, snackbarMessageManager)
 
-        model.errorMessage.observe(
-            viewLifecycleOwner,
-            Observer { message ->
-                val errorMessage = message?.getContentIfNotHandled()
-                if (!errorMessage.isNullOrEmpty()) {
-                    Toast.makeText(this.context, errorMessage, Toast.LENGTH_SHORT).show()
-                    Timber.e(errorMessage)
-                }
-            }
-        )
-
-        model.feed.observe(
-            viewLifecycleOwner,
-            Observer {
+        // Observe feed
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            model.feed.collect {
                 showFeedItems(binding.recyclerView, it)
             }
-        )
+        }
 
-        model.navigateToSessionAction.observe(
-            viewLifecycleOwner,
-            EventObserver { sessionId ->
-                openSessionDetail(sessionId)
+        // Observe navigation events
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            model.navigationActions.collect { action ->
+                when (action) {
+                    is NavigateAction -> findNavController().navigate(action.directions)
+                    is NavigateToScheduleAction -> openSchedule(action.showOnlyPinnedSessions)
+                    is NavigateToSession -> openSessionDetail(action.sessionId)
+                    is OpenLiveStreamAction -> openLiveStreamUrl(action.url)
+                    OpenSignInDialogAction -> openSignInDialog()
+                }
             }
-        )
-
-        model.navigateToScheduleAction.observe(
-            viewLifecycleOwner,
-            EventObserver { withPinnedEvents ->
-                openSchedule(withPinnedEvents)
-            }
-        )
-
-        model.openSignInDialogAction.observe(
-            viewLifecycleOwner,
-            EventObserver { openSignInDialog() }
-        )
-
-        model.openLiveStreamAction.observe(
-            viewLifecycleOwner,
-            EventObserver { streamUrl ->
-                openLiveStreamUrl(streamUrl)
-            }
-        )
-
-        model.navigateAction.observe(
-            viewLifecycleOwner,
-            EventObserver { navDirections ->
-                findNavController().navigate(navDirections)
-            }
-        )
+        }
     }
 
     private fun openSessionDetail(id: SessionId) {

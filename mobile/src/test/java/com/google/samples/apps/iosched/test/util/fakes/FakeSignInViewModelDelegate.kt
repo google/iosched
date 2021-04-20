@@ -34,7 +34,7 @@ import kotlinx.coroutines.flow.map
 class FakeSignInViewModelDelegate : SignInViewModelDelegate {
 
     override val currentUserInfo = MutableLiveData<AuthenticatedUserInfo?>() // Remove
-    private val currentUserInfoFlow = MutableStateFlow<AuthenticatedUserInfo?>(null)
+    override val currentUserInfoFlow = MutableStateFlow<AuthenticatedUserInfo?>(null)
     override val currentUserImageUri = MutableLiveData<Uri?>()
     override val performSignInEvent = MutableLiveData<Event<SignInEvent>>()
     override val shouldShowNotificationsPrefAction = MutableLiveData<Event<Boolean>>()
