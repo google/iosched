@@ -26,14 +26,15 @@ import android.widget.TextView
 import androidx.core.view.updatePaddingRelative
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSettingsBinding
-import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class SettingsFragment : MainNavigationFragment() {
@@ -45,16 +46,16 @@ class SettingsFragment : MainNavigationFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
-        viewModel.navigateToThemeSelector.observe(
-            viewLifecycleOwner,
-            EventObserver {
-                ThemeSettingDialogFragment.newInstance()
-                    .show(requireFragmentManager(), null)
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.navigationActions.collect {
+                if (it is SettingsNavigationAction.NavigateToThemeSelector) {
+                    ThemeSettingDialogFragment.newInstance()
+                        .show(parentFragmentManager, null)
+                }
             }
-        )
-
+        }
         val binding = FragmentSettingsBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
