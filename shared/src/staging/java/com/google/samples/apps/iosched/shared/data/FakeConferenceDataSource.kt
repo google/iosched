@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.data
 
-import androidx.core.graphics.toColorInt
+import android.graphics.Color
 import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.Tag
@@ -60,7 +60,7 @@ object FakeConferenceDataSource : ConferenceDataSource {
         // Create a fake tag
         val stagingTag = Tag(
             displayName = FAKE_SESSION_TAG_NAME, id = "FAKE_TAG", tagName = "topic_staging",
-            color = "#ff00ff".toColorInt(), fontColor = "#202124".toColorInt(), category = "topic",
+            color = Color.BLUE, fontColor = Color.CYAN, category = "topic",
             orderInCategory = 99
         )
         tags.add(stagingTag)

@@ -24,7 +24,8 @@ import android.view.ViewGroup
 import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import kotlinx.coroutines.flow.collect
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.databinding.FragmentCodelabsBinding
@@ -72,7 +73,7 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentCodelabsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -94,12 +95,11 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
             v.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
 
-        codelabsViewModel.codelabs.observe(
-            viewLifecycleOwner,
-            Observer {
+        lifecycleScope.launchWhenStarted {
+            codelabsViewModel.codelabs.collect {
                 codelabsAdapter.submitList(it)
             }
-        )
+        }
 
         analyticsHelper.sendScreenView("Codelabs", requireActivity())
     }
