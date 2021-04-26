@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.ui.codelabs
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.shared.domain.codelabs.GetCodelabsInfoCardShownUseCase
@@ -25,7 +23,10 @@ import com.google.samples.apps.iosched.shared.domain.codelabs.LoadCodelabsUseCas
 import com.google.samples.apps.iosched.shared.domain.codelabs.SetCodelabsInfoCardShownUseCase
 import com.google.samples.apps.iosched.shared.result.successOr
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.util.Collections.emptyList
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,8 +36,8 @@ class CodelabsViewModel @Inject constructor(
     private val setCodelabsInfoCardShownUseCase: SetCodelabsInfoCardShownUseCase
 ) : ViewModel() {
 
-    private val _codelabs = MutableLiveData<List<Any>>()
-    val codelabs: LiveData<List<Any>> = _codelabs
+    private val _codelabs = MutableStateFlow<List<Any>>(emptyList())
+    val codelabs: StateFlow<List<Any>> = _codelabs
 
     init {
         viewModelScope.launch {
