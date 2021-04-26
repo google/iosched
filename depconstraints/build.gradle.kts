@@ -21,7 +21,7 @@ plugins {
 
 val appcompat = "1.1.0"
 val activity = "1.2.0-rc01"
-val activityCompose = "1.3.0-alpha03"
+val activityCompose = "1.3.0-alpha07"
 val cardview = "1.0.0"
 val archTesting = "2.0.0"
 val arcore = "1.7.0"
@@ -69,7 +69,7 @@ val slidingpanelayout = "1.2.0-alpha01"
 val threetenabp = "1.0.5"
 val timber = "4.7.1"
 val viewpager2 = "1.0.0"
-val viewModelCompose = "1.0.0-alpha02"
+val viewModelCompose = "1.0.0-alpha04"
 
 dependencies {
     constraints {
