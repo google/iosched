@@ -28,7 +28,7 @@ object Versions {
     const val COMPOSE = "1.0.0-beta04"
     const val FIREBASE_CRASHLYTICS = "2.3.0"
     const val GOOGLE_SERVICES = "4.3.3"
-    const val KOTLIN = "1.4.30"
+    const val KOTLIN = "1.4.32"
     const val NAVIGATION = "2.3.5"
     const val HILT_AGP = "2.34-beta"
 

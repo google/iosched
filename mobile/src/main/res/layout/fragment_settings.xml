@@ -84,7 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checked="@{viewModel.preferConferenceTimeZone}"
-                    android:onCheckedChanged="@{(view, checked) -> viewModel.toggleTimeZone(checked)}"
+                    android:onClick="@{(view) -> viewModel.toggleTimeZone()}"
                     android:text="@string/settings_time_zone_label" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
@@ -93,7 +93,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checked="@{viewModel.enableNotifications}"
-                    android:onCheckedChanged="@{(view, checked) -> viewModel.toggleEnableNotifications(checked)}"
+                    android:onClick="@{(view) -> viewModel.toggleEnableNotifications()}"
                     android:text="@string/settings_enable_notifications" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
@@ -102,7 +102,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checked="@{viewModel.sendUsageStatistics}"
-                    android:onCheckedChanged="@{(view, checked) -> viewModel.toggleSendUsageStatistics(checked)}"
+                    android:onClick="@{(view) -> viewModel.toggleSendUsageStatistics()}"
                     android:text="@string/settings_send_anonymous_usage_statistics" />
 
                 <View

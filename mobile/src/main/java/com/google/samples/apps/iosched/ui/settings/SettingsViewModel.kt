@@ -16,10 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.settings
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.model.Theme
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefSaveActionUseCase
@@ -31,11 +28,19 @@ import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetAnalyticsSettingUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetTimeZoneUseCase
-import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.data
-import com.google.samples.apps.iosched.shared.result.successOr
-import com.google.samples.apps.iosched.shared.result.updateOnSuccess
+import com.google.samples.apps.iosched.shared.util.tryOffer
+import com.google.samples.apps.iosched.util.WhileViewSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -52,64 +57,65 @@ class SettingsViewModel @Inject constructor(
     getAvailableThemesUseCase: GetAvailableThemesUseCase
 ) : ViewModel() {
 
-    // Time Zone setting
-    private val _preferConferenceTimeZone = MutableLiveData<Boolean>()
-    val preferConferenceTimeZone: LiveData<Boolean>
-        get() = _preferConferenceTimeZone
+    // Used to re-run flows on command
+    private val refreshSignal = MutableSharedFlow<Unit>()
+    // Used to run flows on init and also on command
+    private val loadDataSignal: Flow<Unit> = flow {
+        emit(Unit)
+        emitAll(refreshSignal)
+    }
 
-    // Notifications setting
-    private val _enableNotifications = MutableLiveData<Boolean>()
-    val enableNotifications: LiveData<Boolean>
-        get() = _enableNotifications
+    // Time Zone setting
+    val preferConferenceTimeZone: StateFlow<Boolean> = loadDataSignal.mapLatest {
+        getTimeZoneUseCase(Unit).data ?: true
+    }.stateIn(viewModelScope, WhileViewSubscribed, true)
+
+    val enableNotifications: StateFlow<Boolean> = loadDataSignal.mapLatest {
+        getNotificationsSettingUseCase(Unit).data ?: true
+    }.stateIn(viewModelScope, WhileViewSubscribed, true)
 
     // Analytics setting
-    private val _sendUsageStatistics = MutableLiveData<Boolean>()
-    val sendUsageStatistics: LiveData<Boolean>
-        get() = _sendUsageStatistics
+    val sendUsageStatistics = loadDataSignal.mapLatest {
+        getAnalyticsSettingUseCase(Unit).data ?: false
+    }.stateIn(viewModelScope, WhileViewSubscribed, false)
 
     // Theme setting
-    val theme: LiveData<Theme> = liveData {
-        emit(getThemeUseCase(Unit).successOr(Theme.SYSTEM))
-    }
+    val theme: StateFlow<Theme> = loadDataSignal.mapLatest {
+        getThemeUseCase(Unit).data ?: Theme.SYSTEM
+    }.stateIn(viewModelScope, WhileViewSubscribed, Theme.SYSTEM)
 
     // Theme setting
-    val availableThemes: LiveData<List<Theme>> = liveData {
-        emit(getAvailableThemesUseCase(Unit).successOr(emptyList()))
+    val availableThemes: StateFlow<List<Theme>> = loadDataSignal.mapLatest {
+        getAvailableThemesUseCase(Unit).data ?: listOf<Theme>()
+    }.stateIn(viewModelScope, WhileViewSubscribed, listOf())
+
+    // SIDE EFFECTS: Navigation actions
+    private val _navigationActions = Channel<SettingsNavigationAction>(capacity = Channel.CONFLATED)
+    // Exposed with receiveAsFlow to make sure that only one observer receives updates.
+    val navigationActions = _navigationActions.receiveAsFlow()
+
+    private suspend fun refreshData() {
+        refreshSignal.emit(Unit)
     }
 
-    private val _navigateToThemeSelector = MutableLiveData<Event<Unit>>()
-    val navigateToThemeSelector: LiveData<Event<Unit>>
-        get() = _navigateToThemeSelector
-
-    init {
-        // Executing use cases in parallel
+    fun toggleTimeZone() {
         viewModelScope.launch {
-            _preferConferenceTimeZone.value = getTimeZoneUseCase(Unit).data ?: true
-        }
-
-        viewModelScope.launch {
-            _sendUsageStatistics.value = getAnalyticsSettingUseCase(Unit).data ?: false
-        }
-        viewModelScope.launch {
-            _enableNotifications.value = getNotificationsSettingUseCase(Unit).data ?: false
-        }
-    }
-
-    fun toggleTimeZone(checked: Boolean) {
-        viewModelScope.launch {
-            setTimeZoneUseCase(checked).updateOnSuccess(_preferConferenceTimeZone)
+            setTimeZoneUseCase(!preferConferenceTimeZone.value)
+            refreshData()
         }
     }
 
-    fun toggleSendUsageStatistics(checked: Boolean) {
+    fun toggleEnableNotifications() {
         viewModelScope.launch {
-            setAnalyticsSettingUseCase(checked).updateOnSuccess(_sendUsageStatistics)
+            notificationsPrefSaveActionUseCase(!enableNotifications.value)
+            refreshData()
         }
     }
 
-    fun toggleEnableNotifications(checked: Boolean) {
+    fun toggleSendUsageStatistics() {
         viewModelScope.launch {
-            notificationsPrefSaveActionUseCase(checked).updateOnSuccess(_enableNotifications)
+            setAnalyticsSettingUseCase(!sendUsageStatistics.value)
+            refreshData()
         }
     }
 
@@ -120,6 +126,10 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun onThemeSettingClicked() {
-        _navigateToThemeSelector.value = Event(Unit)
+        _navigationActions.tryOffer(SettingsNavigationAction.NavigateToThemeSelector)
     }
+}
+
+sealed class SettingsNavigationAction {
+    object NavigateToThemeSelector : SettingsNavigationAction()
 }

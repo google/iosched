@@ -22,11 +22,12 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Theme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class ThemeSettingDialogFragment : AppCompatDialogFragment() {
@@ -57,9 +58,8 @@ class ThemeSettingDialogFragment : AppCompatDialogFragment() {
         super.onCreate(savedInstanceState)
 
         // Note you don't need to use viewLifecycleOwner in DialogFragment.
-        viewModel.availableThemes.observe(
-            this,
-            Observer { themes ->
+        lifecycleScope.launchWhenStarted {
+            viewModel.availableThemes.collect { themes ->
                 listAdapter.clear()
                 listAdapter.addAll(
                     themes.map {
@@ -70,9 +70,11 @@ class ThemeSettingDialogFragment : AppCompatDialogFragment() {
 
                 updateSelectedItem(viewModel.theme.value)
             }
-        )
+        }
 
-        viewModel.theme.observe(this, Observer(::updateSelectedItem))
+        lifecycleScope.launchWhenStarted {
+            viewModel.theme.collect { updateSelectedItem(it) }
+        }
     }
 
     private fun updateSelectedItem(selected: Theme?) {
