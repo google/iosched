@@ -85,7 +85,7 @@ fun Fragment.setUpSnackbar(
     setupSnackbarManager(snackbarMessageManager, fadingSnackbar, actionClickListener)
 }
 
-private fun Fragment.setupSnackbarManager(
+fun Fragment.setupSnackbarManager(
     snackbarMessageManager: SnackbarMessageManager,
     fadingSnackbar: FadingSnackbar,
     actionClickListener: () -> Unit

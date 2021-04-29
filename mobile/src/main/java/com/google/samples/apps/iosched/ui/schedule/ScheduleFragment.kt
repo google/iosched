@@ -24,7 +24,7 @@ import android.widget.Toast
 import androidx.core.view.updatePaddingRelative
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -47,8 +47,12 @@ import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
 import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentDirections.Companion.toSearch
 import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentDirections.Companion.toSessionDetail
+import com.google.samples.apps.iosched.ui.schedule.ScheduleNavigationAction.NavigateToSession
+import com.google.samples.apps.iosched.ui.schedule.ScheduleNavigationAction.NavigateToSignInDialogAction
+import com.google.samples.apps.iosched.ui.schedule.ScheduleNavigationAction.NavigateToSignOutDialogAction
+import com.google.samples.apps.iosched.ui.schedule.ScheduleNavigationAction.ShowScheduleUiHints
 import com.google.samples.apps.iosched.ui.sessioncommon.SessionsAdapter
-import com.google.samples.apps.iosched.ui.setUpSnackbar
+import com.google.samples.apps.iosched.ui.setupSnackbarManager
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment.Companion.DIALOG_NOTIFICATIONS_PREFERENCE
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
@@ -62,6 +66,7 @@ import com.google.samples.apps.iosched.widget.BubbleDecoration
 import com.google.samples.apps.iosched.widget.FadingSnackbar
 import com.google.samples.apps.iosched.widget.JumpSmoothScroller
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -115,7 +120,7 @@ class ScheduleFragment : MainNavigationFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentScheduleBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = scheduleViewModel
@@ -146,8 +151,8 @@ class ScheduleFragment : MainNavigationFragment() {
         }
 
         // Snackbar configuration
-        setUpSnackbar(
-            scheduleViewModel.snackBarMessage, snackbar, snackbarMessageManager,
+        setupSnackbarManager(
+            snackbarMessageManager, snackbar,
             actionClickListener = {
                 snackbarPrefsViewModel.onStopClicked()
             }
@@ -193,18 +198,14 @@ class ScheduleFragment : MainNavigationFragment() {
         dayIndicatorRecyclerView.adapter = dayIndicatorAdapter
 
         // Start observing ViewModels
-        scheduleViewModel.scheduleUiData.observe(
-            viewLifecycleOwner,
-            Observer {
-                it ?: return@Observer
-                updateScheduleUi(it)
-            }
-        )
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            scheduleViewModel.scheduleUiData.collect { updateScheduleUi(it) }
+        }
 
         // During conference, scroll to current event.
-        scheduleViewModel.scrollToEvent.observe(
-            viewLifecycleOwner,
-            EventObserver { scrollEvent ->
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            scheduleViewModel.scrollToEvent.collect { scrollEvent ->
                 if (scrollEvent.targetPosition != -1) {
                     scheduleRecyclerView.run {
                         post {
@@ -219,36 +220,19 @@ class ScheduleFragment : MainNavigationFragment() {
                     }
                 }
             }
-        )
-
-        scheduleViewModel.navigateToSessionAction.observe(
-            viewLifecycleOwner,
-            EventObserver { sessionId ->
-                openSessionDetail(sessionId)
-            }
-        )
-
-        scheduleViewModel.navigateToSignInDialogAction.observe(
-            viewLifecycleOwner,
-            EventObserver {
-                openSignInDialog()
-            }
-        )
-
-        scheduleViewModel.navigateToSignOutDialogAction.observe(
-            viewLifecycleOwner,
-            EventObserver {
-                openSignOutDialog()
-            }
-        )
-        scheduleViewModel.scheduleUiHintsShown.observe(
-            viewLifecycleOwner,
-            EventObserver {
-                if (!it) {
-                    openScheduleUiHintsDialog()
+        }
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            scheduleViewModel.navigationActions.collect {
+                when (it) {
+                    is NavigateToSession -> openSessionDetail(it.sessionId)
+                    is NavigateToSignInDialogAction -> openSignInDialog()
+                    is NavigateToSignOutDialogAction -> openSignOutDialog()
+                    is ShowScheduleUiHints -> openScheduleUiHintsDialog()
                 }
             }
-        )
+        }
+
+        // TODO: Migrate to StateFlow
         scheduleViewModel.shouldShowNotificationsPrefAction.observe(
             viewLifecycleOwner,
             EventObserver {
@@ -259,13 +243,11 @@ class ScheduleFragment : MainNavigationFragment() {
         )
 
         // Show an error message
-        scheduleViewModel.errorMessage.observe(
-            viewLifecycleOwner,
-            EventObserver { errorMsg ->
-                // TODO: Change once there's a way to show errors to the user
-                Toast.makeText(this.context, errorMsg, Toast.LENGTH_LONG).show()
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            scheduleViewModel.errorMessage.collect { errorMsg ->
+                Toast.makeText(context, errorMsg, Toast.LENGTH_LONG).show()
             }
-        )
+        }
 
         if (savedInstanceState == null) {
             // VM outlives the UI, so reset this flag when a new Schedule page is shown
