@@ -36,6 +36,10 @@
         <value>true</value>
     </entry>
     <entry>
+        <key>feed_enabled</key>
+        <value>false</value>
+    </entry>
+    <entry>
         <key>search_schedule_enabled</key>
         <value>true</value>
     </entry>

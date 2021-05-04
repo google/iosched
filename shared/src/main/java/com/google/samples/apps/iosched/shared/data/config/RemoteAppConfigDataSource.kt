@@ -99,16 +99,11 @@ class RemoteAppConfigDataSource @Inject constructor(
         Pair(SANDBOXES_DAY3_END_TIME, MutableLiveData())
     )
 
-    private val cacheExpirySeconds: Long
+    // Set cache expiration to 0s when debugging to allow easy testing, otherwise
+    // use the default value.
+    private val cacheExpirySeconds: Long = if (BuildConfig.DEBUG) 0 else DEFAULT_CACHE_EXPIRY_S
 
     init {
-        // Set cache expiration to 0s when debugging to allow easy testing, otherwise
-        // use the default value
-        cacheExpirySeconds = if (BuildConfig.DEBUG) {
-            0
-        } else {
-            DEFAULT_CACHE_EXPIRY_S
-        }
         firebaseRemoteConfig.fetch(cacheExpirySeconds).addOnCompleteListener { task ->
             // Async
             if (task.isSuccessful) {
@@ -174,6 +169,9 @@ class RemoteAppConfigDataSource @Inject constructor(
 
     override fun isReservationFeatureEnabled(): Boolean =
         firebaseRemoteConfig.getBoolean(RESERVATION_FEATURE_ENABLED)
+
+    override fun isFeedEnabled(): Boolean =
+        firebaseRemoteConfig.getBoolean(FEED_FEATURE_ENABLED)
 
     companion object {
         const val WIFI_SSID_KEY = "wifi_ssid"
@@ -244,6 +242,7 @@ class RemoteAppConfigDataSource @Inject constructor(
         const val SEARCH_USING_ROOM_FEATURE_ENABLED = "search_using_room_enabled"
         const val ASSISTANT_APP_FEATURE_ENABLED = "io_assistant_app_enabled"
         const val RESERVATION_FEATURE_ENABLED = "reservation_enabled"
+        const val FEED_FEATURE_ENABLED = "feed_enabled"
 
         val DEFAULT_CACHE_EXPIRY_S = TimeUnit.MINUTES.toSeconds(12)
     }

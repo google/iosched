@@ -130,4 +130,5 @@ class FakeAppConfigDataSource : AppConfigDataSource {
     override fun isSearchUsingRoomFeatureEnabled(): Boolean = true
     override fun isAssistantAppFeatureEnabled(): Boolean = false
     override fun isReservationFeatureEnabled(): Boolean = false
+    override fun isFeedEnabled(): Boolean = false
 }

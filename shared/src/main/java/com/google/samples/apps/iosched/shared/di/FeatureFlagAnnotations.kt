@@ -79,3 +79,12 @@ annotation class AssistantAppEnabledFlag
 )
 @Retention(AnnotationRetention.BINARY)
 annotation class ReservationEnabledFlag
+
+// Whether or not the Feed feature is enabled
+@Qualifier
+@Target(
+    AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER,
+    AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER
+)
+@Retention(AnnotationRetention.BINARY)
+annotation class FeedEnabledFlag
