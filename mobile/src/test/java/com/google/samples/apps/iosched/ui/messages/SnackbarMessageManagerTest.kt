@@ -17,19 +17,13 @@
 package com.google.samples.apps.iosched.ui.messages
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.ui.SnackbarMessage
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.mock
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.CoreMatchers.nullValue
-import org.hamcrest.core.Is.`is`
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -54,9 +48,9 @@ class SnackbarMessageManagerTest {
     fun addOneMessage() {
         snackbarMessageManager.addMessage(msg1)
 
-        val result = LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
+        val result = snackbarMessageManager.currentSnackbar.value
 
-        assertThat(result?.peekContent(), `is`(equalTo(msg1)))
+        assertEquals(result, msg1)
     }
 
     @Test
@@ -67,78 +61,79 @@ class SnackbarMessageManagerTest {
         snackbarMessageManager.addMessage(msg2)
 
         // First message is consumed
-        var result = LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
-        assertThat(result?.getContentIfNotHandled(), `is`(equalTo(msg1)))
-        snackbarMessageManager.loadNextMessage() // Snackbar dismissed
+        var result = snackbarMessageManager.currentSnackbar.value
+        assertEquals(result, msg1)
+        snackbarMessageManager.removeMessageAndLoadNext(msg1) // Snackbar dismissed
 
         // Second message is consumed
-        result = LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
-        assertThat(result?.getContentIfNotHandled(), `is`(equalTo(msg2)))
-        snackbarMessageManager.loadNextMessage() // Snackbar dismissed
+        result = snackbarMessageManager.currentSnackbar.value
+        assertEquals(result, msg2)
+        snackbarMessageManager.removeMessageAndLoadNext(msg2) // Snackbar dismissed
 
         // All messages have been consumed
-        result = LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
-        assertThat(result?.getContentIfNotHandled(), `is`(nullValue()))
+        result = snackbarMessageManager.currentSnackbar.value
+        assertNull(result)
     }
 
     @Test
     fun addTwoMessagesSameRequestId_OnlyOneShows() {
-
         snackbarMessageManager.addMessage(msg1)
 
         snackbarMessageManager.addMessage(msg1)
 
         // First message is consumed
-        var result = LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
-        assertThat(result?.getContentIfNotHandled(), `is`(equalTo(msg1)))
-        snackbarMessageManager.loadNextMessage() // Snackbar dismissed
+        var result = snackbarMessageManager.currentSnackbar.value
+        assertEquals(result, msg1)
+        snackbarMessageManager.removeMessageAndLoadNext(msg1) // Snackbar dismissed
 
         // All messages have been consumed
-        result = LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
-        assertThat(result?.getContentIfNotHandled(), `is`(nullValue()))
+        result = snackbarMessageManager.currentSnackbar.value
+        assertNull(result)
     }
 
     @Test
-    fun addMessagesToQueue_OldOnesRemoved() {
+    fun addMessagesToQueue_NewOnesRemoved() {
         val addedMsgs = 15
         (0..addedMsgs).forEach {
             val newMsg = createMessage(it.toString())
             snackbarMessageManager.addMessage(newMsg)
         }
 
-        val result = LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
+        val result = snackbarMessageManager.currentSnackbar.value
+        assertEquals(result?.requestChangeId, 0.toString())
 
-        // The oldest message request ID should be 5, because we added 15 and the maximum is 10.
-        val oldestId = (addedMsgs - SnackbarMessageManager.MAX_ITEMS).toString()
-        assertThat(result?.getContentIfNotHandled()?.requestChangeId, `is`(equalTo(oldestId)))
+        (0 until SnackbarMessageManager.MAX_ITEMS).forEach {
+            val newMsg = createMessage(it.toString())
+            snackbarMessageManager.removeMessageAndLoadNext(newMsg)
+        }
+
+        // The last message request ID should be 10, because we added 15 and the maximum is 10.
+        val lastMsg = snackbarMessageManager.currentSnackbar.value
+        val lastId = SnackbarMessageManager.MAX_ITEMS.toString()
+        assertEquals(lastMsg?.requestChangeId, lastId)
     }
 
     @Test
     fun addOneMessage_snackbarIsStopped_actionDontShow() {
-        val mockSnackbarIsStopped = mock<LiveData<Boolean>> {
-            on { value }.doReturn(true)
-        }
+
         val snackbarMessageManager = SnackbarMessageManager(
-            FakePreferenceStorage(observableSnackbarIsStopped = mockSnackbarIsStopped)
+            FakePreferenceStorage(observableSnackbarIsStopped = MutableLiveData(true))
         )
         snackbarMessageManager.addMessage((msg1.copy(actionId = R.string.dont_show)))
 
-        val result = LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
+        val result = snackbarMessageManager.currentSnackbar.value
         assertNull(result)
     }
 
     @Test
     fun addOneMessage_snackbarAppears_actionNotDontShow() {
-        val mockSnackbarIsStopped = mock<LiveData<Boolean>> {
-            on { value }.doReturn(true)
-        }
         val snackbarMessageManager = SnackbarMessageManager(
-            FakePreferenceStorage(observableSnackbarIsStopped = mockSnackbarIsStopped)
+            FakePreferenceStorage(observableSnackbarIsStopped = MutableLiveData(true))
         )
         snackbarMessageManager.addMessage(msg1)
 
-        val result = LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
-        assertThat(result?.peekContent(), `is`(equalTo(msg1)))
+        val result = snackbarMessageManager.currentSnackbar.value
+        assertEquals(result, msg1)
     }
 
     private fun createMessage(requestId: String): SnackbarMessage {
