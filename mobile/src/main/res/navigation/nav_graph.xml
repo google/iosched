@@ -19,7 +19,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/navigation_feed">
+    app:startDestination="@id/navigation_schedule">
 
     <fragment
         android:id="@id/navigation_schedule"
