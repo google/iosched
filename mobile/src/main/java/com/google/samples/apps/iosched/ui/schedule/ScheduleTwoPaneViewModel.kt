@@ -16,8 +16,13 @@
 
 package com.google.samples.apps.iosched.ui.schedule
 
-sealed class ScheduleNavigationAction {
-    object NavigateToSignInDialogAction : ScheduleNavigationAction()
-    object NavigateToSignOutDialogAction : ScheduleNavigationAction()
-    object ShowScheduleUiHints : ScheduleNavigationAction()
-}
+import androidx.lifecycle.ViewModel
+import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+
+// Note: clients should obtain this from the Activity.
+@HiltViewModel
+class ScheduleTwoPaneViewModel @Inject constructor(
+    eventActionsViewModelDelegate: EventActionsViewModelDelegate
+) : ViewModel(), EventActionsViewModelDelegate by eventActionsViewModelDelegate

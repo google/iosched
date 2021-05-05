@@ -59,6 +59,13 @@
     <dimen name="speaker_large_headshot_size">112dp</dimen>
 
     <!-- Schedule -->
+    <!-- The pane widths are made large enough so that we only show the panes side-by-side on very
+         wide screens, e.g. tablet landscape (even in tablet portrait we cannot show both panes
+         comfortably). When not shown side-by-side, the panes are made to fit the available width.
+         Be careful not to make them so large that they do not fit anywhere.
+    -->
+    <dimen name="schedule_list_pane_width">464dp</dimen>
+    <dimen name="schedule_detail_pane_width">496dp</dimen>
     <dimen name="schedule_bottom_sheet_peek_height">@dimen/a11y_min_touch_target</dimen>
     <dimen name="schedule_page_padding_bottom">56dp</dimen> <!-- bottom_sheet_peek_height + 8dp -->
     <dimen name="session_keyline">64dp</dimen>

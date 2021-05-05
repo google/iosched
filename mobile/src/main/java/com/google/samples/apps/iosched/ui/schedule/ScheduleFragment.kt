@@ -34,7 +34,6 @@ import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
 import com.google.samples.apps.iosched.model.ConferenceDay
-import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.di.SearchScheduleEnabledFlag
@@ -43,14 +42,10 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
-import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentDirections.Companion.toSearch
-import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentDirections.Companion.toSessionDetail
-import com.google.samples.apps.iosched.ui.schedule.ScheduleNavigationAction.NavigateToSession
 import com.google.samples.apps.iosched.ui.schedule.ScheduleNavigationAction.NavigateToSignInDialogAction
 import com.google.samples.apps.iosched.ui.schedule.ScheduleNavigationAction.NavigateToSignOutDialogAction
 import com.google.samples.apps.iosched.ui.schedule.ScheduleNavigationAction.ShowScheduleUiHints
 import com.google.samples.apps.iosched.ui.sessioncommon.SessionsAdapter
-import com.google.samples.apps.iosched.ui.messages.setupSnackbarManager
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment.Companion.DIALOG_NOTIFICATIONS_PREFERENCE
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
@@ -98,6 +93,7 @@ class ScheduleFragment : MainNavigationFragment() {
     lateinit var snackbarMessageManager: SnackbarMessageManager
 
     private val scheduleViewModel: ScheduleViewModel by viewModels()
+    private val scheduleTwoPaneViewModel: ScheduleTwoPaneViewModel by activityViewModels()
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels()
 
     private lateinit var snackbar: FadingSnackbar
@@ -149,9 +145,6 @@ class ScheduleFragment : MainNavigationFragment() {
             }
         }
 
-        // Snackbar configuration
-        setupSnackbarManager(snackbarMessageManager, snackbar)
-
         binding.includeScheduleAppbar.toolbar.setupProfileMenuItem(mainActivityViewModel, this)
 
         // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
@@ -161,11 +154,11 @@ class ScheduleFragment : MainNavigationFragment() {
 
         // Session list configuration
         sessionsAdapter = SessionsAdapter(
-            scheduleViewModel,
+            scheduleTwoPaneViewModel,
             tagViewPool,
             scheduleViewModel.showReservations,
             scheduleViewModel.timeZoneId,
-            this
+            viewLifecycleOwner
         )
         scheduleRecyclerView.apply {
             adapter = sessionsAdapter
@@ -219,7 +212,6 @@ class ScheduleFragment : MainNavigationFragment() {
             launch {
                 scheduleViewModel.navigationActions.collect {
                     when (it) {
-                        is NavigateToSession -> openSessionDetail(it.sessionId)
                         is NavigateToSignInDialogAction -> openSignInDialog()
                         is NavigateToSignOutDialogAction -> openSignOutDialog()
                         is ShowScheduleUiHints -> openScheduleUiHintsDialog()
@@ -252,16 +244,6 @@ class ScheduleFragment : MainNavigationFragment() {
                 },
                 500
             )
-
-            // Process arguments to set initial filters
-            arguments?.let {
-                if (ScheduleFragmentArgs.fromBundle(it).showMySchedule) {
-                    scheduleViewModel.showMySchedule()
-                }
-                if (ScheduleFragmentArgs.fromBundle(it).showAllEvents) {
-                    scheduleViewModel.showAllEvents()
-                }
-            }
         }
         analyticsHelper.sendScreenView("Schedule", requireActivity())
     }
@@ -344,12 +326,8 @@ class ScheduleFragment : MainNavigationFragment() {
         scheduleViewModel.userHasInteracted = true
     }
 
-    private fun openSessionDetail(id: SessionId) {
-        findNavController().navigate(toSessionDetail(id))
-    }
-
     private fun openSearch() {
-        findNavController().navigate(toSearch())
+        findNavController().navigate(ScheduleFragmentDirections.toSearch())
     }
 
     private fun openSignInDialog() {

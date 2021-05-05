@@ -80,6 +80,7 @@ object Libs {
     const val ROOM_RUNTIME = "androidx.room:room-runtime"
     const val RULES = "androidx.test:rules"
     const val RUNNER = "androidx.test:runner"
+    const val SLIDING_PANE_LAYOUT = "androidx.slidingpanelayout:slidingpanelayout"
     const val THREETENABP = "com.jakewharton.threetenabp:threetenabp"
     const val THREETENBP = "org.threeten:threetenbp"
     const val TIMBER = "com.jakewharton.timber:timber"

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2021 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/schedule_detail_nav_graph"
+    app:startDestination="@id/placeholderFragment">
+
+    <!-- This is a global action since we can go to a session's detail regardless of the current
+         destination. Use popUpTo and popUpToInclusive to avoid creating stacks of session details
+         (e.g. by the user tapping on related sessions, or tapping a speaker and then tapping one of
+         their other sessions).
+    -->
+    <action
+        android:id="@+id/to_session_detail"
+        app:destination="@id/navigation_session_detail"
+        app:popUpTo="@id/navigation_session_detail"
+        app:popUpToInclusive="true" />
+
+    <fragment
+        android:id="@id/navigation_session_detail"
+        android:name="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailFragment"
+        tools:layout="@layout/fragment_session_detail">
+        <argument
+            android:name="session_id"
+            app:argType="string" />
+        <action
+            android:id="@+id/to_speaker_detail"
+            app:destination="@id/navigation_speaker_detail" />
+        <!-- TODO support navigating to the Map -->
+    </fragment>
+
+    <fragment
+        android:id="@id/navigation_speaker_detail"
+        android:name="com.google.samples.apps.iosched.ui.speaker.SpeakerFragment"
+        tools:layout="@layout/fragment_speaker">
+        <argument
+            android:name="speaker_id"
+            app:argType="string" />
+    </fragment>
+
+    <!-- Use an empty start destination until we can load and show the first session detail. -->
+    <fragment
+        android:id="@+id/placeholderFragment"
+        android:name="androidx.fragment.app.Fragment" />
+
+</navigation>

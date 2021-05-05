@@ -34,8 +34,6 @@ import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
-import com.google.samples.apps.iosched.ui.feed.FeedFragmentDirections.Companion.toSchedule
-import com.google.samples.apps.iosched.ui.feed.FeedFragmentDirections.Companion.toSessionDetail
 import com.google.samples.apps.iosched.ui.feed.FeedNavigationAction.NavigateAction
 import com.google.samples.apps.iosched.ui.feed.FeedNavigationAction.NavigateToScheduleAction
 import com.google.samples.apps.iosched.ui.feed.FeedNavigationAction.NavigateToSession
@@ -144,7 +142,8 @@ class FeedFragment : MainNavigationFragment() {
             model.navigationActions.collect { action ->
                 when (action) {
                     is NavigateAction -> findNavController().navigate(action.directions)
-                    is NavigateToScheduleAction -> openSchedule(action.showOnlyPinnedSessions)
+                    NavigateToScheduleAction ->
+                        findNavController().navigate(FeedFragmentDirections.toSchedule())
                     is NavigateToSession -> openSessionDetail(action.sessionId)
                     is OpenLiveStreamAction -> openLiveStreamUrl(action.url)
                     OpenSignInDialogAction -> openSignInDialog()
@@ -154,15 +153,8 @@ class FeedFragment : MainNavigationFragment() {
     }
 
     private fun openSessionDetail(id: SessionId) {
-        findNavController().navigate(toSessionDetail(id))
-    }
-
-    private fun openSchedule(withPinnedSessions: Boolean) {
-        if (withPinnedSessions) {
-            findNavController().navigate(toSchedule(showPinnedEvents = true))
-        } else {
-            findNavController().navigate(toSchedule(showAllEvents = true))
-        }
+        // TODO support opening a session detail
+        // findNavController().navigate(toSessionDetail(id))
     }
 
     private fun showFeedItems(recyclerView: RecyclerView, list: List<Any>?) {

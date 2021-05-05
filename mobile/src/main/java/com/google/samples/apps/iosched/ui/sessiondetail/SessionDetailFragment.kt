@@ -29,6 +29,7 @@ import androidx.core.view.doOnLayout
 import androidx.core.view.forEach
 import androidx.core.view.updatePadding
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -54,8 +55,7 @@ import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFra
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
 import com.google.samples.apps.iosched.ui.reservation.SwapReservationDialogFragment
 import com.google.samples.apps.iosched.ui.reservation.SwapReservationDialogFragment.Companion.DIALOG_SWAP_RESERVATION
-import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentDirections.Companion.toSessionDetail
-import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailFragmentDirections.Companion.toSpeakerDetail
+import com.google.samples.apps.iosched.ui.schedule.ScheduleTwoPaneViewModel
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToSession
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToSessionFeedback
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToSignInDialogAction
@@ -64,7 +64,6 @@ import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationA
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToYoutube
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.RemoveReservationDialogAction
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.ShowNotificationsPrefAction
-import com.google.samples.apps.iosched.ui.messages.setupSnackbarManager
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment.Companion.DIALOG_NOTIFICATIONS_PREFERENCE
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
@@ -83,11 +82,14 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
 
     private var shareString = ""
 
-    @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
+    @Inject
+    lateinit var snackbarMessageManager: SnackbarMessageManager
 
     private val sessionDetailViewModel: SessionDetailViewModel by viewModels()
+    private val scheduleTwoPaneViewModel: ScheduleTwoPaneViewModel by activityViewModels()
 
-    @Inject lateinit var analyticsHelper: AnalyticsHelper
+    @Inject
+    lateinit var analyticsHelper: AnalyticsHelper
 
     @Inject
     @field:Named("tagViewPool")
@@ -108,7 +110,7 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         sharedElementReturnTransition =
             TransitionInflater.from(context).inflateTransition(R.transition.speaker_shared_enter)
         // Delay the enter transition until speaker image has loaded.
@@ -140,14 +142,12 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
                             .startChooser()
                     }
                     R.id.menu_item_star -> {
-                        sessionDetailViewModel.onStarClicked()
+                        sessionDetailViewModel.userSession.value?.let(
+                            scheduleTwoPaneViewModel::onStarClicked
+                        )
                     }
                     R.id.menu_item_map -> {
-                        val directions = SessionDetailFragmentDirections.toMap(
-                            featureId = session?.room?.id,
-                            startTime = session?.startTime?.toEpochMilli() ?: 0L
-                        )
-                        findNavController().navigate(directions)
+                        // TODO support opening Map
                     }
                     R.id.menu_item_ask_question -> {
                         sessionDetailViewModel.session.value?.let { session ->
@@ -165,7 +165,8 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
         val detailsAdapter = SessionDetailAdapter(
             viewLifecycleOwner,
             sessionDetailViewModel,
-            tagRecycledViewPool
+            tagRecycledViewPool,
+            scheduleTwoPaneViewModel
         )
         binding.sessionDetailRecyclerView.run {
             adapter = detailsAdapter
@@ -218,7 +219,7 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
             sessionDetailViewModel.navigationActions.collect { action ->
                 when (action) {
                     is NavigateToSession -> findNavController().navigate(
-                        toSessionDetail(action.sessionId)
+                        SessionDetailFragmentDirections.toSessionDetail(action.sessionId)
                     )
                     is NavigateToSessionFeedback -> openFeedbackDialog(action.sessionId)
                     NavigateToSignInDialogAction -> openSignInDialog(requireActivity())
@@ -227,9 +228,10 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
                             binding.sessionDetailRecyclerView,
                             action.speakerId
                         )
-                        val extras =
+                        findNavController().navigate(
+                            SessionDetailFragmentDirections.toSpeakerDetail(action.speakerId),
                             FragmentNavigatorExtras(sharedElement to sharedElement.transitionName)
-                        findNavController().navigate(toSpeakerDetail(action.speakerId), extras)
+                        )
                     }
                     is NavigateToSwapReservationDialogAction ->
                         openSwapReservationDialog(requireActivity(), action.params)
@@ -241,8 +243,6 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
                 }
             }
         }
-
-        setupSnackbarManager(snackbarMessageManager, binding.snackbar)
 
         // When opened from the post session notification, open the feedback dialog
         requireNotNull(arguments).apply {

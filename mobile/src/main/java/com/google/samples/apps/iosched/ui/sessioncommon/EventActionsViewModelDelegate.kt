@@ -21,6 +21,8 @@ import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.shared.di.MainDispatcher
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
@@ -42,7 +44,7 @@ import javax.inject.Inject
  * actions performed on them.
  */
 interface EventActionsViewModelDelegate : EventActions {
-    val navigateToEventAction: LiveData<Event<SessionId>>
+    val navigateToSessionAction: LiveData<Event<SessionId>>
     val navigateToSignInDialogAction: LiveData<Event<Unit>>
 }
 
@@ -50,20 +52,21 @@ class DefaultEventActionsViewModelDelegate @Inject constructor(
     signInViewModelDelegate: SignInViewModelDelegate,
     private val starEventUseCase: StarEventAndNotifyUseCase,
     private val snackbarMessageManager: SnackbarMessageManager,
+    private val analyticsHelper: AnalyticsHelper,
     @ApplicationScope private val externalScope: CoroutineScope,
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher
 ) : EventActionsViewModelDelegate, SignInViewModelDelegate by signInViewModelDelegate {
 
-    private val _navigateToEventAction = MutableLiveData<Event<SessionId>>()
-    override val navigateToEventAction: LiveData<Event<SessionId>>
-        get() = _navigateToEventAction
+    private val _navigateToSessionAction = MutableLiveData<Event<SessionId>>()
+    override val navigateToSessionAction: LiveData<Event<SessionId>>
+        get() = _navigateToSessionAction
 
     private val _navigateToSignInDialogAction = MutableLiveData<Event<Unit>>()
     override val navigateToSignInDialogAction: LiveData<Event<Unit>>
         get() = _navigateToSignInDialogAction
 
     override fun openEventDetail(id: SessionId) {
-        _navigateToEventAction.value = Event(id)
+        _navigateToSessionAction.value = Event(id)
     }
 
     override fun onStarClicked(userSession: UserSession) {
@@ -87,6 +90,10 @@ class DefaultEventActionsViewModelDelegate @Inject constructor(
                 requestChangeId = UUID.randomUUID().toString()
             )
         )
+
+        if (newIsStarredState) {
+            analyticsHelper.logUiEvent(userSession.session.title, AnalyticsActions.STARRED)
+        }
 
         externalScope.launch(mainDispatcher) {
             userIdValue?.let {

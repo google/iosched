@@ -192,6 +192,7 @@ dependencies {
     implementation(Libs.FLEXBOX)
     implementation(Libs.LOTTIE)
     implementation(Libs.INK_PAGE_INDICATOR)
+    implementation(Libs.SLIDING_PANE_LAYOUT)
 
     // Architecture Components
     implementation(Libs.LIFECYCLE_LIVE_DATA_KTX)

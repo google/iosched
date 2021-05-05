@@ -21,7 +21,6 @@ package com.google.samples.apps.iosched.ui.speaker
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import com.google.samples.apps.iosched.model.TestDataRepository
-import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
@@ -30,12 +29,9 @@ import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCase
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.runBlockingTest
-import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
-import com.google.samples.apps.iosched.test.util.fakes.FakeEventActionsViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
-import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -104,9 +100,7 @@ class SpeakerViewModelTest {
             GetTimeZoneUseCase(FakePreferenceStorage(), coroutineRule.testDispatcher),
         signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate().apply {
             loadUser("123")
-        },
-        eventActionsDelegate: EventActionsViewModelDelegate = FakeEventActionsViewModelDelegate(),
-        analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper()
+        }
     ): SpeakerViewModel {
         return SpeakerViewModel(
             savedStateHandle = SavedStateHandle(mapOf("speaker_id" to speakerId)),
@@ -114,8 +108,6 @@ class SpeakerViewModelTest {
             loadSpeakerSessionsUseCase = loadSpeakerSessionsUseCase,
             getTimeZoneUseCase = getTimeZoneUseCase,
             signInViewModelDelegate = signInViewModelDelegate,
-            eventActionsViewModelDelegate = eventActionsDelegate,
-            analyticsHelper = analyticsHelper
         )
     }
 }

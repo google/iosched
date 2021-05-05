@@ -32,6 +32,7 @@ import com.google.samples.apps.iosched.tests.SetPreferencesRule
 import com.google.samples.apps.iosched.ui.sessioncommon.SessionViewHolder
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -66,6 +67,10 @@ class ScheduleTest {
     }
 
     @Test
+    @Ignore(
+        "Session Details are shown in another pane owned by a parent fragment. This test runs in " +
+            "a test Activity that does not include the other pane, so it will never pass."
+    )
     fun clickOnFirstItem_detailsShown() {
         onView(withId(R.id.recyclerview_schedule))
             .perform(RecyclerViewActions.actionOnItemAtPosition<SessionViewHolder>(0, click()))

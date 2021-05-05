@@ -23,8 +23,6 @@ import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.model.Speaker
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.model.userdata.UserSession
-import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
-import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCase
@@ -34,7 +32,6 @@ import com.google.samples.apps.iosched.shared.result.Result.Loading
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.WhileViewSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -57,12 +54,9 @@ class SpeakerViewModel @Inject constructor(
     private val loadSpeakerUseCase: LoadSpeakerUseCase,
     private val loadSpeakerSessionsUseCase: LoadUserSessionsUseCase,
     getTimeZoneUseCase: GetTimeZoneUseCase,
-    signInViewModelDelegate: SignInViewModelDelegate,
-    private val eventActionsViewModelDelegate: EventActionsViewModelDelegate,
-    private val analyticsHelper: AnalyticsHelper
+    signInViewModelDelegate: SignInViewModelDelegate
 ) : ViewModel(),
-    SignInViewModelDelegate by signInViewModelDelegate,
-    EventActionsViewModelDelegate by eventActionsViewModelDelegate {
+    SignInViewModelDelegate by signInViewModelDelegate {
 
     // TODO: remove hardcoded string when https://issuetracker.google.com/136967621 is available
     private val speakerId: SpeakerId? = savedStateHandle.get<SpeakerId>("speaker_id")
@@ -103,23 +97,4 @@ class SpeakerViewModel @Inject constructor(
 
     // TODO: Replace with timeZoneIdFlow when SearchViewModel is migrated
     val timeZoneId = timeZoneIdFlow.asLiveData()
-
-    override fun onStarClicked(userSession: UserSession) {
-        eventActionsViewModelDelegate.onStarClicked(userSession)
-
-        // Only recording stars, not un-stars.  Since userEvent.isStarred reflects pre-click value,
-        // checking for "old value starred, new value unstarred", in which case we don't record.
-        if (userSession.userEvent.isStarred) {
-            return
-        }
-
-        // Find the session
-        val sessionId = userSession.userEvent.id
-        val sessions = speakerUserSessions.value
-
-        if (sessions.isNotEmpty()) {
-            val session = sessions.first { it.session.id == sessionId }.session
-            analyticsHelper.logUiEvent(session.title, AnalyticsActions.STARRED)
-        }
-    }
 }

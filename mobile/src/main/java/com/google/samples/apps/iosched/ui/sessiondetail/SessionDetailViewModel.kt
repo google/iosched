@@ -38,8 +38,6 @@ import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseC
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.RequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.SwapAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
-import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
-import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Error
 import com.google.samples.apps.iosched.shared.result.Result.Loading
@@ -53,9 +51,7 @@ import com.google.samples.apps.iosched.shared.util.tryOffer
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
-import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
-import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToSession
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToSessionFeedback
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToSignInDialogAction
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToSpeakerDetail
@@ -101,7 +97,6 @@ class SessionDetailViewModel @Inject constructor(
     private val signInViewModelDelegate: SignInViewModelDelegate,
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val loadRelatedSessionUseCase: LoadUserSessionsUseCase,
-    private val starEventUseCase: StarEventAndNotifyUseCase,
     private val reservationActionUseCase: ReservationActionUseCase,
     getTimeZoneUseCase: GetTimeZoneUseCase,
     private val timeProvider: TimeProvider,
@@ -111,7 +106,6 @@ class SessionDetailViewModel @Inject constructor(
     @ReservationEnabledFlag val isReservationEnabledByRemoteConfig: Boolean
 ) : ViewModel(),
     SessionDetailEventListener,
-    EventActions,
     SignInViewModelDelegate by signInViewModelDelegate {
 
     // TODO: remove hardcoded string when https://issuetracker.google.com/136967621 is available
@@ -150,14 +144,17 @@ class SessionDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    // UserEvent is exposed as a StateFlow to the view. It's extracted from sessionUserData.
-    val userEvent: StateFlow<UserEvent?> = sessionUserData.transform { sessionUser ->
-        sessionUser.data?.userSession?.userEvent?.let { emit(it) }
+    // UserSession is exposed as a StateFlow to the view. It's extracted from sessionUserData.
+    val userSession: StateFlow<UserSession?> = sessionUserData.transformLatest { result ->
+        result.data?.userSession?.let { emit(it) }
     }.stateIn(viewModelScope, started = WhileViewSubscribed, initialValue = null)
 
-    // Session data is exposed as a StateFlow to the view. It's extracted from sessionUserData.
-    val session: StateFlow<Session?> = sessionUserData.transform { sessionUser ->
-        sessionUser.data?.userSession?.session?.let { emit(it) }
+    val userEvent: StateFlow<UserEvent?> = userSession.transform { userSession ->
+        userSession?.userEvent?.let { emit(it) }
+    }.stateIn(viewModelScope, started = WhileViewSubscribed, initialValue = null)
+
+    val session: StateFlow<Session?> = userSession.transform { userSession ->
+        userSession?.session?.let { emit(it) }
     }.stateIn(viewModelScope, started = WhileViewSubscribed, initialValue = null)
 
     // Related user sessions are exposed as a StateFlow and depend on the current session
@@ -250,11 +247,9 @@ class SessionDetailViewModel @Inject constructor(
         }
     }
 
-    override fun onStarClicked() {
-        val userEventSnapshot = userEvent.value ?: return
-        val sessionSnapshot = session.value ?: return
-        onStarClicked(UserSession(sessionSnapshot, userEventSnapshot))
-    }
+    // TODO this needs to be implemented to satisfy the interface, but star handling is being moved
+    // to a delegate.
+    override fun onStarClicked() {}
 
     override fun onReservationClicked() {
         if (!networkUtils.hasNetworkConnection()) {
@@ -353,53 +348,6 @@ class SessionDetailViewModel @Inject constructor(
         if (!isUserSignedInValue) {
             Timber.d("Showing Sign-in dialog")
             _navigationActions.tryOffer(NavigateToSignInDialogAction)
-        }
-    }
-
-    override fun openEventDetail(id: SessionId) {
-        _navigationActions.tryOffer(NavigateToSession(id))
-    }
-
-    override fun onStarClicked(userSession: UserSession) {
-        if (!isUserSignedInValue) {
-            Timber.d("Showing Sign-in dialog after star click")
-            _navigationActions.tryOffer(NavigateToSignInDialogAction)
-            return
-        }
-        val newIsStarredState = !userSession.userEvent.isStarred
-
-        val sessionTitle = session.value?.title
-        if (sessionTitle != null && newIsStarredState) {
-            analyticsHelper.logUiEvent(sessionTitle, AnalyticsActions.STARRED)
-        } else {
-            Timber.d("Session title is null, can't log")
-        }
-
-        // Update the snackbar message optimistically.
-        val messageId = if (newIsStarredState) {
-            R.string.event_starred
-        } else {
-            R.string.event_unstarred
-        }
-        snackbarMessageManager.addMessage(
-            SnackbarMessage(messageId, actionId = R.string.dont_show)
-        )
-
-        viewModelScope.launch {
-            userIdValue?.let {
-                val result = starEventUseCase(
-                    StarEventParameter(
-                        it,
-                        userSession.copy(
-                            userEvent = userSession.userEvent.copy(isStarred = newIsStarredState)
-                        )
-                    )
-                )
-                // Show an error message if a star request fails
-                if (result is Error) {
-                    snackbarMessageManager.addMessage(SnackbarMessage(R.string.event_star_error))
-                }
-            }
         }
     }
 

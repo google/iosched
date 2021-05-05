@@ -23,23 +23,9 @@
 
     <fragment
         android:id="@id/navigation_schedule"
-        android:name="com.google.samples.apps.iosched.ui.schedule.ScheduleFragment"
+        android:name="com.google.samples.apps.iosched.ui.schedule.ScheduleTwoPaneFragment"
         android:label="@string/title_schedule"
-        tools:layout="@layout/fragment_schedule">
-        <argument
-            android:name="showMySchedule"
-            android:defaultValue="false"
-            app:argType="boolean" />
-        <argument
-            android:name="showAllEvents"
-            android:defaultValue="false"
-            app:argType="boolean" />
-        <action
-            android:id="@+id/to_session_detail"
-            app:destination="@id/navigation_session_detail" />
-        <action
-            android:id="@+id/to_search"
-            app:destination="@id/navigation_search" />
+        tools:layout="@layout/fragment_schedule_two_pane">
     </fragment>
 
     <fragment
@@ -70,16 +56,7 @@
             app:destination="@id/navigation_session_detail" />
         <action
             android:id="@+id/to_schedule"
-            app:destination="@id/navigation_schedule">
-            <argument
-                android:name="showPinnedEvents"
-                android:defaultValue="false"
-                app:argType="boolean" />
-            <argument
-                android:name="showAllEvents"
-                android:defaultValue="false"
-                app:argType="boolean" />
-        </action>
+            app:destination="@id/navigation_schedule" />
         <action
             android:id="@+id/to_map"
             app:destination="@id/navigation_map">
@@ -142,48 +119,6 @@
         </action>
     </fragment>
 
-    <fragment
-        android:id="@id/navigation_search"
-        android:name="com.google.samples.apps.iosched.ui.search.SearchFragment"
-        tools:layout="@layout/fragment_search">
-        <action
-            android:id="@+id/to_session_detail"
-            app:destination="@id/navigation_session_detail" />
-        <action
-            android:id="@+id/to_speaker_detail"
-            app:destination="@id/navigation_speaker_detail" />
-    </fragment>
-
-    <fragment
-        android:id="@id/navigation_session_detail"
-        android:name="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailFragment"
-        tools:layout="@layout/fragment_session_detail">
-        <argument
-            android:name="session_id"
-            app:argType="string" />
-        <action
-            android:id="@+id/to_session_detail"
-            app:destination="@id/navigation_session_detail" />
-        <action
-            android:id="@+id/to_speaker_detail"
-            app:destination="@id/navigation_speaker_detail" />
-        <action
-            android:id="@+id/to_map"
-            app:destination="@id/navigation_map_sublevel" />
-    </fragment>
-
-    <fragment
-        android:id="@id/navigation_speaker_detail"
-        android:name="com.google.samples.apps.iosched.ui.speaker.SpeakerFragment"
-        tools:layout="@layout/fragment_speaker">
-        <argument
-            android:name="speaker_id"
-            app:argType="string" />
-        <action
-            android:id="@+id/to_session_detail"
-            app:destination="@id/navigation_session_detail" />
-    </fragment>
-
     <!-- Map can be be shown as a non-top-level screen, e.g. when entering from Session Detail. In
          these cases the back button navigates back through the sub-level screens, so we should show
          the back/up arrow in the toolbar. We accomplish that by creating another destination using
@@ -222,6 +157,7 @@
         android:name="com.google.samples.apps.iosched.ui.ar.ArCoreNotSupportedFragment"
         android:label="@string/phone_does_not_support_arcore_title"
         tools:layout="@layout/fragment_arcore_not_supported" />
+
     <fragment
         android:id="@+id/announcements_fragment"
         android:name="com.google.samples.apps.iosched.ui.feed.AnnouncementsFragment"

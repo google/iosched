@@ -24,7 +24,7 @@ import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDel
 
 class FakeEventActionsViewModelDelegate : EventActionsViewModelDelegate {
 
-    override val navigateToEventAction = MutableLiveData<Event<SessionId>>()
+    override val navigateToSessionAction = MutableLiveData<Event<SessionId>>()
     override val navigateToSignInDialogAction = MutableLiveData<Event<Unit>>()
 
     override fun openEventDetail(id: SessionId) = TODO("Not implemented")

@@ -22,9 +22,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.updatePadding
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import androidx.transition.TransitionInflater
 import com.google.android.material.appbar.AppBarLayout
@@ -32,12 +32,9 @@ import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSpeakerBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
-import com.google.samples.apps.iosched.ui.messages.setupSnackbarManager
-import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
-import com.google.samples.apps.iosched.ui.speaker.SpeakerFragmentDirections.Companion.toSessionDetail
+import com.google.samples.apps.iosched.ui.schedule.ScheduleTwoPaneViewModel
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -60,6 +57,7 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
     lateinit var tagRecycledViewPool: RecycledViewPool
 
     private val speakerViewModel: SpeakerViewModel by viewModels()
+    private val scheduleTwoPaneViewModel: ScheduleTwoPaneViewModel by activityViewModels()
 
     private lateinit var binding: FragmentSpeakerBinding
 
@@ -103,28 +101,11 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
             }
         }
 
-        speakerViewModel.navigateToEventAction.observe(
-            viewLifecycleOwner,
-            EventObserver { sessionId ->
-                findNavController().navigate(toSessionDetail(sessionId))
-            }
-        )
-
-        speakerViewModel.navigateToSignInDialogAction.observe(
-            viewLifecycleOwner,
-            EventObserver {
-                val dialog = SignInDialogFragment()
-                dialog.show(
-                    requireActivity().supportFragmentManager,
-                    SignInDialogFragment.DIALOG_SIGN_IN
-                )
-            }
-        )
-        setupSnackbarManager(snackbarMessageManager, binding.snackbar)
         val speakerAdapter = SpeakerAdapter(
             viewLifecycleOwner,
             speakerViewModel,
-            tagRecycledViewPool
+            tagRecycledViewPool,
+            scheduleTwoPaneViewModel
         )
         binding.speakerDetailRecyclerView.run {
             adapter = speakerAdapter

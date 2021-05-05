@@ -64,6 +64,7 @@ val playCore = "1.6.5"
 val room = "2.2.5"
 val rules = "1.1.1"
 val runner = "1.2.0"
+val slidingpanelayout = "1.2.0-alpha01"
 val threetenabp = "1.0.5"
 val timber = "4.7.1"
 val viewpager2 = "1.0.0"
@@ -136,6 +137,7 @@ dependencies {
         api("${Libs.INK_PAGE_INDICATOR}:$pageIndicator")
         api("${Libs.RULES}:$rules")
         api("${Libs.RUNNER}:$runner")
+        api("${Libs.SLIDING_PANE_LAYOUT}:$slidingpanelayout")
         api("${Libs.THREETENABP}:$threetenabp")
         api("${Libs.THREETENBP}:${Versions.THREETENBP}")
         api("${Libs.TIMBER}:$timber")

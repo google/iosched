@@ -18,12 +18,8 @@ package com.google.samples.apps.iosched.ui.schedule
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.ConferenceDay
-import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
-import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
-import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ConferenceDayIndexer
@@ -32,8 +28,6 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSe
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
-import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
-import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Error
@@ -45,7 +39,6 @@ import com.google.samples.apps.iosched.shared.util.tryOffer
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.ScheduleNavigationAction.ShowScheduleUiHints
-import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.WhileViewSubscribed
@@ -70,8 +63,6 @@ import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.threeten.bp.ZoneId
-import timber.log.Timber
-import java.util.UUID
 import javax.inject.Inject
 
 /**
@@ -83,16 +74,13 @@ import javax.inject.Inject
 class ScheduleViewModel @Inject constructor(
     private val loadScheduleUserSessionsUseCase: LoadScheduleUserSessionsUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
-    private val starEventUseCase: StarEventAndNotifyUseCase,
     scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase,
     topicSubscriber: TopicSubscriber,
     private val snackbarMessageManager: SnackbarMessageManager,
     getTimeZoneUseCase: GetTimeZoneUseCase,
     private val refreshConferenceDataUseCase: RefreshConferenceDataUseCase,
     observeConferenceDataUseCase: ObserveConferenceDataUseCase,
-    private val analyticsHelper: AnalyticsHelper
 ) : ViewModel(),
-    EventActions,
     SignInViewModelDelegate by signInViewModelDelegate {
 
     // Exposed to the view as a StateFlow but it's a one-shot operation.
@@ -237,15 +225,6 @@ class ScheduleViewModel @Inject constructor(
         topicSubscriber.subscribeToScheduleUpdates()
     }
 
-    // TODO(jdkoren) support showing all events or just the user's starred/reserved events
-    fun showMySchedule() {}
-
-    fun showAllEvents() {}
-
-    override fun openEventDetail(id: SessionId) {
-        _navigationActions.tryOffer(ScheduleNavigationAction.NavigateToSession(id))
-    }
-
     fun onSwipeRefresh() {
         viewModelScope.launch {
             // Ask repository to fetch new data
@@ -257,51 +236,6 @@ class ScheduleViewModel @Inject constructor(
 
     private fun refreshUserSessions() {
         refreshSignal.tryEmit(Unit)
-    }
-
-    override fun onStarClicked(userSession: UserSession) {
-        if (!isUserSignedInValue) {
-            Timber.d("Showing Sign-in dialog after star click")
-            _navigationActions.tryOffer(ScheduleNavigationAction.NavigateToSignInDialogAction)
-            return
-        }
-        val newIsStarredState = !userSession.userEvent.isStarred
-
-        // Update the snackbar message optimistically.
-        val stringResId = if (newIsStarredState) {
-            R.string.event_starred
-        } else {
-            R.string.event_unstarred
-        }
-
-        if (newIsStarredState) {
-            analyticsHelper.logUiEvent(userSession.session.title, AnalyticsActions.STARRED)
-        }
-
-        snackbarMessageManager.addMessage(
-            SnackbarMessage(
-                messageId = stringResId,
-                actionId = R.string.dont_show,
-                requestChangeId = UUID.randomUUID().toString()
-            )
-        )
-
-        viewModelScope.launch {
-            currentUserId.value?.let {
-                val result = starEventUseCase(
-                    StarEventParameter(
-                        it,
-                        userSession.copy(
-                            userEvent = userSession.userEvent.copy(isStarred = newIsStarredState)
-                        )
-                    )
-                )
-                // Show an error message if a star request fails
-                if (result is Error) {
-                    snackbarMessageManager.addMessage(SnackbarMessage(R.string.event_star_error))
-                }
-            }
-        }
     }
 
     fun scrollToStartOfDay(day: ConferenceDay) {

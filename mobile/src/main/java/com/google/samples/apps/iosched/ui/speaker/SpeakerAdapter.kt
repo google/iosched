@@ -31,6 +31,7 @@ import com.google.samples.apps.iosched.databinding.ItemSessionBinding
 import com.google.samples.apps.iosched.databinding.ItemSpeakerInfoBinding
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.ui.SectionHeader
+import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.speaker.SpeakerViewHolder.HeaderViewHolder
 import com.google.samples.apps.iosched.ui.speaker.SpeakerViewHolder.SpeakerInfoViewHolder
 import com.google.samples.apps.iosched.ui.speaker.SpeakerViewHolder.SpeakerSessionViewHolder
@@ -44,7 +45,8 @@ import java.util.Collections.emptyList
 class SpeakerAdapter(
     private val lifecycleOwner: LifecycleOwner,
     private val speakerViewModel: SpeakerViewModel,
-    private val tagRecycledViewPool: RecycledViewPool
+    private val tagRecycledViewPool: RecycledViewPool,
+    private val eventListener: EventActions
 ) : RecyclerView.Adapter<SpeakerViewHolder>() {
 
     private val differ = AsyncListDiffer<Any>(this, DiffCallback)
@@ -85,7 +87,7 @@ class SpeakerAdapter(
             }
             is SpeakerSessionViewHolder -> holder.binding.executeAfter {
                 userSession = differ.currentList[position] as UserSession
-                eventListener = speakerViewModel
+                eventListener = this@SpeakerAdapter.eventListener
                 timeZoneId = speakerViewModel.timeZoneIdFlow
                 showTime = true
                 lifecycleOwner = this@SpeakerAdapter.lifecycleOwner

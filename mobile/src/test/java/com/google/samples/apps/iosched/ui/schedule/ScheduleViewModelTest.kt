@@ -23,7 +23,6 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.model.TestDataSource
-import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
@@ -45,14 +44,12 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSe
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
-import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.CoroutineScope
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.runBlockingTest
-import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakeAppDatabase
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
@@ -69,13 +66,12 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
+import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsEqual
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertThat
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -130,63 +126,6 @@ class ScheduleViewModelTest {
         viewModel.scheduleUiData.first()
 
         assertNotNull(viewModel.errorMessage.first())
-    }
-
-    /** Starring **/
-
-    @Test
-    fun testStarEvent() = coroutineRule.runBlockingTest {
-        // Create test use cases with test data
-        val snackbarMessageManager = createSnackbarMessageManager()
-        val viewModel = createScheduleViewModel(snackbarMessageManager = snackbarMessageManager)
-
-        viewModel.onStarClicked(TestData.userSession0)
-
-        val message = snackbarMessageManager.currentSnackbar.value
-        assertEquals(message?.messageId, R.string.event_starred)
-        assertEquals(message?.actionId, R.string.dont_show)
-
-        // TODO: check changes in data source
-    }
-
-    @Test
-    fun testUnstarEvent() = coroutineRule.runBlockingTest {
-        // Create test use cases with test data
-        val snackbarMessageManager = createSnackbarMessageManager()
-        val viewModel = createScheduleViewModel(snackbarMessageManager = snackbarMessageManager)
-
-        viewModel.onStarClicked(TestData.userSession1)
-
-        val message = snackbarMessageManager.currentSnackbar.value
-        assertEquals(message?.messageId, R.string.event_unstarred)
-        assertEquals(message?.actionId, R.string.dont_show)
-    }
-
-    @Test
-    fun testStar_notLoggedInUser() = coroutineRule.runBlockingTest {
-        // Create test use cases with test data
-        val signInDelegate = FakeSignInViewModelDelegate()
-        signInDelegate.injectIsSignedIn = false
-
-        val snackbarMessageManager = createSnackbarMessageManager()
-
-        val viewModel = createScheduleViewModel(
-            signInViewModelDelegate = signInDelegate,
-            snackbarMessageManager = snackbarMessageManager
-        )
-
-        viewModel.onStarClicked(TestData.userSession1)
-
-        val message = snackbarMessageManager.currentSnackbar.value
-        // TODO change with actual resource used
-        assertNotEquals(
-            message?.messageId,
-            R.string.reservation_request_succeeded
-        )
-
-        // Verify that the sign in dialog was triggered
-        val signInEvent = viewModel.navigationActions.first()
-        assertTrue(signInEvent is ScheduleNavigationAction.NavigateToSignInDialogAction)
     }
 
     /** New reservation / waitlist **/
@@ -416,7 +355,7 @@ class ScheduleViewModelTest {
         val newValue = viewModel.scheduleUiData.first()
 
         assertThat(
-            newValue?.list?.first()?.session,
+            newValue.list?.first()?.session,
             `is`(IsEqual.equalTo(TestData.session0))
         )
     }
@@ -425,7 +364,6 @@ class ScheduleViewModelTest {
         loadScheduleSessionsUseCase: LoadScheduleUserSessionsUseCase =
             createTestLoadUserSessionsByDayUseCase(),
         signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate(),
-        starEventUseCase: StarEventAndNotifyUseCase = createStarEventUseCase(),
         snackbarMessageManager: SnackbarMessageManager = createSnackbarMessageManager(),
         scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase =
             FakeScheduleUiHintsShownUseCase(),
@@ -434,20 +372,17 @@ class ScheduleViewModelTest {
         refreshConferenceDataUseCase: RefreshConferenceDataUseCase =
             RefreshConferenceDataUseCase(TestDataRepository, testDispatcher),
         observeConferenceDataUseCase: ObserveConferenceDataUseCase =
-            ObserveConferenceDataUseCase(TestDataRepository, testDispatcher),
-        analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper()
+            ObserveConferenceDataUseCase(TestDataRepository, testDispatcher)
     ): ScheduleViewModel {
         return ScheduleViewModel(
             loadScheduleUserSessionsUseCase = loadScheduleSessionsUseCase,
             signInViewModelDelegate = signInViewModelDelegate,
-            starEventUseCase = starEventUseCase,
             scheduleUiHintsShownUseCase = scheduleUiHintsShownUseCase,
             topicSubscriber = topicSubscriber,
             snackbarMessageManager = snackbarMessageManager,
             getTimeZoneUseCase = getTimeZoneUseCase,
             refreshConferenceDataUseCase = refreshConferenceDataUseCase,
             observeConferenceDataUseCase = observeConferenceDataUseCase,
-            analyticsHelper = analyticsHelper
         )
     }
 

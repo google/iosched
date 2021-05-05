@@ -19,12 +19,9 @@ package com.google.samples.apps.iosched.ui.search
 import androidx.core.os.trace
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.samples.apps.iosched.model.SessionId
-import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.shared.domain.search.LoadSearchFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.search.SessionSearchUseCase
 import com.google.samples.apps.iosched.shared.domain.search.SessionSearchUseCaseParams
@@ -33,21 +30,16 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Loading
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-import com.google.samples.apps.iosched.shared.util.tryOffer
 import com.google.samples.apps.iosched.ui.filters.FiltersViewModelDelegate
-import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.threeten.bp.ZoneId
@@ -60,15 +52,10 @@ class SearchViewModel @Inject constructor(
     getTimeZoneUseCase: GetTimeZoneUseCase,
     loadFiltersUseCase: LoadSearchFiltersUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
-    filtersViewModelDelegate: FiltersViewModelDelegate,
-    @ApplicationScope externalScope: CoroutineScope // Needed by FiltersViewModelDelegateImpl
+    filtersViewModelDelegate: FiltersViewModelDelegate
 ) : ViewModel(),
-    EventActions,
     SignInViewModelDelegate by signInViewModelDelegate,
     FiltersViewModelDelegate by filtersViewModelDelegate {
-
-    private val _navigationActions = Channel<SearchNavigationAction>(Channel.CONFLATED)
-    val navigationActions = _navigationActions.receiveAsFlow()
 
     private val _searchResults = MutableStateFlow<List<UserSession>>(emptyList())
     val searchResults: StateFlow<List<UserSession>> = _searchResults
@@ -165,18 +152,4 @@ class SearchViewModel @Inject constructor(
         _showResultCount.value = true
         resultCount.value = sessions.size
     }
-
-    override fun openEventDetail(id: SessionId) {
-        _navigationActions.tryOffer(SearchNavigationAction.OpenSession(id))
-    }
-
-    override fun onStarClicked(userSession: UserSession) {
-        // TODO(jdkoren) make an EventActionsViewModelDelegate that handles this for everyone
-    }
-}
-
-sealed class SearchNavigationAction {
-    data class OpenSession(val sessionId: SessionId) : SearchNavigationAction()
-    data class OpenSpeaker(val speakerId: SpeakerId) : SearchNavigationAction()
-    data class OpenCodelab(val codelabUrl: String) : SearchNavigationAction()
 }

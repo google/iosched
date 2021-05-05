@@ -49,7 +49,6 @@ import com.google.samples.apps.iosched.shared.util.tryOffer
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
-import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailFragmentDirections
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
 import com.google.samples.apps.iosched.util.WhileViewSubscribed
@@ -277,9 +276,7 @@ class FeedViewModel @Inject constructor(
 
     override fun openSchedule(showOnlyPinnedSessions: Boolean) {
         analyticsHelper.logUiEvent("Home to Schedule", AnalyticsActions.HOME_TO_SCHEDULE)
-        _navigationActions.tryOffer(
-            FeedNavigationAction.NavigateToScheduleAction(showOnlyPinnedSessions)
-        )
+        _navigationActions.tryOffer(FeedNavigationAction.NavigateToScheduleAction)
     }
 
     override fun onStarClicked(userSession: UserSession) {
@@ -295,7 +292,7 @@ class FeedViewModel @Inject constructor(
         analyticsHelper.logUiEvent(moment.title.toString(), AnalyticsActions.HOME_TO_MAP)
         _navigationActions.tryOffer(
             FeedNavigationAction.NavigateAction(
-                SessionDetailFragmentDirections.toMap(
+                FeedFragmentDirections.toMap(
                     featureId = moment.featureId,
                     startTime = moment.startTime.toEpochMilli()
                 )
@@ -310,7 +307,7 @@ class FeedViewModel @Inject constructor(
 
     override fun openMapForSession(session: Session) {
         analyticsHelper.logUiEvent(session.id, AnalyticsActions.HOME_TO_MAP)
-        val directions = SessionDetailFragmentDirections.toMap(
+        val directions = FeedFragmentDirections.toMap(
             featureId = session.room?.id,
             startTime = session.startTime.toEpochMilli()
         )
@@ -338,5 +335,5 @@ sealed class FeedNavigationAction {
     class NavigateAction(val directions: NavDirections) : FeedNavigationAction()
     object OpenSignInDialogAction : FeedNavigationAction()
     class OpenLiveStreamAction(val url: String) : FeedNavigationAction()
-    class NavigateToScheduleAction(val showOnlyPinnedSessions: Boolean) : FeedNavigationAction()
+    object NavigateToScheduleAction : FeedNavigationAction()
 }

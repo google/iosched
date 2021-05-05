@@ -379,7 +379,6 @@ class SessionDetailViewModelTest {
             signInViewModelDelegate = signInViewModelPlugin,
             loadUserSessionUseCase = loadUserSessionUseCase,
             loadRelatedSessionUseCase = loadRelatedSessionsUseCase,
-            starEventUseCase = starEventUseCase,
             reservationActionUseCase = reservationActionUseCase,
             getTimeZoneUseCase = getTimeZoneUseCase,
             timeProvider = timeProvider,

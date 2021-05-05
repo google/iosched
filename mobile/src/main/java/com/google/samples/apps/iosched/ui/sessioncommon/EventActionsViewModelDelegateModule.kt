@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.sessioncommon
 
+import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.shared.di.MainDispatcher
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
@@ -40,6 +41,7 @@ internal class EventActionsViewModelDelegateModule {
         signInViewModelDelegate: SignInViewModelDelegate,
         starEventUseCase: StarEventAndNotifyUseCase,
         snackbarMessageManager: SnackbarMessageManager,
+        analyticsHelper: AnalyticsHelper,
         @ApplicationScope applicationScope: CoroutineScope,
         @MainDispatcher mainDispatcher: CoroutineDispatcher
     ): EventActionsViewModelDelegate {
@@ -47,6 +49,7 @@ internal class EventActionsViewModelDelegateModule {
             signInViewModelDelegate,
             starEventUseCase,
             snackbarMessageManager,
+            analyticsHelper,
             applicationScope,
             mainDispatcher
         )
