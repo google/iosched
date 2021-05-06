@@ -16,14 +16,14 @@
 
 package com.google.samples.apps.iosched.ui.onboarding
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompleteActionUseCase
-import com.google.samples.apps.iosched.shared.result.Event
+import com.google.samples.apps.iosched.shared.util.tryOffer
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,20 +36,25 @@ class OnboardingViewModel @Inject constructor(
     signInViewModelDelegate: SignInViewModelDelegate
 ) : ViewModel(), SignInViewModelDelegate by signInViewModelDelegate {
 
-    private val _navigateToMainActivity = MutableLiveData<Event<Unit>>()
-    val navigateToMainActivity: LiveData<Event<Unit>> = _navigateToMainActivity
-
-    private val _navigateToSignInDialogAction = MutableLiveData<Event<Unit>>()
-    val navigateToSignInDialogAction: LiveData<Event<Unit>> = _navigateToSignInDialogAction
+    private val _navigationActions = Channel<OnboardingNavigationAction>(Channel.CONFLATED)
+    // OnboardingViewModel is a shared ViewModel. Therefore, the navigation actions could be
+    // received by multiple collectors at the same time. With `receiveAsFlow`, we make sure only
+    // one collector will process the navigation event to avoid multiple back stack entries.
+    val navigationActions = _navigationActions.receiveAsFlow()
 
     fun getStartedClick() {
         viewModelScope.launch {
             onboardingCompleteActionUseCase(true)
-            _navigateToMainActivity.postValue(Event(Unit))
+            _navigationActions.send(OnboardingNavigationAction.NavigateToMainScreen)
         }
     }
 
     fun onSigninClicked() {
-        _navigateToSignInDialogAction.value = Event(Unit)
+        _navigationActions.tryOffer(OnboardingNavigationAction.NavigateToSignInDialog)
     }
+}
+
+sealed class OnboardingNavigationAction {
+    object NavigateToMainScreen : OnboardingNavigationAction()
+    object NavigateToSignInDialog : OnboardingNavigationAction()
 }

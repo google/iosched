@@ -29,10 +29,11 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.viewModels
 import com.google.samples.apps.iosched.databinding.FragmentOnboardingBinding
-import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.ui.MainActivity
+import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 private const val AUTO_ADVANCE_DELAY = 6_000L
 private const val INITIAL_ADVANCE_DELAY = 3_000L
@@ -64,7 +65,7 @@ class OnboardingFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentOnboardingBinding.inflate(inflater, container, false).apply {
             viewModel = onboardingViewModel
             lifecycleOwner = viewLifecycleOwner
@@ -76,18 +77,22 @@ class OnboardingFragment : Fragment() {
                 false
             }
         }
+        return binding.root
+    }
 
-        onboardingViewModel.navigateToMainActivity.observe(
-            viewLifecycleOwner,
-            EventObserver {
-                requireActivity().run {
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        launchAndRepeatWithViewLifecycle {
+            onboardingViewModel.navigationActions.collect { action ->
+                if (action == OnboardingNavigationAction.NavigateToMainScreen) {
+                    requireActivity().run {
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+                    }
                 }
             }
-        )
-
-        return binding.root
+        }
     }
 
     override fun onAttach(context: Context) {

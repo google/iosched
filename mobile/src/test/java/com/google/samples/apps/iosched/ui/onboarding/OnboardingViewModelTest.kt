@@ -19,15 +19,16 @@
 package com.google.samples.apps.iosched.ui.onboarding
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompleteActionUseCase
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestCoroutineDispatcher
-import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 
@@ -47,7 +48,7 @@ class OnboardingViewModelTest {
     private val testDispatcher = TestCoroutineDispatcher()
 
     @Test
-    fun onGetStartedClicked_updatesPrefs() {
+    fun onGetStartedClicked_updatesPrefs() = coroutineRule.runBlockingTest {
         // Given an onboarding view model
         val prefs = mock<PreferenceStorage>()
         val onboardingCompleteActionUseCase = OnboardingCompleteActionUseCase(prefs, testDispatcher)
@@ -61,12 +62,12 @@ class OnboardingViewModelTest {
         verify(prefs).onboardingCompleted = true
 
         // And that the navigation event was fired
-        val navigateEvent = LiveDataTestUtil.getValue(viewModel.navigateToMainActivity)
-        assertNotNull(navigateEvent?.getContentIfNotHandled())
+        val navigateEvent = viewModel.navigationActions.first()
+        assertEquals(navigateEvent, OnboardingNavigationAction.NavigateToMainScreen)
     }
 
     @Test
-    fun onSigninClicked() {
+    fun onSigninClicked() = coroutineRule.runBlockingTest {
         // Given an onboarding view model
         val prefs = mock<PreferenceStorage>()
         val onboardingCompleteActionUseCase = OnboardingCompleteActionUseCase(prefs, testDispatcher)
@@ -77,7 +78,7 @@ class OnboardingViewModelTest {
         viewModel.onSigninClicked()
 
         // And that the navigation event was fired
-        val navigateEvent = LiveDataTestUtil.getValue(viewModel.navigateToSignInDialogAction)
-        assertNotNull(navigateEvent?.getContentIfNotHandled())
+        val navigateEvent = viewModel.navigationActions.first()
+        assertEquals(navigateEvent, OnboardingNavigationAction.NavigateToSignInDialog)
     }
 }

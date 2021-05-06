@@ -40,7 +40,7 @@ class WelcomePreConferenceFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentOnboardingWelcomePreBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
         }

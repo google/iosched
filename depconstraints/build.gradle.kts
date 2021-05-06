@@ -52,7 +52,7 @@ val hamcrest = "1.3"
 val hilt = Versions.HILT_AGP
 val junit = "4.13"
 val junitExt = "1.1.1"
-val lifecycle = "2.3.0"
+val lifecycle = "2.4.0-alpha01"
 val lottie = "3.0.0"
 val material = "1.3.0"
 val mockito = "3.3.1"
@@ -118,6 +118,7 @@ dependencies {
         api("${Libs.KOTLIN_STDLIB}:${Versions.KOTLIN}")
         api("${Libs.LIFECYCLE_COMPILER}:$lifecycle")
         api("${Libs.LIFECYCLE_LIVE_DATA_KTX}:$lifecycle")
+        api("${Libs.LIFECYCLE_RUNTIME_KTX}:$lifecycle")
         api("${Libs.LIFECYCLE_VIEW_MODEL_KTX}:$lifecycle")
         api("${Libs.LOTTIE}:$lottie")
         api("${Libs.MATERIAL}:$material")

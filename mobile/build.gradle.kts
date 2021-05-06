@@ -139,6 +139,11 @@ android {
         // Running lint over the debug variant is enough
         isCheckReleaseBuilds = false
         // See lint.xml for rules configuration
+
+        // TODO: Remove when upgrading lifecycle from `2.4.0-alpha01`.
+        // Fix: https://android-review.googlesource.com/c/platform/frameworks/support/+/1697465
+        // Bug: https://issuetracker.google.com/184830263
+        disable("NullSafeMutableLiveData")
     }
 
     testBuildType = "staging"
@@ -189,6 +194,7 @@ dependencies {
 
     // Architecture Components
     implementation(Libs.LIFECYCLE_LIVE_DATA_KTX)
+    implementation(Libs.LIFECYCLE_RUNTIME_KTX)
     kapt(Libs.LIFECYCLE_COMPILER)
     testImplementation(Libs.ARCH_TESTING)
     implementation(Libs.NAVIGATION_FRAGMENT_KTX)

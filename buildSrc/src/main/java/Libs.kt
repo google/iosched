@@ -63,6 +63,7 @@ object Libs {
     const val KOTLIN_STDLIB = "org.jetbrains.kotlin:kotlin-stdlib-jdk7"
     const val LIFECYCLE_COMPILER = "androidx.lifecycle:lifecycle-compiler"
     const val LIFECYCLE_LIVE_DATA_KTX = "androidx.lifecycle:lifecycle-livedata-ktx"
+    const val LIFECYCLE_RUNTIME_KTX = "androidx.lifecycle:lifecycle-runtime-ktx"
     const val LIFECYCLE_VIEW_MODEL_KTX = "androidx.lifecycle:lifecycle-viewmodel-ktx"
     const val LOTTIE = "com.airbnb.android:lottie"
     const val MATERIAL = "com.google.android.material:material"

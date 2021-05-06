@@ -20,7 +20,13 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.samples.apps.iosched.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 fun navigationItemBackground(context: Context): Drawable? {
     // Need to inflate the drawable and CSL via AppCompatResources to work on Lollipop
@@ -43,4 +49,19 @@ fun navigationItemBackground(context: Context): Drawable? {
  */
 fun slideOffsetToAlpha(value: Float, rangeMin: Float, rangeMax: Float): Float {
     return ((value - rangeMin) / (rangeMax - rangeMin)).coerceIn(0f, 1f)
+}
+
+/**
+ * Launches a new coroutine and repeats `block` every time the Fragment's viewLifecycleOwner
+ * is in and out of `minActiveState` lifecycle state.
+ */
+inline fun Fragment.launchAndRepeatWithViewLifecycle(
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+    crossinline block: suspend CoroutineScope.() -> Unit
+) {
+    viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.lifecycle.repeatOnLifecycle(minActiveState) {
+            block()
+        }
+    }
 }

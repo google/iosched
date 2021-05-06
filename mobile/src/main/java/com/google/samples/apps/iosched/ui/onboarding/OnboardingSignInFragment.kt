@@ -36,7 +36,7 @@ class OnboardingSignInFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentOnboardingSigninBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
         }
