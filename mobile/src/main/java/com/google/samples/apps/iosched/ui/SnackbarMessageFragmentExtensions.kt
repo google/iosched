@@ -85,14 +85,14 @@ fun Fragment.setUpSnackbar(
     setupSnackbarManager(snackbarMessageManager, fadingSnackbar, actionClickListener)
 }
 
-private fun Fragment.setupSnackbarManager(
+fun Fragment.setupSnackbarManager(
     snackbarMessageManager: SnackbarMessageManager,
     fadingSnackbar: FadingSnackbar,
     actionClickListener: () -> Unit
 ) {
-    snackbarMessageManager.observeNextMessage().observe(
-        viewLifecycleOwner,
-        EventObserver { message ->
+    viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+        snackbarMessageManager.currentSnackbar.collect { message ->
+            if (message == null) { return@collect }
             val messageText = HtmlCompat.fromHtml(
                 requireContext().getString(message.messageId, message.session?.title),
                 FROM_HTML_MODE_LEGACY
@@ -107,8 +107,10 @@ private fun Fragment.setupSnackbarManager(
                 },
                 // When the snackbar is dismissed, ping the snackbar message manager in case there
                 // are pending messages.
-                dismissListener = { snackbarMessageManager.loadNextMessage() }
+                dismissListener = {
+                    snackbarMessageManager.removeMessageAndLoadNext(message)
+                }
             )
         }
-    )
+    }
 }

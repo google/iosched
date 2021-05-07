@@ -47,7 +47,6 @@ import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceD
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
-import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.CoroutineScope
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
@@ -58,7 +57,6 @@ import com.google.samples.apps.iosched.test.util.fakes.FakeAppDatabase
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
-import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.signin.FirebaseSignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
@@ -67,14 +65,15 @@ import com.nhaarman.mockito_kotlin.mock
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.CoreMatchers.not
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsEqual
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertThat
 import org.junit.Assert.assertTrue
@@ -109,14 +108,14 @@ class ScheduleViewModelTest {
         signInDelegate.loadUser("test")
 
         // Observe viewmodel to load sessions
-        viewModel.scheduleUiData.observeForTesting {
-            // Check that data were loaded correctly
-            assertEquals(
-                TestData.userSessionList,
-                LiveDataTestUtil.getValue(viewModel.scheduleUiData)?.list
-            )
-            assertFalse(LiveDataTestUtil.getValue(viewModel.isLoading)!!)
-        }
+        val scheduleUiData = viewModel.scheduleUiData.first()
+
+        // Check that data were loaded correctly
+        assertEquals(
+            TestData.userSessionList,
+            scheduleUiData.list
+        )
+        assertFalse(viewModel.isLoading.first())
     }
 
     @Test
@@ -125,67 +124,67 @@ class ScheduleViewModelTest {
         val viewModel = createScheduleViewModel(
             loadScheduleSessionsUseCase = createExceptionUseCase()
         )
-        viewModel.errorMessage.observeForTesting {
-            val errorMsg = LiveDataTestUtil.getValue(viewModel.errorMessage)
-            assertTrue(errorMsg?.peekContent()?.isNotEmpty() ?: false)
-        }
+        // Trigger data load
+        viewModel.scheduleUiData.first()
+
+        assertNotNull(viewModel.errorMessage.first())
     }
 
     /** Starring **/
 
     @Test
-    fun testStarEvent() {
+    fun testStarEvent() = coroutineRule.runBlockingTest {
         // Create test use cases with test data
         val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
         val viewModel = createScheduleViewModel(snackbarMessageManager = snackbarMessageManager)
 
         viewModel.onStarClicked(TestData.userSession0)
 
-        val nextMessageEvent: Event<SnackbarMessage>? =
-            LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
-        val message = nextMessageEvent?.getContentIfNotHandled()
-        assertThat(message?.messageId, `is`(equalTo(R.string.event_starred)))
-        assertThat(message?.actionId, `is`(equalTo(R.string.dont_show)))
+        val message = snackbarMessageManager.currentSnackbar.value
+        assertEquals(message?.messageId, R.string.event_starred)
+        assertEquals(message?.actionId, R.string.dont_show)
 
         // TODO: check changes in data source
     }
 
     @Test
-    fun testUnstarEvent() {
+    fun testUnstarEvent() = coroutineRule.runBlockingTest {
         // Create test use cases with test data
         val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
         val viewModel = createScheduleViewModel(snackbarMessageManager = snackbarMessageManager)
 
         viewModel.onStarClicked(TestData.userSession1)
 
-        val nextMessageEvent: Event<SnackbarMessage>? =
-            LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
-        val message = nextMessageEvent?.getContentIfNotHandled()
-        assertThat(message?.messageId, `is`(equalTo(R.string.event_unstarred)))
-        assertThat(message?.actionId, `is`(equalTo(R.string.dont_show)))
+        val message = snackbarMessageManager.currentSnackbar.value
+        assertEquals(message?.messageId, R.string.event_unstarred)
+        assertEquals(message?.actionId, R.string.dont_show)
     }
 
     @Test
-    fun testStar_notLoggedInUser() {
+    fun testStar_notLoggedInUser() = coroutineRule.runBlockingTest {
         // Create test use cases with test data
         val signInDelegate = FakeSignInViewModelDelegate()
         signInDelegate.injectIsSignedIn = false
 
-        val viewModel = createScheduleViewModel(signInViewModelDelegate = signInDelegate)
+        val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
+
+        val viewModel = createScheduleViewModel(
+            signInViewModelDelegate = signInDelegate,
+            snackbarMessageManager = snackbarMessageManager
+        )
 
         viewModel.onStarClicked(TestData.userSession1)
 
-        val starEvent: Event<SnackbarMessage>? =
-            LiveDataTestUtil.getValue(viewModel.snackBarMessage)
+        val message = snackbarMessageManager.currentSnackbar.value
         // TODO change with actual resource used
-        assertThat(
-            starEvent?.getContentIfNotHandled()?.messageId,
-            `is`(not(equalTo(R.string.reservation_request_succeeded)))
+        assertNotEquals(
+            message?.messageId,
+            R.string.reservation_request_succeeded
         )
 
         // Verify that the sign in dialog was triggered
-        val signInEvent = LiveDataTestUtil.getValue(viewModel.navigateToSignInDialogAction)
-        assertNotNull(signInEvent?.getContentIfNotHandled())
+        val signInEvent = viewModel.navigationActions.first()
+        assertTrue(signInEvent is ScheduleNavigationAction.NavigateToSignInDialogAction)
     }
 
     /** New reservation / waitlist **/
@@ -208,10 +207,7 @@ class ScheduleViewModelTest {
         signInDelegate.loadUser(testUserId)
 
         // Observe viewmodel to load sessions
-        viewModel.scheduleUiData.observeForever { }
-
-        // Observe snackbar so messages are received
-        viewModel.snackBarMessage.observeForever { }
+        viewModel.scheduleUiData.first()
 
         // A session goes from not-reserved to reserved
         val oldValue = UserEventsResult(TestData.userEvents)
@@ -222,11 +218,10 @@ class ScheduleViewModelTest {
         )
         source.newObservableUserEvents.value = newValue
 
-        val reservationMessage: Event<SnackbarMessage>? =
-            LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
-        assertThat(
-            reservationMessage?.getContentIfNotHandled()?.messageId,
-            `is`(equalTo(R.string.reservation_new))
+        val message = snackbarMessageManager.currentSnackbar.value
+        assertEquals(
+            message?.messageId,
+            R.string.reservation_new
         )
     }
 
@@ -247,10 +242,7 @@ class ScheduleViewModelTest {
         signInDelegate.loadUser("test")
 
         // Observe viewmodel to load sessions
-        viewModel.scheduleUiData.observeForever {}
-
-        // Observe snackbar so messages are received
-        viewModel.snackBarMessage.observeForever { }
+        viewModel.scheduleUiData.first()
 
         // A session goes from not-reserved to reserved
         val oldValue = UserEventsResult(TestData.userEvents)
@@ -260,11 +252,10 @@ class ScheduleViewModelTest {
 
         source.newObservableUserEvents.value = newValue
 
-        val waitlistMessage: Event<SnackbarMessage>? =
-            LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
-        assertThat(
-            waitlistMessage?.getContentIfNotHandled()?.messageId,
-            `is`(equalTo(R.string.waitlist_new))
+        val message = snackbarMessageManager.currentSnackbar.value
+        assertEquals(
+            message?.messageId,
+            R.string.waitlist_new
         )
     }
 
@@ -363,12 +354,10 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun scheduleHints_notShown_on_launch() = coroutineRule.runBlockingTest {
+    fun scheduleHints_shownOnLaunch() = coroutineRule.runBlockingTest {
         val viewModel = createScheduleViewModel()
-        viewModel.scheduleUiHintsShown.observeForTesting {
-            val event = LiveDataTestUtil.getValue(viewModel.scheduleUiHintsShown)
-            assertEquals(event?.getContentIfNotHandled(), false)
-        }
+        val firstNavAction = viewModel.navigationActions.firstOrNull()
+        assertEquals(firstNavAction, ScheduleNavigationAction.ShowScheduleUiHints)
     }
 
     @Test
@@ -392,14 +381,12 @@ class ScheduleViewModelTest {
         // Then the remote data source attempts to fetch new data
         verify(remoteDataSource).getRemoteConferenceData()
 
-        viewModel.swipeRefreshing.observeForTesting {
-            // And the swipe refreshing status is set to false
-            assertEquals(false, LiveDataTestUtil.getValue(viewModel.swipeRefreshing))
-        }
+        // And the swipe refreshing status is set to false
+        assertEquals(false, viewModel.swipeRefreshing.first())
     }
 
     @Test
-    fun newDataFromConfRepo_scheduleUpdated() {
+    fun newDataFromConfRepo_scheduleUpdated() = coroutineRule.runBlockingTest {
         val repo = ConferenceDataRepository(
             remoteDataSource = TestConfDataSourceSession0(),
             boostrapDataSource = BootstrapDataSourceSession3(),
@@ -415,13 +402,13 @@ class ScheduleViewModelTest {
         )
 
         // Observe viewmodel to load sessions
-        viewModel.scheduleUiData.observeForever {}
+        viewModel.scheduleUiData.first()
 
         // Trigger a refresh on the repo
         repo.refreshCacheWithRemoteConferenceData()
 
         // The new value should be present
-        val newValue = LiveDataTestUtil.getValue(viewModel.scheduleUiData)
+        val newValue = viewModel.scheduleUiData.first()
 
         assertThat(
             newValue?.list?.first()?.session,

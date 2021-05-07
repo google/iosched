@@ -17,12 +17,13 @@
 package com.google.samples.apps.iosched.ui.messages
 
 import androidx.annotation.VisibleForTesting
-import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
-import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager.Companion.MAX_ITEMS
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -47,48 +48,46 @@ open class SnackbarMessageManager @Inject constructor(
         const val MAX_ITEMS = 10
     }
 
-    private val messages = mutableListOf<Event<SnackbarMessage>>()
+    private val messages = mutableListOf<SnackbarMessage>()
 
-    private val result = MutableLiveData<Event<SnackbarMessage>>()
+    private val _currentSnackbar = MutableStateFlow<SnackbarMessage?>(null)
+    val currentSnackbar: StateFlow<SnackbarMessage?> = _currentSnackbar
 
     fun addMessage(msg: SnackbarMessage) {
-        if (isSnackbarShouldBeIgnored(msg)) {
+        if (shouldSnackbarBeIgnored(msg)) {
             return
         }
-        // If the new message is about the same change as a pending one, keep the new one. (rare)
-        val sameRequestId = messages.filter {
-            it.peekContent().requestChangeId == msg.requestChangeId && !it.hasBeenHandled
-        }
-        if (sameRequestId.isNotEmpty()) {
-            messages.removeAll(sameRequestId)
-        }
-
-        // If the new message is about a change that was already notified, ignore it.
-        val alreadyHandledWithSameId = messages.filter {
-            it.peekContent().requestChangeId == msg.requestChangeId && it.hasBeenHandled
-        }
-
-        // Only add the message if it hasn't been handled before
-        if (alreadyHandledWithSameId.isEmpty()) {
-            messages.add(Event(msg))
-            loadNextMessage()
-        }
-
-        // Remove old messages
+        // Limit amount of pending messages
         if (messages.size > MAX_ITEMS) {
-            messages.retainAll(messages.drop(messages.size - MAX_ITEMS))
+            Timber.e("Too many Snackbar messages. Message id: ${msg.messageId}")
+            return
+        }
+        // If the new message is about the same change as a pending one, keep the old one. (rare)
+        val sameRequestId = messages.find {
+            it.requestChangeId == msg.requestChangeId
+        }
+        if (sameRequestId == null) {
+            messages.add(msg)
+        }
+        loadNext()
+    }
+
+    private fun loadNext() {
+        if (_currentSnackbar.value == null) {
+            _currentSnackbar.value = messages.firstOrNull()
         }
     }
 
-    fun loadNextMessage() {
-        result.postValue(messages.firstOrNull { !it.hasBeenHandled })
+    fun removeMessageAndLoadNext(shownMsg: SnackbarMessage?) {
+        messages.removeAll { it == shownMsg }
+        if (_currentSnackbar.value == shownMsg) {
+            _currentSnackbar.value = null
+        }
+        loadNext()
     }
 
-    fun observeNextMessage(): MutableLiveData<Event<SnackbarMessage>> {
-        return result
-    }
-
-    private fun isSnackbarShouldBeIgnored(msg: SnackbarMessage): Boolean {
+    private fun shouldSnackbarBeIgnored(msg: SnackbarMessage): Boolean {
+        // TODO: This should call a suspend fun (migrate to datastore)
         return preferenceStorage.observableSnackbarIsStopped.value == true &&
             msg.actionId == R.string.dont_show
     }

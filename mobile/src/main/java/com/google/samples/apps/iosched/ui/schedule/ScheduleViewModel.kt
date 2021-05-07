@@ -16,13 +16,8 @@
 
 package com.google.samples.apps.iosched.ui.schedule
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.liveData
-import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.ConferenceDay
@@ -34,25 +29,45 @@ import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCas
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ConferenceDayIndexer
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsParameters
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
-import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.shared.util.tryOffer
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
+import com.google.samples.apps.iosched.ui.schedule.ScheduleNavigationAction.ShowScheduleUiHints
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.google.samples.apps.iosched.util.WhileViewSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.BufferOverflow.DROP_LATEST
+import kotlinx.coroutines.channels.BufferOverflow.DROP_OLDEST
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted.Companion.Lazily
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combineTransform
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.threeten.bp.ZoneId
 import timber.log.Timber
@@ -80,144 +95,146 @@ class ScheduleViewModel @Inject constructor(
     EventActions,
     SignInViewModelDelegate by signInViewModelDelegate {
 
-    private val preferConferenceTimeZoneResult: LiveData<Result<Boolean>> = liveData {
-        emit(getTimeZoneUseCase(Unit))
-    }
-
-    val timeZoneId: LiveData<ZoneId> = preferConferenceTimeZoneResult.map {
-        val preferConferenceTimeZone = it.successOr(true)
-        if (preferConferenceTimeZone) {
-            TimeUtils.CONFERENCE_TIMEZONE
+    // Exposed to the view as a StateFlow but it's a one-shot operation.
+    // TODO: Rename with timeZoneId when ScheduleViewModel is migrated
+    val timeZoneIdFlow = flow<ZoneId> {
+        if (getTimeZoneUseCase(Unit).successOr(true)) {
+            emit(TimeUtils.CONFERENCE_TIMEZONE)
         } else {
-            ZoneId.systemDefault()
+            emit(ZoneId.systemDefault())
         }
-    }
+    }.stateIn(viewModelScope, Lazily, TimeUtils.CONFERENCE_TIMEZONE)
 
-    val isConferenceTimeZone: LiveData<Boolean> = timeZoneId.map { zoneId ->
+    // TODO: Replace with timeZoneIdFlow when SearchViewModel is migrated
+    val timeZoneId = timeZoneIdFlow.asLiveData()
+
+    val isConferenceTimeZone: StateFlow<Boolean> = timeZoneIdFlow.mapLatest { zoneId ->
         TimeUtils.isConferenceTimeZone(zoneId)
-    }
+    }.stateIn(viewModelScope, Lazily, true)
 
     private lateinit var dayIndexer: ConferenceDayIndexer
 
-    private val conferenceDataAvailable: LiveData<Result<Long>> =
-        observeConferenceDataUseCase(Unit).asLiveData()
+    // Used to re-run flows on command
+    private val refreshSignal = MutableSharedFlow<Unit>()
+    // Used to run flows on init and also on command
+    private val loadDataSignal: Flow<Unit> = flow {
+        emit(Unit)
+        emitAll(refreshSignal)
+    }
 
-    private val userSessionsNeedRefresh = MediatorLiveData<Unit>().apply {
-        // Load sessions when there's new conference data
-        addSource(conferenceDataAvailable) {
-            Timber.d("Detected new data in conference data repository")
-            refreshUserSessions()
-        }
-        addSource(timeZoneId) {
-            Timber.d("Timezone changed")
-            refreshUserSessions()
-        }
-        // Refresh the list of user sessions if the user is updated.
-        addSource(currentUserInfo) {
-            Timber.d("User change: Loading user session with user ${it?.getUid()}")
-            refreshUserSessions()
+    // Event coming from repository indicating data should be refreshed
+    init {
+        viewModelScope.launch {
+            observeConferenceDataUseCase(Unit).collect {
+                refreshUserSessions()
+            }
         }
     }
 
-    // Refresh sessions when needed
-    private val loadSessionsResult = userSessionsNeedRefresh.switchMap {
-        loadScheduleUserSessionsUseCase(
-            LoadScheduleUserSessionsParameters(getUserId())
-        ).asLiveData()
-    }
+    // Latest user ID
+    private val userId = observeUserId().stateIn(viewModelScope, WhileViewSubscribed, null)
 
-    val isLoading: LiveData<Boolean> = loadSessionsResult.map {
+    // Refresh sessions when needed and when the user changes
+    private val loadSessionsResult: StateFlow<Result<LoadScheduleUserSessionsResult>> =
+        loadDataSignal.combineTransform(userId) { _, userId ->
+            emitAll(
+                loadScheduleUserSessionsUseCase(
+                    LoadScheduleUserSessionsParameters(userId)
+                )
+            )
+        }
+            .onEach {
+                // Side effect: show error messages coming from LoadScheduleUserSessionsUseCase
+                if (it is Result.Error) {
+                    _errorMessage.tryOffer(it.exception.message ?: "Error")
+                }
+                // Side effect: show snackbar if the result contains a message
+                if (it is Result.Success) {
+                    it.data.userMessage?.type?.stringRes()?.let { messageId ->
+                        // There is a message to display:
+                        snackbarMessageManager.addMessage(
+                            SnackbarMessage(
+                                messageId = messageId,
+                                longDuration = true,
+                                session = it.data.userMessageSession,
+                                requestChangeId = it.data.userMessage?.changeRequestId
+                            )
+                        )
+                    }
+                }
+            }
+            .stateIn(viewModelScope, WhileViewSubscribed, Result.Loading)
+
+    val isLoading: StateFlow<Boolean> = loadSessionsResult.mapLatest {
         it == Result.Loading
-    }
+    }.stateIn(viewModelScope, WhileViewSubscribed, true)
 
     // Expose new UI data when loadSessionsResult changes
-    val scheduleUiData = loadSessionsResult.switchMap { sessions ->
-        liveData {
-            val timeZoneIdValue = timeZoneId.value
+    val scheduleUiData: StateFlow<ScheduleUiData> =
+        loadSessionsResult.combineTransform(timeZoneIdFlow) { sessions, timeZone ->
             sessions.data?.let { data ->
                 dayIndexer = data.dayIndexer
                 emit(
                     ScheduleUiData(
                         list = data.userSessions,
                         dayIndexer = data.dayIndexer,
-                        timeZoneId = timeZoneIdValue
+                        timeZoneId = timeZone
                     )
                 )
             }
-        }
-    }
+        }.stateIn(viewModelScope, WhileViewSubscribed, ScheduleUiData())
 
-    private val swipeRefreshResult = MutableLiveData<Result<Boolean>>()
-    val swipeRefreshing: LiveData<Boolean> = swipeRefreshResult.map {
-        // Whenever refresh finishes, stop the indicator, whatever the result
-        false
-    }
+    private val _swipeRefreshing = MutableStateFlow(false)
+    val swipeRefreshing: StateFlow<Boolean> = _swipeRefreshing
 
-    /** LiveData for Actions and Events **/
+    /** Flows for Actions and Events **/
 
-    private val _errorMessage = MediatorLiveData<Event<String>>().apply {
-        addSource(loadSessionsResult) { result ->
-            if (result is Result.Error) {
-                value = Event(content = result.exception.message ?: "Error")
-            }
-        }
-    }
-    val errorMessage: LiveData<Event<String>> = _errorMessage
+    // SIDE EFFECTS: Error messages
+    // Guard against too many error messages by limiting to 3, keeping the oldest.
+    private val _errorMessage = Channel<String>(1, DROP_LATEST)
+    val errorMessage: Flow<String> =
+        _errorMessage.receiveAsFlow().shareIn(viewModelScope, WhileViewSubscribed)
 
-    private val _navigateToSessionAction = MutableLiveData<Event<String>>()
-    val navigateToSessionAction: LiveData<Event<String>>
-        get() = _navigateToSessionAction
+    // SIDE EFFECTS: Navigation actions
+    private val _navigationActions = Channel<ScheduleNavigationAction>(capacity = Channel.CONFLATED)
+    // Exposed with receiveAsFlow to make sure that only one observer receives updates.
+    val navigationActions = _navigationActions.receiveAsFlow()
 
-    private val _snackBarMessage = MediatorLiveData<Event<SnackbarMessage>>().apply {
-        addSource(loadSessionsResult) {
-            if (it is Success) {
-                it.data.userMessage?.type?.stringRes()?.let { messageId ->
-                    // There is a message to display:
-                    snackbarMessageManager.addMessage(
-                        SnackbarMessage(
-                            messageId = messageId,
-                            longDuration = true,
-                            session = it.data.userMessageSession,
-                            requestChangeId = it.data.userMessage?.changeRequestId
-                        )
-                    )
+    /** Show hints for the schedule if they haven't been shown yet */
+    init {
+        viewModelScope.launch {
+            scheduleUiHintsShownUseCase(Unit).successOr(false).let { scheduleHintsShown ->
+                if (!scheduleHintsShown) {
+                    _navigationActions.tryOffer(ShowScheduleUiHints)
                 }
             }
         }
-    }
-    val snackBarMessage: LiveData<Event<SnackbarMessage>> = _snackBarMessage
-
-    private val _navigateToSignInDialogAction = MutableLiveData<Event<Unit>>()
-    val navigateToSignInDialogAction: LiveData<Event<Unit>>
-        get() = _navigateToSignInDialogAction
-
-    private val _navigateToSignOutDialogAction = MutableLiveData<Event<Unit>>()
-    val navigateToSignOutDialogAction: LiveData<Event<Unit>>
-        get() = _navigateToSignOutDialogAction
-
-    /** Indicates if the UI hints for the schedule have been shown */
-    val scheduleUiHintsShown: LiveData<Event<Boolean>> = liveData {
-        val scheduleHintsShown = scheduleUiHintsShownUseCase(Unit)
-        emit(Event(scheduleHintsShown.successOr(false)))
     }
 
     // Flags used to indicate if the "scroll to now" feature has been used already.
     var userHasInteracted = false
 
-    // LiveData describing which item to scroll to automatically. We use an Event because on
-    // rotation RecyclerView takes care of restoring its scroll position.
-    private val _scrollToEvent = MediatorLiveData<Event<ScheduleScrollEvent>>().apply {
-        addSource(loadSessionsResult) { result ->
-            if (!userHasInteracted) {
+    // Flow describing which item to scroll to automatically.
+    // Using a MutableSharedFlow so a new value can be emitted from a user event and so
+    // the values are not replayed.
+    private val currentEventIndex = MutableSharedFlow<Int>(
+        extraBufferCapacity = 1,
+        onBufferOverflow = DROP_OLDEST
+    )
+    val scrollToEvent: SharedFlow<ScheduleScrollEvent> =
+        loadSessionsResult.combineTransform(currentEventIndex) { result, currentEventIndex ->
+            if (userHasInteracted) {
+                // Setting smoothScroll to false as it's an unnecessary delay.
+                emit(ScheduleScrollEvent(currentEventIndex, smoothScroll = false))
+            } else {
                 val index =
-                    (result as? Success)?.data?.firstUnfinishedSessionIndex ?: return@addSource
+                    (result as? Success)?.data?.firstUnfinishedSessionIndex
+                        ?: return@combineTransform
                 if (index != -1) {
-                    value = Event(ScheduleScrollEvent(index))
+                    emit(ScheduleScrollEvent(index))
                 }
             }
-        }
-    }
-    val scrollToEvent: LiveData<Event<ScheduleScrollEvent>> = _scrollToEvent
+        }.shareIn(viewModelScope, WhileViewSubscribed, replay = 0) // Don't replay on rotation
 
     init {
         // Subscribe user to schedule updates
@@ -230,23 +247,26 @@ class ScheduleViewModel @Inject constructor(
     fun showAllEvents() {}
 
     override fun openEventDetail(id: SessionId) {
-        _navigateToSessionAction.value = Event(id)
+        _navigationActions.tryOffer(ScheduleNavigationAction.NavigateToSession(id))
     }
 
     fun onSwipeRefresh() {
         viewModelScope.launch {
-            swipeRefreshResult.value = refreshConferenceDataUseCase(Any())
+            // Ask repository to fetch new data
+            _swipeRefreshing.emit(true)
+            refreshConferenceDataUseCase(Any())
+            _swipeRefreshing.emit(false)
         }
     }
 
     private fun refreshUserSessions() {
-        userSessionsNeedRefresh.value = Unit
+        refreshSignal.tryEmit(Unit)
     }
 
     override fun onStarClicked(userSession: UserSession) {
         if (!isSignedIn()) {
             Timber.d("Showing Sign-in dialog after star click")
-            _navigateToSignInDialogAction.value = Event(Unit)
+            _navigationActions.tryOffer(ScheduleNavigationAction.NavigateToSignInDialogAction)
             return
         }
         val newIsStarredState = !userSession.userEvent.isStarred
@@ -271,7 +291,7 @@ class ScheduleViewModel @Inject constructor(
         )
 
         viewModelScope.launch {
-            getUserId()?.let {
+            userId.value?.let {
                 val result = starEventUseCase(
                     StarEventParameter(
                         it,
@@ -282,16 +302,14 @@ class ScheduleViewModel @Inject constructor(
                 )
                 // Show an error message if a star request fails
                 if (result is Result.Error) {
-                    _snackBarMessage.value = Event(SnackbarMessage(R.string.event_star_error))
+                    snackbarMessageManager.addMessage(SnackbarMessage(R.string.event_star_error))
                 }
             }
         }
     }
 
     fun scrollToStartOfDay(day: ConferenceDay) {
-        val index = dayIndexer.positionForDay(day)
-        // We don't check userHasInteracted because the user explicitly requested this scroll.
-        _scrollToEvent.value = Event(ScheduleScrollEvent(index, true))
+        currentEventIndex.tryEmit(dayIndexer.positionForDay(day))
     }
 }
 
