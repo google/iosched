@@ -69,4 +69,10 @@ class FeatureFlagsModule {
     fun provideReservationEnabledFlag(appConfig: AppConfigDataSource): Boolean {
         return appConfig.isReservationFeatureEnabled()
     }
+
+    @Provides
+    @FeedEnabledFlag
+    fun provideFeedEnabledFlag(appConfig: AppConfigDataSource): Boolean {
+        return appConfig.isReservationFeatureEnabled()
+    }
 }
