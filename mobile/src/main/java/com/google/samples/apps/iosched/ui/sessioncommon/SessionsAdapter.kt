@@ -27,13 +27,14 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.samples.apps.iosched.databinding.ItemSessionBinding
 import com.google.samples.apps.iosched.model.userdata.UserSession
+import kotlinx.coroutines.flow.StateFlow
 import org.threeten.bp.ZoneId
 
 class SessionsAdapter(
     private val eventListener: EventActions,
     private val tagViewPool: RecycledViewPool,
     private val showReservations: LiveData<Boolean>,
-    private val timeZoneId: LiveData<ZoneId>,
+    private val timeZoneId: StateFlow<ZoneId>,
     private val lifecycleOwner: LifecycleOwner
 ) : ListAdapter<UserSession, SessionViewHolder>(SessionDiff) {
 
@@ -62,7 +63,7 @@ class SessionViewHolder(
     private val binding: ItemSessionBinding,
     private val eventListener: EventActions,
     private val showReservations: LiveData<Boolean>,
-    private val timeZoneId: LiveData<ZoneId>,
+    private val timeZoneId: StateFlow<ZoneId>,
     private val lifecycleOwner: LifecycleOwner
 ) : ViewHolder(binding.root) {
 

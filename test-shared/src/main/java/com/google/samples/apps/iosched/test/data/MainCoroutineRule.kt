@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.test.data
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
@@ -41,7 +42,7 @@ class MainCoroutineRule(
     }
 }
 
-fun MainCoroutineRule.runBlockingTest(block: suspend () -> Unit) =
+fun MainCoroutineRule.runBlockingTest(block: suspend TestCoroutineScope.() -> Unit) =
     this.testDispatcher.runBlockingTest {
         block()
     }

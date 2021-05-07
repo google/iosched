@@ -16,25 +16,27 @@
 
 package com.google.samples.apps.iosched.ui.filters
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
-import com.google.samples.apps.iosched.androidtest.util.observeForTesting
 import com.google.samples.apps.iosched.model.Tag
 import com.google.samples.apps.iosched.model.filters.Filter
 import com.google.samples.apps.iosched.model.filters.Filter.MyScheduleFilter
 import com.google.samples.apps.iosched.model.filters.Filter.TagFilter
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.CoreMatchers.equalTo
-import org.junit.Assert.assertThat
+import com.google.samples.apps.iosched.test.data.runBlockingTest
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 class FiltersViewModelTest {
 
-    // Executes tasks in the Architecture Components in the same thread
-    @get:Rule var instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
 
     private val tagFilters = TestData.tagsList.map { TagFilter(it) }
     private val androidFilter = TagFilter(TestData.androidTag)
@@ -44,7 +46,7 @@ class FiltersViewModelTest {
 
     @Before
     fun setup() {
-        viewModel = FiltersViewModelDelegateImpl()
+        viewModel = FiltersViewModelDelegateImpl(CoroutineScope(coroutineRule.testDispatcher))
         viewModel.setSupportedFilters(tagFilters)
     }
 
@@ -55,111 +57,108 @@ class FiltersViewModelTest {
     }
 
     // Helper method for subsequent tests.
-    private fun verifyLiveData(
+    private suspend fun verifyFlowEmissions(
         viewModel: FiltersViewModelDelegate,
         selectedFilters: List<Filter>,
         allFilters: List<Filter> = tagFilters
     ) {
         // Verify selected filters.
-        viewModel.selectedFilters.observeForTesting {
-            val selected = viewModel.selectedFilters.value!!
-            assertThat(selected.size, `is`(selectedFilters.size))
-            selected.forEach {
-                assertThat(it in selectedFilters, `is`(true))
-            }
+        val selectedFiltersResult = viewModel.selectedFilters.first()
+        assertEquals(selectedFiltersResult.size, selectedFilters.size)
+        selectedFiltersResult.forEach {
+            assertTrue(it in selectedFilters)
         }
+
         // Verify selected filter chips.
-        viewModel.selectedFilterChips.observeForTesting {
-            val chips = viewModel.selectedFilterChips.value!!
-            assertThat(chips.size, `is`(selectedFilters.size))
-            // Verify each chip's filter is in the list.
-            chips.forEach {
-                assertThat(it.filter in selectedFilters, `is`(true))
-            }
+        val selectedFilterChipsResult = viewModel.selectedFilterChips.first()
+        assertEquals(selectedFilterChipsResult.size, selectedFilters.size)
+        selectedFilterChipsResult.forEach {
+            assertTrue(it.filter in selectedFilters)
         }
+
         // Verify all filter chips.
-        viewModel.filterChips.observeForTesting {
-            val chips = viewModel.filterChips.value!!
-            assertThat(chips.size, `is`(allFilters.size))
-            // Verify chips are in order with correct selection state.
-            chips.forEachIndexed { index, filterChip ->
-                assertThat(filterChip.filter, `is`(equalTo(allFilters[index])))
-                assertThat(filterChip.isSelected, `is`(filterChip.filter in selectedFilters))
-            }
+        val filterChipsResult = viewModel.filterChips.first()
+        assertEquals(filterChipsResult.size, allFilters.size)
+        filterChipsResult.forEachIndexed { index, filterChip ->
+            assertEquals(filterChip.filter, allFilters[index])
+            assertEquals(filterChip.isSelected, filterChip.filter in selectedFilters)
         }
     }
 
     @Test
-    fun `setSupportedFilters() emits initial live data`() {
-        verifyLiveData(viewModel, emptyList())
+    fun `setSupportedFilters() emits default values`() = coroutineRule.runBlockingTest {
+        verifyFlowEmissions(viewModel, emptyList())
     }
 
     @Test
-    fun `activate and deactivate filters updates live data`() {
+    fun `activate and deactivate filters updates flows`() = coroutineRule.runBlockingTest {
         // Activate filters.
         viewModel.toggleFilter(androidFilter, true)
         viewModel.toggleFilter(sessionsFilter, true)
-        verifyLiveData(viewModel, listOf(androidFilter, sessionsFilter))
+        verifyFlowEmissions(viewModel, listOf(androidFilter, sessionsFilter))
 
         // Deactivate a filter.
         viewModel.toggleFilter(androidFilter, false)
-        verifyLiveData(viewModel, listOf(sessionsFilter))
+        verifyFlowEmissions(viewModel, listOf(sessionsFilter))
     }
 
     @Test
-    fun `activate same filter does not emit a change`() {
+    fun `activate same filter does not emit a change`() = coroutineRule.runBlockingTest {
         // Activate filter.
         viewModel.toggleFilter(androidFilter, true)
 
         var calls = 0
-        val observer = Observer<List<Filter>> {
-            calls++
+        val collectionJob = launch {
+            viewModel.selectedFilters.collect {
+                calls++
+            }
         }
-        viewModel.selectedFilters.observeForever(observer)
-        // Verify observer called for current value.
-        assertThat(calls, `is`(1))
+        assertEquals(calls, 1)
 
         // Activate same filter.
         viewModel.toggleFilter(androidFilter, true)
-        // Verify observer not called again.
-        assertThat(calls, `is`(1))
 
-        // Clean up.
-        viewModel.selectedFilters.removeObserver(observer)
+        // Verify collector not called again.
+        assertEquals(calls, 1)
+
+        collectionJob.cancel()
     }
 
     @Test
-    fun `deactivate filter that isn't selected does not emit a change`() {
-        // Activate filter.
-        viewModel.toggleFilter(androidFilter, true)
+    fun `deactivate filter that isn't selected does not emit a change`() =
+        coroutineRule.runBlockingTest {
+            // Activate filter.
+            viewModel.toggleFilter(androidFilter, true)
 
-        var calls = 0
-        val observer = Observer<List<Filter>> {
-            calls++
+            var calls = 0
+            val collectionJob = launch {
+                viewModel.selectedFilters.collect {
+                    calls++
+                }
+            }
+            // Verify collector called for current value.
+            assertEquals(calls, 1)
+
+            // Deactivate some other filter.
+            viewModel.toggleFilter(sessionsFilter, false)
+
+            // Verify collector not called again.
+            assertEquals(calls, 1)
+
+            collectionJob.cancel()
         }
-        viewModel.selectedFilters.observeForever(observer)
-        // Verify observer called for current value.
-        assertThat(calls, `is`(1))
-
-        // Deactivate some other filter.
-        viewModel.toggleFilter(sessionsFilter, false)
-        // Verify observer not called again.
-        assertThat(calls, `is`(1))
-
-        // Clean up.
-        viewModel.selectedFilters.removeObserver(observer)
-    }
 
     @Test
-    fun `setSupportedFilters() removes orphaned selected filters`() {
-        // Activate a topic filter and a type filter.
-        viewModel.toggleFilter(androidFilter, true)
-        viewModel.toggleFilter(sessionsFilter, true)
-        verifyLiveData(viewModel, listOf(androidFilter, sessionsFilter))
+    fun `setSupportedFilters() removes orphaned selected filters`() =
+        coroutineRule.runBlockingTest {
+            // Activate a topic filter and a type filter.
+            viewModel.toggleFilter(androidFilter, true)
+            viewModel.toggleFilter(sessionsFilter, true)
+            verifyFlowEmissions(viewModel, listOf(androidFilter, sessionsFilter))
 
-        // Set supported filters to only topic tags.
-        val topicTagFilters = tagFilters.filter { it.tag.category == Tag.CATEGORY_TOPIC }
-        viewModel.setSupportedFilters(topicTagFilters)
-        verifyLiveData(viewModel, listOf(androidFilter), allFilters = topicTagFilters)
-    }
+            // Set supported filters to only topic tags.
+            val topicTagFilters = tagFilters.filter { it.tag.category == Tag.CATEGORY_TOPIC }
+            viewModel.setSupportedFilters(topicTagFilters)
+            verifyFlowEmissions(viewModel, listOf(androidFilter), allFilters = topicTagFilters)
+        }
 }

@@ -86,7 +86,7 @@ class SpeakerAdapter(
             is SpeakerSessionViewHolder -> holder.binding.executeAfter {
                 userSession = differ.currentList[position] as UserSession
                 eventListener = speakerViewModel
-                timeZoneId = speakerViewModel.timeZoneId
+                timeZoneId = speakerViewModel.timeZoneIdFlow
                 showTime = true
                 lifecycleOwner = this@SpeakerAdapter.lifecycleOwner
             }

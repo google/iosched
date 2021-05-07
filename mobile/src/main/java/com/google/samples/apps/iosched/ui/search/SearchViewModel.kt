@@ -17,35 +17,38 @@
 package com.google.samples.apps.iosched.ui.search
 
 import androidx.core.os.trace
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.SpeakerId
-import com.google.samples.apps.iosched.model.filters.Filter
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
+import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.shared.domain.search.LoadSearchFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.search.SessionSearchUseCase
 import com.google.samples.apps.iosched.shared.domain.search.SessionSearchUseCaseParams
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
-import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Loading
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.shared.util.tryOffer
 import com.google.samples.apps.iosched.ui.filters.FiltersViewModelDelegate
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.threeten.bp.ZoneId
 import javax.inject.Inject
@@ -57,69 +60,58 @@ class SearchViewModel @Inject constructor(
     getTimeZoneUseCase: GetTimeZoneUseCase,
     loadFiltersUseCase: LoadSearchFiltersUseCase,
     signInViewModelDelegate: SignInViewModelDelegate,
-    filtersViewModelDelegate: FiltersViewModelDelegate
+    filtersViewModelDelegate: FiltersViewModelDelegate,
+    @ApplicationScope externalScope: CoroutineScope // Needed by FiltersViewModelDelegateImpl
 ) : ViewModel(),
     EventActions,
     SignInViewModelDelegate by signInViewModelDelegate,
     FiltersViewModelDelegate by filtersViewModelDelegate {
 
-    private val _navigateToSessionAction = MutableLiveData<Event<SessionId>>()
-    val navigateToSessionAction: LiveData<Event<SessionId>> = _navigateToSessionAction
+    private val _navigationActions = Channel<SearchNavigationAction>(Channel.CONFLATED)
+    val navigationActions = _navigationActions.receiveAsFlow()
 
-    private val _navigateToSpeakerAction = MutableLiveData<Event<SpeakerId>>()
-    val navigateToSpeakerAction: LiveData<Event<SpeakerId>> = _navigateToSpeakerAction
+    private val _searchResults = MutableStateFlow<List<UserSession>>(emptyList())
+    val searchResults: StateFlow<List<UserSession>> = _searchResults
 
-    // Has codelabUrl as String
-    private val _navigateToCodelabAction = MutableLiveData<Event<String>>()
-    val navigateToCodelabAction: LiveData<Event<String>> = _navigateToCodelabAction
-
-    private val _searchResults = MediatorLiveData<List<UserSession>>()
-    val searchResults: LiveData<List<UserSession>> = _searchResults
-
-    private val _isEmpty = MediatorLiveData<Boolean>()
-    val isEmpty: LiveData<Boolean> = _isEmpty
+    private val _isEmpty = MutableStateFlow(true)
+    val isEmpty: StateFlow<Boolean> = _isEmpty
 
     private var searchJob: Job? = null
 
-    private val _timeZoneId = MutableLiveData<ZoneId>()
-    val timeZoneId: LiveData<ZoneId>
-        get() = _timeZoneId
+    val timeZoneId: StateFlow<ZoneId> = flow {
+        if (getTimeZoneUseCase(Unit).successOr(true)) {
+            emit(TimeUtils.CONFERENCE_TIMEZONE)
+        } else {
+            emit(ZoneId.systemDefault())
+        }
+    }.stateIn(viewModelScope, SharingStarted.Lazily, ZoneId.systemDefault())
 
     private var textQuery = ""
-    private val selectedFiltersObserver = Observer<List<Filter>> {
-        executeSearch()
-    }
-    private val currentUserObserver = Observer<AuthenticatedUserInfo?> {
-        executeSearch()
-    }
 
     // Override because we also want to show result count when there's a text query.
-    override val showResultCount = MutableLiveData(false)
+    private val _showResultCount = MutableStateFlow(false)
+    override val showResultCount: StateFlow<Boolean> = _showResultCount
 
     init {
-        // Load timezone
-        viewModelScope.launch {
-            _timeZoneId.value = if (getTimeZoneUseCase(Unit).successOr(true)) {
-                TimeUtils.CONFERENCE_TIMEZONE
-            } else {
-                ZoneId.systemDefault()
-            }
-        }
         // Load filters
         viewModelScope.launch {
             setSupportedFilters(loadFiltersUseCase(Unit).successOr(emptyList()))
         }
+
         // Re-execute search when selected filters change
-        selectedFilters.observeForever(selectedFiltersObserver)
+        viewModelScope.launch {
+            selectedFilters.collect {
+                executeSearch()
+            }
+        }
+
         // Re-execute search when signed in user changes.
         // Required because we show star / reservation status.
-        currentUserInfo.observeForever(currentUserObserver)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        selectedFilters.removeObserver(selectedFiltersObserver)
-        currentUserInfo.removeObserver(currentUserObserver)
+        viewModelScope.launch {
+            currentUserInfoFlow.collect {
+                executeSearch()
+            }
+        }
     }
 
     fun onSearchQueryChanged(query: String) {
@@ -135,7 +127,7 @@ class SearchViewModel @Inject constructor(
         // Cancel any in-flight searches
         searchJob?.cancel()
 
-        val filters = selectedFilters.value ?: emptyList()
+        val filters = selectedFilters.value
         if (textQuery.isEmpty() && filters.isEmpty()) {
             clearSearchResults()
             return
@@ -159,7 +151,7 @@ class SearchViewModel @Inject constructor(
         _searchResults.value = emptyList()
         // Explicitly set false to not show the "No results" state
         _isEmpty.value = false
-        showResultCount.value = false
+        _showResultCount.value = false
         resultCount.value = 0
     }
 
@@ -170,15 +162,21 @@ class SearchViewModel @Inject constructor(
         val sessions = searchResult.successOr(emptyList())
         _searchResults.value = sessions
         _isEmpty.value = sessions.isEmpty()
-        showResultCount.value = true
+        _showResultCount.value = true
         resultCount.value = sessions.size
     }
 
     override fun openEventDetail(id: SessionId) {
-        _navigateToSessionAction.value = Event(id)
+        _navigationActions.tryOffer(SearchNavigationAction.OpenSession(id))
     }
 
     override fun onStarClicked(userSession: UserSession) {
         // TODO(jdkoren) make an EventActionsViewModelDelegate that handles this for everyone
     }
+}
+
+sealed class SearchNavigationAction {
+    data class OpenSession(val sessionId: SessionId) : SearchNavigationAction()
+    data class OpenSpeaker(val speakerId: SpeakerId) : SearchNavigationAction()
+    data class OpenCodelab(val codelabUrl: String) : SearchNavigationAction()
 }

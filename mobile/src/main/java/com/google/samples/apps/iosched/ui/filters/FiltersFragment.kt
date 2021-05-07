@@ -28,19 +28,20 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePaddingRelative
 import androidx.databinding.ObservableFloat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.google.android.flexbox.FlexboxItemDecoration
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentFiltersBinding
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import com.google.samples.apps.iosched.util.slideOffsetToAlpha
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_COLLAPSED
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_EXPANDED
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.Companion.STATE_HIDDEN
+import kotlinx.coroutines.flow.collect
 
 /**
  * Fragment that shows the list of filters for the Schedule
@@ -115,13 +116,6 @@ abstract class FiltersFragment : Fragment() {
         behavior = BottomSheetBehavior.from(binding.filterSheet)
 
         filterAdapter = SelectableFilterChipAdapter(viewModel)
-        viewModel.filterChips.observe(
-            viewLifecycleOwner,
-            Observer {
-                filterAdapter.submitFilterList(it)
-            }
-        )
-
         binding.recyclerviewFilters.apply {
             adapter = filterAdapter
             setHasFixedSize(true)
@@ -180,6 +174,16 @@ abstract class FiltersFragment : Fragment() {
             pendingSheetState = -1
         }
         updateBackPressedCallbackEnabled(behavior.state)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        launchAndRepeatWithViewLifecycle {
+            viewModel.filterChips.collect {
+                filterAdapter.submitFilterList(it)
+            }
+        }
     }
 
     private fun updateFilterContentsAlpha(slideOffset: Float) {

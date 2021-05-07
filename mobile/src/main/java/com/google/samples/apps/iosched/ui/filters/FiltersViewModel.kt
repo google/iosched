@@ -16,28 +16,32 @@
 
 package com.google.samples.apps.iosched.ui.filters
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.map
 import com.google.samples.apps.iosched.model.filters.Filter
 import com.google.samples.apps.iosched.util.compatRemoveIf
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
 /**
  * Interface to add filters functionality to a screen through a ViewModel.
  */
 interface FiltersViewModelDelegate {
     /** The full list of filter chips. */
-    val filterChips: LiveData<List<FilterChip>>
+    val filterChips: Flow<List<FilterChip>>
     /** The list of selected filters. */
-    val selectedFilters: LiveData<List<Filter>>
+    val selectedFilters: StateFlow<List<Filter>>
     /** The list of selected filter chips. */
-    val selectedFilterChips: LiveData<List<FilterChip>>
+    val selectedFilterChips: StateFlow<List<FilterChip>>
     /** True if there are any selected filters. */
-    val hasAnyFilters: LiveData<Boolean>
+    val hasAnyFilters: StateFlow<Boolean>
     /** Number of results from applying filters. Can be set by implementers. */
-    val resultCount: MutableLiveData<Int>
+    val resultCount: MutableStateFlow<Int>
     /** Whether to show the result count instead of the "Filters" header. */
-    val showResultCount: LiveData<Boolean>
+    val showResultCount: StateFlow<Boolean>
 
     /** Set the list of filters. */
     fun setSupportedFilters(filters: List<Filter>)
@@ -49,46 +53,53 @@ interface FiltersViewModelDelegate {
     fun clearFilters()
 }
 
-class FiltersViewModelDelegateImpl : FiltersViewModelDelegate {
+class FiltersViewModelDelegateImpl(
+    externalScope: CoroutineScope
+) : FiltersViewModelDelegate {
 
-    override val filterChips = MutableLiveData<List<FilterChip>>(emptyList())
+    private val _filterChips = MutableStateFlow<List<FilterChip>>(emptyList())
+    override val filterChips: Flow<List<FilterChip>> = _filterChips
 
-    override val selectedFilters = MutableLiveData<List<Filter>>(emptyList())
+    private val _selectedFilters = MutableStateFlow<List<Filter>>(emptyList())
+    override val selectedFilters: StateFlow<List<Filter>> = _selectedFilters
 
-    override val selectedFilterChips = MutableLiveData<List<FilterChip>>(emptyList())
+    private val _selectedFilterChips = MutableStateFlow<List<FilterChip>>(emptyList())
+    override val selectedFilterChips: StateFlow<List<FilterChip>> = _selectedFilterChips
 
-    override val hasAnyFilters = selectedFilterChips.map { it.isNotEmpty() }
+    override val hasAnyFilters = selectedFilterChips
+        .map { it.isNotEmpty() }
+        .stateIn(externalScope, SharingStarted.Lazily, false)
 
-    override val resultCount = MutableLiveData(0)
+    override val resultCount = MutableStateFlow(0)
 
     // Default behavior: show count when there are active filters.
     override val showResultCount = hasAnyFilters
 
     // State for internal logic
     private var _filters = mutableListOf<Filter>()
-    private val _selectedFilters = mutableSetOf<Filter>()
-    private var _filterChips = mutableListOf<FilterChip>()
-    private var _selectedFilterChips = mutableListOf<FilterChip>()
+    private val _selectedFiltersList = mutableSetOf<Filter>()
+    private var _filterChipsList = mutableListOf<FilterChip>()
+    private var _selectedFilterChipsList = mutableListOf<FilterChip>()
 
     override fun setSupportedFilters(filters: List<Filter>) {
         // Remove orphaned filters
-        val selectedChanged = _selectedFilters.compatRemoveIf { it !in filters }
+        val selectedChanged = _selectedFiltersList.compatRemoveIf { it !in filters }
         _filters = filters.toMutableList()
-        _filterChips = _filters.mapTo(mutableListOf()) {
-            it.asChip(it in _selectedFilters)
+        _filterChipsList = _filters.mapTo(mutableListOf()) {
+            it.asChip(it in _selectedFiltersList)
         }
 
         if (selectedChanged) {
-            _selectedFilterChips = _filterChips.filterTo(mutableListOf()) { it.isSelected }
+            _selectedFilterChipsList = _filterChipsList.filterTo(mutableListOf()) { it.isSelected }
         }
         publish(selectedChanged)
     }
 
     private fun publish(selectedChanged: Boolean) {
-        filterChips.value = _filterChips
+        _filterChips.value = _filterChipsList
         if (selectedChanged) {
-            selectedFilters.value = _selectedFilters.toList()
-            selectedFilterChips.value = _selectedFilterChips
+            _selectedFilters.value = _selectedFiltersList.toList()
+            _selectedFilterChips.value = _selectedFilterChipsList
         }
     }
 
@@ -96,21 +107,26 @@ class FiltersViewModelDelegateImpl : FiltersViewModelDelegate {
         if (filter !in _filters) {
             throw IllegalArgumentException("Unsupported filter: $filter")
         }
-        val changed = if (enabled) _selectedFilters.add(filter) else _selectedFilters.remove(filter)
+        val changed = if (enabled) {
+            _selectedFiltersList.add(filter)
+        } else {
+            _selectedFiltersList.remove(filter)
+        }
         if (changed) {
-            _selectedFilterChips = _selectedFilters.mapTo(mutableListOf()) { it.asChip(true) }
-            val index = _filterChips.indexOfFirst { it.filter == filter }
-            _filterChips[index] = filter.asChip(enabled)
+            _selectedFilterChipsList =
+                _selectedFiltersList.mapTo(mutableListOf()) { it.asChip(true) }
+            val index = _filterChipsList.indexOfFirst { it.filter == filter }
+            _filterChipsList[index] = filter.asChip(enabled)
 
             publish(true)
         }
     }
 
     override fun clearFilters() {
-        if (_selectedFilters.isNotEmpty()) {
-            _selectedFilters.clear()
-            _selectedFilterChips.clear()
-            _filterChips = _filterChips.mapTo(mutableListOf()) {
+        if (_selectedFiltersList.isNotEmpty()) {
+            _selectedFiltersList.clear()
+            _selectedFilterChipsList.clear()
+            _filterChipsList = _filterChipsList.mapTo(mutableListOf()) {
                 if (it.isSelected) it.copy(isSelected = false) else it
             }
 

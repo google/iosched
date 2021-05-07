@@ -233,17 +233,13 @@ class SessionDetailViewModel @Inject constructor(
     }.stateIn(viewModelScope, WhileViewSubscribed, false)
 
     // Exposed to the view as a StateFlow but it's a one-shot operation.
-    // TODO: Rename with timeZoneId when ScheduleViewModel is migrated
-    val timeZoneIdFlow = flow<ZoneId> {
+    val timeZoneId = flow<ZoneId> {
         if (getTimeZoneUseCase(Unit).successOr(true)) {
             emit(TimeUtils.CONFERENCE_TIMEZONE)
         } else {
             emit(ZoneId.systemDefault())
         }
     }.stateIn(viewModelScope, WhileViewSubscribed, TimeUtils.CONFERENCE_TIMEZONE)
-
-    // TODO: Replace with timeZoneIdFlow when ScheduleViewModel is migrated
-    val timeZoneId = timeZoneIdFlow.asLiveData()
 
     // SIDE EFFECTS: Navigation actions
     private val _navigationActions = Channel<SessionDetailNavigationAction>(capacity = CONFLATED)

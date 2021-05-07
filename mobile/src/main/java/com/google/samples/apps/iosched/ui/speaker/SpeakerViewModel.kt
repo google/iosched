@@ -19,8 +19,10 @@ package com.google.samples.apps.iosched.ui.speaker
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.model.Speaker
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.model.userdata.UserSession
@@ -38,7 +40,9 @@ import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.stateIn
 import org.threeten.bp.ZoneId
 import javax.inject.Inject
 
@@ -96,6 +100,9 @@ class SpeakerViewModel @Inject constructor(
             emit(ZoneId.systemDefault())
         }
     }
+
+    val timeZoneIdFlow = timeZoneId.asFlow()
+        .stateIn(viewModelScope, SharingStarted.Lazily, ZoneId.systemDefault())
 
     /**
      * Provides the speaker ID which initiates all data loading.

@@ -16,15 +16,19 @@
 
 package com.google.samples.apps.iosched.ui.filters
 
+import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineScope
 
 @InstallIn(SingletonComponent::class)
 @Module
 class FiltersViewModelDelegateModule {
 
     @Provides
-    fun provideFiltersViewModelDelegate(): FiltersViewModelDelegate = FiltersViewModelDelegateImpl()
+    fun provideFiltersViewModelDelegate(
+        @ApplicationScope applicationScope: CoroutineScope
+    ): FiltersViewModelDelegate = FiltersViewModelDelegateImpl(applicationScope)
 }

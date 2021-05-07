@@ -26,20 +26,21 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSearchBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.search.SearchFragmentDirections.Companion.toSessionDetail
 import com.google.samples.apps.iosched.ui.search.SearchFragmentDirections.Companion.toSpeakerDetail
 import com.google.samples.apps.iosched.ui.sessioncommon.SessionsAdapter
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import com.google.samples.apps.iosched.util.openWebsiteUrl
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -63,7 +64,7 @@ class SearchFragment : MainNavigationFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val themedInflater =
             inflater.cloneInContext(ContextThemeWrapper(requireActivity(), R.style.AppTheme_Detail))
         binding = FragmentSearchBinding.inflate(themedInflater, container, false).apply {
@@ -74,31 +75,6 @@ class SearchFragment : MainNavigationFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        viewModel.searchResults.observe(
-            viewLifecycleOwner,
-            Observer {
-                sessionsAdapter.submitList(it)
-            }
-        )
-        viewModel.navigateToSessionAction.observe(
-            viewLifecycleOwner,
-            EventObserver { sessionId ->
-                findNavController().navigate(toSessionDetail(sessionId))
-            }
-        )
-        viewModel.navigateToSpeakerAction.observe(
-            viewLifecycleOwner,
-            EventObserver { speakerId ->
-                findNavController().navigate(toSpeakerDetail(speakerId))
-            }
-        )
-        viewModel.navigateToCodelabAction.observe(
-            viewLifecycleOwner,
-            EventObserver { url ->
-                openWebsiteUrl(requireActivity(), url)
-            }
-        )
         analyticsHelper.sendScreenView("Search", requireActivity())
     }
 
@@ -151,6 +127,29 @@ class SearchFragment : MainNavigationFragment() {
             adapter = sessionsAdapter
             doOnApplyWindowInsets { v, insets, padding ->
                 v.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)
+            }
+        }
+
+        launchAndRepeatWithViewLifecycle {
+            launch {
+                viewModel.searchResults.collect {
+                    sessionsAdapter.submitList(it)
+                }
+            }
+            launch {
+                viewModel.navigationActions.collect { event ->
+                    when (event) {
+                        is SearchNavigationAction.OpenSession -> {
+                            findNavController().navigate(toSessionDetail(event.sessionId))
+                        }
+                        is SearchNavigationAction.OpenSpeaker -> {
+                            findNavController().navigate(toSpeakerDetail(event.speakerId))
+                        }
+                        is SearchNavigationAction.OpenCodelab -> {
+                            openWebsiteUrl(requireActivity(), event.codelabUrl)
+                        }
+                    }
+                }
             }
         }
 

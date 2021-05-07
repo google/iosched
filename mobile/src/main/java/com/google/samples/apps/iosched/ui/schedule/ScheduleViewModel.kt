@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.ui.schedule
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.ConferenceDay
@@ -37,6 +36,7 @@ import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUse
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.Result.Error
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.result.successOr
@@ -96,8 +96,7 @@ class ScheduleViewModel @Inject constructor(
     SignInViewModelDelegate by signInViewModelDelegate {
 
     // Exposed to the view as a StateFlow but it's a one-shot operation.
-    // TODO: Rename with timeZoneId when ScheduleViewModel is migrated
-    val timeZoneIdFlow = flow<ZoneId> {
+    val timeZoneId = flow<ZoneId> {
         if (getTimeZoneUseCase(Unit).successOr(true)) {
             emit(TimeUtils.CONFERENCE_TIMEZONE)
         } else {
@@ -105,10 +104,7 @@ class ScheduleViewModel @Inject constructor(
         }
     }.stateIn(viewModelScope, Lazily, TimeUtils.CONFERENCE_TIMEZONE)
 
-    // TODO: Replace with timeZoneIdFlow when SearchViewModel is migrated
-    val timeZoneId = timeZoneIdFlow.asLiveData()
-
-    val isConferenceTimeZone: StateFlow<Boolean> = timeZoneIdFlow.mapLatest { zoneId ->
+    val isConferenceTimeZone: StateFlow<Boolean> = timeZoneId.mapLatest { zoneId ->
         TimeUtils.isConferenceTimeZone(zoneId)
     }.stateIn(viewModelScope, Lazily, true)
 
@@ -145,11 +141,11 @@ class ScheduleViewModel @Inject constructor(
         }
             .onEach {
                 // Side effect: show error messages coming from LoadScheduleUserSessionsUseCase
-                if (it is Result.Error) {
+                if (it is Error) {
                     _errorMessage.tryOffer(it.exception.message ?: "Error")
                 }
                 // Side effect: show snackbar if the result contains a message
-                if (it is Result.Success) {
+                if (it is Success) {
                     it.data.userMessage?.type?.stringRes()?.let { messageId ->
                         // There is a message to display:
                         snackbarMessageManager.addMessage(
@@ -171,7 +167,7 @@ class ScheduleViewModel @Inject constructor(
 
     // Expose new UI data when loadSessionsResult changes
     val scheduleUiData: StateFlow<ScheduleUiData> =
-        loadSessionsResult.combineTransform(timeZoneIdFlow) { sessions, timeZone ->
+        loadSessionsResult.combineTransform(timeZoneId) { sessions, timeZone ->
             sessions.data?.let { data ->
                 dayIndexer = data.dayIndexer
                 emit(
@@ -301,7 +297,7 @@ class ScheduleViewModel @Inject constructor(
                     )
                 )
                 // Show an error message if a star request fails
-                if (result is Result.Error) {
+                if (result is Error) {
                     snackbarMessageManager.addMessage(SnackbarMessage(R.string.event_star_error))
                 }
             }

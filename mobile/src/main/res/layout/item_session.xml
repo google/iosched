@@ -22,6 +22,7 @@
     <data>
 
         <import type="androidx.lifecycle.LiveData" />
+        <import type="kotlinx.coroutines.flow.StateFlow" />
 
         <variable
             name="userSession"
@@ -37,7 +38,7 @@
 
         <variable
             name="timeZoneId"
-            type="LiveData&lt;org.threeten.bp.ZoneId&gt;" />
+            type="StateFlow&lt;org.threeten.bp.ZoneId&gt;" />
 
         <variable
             name="showTime"
