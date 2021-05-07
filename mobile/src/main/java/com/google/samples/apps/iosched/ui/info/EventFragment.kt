@@ -29,17 +29,18 @@ import androidx.core.view.updatePaddingRelative
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentInfoEventBinding
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 import com.google.samples.apps.iosched.shared.di.AssistantAppEnabledFlag
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
-import com.google.samples.apps.iosched.ui.setUpSnackbar
+import com.google.samples.apps.iosched.ui.setupSnackbarManager
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import com.google.samples.apps.iosched.widget.FadingSnackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -73,20 +74,23 @@ class EventFragment : Fragment() {
         }
 
         val snackbarLayout = requireActivity().findViewById<FadingSnackbar>(R.id.snackbar)
-        setUpSnackbar(eventInfoViewModel.snackBarMessage, snackbarLayout, snackbarMessageManager)
+        setupSnackbarManager(snackbarMessageManager, snackbarLayout) { }
 
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        eventInfoViewModel.openUrlEvent.observe(
-            viewLifecycleOwner,
-            Observer {
-                val url = it?.getContentIfNotHandled() ?: return@Observer
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        launchAndRepeatWithViewLifecycle {
+            eventInfoViewModel.navigationActions.collect { event ->
+                when (event) {
+                    is EventInfoNavigationAction.OpenUrl -> {
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(event.url)))
+                    }
+                }
             }
-        )
+        }
     }
 }
 
