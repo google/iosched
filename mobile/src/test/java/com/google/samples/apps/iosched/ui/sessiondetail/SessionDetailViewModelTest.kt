@@ -25,10 +25,12 @@ import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
+import com.google.samples.apps.iosched.shared.domain.prefs.StopSnackbarActionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotificationAlarmUpdater
@@ -41,6 +43,7 @@ import com.google.samples.apps.iosched.shared.time.DefaultTimeProvider
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
+import com.google.samples.apps.iosched.test.data.CoroutineScope
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.TestData.sessionWithYoutubeUrl
@@ -50,6 +53,7 @@ import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
 import com.google.samples.apps.iosched.test.util.time.FixedTimeExecutorRule
+import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToSignInDialogAction
@@ -203,11 +207,16 @@ class SessionDetailViewModelTest {
             on { hasNetworkConnection() }.doReturn(false)
         }
 
-        val viewModel = createSessionDetailViewModel(networkUtils = networkUtils)
+        val snackbarMessageManager = createSnackbarMessageManager()
+        val viewModel = createSessionDetailViewModel(
+            networkUtils = networkUtils,
+            snackbarMessageManager = snackbarMessageManager
+        )
 
         viewModel.onReservationClicked()
 
-        assertEquals(viewModel.snackBarMessages.first().messageId, R.string.no_network_connection)
+        val message = snackbarMessageManager.currentSnackbar.value
+        assertEquals(message?.messageId, R.string.no_network_connection)
     }
 
     @Test
@@ -362,6 +371,7 @@ class SessionDetailViewModelTest {
         networkUtils: NetworkUtils = mockNetworkUtils,
         timeProvider: TimeProvider = DefaultTimeProvider,
         analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper(),
+        snackbarMessageManager: SnackbarMessageManager = createSnackbarMessageManager(),
         isReservationEnabledByRemoteConfig: Boolean = true,
     ): SessionDetailViewModel {
         return SessionDetailViewModel(
@@ -375,6 +385,7 @@ class SessionDetailViewModelTest {
             timeProvider = timeProvider,
             networkUtils = networkUtils,
             analyticsHelper = analyticsHelper,
+            snackbarMessageManager = snackbarMessageManager,
             isReservationEnabledByRemoteConfig = isReservationEnabledByRemoteConfig
         )
     }
@@ -428,4 +439,14 @@ class SessionDetailViewModelTest {
 
     private fun createGetTimeZoneUseCase() =
         GetTimeZoneUseCase(FakePreferenceStorage(), coroutineRule.testDispatcher)
+
+    private fun createSnackbarMessageManager(
+        preferenceStorage: PreferenceStorage = FakePreferenceStorage()
+    ): SnackbarMessageManager {
+        return SnackbarMessageManager(
+            preferenceStorage,
+            coroutineRule.CoroutineScope(),
+            StopSnackbarActionUseCase(preferenceStorage, coroutineRule.testDispatcher)
+        )
+    }
 }

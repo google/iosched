@@ -29,7 +29,6 @@ import androidx.core.view.doOnLayout
 import androidx.core.view.forEach
 import androidx.core.view.updatePadding
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -50,7 +49,6 @@ import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
-import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment.Companion.DIALOG_REMOVE_RESERVATION
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
@@ -66,7 +64,7 @@ import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationA
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToYoutube
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.RemoveReservationDialogAction
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.ShowNotificationsPrefAction
-import com.google.samples.apps.iosched.ui.setUpSnackbar
+import com.google.samples.apps.iosched.ui.messages.setupSnackbarManager
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment.Companion.DIALOG_NOTIFICATIONS_PREFERENCE
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
@@ -88,7 +86,6 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
     @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
 
     private val sessionDetailViewModel: SessionDetailViewModel by viewModels()
-    private val snackbarPrefsViewModel: SnackbarPreferenceViewModel by activityViewModels()
 
     @Inject lateinit var analyticsHelper: AnalyticsHelper
 
@@ -245,14 +242,7 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
             }
         }
 
-        setUpSnackbar(
-            sessionDetailViewModel.snackBarMessages,
-            binding.snackbar,
-            snackbarMessageManager,
-            actionClickListener = {
-                snackbarPrefsViewModel.onStopClicked()
-            }
-        )
+        setupSnackbarManager(snackbarMessageManager, binding.snackbar)
 
         // When opened from the post session notification, open the feedback dialog
         requireNotNull(arguments).apply {

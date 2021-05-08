@@ -22,7 +22,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.R.string
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.SessionType
@@ -51,7 +50,8 @@ import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.tryOffer
-import com.google.samples.apps.iosched.ui.SnackbarMessage
+import com.google.samples.apps.iosched.ui.messages.SnackbarMessage
+import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
@@ -64,11 +64,9 @@ import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationA
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.WhileViewSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.BufferOverflow.DROP_LATEST
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.CONFLATED
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted.Companion.Eagerly
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -80,7 +78,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.flow.transformLatest
@@ -110,6 +107,7 @@ class SessionDetailViewModel @Inject constructor(
     private val timeProvider: TimeProvider,
     private val networkUtils: NetworkUtils,
     private val analyticsHelper: AnalyticsHelper,
+    private val snackbarMessageManager: SnackbarMessageManager,
     @ReservationEnabledFlag val isReservationEnabledByRemoteConfig: Boolean
 ) : ViewModel(),
     SessionDetailEventListener,
@@ -122,12 +120,6 @@ class SessionDetailViewModel @Inject constructor(
     // Start observing the user ID right away from the SignInViewModelDelegate
     private val userIdFlow: StateFlow<Result<String?>> = observeUserId().map { Success(it) }
         .stateIn(viewModelScope, started = Eagerly, initialValue = Loading)
-
-    // SIDE EFFECTS: Snackbar messages
-    // Guard against too many Snackbar messages by limiting to 3, keeping the oldest.
-    private val _snackBarMessages = Channel<SnackbarMessage>(3, DROP_LATEST)
-    val snackBarMessages: Flow<SnackbarMessage> =
-        _snackBarMessages.receiveAsFlow().shareIn(viewModelScope, WhileViewSubscribed)
 
     // Session & UserData are updated with new user IDs
     private val sessionUserData = userIdFlow.transformLatest { userId ->
@@ -145,7 +137,7 @@ class SessionDetailViewModel @Inject constructor(
         sessionUserData.onEach { result ->
             result.data?.let { userData ->
                 userData.userMessage?.type?.stringRes()?.let { messageId ->
-                    _snackBarMessages.tryOffer(
+                    snackbarMessageManager.addMessage(
                         SnackbarMessage(
                             messageId = messageId,
                             longDuration = true,
@@ -267,7 +259,7 @@ class SessionDetailViewModel @Inject constructor(
     override fun onReservationClicked() {
         if (!networkUtils.hasNetworkConnection()) {
             Timber.d("No network connection, ignoring reserve click.")
-            _snackBarMessages.tryOffer(
+            snackbarMessageManager.addMessage(
                 SnackbarMessage(
                     messageId = R.string.no_network_connection,
                     requestChangeId = UUID.randomUUID().toString()
@@ -294,7 +286,7 @@ class SessionDetailViewModel @Inject constructor(
             userEventSnapshot.isCancelPending() // Just in case
         ) {
             if (isReservationDeniedByCutoffSnapshot) {
-                _snackBarMessages.tryOffer(
+                snackbarMessageManager.addMessage(
                     SnackbarMessage(R.string.cancellation_denied_cutoff, longDuration = true)
                 )
                 analyticsHelper.logUiEvent(
@@ -316,7 +308,7 @@ class SessionDetailViewModel @Inject constructor(
             return
         }
         if (isReservationDeniedByCutoffSnapshot) {
-            _snackBarMessages.tryOffer(
+            snackbarMessageManager.addMessage(
                 SnackbarMessage(R.string.reservation_denied_cutoff, longDuration = true)
             )
             analyticsHelper.logUiEvent(sessionSnapshot.title, AnalyticsActions.RESERVE_FAILED)
@@ -346,11 +338,8 @@ class SessionDetailViewModel @Inject constructor(
                         }
                     }
                     is Error -> {
-                        _snackBarMessages.tryOffer(
-                            SnackbarMessage(
-                                messageId = string.reservation_error,
-                                longDuration = true
-                            )
+                        snackbarMessageManager.addMessage(
+                            SnackbarMessage(R.string.reservation_error, longDuration = true)
                         )
                     }
                     Loading -> throw IllegalStateException()
@@ -387,12 +376,14 @@ class SessionDetailViewModel @Inject constructor(
         }
 
         // Update the snackbar message optimistically.
-        val snackbarMessage = if (newIsStarredState) {
-            SnackbarMessage(R.string.event_starred, R.string.got_it)
+        val messageId = if (newIsStarredState) {
+            R.string.event_starred
         } else {
-            SnackbarMessage(R.string.event_unstarred)
+            R.string.event_unstarred
         }
-        _snackBarMessages.tryOffer(snackbarMessage)
+        snackbarMessageManager.addMessage(
+            SnackbarMessage(messageId, actionId = R.string.dont_show)
+        )
 
         viewModelScope.launch {
             getUserId()?.let {
@@ -406,7 +397,7 @@ class SessionDetailViewModel @Inject constructor(
                 )
                 // Show an error message if a star request fails
                 if (result is Error) {
-                    _snackBarMessages.tryOffer(SnackbarMessage(R.string.event_star_error))
+                    snackbarMessageManager.addMessage(SnackbarMessage(R.string.event_star_error))
                 }
             }
         }

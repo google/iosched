@@ -44,7 +44,6 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
-import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
 import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentDirections.Companion.toSearch
 import com.google.samples.apps.iosched.ui.schedule.ScheduleFragmentDirections.Companion.toSessionDetail
 import com.google.samples.apps.iosched.ui.schedule.ScheduleNavigationAction.NavigateToSession
@@ -52,7 +51,7 @@ import com.google.samples.apps.iosched.ui.schedule.ScheduleNavigationAction.Navi
 import com.google.samples.apps.iosched.ui.schedule.ScheduleNavigationAction.NavigateToSignOutDialogAction
 import com.google.samples.apps.iosched.ui.schedule.ScheduleNavigationAction.ShowScheduleUiHints
 import com.google.samples.apps.iosched.ui.sessioncommon.SessionsAdapter
-import com.google.samples.apps.iosched.ui.setupSnackbarManager
+import com.google.samples.apps.iosched.ui.messages.setupSnackbarManager
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment.Companion.DIALOG_NOTIFICATIONS_PREFERENCE
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
@@ -98,7 +97,6 @@ class ScheduleFragment : MainNavigationFragment() {
     lateinit var snackbarMessageManager: SnackbarMessageManager
 
     private val scheduleViewModel: ScheduleViewModel by viewModels()
-    private val snackbarPrefsViewModel: SnackbarPreferenceViewModel by activityViewModels()
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels()
 
     private lateinit var snackbar: FadingSnackbar
@@ -151,12 +149,7 @@ class ScheduleFragment : MainNavigationFragment() {
         }
 
         // Snackbar configuration
-        setupSnackbarManager(
-            snackbarMessageManager, snackbar,
-            actionClickListener = {
-                snackbarPrefsViewModel.onStopClicked()
-            }
-        )
+        setupSnackbarManager(snackbarMessageManager, snackbar)
 
         binding.includeScheduleAppbar.toolbar.setupProfileMenuItem(mainActivityViewModel, this)
 

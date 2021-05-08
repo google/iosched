@@ -22,7 +22,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.updatePadding
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -36,8 +35,7 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
-import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
-import com.google.samples.apps.iosched.ui.setUpSnackbar
+import com.google.samples.apps.iosched.ui.messages.setupSnackbarManager
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.speaker.SpeakerFragmentDirections.Companion.toSessionDetail
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
@@ -61,7 +59,6 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
     lateinit var tagRecycledViewPool: RecycledViewPool
 
     private val speakerViewModel: SpeakerViewModel by viewModels()
-    private val snackbarPrefsViewModel: SnackbarPreferenceViewModel by activityViewModels()
 
     private lateinit var binding: FragmentSpeakerBinding
 
@@ -124,15 +121,7 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
                 )
             }
         )
-
-        setUpSnackbar(
-            speakerViewModel.snackBarMessage,
-            binding.snackbar,
-            snackbarMessageManager,
-            actionClickListener = {
-                snackbarPrefsViewModel.onStopClicked()
-            }
-        )
+        setupSnackbarManager(snackbarMessageManager, binding.snackbar)
         val speakerAdapter = SpeakerAdapter(
             viewLifecycleOwner,
             speakerViewModel,
