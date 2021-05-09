@@ -33,6 +33,7 @@ val core = "1.3.2"
 val coroutines = "1.4.2"
 val coroutinesTest = "1.3.4"
 val crashlytics = "17.2.2"
+val dataStore = "1.0.0-beta01"
 val drawerLayout = "1.1.0-rc01"
 val espresso = "3.1.1"
 val firebaseAnalytics = "17.4.0"
@@ -91,6 +92,7 @@ dependencies {
         api("${Libs.COROUTINES}:$coroutines")
         api("${Libs.COROUTINES_TEST}:$coroutines")
         api("${Libs.CRASHLYTICS}:$crashlytics")
+        api("${Libs.DATA_STORE_PREFERENCES}:$dataStore")
         api("${Libs.DRAWER_LAYOUT}:$drawerLayout")
         api("${Libs.ESPRESSO_CORE}:$espresso")
         api("${Libs.ESPRESSO_CONTRIB}:$espresso")

@@ -19,13 +19,13 @@
 package com.google.samples.apps.iosched.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompletedUseCase
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
-import com.google.samples.apps.iosched.ui.LaunchDestination.MAIN_ACTIVITY
-import com.google.samples.apps.iosched.ui.LaunchDestination.ONBOARDING
+import com.google.samples.apps.iosched.ui.LaunchNavigatonAction.NavigateToMainActivityAction
+import com.google.samples.apps.iosched.ui.LaunchNavigatonAction.NavigateToOnboardingAction
+import kotlinx.coroutines.flow.first
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -53,8 +53,8 @@ class LaunchViewModelTest {
 
         // When launchDestination is observed
         // Then verify user is navigated to the onboarding activity
-        val navigateEvent = LiveDataTestUtil.getValue(viewModel.launchDestination)
-        assertEquals(ONBOARDING, navigateEvent?.getContentIfNotHandled())
+        val navigateEvent = viewModel.launchDestination.first()
+        assertEquals(NavigateToOnboardingAction, navigateEvent)
     }
 
     @Test
@@ -67,7 +67,7 @@ class LaunchViewModelTest {
 
         // When launchDestination is observed
         // Then verify user is navigated to the main activity
-        val navigateEvent = LiveDataTestUtil.getValue(viewModel.launchDestination)
-        assertEquals(MAIN_ACTIVITY, navigateEvent?.getContentIfNotHandled())
+        val navigateEvent = viewModel.launchDestination.first()
+        assertEquals(NavigateToMainActivityAction, navigateEvent)
     }
 }

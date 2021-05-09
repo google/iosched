@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.ui.messages
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.domain.prefs.StopSnackbarActionUseCase
@@ -128,7 +127,7 @@ class SnackbarMessageManagerTest {
     @Test
     fun addOneMessage_snackbarIsStopped_actionDontShow() {
         val snackbarMessageManager = createSnackbarMessageManager(
-            FakePreferenceStorage(observableSnackbarIsStopped = MutableLiveData(true))
+            FakePreferenceStorage(snackbarIsStopped = true)
         )
         snackbarMessageManager.addMessage(msg1.copy(actionId = R.string.dont_show))
 
@@ -139,7 +138,7 @@ class SnackbarMessageManagerTest {
     @Test
     fun addOneMessage_snackbarAppears_actionNotDontShow() {
         val snackbarMessageManager = createSnackbarMessageManager(
-            FakePreferenceStorage(observableSnackbarIsStopped = MutableLiveData(true))
+            FakePreferenceStorage(snackbarIsStopped = true)
         )
         snackbarMessageManager.addMessage(msg1)
 

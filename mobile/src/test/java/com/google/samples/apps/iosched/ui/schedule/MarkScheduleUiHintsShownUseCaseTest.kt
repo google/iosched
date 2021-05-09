@@ -17,13 +17,12 @@
 package com.google.samples.apps.iosched.ui.schedule
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.domain.prefs.MarkScheduleUiHintsShownUseCase
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.runBlockingTest
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
+import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import kotlinx.coroutines.test.TestCoroutineDispatcher
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -42,10 +41,11 @@ class MarkScheduleUiHintsShownUseCaseTest {
 
     @Test
     fun dismissed_navigateUiHintsShowAction() = coroutineRule.runBlockingTest {
-        val mockPrefs = mock<PreferenceStorage> {}
-        val useCase = MarkScheduleUiHintsShownUseCase(mockPrefs, TestCoroutineDispatcher())
+        val prefs = FakePreferenceStorage()
+        val useCase = MarkScheduleUiHintsShownUseCase(prefs, TestCoroutineDispatcher())
 
         useCase.invoke(Unit)
-        verify(mockPrefs).scheduleUiHintsShown = true
+        val hintsShown = prefs.scheduleUiHintsShown
+        assertTrue(hintsShown)
     }
 }

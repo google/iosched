@@ -21,6 +21,7 @@ import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.first
 
 /**
  * Returns whether the notifications preference has been shown to the user.
@@ -29,6 +30,7 @@ open class NotificationsPrefIsShownUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : UseCase<Unit, Boolean>(dispatcher) {
+    // TODO use as flow
     override suspend fun execute(parameters: Unit): Boolean =
-        preferenceStorage.notificationsPreferenceShown
+        preferenceStorage.notificationsPreferenceShown.first()
 }

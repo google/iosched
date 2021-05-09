@@ -16,160 +16,193 @@
 
 package com.google.samples.apps.iosched.shared.data.prefs
 
-import android.content.Context
-import android.content.Context.MODE_PRIVATE
-import android.content.SharedPreferences
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener
-import androidx.annotation.WorkerThread
-import androidx.core.content.edit
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.samples.apps.iosched.model.Theme
-import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.google.samples.apps.iosched.shared.data.prefs.DataStorePreferenceStorage.PreferencesKeys.PREF_CODELABS_INFO_SHOWN
+import com.google.samples.apps.iosched.shared.data.prefs.DataStorePreferenceStorage.PreferencesKeys.PREF_CONFERENCE_TIME_ZONE
+import com.google.samples.apps.iosched.shared.data.prefs.DataStorePreferenceStorage.PreferencesKeys.PREF_MY_LOCATION_OPTED_IN
+import com.google.samples.apps.iosched.shared.data.prefs.DataStorePreferenceStorage.PreferencesKeys.PREF_NOTIFICATIONS_SHOWN
+import com.google.samples.apps.iosched.shared.data.prefs.DataStorePreferenceStorage.PreferencesKeys.PREF_ONBOARDING
+import com.google.samples.apps.iosched.shared.data.prefs.DataStorePreferenceStorage.PreferencesKeys.PREF_RECEIVE_NOTIFICATIONS
+import com.google.samples.apps.iosched.shared.data.prefs.DataStorePreferenceStorage.PreferencesKeys.PREF_SCHED_UI_HINTS_SHOWN
+import com.google.samples.apps.iosched.shared.data.prefs.DataStorePreferenceStorage.PreferencesKeys.PREF_SELECTED_FILTERS
+import com.google.samples.apps.iosched.shared.data.prefs.DataStorePreferenceStorage.PreferencesKeys.PREF_SELECTED_THEME
+import com.google.samples.apps.iosched.shared.data.prefs.DataStorePreferenceStorage.PreferencesKeys.PREF_SEND_USAGE_STATISTICS
+import com.google.samples.apps.iosched.shared.data.prefs.DataStorePreferenceStorage.PreferencesKeys.PREF_SNACKBAR_IS_STOPPED
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.properties.ReadWriteProperty
-import kotlin.reflect.KProperty
 
 /**
  * Storage for app and user preferences.
  */
 interface PreferenceStorage {
-    var onboardingCompleted: Boolean
-    var scheduleUiHintsShown: Boolean
-    var notificationsPreferenceShown: Boolean
-    var preferToReceiveNotifications: Boolean
-    var myLocationOptedIn: Boolean
-    var snackbarIsStopped: Boolean
-    var observableSnackbarIsStopped: LiveData<Boolean>
-    var sendUsageStatistics: Boolean
-    var preferConferenceTimeZone: Boolean
-    var selectedFilters: String
-    var selectedTheme: String
-    var observableSelectedTheme: Flow<String>
-    var codelabsInfoShown: Boolean
+    suspend fun completeOnboarding(complete: Boolean)
+    val onboardingCompleted: Flow<Boolean>
+
+    suspend fun showScheduleUiHints(show: Boolean)
+    suspend fun areScheduleUiHintsShown(): Boolean
+
+    suspend fun showNotificationsPreference(show: Boolean)
+    val notificationsPreferenceShown: Flow<Boolean>
+
+    suspend fun preferToReceiveNotifications(prefer: Boolean)
+    val preferToReceiveNotifications: Flow<Boolean>
+
+    suspend fun optInMyLocation(optIn: Boolean)
+    val myLocationOptedIn: Flow<Boolean>
+
+    suspend fun stopSnackbar(stop: Boolean)
+    // TODO make this a flow or a suspend function
+    suspend fun isSnackbarStopped(): Boolean
+
+    suspend fun sendUsageStatistics(send: Boolean)
+    val sendUsageStatistics: Flow<Boolean>
+
+    suspend fun preferConferenceTimeZone(preferConferenceTimeZone: Boolean)
+    val preferConferenceTimeZone: Flow<Boolean>
+
+    suspend fun selectFilters(filters: String)
+    val selectedFilters: Flow<String>
+
+    suspend fun selectTheme(theme: String)
+    val selectedTheme: Flow<String>
+
+    suspend fun showCodelabsInfo(show: Boolean)
+    val codelabsInfoShown: Flow<Boolean>
 }
 
-/**
- * [PreferenceStorage] impl backed by [android.content.SharedPreferences].
- */
-@ExperimentalCoroutinesApi
 @Singleton
-class SharedPreferenceStorage @Inject constructor(
-    @ApplicationContext context: Context
+class DataStorePreferenceStorage @Inject constructor(
+    private val dataStore: DataStore<Preferences>
 ) : PreferenceStorage {
-
-    private val selectedThemeFlow: MutableStateFlow<String> by lazy {
-        MutableStateFlow(selectedTheme)
-    }
-
-    private val prefs: Lazy<SharedPreferences> = lazy { // Lazy to prevent IO access to main thread.
-        context.applicationContext.getSharedPreferences(
-            PREFS_NAME, MODE_PRIVATE
-        ).apply {
-            registerOnSharedPreferenceChangeListener(changeListener)
-        }
-    }
-
-    private val observableShowSnackbarResult = MutableLiveData<Boolean>()
-
-    private val changeListener = OnSharedPreferenceChangeListener { _, key ->
-        when (key) {
-            PREF_SNACKBAR_IS_STOPPED -> observableShowSnackbarResult.value = snackbarIsStopped
-            PREF_DARK_MODE_ENABLED -> selectedThemeFlow.value = selectedTheme
-        }
-    }
-
-    override var onboardingCompleted by BooleanPreference(prefs, PREF_ONBOARDING, false)
-
-    override var scheduleUiHintsShown by BooleanPreference(prefs, PREF_SCHED_UI_HINTS_SHOWN, false)
-
-    override var notificationsPreferenceShown
-        by BooleanPreference(prefs, PREF_NOTIFICATIONS_SHOWN, false)
-
-    override var preferToReceiveNotifications
-        by BooleanPreference(prefs, PREF_RECEIVE_NOTIFICATIONS, false)
-
-    override var myLocationOptedIn: Boolean
-        by BooleanPreference(prefs, PREF_MY_LOCATION_OPTED_IN, false)
-
-    override var snackbarIsStopped by BooleanPreference(prefs, PREF_SNACKBAR_IS_STOPPED, false)
-
-    override var observableSnackbarIsStopped: LiveData<Boolean>
-        get() {
-            observableShowSnackbarResult.value = snackbarIsStopped
-            return observableShowSnackbarResult
-        }
-        set(_) = throw IllegalAccessException("This property can't be changed")
-
-    override var sendUsageStatistics by BooleanPreference(prefs, PREF_SEND_USAGE_STATISTICS, true)
-
-    override var preferConferenceTimeZone
-        by BooleanPreference(prefs, PREF_CONFERENCE_TIME_ZONE, true)
-
-    override var selectedFilters by StringPreference(prefs, PREF_SELECTED_FILTERS, "")
-
-    override var selectedTheme by StringPreference(
-        prefs, PREF_DARK_MODE_ENABLED, Theme.SYSTEM.storageKey
-    )
-
-    override var observableSelectedTheme: Flow<String>
-        get() = selectedThemeFlow
-        set(_) = throw IllegalAccessException("This property can't be changed")
-
-    override var codelabsInfoShown by BooleanPreference(prefs, PREF_CODELABS_INFO_SHOWN, false)
-
     companion object {
         const val PREFS_NAME = "iosched"
-        const val PREF_ONBOARDING = "pref_onboarding"
-        const val PREF_SCHED_UI_HINTS_SHOWN = "pref_sched_ui_hints_shown"
-        const val PREF_NOTIFICATIONS_SHOWN = "pref_notifications_shown"
-        const val PREF_RECEIVE_NOTIFICATIONS = "pref_receive_notifications"
-        const val PREF_MY_LOCATION_OPTED_IN = "pref_my_location_opted_in"
-        const val PREF_SNACKBAR_IS_STOPPED = "pref_snackbar_is_stopped"
-        const val PREF_SEND_USAGE_STATISTICS = "pref_send_usage_statistics"
-        const val PREF_CONFERENCE_TIME_ZONE = "pref_conference_time_zone"
-        const val PREF_SELECTED_FILTERS = "pref_selected_filters"
-        const val PREF_DARK_MODE_ENABLED = "pref_dark_mode"
-        const val PREF_CODELABS_INFO_SHOWN = "pref_codelabs_info_shown"
     }
 
-    fun registerOnPreferenceChangeListener(listener: OnSharedPreferenceChangeListener) {
-        prefs.value.registerOnSharedPreferenceChangeListener(listener)
-    }
-}
-
-class BooleanPreference(
-    private val preferences: Lazy<SharedPreferences>,
-    private val name: String,
-    private val defaultValue: Boolean
-) : ReadWriteProperty<Any, Boolean> {
-
-    @WorkerThread
-    override fun getValue(thisRef: Any, property: KProperty<*>): Boolean {
-        return preferences.value.getBoolean(name, defaultValue)
+    object PreferencesKeys {
+        val PREF_ONBOARDING = booleanPreferencesKey("pref_onboarding")
+        val PREF_SCHED_UI_HINTS_SHOWN = booleanPreferencesKey("pref_sched_ui_hints_shown")
+        val PREF_NOTIFICATIONS_SHOWN = booleanPreferencesKey("pref_notifications_shown")
+        val PREF_RECEIVE_NOTIFICATIONS = booleanPreferencesKey("pref_receive_notifications")
+        val PREF_MY_LOCATION_OPTED_IN = booleanPreferencesKey("pref_my_location_opted_in")
+        val PREF_SNACKBAR_IS_STOPPED = booleanPreferencesKey("pref_snackbar_is_stopped")
+        val PREF_SEND_USAGE_STATISTICS = booleanPreferencesKey("pref_send_usage_statistics")
+        val PREF_CONFERENCE_TIME_ZONE = booleanPreferencesKey("pref_conference_time_zone")
+        val PREF_SELECTED_FILTERS = stringPreferencesKey("pref_selected_filters")
+        val PREF_SELECTED_THEME = stringPreferencesKey("pref_dark_mode")
+        val PREF_CODELABS_INFO_SHOWN = booleanPreferencesKey("pref_codelabs_info_shown")
     }
 
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) {
-        preferences.value.edit { putBoolean(name, value) }
-    }
-}
-
-class StringPreference(
-    private val preferences: Lazy<SharedPreferences>,
-    private val name: String,
-    private val defaultValue: String
-) : ReadWriteProperty<Any, String?> {
-
-    @WorkerThread
-    override fun getValue(thisRef: Any, property: KProperty<*>): String {
-        return preferences.value.getString(name, defaultValue) ?: defaultValue
+    override suspend fun completeOnboarding(complete: Boolean) {
+        dataStore.edit {
+            it[PREF_ONBOARDING] = complete
+        }
     }
 
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: String?) {
-        preferences.value.edit { putString(name, value) }
+    override val onboardingCompleted: Flow<Boolean> =
+        dataStore.data.map { it[PREF_ONBOARDING] ?: false }
+
+    override suspend fun showScheduleUiHints(show: Boolean) {
+        dataStore.edit {
+            it[PREF_SCHED_UI_HINTS_SHOWN] = show
+        }
+    }
+
+    override suspend fun areScheduleUiHintsShown() =
+        dataStore.data.map { it[PREF_SCHED_UI_HINTS_SHOWN] ?: false }.first()
+
+    override suspend fun showNotificationsPreference(show: Boolean) {
+        dataStore.edit {
+            it[PREF_NOTIFICATIONS_SHOWN] = show
+        }
+    }
+
+    override val notificationsPreferenceShown = dataStore.data.map {
+        it[PREF_NOTIFICATIONS_SHOWN] ?: false
+    }
+
+    override suspend fun preferToReceiveNotifications(prefer: Boolean) {
+        dataStore.edit {
+            it[PREF_RECEIVE_NOTIFICATIONS] = prefer
+        }
+    }
+
+    override val preferToReceiveNotifications = dataStore.data.map {
+        it[PREF_RECEIVE_NOTIFICATIONS] ?: false
+    }
+
+    override suspend fun optInMyLocation(optIn: Boolean) {
+        dataStore.edit {
+            it[PREF_MY_LOCATION_OPTED_IN] = optIn
+        }
+    }
+
+    override val myLocationOptedIn = dataStore.data.map {
+        it[PREF_MY_LOCATION_OPTED_IN] ?: false
+    }
+
+    override suspend fun stopSnackbar(stop: Boolean) {
+        dataStore.edit {
+            it[PREF_SNACKBAR_IS_STOPPED] = stop
+        }
+    }
+
+    override suspend fun isSnackbarStopped(): Boolean {
+        return dataStore.data.map { it[PREF_SNACKBAR_IS_STOPPED] ?: false }.first()
+    }
+
+    override suspend fun sendUsageStatistics(send: Boolean) {
+        dataStore.edit {
+            it[PREF_SEND_USAGE_STATISTICS] = send
+        }
+    }
+
+    override val sendUsageStatistics = dataStore.data.map {
+        it[PREF_SEND_USAGE_STATISTICS] ?: true
+    }
+
+    override suspend fun preferConferenceTimeZone(preferConferenceTimeZone: Boolean) {
+        dataStore.edit {
+            it[PREF_CONFERENCE_TIME_ZONE] = preferConferenceTimeZone
+        }
+    }
+
+    override val preferConferenceTimeZone =
+        dataStore.data.map { it[PREF_CONFERENCE_TIME_ZONE] ?: true }
+
+    override suspend fun selectFilters(filters: String) {
+        dataStore.edit {
+            it[PREF_SELECTED_FILTERS] = filters
+        }
+    }
+
+    override val selectedFilters = dataStore.data.map {
+        it[PREF_SELECTED_FILTERS] ?: ""
+    }
+
+    override suspend fun selectTheme(theme: String) {
+        dataStore.edit {
+            it[PREF_SELECTED_THEME] = theme
+        }
+    }
+
+    override val selectedTheme =
+        dataStore.data.map { it[PREF_SELECTED_THEME] ?: Theme.SYSTEM.storageKey }
+
+    override suspend fun showCodelabsInfo(show: Boolean) {
+        dataStore.edit {
+            it[PREF_CODELABS_INFO_SHOWN] = show
+        }
+    }
+
+    override val codelabsInfoShown = dataStore.data.map {
+        it[PREF_CODELABS_INFO_SHOWN] ?: false
     }
 }

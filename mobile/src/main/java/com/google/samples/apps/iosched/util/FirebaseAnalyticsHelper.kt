@@ -18,20 +18,28 @@ package com.google.samples.apps.iosched.util
 
 import android.app.Activity
 import android.content.Context
-import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
+import com.google.samples.apps.iosched.shared.data.prefs.DataStorePreferenceStorage.PreferencesKeys.PREF_CODELABS_INFO_SHOWN
+import com.google.samples.apps.iosched.shared.data.prefs.DataStorePreferenceStorage.PreferencesKeys.PREF_CONFERENCE_TIME_ZONE
+import com.google.samples.apps.iosched.shared.data.prefs.DataStorePreferenceStorage.PreferencesKeys.PREF_MY_LOCATION_OPTED_IN
+import com.google.samples.apps.iosched.shared.data.prefs.DataStorePreferenceStorage.PreferencesKeys.PREF_NOTIFICATIONS_SHOWN
+import com.google.samples.apps.iosched.shared.data.prefs.DataStorePreferenceStorage.PreferencesKeys.PREF_ONBOARDING
+import com.google.samples.apps.iosched.shared.data.prefs.DataStorePreferenceStorage.PreferencesKeys.PREF_RECEIVE_NOTIFICATIONS
+import com.google.samples.apps.iosched.shared.data.prefs.DataStorePreferenceStorage.PreferencesKeys.PREF_SEND_USAGE_STATISTICS
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
-import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
 import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flattenMerge
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -42,22 +50,12 @@ class FirebaseAnalyticsHelper(
     @ApplicationScope private val externalScope: CoroutineScope,
     context: Context,
     signInViewModelDelegate: SignInViewModelDelegate,
-    preferenceStorage: PreferenceStorage
+    private val preferenceStorage: PreferenceStorage
 ) : AnalyticsHelper {
 
     private var firebaseAnalytics = Firebase.analytics
 
-    /**
-     * stores a strong reference to preference change][PreferenceManager]
-     */
-    private var prefListener: SharedPreferences.OnSharedPreferenceChangeListener? = null
-
-    private var analyticsEnabled: Boolean = false
-        set(enabled) {
-            field = enabled
-            Timber.d("Setting Analytics enabled: $enabled")
-            firebaseAnalytics.setAnalyticsCollectionEnabled(enabled)
-        }
+    private var analyticsEnabled: Flow<Boolean> = preferenceStorage.sendUsageStatistics
 
     /**
      * Initialize Analytics tracker.  If the user has permitted tracking and has already signed TOS,
@@ -65,14 +63,20 @@ class FirebaseAnalyticsHelper(
      */
     init {
         externalScope.launch { // Prevent access to preferences on main thread
-            analyticsEnabled = preferenceStorage.sendUsageStatistics
+            analyticsEnabled.collect {
+                Timber.d("Setting Analytics enabled: $it")
+                firebaseAnalytics.setAnalyticsCollectionEnabled(it)
+            }
+            // The listener will initialize Analytics when the TOS is signed, or enable/disable
+            // Analytics based on the "anonymous data collection" setting.
+            logSendUsageStatsFlagChanges()
         }
 
-        Timber.d("Analytics initialized")
-
-        // The listener will initialize Analytics when the TOS is signed, or enable/disable
-        // Analytics based on the "anonymous data collection" setting.
-        setupPreferenceChangeListener(context)
+        externalScope.launch {
+            // The listener will initialize Analytics when the TOS is signed, or enable/disable
+            // Analytics based on the "anonymous data collection" setting.
+            logSendUsageStatsFlagChanges()
+        }
 
         externalScope.launch {
             signInViewModelDelegate.isUserSignedIn.collect { signedIn ->
@@ -121,32 +125,24 @@ class FirebaseAnalyticsHelper(
     /**
      * Set up a listener for preference changes.
      */
-    private fun setupPreferenceChangeListener(context: Context) {
-        val listener = SharedPreferences.OnSharedPreferenceChangeListener { pref, key ->
-            val action = try {
-                getBooleanPreferenceAction(pref, key)
-            } catch (e: ClassCastException) {
-                return@OnSharedPreferenceChangeListener
-            }
-
-            if (key == SharedPreferenceStorage.PREF_SEND_USAGE_STATISTICS) {
-                val sendStats = pref.getBoolean(key, false)
-                analyticsEnabled = sendStats
-            } else {
-                logUiEvent("Preference: $key", action)
-            }
+    private suspend fun logSendUsageStatsFlagChanges() {
+        // not logged: showScheduleUiHints, selectedFilters, selectedTheme
+        flowOf(
+            preferenceStorage.codelabsInfoShown.map { PREF_CODELABS_INFO_SHOWN.name to it },
+            preferenceStorage.myLocationOptedIn.map { PREF_MY_LOCATION_OPTED_IN.name to it },
+            preferenceStorage.notificationsPreferenceShown.map {
+                PREF_NOTIFICATIONS_SHOWN.name to it
+            },
+            preferenceStorage.onboardingCompleted.map { PREF_ONBOARDING.name to it },
+            preferenceStorage.preferConferenceTimeZone.map { PREF_CONFERENCE_TIME_ZONE.name to it },
+            preferenceStorage.preferToReceiveNotifications.map {
+                PREF_RECEIVE_NOTIFICATIONS.name to it
+            },
+            preferenceStorage.sendUsageStatistics.map { PREF_SEND_USAGE_STATISTICS.name to it }
+        ).flattenMerge().collect { (key, value) ->
+            val action = if (value) AnalyticsActions.ENABLE else AnalyticsActions.DISABLE
+            logUiEvent("Preference: $key", action)
         }
-
-        externalScope.launch { // Prevent access to preferences on main thread
-            SharedPreferenceStorage(context).registerOnPreferenceChangeListener(listener)
-        }
-        prefListener = listener
-        Timber.d("Preference Change Listener has been set up.")
-    }
-
-    private fun getBooleanPreferenceAction(prefs: SharedPreferences, key: String): String {
-        return if (prefs.getBoolean(key, true)) AnalyticsActions.ENABLE
-        else AnalyticsActions.DISABLE
     }
 
     companion object {

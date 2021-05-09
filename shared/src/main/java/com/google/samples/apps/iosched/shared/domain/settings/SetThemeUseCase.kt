@@ -28,6 +28,6 @@ open class SetThemeUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : UseCase<Theme, Unit>(dispatcher) {
     override suspend fun execute(parameters: Theme) {
-        preferenceStorage.selectedTheme = parameters.storageKey
+        preferenceStorage.selectTheme(parameters.storageKey)
     }
 }

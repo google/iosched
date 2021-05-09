@@ -32,6 +32,6 @@ open class StopSnackbarActionUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : UseCase<Boolean, Unit>(dispatcher) {
     override suspend fun execute(parameters: Boolean) {
-        preferenceStorage.snackbarIsStopped = parameters
+        preferenceStorage.stopSnackbar(parameters)
     }
 }

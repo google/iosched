@@ -28,7 +28,6 @@ import com.google.samples.apps.iosched.shared.data.agenda.DefaultAgendaRepositor
 import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
 import com.google.samples.apps.iosched.shared.data.db.AppDatabase
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
-import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
 import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.shared.di.DefaultDispatcher
 import com.google.samples.apps.iosched.shared.di.MainThreadHandler
@@ -55,11 +54,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 class AppModule {
-
-    @Singleton
-    @Provides
-    fun providePreferenceStorage(@ApplicationContext context: Context): PreferenceStorage =
-        SharedPreferenceStorage(context)
 
     @Provides
     fun provideWifiManager(@ApplicationContext context: Context): WifiManager =

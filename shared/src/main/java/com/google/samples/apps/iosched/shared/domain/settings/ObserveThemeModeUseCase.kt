@@ -34,7 +34,7 @@ open class ObserveThemeModeUseCase @Inject constructor(
     @DefaultDispatcher dispatcher: CoroutineDispatcher
 ) : FlowUseCase<Unit, Theme>(dispatcher) {
     override fun execute(parameters: Unit): Flow<Result<Theme>> {
-        return preferenceStorage.observableSelectedTheme.map {
+        return preferenceStorage.selectedTheme.map {
             val theme = themeFromStorageKey(it)
                 ?: when {
                     Build.VERSION.SDK_INT >= 29 -> Theme.SYSTEM

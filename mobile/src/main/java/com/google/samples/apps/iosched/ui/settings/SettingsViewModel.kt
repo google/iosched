@@ -36,6 +36,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.mapLatest
@@ -75,9 +76,10 @@ class SettingsViewModel @Inject constructor(
     }.stateIn(viewModelScope, WhileViewSubscribed, true)
 
     // Analytics setting
-    val sendUsageStatistics = loadDataSignal.mapLatest {
-        getAnalyticsSettingUseCase(Unit).data ?: false
-    }.stateIn(viewModelScope, WhileViewSubscribed, false)
+    val sendUsageStatistics =
+        loadDataSignal.combine(getAnalyticsSettingUseCase(Unit)) { _, result ->
+            result.data ?: false
+        }.stateIn(viewModelScope, WhileViewSubscribed, false)
 
     // Theme setting
     val theme: StateFlow<Theme> = loadDataSignal.mapLatest {

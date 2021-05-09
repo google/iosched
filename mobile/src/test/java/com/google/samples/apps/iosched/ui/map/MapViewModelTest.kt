@@ -74,7 +74,7 @@ class MapViewModelTest {
         signInViewModelDelegate.injectIsRegistered = true // On-site attendee
         signInViewModelDelegate.loadUser("1")
         assertNotNull(viewModel.userInfo)
-        assertFalse(storage.myLocationOptedIn)
+        assertFalse(storage.myLocationOptedIn.first())
         assertTrue(viewModel.showMyLocationOption.first())
         viewModel.optIntoMyLocation()
         // The button is gone after opt-in

@@ -27,7 +27,7 @@ open class OptIntoMyLocationUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : UseCase<Boolean, Boolean>(dispatcher) {
     override suspend fun execute(parameters: Boolean): Boolean {
-        preferenceStorage.myLocationOptedIn = parameters
+        preferenceStorage.optInMyLocation(parameters)
         return parameters
     }
 }

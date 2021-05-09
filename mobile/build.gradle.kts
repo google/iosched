@@ -167,6 +167,12 @@ android {
     }
 }
 
+kapt {
+    arguments {
+        arg("dagger.hilt.shareTestComponents", "true")
+    }
+}
+
 dependencies {
     api(platform(project(":depconstraints")))
     kapt(platform(project(":depconstraints")))
@@ -223,6 +229,10 @@ dependencies {
     androidTestImplementation(Libs.HILT_TESTING)
     kapt(Libs.HILT_COMPILER)
     kaptAndroidTest(Libs.HILT_COMPILER)
+
+    // DataStore
+    implementation(Libs.DATA_STORE_PREFERENCES)
+    androidTestImplementation(Libs.DATA_STORE_PREFERENCES)
 
     // Glide
     implementation(Libs.GLIDE)

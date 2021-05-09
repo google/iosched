@@ -52,9 +52,15 @@ class SettingsViewModelTest {
 
         val prefs = FakePreferenceStorage()
 
-        assertEquals(prefs.preferConferenceTimeZone, viewModel.preferConferenceTimeZone.first())
-        assertEquals(prefs.preferToReceiveNotifications, viewModel.enableNotifications.first())
-        assertEquals(prefs.sendUsageStatistics, viewModel.sendUsageStatistics.first())
+        assertEquals(
+            prefs.preferConferenceTimeZone.first(),
+            viewModel.preferConferenceTimeZone.first()
+        )
+        assertEquals(
+            prefs.preferToReceiveNotifications.first(),
+            viewModel.enableNotifications.first()
+        )
+        assertEquals(prefs.sendUsageStatistics.first(), viewModel.sendUsageStatistics.first())
         assertEquals(BATTERY_SAVER, viewModel.theme.first())
     }
 
