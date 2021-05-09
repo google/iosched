@@ -28,8 +28,12 @@
             type="com.google.samples.apps.iosched.model.userdata.UserSession" />
 
         <variable
-            name="eventListener"
-            type="com.google.samples.apps.iosched.ui.sessioncommon.EventActions" />
+            name="sessionClickListener"
+            type="com.google.samples.apps.iosched.ui.sessioncommon.OnSessionClickListener" />
+
+        <variable
+            name="sessionStarClickListener"
+            type="com.google.samples.apps.iosched.ui.sessioncommon.OnSessionStarClickListener" />
 
         <variable
             name="showReservations"
@@ -48,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
-        android:onClick="@{() -> eventListener.openEventDetail(userSession.session.id)}"
+        android:onClick="@{() -> sessionClickListener.openEventDetail(userSession.session.id)}"
         android:paddingBottom="@dimen/schedule_item_padding_vertical"
         android:paddingTop="@dimen/schedule_item_padding_vertical"
         tools:targetApi="o">
@@ -86,7 +90,7 @@
             android:background="?selectableItemBackgroundBorderless"
             android:checked="@{userSession.userEvent.isStarred}"
             android:contentDescription="@string/a11y_star"
-            android:onClick="@{() -> eventListener.onStarClicked(userSession)}"
+            android:onClick="@{() -> sessionStarClickListener.onStarClicked(userSession)}"
             android:src="@drawable/asld_star_event"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

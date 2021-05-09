@@ -152,7 +152,7 @@
             app:isReservationDeniedByCutoff="@{viewModel.isReservationDeniedByCutoff}"
             app:isSignedIn="@{viewModel.isUserSignedIn}"
             app:tint="?attr/colorOnSurface"
-            app:userEvent="@{viewModel.userEvent}" />
+            app:userSession="@{viewModel.userSession}" />
 
         <View
             android:id="@+id/nav_bar_scrim"

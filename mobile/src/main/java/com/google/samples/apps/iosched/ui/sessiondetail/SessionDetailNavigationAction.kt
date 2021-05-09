@@ -29,7 +29,6 @@ sealed class SessionDetailNavigationAction {
         SessionDetailNavigationAction()
     class NavigateToSwapReservationDialogAction(val params: SwapRequestParameters) :
         SessionDetailNavigationAction()
-    class NavigateToSession(val sessionId: SessionId) : SessionDetailNavigationAction()
     class NavigateToSessionFeedback(val sessionId: SessionId) : SessionDetailNavigationAction()
     class NavigateToSpeakerDetail(val speakerId: SpeakerId) : SessionDetailNavigationAction()
 }

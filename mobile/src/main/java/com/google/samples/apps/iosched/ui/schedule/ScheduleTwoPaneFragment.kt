@@ -23,7 +23,6 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
@@ -31,13 +30,14 @@ import androidx.slidingpanelayout.widget.SlidingPaneLayout
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.ScheduleDetailNavGraphDirections
 import com.google.samples.apps.iosched.databinding.FragmentScheduleTwoPaneBinding
-import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.messages.setupSnackbarManager
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
+import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -89,30 +89,28 @@ class ScheduleTwoPaneFragment : MainNavigationFragment() {
             scheduleTwoPaneViewModel.setIsTwoPane(!binding.slidingPaneLayout.isSlideable)
         }
 
-        scheduleTwoPaneViewModel.navigateToSessionAction.observe(
-            viewLifecycleOwner,
-            EventObserver { sessionId ->
-                detailPaneNavController.navigate(
-                    ScheduleDetailNavGraphDirections.toSessionDetail(sessionId)
-                )
-                // On narrow screens, slide the detail pane over the list pane if it isn't already
-                // on top. If both panes are visible, this will have no effect.
-                binding.slidingPaneLayout.open()
+        launchAndRepeatWithViewLifecycle {
+            launch {
+                scheduleTwoPaneViewModel.selectSessionEvents.collect { sessionId ->
+                    detailPaneNavController.navigate(
+                        ScheduleDetailNavGraphDirections.toSessionDetail(sessionId)
+                    )
+                    // On narrow screens, slide the detail pane over the list pane if it isn't already
+                    // on top. If both panes are visible, this will have no effect.
+                    binding.slidingPaneLayout.open()
+                }
             }
-        )
-
-        lifecycleScope.launchWhenStarted {
-            scheduleTwoPaneViewModel.returnToListPaneEvents.collect {
-                binding.slidingPaneLayout.close()
+            launch {
+                scheduleTwoPaneViewModel.navigateToSignInDialogEvents.collect {
+                    openSignInDialog()
+                }
+            }
+            launch {
+                scheduleTwoPaneViewModel.returnToListPaneEvents.collect {
+                    binding.slidingPaneLayout.close()
+                }
             }
         }
-
-        scheduleTwoPaneViewModel.navigateToSignInDialogAction.observe(
-            viewLifecycleOwner,
-            EventObserver {
-                openSignInDialog()
-            }
-        )
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, backPressHandler)
     }

@@ -16,10 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.sessioncommon
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
@@ -27,52 +24,45 @@ import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.shared.di.MainDispatcher
 import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
-import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.util.tryOffer
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.UUID
 import javax.inject.Inject
 
 /**
- * A delegate providing common functionality for displaying a list of events and responding to
- * actions performed on them.
+ * A delegate providing common functionality for starring events.
  */
-interface EventActionsViewModelDelegate : EventActions {
-    val navigateToSessionAction: LiveData<Event<SessionId>>
-    val navigateToSignInDialogAction: LiveData<Event<Unit>>
+
+interface OnSessionStarClickDelegate : OnSessionStarClickListener {
+    val navigateToSignInDialogEvents: Flow<Unit>
 }
 
-class DefaultEventActionsViewModelDelegate @Inject constructor(
+class DefaultOnSessionStarClickDelegate @Inject constructor(
     signInViewModelDelegate: SignInViewModelDelegate,
     private val starEventUseCase: StarEventAndNotifyUseCase,
     private val snackbarMessageManager: SnackbarMessageManager,
     private val analyticsHelper: AnalyticsHelper,
     @ApplicationScope private val externalScope: CoroutineScope,
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher
-) : EventActionsViewModelDelegate, SignInViewModelDelegate by signInViewModelDelegate {
+) : OnSessionStarClickDelegate, SignInViewModelDelegate by signInViewModelDelegate {
 
-    private val _navigateToSessionAction = MutableLiveData<Event<SessionId>>()
-    override val navigateToSessionAction: LiveData<Event<SessionId>>
-        get() = _navigateToSessionAction
-
-    private val _navigateToSignInDialogAction = MutableLiveData<Event<Unit>>()
-    override val navigateToSignInDialogAction: LiveData<Event<Unit>>
-        get() = _navigateToSignInDialogAction
-
-    override fun openEventDetail(id: SessionId) {
-        _navigateToSessionAction.value = Event(id)
-    }
+    private val _navigateToSignInDialogEvents = Channel<Unit>(capacity = Channel.CONFLATED)
+    override val navigateToSignInDialogEvents = _navigateToSignInDialogEvents.receiveAsFlow()
 
     override fun onStarClicked(userSession: UserSession) {
         if (!isUserSignedInValue) {
             Timber.d("Showing Sign-in dialog after star click")
-            _navigateToSignInDialogAction.value = Event(Unit)
+            _navigateToSignInDialogEvents.tryOffer(Unit)
             return
         }
         val newIsStarredState = !userSession.userEvent.isStarred
@@ -90,7 +80,6 @@ class DefaultEventActionsViewModelDelegate @Inject constructor(
                 requestChangeId = UUID.randomUUID().toString()
             )
         )
-
         if (newIsStarredState) {
             analyticsHelper.logUiEvent(userSession.session.title, AnalyticsActions.STARRED)
         }

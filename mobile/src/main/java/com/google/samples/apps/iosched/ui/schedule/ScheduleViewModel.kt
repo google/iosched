@@ -79,7 +79,7 @@ class ScheduleViewModel @Inject constructor(
     private val snackbarMessageManager: SnackbarMessageManager,
     getTimeZoneUseCase: GetTimeZoneUseCase,
     private val refreshConferenceDataUseCase: RefreshConferenceDataUseCase,
-    observeConferenceDataUseCase: ObserveConferenceDataUseCase,
+    observeConferenceDataUseCase: ObserveConferenceDataUseCase
 ) : ViewModel(),
     SignInViewModelDelegate by signInViewModelDelegate {
 
@@ -211,9 +211,7 @@ class ScheduleViewModel @Inject constructor(
                 // Setting smoothScroll to false as it's an unnecessary delay.
                 emit(ScheduleScrollEvent(currentEventIndex, smoothScroll = false))
             } else {
-                val index =
-                    (result as? Success)?.data?.firstUnfinishedSessionIndex
-                        ?: return@combineTransform
+                val index = result.data?.firstUnfinishedSessionIndex ?: return@combineTransform
                 if (index != -1) {
                     emit(ScheduleScrollEvent(index))
                 }

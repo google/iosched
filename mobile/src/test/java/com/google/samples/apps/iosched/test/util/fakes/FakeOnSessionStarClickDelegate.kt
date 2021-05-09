@@ -16,18 +16,14 @@
 
 package com.google.samples.apps.iosched.test.util.fakes
 
-import androidx.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
-import com.google.samples.apps.iosched.shared.result.Event
-import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
+import com.google.samples.apps.iosched.ui.sessioncommon.OnSessionStarClickDelegate
+import kotlinx.coroutines.flow.Flow
 
-class FakeEventActionsViewModelDelegate : EventActionsViewModelDelegate {
+class FakeOnSessionStarClickDelegate : OnSessionStarClickDelegate {
 
-    override val navigateToSessionAction = MutableLiveData<Event<SessionId>>()
-    override val navigateToSignInDialogAction = MutableLiveData<Event<Unit>>()
-
-    override fun openEventDetail(id: SessionId) = TODO("Not implemented")
+    override val navigateToSignInDialogEvents: Flow<Unit>
+        get() = TODO("Not implemented")
 
     override fun onStarClicked(userSession: UserSession) = TODO("Not implemented")
 }

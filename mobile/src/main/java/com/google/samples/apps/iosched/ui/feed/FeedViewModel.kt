@@ -47,7 +47,8 @@ import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import com.google.samples.apps.iosched.shared.util.tryOffer
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
-import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
+import com.google.samples.apps.iosched.ui.sessioncommon.OnSessionClickListener
+import com.google.samples.apps.iosched.ui.sessioncommon.OnSessionStarClickListener
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
 import com.google.samples.apps.iosched.util.WhileViewSubscribed
@@ -315,7 +316,7 @@ class FeedViewModel @Inject constructor(
     }
 }
 
-interface FeedEventListener : EventActions {
+interface FeedEventListener : OnSessionClickListener, OnSessionStarClickListener {
     fun openSchedule(showOnlyPinnedSessions: Boolean)
     fun signIn()
     fun openMap(moment: Moment)

@@ -53,7 +53,6 @@ import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakeAppDatabase
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
-import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.signin.FirebaseSignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
@@ -382,7 +381,7 @@ class ScheduleViewModelTest {
             snackbarMessageManager = snackbarMessageManager,
             getTimeZoneUseCase = getTimeZoneUseCase,
             refreshConferenceDataUseCase = refreshConferenceDataUseCase,
-            observeConferenceDataUseCase = observeConferenceDataUseCase,
+            observeConferenceDataUseCase = observeConferenceDataUseCase
         )
     }
 
@@ -412,8 +411,6 @@ class ScheduleViewModelTest {
                 }
         }
     }
-
-    private fun createStarEventUseCase() = FakeStarEventUseCase(testDispatcher)
 
     private fun createGetTimeZoneUseCase() =
         GetTimeZoneUseCase(FakePreferenceStorage(), testDispatcher)

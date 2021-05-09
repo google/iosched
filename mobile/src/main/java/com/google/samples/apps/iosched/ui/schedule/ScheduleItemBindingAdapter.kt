@@ -38,11 +38,12 @@ import org.threeten.bp.ZonedDateTime
 )
 fun sessionDateTimeLocation(
     textView: TextView,
-    startTime: ZonedDateTime,
+    startTime: ZonedDateTime?,
     zoneId: ZoneId?,
     showTime: Boolean,
     room: Room?
 ) {
+    startTime ?: return
     zoneId ?: return
     val roomName = room?.name ?: "-"
     val localStartTime = TimeUtils.zonedTime(startTime, zoneId)

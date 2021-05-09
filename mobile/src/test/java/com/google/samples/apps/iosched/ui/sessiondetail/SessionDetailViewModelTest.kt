@@ -56,6 +56,8 @@ import com.google.samples.apps.iosched.test.util.time.FixedTimeExecutorRule
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
+import com.google.samples.apps.iosched.ui.sessioncommon.DefaultOnSessionStarClickDelegate
+import com.google.samples.apps.iosched.ui.sessioncommon.OnSessionStarClickDelegate
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToSignInDialogAction
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToYoutube
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.RemoveReservationDialogAction
@@ -373,6 +375,7 @@ class SessionDetailViewModelTest {
         analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper(),
         snackbarMessageManager: SnackbarMessageManager = createSnackbarMessageManager(),
         isReservationEnabledByRemoteConfig: Boolean = true,
+        onSessionStarClickDelegate: OnSessionStarClickDelegate = createOnSessionStarClickDelegate()
     ): SessionDetailViewModel {
         return SessionDetailViewModel(
             savedStateHandle = SavedStateHandle(mapOf("session_id" to sessionId)),
@@ -385,6 +388,7 @@ class SessionDetailViewModelTest {
             networkUtils = networkUtils,
             analyticsHelper = analyticsHelper,
             snackbarMessageManager = snackbarMessageManager,
+            onSessionStarClickDelegate = onSessionStarClickDelegate,
             isReservationEnabledByRemoteConfig = isReservationEnabledByRemoteConfig
         )
     }
@@ -448,4 +452,22 @@ class SessionDetailViewModelTest {
             StopSnackbarActionUseCase(preferenceStorage, coroutineRule.testDispatcher)
         )
     }
+
+    private fun createOnSessionStarClickDelegate(
+        signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate(),
+        starEventUseCase: StarEventAndNotifyUseCase = createStarEventUseCase(),
+        snackbarMessageManager: SnackbarMessageManager = createSnackbarMessageManager(),
+        analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper()
+    ): OnSessionStarClickDelegate {
+        return DefaultOnSessionStarClickDelegate(
+            signInViewModelDelegate,
+            starEventUseCase,
+            snackbarMessageManager,
+            analyticsHelper,
+            coroutineRule.CoroutineScope(),
+            coroutineRule.testDispatcher
+        )
+    }
+
+    private fun createStarEventUseCase() = FakeStarEventUseCase(coroutineRule.testDispatcher)
 }

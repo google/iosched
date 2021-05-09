@@ -30,22 +30,22 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 
 /**
- * Provides a default implementation of [EventActionsViewModelDelegate].
+ * Provides a default implementation of [OnSessionStarClickDelegate].
  */
 @InstallIn(ViewModelComponent::class)
 @Module
-internal class EventActionsViewModelDelegateModule {
+internal class OnSessionStarClickDelegateModule {
 
     @Provides
-    fun provideEventActionsViewModelDelegate(
+    fun provideOnSessionStarClickDelegate(
         signInViewModelDelegate: SignInViewModelDelegate,
         starEventUseCase: StarEventAndNotifyUseCase,
         snackbarMessageManager: SnackbarMessageManager,
         analyticsHelper: AnalyticsHelper,
         @ApplicationScope applicationScope: CoroutineScope,
         @MainDispatcher mainDispatcher: CoroutineDispatcher
-    ): EventActionsViewModelDelegate {
-        return DefaultEventActionsViewModelDelegate(
+    ): OnSessionStarClickDelegate {
+        return DefaultOnSessionStarClickDelegate(
             signInViewModelDelegate,
             starEventUseCase,
             snackbarMessageManager,

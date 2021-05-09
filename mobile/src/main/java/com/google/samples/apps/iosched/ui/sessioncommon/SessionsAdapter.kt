@@ -30,11 +30,12 @@ import kotlinx.coroutines.flow.StateFlow
 import org.threeten.bp.ZoneId
 
 class SessionsAdapter(
-    private val eventListener: EventActions,
     private val tagViewPool: RecycledViewPool,
     private val showReservations: StateFlow<Boolean>,
     private val timeZoneId: StateFlow<ZoneId>,
-    private val lifecycleOwner: LifecycleOwner
+    private val lifecycleOwner: LifecycleOwner,
+    private val onSessionClickListener: OnSessionClickListener,
+    private val onSessionStarClickListener: OnSessionStarClickListener
 ) : ListAdapter<UserSession, SessionViewHolder>(SessionDiff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SessionViewHolder {
@@ -47,35 +48,25 @@ class SessionsAdapter(
                     recycleChildrenOnDetach = true
                 }
             }
+            showReservations = this@SessionsAdapter.showReservations
+            timeZoneId = this@SessionsAdapter.timeZoneId
+            showTime = false
+            lifecycleOwner = this@SessionsAdapter.lifecycleOwner
+            sessionClickListener = onSessionClickListener
+            sessionStarClickListener = onSessionStarClickListener
         }
-        return SessionViewHolder(
-            binding, eventListener, showReservations, timeZoneId, lifecycleOwner
-        )
+        return SessionViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: SessionViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.binding.userSession = getItem(position)
+        holder.binding.executePendingBindings()
     }
 }
 
 class SessionViewHolder(
-    private val binding: ItemSessionBinding,
-    private val eventListener: EventActions,
-    private val showReservations: StateFlow<Boolean>,
-    private val timeZoneId: StateFlow<ZoneId>,
-    private val lifecycleOwner: LifecycleOwner
-) : ViewHolder(binding.root) {
-
-    fun bind(userSession: UserSession) {
-        binding.userSession = userSession
-        binding.eventListener = eventListener
-        binding.showReservations = showReservations
-        binding.timeZoneId = timeZoneId
-        binding.showTime = false
-        binding.lifecycleOwner = lifecycleOwner
-        binding.executePendingBindings()
-    }
-}
+    internal val binding: ItemSessionBinding
+) : ViewHolder(binding.root)
 
 object SessionDiff : DiffUtil.ItemCallback<UserSession>() {
     override fun areItemsTheSame(oldItem: UserSession, newItem: UserSession): Boolean {

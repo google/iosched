@@ -31,7 +31,7 @@ import com.google.samples.apps.iosched.model.SessionType.GAME_REVIEW
 import com.google.samples.apps.iosched.model.SessionType.KEYNOTE
 import com.google.samples.apps.iosched.model.SessionType.OFFICE_HOURS
 import com.google.samples.apps.iosched.model.SessionType.SESSION
-import com.google.samples.apps.iosched.model.userdata.UserEvent
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.ui.reservation.ReservationViewState
 import com.google.samples.apps.iosched.ui.reservation.ReservationViewState.RESERVABLE
@@ -138,7 +138,7 @@ fun sessionStartCountdown(view: TextView, timeUntilStart: Duration?) {
 }
 
 @BindingAdapter(
-    "userEvent",
+    "userSession",
     "isSignedIn",
     "isRegistered",
     "isReservable",
@@ -148,13 +148,14 @@ fun sessionStartCountdown(view: TextView, timeUntilStart: Duration?) {
 )
 fun assignFab(
     fab: StarReserveFab,
-    userEvent: UserEvent?,
+    userSession: UserSession?,
     isSignedIn: Boolean,
     isRegistered: Boolean,
     isReservable: Boolean,
     isReservationDeniedByCutoff: Boolean,
     eventListener: SessionDetailEventListener
 ) {
+    userSession ?: return
     when {
         !isSignedIn -> {
             if (isReservable) {
@@ -166,14 +167,14 @@ fun assignFab(
         }
         isRegistered && isReservable -> {
             fab.reservationStatus = ReservationViewState.fromUserEvent(
-                userEvent,
+                userSession.userEvent,
                 isReservationDeniedByCutoff
             )
             fab.setOnClickListener { eventListener.onReservationClicked() }
         }
         else -> {
-            fab.isChecked = userEvent?.isStarred == true
-            fab.setOnClickListener { eventListener.onStarClicked() }
+            fab.isChecked = userSession.userEvent.isStarred
+            fab.setOnClickListener { eventListener.onStarClicked(userSession) }
         }
     }
 }

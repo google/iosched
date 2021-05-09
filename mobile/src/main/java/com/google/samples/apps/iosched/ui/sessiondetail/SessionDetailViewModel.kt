@@ -51,6 +51,8 @@ import com.google.samples.apps.iosched.shared.util.tryOffer
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogParameters
+import com.google.samples.apps.iosched.ui.sessioncommon.OnSessionStarClickDelegate
+import com.google.samples.apps.iosched.ui.sessioncommon.OnSessionStarClickListener
 import com.google.samples.apps.iosched.ui.sessioncommon.stringRes
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToSessionFeedback
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToSignInDialogAction
@@ -103,9 +105,11 @@ class SessionDetailViewModel @Inject constructor(
     private val networkUtils: NetworkUtils,
     private val analyticsHelper: AnalyticsHelper,
     private val snackbarMessageManager: SnackbarMessageManager,
+    onSessionStarClickDelegate: OnSessionStarClickDelegate,
     @ReservationEnabledFlag val isReservationEnabledByRemoteConfig: Boolean
 ) : ViewModel(),
     SessionDetailEventListener,
+    OnSessionStarClickListener by onSessionStarClickDelegate,
     SignInViewModelDelegate by signInViewModelDelegate {
 
     // TODO: remove hardcoded string when https://issuetracker.google.com/136967621 is available
@@ -247,10 +251,6 @@ class SessionDetailViewModel @Inject constructor(
         }
     }
 
-    // TODO this needs to be implemented to satisfy the interface, but star handling is being moved
-    // to a delegate.
-    override fun onStarClicked() {}
-
     override fun onReservationClicked() {
         if (!networkUtils.hasNetworkConnection()) {
             Timber.d("No network connection, ignoring reserve click.")
@@ -362,11 +362,9 @@ class SessionDetailViewModel @Inject constructor(
     }
 }
 
-interface SessionDetailEventListener {
+interface SessionDetailEventListener : OnSessionStarClickListener {
 
     fun onReservationClicked()
-
-    fun onStarClicked()
 
     fun onLoginClicked()
 

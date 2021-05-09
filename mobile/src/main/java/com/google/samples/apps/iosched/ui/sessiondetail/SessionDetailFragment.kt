@@ -57,7 +57,6 @@ import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogPar
 import com.google.samples.apps.iosched.ui.reservation.SwapReservationDialogFragment
 import com.google.samples.apps.iosched.ui.reservation.SwapReservationDialogFragment.Companion.DIALOG_SWAP_RESERVATION
 import com.google.samples.apps.iosched.ui.schedule.ScheduleTwoPaneViewModel
-import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToSession
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToSessionFeedback
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToSignInDialogAction
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailNavigationAction.NavigateToSpeakerDetail
@@ -168,8 +167,8 @@ class SessionDetailFragment : Fragment(), SessionFeedbackFragment.Listener {
         val detailsAdapter = SessionDetailAdapter(
             viewLifecycleOwner,
             sessionDetailViewModel,
-            tagRecycledViewPool,
-            scheduleTwoPaneViewModel
+            scheduleTwoPaneViewModel,
+            tagRecycledViewPool
         )
         binding.sessionDetailRecyclerView.run {
             adapter = detailsAdapter
@@ -233,9 +232,6 @@ class SessionDetailFragment : Fragment(), SessionFeedbackFragment.Listener {
         launch {
             sessionDetailViewModel.navigationActions.collect { action ->
                 when (action) {
-                    is NavigateToSession -> findNavController().navigate(
-                        SessionDetailFragmentDirections.toSessionDetail(action.sessionId)
-                    )
                     is NavigateToSessionFeedback -> openFeedbackDialog(action.sessionId)
                     NavigateToSignInDialogAction -> openSignInDialog(requireActivity())
                     is NavigateToSpeakerDetail -> {

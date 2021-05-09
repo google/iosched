@@ -22,7 +22,10 @@ import com.google.samples.apps.iosched.model.userdata.UserSession
 /**
  * Actions that can be performed on events.
  */
-interface EventActions {
+interface OnSessionClickListener {
     fun openEventDetail(id: SessionId)
+}
+
+interface OnSessionStarClickListener {
     fun onStarClicked(userSession: UserSession)
 }

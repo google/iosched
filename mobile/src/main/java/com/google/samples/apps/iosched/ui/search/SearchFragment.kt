@@ -113,11 +113,12 @@ class SearchFragment : Fragment() {
         }
 
         sessionsAdapter = SessionsAdapter(
-            scheduleTwoPaneViewModel,
             tagViewPool,
             viewModel.showReservations,
             viewModel.timeZoneId,
-            viewLifecycleOwner
+            viewLifecycleOwner,
+            scheduleTwoPaneViewModel, // OnSessionClickListener
+            scheduleTwoPaneViewModel // OnSessionStarClickListener
         )
         binding.recyclerView.apply {
             adapter = sessionsAdapter

@@ -31,6 +31,7 @@ import com.google.samples.apps.iosched.shared.result.Result.Loading
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.ui.sessioncommon.OnSessionStarClickDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.util.WhileViewSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -53,9 +54,11 @@ class SpeakerViewModel @Inject constructor(
     private val loadSpeakerUseCase: LoadSpeakerUseCase,
     private val loadSpeakerSessionsUseCase: LoadUserSessionsUseCase,
     getTimeZoneUseCase: GetTimeZoneUseCase,
-    signInViewModelDelegate: SignInViewModelDelegate
+    signInViewModelDelegate: SignInViewModelDelegate,
+    private val onSessionStarClickDelegate: OnSessionStarClickDelegate
 ) : ViewModel(),
-    SignInViewModelDelegate by signInViewModelDelegate {
+    SignInViewModelDelegate by signInViewModelDelegate,
+    OnSessionStarClickDelegate by onSessionStarClickDelegate {
 
     // TODO: remove hardcoded string when https://issuetracker.google.com/136967621 is available
     private val speakerId: SpeakerId? = savedStateHandle.get<SpeakerId>("speaker_id")

@@ -158,11 +158,12 @@ class ScheduleFragment : Fragment() {
 
         // Session list configuration
         sessionsAdapter = SessionsAdapter(
-            scheduleTwoPaneViewModel,
             tagViewPool,
             scheduleViewModel.showReservations,
             scheduleViewModel.timeZoneId,
-            viewLifecycleOwner
+            viewLifecycleOwner,
+            scheduleTwoPaneViewModel, // OnSessionClickListener
+            scheduleTwoPaneViewModel // OnSessionStarClickListener
         )
         scheduleRecyclerView.apply {
             adapter = sessionsAdapter

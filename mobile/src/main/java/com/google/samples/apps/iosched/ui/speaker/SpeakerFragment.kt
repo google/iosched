@@ -98,8 +98,8 @@ class SpeakerFragment : Fragment(), OnOffsetChangedListener {
         val speakerAdapter = SpeakerAdapter(
             viewLifecycleOwner,
             speakerViewModel,
-            tagRecycledViewPool,
-            scheduleTwoPaneViewModel
+            scheduleTwoPaneViewModel,
+            tagRecycledViewPool
         )
         binding.speakerDetailRecyclerView.run {
             adapter = speakerAdapter
