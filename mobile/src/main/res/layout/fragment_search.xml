@@ -15,7 +15,8 @@
   ~ limitations under the License.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -31,10 +32,62 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <include
-            android:id="@+id/include_search_appbar"
-            layout="@layout/include_search_appbar"
-            app:viewModel="@{viewModel}"/>
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            style="@style/Widget.IOSched.AppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize">
+
+                <!-- Toolbar doesn't support layout_weight, so use intermediary LinearLayout. -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="?android:dividerHorizontal"
+                    android:dividerPadding="@dimen/spacing_normal"
+                    android:orientation="horizontal"
+                    android:showDividers="middle">
+
+                    <SearchView
+                        android:id="@+id/searchView"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:iconifiedByDefault="false"
+                        android:imeOptions="actionDone|flagNoExtractUi"
+                        android:queryBackground="@color/transparent"
+                        android:queryHint="@string/search_schedule_hint"
+                        android:searchHintIcon="@null"
+                        android:searchIcon="@null"
+                        tools:targetApi="lollipop_mr1">
+
+                    </SearchView>
+
+                    <ViewStub
+                        android:id="@+id/active_filters_wide_stub"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content"
+                        android:layout="@layout/search_active_filters_wide"
+                        app:viewModel="@{viewModel}" />
+                </LinearLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <ViewStub
+                android:id="@+id/active_filters_narrow_stub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout="@layout/search_active_filters_narrow"
+                app:viewModel="@{viewModel}"
+                tools:visibility="visible" />
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

@@ -88,6 +88,10 @@
 
     <!-- Search -->
     <dimen name="search_result_icon_size">24dp</dimen>
+    <!-- How wide the toolbar must be to have the active filters in it. See SearchFragment for
+         details. Calculated as 720dp - 72dp (min width of a NavigationRailView)
+    -->
+    <dimen name="active_filters_in_toolbar_threshold">648dp</dimen>
 
     <!-- Feed -->
     <dimen name="feed_card_corner_radius">8dp</dimen>
