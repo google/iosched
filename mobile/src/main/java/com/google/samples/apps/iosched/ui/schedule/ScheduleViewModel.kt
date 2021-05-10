@@ -128,11 +128,11 @@ class ScheduleViewModel @Inject constructor(
     }
 
     // Latest user ID
-    private val userId = observeUserId().stateIn(viewModelScope, WhileViewSubscribed, null)
+    private val currentUserId = userId.stateIn(viewModelScope, WhileViewSubscribed, null)
 
     // Refresh sessions when needed and when the user changes
     private val loadSessionsResult: StateFlow<Result<LoadScheduleUserSessionsResult>> =
-        loadDataSignal.combineTransform(userId) { _, userId ->
+        loadDataSignal.combineTransform(currentUserId) { _, userId ->
             emitAll(
                 loadScheduleUserSessionsUseCase(
                     LoadScheduleUserSessionsParameters(userId)
@@ -260,7 +260,7 @@ class ScheduleViewModel @Inject constructor(
     }
 
     override fun onStarClicked(userSession: UserSession) {
-        if (!isSignedIn()) {
+        if (!isUserSignedInValue) {
             Timber.d("Showing Sign-in dialog after star click")
             _navigationActions.tryOffer(ScheduleNavigationAction.NavigateToSignInDialogAction)
             return
@@ -287,7 +287,7 @@ class ScheduleViewModel @Inject constructor(
         )
 
         viewModelScope.launch {
-            userId.value?.let {
+            currentUserId.value?.let {
                 val result = starEventUseCase(
                     StarEventParameter(
                         it,

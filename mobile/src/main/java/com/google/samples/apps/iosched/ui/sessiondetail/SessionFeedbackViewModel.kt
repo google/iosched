@@ -87,7 +87,7 @@ class SessionFeedbackViewModel @Inject constructor(
         _sessionId = sessionId
         loadUserSessionJob.cancelIfActive()
         loadUserSessionJob = viewModelScope.launch {
-            loadUserSessionUseCase(getUserId() to sessionId).collect { result ->
+            loadUserSessionUseCase(userIdValue to sessionId).collect { result ->
                 _userSession.value = (result as? Result.Success)?.data?.userSession
             }
         }
@@ -95,7 +95,7 @@ class SessionFeedbackViewModel @Inject constructor(
 
     fun submit(feedbackUpdates: Map<String, Int>) {
         val sessionId = _sessionId ?: return
-        val userId = getUserId()
+        val userId = userIdValue
         val userEvent = _userSession.value?.userEvent
         if (userId != null && userEvent != null) {
             viewModelScope.launch {

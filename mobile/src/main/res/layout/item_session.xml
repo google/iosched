@@ -21,7 +21,6 @@
 
     <data>
 
-        <import type="androidx.lifecycle.LiveData" />
         <import type="kotlinx.coroutines.flow.StateFlow" />
 
         <variable
@@ -34,7 +33,7 @@
 
         <variable
             name="showReservations"
-            type="LiveData&lt;Boolean&gt;" />
+            type="StateFlow&lt;Boolean&gt;" />
 
         <variable
             name="timeZoneId"

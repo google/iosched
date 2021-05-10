@@ -38,9 +38,10 @@ import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.result.updateOnSuccess
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
-import com.google.samples.apps.iosched.util.combine
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -88,9 +89,9 @@ class MapViewModel @Inject constructor(
     val selectedMarkerInfo: LiveData<MarkerInfo?>
         get() = _selectedMarkerInfo
 
-    private val myLocationOptedIn = MutableLiveData<Boolean>()
+    private val myLocationOptedIn = MutableStateFlow<Boolean>(false)
 
-    val showMyLocationOption = currentUserInfo.combine(myLocationOptedIn) { info, optedIn ->
+    val showMyLocationOption = userInfo.combine(myLocationOptedIn) { info, optedIn ->
         // Show the button to enable "My Location" when the user is an on-site attendee and he/she
         // is not opted into the feature yet.
         info != null && info.isRegistered() && !optedIn

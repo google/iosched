@@ -53,7 +53,7 @@ class MainActivityViewModel @Inject constructor(
     private val _navigationActions = Channel<MainNavigationAction>(Channel.CONFLATED)
     val navigationActions = _navigationActions.receiveAsFlow()
 
-    val pinnedSessionsJson: StateFlow<String> = currentUserInfoFlow.transformLatest { user ->
+    val pinnedSessionsJson: StateFlow<String> = userInfo.transformLatest { user ->
         val uid = user?.getUid()
         if (uid != null) {
             loadPinnedSessionsUseCase(uid).collect { result ->
@@ -66,7 +66,7 @@ class MainActivityViewModel @Inject constructor(
         }
     }.stateIn(viewModelScope, WhileViewSubscribed, "")
 
-    val canSignedInUserDemoAr: StateFlow<Boolean> = currentUserInfoFlow.transformLatest {
+    val canSignedInUserDemoAr: StateFlow<Boolean> = userInfo.transformLatest {
         val result = loadArDebugFlagUseCase(Unit)
         if (result is Result.Success) {
             emit(result.data)
@@ -89,7 +89,7 @@ class MainActivityViewModel @Inject constructor(
     }.stateIn(viewModelScope, WhileViewSubscribed, null)
 
     fun onProfileClicked() {
-        if (isSignedIn()) {
+        if (isUserSignedInValue) {
             _navigationActions.tryOffer(MainNavigationAction.OpenSignOut)
         } else {
             _navigationActions.tryOffer(MainNavigationAction.OpenSignIn)

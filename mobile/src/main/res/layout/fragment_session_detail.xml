@@ -148,10 +148,10 @@
             app:layout_anchor="@id/session_detail_bottom_app_bar"
             app:backgroundTint="?attr/colorSurface"
             app:eventListener="@{viewModel}"
-            app:isRegistered="@{viewModel.observeRegisteredUser}"
+            app:isRegistered="@{viewModel.isUserRegistered}"
             app:isReservable="@{viewModel.isReservable}"
             app:isReservationDeniedByCutoff="@{viewModel.isReservationDeniedByCutoff}"
-            app:isSignedIn="@{viewModel.observeSignedInUser}"
+            app:isSignedIn="@{viewModel.isUserSignedIn}"
             app:tint="?attr/colorOnSurface"
             app:userEvent="@{viewModel.userEvent}" />
 

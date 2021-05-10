@@ -129,7 +129,7 @@ class FeedViewModel @Inject constructor(
     val timeZoneId = timeZoneIdFlow.asLiveData()
 
     private val loadSessionsResult: StateFlow<Result<List<UserSession>>> =
-        signInViewModelDelegate.observeUserId()
+        signInViewModelDelegate.userId
             .flatMapLatest {
                 // TODO(jdkoren): might need to show sessions for not signed in users too...
                 loadStarredAndReservedSessionsUseCase(it)
@@ -186,7 +186,7 @@ class FeedViewModel @Inject constructor(
         combine(
             feedSessionsContainer,
             conferenceState,
-            signInViewModelDelegate.currentUserInfoFlow
+            signInViewModelDelegate.userInfo
         ) { sessionsContainer: FeedSessions,
             conferenceState: ConferenceState,
             userInfo: AuthenticatedUserInfo?

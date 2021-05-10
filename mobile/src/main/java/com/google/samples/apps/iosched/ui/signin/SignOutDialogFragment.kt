@@ -27,14 +27,15 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.core.view.isGone
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.databinding.DialogSignOutBinding
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
-import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignOut
+import com.google.samples.apps.iosched.ui.signin.SignInNavigationAction.RequestSignOut
 import com.google.samples.apps.iosched.util.executeAfter
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 /**
@@ -66,18 +67,17 @@ class SignOutDialogFragment : AppCompatDialogFragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        signInViewModel.performSignInEvent.observe(
-            viewLifecycleOwner,
-            Observer { request ->
-                if (request.peekContent() == RequestSignOut) {
-                    request.getContentIfNotHandled()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            signInViewModel.signInNavigationActions.collect { action ->
+                if (action == RequestSignOut) {
                     signInHandler.signOut(requireContext())
                     dismiss()
                 }
             }
-        )
+        }
 
         binding.executeAfter {
             viewModel = signInViewModel

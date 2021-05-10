@@ -17,32 +17,36 @@
 package com.google.samples.apps.iosched.ui.signin
 
 import android.net.Uri
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.liveData
-import androidx.lifecycle.map
-import androidx.lifecycle.switchMap
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
+import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.di.MainDispatcher
 import com.google.samples.apps.iosched.shared.di.ReservationEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
-import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.result.data
-import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignOut
+import com.google.samples.apps.iosched.shared.util.tryOffer
+import com.google.samples.apps.iosched.ui.signin.SignInNavigationAction.ShowNotificationPreferencesDialog
+import com.google.samples.apps.iosched.util.WhileViewSubscribed
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
-enum class SignInEvent {
-    RequestSignIn, RequestSignOut
+enum class SignInNavigationAction {
+    RequestSignIn, RequestSignOut, ShowNotificationPreferencesDialog
 }
 
 /**
@@ -63,29 +67,22 @@ interface SignInViewModelDelegate {
     /**
      * Live updated value of the current firebase user
      */
-    val currentUserInfo: LiveData<AuthenticatedUserInfo?>
-    val currentUserInfoFlow: Flow<AuthenticatedUserInfo?> // TODO rename and remove LiveData
+    val userInfo: StateFlow<AuthenticatedUserInfo?>
 
     /**
      * Live updated value of the current firebase users image url
      */
-    val currentUserImageUri: LiveData<Uri?>
+    val currentUserImageUri: StateFlow<Uri?>
 
     /**
-     * Emits Events when a sign-in event should be attempted
+     * Emits Events when a sign-in event should be attempted or a dialog shown
      */
-    val performSignInEvent: MutableLiveData<Event<SignInEvent>>
-
-    /**
-     * Emits an non-null Event when the dialog to ask the user notifications preference should be
-     * shown.
-     */
-    val shouldShowNotificationsPrefAction: LiveData<Event<Boolean>>
+    val signInNavigationActions: Flow<SignInNavigationAction>
 
     /**
      * Emits whether or not to show reservations for the current user
      */
-    val showReservations: LiveData<Boolean>
+    val showReservations: StateFlow<Boolean>
 
     /**
      * Emit an Event on performSignInEvent to request sign-in
@@ -97,23 +94,20 @@ interface SignInViewModelDelegate {
      */
     suspend fun emitSignOutRequest()
 
-    fun observeSignedInUser(): LiveData<Boolean>
-
-    fun observeRegisteredUser(): LiveData<Boolean>
-
-    val userIsRegistered: Flow<Boolean> // TODO: Rename, make property?
-
-    fun isSignedIn(): Boolean // Make property flow?
-
-    fun isRegistered(): Boolean
+    val userId: Flow<String?>
 
     /**
      * Returns the current user ID or null if not available.
      */
-    @Deprecated("Use [observeUserId]")
-    fun getUserId(): String?
+    val userIdValue: String?
 
-    fun observeUserId(): Flow<String?>
+    val isUserSignedIn: StateFlow<Boolean>
+
+    val isUserSignedInValue: Boolean
+
+    val isUserRegistered: StateFlow<Boolean>
+
+    val isUserRegisteredValue: Boolean
 }
 
 /**
@@ -124,10 +118,12 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
     private val notificationsPrefIsShownUseCase: NotificationsPrefIsShownUseCase,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
-    @ReservationEnabledFlag val isReservationEnabledByRemoteConfig: Boolean
+    @ReservationEnabledFlag val isReservationEnabledByRemoteConfig: Boolean,
+    @ApplicationScope val applicationScope: CoroutineScope
 ) : SignInViewModelDelegate {
 
-    override val performSignInEvent = MutableLiveData<Event<SignInEvent>>()
+    private val _signInNavigationActions = Channel<SignInNavigationAction>(Channel.CONFLATED)
+    override val signInNavigationActions = _signInNavigationActions.receiveAsFlow()
 
     private val currentFirebaseUser: Flow<Result<AuthenticatedUserInfo?>> =
         observeUserAuthStateUseCase(Any()).map {
@@ -137,82 +133,58 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
             it
         }
 
-    override val currentUserInfo: LiveData<AuthenticatedUserInfo?> = currentFirebaseUser.map {
+    override val userInfo: StateFlow<AuthenticatedUserInfo?> = currentFirebaseUser.map {
         (it as? Success)?.data
-    }.asLiveData() // TODO: Remove
+    }.stateIn(applicationScope, WhileViewSubscribed, null)
 
-    override val currentUserInfoFlow: Flow<AuthenticatedUserInfo?> = currentFirebaseUser.map {
-        (it as? Success)?.data
-    }
-
-    private val notificationsPrefIsShown = currentUserInfo.switchMap {
-        liveData {
-            emit(notificationsPrefIsShownUseCase(Unit))
-        }
-    }
-
-    override val currentUserImageUri: LiveData<Uri?> = currentUserInfo.map {
+    override val currentUserImageUri: StateFlow<Uri?> = userInfo.map {
         it?.getPhotoUrl()
-    }
+    }.stateIn(applicationScope, WhileViewSubscribed, null)
 
-    private val isRegistered: LiveData<Boolean> = currentUserInfo.map {
-        it?.isRegistered() ?: false
-    }
-
-    private val isSignedIn: LiveData<Boolean> = currentUserInfo.map {
+    override val isUserSignedIn: StateFlow<Boolean> = userInfo.map {
         it?.isSignedIn() ?: false
-    }
+    }.stateIn(applicationScope, WhileViewSubscribed, false)
 
-    override val shouldShowNotificationsPrefAction = notificationsPrefIsShown.map {
-        showNotificationPref(it)
-    }
+    override val isUserRegistered: StateFlow<Boolean> = userInfo.map {
+        it?.isRegistered() ?: false
+    }.stateIn(applicationScope, WhileViewSubscribed, false)
 
-    override val showReservations: LiveData<Boolean> = currentUserInfo.map {
-        (isRegistered() || !isSignedIn()) && isReservationEnabledByRemoteConfig
-    }
-
-    private fun showNotificationPref(
-        notificationsPrefIsShownValue: Result<Boolean>
-    ): Event<Boolean> {
-        val shouldShowDialog = notificationsPrefIsShownValue.data == false && isSignedIn()
-        // Show the notification if the preference is not set and the event hasn't been handled yet.
-        if (shouldShowDialog && (
-            shouldShowNotificationsPrefAction.value == null ||
-                shouldShowNotificationsPrefAction.value?.hasBeenHandled == false
-            )
-        ) {
-            return Event(true)
+    init {
+        applicationScope.launch {
+            userInfo.collect {
+                if (notificationsPrefIsShownUseCase(Unit).data == true && isUserSignedInValue) {
+                    _signInNavigationActions.tryOffer(ShowNotificationPreferencesDialog)
+                }
+            }
         }
-        return Event(false)
     }
 
-    override suspend fun emitSignInRequest() = withContext(ioDispatcher) {
+    override val showReservations: StateFlow<Boolean> = userInfo.map {
+        (isUserRegisteredValue || !isUserSignedInValue) &&
+            isReservationEnabledByRemoteConfig
+    }.stateIn(applicationScope, WhileViewSubscribed, false)
+
+    override suspend fun emitSignInRequest(): Unit = withContext(ioDispatcher) {
         // Refresh the notificationsPrefIsShown because it's used to indicate if the
         // notifications preference dialog should be shown
         notificationsPrefIsShownUseCase(Unit)
-        withContext(mainDispatcher) {
-            performSignInEvent.value = Event(SignInEvent.RequestSignIn)
-        }
+        _signInNavigationActions.tryOffer(SignInNavigationAction.RequestSignIn)
     }
 
-    override suspend fun emitSignOutRequest() = withContext(mainDispatcher) {
-        performSignInEvent.value = Event(RequestSignOut)
+    override suspend fun emitSignOutRequest(): Unit = withContext(mainDispatcher) {
+        _signInNavigationActions.tryOffer(SignInNavigationAction.RequestSignOut)
     }
 
-    override fun isSignedIn(): Boolean = isSignedIn.value == true
+    override val isUserSignedInValue: Boolean
+        get() = isUserSignedIn.value
 
-    override fun isRegistered(): Boolean = isRegistered.value == true
+    override val isUserRegisteredValue: Boolean
+        get() = isUserRegistered.value
 
-    override fun observeSignedInUser(): LiveData<Boolean> = isSignedIn
+    override val userIdValue: String?
+        get() = userInfo.value?.getUid()
 
-    override fun observeRegisteredUser(): LiveData<Boolean> = isRegistered
-
-    override val userIsRegistered: Flow<Boolean> =
-        currentFirebaseUser.map { it.data?.isRegistered() == true }
-
-    override fun getUserId(): String? {
-        return currentUserInfo.value?.getUid()
-    }
-
-    override fun observeUserId(): Flow<String?> = currentFirebaseUser.map { it.data?.getUid() }
+    override val userId: StateFlow<String?>
+        get() = userInfo.mapLatest { it?.getUid() }
+            .stateIn(applicationScope, WhileViewSubscribed, null)
 }

@@ -39,7 +39,6 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.di.SearchScheduleEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.sessions.ConferenceDayIndexer
-import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
@@ -55,6 +54,7 @@ import com.google.samples.apps.iosched.ui.messages.setupSnackbarManager
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment
 import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFragment.Companion.DIALOG_NOTIFICATIONS_PREFERENCE
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
+import com.google.samples.apps.iosched.ui.signin.SignInNavigationAction.ShowNotificationPreferencesDialog
 import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.clearDecorations
@@ -66,6 +66,7 @@ import com.google.samples.apps.iosched.widget.FadingSnackbar
 import com.google.samples.apps.iosched.widget.JumpSmoothScroller
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -215,25 +216,24 @@ class ScheduleFragment : MainNavigationFragment() {
             }
         }
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            scheduleViewModel.navigationActions.collect {
-                when (it) {
-                    is NavigateToSession -> openSessionDetail(it.sessionId)
-                    is NavigateToSignInDialogAction -> openSignInDialog()
-                    is NavigateToSignOutDialogAction -> openSignOutDialog()
-                    is ShowScheduleUiHints -> openScheduleUiHintsDialog()
+            launch {
+                scheduleViewModel.navigationActions.collect {
+                    when (it) {
+                        is NavigateToSession -> openSessionDetail(it.sessionId)
+                        is NavigateToSignInDialogAction -> openSignInDialog()
+                        is NavigateToSignOutDialogAction -> openSignOutDialog()
+                        is ShowScheduleUiHints -> openScheduleUiHintsDialog()
+                    }
+                }
+            }
+            launch {
+                scheduleViewModel.signInNavigationActions.collect {
+                    if (it == ShowNotificationPreferencesDialog) {
+                        openNotificationsPreferenceDialog()
+                    }
                 }
             }
         }
-
-        // TODO: Migrate to StateFlow
-        scheduleViewModel.shouldShowNotificationsPrefAction.observe(
-            viewLifecycleOwner,
-            EventObserver {
-                if (it) {
-                    openNotificationsPreferenceDialog()
-                }
-            }
-        )
 
         // Show an error message
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {

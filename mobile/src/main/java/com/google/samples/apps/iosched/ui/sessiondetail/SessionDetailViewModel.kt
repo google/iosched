@@ -118,7 +118,7 @@ class SessionDetailViewModel @Inject constructor(
     private val sessionId = savedStateHandle.get<SessionId>("session_id")
 
     // Start observing the user ID right away from the SignInViewModelDelegate
-    private val userIdFlow: StateFlow<Result<String?>> = observeUserId().map { Success(it) }
+    private val userIdFlow: StateFlow<Result<String?>> = userId.map { Success(it) }
         .stateIn(viewModelScope, started = Eagerly, initialValue = Loading)
 
     // Session & UserData are updated with new user IDs
@@ -174,7 +174,7 @@ class SessionDetailViewModel @Inject constructor(
         sessionUserData.mapLatest { sessionUser ->
             val currentSession = sessionUser.data?.userSession?.session
             val userEvent = sessionUser.data?.userSession?.userEvent
-            isSignedIn() &&
+            isUserSignedInValue &&
                 userEvent?.isReviewed == false &&
                 currentSession?.type == SessionType.SESSION &&
                 (
@@ -215,7 +215,7 @@ class SessionDetailViewModel @Inject constructor(
     }
 
     // Show the star in bottom nav instead of the FAB if the FAB shows the reservation button.
-    val shouldShowStarInBottomNav = session.combine(userIsRegistered) { session, isRegistered ->
+    val shouldShowStarInBottomNav = session.combine(isUserRegistered) { session, isRegistered ->
         isRegistered && session?.isReservable == true
     }
 
@@ -267,7 +267,7 @@ class SessionDetailViewModel @Inject constructor(
             )
             return
         }
-        if (!isSignedIn()) {
+        if (!isUserSignedInValue) {
             Timber.d("Showing Sign-in dialog after reserve click")
             _navigationActions.tryOffer(NavigateToSignInDialogAction)
             return
@@ -350,7 +350,7 @@ class SessionDetailViewModel @Inject constructor(
     }
 
     override fun onLoginClicked() {
-        if (!isSignedIn()) {
+        if (!isUserSignedInValue) {
             Timber.d("Showing Sign-in dialog")
             _navigationActions.tryOffer(NavigateToSignInDialogAction)
         }
@@ -361,7 +361,7 @@ class SessionDetailViewModel @Inject constructor(
     }
 
     override fun onStarClicked(userSession: UserSession) {
-        if (!isSignedIn()) {
+        if (!isUserSignedInValue) {
             Timber.d("Showing Sign-in dialog after star click")
             _navigationActions.tryOffer(NavigateToSignInDialogAction)
             return
@@ -386,7 +386,7 @@ class SessionDetailViewModel @Inject constructor(
         )
 
         viewModelScope.launch {
-            getUserId()?.let {
+            userIdValue?.let {
                 val result = starEventUseCase(
                     StarEventParameter(
                         it,

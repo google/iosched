@@ -18,8 +18,6 @@ package com.google.samples.apps.iosched.ui.signin
 
 import android.net.Uri
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
-import com.google.samples.apps.iosched.androidtest.util.observeForTesting
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfoBasic
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
@@ -34,6 +32,7 @@ import com.nhaarman.mockito_kotlin.mock
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.first
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -62,18 +61,15 @@ class FirebaseSignInViewModelDelegateTest {
             )
         )
 
-        subject.currentUserInfo.observeForTesting {
-            val currentFirebaseUser = LiveDataTestUtil.getValue(subject.currentUserInfo)
-            assertEquals(
-                null,
-                currentFirebaseUser?.getUid()
-            )
-            assertEquals(
-                null,
-                LiveDataTestUtil.getValue(subject.currentUserImageUri)
-            )
-            assertFalse(subject.isSignedIn())
-        }
+        assertEquals(
+            null,
+            subject.userInfo.first()?.getUid()
+        )
+        assertEquals(
+            null,
+            subject.currentUserImageUri.first()
+        )
+        assertFalse(subject.isUserSignedInValue)
     }
 
     @Test
@@ -96,20 +92,18 @@ class FirebaseSignInViewModelDelegateTest {
             observeUserAuthStateUseCase = fakeObserveUserAuthStateUseCase
         )
 
-        // Observe signIn and registeredUser so messages are received
-        subject.observeSignedInUser().observeForever { }
-        subject.observeRegisteredUser().observeForever { }
-
         assertEquals(
             user.getUid(),
-            LiveDataTestUtil.getValue(subject.currentUserInfo)?.getUid()
+            subject.userInfo.first()?.getUid()
         )
         assertEquals(
             user.getPhotoUrl(),
-            LiveDataTestUtil.getValue(subject.currentUserImageUri)
+            subject.currentUserImageUri.first()
         )
-        assertTrue(subject.isSignedIn())
-        assertTrue(subject.isRegistered())
+        assertTrue(subject.isUserSignedIn.first())
+        assertTrue(subject.isUserSignedInValue)
+        assertTrue(subject.isUserRegistered.first())
+        assertTrue(subject.isUserRegisteredValue)
     }
 
     @Test
@@ -130,21 +124,19 @@ class FirebaseSignInViewModelDelegateTest {
         val subject = createFirebaseSignInViewModelDelegate(
             observeUserAuthStateUseCase = fakeObserveUserAuthStateUseCase
         )
-
-        // Observe signIn and registeredUser so messages are received
-        subject.observeSignedInUser().observeForever { }
-        subject.observeRegisteredUser().observeForever { }
-
         assertEquals(
             user.getUid(),
-            LiveDataTestUtil.getValue(subject.currentUserInfo)?.getUid()
+            subject.userInfo.first()?.getUid()
         )
         assertEquals(
             user.getPhotoUrl(),
-            LiveDataTestUtil.getValue(subject.currentUserImageUri)
+            subject.currentUserImageUri.first()
         )
-        assertTrue(subject.isSignedIn())
-        assertFalse(subject.isRegistered())
+
+        assertTrue(subject.isUserSignedIn.first())
+        assertTrue(subject.isUserSignedInValue)
+        assertFalse(subject.isUserRegistered.first())
+        assertFalse(subject.isUserRegisteredValue)
     }
 
     @Test
@@ -162,8 +154,8 @@ class FirebaseSignInViewModelDelegateTest {
 
         // Check that the emitted event is a sign in request
         assertEquals(
-            LiveDataTestUtil.getValue(subject.performSignInEvent)?.peekContent(),
-            SignInEvent.RequestSignIn
+            subject.signInNavigationActions.first(),
+            SignInNavigationAction.RequestSignIn
         )
     }
 
@@ -181,8 +173,8 @@ class FirebaseSignInViewModelDelegateTest {
         subject.emitSignOutRequest()
 
         assertEquals(
-            LiveDataTestUtil.getValue(subject.performSignInEvent)?.peekContent(),
-            SignInEvent.RequestSignOut
+            subject.signInNavigationActions.first(),
+            SignInNavigationAction.RequestSignOut
         )
     }
 
@@ -212,7 +204,8 @@ class FirebaseSignInViewModelDelegateTest {
             notificationsPrefIsShownUseCase,
             ioDispatcher,
             mainDispatcher,
-            isReservationEnabledByRemoteConfig
+            isReservationEnabledByRemoteConfig,
+            applicationScope = coroutineRule.CoroutineScope()
         )
     }
 }

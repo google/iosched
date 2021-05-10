@@ -21,7 +21,6 @@
 
     <data>
 
-        <import type="androidx.lifecycle.LiveData" />
         <import type="kotlinx.coroutines.flow.StateFlow" />
 
         <variable
@@ -30,7 +29,7 @@
 
         <variable
             name="userInfo"
-            type="LiveData&lt;com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo&gt;" />
+            type="StateFlow&lt;com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo&gt;" />
 
         <variable
             name="theme"

@@ -36,7 +36,6 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.MapView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -53,6 +52,7 @@ import com.google.samples.apps.iosched.util.slideOffsetToAlpha
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.threeten.bp.Instant
 import javax.inject.Inject
@@ -154,12 +154,11 @@ class MapFragment : MainNavigationFragment() {
             setupProfileMenuItem(mainActivityViewModel, this@MapFragment)
 
             menu.findItem(R.id.action_my_location)?.let { item ->
-                viewModel.showMyLocationOption.observe(
-                    viewLifecycleOwner,
-                    Observer { option ->
-                        item.isVisible = (option == true)
+                viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                    viewModel.showMyLocationOption.collect { option ->
+                        item.isVisible = option
                     }
-                )
+                }
             }
             setOnMenuItemClickListener { item ->
                 if (item.itemId == R.id.action_my_location) {

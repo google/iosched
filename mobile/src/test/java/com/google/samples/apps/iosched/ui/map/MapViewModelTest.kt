@@ -19,13 +19,14 @@ package com.google.samples.apps.iosched.ui.map
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.android.gms.maps.model.LatLng
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.shared.domain.prefs.MyLocationOptedInUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.OptIntoMyLocationUseCase
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -74,31 +75,31 @@ class MapViewModelTest {
     }
 
     @Test
-    fun myLocation() {
+    fun myLocation() = coroutineRule.runBlockingTest {
         signInViewModelDelegate.injectIsRegistered = true // On-site attendee
         signInViewModelDelegate.loadUser("1")
-        assertNotNull(LiveDataTestUtil.getValue(viewModel.currentUserInfo))
+        assertNotNull(viewModel.userInfo)
         assertFalse(storage.myLocationOptedIn)
-        assertTrue(LiveDataTestUtil.getValue(viewModel.showMyLocationOption)!!)
+        assertTrue(viewModel.showMyLocationOption.first())
         viewModel.optIntoMyLocation()
         // The button is gone after opt-in
-        assertFalse(LiveDataTestUtil.getValue(viewModel.showMyLocationOption)!!)
+        assertFalse(viewModel.showMyLocationOption.first())
         // This happens when user revokes the permission on system settings.
         viewModel.optIntoMyLocation(false)
-        assertTrue(LiveDataTestUtil.getValue(viewModel.showMyLocationOption)!!)
+        assertTrue(viewModel.showMyLocationOption.first())
     }
 
     @Test
-    fun myLocation_notSignedIn() {
+    fun myLocation_notSignedIn() = coroutineRule.runBlockingTest {
         signInViewModelDelegate.injectIsSignedIn = false
         signInViewModelDelegate.loadUser("1")
-        assertFalse(LiveDataTestUtil.getValue(viewModel.showMyLocationOption)!!)
+        assertFalse(viewModel.showMyLocationOption.first())
     }
 
     @Test
-    fun myLocation_notRegistered() {
+    fun myLocation_notRegistered() = coroutineRule.runBlockingTest {
         signInViewModelDelegate.injectIsRegistered = false
         signInViewModelDelegate.loadUser("1")
-        assertFalse(LiveDataTestUtil.getValue(viewModel.showMyLocationOption)!!)
+        assertFalse(viewModel.showMyLocationOption.first())
     }
 }

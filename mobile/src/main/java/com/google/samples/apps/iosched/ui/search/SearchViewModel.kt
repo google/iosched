@@ -108,7 +108,7 @@ class SearchViewModel @Inject constructor(
         // Re-execute search when signed in user changes.
         // Required because we show star / reservation status.
         viewModelScope.launch {
-            currentUserInfoFlow.collect {
+            userInfo.collect {
                 executeSearch()
             }
         }
@@ -139,7 +139,7 @@ class SearchViewModel @Inject constructor(
             delay(500)
             trace("search-path-viewmodel") {
                 searchUseCase(
-                    SessionSearchUseCaseParams(getUserId(), textQuery, filters)
+                    SessionSearchUseCaseParams(userIdValue, textQuery, filters)
                 ).collect {
                     processSearchResult(it)
                 }

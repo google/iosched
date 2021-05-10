@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:lines="1"
                 android:textAppearance="@style/TextAppearance.IOSched.AccountDialog.Username"
-                app:username="@{viewModel.currentUserInfo}"
+                app:username="@{viewModel.userInfo}"
                 tools:text="User Name" />
 
             <TextView
@@ -71,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lines="1"
-                app:userEmail="@{viewModel.currentUserInfo}"
+                app:userEmail="@{viewModel.userInfo}"
                 tools:text="user@email.com" />
         </LinearLayout>
 

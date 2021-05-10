@@ -17,11 +17,8 @@
 package com.google.samples.apps.iosched.test.util.fakes
 
 import android.net.Uri
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asFlow
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
-import com.google.samples.apps.iosched.shared.result.Event
-import com.google.samples.apps.iosched.ui.signin.SignInEvent
+import com.google.samples.apps.iosched.ui.signin.SignInNavigationAction
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
@@ -33,27 +30,25 @@ import kotlinx.coroutines.flow.map
 
 class FakeSignInViewModelDelegate : SignInViewModelDelegate {
 
-    override val currentUserInfo = MutableLiveData<AuthenticatedUserInfo?>() // Remove
-    override val currentUserInfoFlow = MutableStateFlow<AuthenticatedUserInfo?>(null)
-    override val currentUserImageUri = MutableLiveData<Uri?>()
-    override val performSignInEvent = MutableLiveData<Event<SignInEvent>>()
-    override val shouldShowNotificationsPrefAction = MutableLiveData<Event<Boolean>>()
-    override val showReservations = MutableLiveData<Boolean>()
+    override val userInfo = MutableStateFlow<AuthenticatedUserInfo?>(null)
+    override val currentUserImageUri = MutableStateFlow<Uri?>(null)
+    override val signInNavigationActions = flow<SignInNavigationAction> { }
+    override val showReservations = MutableStateFlow<Boolean>(false)
 
     var injectIsSignedIn = true
     var injectIsRegistered = false
     var signInRequestsEmitted = 0
     var signOutRequestsEmitted = 0
 
-    override fun isSignedIn(): Boolean = injectIsSignedIn
+    override val isUserSignedInValue: Boolean
+        get() = injectIsSignedIn
 
-    override fun observeSignedInUser() = TODO("Not implemented")
+    override val isUserSignedIn get() = TODO("Not implemented")
 
-    override fun observeRegisteredUser() = MutableLiveData(injectIsSignedIn)
+    override val isUserRegistered get() = MutableStateFlow(injectIsSignedIn)
 
-    override val userIsRegistered: Flow<Boolean> = observeRegisteredUser().asFlow()
-
-    override fun isRegistered(): Boolean = injectIsRegistered
+    override val isUserRegisteredValue: Boolean
+        get() = injectIsRegistered
 
     override suspend fun emitSignInRequest() {
         signInRequestsEmitted++
@@ -63,9 +58,10 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
         signOutRequestsEmitted++
     }
 
-    override fun getUserId(): String? {
-        return currentUserInfo.value?.getUid()
-    }
+    override val userIdValue: String?
+        get() {
+            return userInfo.value?.getUid()
+        }
 
     fun loadUser(id: String) {
         val mockUser = mock<AuthenticatedUserInfo> {
@@ -75,10 +71,9 @@ class FakeSignInViewModelDelegate : SignInViewModelDelegate {
             on { this@on.isRegistered() }.doReturn(injectIsRegistered)
             on { isRegistrationDataReady() }.doReturn(true)
         }
-        currentUserInfo.value = mockUser
-        currentUserInfoFlow.value = mockUser
+        userInfo.value = mockUser
     }
 
-    override fun observeUserId(): Flow<String?> =
-        flow { emitAll(currentUserInfoFlow.map { it?.getUid() }) }
+    override val userId: Flow<String?>
+        get() = flow { emitAll(userInfo.map { it?.getUid() }) }
 }

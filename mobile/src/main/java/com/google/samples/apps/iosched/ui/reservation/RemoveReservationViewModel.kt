@@ -57,7 +57,7 @@ class RemoveReservationViewModel @Inject constructor(
         _sessionId.value = sessionId
         loadUserSessionJob.cancelIfActive()
         loadUserSessionJob = viewModelScope.launch {
-            loadUserSessionUseCase(getUserId() to sessionId).collect { loadResult ->
+            loadUserSessionUseCase(userIdValue to sessionId).collect { loadResult ->
                 loadResult.data?.userSession?.let {
                     _userSession.value = it
                 }
@@ -66,7 +66,7 @@ class RemoveReservationViewModel @Inject constructor(
     }
 
     fun removeReservation() {
-        val userId = getUserId() ?: return
+        val userId = userIdValue ?: return
         val sessionId = _sessionId.value ?: return
         val userSession = _userSession.value
         viewModelScope.launch {

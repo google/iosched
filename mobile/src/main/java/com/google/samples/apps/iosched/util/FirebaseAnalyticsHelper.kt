@@ -31,6 +31,7 @@ import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
 import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -73,14 +74,17 @@ class FirebaseAnalyticsHelper(
         // Analytics based on the "anonymous data collection" setting.
         setupPreferenceChangeListener(context)
 
-        signInViewModelDelegate.observeSignedInUser().observeForever { signedIn ->
-            setUserSignedIn(signedIn == true)
-            Timber.d("Updated user signed in to $signedIn")
+        externalScope.launch {
+            signInViewModelDelegate.isUserSignedIn.collect { signedIn ->
+                setUserSignedIn(signedIn)
+                Timber.d("Updated user signed in to $signedIn")
+            }
         }
-
-        signInViewModelDelegate.observeRegisteredUser().observeForever { registered ->
-            setUserRegistered(registered == true)
-            Timber.d("Updated user registered to $registered")
+        externalScope.launch {
+            signInViewModelDelegate.isUserRegistered.collect { registered ->
+                setUserRegistered(registered)
+                Timber.d("Updated user registered to $registered")
+            }
         }
     }
 

@@ -67,7 +67,7 @@ class DefaultEventActionsViewModelDelegate @Inject constructor(
     }
 
     override fun onStarClicked(userSession: UserSession) {
-        if (!isSignedIn()) {
+        if (!isUserSignedInValue) {
             Timber.d("Showing Sign-in dialog after star click")
             _navigateToSignInDialogAction.value = Event(Unit)
             return
@@ -89,7 +89,7 @@ class DefaultEventActionsViewModelDelegate @Inject constructor(
         )
 
         externalScope.launch(mainDispatcher) {
-            getUserId()?.let {
+            userIdValue?.let {
                 val result = starEventUseCase(
                     StarEventParameter(
                         it,

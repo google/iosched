@@ -55,7 +55,7 @@
             android:text="@string/sign_in"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:goneUnless="@{!activityViewModel.observeSignedInUser}"
+            app:goneUnless="@{!activityViewModel.isUserSignedIn}"
             tools:text="Sign in" />
 
         <ImageView

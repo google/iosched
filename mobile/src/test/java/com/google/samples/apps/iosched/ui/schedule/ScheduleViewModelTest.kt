@@ -20,8 +20,6 @@ package com.google.samples.apps.iosched.ui.schedule
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
-import com.google.samples.apps.iosched.androidtest.util.observeForTesting
 import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.model.TestDataSource
@@ -97,6 +95,8 @@ class ScheduleViewModelTest {
     var coroutineRule = MainCoroutineRule()
 
     private val testDispatcher = coroutineRule.testDispatcher
+
+    private val coroutineScope = coroutineRule.CoroutineScope()
 
     @Test
     fun testDataIsLoaded_ObservablesUpdated() = coroutineRule.runBlockingTest {
@@ -278,14 +278,13 @@ class ScheduleViewModelTest {
             mock {},
             testDispatcher,
             testDispatcher,
-            true
+            true,
+            coroutineScope
         )
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
-        viewModel.showReservations.observeForTesting {
-            // Check that reservation buttons are shown
-            assertEquals(true, LiveDataTestUtil.getValue(viewModel.showReservations))
-        }
+        // Check that reservation buttons are shown
+        assertTrue(viewModel.showReservations.first())
     }
 
     @Test
@@ -308,15 +307,19 @@ class ScheduleViewModelTest {
             mock {},
             testDispatcher,
             testDispatcher,
-            true
+            true,
+            coroutineScope
         )
         // Create ViewModel
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
-        viewModel.showReservations.observeForTesting {
-            // Check that reservation buttons are shown
-            assertEquals(true, LiveDataTestUtil.getValue(viewModel.showReservations))
-        }
+        // Trigger data load
+        viewModel.userInfo.first()
+        viewModel.isUserSignedIn.first()
+        viewModel.isUserRegistered.first()
+
+        // Check that reservation buttons are shown
+        assertTrue(viewModel.showReservations.first())
     }
 
     @Test
@@ -339,20 +342,20 @@ class ScheduleViewModelTest {
             mock {},
             testDispatcher,
             testDispatcher,
-            true
+            true,
+            coroutineRule.CoroutineScope()
         )
 
         // Create ViewModel
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
-        // Observe signIn and registeredUser so messages are received
-        signInViewModelComponent.observeRegisteredUser().observeForever { }
-        signInViewModelComponent.observeSignedInUser().observeForever { }
+        // Trigger data load
+        viewModel.userInfo.first()
+        viewModel.isUserSignedIn.first()
+        viewModel.isUserRegistered.first()
 
-        viewModel.showReservations.observeForTesting {
-            // Check that *no* reservation buttons are shown
-            assertEquals(false, LiveDataTestUtil.getValue(viewModel.showReservations))
-        }
+        // Check that *no* reservation buttons are shown
+        assertFalse(viewModel.showReservations.first())
     }
 
     @Test

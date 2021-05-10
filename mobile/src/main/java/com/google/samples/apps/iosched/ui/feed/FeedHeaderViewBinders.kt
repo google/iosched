@@ -22,7 +22,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.android.material.button.MaterialButton
 import com.google.samples.apps.iosched.R
@@ -63,14 +62,14 @@ class CountdownViewBinder : FeedItemViewBinder<CountdownItem, CountdownViewHolde
 // A Moment may be shown during or after the conference based on the current time
 class MomentViewBinder(
     private val eventListener: FeedEventListener,
-    private val userInfoLiveData: LiveData<AuthenticatedUserInfo?>,
+    private val userInfo: StateFlow<AuthenticatedUserInfo?>,
     private val themeLiveData: StateFlow<Theme>
 ) : FeedItemViewBinder<Moment, MomentViewHolder>(Moment::class.java) {
 
     override fun createViewHolder(parent: ViewGroup): MomentViewHolder {
         val binding =
             ItemFeedMomentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MomentViewHolder(binding, eventListener, userInfoLiveData, themeLiveData)
+        return MomentViewHolder(binding, eventListener, userInfo, themeLiveData)
     }
 
     override fun bindViewHolder(model: Moment, viewHolder: MomentViewHolder) {
@@ -88,7 +87,7 @@ class MomentViewBinder(
 class MomentViewHolder(
     private val binding: ItemFeedMomentBinding,
     private val eventListener: FeedEventListener,
-    private val userInfoLiveData: LiveData<AuthenticatedUserInfo?>,
+    private val userInfo: StateFlow<AuthenticatedUserInfo?>,
     private val themeLiveData: StateFlow<Theme>
 ) : ViewHolder(binding.root) {
 
@@ -96,7 +95,7 @@ class MomentViewHolder(
         binding.executeAfter {
             moment = item
             theme = themeLiveData
-            userInfo = userInfoLiveData
+            userInfo = userInfo
             eventListener = this@MomentViewHolder.eventListener
         }
     }

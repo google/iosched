@@ -19,7 +19,6 @@ package com.google.samples.apps.iosched.ui.sessioncommon
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
@@ -33,7 +32,7 @@ import org.threeten.bp.ZoneId
 class SessionsAdapter(
     private val eventListener: EventActions,
     private val tagViewPool: RecycledViewPool,
-    private val showReservations: LiveData<Boolean>,
+    private val showReservations: StateFlow<Boolean>,
     private val timeZoneId: StateFlow<ZoneId>,
     private val lifecycleOwner: LifecycleOwner
 ) : ListAdapter<UserSession, SessionViewHolder>(SessionDiff) {
@@ -62,7 +61,7 @@ class SessionsAdapter(
 class SessionViewHolder(
     private val binding: ItemSessionBinding,
     private val eventListener: EventActions,
-    private val showReservations: LiveData<Boolean>,
+    private val showReservations: StateFlow<Boolean>,
     private val timeZoneId: StateFlow<ZoneId>,
     private val lifecycleOwner: LifecycleOwner
 ) : ViewHolder(binding.root) {

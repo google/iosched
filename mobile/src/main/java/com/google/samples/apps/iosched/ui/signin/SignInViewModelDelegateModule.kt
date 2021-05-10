@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.signin
 
+import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.di.MainDispatcher
 import com.google.samples.apps.iosched.shared.di.ReservationEnabledFlag
@@ -26,6 +27,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -39,14 +41,16 @@ class SignInViewModelDelegateModule {
         notificationsPrefIsShownUseCase: NotificationsPrefIsShownUseCase,
         @IoDispatcher ioDispatcher: CoroutineDispatcher,
         @MainDispatcher mainDispatcher: CoroutineDispatcher,
-        @ReservationEnabledFlag isReservationEnabledByRemoteConfig: Boolean
+        @ReservationEnabledFlag isReservationEnabledByRemoteConfig: Boolean,
+        @ApplicationScope applicationScope: CoroutineScope
     ): SignInViewModelDelegate {
         return FirebaseSignInViewModelDelegate(
             observeUserAuthStateUseCase = dataSource,
             notificationsPrefIsShownUseCase = notificationsPrefIsShownUseCase,
             ioDispatcher = ioDispatcher,
             mainDispatcher = mainDispatcher,
-            isReservationEnabledByRemoteConfig = isReservationEnabledByRemoteConfig
+            isReservationEnabledByRemoteConfig = isReservationEnabledByRemoteConfig,
+            applicationScope = applicationScope
         )
     }
 }

@@ -26,13 +26,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.databinding.DialogSignInBinding
-import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignIn
+import com.google.samples.apps.iosched.ui.signin.SignInNavigationAction.RequestSignIn
 import com.google.samples.apps.iosched.util.executeAfter
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 /**
@@ -58,18 +59,18 @@ class SignInDialogFragment : AppCompatDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // In case we are showing as a dialog, use getLayoutInflater() instead.
         binding = DialogSignInBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        signInViewModel.performSignInEvent.observe(
-            viewLifecycleOwner,
-            EventObserver { request ->
-                if (request == RequestSignIn) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            signInViewModel.signInNavigationActions.collect { action ->
+                if (action == RequestSignIn) {
                     activity?.let { activity ->
                         val signInIntent = signInHandler.makeSignInIntent()
                         val observer = object : Observer<Intent?> {
@@ -83,7 +84,7 @@ class SignInDialogFragment : AppCompatDialogFragment() {
                     dismiss()
                 }
             }
-        )
+        }
 
         binding.executeAfter {
             viewModel = signInViewModel
