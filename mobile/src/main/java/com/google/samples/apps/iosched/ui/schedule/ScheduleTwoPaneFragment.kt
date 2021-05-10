@@ -20,9 +20,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
+import androidx.slidingpanelayout.widget.SlidingPaneLayout
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.ScheduleDetailNavGraphDirections
 import com.google.samples.apps.iosched.databinding.FragmentScheduleTwoPaneBinding
@@ -47,6 +50,8 @@ class ScheduleTwoPaneFragment : MainNavigationFragment() {
     private lateinit var listPaneNavController: NavController
     private lateinit var detailPaneNavController: NavController
 
+    private val backPressHandler = BackPressHandler()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,11 +66,20 @@ class ScheduleTwoPaneFragment : MainNavigationFragment() {
 
         setupSnackbarManager(snackbarMessageManager, binding.snackbar)
 
+        binding.slidingPaneLayout.apply {
+            // Disable dragging the detail pane.
+            lockMode = SlidingPaneLayout.LOCK_MODE_LOCKED
+            // Listen for movement of the detail pane.
+            addPanelSlideListener(backPressHandler)
+        }
+
         childFragmentManager.run {
             listPaneNavController =
                 (findFragmentById(R.id.list_pane) as NavHostFragment).navController
             detailPaneNavController =
                 (findFragmentById(R.id.detail_pane) as NavHostFragment).navController
+            listPaneNavController.addOnDestinationChangedListener(backPressHandler)
+            detailPaneNavController.addOnDestinationChangedListener(backPressHandler)
         }
 
         scheduleTwoPaneViewModel.navigateToSessionAction.observe(
@@ -74,6 +88,9 @@ class ScheduleTwoPaneFragment : MainNavigationFragment() {
                 detailPaneNavController.navigate(
                     ScheduleDetailNavGraphDirections.toSessionDetail(sessionId)
                 )
+                // On narrow screens, slide the detail pane over the list pane if it isn't already
+                // on top. If both panes are visible, this will have no effect.
+                binding.slidingPaneLayout.open()
             }
         )
 
@@ -83,11 +100,69 @@ class ScheduleTwoPaneFragment : MainNavigationFragment() {
                 openSignInDialog()
             }
         )
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, backPressHandler)
     }
 
     // TODO convert this to a dialog destination in the nav graph
     private fun openSignInDialog() {
         val dialog = SignInDialogFragment()
         dialog.show(requireActivity().supportFragmentManager, SignInDialogFragment.DIALOG_SIGN_IN)
+    }
+
+    /** Handles back button press while this fragment is on screen. */
+    inner class BackPressHandler :
+        OnBackPressedCallback(false),
+        SlidingPaneLayout.PanelSlideListener,
+        NavController.OnDestinationChangedListener {
+
+        override fun handleOnBackPressed() {
+            // Back press can have three possible effects that we check for in order.
+            // 1. In the detail pane, go back from Speaker Detail to Session Detail.
+            val listDestination = listPaneNavController.currentDestination?.id
+            val detailDestination = detailPaneNavController.currentDestination?.id
+            var done = false
+            if (detailDestination == R.id.navigation_speaker_detail) {
+                done = detailPaneNavController.popBackStack()
+            }
+            // 2. On narrow screens, if the detail pane is in front, "go back" by sliding it away.
+            if (!done) {
+                done = binding.slidingPaneLayout.closePane()
+            }
+            // 3. Try to pop the list pane, e.g. back from Search to Schedule.
+            if (!done && listDestination == R.id.navigation_schedule_search) {
+                listPaneNavController.popBackStack()
+            }
+
+            syncEnabledState()
+        }
+
+        override fun onPanelSlide(panel: View, slideOffset: Float) {
+            // noop
+        }
+
+        override fun onPanelOpened(panel: View) {
+            syncEnabledState()
+        }
+
+        override fun onPanelClosed(panel: View) {
+            syncEnabledState()
+        }
+
+        override fun onDestinationChanged(
+            controller: NavController,
+            destination: NavDestination,
+            arguments: Bundle?
+        ) {
+            syncEnabledState()
+        }
+
+        private fun syncEnabledState() {
+            val listDestination = listPaneNavController.currentDestination?.id
+            val detailDestination = detailPaneNavController.currentDestination?.id
+            isEnabled = listDestination == R.id.navigation_schedule_search ||
+                detailDestination == R.id.navigation_speaker_detail ||
+                (binding.slidingPaneLayout.isSlideable && binding.slidingPaneLayout.isOpen)
+        }
     }
 }

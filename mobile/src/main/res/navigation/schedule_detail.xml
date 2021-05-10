@@ -19,7 +19,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/schedule_detail_nav_graph"
-    app:startDestination="@id/placeholderFragment">
+    app:startDestination="@id/navigation_placeholder">
 
     <!-- This is a global action since we can go to a session's detail regardless of the current
          destination. Use popUpTo and popUpToInclusive to avoid creating stacks of session details
@@ -56,7 +56,7 @@
 
     <!-- Use an empty start destination until we can load and show the first session detail. -->
     <fragment
-        android:id="@+id/placeholderFragment"
+        android:id="@+id/navigation_placeholder"
         android:name="androidx.fragment.app.Fragment" />
 
 </navigation>
