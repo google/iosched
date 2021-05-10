@@ -16,12 +16,9 @@
 
 package com.google.samples.apps.iosched.ui.speaker
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asFlow
-import androidx.lifecycle.liveData
-import androidx.lifecycle.switchMap
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.model.Speaker
 import com.google.samples.apps.iosched.model.SpeakerId
@@ -33,16 +30,21 @@ import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCase
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCaseResult
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.Result.Loading
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.google.samples.apps.iosched.util.WhileViewSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.transformLatest
 import org.threeten.bp.ZoneId
 import javax.inject.Inject
 
@@ -51,6 +53,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class SpeakerViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val loadSpeakerUseCase: LoadSpeakerUseCase,
     private val loadSpeakerSessionsUseCase: LoadUserSessionsUseCase,
     getTimeZoneUseCase: GetTimeZoneUseCase,
@@ -61,55 +64,45 @@ class SpeakerViewModel @Inject constructor(
     SignInViewModelDelegate by signInViewModelDelegate,
     EventActionsViewModelDelegate by eventActionsViewModelDelegate {
 
-    private val speakerId = MutableLiveData<String>()
+    // TODO: remove hardcoded string when https://issuetracker.google.com/136967621 is available
+    private val speakerId: SpeakerId? = savedStateHandle.get<SpeakerId>("speaker_id")
 
-    private val loadSpeakerUseCaseResult: LiveData<Result<LoadSpeakerUseCaseResult>> =
-        speakerId.switchMap { speakerId ->
-            liveData {
-                emit(loadSpeakerUseCase(speakerId))
-            }
-        }
+    private val loadSpeakerUseCaseResult: StateFlow<Result<LoadSpeakerUseCaseResult>> =
+        flow {
+            speakerId?.let { emit(loadSpeakerUseCase(speakerId)) }
+        }.stateIn(viewModelScope, SharingStarted.Eagerly, Loading)
 
-    val speakerUserSessions: LiveData<List<UserSession>> =
-        loadSpeakerUseCaseResult.switchMap { speaker ->
-            liveData {
-                emit(emptyList()) // Reset value
-                speaker.data?.let {
-                    loadSpeakerSessionsUseCase(it.speaker.id to it.sessionIds).collect {
-                        it.data?.let { data ->
-                            emit(data)
-                        }
+    val speakerUserSessions: StateFlow<List<UserSession>> =
+        loadSpeakerUseCaseResult.transformLatest { speaker ->
+            speaker.data?.let {
+                loadSpeakerSessionsUseCase(it.speaker.id to it.sessionIds).collect {
+                    it.data?.let { data ->
+                        emit(data)
                     }
                 }
             }
-        }
+        }.stateIn(viewModelScope, WhileViewSubscribed, emptyList())
 
-    val speaker: LiveData<Speaker?> = loadSpeakerUseCaseResult.map {
+    val speaker: StateFlow<Speaker?> = loadSpeakerUseCaseResult.mapLatest {
         it.data?.speaker
-    }
+    }.stateIn(viewModelScope, WhileViewSubscribed, null)
 
-    val hasNoProfileImage: LiveData<Boolean> = loadSpeakerUseCaseResult.map {
+    val hasNoProfileImage: StateFlow<Boolean> = loadSpeakerUseCaseResult.mapLatest {
         it.data?.speaker?.imageUrl.isNullOrEmpty()
-    }
+    }.stateIn(viewModelScope, WhileViewSubscribed, true)
 
-    val timeZoneId = liveData {
-        val timeZone = getTimeZoneUseCase(Unit)
-        if (timeZone.successOr(true)) {
+    // Exposed to the view as a StateFlow but it's a one-shot operation.
+    // TODO: Rename with timeZoneId when all usages are migrated
+    val timeZoneIdFlow = flow<ZoneId> {
+        if (getTimeZoneUseCase(Unit).successOr(true)) {
             emit(TimeUtils.CONFERENCE_TIMEZONE)
         } else {
             emit(ZoneId.systemDefault())
         }
-    }
+    }.stateIn(viewModelScope, SharingStarted.Lazily, TimeUtils.CONFERENCE_TIMEZONE)
 
-    val timeZoneIdFlow = timeZoneId.asFlow()
-        .stateIn(viewModelScope, SharingStarted.Lazily, ZoneId.systemDefault())
-
-    /**
-     * Provides the speaker ID which initiates all data loading.
-     */
-    fun setSpeakerId(id: SpeakerId) {
-        speakerId.value = id
-    }
+    // TODO: Replace with timeZoneIdFlow when SearchViewModel is migrated
+    val timeZoneId = timeZoneIdFlow.asLiveData()
 
     override fun onStarClicked(userSession: UserSession) {
         eventActionsViewModelDelegate.onStarClicked(userSession)
@@ -124,7 +117,7 @@ class SpeakerViewModel @Inject constructor(
         val sessionId = userSession.userEvent.id
         val sessions = speakerUserSessions.value
 
-        if (sessions != null) {
+        if (sessions.isNotEmpty()) {
             val session = sessions.first { it.session.id == sessionId }.session
             analyticsHelper.logUiEvent(session.title, AnalyticsActions.STARRED)
         }
