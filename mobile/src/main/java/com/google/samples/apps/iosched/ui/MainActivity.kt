@@ -24,7 +24,9 @@ import android.view.Menu
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -39,7 +41,6 @@ import com.google.samples.apps.iosched.shared.di.CodelabsEnabledFlag
 import com.google.samples.apps.iosched.shared.di.ExploreArEnabledFlag
 import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.ar.ArConstants
-import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
@@ -48,6 +49,8 @@ import com.google.samples.apps.iosched.util.HeightTopWindowInsetsListener
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
 import com.google.samples.apps.iosched.util.updateForTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.UUID
 import javax.inject.Inject
@@ -107,10 +110,6 @@ class MainActivity : AppCompatActivity(), NavigationHost {
     private lateinit var navHostFragment: NavHostFragment
     private var currentNavId = NAV_ID_NONE
 
-    // For sending pinned sessions as JSON to the AR module
-    private var pinnedSessionsJson: String? = null
-    private var canSignedInUserDemoAr: Boolean = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -149,42 +148,36 @@ class MainActivity : AppCompatActivity(), NavigationHost {
             navigateTo(requestedNavId)
         }
 
-        viewModel.theme.observe(this, Observer(::updateForTheme))
-
-        viewModel.navigateToSignInDialogAction.observe(
-            this,
-            EventObserver {
-                openSignInDialog()
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.navigationActions.collect { action ->
+                        when (action) {
+                            MainNavigationAction.OpenSignIn -> openSignInDialog()
+                            MainNavigationAction.OpenSignOut -> openSignOutDialog()
+                        }
+                    }
+                }
+                launch {
+                    viewModel.theme.collect { theme ->
+                        updateForTheme(theme)
+                    }
+                }
+                // AR-related Flows
+                launch {
+                    viewModel.arCoreAvailability.collect { result ->
+                        // Do nothing - activate flow
+                        Timber.d("ArCoreAvailability = $result")
+                    }
+                }
+                launch {
+                    viewModel.pinnedSessionsJson.collect { /* Do nothing - activate flow */ }
+                }
+                launch {
+                    viewModel.canSignedInUserDemoAr.collect { /* Do nothing - activate flow  */ }
+                }
             }
-        )
-
-        viewModel.navigateToSignOutDialogAction.observe(
-            this,
-            EventObserver {
-                openSignOutDialog()
-            }
-        )
-        viewModel.arCoreAvailability.observe(
-            this,
-            Observer {
-                // Start observing ArCoreAvailability otherwise the value isn't updated
-                Timber.d("ArCoreAvailability = $it")
-            }
-        )
-        viewModel.pinnedSessionsJson.observe(
-            this,
-            Observer {
-                // Need to observe the pinnedSessions otherwise it's considered as inactive
-                pinnedSessionsJson = it
-            }
-        )
-        viewModel.canSignedInUserDemoAr.observe(
-            this,
-            Observer {
-                Timber.d("Signed in user can demo ar = $it")
-                canSignedInUserDemoAr = it
-            }
-        )
+        }
     }
 
     private fun configureNavMenu(menu: Menu) {
@@ -275,8 +268,8 @@ class MainActivity : AppCompatActivity(), NavigationHost {
             ArActivity::class.java
         ).apply {
             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-            putExtra(ArConstants.CAN_SIGNED_IN_USER_DEMO_AR, canSignedInUserDemoAr)
-            putExtra(ArConstants.PINNED_SESSIONS_JSON_KEY, pinnedSessionsJson)
+            putExtra(ArConstants.CAN_SIGNED_IN_USER_DEMO_AR, viewModel.canSignedInUserDemoAr.value)
+            putExtra(ArConstants.PINNED_SESSIONS_JSON_KEY, viewModel.pinnedSessionsJson.value)
         }
         startActivity(intent)
     }

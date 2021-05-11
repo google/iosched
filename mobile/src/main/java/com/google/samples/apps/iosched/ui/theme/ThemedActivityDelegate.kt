@@ -16,15 +16,17 @@
 
 package com.google.samples.apps.iosched.ui.theme
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
 import com.google.samples.apps.iosched.model.Theme
+import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.shared.domain.settings.GetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.ObserveThemeModeUseCase
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.result.successOr
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
@@ -45,7 +47,7 @@ interface ThemedActivityDelegate {
     /**
      * Allows observing of the current theme
      */
-    val theme: LiveData<Theme>
+    val theme: StateFlow<Theme>
 
     /**
      * Allows querying of the current theme synchronously
@@ -54,16 +56,14 @@ interface ThemedActivityDelegate {
 }
 
 class ThemedActivityDelegateImpl @Inject constructor(
-    private val observeThemeUseCase: ObserveThemeModeUseCase,
+    @ApplicationScope externalScope: CoroutineScope,
+    observeThemeUseCase: ObserveThemeModeUseCase,
     private val getThemeUseCase: GetThemeUseCase
 ) : ThemedActivityDelegate {
 
-    @ExperimentalCoroutinesApi
-    override val theme: LiveData<Theme> = liveData {
-        observeThemeUseCase(Unit).collect {
-            emit(it.successOr(Theme.SYSTEM))
-        }
-    }
+    override val theme: StateFlow<Theme> = observeThemeUseCase(Unit).map {
+        it.successOr(Theme.SYSTEM)
+    }.stateIn(externalScope, SharingStarted.Eagerly, Theme.SYSTEM)
 
     override val currentTheme: Theme
         get() = runBlocking { // Using runBlocking to execute this coroutine synchronously

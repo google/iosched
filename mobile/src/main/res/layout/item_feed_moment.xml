@@ -22,6 +22,7 @@
     <data>
 
         <import type="androidx.lifecycle.LiveData" />
+        <import type="kotlinx.coroutines.flow.StateFlow" />
 
         <variable
             name="moment"
@@ -33,7 +34,7 @@
 
         <variable
             name="theme"
-            type="LiveData&lt;com.google.samples.apps.iosched.model.Theme&gt;" />
+            type="StateFlow&lt;com.google.samples.apps.iosched.model.Theme&gt;" />
 
         <variable
             name="eventListener"

@@ -16,14 +16,12 @@
 
 package com.google.samples.apps.iosched.test.util.fakes
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.Theme
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class FakeThemedActivityDelegate(
-    override val theme: LiveData<Theme> = MutableLiveData<Theme>().apply {
-        setValue(Theme.SYSTEM)
-    },
+    override val theme: StateFlow<Theme> = MutableStateFlow(Theme.SYSTEM),
     override val currentTheme: Theme = Theme.SYSTEM
 ) : ThemedActivityDelegate

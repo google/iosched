@@ -16,13 +16,10 @@
 
 package com.google.samples.apps.iosched.shared.domain.ar
 
-import androidx.lifecycle.asFlow
 import com.google.samples.apps.iosched.shared.data.ar.ArDebugFlagEndpoint
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
-import com.google.samples.apps.iosched.shared.domain.FlowUseCase
-import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.domain.UseCase
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 /**
@@ -32,7 +29,7 @@ import javax.inject.Inject
 class LoadArDebugFlagUseCase @Inject constructor(
     private val endpoint: ArDebugFlagEndpoint,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
-) : FlowUseCase<Unit, Boolean>(ioDispatcher) {
+) : UseCase<Unit, Boolean>(ioDispatcher) {
 
-    override fun execute(parameters: Unit): Flow<Result<Boolean>> = endpoint.canDemoAr().asFlow()
+    override suspend fun execute(parameters: Unit): Boolean = endpoint.canDemoAr()
 }

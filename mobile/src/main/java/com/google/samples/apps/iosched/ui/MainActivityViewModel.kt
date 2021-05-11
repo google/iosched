@@ -17,21 +17,26 @@
 package com.google.samples.apps.iosched.ui
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import androidx.lifecycle.switchMap
+import androidx.lifecycle.viewModelScope
+import com.google.ar.core.ArCoreApk
 import com.google.samples.apps.iosched.shared.domain.ar.LoadArDebugFlagUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadPinnedSessionsJsonUseCase
-import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.ui.ar.ArCoreAvailabilityLiveData
+import com.google.samples.apps.iosched.shared.util.tryOffer
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
+import com.google.samples.apps.iosched.util.WhileViewSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.transformLatest
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,47 +50,54 @@ class MainActivityViewModel @Inject constructor(
     SignInViewModelDelegate by signInViewModelDelegate,
     ThemedActivityDelegate by themedActivityDelegate {
 
-    private val _navigateToSignInDialogAction = MutableLiveData<Event<Unit>>()
-    val navigateToSignInDialogAction: LiveData<Event<Unit>>
-        get() = _navigateToSignInDialogAction
+    private val _navigationActions = Channel<MainNavigationAction>(Channel.CONFLATED)
+    val navigationActions = _navigationActions.receiveAsFlow()
 
-    private val _navigateToSignOutDialogAction = MutableLiveData<Event<Unit>>()
-    val navigateToSignOutDialogAction: LiveData<Event<Unit>>
-        get() = _navigateToSignOutDialogAction
-
-    val pinnedSessionsJson: LiveData<String> = currentUserInfo.switchMap { user ->
+    val pinnedSessionsJson: StateFlow<String> = currentUserInfoFlow.transformLatest { user ->
         val uid = user?.getUid()
-        liveData {
-            if (uid != null) {
-                loadPinnedSessionsUseCase(uid).collect { result ->
-                    if (result is Result.Success) {
-                        emit(result.data)
-                    }
-                }
-            } else {
-                emit("")
-            }
-        }
-    }
-
-    val canSignedInUserDemoAr: LiveData<Boolean> = currentUserInfo.switchMap {
-        liveData {
-            emit(false)
-            loadArDebugFlagUseCase(Unit).collect { result ->
+        if (uid != null) {
+            loadPinnedSessionsUseCase(uid).collect { result ->
                 if (result is Result.Success) {
                     emit(result.data)
                 }
             }
+        } else {
+            emit("")
         }
-    }
+    }.stateIn(viewModelScope, WhileViewSubscribed, "")
 
-    val arCoreAvailability = ArCoreAvailabilityLiveData(context)
+    val canSignedInUserDemoAr: StateFlow<Boolean> = currentUserInfoFlow.transformLatest {
+        val result = loadArDebugFlagUseCase(Unit)
+        if (result is Result.Success) {
+            emit(result.data)
+        }
+    }.stateIn(viewModelScope, WhileViewSubscribed, false)
+
+    val arCoreAvailability: StateFlow<ArCoreApk.Availability?> = flow<ArCoreApk.Availability> {
+        var result: ArCoreApk.Availability? = null
+        while (result == null) {
+            val availability = ArCoreApk.getInstance().checkAvailability(context)
+            // If the availability is transient, we need to call availability check again
+            // as in https://developers.google.com/ar/develop/java/enable-arcore#check_supported
+            if (availability.isTransient) {
+                delay(1000)
+            } else {
+                result = availability
+                emit(result)
+            }
+        }
+    }.stateIn(viewModelScope, WhileViewSubscribed, null)
 
     fun onProfileClicked() {
         if (isSignedIn()) {
-            _navigateToSignOutDialogAction.value = Event(Unit)
+            _navigationActions.tryOffer(MainNavigationAction.OpenSignOut)
         } else {
-            _navigateToSignInDialogAction.value = Event(Unit)
+            _navigationActions.tryOffer(MainNavigationAction.OpenSignIn)
         }
     }
+}
+
+sealed class MainNavigationAction {
+    object OpenSignIn : MainNavigationAction()
+    object OpenSignOut : MainNavigationAction()
 }

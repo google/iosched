@@ -16,15 +16,9 @@
 
 package com.google.samples.apps.iosched.shared.data.ar
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.shared.result.Result
-
 object FakeArDebugFlagEndpoint : ArDebugFlagEndpoint {
 
-    override fun canDemoAr(): LiveData<Result<Boolean>> {
-        val result = MutableLiveData<Result<Boolean>>()
-        result.postValue(Result.Success(true))
-        return result
+    override suspend fun canDemoAr(): Boolean {
+        return true
     }
 }

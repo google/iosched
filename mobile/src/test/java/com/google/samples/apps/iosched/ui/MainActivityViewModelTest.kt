@@ -20,7 +20,6 @@ import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.gson.GsonBuilder
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.data.ar.DefaultArDebugFlagEndpoint
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
@@ -34,14 +33,14 @@ import com.google.samples.apps.iosched.test.util.fakes.FakeThemedActivityDelegat
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
-import org.hamcrest.Matchers.`is`
-import org.hamcrest.Matchers.notNullValue
-import org.junit.Assert.assertThat
+import kotlinx.coroutines.flow.first
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
 
 class MainActivityViewModelTest {
+
     // Executes tasks in the Architecture Components in the same thread
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -87,8 +86,8 @@ class MainActivityViewModelTest {
         viewModel.onProfileClicked()
 
         // Then the sign in dialog should be shown
-        val signOutEvent = LiveDataTestUtil.getValue(viewModel.navigateToSignInDialogAction)
-        assertThat(signOutEvent?.getContentIfNotHandled(), `is`(notNullValue()))
+        val signInEvent = viewModel.navigationActions.first()
+        assertEquals(signInEvent, MainNavigationAction.OpenSignIn)
     }
 
     @Test
@@ -104,7 +103,7 @@ class MainActivityViewModelTest {
         viewModel.onProfileClicked()
 
         // Then the sign out dialog should be shown
-        val signOutEvent = LiveDataTestUtil.getValue(viewModel.navigateToSignOutDialogAction)
-        assertThat(signOutEvent?.getContentIfNotHandled(), `is`(notNullValue()))
+        val signOutEvent = viewModel.navigationActions.first()
+        assertEquals(signOutEvent, MainNavigationAction.OpenSignOut)
     }
 }

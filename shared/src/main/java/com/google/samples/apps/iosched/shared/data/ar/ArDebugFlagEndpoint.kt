@@ -16,11 +16,11 @@
 
 package com.google.samples.apps.iosched.shared.data.ar
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.firebase.functions.FirebaseFunctions
-import com.google.samples.apps.iosched.shared.result.Result
+import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 /**
  * Interface that checkes if a signed user is able to demo the AR feature
@@ -30,31 +30,27 @@ interface ArDebugFlagEndpoint {
     /**
      * Asks if the signed in user can demo the AR feature (bypass the teaser page)
      */
-    fun canDemoAr(): LiveData<Result<Boolean>>
+    suspend fun canDemoAr(): Boolean
 }
 
 class DefaultArDebugFlagEndpoint @Inject constructor(private val functions: FirebaseFunctions) :
     ArDebugFlagEndpoint {
 
-    override fun canDemoAr(): LiveData<Result<Boolean>> {
-        val result = MutableLiveData<Result<Boolean>>()
+    override suspend fun canDemoAr(): Boolean = suspendCancellableCoroutine { cont ->
         functions
             .getHttpsCallable("canDemoAr")
             .call()
             .addOnCompleteListener { task ->
-                result.postValue(
-                    if (task.isSuccessful) {
-                        val taskResult = task.result?.data as Map<*, *>
-                        if (taskResult["whitelisted"] == true) {
-                            Result.Success(true)
-                        } else {
-                            Result.Success(false)
-                        }
+                if (task.isSuccessful) {
+                    val taskResult = task.result?.data as Map<*, *>
+                    if (taskResult["whitelisted"] == true) {
+                        cont.resume(true)
                     } else {
-                        Result.Error(RuntimeException(task.exception))
+                        cont.resume(false)
                     }
-                )
+                } else {
+                    cont.resumeWithException(RuntimeException(task.exception))
+                }
             }
-        return result
     }
 }

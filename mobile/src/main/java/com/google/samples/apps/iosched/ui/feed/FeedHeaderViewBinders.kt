@@ -34,6 +34,7 @@ import com.google.samples.apps.iosched.model.Moment.Companion.CTA_SIGNIN
 import com.google.samples.apps.iosched.model.Theme
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.util.executeAfter
+import kotlinx.coroutines.flow.StateFlow
 
 // Countdown is shown before the Keynote
 object CountdownItem
@@ -63,7 +64,7 @@ class CountdownViewBinder : FeedItemViewBinder<CountdownItem, CountdownViewHolde
 class MomentViewBinder(
     private val eventListener: FeedEventListener,
     private val userInfoLiveData: LiveData<AuthenticatedUserInfo?>,
-    private val themeLiveData: LiveData<Theme>
+    private val themeLiveData: StateFlow<Theme>
 ) : FeedItemViewBinder<Moment, MomentViewHolder>(Moment::class.java) {
 
     override fun createViewHolder(parent: ViewGroup): MomentViewHolder {
@@ -88,7 +89,7 @@ class MomentViewHolder(
     private val binding: ItemFeedMomentBinding,
     private val eventListener: FeedEventListener,
     private val userInfoLiveData: LiveData<AuthenticatedUserInfo?>,
-    private val themeLiveData: LiveData<Theme>
+    private val themeLiveData: StateFlow<Theme>
 ) : ViewHolder(binding.root) {
 
     fun bind(item: Moment) {
