@@ -28,9 +28,10 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
-import com.google.samples.apps.iosched.shared.result.EventObserver
+import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import com.google.samples.apps.iosched.util.makeBold
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 /**
  * Dialog that confirms the user really wants to cancel their reservation
@@ -81,24 +82,22 @@ class RemoveReservationDialogFragment : AppCompatDialogFragment() {
         val sessionId = arguments?.getString(SESSION_ID_KEY)
         if (sessionId == null) {
             dismiss()
-        } else {
-            viewModel.setSessionId(sessionId)
         }
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.snackBarMessage.observe(
-            viewLifecycleOwner,
-            EventObserver {
+
+        launchAndRepeatWithViewLifecycle {
+            viewModel.snackbarMessages.collect {
                 // Using Toast instead of Snackbar as it's easier for DialogFragment
                 Toast.makeText(
                     view.context, it.messageId,
                     if (it.longDuration) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
                 ).show()
             }
-        )
+        }
     }
 
     private fun formatRemoveReservationMessage(

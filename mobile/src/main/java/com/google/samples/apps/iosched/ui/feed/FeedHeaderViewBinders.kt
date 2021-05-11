@@ -88,13 +88,13 @@ class MomentViewHolder(
     private val binding: ItemFeedMomentBinding,
     private val eventListener: FeedEventListener,
     private val userInfo: StateFlow<AuthenticatedUserInfo?>,
-    private val themeLiveData: StateFlow<Theme>
+    private val theme: StateFlow<Theme>
 ) : ViewHolder(binding.root) {
 
     fun bind(item: Moment) {
         binding.executeAfter {
             moment = item
-            theme = themeLiveData
+            theme = theme
             userInfo = userInfo
             eventListener = this@MomentViewHolder.eventListener
         }
