@@ -19,10 +19,13 @@ package com.google.samples.apps.iosched.ui.messages
 import androidx.annotation.VisibleForTesting
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
-import com.google.samples.apps.iosched.ui.SnackbarMessage
+import com.google.samples.apps.iosched.shared.di.ApplicationScope
+import com.google.samples.apps.iosched.shared.domain.prefs.StopSnackbarActionUseCase
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager.Companion.MAX_ITEMS
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -40,7 +43,9 @@ import javax.inject.Singleton
  */
 @Singleton
 open class SnackbarMessageManager @Inject constructor(
-    private val preferenceStorage: PreferenceStorage
+    private val preferenceStorage: PreferenceStorage,
+    @ApplicationScope private val coroutineScope: CoroutineScope,
+    private val stopSnackbarActionUseCase: StopSnackbarActionUseCase
 ) {
     companion object {
         // Keep a fixed number of old items
@@ -84,6 +89,14 @@ open class SnackbarMessageManager @Inject constructor(
             _currentSnackbar.value = null
         }
         loadNext()
+    }
+
+    fun processDismissedMessage(message: SnackbarMessage) {
+        if (message.actionId == R.string.dont_show) {
+            coroutineScope.launch {
+                stopSnackbarActionUseCase(true)
+            }
+        }
     }
 
     private fun shouldSnackbarBeIgnored(msg: SnackbarMessage): Boolean {

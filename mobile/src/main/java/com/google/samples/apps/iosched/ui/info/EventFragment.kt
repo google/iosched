@@ -35,7 +35,7 @@ import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 import com.google.samples.apps.iosched.shared.di.AssistantAppEnabledFlag
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
-import com.google.samples.apps.iosched.ui.setupSnackbarManager
+import com.google.samples.apps.iosched.ui.messages.setupSnackbarManager
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import com.google.samples.apps.iosched.widget.FadingSnackbar
@@ -74,7 +74,7 @@ class EventFragment : Fragment() {
         }
 
         val snackbarLayout = requireActivity().findViewById<FadingSnackbar>(R.id.snackbar)
-        setupSnackbarManager(snackbarMessageManager, snackbarLayout) { }
+        setupSnackbarManager(snackbarMessageManager, snackbarLayout)
 
         return binding.root
     }

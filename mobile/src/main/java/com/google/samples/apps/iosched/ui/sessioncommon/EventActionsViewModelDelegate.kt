@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.ui.sessioncommon
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
@@ -28,7 +27,7 @@ import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUse
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.ui.SnackbarMessage
+import com.google.samples.apps.iosched.ui.messages.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import kotlinx.coroutines.CoroutineDispatcher
@@ -45,7 +44,6 @@ import javax.inject.Inject
 interface EventActionsViewModelDelegate : EventActions {
     val navigateToEventAction: LiveData<Event<SessionId>>
     val navigateToSignInDialogAction: LiveData<Event<Unit>>
-    val snackBarMessage: LiveData<Event<SnackbarMessage>>
 }
 
 class DefaultEventActionsViewModelDelegate @Inject constructor(
@@ -63,10 +61,6 @@ class DefaultEventActionsViewModelDelegate @Inject constructor(
     private val _navigateToSignInDialogAction = MutableLiveData<Event<Unit>>()
     override val navigateToSignInDialogAction: LiveData<Event<Unit>>
         get() = _navigateToSignInDialogAction
-
-    private val _snackBarMessage = MediatorLiveData<Event<SnackbarMessage>>()
-    override val snackBarMessage: LiveData<Event<SnackbarMessage>>
-        get() = _snackBarMessage
 
     override fun openEventDetail(id: SessionId) {
         _navigateToEventAction.value = Event(id)
@@ -106,7 +100,7 @@ class DefaultEventActionsViewModelDelegate @Inject constructor(
                 )
                 // Show an error message if a star request fails
                 if (result is Result.Error) {
-                    _snackBarMessage.value = Event(SnackbarMessage(R.string.event_star_error))
+                    snackbarMessageManager.addMessage(SnackbarMessage(R.string.event_star_error))
                 }
             }
         }

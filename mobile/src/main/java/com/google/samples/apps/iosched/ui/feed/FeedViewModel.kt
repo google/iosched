@@ -40,21 +40,20 @@ import com.google.samples.apps.iosched.shared.domain.feed.LoadCurrentMomentUseCa
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadStarredAndReservedSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.result.Result.Loading
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDays
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import com.google.samples.apps.iosched.shared.util.tryOffer
-import com.google.samples.apps.iosched.ui.SnackbarMessage
+import com.google.samples.apps.iosched.ui.messages.SnackbarMessage
+import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActions
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailFragmentDirections
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
 import com.google.samples.apps.iosched.util.WhileViewSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.BufferOverflow.DROP_LATEST
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -64,7 +63,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
@@ -85,7 +83,8 @@ class FeedViewModel @Inject constructor(
     private val timeProvider: TimeProvider,
     private val analyticsHelper: AnalyticsHelper,
     private val signInViewModelDelegate: SignInViewModelDelegate,
-    themedActivityDelegate: ThemedActivityDelegate
+    themedActivityDelegate: ThemedActivityDelegate,
+    private val snackbarMessageManager: SnackbarMessageManager
 ) : ViewModel(),
     FeedEventListener,
     ThemedActivityDelegate by themedActivityDelegate,
@@ -140,7 +139,7 @@ class FeedViewModel @Inject constructor(
     private val conferenceState: StateFlow<ConferenceState> = getConferenceStateUseCase(Unit)
         .onEach {
             if (it is Result.Error) {
-                _snackBarMessages.tryOffer(SnackbarMessage(R.string.feed_loading_error))
+                snackbarMessageManager.addMessage(SnackbarMessage(R.string.feed_loading_error))
             }
         }
         .map { it.successOr(UPCOMING) }
@@ -160,7 +159,7 @@ class FeedViewModel @Inject constructor(
         emit(loadAnnouncementsUseCase(timeProvider.now()))
     }.onEach {
         if (it is Result.Error) {
-            _snackBarMessages.tryOffer(SnackbarMessage(R.string.feed_loading_error))
+            snackbarMessageManager.addMessage(SnackbarMessage(R.string.feed_loading_error))
         }
     }.stateIn(viewModelScope, WhileViewSubscribed, Result.Loading)
 
@@ -168,7 +167,7 @@ class FeedViewModel @Inject constructor(
         val announcementsHeader = AnnouncementsHeader(
             showPastNotificationsButton = it.successOr(emptyList()).size > 1
         )
-        if (it is Loading) {
+        if (it is Result.Loading) {
             listOf(announcementsHeader, LoadingIndicator)
         } else {
             listOf(
@@ -177,12 +176,6 @@ class FeedViewModel @Inject constructor(
             )
         }
     }.stateIn(viewModelScope, WhileViewSubscribed, emptyList())
-
-    // SIDE EFFECTS: Snackbar messages
-    // Guard against too many Snackbar messages by limiting to 3, keeping the oldest.
-    private val _snackBarMessages = Channel<SnackbarMessage>(3, DROP_LATEST)
-    val snackBarMessages: Flow<SnackbarMessage> =
-        _snackBarMessages.receiveAsFlow().shareIn(viewModelScope, WhileViewSubscribed)
 
     private val feedSessionsContainer: Flow<FeedSessions> = loadSessionsResult
         .combine(timeZoneIdFlow) { sessions, timeZone ->
@@ -196,7 +189,8 @@ class FeedViewModel @Inject constructor(
             signInViewModelDelegate.currentUserInfoFlow
         ) { sessionsContainer: FeedSessions,
             conferenceState: ConferenceState,
-            userInfo: AuthenticatedUserInfo? ->
+            userInfo: AuthenticatedUserInfo?
+            ->
             val isSignedIn = userInfo?.isSignedIn() ?: false
             val isRegistered = userInfo?.isRegistered() ?: false
             if (conferenceState != ENDED && isSignedIn && isRegistered &&
@@ -268,7 +262,7 @@ class FeedViewModel @Inject constructor(
             actionTextId = actionId,
             userSessions = upcomingReservedSessions,
             timeZoneId = timeZoneId,
-            isLoading = sessionsResult is Loading,
+            isLoading = sessionsResult is Result.Loading,
             isMapFeatureEnabled = isMapEnabledByRemoteConfig
         )
     }

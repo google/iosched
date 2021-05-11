@@ -20,14 +20,12 @@ import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.result.Event
-import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
 
 class FakeEventActionsViewModelDelegate : EventActionsViewModelDelegate {
 
     override val navigateToEventAction = MutableLiveData<Event<SessionId>>()
     override val navigateToSignInDialogAction = MutableLiveData<Event<Unit>>()
-    override val snackBarMessage = MutableLiveData<Event<SnackbarMessage>>()
 
     override fun openEventDetail(id: SessionId) = TODO("Not implemented")
 

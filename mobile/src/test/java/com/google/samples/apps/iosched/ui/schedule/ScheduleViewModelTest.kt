@@ -28,6 +28,7 @@ import com.google.samples.apps.iosched.model.TestDataSource
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfoBasic
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
@@ -40,6 +41,7 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
+import com.google.samples.apps.iosched.shared.domain.prefs.StopSnackbarActionUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsParameters
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsResult
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsUseCase
@@ -135,7 +137,7 @@ class ScheduleViewModelTest {
     @Test
     fun testStarEvent() = coroutineRule.runBlockingTest {
         // Create test use cases with test data
-        val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
+        val snackbarMessageManager = createSnackbarMessageManager()
         val viewModel = createScheduleViewModel(snackbarMessageManager = snackbarMessageManager)
 
         viewModel.onStarClicked(TestData.userSession0)
@@ -150,7 +152,7 @@ class ScheduleViewModelTest {
     @Test
     fun testUnstarEvent() = coroutineRule.runBlockingTest {
         // Create test use cases with test data
-        val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
+        val snackbarMessageManager = createSnackbarMessageManager()
         val viewModel = createScheduleViewModel(snackbarMessageManager = snackbarMessageManager)
 
         viewModel.onStarClicked(TestData.userSession1)
@@ -166,7 +168,7 @@ class ScheduleViewModelTest {
         val signInDelegate = FakeSignInViewModelDelegate()
         signInDelegate.injectIsSignedIn = false
 
-        val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
+        val snackbarMessageManager = createSnackbarMessageManager()
 
         val viewModel = createScheduleViewModel(
             signInViewModelDelegate = signInDelegate,
@@ -196,7 +198,7 @@ class ScheduleViewModelTest {
         val source = TestUserEventDataSource()
         val loadSessionsUseCase = createTestLoadUserSessionsByDayUseCase(source)
         val signInDelegate = FakeSignInViewModelDelegate()
-        val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
+        val snackbarMessageManager = createSnackbarMessageManager()
         val viewModel = createScheduleViewModel(
             loadScheduleSessionsUseCase = loadSessionsUseCase,
             signInViewModelDelegate = signInDelegate,
@@ -231,7 +233,7 @@ class ScheduleViewModelTest {
         val source = TestUserEventDataSource()
         val loadSessionsUseCase = createTestLoadUserSessionsByDayUseCase(source)
         val signInDelegate = FakeSignInViewModelDelegate()
-        val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
+        val snackbarMessageManager = createSnackbarMessageManager()
         val viewModel = createScheduleViewModel(
             loadScheduleSessionsUseCase = loadSessionsUseCase,
             signInViewModelDelegate = signInDelegate,
@@ -421,9 +423,7 @@ class ScheduleViewModelTest {
             createTestLoadUserSessionsByDayUseCase(),
         signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate(),
         starEventUseCase: StarEventAndNotifyUseCase = createStarEventUseCase(),
-        snackbarMessageManager: SnackbarMessageManager = SnackbarMessageManager(
-            FakePreferenceStorage()
-        ),
+        snackbarMessageManager: SnackbarMessageManager = createSnackbarMessageManager(),
         scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase =
             FakeScheduleUiHintsShownUseCase(),
         getTimeZoneUseCase: GetTimeZoneUseCase = createGetTimeZoneUseCase(),
@@ -479,6 +479,16 @@ class ScheduleViewModelTest {
 
     private fun createGetTimeZoneUseCase() =
         GetTimeZoneUseCase(FakePreferenceStorage(), testDispatcher)
+
+    private fun createSnackbarMessageManager(
+        preferenceStorage: PreferenceStorage = FakePreferenceStorage()
+    ): SnackbarMessageManager {
+        return SnackbarMessageManager(
+            preferenceStorage,
+            coroutineRule.CoroutineScope(),
+            StopSnackbarActionUseCase(preferenceStorage, testDispatcher)
+        )
+    }
 }
 
 class TestRegisteredUserDataSource(private val isRegistered: Result<Boolean?>) :

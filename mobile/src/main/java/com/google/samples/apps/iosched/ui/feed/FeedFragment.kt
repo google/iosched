@@ -42,7 +42,7 @@ import com.google.samples.apps.iosched.ui.feed.FeedNavigationAction.NavigateToSe
 import com.google.samples.apps.iosched.ui.feed.FeedNavigationAction.OpenLiveStreamAction
 import com.google.samples.apps.iosched.ui.feed.FeedNavigationAction.OpenSignInDialogAction
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
-import com.google.samples.apps.iosched.ui.setUpSnackbar
+import com.google.samples.apps.iosched.ui.messages.setupSnackbarManager
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
@@ -76,8 +76,7 @@ class FeedFragment : MainNavigationFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
+    ): View {
         binding = FragmentFeedBinding.inflate(
             inflater, container, false
         ).apply {
@@ -131,7 +130,7 @@ class FeedFragment : MainNavigationFragment() {
             v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
 
-        setUpSnackbar(model.snackBarMessages, binding.snackbar, snackbarMessageManager)
+        setupSnackbarManager(snackbarMessageManager, binding.snackbar)
 
         // Observe feed
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {

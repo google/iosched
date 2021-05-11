@@ -19,12 +19,14 @@ package com.google.samples.apps.iosched.ui.messages
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
+import com.google.samples.apps.iosched.shared.domain.prefs.StopSnackbarActionUseCase
+import com.google.samples.apps.iosched.test.data.CoroutineScope
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
-import com.google.samples.apps.iosched.ui.SnackbarMessage
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -33,19 +35,26 @@ import org.junit.Test
  */
 class SnackbarMessageManagerTest {
 
-    private lateinit var snackbarMessageManager: SnackbarMessageManager
-
     // Executes tasks in the Architecture Components in the same thread
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    @Before
-    fun createSubject() {
-        snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
+    @get:Rule
+    var coroutineRule = MainCoroutineRule()
+
+    private fun createSnackbarMessageManager(
+        preferenceStorage: PreferenceStorage = FakePreferenceStorage()
+    ): SnackbarMessageManager {
+        return SnackbarMessageManager(
+            preferenceStorage,
+            coroutineRule.CoroutineScope(),
+            StopSnackbarActionUseCase(preferenceStorage, coroutineRule.testDispatcher)
+        )
     }
 
     @Test
     fun addOneMessage() {
+        val snackbarMessageManager = createSnackbarMessageManager()
         snackbarMessageManager.addMessage(msg1)
 
         val result = snackbarMessageManager.currentSnackbar.value
@@ -55,9 +64,9 @@ class SnackbarMessageManagerTest {
 
     @Test
     fun addTwoMessages_OrderMaintained_NullWhenNoMore() {
+        val snackbarMessageManager = createSnackbarMessageManager()
 
         snackbarMessageManager.addMessage(msg1)
-
         snackbarMessageManager.addMessage(msg2)
 
         // First message is consumed
@@ -77,8 +86,9 @@ class SnackbarMessageManagerTest {
 
     @Test
     fun addTwoMessagesSameRequestId_OnlyOneShows() {
-        snackbarMessageManager.addMessage(msg1)
+        val snackbarMessageManager = createSnackbarMessageManager()
 
+        snackbarMessageManager.addMessage(msg1)
         snackbarMessageManager.addMessage(msg1)
 
         // First message is consumed
@@ -93,6 +103,8 @@ class SnackbarMessageManagerTest {
 
     @Test
     fun addMessagesToQueue_NewOnesRemoved() {
+        val snackbarMessageManager = createSnackbarMessageManager()
+
         val addedMsgs = 15
         (0..addedMsgs).forEach {
             val newMsg = createMessage(it.toString())
@@ -115,11 +127,10 @@ class SnackbarMessageManagerTest {
 
     @Test
     fun addOneMessage_snackbarIsStopped_actionDontShow() {
-
-        val snackbarMessageManager = SnackbarMessageManager(
+        val snackbarMessageManager = createSnackbarMessageManager(
             FakePreferenceStorage(observableSnackbarIsStopped = MutableLiveData(true))
         )
-        snackbarMessageManager.addMessage((msg1.copy(actionId = R.string.dont_show)))
+        snackbarMessageManager.addMessage(msg1.copy(actionId = R.string.dont_show))
 
         val result = snackbarMessageManager.currentSnackbar.value
         assertNull(result)
@@ -127,7 +138,7 @@ class SnackbarMessageManagerTest {
 
     @Test
     fun addOneMessage_snackbarAppears_actionNotDontShow() {
-        val snackbarMessageManager = SnackbarMessageManager(
+        val snackbarMessageManager = createSnackbarMessageManager(
             FakePreferenceStorage(observableSnackbarIsStopped = MutableLiveData(true))
         )
         snackbarMessageManager.addMessage(msg1)
