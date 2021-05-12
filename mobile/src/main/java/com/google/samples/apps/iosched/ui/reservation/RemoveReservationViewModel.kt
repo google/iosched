@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.reservation
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
@@ -26,49 +26,54 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUse
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
-import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result.Error
 import com.google.samples.apps.iosched.shared.result.data
-import com.google.samples.apps.iosched.shared.util.cancelIfActive
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessage
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.google.samples.apps.iosched.util.WhileViewSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RemoveReservationViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     signInViewModelDelegate: SignInViewModelDelegate,
     private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val reservationActionUseCase: ReservationActionUseCase
 ) : ViewModel(), SignInViewModelDelegate by signInViewModelDelegate {
 
-    private var loadUserSessionJob: Job? = null
-    private val _sessionId = MutableLiveData<SessionId>()
+    private val sessionId: SessionId? = savedStateHandle.get<SessionId>("session_id")
 
-    private val _userSession = MutableLiveData<UserSession>()
+    private val userIdStateFlow: StateFlow<String?> =
+        userId.stateIn(viewModelScope, WhileViewSubscribed, null)
 
-    private val _snackBarMessage = MutableLiveData<Event<SnackbarMessage>>()
-    val snackBarMessage = _snackBarMessage
-
-    fun setSessionId(sessionId: SessionId) {
-        _sessionId.value = sessionId
-        loadUserSessionJob.cancelIfActive()
-        loadUserSessionJob = viewModelScope.launch {
-            loadUserSessionUseCase(userIdValue to sessionId).collect { loadResult ->
-                loadResult.data?.userSession?.let {
-                    _userSession.value = it
-                }
+    val userSession: StateFlow<UserSession?> = userIdStateFlow.transform { userId ->
+        if (userId != null && sessionId != null) {
+            loadUserSessionUseCase(userId to sessionId).collect { loadResult ->
+                emit(loadResult.data?.userSession)
             }
         }
-    }
+    }.stateIn(viewModelScope, WhileViewSubscribed, null)
+
+    private val _snackbarMessages = Channel<SnackbarMessage>(3, BufferOverflow.DROP_LATEST)
+    val snackbarMessages: Flow<SnackbarMessage> =
+        _snackbarMessages.receiveAsFlow().shareIn(viewModelScope, WhileViewSubscribed)
 
     fun removeReservation() {
-        val userId = userIdValue ?: return
-        val sessionId = _sessionId.value ?: return
-        val userSession = _userSession.value
+        if (sessionId == null) return
+        val userId = userIdStateFlow.value ?: return
+        val userSession = userSession.value
+
         viewModelScope.launch {
             val result = reservationActionUseCase(
                 ReservationRequestParameters(
@@ -79,13 +84,12 @@ class RemoveReservationViewModel @Inject constructor(
                 )
             )
             if (result is Error) {
-                _snackBarMessage.value =
-                    Event(
-                        SnackbarMessage(
-                            messageId = R.string.reservation_error,
-                            longDuration = true
-                        )
+                _snackbarMessages.send(
+                    SnackbarMessage(
+                        messageId = R.string.reservation_error,
+                        longDuration = true
                     )
+                )
             }
         }
     }
