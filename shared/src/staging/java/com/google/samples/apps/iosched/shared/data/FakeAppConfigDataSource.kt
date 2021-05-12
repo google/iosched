@@ -17,82 +17,82 @@
 package com.google.samples.apps.iosched.shared.data
 
 import android.content.res.Resources.NotFoundException
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
+import com.google.samples.apps.iosched.shared.data.config.AgendaTimestampsKey
 import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
-import com.google.samples.apps.iosched.shared.data.config.RemoteAppConfigDataSource
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME
+import kotlin.collections.Map.Entry
 
-class FakeAppConfigDataSource : AppConfigDataSource {
+class FakeAppConfigDataSource() : AppConfigDataSource {
 
-    private val times1: Map<String, MutableLiveData<String>> = mapOf(
-        RemoteAppConfigDataSource.BADGE_PICK_UP_DAY1_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.BADGE_PICK_UP_DAY1_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.BADGE_PICK_UP_DAY0_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.BADGE_PICK_UP_DAY0_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.BREAKFAST_DAY1_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.BREAKFAST_DAY1_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.GOOGLE_KEYNOTE_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.GOOGLE_KEYNOTE_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.IO_STORE_DAY1_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.IO_STORE_DAY1_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.LUNCH_DAY1_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.BADGE_PICK_UP_DAY0_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.LUNCH_DAY1_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.DEVELOPER_KEYNOTE_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.DEVELOPER_KEYNOTE_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.SESSIONS_DAY1_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.SESSIONS_DAY1_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.CODELABS_DAY1_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.CODELABS_DAY1_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.OFFICE_HOURS_DAY1_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.OFFICE_HOURS_DAY1_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.SANDBOXES_DAY1_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.SANDBOXES_DAY1_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.AFTER_DARK_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.AFTER_DARK_END_TIME to MutableLiveData()
-    )
-    private val times2: Map<String, MutableLiveData<String>> = mapOf(
-        RemoteAppConfigDataSource.BADGE_DEVICE_PICK_UP_DAY2_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.BADGE_DEVICE_PICK_UP_DAY2_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.BREAKFAST_DAY2_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.BREAKFAST_DAY2_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.IO_STORE_DAY2_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.IO_STORE_DAY2_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.LUNCH_DAY2_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.LUNCH_DAY2_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.SESSIONS_DAY2_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.SESSIONS_DAY2_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.CODELABS_DAY2_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.CODELABS_DAY2_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.OFFICE_HOURS_DAY2_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.OFFICE_HOURS_DAY2_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.SANDBOXES_DAY2_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.SANDBOXES_DAY2_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.CONCERT_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.CONCERT_END_TIME to MutableLiveData()
+    private val times1 = mutableMapOf(
+        AgendaTimestampsKey.BADGE_PICK_UP_DAY1_START_TIME.key to "",
+        AgendaTimestampsKey.BADGE_PICK_UP_DAY1_END_TIME.key to "",
+        AgendaTimestampsKey.BADGE_PICK_UP_DAY0_START_TIME.key to "",
+        AgendaTimestampsKey.BADGE_PICK_UP_DAY0_END_TIME.key to "",
+        AgendaTimestampsKey.BREAKFAST_DAY1_START_TIME.key to "",
+        AgendaTimestampsKey.BREAKFAST_DAY1_END_TIME.key to "",
+        AgendaTimestampsKey.GOOGLE_KEYNOTE_START_TIME.key to "",
+        AgendaTimestampsKey.GOOGLE_KEYNOTE_END_TIME.key to "",
+        AgendaTimestampsKey.IO_STORE_DAY1_START_TIME.key to "",
+        AgendaTimestampsKey.IO_STORE_DAY1_END_TIME.key to "",
+        AgendaTimestampsKey.LUNCH_DAY1_START_TIME.key to "",
+        AgendaTimestampsKey.BADGE_PICK_UP_DAY0_END_TIME.key to "",
+        AgendaTimestampsKey.LUNCH_DAY1_END_TIME.key to "",
+        AgendaTimestampsKey.DEVELOPER_KEYNOTE_START_TIME.key to "",
+        AgendaTimestampsKey.DEVELOPER_KEYNOTE_END_TIME.key to "",
+        AgendaTimestampsKey.SESSIONS_DAY1_START_TIME.key to "",
+        AgendaTimestampsKey.SESSIONS_DAY1_END_TIME.key to "",
+        AgendaTimestampsKey.CODELABS_DAY1_START_TIME.key to "",
+        AgendaTimestampsKey.CODELABS_DAY1_END_TIME.key to "",
+        AgendaTimestampsKey.OFFICE_HOURS_DAY1_START_TIME.key to "",
+        AgendaTimestampsKey.OFFICE_HOURS_DAY1_END_TIME.key to "",
+        AgendaTimestampsKey.SANDBOXES_DAY1_START_TIME.key to "",
+        AgendaTimestampsKey.SANDBOXES_DAY1_END_TIME.key to "",
+        AgendaTimestampsKey.AFTER_DARK_START_TIME.key to "",
+        AgendaTimestampsKey.AFTER_DARK_END_TIME.key to ""
     )
 
-    private val times3: Map<String, MutableLiveData<String>> = mapOf(
-        RemoteAppConfigDataSource.BADGE_DEVICE_PICK_UP_DAY3_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.BADGE_DEVICE_PICK_UP_DAY3_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.BREAKFAST_DAY3_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.BREAKFAST_DAY3_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.IO_STORE_DAY3_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.IO_STORE_DAY3_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.LUNCH_DAY3_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.LUNCH_DAY3_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.SESSIONS_DAY3_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.SESSIONS_DAY3_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.CODELABS_DAY3_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.CODELABS_DAY3_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.OFFICE_HOURS_DAY3_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.OFFICE_HOURS_DAY3_END_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.SANDBOXES_DAY3_START_TIME to MutableLiveData(),
-        RemoteAppConfigDataSource.SANDBOXES_DAY3_END_TIME to MutableLiveData()
+    private val times2 = mutableMapOf(
+        AgendaTimestampsKey.BADGE_DEVICE_PICK_UP_DAY2_START_TIME.key to "",
+        AgendaTimestampsKey.BADGE_DEVICE_PICK_UP_DAY2_END_TIME.key to "",
+        AgendaTimestampsKey.BREAKFAST_DAY2_START_TIME.key to "",
+        AgendaTimestampsKey.BREAKFAST_DAY2_END_TIME.key to "",
+        AgendaTimestampsKey.IO_STORE_DAY2_START_TIME.key to "",
+        AgendaTimestampsKey.IO_STORE_DAY2_END_TIME.key to "",
+        AgendaTimestampsKey.LUNCH_DAY2_START_TIME.key to "",
+        AgendaTimestampsKey.LUNCH_DAY2_END_TIME.key to "",
+        AgendaTimestampsKey.SESSIONS_DAY2_START_TIME.key to "",
+        AgendaTimestampsKey.SESSIONS_DAY2_END_TIME.key to "",
+        AgendaTimestampsKey.CODELABS_DAY2_START_TIME.key to "",
+        AgendaTimestampsKey.CODELABS_DAY2_END_TIME.key to "",
+        AgendaTimestampsKey.OFFICE_HOURS_DAY2_START_TIME.key to "",
+        AgendaTimestampsKey.OFFICE_HOURS_DAY2_END_TIME.key to "",
+        AgendaTimestampsKey.SANDBOXES_DAY2_START_TIME.key to "",
+        AgendaTimestampsKey.SANDBOXES_DAY2_END_TIME.key to "",
+        AgendaTimestampsKey.CONCERT_START_TIME.key to "",
+        AgendaTimestampsKey.CONCERT_END_TIME.key to ""
+    )
+
+    private val times3 = mutableMapOf(
+        AgendaTimestampsKey.BADGE_DEVICE_PICK_UP_DAY3_START_TIME.key to "",
+        AgendaTimestampsKey.BADGE_DEVICE_PICK_UP_DAY3_END_TIME.key to "",
+        AgendaTimestampsKey.BREAKFAST_DAY3_START_TIME.key to "",
+        AgendaTimestampsKey.BREAKFAST_DAY3_END_TIME.key to "",
+        AgendaTimestampsKey.IO_STORE_DAY3_START_TIME.key to "",
+        AgendaTimestampsKey.IO_STORE_DAY3_END_TIME.key to "",
+        AgendaTimestampsKey.LUNCH_DAY3_START_TIME.key to "",
+        AgendaTimestampsKey.LUNCH_DAY3_END_TIME.key to "",
+        AgendaTimestampsKey.SESSIONS_DAY3_START_TIME.key to "",
+        AgendaTimestampsKey.SESSIONS_DAY3_END_TIME.key to "",
+        AgendaTimestampsKey.CODELABS_DAY3_START_TIME.key to "",
+        AgendaTimestampsKey.CODELABS_DAY3_END_TIME.key to "",
+        AgendaTimestampsKey.OFFICE_HOURS_DAY3_START_TIME.key to "",
+        AgendaTimestampsKey.OFFICE_HOURS_DAY3_END_TIME.key to "",
+        AgendaTimestampsKey.SANDBOXES_DAY3_START_TIME.key to "",
+        AgendaTimestampsKey.SANDBOXES_DAY3_END_TIME.key to ""
     )
 
     init {
@@ -106,16 +106,14 @@ class FakeAppConfigDataSource : AppConfigDataSource {
 
     private fun initTimes(
         startTimeDay: ZonedDateTime,
-        times: Map<String, MutableLiveData<String>>
+        times: MutableMap<String, String>
     ) {
-        times.values.forEachIndexed { index, mutableLiveData ->
-            mutableLiveData.setValue(
-                startTimeDay.plusMinutes(index.toLong()).format(ISO_OFFSET_DATE_TIME)
-            )
+        times.onEachIndexed { index, entry: Entry<String, String> ->
+            times[entry.key] = startTimeDay.plusMinutes(index.toLong()).format(ISO_OFFSET_DATE_TIME)
         }
     }
 
-    override fun getStringLiveData(key: String): LiveData<String> {
+    override fun getTimestamp(key: String): String {
         return times1[key] ?: times2[key] ?: times3[key]
             ?: throw NotFoundException("Value for $key not found")
     }

@@ -25,7 +25,6 @@ import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.google.common.collect.ImmutableMap
 import com.google.samples.apps.iosched.databinding.FragmentAnnouncementsBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
@@ -33,7 +32,9 @@ import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -85,12 +86,11 @@ class AnnouncementsFragment : MainNavigationFragment() {
             v.updatePadding(bottom = padding.bottom + systemInsets.bottom)
         }
 
-        model.announcements.observe(
-            viewLifecycleOwner,
-            Observer {
+        launchAndRepeatWithViewLifecycle {
+            model.announcements.collect {
                 (binding.recyclerView.adapter as FeedAdapter).submitList(it)
             }
-        )
+        }
     }
 
     private fun createAdapter(): FeedAdapter {

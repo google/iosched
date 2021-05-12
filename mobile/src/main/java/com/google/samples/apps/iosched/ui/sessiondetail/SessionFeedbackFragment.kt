@@ -22,7 +22,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -32,9 +31,12 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSessionFeedbackBinding
 import com.google.samples.apps.iosched.databinding.ItemQuestionBinding
 import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.shared.result.data
+import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import com.google.samples.apps.iosched.widget.SimpleRatingBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -59,21 +61,16 @@ class SessionFeedbackFragment : AppCompatDialogFragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = questionAdapter
         }
-        // The lifecycle owner has to be the DialogFragment itself here.
-        viewModel.questions.observe(
-            this,
-            Observer { questions ->
-                if (questions != null && questions.isNotEmpty()) {
-                    questionAdapter.submitList(questions)
+
+        questionAdapter.submitList(viewModel.questions)
+
+        launchAndRepeatWithViewLifecycle {
+            viewModel.userSession.collect {
+                it.data?.let {
+                    dialog?.setTitle(it.session.title)
                 }
             }
-        )
-        viewModel.userSession.observe(
-            this,
-            Observer { userSession ->
-                dialog?.setTitle(userSession.session.title)
-            }
-        )
+        }
         return MaterialAlertDialogBuilder(requireContext())
             // The actual title is set asynchronously, but there has to be some title to
             // initialize the view first.

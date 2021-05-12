@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.shared.domain.users
 
-import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
@@ -109,8 +108,6 @@ class StarEventAndNotifyUseCaseTest {
 }
 
 val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepository {
-
-    val result = MutableLiveData<Result<StarUpdatedStatus>>()
 
     override suspend fun starEvent(
         userId: String,

@@ -17,11 +17,9 @@
 package com.google.samples.apps.iosched.ui.signin
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
 
@@ -63,18 +61,5 @@ class SignInViewModelTest {
 
         // Then a sign out request is emitted
         assertEquals(1, signInViewModelDelegate.signInRequestsEmitted)
-    }
-
-    @Test
-    fun onCancel_dialogDismiss() {
-        // Given a view model with a signed in user
-        val viewModel = SignInViewModel(FakeSignInViewModelDelegate())
-
-        // When cancel is requested
-        viewModel.onCancel()
-
-        // Then the dialog is dismissed
-        val dismissEvent = LiveDataTestUtil.getValue(viewModel.dismissDialogAction)
-        assertNotNull(dismissEvent?.getContentIfNotHandled())
     }
 }

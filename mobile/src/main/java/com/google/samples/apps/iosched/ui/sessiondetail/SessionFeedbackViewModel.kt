@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.ui.sessiondetail
 
 import androidx.annotation.IntRange
 import androidx.annotation.StringRes
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.R
@@ -28,10 +27,14 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUse
 import com.google.samples.apps.iosched.shared.domain.users.FeedbackParameter
 import com.google.samples.apps.iosched.shared.domain.users.FeedbackUseCase
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.Result.Success
+import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.util.cancelIfActive
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -73,22 +76,23 @@ class SessionFeedbackViewModel @Inject constructor(
 
     private var _sessionId: SessionId? = null
 
-    private val _userSession = MutableLiveData<UserSession>()
-    val userSession = _userSession
+    private val _userSession = MutableStateFlow<Result<UserSession>>(Result.Loading)
+    val userSession: StateFlow<Result<UserSession>> = _userSession
 
-    val questions = MutableLiveData<List<Question>>(
+    val questions =
         MESSAGES.map { (key, value) ->
             val (text, start, end) = value
             Question(key, text, 0, start, end)
         }
-    )
 
     fun setSessionId(sessionId: SessionId) {
         _sessionId = sessionId
         loadUserSessionJob.cancelIfActive()
         loadUserSessionJob = viewModelScope.launch {
             loadUserSessionUseCase(userIdValue to sessionId).collect { result ->
-                _userSession.value = (result as? Result.Success)?.data?.userSession
+                result.data?.userSession?.let { success ->
+                    _userSession.value = Success(success)
+                }
             }
         }
     }
@@ -96,7 +100,7 @@ class SessionFeedbackViewModel @Inject constructor(
     fun submit(feedbackUpdates: Map<String, Int>) {
         val sessionId = _sessionId ?: return
         val userId = userIdValue
-        val userEvent = _userSession.value?.userEvent
+        val userEvent = _userSession.value.data?.userEvent
         if (userId != null && userEvent != null) {
             viewModelScope.launch {
                 feedbackUseCase(

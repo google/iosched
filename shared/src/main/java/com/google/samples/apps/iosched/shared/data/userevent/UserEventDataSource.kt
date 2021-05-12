@@ -40,7 +40,7 @@ interface UserEventDataSource {
      *
      * @param userId the userId ([FirebaseUser#uid]) of the current logged in user
      * @param userEvent the [UserEvent], which isStarred is going to be the updated status
-     * @return the LiveData that represents the status of the star operation.
+     * @return the Result that represents the status of the star operation.
      */
     suspend fun starEvent(userId: String, userEvent: UserEvent): Result<StarUpdatedStatus>
 

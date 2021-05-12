@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.ui.sessiondetail
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.data.feedback.FeedbackEndpoint
@@ -27,15 +26,18 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.FeedbackUseCase
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.time.FixedTimeExecutorRule
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
+import kotlinx.coroutines.flow.first
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -74,20 +76,20 @@ class SessionFeedbackViewModelTest {
     }
 
     @Test
-    fun title() {
+    fun title() = coroutineRule.runBlockingTest {
         assertEquals(
             testSession.title,
-            LiveDataTestUtil.getValue(viewModel.userSession)!!.session.title
+            viewModel.userSession.first().data?.session?.title
         )
     }
 
     @Test
     fun questions() {
-        val questions = LiveDataTestUtil.getValue(viewModel.questions)!!
+        // TODO: pointless test, left here for when these are dynamic.
+        val questions = viewModel.questions
         assertEquals(4, questions.size)
-        // TODO: b/124489280
-        assertEquals(0, questions[0].currentRating) // TODO: This should be 1
-        assertEquals(0, questions[1].currentRating) // TODO: This should be 2
+        assertEquals(0, questions[0].currentRating)
+        assertEquals(0, questions[1].currentRating)
         assertEquals(0, questions[2].currentRating)
         assertEquals(0, questions[3].currentRating)
     }

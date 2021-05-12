@@ -63,13 +63,13 @@ class CountdownViewBinder : FeedItemViewBinder<CountdownItem, CountdownViewHolde
 class MomentViewBinder(
     private val eventListener: FeedEventListener,
     private val userInfo: StateFlow<AuthenticatedUserInfo?>,
-    private val themeLiveData: StateFlow<Theme>
+    private val theme: StateFlow<Theme>
 ) : FeedItemViewBinder<Moment, MomentViewHolder>(Moment::class.java) {
 
     override fun createViewHolder(parent: ViewGroup): MomentViewHolder {
         val binding =
             ItemFeedMomentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MomentViewHolder(binding, eventListener, userInfo, themeLiveData)
+        return MomentViewHolder(binding, eventListener, userInfo, theme)
     }
 
     override fun bindViewHolder(model: Moment, viewHolder: MomentViewHolder) {

@@ -172,7 +172,7 @@ class FeedFragment : MainNavigationFragment() {
             val momentViewBinder = MomentViewBinder(
                 eventListener = model,
                 userInfo = model.userInfo,
-                themeLiveData = model.theme
+                theme = model.theme
             )
             val sessionsViewBinder = FeedSessionsViewBinder(model)
             val feedAnnouncementsHeaderViewBinder =

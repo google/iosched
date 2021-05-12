@@ -16,9 +16,8 @@
 
 package com.google.samples.apps.iosched.ui.feed
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.shared.domain.feed.LoadAnnouncementsUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.Result.Loading
@@ -26,6 +25,10 @@ import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted.Companion.Eagerly
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.stateIn
 import org.threeten.bp.ZoneId
 import javax.inject.Inject
 
@@ -36,7 +39,7 @@ class AnnouncementsViewModel @Inject constructor(
     timeProvider: TimeProvider
 ) : ViewModel() {
 
-    val announcements: LiveData<List<Any>> = liveData {
+    val announcements: StateFlow<List<Any>> = flow {
         val loadAnnouncementsResult = loadAnnouncementsUseCase(timeProvider.now())
         if (loadAnnouncementsResult is Loading) {
             emit(listOf(LoadingIndicator))
@@ -48,14 +51,14 @@ class AnnouncementsViewModel @Inject constructor(
                 emit(listOf(AnnouncementsEmpty))
             }
         }
-    }
+    }.stateIn(viewModelScope, Eagerly, emptyList())
 
-    val timeZoneId: LiveData<ZoneId> = liveData {
+    val timeZoneId: StateFlow<ZoneId> = flow {
         val timeZoneResult = getTimeZoneUseCase(Unit)
         if (timeZoneResult.successOr(true)) {
             emit(TimeUtils.CONFERENCE_TIMEZONE)
         } else {
             emit(ZoneId.systemDefault())
         }
-    }
+    }.stateIn(viewModelScope, Eagerly, TimeUtils.CONFERENCE_TIMEZONE)
 }

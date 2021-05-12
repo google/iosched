@@ -22,13 +22,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemFeedAnnouncementBinding
 import com.google.samples.apps.iosched.databinding.ItemFeedAnnouncementsHeaderBinding
 import com.google.samples.apps.iosched.model.Announcement
 import com.google.samples.apps.iosched.shared.util.TimeUtils
+import kotlinx.coroutines.flow.StateFlow
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 
@@ -86,7 +86,7 @@ class AnnouncementsPreviewViewHolder(
 
 // For Announcement items
 class AnnouncementViewBinder(
-    private val timeZoneId: LiveData<ZoneId>,
+    private val timeZoneId: StateFlow<ZoneId>,
     private val lifecycleOwner: LifecycleOwner
 ) : FeedItemViewBinder<Announcement, AnnouncementViewHolder>(
     Announcement::class.java
@@ -115,7 +115,7 @@ class AnnouncementViewBinder(
 class AnnouncementViewHolder(
     private val binding: ItemFeedAnnouncementBinding,
     private val lifecycleOwner: LifecycleOwner,
-    private val timeZoneId: LiveData<ZoneId>
+    private val timeZoneId: StateFlow<ZoneId>
 ) : ViewHolder(binding.root) {
 
     fun bind(announcement: Announcement) {

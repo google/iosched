@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.ui.feed
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
 import com.google.samples.apps.iosched.R
@@ -55,6 +54,7 @@ import com.google.samples.apps.iosched.util.WhileViewSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted.Companion.Eagerly
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
@@ -94,9 +94,7 @@ class FeedViewModel @Inject constructor(
         // View All sessions and go to schedule to view the full list
         private const val MAX_SESSIONS = 10
 
-        // Indicates there is no header to show at the current time. We need this sentinel value
-        // because our LiveData.combine extension functions interpret null values to mean the
-        // LiveData has not returned a result, but null for the current Moment is valid.
+        // Indicates there is no header to show at the current time.
         private object NoHeader
 
         // Indicates there is no sessions related display on the home screen as the conference is
@@ -115,17 +113,13 @@ class FeedViewModel @Inject constructor(
     var isMapEnabledByRemoteConfig: Boolean = false
 
     // Exposed to the view as a StateFlow but it's a one-shot operation.
-    // TODO: Rename with timeZoneId when ScheduleViewModel is migrated
-    val timeZoneIdFlow = flow<ZoneId> {
+    val timeZoneId = flow<ZoneId> {
         if (getTimeZoneUseCase(Unit).successOr(true)) {
             emit(TimeUtils.CONFERENCE_TIMEZONE)
         } else {
             emit(ZoneId.systemDefault())
         }
-    }.stateIn(viewModelScope, WhileViewSubscribed, TimeUtils.CONFERENCE_TIMEZONE)
-
-    // TODO: Replace with timeZoneIdFlow when ScheduleViewModel is migrated
-    val timeZoneId = timeZoneIdFlow.asLiveData()
+    }.stateIn(viewModelScope, Eagerly, TimeUtils.CONFERENCE_TIMEZONE)
 
     private val loadSessionsResult: StateFlow<Result<List<UserSession>>> =
         signInViewModelDelegate.userId
@@ -177,7 +171,7 @@ class FeedViewModel @Inject constructor(
     }.stateIn(viewModelScope, WhileViewSubscribed, emptyList())
 
     private val feedSessionsContainer: Flow<FeedSessions> = loadSessionsResult
-        .combine(timeZoneIdFlow) { sessions, timeZone ->
+        .combine(timeZoneId) { sessions, timeZone ->
             createFeedSessionsContainer(sessions, timeZone)
         }
 

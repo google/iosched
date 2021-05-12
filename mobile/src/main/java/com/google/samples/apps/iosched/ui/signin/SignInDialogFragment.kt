@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.ui.signin
 
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +24,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.databinding.DialogSignInBinding
 import com.google.samples.apps.iosched.ui.signin.SignInNavigationAction.RequestSignIn
@@ -71,16 +69,10 @@ class SignInDialogFragment : AppCompatDialogFragment() {
         launchAndRepeatWithViewLifecycle {
             signInViewModel.signInNavigationActions.collect { action ->
                 if (action == RequestSignIn) {
-                    activity?.let { activity ->
-                        val signInIntent = signInHandler.makeSignInIntent()
-                        val observer = object : Observer<Intent?> {
-                            override fun onChanged(it: Intent?) {
-                                activity.startActivityForResult(it, REQUEST_CODE_SIGN_IN)
-                                signInIntent.removeObserver(this)
-                            }
-                        }
-                        signInIntent.observeForever(observer)
-                    }
+                    activity?.startActivityForResult(
+                        signInHandler.makeSignInIntent(),
+                        REQUEST_CODE_SIGN_IN
+                    )
                     dismiss()
                 }
             }

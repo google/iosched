@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.ui.speaker
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.model.Speaker
 import com.google.samples.apps.iosched.model.SpeakerId
@@ -86,15 +85,11 @@ class SpeakerViewModel @Inject constructor(
     }.stateIn(viewModelScope, WhileViewSubscribed, true)
 
     // Exposed to the view as a StateFlow but it's a one-shot operation.
-    // TODO: Rename with timeZoneId when all usages are migrated
-    val timeZoneIdFlow = flow<ZoneId> {
+    val timeZoneId = flow<ZoneId> {
         if (getTimeZoneUseCase(Unit).successOr(true)) {
             emit(TimeUtils.CONFERENCE_TIMEZONE)
         } else {
             emit(ZoneId.systemDefault())
         }
     }.stateIn(viewModelScope, SharingStarted.Lazily, TimeUtils.CONFERENCE_TIMEZONE)
-
-    // TODO: Replace with timeZoneIdFlow when SearchViewModel is migrated
-    val timeZoneId = timeZoneIdFlow.asLiveData()
 }

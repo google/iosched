@@ -17,8 +17,6 @@
 package com.google.samples.apps.iosched.shared.data.config
 
 import android.content.res.Resources.NotFoundException
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
@@ -38,72 +36,15 @@ class RemoteAppConfigDataSource @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : AppConfigDataSource {
 
-    private val _attributesLiveDataMap: Map<String, MutableLiveData<String>> = mapOf(
-        Pair(BADGE_PICK_UP_DAY0_START_TIME, MutableLiveData()),
-        Pair(BADGE_PICK_UP_DAY0_END_TIME, MutableLiveData()),
-        Pair(BADGE_PICK_UP_DAY1_START_TIME, MutableLiveData()),
-        Pair(BADGE_PICK_UP_DAY1_END_TIME, MutableLiveData()),
-        Pair(BREAKFAST_DAY1_START_TIME, MutableLiveData()),
-        Pair(BREAKFAST_DAY1_END_TIME, MutableLiveData()),
-        Pair(GOOGLE_KEYNOTE_START_TIME, MutableLiveData()),
-        Pair(GOOGLE_KEYNOTE_END_TIME, MutableLiveData()),
-        Pair(IO_STORE_DAY1_START_TIME, MutableLiveData()),
-        Pair(IO_STORE_DAY1_END_TIME, MutableLiveData()),
-        Pair(LUNCH_DAY1_START_TIME, MutableLiveData()),
-        Pair(LUNCH_DAY1_END_TIME, MutableLiveData()),
-        Pair(DEVELOPER_KEYNOTE_START_TIME, MutableLiveData()),
-        Pair(DEVELOPER_KEYNOTE_END_TIME, MutableLiveData()),
-        Pair(SESSIONS_DAY1_START_TIME, MutableLiveData()),
-        Pair(SESSIONS_DAY1_END_TIME, MutableLiveData()),
-        Pair(CODELABS_DAY1_START_TIME, MutableLiveData()),
-        Pair(CODELABS_DAY1_END_TIME, MutableLiveData()),
-        Pair(OFFICE_HOURS_DAY1_START_TIME, MutableLiveData()),
-        Pair(OFFICE_HOURS_DAY1_END_TIME, MutableLiveData()),
-        Pair(SANDBOXES_DAY1_START_TIME, MutableLiveData()),
-        Pair(SANDBOXES_DAY1_END_TIME, MutableLiveData()),
-        Pair(AFTER_DARK_START_TIME, MutableLiveData()),
-        Pair(AFTER_DARK_END_TIME, MutableLiveData()),
-        Pair(BADGE_DEVICE_PICK_UP_DAY2_START_TIME, MutableLiveData()),
-        Pair(BADGE_DEVICE_PICK_UP_DAY2_END_TIME, MutableLiveData()),
-        Pair(BREAKFAST_DAY2_START_TIME, MutableLiveData()),
-        Pair(BREAKFAST_DAY2_END_TIME, MutableLiveData()),
-        Pair(IO_STORE_DAY2_START_TIME, MutableLiveData()),
-        Pair(IO_STORE_DAY2_END_TIME, MutableLiveData()),
-        Pair(LUNCH_DAY2_START_TIME, MutableLiveData()),
-        Pair(LUNCH_DAY2_END_TIME, MutableLiveData()),
-        Pair(SESSIONS_DAY2_START_TIME, MutableLiveData()),
-        Pair(SESSIONS_DAY2_END_TIME, MutableLiveData()),
-        Pair(CODELABS_DAY2_START_TIME, MutableLiveData()),
-        Pair(CODELABS_DAY2_END_TIME, MutableLiveData()),
-        Pair(OFFICE_HOURS_DAY2_START_TIME, MutableLiveData()),
-        Pair(OFFICE_HOURS_DAY2_END_TIME, MutableLiveData()),
-        Pair(SANDBOXES_DAY2_START_TIME, MutableLiveData()),
-        Pair(SANDBOXES_DAY2_END_TIME, MutableLiveData()),
-        Pair(CONCERT_START_TIME, MutableLiveData()),
-        Pair(CONCERT_END_TIME, MutableLiveData()),
-        Pair(BADGE_DEVICE_PICK_UP_DAY3_START_TIME, MutableLiveData()),
-        Pair(BADGE_DEVICE_PICK_UP_DAY3_END_TIME, MutableLiveData()),
-        Pair(BREAKFAST_DAY3_START_TIME, MutableLiveData()),
-        Pair(BREAKFAST_DAY3_END_TIME, MutableLiveData()),
-        Pair(IO_STORE_DAY3_START_TIME, MutableLiveData()),
-        Pair(IO_STORE_DAY3_END_TIME, MutableLiveData()),
-        Pair(LUNCH_DAY3_START_TIME, MutableLiveData()),
-        Pair(LUNCH_DAY3_END_TIME, MutableLiveData()),
-        Pair(SESSIONS_DAY3_START_TIME, MutableLiveData()),
-        Pair(SESSIONS_DAY3_END_TIME, MutableLiveData()),
-        Pair(CODELABS_DAY3_START_TIME, MutableLiveData()),
-        Pair(CODELABS_DAY3_END_TIME, MutableLiveData()),
-        Pair(OFFICE_HOURS_DAY3_START_TIME, MutableLiveData()),
-        Pair(OFFICE_HOURS_DAY3_END_TIME, MutableLiveData()),
-        Pair(SANDBOXES_DAY3_START_TIME, MutableLiveData()),
-        Pair(SANDBOXES_DAY3_END_TIME, MutableLiveData())
-    )
+    val times = mutableMapOf<String, String>()
 
     // Set cache expiration to 0s when debugging to allow easy testing, otherwise
     // use the default value.
     private val cacheExpirySeconds: Long = if (BuildConfig.DEBUG) 0 else DEFAULT_CACHE_EXPIRY_S
 
     init {
+        // Do an initial load of default values
+        updateStrings()
         firebaseRemoteConfig.fetch(cacheExpirySeconds).addOnCompleteListener { task ->
             // Async
             if (task.isSuccessful) {
@@ -115,8 +56,8 @@ class RemoteAppConfigDataSource @Inject constructor(
     }
 
     private fun updateStrings() {
-        _attributesLiveDataMap.map { (key, liveData) ->
-            liveData.value = firebaseRemoteConfig.getString(key)
+        AgendaTimestampsKey.values().forEach {
+            times[it.key] = firebaseRemoteConfig.getString(it.key)
         }
     }
 
@@ -139,8 +80,8 @@ class RemoteAppConfigDataSource @Inject constructor(
         }
     }
 
-    override fun getStringLiveData(key: String): LiveData<String> =
-        _attributesLiveDataMap[key] ?: throw NotFoundException("Value for $key not found")
+    override fun getTimestamp(key: String): String =
+        times[key] ?: throw NotFoundException("Value for $key not found")
 
     override fun getWifiInfo(): ConferenceWifiInfo {
         return ConferenceWifiInfo(
@@ -176,64 +117,6 @@ class RemoteAppConfigDataSource @Inject constructor(
     companion object {
         const val WIFI_SSID_KEY = "wifi_ssid"
         const val WIFI_PASSWORD_KEY = "wifi_password"
-        const val BADGE_PICK_UP_DAY0_START_TIME = "badge_pick_up_day0_start_time"
-        const val BADGE_PICK_UP_DAY0_END_TIME = "badge_pick_up_day0_end_time"
-        const val BADGE_PICK_UP_DAY1_START_TIME = "badge_pick_up_day1_start_time"
-        const val BADGE_PICK_UP_DAY1_END_TIME = "badge_pick_up_day1_end_time"
-        const val BREAKFAST_DAY1_START_TIME = "breakfast_day1_start_time"
-        const val BREAKFAST_DAY1_END_TIME = "breakfast_day1_end_time"
-        const val GOOGLE_KEYNOTE_START_TIME = "google_keynote_start_time"
-        const val GOOGLE_KEYNOTE_END_TIME = "google_keynote_end_time"
-        const val IO_STORE_DAY1_START_TIME = "io_store_day1_start_time"
-        const val IO_STORE_DAY1_END_TIME = "io_store_day1_end_time"
-        const val LUNCH_DAY1_START_TIME = "lunch_day1_start_time"
-        const val LUNCH_DAY1_END_TIME = "lunch_day1_end_time"
-        const val DEVELOPER_KEYNOTE_START_TIME = "developer_keynote_start_time"
-        const val DEVELOPER_KEYNOTE_END_TIME = "developer_keynote_end_time"
-        const val SESSIONS_DAY1_START_TIME = "sessions_day1_start_time"
-        const val SESSIONS_DAY1_END_TIME = "sessions_day1_end_time"
-        const val CODELABS_DAY1_START_TIME = "codelabs_day1_start_time"
-        const val CODELABS_DAY1_END_TIME = "codelabs_day1_end_time"
-        const val OFFICE_HOURS_DAY1_START_TIME = "office_hours_day1_start_time"
-        const val OFFICE_HOURS_DAY1_END_TIME = "office_hours_day1_end_time"
-        const val SANDBOXES_DAY1_START_TIME = "sandboxes_day1_start_time"
-        const val SANDBOXES_DAY1_END_TIME = "sandboxes_day1_end_time"
-        const val AFTER_DARK_START_TIME = "after_dark_start_time"
-        const val AFTER_DARK_END_TIME = "after_dark_end_time"
-        const val BADGE_DEVICE_PICK_UP_DAY2_START_TIME = "badge_device_pick_up_day2_start_time"
-        const val BADGE_DEVICE_PICK_UP_DAY2_END_TIME = "badge_device_pick_up_day2_end_time"
-        const val BREAKFAST_DAY2_START_TIME = "breakfast_day2_start_time"
-        const val BREAKFAST_DAY2_END_TIME = "breakfast_day2_end_time"
-        const val IO_STORE_DAY2_START_TIME = "io_store_day2_start_time"
-        const val IO_STORE_DAY2_END_TIME = "io_store_day2_end_time"
-        const val LUNCH_DAY2_START_TIME = "lunch_day2_start_time"
-        const val LUNCH_DAY2_END_TIME = "lunch_day2_end_time"
-        const val SESSIONS_DAY2_START_TIME = "sessions_day2_start_time"
-        const val SESSIONS_DAY2_END_TIME = "sessions_day2_end_time"
-        const val CODELABS_DAY2_START_TIME = "codelabs_day2_start_time"
-        const val CODELABS_DAY2_END_TIME = "codelabs_day2_end_time"
-        const val OFFICE_HOURS_DAY2_START_TIME = "office_hours_day2_start_time"
-        const val OFFICE_HOURS_DAY2_END_TIME = "office_hours_day2_end_time"
-        const val SANDBOXES_DAY2_START_TIME = "sandboxes_day2_start_time"
-        const val SANDBOXES_DAY2_END_TIME = "sandboxes_day2_end_time"
-        const val CONCERT_START_TIME = "concert_start_time"
-        const val CONCERT_END_TIME = "concert_end_time"
-        const val BADGE_DEVICE_PICK_UP_DAY3_START_TIME = "badge_device_pick_up_day3_start_time"
-        const val BADGE_DEVICE_PICK_UP_DAY3_END_TIME = "badge_device_pick_up_day3_end_time"
-        const val BREAKFAST_DAY3_START_TIME = "breakfast_day3_start_time"
-        const val BREAKFAST_DAY3_END_TIME = "breakfast_day3_end_time"
-        const val IO_STORE_DAY3_START_TIME = "io_store_day3_start_time"
-        const val IO_STORE_DAY3_END_TIME = "io_store_day3_end_time"
-        const val LUNCH_DAY3_START_TIME = "lunch_day3_start_time"
-        const val LUNCH_DAY3_END_TIME = "lunch_day3_end_time"
-        const val SESSIONS_DAY3_START_TIME = "sessions_day3_start_time"
-        const val SESSIONS_DAY3_END_TIME = "sessions_day3_end_time"
-        const val CODELABS_DAY3_START_TIME = "codelabs_day3_start_time"
-        const val CODELABS_DAY3_END_TIME = "codelabs_day3_end_time"
-        const val OFFICE_HOURS_DAY3_START_TIME = "office_hours_day3_start_time"
-        const val OFFICE_HOURS_DAY3_END_TIME = "office_hours_day3_end_time"
-        const val SANDBOXES_DAY3_START_TIME = "sandboxes_day3_start_time"
-        const val SANDBOXES_DAY3_END_TIME = "sandboxes_day3_end_time"
 
         const val MAP_FEATURE_ENABLED = "map_enabled"
         const val EXPLORE_AR_FEATURE_ENABLED = "explore_ar_enabled"
@@ -246,4 +129,65 @@ class RemoteAppConfigDataSource @Inject constructor(
 
         val DEFAULT_CACHE_EXPIRY_S = TimeUnit.MINUTES.toSeconds(12)
     }
+}
+
+enum class AgendaTimestampsKey(val key: String) {
+    BADGE_PICK_UP_DAY0_START_TIME("badge_pick_up_day0_start_time"),
+    BADGE_PICK_UP_DAY0_END_TIME("badge_pick_up_day0_end_time"),
+    BADGE_PICK_UP_DAY1_START_TIME("badge_pick_up_day1_start_time"),
+    BADGE_PICK_UP_DAY1_END_TIME("badge_pick_up_day1_end_time"),
+    BREAKFAST_DAY1_START_TIME("breakfast_day1_start_time"),
+    BREAKFAST_DAY1_END_TIME("breakfast_day1_end_time"),
+    GOOGLE_KEYNOTE_START_TIME("google_keynote_start_time"),
+    GOOGLE_KEYNOTE_END_TIME("google_keynote_end_time"),
+    IO_STORE_DAY1_START_TIME("io_store_day1_start_time"),
+    IO_STORE_DAY1_END_TIME("io_store_day1_end_time"),
+    LUNCH_DAY1_START_TIME("lunch_day1_start_time"),
+    LUNCH_DAY1_END_TIME("lunch_day1_end_time"),
+    DEVELOPER_KEYNOTE_START_TIME("developer_keynote_start_time"),
+    DEVELOPER_KEYNOTE_END_TIME("developer_keynote_end_time"),
+    SESSIONS_DAY1_START_TIME("sessions_day1_start_time"),
+    SESSIONS_DAY1_END_TIME("sessions_day1_end_time"),
+    CODELABS_DAY1_START_TIME("codelabs_day1_start_time"),
+    CODELABS_DAY1_END_TIME("codelabs_day1_end_time"),
+    OFFICE_HOURS_DAY1_START_TIME("office_hours_day1_start_time"),
+    OFFICE_HOURS_DAY1_END_TIME("office_hours_day1_end_time"),
+    SANDBOXES_DAY1_START_TIME("sandboxes_day1_start_time"),
+    SANDBOXES_DAY1_END_TIME("sandboxes_day1_end_time"),
+    AFTER_DARK_START_TIME("after_dark_start_time"),
+    AFTER_DARK_END_TIME("after_dark_end_time"),
+    BADGE_DEVICE_PICK_UP_DAY2_START_TIME("badge_device_pick_up_day2_start_time"),
+    BADGE_DEVICE_PICK_UP_DAY2_END_TIME("badge_device_pick_up_day2_end_time"),
+    BREAKFAST_DAY2_START_TIME("breakfast_day2_start_time"),
+    BREAKFAST_DAY2_END_TIME("breakfast_day2_end_time"),
+    IO_STORE_DAY2_START_TIME("io_store_day2_start_time"),
+    IO_STORE_DAY2_END_TIME("io_store_day2_end_time"),
+    LUNCH_DAY2_START_TIME("lunch_day2_start_time"),
+    LUNCH_DAY2_END_TIME("lunch_day2_end_time"),
+    SESSIONS_DAY2_START_TIME("sessions_day2_start_time"),
+    SESSIONS_DAY2_END_TIME("sessions_day2_end_time"),
+    CODELABS_DAY2_START_TIME("codelabs_day2_start_time"),
+    CODELABS_DAY2_END_TIME("codelabs_day2_end_time"),
+    OFFICE_HOURS_DAY2_START_TIME("office_hours_day2_start_time"),
+    OFFICE_HOURS_DAY2_END_TIME("office_hours_day2_end_time"),
+    SANDBOXES_DAY2_START_TIME("sandboxes_day2_start_time"),
+    SANDBOXES_DAY2_END_TIME("sandboxes_day2_end_time"),
+    CONCERT_START_TIME("concert_start_time"),
+    CONCERT_END_TIME("concert_end_time"),
+    BADGE_DEVICE_PICK_UP_DAY3_START_TIME("badge_device_pick_up_day3_start_time"),
+    BADGE_DEVICE_PICK_UP_DAY3_END_TIME("badge_device_pick_up_day3_end_time"),
+    BREAKFAST_DAY3_START_TIME("breakfast_day3_start_time"),
+    BREAKFAST_DAY3_END_TIME("breakfast_day3_end_time"),
+    IO_STORE_DAY3_START_TIME("io_store_day3_start_time"),
+    IO_STORE_DAY3_END_TIME("io_store_day3_end_time"),
+    LUNCH_DAY3_START_TIME("lunch_day3_start_time"),
+    LUNCH_DAY3_END_TIME("lunch_day3_end_time"),
+    SESSIONS_DAY3_START_TIME("sessions_day3_start_time"),
+    SESSIONS_DAY3_END_TIME("sessions_day3_end_time"),
+    CODELABS_DAY3_START_TIME("codelabs_day3_start_time"),
+    CODELABS_DAY3_END_TIME("codelabs_day3_end_time"),
+    OFFICE_HOURS_DAY3_START_TIME("office_hours_day3_start_time"),
+    OFFICE_HOURS_DAY3_END_TIME("office_hours_day3_end_time"),
+    SANDBOXES_DAY3_START_TIME("sandboxes_day3_start_time"),
+    SANDBOXES_DAY3_END_TIME("sandboxes_day3_end_time"),
 }

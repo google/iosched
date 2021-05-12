@@ -17,12 +17,12 @@
 package com.google.samples.apps.iosched.ui
 
 import android.content.Intent
-import androidx.lifecycle.repeatOnLifecycle
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.samples.apps.iosched.ui.LaunchNavigatonAction.NavigateToMainActivityAction
 import com.google.samples.apps.iosched.ui.LaunchNavigatonAction.NavigateToOnboardingAction
 import com.google.samples.apps.iosched.ui.onboarding.OnboardingActivity

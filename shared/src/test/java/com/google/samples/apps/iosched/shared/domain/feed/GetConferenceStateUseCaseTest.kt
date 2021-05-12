@@ -48,6 +48,8 @@ private val INSTANT_AFTER_CONFERENCE_END: Instant =
 
 /**
  * Unit tests for [GetConferenceStateUseCase]
+ *
+ * TODO: Remove excessive mocking and LiveData bridges
  */
 class GetConferenceStateUseCaseTest {
     @get:Rule

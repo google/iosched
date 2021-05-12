@@ -16,12 +16,11 @@
 
 package com.google.samples.apps.iosched.shared.data.config
 
-import androidx.lifecycle.LiveData
 import com.google.samples.apps.iosched.model.ConferenceWifiInfo
 
 interface AppConfigDataSource {
 
-    fun getStringLiveData(key: String): LiveData<String> // TODO: change name
+    fun getTimestamp(key: String): String // TODO: change name
     /**
      * Sync the strings with the latest values with Remote Config
      */

@@ -20,8 +20,6 @@
 
     <data>
 
-        <import type="androidx.lifecycle.LiveData" />
-
         <variable
             name="eventListener"
             type="com.google.samples.apps.iosched.ui.feed.FeedEventListener" />

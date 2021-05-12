@@ -17,12 +17,16 @@
 package com.google.samples.apps.iosched.ui
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompletedUseCase
+import com.google.samples.apps.iosched.shared.result.Result.Loading
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.ui.LaunchNavigatonAction.NavigateToMainActivityAction
 import com.google.samples.apps.iosched.ui.LaunchNavigatonAction.NavigateToOnboardingAction
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted.Companion.Eagerly
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 /**
@@ -38,7 +42,7 @@ class LaunchViewModel @Inject constructor(
         } else {
             NavigateToMainActivityAction
         }
-    }
+    }.stateIn(viewModelScope, Eagerly, Loading)
 }
 
 sealed class LaunchNavigatonAction {

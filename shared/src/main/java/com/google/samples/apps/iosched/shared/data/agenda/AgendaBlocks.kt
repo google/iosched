@@ -17,8 +17,8 @@
 package com.google.samples.apps.iosched.shared.data.agenda
 
 import com.google.samples.apps.iosched.model.Block
+import com.google.samples.apps.iosched.shared.data.config.AgendaTimestampsKey
 import com.google.samples.apps.iosched.shared.data.config.AppConfigDataSource
-import com.google.samples.apps.iosched.shared.data.config.RemoteAppConfigDataSource
 import org.threeten.bp.ZonedDateTime
 
 /**
@@ -33,14 +33,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             type = BADGE_PICKUP_TYPE,
             color = BADGE_PICKUP_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.BADGE_PICK_UP_DAY0_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.BADGE_PICK_UP_DAY0_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.BADGE_PICK_UP_DAY0_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.BADGE_PICK_UP_DAY0_END_TIME.key)
             )
         ),
         Block(
@@ -48,14 +44,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             type = BADGE_PICKUP_TYPE,
             color = BADGE_PICKUP_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.BADGE_PICK_UP_DAY1_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.BADGE_PICK_UP_DAY1_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.BADGE_PICK_UP_DAY1_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.BADGE_PICK_UP_DAY1_END_TIME.key)
             )
         ),
         Block(
@@ -63,14 +55,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             type = MEAL_TYPE,
             color = MEAL_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.BREAKFAST_DAY1_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.BREAKFAST_DAY1_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.BREAKFAST_DAY1_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.BREAKFAST_DAY1_END_TIME.key)
             )
         ),
         Block(
@@ -78,14 +66,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             type = KEYNOTE_TYPE,
             color = KEYNOTE_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.GOOGLE_KEYNOTE_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.GOOGLE_KEYNOTE_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.GOOGLE_KEYNOTE_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.GOOGLE_KEYNOTE_END_TIME.key)
             )
         ),
         Block(
@@ -94,14 +78,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = STORE_COLOR.toInt(),
             strokeColor = STORE_STROKE_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.IO_STORE_DAY1_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.IO_STORE_DAY1_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.IO_STORE_DAY1_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.IO_STORE_DAY1_END_TIME.key)
             )
         ),
         Block(
@@ -109,12 +89,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             type = MEAL_TYPE,
             color = MEAL_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.LUNCH_DAY1_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.LUNCH_DAY1_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(RemoteAppConfigDataSource.LUNCH_DAY1_END_TIME).value
+                dataSource.getTimestamp(AgendaTimestampsKey.LUNCH_DAY1_END_TIME.key)
             )
         ),
         Block(
@@ -122,14 +100,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             type = KEYNOTE_TYPE,
             color = KEYNOTE_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.DEVELOPER_KEYNOTE_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.DEVELOPER_KEYNOTE_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.DEVELOPER_KEYNOTE_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.DEVELOPER_KEYNOTE_END_TIME.key)
             )
         ),
         Block(
@@ -138,14 +112,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             isDark = true,
             color = SESSION_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.SESSIONS_DAY1_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.SESSIONS_DAY1_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.SESSIONS_DAY1_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.SESSIONS_DAY1_END_TIME.key)
             )
         ),
         Block(
@@ -154,14 +124,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = OTHER_BOOTH_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.CODELABS_DAY1_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.CODELABS_DAY1_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.CODELABS_DAY1_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.CODELABS_DAY1_END_TIME.key)
             )
         ),
         Block(
@@ -170,14 +136,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = OTHER_BOOTH_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.OFFICE_HOURS_DAY1_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.OFFICE_HOURS_DAY1_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.OFFICE_HOURS_DAY1_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.OFFICE_HOURS_DAY1_END_TIME.key)
             )
         ),
         Block(
@@ -186,14 +148,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = OTHER_BOOTH_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.SANDBOXES_DAY1_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.SANDBOXES_DAY1_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.SANDBOXES_DAY1_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.SANDBOXES_DAY1_END_TIME.key)
             )
         ),
         Block(
@@ -202,12 +160,11 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = AFTER_DARK_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.AFTER_DARK_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.AFTER_DARK_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(RemoteAppConfigDataSource.AFTER_DARK_END_TIME).value
+                dataSource.getTimestamp(AgendaTimestampsKey.AFTER_DARK_END_TIME.key)
+
             )
         ),
         Block(
@@ -215,16 +172,14 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             type = BADGE_PICKUP_TYPE,
             color = BADGE_PICKUP_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
-                dataSource
-                    .getStringLiveData(
-                        RemoteAppConfigDataSource.BADGE_DEVICE_PICK_UP_DAY2_START_TIME
-                    ).value
+                dataSource.getTimestamp(
+                    AgendaTimestampsKey.BADGE_DEVICE_PICK_UP_DAY2_START_TIME.key
+                )
             ),
             endTime = ZonedDateTime.parse(
-                dataSource
-                    .getStringLiveData(
-                        RemoteAppConfigDataSource.BADGE_DEVICE_PICK_UP_DAY2_END_TIME
-                    ).value
+                dataSource.getTimestamp(
+                    AgendaTimestampsKey.BADGE_DEVICE_PICK_UP_DAY2_END_TIME.key
+                )
             )
         ),
         Block(
@@ -232,14 +187,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             type = MEAL_TYPE,
             color = MEAL_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.BREAKFAST_DAY2_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.BREAKFAST_DAY2_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.BREAKFAST_DAY2_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.BREAKFAST_DAY2_END_TIME.key)
             )
         ),
         Block(
@@ -248,14 +199,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = STORE_COLOR.toInt(),
             strokeColor = STORE_STROKE_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.IO_STORE_DAY2_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.IO_STORE_DAY2_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.IO_STORE_DAY2_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.IO_STORE_DAY2_END_TIME.key)
             )
         ),
         Block(
@@ -263,12 +210,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             type = MEAL_TYPE,
             color = MEAL_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.LUNCH_DAY2_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.LUNCH_DAY2_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(RemoteAppConfigDataSource.LUNCH_DAY2_END_TIME).value
+                dataSource.getTimestamp(AgendaTimestampsKey.LUNCH_DAY2_END_TIME.key)
             )
         ),
         Block(
@@ -277,14 +222,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             isDark = true,
             color = SESSION_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.SESSIONS_DAY2_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.SESSIONS_DAY2_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.SESSIONS_DAY2_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.SESSIONS_DAY2_END_TIME.key)
             )
         ),
         Block(
@@ -293,14 +234,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = OTHER_BOOTH_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.CODELABS_DAY2_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.CODELABS_DAY2_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.CODELABS_DAY2_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.CODELABS_DAY2_END_TIME.key)
             )
         ),
         Block(
@@ -309,14 +246,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = OTHER_BOOTH_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.OFFICE_HOURS_DAY2_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.OFFICE_HOURS_DAY2_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.OFFICE_HOURS_DAY2_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.OFFICE_HOURS_DAY2_END_TIME.key)
             )
         ),
         Block(
@@ -325,14 +258,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = OTHER_BOOTH_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.SANDBOXES_DAY2_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.SANDBOXES_DAY2_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.SANDBOXES_DAY2_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.SANDBOXES_DAY2_END_TIME.key)
             )
         ),
         Block(
@@ -341,10 +270,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = AFTER_DARK_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(RemoteAppConfigDataSource.CONCERT_START_TIME).value
+                dataSource.getTimestamp(AgendaTimestampsKey.CONCERT_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(RemoteAppConfigDataSource.CONCERT_END_TIME).value
+                dataSource.getTimestamp(AgendaTimestampsKey.CONCERT_END_TIME.key)
             )
         ),
         Block(
@@ -353,15 +282,15 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = BADGE_PICKUP_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
                 dataSource
-                    .getStringLiveData(
-                        RemoteAppConfigDataSource.BADGE_DEVICE_PICK_UP_DAY3_START_TIME
-                    ).value
+                    .getTimestamp(
+                        AgendaTimestampsKey.BADGE_DEVICE_PICK_UP_DAY3_START_TIME.key
+                    )
             ),
             endTime = ZonedDateTime.parse(
                 dataSource
-                    .getStringLiveData(
-                        RemoteAppConfigDataSource.BADGE_DEVICE_PICK_UP_DAY3_END_TIME
-                    ).value
+                    .getTimestamp(
+                        AgendaTimestampsKey.BADGE_DEVICE_PICK_UP_DAY3_END_TIME.key
+                    )
             )
         ),
         Block(
@@ -369,14 +298,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             type = MEAL_TYPE,
             color = MEAL_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.BREAKFAST_DAY3_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.BREAKFAST_DAY3_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.BREAKFAST_DAY3_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.BREAKFAST_DAY3_END_TIME.key)
             )
         ),
         Block(
@@ -385,14 +310,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = STORE_COLOR.toInt(),
             strokeColor = STORE_STROKE_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.IO_STORE_DAY3_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.IO_STORE_DAY3_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.IO_STORE_DAY3_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.IO_STORE_DAY3_END_TIME.key)
             )
         ),
         Block(
@@ -400,14 +321,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             type = MEAL_TYPE,
             color = MEAL_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.LUNCH_DAY3_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.LUNCH_DAY3_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.LUNCH_DAY3_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.LUNCH_DAY3_END_TIME.key)
             )
         ),
         Block(
@@ -416,14 +333,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             isDark = true,
             color = SESSION_COLOR.toInt(),
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.SESSIONS_DAY3_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.SESSIONS_DAY3_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.SESSIONS_DAY3_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.SESSIONS_DAY3_END_TIME.key)
             )
         ),
         Block(
@@ -432,14 +345,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = OTHER_BOOTH_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.CODELABS_DAY3_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.CODELABS_DAY3_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.CODELABS_DAY3_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.CODELABS_DAY3_END_TIME.key)
             )
         ),
         Block(
@@ -448,14 +357,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = OTHER_BOOTH_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.OFFICE_HOURS_DAY3_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.OFFICE_HOURS_DAY3_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.OFFICE_HOURS_DAY3_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.OFFICE_HOURS_DAY3_END_TIME.key)
             )
         ),
         Block(
@@ -464,14 +369,10 @@ fun generateBlocks(dataSource: AppConfigDataSource): List<Block> {
             color = OTHER_BOOTH_COLOR.toInt(),
             isDark = true,
             startTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.SANDBOXES_DAY3_START_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.SANDBOXES_DAY3_START_TIME.key)
             ),
             endTime = ZonedDateTime.parse(
-                dataSource.getStringLiveData(
-                    RemoteAppConfigDataSource.SANDBOXES_DAY3_END_TIME
-                ).value
+                dataSource.getTimestamp(AgendaTimestampsKey.SANDBOXES_DAY3_END_TIME.key)
             )
         )
     )

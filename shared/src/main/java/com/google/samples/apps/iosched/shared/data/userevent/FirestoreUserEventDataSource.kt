@@ -314,7 +314,7 @@ class FirestoreUserEventDataSource @Inject constructor(
      *
      * This method makes two write operations at once.
      *
-     * @return a LiveData indicating whether the request was successful (not whether the event
+     * @return a Result indicating whether the request was successful (not whether the event
      * was reserved)
      */
     override suspend fun requestReservation(
