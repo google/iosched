@@ -23,7 +23,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import androidx.transition.TransitionInflater
@@ -40,6 +40,7 @@ import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.speaker.SpeakerFragmentDirections.Companion.toSessionDetail
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
@@ -69,7 +70,6 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        speakerViewModel.setSpeakerId(SpeakerFragmentArgs.fromBundle(requireArguments()).speakerId)
 
         sharedElementEnterTransition =
             TransitionInflater.from(context).inflateTransition(R.transition.speaker_shared_enter)
@@ -95,14 +95,13 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
         }
 
         // If speaker does not have a profile image to load, we need to resume.
-        speakerViewModel.hasNoProfileImage.observe(
-            viewLifecycleOwner,
-            Observer {
-                if (it == true) {
+        lifecycleScope.launchWhenStarted {
+            speakerViewModel.hasNoProfileImage.collect {
+                if (it) {
                     startPostponedEnterTransition()
                 }
             }
-        )
+        }
 
         speakerViewModel.navigateToEventAction.observe(
             viewLifecycleOwner,
@@ -143,29 +142,26 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
                     insets.systemWindowInsetTop * 2
             }
         }
-
-        speakerViewModel.speakerUserSessions.observe(
-            viewLifecycleOwner,
-            Observer {
+        lifecycleScope.launchWhenStarted {
+            speakerViewModel.speakerUserSessions.collect {
                 speakerAdapter.speakerSessions = it ?: emptyList()
             }
-        )
+        }
 
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        speakerViewModel.speaker.observe(
-            viewLifecycleOwner,
-            Observer {
+        lifecycleScope.launchWhenStarted {
+            speakerViewModel.speaker.collect {
                 if (it != null) {
                     val pageName = "Speaker Details: ${it.name}"
                     analyticsHelper.sendScreenView(pageName, requireActivity())
                 }
             }
-        )
+        }
     }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {

@@ -19,8 +19,7 @@
 package com.google.samples.apps.iosched.ui.speaker
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
-import com.google.samples.apps.iosched.androidtest.util.observeForTesting
+import androidx.lifecycle.SavedStateHandle
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
@@ -38,6 +37,7 @@ import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelega
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.sessioncommon.EventActionsViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -61,28 +61,20 @@ class SpeakerViewModelTest {
         // Given a speaker view model
         val viewModel = createViewModel()
 
-        // When the speaker ID is set
-        viewModel.setSpeakerId(TestData.speaker1.id)
-
         // Then the speaker is loaded
-        assertEquals(TestData.speaker1, LiveDataTestUtil.getValue(viewModel.speaker))
+        assertEquals(TestData.speaker1, viewModel.speaker.first())
     }
 
     @Test
     fun setSpeakerId_loadsSpeakersEvents_singleEvent() = coroutineRule.runBlockingTest {
         // Given a speaker view model
-        val viewModel = createViewModel()
+        val viewModel = createViewModel(speakerId = TestData.speaker3.id)
 
-        // When the ID of a speaker with a single event is set
-        viewModel.setSpeakerId(TestData.speaker3.id)
-
-        viewModel.speakerUserSessions.observeForTesting {
-            // Then the speakers event is loaded
-            assertEquals(
-                listOf(TestData.userSession2),
-                viewModel.speakerUserSessions.value
-            )
-        }
+        // Then the speakers event is loaded
+        assertEquals(
+            listOf(TestData.userSession2),
+            viewModel.speakerUserSessions.first()
+        )
     }
 
     @Test
@@ -90,19 +82,15 @@ class SpeakerViewModelTest {
         // Given a speaker view model
         val viewModel = createViewModel()
 
-        viewModel.speakerUserSessions.observeForTesting {
-            // When the ID of a speaker with multiple events is set
-            viewModel.setSpeakerId(TestData.speaker1.id)
-
-            // Then the speakers events are loaded
-            assertEquals(
-                listOf(TestData.userSession0, TestData.userSession3, TestData.userSession4),
-                viewModel.speakerUserSessions.value
-            )
-        }
+        // Then the speakers events are loaded
+        assertEquals(
+            listOf(TestData.userSession0, TestData.userSession3, TestData.userSession4),
+            viewModel.speakerUserSessions.first()
+        )
     }
 
     private fun createViewModel(
+        speakerId: String? = TestData.speaker1.id,
         loadSpeakerUseCase: LoadSpeakerUseCase =
             LoadSpeakerUseCase(TestDataRepository, TestCoroutineDispatcher()),
         loadSpeakerSessionsUseCase: LoadUserSessionsUseCase = LoadUserSessionsUseCase(
@@ -121,12 +109,13 @@ class SpeakerViewModelTest {
         analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper()
     ): SpeakerViewModel {
         return SpeakerViewModel(
-            loadSpeakerUseCase,
-            loadSpeakerSessionsUseCase,
-            getTimeZoneUseCase,
-            signInViewModelDelegate,
-            eventActionsDelegate,
-            analyticsHelper
+            savedStateHandle = SavedStateHandle(mapOf("speaker_id" to speakerId)),
+            loadSpeakerUseCase = loadSpeakerUseCase,
+            loadSpeakerSessionsUseCase = loadSpeakerSessionsUseCase,
+            getTimeZoneUseCase = getTimeZoneUseCase,
+            signInViewModelDelegate = signInViewModelDelegate,
+            eventActionsViewModelDelegate = eventActionsDelegate,
+            analyticsHelper = analyticsHelper
         )
     }
 }
