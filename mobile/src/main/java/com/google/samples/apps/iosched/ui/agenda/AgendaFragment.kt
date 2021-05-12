@@ -21,7 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePaddingRelative
+import androidx.core.view.updatePadding
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -54,10 +54,10 @@ class AgendaFragment : MainNavigationFragment() {
         }
         // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
         binding.recyclerView.doOnApplyWindowInsets { v, insets, padding ->
-            v.updatePaddingRelative(
-                bottom =
-                padding.bottom + insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+            val systemInsets = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime()
             )
+            v.updatePadding(bottom = padding.bottom + systemInsets.bottom)
         }
         return binding.root
     }

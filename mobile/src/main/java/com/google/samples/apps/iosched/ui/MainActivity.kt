@@ -24,6 +24,12 @@ import android.view.Menu
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.graphics.Insets
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -115,6 +121,7 @@ class MainActivity : AppCompatActivity(), NavigationHost {
 
         // Update for Dark Mode straight away
         updateForTheme(viewModel.currentTheme)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -177,6 +184,37 @@ class MainActivity : AppCompatActivity(), NavigationHost {
                     viewModel.canSignedInUserDemoAr.collect { /* Do nothing - activate flow  */ }
                 }
             }
+        }
+
+        binding.navigationRail?.let {
+            ViewCompat.setOnApplyWindowInsetsListener(it) { view, insets ->
+                // Pad the Navigation Rail so its content is not behind system bars.
+                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                view.updatePadding(top = systemBars.top, bottom = systemBars.bottom)
+                insets
+            }
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(binding.rootContainer) { view, insets ->
+            // Hide the bottom navigation view whenever the keyboard is visible.
+            val imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
+            binding.bottomNavigation?.isVisible = !imeVisible
+
+            // If we're showing the bottom navigation, add bottom padding. Also, add left and right
+            // padding since there's no better we can do with horizontal insets.
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val bottomPadding = if (binding.bottomNavigation?.isVisible == true) {
+                systemBars.bottom
+            } else 0
+            view.updatePadding(
+                left = systemBars.left,
+                right = systemBars.right,
+                bottom = bottomPadding
+            )
+            // Consume the insets we've used.
+            WindowInsetsCompat.Builder(insets).setInsets(
+                WindowInsetsCompat.Type.systemBars(),
+                Insets.of(0, systemBars.top, 0, systemBars.bottom - bottomPadding)
+            ).build()
         }
     }
 

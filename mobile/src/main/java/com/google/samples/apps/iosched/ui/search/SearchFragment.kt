@@ -16,14 +16,14 @@
 
 package com.google.samples.apps.iosched.ui.search
 
-import android.content.Context
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnNextLayout
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
@@ -122,7 +122,10 @@ class SearchFragment : Fragment() {
         binding.recyclerView.apply {
             adapter = sessionsAdapter
             doOnApplyWindowInsets { v, insets, padding ->
-                v.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)
+                val systemInsets = insets.getInsets(
+                    WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime()
+                )
+                v.updatePadding(bottom = padding.bottom + systemInsets.bottom)
             }
         }
 
@@ -181,13 +184,11 @@ class SearchFragment : Fragment() {
     }
 
     private fun showKeyboard(view: View) {
-        val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(view, InputMethodManager.SHOW_FORCED)
+        ViewCompat.getWindowInsetsController(view)?.show(WindowInsetsCompat.Type.ime())
     }
 
     private fun dismissKeyboard(view: View) {
-        val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
+        ViewCompat.getWindowInsetsController(view)?.hide(WindowInsetsCompat.Type.ime())
     }
 
     private fun findFiltersFragment(): SearchFilterFragment {

@@ -22,10 +22,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnLayout
 import androidx.core.view.marginBottom
 import androidx.core.view.updateLayoutParams
-import androidx.core.view.updatePaddingRelative
+import androidx.core.view.updatePadding
 import androidx.databinding.ObservableFloat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -99,7 +100,10 @@ abstract class FiltersFragment : Fragment() {
 
         // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
         binding.recyclerviewFilters.doOnApplyWindowInsets { v, insets, padding ->
-            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+            val systemInsets = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime()
+            )
+            v.updatePadding(bottom = padding.bottom + systemInsets.bottom)
         }
 
         return binding.root
@@ -137,12 +141,12 @@ abstract class FiltersFragment : Fragment() {
         val peekHeight = behavior.peekHeight
         val marginBottom = binding.root.marginBottom
         binding.root.doOnApplyWindowInsets { v, insets, _ ->
-            val gestureInsets = insets.systemGestureInsets
+            val gestureInsets = insets.getInsets(WindowInsetsCompat.Type.systemGestures())
             // Update the peek height so that it is above the navigation bar
             behavior.peekHeight = gestureInsets.bottom + peekHeight
 
             v.updateLayoutParams<MarginLayoutParams> {
-                bottomMargin = marginBottom + insets.systemWindowInsetTop
+                bottomMargin = marginBottom + gestureInsets.top
             }
         }
 

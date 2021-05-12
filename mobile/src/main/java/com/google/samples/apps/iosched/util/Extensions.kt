@@ -271,7 +271,11 @@ fun View.requestApplyInsetsWhenAttached() {
 
 private fun createStateForView(view: View) = ViewPaddingState(
     view.paddingLeft,
-    view.paddingTop, view.paddingRight, view.paddingBottom, view.paddingStart, view.paddingEnd
+    view.paddingTop,
+    view.paddingRight,
+    view.paddingBottom,
+    view.paddingStart,
+    view.paddingEnd
 )
 
 data class ViewPaddingState(

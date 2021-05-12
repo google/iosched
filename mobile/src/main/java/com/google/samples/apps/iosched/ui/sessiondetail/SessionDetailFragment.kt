@@ -26,6 +26,7 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ShareCompat
 import androidx.core.net.toUri
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnLayout
 import androidx.core.view.forEach
 import androidx.core.view.updatePadding
@@ -178,12 +179,14 @@ class SessionDetailFragment : Fragment(), SessionFeedbackFragment.Listener {
                 changeDuration = 120L
                 removeDuration = 100L
             }
-            doOnApplyWindowInsets { view, insets, state ->
-                view.updatePadding(bottom = state.bottom + insets.systemWindowInsetBottom)
-                // CollapsingToolbarLayout's defualt scrim visible trigger height is a bit large.
+            doOnApplyWindowInsets { view, insets, padding ->
+                val systemInsets = insets.getInsets(
+                    WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime()
+                )
+                view.updatePadding(bottom = padding.bottom + systemInsets.bottom)
+                // CollapsingToolbarLayout's default scrim visible trigger height is a bit large.
                 // Choose something smaller so that the content stays visible longer.
-                binding.collapsingToolbar.scrimVisibleHeightTrigger =
-                    insets.systemWindowInsetTop * 2
+                binding.collapsingToolbar.scrimVisibleHeightTrigger = systemInsets.top * 2
             }
         }
 

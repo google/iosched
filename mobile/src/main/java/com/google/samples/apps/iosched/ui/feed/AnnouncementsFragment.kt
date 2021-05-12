@@ -20,8 +20,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
-import androidx.core.view.updatePaddingRelative
+import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -69,15 +70,19 @@ class AnnouncementsFragment : MainNavigationFragment() {
         binding.toolbar.setupProfileMenuItem(mainActivityViewModel, viewLifecycleOwner)
 
         binding.root.doOnApplyWindowInsets { _, insets, _ ->
+            val systemInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             binding.statusBar.run {
-                layoutParams.height = insets.systemWindowInsetTop
+                layoutParams.height = systemInsets.top
                 isVisible = layoutParams.height > 0
                 requestLayout()
             }
         }
 
         binding.recyclerView.doOnApplyWindowInsets { v, insets, padding ->
-            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+            val systemInsets = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime()
+            )
+            v.updatePadding(bottom = padding.bottom + systemInsets.bottom)
         }
 
         model.announcements.observe(

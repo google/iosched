@@ -21,6 +21,7 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -109,11 +110,13 @@ class SpeakerFragment : Fragment(), OnOffsetChangedListener {
                 removeDuration = 100L
             }
             doOnApplyWindowInsets { view, insets, padding ->
-                view.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)
-                // CollapsingToolbarLayout's defualt scrim visible trigger height is a bit large.
+                val systemInsets = insets.getInsets(
+                    WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime()
+                )
+                view.updatePadding(bottom = padding.bottom + systemInsets.bottom)
+                // CollapsingToolbarLayout's default scrim visible trigger height is a bit large.
                 // Choose something smaller so that the content stays visible longer.
-                binding.collapsingToolbar.scrimVisibleHeightTrigger =
-                    insets.systemWindowInsetTop * 2
+                binding.collapsingToolbar.scrimVisibleHeightTrigger = systemInsets.top * 2
             }
         }
 

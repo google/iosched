@@ -28,10 +28,11 @@ import android.view.ViewGroup.MarginLayoutParams
 import androidx.activity.addCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.marginBottom
 import androidx.core.view.updateLayoutParams
-import androidx.core.view.updatePaddingRelative
+import androidx.core.view.updatePadding
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
@@ -221,8 +222,9 @@ class MapFragment : MainNavigationFragment() {
 
         val originalPeekHeight = bottomSheetBehavior.peekHeight
         binding.root.doOnApplyWindowInsets { _, insets, _ ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             binding.statusBar.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                height = insets.systemWindowInsetTop
+                height = systemBars.top
             }
             binding.statusBar.isVisible = true
             binding.statusBar.requestLayout()
@@ -230,20 +232,18 @@ class MapFragment : MainNavigationFragment() {
             // Update the Map padding so that the copyright, etc is not displayed in nav bar
             viewLifecycleOwner.lifecycleScope.launch {
                 val map = binding.map.awaitMap()
-                map.setPadding(0, 0, 0, insets.systemWindowInsetBottom)
+                map.setPadding(0, 0, 0, systemBars.bottom)
             }
 
             binding.mapModeFab.updateLayoutParams<MarginLayoutParams> {
-                bottomMargin = fabBaseMarginBottom + insets.systemWindowInsetBottom
+                bottomMargin = fabBaseMarginBottom + systemBars.bottom
             }
 
-            binding.descriptionScrollview.updatePaddingRelative(
-                bottom = insets.systemWindowInsetBottom
-            )
+            binding.descriptionScrollview.updatePadding(bottom = systemBars.bottom)
 
             // The peek height should use the bottom system gesture inset since it is a scrolling
             // widget
-            val gestureInsets = insets.systemGestureInsets
+            val gestureInsets = insets.getInsets(WindowInsetsCompat.Type.systemGestures())
             bottomSheetBehavior.peekHeight = gestureInsets.bottom + originalPeekHeight
         }
 

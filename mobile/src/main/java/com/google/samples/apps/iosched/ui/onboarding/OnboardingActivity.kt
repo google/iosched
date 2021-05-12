@@ -17,10 +17,11 @@
 package com.google.samples.apps.iosched.ui.onboarding
 
 import android.os.Bundle
-import android.view.View
 import android.widget.FrameLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -42,16 +43,12 @@ class OnboardingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_onboarding)
 
-        // immersive mode so images can draw behind the status bar
-        val decor = window.decorView
-        val flags = decor.systemUiVisibility or
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        decor.systemUiVisibility = flags
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         val container: FrameLayout = findViewById(R.id.fragment_container)
         container.doOnApplyWindowInsets { v, insets, padding ->
-            v.updatePadding(top = padding.top + insets.systemWindowInsetTop)
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(top = padding.top + systemBars.top)
         }
 
         if (savedInstanceState == null) {

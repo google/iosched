@@ -23,7 +23,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.widget.TextView
-import androidx.core.view.updatePaddingRelative
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.viewModels
 import com.google.samples.apps.iosched.R
@@ -63,7 +64,10 @@ class SettingsFragment : MainNavigationFragment() {
         binding.toolbar.setupProfileMenuItem(mainActivityViewModel, viewLifecycleOwner)
 
         binding.settingsScroll.doOnApplyWindowInsets { v, insets, padding ->
-            v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
+            val systemInsets = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime()
+            )
+            v.updatePadding(bottom = padding.bottom + systemInsets.bottom)
         }
 
         return binding.root
