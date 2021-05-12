@@ -33,7 +33,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
@@ -70,9 +69,12 @@ import com.google.samples.apps.iosched.ui.signin.NotificationsPreferenceDialogFr
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment.Companion.DIALOG_SIGN_IN
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import com.google.samples.apps.iosched.util.openWebsiteUrl
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -131,12 +133,7 @@ class SessionDetailFragment : Fragment(), SessionFeedbackFragment.Listener {
         binding.sessionDetailBottomAppBar.run {
             inflateMenu(R.menu.session_detail_menu)
             menu.findItem(R.id.menu_item_map)?.isVisible = isMapEnabled
-            lifecycleScope.launchWhenStarted {
-                sessionDetailViewModel.session.collect { session ->
-                    menu.findItem(R.id.menu_item_ask_question).isVisible =
-                        session?.doryLink?.isNotBlank() == true
-                }
-            }
+
             setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.menu_item_share -> {
@@ -189,38 +186,48 @@ class SessionDetailFragment : Fragment(), SessionFeedbackFragment.Listener {
                     insets.systemWindowInsetTop * 2
             }
         }
-        lifecycleScope.launchWhenStarted {
-            sessionDetailViewModel.relatedUserSessions.collect {
-                detailsAdapter.related = it.successOr(emptyList())
+
+        launchAndRepeatWithViewLifecycle {
+            observeViewModel()
+        }
+    }
+
+    private fun CoroutineScope.observeViewModel() {
+        val menu = binding.sessionDetailBottomAppBar.menu
+        val starMenu = menu.findItem(R.id.menu_item_star)
+        launch {
+            sessionDetailViewModel.shouldShowStarInBottomNav.collect { showStar ->
+                starMenu.isVisible = showStar
             }
         }
 
-        lifecycleScope.launchWhenStarted {
-            sessionDetailViewModel.session.collect { session ->
-                shareString = if (session == null) {
-                    ""
-                } else {
-                    getString(R.string.share_text_session_detail, session.title, session.sessionUrl)
+        launch {
+            sessionDetailViewModel.userEvent.collect { userEvent ->
+                userEvent?.let {
+                    if (it.isStarred) {
+                        starMenu.setIcon(R.drawable.ic_star)
+                    } else {
+                        starMenu.setIcon(R.drawable.ic_star_border)
+                    }
                 }
-                detailsAdapter.speakers = session?.speakers?.toList() ?: emptyList()
-                // ViewBinding is binding the session so we should wait until after the session has
-                // been laid out to report fully drawn. Note that we are *not* waiting for the
-                // speaker images to be downloaded and displayed because we are showing a
-                // placeholder image. Thus the screen appears fully drawn to the user. In terms of
-                // performance, this allows us to obtain a stable start up times by not including
-                // the network call to download images, which can vary greatly based on
-                // uncontrollable factors, mainly network speed.
-                binding.sessionDetailRecyclerView.doOnLayout {
-                    // If this activity was launched from a deeplink, then the logcat statement is
-                    // printed. Otherwise, SessionDetailFragment is started from the MainActivity
-                    // which would have already reported fully drawn to the framework.
-                    activity?.reportFullyDrawn()
+            }
+        }
+
+        launch {
+            sessionDetailViewModel.session.collect {
+                if (it != null) {
+                    sessionTitle = it.title
+                    activity?.let { activity ->
+                        analyticsHelper.sendScreenView(
+                            "Session Details: $sessionTitle", activity
+                        )
+                    }
                 }
             }
         }
 
         // Navigation
-        lifecycleScope.launchWhenStarted {
+        launch {
             sessionDetailViewModel.navigationActions.collect { action ->
                 when (action) {
                     is NavigateToSession -> findNavController().navigate(
@@ -235,7 +242,9 @@ class SessionDetailFragment : Fragment(), SessionFeedbackFragment.Listener {
                         )
                         findNavController().navigate(
                             SessionDetailFragmentDirections.toSpeakerDetail(action.speakerId),
-                            FragmentNavigatorExtras(sharedElement to sharedElement.transitionName)
+                            FragmentNavigatorExtras(
+                                sharedElement to sharedElement.transitionName
+                            )
                         )
                     }
                     is NavigateToSwapReservationDialogAction ->
@@ -249,7 +258,57 @@ class SessionDetailFragment : Fragment(), SessionFeedbackFragment.Listener {
             }
         }
 
-        lifecycleScope.launchWhenStarted {
+        launch {
+            sessionDetailViewModel.session.collect { session ->
+                shareString = if (session == null) {
+                    ""
+                } else {
+                    getString(
+                        R.string.share_text_session_detail, session.title, session.sessionUrl
+                    )
+                }
+                (binding.sessionDetailRecyclerView.adapter as SessionDetailAdapter)
+                    .speakers = session?.speakers?.toList() ?: emptyList()
+                // ViewBinding is binding the session so we should wait until after the session
+                // has been laid out to report fully drawn. Note that we are *not* waiting for the
+                // speaker images to be downloaded and displayed because we are showing a
+                // placeholder image. Thus the screen appears fully drawn to the user. In terms of
+                // performance, this allows us to obtain a stable start up times by not including
+                // the network call to download images, which can vary greatly based on
+                // uncontrollable factors, mainly network speed.
+                binding.sessionDetailRecyclerView.doOnLayout {
+                    // If this activity was launched from a deeplink, then the logcat statement is
+                    // printed. Otherwise, SessionDetailFragment is started from the MainActivity
+                    // which would have already reported fully drawn to the framework.
+                    activity?.reportFullyDrawn()
+                }
+            }
+        }
+
+        launch {
+            sessionDetailViewModel.relatedUserSessions.collect {
+                (binding.sessionDetailRecyclerView.adapter as SessionDetailAdapter)
+                    .related = it.successOr(emptyList())
+            }
+        }
+
+        launch {
+            sessionDetailViewModel.showFeedbackButton.collect { showFeedbackButton ->
+                // When opened from the post session notification, open the feedback dialog
+                arguments?.let {
+                    val sessionId = SessionDetailFragmentArgs.fromBundle(it).sessionId
+                    val openRateSession =
+                        arguments?.getBoolean(AlarmBroadcastReceiver.EXTRA_SHOW_RATE_SESSION_FLAG)
+                            ?: false
+
+                    if (showFeedbackButton && openRateSession) {
+                        openFeedbackDialog(sessionId)
+                    }
+                }
+            }
+        }
+
+        launch {
             // Only show the back/up arrow in the toolbar in single-pane configurations.
             scheduleTwoPaneViewModel.isTwoPane.collect { isTwoPane ->
                 if (isTwoPane) {
@@ -265,50 +324,10 @@ class SessionDetailFragment : Fragment(), SessionFeedbackFragment.Listener {
             }
         }
 
-        // When opened from the post session notification, open the feedback dialog
-        requireNotNull(arguments).apply {
-            val sessionId = SessionDetailFragmentArgs.fromBundle(this).sessionId
-            val openRateSession =
-                arguments?.getBoolean(AlarmBroadcastReceiver.EXTRA_SHOW_RATE_SESSION_FLAG) ?: false
-            lifecycleScope.launchWhenStarted {
-                sessionDetailViewModel.showFeedbackButton.collect {
-                    if (it && openRateSession) {
-                        openFeedbackDialog(sessionId)
-                    }
-                }
-            }
-        }
-
-        // Observing the changes from Fragment because data binding doesn't work with menu items.
-        val menu = binding.sessionDetailBottomAppBar.menu
-        val starMenu = menu.findItem(R.id.menu_item_star)
-        lifecycleScope.launchWhenStarted {
-            sessionDetailViewModel.shouldShowStarInBottomNav.collect { showStar ->
-                starMenu.isVisible = showStar
-            }
-        }
-        lifecycleScope.launchWhenStarted {
-            sessionDetailViewModel.userEvent.collect { userEvent ->
-                userEvent?.let {
-                    if (it.isStarred) {
-                        starMenu.setIcon(R.drawable.ic_star)
-                    } else {
-                        starMenu.setIcon(R.drawable.ic_star_border)
-                    }
-                }
-            }
-        }
-
-        var titleUpdated = false
-        lifecycleScope.launchWhenStarted {
-            sessionDetailViewModel.session.collect {
-                if (it != null && !titleUpdated) {
-                    sessionTitle = it.title
-                    activity?.let { activity ->
-                        analyticsHelper.sendScreenView("Session Details: $sessionTitle", activity)
-                    }
-                    titleUpdated = true
-                }
+        launch {
+            sessionDetailViewModel.session.collect { session ->
+                menu.findItem(R.id.menu_item_ask_question).isVisible =
+                    session?.doryLink?.isNotBlank() == true
             }
         }
     }

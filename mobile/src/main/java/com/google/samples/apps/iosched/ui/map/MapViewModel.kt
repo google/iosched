@@ -100,7 +100,9 @@ class MapViewModel @Inject constructor(
             mapVariant.collect {
                 // When the map variant changes, the selected feature might not be present in the
                 // new variant, so hide the feature detail.
-                dismissFeatureDetails()
+                it?.let {
+                    dismissFeatureDetails()
+                }
             }
         }
     }

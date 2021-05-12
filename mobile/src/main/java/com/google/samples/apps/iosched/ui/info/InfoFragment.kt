@@ -62,7 +62,7 @@ class InfoFragment : MainNavigationFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.run {
-            toolbar.setupProfileMenuItem(viewModel, this@InfoFragment)
+            toolbar.setupProfileMenuItem(viewModel, viewLifecycleOwner)
 
             viewpager.offscreenPageLimit = INFO_PAGES.size
             viewpager.adapter = InfoAdapter(this@InfoFragment)

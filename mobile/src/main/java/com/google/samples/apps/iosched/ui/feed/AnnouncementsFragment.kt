@@ -66,7 +66,7 @@ class AnnouncementsFragment : MainNavigationFragment() {
         super.onViewCreated(view, savedInstanceState)
         analyticsHelper.sendScreenView("Announcements", requireActivity())
 
-        binding.toolbar.setupProfileMenuItem(mainActivityViewModel, this)
+        binding.toolbar.setupProfileMenuItem(mainActivityViewModel, viewLifecycleOwner)
 
         binding.root.doOnApplyWindowInsets { _, insets, _ ->
             binding.statusBar.run {

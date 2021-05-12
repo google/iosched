@@ -25,7 +25,6 @@ import androidx.core.view.updatePaddingRelative
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -55,6 +54,7 @@ import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.clearDecorations
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.executeAfter
+import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import com.google.samples.apps.iosched.util.requestApplyInsetsWhenAttached
 import com.google.samples.apps.iosched.widget.BubbleDecoration
 import com.google.samples.apps.iosched.widget.FadingSnackbar
@@ -189,30 +189,30 @@ class ScheduleFragment : Fragment() {
         dayIndicatorRecyclerView.adapter = dayIndicatorAdapter
 
         // Start observing ViewModels
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            scheduleViewModel.scheduleUiData.collect { updateScheduleUi(it) }
-        }
+        launchAndRepeatWithViewLifecycle {
+            launch {
+                scheduleViewModel.scheduleUiData.collect { updateScheduleUi(it) }
+            }
 
-        // During conference, scroll to current event.
-
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            scheduleViewModel.scrollToEvent.collect { scrollEvent ->
-                if (scrollEvent.targetPosition != -1) {
-                    scheduleRecyclerView.run {
-                        post {
-                            val lm = layoutManager as LinearLayoutManager
-                            if (scrollEvent.smoothScroll) {
-                                scheduleScroller.targetPosition = scrollEvent.targetPosition
-                                lm.startSmoothScroll(scheduleScroller)
-                            } else {
-                                lm.scrollToPositionWithOffset(scrollEvent.targetPosition, 0)
+            // During conference, scroll to current event.
+            launch {
+                scheduleViewModel.scrollToEvent.collect { scrollEvent ->
+                    if (scrollEvent.targetPosition != -1) {
+                        scheduleRecyclerView.run {
+                            post {
+                                val lm = layoutManager as LinearLayoutManager
+                                if (scrollEvent.smoothScroll) {
+                                    scheduleScroller.targetPosition = scrollEvent.targetPosition
+                                    lm.startSmoothScroll(scheduleScroller)
+                                } else {
+                                    lm.scrollToPositionWithOffset(scrollEvent.targetPosition, 0)
+                                }
                             }
                         }
                     }
                 }
             }
-        }
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+
             launch {
                 scheduleViewModel.navigationActions.collect {
                     when (it) {
@@ -222,6 +222,7 @@ class ScheduleFragment : Fragment() {
                     }
                 }
             }
+
             launch {
                 scheduleViewModel.signInNavigationActions.collect {
                     if (it == ShowNotificationPreferencesDialog) {
@@ -229,12 +230,12 @@ class ScheduleFragment : Fragment() {
                     }
                 }
             }
-        }
 
-        // Show an error message
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            scheduleViewModel.errorMessage.collect { errorMsg ->
-                Toast.makeText(context, errorMsg, Toast.LENGTH_LONG).show()
+            // Show an error message
+            launch {
+                scheduleViewModel.errorMessage.collect { errorMsg ->
+                    Toast.makeText(context, errorMsg, Toast.LENGTH_LONG).show()
+                }
             }
         }
 

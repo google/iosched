@@ -19,7 +19,7 @@ package com.google.samples.apps.iosched.ui.messages
 import androidx.core.text.HtmlCompat
 import androidx.core.text.HtmlCompat.FROM_HTML_MODE_LEGACY
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import com.google.samples.apps.iosched.widget.FadingSnackbar
 import kotlinx.coroutines.flow.collect
 
@@ -30,7 +30,7 @@ fun Fragment.setupSnackbarManager(
     snackbarMessageManager: SnackbarMessageManager,
     fadingSnackbar: FadingSnackbar
 ) {
-    viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+    launchAndRepeatWithViewLifecycle {
         snackbarMessageManager.currentSnackbar.collect { message ->
             if (message == null) { return@collect }
             val messageText = HtmlCompat.fromHtml(

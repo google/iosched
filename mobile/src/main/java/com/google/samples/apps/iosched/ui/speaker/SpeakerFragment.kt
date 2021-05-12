@@ -25,7 +25,6 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import androidx.transition.TransitionInflater
@@ -37,8 +36,10 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.ScheduleTwoPaneViewModel
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
@@ -93,15 +94,6 @@ class SpeakerFragment : Fragment(), OnOffsetChangedListener {
             viewModel = speakerViewModel
         }
 
-        // If speaker does not have a profile image to load, we need to resume.
-        lifecycleScope.launchWhenStarted {
-            speakerViewModel.hasNoProfileImage.collect {
-                if (it) {
-                    startPostponedEnterTransition()
-                }
-            }
-        }
-
         val speakerAdapter = SpeakerAdapter(
             viewLifecycleOwner,
             speakerViewModel,
@@ -129,23 +121,35 @@ class SpeakerFragment : Fragment(), OnOffsetChangedListener {
             findNavController().navigateUp()
         }
 
-        lifecycleScope.launchWhenStarted {
-            speakerViewModel.speakerUserSessions.collect {
-                speakerAdapter.speakerSessions = it
-            }
-        }
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lifecycleScope.launchWhenStarted {
-            speakerViewModel.speaker.collect {
-                if (it != null) {
-                    val pageName = "Speaker Details: ${it.name}"
-                    analyticsHelper.sendScreenView(pageName, requireActivity())
+        launchAndRepeatWithViewLifecycle {
+            launch {
+                speakerViewModel.speaker.collect {
+                    if (it != null) {
+                        val pageName = "Speaker Details: ${it.name}"
+                        analyticsHelper.sendScreenView(pageName, requireActivity())
+                    }
+                }
+            }
+
+            launch {
+                speakerViewModel.speakerUserSessions.collect {
+                    (binding.speakerDetailRecyclerView.adapter as SpeakerAdapter)
+                        .speakerSessions = it
+                }
+            }
+
+            // If speaker does not have a profile image to load, we need to resume.
+            launch {
+                speakerViewModel.hasNoProfileImage.collect {
+                    if (it) {
+                        startPostponedEnterTransition()
+                    }
                 }
             }
         }

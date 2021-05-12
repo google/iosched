@@ -36,7 +36,6 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.MapView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -153,10 +152,10 @@ class MapFragment : MainNavigationFragment() {
         fabBaseMarginBottom = binding.mapModeFab.marginBottom
 
         binding.toolbar.run {
-            setupProfileMenuItem(mainActivityViewModel, this@MapFragment)
+            setupProfileMenuItem(mainActivityViewModel, viewLifecycleOwner)
 
             menu.findItem(R.id.action_my_location)?.let { item ->
-                viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                launchAndRepeatWithViewLifecycle {
                     viewModel.showMyLocationOption.collect { option ->
                         item.isVisible = option
                     }
@@ -229,7 +228,7 @@ class MapFragment : MainNavigationFragment() {
             binding.statusBar.requestLayout()
 
             // Update the Map padding so that the copyright, etc is not displayed in nav bar
-            lifecycleScope.launchWhenCreated {
+            viewLifecycleOwner.lifecycleScope.launch {
                 val map = binding.map.awaitMap()
                 map.setPadding(0, 0, 0, insets.systemWindowInsetBottom)
             }
@@ -267,7 +266,7 @@ class MapFragment : MainNavigationFragment() {
         }
 
         // Initialize MapView
-        launchAndRepeatWithViewLifecycle(Lifecycle.State.CREATED) {
+        viewLifecycleOwner.lifecycleScope.launch {
             mapView.awaitMap().apply {
                 setOnMapClickListener { viewModel.dismissFeatureDetails() }
                 setOnCameraMoveListener {

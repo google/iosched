@@ -24,8 +24,6 @@ import android.view.ViewGroup
 import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import kotlinx.coroutines.flow.collect
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.databinding.FragmentCodelabsBinding
@@ -37,8 +35,10 @@ import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import com.google.samples.apps.iosched.util.openWebsiteUri
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -80,7 +80,7 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.setupProfileMenuItem(mainActivityViewModel, this)
+        binding.toolbar.setupProfileMenuItem(mainActivityViewModel, viewLifecycleOwner)
 
         codelabsAdapter = CodelabsAdapter(
             this,
@@ -95,7 +95,7 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
             v.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)
         }
 
-        lifecycleScope.launchWhenStarted {
+        launchAndRepeatWithViewLifecycle {
             codelabsViewModel.codelabs.collect {
                 codelabsAdapter.submitList(it)
             }

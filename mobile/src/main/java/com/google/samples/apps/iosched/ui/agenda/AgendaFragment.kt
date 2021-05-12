@@ -66,7 +66,7 @@ class AgendaFragment : MainNavigationFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.viewModel = viewModel
-        binding.toolbar.setupProfileMenuItem(mainActivityViewModel, this@AgendaFragment)
+        binding.toolbar.setupProfileMenuItem(mainActivityViewModel, viewLifecycleOwner)
     }
 }
 

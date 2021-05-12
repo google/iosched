@@ -26,11 +26,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.databinding.DialogSignInBinding
 import com.google.samples.apps.iosched.ui.signin.SignInNavigationAction.RequestSignIn
 import com.google.samples.apps.iosched.util.executeAfter
+import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -68,7 +68,7 @@ class SignInDialogFragment : AppCompatDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+        launchAndRepeatWithViewLifecycle {
             signInViewModel.signInNavigationActions.collect { action ->
                 if (action == RequestSignIn) {
                     activity?.let { activity ->

@@ -24,8 +24,10 @@ import android.view.MenuItem
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuItemCompat
+import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
@@ -34,6 +36,7 @@ import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.util.asGlideTarget
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 fun Toolbar.setupProfileMenuItem(
     viewModel: MainActivityViewModel,
@@ -45,19 +48,21 @@ fun Toolbar.setupProfileMenuItem(
         viewModel.onProfileClicked()
         true
     }
-
-    lifecycleOwner.lifecycleScope.launchWhenStarted {
-        viewModel.userInfo.collect {
-            setProfileContentDescription(profileItem, resources, it)
+    lifecycleOwner.lifecycleScope.launch {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(STARTED) {
+            viewModel.userInfo.collect {
+                setProfileContentDescription(profileItem, resources, it)
+            }
         }
     }
 
     val avatarSize = resources.getDimensionPixelSize(R.dimen.nav_account_image_size)
     val target = profileItem.asGlideTarget(avatarSize)
-
-    lifecycleOwner.lifecycleScope.launchWhenStarted {
-        viewModel.currentUserImageUri.collect {
-            setProfileAvatar(context, target, it)
+    lifecycleOwner.lifecycleScope.launch {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(STARTED) {
+            viewModel.currentUserImageUri.collect {
+                setProfileAvatar(context, target, it)
+            }
         }
     }
 }

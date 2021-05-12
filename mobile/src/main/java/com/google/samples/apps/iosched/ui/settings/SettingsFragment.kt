@@ -26,13 +26,13 @@ import android.widget.TextView
 import androidx.core.view.updatePaddingRelative
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSettingsBinding
 import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -48,7 +48,7 @@ class SettingsFragment : MainNavigationFragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+        launchAndRepeatWithViewLifecycle {
             viewModel.navigationActions.collect {
                 if (it is SettingsNavigationAction.NavigateToThemeSelector) {
                     ThemeSettingDialogFragment.newInstance()
@@ -60,7 +60,7 @@ class SettingsFragment : MainNavigationFragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        binding.toolbar.setupProfileMenuItem(mainActivityViewModel, this)
+        binding.toolbar.setupProfileMenuItem(mainActivityViewModel, viewLifecycleOwner)
 
         binding.settingsScroll.doOnApplyWindowInsets { v, insets, padding ->
             v.updatePaddingRelative(bottom = padding.bottom + insets.systemWindowInsetBottom)
