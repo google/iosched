@@ -22,9 +22,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import androidx.transition.TransitionInflater
 import com.google.android.material.appbar.AppBarLayout
@@ -32,7 +34,6 @@ import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSpeakerBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.ScheduleTwoPaneViewModel
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
@@ -46,7 +47,7 @@ import javax.inject.Named
  * Fragment displaying speaker details and their events.
  */
 @AndroidEntryPoint
-class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
+class SpeakerFragment : Fragment(), OnOffsetChangedListener {
 
     @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
 
@@ -67,7 +68,7 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         sharedElementEnterTransition =
             TransitionInflater.from(context).inflateTransition(R.transition.speaker_shared_enter)
@@ -123,9 +124,14 @@ class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
                     insets.systemWindowInsetTop * 2
             }
         }
+
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+
         lifecycleScope.launchWhenStarted {
             speakerViewModel.speakerUserSessions.collect {
-                speakerAdapter.speakerSessions = it ?: emptyList()
+                speakerAdapter.speakerSessions = it
             }
         }
 

@@ -125,8 +125,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="?actionBarSize"
                     app:layout_collapseMode="pin"
-                    app:navigationContentDescription="@string/navigate_up"
-                    app:navigationIcon="@drawable/ic_arrow_back" />
+                    app:navigationContentDescription="@string/navigate_up" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 

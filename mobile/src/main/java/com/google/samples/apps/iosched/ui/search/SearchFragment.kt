@@ -24,14 +24,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
+import androidx.core.view.doOnNextLayout
 import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSearchBinding
+import com.google.samples.apps.iosched.databinding.SearchActiveFiltersNarrowBinding
+import com.google.samples.apps.iosched.databinding.SearchActiveFiltersWideBinding
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.schedule.ScheduleTwoPaneViewModel
 import com.google.samples.apps.iosched.ui.sessioncommon.SessionsAdapter
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
@@ -42,7 +45,7 @@ import javax.inject.Inject
 import javax.inject.Named
 
 @AndroidEntryPoint
-class SearchFragment : MainNavigationFragment() {
+class SearchFragment : Fragment() {
 
     @Inject
     lateinit var analyticsHelper: AnalyticsHelper
@@ -75,7 +78,7 @@ class SearchFragment : MainNavigationFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
 
-        binding.includeSearchAppbar.toolbar.apply {
+        binding.toolbar.apply {
             inflateMenu(R.menu.search_menu)
             setOnMenuItemClickListener {
                 if (it.itemId == R.id.action_open_filters) {
@@ -87,7 +90,7 @@ class SearchFragment : MainNavigationFragment() {
             }
         }
 
-        binding.includeSearchAppbar.searchView.apply {
+        binding.searchView.apply {
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     dismissKeyboard(this@apply)
@@ -129,6 +132,42 @@ class SearchFragment : MainNavigationFragment() {
             }
         }
 
+        /* The active filters on Search can appear in one of two places:
+         *   - In the toolbar next to the search field (on wide screens)
+         *   - In the app bar below the toolbar (on narrow screens)
+         *
+         * Normally this could be handled by a resource with a width qualifier, e.g. layout-w720dp.
+         * However, Search can appear in the list pane of a two pane layout. When both panes are
+         * visible, a resource qualifier like the above will give us the "wide" state (based on the
+         * device width) when we actually want the "narrow" state (based on the list pane width).
+         * Instead we check the toolbar width after first layout and inflate one of two ViewStubs.
+         */
+        binding.toolbar.doOnNextLayout { toolbar ->
+            val threshold =
+                resources.getDimensionPixelSize(R.dimen.active_filters_in_toolbar_threshold)
+            if (toolbar.width >= threshold) {
+                binding.activeFiltersWideStub.viewStub?.apply {
+                    setOnInflateListener { _, inflated ->
+                        SearchActiveFiltersWideBinding.bind(inflated).apply {
+                            viewModel = this@SearchFragment.viewModel
+                            lifecycleOwner = viewLifecycleOwner
+                        }
+                    }
+                    inflate()
+                }
+            } else {
+                binding.activeFiltersNarrowStub.viewStub?.apply {
+                    setOnInflateListener { _, inflated ->
+                        SearchActiveFiltersNarrowBinding.bind(inflated).apply {
+                            viewModel = this@SearchFragment.viewModel
+                            lifecycleOwner = viewLifecycleOwner
+                        }
+                    }
+                    inflate()
+                }
+            }
+        }
+
         if (savedInstanceState == null) {
             // On first entry, show the filters.
             findFiltersFragment().showFiltersSheet()
@@ -137,7 +176,7 @@ class SearchFragment : MainNavigationFragment() {
     }
 
     override fun onPause() {
-        dismissKeyboard(binding.includeSearchAppbar.searchView)
+        dismissKeyboard(binding.searchView)
         super.onPause()
     }
 

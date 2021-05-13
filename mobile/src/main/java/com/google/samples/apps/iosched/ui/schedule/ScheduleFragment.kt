@@ -22,6 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.updatePaddingRelative
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -40,7 +41,6 @@ import com.google.samples.apps.iosched.shared.di.SearchScheduleEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.sessions.ConferenceDayIndexer
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.ui.MainActivityViewModel
-import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.ScheduleNavigationAction.NavigateToSignInDialogAction
 import com.google.samples.apps.iosched.ui.schedule.ScheduleNavigationAction.NavigateToSignOutDialogAction
@@ -69,7 +69,7 @@ import javax.inject.Named
  * The Schedule page of the top-level Activity.
  */
 @AndroidEntryPoint
-class ScheduleFragment : MainNavigationFragment() {
+class ScheduleFragment : Fragment() {
 
     companion object {
         private const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
@@ -123,7 +123,7 @@ class ScheduleFragment : MainNavigationFragment() {
 
         snackbar = binding.snackbar
         scheduleRecyclerView = binding.recyclerviewSchedule
-        dayIndicatorRecyclerView = binding.includeScheduleAppbar.dayIndicators
+        dayIndicatorRecyclerView = binding.dayIndicators
         return binding.root
     }
 
@@ -131,7 +131,7 @@ class ScheduleFragment : MainNavigationFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Set up search menu item
-        binding.includeScheduleAppbar.toolbar.run {
+        binding.toolbar.run {
             inflateMenu(R.menu.schedule_menu)
             menu.findItem(R.id.search).isVisible = searchScheduleFeatureEnabled
             setOnMenuItemClickListener { item ->
@@ -145,7 +145,7 @@ class ScheduleFragment : MainNavigationFragment() {
             }
         }
 
-        binding.includeScheduleAppbar.toolbar.setupProfileMenuItem(mainActivityViewModel, this)
+        binding.toolbar.setupProfileMenuItem(mainActivityViewModel, this)
 
         // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
         binding.recyclerviewSchedule.doOnApplyWindowInsets { v, insets, padding ->
@@ -173,6 +173,10 @@ class ScheduleFragment : MainNavigationFragment() {
             addOnScrollListener(object : OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     onScheduleScrolled()
+                }
+
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    scheduleViewModel.userHasInteracted = true
                 }
             })
         }
@@ -320,10 +324,6 @@ class ScheduleFragment : MainNavigationFragment() {
             cachedBubbleRange = highlightRange
             rebuildDayIndicators()
         }
-    }
-
-    override fun onUserInteraction() {
-        scheduleViewModel.userHasInteracted = true
     }
 
     private fun openSearch() {

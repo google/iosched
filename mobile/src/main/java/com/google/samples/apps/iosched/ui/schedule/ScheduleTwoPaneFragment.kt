@@ -21,7 +21,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
@@ -35,6 +37,7 @@ import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.messages.setupSnackbarManager
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -82,6 +85,10 @@ class ScheduleTwoPaneFragment : MainNavigationFragment() {
             detailPaneNavController.addOnDestinationChangedListener(backPressHandler)
         }
 
+        binding.slidingPaneLayout.doOnNextLayout {
+            scheduleTwoPaneViewModel.setIsTwoPane(!binding.slidingPaneLayout.isSlideable)
+        }
+
         scheduleTwoPaneViewModel.navigateToSessionAction.observe(
             viewLifecycleOwner,
             EventObserver { sessionId ->
@@ -93,6 +100,12 @@ class ScheduleTwoPaneFragment : MainNavigationFragment() {
                 binding.slidingPaneLayout.open()
             }
         )
+
+        lifecycleScope.launchWhenStarted {
+            scheduleTwoPaneViewModel.returnToListPaneEvents.collect {
+                binding.slidingPaneLayout.close()
+            }
+        }
 
         scheduleTwoPaneViewModel.navigateToSignInDialogAction.observe(
             viewLifecycleOwner,

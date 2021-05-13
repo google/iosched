@@ -36,9 +36,31 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <include
-            android:id="@+id/include_schedule_appbar"
-            layout="@layout/include_schedule_appbar" />
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            style="@style/Widget.IOSched.AppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/day_indicators"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layoutManager="LinearLayoutManager"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_schedule_day_indicator" />
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <!-- A view to draw above the AppBarLayout to mimic the status bar -->
         <View

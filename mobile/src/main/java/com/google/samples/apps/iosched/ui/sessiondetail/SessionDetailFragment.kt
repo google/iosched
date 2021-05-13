@@ -23,11 +23,13 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ShareCompat
 import androidx.core.net.toUri
 import androidx.core.view.doOnLayout
 import androidx.core.view.forEach
 import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -48,7 +50,6 @@ import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
 import com.google.samples.apps.iosched.shared.notifications.AlarmBroadcastReceiver
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
-import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment
 import com.google.samples.apps.iosched.ui.reservation.RemoveReservationDialogFragment.Companion.DIALOG_REMOVE_RESERVATION
@@ -78,7 +79,7 @@ import javax.inject.Inject
 import javax.inject.Named
 
 @AndroidEntryPoint
-class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.Listener {
+class SessionDetailFragment : Fragment(), SessionFeedbackFragment.Listener {
 
     private var shareString = ""
 
@@ -118,10 +119,14 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
 
         val themedInflater =
             inflater.cloneInContext(ContextThemeWrapper(requireActivity(), style.AppTheme_Detail))
-        binding = FragmentSessionDetailBinding.inflate(themedInflater, container, false).apply {
-            viewModel = sessionDetailViewModel
-            lifecycleOwner = viewLifecycleOwner
-        }
+        binding = FragmentSessionDetailBinding.inflate(themedInflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = sessionDetailViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
         binding.sessionDetailBottomAppBar.run {
             inflateMenu(R.menu.session_detail_menu)
@@ -244,6 +249,22 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
             }
         }
 
+        lifecycleScope.launchWhenStarted {
+            // Only show the back/up arrow in the toolbar in single-pane configurations.
+            scheduleTwoPaneViewModel.isTwoPane.collect { isTwoPane ->
+                if (isTwoPane) {
+                    binding.toolbar.navigationIcon = null
+                    binding.toolbar.setNavigationOnClickListener(null)
+                } else {
+                    binding.toolbar.navigationIcon =
+                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_arrow_back)
+                    binding.toolbar.setNavigationOnClickListener {
+                        scheduleTwoPaneViewModel.returnToListPane()
+                    }
+                }
+            }
+        }
+
         // When opened from the post session notification, open the feedback dialog
         requireNotNull(arguments).apply {
             val sessionId = SessionDetailFragmentArgs.fromBundle(this).sessionId
@@ -257,11 +278,6 @@ class SessionDetailFragment : MainNavigationFragment(), SessionFeedbackFragment.
                 }
             }
         }
-        return binding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
 
         // Observing the changes from Fragment because data binding doesn't work with menu items.
         val menu = binding.sessionDetailBottomAppBar.menu
