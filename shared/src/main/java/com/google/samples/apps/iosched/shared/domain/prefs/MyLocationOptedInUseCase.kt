@@ -21,11 +21,12 @@ import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.first
 
 open class MyLocationOptedInUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : UseCase<Unit, Boolean>(dispatcher) {
-
-    override suspend fun execute(parameters: Unit) = preferenceStorage.myLocationOptedIn
+    // TODO use this as flow
+    override suspend fun execute(parameters: Unit) = preferenceStorage.myLocationOptedIn.first()
 }

@@ -159,6 +159,9 @@ dependencies {
     implementation(Libs.HILT_ANDROID)
     kapt(Libs.HILT_COMPILER)
 
+    // DataStore
+    implementation(Libs.DATA_STORE_PREFERENCES)
+
     // Firebase
     api(Libs.FIREBASE_AUTH)
     api(Libs.FIREBASE_CONFIG)

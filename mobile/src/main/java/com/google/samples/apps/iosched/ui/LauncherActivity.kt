@@ -17,15 +17,18 @@
 package com.google.samples.apps.iosched.ui
 
 import android.content.Intent
+import androidx.lifecycle.repeatOnLifecycle
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.appcompat.app.AppCompatActivity
-import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.shared.util.checkAllMatched
-import com.google.samples.apps.iosched.ui.LaunchDestination.MAIN_ACTIVITY
-import com.google.samples.apps.iosched.ui.LaunchDestination.ONBOARDING
+import androidx.lifecycle.lifecycleScope
+import com.google.samples.apps.iosched.ui.LaunchNavigatonAction.NavigateToMainActivityAction
+import com.google.samples.apps.iosched.ui.LaunchNavigatonAction.NavigateToOnboardingAction
 import com.google.samples.apps.iosched.ui.onboarding.OnboardingActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 /**
  * A 'Trampoline' activity for sending users to an appropriate screen on launch.
@@ -38,15 +41,20 @@ class LauncherActivity : AppCompatActivity() {
 
         val viewModel: LaunchViewModel by viewModels()
 
-        viewModel.launchDestination.observe(
-            this,
-            EventObserver { destination ->
-                when (destination) {
-                    MAIN_ACTIVITY -> startActivity(Intent(this, MainActivity::class.java))
-                    ONBOARDING -> startActivity(Intent(this, OnboardingActivity::class.java))
-                }.checkAllMatched
-                finish()
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.launchDestination.collect { action ->
+                    when (action) {
+                        is NavigateToMainActivityAction -> startActivity(
+                            Intent(this@LauncherActivity, MainActivity::class.java)
+                        )
+                        is NavigateToOnboardingAction -> startActivity(
+                            Intent(this@LauncherActivity, OnboardingActivity::class.java)
+                        )
+                    }
+                    finish()
+                }
             }
-        )
+        }
     }
 }

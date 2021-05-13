@@ -34,6 +34,7 @@ object Libs {
     const val COMPOSE_TOOLING = "androidx.compose.ui:ui-tooling"
     const val COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-core"
     const val COROUTINES_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test"
+    const val DATA_STORE_PREFERENCES = "androidx.datastore:datastore-preferences"
     const val DRAWER_LAYOUT = "androidx.drawerlayout:drawerlayout"
     const val ESPRESSO_CONTRIB = "androidx.test.espresso:espresso-contrib"
     const val ESPRESSO_CORE = "androidx.test.espresso:espresso-core"

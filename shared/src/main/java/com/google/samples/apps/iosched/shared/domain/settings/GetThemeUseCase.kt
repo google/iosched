@@ -25,13 +25,15 @@ import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.first
 
 class GetThemeUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : UseCase<Unit, Theme>(dispatcher) {
     override suspend fun execute(parameters: Unit): Theme {
-        val selectedTheme = preferenceStorage.selectedTheme
+        // TODO use as flow
+        val selectedTheme = preferenceStorage.selectedTheme.first()
         return themeFromStorageKey(selectedTheme)
             ?: when {
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> Theme.SYSTEM

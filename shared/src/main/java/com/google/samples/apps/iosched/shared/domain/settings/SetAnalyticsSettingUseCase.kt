@@ -27,7 +27,7 @@ open class SetAnalyticsSettingUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : UseCase<Boolean, Boolean>(dispatcher) {
     override suspend fun execute(parameters: Boolean): Boolean {
-        preferenceStorage.sendUsageStatistics = parameters
-        return preferenceStorage.sendUsageStatistics
+        preferenceStorage.sendUsageStatistics(parameters)
+        return parameters
     }
 }

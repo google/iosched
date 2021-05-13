@@ -35,7 +35,7 @@ import androidx.core.net.toUri
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.R
-import com.google.samples.apps.iosched.shared.data.prefs.SharedPreferenceStorage
+import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthIdDataSource
 import com.google.samples.apps.iosched.shared.di.ApplicationScope
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionOneShotUseCase
@@ -46,6 +46,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.threeten.bp.Instant
 import timber.log.Timber
@@ -59,7 +60,7 @@ import javax.inject.Inject
 class AlarmBroadcastReceiver : BroadcastReceiver() {
 
     @Inject
-    lateinit var sharedPreferencesStorage: SharedPreferenceStorage
+    lateinit var preferencesStorage: PreferenceStorage
 
     @Inject
     lateinit var loadUserSession: LoadUserSessionOneShotUseCase
@@ -111,7 +112,8 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
         sessionId: String,
         userId: String
     ) {
-        if (!sharedPreferencesStorage.preferToReceiveNotifications) {
+        // TODO use preferToReceiveNotifications as flow
+        if (!preferencesStorage.preferToReceiveNotifications.first()) {
             Timber.d("User disabled notifications, not showing")
             return
         }
@@ -146,7 +148,8 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
         sessionId: String,
         userId: String
     ) {
-        if (!sharedPreferencesStorage.preferToReceiveNotifications) {
+        // TODO use preferToReceiveNotifications as flow
+        if (!preferencesStorage.preferToReceiveNotifications.first()) {
             Timber.d("User disabled notifications, not showing")
             return
         }

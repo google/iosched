@@ -19,16 +19,15 @@
 package com.google.samples.apps.iosched.ui.onboarding
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompleteActionUseCase
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.runBlockingTest
+import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -50,7 +49,7 @@ class OnboardingViewModelTest {
     @Test
     fun onGetStartedClicked_updatesPrefs() = coroutineRule.runBlockingTest {
         // Given an onboarding view model
-        val prefs = mock<PreferenceStorage>()
+        val prefs = FakePreferenceStorage()
         val onboardingCompleteActionUseCase = OnboardingCompleteActionUseCase(prefs, testDispatcher)
         val signInDelegate = FakeSignInViewModelDelegate()
         val viewModel = OnboardingViewModel(onboardingCompleteActionUseCase, signInDelegate)
@@ -59,7 +58,8 @@ class OnboardingViewModelTest {
         viewModel.getStartedClick()
 
         // Then verify that local storage was updated
-        verify(prefs).onboardingCompleted = true
+        val onboardingCompleted = prefs.onboardingCompleted.first()
+        assertTrue(onboardingCompleted)
 
         // And that the navigation event was fired
         val navigateEvent = viewModel.navigationActions.first()
@@ -69,7 +69,7 @@ class OnboardingViewModelTest {
     @Test
     fun onSigninClicked() = coroutineRule.runBlockingTest {
         // Given an onboarding view model
-        val prefs = mock<PreferenceStorage>()
+        val prefs = FakePreferenceStorage()
         val onboardingCompleteActionUseCase = OnboardingCompleteActionUseCase(prefs, testDispatcher)
         val signInDelegate = FakeSignInViewModelDelegate()
         val viewModel = OnboardingViewModel(onboardingCompleteActionUseCase, signInDelegate)

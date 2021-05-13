@@ -61,7 +61,7 @@ from a few different sources -  user data is stored in
 [Cloud Firestore](https://firebase.google.com/docs/firestore/)
 (either remotely or in
 a local cache for offline use), user preferences and settings are stored in
-SharedPreferences, conference data is stored remotely and is fetched and stored
+DataStore, conference data is stored remotely and is fetched and stored
 in memory for the app to use, etc. - and the repository modules
 are responsible for handling all data operations and abstracting the data sources
 from the rest of the app (we liked using Firestore, but if we wanted to swap it

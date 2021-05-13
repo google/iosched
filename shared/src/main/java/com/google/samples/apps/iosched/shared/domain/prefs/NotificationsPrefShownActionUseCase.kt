@@ -30,6 +30,6 @@ class NotificationsPrefShownActionUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : UseCase<Boolean, Unit>(dispatcher) {
     override suspend fun execute(parameters: Boolean) {
-        preferenceStorage.notificationsPreferenceShown = parameters
+        preferenceStorage.showNotificationsPreference(parameters)
     }
 }

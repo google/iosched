@@ -27,7 +27,7 @@ class SetTimeZoneUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : UseCase<Boolean, Boolean>(dispatcher) {
     override suspend fun execute(parameters: Boolean): Boolean {
-        preferenceStorage.preferConferenceTimeZone = parameters
-        return preferenceStorage.preferConferenceTimeZone
+        preferenceStorage.preferConferenceTimeZone(parameters)
+        return parameters
     }
 }

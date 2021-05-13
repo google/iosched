@@ -30,6 +30,6 @@ class SetCodelabsInfoCardShownUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : UseCase<Unit, Unit>(dispatcher) {
     override suspend fun execute(parameters: Unit) {
-        preferenceStorage.codelabsInfoShown = true
+        preferenceStorage.showCodelabsInfo(true)
     }
 }

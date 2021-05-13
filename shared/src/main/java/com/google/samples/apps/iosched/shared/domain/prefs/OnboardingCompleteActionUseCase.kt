@@ -30,6 +30,6 @@ open class OnboardingCompleteActionUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : UseCase<Boolean, Unit>(dispatcher) {
     override suspend fun execute(parameters: Boolean) {
-        preferenceStorage.onboardingCompleted = parameters
+        preferenceStorage.completeOnboarding(parameters)
     }
 }

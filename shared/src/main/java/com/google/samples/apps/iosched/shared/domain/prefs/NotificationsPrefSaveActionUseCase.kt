@@ -30,7 +30,7 @@ open class NotificationsPrefSaveActionUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : UseCase<Boolean, Boolean>(dispatcher) {
     override suspend fun execute(parameters: Boolean): Boolean {
-        preferenceStorage.preferToReceiveNotifications = parameters
-        return preferenceStorage.preferToReceiveNotifications
+        preferenceStorage.preferToReceiveNotifications(parameters)
+        return parameters
     }
 }

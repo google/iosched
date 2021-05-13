@@ -59,22 +59,23 @@ open class SnackbarMessageManager @Inject constructor(
     val currentSnackbar: StateFlow<SnackbarMessage?> = _currentSnackbar
 
     fun addMessage(msg: SnackbarMessage) {
-        if (shouldSnackbarBeIgnored(msg)) {
-            return
+        coroutineScope.launch {
+            if (!shouldSnackbarBeIgnored(msg)) {
+                // Limit amount of pending messages
+                if (messages.size > MAX_ITEMS) {
+                    Timber.e("Too many Snackbar messages. Message id: ${msg.messageId}")
+                    return@launch
+                }
+                // If the new message is about the same change as a pending one, keep the old one. (rare)
+                val sameRequestId = messages.find {
+                    it.requestChangeId == msg.requestChangeId
+                }
+                if (sameRequestId == null) {
+                    messages.add(msg)
+                }
+                loadNext()
+            }
         }
-        // Limit amount of pending messages
-        if (messages.size > MAX_ITEMS) {
-            Timber.e("Too many Snackbar messages. Message id: ${msg.messageId}")
-            return
-        }
-        // If the new message is about the same change as a pending one, keep the old one. (rare)
-        val sameRequestId = messages.find {
-            it.requestChangeId == msg.requestChangeId
-        }
-        if (sameRequestId == null) {
-            messages.add(msg)
-        }
-        loadNext()
     }
 
     private fun loadNext() {
@@ -99,9 +100,7 @@ open class SnackbarMessageManager @Inject constructor(
         }
     }
 
-    private fun shouldSnackbarBeIgnored(msg: SnackbarMessage): Boolean {
-        // TODO: This should call a suspend fun (migrate to datastore)
-        return preferenceStorage.observableSnackbarIsStopped.value == true &&
-            msg.actionId == R.string.dont_show
+    private suspend fun shouldSnackbarBeIgnored(msg: SnackbarMessage): Boolean {
+        return preferenceStorage.isSnackbarStopped() && msg.actionId == R.string.dont_show
     }
 }

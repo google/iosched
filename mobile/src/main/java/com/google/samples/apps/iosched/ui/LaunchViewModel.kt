@@ -17,11 +17,12 @@
 package com.google.samples.apps.iosched.ui
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompletedUseCase
-import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.data
+import com.google.samples.apps.iosched.ui.LaunchNavigatonAction.NavigateToMainActivityAction
+import com.google.samples.apps.iosched.ui.LaunchNavigatonAction.NavigateToOnboardingAction
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
@@ -31,17 +32,16 @@ import javax.inject.Inject
 class LaunchViewModel @Inject constructor(
     onboardingCompletedUseCase: OnboardingCompletedUseCase
 ) : ViewModel() {
-    val launchDestination = liveData {
-        val result = onboardingCompletedUseCase(Unit)
+    val launchDestination = onboardingCompletedUseCase(Unit).map { result ->
         if (result.data == false) {
-            emit(Event(LaunchDestination.ONBOARDING))
+            NavigateToOnboardingAction
         } else {
-            emit(Event(LaunchDestination.MAIN_ACTIVITY))
+            NavigateToMainActivityAction
         }
     }
 }
 
-enum class LaunchDestination {
-    ONBOARDING,
-    MAIN_ACTIVITY
+sealed class LaunchNavigatonAction {
+    object NavigateToOnboardingAction : LaunchNavigatonAction()
+    object NavigateToMainActivityAction : LaunchNavigatonAction()
 }
