@@ -152,7 +152,7 @@ internal class FirebaseSignInViewModelDelegate @Inject constructor(
     init {
         applicationScope.launch {
             userInfo.collect {
-                if (notificationsPrefIsShownUseCase(Unit).data == true && isUserSignedInValue) {
+                if (notificationsPrefIsShownUseCase(Unit).data == false && isUserSignedInValue) {
                     _signInNavigationActions.tryOffer(ShowNotificationPreferencesDialog)
                 }
             }
