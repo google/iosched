@@ -16,10 +16,6 @@
 
 package com.google.samples.apps.iosched.ui.map
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.CameraUpdate
@@ -34,14 +30,22 @@ import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.domain.prefs.MyLocationOptedInUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.OptIntoMyLocationUseCase
-import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.shared.result.updateOnSuccess
+import com.google.samples.apps.iosched.shared.util.tryOffer
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import com.google.samples.apps.iosched.util.WhileViewSubscribed
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -62,18 +66,24 @@ class MapViewModel @Inject constructor(
         BuildConfig.MAP_VIEWPORT_BOUND_NE
     )
 
-    private val _mapVariant = MutableLiveData<MapVariant>()
-    val mapVariant = Transformations.distinctUntilChanged(_mapVariant)
+    private val _mapVariant = MutableStateFlow<MapVariant?>(null)
+    val mapVariant: StateFlow<MapVariant?> = _mapVariant
 
-    private val _mapCenterEvent = MutableLiveData<Event<CameraUpdate>>()
-    val mapCenterEvent: LiveData<Event<CameraUpdate>>
-        get() = _mapCenterEvent
+    private val _mapCenterEvent = Channel<CameraUpdate>(Channel.CONFLATED)
+    val mapCenterEvent = _mapCenterEvent.receiveAsFlow()
 
-    private val loadGeoJsonResult = MutableLiveData<GeoJsonData>()
+    private val loadGeoJsonResult = MutableStateFlow<GeoJsonData?>(null)
 
-    private val _geoJsonLayer = MediatorLiveData<GeoJsonLayer?>()
-    val geoJsonLayer: LiveData<GeoJsonLayer?>
-        get() = _geoJsonLayer
+    val geoJsonLayer: StateFlow<GeoJsonLayer?> = loadGeoJsonResult
+        .onEach { data ->
+            if (data != null) {
+                // TODO: Remove side effects and make these reactive
+                hasLoadedFeatures = true
+                setMapFeatures(data.featureMap)
+            }
+        }.map { data ->
+            data?.geoJsonLayer
+        }.stateIn(viewModelScope, WhileViewSubscribed, null)
 
     private val featureLookup: MutableMap<String, GeoJsonFeature> = mutableMapOf()
     private var hasLoadedFeatures = false
@@ -82,14 +92,23 @@ class MapViewModel @Inject constructor(
     private val focusZoomLevel = BuildConfig.MAP_CAMERA_FOCUS_ZOOM
     private var currentZoomLevel = 16 // min zoom level supported
 
-    private val _bottomSheetStateEvent = MediatorLiveData<Event<Int>>()
-    val bottomSheetStateEvent: LiveData<Event<Int>>
-        get() = _bottomSheetStateEvent
-    private val _selectedMarkerInfo = MutableLiveData<MarkerInfo?>()
-    val selectedMarkerInfo: LiveData<MarkerInfo?>
-        get() = _selectedMarkerInfo
+    private val _bottomSheetStateEvent = Channel<Int>(Channel.CONFLATED)
+    val bottomSheetStateEvent = _bottomSheetStateEvent.receiveAsFlow()
 
-    private val myLocationOptedIn = MutableStateFlow<Boolean>(false)
+    init {
+        viewModelScope.launch {
+            mapVariant.collect {
+                // When the map variant changes, the selected feature might not be present in the
+                // new variant, so hide the feature detail.
+                dismissFeatureDetails()
+            }
+        }
+    }
+
+    private val _selectedMarkerInfo = MutableStateFlow<MarkerInfo?>(null)
+    val selectedMarkerInfo: StateFlow<MarkerInfo?> = _selectedMarkerInfo
+
+    private val myLocationOptedIn = MutableStateFlow(false)
 
     val showMyLocationOption = userInfo.combine(myLocationOptedIn) { info, optedIn ->
         // Show the button to enable "My Location" when the user is an on-site attendee and he/she
@@ -100,17 +119,6 @@ class MapViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             myLocationOptedIn.value = myLocationOptedInUseCase(Unit).successOr(false)
-        }
-        _geoJsonLayer.addSource(loadGeoJsonResult) { data ->
-            hasLoadedFeatures = true
-            setMapFeatures(data.featureMap)
-            _geoJsonLayer.value = data.geoJsonLayer
-        }
-
-        // When the map variant changes, the selected feature might not be present in the new
-        // variant, so hide the feature detail.
-        _bottomSheetStateEvent.addSource(mapVariant) {
-            dismissFeatureDetails()
         }
     }
 
@@ -128,7 +136,7 @@ class MapViewModel @Inject constructor(
         // The geo json layer is tied to the GoogleMap, so we should release it.
         hasLoadedFeatures = false
         featureLookup.clear()
-        _geoJsonLayer.value = null
+        loadGeoJsonResult.value = null
     }
 
     fun loadMapFeatures(googleMap: GoogleMap) {
@@ -144,7 +152,7 @@ class MapViewModel @Inject constructor(
     private fun setMapFeatures(features: Map<String, GeoJsonFeature>) {
         featureLookup.clear()
         featureLookup.putAll(features)
-        updateFeaturesVisiblity(currentZoomLevel.toFloat())
+        updateFeaturesVisibility(currentZoomLevel.toFloat())
         // if we have a pending request to highlight a feature, resolve it now
         val featureId = requestedFeatureId ?: return
         requestedFeatureId = null
@@ -156,11 +164,11 @@ class MapViewModel @Inject constructor(
         val zoomInt = zoom.toInt()
         if (currentZoomLevel != zoomInt) {
             currentZoomLevel = zoomInt
-            updateFeaturesVisiblity(zoom)
+            updateFeaturesVisibility(zoom)
         }
     }
 
-    private fun updateFeaturesVisiblity(zoom: Float) {
+    private fun updateFeaturesVisibility(zoom: Float) {
         // Don't hide the marker if it's currently being focused on by the user
         val selectedId = selectedMarkerInfo.value?.id
         featureLookup.values.forEach { feature ->
@@ -185,7 +193,7 @@ class MapViewModel @Inject constructor(
         val geometry = feature.geometry as? GeoJsonPoint ?: return
         // center map on the requested feature.
         val update = CameraUpdateFactory.newLatLngZoom(geometry.coordinates, focusZoomLevel)
-        _mapCenterEvent.value = Event(update)
+        _mapCenterEvent.tryOffer(update)
 
         // publish feature data
         val title = feature.getProperty("title")
@@ -198,14 +206,14 @@ class MapViewModel @Inject constructor(
         )
 
         // bring bottom sheet into view
-        _bottomSheetStateEvent.value = Event(BottomSheetBehavior.STATE_COLLAPSED)
+        _bottomSheetStateEvent.tryOffer(BottomSheetBehavior.STATE_COLLAPSED)
 
         // Analytics
         analyticsHelper.logUiEvent(title, AnalyticsActions.MAP_MARKER_SELECT)
     }
 
     fun dismissFeatureDetails() {
-        _bottomSheetStateEvent.value = Event(BottomSheetBehavior.STATE_HIDDEN)
+        _bottomSheetStateEvent.tryOffer(BottomSheetBehavior.STATE_HIDDEN)
         _selectedMarkerInfo.value = null
     }
 

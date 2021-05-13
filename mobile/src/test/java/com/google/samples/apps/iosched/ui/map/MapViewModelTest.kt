@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.ui.map
 
 import android.content.Context
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.android.gms.maps.model.LatLng
 import com.google.samples.apps.iosched.shared.domain.prefs.MyLocationOptedInUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.OptIntoMyLocationUseCase
@@ -27,7 +26,6 @@ import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
@@ -41,16 +39,13 @@ import org.mockito.Mockito.mock
  */
 class MapViewModelTest {
 
-    // Executes tasks in the Architecture Components in the same thread
-    @get:Rule var instantTaskExecutorRule = InstantTaskExecutorRule()
-
     @get:Rule var coroutineRule = MainCoroutineRule()
 
     private val storage = FakePreferenceStorage()
     private val signInViewModelDelegate = FakeSignInViewModelDelegate()
     private lateinit var viewModel: MapViewModel
 
-    private val testDispatcher = TestCoroutineDispatcher()
+    private val testDispatcher = coroutineRule.testDispatcher
 
     @Before
     fun createViewModel() {
@@ -65,7 +60,7 @@ class MapViewModelTest {
     }
 
     @Test
-    fun testDataIsLoaded() {
+    fun testDataIsLoaded() = coroutineRule.runBlockingTest {
         assertTrue(
             viewModel.conferenceLocationBounds.contains(
                 // conference center

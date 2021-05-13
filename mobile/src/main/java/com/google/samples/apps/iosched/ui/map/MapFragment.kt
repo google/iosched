@@ -36,6 +36,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.MapView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -48,6 +49,7 @@ import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import com.google.samples.apps.iosched.util.slideOffsetToAlpha
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 import com.google.samples.apps.iosched.widget.BottomSheetBehavior.BottomSheetCallback
@@ -129,14 +131,14 @@ class MapFragment : MainNavigationFragment() {
         }
 
         if (savedInstanceState == null) {
-            MapFragmentArgs.fromBundle(arguments ?: Bundle.EMPTY).run {
-                if (!featureId.isNullOrEmpty()) {
-                    viewModel.requestHighlightFeature(featureId)
+            MapFragmentArgs.fromBundle(arguments ?: Bundle.EMPTY).let { it ->
+                if (!it.featureId.isNullOrEmpty()) {
+                    viewModel.requestHighlightFeature(it.featureId)
                 }
 
                 val variant = when {
-                    mapVariant != null -> MapVariant.valueOf(mapVariant)
-                    startTime > 0L -> MapVariant.forTime(Instant.ofEpochMilli(startTime))
+                    it.mapVariant != null -> MapVariant.valueOf(it.mapVariant)
+                    it.startTime > 0L -> MapVariant.forTime(Instant.ofEpochMilli(it.startTime))
                     else -> MapVariant.forTime()
                 }
                 viewModel.setMapVariant(variant)
@@ -265,7 +267,7 @@ class MapFragment : MainNavigationFragment() {
         }
 
         // Initialize MapView
-        lifecycleScope.launchWhenCreated {
+        launchAndRepeatWithViewLifecycle(Lifecycle.State.CREATED) {
             mapView.awaitMap().apply {
                 setOnMapClickListener { viewModel.dismissFeatureDetails() }
                 setOnCameraMoveListener {
@@ -275,22 +277,46 @@ class MapFragment : MainNavigationFragment() {
             }
         }
 
-        // Observe ViewModel data
-        viewModel.mapVariant.observe(viewLifecycleOwner) {
-            lifecycleScope.launchWhenCreated {
-                mapView.awaitMap().apply {
-                    clear()
-                    viewModel.loadMapFeatures(this)
+        launchAndRepeatWithViewLifecycle {
+            launch {
+                // Observe ViewModel data
+                viewModel.mapVariant.collect {
+                    mapView.awaitMap().apply {
+                        clear()
+                        viewModel.loadMapFeatures(this)
+                    }
                 }
             }
-        }
 
-        viewModel.geoJsonLayer.observe(viewLifecycleOwner) {
-            updateMarkers(it ?: return@observe)
-        }
+            // Set the center of the map's camera. Call this every time the user selects a marker.
+            launch {
+                viewModel.mapCenterEvent.collect { update ->
+                    mapView.getMapAsync {
+                        it.animateCamera(update)
+                    }
+                }
+            }
 
-        viewModel.selectedMarkerInfo.observe(viewLifecycleOwner) {
-            updateInfoSheet(it ?: return@observe)
+            launch {
+                viewModel.bottomSheetStateEvent.collect { event ->
+                    BottomSheetBehavior.from(binding.bottomSheet).state = event
+                }
+            }
+
+            launch {
+                viewModel.geoJsonLayer.collect {
+                    it?.let {
+                        updateMarkers(it)
+                    }
+                }
+            }
+            launch {
+                viewModel.selectedMarkerInfo.collect {
+                    it?.let {
+                        updateInfoSheet(it)
+                    }
+                }
+            }
         }
 
         analyticsHelper.sendScreenView("Map", requireActivity())
