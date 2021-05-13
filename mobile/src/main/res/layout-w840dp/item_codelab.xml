@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2021 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="codelab"
+            type="com.google.samples.apps.iosched.model.Codelab" />
+
+        <variable
+            name="actionHandler"
+            type="com.google.samples.apps.iosched.ui.codelabs.CodelabsActionsHandler" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> actionHandler.startCodelab(codelab)}"
+        app:contentPadding="@dimen/margin_normal">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?listPreferredItemHeight">
+
+            <ImageView
+                android:id="@+id/codelab_icon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:contentDescription="@null"
+                android:layout_marginEnd="@dimen/margin_normal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/codelab_title"
+                app:layout_constraintTop_toTopOf="parent"
+                app:imageUrl="@{codelab.iconUrl}"
+                app:placeholder="@{@drawable/ic_nav_codelabs}"
+                tools:src="@drawable/ic_nav_codelabs" />
+
+            <TextView
+                android:id="@+id/codelab_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{codelab.title}"
+                android:textAlignment="viewStart"
+                android:textAppearance="?textAppearanceListItem"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/codelab_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@sample/codelabs.json/codelabs/title" />
+
+            <TextView
+                android:id="@+id/codelab_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_micro"
+                app:layout_constraintStart_toStartOf="@id/codelab_title"
+                app:layout_constraintTop_toBottomOf="@id/codelab_title"
+                app:codelabDuration="@{codelab.durationMinutes}"
+                tools:text="@sample/codelabs.json/codelabs/duration"
+                tools:visibility="visible" />
+
+            <com.google.samples.apps.iosched.widget.NoTouchRecyclerView
+                android:id="@+id/codelab_tags"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/codelab_title"
+                app:layout_constraintTop_toBottomOf="@id/codelab_duration"
+                app:topicTags="@{codelab.tags}"
+                tools:itemCount="3"
+                tools:layoutManager="LinearLayoutManager"
+                tools:listitem="@layout/item_inline_tag" />
+
+            <TextView
+                android:id="@+id/codelab_description"
+                style="@style/Widget.IOSched.MultilineBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:text="@{codelab.description}"
+                android:textAlignment="viewStart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/codelab_title"
+                app:layout_constraintTop_toBottomOf="@id/codelab_tags"
+                tools:text="@sample/codelabs.json/codelabs/description"
+                tools:visibility="visible" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

@@ -31,7 +31,7 @@
         android:id="@+id/wifi_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/wifi_card_background"
+        app:cardBackgroundColor="@color/highlighted_card_background"
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
         app:goneUnless="@{viewModel.showWifi}">

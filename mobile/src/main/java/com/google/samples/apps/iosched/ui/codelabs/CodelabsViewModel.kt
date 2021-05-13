@@ -18,14 +18,15 @@ package com.google.samples.apps.iosched.ui.codelabs
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.samples.apps.iosched.model.Codelab
 import com.google.samples.apps.iosched.shared.domain.codelabs.GetCodelabsInfoCardShownUseCase
 import com.google.samples.apps.iosched.shared.domain.codelabs.LoadCodelabsUseCase
 import com.google.samples.apps.iosched.shared.domain.codelabs.SetCodelabsInfoCardShownUseCase
-import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.util.WhileViewSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -34,25 +35,29 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CodelabsViewModel @Inject constructor(
-    private val loadCodelabsUseCase: LoadCodelabsUseCase,
-    private val getCodelabsInfoCardShownUseCase: GetCodelabsInfoCardShownUseCase,
+    loadCodelabsUseCase: LoadCodelabsUseCase,
+    getCodelabsInfoCardShownUseCase: GetCodelabsInfoCardShownUseCase,
     private val setCodelabsInfoCardShownUseCase: SetCodelabsInfoCardShownUseCase
 ) : ViewModel() {
 
-    val codelabs: StateFlow<List<Any>> = getCodelabsInfoCardShownUseCase(Unit).map {
-        // Refresh codelabs when infoCardShownResult changes.
-        refreshCodelabs(it)
+    private val infoCardDismissed = getCodelabsInfoCardShownUseCase(Unit).map {
+        it.successOr(false)
+    }
+
+    private val codelabs = flow {
+        emit(loadCodelabsUseCase(Unit).successOr(emptyList()))
+    }
+
+    val screenContent = combine(codelabs, infoCardDismissed) { list, cardDismissed ->
+        buildScreenContent(list, cardDismissed)
     }.stateIn(viewModelScope, WhileViewSubscribed, emptyList())
 
-    private suspend fun refreshCodelabs(cardShown: Result<Boolean>): List<Any> {
-        val codelabs = loadCodelabsUseCase(Unit)
-
+    private fun buildScreenContent(codelabs: List<Codelab>, cardDismissed: Boolean): List<Any> {
         val items = mutableListOf<Any>()
-        if (!cardShown.successOr(false)) {
+        if (!cardDismissed) {
             items.add(CodelabsInformationCard)
         }
-        items.add(CodelabsHeaderItem)
-        items.addAll(codelabs.successOr(emptyList()))
+        items.addAll(codelabs)
         return items
     }
 

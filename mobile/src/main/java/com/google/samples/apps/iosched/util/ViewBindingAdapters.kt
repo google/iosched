@@ -31,6 +31,7 @@ import androidx.browser.customtabs.CustomTabsService
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -41,6 +42,7 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Theme
 import com.google.samples.apps.iosched.model.Theme.DARK
 import com.google.samples.apps.iosched.widget.CustomSwipeRefreshLayout
+import com.google.samples.apps.iosched.widget.SpaceDecoration
 import timber.log.Timber
 
 @BindingAdapter("goneUnless")
@@ -122,6 +124,14 @@ fun setText(view: TextView, @StringRes resId: Int) {
         view.text = null
     } else {
         view.setText(resId)
+    }
+}
+
+@BindingAdapter("itemSpacing")
+fun itemSpacing(view: RecyclerView, dimen: Float) {
+    val space = dimen.toInt()
+    if (space > 0) {
+        view.addItemDecoration(SpaceDecoration(space, space, space, space))
     }
 }
 

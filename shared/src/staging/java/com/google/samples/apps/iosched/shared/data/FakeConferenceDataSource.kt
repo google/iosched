@@ -102,7 +102,7 @@ object FakeConferenceDataSource : ConferenceDataSource {
             durationMinutes = 1,
             iconUrl = null,
             sortPriority = Int.MAX_VALUE,
-            tags = emptyList()
+            tags = listOf(stagingTag)
         )
         codelabs.add(0, codelab)
 

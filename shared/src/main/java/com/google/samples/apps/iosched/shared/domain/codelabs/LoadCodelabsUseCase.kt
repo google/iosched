@@ -20,8 +20,8 @@ import com.google.samples.apps.iosched.model.Codelab
 import com.google.samples.apps.iosched.shared.data.codelabs.CodelabsRepository
 import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
+import javax.inject.Inject
 
 class LoadCodelabsUseCase @Inject constructor(
     private val repository: CodelabsRepository,
