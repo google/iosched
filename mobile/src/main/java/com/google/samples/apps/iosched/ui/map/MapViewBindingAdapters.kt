@@ -16,18 +16,14 @@
 
 package com.google.samples.apps.iosched.ui.map
 
-import android.view.View
 import androidx.annotation.DimenRes
 import androidx.annotation.RawRes
 import androidx.databinding.BindingAdapter
-import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.TileOverlayOptions
-import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.util.getFloatUsingCompat
-import com.google.samples.apps.iosched.widget.BottomSheetBehavior
 
 @BindingAdapter("mapStyle")
 fun mapStyle(mapView: MapView, @RawRes resId: Int) {
@@ -47,17 +43,6 @@ fun mapViewport(mapView: MapView, bounds: LatLngBounds?) {
         mapView.getMapAsync {
             it.setLatLngBoundsForCameraTarget(bounds)
         }
-    }
-}
-
-/**
- * Sets the center of the map's camera. Call this every time the user selects a marker.
- */
-@BindingAdapter("mapCenter")
-fun mapCenter(mapView: MapView, event: Event<CameraUpdate>?) {
-    val update = event?.getContentIfNotHandled() ?: return
-    mapView.getMapAsync {
-        it.animateCamera(update)
     }
 }
 
@@ -105,10 +90,4 @@ fun mapTileProvider(mapView: MapView, mapVariant: MapVariant?) {
             )
         }
     }
-}
-
-@BindingAdapter("bottomSheetState")
-fun bottomSheetState(view: View, event: Event<Int>?) {
-    val state = event?.getContentIfNotHandled() ?: return
-    BottomSheetBehavior.from(view).state = state
 }

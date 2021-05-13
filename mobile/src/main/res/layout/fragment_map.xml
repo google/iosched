@@ -70,7 +70,6 @@
             app:cameraZoom="@dimen/map_camera_zoom"
             app:isIndoorEnabled="@{false}"
             app:isMapToolbarEnabled="@{false}"
-            app:mapCenter="@{viewModel.mapCenterEvent}"
             app:mapMaxZoom="@{R.dimen.map_viewport_max_zoom}"
             app:mapMinZoom="@{R.dimen.map_viewport_min_zoom}"
             app:mapStyle="@{viewModel.mapVariant.styleResId}"
@@ -106,8 +105,7 @@
                 android:elevation="@dimen/bottom_sheet_elevation"
                 app:layout_behavior="com.google.samples.apps.iosched.widget.BottomSheetBehavior"
                 app:behavior_hideable="true"
-                app:behavior_peekHeight="@dimen/map_bottom_sheet_peek_height"
-                app:bottomSheetState="@{viewModel.bottomSheetStateEvent}">
+                app:behavior_peekHeight="@dimen/map_bottom_sheet_peek_height">
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guide_peek_height"
