@@ -24,14 +24,17 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.databinding.DialogSignInBinding
 import com.google.samples.apps.iosched.ui.signin.SignInNavigationAction.RequestSignIn
 import com.google.samples.apps.iosched.util.executeAfter
-import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -66,14 +69,16 @@ class SignInDialogFragment : AppCompatDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        launchAndRepeatWithViewLifecycle {
-            signInViewModel.signInNavigationActions.collect { action ->
-                if (action == RequestSignIn) {
-                    activity?.startActivityForResult(
-                        signInHandler.makeSignInIntent(),
-                        REQUEST_CODE_SIGN_IN
-                    )
-                    dismiss()
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                signInViewModel.signInNavigationActions.collect { action ->
+                    if (action == RequestSignIn) {
+                        activity?.startActivityForResult(
+                            signInHandler.makeSignInIntent(),
+                            REQUEST_CODE_SIGN_IN
+                        )
+                        dismiss()
+                    }
                 }
             }
         }

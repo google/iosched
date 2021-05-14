@@ -27,11 +27,14 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MapVariantSelectionDialogFragment : AppCompatDialogFragment() {
@@ -58,9 +61,11 @@ class MapVariantSelectionDialogFragment : AppCompatDialogFragment() {
         adapter = MapVariantAdapter(::selectMapVariant)
         view.findViewById<RecyclerView>(R.id.map_variant_list).adapter = adapter
 
-        launchAndRepeatWithViewLifecycle {
-            mapViewModel.mapVariant.collect {
-                adapter.currentSelection = it
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mapViewModel.mapVariant.collect {
+                    adapter.currentSelection = it
+                }
             }
         }
     }

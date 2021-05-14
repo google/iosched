@@ -22,12 +22,15 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Theme
-import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ThemeSettingDialogFragment : AppCompatDialogFragment() {
@@ -58,22 +61,25 @@ class ThemeSettingDialogFragment : AppCompatDialogFragment() {
         super.onCreate(savedInstanceState)
 
         // Note you don't need to use viewLifecycleOwner in DialogFragment.
-        launchAndRepeatWithViewLifecycle {
-            viewModel.availableThemes.collect { themes ->
-                listAdapter.clear()
-                listAdapter.addAll(
-                    themes.map {
-                        theme ->
-                        ThemeHolder(theme, getTitleForTheme(theme))
-                    }
-                )
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.availableThemes.collect { themes ->
+                    listAdapter.clear()
+                    listAdapter.addAll(
+                        themes.map { theme ->
+                            ThemeHolder(theme, getTitleForTheme(theme))
+                        }
+                    )
 
-                updateSelectedItem(viewModel.theme.value)
+                    updateSelectedItem(viewModel.theme.value)
+                }
             }
         }
 
-        launchAndRepeatWithViewLifecycle {
-            viewModel.theme.collect { updateSelectedItem(it) }
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.theme.collect { updateSelectedItem(it) }
+            }
         }
     }
 
