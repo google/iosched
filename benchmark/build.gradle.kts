@@ -49,6 +49,12 @@ android {
         }
     }
 
+    packagingOptions {
+        resources.excludes.add("META-INF/licenses/**")
+        resources.excludes.add("META-INF/AL2.0")
+        resources.excludes.add("META-INF/LGPL2.1")
+    }
+
     testBuildType = "staging"
 
     // To avoid the compile error from benchmarkRule.measureRepeated
