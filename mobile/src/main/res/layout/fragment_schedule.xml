@@ -15,7 +15,8 @@
   ~ limitations under the License.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -70,17 +71,22 @@
             android:fitsSystemWindows="true"
             app:layout_behavior="com.google.samples.apps.iosched.util.StatusBarScrimBehavior" />
 
-        <com.google.samples.apps.iosched.widget.CustomSwipeRefreshLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:onRefreshListener="@{() -> viewModel.onSwipeRefresh()}"
-            app:refreshing="@{viewModel.swipeRefreshing}"
-            app:swipeRefreshColors="@{@intArray/swipe_refresh}">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <com.google.samples.apps.iosched.widget.CustomSwipeRefreshLayout
+                android:id="@+id/swipe_refresh_layout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:onRefreshListener="@{() -> viewModel.onSwipeRefresh()}"
+                app:refreshing="@{viewModel.swipeRefreshing}"
+                app:swipeRefreshColors="@{@intArray/swipe_refresh}">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_schedule"
@@ -91,24 +97,29 @@
                     android:paddingBottom="@dimen/schedule_page_padding_bottom"
                     android:paddingTop="@dimen/spacing_normal"
                     android:scrollbars="vertical"
-                    app:layoutManager="LinearLayoutManager" />
+                    app:layoutManager="LinearLayoutManager"
+                    tools:listitem="@layout/item_session" />
 
-                <TextView
-                    android:id="@+id/empty"
-                    style="@style/Widget.IOSched.EmptyResults"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="@dimen/schedule_page_padding_bottom"
-                    android:layout_marginHorizontal="@dimen/margin_large"
-                    android:text="@string/schedule_filters_empty"
-                    app:goneUnless="@{isEmpty &amp;&amp; !viewModel.isLoading}"
-                    tools:targetApi="o"
-                    tools:visibility="visible" />
+            </com.google.samples.apps.iosched.widget.CustomSwipeRefreshLayout>
 
-            </FrameLayout>
+            <TextView
+                android:id="@+id/empty"
+                style="@style/Widget.IOSched.EmptyResults"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/schedule_page_padding_bottom"
+                android:layout_marginHorizontal="@dimen/margin_large"
+                android:text="@string/schedule_filters_empty"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:goneUnless="@{isEmpty &amp;&amp; !viewModel.isLoading}"
+                tools:targetApi="o"
+                tools:visibility="visible" />
 
-        </com.google.samples.apps.iosched.widget.CustomSwipeRefreshLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- TODO(b/72711711): Provide a better loading indicator -->
         <ProgressBar

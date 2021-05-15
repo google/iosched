@@ -121,8 +121,8 @@ class FakeAppConfigDataSource() : AppConfigDataSource {
     override suspend fun syncStrings() {}
 
     override fun getWifiInfo(): ConferenceWifiInfo = ConferenceWifiInfo("", "")
-    override fun isMapFeatureEnabled(): Boolean = true
-    override fun isExploreArFeatureEnabled(): Boolean = true
+    override fun isMapFeatureEnabled(): Boolean = false
+    override fun isExploreArFeatureEnabled(): Boolean = false
     override fun isCodelabsFeatureEnabled(): Boolean = true
     override fun isSearchScheduleFeatureEnabled(): Boolean = true
     override fun isSearchUsingRoomFeatureEnabled(): Boolean = true

@@ -28,6 +28,7 @@ import androidx.core.app.ShareCompat
 import androidx.core.net.toUri
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnLayout
+import androidx.core.view.doOnNextLayout
 import androidx.core.view.forEach
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
@@ -72,6 +73,7 @@ import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment.Companion.
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import com.google.samples.apps.iosched.util.openWebsiteUrl
+import com.google.samples.apps.iosched.util.setContentMaxWidth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
@@ -187,6 +189,9 @@ class SessionDetailFragment : Fragment(), SessionFeedbackFragment.Listener {
                 // CollapsingToolbarLayout's default scrim visible trigger height is a bit large.
                 // Choose something smaller so that the content stays visible longer.
                 binding.collapsingToolbar.scrimVisibleHeightTrigger = systemInsets.top * 2
+            }
+            doOnNextLayout {
+                setContentMaxWidth(this)
             }
         }
 

@@ -71,8 +71,8 @@
                     <ViewStub
                         android:id="@+id/active_filters_wide_stub"
                         android:layout_width="0dp"
-                        android:layout_weight="3"
                         android:layout_height="wrap_content"
+                        android:layout_weight="3"
                         android:layout="@layout/search_active_filters_wide"
                         app:viewModel="@{viewModel}" />
                 </LinearLayout>
@@ -89,32 +89,45 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/spacing_normal"
-            android:paddingTop="@dimen/spacing_normal"
-            android:scrollbars="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:goneUnless="@{!viewModel.isEmpty}"
-            app:layoutManager="LinearLayoutManager"
-            tools:listitem="@layout/item_session" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:id="@+id/empty"
-            style="@style/Widget.IOSched.EmptyResults"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="@dimen/margin_large"
-            android:layout_marginTop="?actionBarSize"
-            android:text="@string/search_schedule_no_results"
-            app:goneUnless="@{viewModel.isEmpty}"
-            tools:targetApi="o"
-            tools:visibility="visible" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:clipToPadding="false"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/spacing_normal"
+                android:paddingTop="@dimen/spacing_normal"
+                android:scrollbars="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:goneUnless="@{!viewModel.isEmpty}"
+                app:layoutManager="LinearLayoutManager"
+                tools:listitem="@layout/item_session" />
+
+            <TextView
+                android:id="@+id/empty"
+                style="@style/Widget.IOSched.EmptyResults"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_large"
+                android:layout_marginTop="?actionBarSize"
+                android:text="@string/search_schedule_no_results"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:goneUnless="@{viewModel.isEmpty}"
+                tools:targetApi="o"
+                tools:visibility="visible" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <fragment
             android:id="@+id/filter_sheet"

@@ -22,6 +22,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.doOnNextLayout
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -38,6 +39,7 @@ import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.schedule.ScheduleTwoPaneViewModel
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
+import com.google.samples.apps.iosched.util.setContentMaxWidth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -117,6 +119,9 @@ class SpeakerFragment : Fragment(), OnOffsetChangedListener {
                 // CollapsingToolbarLayout's default scrim visible trigger height is a bit large.
                 // Choose something smaller so that the content stays visible longer.
                 binding.collapsingToolbar.scrimVisibleHeightTrigger = systemInsets.top * 2
+            }
+            doOnNextLayout {
+                setContentMaxWidth(this)
             }
         }
 

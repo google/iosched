@@ -22,6 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.doOnNextLayout
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -57,6 +58,7 @@ import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.executeAfter
 import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import com.google.samples.apps.iosched.util.requestApplyInsetsWhenAttached
+import com.google.samples.apps.iosched.util.setContentMaxWidth
 import com.google.samples.apps.iosched.widget.BubbleDecoration
 import com.google.samples.apps.iosched.widget.FadingSnackbar
 import com.google.samples.apps.iosched.widget.JumpSmoothScroller
@@ -183,6 +185,9 @@ class ScheduleFragment : Fragment() {
                     scheduleViewModel.userHasInteracted = true
                 }
             })
+        }
+        binding.swipeRefreshLayout.doOnNextLayout {
+            setContentMaxWidth(it)
         }
         scheduleScroller = JumpSmoothScroller(view.context)
 
