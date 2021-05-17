@@ -158,11 +158,12 @@
 
                     <TextView
                         android:id="@+id/version_build_number"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="start|center_vertical"
-                        android:minHeight="48dp"
-                        android:padding="@dimen/margin_normal"
+                        android:minHeight="?listPreferredItemHeightSmall"
+                        android:paddingEnd="?listPreferredItemPaddingEnd"
+                        android:paddingStart="?listPreferredItemPaddingStart"
                         android:textAppearance="?textAppearanceBody2"
                         app:versionName="@{BuildConfig.VERSION_NAME}" />
 
@@ -172,12 +173,10 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/margin_normal"
                         android:drawablePadding="@dimen/margin_small"
-                        android:drawableStart="@drawable/ic_logo_components"
                         android:gravity="center"
-                        android:paddingEnd="@dimen/margin_normal"
-                        android:paddingStart="@dimen/margin_normal"
                         android:text="@string/built_with_material_components"
-                        android:textAppearance="?attr/textAppearanceBody1" />
+                        android:textAppearance="?attr/textAppearanceBody1"
+                        app:drawableStartCompat="@drawable/ic_logo_components" />
 
                 </LinearLayout>
 
