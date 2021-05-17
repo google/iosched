@@ -27,15 +27,18 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.core.view.isGone
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.databinding.DialogSignOutBinding
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.ui.signin.SignInNavigationAction.RequestSignOut
 import com.google.samples.apps.iosched.util.executeAfter
-import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -70,11 +73,13 @@ class SignOutDialogFragment : AppCompatDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        launchAndRepeatWithViewLifecycle {
-            signInViewModel.signInNavigationActions.collect { action ->
-                if (action == RequestSignOut) {
-                    signInHandler.signOut(requireContext())
-                    dismiss()
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                signInViewModel.signInNavigationActions.collect { action ->
+                    if (action == RequestSignOut) {
+                        signInHandler.signOut(requireContext())
+                        dismiss()
+                    }
                 }
             }
         }

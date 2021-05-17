@@ -25,13 +25,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
-import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import com.google.samples.apps.iosched.util.makeBold
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 /**
  * Dialog that confirms the user really wants to cancel their reservation
@@ -86,16 +89,19 @@ class RemoveReservationDialogFragment : AppCompatDialogFragment() {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        launchAndRepeatWithViewLifecycle {
-            viewModel.snackbarMessages.collect {
-                // Using Toast instead of Snackbar as it's easier for DialogFragment
-                Toast.makeText(
-                    view.context, it.messageId,
-                    if (it.longDuration) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
-                ).show()
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.snackbarMessages.collect {
+                    // Using Toast instead of Snackbar as it's easier for DialogFragment
+                    Toast.makeText(
+                        requireContext(),
+                        it.messageId,
+                        if (it.longDuration) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }
