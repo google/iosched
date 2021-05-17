@@ -255,7 +255,7 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:minHeight">?listPreferredItemHeightSmall</item>
         <item name="android:paddingBottom">@dimen/spacing_normal</item>
-        <item name="android:paddingRight">?listPreferredItemPaddingEnd</item>
+        <item name="android:paddingEnd">?listPreferredItemPaddingEnd</item>
         <item name="android:paddingStart">?listPreferredItemPaddingStart</item>
         <item name="android:paddingTop">@dimen/spacing_normal</item>
         <item name="android:textColor">?android:textColorPrimary</item>
@@ -265,8 +265,7 @@
 
     <style name="Widget.IOSched.AccountDialog.ManageAccountButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textColor">?android:textColorSecondary</item>
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.Chip
-        </item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.Chip</item>
     </style>
 
     <!-- Onboarding -->
@@ -329,7 +328,10 @@
         <item name="android:background">@null</item>
         <item name="android:foreground">?selectableItemBackground</item>
         <item name="android:minHeight">?android:attr/listPreferredItemHeightSmall</item>
-        <item name="android:padding">@dimen/margin_normal</item>
+        <item name="android:paddingBottom">@dimen/spacing_normal</item>
+        <item name="android:paddingEnd">?listPreferredItemPaddingEnd</item>
+        <item name="android:paddingStart">?listPreferredItemPaddingStart</item>
+        <item name="android:paddingTop">@dimen/spacing_normal</item>
         <item name="android:textAlignment">viewStart</item>
         <item name="switchPadding">@dimen/margin_small</item>
         <item name="switchTextAppearance">?attr/textAppearanceBody2</item>
@@ -340,7 +342,7 @@
         <item name="android:gravity">start|center_vertical</item>
         <item name="android:minHeight">?listPreferredItemHeightSmall</item>
         <item name="android:paddingBottom">@dimen/spacing_normal</item>
-        <item name="android:paddingRight">?listPreferredItemPaddingEnd</item>
+        <item name="android:paddingEnd">?listPreferredItemPaddingEnd</item>
         <item name="android:paddingStart">?listPreferredItemPaddingStart</item>
         <item name="android:paddingTop">@dimen/spacing_normal</item>
         <item name="android:textAlignment">viewStart</item>

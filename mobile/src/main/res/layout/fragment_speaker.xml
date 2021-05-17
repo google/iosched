@@ -38,20 +38,31 @@
         android:fitsSystemWindows="true"
         tools:ignore="MergeRootFrame">
 
-        <!-- CollapsingToolbarLayout consumes all system window insets, so we need to put the
-             RecyclerView first in order for it to inspect the insets first.
+        <!-- CollapsingToolbarLayout consumes all system window insets, so we need to put this
+             first in order for RecyclerView to inspect the insets first.
              Use layout_height="wrap_content" so that the CollapsingToolbarLayout doesn't collapse
              when there is not enough content to fill the screen.
         -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/speaker_detail_recycler_view"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:paddingBottom="@dimen/margin_normal"
-            android:scrollbars="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:layoutManager="LinearLayoutManager" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/speaker_detail_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/margin_normal"
+                android:scrollbars="vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layoutManager="LinearLayoutManager"
+                tools:listitem="@layout/item_speaker_info"
+                tools:itemCount="1"
+                tools:layout_constraintWidth_percent="@dimen/content_max_width_percent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"

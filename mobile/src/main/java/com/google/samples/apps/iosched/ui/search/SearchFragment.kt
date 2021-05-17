@@ -39,6 +39,7 @@ import com.google.samples.apps.iosched.ui.schedule.ScheduleTwoPaneViewModel
 import com.google.samples.apps.iosched.ui.sessioncommon.SessionsAdapter
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
+import com.google.samples.apps.iosched.util.setContentMaxWidth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
@@ -127,6 +128,9 @@ class SearchFragment : Fragment() {
                     WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime()
                 )
                 v.updatePadding(bottom = padding.bottom + systemInsets.bottom)
+            }
+            doOnNextLayout {
+                setContentMaxWidth(this)
             }
         }
 

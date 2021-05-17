@@ -59,6 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:headerLayout="@layout/navigation_rail_header"
         app:menu="@menu/bar_navigation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,7 +14,8 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -49,128 +50,139 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/settings_scroll"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:scrollbarStyle="insideOverlay"
-            android:scrollbars="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
-                android:id="@+id/settings_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="@dimen/margin_normal"
-                android:paddingBottom="@dimen/margin_normal"
-                tools:targetApi="o">
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/settings_scroll"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:clipToPadding="false"
+                android:scrollbarStyle="insideOverlay"
+                android:scrollbars="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="@dimen/content_max_width_percent">
 
-                <TextView
-                    android:id="@+id/settings_choose_theme"
-                    style="@style/Widget.IOSched.Settings.Button"
+                <LinearLayout
+                    android:id="@+id/settings_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="true"
-                    android:onClick="@{(view) -> viewModel.onThemeSettingClicked()}"
-                    android:text="@string/settings_theme_title" />
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/margin_normal"
+                    android:paddingTop="@dimen/margin_normal"
+                    tools:targetApi="o">
 
-                <!-- AppCompat/MaterialComponents layout inflators don't automatically handle
-                     Switch widgets. See https://material.io/develop/android/components/switch/ -->
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/settings_time_zone"
-                    style="@style/Widget.IOSched.Settings.Switch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:checked="@{viewModel.preferConferenceTimeZone}"
-                    android:onClick="@{(view) -> viewModel.toggleTimeZone()}"
-                    android:text="@string/settings_time_zone_label" />
+                    <TextView
+                        android:id="@+id/settings_choose_theme"
+                        style="@style/Widget.IOSched.Settings.Button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:onClick="@{(view) -> viewModel.onThemeSettingClicked()}"
+                        android:text="@string/settings_theme_title" />
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/settings_enable_notifications"
-                    style="@style/Widget.IOSched.Settings.Switch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:checked="@{viewModel.enableNotifications}"
-                    android:onClick="@{(view) -> viewModel.toggleEnableNotifications()}"
-                    android:text="@string/settings_enable_notifications" />
+                    <!-- AppCompat/MaterialComponents layout inflators don't automatically handle
+                         Switch widgets. See https://material.io/develop/android/components/switch/ -->
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/settings_time_zone"
+                        style="@style/Widget.IOSched.Settings.Switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:checked="@{viewModel.preferConferenceTimeZone}"
+                        android:onClick="@{(view) -> viewModel.toggleTimeZone()}"
+                        android:text="@string/settings_time_zone_label" />
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/settings_send_anonymous_usage_statistics"
-                    style="@style/Widget.IOSched.Settings.Switch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:checked="@{viewModel.sendUsageStatistics}"
-                    android:onClick="@{(view) -> viewModel.toggleSendUsageStatistics()}"
-                    android:text="@string/settings_send_anonymous_usage_statistics" />
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/settings_enable_notifications"
+                        style="@style/Widget.IOSched.Settings.Switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:checked="@{viewModel.enableNotifications}"
+                        android:onClick="@{(view) -> viewModel.toggleEnableNotifications()}"
+                        android:text="@string/settings_enable_notifications" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:dividerHorizontal" />
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/settings_send_anonymous_usage_statistics"
+                        style="@style/Widget.IOSched.Settings.Switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:checked="@{viewModel.sendUsageStatistics}"
+                        android:onClick="@{(view) -> viewModel.toggleSendUsageStatistics()}"
+                        android:text="@string/settings_send_anonymous_usage_statistics" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_normal"
-                    android:layout_marginLeft="@dimen/margin_normal"
-                    android:layout_marginRight="@dimen/margin_normal"
-                    android:layout_marginTop="@dimen/margin_large"
-                    android:textAppearance="@style/TextAppearance.IOSched.Overline"
-                    android:text="@string/about_title" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:dividerHorizontal" />
 
-                <TextView
-                    android:id="@+id/terms_of_service"
-                    style="@style/Widget.IOSched.Settings.Button.About"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_tos"
-                    app:websiteLink="@{@string/tos_url}" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_normal"
+                        android:layout_marginLeft="@dimen/margin_normal"
+                        android:layout_marginRight="@dimen/margin_normal"
+                        android:layout_marginTop="@dimen/margin_large"
+                        android:text="@string/about_title"
+                        android:textAppearance="@style/TextAppearance.IOSched.Overline" />
 
-                <TextView
-                    android:id="@+id/privacy_policy"
-                    style="@style/Widget.IOSched.Settings.Button.About"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_privacy_policy"
-                    app:websiteLink="@{@string/privacy_policy_url}" />
+                    <TextView
+                        android:id="@+id/terms_of_service"
+                        style="@style/Widget.IOSched.Settings.Button.About"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_tos"
+                        app:websiteLink="@{@string/tos_url}" />
 
-                <TextView
-                    android:id="@+id/open_source_license"
-                    style="@style/Widget.IOSched.Settings.Button.About"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_oss_licenses"
-                    app:dialogTitle="@{@string/settings_oss_licenses}"
-                    app:fileLink="@{@string/oss_file}" />
+                    <TextView
+                        android:id="@+id/privacy_policy"
+                        style="@style/Widget.IOSched.Settings.Button.About"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_privacy_policy"
+                        app:websiteLink="@{@string/privacy_policy_url}" />
 
-                <TextView
-                    android:id="@+id/version_build_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start|center_vertical"
-                    android:minHeight="48dp"
-                    android:padding="@dimen/margin_normal"
-                    android:textAppearance="?textAppearanceBody2"
-                    app:versionName="@{BuildConfig.VERSION_NAME}" />
+                    <TextView
+                        android:id="@+id/open_source_license"
+                        style="@style/Widget.IOSched.Settings.Button.About"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_oss_licenses"
+                        app:dialogTitle="@{@string/settings_oss_licenses}"
+                        app:fileLink="@{@string/oss_file}" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/margin_normal"
-                    android:drawablePadding="@dimen/margin_small"
-                    android:drawableStart="@drawable/ic_logo_components"
-                    android:gravity="center"
-                    android:paddingEnd="@dimen/margin_normal"
-                    android:paddingStart="@dimen/margin_normal"
-                    android:text="@string/built_with_material_components"
-                    android:textAppearance="?attr/textAppearanceBody1" />
+                    <TextView
+                        android:id="@+id/version_build_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start|center_vertical"
+                        android:minHeight="?listPreferredItemHeightSmall"
+                        android:paddingEnd="?listPreferredItemPaddingEnd"
+                        android:paddingStart="?listPreferredItemPaddingStart"
+                        android:textAppearance="?textAppearanceBody2"
+                        app:versionName="@{BuildConfig.VERSION_NAME}" />
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/margin_normal"
+                        android:drawablePadding="@dimen/margin_small"
+                        android:gravity="center"
+                        android:text="@string/built_with_material_components"
+                        android:textAppearance="?attr/textAppearanceBody1"
+                        app:drawableStartCompat="@drawable/ic_logo_components" />
 
-        </androidx.core.widget.NestedScrollView>
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.samples.apps.iosched.widget.FadingSnackbar
             android:id="@+id/snackbar"

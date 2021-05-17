@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.shared.data
 
 import android.graphics.Color
+import com.google.samples.apps.iosched.model.Codelab
 import com.google.samples.apps.iosched.model.ConferenceData
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.Tag
@@ -42,6 +43,7 @@ object FakeConferenceDataSource : ConferenceDataSource {
     private fun transformDataForStaging(data: ConferenceData): ConferenceData {
         val sessions = data.sessions.toMutableList()
         val speakers = data.speakers.toMutableList()
+        val codelabs = data.codelabs.toMutableList()
         val tags = data.tags.toMutableList()
 
         // Rename the first session of each day
@@ -91,11 +93,24 @@ object FakeConferenceDataSource : ConferenceDataSource {
         )
         sessions.add(stagingSession)
 
+        // Add a fake codelab
+        val codelab = Codelab(
+            id = FAKE_CODELAB_TITLE,
+            title = FAKE_CODELAB_TITLE,
+            description = FAKE_CODELAB_DESC,
+            codelabUrl = "",
+            durationMinutes = 1,
+            iconUrl = null,
+            sortPriority = Int.MAX_VALUE,
+            tags = emptyList()
+        )
+        codelabs.add(0, codelab)
+
         // TODO: Find a way to test alarms without introducing a session with invalid timestamps.
         // addSessionForAlarmsTesting(sessions, stagingSession)
 
         // Return the new data replacing the modified properties only.
-        return data.copy(sessions = sessions, speakers = speakers, tags = tags)
+        return data.copy(sessions = sessions, speakers = speakers, tags = tags, codelabs = codelabs)
     }
 
     private fun addSessionForAlarmsTesting(
@@ -119,4 +134,7 @@ object FakeConferenceDataSource : ConferenceDataSource {
     const val FAKE_SESSION_TAG_NAME = "Staging tag"
     const val FAKE_SESSION_SPEAKER_NAME = "Dr. Staging"
     const val ALARM_SESSION_ID = "abcdefg"
+
+    const val FAKE_CODELAB_TITLE = "Baking an Android Cake"
+    const val FAKE_CODELAB_DESC = "In this codelab you'll something something something spatula."
 }

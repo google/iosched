@@ -25,6 +25,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -53,7 +54,7 @@ class CodelabTest {
         // Title
         onView(allOf(instanceOf(TextView::class.java), withParent(withId(R.id.toolbar))))
             .check(matches(withText(R.string.event_codelabs_title)))
-        // One of the blocks
-        onView(withText(R.string.codelabs_building)).check(matches(isDisplayed()))
+        // One of the codelabs
+        onView(withText(FakeConferenceDataSource.FAKE_CODELAB_TITLE)).check(matches(isDisplayed()))
     }
 }
