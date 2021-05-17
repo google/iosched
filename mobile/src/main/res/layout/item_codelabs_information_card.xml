@@ -26,20 +26,13 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.IOSched.Codelabs.InfoCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_small"
-        android:layout_marginEnd="?listPreferredItemPaddingEnd"
-        android:layout_marginStart="?listPreferredItemPaddingStart"
-        android:layout_marginTop="@dimen/margin_small"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="0dp"
         app:contentPaddingBottom="@dimen/margin_small"
         app:contentPaddingLeft="@dimen/margin_normal"
         app:contentPaddingRight="@dimen/margin_normal"
-        app:contentPaddingTop="@dimen/margin_normal"
-        app:strokeColor="?colorControlLight"
-        app:strokeWidth="1dp">
+        app:contentPaddingTop="@dimen/margin_normal">
 
         <LinearLayout
             android:layout_width="match_parent"

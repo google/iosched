@@ -48,11 +48,9 @@ class CodelabsViewModelTest {
         val viewModel = createCodelabsViewModel(
             getCodelabsInfoCardShownUseCase = createTestGetCodelabsInfoCardShownUseCase(prefs)
         )
-        val codelabs = viewModel.codelabs.first()
+        val codelabs = viewModel.screenContent.first()
         // codelabs does not contain the info card
         assertFalse(codelabs.contains(CodelabsInformationCard))
-        // codelabs contain a header item
-        assertTrue(codelabs.contains(CodelabsHeaderItem))
         // We have other codelabs apart from the header item
         assertTrue(codelabs.size > 1)
     }
@@ -63,11 +61,9 @@ class CodelabsViewModelTest {
         val viewModel = createCodelabsViewModel(
             getCodelabsInfoCardShownUseCase = createTestGetCodelabsInfoCardShownUseCase(prefs)
         )
-        val codelabs = viewModel.codelabs.first()
+        val codelabs = viewModel.screenContent.first()
         // codelabs contain the info card
         assertTrue(codelabs.contains(CodelabsInformationCard))
-        // codelabs contain a header item
-        assertTrue(codelabs.contains(CodelabsHeaderItem))
         // We have other codelabs apart from the header item and info card
         assertTrue(codelabs.size > 2)
     }
@@ -79,13 +75,13 @@ class CodelabsViewModelTest {
             getCodelabsInfoCardShownUseCase = createTestGetCodelabsInfoCardShownUseCase(prefs),
             setCodelabsInfoCardShownUseCase = createTestSetCodelabsInfoCardShownUseCase(prefs)
         )
-        val initialCodelabs = viewModel.codelabs.first()
+        val initialCodelabs = viewModel.screenContent.first()
         // codelabs contain the info card
         assertTrue(initialCodelabs.contains(CodelabsInformationCard))
 
         viewModel.dismissCodelabsInfoCard()
 
-        val newCodelabs = viewModel.codelabs.first()
+        val newCodelabs = viewModel.screenContent.first()
         assertFalse(newCodelabs.contains(CodelabsInformationCard))
     }
 

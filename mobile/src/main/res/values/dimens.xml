@@ -131,6 +131,10 @@
     -->
     <dimen name="profile_dialog_header_height">68dp</dimen>
 
+    <!-- Codelabs -->
+    <dimen name="codelabs_max_width_percent">@dimen/content_max_width_percent</dimen>
+    <dimen name="codelabs_list_item_spacing">0dp</dimen>
+
     <!-- per android.view.ViewGroup.LayoutParams -->
     <item name="match_parent" format="integer" type="dimen">-1</item>
     <item name="wrap_content" format="integer" type="dimen">-2</item>

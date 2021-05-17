@@ -16,8 +16,7 @@
   -->
 
 <resources>
-    <dimen name="content_max_width_percent">0.7</dimen>
-    <!-- At this size Codelabs screen switches to a 2-column grid. -->
-    <dimen name="codelabs_max_width_percent">1.0</dimen>
-    <dimen name="codelabs_list_item_spacing">@dimen/spacing_normal</dimen>
+    <style name="Widget.IOSched.Codelabs.InfoCard" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/highlighted_card_background</item>
+    </style>
 </resources>

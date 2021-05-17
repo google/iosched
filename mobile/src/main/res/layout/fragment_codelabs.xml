@@ -42,8 +42,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                app:navigationContentDescription="@string/a11y_show_navigation"
-                app:navigationIcon="@drawable/ic_menu"
+                app:menu="@menu/codelabs_menu"
                 app:title="@string/event_codelabs_title" />
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -59,15 +58,17 @@
                 android:layout_height="0dp"
                 android:clipToPadding="false"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/spacing_normal"
-                android:paddingTop="@dimen/spacing_normal"
+                android:paddingHorizontal="@dimen/codelabs_list_item_spacing"
+                android:paddingVertical="@dimen/spacing_normal"
                 android:scrollbars="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="@dimen/content_max_width_percent"
-                app:layoutManager="LinearLayoutManager"
+                app:layout_constraintWidth_percent="@dimen/codelabs_max_width_percent"
+                app:layoutManager="@string/codelabs_recyclerview_layoutmanager"
+                app:spanCount="2"
+                app:itemSpacing="@{@dimen/codelabs_list_item_spacing}"
                 tools:listitem="@layout/item_codelab" />
 
             <!-- TODO add empty view -->

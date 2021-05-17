@@ -33,7 +33,7 @@
     <color name="nav_bar_scrim">@color/system_ui_scrim_black</color>
 
     <!-- Other colors with dark mode alternatives -->
-    <color name="wifi_card_background">#e8f0fe</color>
+    <color name="highlighted_card_background">#e8f0fe</color>
     <color name="event_card_header_background">@color/event_card_header_background_light</color>
     <color name="list_divider">#1f000000</color>>
 

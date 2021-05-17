@@ -32,11 +32,9 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemCodelabBinding
-import com.google.samples.apps.iosched.databinding.ItemCodelabsHeaderBinding
 import com.google.samples.apps.iosched.databinding.ItemCodelabsInformationCardBinding
 import com.google.samples.apps.iosched.model.Codelab
 import com.google.samples.apps.iosched.ui.codelabs.CodelabsViewHolder.CodelabItemHolder
-import com.google.samples.apps.iosched.ui.codelabs.CodelabsViewHolder.CodelabsHeaderHolder
 import com.google.samples.apps.iosched.ui.codelabs.CodelabsViewHolder.CodelabsInformationCardHolder
 import com.google.samples.apps.iosched.util.compatRemoveIf
 import com.google.samples.apps.iosched.util.executeAfter
@@ -44,7 +42,6 @@ import com.google.samples.apps.iosched.util.executeAfter
 internal class CodelabsAdapter(
     private val codelabsActionsHandler: CodelabsActionsHandler,
     private val tagViewPool: RecycledViewPool,
-    private val isMapEnabled: Boolean,
     savedState: Bundle?
 ) : ListAdapter<Any, CodelabsViewHolder>(CodelabsDiffCallback) {
 
@@ -76,11 +73,9 @@ internal class CodelabsAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        val item = getItem(position)
-        return when (item) {
+        return when (val item = getItem(position)) {
             is Codelab -> R.layout.item_codelab
             is CodelabsInformationCard -> R.layout.item_codelabs_information_card
-            is CodelabsHeaderItem -> R.layout.item_codelabs_header
             else -> throw IllegalStateException("Unknown type: ${item::class.java.simpleName}")
         }
     }
@@ -104,12 +99,6 @@ internal class CodelabsAdapter(
                     actionHandler = codelabsActionsHandler
                 }
             )
-            R.layout.item_codelabs_header -> CodelabsHeaderHolder(
-                ItemCodelabsHeaderBinding.inflate(inflater, parent, false).apply {
-                    actionHandler = codelabsActionsHandler
-                    mapEnabled = isMapEnabled
-                }
-            )
             else -> throw IllegalArgumentException("Invalid viewType")
         }
     }
@@ -126,19 +115,22 @@ internal class CodelabsAdapter(
             codelab = item
             isExpanded = expandedIds.contains(item.id)
         }
-        holder.itemView.setOnClickListener {
-            val parent = holder.itemView.parent as? ViewGroup ?: return@setOnClickListener
-            val expanded = holder.binding.isExpanded ?: false
-            if (expanded) {
-                expandedIds.remove(item.id)
-            } else {
-                expandedIds.add(item.id)
-            }
-            val transition = TransitionInflater.from(holder.itemView.context)
-                .inflateTransition(R.transition.codelab_toggle)
-            TransitionManager.beginDelayedTransition(parent, transition)
-            holder.binding.executeAfter {
-                isExpanded = !expanded
+        // In certain configurations the view already has a click listener to start the codelab.
+        if (!holder.itemView.hasOnClickListeners()) {
+            holder.itemView.setOnClickListener {
+                val parent = holder.itemView.parent as? ViewGroup ?: return@setOnClickListener
+                val expanded = holder.binding.isExpanded ?: false
+                if (expanded) {
+                    expandedIds.remove(item.id)
+                } else {
+                    expandedIds.add(item.id)
+                }
+                val transition = TransitionInflater.from(holder.itemView.context)
+                    .inflateTransition(R.transition.codelab_toggle)
+                TransitionManager.beginDelayedTransition(parent, transition)
+                holder.binding.executeAfter {
+                    isExpanded = !expanded
+                }
             }
         }
     }
@@ -146,8 +138,6 @@ internal class CodelabsAdapter(
 
 // Marker objects for singleton items
 object CodelabsInformationCard
-
-object CodelabsHeaderItem
 
 internal sealed class CodelabsViewHolder(itemView: View) : ViewHolder(itemView) {
 
@@ -158,10 +148,6 @@ internal sealed class CodelabsViewHolder(itemView: View) : ViewHolder(itemView) 
     class CodelabsInformationCardHolder(
         val binding: ItemCodelabsInformationCardBinding
     ) : CodelabsViewHolder(binding.root)
-
-    class CodelabsHeaderHolder(
-        val binding: ItemCodelabsHeaderBinding
-    ) : CodelabsViewHolder(binding.root)
 }
 
 internal object CodelabsDiffCallback : DiffUtil.ItemCallback<Any>() {
@@ -169,7 +155,6 @@ internal object CodelabsDiffCallback : DiffUtil.ItemCallback<Any>() {
     override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
         return when {
             oldItem === CodelabsInformationCard && newItem === CodelabsInformationCard -> true
-            oldItem === CodelabsHeaderItem && newItem === CodelabsHeaderItem -> true
             oldItem is Codelab && newItem is Codelab -> oldItem.id == newItem.id
             else -> false
         }

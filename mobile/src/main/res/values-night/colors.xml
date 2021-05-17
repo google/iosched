@@ -31,7 +31,7 @@
     <color name="status_bar_scrim">@color/transparent</color>
 
     <!-- Other colors with light mode alternatives -->
-    <color name="wifi_card_background">#263238</color>
+    <color name="highlighted_card_background">#263238</color>
     <color name="event_card_header_background">@color/event_card_header_background_dark</color>
     <color name="list_divider">#1fffffff</color>
 

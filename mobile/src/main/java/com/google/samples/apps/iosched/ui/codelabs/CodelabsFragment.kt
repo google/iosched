@@ -27,11 +27,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentCodelabsBinding
 import com.google.samples.apps.iosched.model.Codelab
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsActions
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.di.MapFeatureEnabledFlag
+import com.google.samples.apps.iosched.shared.util.consume
 import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
@@ -81,15 +83,27 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.setupProfileMenuItem(mainActivityViewModel, viewLifecycleOwner)
+        binding.toolbar.apply {
+            setupProfileMenuItem(mainActivityViewModel, viewLifecycleOwner)
+            menu.findItem(R.id.action_see_on_map)?.isVisible = mapFeatureEnabled
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.action_see_on_map -> consume { openCodelabsOnMap() }
+                    R.id.action_codelabs_website -> consume { launchCodelabsWebsite() }
+                }
+                false
+            }
+        }
 
         codelabsAdapter = CodelabsAdapter(
             this,
             tagRecycledViewPool,
-            mapFeatureEnabled,
             savedInstanceState
         )
-        binding.codelabsList.adapter = codelabsAdapter
+        binding.codelabsList.apply {
+            adapter = codelabsAdapter
+            setHasFixedSize(true)
+        }
 
         // Pad the bottom of the RecyclerView so that the content scrolls up above the nav bar
         binding.codelabsList.doOnApplyWindowInsets { v, insets, padding ->
@@ -100,7 +114,7 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
         }
 
         launchAndRepeatWithViewLifecycle {
-            codelabsViewModel.codelabs.collect {
+            codelabsViewModel.screenContent.collect {
                 codelabsAdapter.submitList(it)
             }
         }
@@ -129,8 +143,10 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
     }
 
     override fun startCodelab(codelab: Codelab) {
-        openWebsiteUri(requireContext(), addCodelabsAnalyticsQueryParams(codelab.codelabUrl))
-        analyticsHelper.logUiEvent("Start codelab \"${codelab.title}\"", AnalyticsActions.CLICK)
+        if (codelab.hasUrl()) {
+            openWebsiteUri(requireContext(), addCodelabsAnalyticsQueryParams(codelab.codelabUrl))
+            analyticsHelper.logUiEvent("Start codelab \"${codelab.title}\"", AnalyticsActions.CLICK)
+        }
     }
 
     private fun addCodelabsAnalyticsQueryParams(url: String): Uri {
