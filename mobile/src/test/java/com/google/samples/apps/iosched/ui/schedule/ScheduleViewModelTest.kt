@@ -64,6 +64,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
@@ -357,6 +359,69 @@ class ScheduleViewModelTest {
             newValue.list?.first()?.session,
             `is`(IsEqual.equalTo(TestData.session0))
         )
+    }
+
+    @Test
+    fun scrollToEvent_beforeconference() {
+        scrollToEvent_beforeConference(dayIndex = 0, targetPosition = 0)
+    }
+
+    @Test
+    fun scrollToEvent_beforeConference_clickOnSecondDay() {
+        scrollToEvent_beforeConference(dayIndex = 1, targetPosition = 2)
+    }
+
+    private fun scrollToEvent_beforeConference(dayIndex: Int, targetPosition: Int) =
+        coroutineRule.runBlockingTest {
+            val viewModel = createScheduleViewModel()
+
+            // Start observing
+            viewModel.scheduleUiData.first()
+
+            // Trigger to generate indexer
+            viewModel.scrollToStartOfDay(TestData.TestConferenceDays[0])
+
+            val result = mutableListOf<ScheduleScrollEvent>()
+            val job = launch {
+                viewModel.scrollToEvent.toList(result)
+            }
+
+            // Trigger to generate a result in scrollToEvent
+            viewModel.scrollToStartOfDay(TestData.TestConferenceDays[dayIndex])
+
+            assertTrue(result.size == 1)
+            assertEquals(
+                result[0],
+                ScheduleScrollEvent(targetPosition = targetPosition, smoothScroll = false)
+            )
+
+            job.cancel()
+        }
+
+    @Test
+    fun scrollToEvent_beforeConference_userHasInteracted() = coroutineRule.runBlockingTest {
+        val viewModel = createScheduleViewModel()
+
+        viewModel.userHasInteracted = true
+
+        // Start observing
+        viewModel.scheduleUiData.first()
+
+        // Trigger to generate indexer
+        viewModel.scrollToStartOfDay(TestData.TestConferenceDays[0])
+
+        val result = mutableListOf<ScheduleScrollEvent>()
+        val job = launch {
+            viewModel.scrollToEvent.toList(result)
+        }
+
+        // Trigger to generate a result in scrollToEvent
+        viewModel.scrollToStartOfDay(TestData.TestConferenceDays[1])
+
+        assertTrue(result.size == 1)
+        assertEquals(result[0], ScheduleScrollEvent(targetPosition = 2, smoothScroll = false))
+
+        job.cancel()
     }
 
     private fun createScheduleViewModel(

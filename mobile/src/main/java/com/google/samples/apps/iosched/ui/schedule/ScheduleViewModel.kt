@@ -213,7 +213,11 @@ class ScheduleViewModel @Inject constructor(
             } else {
                 val index = result.data?.firstUnfinishedSessionIndex ?: return@combineTransform
                 if (index != -1) {
+                    // User hasn't interacted yet and conference is happening
                     emit(ScheduleScrollEvent(index))
+                } else {
+                    // User hasn't interacted but conference not in progress, scroll to first event
+                    emit(ScheduleScrollEvent(currentEventIndex))
                 }
             }
         }.shareIn(viewModelScope, WhileViewSubscribed, replay = 0) // Don't replay on rotation
