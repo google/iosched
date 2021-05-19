@@ -29,12 +29,8 @@ import com.google.samples.apps.iosched.shared.data.FakeConferenceDataSource
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.setMain
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.instanceOf
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
