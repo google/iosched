@@ -33,6 +33,7 @@ import com.google.samples.apps.iosched.databinding.FragmentSettingsBinding
 import com.google.samples.apps.iosched.ui.MainActivityViewModel
 import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.signin.setupProfileMenuItem
+import com.google.samples.apps.iosched.ui.util.supportWideScreen
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -55,7 +56,11 @@ class SettingsFragment : MainNavigationFragment() {
 
         binding.composeView.setContent {
             MdcTheme {
-                Surface(Modifier.fillMaxSize()) {
+                Surface(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .supportWideScreen()
+                ) {
                     val scrollState = rememberScrollState()
                     Column(Modifier.verticalScroll(scrollState)) { // Make the screen scrollable
                         SettingsScreen()

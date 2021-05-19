@@ -16,9 +16,15 @@
 
 package com.google.samples.apps.iosched.ui.util
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import kotlinx.coroutines.flow.Flow
@@ -41,3 +47,11 @@ fun <T> rememberFlowWithLifecycle(
         minActiveState = minActiveState
     )
 }
+
+/**
+ * Support wide screen by making the content width max 840dp, centered horizontally.
+ */
+fun Modifier.supportWideScreen() = this
+    .fillMaxWidth()
+    .wrapContentWidth(align = Alignment.CenterHorizontally)
+    .widthIn(max = 840.dp)
