@@ -1,4 +1,22 @@
 /*
+ * Copyright 2021 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import kotlin.reflect.full.memberFunctions
+
+/*
  * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +35,6 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    kotlin("android.extensions")
     kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.firebase.crashlytics")
@@ -37,23 +54,23 @@ android {
         buildConfigField(
             "com.google.android.gms.maps.model.LatLng",
             "MAP_VIEWPORT_BOUND_NE",
-            "new com.google.android.gms.maps.model.LatLng(${properties["map_viewport_bound_ne"]})"
+            "new com.google.android.gms.maps.model.LatLng(${project.properties["map_viewport_bound_ne"]})"
         )
         buildConfigField(
             "com.google.android.gms.maps.model.LatLng",
             "MAP_VIEWPORT_BOUND_SW",
-            "new com.google.android.gms.maps.model.LatLng(${properties["map_viewport_bound_sw"]})"
+            "new com.google.android.gms.maps.model.LatLng(${project.properties["map_viewport_bound_sw"]})"
         )
 
-        buildConfigField("float", "MAP_CAMERA_FOCUS_ZOOM", properties["map_camera_focus_zoom"] as String)
+        buildConfigField("float", "MAP_CAMERA_FOCUS_ZOOM", project.properties["map_camera_focus_zoom"] as String)
 
-        resValue("dimen", "map_camera_bearing", properties["map_default_camera_bearing"] as String)
-        resValue("dimen", "map_camera_target_lat", properties["map_default_camera_target_lat"] as String)
-        resValue("dimen", "map_camera_target_lng", properties["map_default_camera_target_lng"] as String)
-        resValue("dimen", "map_camera_tilt", properties["map_default_camera_tilt"] as String)
-        resValue("dimen", "map_camera_zoom", properties["map_default_camera_zoom"] as String)
-        resValue("dimen", "map_viewport_min_zoom", properties["map_viewport_min_zoom"] as String)
-        resValue("dimen", "map_viewport_max_zoom", properties["map_viewport_max_zoom"] as String)
+        resValue("dimen", "map_camera_bearing", project.properties["map_default_camera_bearing"] as String)
+        resValue("dimen", "map_camera_target_lat", project.properties["map_default_camera_target_lat"] as String)
+        resValue("dimen", "map_camera_target_lng", project.properties["map_default_camera_target_lng"] as String)
+        resValue("dimen", "map_camera_tilt", project.properties["map_default_camera_tilt"] as String)
+        resValue("dimen", "map_camera_zoom", project.properties["map_default_camera_zoom"] as String)
+        resValue("dimen", "map_viewport_min_zoom", project.properties["map_viewport_min_zoom"] as String)
+        resValue("dimen", "map_viewport_max_zoom", project.properties["map_viewport_max_zoom"] as String)
 
         manifestPlaceholders["crashlyticsEnabled"] = true
 
@@ -93,14 +110,16 @@ android {
         }
         maybeCreate("staging")
         getByName("staging") {
-            initWith(getByName("debug"))
+            // TODO: replace with initWith(getByName("debug")) in 7.0.0-beta04
+            // https://issuetracker.google.com/issues/186798050
+            this::class.memberFunctions.first { it.name == "initWith" }.call(this, getByName("debug"))
             versionNameSuffix = "-staging"
 
             // Specifies a sorted list of fallback build types that the
             // plugin should try to use when a dependency does not include a
             // "staging" build type.
             // Used with :test-shared, which doesn't have a staging variant.
-            setMatchingFallbacks(listOf("debug"))
+            matchingFallbacks += listOf("debug")
         }
     }
 
@@ -134,7 +153,7 @@ android {
         }
     }
 
-    lintOptions {
+    lint {
         // Eliminates UnusedResources false positives for resources used in DataBinding layouts
         isCheckGeneratedSources = true
         // Running lint over the debug variant is enough
@@ -162,8 +181,8 @@ android {
     }
 
     packagingOptions {
-        exclude("META-INF/AL2.0")
-        exclude("META-INF/LGPL2.1")
+        resources.excludes += "META-INF/AL2.0"
+        resources.excludes += "META-INF/LGPL2.1"
     }
 }
 

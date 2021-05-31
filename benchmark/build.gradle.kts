@@ -1,4 +1,22 @@
 /*
+ * Copyright 2021 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import kotlin.reflect.full.memberFunctions
+
+/*
  * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,27 +35,25 @@
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("android.extensions")
     id("androidx.benchmark")
     kotlin("kapt")
 }
 
 android {
-    compileSdkVersion(Versions.COMPILE_SDK)
+    compileSdk = Versions.COMPILE_SDK
     defaultConfig {
-        minSdkVersion(Versions.MIN_SDK)
-        targetSdkVersion(Versions.TARGET_SDK)
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = Versions.MIN_SDK
+        targetSdk = Versions.TARGET_SDK
         testInstrumentationRunner = "androidx.benchmark.junit4.AndroidBenchmarkRunner"
     }
 
     buildTypes {
         maybeCreate("staging")
         getByName("staging") {
-            initWith(getByName("debug"))
+            // TODO: replace with initWith(getByName("debug")) in 7.0.0-beta04
+            // https://issuetracker.google.com/issues/186798050 
+            this::class.memberFunctions.first { it.name == "initWith" }.call(this, getByName("debug"))
             isDefault = true
-            versionNameSuffix = "-staging"
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
 
@@ -45,7 +61,7 @@ android {
             // plugin should try to use when a dependency does not include a
             // "staging" build type.
             // Used with :test-shared, which doesn't have a staging variant.
-            setMatchingFallbacks(listOf("debug"))
+            matchingFallbacks += listOf("debug")
         }
     }
 
