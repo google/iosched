@@ -1,3 +1,6 @@
+import com.squareup.kotlinpoet.MemberName.Companion.member
+import kotlin.reflect.full.memberFunctions
+
 /*
  * Copyright 2020 Google LLC
  *
@@ -17,27 +20,24 @@
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("android.extensions")
     id("androidx.benchmark")
     kotlin("kapt")
 }
 
 android {
-    compileSdkVersion(Versions.COMPILE_SDK)
+    compileSdk = Versions.COMPILE_SDK
     defaultConfig {
-        minSdkVersion(Versions.MIN_SDK)
-        targetSdkVersion(Versions.TARGET_SDK)
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = Versions.MIN_SDK
+        targetSdk = Versions.TARGET_SDK
         testInstrumentationRunner = "androidx.benchmark.junit4.AndroidBenchmarkRunner"
     }
 
     buildTypes {
         maybeCreate("staging")
         getByName("staging") {
-            initWith(getByName("debug"))
+            // TODO: replace with initWith(getByName("debug")) in 7.0.0-beta04
+            this::class.memberFunctions.first { it.name == "initWith" }.call(this, getByName("debug"))
             isDefault = true
-            versionNameSuffix = "-staging"
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
 
@@ -45,7 +45,7 @@ android {
             // plugin should try to use when a dependency does not include a
             // "staging" build type.
             // Used with :test-shared, which doesn't have a staging variant.
-            setMatchingFallbacks(listOf("debug"))
+            matchingFallbacks += listOf("debug")
         }
     }
 
