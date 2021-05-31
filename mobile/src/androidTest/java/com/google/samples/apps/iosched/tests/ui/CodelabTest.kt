@@ -55,6 +55,7 @@ class CodelabTest {
         onView(allOf(instanceOf(TextView::class.java), withParent(withId(R.id.toolbar))))
             .check(matches(withText(R.string.event_codelabs_title)))
         // One of the codelabs
+        Thread.sleep(400) // TODO: RecyclerView is async so it makes the test fail
         onView(withText(FakeConferenceDataSource.FAKE_CODELAB_TITLE)).check(matches(isDisplayed()))
     }
 }
