@@ -95,6 +95,7 @@ android {
         maybeCreate("staging")
         getByName("staging") {
             // TODO: replace with initWith(getByName("debug")) in 7.0.0-beta04
+            // https://issuetracker.google.com/issues/186798050
             this::class.memberFunctions.first { it.name == "initWith" }.call(this, getByName("debug"))
             versionNameSuffix = "-staging"
 
