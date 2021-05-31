@@ -5,7 +5,10 @@ on:
     branches:
       - main
       - compose
-      - main_gha
+  pull_request:
+    branches:
+      - main
+      - compose
 
 jobs:
   build:
