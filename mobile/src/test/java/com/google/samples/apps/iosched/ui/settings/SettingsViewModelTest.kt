@@ -51,16 +51,11 @@ class SettingsViewModelTest {
         val viewModel = createSettingsViewModel()
 
         val prefs = FakePreferenceStorage()
+        val uiState = viewModel.uiState.first()
 
-        assertEquals(
-            prefs.preferConferenceTimeZone.first(),
-            viewModel.preferConferenceTimeZone.first()
-        )
-        assertEquals(
-            prefs.preferToReceiveNotifications.first(),
-            viewModel.enableNotifications.first()
-        )
-        assertEquals(prefs.sendUsageStatistics.first(), viewModel.sendUsageStatistics.first())
+        assertEquals(prefs.preferConferenceTimeZone.value, uiState.preferConferenceTimeZone)
+        assertEquals(prefs.preferToReceiveNotifications.value, uiState.enableNotifications)
+        assertEquals(prefs.sendUsageStatistics.value, uiState.sendUsageStatistics)
         assertEquals(BATTERY_SAVER, viewModel.theme.first())
     }
 
@@ -68,17 +63,19 @@ class SettingsViewModelTest {
     fun toggleBooleanSettings() = coroutineRule.runBlockingTest {
         val viewModel = createSettingsViewModel()
 
-        val initialTimeZone = viewModel.preferConferenceTimeZone.first()
-        val initialNotifications = viewModel.enableNotifications.first()
-        val initialSendUsageStatistics = viewModel.sendUsageStatistics.first()
+        val uiState = viewModel.uiState.first()
+        assertEquals(true, uiState.preferConferenceTimeZone)
+        assertEquals(false, uiState.enableNotifications)
+        assertEquals(false, uiState.sendUsageStatistics)
 
-        viewModel.toggleTimeZone()
-        viewModel.toggleEnableNotifications()
-        viewModel.toggleSendUsageStatistics()
+        viewModel.setTimeZone(false)
+        viewModel.setEnableNotifications(true)
+        viewModel.setSendUsageStatistics(true)
 
-        assertEquals(!initialTimeZone, viewModel.preferConferenceTimeZone.first())
-        assertEquals(!initialNotifications, viewModel.enableNotifications.first())
-        assertEquals(!initialSendUsageStatistics, viewModel.sendUsageStatistics.first())
+        val nextUiState = viewModel.uiState.first()
+        assertEquals(false, nextUiState.preferConferenceTimeZone)
+        assertEquals(true, nextUiState.enableNotifications)
+        assertEquals(true, nextUiState.sendUsageStatistics)
     }
 
     @Test

@@ -30,6 +30,7 @@ import com.google.samples.apps.iosched.shared.domain.settings.SetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.util.tryOffer
+import com.google.samples.apps.iosched.shared.util.zip
 import com.google.samples.apps.iosched.util.WhileViewSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -66,20 +67,21 @@ class SettingsViewModel @Inject constructor(
         emitAll(refreshSignal)
     }
 
-    // Time Zone setting
-    val preferConferenceTimeZone: StateFlow<Boolean> = loadDataSignal.mapLatest {
-        getTimeZoneUseCase(Unit).data ?: true
-    }.stateIn(viewModelScope, WhileViewSubscribed, true)
-
-    val enableNotifications: StateFlow<Boolean> = loadDataSignal.mapLatest {
-        getNotificationsSettingUseCase(Unit).data ?: true
-    }.stateIn(viewModelScope, WhileViewSubscribed, true)
-
-    // Analytics setting
-    val sendUsageStatistics =
+    val uiState: StateFlow<SettingsUiModel> = zip(
+        loadDataSignal.mapLatest { getTimeZoneUseCase(Unit).data ?: true },
+        loadDataSignal.mapLatest { getNotificationsSettingUseCase(Unit).data ?: true },
         loadDataSignal.combine(getAnalyticsSettingUseCase(Unit)) { _, result ->
             result.data ?: false
-        }.stateIn(viewModelScope, WhileViewSubscribed, false)
+        }
+    ) {
+        preferConferenceTimeZone, enableNotifications, sendUsageStatistics ->
+        SettingsUiModel(
+            isLoading = false,
+            preferConferenceTimeZone = preferConferenceTimeZone,
+            enableNotifications = enableNotifications,
+            sendUsageStatistics = sendUsageStatistics
+        )
+    }.stateIn(viewModelScope, WhileViewSubscribed, SettingsUiModel(isLoading = true))
 
     // Theme setting
     val theme: StateFlow<Theme> = loadDataSignal.mapLatest {
@@ -100,23 +102,23 @@ class SettingsViewModel @Inject constructor(
         refreshSignal.emit(Unit)
     }
 
-    fun toggleTimeZone() {
+    fun setTimeZone(checked: Boolean) {
         viewModelScope.launch {
-            setTimeZoneUseCase(!preferConferenceTimeZone.value)
+            setTimeZoneUseCase(checked)
             refreshData()
         }
     }
 
-    fun toggleEnableNotifications() {
+    fun setEnableNotifications(checked: Boolean) {
         viewModelScope.launch {
-            notificationsPrefSaveActionUseCase(!enableNotifications.value)
+            notificationsPrefSaveActionUseCase(checked)
             refreshData()
         }
     }
 
-    fun toggleSendUsageStatistics() {
+    fun setSendUsageStatistics(checked: Boolean) {
         viewModelScope.launch {
-            setAnalyticsSettingUseCase(!sendUsageStatistics.value)
+            setAnalyticsSettingUseCase(checked)
             refreshData()
         }
     }
@@ -124,6 +126,7 @@ class SettingsViewModel @Inject constructor(
     fun setTheme(theme: Theme) {
         viewModelScope.launch {
             setThemeUseCase(theme)
+            refreshData()
         }
     }
 
@@ -135,3 +138,10 @@ class SettingsViewModel @Inject constructor(
 sealed class SettingsNavigationAction {
     object NavigateToThemeSelector : SettingsNavigationAction()
 }
+
+data class SettingsUiModel(
+    val isLoading: Boolean = false,
+    val preferConferenceTimeZone: Boolean = false,
+    val enableNotifications: Boolean = false,
+    val sendUsageStatistics: Boolean = false
+)

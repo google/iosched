@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2018 Google LLC
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2021 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,16 +14,24 @@
   ~ limitations under the License.
   -->
 
-<font-family
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:fontProviderAuthority="com.google.android.gms.fonts"
-    android:fontProviderCerts="@array/com_google_android_gms_fonts_certs"
-    android:fontProviderPackage="com.google.android.gms"
-    android:fontProviderQuery="Google Sans"
-    app:fontProviderAuthority="com.google.android.gms.fonts"
-    app:fontProviderCerts="@array/com_google_android_gms_fonts_certs"
-    app:fontProviderPackage="com.google.android.gms"
-    app:fontProviderQuery="Google Sans"
-    tools:ignore="FontValidationError,FontValidationWarning,UnusedAttribute" />
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/google_sans_regular_font" />
+</font-family>
+
+<!-- TODO: Use this when Compose works with downloadable fonts -->
+<!--<font-family-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:fontProviderAuthority="com.google.android.gms.fonts"-->
+<!--    android:fontProviderCerts="@array/com_google_android_gms_fonts_certs"-->
+<!--    android:fontProviderPackage="com.google.android.gms"-->
+<!--    android:fontProviderQuery="Google Sans"-->
+<!--    app:fontProviderAuthority="com.google.android.gms.fonts"-->
+<!--    app:fontProviderCerts="@array/com_google_android_gms_fonts_certs"-->
+<!--    app:fontProviderPackage="com.google.android.gms"-->
+<!--    app:fontProviderQuery="Google Sans"-->
+<!--    tools:ignore="FontValidationError,FontValidationWarning,UnusedAttribute" />-->

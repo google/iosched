@@ -18,10 +18,12 @@ package com.google.samples.apps.iosched.tests.ui
 
 import android.content.Context
 import android.widget.TextView
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.junit4.AndroidComposeTestRule
+import androidx.compose.ui.test.onNodeWithText
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -52,20 +54,26 @@ class SettingsTest {
     var preferencesRule = SetPreferencesRule()
 
     @get:Rule(order = 2)
-    var activityRule = MainActivityTestRule(R.id.navigation_settings)
+    val composeTestRule = AndroidComposeTestRule(
+        activityRule = MainActivityTestRule(R.id.navigation_settings),
+        activityProvider = { it.activity }
+    )
 
     private val resources = ApplicationProvider.getApplicationContext<Context>().resources
 
     @Test
     fun settings_basicViewsDisplayed() {
-        // Title
+        // Settings title
         onView(allOf(instanceOf(TextView::class.java), withParent(withId(id.toolbar))))
             .check(matches(withText(R.string.settings_title)))
+
         // Preference toggle
-        onView(withText(resources.getString(R.string.settings_enable_notifications)))
-            .check(matches(isDisplayed()))
+        composeTestRule.onNodeWithText(resources.getString(R.string.settings_enable_notifications))
+            .assertIsDisplayed()
+
+        // TODO: toUpperCase can cause problems in devices with some Locales. Watch out!
         // About label
-        onView(withText(resources.getString(R.string.about_title)))
-            .check(matches(isDisplayed()))
+        composeTestRule.onNodeWithText(resources.getString(R.string.about_title).toUpperCase())
+            .assertIsDisplayed()
     }
 }

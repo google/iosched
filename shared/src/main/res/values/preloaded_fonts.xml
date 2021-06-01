@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2021 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,7 +16,8 @@
   -->
 
 <resources>
-    <array name="preloaded_fonts" translatable="false">
-        <item>@font/google_sans</item>
-    </array>
+<!--    TODO: Add back when Compose supports downloadable fonts -->
+<!--    <array name="preloaded_fonts" translatable="false">-->
+<!--        <item>@font/google_sans</item>-->
+<!--    </array>-->
 </resources>
