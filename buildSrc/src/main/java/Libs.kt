@@ -18,6 +18,7 @@ object Libs {
     const val ACTIVITY_COMPOSE = "androidx.activity:activity-compose"
     const val ACTIVITY_KTX = "androidx.activity:activity-ktx"
     const val APPCOMPAT = "androidx.appcompat:appcompat"
+    const val APP_STARTUP = "androidx.startup:startup-runtime"
     const val ARCH_TESTING = "androidx.arch.core:core-testing"
     const val ARCORE = "com.google.ar:core"
     const val BENCHMARK = "androidx.benchmark:benchmark-junit4"
