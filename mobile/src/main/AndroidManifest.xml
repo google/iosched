@@ -58,7 +58,12 @@
          </activity>
 
         <activity
-            android:name=".ui.MainActivity" />
+            android:name=".ui.MainActivity" >
+            <intent-filter>
+                <action android:name="com.google.samples.apps.iosched.STARTUP_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.onboarding.OnboardingActivity"
@@ -99,11 +104,14 @@
             <meta-data
                 android:name="com.google.samples.apps.iosched.util.initializers.StrictModeInitializer"
                 android:value="androidx.startup" />
-            <!-- Initalize TimberInitializer after the Application's onCreate is called -->
             <meta-data
                 android:name="com.google.samples.apps.iosched.util.initializers.TimberInitializer"
-                tools:node="remove" />
+                android:value="androidx.startup" />
         </provider>
+        <!-- enable profiling by macrobenchmark -->
+        <profileable
+            android:shell="true"
+            tools:targetApi="q" />
     </application>
 
 </manifest>

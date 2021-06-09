@@ -57,6 +57,10 @@ allprojects {
         maven {
             url = uri("${project.rootDir}/../../../prebuilts/fullsdk/linux/extras/support/m2repository")
         }
+        // snapshot repository for androidx - not necessary once alpha is public
+        maven {
+            url = uri("https://androidx.dev/snapshots/builds/7352378/artifacts/repository")
+        }
 
         flatDir {
             dirs = setOf(file("libs"), project(":ar").file("libs"))

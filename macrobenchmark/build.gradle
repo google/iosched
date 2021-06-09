@@ -1,0 +1,52 @@
+plugins {
+    id 'com.android.test'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdkVersion 30
+    defaultConfig {
+        minSdkVersion 29
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildTypes {
+        // declare a build type (release) to match the target app's build type
+        release {
+            debuggable = true
+            signingConfig = debug.signingConfig
+        }
+    }
+
+    targetProjectPath = ":mobile"
+    properties["android.experimental.self-instrumenting"] = true
+}
+
+androidComponents {
+    beforeVariants(selector().all()) {
+        // enable only the release buildType, since we only want to measure
+        // release build performance
+        enable = buildType == 'release'
+    }
+}
+
+dependencies {
+    //noinspection GradleDependency
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.5.0"
+    implementation 'androidx.test.ext:junit:1.1.2'
+    implementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+    implementation 'androidx.benchmark:benchmark-macro-junit4:1.1.0-SNAPSHOT'
+}

@@ -17,9 +17,7 @@
 package com.google.samples.apps.iosched
 
 import android.app.Application
-import androidx.startup.AppInitializer
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
-import com.google.samples.apps.iosched.util.initializers.TimberInitializer
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
@@ -30,11 +28,6 @@ import javax.inject.Inject
 class MainApplication : Application() {
 
     // Even if the var isn't used, needs to be initialized at application startup.
-    @Inject lateinit var analyticsHelper: AnalyticsHelper
-
-    override fun onCreate() {
-        super.onCreate()
-        AppInitializer.getInstance(this)
-            .initializeComponent(TimberInitializer::class.java)
-    }
+    @Inject
+    lateinit var analyticsHelper: AnalyticsHelper
 }

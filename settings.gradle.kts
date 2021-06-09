@@ -22,5 +22,6 @@ include(
   ":androidTest-shared",
   "ar",
   "benchmark",
-  "depconstraints"
+  "depconstraints",
+  ":macrobenchmark"
 )
