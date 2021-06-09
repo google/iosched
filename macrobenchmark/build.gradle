@@ -43,10 +43,10 @@ androidComponents {
 }
 
 dependencies {
-    //noinspection GradleDependency
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.5.0"
-    implementation 'androidx.test.ext:junit:1.1.2'
-    implementation 'androidx.test.espresso:espresso-core:3.3.0'
-    implementation 'androidx.test.uiautomator:uiautomator:2.2.0'
-    implementation 'androidx.benchmark:benchmark-macro-junit4:1.1.0-SNAPSHOT'
+    api platform(project(":depconstraints"))
+    implementation Libs.BENCHMARK_MACRO
+    implementation Libs.ESPRESSO_CORE
+    implementation Libs.EXT_JUNIT
+    implementation Libs.KOTLIN_STDLIB
+    implementation Libs.UI_AUTOMATOR
 }
