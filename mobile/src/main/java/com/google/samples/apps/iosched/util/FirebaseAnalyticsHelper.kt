@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.util
 
 import android.app.Activity
-import android.content.Context
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
@@ -48,7 +47,6 @@ import timber.log.Timber
  */
 class FirebaseAnalyticsHelper(
     @ApplicationScope private val externalScope: CoroutineScope,
-    context: Context,
     signInViewModelDelegate: SignInViewModelDelegate,
     private val preferenceStorage: PreferenceStorage
 ) : AnalyticsHelper {

@@ -17,17 +17,7 @@
 package com.google.samples.apps.iosched
 
 import android.app.Application
-import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import dagger.hilt.android.HiltAndroidApp
-import javax.inject.Inject
 
-/**
- * Initialization of libraries.
- */
 @HiltAndroidApp
-class MainApplication : Application() {
-
-    // Even if the var isn't used, needs to be initialized at application startup.
-    @Inject
-    lateinit var analyticsHelper: AnalyticsHelper
-}
+class MainApplication : Application()

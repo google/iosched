@@ -107,6 +107,9 @@
             <meta-data
                 android:name="com.google.samples.apps.iosched.util.initializers.TimberInitializer"
                 android:value="androidx.startup" />
+            <meta-data
+                android:name="com.google.samples.apps.iosched.util.initializers.AnalyticsHelperInitializer"
+                android:value="androidx.startup" />
         </provider>
         <!-- enable profiling by macrobenchmark -->
         <profileable
