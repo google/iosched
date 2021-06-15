@@ -21,7 +21,6 @@ import com.google.samples.apps.iosched.util.initializers.AnalyticsHelperInitiali
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 
 @EntryPoint
@@ -29,7 +28,7 @@ import dagger.hilt.components.SingletonComponent
 interface InitializerEntryPoint {
 
     companion object {
-        fun resolve(@ApplicationContext context: Context): InitializerEntryPoint {
+        fun resolve(context: Context): InitializerEntryPoint {
             return EntryPointAccessors.fromApplication(
                 context,
                 InitializerEntryPoint::class.java
