@@ -8,8 +8,6 @@ android {
     defaultConfig {
         minSdkVersion 29
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -31,14 +29,14 @@ android {
     }
 
     targetProjectPath = ":mobile"
-    properties["android.experimental.self-instrumenting"] = true
+    experimentalProperties["android.experimental.self-instrumenting"] = true
 }
 
 androidComponents {
     beforeVariants(selector().all()) {
         // enable only the release buildType, since we only want to measure
         // release build performance
-        enable = buildType == 'release'
+        enabled = buildType == 'release'
     }
 }
 
