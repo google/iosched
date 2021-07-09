@@ -58,7 +58,12 @@
          </activity>
 
         <activity
-            android:name=".ui.MainActivity" />
+            android:name=".ui.MainActivity" >
+            <intent-filter>
+                <action android:name="com.google.samples.apps.iosched.STARTUP_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.onboarding.OnboardingActivity"
@@ -87,6 +92,27 @@
             android:exported="false" />
         <receiver android:name=".shared.notifications.CancelNotificationBroadcastReceiver"
             android:exported="false" />
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="com.google.samples.apps.iosched.util.initializers.AndroidThreeTenInitializer"
+                android:value="androidx.startup" />
+            <meta-data
+                android:name="com.google.samples.apps.iosched.util.initializers.StrictModeInitializer"
+                android:value="androidx.startup" />
+            <meta-data
+                android:name="com.google.samples.apps.iosched.util.initializers.TimberInitializer"
+                android:value="androidx.startup" />
+
+        </provider>
+        <!-- enable profiling by macrobenchmark -->
+        <profileable
+            android:shell="true"
+            tools:targetApi="q" />
     </application>
 
 </manifest>

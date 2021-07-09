@@ -204,6 +204,7 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     implementation(Libs.CORE_KTX)
+    implementation(Libs.APP_STARTUP)
 
     // UI
     implementation(Libs.ACTIVITY_KTX)

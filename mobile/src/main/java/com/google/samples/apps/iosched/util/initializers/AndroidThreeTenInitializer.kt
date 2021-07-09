@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,17 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched
+package com.google.samples.apps.iosched.util.initializers
 
-import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
+import android.content.Context
+import androidx.startup.Initializer
+import com.jakewharton.threetenabp.AndroidThreeTen
 
-@HiltAndroidApp
-class MainApplication : Application()
+class AndroidThreeTenInitializer : Initializer<Unit> {
+
+    override fun create(context: Context) {
+        AndroidThreeTen.init(context)
+    }
+
+    override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
+}

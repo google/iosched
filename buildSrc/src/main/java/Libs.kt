@@ -18,9 +18,11 @@ object Libs {
     const val ACTIVITY_COMPOSE = "androidx.activity:activity-compose"
     const val ACTIVITY_KTX = "androidx.activity:activity-ktx"
     const val APPCOMPAT = "androidx.appcompat:appcompat"
+    const val APP_STARTUP = "androidx.startup:startup-runtime"
     const val ARCH_TESTING = "androidx.arch.core:core-testing"
     const val ARCORE = "com.google.ar:core"
     const val BENCHMARK = "androidx.benchmark:benchmark-junit4"
+    const val BENCHMARK_MACRO = "androidx.benchmark:benchmark-macro-junit4"
     const val BROWSER = "androidx.browser:browser"
     const val CARDVIEW = "androidx.cardview:cardview"
     const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout"
@@ -87,4 +89,5 @@ object Libs {
     const val TIMBER = "com.jakewharton.timber:timber"
     const val VIEWMODEL_COMPOSE = "androidx.lifecycle:lifecycle-viewmodel-compose"
     const val VIEWPAGER2 = "androidx.viewpager2:viewpager2"
+    const val UI_AUTOMATOR = "androidx.test.uiautomator:uiautomator"
 }

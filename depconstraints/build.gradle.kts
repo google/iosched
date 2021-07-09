@@ -22,10 +22,12 @@ plugins {
 val appcompat = "1.1.0"
 val activity = "1.2.0-rc01"
 val activityCompose = "1.3.0-alpha03"
+val appStartup = "1.1.0-beta01"
 val cardview = "1.0.0"
 val archTesting = "2.0.0"
 val arcore = "1.7.0"
 val benchmark = "1.0.0"
+val benchmarkMacro = "1.1.0-alpha02"
 val browser = "1.0.0"
 val compose = Versions.COMPOSE
 val constraintLayout = "1.1.3"
@@ -70,16 +72,19 @@ val threetenabp = "1.0.5"
 val timber = "4.7.1"
 val viewpager2 = "1.0.0"
 val viewModelCompose = "1.0.0-alpha02"
+val uiAutomator = "2.2.0"
 
 dependencies {
     constraints {
         api("${Libs.ACTIVITY_COMPOSE}:$activityCompose")
         api("${Libs.ACTIVITY_KTX}:$activity")
         api("${Libs.APPCOMPAT}:$appcompat")
+        api("${Libs.APP_STARTUP}:$appStartup")
         api("${Libs.CARDVIEW}:$cardview")
         api("${Libs.ARCH_TESTING}:$archTesting")
         api("${Libs.ARCORE}:$arcore")
         api("${Libs.BENCHMARK}:$benchmark")
+        api("${Libs.BENCHMARK_MACRO}:$benchmarkMacro")
         api("${Libs.BROWSER}:$browser")
         api("${Libs.COMPOSE_ANIMATION}:$compose")
         api("${Libs.COMPOSE_MATERIAL}:$compose")
@@ -145,6 +150,7 @@ dependencies {
         api("${Libs.TIMBER}:$timber")
         api("${Libs.VIEWPAGER2}:$viewpager2")
         api("${Libs.VIEWMODEL_COMPOSE}:$viewModelCompose")
+        api("${Libs.UI_AUTOMATOR}:$uiAutomator")
     }
 }
 

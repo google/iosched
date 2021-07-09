@@ -1,0 +1,50 @@
+plugins {
+    id 'com.android.test'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdkVersion 30
+    defaultConfig {
+        minSdkVersion 29
+        targetSdkVersion 30
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildTypes {
+        // declare a build type (release) to match the target app's build type
+        release {
+            debuggable = true
+            signingConfig = debug.signingConfig
+        }
+    }
+
+    targetProjectPath = ":mobile"
+    experimentalProperties["android.experimental.self-instrumenting"] = true
+}
+
+androidComponents {
+    beforeVariants(selector().all()) {
+        // enable only the release buildType, since we only want to measure
+        // release build performance
+        enabled = buildType == 'release'
+    }
+}
+
+dependencies {
+    api platform(project(":depconstraints"))
+    implementation Libs.BENCHMARK_MACRO
+    implementation Libs.ESPRESSO_CORE
+    implementation Libs.EXT_JUNIT
+    implementation Libs.KOTLIN_STDLIB
+    implementation Libs.UI_AUTOMATOR
+}

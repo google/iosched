@@ -85,11 +85,10 @@ class AppModule {
     @Provides
     fun provideAnalyticsHelper(
         @ApplicationScope applicationScope: CoroutineScope,
-        @ApplicationContext context: Context,
         signInDelegate: SignInViewModelDelegate,
         preferenceStorage: PreferenceStorage
     ): AnalyticsHelper =
-        FirebaseAnalyticsHelper(applicationScope, context, signInDelegate, preferenceStorage)
+        FirebaseAnalyticsHelper(applicationScope, signInDelegate, preferenceStorage)
 
     @Singleton
     @Provides
