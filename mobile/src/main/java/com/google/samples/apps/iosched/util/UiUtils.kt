@@ -22,6 +22,7 @@ import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -63,6 +64,23 @@ inline fun Fragment.launchAndRepeatWithViewLifecycle(
 ) {
     viewLifecycleOwner.lifecycleScope.launch {
         viewLifecycleOwner.lifecycle.repeatOnLifecycle(minActiveState) {
+            block()
+        }
+    }
+}
+
+/**
+ * Launches a new coroutine and repeats `block` every time the DialogFragment's lifecycle
+ * is in and out of `minActiveState` lifecycle state.
+ * DialogFragment has a slightly different lifecycle so we can't use viewLifecycleOwner here.
+ * https://developer.android.com/guide/fragments/dialogs#lifecycle
+ */
+inline fun DialogFragment.launchAndRepeatWithDialogLifecycle(
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+    crossinline block: suspend CoroutineScope.() -> Unit
+) {
+    lifecycleScope.launch {
+        lifecycle.repeatOnLifecycle(minActiveState) {
             block()
         }
     }

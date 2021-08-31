@@ -32,7 +32,7 @@ import com.google.samples.apps.iosched.databinding.FragmentSessionFeedbackBindin
 import com.google.samples.apps.iosched.databinding.ItemQuestionBinding
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.shared.result.data
-import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
+import com.google.samples.apps.iosched.util.launchAndRepeatWithDialogLifecycle
 import com.google.samples.apps.iosched.widget.SimpleRatingBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -64,7 +64,7 @@ class SessionFeedbackFragment : AppCompatDialogFragment() {
 
         questionAdapter.submitList(viewModel.questions)
 
-        launchAndRepeatWithViewLifecycle {
+        launchAndRepeatWithDialogLifecycle {
             viewModel.userSession.collect {
                 it.data?.let {
                     dialog?.setTitle(it.session.title)
