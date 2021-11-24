@@ -50,9 +50,7 @@ android {
     buildTypes {
         maybeCreate("staging")
         getByName("staging") {
-            // TODO: replace with initWith(getByName("debug")) in 7.0.0-beta04
-            // https://issuetracker.google.com/issues/186798050 
-            this::class.memberFunctions.first { it.name == "initWith" }.call(this, getByName("debug"))
+            initWith(getByName("debug"))
             isDefault = true
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))

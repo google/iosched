@@ -87,9 +87,7 @@ android {
         }
         maybeCreate("staging")
         getByName("staging") {
-            // TODO: replace with initWith(getByName("debug")) in 7.0.0-beta04
-            this::class.memberFunctions.first { it.name == "initWith" }.call(this, getByName("debug"))
-
+            initWith(getByName("debug"))
             // Specifies a sorted list of fallback build types that the
             // plugin should try to use when a dependency does not include a
             // "staging" build type.
