@@ -30,9 +30,10 @@ android {
     }
 
     buildTypes {
-        maybeCreate("staging")
-        getByName("staging") {
-            initWith(getByName("debug"))
+        maybeCreate("benchmark")
+        getByName("benchmark") {
+            initWith(getByName("release"))
+            signingConfig = signingConfigs.getByName("debug")
             isDefault = true
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
@@ -41,16 +42,21 @@ android {
             // plugin should try to use when a dependency does not include a
             // "staging" build type.
             // Used with :test-shared, which doesn't have a staging variant.
-            matchingFallbacks += listOf("debug")
+            matchingFallbacks += listOf("staging", "debug")
         }
     }
 
-    testBuildType = "staging"
+    testBuildType = "benchmark"
 
     // To avoid the compile error from benchmarkRule.measureRepeated
     // Cannot inline bytecode built with JVM target 1.8 into bytecode that is being built with JVM
     // target 1.6
     kotlinOptions.jvmTarget = "1.8"
+
+    packagingOptions {
+        resources.excludes += "META-INF/AL2.0"
+        resources.excludes += "META-INF/LGPL2.1"
+    }
 }
 
 dependencies {

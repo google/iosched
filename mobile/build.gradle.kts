@@ -101,6 +101,21 @@ android {
             // Used with :test-shared, which doesn't have a staging variant.
             matchingFallbacks += listOf("debug")
         }
+
+        maybeCreate("benchmark")
+        getByName("benchmark") {
+            initWith(getByName("staging"))
+            versionNameSuffix = "-benchmark"
+            isMinifyEnabled = true
+            isDebuggable = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro", "proguard-rules-benchmark.pro")
+
+            // Specifies a sorted list of fallback build types that the
+            // plugin should try to use when a dependency does not include a
+            // "staging" build type.
+            // Used with :test-shared, which doesn't have a staging variant.
+            matchingFallbacks += listOf("staging", "debug")
+        }
     }
 
     buildFeatures {
@@ -130,6 +145,10 @@ android {
         }
         getByName("release") {
             java.srcDir("src/debugRelease/java")
+        }
+        getByName("benchmark") {
+            java.srcDir("src/staging/java")
+            res.srcDir("src/staging/res")
         }
     }
 
