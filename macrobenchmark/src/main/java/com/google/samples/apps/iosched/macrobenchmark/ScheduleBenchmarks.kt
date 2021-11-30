@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.macrobenchmark
 
 import android.content.Intent
 import android.util.Log
-import androidx.benchmark.macro.CompilationMode
 import androidx.benchmark.macro.FrameTimingMetric
 import androidx.benchmark.macro.StartupMode
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
@@ -55,6 +54,25 @@ class ScheduleBenchmarks {
                 val intent = Intent("com.google.samples.apps.iosched.STARTUP_ACTIVITY")
                 Log.d(TAG, "Starting activity $intent")
                 startActivityAndWait(intent)
+
+                // the first time the app is run, dialog is shown, dismiss by clicking dialog positive button
+                val customizeScheduleDialogButton = device.findObject(By.res("android", "button1"))
+                customizeScheduleDialogButton?.let {
+                    it.click()
+                    device.waitForIdle()
+                    // need short delay to properly show UI
+                    Thread.sleep(1_000)
+                }
+
+                // it happens that both dialogs are shown one after another
+                // later, it may show I/O notifications dialog, dismiss by clicking dialog positive button
+                val notificationsDialogButton = device.findObject(By.res("android", "button1"))
+                notificationsDialogButton?.let {
+                    it.click()
+                    device.waitForIdle()
+                    // need short delay to properly show UI
+                    Thread.sleep(1_000)
+                }
 
                 //  the children count is only visible part of the screen,
                 //  so if we have too many iterations, we must scroll the recycler to other items
