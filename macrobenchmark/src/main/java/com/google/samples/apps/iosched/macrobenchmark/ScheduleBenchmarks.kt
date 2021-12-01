@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.macrobenchmark
 import android.content.Intent
 import android.util.Log
 import androidx.benchmark.macro.FrameTimingMetric
+import androidx.benchmark.macro.MacrobenchmarkScope
 import androidx.benchmark.macro.StartupMode
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -39,6 +40,29 @@ class ScheduleBenchmarks {
     @get:Rule
     val benchmarkRule = MacrobenchmarkRule()
 
+    private val scheduleRecyclerSelector
+        get() = By.res(TARGET_PACKAGE, "recyclerview_schedule")
+
+    @Test
+    fun scrollSchedule() {
+        benchmarkRule.measureRepeated(
+            metrics = listOf(FrameTimingMetric()),
+            packageName = TARGET_PACKAGE,
+            iterations = 5,
+            startupMode = StartupMode.WARM, // restart activity
+            setupBlock = {
+                startMainAndWaitForSchedules()
+            }
+        ) {
+            val recycler = device.findObject(scheduleRecyclerSelector)
+            // need to set, otherwise scrolling could trigger system gesture navigation
+            recycler.setGestureMargin(device.displayWidth / 5)
+
+            // fling several times
+            repeat(3) { recycler.fling(Direction.DOWN) }
+        }
+    }
+
     @Test
     fun openDetail() {
         // need to keep track which index was selected so we can always select different one
@@ -48,35 +72,13 @@ class ScheduleBenchmarks {
             packageName = TARGET_PACKAGE,
             metrics = listOf(FrameTimingMetric()),
             startupMode = StartupMode.WARM, // start the activity every time
-            iterations = 10,
+            iterations = 5,
             setupBlock = {
-                // start main activity
-                val intent = Intent("com.google.samples.apps.iosched.STARTUP_ACTIVITY")
-                Log.d(TAG, "Starting activity $intent")
-                startActivityAndWait(intent)
-
-                // the first time the app is run, dialog is shown, dismiss by clicking dialog positive button
-                val customizeScheduleDialogButton = device.findObject(By.res("android", "button1"))
-                customizeScheduleDialogButton?.let {
-                    it.click()
-                    device.waitForIdle()
-                    // need short delay to properly show UI
-                    Thread.sleep(1_000)
-                }
-
-                // it happens that both dialogs are shown one after another
-                // later, it may show I/O notifications dialog, dismiss by clicking dialog positive button
-                val notificationsDialogButton = device.findObject(By.res("android", "button1"))
-                notificationsDialogButton?.let {
-                    it.click()
-                    device.waitForIdle()
-                    // need short delay to properly show UI
-                    Thread.sleep(1_000)
-                }
+                startMainAndWaitForSchedules()
 
                 //  the children count is only visible part of the screen,
                 //  so if we have too many iterations, we must scroll the recycler to other items
-                val recycler = device.findObject(By.res(TARGET_PACKAGE, "recyclerview_schedule"))
+                val recycler = device.findObject(scheduleRecyclerSelector)
                 if (selectedIndex >= recycler.childCount) {
                     // need to set, otherwise scrolling could trigger system gesture navigation
                     recycler.setGestureMargin(device.displayWidth / 5)
@@ -87,7 +89,7 @@ class ScheduleBenchmarks {
                 }
             }
         ) {
-            val recycler = device.findObject(By.res(TARGET_PACKAGE, "recyclerview_schedule"))
+            val recycler = device.findObject(scheduleRecyclerSelector)
                 ?: return@measureRepeated // TODO: BUG? the measure block is run before setup for CompilationMode.None and StartupMode.Warm
 
             // click on item which navigates to event detail
@@ -104,6 +106,31 @@ class ScheduleBenchmarks {
             // next time select different item
             selectedIndex++
         }
+    }
 
+    private fun MacrobenchmarkScope.startMainAndWaitForSchedules() {
+        // start activity defined by an action
+        val intent = Intent("$TARGET_PACKAGE.STARTUP_ACTIVITY")
+        Log.d(TAG, "Starting activity $intent")
+        startActivityAndWait(intent)
+
+        // the first time the app is run, customize schedule dialog is shown
+        confirmDialog()
+
+        // later, it may show I/O notifications dialog
+        // sometimes it happens that both dialogs are shown one after another
+        confirmDialog()
+
+        // need to wait until schedule is loaded
+        device.wait(Until.hasObject(scheduleRecyclerSelector), 10_000)
+    }
+
+    private fun MacrobenchmarkScope.confirmDialog() {
+        // check if button is appeared or return
+        val dialogPositiveButton = device.findObject(By.res("android", "button1")) ?: return
+        dialogPositiveButton.click()
+        device.waitForIdle()
+        // need short delay, because it may be animating the dialog out
+        Thread.sleep(1_000)
     }
 }
