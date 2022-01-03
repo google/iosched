@@ -16,7 +16,10 @@
 
 package com.google.samples.apps.iosched.macrobenchmark
 
+import android.content.Intent
+import androidx.benchmark.macro.CompilationMode
 import androidx.benchmark.macro.StartupMode
+import androidx.benchmark.macro.StartupTimingMetric
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import androidx.test.filters.LargeTest
 import org.junit.Rule
@@ -31,12 +34,20 @@ class StartupBenchmark(private val startupMode: StartupMode) {
     val benchmarkRule = MacrobenchmarkRule()
 
     @Test
-    fun startup() = benchmarkRule.measureStartup(
-        profileCompiled = false,
+    fun startup() = benchmarkRule.measureRepeated(
+        packageName = TARGET_PACKAGE,
+        compilationMode = CompilationMode.None(),
         startupMode = startupMode,
-        iterations = 3
+        iterations = 3,
+        metrics = listOf(StartupTimingMetric()),
+        setupBlock = {
+            // need to have, because [StartupMode.HOT] wouldn't do anything
+            pressHome()
+        }
     ) {
-        action = "com.google.samples.apps.iosched.STARTUP_ACTIVITY"
+        // starts default launch activity
+        val intent = Intent("$TARGET_PACKAGE.STARTUP_ACTIVITY")
+        startActivityAndWait(intent)
     }
 
     companion object {
