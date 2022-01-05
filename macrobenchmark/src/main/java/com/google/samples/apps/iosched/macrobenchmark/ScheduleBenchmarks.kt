@@ -90,7 +90,6 @@ class ScheduleBenchmarks {
             }
         ) {
             val recycler = device.findObject(scheduleRecyclerSelector)
-                ?: return@measureRepeated // TODO: BUG? the measure block is run before setup for CompilationMode.None and StartupMode.Warm
 
             // click on item which navigates to event detail
             val item = recycler.children[selectedIndex]
