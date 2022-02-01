@@ -21,8 +21,8 @@ android {
     }
 
     buildTypes {
-        // declare a build type (release) to match the target app's build type
-        release {
+        // declare a build type to match the target app's build type
+        benchmark {
             debuggable = true
             signingConfig = debug.signingConfig
         }
@@ -36,7 +36,7 @@ androidComponents {
     beforeVariants(selector().all()) {
         // enable only the release buildType, since we only want to measure
         // release build performance
-        enabled = buildType == 'release'
+        enabled = buildType == 'benchmark'
     }
 }
 
