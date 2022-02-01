@@ -17,4 +17,3 @@
 package com.google.samples.apps.iosched.macrobenchmark
 
 const val TARGET_PACKAGE = "com.google.samples.apps.iosched"
-
