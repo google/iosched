@@ -204,6 +204,7 @@ dependencies {
 
     implementation(Libs.CORE_KTX)
     implementation(Libs.APP_STARTUP)
+    implementation(Libs.PROFILE_INSTALLER)
 
     // UI
     implementation(Libs.ACTIVITY_KTX)
