@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,6 +51,10 @@ class StartupBenchmark(private val startupMode: StartupMode) {
     }
 
     companion object {
+        /**
+         * Parameterized expects list of arrays,
+         * to be able to execute multiple runs with possible several variables in each run.
+         */
         @Parameterized.Parameters(name = "mode={0}")
         @JvmStatic
         fun parameters(): List<Array<Any>> {

@@ -112,8 +112,8 @@ android {
 
             // Specifies a sorted list of fallback build types that the
             // plugin should try to use when a dependency does not include a
-            // "staging" build type.
-            // Used with :test-shared, which doesn't have a staging variant.
+            // "benchmark" build type.
+            // Used with :test-shared, which doesn't have a benchmark variant.
             matchingFallbacks += listOf("staging", "debug")
         }
     }
