@@ -23,11 +23,11 @@ import com.google.samples.apps.iosched.shared.domain.codelabs.GetCodelabsInfoCar
 import com.google.samples.apps.iosched.shared.domain.codelabs.LoadCodelabsUseCase
 import com.google.samples.apps.iosched.shared.domain.codelabs.SetCodelabsInfoCardShownUseCase
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakeAppDatabase
 import com.google.samples.apps.iosched.test.util.fakes.FakeConferenceDataSource
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -43,7 +43,7 @@ class CodelabsViewModelTest {
     var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun testData_codelabInfoShown() = coroutineRule.runBlockingTest {
+    fun testData_codelabInfoShown() = runTest {
         val prefs = FakePreferenceStorage(codelabsInfoShown = true)
         val viewModel = createCodelabsViewModel(
             getCodelabsInfoCardShownUseCase = createTestGetCodelabsInfoCardShownUseCase(prefs)
@@ -56,7 +56,7 @@ class CodelabsViewModelTest {
     }
 
     @Test
-    fun testData_codelabInfoNotShown() = coroutineRule.runBlockingTest {
+    fun testData_codelabInfoNotShown() = runTest {
         val prefs = FakePreferenceStorage(codelabsInfoShown = false)
         val viewModel = createCodelabsViewModel(
             getCodelabsInfoCardShownUseCase = createTestGetCodelabsInfoCardShownUseCase(prefs)
@@ -69,7 +69,7 @@ class CodelabsViewModelTest {
     }
 
     @Test
-    fun testData_dismissCodelabInfoCard() = coroutineRule.runBlockingTest {
+    fun testData_dismissCodelabInfoCard() = runTest {
         val prefs = FakePreferenceStorage(codelabsInfoShown = false)
         val viewModel = createCodelabsViewModel(
             getCodelabsInfoCardShownUseCase = createTestGetCodelabsInfoCardShownUseCase(prefs),

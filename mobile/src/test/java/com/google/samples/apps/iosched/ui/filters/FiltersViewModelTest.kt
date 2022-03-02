@@ -22,11 +22,11 @@ import com.google.samples.apps.iosched.model.filters.Filter.MyScheduleFilter
 import com.google.samples.apps.iosched.model.filters.Filter.TagFilter
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -86,12 +86,12 @@ class FiltersViewModelTest {
     }
 
     @Test
-    fun `setSupportedFilters() emits default values`() = coroutineRule.runBlockingTest {
+    fun `setSupportedFilters() emits default values`() = runTest {
         verifyFlowEmissions(viewModel, emptyList())
     }
 
     @Test
-    fun `activate and deactivate filters updates flows`() = coroutineRule.runBlockingTest {
+    fun `activate and deactivate filters updates flows`() = runTest {
         // Activate filters.
         viewModel.toggleFilter(androidFilter, true)
         viewModel.toggleFilter(sessionsFilter, true)
@@ -103,7 +103,7 @@ class FiltersViewModelTest {
     }
 
     @Test
-    fun `activate same filter does not emit a change`() = coroutineRule.runBlockingTest {
+    fun `activate same filter does not emit a change`() = runTest(UnconfinedTestDispatcher()) {
         // Activate filter.
         viewModel.toggleFilter(androidFilter, true)
 
@@ -126,7 +126,7 @@ class FiltersViewModelTest {
 
     @Test
     fun `deactivate filter that isn't selected does not emit a change`() =
-        coroutineRule.runBlockingTest {
+        runTest(UnconfinedTestDispatcher()) {
             // Activate filter.
             viewModel.toggleFilter(androidFilter, true)
 
@@ -150,7 +150,7 @@ class FiltersViewModelTest {
 
     @Test
     fun `setSupportedFilters() removes orphaned selected filters`() =
-        coroutineRule.runBlockingTest {
+        runTest {
             // Activate a topic filter and a type filter.
             viewModel.toggleFilter(androidFilter, true)
             viewModel.toggleFilter(sessionsFilter, true)

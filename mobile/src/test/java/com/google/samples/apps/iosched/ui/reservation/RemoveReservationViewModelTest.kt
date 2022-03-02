@@ -28,7 +28,6 @@ import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotific
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
@@ -36,6 +35,7 @@ import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -63,7 +63,7 @@ class RemoveReservationViewModelTest {
     }
 
     @Test
-    fun dataIsLoaded() = coroutineRule.runBlockingTest {
+    fun dataIsLoaded() = runTest {
         val removeReservationViewModel = createRemoveReservationViewModel(TestData.session0.id)
 
         val userSession = removeReservationViewModel.userSession.first()
@@ -71,7 +71,7 @@ class RemoveReservationViewModelTest {
     }
 
     @Test
-    fun reservationIsPlaced() = coroutineRule.runBlockingTest {
+    fun reservationIsPlaced() = runTest {
         val removeReservationViewModel = createRemoveReservationViewModel(TestData.session0.id)
 
         val userSession = removeReservationViewModel.userSession.first()

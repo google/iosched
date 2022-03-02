@@ -47,7 +47,6 @@ import com.google.samples.apps.iosched.test.data.CoroutineScope
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.TestData.sessionWithYoutubeUrl
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
@@ -71,7 +70,8 @@ import com.nhaarman.mockito_kotlin.validateMockitoUsage
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -119,20 +119,20 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun testAnonymous_dataReady() = coroutineRule.runBlockingTest {
+    fun testAnonymous_dataReady() = runTest {
         // Session should be loaded without a user
         assertNotNull(viewModel.session.first { it != null })
     }
 
     @Test
-    fun testDataIsLoaded_authReady() = coroutineRule.runBlockingTest {
+    fun testDataIsLoaded_authReady() = runTest {
         val vm = createSessionDetailViewModelWithAuthEnabled()
 
         assertEquals(testSession, vm.session.first())
     }
 
     @Test
-    fun testOnPlayVideo_createsEventForVideo() = coroutineRule.runBlockingTest {
+    fun testOnPlayVideo_createsEventForVideo() = runTest {
         val vm = createSessionDetailViewModelWithAuthEnabled(sessionId = sessionWithYoutubeUrl.id)
 
         // Observe to load a session
@@ -148,7 +148,7 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun testReserveEvent() = coroutineRule.runBlockingTest {
+    fun testReserveEvent() = runTest {
         val mockRepository = mock<SessionAndUserEventRepository>()
         val mockAlarmUpdater = mock<StarReserveNotificationAlarmUpdater>()
         val reservationActionUseCase = ReservationActionUseCase(
@@ -183,7 +183,7 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun testReserveEvent_notLoggedIn() = coroutineRule.runBlockingTest {
+    fun testReserveEvent_notLoggedIn() = runTest {
         // Create test use cases with test data
         val signInDelegate = FakeSignInViewModelDelegate()
         signInDelegate.injectIsSignedIn = false
@@ -200,7 +200,7 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun testReserveEvent_noInternet() = coroutineRule.runBlockingTest {
+    fun testReserveEvent_noInternet() = runTest {
         // Create test use cases with test data
         val signInDelegate = FakeSignInViewModelDelegate()
         signInDelegate.injectIsSignedIn = false
@@ -222,7 +222,7 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun testCancelEvent() = coroutineRule.runBlockingTest {
+    fun testCancelEvent() = runTest {
         val signInDelegate = FakeSignInViewModelDelegate()
         // The session isn't reservable from one hour before the session.
         // So making now as two hours before
@@ -257,15 +257,15 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun testStartsInTenMinutes_thenHasNullTimeUntilStart() = coroutineRule.runBlockingTest {
+    fun testStartsInTenMinutes_thenHasNullTimeUntilStart() = runTest {
         val vm = createSessionDetailViewModelWithAuthEnabled()
         fixedTimeExecutorRule.time = testSession.startTime.minusMinutes(10).toInstant()
-        coroutineRule.testDispatcher.advanceTimeBy(TEN_SECONDS)
+        advanceTimeBy(TEN_SECONDS)
         assertNull(LiveDataTestUtil.getValue(vm.timeUntilStart))
     }
 
     @Test
-    fun testStartsIn5Minutes_thenHasDurationTimeUntilStart() = coroutineRule.runBlockingTest {
+    fun testStartsIn5Minutes_thenHasDurationTimeUntilStart() = runTest {
         val viewmodel = createSessionDetailViewModelWithAuthEnabled()
         fixedTimeExecutorRule.time = testSession.startTime.minusMinutes(5).toInstant()
         assertEquals(Duration.ofMinutes(5), LiveDataTestUtil.getValue(viewmodel.timeUntilStart))
@@ -312,7 +312,7 @@ class SessionDetailViewModelTest {
      * StateFlow https://issuetracker.google.com/184935697 */
     @Test
     fun testSessionStartsIn61Minutes_thenReservationIsEnabled() =
-        coroutineRule.runBlockingTest {
+        runTest {
             fixedTimeExecutorRule.time = testSession.startTime.minusMinutes(61).toInstant()
             val reservationDisabled =
                 LiveDataTestUtil.getValue(viewModel.isReservationDeniedByCutoff)
@@ -321,7 +321,7 @@ class SessionDetailViewModelTest {
 
     @Test
     fun testSessionStartsIn60Minutes_thenReservationIsDisabled() =
-        coroutineRule.runBlockingTest {
+        runTest {
             fixedTimeExecutorRule.time = testSession.startTime.minusMinutes(59).toInstant()
             val reservationDisabled =
                 LiveDataTestUtil.getValue(viewModel.isReservationDeniedByCutoff)
@@ -330,7 +330,7 @@ class SessionDetailViewModelTest {
 
     @Test
     fun testSessionStartsNow_thenReservationIsDisabled() =
-        coroutineRule.runBlockingTest {
+        runTest {
             fixedTimeExecutorRule.time = testSession.startTime.toInstant()
             val reservationDisabled =
                 LiveDataTestUtil.getValue(viewModel.isReservationDeniedByCutoff)
@@ -339,7 +339,7 @@ class SessionDetailViewModelTest {
 
     @Test
     fun testSessionStarted1MinuteAgo_thenReservationIsDisabled() =
-        coroutineRule.runBlockingTest {
+        runTest {
             fixedTimeExecutorRule.time = testSession.startTime.plusMinutes(1).toInstant()
             val reservationDisabled =
                 LiveDataTestUtil.getValue(viewModel.isReservationDeniedByCutoff)
@@ -423,7 +423,7 @@ class SessionDetailViewModelTest {
             userEventDataSource,
             sessionRepository
         )
-        return LoadUserSessionsUseCase(userEventRepository, TestCoroutineDispatcher())
+        return LoadUserSessionsUseCase(userEventRepository, coroutineRule.testDispatcher)
     }
 
     private fun createFakeUpdater(): StarReserveNotificationAlarmUpdater {

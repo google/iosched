@@ -26,8 +26,8 @@ import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import junit.framework.Assert.assertEquals
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
@@ -45,7 +45,7 @@ class FeedbackUseCaseTest {
     var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun submit() = coroutineRule.runBlockingTest {
+    fun submit() = runTest {
         val testFeedbackEndpoint = object : FeedbackEndpoint {
             override suspend fun sendFeedback(
                 sessionId: SessionId,

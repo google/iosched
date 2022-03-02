@@ -30,8 +30,8 @@ import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.TestData.TestConferenceDays
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.Matchers.equalTo
 import org.junit.Assert.assertThat
@@ -66,7 +66,7 @@ class LoadScheduleUserSessionsUseCaseTest {
     }
 
     @Test
-    fun returnsMapOfSessions() = coroutineRule.runBlockingTest {
+    fun returnsMapOfSessions() = runTest {
         val useCaseResult = useCase(LoadScheduleUserSessionsParameters("user1"))
             .first { it is Result.Success }
 
@@ -115,7 +115,7 @@ class LoadScheduleUserSessionsUseCaseTest {
      */
 
     @Test
-    fun errorCase() = coroutineRule.runBlockingTest {
+    fun errorCase() = runTest {
         // Use a repository that throws an error
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
             TestUserEventDataSource(),
@@ -131,7 +131,7 @@ class LoadScheduleUserSessionsUseCaseTest {
     }
 
     @Test
-    fun returnsCurrentEventIndex() = coroutineRule.runBlockingTest {
+    fun returnsCurrentEventIndex() = runTest {
         // When we execute it, passing Day 2 +3hrs as the current time
         val now = TestConferenceDays.first().start.plusHours(3L)
         val useCaseResult = useCase(LoadScheduleUserSessionsParameters("user1", now))
@@ -141,7 +141,7 @@ class LoadScheduleUserSessionsUseCaseTest {
     }
 
     @Test
-    fun midConference_afterDayEnd_returnsCurrentEventIndex() = coroutineRule.runBlockingTest {
+    fun midConference_afterDayEnd_returnsCurrentEventIndex() = runTest {
         // When we execute it, passing Day 2 *after the end of day*
         val now = TestConferenceDays[1].end.plusHours(3L)
 
@@ -152,7 +152,7 @@ class LoadScheduleUserSessionsUseCaseTest {
     }
 
     @Test
-    fun beforeConference_returnsNoCurrentEventIndex() = coroutineRule.runBlockingTest {
+    fun beforeConference_returnsNoCurrentEventIndex() = runTest {
         // When we execute it, passing a current time *before* the conference
         val now = TestConferenceDays.first().start.minusDays(2L)
         val useCaseResult = useCase(LoadScheduleUserSessionsParameters("user1", now))
@@ -162,7 +162,7 @@ class LoadScheduleUserSessionsUseCaseTest {
     }
 
     @Test
-    fun afterConference_returnsNoCurrentEventIndex() = coroutineRule.runBlockingTest {
+    fun afterConference_returnsNoCurrentEventIndex() = runTest {
         // When we execute it, passing a current time *after* the conference
         val now = TestConferenceDays.last().end.plusHours(2L)
         val useCaseResult = useCase(LoadScheduleUserSessionsParameters("user1", now))

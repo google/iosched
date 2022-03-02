@@ -29,7 +29,7 @@ import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.result.succeeded
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.jakewharton.threetenabp.AndroidThreeTen
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.collection.IsCollectionWithSize.hasSize
 import org.hamcrest.core.Is.`is`
@@ -61,7 +61,7 @@ class LoadAgendaUseCaseBenchmark {
         )
 
         benchmarkRule.measureRepeated {
-            coroutineRule.testDispatcher.runBlockingTest {
+            runTest {
                 val result: Result<List<Block>> = useCase.invoke(parameters = true)
 
                 assertThat(result.succeeded, `is`(true))

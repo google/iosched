@@ -121,7 +121,7 @@ fun Job?.cancelIfActive() {
  * Tries to send an element to a Channel and ignores the exception.
  */
 fun <E> SendChannel<E>.tryOffer(element: E): Boolean = try {
-    offer(element)
+    trySend(element).isSuccess
 } catch (t: Throwable) {
     false // Ignore
 }

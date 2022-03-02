@@ -32,13 +32,13 @@ import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doNothing
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -54,7 +54,7 @@ class StarEventAndNotifyUseCaseTest {
     var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun sessionIsStarredSuccessfully() = coroutineRule.runBlockingTest {
+    fun sessionIsStarredSuccessfully() = runTest {
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
             TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
         )
@@ -70,7 +70,7 @@ class StarEventAndNotifyUseCaseTest {
     }
 
     @Test
-    fun sessionIsStarredUnsuccessfully() = coroutineRule.runBlockingTest {
+    fun sessionIsStarredUnsuccessfully() = runTest {
         val alarmManager: SessionAlarmManager = mock()
         doNothing().whenever(alarmManager).cancelAlarmForSession(any())
         val alarmUpdater = StarReserveNotificationAlarmUpdater(alarmManager)
@@ -87,7 +87,7 @@ class StarEventAndNotifyUseCaseTest {
     }
 
     @Test
-    fun sessionIsStarredAndNotificationSet() = coroutineRule.runBlockingTest {
+    fun sessionIsStarredAndNotificationSet() = runTest {
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
             TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
         )

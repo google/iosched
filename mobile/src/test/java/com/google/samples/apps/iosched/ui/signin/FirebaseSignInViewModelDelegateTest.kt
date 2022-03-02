@@ -24,7 +24,6 @@ import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsSh
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.CoroutineScope
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.ui.schedule.FakeObserveUserAuthStateUseCase
 import com.nhaarman.mockito_kotlin.doReturn
@@ -33,6 +32,7 @@ import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -51,7 +51,7 @@ class FirebaseSignInViewModelDelegateTest {
     var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun testSignedOut() = coroutineRule.runBlockingTest {
+    fun testSignedOut() = runTest {
         val subject = createFirebaseSignInViewModelDelegate(
             observeUserAuthStateUseCase = FakeObserveUserAuthStateUseCase(
                 user = Result.Success(null),
@@ -73,7 +73,7 @@ class FirebaseSignInViewModelDelegateTest {
     }
 
     @Test
-    fun testSignedInRegistered() = coroutineRule.runBlockingTest {
+    fun testSignedInRegistered() = runTest {
 
         val user = mock<AuthenticatedUserInfoBasic> {
             on { getUid() }.doReturn("123")
@@ -107,7 +107,7 @@ class FirebaseSignInViewModelDelegateTest {
     }
 
     @Test
-    fun testSignedInNotRegistered() = coroutineRule.runBlockingTest {
+    fun testSignedInNotRegistered() = runTest {
 
         val user = mock<AuthenticatedUserInfoBasic> {
             on { getUid() }.doReturn("123")
@@ -140,7 +140,7 @@ class FirebaseSignInViewModelDelegateTest {
     }
 
     @Test
-    fun testPostSignIn() = coroutineRule.runBlockingTest {
+    fun testPostSignIn() = runTest {
         val subject = createFirebaseSignInViewModelDelegate(
             observeUserAuthStateUseCase = FakeObserveUserAuthStateUseCase(
                 user = Result.Success(null),
@@ -160,7 +160,7 @@ class FirebaseSignInViewModelDelegateTest {
     }
 
     @Test
-    fun testPostSignOut() = coroutineRule.runBlockingTest {
+    fun testPostSignOut() = runTest {
         val subject = createFirebaseSignInViewModelDelegate(
             observeUserAuthStateUseCase = FakeObserveUserAuthStateUseCase(
                 user = Result.Success(null),
