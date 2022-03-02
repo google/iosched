@@ -57,7 +57,7 @@ class SpeakerFragment : Fragment(), OnOffsetChangedListener {
     @Inject lateinit var analyticsHelper: AnalyticsHelper
 
     @Inject
-    @field:Named("tagViewPool")
+    @Named("tagViewPool")
     lateinit var tagRecycledViewPool: RecycledViewPool
 
     private val speakerViewModel: SpeakerViewModel by viewModels()

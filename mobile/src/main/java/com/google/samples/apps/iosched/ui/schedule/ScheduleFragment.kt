@@ -84,7 +84,7 @@ class ScheduleFragment : Fragment() {
     lateinit var analyticsHelper: AnalyticsHelper
 
     @Inject
-    @field:Named("tagViewPool")
+    @Named("tagViewPool")
     lateinit var tagViewPool: RecycledViewPool
 
     @Inject

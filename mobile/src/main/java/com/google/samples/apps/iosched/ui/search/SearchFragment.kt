@@ -52,7 +52,7 @@ class SearchFragment : Fragment() {
     lateinit var analyticsHelper: AnalyticsHelper
 
     @Inject
-    @field:Named("tagViewPool")
+    @Named("tagViewPool")
     lateinit var tagViewPool: RecycledViewPool
 
     private lateinit var binding: FragmentSearchBinding

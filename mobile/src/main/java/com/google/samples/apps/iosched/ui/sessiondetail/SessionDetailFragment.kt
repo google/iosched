@@ -97,7 +97,7 @@ class SessionDetailFragment : Fragment(), SessionFeedbackFragment.Listener {
     lateinit var analyticsHelper: AnalyticsHelper
 
     @Inject
-    @field:Named("tagViewPool")
+    @Named("tagViewPool")
     lateinit var tagRecycledViewPool: RecycledViewPool
 
     @Inject
