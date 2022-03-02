@@ -41,7 +41,6 @@ import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import com.google.samples.apps.iosched.util.launchAndRepeatWithViewLifecycle
 import com.google.samples.apps.iosched.util.setContentMaxWidth
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -74,8 +73,8 @@ class SpeakerFragment : Fragment(), OnOffsetChangedListener {
         savedInstanceState: Bundle?
     ): View {
 
-        sharedElementEnterTransition =
-            TransitionInflater.from(context).inflateTransition(R.transition.speaker_shared_enter)
+        sharedElementEnterTransition = TransitionInflater.from(requireContext())
+            .inflateTransition(R.transition.speaker_shared_enter)
         // Delay the enter transition until speaker image has loaded.
         postponeEnterTransition(500L, TimeUnit.MILLISECONDS)
 

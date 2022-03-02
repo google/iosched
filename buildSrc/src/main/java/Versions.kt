@@ -29,7 +29,7 @@ object Versions {
     const val FIREBASE_CRASHLYTICS = "2.3.0"
     const val GOOGLE_SERVICES = "4.3.3"
     const val KOTLIN = "1.4.32"
-    const val NAVIGATION = "2.3.5"
+    const val NAVIGATION = "2.4.1"
     const val HILT_AGP = "2.36"
 
     // TODO: Remove this once the version for
