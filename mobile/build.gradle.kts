@@ -1,23 +1,5 @@
 /*
- * Copyright 2021 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-import kotlin.reflect.full.memberFunctions
-
-/*
- * Copyright 2020 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -110,9 +92,7 @@ android {
         }
         maybeCreate("staging")
         getByName("staging") {
-            // TODO: replace with initWith(getByName("debug")) in 7.0.0-beta04
-            // https://issuetracker.google.com/issues/186798050
-            this::class.memberFunctions.first { it.name == "initWith" }.call(this, getByName("debug"))
+            initWith(getByName("debug"))
             versionNameSuffix = "-staging"
 
             // Specifies a sorted list of fallback build types that the
@@ -155,15 +135,15 @@ android {
 
     lint {
         // Eliminates UnusedResources false positives for resources used in DataBinding layouts
-        isCheckGeneratedSources = true
+        checkGeneratedSources = true
         // Running lint over the debug variant is enough
-        isCheckReleaseBuilds = false
+        checkReleaseBuilds = false
         // See lint.xml for rules configuration
 
         // TODO: Remove when upgrading lifecycle from `2.4.0-alpha01`.
         // Fix: https://android-review.googlesource.com/c/platform/frameworks/support/+/1697465
         // Bug: https://issuetracker.google.com/184830263
-        disable("NullSafeMutableLiveData")
+        disable += "NullSafeMutableLiveData"
     }
 
     testBuildType = "staging"
