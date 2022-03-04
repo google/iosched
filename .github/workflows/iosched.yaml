@@ -71,6 +71,7 @@ jobs:
           api-level: ${{ matrix.api-level }}
           arch: x86
           disable-animations: true
+          ram-size: 2048M
           script: ./gradlew mobile:cAT --stacktrace
 
       - name: Upload test reports
