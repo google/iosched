@@ -107,7 +107,7 @@ class GetConferenceStateUseCaseTest {
     }
 
     @Test
-    fun testStateTransition() = runTest() {
+    fun testStateTransition() = runTest {
         val mockTimeProvider = mock<TimeProvider> {
             on { now() }.doReturn(
                 INSTANT_BEFORE_CONFERENCE_START
