@@ -25,7 +25,7 @@ import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
@@ -50,7 +50,7 @@ class SetPreferencesRule : TestWatcher() {
             ApplicationProvider.getApplicationContext(),
             SetPreferencesRuleEntryPoint::class.java
         ).preferenceStorage().apply {
-            runBlocking {
+            runTest {
                 completeOnboarding(true)
                 showScheduleUiHints(true)
                 preferConferenceTimeZone(true)

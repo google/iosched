@@ -23,7 +23,7 @@ import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.data.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
@@ -39,7 +39,7 @@ class LoadSearchFiltersUseCaseTest {
     var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun `returns ordered filters`() = coroutineRule.runBlockingTest {
+    fun `returns ordered filters`() = runTest {
         val useCase = LoadSearchFiltersUseCase(
             TestDataRepository,
             TagRepository(TestDataRepository),

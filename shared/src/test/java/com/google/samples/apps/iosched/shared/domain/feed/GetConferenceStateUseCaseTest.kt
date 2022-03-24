@@ -31,7 +31,8 @@ import com.nhaarman.mockito_kotlin.mock
 import java.util.concurrent.TimeUnit
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.`when`
@@ -61,7 +62,7 @@ class GetConferenceStateUseCaseTest {
     private val testDispatcher = coroutineRule.testDispatcher
 
     @Test
-    fun testUpcomingState() = testDispatcher.runBlockingTest {
+    fun testUpcomingState() = runTest {
         val getConferenceStateUseCase =
             createGetConferenceStateUseCase(
                 instant = INSTANT_BEFORE_CONFERENCE_START
@@ -76,7 +77,7 @@ class GetConferenceStateUseCaseTest {
     }
 
     @Test
-    fun testStartedState() = testDispatcher.runBlockingTest {
+    fun testStartedState() = runTest {
         val getConferenceStateUseCase =
             createGetConferenceStateUseCase(
                 instant = INSTANT_DURING_CONFERENCE
@@ -91,7 +92,7 @@ class GetConferenceStateUseCaseTest {
     }
 
     @Test
-    fun testEndedState() = testDispatcher.runBlockingTest {
+    fun testEndedState() = runTest {
         val getConferenceStateUseCase =
             createGetConferenceStateUseCase(
                 instant = INSTANT_AFTER_CONFERENCE_END
@@ -106,7 +107,7 @@ class GetConferenceStateUseCaseTest {
     }
 
     @Test
-    fun testStateTransition() = testDispatcher.runBlockingTest {
+    fun testStateTransition() = runTest {
         val mockTimeProvider = mock<TimeProvider> {
             on { now() }.doReturn(
                 INSTANT_BEFORE_CONFERENCE_START
@@ -129,7 +130,7 @@ class GetConferenceStateUseCaseTest {
         `when`(mockTimeProvider.now()).thenReturn(
             INSTANT_DURING_CONFERENCE
         )
-        testDispatcher.advanceTimeBy(TimeUnit.DAYS.toMillis(1))
+        advanceTimeBy(TimeUnit.DAYS.toMillis(1))
 
         verify(observer).onChanged(Result.Success(STARTED))
 
@@ -137,7 +138,7 @@ class GetConferenceStateUseCaseTest {
         `when`(mockTimeProvider.now()).thenReturn(
             INSTANT_AFTER_CONFERENCE_END
         )
-        testDispatcher.advanceTimeBy(TimeUnit.DAYS.toMillis(4))
+        advanceTimeBy(TimeUnit.DAYS.toMillis(4))
 
         verify(observer).onChanged(Result.Success(ENDED))
     }

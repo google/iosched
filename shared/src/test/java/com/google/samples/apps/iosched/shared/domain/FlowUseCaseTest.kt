@@ -18,11 +18,11 @@ package com.google.samples.apps.iosched.shared.domain
 
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.Assert.assertThat
 import org.junit.Rule
@@ -37,7 +37,7 @@ class FlowUseCaseTest {
     private val testDispatcher = coroutineRule.testDispatcher
 
     @Test
-    fun `exception emits Result#Error`() = coroutineRule.runBlockingTest {
+    fun `exception emits Result#Error`() = runTest {
         val useCase = ExceptionUseCase(testDispatcher)
         val result = useCase(Unit)
         assertThat(result.first(), instanceOf(Result.Error::class.java))

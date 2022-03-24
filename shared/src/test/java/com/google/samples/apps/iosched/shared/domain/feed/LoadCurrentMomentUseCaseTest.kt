@@ -25,7 +25,7 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.successOr
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.data.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -46,28 +46,28 @@ class LoadCurrentMomentUseCaseTest {
     var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun timeDuringMoment_loadsMoment() = coroutineRule.runBlockingTest {
+    fun timeDuringMoment_loadsMoment() = runTest {
         val time = TestData.TestConferenceDays.first().start.plusHours(3).toInstant()
         val moment = loadMomentForTime(time)
         assertEquals(moment, TestData.moment1)
     }
 
     @Test
-    fun timeBeforeFirstMoment_loadsNull() = coroutineRule.runBlockingTest {
+    fun timeBeforeFirstMoment_loadsNull() = runTest {
         val time = TestData.TestConferenceDays.first().start.minusMinutes(1).toInstant()
         val moment = loadMomentForTime(time)
         assertNull(moment)
     }
 
     @Test
-    fun timeAfterLastMoment_loadsNull() = coroutineRule.runBlockingTest {
+    fun timeAfterLastMoment_loadsNull() = runTest {
         val time = TestData.TestConferenceDays.last().end.plusMinutes(1).toInstant()
         val moment = loadMomentForTime(time)
         assertNull(moment)
     }
 
     @Test
-    fun loadsError() = coroutineRule.runBlockingTest {
+    fun loadsError() = runTest {
         val useCase =
             LoadCurrentMomentUseCase(unsuccessfulFeedRepository, coroutineRule.testDispatcher)
 

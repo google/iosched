@@ -18,8 +18,8 @@ package com.google.samples.apps.iosched.shared.domain.sessions
 
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.notNullValue
 import org.hamcrest.core.Is.`is`
@@ -36,7 +36,7 @@ class ObserveConferenceDataUseCaseTest {
     var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun remoteConfDataRefreshed_valueIsUpdated() = coroutineRule.runBlockingTest {
+    fun remoteConfDataRefreshed_valueIsUpdated() = runTest {
 
         val repo = TestDataRepository
         val subject = ObserveConferenceDataUseCase(repo, coroutineRule.testDispatcher)

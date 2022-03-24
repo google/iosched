@@ -23,9 +23,9 @@ import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -45,7 +45,7 @@ class AgendaViewModelTest {
     var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun agendaDataIsLoaded() = coroutineRule.runBlockingTest {
+    fun agendaDataIsLoaded() = runTest {
         val viewModel = AgendaViewModel(
             LoadAgendaUseCase(FakeAgendaRepository(), coroutineRule.testDispatcher),
             GetTimeZoneUseCase(FakePreferenceStorage(), coroutineRule.testDispatcher)

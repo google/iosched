@@ -30,9 +30,9 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.instanceOf
@@ -54,7 +54,7 @@ class LoadPinnedSessionsJsonUseCaseTest {
     var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun returnedUserSessions_areStarredOrReserved() = coroutineRule.runBlockingTest {
+    fun returnedUserSessions_areStarredOrReserved() = runTest {
         // Arrange
         val gson = GsonBuilder().create()
 

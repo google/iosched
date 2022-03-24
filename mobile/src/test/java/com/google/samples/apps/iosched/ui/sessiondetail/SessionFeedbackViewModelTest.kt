@@ -30,7 +30,6 @@ import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.shared.util.NetworkUtils
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.time.FixedTimeExecutorRule
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
@@ -38,6 +37,7 @@ import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -76,7 +76,7 @@ class SessionFeedbackViewModelTest {
     }
 
     @Test
-    fun title() = coroutineRule.runBlockingTest {
+    fun title() = runTest {
         assertEquals(
             testSession.title,
             viewModel.userSession.first().data?.session?.title

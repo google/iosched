@@ -32,8 +32,8 @@ val browser = "1.0.0"
 val compose = Versions.COMPOSE
 val constraintLayout = "1.1.3"
 val core = "1.3.2"
-val coroutines = "1.4.2"
-val coroutinesTest = "1.3.4"
+val coroutines = "1.6.0"
+val coroutinesTest = "1.6.0"
 val crashlytics = "17.2.2"
 val dataStore = "1.0.0-beta01"
 val drawerLayout = "1.1.0-rc01"
@@ -64,7 +64,7 @@ val okhttp = "3.10.0"
 val okio = "1.14.0"
 val pageIndicator = "1.3.0"
 val playCore = "1.6.5"
-val room = "2.2.5"
+val room = "2.4.2"
 val rules = "1.1.1"
 val runner = "1.2.0"
 val slidingpanelayout = "1.2.0-alpha01"
@@ -95,7 +95,7 @@ dependencies {
         api("${Libs.CONSTRAINT_LAYOUT}:$constraintLayout")
         api("${Libs.CORE_KTX}:$core")
         api("${Libs.COROUTINES}:$coroutines")
-        api("${Libs.COROUTINES_TEST}:$coroutines")
+        api("${Libs.COROUTINES_TEST}:$coroutinesTest")
         api("${Libs.CRASHLYTICS}:$crashlytics")
         api("${Libs.DATA_STORE_PREFERENCES}:$dataStore")
         api("${Libs.DRAWER_LAYOUT}:$drawerLayout")

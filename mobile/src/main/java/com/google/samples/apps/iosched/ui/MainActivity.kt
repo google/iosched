@@ -150,7 +150,7 @@ class MainActivity : AppCompatActivity(), NavigationHost {
         }
 
         if (savedInstanceState == null) {
-            currentNavId = navController.graph.startDestination
+            currentNavId = navController.graph.startDestinationId
             val requestedNavId = intent.getIntExtra(EXTRA_NAVIGATION_ID, currentNavId)
             navigateTo(requestedNavId)
         }

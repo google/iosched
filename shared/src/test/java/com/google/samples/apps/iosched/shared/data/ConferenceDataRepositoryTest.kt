@@ -22,9 +22,9 @@ import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
 import com.google.samples.apps.iosched.test.data.TestData.session1
 import com.google.samples.apps.iosched.test.data.TestData.session3
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.FakeAppDatabase
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
 import java.io.IOException
 import org.hamcrest.core.Is.`is` as Is
 import org.hamcrest.core.IsEqual.equalTo
@@ -53,7 +53,7 @@ class ConferenceDataRepositoryTest {
     private val testDispatcher = coroutineRule.testDispatcher
 
     @Test
-    fun remotePrevailsOverBootstrap() = coroutineRule.runBlockingTest {
+    fun remotePrevailsOverBootstrap() = runTest {
         // Given a repo with a working remote data source that returns session0
         // and a bootstrap that returns session 3
         repo = ConferenceDataRepository(
@@ -78,7 +78,7 @@ class ConferenceDataRepositoryTest {
 
     // TODO: Takes 2 seconds
     @Test
-    fun remoteNotAvailable_bootstrapUsed() = coroutineRule.runBlockingTest {
+    fun remoteNotAvailable_bootstrapUsed() = runTest {
         // Given a repo with unavailable remote data source
         // and a bootstrap that returns session 3
         repo = ConferenceDataRepository(
@@ -106,7 +106,7 @@ class ConferenceDataRepositoryTest {
     }
 
     @Test
-    fun networkExceptionCacheUnavailable_cacheReturned() = coroutineRule.runBlockingTest {
+    fun networkExceptionCacheUnavailable_cacheReturned() = runTest {
         // Given a repo with unavailable remote data (that throws an exception) and no cache
         // and a bootstrap that returns session 1
         repo = ConferenceDataRepository(
