@@ -19,9 +19,9 @@ package com.google.samples.apps.iosched.shared.domain.search
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.FakeSearchAppDatabase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsEqual.equalTo
 import org.junit.Assert.assertThat
@@ -79,7 +79,7 @@ class SessionTextMatchStrategyTest(private val strategy: SessionTextMatchStrateg
     private fun assertSearchResults(
         query: String,
         expectedSessions: List<UserSession>
-    ) = coroutineRule.runBlockingTest {
+    ) = runTest {
         val sessions = strategy.searchSessions(TestData.userSessionList, query)
         assertThat(sessions, `is`(equalTo(expectedSessions)))
     }

@@ -97,7 +97,7 @@ class SessionDetailFragment : Fragment(), SessionFeedbackFragment.Listener {
     lateinit var analyticsHelper: AnalyticsHelper
 
     @Inject
-    @field:Named("tagViewPool")
+    @Named("tagViewPool")
     lateinit var tagRecycledViewPool: RecycledViewPool
 
     @Inject
@@ -116,8 +116,8 @@ class SessionDetailFragment : Fragment(), SessionFeedbackFragment.Listener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        sharedElementReturnTransition =
-            TransitionInflater.from(context).inflateTransition(R.transition.speaker_shared_enter)
+        sharedElementReturnTransition = TransitionInflater.from(requireContext())
+            .inflateTransition(R.transition.speaker_shared_enter)
         // Delay the enter transition until speaker image has loaded.
         postponeEnterTransition(500L, TimeUnit.MILLISECONDS)
 

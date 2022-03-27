@@ -31,12 +31,12 @@ import com.google.samples.apps.iosched.shared.notifications.SessionAlarmManager
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doNothing
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -56,7 +56,7 @@ class ReservationActionUseCaseTest {
     var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun sessionIsRequestedSuccessfully() = coroutineRule.runBlockingTest {
+    fun sessionIsRequestedSuccessfully() = runTest {
         val useCase = ReservationActionUseCase(
             TestUserEventRepository,
             createFakeUpdater(),
@@ -75,7 +75,7 @@ class ReservationActionUseCaseTest {
     }
 
     @Test
-    fun sessionIsCanceledSuccessfully() = coroutineRule.runBlockingTest {
+    fun sessionIsCanceledSuccessfully() = runTest {
         val useCase = ReservationActionUseCase(
             TestUserEventRepository,
             createFakeUpdater(),
@@ -94,7 +94,7 @@ class ReservationActionUseCaseTest {
     }
 
     @Test
-    fun requestFails() = coroutineRule.runBlockingTest {
+    fun requestFails() = runTest {
         val useCase = ReservationActionUseCase(
             FailingUserEventRepository,
             createFakeUpdater(),

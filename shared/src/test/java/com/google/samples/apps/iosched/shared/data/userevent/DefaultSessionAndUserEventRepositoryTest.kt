@@ -23,10 +23,9 @@ import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.instanceOf
 import org.hamcrest.core.Is.`is`
@@ -50,7 +49,7 @@ class DefaultSessionAndUserEventRepositoryTest {
     var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun observableUserEvents_areMappedCorrectly() = runBlocking {
+    fun observableUserEvents_areMappedCorrectly() = runTest {
         val repository = DefaultSessionAndUserEventRepository(
             userEventDataSource = TestUserEventDataSource(),
             sessionRepository = DefaultSessionRepository(TestDataRepository)
@@ -83,7 +82,7 @@ class DefaultSessionAndUserEventRepositoryTest {
     }
 
     @Test
-    fun observableUserEvent() = coroutineRule.runBlockingTest {
+    fun observableUserEvent() = runTest {
         val repository = DefaultSessionAndUserEventRepository(
             userEventDataSource = TestUserEventDataSource(),
             sessionRepository = DefaultSessionRepository(TestDataRepository)

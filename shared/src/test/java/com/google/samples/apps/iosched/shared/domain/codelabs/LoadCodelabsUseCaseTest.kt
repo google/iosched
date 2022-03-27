@@ -21,7 +21,7 @@ import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.data.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
@@ -35,7 +35,7 @@ class LoadCodelabsUseCaseTest {
     var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun loadCodelabsList() = coroutineRule.runBlockingTest {
+    fun loadCodelabsList() = runTest {
         val loadCodelabsUseCase = LoadCodelabsUseCase(
             CodelabsRepository(TestDataRepository), coroutineRule.testDispatcher
         )

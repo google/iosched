@@ -19,19 +19,19 @@ object Versions {
     private const val versionCodeBase = 70150 // XYYZZM; M = Module (tv, mobile)
     const val versionCodeMobile = versionCodeBase + 3
 
-    const val COMPILE_SDK = 30
+    const val COMPILE_SDK = 31
     const val TARGET_SDK = 30
     const val MIN_SDK = 21
 
-    const val ANDROID_GRADLE_PLUGIN = "7.0.2"
+
+    const val ANDROID_GRADLE_PLUGIN = "7.1.2"
     const val BENCHMARK = "1.0.0"
-    const val COMPOSE = "1.0.0-beta04"
+    const val COMPOSE = "1.1.1"
     const val FIREBASE_CRASHLYTICS = "2.3.0"
     const val GOOGLE_SERVICES = "4.3.3"
-    const val KOTLIN = "1.4.32"
-    const val NAVIGATION = "2.3.5"
-    const val HILT_AGP = "2.38.1"
-
+    const val KOTLIN = "1.6.10"
+    const val NAVIGATION = "2.4.1"
+    const val HILT_AGP = "2.40.5"
     // TODO: Remove this once the version for
     //  "org.threeten:threetenbp:${Versions.threetenbp}:no-tzdb" using java-platform in the
     //  depconstraints/build.gradle.kts is defined

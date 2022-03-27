@@ -27,13 +27,13 @@ import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUs
 import com.google.samples.apps.iosched.shared.domain.ar.LoadArDebugFlagUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadPinnedSessionsJsonUseCase
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeThemedActivityDelegate
 import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -74,7 +74,7 @@ class MainActivityViewModelTest {
     }
 
     @Test
-    fun notLoggedIn_profileClicked_showsSignInDialog() = coroutineRule.runBlockingTest {
+    fun notLoggedIn_profileClicked_showsSignInDialog() = runTest {
         // Given a ViewModel with a signed out user
         val signInViewModelDelegate = FakeSignInViewModelDelegate().apply {
             injectIsSignedIn = false
@@ -91,7 +91,7 @@ class MainActivityViewModelTest {
     }
 
     @Test
-    fun loggedIn_profileClicked_showsSignOutDialog() = coroutineRule.runBlockingTest {
+    fun loggedIn_profileClicked_showsSignOutDialog() = runTest {
         // Given a ViewModel with a signed in user
         val signInViewModelDelegate = FakeSignInViewModelDelegate().apply {
             injectIsSignedIn = true

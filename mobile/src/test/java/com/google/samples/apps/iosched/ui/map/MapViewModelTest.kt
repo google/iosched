@@ -21,11 +21,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.samples.apps.iosched.shared.domain.prefs.MyLocationOptedInUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.OptIntoMyLocationUseCase
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
@@ -60,7 +60,7 @@ class MapViewModelTest {
     }
 
     @Test
-    fun testDataIsLoaded() = coroutineRule.runBlockingTest {
+    fun testDataIsLoaded() = runTest {
         assertTrue(
             viewModel.conferenceLocationBounds.contains(
                 // conference center
@@ -70,7 +70,7 @@ class MapViewModelTest {
     }
 
     @Test
-    fun myLocation() = coroutineRule.runBlockingTest {
+    fun myLocation() = runTest {
         signInViewModelDelegate.injectIsRegistered = true // On-site attendee
         signInViewModelDelegate.loadUser("1")
         assertNotNull(viewModel.userInfo)
@@ -85,14 +85,14 @@ class MapViewModelTest {
     }
 
     @Test
-    fun myLocation_notSignedIn() = coroutineRule.runBlockingTest {
+    fun myLocation_notSignedIn() = runTest {
         signInViewModelDelegate.injectIsSignedIn = false
         signInViewModelDelegate.loadUser("1")
         assertFalse(viewModel.showMyLocationOption.first())
     }
 
     @Test
-    fun myLocation_notRegistered() = coroutineRule.runBlockingTest {
+    fun myLocation_notRegistered() = runTest {
         signInViewModelDelegate.injectIsRegistered = false
         signInViewModelDelegate.loadUser("1")
         assertFalse(viewModel.showMyLocationOption.first())

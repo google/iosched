@@ -22,8 +22,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.google.samples.apps.iosched.shared.data.prefs.DataStorePreferenceStorage
 import com.google.samples.apps.iosched.shared.data.prefs.PreferenceStorage
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.TestCoroutineScope
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -33,75 +32,73 @@ val Context.dataStore by preferencesDataStore(name = "test")
 
 class DataStorePreferenceStorageTest {
 
-    private lateinit var dataStoreScope: TestCoroutineScope
     private lateinit var context: Context
     private lateinit var preferenceStorage: PreferenceStorage
 
     @Before
     fun init() {
-        dataStoreScope = TestCoroutineScope()
         context = ApplicationProvider.getApplicationContext()
         preferenceStorage = DataStorePreferenceStorage(context.dataStore)
     }
 
     @Test
-    fun completeOnboarding() = runBlocking {
+    fun completeOnboarding() = runTest {
         preferenceStorage.completeOnboarding(true)
         val result = preferenceStorage.onboardingCompleted.first()
         assertTrue(result)
     }
 
     @Test
-    fun showScheduleUiHints() = runBlocking {
+    fun showScheduleUiHints() = runTest {
         preferenceStorage.showScheduleUiHints(true)
         val result = preferenceStorage.areScheduleUiHintsShown()
         assertTrue(result)
     }
 
     @Test
-    fun showNotificationsPreference() = runBlocking {
+    fun showNotificationsPreference() = runTest {
         preferenceStorage.showNotificationsPreference(true)
         val result = preferenceStorage.notificationsPreferenceShown.first()
         assertTrue(result)
     }
 
     @Test
-    fun preferToReceiveNotifications() = runBlocking {
+    fun preferToReceiveNotifications() = runTest {
         preferenceStorage.preferToReceiveNotifications(true)
         val result = preferenceStorage.preferToReceiveNotifications.first()
         assertTrue(result)
     }
 
     @Test
-    fun optInMyLocation() = runBlocking {
+    fun optInMyLocation() = runTest {
         preferenceStorage.optInMyLocation(true)
         val result = preferenceStorage.myLocationOptedIn.first()
         assertTrue(result)
     }
 
     @Test
-    fun stopSnackbar() = runBlocking {
+    fun stopSnackbar() = runTest {
         preferenceStorage.stopSnackbar(true)
         val result = preferenceStorage.isSnackbarStopped()
         assertTrue(result)
     }
 
     @Test
-    fun sendUsageStatistics() = runBlocking {
+    fun sendUsageStatistics() = runTest {
         preferenceStorage.sendUsageStatistics(true)
         val result = preferenceStorage.sendUsageStatistics.first()
         assertTrue(result)
     }
 
     @Test
-    fun preferConferenceTimeZone() = runBlocking {
+    fun preferConferenceTimeZone() = runTest {
         preferenceStorage.preferConferenceTimeZone(true)
         val result = preferenceStorage.preferConferenceTimeZone.first()
         assertTrue(result)
     }
 
     @Test
-    fun selectFilters() = runBlocking {
+    fun selectFilters() = runTest {
         val filters = "filter1, filter2"
         preferenceStorage.selectFilters(filters)
         val result = preferenceStorage.selectedFilters.first()
@@ -109,7 +106,7 @@ class DataStorePreferenceStorageTest {
     }
 
     @Test
-    fun selectTheme() = runBlocking {
+    fun selectTheme() = runTest {
         val theme = "theme"
         preferenceStorage.selectTheme(theme)
         val result = preferenceStorage.selectedTheme.first()
@@ -117,7 +114,7 @@ class DataStorePreferenceStorageTest {
     }
 
     @Test
-    fun showCodelabsInfo() = runBlocking {
+    fun showCodelabsInfo() = runTest {
         preferenceStorage.showCodelabsInfo(true)
         val result = preferenceStorage.codelabsInfoShown.first()
         assertTrue(result)

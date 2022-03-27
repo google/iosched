@@ -57,7 +57,7 @@ class CodelabsFragment : MainNavigationFragment(), CodelabsActionsHandler {
     }
 
     @Inject
-    @field:Named("tagViewPool")
+    @Named("tagViewPool")
     lateinit var tagRecycledViewPool: RecycledViewPool
 
     @Inject

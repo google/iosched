@@ -21,11 +21,11 @@ package com.google.samples.apps.iosched.ui
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompletedUseCase
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.ui.LaunchNavigatonAction.NavigateToMainActivityAction
 import com.google.samples.apps.iosched.ui.LaunchNavigatonAction.NavigateToOnboardingAction
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -44,7 +44,7 @@ class LaunchViewModelTest {
     var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun notCompletedOnboarding_navigatesToOnboarding() = coroutineRule.runBlockingTest {
+    fun notCompletedOnboarding_navigatesToOnboarding() = runTest {
         // Given that user has *not* completed onboarding
         val prefs = FakePreferenceStorage(onboardingCompleted = false)
         val onboardingCompletedUseCase =
@@ -58,7 +58,7 @@ class LaunchViewModelTest {
     }
 
     @Test
-    fun hasCompletedOnboarding_navigatesToMainActivity() = coroutineRule.runBlockingTest {
+    fun hasCompletedOnboarding_navigatesToMainActivity() = runTest {
         // Given that user *has* completed onboarding
         val prefs = FakePreferenceStorage(onboardingCompleted = true)
         val onboardingCompletedUseCase =
