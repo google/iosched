@@ -39,6 +39,7 @@ class BaselineProfileGenerator {
             // optimizing for app startup. But you can also navigate and scroll
             // through your most important UI.
             startMainAndWait()
+            scrollSchedule()
         }
     }
 
