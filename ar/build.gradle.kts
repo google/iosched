@@ -33,6 +33,7 @@ android {
         maybeCreate("staging")
         getByName("staging") {
             initWith(getByName("debug"))
+
             // Specifies a sorted list of fallback build types that the
             // plugin should try to use when a dependency does not include a
             // "staging" build type.
@@ -51,9 +52,9 @@ android {
     }
 
     lint {
-        disable("InvalidPackage")
+        disable += "InvalidPackage"
         // Version changes are beyond our control, so don't warn. The IDE will still mark these.
-        disable("GradleDependency")
+        disable += "GradleDependency"
     }
 
     // Required by ArWebView

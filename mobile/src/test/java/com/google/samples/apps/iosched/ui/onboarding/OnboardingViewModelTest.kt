@@ -21,11 +21,10 @@ package com.google.samples.apps.iosched.ui.onboarding
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompleteActionUseCase
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -44,13 +43,12 @@ class OnboardingViewModelTest {
     @get:Rule
     var coroutineRule = MainCoroutineRule()
 
-    private val testDispatcher = TestCoroutineDispatcher()
-
     @Test
-    fun onGetStartedClicked_updatesPrefs() = coroutineRule.runBlockingTest {
+    fun onGetStartedClicked_updatesPrefs() = runTest {
         // Given an onboarding view model
         val prefs = FakePreferenceStorage()
-        val onboardingCompleteActionUseCase = OnboardingCompleteActionUseCase(prefs, testDispatcher)
+        val onboardingCompleteActionUseCase =
+            OnboardingCompleteActionUseCase(prefs, coroutineRule.testDispatcher)
         val signInDelegate = FakeSignInViewModelDelegate()
         val viewModel = OnboardingViewModel(onboardingCompleteActionUseCase, signInDelegate)
 
@@ -67,10 +65,11 @@ class OnboardingViewModelTest {
     }
 
     @Test
-    fun onSigninClicked() = coroutineRule.runBlockingTest {
+    fun onSigninClicked() = runTest {
         // Given an onboarding view model
         val prefs = FakePreferenceStorage()
-        val onboardingCompleteActionUseCase = OnboardingCompleteActionUseCase(prefs, testDispatcher)
+        val onboardingCompleteActionUseCase =
+            OnboardingCompleteActionUseCase(prefs, coroutineRule.testDispatcher)
         val signInDelegate = FakeSignInViewModelDelegate()
         val viewModel = OnboardingViewModel(onboardingCompleteActionUseCase, signInDelegate)
 

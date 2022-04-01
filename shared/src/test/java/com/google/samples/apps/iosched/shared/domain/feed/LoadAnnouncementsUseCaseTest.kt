@@ -24,7 +24,7 @@ import com.google.samples.apps.iosched.shared.data.feed.FeedRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.data.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -44,7 +44,7 @@ class LoadAnnouncementsUseCaseTest {
     var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun announcementsLoadedSuccessfully() = coroutineRule.runBlockingTest {
+    fun announcementsLoadedSuccessfully() = runTest {
         val useCase =
             LoadAnnouncementsUseCase(successfulFeedRepository, coroutineRule.testDispatcher)
 
@@ -56,7 +56,7 @@ class LoadAnnouncementsUseCaseTest {
     }
 
     @Test
-    fun announcementsLoadedUnsuccessfully() = coroutineRule.runBlockingTest {
+    fun announcementsLoadedUnsuccessfully() = runTest {
         val useCase =
             LoadAnnouncementsUseCase(unsuccessfulFeedRepository, coroutineRule.testDispatcher)
 
@@ -67,7 +67,7 @@ class LoadAnnouncementsUseCaseTest {
     }
 
     @Test
-    fun announcementsLoaded_filteredByTimestamp() = coroutineRule.runBlockingTest {
+    fun announcementsLoaded_filteredByTimestamp() = runTest {
         val useCase =
             LoadAnnouncementsUseCase(successfulFeedRepository, coroutineRule.testDispatcher)
 

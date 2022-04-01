@@ -27,9 +27,9 @@ import com.google.samples.apps.iosched.shared.domain.settings.SetAnalyticsSettin
 import com.google.samples.apps.iosched.shared.domain.settings.SetThemeUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.SetTimeZoneUseCase
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -47,7 +47,7 @@ class SettingsViewModelTest {
     private val testDispatcher = coroutineRule.testDispatcher
 
     @Test
-    fun initialValues_matchStorage() = coroutineRule.runBlockingTest {
+    fun initialValues_matchStorage() = runTest {
         val viewModel = createSettingsViewModel()
 
         val prefs = FakePreferenceStorage()
@@ -65,7 +65,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun toggleBooleanSettings() = coroutineRule.runBlockingTest {
+    fun toggleBooleanSettings() = runTest {
         val viewModel = createSettingsViewModel()
 
         val initialTimeZone = viewModel.preferConferenceTimeZone.first()
@@ -82,7 +82,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun clickOnChooseTheme_navigationActionTriggered() = coroutineRule.runBlockingTest {
+    fun clickOnChooseTheme_navigationActionTriggered() = runTest {
         val viewModel = createSettingsViewModel()
         viewModel.onThemeSettingClicked()
 

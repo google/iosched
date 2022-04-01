@@ -25,7 +25,6 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.test.data.CoroutineScope
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.never
@@ -33,6 +32,7 @@ import com.nhaarman.mockito_kotlin.verify
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.instanceOf
 import org.hamcrest.core.Is.`is`
@@ -55,7 +55,7 @@ class ObserveUserAuthStateUseCaseTest {
     var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun userSuccessRegistered() = coroutineRule.runBlockingTest {
+    fun userSuccessRegistered() = runTest {
 
         val topicSubscriber = mock<TopicSubscriber> {}
 
@@ -87,7 +87,7 @@ class ObserveUserAuthStateUseCaseTest {
     }
 
     @Test
-    fun userSuccessNotRegistered() = coroutineRule.runBlockingTest {
+    fun userSuccessNotRegistered() = runTest {
         val topicSubscriber = mock<TopicSubscriber> {}
 
         val subject = createObserveUserAuthStateUseCase(
@@ -117,7 +117,7 @@ class ObserveUserAuthStateUseCaseTest {
     }
 
     @Test
-    fun userErrorNotRegistered() = coroutineRule.runBlockingTest {
+    fun userErrorNotRegistered() = runTest {
         val topicSubscriber = mock<TopicSubscriber> {}
 
         val subject = createObserveUserAuthStateUseCase(
@@ -139,7 +139,7 @@ class ObserveUserAuthStateUseCaseTest {
     }
 
     @Test
-    fun userLogsOut() = coroutineRule.runBlockingTest {
+    fun userLogsOut() = runTest {
 
         val topicSubscriber = mock<TopicSubscriber> {}
 

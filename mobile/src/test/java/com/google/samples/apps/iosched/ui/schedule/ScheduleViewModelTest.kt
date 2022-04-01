@@ -49,7 +49,6 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.data.CoroutineScope
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakeAppDatabase
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
@@ -66,7 +65,8 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsEqual
@@ -96,7 +96,7 @@ class ScheduleViewModelTest {
     private val coroutineScope = coroutineRule.CoroutineScope()
 
     @Test
-    fun testDataIsLoaded_ObservablesUpdated() = coroutineRule.runBlockingTest {
+    fun testDataIsLoaded_ObservablesUpdated() = runTest {
         // Create a delegate so we can load a user
         val signInDelegate = FakeSignInViewModelDelegate()
 
@@ -118,7 +118,7 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun testDataIsLoaded_Fails() = coroutineRule.runBlockingTest {
+    fun testDataIsLoaded_Fails() = runTest {
         // Create ViewModel
         val viewModel = createScheduleViewModel(
             loadScheduleSessionsUseCase = createExceptionUseCase()
@@ -132,7 +132,7 @@ class ScheduleViewModelTest {
     /** New reservation / waitlist **/
 
     @Test
-    fun reservationReceived() = coroutineRule.runBlockingTest {
+    fun reservationReceived() = runTest {
         // Create test use cases with test data
         val testUserId = "test"
         val source = TestUserEventDataSource()
@@ -168,7 +168,7 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun waitlistReceived() = coroutineRule.runBlockingTest {
+    fun waitlistReceived() = runTest {
         // Create test use cases with test data
         val source = TestUserEventDataSource()
         val loadSessionsUseCase = createTestLoadUserSessionsByDayUseCase(source)
@@ -202,7 +202,7 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun noLoggedInUser_showsReservationButton() = coroutineRule.runBlockingTest {
+    fun noLoggedInUser_showsReservationButton() = runTest {
         // Given no logged in user
         val noFirebaseUser = null
 
@@ -228,7 +228,7 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun loggedInUser_registered_showsReservationButton() = coroutineRule.runBlockingTest {
+    fun loggedInUser_registered_showsReservationButton() = runTest {
         // Given a logged in user
         val mockUser = mock<AuthenticatedUserInfoBasic> {
             on { getUid() }.doReturn("uuid")
@@ -263,7 +263,7 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun loggedInUser_notRegistered_hidesReservationButton() = coroutineRule.runBlockingTest {
+    fun loggedInUser_notRegistered_hidesReservationButton() = runTest {
         // Given a logged in user
         val mockUser = mock<AuthenticatedUserInfoBasic> {
             on { getUid() }.doReturn("uuid")
@@ -299,14 +299,14 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun scheduleHints_shownOnLaunch() = coroutineRule.runBlockingTest {
+    fun scheduleHints_shownOnLaunch() = runTest {
         val viewModel = createScheduleViewModel()
         val firstNavAction = viewModel.navigationActions.firstOrNull()
         assertEquals(firstNavAction, ScheduleNavigationAction.ShowScheduleUiHints)
     }
 
     @Test
-    fun swipeRefresh_refreshesRemoteConfData() = coroutineRule.runBlockingTest {
+    fun swipeRefresh_refreshesRemoteConfData() = runTest {
         // Given a view model with a mocked remote data source
         val remoteDataSource = mock<ConferenceDataSource> {}
         val viewModel = createScheduleViewModel(
@@ -331,7 +331,7 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun newDataFromConfRepo_scheduleUpdated() = coroutineRule.runBlockingTest {
+    fun newDataFromConfRepo_scheduleUpdated() = runTest {
         val repo = ConferenceDataRepository(
             remoteDataSource = TestConfDataSourceSession0(),
             boostrapDataSource = BootstrapDataSourceSession3(),
@@ -372,7 +372,7 @@ class ScheduleViewModelTest {
     }
 
     private fun scrollToEvent_beforeConference(dayIndex: Int, targetPosition: Int) =
-        coroutineRule.runBlockingTest {
+        runTest {
             val viewModel = createScheduleViewModel()
 
             // Start observing
@@ -382,7 +382,7 @@ class ScheduleViewModelTest {
             viewModel.scrollToStartOfDay(TestData.TestConferenceDays[0])
 
             val result = mutableListOf<ScheduleScrollEvent>()
-            val job = launch {
+            val job = launch(UnconfinedTestDispatcher()) {
                 viewModel.scrollToEvent.toList(result)
             }
 
@@ -399,7 +399,7 @@ class ScheduleViewModelTest {
         }
 
     @Test
-    fun scrollToEvent_beforeConference_userHasInteracted() = coroutineRule.runBlockingTest {
+    fun scrollToEvent_beforeConference_userHasInteracted() = runTest {
         val viewModel = createScheduleViewModel()
 
         viewModel.userHasInteracted = true
@@ -411,14 +411,13 @@ class ScheduleViewModelTest {
         viewModel.scrollToStartOfDay(TestData.TestConferenceDays[0])
 
         val result = mutableListOf<ScheduleScrollEvent>()
-        val job = launch {
+        val job = launch(UnconfinedTestDispatcher()) {
             viewModel.scrollToEvent.toList(result)
         }
 
         // Trigger to generate a result in scrollToEvent
         viewModel.scrollToStartOfDay(TestData.TestConferenceDays[1])
-
-        assertTrue(result.size == 1)
+        assertEquals(1, result.size)
         assertEquals(result[0], ScheduleScrollEvent(targetPosition = 2, smoothScroll = false))
 
         job.cancel()
@@ -430,7 +429,7 @@ class ScheduleViewModelTest {
         signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate(),
         snackbarMessageManager: SnackbarMessageManager = createSnackbarMessageManager(),
         scheduleUiHintsShownUseCase: ScheduleUiHintsShownUseCase =
-            FakeScheduleUiHintsShownUseCase(),
+            FakeScheduleUiHintsShownUseCase(testDispatcher),
         getTimeZoneUseCase: GetTimeZoneUseCase = createGetTimeZoneUseCase(),
         topicSubscriber: TopicSubscriber = mock {},
         refreshConferenceDataUseCase: RefreshConferenceDataUseCase =
@@ -519,9 +518,11 @@ class FakeObserveUserAuthStateUseCase(
     coroutineDispatcher
 )
 
-class FakeScheduleUiHintsShownUseCase : ScheduleUiHintsShownUseCase(
+class FakeScheduleUiHintsShownUseCase(
+    dispatcher: CoroutineDispatcher
+) : ScheduleUiHintsShownUseCase(
     preferenceStorage = FakePreferenceStorage(),
-    dispatcher = TestCoroutineDispatcher()
+    dispatcher = dispatcher,
 )
 
 class TestConfDataSourceSession0 : ConferenceDataSource {

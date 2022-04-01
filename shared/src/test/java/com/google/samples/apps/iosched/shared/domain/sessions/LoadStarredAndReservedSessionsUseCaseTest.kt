@@ -25,8 +25,8 @@ import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.data
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert
@@ -60,7 +60,7 @@ class LoadStarredAndReservedSessionsUseCaseTest {
     }
 
     @Test
-    fun `returns starred or reserved sessions`() = coroutineRule.runBlockingTest {
+    fun `returns starred or reserved sessions`() = runTest {
         val result = useCase("user1").first { it is Result.Success }
         Assert.assertThat(
             result.data,
@@ -69,7 +69,7 @@ class LoadStarredAndReservedSessionsUseCaseTest {
     }
 
     @Test
-    fun `null user id returns empty list`() = coroutineRule.runBlockingTest {
+    fun `null user id returns empty list`() = runTest {
         val result = useCase(null).first { it is Result.Success }
         Assert.assertThat(
             result.data,

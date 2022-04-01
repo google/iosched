@@ -28,7 +28,6 @@ import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
 import com.google.samples.apps.iosched.shared.domain.speakers.LoadSpeakerUseCase
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakeOnSessionStarClickDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
@@ -36,7 +35,7 @@ import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
 import com.google.samples.apps.iosched.ui.sessioncommon.OnSessionStarClickDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -55,7 +54,7 @@ class SpeakerViewModelTest {
     var coroutineRule = MainCoroutineRule()
 
     @Test
-    fun setSpeakerId_loadsSpeaker() = coroutineRule.runBlockingTest {
+    fun setSpeakerId_loadsSpeaker() = runTest {
         // Given a speaker view model
         val viewModel = createViewModel()
 
@@ -64,7 +63,7 @@ class SpeakerViewModelTest {
     }
 
     @Test
-    fun setSpeakerId_loadsSpeakersEvents_singleEvent() = coroutineRule.runBlockingTest {
+    fun setSpeakerId_loadsSpeakersEvents_singleEvent() = runTest {
         // Given a speaker view model
         val viewModel = createViewModel(speakerId = TestData.speaker3.id)
 
@@ -76,7 +75,7 @@ class SpeakerViewModelTest {
     }
 
     @Test
-    fun setSpeakerId_loadsSpeakersEvents_multipleEvents() = coroutineRule.runBlockingTest {
+    fun setSpeakerId_loadsSpeakersEvents_multipleEvents() = runTest {
         // Given a speaker view model
         val viewModel = createViewModel()
 
@@ -90,7 +89,7 @@ class SpeakerViewModelTest {
     private fun createViewModel(
         speakerId: String? = TestData.speaker1.id,
         loadSpeakerUseCase: LoadSpeakerUseCase =
-            LoadSpeakerUseCase(TestDataRepository, TestCoroutineDispatcher()),
+            LoadSpeakerUseCase(TestDataRepository, coroutineRule.testDispatcher),
         loadSpeakerSessionsUseCase: LoadUserSessionsUseCase = LoadUserSessionsUseCase(
             DefaultSessionAndUserEventRepository(
                 TestUserEventDataSource(),

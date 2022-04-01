@@ -36,7 +36,6 @@ import com.google.samples.apps.iosched.shared.time.TimeProvider
 import com.google.samples.apps.iosched.test.data.CoroutineScope
 import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
@@ -49,6 +48,7 @@ import com.google.samples.apps.iosched.ui.theme.ThemedActivityDelegate
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.equalTo
@@ -81,7 +81,7 @@ class FeedViewModelTest {
         FixedTimeProvider(TestData.TestConferenceDays[0].start.plusHours(4).toInstant())
 
     @Test
-    fun testDataIsLoaded_ObservablesUpdated() = coroutineRule.runBlockingTest {
+    fun testDataIsLoaded_ObservablesUpdated() = runTest {
         // Create ViewModel with the use case and load the feed.
         val viewModel = createFeedViewModel()
         val feedObservable = viewModel.feed.first()
@@ -101,12 +101,10 @@ class FeedViewModelTest {
 
         // Must cancel because there's a flow in [GetConferenceStateUseCase] that never finishes.
         viewModel.viewModelScope.cancel()
-        // Cancel is not synchronous so we need to wait for it to avoid leaks.
-        coroutineRule.testDispatcher.advanceUntilIdle()
     }
 
     @Test
-    fun testDataIsLoaded_Fails() = coroutineRule.runBlockingTest {
+    fun testDataIsLoaded_Fails() = runTest {
         // Create ViewModel with a use case that returns an error
         val snackbarMessageManager = createSnackbarMessageManager()
         val viewModel = createFeedViewModel(
@@ -123,9 +121,6 @@ class FeedViewModelTest {
 
         // Must cancel because there's a flow in [GetConferenceStateUseCase] that never finishes.
         viewModel.viewModelScope.cancel()
-
-        // Cancel is not synchronous so we need to wait for it to avoid leaks.
-        coroutineRule.testDispatcher.advanceUntilIdle()
     }
 
     /**

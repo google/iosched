@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -154,15 +154,15 @@ android {
 
     lint {
         // Eliminates UnusedResources false positives for resources used in DataBinding layouts
-        isCheckGeneratedSources = true
+        checkGeneratedSources = true
         // Running lint over the debug variant is enough
-        isCheckReleaseBuilds = false
+        checkReleaseBuilds = false
         // See lint.xml for rules configuration
 
         // TODO: Remove when upgrading lifecycle from `2.4.0-alpha01`.
         // Fix: https://android-review.googlesource.com/c/platform/frameworks/support/+/1697465
         // Bug: https://issuetracker.google.com/184830263
-        disable("NullSafeMutableLiveData")
+        disable += "NullSafeMutableLiveData"
     }
 
     testBuildType = "staging"
