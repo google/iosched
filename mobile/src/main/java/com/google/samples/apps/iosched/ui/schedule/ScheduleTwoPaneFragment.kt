@@ -21,6 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.doOnLayout
 import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -66,6 +67,10 @@ class ScheduleTwoPaneFragment : MainNavigationFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        view.doOnLayout {
+            activity?.reportFullyDrawn()
+        }
 
         setupSnackbarManager(snackbarMessageManager, binding.snackbar)
 
