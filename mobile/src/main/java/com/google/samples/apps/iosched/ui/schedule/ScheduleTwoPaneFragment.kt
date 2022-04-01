@@ -21,7 +21,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.core.view.doOnLayout
 import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
