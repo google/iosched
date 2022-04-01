@@ -16,38 +16,38 @@
 
 package com.google.samples.apps.iosched.macrobenchmark
 
-import androidx.benchmark.macro.CompilationMode
-import androidx.benchmark.macro.StartupMode
-import androidx.benchmark.macro.StartupTimingMetric
-import androidx.benchmark.macro.junit4.MacrobenchmarkRule
+import androidx.benchmark.macro.ExperimentalBaselineProfilesApi
+import androidx.benchmark.macro.junit4.BaselineProfileRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class StartupBenchmark {
+@ExperimentalBaselineProfilesApi
+class BaselineProfileGenerator {
+
     @get:Rule
-    val benchmarkRule = MacrobenchmarkRule()
+    val rule = BaselineProfileRule()
 
     @Test
-    fun startupCompilationNone() = startup(CompilationMode.None())
+    fun generateBaselineProfile() {
+        rule.collectBaselineProfile(TARGET_PACKAGE) {
+            // This block defines the app's critical user journey. Here we are interested in
+            // optimizing for app startup. But you can also navigate and scroll
+            // through your most important UI.
+            startMainAndWait()
+        }
+    }
 
     @Test
-    fun startupCompilationPartial() = startup(CompilationMode.Partial())
-
-    @Test
-    fun startupCompilationFull() = startup(CompilationMode.Full())
-
-    private fun startup(compilationMode: CompilationMode) = benchmarkRule.measureRepeated(
-        packageName = TARGET_PACKAGE,
-        compilationMode = compilationMode,
-        startupMode = StartupMode.COLD,
-        iterations = 5,
-        metrics = listOf(StartupTimingMetric()),
-    ) {
-        startMainAndWait()
+    fun scrollScheduleBaselineProfile() {
+        rule.collectBaselineProfile(TARGET_PACKAGE) {
+            startMainAndConfirmDialogs()
+            scrollSchedule()
+        }
     }
 }

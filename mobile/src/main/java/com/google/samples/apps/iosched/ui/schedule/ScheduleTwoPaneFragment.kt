@@ -68,10 +68,6 @@ class ScheduleTwoPaneFragment : MainNavigationFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.doOnLayout {
-            activity?.reportFullyDrawn()
-        }
-
         setupSnackbarManager(snackbarMessageManager, binding.snackbar)
 
         binding.slidingPaneLayout.apply {

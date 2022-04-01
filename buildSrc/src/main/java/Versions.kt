@@ -23,7 +23,7 @@ object Versions {
     const val TARGET_SDK = 30
     const val MIN_SDK = 21
 
-    const val ANDROID_GRADLE_PLUGIN = "7.1.2"
+    const val ANDROID_GRADLE_PLUGIN = "7.3.0-alpha07"
     const val BENCHMARK = "1.1.0-beta05"
     const val COMPOSE = "1.1.1"
     const val FIREBASE_CRASHLYTICS = "2.3.0"
