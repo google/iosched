@@ -47,6 +47,9 @@ class StartupBenchmark {
         startupMode = StartupMode.COLD,
         iterations = 5,
         metrics = listOf(StartupTimingMetric()),
+        setupBlock = {
+            pressHome()
+        }
     ) {
         startMainAndWait()
     }

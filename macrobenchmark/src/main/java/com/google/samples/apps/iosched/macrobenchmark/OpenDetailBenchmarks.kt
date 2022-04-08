@@ -46,6 +46,7 @@ class OpenDetailBenchmarks {
             startupMode = StartupMode.WARM, // start the activity every time
             iterations = 5,
             setupBlock = {
+                pressHome()
                 startMainAndConfirmDialogs()
 
                 //  the children count is only visible part of the screen,

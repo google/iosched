@@ -40,6 +40,7 @@ class ScheduleBenchmarks {
             iterations = 5,
             startupMode = StartupMode.WARM, // restart activity
             setupBlock = {
+                pressHome()
                 startMainAndConfirmDialogs()
             }
         ) {

@@ -38,6 +38,7 @@ class BaselineProfileGenerator {
             // This block defines the app's critical user journey. Here we are interested in
             // optimizing for app startup. But you can also navigate and scroll
             // through your most important UI.
+            pressHome()
             startMainAndWait()
             scrollSchedule()
         }
@@ -46,6 +47,7 @@ class BaselineProfileGenerator {
     @Test
     fun scrollScheduleBaselineProfile() {
         rule.collectBaselineProfile(TARGET_PACKAGE) {
+            pressHome()
             startMainAndConfirmDialogs()
             scrollSchedule()
         }

@@ -30,8 +30,6 @@ val scheduleRecyclerSelector: BySelector
     get() = By.res(TARGET_PACKAGE, "recyclerview_schedule")
 
 fun MacrobenchmarkScope.startMainAndWait() {
-    // Need to have, because [StartupMode.HOT] wouldn't do anything
-    pressHome()
     // Start activity defined by an action
     val intent = Intent("$TARGET_PACKAGE.STARTUP_ACTIVITY")
     Log.d("Benchmark", "Starting activity $intent")
