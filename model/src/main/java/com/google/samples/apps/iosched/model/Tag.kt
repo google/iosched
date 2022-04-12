@@ -30,14 +30,16 @@ data class Tag(
     val id: String,
 
     /**
-     * Tag category type. For example, "track", "level", "type", "theme". etc.
+     * Tag category type. For example, "track", "level", "type", "theme", etc.
      */
     val category: String,
 
     /**
-     * Tag code. For example, "topic_iot", "type_afterhours", "topic_ar&vr", etc.
+     * Tag name. For example, "topic_iot", "type_afterhours", "topic_ar&vr", etc. Used to resolve
+     * references to this tag from other entities during data deserialization and normalization.
+     * For UI, use [displayName] instead.
      */
-    val tag: String,
+    val tagName: String,
 
     /**
      * This tag's order within its [category].
@@ -45,9 +47,9 @@ data class Tag(
     val orderInCategory: Int,
 
     /**
-     * Display tag name within a category. For example, "Android", or "Ads", or "Design".
+     * Display name within a category. For example, "Android", "Ads", "Design".
      */
-    val name: String,
+    val displayName: String,
 
     /**
      * The color associated with this tag as a color integer.
@@ -71,12 +73,14 @@ data class Tag(
         const val CATEGORY_LEVEL = "level"
 
         // Exhaustive list of IDs for tags with category = TYPE
+        const val TYPE_KEYNOTE = "type_keynotes"
         const val TYPE_SESSIONS = "type_sessions"
         const val TYPE_APP_REVIEWS = "type_appreviews"
-        const val TYPE_AFTERHOURS = "type_afterhours"
+        const val TYPE_AFTERDARK = "type_afterdark"
         const val TYPE_CODELABS = "type_codelabs"
+        const val TYPE_GAME_REVIEWS = "type_gamereviews"
+        const val TYPE_MEETUPS = "type_meetups"
         const val TYPE_OFFICEHOURS = "type_officehours"
-        const val TYPE_SANDBOXDEMO = "type_sandboxdemos"
     }
 
     /** Only IDs are used for equality. */
@@ -85,7 +89,7 @@ data class Tag(
     /** Only IDs are used for equality. */
     override fun hashCode(): Int = id.hashCode()
 
-    fun isUiContentEqual(other: Tag) = color == other.color && name == other.name
+    fun isUiContentEqual(other: Tag) = color == other.color && displayName == other.displayName
 
     fun isLightFontColor() = fontColor?.toLong() == 0xFFFFFFFF
 }

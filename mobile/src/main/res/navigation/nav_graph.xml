@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigation_feed">
+
+    <fragment
+        android:id="@id/navigation_schedule"
+        android:name="com.google.samples.apps.iosched.ui.schedule.ScheduleFragment"
+        android:label="@string/title_schedule"
+        tools:layout="@layout/fragment_schedule">
+        <argument
+            android:name="showMySchedule"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="showAllEvents"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/to_session_detail"
+            app:destination="@id/navigation_session_detail" />
+        <action
+            android:id="@+id/to_search"
+            app:destination="@id/navigation_search" />
+    </fragment>
+
+    <fragment
+        android:id="@id/navigation_info"
+        android:name="com.google.samples.apps.iosched.ui.info.InfoFragment"
+        android:label="@string/title_info"
+        tools:layout="@layout/fragment_info" />
+
+    <fragment
+        android:id="@id/navigation_agenda"
+        android:name="com.google.samples.apps.iosched.ui.agenda.AgendaFragment"
+        android:label="@string/agenda"
+        tools:layout="@layout/fragment_agenda" />
+
+    <fragment
+        android:id="@id/navigation_settings"
+        android:name="com.google.samples.apps.iosched.ui.settings.SettingsFragment"
+        android:label="@string/settings_title"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@id/navigation_feed"
+        android:name="com.google.samples.apps.iosched.ui.feed.FeedFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_feed">
+        <action
+            android:id="@+id/to_session_detail"
+            app:destination="@id/navigation_session_detail" />
+        <action
+            android:id="@+id/to_schedule"
+            app:destination="@id/navigation_schedule">
+            <argument
+                android:name="showPinnedEvents"
+                android:defaultValue="false"
+                app:argType="boolean" />
+            <argument
+                android:name="showAllEvents"
+                android:defaultValue="false"
+                app:argType="boolean" />
+        </action>
+        <action
+            android:id="@+id/to_map"
+            app:destination="@id/navigation_map">
+            <argument
+                android:name="featureId"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+            <argument
+                android:name="startTime"
+                android:defaultValue="0L"
+                app:argType="long" />
+        </action>
+        <action
+            android:id="@+id/to_announcements_fragment"
+            app:destination="@id/announcements_fragment"
+            app:popUpTo="@id/navigation_feed" />
+    </fragment>
+
+    <fragment
+        android:id="@id/navigation_map"
+        android:name="com.google.samples.apps.iosched.ui.map.MapFragment"
+        android:label="@string/title_map"
+        tools:layout="@layout/fragment_map">
+        <!-- Navigation library doesn't allow nullable arguments of an enum type, so we have to use
+             the enum name instead.
+        -->
+        <argument
+            android:name="mapVariant"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="featureId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="startTime"
+            android:defaultValue="0L"
+            app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@id/navigation_codelabs"
+        android:name="com.google.samples.apps.iosched.ui.codelabs.CodelabsFragment"
+        android:label="@string/event_codelabs_title"
+        tools:layout="@layout/fragment_codelabs">
+        <action
+            android:id="@+id/to_map"
+            app:destination="@id/navigation_map_sublevel">
+            <argument
+                android:name="mapVariant"
+                android:defaultValue="DAY"
+                app:argType="string" />
+            <argument
+                android:name="featureId"
+                android:defaultValue="codelabs"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@id/navigation_search"
+        android:name="com.google.samples.apps.iosched.ui.search.SearchFragment"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/to_session_detail"
+            app:destination="@id/navigation_session_detail" />
+        <action
+            android:id="@+id/to_speaker_detail"
+            app:destination="@id/navigation_speaker_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@id/navigation_session_detail"
+        android:name="com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailFragment"
+        tools:layout="@layout/fragment_session_detail">
+        <argument
+            android:name="session_id"
+            app:argType="string" />
+        <action
+            android:id="@+id/to_session_detail"
+            app:destination="@id/navigation_session_detail" />
+        <action
+            android:id="@+id/to_speaker_detail"
+            app:destination="@id/navigation_speaker_detail" />
+        <action
+            android:id="@+id/to_map"
+            app:destination="@id/navigation_map_sublevel" />
+    </fragment>
+
+    <fragment
+        android:id="@id/navigation_speaker_detail"
+        android:name="com.google.samples.apps.iosched.ui.speaker.SpeakerFragment"
+        tools:layout="@layout/fragment_speaker">
+        <argument
+            android:name="speaker_id"
+            app:argType="string" />
+        <action
+            android:id="@+id/to_session_detail"
+            app:destination="@id/navigation_session_detail" />
+    </fragment>
+
+    <!-- Map can be be shown as a non-top-level screen, e.g. when entering from Session Detail. In
+         these cases the back button navigates back through the sub-level screens, so we should show
+         the back/up arrow in the toolbar. We accomplish that by creating another destination using
+         the same MapFragment but a different ID.
+    -->
+    <fragment
+        android:id="@id/navigation_map_sublevel"
+        android:name="com.google.samples.apps.iosched.ui.map.MapFragment"
+        android:label="@string/title_map"
+        tools:layout="@layout/fragment_map" >
+        <!-- Unfortunately we have to duplicate the args. -->
+        <argument
+            android:name="mapVariant"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="featureId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="startTime"
+            android:defaultValue="0L"
+            app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@id/navigation_no_network_ar"
+        android:name="com.google.samples.apps.iosched.ui.ar.NoNetworkConnectionFragment"
+        android:label="@string/no_network_connection"
+        tools:layout="@layout/fragment_no_network" />
+
+    <fragment
+        android:id="@id/navigation_phone_does_not_support_arcore"
+        android:name="com.google.samples.apps.iosched.ui.ar.ArCoreNotSupportedFragment"
+        android:label="@string/phone_does_not_support_arcore_title"
+        tools:layout="@layout/fragment_arcore_not_supported" />
+    <fragment
+        android:id="@+id/announcements_fragment"
+        android:name="com.google.samples.apps.iosched.ui.feed.AnnouncementsFragment"
+        android:label="@string/feed_announcement_title"
+        tools:layout="@layout/fragment_announcements" />
+</navigation>

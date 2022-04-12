@@ -22,6 +22,7 @@ import android.app.job.JobScheduler.RESULT_FAILURE
 import android.app.job.JobScheduler.RESULT_SUCCESS
 import android.content.ComponentName
 import android.content.Context
+import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.samples.apps.iosched.shared.data.job.ConferenceDataService
 import timber.log.Timber
@@ -30,11 +31,17 @@ import java.util.concurrent.TimeUnit
 /**
  * Receives Firebase Cloud Messages and starts a [ConferenceDataService] to download new data.
  */
-class IoschedFirebaseMessagingService : DaggerFirebaseMessagingService() {
+class IoschedFirebaseMessagingService : FirebaseMessagingService() {
 
-    override fun onMessageReceived(remoteMessage: RemoteMessage?) {
-        Timber.d("Message data payload: ${remoteMessage?.data}")
-        val data = remoteMessage?.data ?: return
+    override fun onNewToken(token: String) {
+        super.onNewToken(token)
+        Timber.d("New firebase token: $token")
+        // Nothing to do, we update the user's firebase token via FirebaseAuthStateUserDataSource
+    }
+
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
+        Timber.d("Message data payload: ${remoteMessage.data}")
+        val data = remoteMessage.data
         if (data[TRIGGER_EVENT_DATA_SYNC_key] == TRIGGER_EVENT_DATA_SYNC) {
             // Schedule job on JobScheduler when FCM message with action `TRIGGER_EVENT_DATA_SYNC`
             // is received.
@@ -67,9 +74,9 @@ class IoschedFirebaseMessagingService : DaggerFirebaseMessagingService() {
         private const val TRIGGER_EVENT_DATA_SYNC_key = "action"
 
         // Some latency to avoid load spikes
-        private val MINIMUM_LATENCY = TimeUnit.SECONDS.toSeconds(5)
+        private val MINIMUM_LATENCY = TimeUnit.SECONDS.toMillis(5)
 
         // Job scheduled to run only with Wi-Fi but with a deadline
-        private val OVERRIDE_DEADLINE = TimeUnit.SECONDS.toMinutes(15)
+        private val OVERRIDE_DEADLINE = TimeUnit.MINUTES.toMillis(15)
     }
 }

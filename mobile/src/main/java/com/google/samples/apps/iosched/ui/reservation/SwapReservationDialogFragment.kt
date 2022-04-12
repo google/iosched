@@ -16,31 +16,28 @@
 
 package com.google.samples.apps.iosched.ui.reservation
 
-import android.content.Context
+import android.app.Dialog
+import android.content.res.Resources
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.google.samples.apps.iosched.databinding.DialogSwapReservationBinding
+import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.lifecycle.coroutineScope
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.domain.users.SwapActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestParameters
-import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
-import com.google.samples.apps.iosched.widget.CustomDimDialogFragment
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.AndroidSupportInjection
-import dagger.android.support.HasSupportFragmentInjector
+import com.google.samples.apps.iosched.util.makeBold
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * Dialog that confirms the user that if the user wants to replace their reservations
+ * Dialog that confirms the user wants to replace their reservations
  */
-class SwapReservationDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInjector {
+@AndroidEntryPoint
+class SwapReservationDialogFragment : AppCompatDialogFragment() {
 
     companion object {
-        const val DIALOG_SWAP_RESERVATION = "dialog_replace_reservation"
+        const val DIALOG_SWAP_RESERVATION = "dialog_swap_reservation"
         private const val USER_ID_KEY = "user_id"
         private const val FROM_ID_KEY = "from_id"
         private const val FROM_TITLE_KEY = "from_title"
@@ -60,42 +57,37 @@ class SwapReservationDialogFragment : CustomDimDialogFragment(), HasSupportFragm
     }
 
     @Inject
-    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var swapActionUseCase: SwapActionUseCase
 
-    private lateinit var swapViewModel: SwapReservationViewModel
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val context = requireContext()
+        val args = requireNotNull(arguments)
+        val userId = requireNotNull(args.getString(USER_ID_KEY))
+        val fromId = requireNotNull(args.getString(FROM_ID_KEY))
+        val fromTitle = requireNotNull(args.getString(FROM_TITLE_KEY))
+        val toId = requireNotNull(args.getString(TO_ID_KEY))
+        val toTitle = requireNotNull(args.getString(TO_TITLE_KEY))
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
-        return fragmentInjector
+        return MaterialAlertDialogBuilder(context)
+            .setTitle(R.string.swap_reservation_title)
+            .setMessage(formatSwapReservationMessage(context.resources, fromTitle, toTitle))
+            .setNegativeButton(R.string.cancel, null)
+            .setPositiveButton(R.string.swap) { _, _ ->
+                viewLifecycleOwner.lifecycle.coroutineScope.launch {
+                    swapActionUseCase(
+                        SwapRequestParameters(userId, fromId, fromTitle, toId, toTitle)
+                    )
+                }
+            }
+            .create()
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        AndroidSupportInjection.inject(this)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        swapViewModel = viewModelProvider(viewModelFactory)
-
-        requireNotNull(arguments).run {
-            swapViewModel.userId = getString(USER_ID_KEY)
-            swapViewModel.fromId = getString(FROM_ID_KEY)
-            swapViewModel.fromTitle = getString(FROM_TITLE_KEY)
-            swapViewModel.toId = getString(TO_ID_KEY)
-            swapViewModel.toTitle = getString(TO_TITLE_KEY)
-        }
-
-        val binding = DialogSwapReservationBinding.inflate(inflater, container, false).apply {
-            viewModel = swapViewModel
-        }
-        swapViewModel.dismissDialogAction.observe(this, EventObserver {
-            dismiss()
-        })
-        return binding.root
+    private fun formatSwapReservationMessage(
+        res: Resources,
+        fromTitle: String,
+        toTitle: String
+    ): CharSequence {
+        val text = res.getString(R.string.swap_reservation_content, fromTitle, toTitle)
+        return text.makeBold(fromTitle).makeBold(toTitle)
     }
 }

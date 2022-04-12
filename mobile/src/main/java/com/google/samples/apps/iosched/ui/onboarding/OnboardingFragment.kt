@@ -24,16 +24,15 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.google.samples.apps.iosched.databinding.FragmentOnboardingBinding
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.MainActivity
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
 private const val AUTO_ADVANCE_DELAY = 6_000L
 private const val INITIAL_ADVANCE_DELAY = 3_000L
@@ -41,11 +40,10 @@ private const val INITIAL_ADVANCE_DELAY = 3_000L
 /**
  * Contains the pages of the onboarding experience and responds to [OnboardingViewModel] events.
  */
-class OnboardingFragment : DaggerFragment() {
+@AndroidEntryPoint
+class OnboardingFragment : Fragment() {
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private lateinit var onboardingViewModel: OnboardingViewModel
+    private val onboardingViewModel: OnboardingViewModel by viewModels()
 
     private lateinit var binding: FragmentOnboardingBinding
 
@@ -67,11 +65,9 @@ class OnboardingFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        onboardingViewModel = viewModelProvider(viewModelFactory)
-
         binding = FragmentOnboardingBinding.inflate(inflater, container, false).apply {
             viewModel = onboardingViewModel
-            setLifecycleOwner(this@OnboardingFragment)
+            lifecycleOwner = viewLifecycleOwner
             pager.adapter = OnboardingAdapter(childFragmentManager)
             pagerPager = ViewPagerPager(pager)
             // If user touches pager then stop auto advance
@@ -81,7 +77,7 @@ class OnboardingFragment : DaggerFragment() {
             }
         }
 
-        onboardingViewModel.navigateToMainActivity.observe(this, EventObserver {
+        onboardingViewModel.navigateToMainActivity.observe(viewLifecycleOwner, EventObserver {
             requireActivity().run {
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
@@ -91,7 +87,7 @@ class OnboardingFragment : DaggerFragment() {
         return binding.root
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         handler.postDelayed(advancePager, INITIAL_ADVANCE_DELAY)
     }
@@ -105,16 +101,22 @@ class OnboardingFragment : DaggerFragment() {
 class OnboardingAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
 
     // Don't show then countdown fragment if the conference has already started
-    private val fragments = if (TimeUtils.conferenceHasStarted()) {
+    private val fragments = if (!TimeUtils.conferenceHasStarted()) {
+        // Before the conference
         arrayOf(
-            WelcomeFragment(),
-            CustomizeScheduleFragment()
+            WelcomePreConferenceFragment(),
+            OnboardingSignInFragment()
+        )
+    } else if (TimeUtils.conferenceHasStarted() && !TimeUtils.conferenceHasEnded()) {
+        // During the conference
+        arrayOf(
+            WelcomeDuringConferenceFragment(),
+            OnboardingSignInFragment()
         )
     } else {
+        // Post the conference
         arrayOf(
-            WelcomeFragment(),
-            CustomizeScheduleFragment(),
-            CountdownFragment()
+            WelcomePostConferenceFragment()
         )
     }
 

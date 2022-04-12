@@ -32,14 +32,13 @@ import java.util.Locale
 fun processGeoJsonLayer(layer: GeoJsonLayer, context: Context) {
     val iconGenerator = getLabelIconGenerator(context)
     layer.features.forEach { feature ->
-        val id = feature.getProperty("id")
         val icon = feature.getProperty("icon")
-        val title = feature.getProperty("title")
+        val label = feature.getProperty("label") ?: feature.getProperty("title")
 
         val drawableRes = getDrawableResourceForIcon(context, icon)
         feature.pointStyle = when {
-            drawableRes != 0 -> createIconMarker(context, drawableRes, title, id)
-            title != null -> createLabelMarker(iconGenerator, title, id) // Fall back to title
+            drawableRes != 0 -> createIconMarker(context, drawableRes, label)
+            label != null -> createLabelMarker(iconGenerator, label) // Fall back to label
             else -> GeoJsonPointStyle() // no styling
         }
     }
@@ -47,9 +46,10 @@ fun processGeoJsonLayer(layer: GeoJsonLayer, context: Context) {
 
 /** Creates a new IconGenerator for labels on the map. */
 private fun getLabelIconGenerator(context: Context): IconGenerator {
+    val labelBg = context.getDrawable(R.drawable.map_marker_label_background)
     return IconGenerator(context).apply {
-        setTextAppearance(context, R.style.TextApparance_IOSched_Map_Label)
-        setBackground(null)
+        setTextAppearance(context, R.style.TextAppearance_IOSched_Map_MarkerLabel)
+        setBackground(labelBg)
     }
 }
 
@@ -71,18 +71,15 @@ fun getDrawableResourceForIcon(context: Context, iconType: String?): Int {
 /** Creates a GeoJsonPointStyle for a label. */
 private fun createLabelMarker(
     iconGenerator: IconGenerator,
-    title: String,
-    id: String
+    title: String
 ): GeoJsonPointStyle {
     val icon = BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon(title))
-    // Note: We add the ID as the snippet since there's no other way to store metaata in the marker
-    // and we need to look it up later when the user clicks on the marker.
     return GeoJsonPointStyle().apply {
         setAnchor(.5f, .5f)
-        setTitle(title)
-        snippet = id
         setIcon(icon)
-        isVisible = true
+        // Don't set the title because we don't want to show an InfoWindow, but set the snippet for
+        // accessibility services (TalkBack).
+        snippet = title
     }
 }
 
@@ -93,19 +90,14 @@ private fun createLabelMarker(
 private fun createIconMarker(
     context: Context,
     drawableRes: Int,
-    title: String,
-    id: String
+    title: String
 ): GeoJsonPointStyle {
     val bitmap = drawableToBitmap(context, drawableRes)
     val icon = BitmapDescriptorFactory.fromBitmap(bitmap)
-    // Note: We add the ID as the snippet since there's no other way to store metaata in the marker
-    // and we need to look it up later when the user clicks on the marker.
     return GeoJsonPointStyle().apply {
         setAnchor(0.5f, 1f)
         setTitle(title)
-        snippet = id
         setIcon(icon)
-        isVisible = true
     }
 }
 

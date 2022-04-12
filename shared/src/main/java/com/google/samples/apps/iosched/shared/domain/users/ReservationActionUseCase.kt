@@ -17,35 +17,44 @@
 package com.google.samples.apps.iosched.shared.domain.users
 
 import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
+import com.google.samples.apps.iosched.shared.domain.UseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.StarReserveNotificationAlarmUpdater
 import com.google.samples.apps.iosched.shared.result.Result
-import timber.log.Timber
+import com.google.samples.apps.iosched.shared.result.Result.Loading
+import com.google.samples.apps.iosched.shared.result.Result.Success
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 /**
  * Sends a request to reserve or cancel a reservation for a session.
  */
+// TODO: Verify after b/149544822 is fixed.
 open class ReservationActionUseCase @Inject constructor(
-    private val repository: SessionAndUserEventRepository
-) : MediatorUseCase<ReservationRequestParameters, ReservationRequestAction>() {
+    private val repository: SessionAndUserEventRepository,
+    private val alarmUpdater: StarReserveNotificationAlarmUpdater,
+    @IoDispatcher ioDispatcher: CoroutineDispatcher
+) : UseCase<ReservationRequestParameters, ReservationRequestAction>(ioDispatcher) {
 
-    override fun execute(parameters: ReservationRequestParameters) {
-
-        DefaultScheduler.execute {
-            try {
-                val (userId, sessionId, action) = parameters
-                val updateResult = repository.changeReservation(userId, sessionId, action)
-
-                result.removeSource(updateResult)
-                result.addSource(updateResult, {
-                    result.postValue(updateResult.value)
-                })
-            } catch (e: Exception) {
-                Timber.d("Exception changing reservation")
-                result.postValue(Result.Error(e))
+    override suspend fun execute(parameters: ReservationRequestParameters):
+            ReservationRequestAction {
+        val (userId, sessionId, action) = parameters
+        return when (val updateResult = repository.changeReservation(userId, sessionId, action)) {
+            is Success -> {
+                if (parameters.userSession != null) {
+                    alarmUpdater.updateSession(
+                        parameters.userSession,
+                        parameters.userSession.userEvent.isStarred ||
+                                // TODO(b/130515170)
+                                updateResult.data is ReservationRequestAction.RequestAction
+                    )
+                }
+                updateResult.data
             }
+            is Result.Error -> throw updateResult.exception
+            Loading -> throw IllegalStateException()
         }
     }
 }
@@ -53,7 +62,8 @@ open class ReservationActionUseCase @Inject constructor(
 data class ReservationRequestParameters(
     val userId: String,
     val sessionId: SessionId,
-    val action: ReservationRequestAction
+    val action: ReservationRequestAction,
+    val userSession: UserSession?
 )
 
 sealed class ReservationRequestAction {

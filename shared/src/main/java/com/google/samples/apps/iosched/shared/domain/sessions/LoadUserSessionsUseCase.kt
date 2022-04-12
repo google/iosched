@@ -19,50 +19,44 @@ package com.google.samples.apps.iosched.shared.domain.sessions
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserSession
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
+import com.google.samples.apps.iosched.shared.domain.FlowUseCase
 import com.google.samples.apps.iosched.shared.result.Result
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 /**
  * Load [UserSession]s for a given list of sessions.
  */
+@ExperimentalCoroutinesApi
 open class LoadUserSessionsUseCase @Inject constructor(
-    private val userEventRepository: DefaultSessionAndUserEventRepository
-) : MediatorUseCase<Pair<String?, Set<SessionId>>, LoadUserSessionsUseCaseResult>() {
+    private val userEventRepository: DefaultSessionAndUserEventRepository,
+    @IoDispatcher dispatcher: CoroutineDispatcher
+) : FlowUseCase<Pair<String?, Set<SessionId>>, List<UserSession>>(dispatcher) {
 
-    override fun execute(parameters: Pair<String?, Set<String>>) {
+    override fun execute(parameters: Pair<String?, Set<String>>): Flow<Result<List<UserSession>>> {
         val (userId, eventIds) = parameters
         // Observe *all* user events
-        val userSessions = userEventRepository.getObservableUserEvents(userId)
-
-        result.removeSource(userSessions)
-        result.value = null
-        result.addSource(userSessions) {
-            DefaultScheduler.execute {
-                when (it) {
-                    is Result.Success -> {
-                        // Filter down to events for sessions we're interested in
-                        val relevantUserSessions = it.data.userSessionsPerDay
-                            .flatMap { it.value.filter { it.session.id in eventIds } }
-                            .sortedBy { it.session.startTime }
-                        if (relevantUserSessions.isNotEmpty()) {
-                            val useCaseResult = LoadUserSessionsUseCaseResult(relevantUserSessions)
-                            result.postValue(Result.Success(useCaseResult))
-                        }
-                    }
-                    is Result.Error -> {
-                        result.postValue(it)
+        return userEventRepository.getObservableUserEvents(userId).map { observableResult ->
+            when (observableResult) {
+                is Result.Success -> {
+                    // Filter down to events for sessions we're interested in
+                    val relevantUserSessions = observableResult.data.userSessions
+                        .filter { it.session.id in eventIds }
+                        .sortedBy { it.session.startTime }
+                    if (relevantUserSessions.isNotEmpty()) {
+                        val useCaseResult: List<UserSession> = relevantUserSessions
+                        Result.Success(useCaseResult)
+                    } else {
+                        Result.Error(IllegalStateException("RelevantUserSessions is empty"))
                     }
                 }
+                is Result.Error -> observableResult
+                else -> Result.Error(IllegalStateException("Result must be Success or Error"))
             }
         }
     }
-
-    fun onCleared() {
-        // This use case is no longer going to be used so remove subscriptions
-        userEventRepository.clearSingleEventSubscriptions()
-    }
 }
-
-data class LoadUserSessionsUseCaseResult(val userSessions: List<UserSession>)

@@ -19,7 +19,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:interpolator="@android:interpolator/fast_out_slow_in">
 
-    <transition class="com.google.samples.apps.iosched.widget.transition.Rotate">
+    <transition class="com.google.samples.apps.iosched.widget.transition.RotateX">
         <targets>
             <target android:targetId="@id/expand_icon" />
         </targets>

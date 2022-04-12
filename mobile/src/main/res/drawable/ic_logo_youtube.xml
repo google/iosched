@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2020 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="21dp"
+    android:height="15dp"
+    android:viewportWidth="21"
+    android:viewportHeight="15">
+
+    <path
+        android:fillColor="#ffffff"
+        android:pathData="M19.8437 2.29015C19.6122 1.4222 18.9277 0.738773 18.0599 0.506408C16.487 0.0849609 10.1769 0.0849609 10.1769 0.0849609C10.1769 0.0849609 3.86693 0.0849609 2.29401 0.506408C1.42615 0.738773 0.741728 1.4222 0.510147 2.29015C0.0882568 3.86431 0.0882568 7.14704 0.0882568 7.14704C0.0882568 7.14704 0.0882568 10.4298 0.510147 12.0039C0.741728 12.8719 1.42615 13.5553 2.29401 13.7877C3.86693 14.2091 10.1769 14.2091 10.1769 14.2091C10.1769 14.2091 16.487 14.2091 18.0599 13.7877C18.9277 13.5553 19.6122 12.8719 19.8437 12.0039C20.2656 10.4298 20.2656 7.14704 20.2656 7.14704C20.2656 7.14704 20.2656 3.86431 19.8437 2.29015ZM8.11335 10.1279V4.16616L13.387 7.14704L8.11335 10.1279Z" />
+</vector>

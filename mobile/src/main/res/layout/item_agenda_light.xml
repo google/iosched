@@ -35,8 +35,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
+        android:paddingStart="@dimen/margin_normal"
         android:paddingEnd="@dimen/margin_normal"
-        android:paddingVertical="@dimen/spacing_micro"
+        android:paddingTop="@dimen/spacing_micro"
+        android:paddingBottom="@dimen/spacing_micro"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Light"
         tools:ignore="RtlSymmetry,UnusedAttribute">
 
         <include

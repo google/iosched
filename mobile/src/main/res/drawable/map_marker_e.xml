@@ -20,12 +20,12 @@
     android:viewportWidth="40"
     android:viewportHeight="40">
     <path
-        android:fillColor="#FFFFFF"
+        android:fillColor="#4285f4"
         android:pathData="M20,0a20,20 0 1,1 0,40a20,20 0 1,1 0,-40" />
     <path
-        android:fillColor="#3FE5B6"
-        android:pathData="M20,0a20,20 0 1,1 0,40a20,20 0 1,1 0,-40M20,2a18,18 0 0,0 0,36a18,18 0 0,0 0,-36" />
+        android:fillColor="#fff"
+        android:pathData="M20,0a20,20 0 1,1 0,40a20,20 0 1,1 0,-40M20,3a17,17 0 0,0 0,34a17,17 0 0,0 0,-34" />
     <path
-        android:fillColor="#202124"
-        android:pathData="M14.68,10.37h10.44v2.57h-7.75v4.75h6.98v2.54h-6.98v4.75h7.75v2.57h-10.44z" />
+        android:fillColor="#fff"
+        android:pathData="M17.55,13.87v4.42h7.64v3.41h-7.64v4.43h8.5v3.41h-12.09v-19.07h12.09v3.41z" />
 </vector>

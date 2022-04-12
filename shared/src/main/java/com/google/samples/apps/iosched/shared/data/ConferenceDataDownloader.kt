@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.shared.data
 import android.content.Context
 import androidx.annotation.WorkerThread
 import com.google.samples.apps.iosched.shared.BuildConfig
+import java.io.IOException
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.HttpUrl
@@ -28,7 +29,6 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
-import java.io.IOException
 
 /**
  * Downloads session data.
@@ -38,10 +38,9 @@ class ConferenceDataDownloader(
     private val bootstrapVersion: String
 ) {
 
-    // TODO(jalc): Provide this, only one client should exist
     private val client: OkHttpClient by lazy {
         val logInterceptor = HttpLoggingInterceptor()
-        logInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC)
+        logInterceptor.level = HttpLoggingInterceptor.Level.BASIC
 
         val protocols = arrayListOf(Protocol.HTTP_1_1, Protocol.HTTP_2) // Support h2
 
@@ -70,13 +69,11 @@ class ConferenceDataDownloader(
 
         val request = Request.Builder()
             .url(httpBuilder.build())
-            .cacheControl(CacheControl.FORCE_NETWORK) // TODO(jalc): Needed?
+            .cacheControl(CacheControl.FORCE_NETWORK)
             .build()
 
         // Blocking call
         val response = client.newCall(request).execute()
-
-        // TODO Delete cache somehow
 
         Timber.d("Downloaded bytes: ${response.body()?.contentLength() ?: 0}")
 

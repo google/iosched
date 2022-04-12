@@ -16,21 +16,22 @@
 
 package com.google.samples.apps.iosched.tests.ui
 
-import androidx.test.InstrumentationRegistry
+import android.widget.TextView
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withParent
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.R.id
+import com.google.samples.apps.iosched.di.CoroutinesModule
 import com.google.samples.apps.iosched.tests.SetPreferencesRule
-import com.google.samples.apps.iosched.tests.SyncTaskExecutorRule
-import com.google.samples.apps.iosched.ui.MainActivity
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import org.hamcrest.CoreMatchers.allOf
-import org.junit.Before
+import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -38,30 +39,24 @@ import org.junit.runner.RunWith
 /**
  * Espresso tests for the Map screen.
  */
+@HiltAndroidTest
+@UninstallModules(CoroutinesModule::class)
 @RunWith(AndroidJUnit4::class)
 class MapTest {
 
-    @get:Rule
-    var activityRule = ActivityTestRule<MainActivity>(MainActivity::class.java)
-
-    // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule
-    var syncTaskExecutorRule = SyncTaskExecutorRule()
+    @get:Rule(order = 0)
+    var hiltRule = HiltAndroidRule(this)
 
     // Sets the preferences so no welcome screens are shown
-    @get:Rule
+    @get:Rule(order = 1)
     var preferencesRule = SetPreferencesRule()
 
-    private val resources = InstrumentationRegistry.getTargetContext().resources
-
-    @Before
-    fun goToMapScreen() {
-        onView(withId(R.id.navigation_map)).perform(ViewActions.click())
-    }
+    @get:Rule(order = 2)
+    var activityRule = MainActivityTestRule(R.id.navigation_map)
 
     @Test
-    fun info_basicViewsDisplayed() {
-        onView(allOf(withText(resources.getString(R.string.title_map)), withId(R.id.title)))
-            .check(matches(isDisplayed()))
+    fun map_basicViewsDisplayed() {
+        onView(allOf(instanceOf(TextView::class.java), withParent(withId(id.toolbar))))
+            .check(matches(withText(R.string.title_map)))
     }
 }

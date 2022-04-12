@@ -16,16 +16,17 @@
 
 package com.google.samples.apps.iosched.shared.data.signin.datasources
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.ListenerRegistration
-import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.data.document2020
 import com.google.samples.apps.iosched.shared.result.Result
-import timber.log.Timber
 import javax.inject.Inject
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import timber.log.Timber
 
 /**
  * A [RegisteredUserDataSource] that listens to changes in firestore to indicate whether the
@@ -40,64 +41,32 @@ class FirestoreRegisteredUserDataSource @Inject constructor(
         private const val REGISTERED_KEY = "registered"
     }
 
-    private var registeredChangedListenerSubscription: ListenerRegistration? = null
-
-    // Result can contain a null value (not processed) or a null result (not available).
-    private val result = MutableLiveData<Result<Boolean?>?>()
-
-    // Keeping the last observed user ID, to avoid unnecessary calls
-    private var lastUserId: String? = null
-
-    /**
-     * Listens to changes in the user document in Firestore. A Change in the "registered" field
-     * will emit a new user.
-     */
-    override fun listenToUserChanges(newUserId: String) {
-        val userId = if (lastUserId != newUserId) {
-            newUserId
-        } else {
-            // No need to refresh
-            return
-        }
-
-        // Remove the previous subscription, if it exists:
-        registeredChangedListenerSubscription?.remove()
-
-        Timber.d("LoadUserSessionUseCase FirestoreRegisteredUserDataSource = null")
-        result.postValue(null) // Reset result
-
-        // Watch the document:
-        val registeredChangedListener =
-            { snapshot: DocumentSnapshot?, _: FirebaseFirestoreException? ->
-                DefaultScheduler.execute {
+    override fun observeUserChanges(userId: String): Flow<Result<Boolean?>> {
+        return channelFlow<Result<Boolean?>> {
+            // Watch the document
+            val registeredChangedListener =
+                { snapshot: DocumentSnapshot?, _: FirebaseFirestoreException? ->
                     if (snapshot == null || !snapshot.exists()) {
                         // When the account signs in for the first time, the document doesn't exist
                         Timber.d("Document for snapshot $userId doesn't exist")
-                        result.postValue(Result.Success(false))
-                        return@execute
-                    }
-                    val isRegistered: Boolean? = snapshot.get(REGISTERED_KEY) as? Boolean
-                    // Only emit a value if it's a new value or a value change.
-                    if (result.value == null ||
-                        (result.value as? Result.Success)?.data != isRegistered
-                    ) {
+                        channel.offer(Result.Success(false))
+                    } else {
+                        val isRegistered: Boolean? = snapshot.get(REGISTERED_KEY) as? Boolean
                         Timber.d("Received registered flag: $isRegistered")
-                        result.postValue(Result.Success(isRegistered))
+                        channel.offer(Result.Success(isRegistered))
                     }
+                    Unit // Avoids returning the Boolean from channel.offer
                 }
-            }
-        registeredChangedListenerSubscription = firestore.collection(USERS_COLLECTION)
-            .document(userId).addSnapshotListener(registeredChangedListener)
-        lastUserId = userId
-    }
 
-    override fun observeResult(): LiveData<Result<Boolean?>?> {
-        return result
-    }
+            val registeredChangedListenerSubscription = firestore
+                .document2020()
+                .collection(USERS_COLLECTION)
+                .document(userId)
+                .addSnapshotListener(registeredChangedListener)
 
-    override fun setAnonymousValue() {
-        registeredChangedListenerSubscription?.remove()
-        lastUserId = null
-        result.postValue(Result.Success(false))
+            awaitClose { registeredChangedListenerSubscription.remove() }
+        }
+            // Only emit a value if it's a new value or a value change.
+            .distinctUntilChanged()
     }
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2019 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+    <string name="feature_explore_io">探索 I/O 大會</string>
+    <string name="day1">第 1 天</string>
+    <string name="day2">第 2 天</string>
+    <string name="day3">第 3 天</string>
+    <string name="day1_date">5 月 7 日</string>
+    <string name="day2_date">5 月 8 日</string>
+    <string name="day3_date">5 月 9 日</string>
+    <string name="day0">前一天</string>
+    <string name="day0_day_date">5 月 6 日 (週一)</string>
+    <string name="day1_day_date">5 月 7 日 (週二)</string>
+    <string name="day2_day_date">5 月 8 日 (週三)</string>
+    <string name="day3_day_date">5 月 9 日 (週四)</string>
+</resources>

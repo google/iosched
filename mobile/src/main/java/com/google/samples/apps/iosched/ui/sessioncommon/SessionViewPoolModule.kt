@@ -17,15 +17,18 @@
 package com.google.samples.apps.iosched.ui.sessioncommon
 
 import androidx.recyclerview.widget.RecyclerView
-import com.google.samples.apps.iosched.shared.di.FragmentScoped
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.FragmentComponent
+import dagger.hilt.android.scopes.FragmentScoped
 import javax.inject.Named
 
 /**
- * Provides [RecycleViewPool]s to share views between [RecyclerView]s.
+ * Provides [RecyclerView.RecycledViewPool]s to share views between [RecyclerView]s.
  * E.g. Between different days of the schedule.
  */
+@InstallIn(FragmentComponent::class)
 @Module
 internal class SessionViewPoolModule {
 

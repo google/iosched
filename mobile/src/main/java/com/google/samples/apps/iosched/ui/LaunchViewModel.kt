@@ -16,35 +16,25 @@
 
 package com.google.samples.apps.iosched.ui
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import com.google.samples.apps.iosched.shared.domain.prefs.OnboardingCompletedUseCase
 import com.google.samples.apps.iosched.shared.result.Event
-import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.util.map
-import javax.inject.Inject
+import com.google.samples.apps.iosched.shared.result.data
 
 /**
  * Logic for determining which screen to send users to on app launch.
  */
-class LaunchViewModel @Inject constructor(
+class LaunchViewModel @ViewModelInject constructor(
     onboardingCompletedUseCase: OnboardingCompletedUseCase
 ) : ViewModel() {
-
-    private val onboardingCompletedResult = MutableLiveData<Result<Boolean>>()
-    val launchDestination: LiveData<Event<LaunchDestination>>
-
-    init {
-        // Check if onboarding has already been completed and then navigate the user accordingly
-        onboardingCompletedUseCase(Unit, onboardingCompletedResult)
-        launchDestination = onboardingCompletedResult.map {
-            // If this check fails, prefer to launch main activity than show onboarding too often
-            if ((it as? Result.Success)?.data == false) {
-                Event(LaunchDestination.ONBOARDING)
-            } else {
-                Event(LaunchDestination.MAIN_ACTIVITY)
-            }
+    val launchDestination = liveData {
+        val result = onboardingCompletedUseCase(Unit)
+        if (result.data == false) {
+            emit(Event(LaunchDestination.ONBOARDING))
+        } else {
+            emit(Event(LaunchDestination.MAIN_ACTIVITY))
         }
     }
 }

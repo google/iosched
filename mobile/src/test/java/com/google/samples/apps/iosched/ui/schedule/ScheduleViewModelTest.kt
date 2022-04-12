@@ -18,60 +18,58 @@
 
 package com.google.samples.apps.iosched.ui.schedule
 
-import android.net.Uri
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.androidtest.util.LiveDataTestUtil
-import com.google.samples.apps.iosched.model.Block
+import com.google.samples.apps.iosched.androidtest.util.observeForTesting
 import com.google.samples.apps.iosched.model.ConferenceData
-import com.google.samples.apps.iosched.model.MobileTestData
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.model.TestDataSource
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
-import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfoBasic
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
-import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessage
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventMessageChangeType
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.RefreshConferenceDataUseCase
-import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
-import com.google.samples.apps.iosched.shared.domain.prefs.LoadSelectedFiltersUseCase
-import com.google.samples.apps.iosched.shared.domain.prefs.SaveSelectedFiltersUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.ScheduleUiHintsShownUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsParameters
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsResult
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadScheduleUserSessionsUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.ObserveConferenceDataUseCase
 import com.google.samples.apps.iosched.shared.domain.settings.GetTimeZoneUseCase
-import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
+import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Event
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
+import com.google.samples.apps.iosched.test.data.CoroutineScope
+import com.google.samples.apps.iosched.test.data.MainCoroutineRule
 import com.google.samples.apps.iosched.test.data.TestData
-import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.test.data.runBlockingTest
 import com.google.samples.apps.iosched.test.util.fakes.FakeAnalyticsHelper
+import com.google.samples.apps.iosched.test.util.fakes.FakeAppDatabase
 import com.google.samples.apps.iosched.test.util.fakes.FakePreferenceStorage
 import com.google.samples.apps.iosched.test.util.fakes.FakeSignInViewModelDelegate
 import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
-import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
-import com.google.samples.apps.iosched.ui.schedule.filters.EventFilter
-import com.google.samples.apps.iosched.ui.schedule.filters.LoadEventFiltersUseCase
 import com.google.samples.apps.iosched.ui.signin.FirebaseSignInViewModelDelegate
 import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.core.Is.`is`
@@ -88,161 +86,51 @@ import org.mockito.Mockito.verify
 /**
  * Unit tests for the [ScheduleViewModel].
  */
+@FlowPreview
 class ScheduleViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    // Executes tasks in a synchronous [TaskScheduler]
+    // Overrides Dispatchers.Main used in Coroutines
     @get:Rule
-    var syncTaskExecutorRule = SyncTaskExecutorRule()
+    var coroutineRule = MainCoroutineRule()
+
+    private val testDispatcher = coroutineRule.testDispatcher
 
     @Test
-    fun testDataIsLoaded_ObservablesUpdated() { // TODO: Very slow test (1s)
-        // Create test use cases with test data
-        val loadSessionsUseCase = LoadUserSessionsByDayUseCase(
-            DefaultSessionAndUserEventRepository(
-                TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
-            )
-        )
-        val loadTagsUseCase = LoadEventFiltersUseCase(TagRepository(TestDataRepository))
+    fun testDataIsLoaded_ObservablesUpdated() = coroutineRule.runBlockingTest {
+        // Create a delegate so we can load a user
         val signInDelegate = FakeSignInViewModelDelegate()
 
         // Create ViewModel with the use cases
-        val viewModel = createScheduleViewModel(
-            loadSessionsUseCase = loadSessionsUseCase,
-            loadTagsUseCase = loadTagsUseCase,
-            signInViewModelDelegate = signInDelegate
-        )
+        val viewModel = createScheduleViewModel(signInViewModelDelegate = signInDelegate)
 
         // Kick off the viewmodel by loading a user.
         signInDelegate.loadUser("test")
 
         // Observe viewmodel to load sessions
-        viewModel.getSessionTimeDataForDay(0).observeForever {}
-
-        // Check that data were loaded correctly
-        // Sessions
-        TestData.TestConferenceDays.forEachIndexed { index, day ->
-
+        viewModel.scheduleUiData.observeForTesting {
+            // Check that data were loaded correctly
             assertEquals(
-                TestData.userSessionMap[day],
-                LiveDataTestUtil.getValue(viewModel.getSessionTimeDataForDay(index))?.list
+                TestData.userSessionList,
+                LiveDataTestUtil.getValue(viewModel.scheduleUiData)?.list
             )
+            assertFalse(LiveDataTestUtil.getValue(viewModel.isLoading)!!)
         }
-        assertFalse(LiveDataTestUtil.getValue(viewModel.isLoading)!!)
-        // Tags
-        val loadedFilters = LiveDataTestUtil.getValue(viewModel.eventFilters)
-        assertTrue(loadedFilters?.containsAll(MobileTestData.tagFiltersList) ?: false)
     }
 
     @Test
-    fun profileClicked_whileLoggedIn_showsSignOutDialog() {
-        // Given a ViewModel with a signed in user
-        val signInViewModelDelegate = createSignInViewModelDelegate().apply {
-            injectIsSignedIn = true
-        }
-        val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelDelegate)
-
-        // When profile is clicked
-        viewModel.onProfileClicked()
-
-        // Then the sign out dialog should be shown
-        val signOutEvent = LiveDataTestUtil.getValue(viewModel.navigateToSignOutDialogAction)
-        assertNotNull(signOutEvent?.getContentIfNotHandled())
-    }
-
-    @Test
-    fun profileClicked_whileLoggedOut_showsSignInDialog() {
-        // Given a ViewModel with no signed in user
-        val signInViewModelDelegate = createSignInViewModelDelegate().apply {
-            injectIsSignedIn = false
-        }
-        val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelDelegate)
-
-        // When profile is clicked
-        viewModel.onProfileClicked()
-
-        // Then the sign in dialog should ne shown
-        val signInEvent = LiveDataTestUtil.getValue(viewModel.navigateToSignInDialogAction)
-        assertNotNull(signInEvent?.getContentIfNotHandled())
-    }
-
-    @Test
-    fun loggedInUser_setsProfileContentDescription() {
-        // Given a mock firebase user
-        val mockUser = mock<AuthenticatedUserInfoBasic> {
-            on { getUid() }.doReturn("123")
-            on { getPhotoUrl() }.doReturn(mock<Uri> {})
-            on { isSignedIn() }.doReturn(true)
-        }
-
+    fun testDataIsLoaded_Fails() = coroutineRule.runBlockingTest {
         // Create ViewModel
-        val observableFirebaseUserUseCase =
-            FakeObserveUserAuthStateUseCase(
-                user = Result.Success(mockUser),
-                isRegistered = Result.Success(false)
-            )
-        val signInViewModelComponent = FirebaseSignInViewModelDelegate(
-            observableFirebaseUserUseCase,
-            mock {})
-        val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
-
-        // Check that the expected content description is set
-        assertEquals(
-            R.string.sign_out,
-            LiveDataTestUtil.getValue(viewModel.profileContentDesc)
+        val viewModel = createScheduleViewModel(
+            loadScheduleSessionsUseCase = createExceptionUseCase()
         )
-    }
-
-    @Test
-    fun noLoggedInUser_setsProfileContentDescription() {
-        // Given no firebase user
-        val noFirebaseUser = null
-
-        // Create ViewModel
-        val observableFirebaseUserUseCase =
-            FakeObserveUserAuthStateUseCase(
-                user = Result.Success(noFirebaseUser),
-                isRegistered = Result.Success(false)
-            )
-        val signInViewModelComponent = FirebaseSignInViewModelDelegate(
-            observableFirebaseUserUseCase,
-            mock {})
-
-        val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
-
-        // Check that the expected content description is set
-        assertEquals(R.string.sign_in, LiveDataTestUtil.getValue(viewModel.profileContentDesc))
-    }
-
-    @Test
-    fun errorLoggingIn_setsProfileContentDescription() {
-        // Given no firebase user
-        val errorLoadingFirebaseUser = Result.Error(Exception())
-
-        // Create ViewModel
-        val observableFirebaseUserUseCase =
-            FakeObserveUserAuthStateUseCase(
-                user = errorLoadingFirebaseUser,
-                isRegistered = Result.Success(false)
-            )
-        val signInViewModelComponent = FirebaseSignInViewModelDelegate(
-            observableFirebaseUserUseCase,
-            mock {})
-        val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
-
-        // Check that the expected content description is set
-        assertEquals(R.string.sign_in, LiveDataTestUtil.getValue(viewModel.profileContentDesc))
-    }
-
-    @Test
-    fun testDataIsLoaded_Fails() {
-        // Create ViewModel
-        val viewModel = createScheduleViewModel()
-        val errorMsg = LiveDataTestUtil.getValue(viewModel.errorMessage)
-        assertTrue(errorMsg?.peekContent()?.isNotEmpty() ?: false)
+        viewModel.errorMessage.observeForTesting {
+            val errorMsg = LiveDataTestUtil.getValue(viewModel.errorMessage)
+            assertTrue(errorMsg?.peekContent()?.isNotEmpty() ?: false)
+        }
     }
 
     /** Starring **/
@@ -305,37 +193,36 @@ class ScheduleViewModelTest {
     /** New reservation / waitlist **/
 
     @Test
-    fun reservationReceived() {
+    fun reservationReceived() = coroutineRule.runBlockingTest {
         // Create test use cases with test data
-        val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
-        val source = TestUserEventDataSource(userEventsResult)
+        val testUserId = "test"
+        val source = TestUserEventDataSource()
         val loadSessionsUseCase = createTestLoadUserSessionsByDayUseCase(source)
         val signInDelegate = FakeSignInViewModelDelegate()
         val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
         val viewModel = createScheduleViewModel(
-            loadSessionsUseCase = loadSessionsUseCase,
+            loadScheduleSessionsUseCase = loadSessionsUseCase,
             signInViewModelDelegate = signInDelegate,
             snackbarMessageManager = snackbarMessageManager
         )
 
         // Kick off the viewmodel by loading a user.
-        signInDelegate.loadUser("test")
+        signInDelegate.loadUser(testUserId)
 
         // Observe viewmodel to load sessions
-        viewModel.getSessionTimeDataForDay(0).observeForever {}
+        viewModel.scheduleUiData.observeForever { }
 
         // Observe snackbar so messages are received
         viewModel.snackBarMessage.observeForever { }
 
         // A session goes from not-reserved to reserved
-        val oldValue = LiveDataTestUtil.getValue(userEventsResult)
-        val newValue = oldValue!!.copy(
+        val oldValue = UserEventsResult(TestData.userEvents)
+        val newValue = oldValue.copy(
             userEventsMessage = UserEventMessage(
                 UserEventMessageChangeType.CHANGES_IN_RESERVATIONS
             )
         )
-
-        userEventsResult.postValue(newValue)
+        source.newObservableUserEvents.offer(newValue)
 
         val reservationMessage: Event<SnackbarMessage>? =
             LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
@@ -346,15 +233,14 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun waitlistReceived() {
+    fun waitlistReceived() = coroutineRule.runBlockingTest {
         // Create test use cases with test data
-        val userEventsResult = MutableLiveData<UserEventsResult>()
-        val source = TestUserEventDataSource(userEventsResult)
+        val source = TestUserEventDataSource()
         val loadSessionsUseCase = createTestLoadUserSessionsByDayUseCase(source)
         val signInDelegate = FakeSignInViewModelDelegate()
         val snackbarMessageManager = SnackbarMessageManager(FakePreferenceStorage())
         val viewModel = createScheduleViewModel(
-            loadSessionsUseCase = loadSessionsUseCase,
+            loadScheduleSessionsUseCase = loadSessionsUseCase,
             signInViewModelDelegate = signInDelegate,
             snackbarMessageManager = snackbarMessageManager
         )
@@ -363,22 +249,21 @@ class ScheduleViewModelTest {
         signInDelegate.loadUser("test")
 
         // Observe viewmodel to load sessions
-        viewModel.getSessionTimeDataForDay(0).observeForever {}
+        viewModel.scheduleUiData.observeForever {}
 
         // Observe snackbar so messages are received
         viewModel.snackBarMessage.observeForever { }
 
         // A session goes from not-reserved to reserved
-        val oldValue = LiveDataTestUtil.getValue(userEventsResult)
-        val newValue = oldValue!!.copy(
+        val oldValue = UserEventsResult(TestData.userEvents)
+        val newValue = oldValue.copy(
             userEventsMessage = UserEventMessage(UserEventMessageChangeType.CHANGES_IN_WAITLIST)
         )
 
-        userEventsResult.postValue(newValue)
+        source.newObservableUserEvents.offer(newValue)
 
         val waitlistMessage: Event<SnackbarMessage>? =
             LiveDataTestUtil.getValue(snackbarMessageManager.observeNextMessage())
-
         assertThat(
             waitlistMessage?.getContentIfNotHandled()?.messageId,
             `is`(equalTo(R.string.waitlist_new))
@@ -386,92 +271,120 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun noLoggedInUser_showsReservationButton() {
+    fun noLoggedInUser_showsReservationButton() = coroutineRule.runBlockingTest {
         // Given no logged in user
         val noFirebaseUser = null
 
         // Create ViewModel
-        val observableFirebaseUserUseCase =
-            FakeObserveUserAuthStateUseCase(
-                user = Result.Success(noFirebaseUser),
-                isRegistered = Result.Success(false)
-            )
+        val observableFirebaseUserUseCase = FakeObserveUserAuthStateUseCase(
+            user = Result.Success(noFirebaseUser),
+            isRegistered = Result.Success(false),
+            coroutineScope = coroutineRule.CoroutineScope(),
+            coroutineDispatcher = testDispatcher
+        )
         val signInViewModelComponent = FirebaseSignInViewModelDelegate(
             observableFirebaseUserUseCase,
-            mock {})
-
+            mock {},
+            testDispatcher,
+            testDispatcher,
+            true
+        )
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
-        // Check that reservation buttons are shown
-        assertEquals(true, LiveDataTestUtil.getValue(viewModel.showReservations))
+        viewModel.showReservations.observeForTesting {
+            // Check that reservation buttons are shown
+            assertEquals(true, LiveDataTestUtil.getValue(viewModel.showReservations))
+        }
     }
 
     @Test
-    fun loggedInUser_registered_showsReservationButton() {
+    fun loggedInUser_registered_showsReservationButton() = coroutineRule.runBlockingTest {
         // Given a logged in user
         val mockUser = mock<AuthenticatedUserInfoBasic> {
+            on { getUid() }.doReturn("uuid")
             on { isSignedIn() }.doReturn(true)
         }
 
         // Who is registered
-        val observableFirebaseUserUseCase =
-            FakeObserveUserAuthStateUseCase(
-                user = Result.Success(mockUser),
-                isRegistered = Result.Success(true)
-            )
+        val observableFirebaseUserUseCase = FakeObserveUserAuthStateUseCase(
+            user = Result.Success(mockUser),
+            isRegistered = Result.Success(true),
+            coroutineScope = coroutineRule.CoroutineScope(),
+            coroutineDispatcher = testDispatcher
+        )
         val signInViewModelComponent = FirebaseSignInViewModelDelegate(
             observableFirebaseUserUseCase,
-            mock {})
-
+            mock {},
+            testDispatcher,
+            testDispatcher,
+            true
+        )
         // Create ViewModel
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
-        // Check that reservation buttons are shown
-        assertEquals(true, LiveDataTestUtil.getValue(viewModel.showReservations))
+        viewModel.showReservations.observeForTesting {
+            // Check that reservation buttons are shown
+            assertEquals(true, LiveDataTestUtil.getValue(viewModel.showReservations))
+        }
     }
 
     @Test
-    fun loggedInUser_notRegistered_hidesReservationButton() {
+    fun loggedInUser_notRegistered_hidesReservationButton() = coroutineRule.runBlockingTest {
         // Given a logged in user
         val mockUser = mock<AuthenticatedUserInfoBasic> {
+            on { getUid() }.doReturn("uuid")
             on { isSignedIn() }.doReturn(true)
         }
 
         // Who isn't registered
-        val observableFirebaseUserUseCase =
-            FakeObserveUserAuthStateUseCase(
-                user = Result.Success(mockUser),
-                isRegistered = Result.Success(false)
-            )
+        val observableFirebaseUserUseCase = FakeObserveUserAuthStateUseCase(
+            user = Result.Success(mockUser),
+            isRegistered = Result.Success(false),
+            coroutineScope = coroutineRule.CoroutineScope(),
+            coroutineDispatcher = testDispatcher
+        )
         val signInViewModelComponent = FirebaseSignInViewModelDelegate(
             observableFirebaseUserUseCase,
-            mock {})
+            mock {},
+            testDispatcher,
+            testDispatcher,
+            true
+        )
 
         // Create ViewModel
         val viewModel = createScheduleViewModel(signInViewModelDelegate = signInViewModelComponent)
 
-        // Check that *no* reservation buttons are shown
-        assertEquals(false, LiveDataTestUtil.getValue(viewModel.showReservations))
+        // Observe signIn and registeredUser so messages are received
+        signInViewModelComponent.observeRegisteredUser().observeForever { }
+        signInViewModelComponent.observeSignedInUser().observeForever { }
+
+        viewModel.showReservations.observeForTesting {
+            // Check that *no* reservation buttons are shown
+            assertEquals(false, LiveDataTestUtil.getValue(viewModel.showReservations))
+        }
     }
 
     @Test
-    fun scheduleHints_notShown_on_launch() {
+    fun scheduleHints_notShown_on_launch() = coroutineRule.runBlockingTest {
         val viewModel = createScheduleViewModel()
-
-        val event = LiveDataTestUtil.getValue(viewModel.scheduleUiHintsShown)
-        assertEquals(event?.getContentIfNotHandled(), false)
+        viewModel.scheduleUiHintsShown.observeForTesting {
+            val event = LiveDataTestUtil.getValue(viewModel.scheduleUiHintsShown)
+            assertEquals(event?.getContentIfNotHandled(), false)
+        }
     }
 
     @Test
-    fun swipeRefresh_refreshesRemoteConfData() {
+    fun swipeRefresh_refreshesRemoteConfData() = coroutineRule.runBlockingTest {
         // Given a view model with a mocked remote data source
         val remoteDataSource = mock<ConferenceDataSource> {}
         val viewModel = createScheduleViewModel(
             refreshConferenceDataUseCase = RefreshConferenceDataUseCase(
                 ConferenceDataRepository(
                     remoteDataSource = remoteDataSource,
-                    boostrapDataSource = TestDataSource
-                )
+                    boostrapDataSource = TestDataSource,
+                    appDatabase = FakeAppDatabase()
+                ),
+                testDispatcher
             )
         )
 
@@ -481,33 +394,36 @@ class ScheduleViewModelTest {
         // Then the remote data source attempts to fetch new data
         verify(remoteDataSource).getRemoteConferenceData()
 
-        // And the swipe refreshing status is set to false
-        assertEquals(false, LiveDataTestUtil.getValue(viewModel.swipeRefreshing))
+        viewModel.swipeRefreshing.observeForTesting {
+            // And the swipe refreshing status is set to false
+            assertEquals(false, LiveDataTestUtil.getValue(viewModel.swipeRefreshing))
+        }
     }
 
     @Test
     fun newDataFromConfRepo_scheduleUpdated() {
         val repo = ConferenceDataRepository(
             remoteDataSource = TestConfDataSourceSession0(),
-            boostrapDataSource = BootstrapDataSourceSession3()
+            boostrapDataSource = BootstrapDataSourceSession3(),
+            appDatabase = FakeAppDatabase()
         )
 
         val loadUserSessionsByDayUseCase = createTestLoadUserSessionsByDayUseCase(
             conferenceDataRepo = repo
         )
         val viewModel = createScheduleViewModel(
-            loadSessionsUseCase = loadUserSessionsByDayUseCase,
-            observeConferenceDataUseCase = ObserveConferenceDataUseCase(repo)
+            loadScheduleSessionsUseCase = loadUserSessionsByDayUseCase,
+            observeConferenceDataUseCase = ObserveConferenceDataUseCase(repo, testDispatcher)
         )
 
         // Observe viewmodel to load sessions
-        viewModel.getSessionTimeDataForDay(0).observeForever {}
+        viewModel.scheduleUiData.observeForever {}
 
         // Trigger a refresh on the repo
         repo.refreshCacheWithRemoteConferenceData()
 
         // The new value should be present
-        val newValue = LiveDataTestUtil.getValue(viewModel.getSessionTimeDataForDay(0))
+        val newValue = LiveDataTestUtil.getValue(viewModel.scheduleUiData)
 
         assertThat(
             newValue?.list?.first()?.session,
@@ -516,12 +432,10 @@ class ScheduleViewModelTest {
     }
 
     private fun createScheduleViewModel(
-        loadSessionsUseCase: LoadUserSessionsByDayUseCase =
+        loadScheduleSessionsUseCase: LoadScheduleUserSessionsUseCase =
             createTestLoadUserSessionsByDayUseCase(),
-        loadAgendaUseCase: LoadAgendaUseCase = createAgendaExceptionUseCase(),
-        loadTagsUseCase: LoadEventFiltersUseCase = createEventFiltersExceptionUseCase(),
-        signInViewModelDelegate: SignInViewModelDelegate = createSignInViewModelDelegate(),
-        starEventUseCase: StarEventUseCase = createStarEventUseCase(),
+        signInViewModelDelegate: SignInViewModelDelegate = FakeSignInViewModelDelegate(),
+        starEventUseCase: StarEventAndNotifyUseCase = createStarEventUseCase(),
         snackbarMessageManager: SnackbarMessageManager = SnackbarMessageManager(
             FakePreferenceStorage()
         ),
@@ -530,19 +444,13 @@ class ScheduleViewModelTest {
         getTimeZoneUseCase: GetTimeZoneUseCase = createGetTimeZoneUseCase(),
         topicSubscriber: TopicSubscriber = mock {},
         refreshConferenceDataUseCase: RefreshConferenceDataUseCase =
-            RefreshConferenceDataUseCase(TestDataRepository),
+            RefreshConferenceDataUseCase(TestDataRepository, testDispatcher),
         observeConferenceDataUseCase: ObserveConferenceDataUseCase =
-            ObserveConferenceDataUseCase(TestDataRepository),
-        loadSelectedFiltersUseCase: LoadSelectedFiltersUseCase =
-            LoadSelectedFiltersUseCase(FakePreferenceStorage()),
-        saveSelectedFiltersUseCase: SaveSelectedFiltersUseCase =
-            SaveSelectedFiltersUseCase(FakePreferenceStorage()),
+            ObserveConferenceDataUseCase(TestDataRepository, testDispatcher),
         analyticsHelper: AnalyticsHelper = FakeAnalyticsHelper()
     ): ScheduleViewModel {
         return ScheduleViewModel(
-            loadUserSessionsByDayUseCase = loadSessionsUseCase,
-            loadAgendaUseCase = loadAgendaUseCase,
-            loadEventFiltersUseCase = loadTagsUseCase,
+            loadScheduleUserSessionsUseCase = loadScheduleSessionsUseCase,
             signInViewModelDelegate = signInViewModelDelegate,
             starEventUseCase = starEventUseCase,
             scheduleUiHintsShownUseCase = scheduleUiHintsShownUseCase,
@@ -551,90 +459,74 @@ class ScheduleViewModelTest {
             getTimeZoneUseCase = getTimeZoneUseCase,
             refreshConferenceDataUseCase = refreshConferenceDataUseCase,
             observeConferenceDataUseCase = observeConferenceDataUseCase,
-            loadSelectedFiltersUseCase = loadSelectedFiltersUseCase,
-            saveSelectedFiltersUseCase = saveSelectedFiltersUseCase,
             analyticsHelper = analyticsHelper
         )
     }
 
     /**
-     * Creates a test [LoadUserSessionsByDayUseCase].
+     * Creates a test [LoadScheduleUserSessionsUseCase].
      */
     private fun createTestLoadUserSessionsByDayUseCase(
         userEventDataSource: UserEventDataSource = TestUserEventDataSource(),
         conferenceDataRepo: ConferenceDataRepository = TestDataRepository
-    ): LoadUserSessionsByDayUseCase {
+    ): LoadScheduleUserSessionsUseCase {
         val sessionRepository = DefaultSessionRepository(conferenceDataRepo)
         val userEventRepository = DefaultSessionAndUserEventRepository(
             userEventDataSource, sessionRepository
         )
 
-        return LoadUserSessionsByDayUseCase(userEventRepository)
+        return LoadScheduleUserSessionsUseCase(userEventRepository, testDispatcher)
     }
 
     /**
      * Creates a use case that throws an exception.
      */
-    private fun createEventFiltersExceptionUseCase(): LoadEventFiltersUseCase {
-        return object : LoadEventFiltersUseCase(TagRepository(TestDataRepository)) {
-            override fun execute(parameters: UserSessionMatcher): List<EventFilter> {
-                throw Exception("Testing exception")
+    private fun createExceptionUseCase(): LoadScheduleUserSessionsUseCase {
+        return object : LoadScheduleUserSessionsUseCase(mock {}, testDispatcher) {
+            override fun execute(parameters: LoadScheduleUserSessionsParameters):
+                Flow<Result<LoadScheduleUserSessionsResult>> = flow {
+                throw Exception("Loading failed")
             }
         }
     }
 
-    /**
-     * Creates a use case that throws an exception.
-     */
-    private fun createAgendaExceptionUseCase(): LoadAgendaUseCase {
-        return object : LoadAgendaUseCase(AgendaRepository()) {
-            override fun execute(parameters: Unit): List<Block> {
-                throw Exception("Testing exception")
-            }
-        }
-    }
-
-    private fun createSignInViewModelDelegate() = FakeSignInViewModelDelegate()
-
-    private fun createStarEventUseCase() = FakeStarEventUseCase()
+    private fun createStarEventUseCase() = FakeStarEventUseCase(testDispatcher)
 
     private fun createGetTimeZoneUseCase() =
-        object : GetTimeZoneUseCase(FakePreferenceStorage()) {}
+        GetTimeZoneUseCase(FakePreferenceStorage(), testDispatcher)
 }
 
 class TestRegisteredUserDataSource(private val isRegistered: Result<Boolean?>) :
     RegisteredUserDataSource {
-    override fun listenToUserChanges(userId: String) {}
-
-    override fun observeResult(): LiveData<Result<Boolean?>?> {
-        return MutableLiveData<Result<Boolean?>?>().apply { value = isRegistered }
+    override fun observeUserChanges(userId: String): Flow<Result<Boolean?>> = flow {
+        emit(isRegistered)
     }
-
-    override fun setAnonymousValue() {}
 }
 
 class TestAuthStateUserDataSource(
-    private val user: Result<AuthenticatedUserInfoBasic?>?
+    private val user: Result<AuthenticatedUserInfoBasic?>
 ) : AuthStateUserDataSource {
-    override fun startListening() {}
-
-    override fun getBasicUserInfo(): LiveData<Result<AuthenticatedUserInfoBasic?>> =
-        MutableLiveData<Result<AuthenticatedUserInfoBasic?>>().apply { value = user }
-
-    override fun clearListener() {}
+    override fun getBasicUserInfo(): Flow<Result<AuthenticatedUserInfoBasic?>> = flow {
+        emit(user)
+    }
 }
 
 class FakeObserveUserAuthStateUseCase(
-    user: Result<AuthenticatedUserInfoBasic?>?,
-    isRegistered: Result<Boolean?>
+    user: Result<AuthenticatedUserInfoBasic?>,
+    isRegistered: Result<Boolean?>,
+    coroutineScope: CoroutineScope,
+    coroutineDispatcher: CoroutineDispatcher
 ) : ObserveUserAuthStateUseCase(
     TestRegisteredUserDataSource(isRegistered),
     TestAuthStateUserDataSource(user),
-    mock {}
+    mock {},
+    coroutineScope,
+    coroutineDispatcher
 )
 
 class FakeScheduleUiHintsShownUseCase : ScheduleUiHintsShownUseCase(
-    preferenceStorage = FakePreferenceStorage()
+    preferenceStorage = FakePreferenceStorage(),
+    dispatcher = TestCoroutineDispatcher()
 )
 
 class TestConfDataSourceSession0 : ConferenceDataSource {
@@ -648,9 +540,10 @@ class TestConfDataSourceSession0 : ConferenceDataSource {
 
     private val conferenceData = ConferenceData(
         sessions = listOf(TestData.session0),
-        tags = listOf(TestData.androidTag, TestData.webTag),
         speakers = listOf(TestData.speaker1),
         rooms = emptyList(),
+        codelabs = emptyList(),
+        tags = listOf(TestData.androidTag, TestData.webTag),
         version = 42
     )
 }
@@ -663,9 +556,10 @@ class BootstrapDataSourceSession3 : ConferenceDataSource {
     override fun getOfflineConferenceData(): ConferenceData? {
         return ConferenceData(
             sessions = listOf(TestData.session3),
-            tags = listOf(TestData.androidTag, TestData.webTag),
             speakers = listOf(TestData.speaker1),
             rooms = emptyList(),
+            codelabs = emptyList(),
+            tags = listOf(TestData.androidTag, TestData.webTag),
             version = 42
         )
     }

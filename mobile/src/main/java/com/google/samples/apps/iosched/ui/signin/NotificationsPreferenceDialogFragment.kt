@@ -16,73 +16,53 @@
 
 package com.google.samples.apps.iosched.ui.signin
 
-import android.content.Context
+import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
-import com.google.samples.apps.iosched.widget.CustomDimDialogFragment
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.AndroidSupportInjection
-import dagger.android.support.HasSupportFragmentInjector
-import kotlinx.android.synthetic.main.dialog_notifications_preference.notifications_pref_button_no
-import kotlinx.android.synthetic.main.dialog_notifications_preference.notifications_pref_button_yes
+import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefSaveActionUseCase
+import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefShownActionUseCase
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * Dialog that asks the user notifications preference.
+ * Dialog that asks for the user's notifications preference.
  */
-class NotificationsPreferenceDialogFragment : CustomDimDialogFragment(),
-    HasSupportFragmentInjector {
+@AndroidEntryPoint
+class NotificationsPreferenceDialogFragment : AppCompatDialogFragment() {
 
     @Inject
-    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
-
+    lateinit var notificationsPrefSaveActionUseCase: NotificationsPrefSaveActionUseCase
     @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var notificationsPrefShownActionUseCase: NotificationsPrefShownActionUseCase
 
-    private lateinit var viewModel: NotificationsPreferenceViewModel
-
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
-        return fragmentInjector
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.notifications_preference_dialog_title)
+            .setMessage(R.string.notifications_preference_dialog_content)
+            .setNegativeButton(R.string.no) { _, _ ->
+                lifecycleScope.launch {
+                    notificationsPrefSaveActionUseCase(false)
+                }
+            }
+            .setPositiveButton(R.string.yes) { _, _ ->
+                lifecycleScope.launch {
+                    notificationsPrefSaveActionUseCase(true)
+                }
+            }
+            .create()
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        AndroidSupportInjection.inject(this)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.dialog_notifications_preference, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel = viewModelProvider(viewModelFactory)
-
-        notifications_pref_button_no.setOnClickListener {
-            viewModel.onNoClicked()
-            dismiss()
+    override fun onDismiss(dialog: DialogInterface) {
+        GlobalScope.launch {
+            notificationsPrefShownActionUseCase(true)
         }
-        notifications_pref_button_yes.setOnClickListener {
-            viewModel.onYesClicked()
-            dismiss()
-        }
-    }
-
-    override fun onDismiss(dialog: DialogInterface?) {
         super.onDismiss(dialog)
-        viewModel.onDismissed()
     }
 
     companion object {

@@ -46,7 +46,7 @@ data class SessionTemp(
     /**
      * Body of text explaining this session in detail.
      */
-    val abstract: String,
+    val description: String,
 
     /**
      * Full URL for the session online.
@@ -59,11 +59,6 @@ data class SessionTemp(
     val room: String,
 
     /**
-     * Url for the session livestream.
-     */
-    val liveStreamUrl: String,
-
-    /**
      * Indicates if the Session has a live stream.
      */
     val isLivestream: Boolean,
@@ -72,6 +67,11 @@ data class SessionTemp(
      * Full URL to YouTube.
      */
     val youTubeUrl: String,
+
+    /**
+     * URL to the Dory page.
+     */
+    val doryLink: String,
 
     /**
      * IDs of the `Tag`s associated with the session. Ordered, with the most important tags
@@ -87,7 +87,7 @@ data class SessionTemp(
     /**
      * The session's photo URL.
      */
-    val photoUrl: String?,
+    val photoUrl: String,
 
     /**
      * IDs of the sessions related to this session.

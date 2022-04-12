@@ -15,61 +15,169 @@
   ~ limitations under the License.
   -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <import type="com.google.samples.apps.iosched.BuildConfig" />
+
         <variable
             name="viewModel"
-            type="com.google.samples.apps.iosched.ui.info.SettingsViewModel" />
+            type="com.google.samples.apps.iosched.ui.settings.SettingsViewModel" />
     </data>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/settings_scroll"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbarStyle="insideOverlay"
-        android:scrollbars="vertical">
+        android:fitsSystemWindows="true">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/settings_layout"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            style="@style/Widget.IOSched.AppBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true">
 
-            <!--TODO: make button ripple the entire width of row for switches-->
-            <Switch
-                android:id="@+id/settings_time_zone"
-                style="@style/TextAppearance.IOSched.SettingsSwitch"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                app:navigationContentDescription="@string/a11y_show_navigation"
+                app:navigationIcon="@drawable/ic_menu"
+                app:title="@string/settings_title" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/settings_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:scrollbarStyle="insideOverlay"
+            android:scrollbars="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:id="@+id/settings_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:checked="@{viewModel.preferConferenceTimeZone}"
-                android:onCheckedChanged="@{(view, checked) -> viewModel.toggleTimeZone(checked)}"
-                android:text="@string/settings_time_zone_label"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:orientation="vertical"
+                android:paddingTop="@dimen/margin_normal"
+                android:paddingBottom="@dimen/margin_normal"
+                tools:targetApi="o">
 
-            <Switch
-                android:id="@+id/settings_enable_notifications"
-                style="@style/TextAppearance.IOSched.SettingsSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checked="@{viewModel.enableNotifications}"
-                android:onCheckedChanged="@{(view, checked) -> viewModel.toggleEnableNotifications(checked)}"
-                android:text="@string/settings_enable_notifications"
-                app:layout_constraintTop_toBottomOf="@+id/settings_time_zone" />
+                <TextView
+                    android:id="@+id/settings_choose_theme"
+                    style="@style/Widget.IOSched.Settings.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:onClick="@{(view) -> viewModel.onThemeSettingClicked()}"
+                    android:text="@string/settings_theme_title" />
 
-            <Switch
-                android:id="@+id/settings_send_anonymous_usage_statistics"
-                style="@style/TextAppearance.IOSched.SettingsSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checked="@{viewModel.sendUsageStatistics}"
-                android:onCheckedChanged="@{(view, checked) -> viewModel.toggleSendUsageStatistics(checked)}"
-                android:text="@string/settings_send_anonymous_usage_statistics"
-                app:layout_constraintTop_toBottomOf="@+id/settings_enable_notifications" />
+                <!-- AppCompat/MaterialComponents layout inflators don't automatically handle
+                     Switch widgets. See https://material.io/develop/android/components/switch/ -->
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/settings_time_zone"
+                    style="@style/Widget.IOSched.Settings.Switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="@{viewModel.preferConferenceTimeZone}"
+                    android:onCheckedChanged="@{(view, checked) -> viewModel.toggleTimeZone(checked)}"
+                    android:text="@string/settings_time_zone_label" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/settings_enable_notifications"
+                    style="@style/Widget.IOSched.Settings.Switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="@{viewModel.enableNotifications}"
+                    android:onCheckedChanged="@{(view, checked) -> viewModel.toggleEnableNotifications(checked)}"
+                    android:text="@string/settings_enable_notifications" />
 
-    </androidx.core.widget.NestedScrollView>
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/settings_send_anonymous_usage_statistics"
+                    style="@style/Widget.IOSched.Settings.Switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="@{viewModel.sendUsageStatistics}"
+                    android:onCheckedChanged="@{(view, checked) -> viewModel.toggleSendUsageStatistics(checked)}"
+                    android:text="@string/settings_send_anonymous_usage_statistics" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:dividerHorizontal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_normal"
+                    android:layout_marginLeft="@dimen/margin_normal"
+                    android:layout_marginRight="@dimen/margin_normal"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:textAppearance="@style/TextAppearance.IOSched.Overline"
+                    android:text="@string/about_title" />
+
+                <TextView
+                    android:id="@+id/terms_of_service"
+                    style="@style/Widget.IOSched.Settings.Button.About"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_tos"
+                    app:websiteLink="@{@string/tos_url}" />
+
+                <TextView
+                    android:id="@+id/privacy_policy"
+                    style="@style/Widget.IOSched.Settings.Button.About"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_privacy_policy"
+                    app:websiteLink="@{@string/privacy_policy_url}" />
+
+                <TextView
+                    android:id="@+id/open_source_license"
+                    style="@style/Widget.IOSched.Settings.Button.About"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_oss_licenses"
+                    app:dialogTitle="@{@string/settings_oss_licenses}"
+                    app:fileLink="@{@string/oss_file}" />
+
+                <TextView
+                    android:id="@+id/version_build_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start|center_vertical"
+                    android:minHeight="48dp"
+                    android:padding="@dimen/margin_normal"
+                    android:textAppearance="?textAppearanceBody2"
+                    app:versionName="@{BuildConfig.VERSION_NAME}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/margin_normal"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:drawableStart="@drawable/ic_logo_components"
+                    android:gravity="center"
+                    android:paddingEnd="@dimen/margin_normal"
+                    android:paddingStart="@dimen/margin_normal"
+                    android:text="@string/built_with_material_components"
+                    android:textAppearance="?attr/textAppearanceBody1" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.samples.apps.iosched.widget.FadingSnackbar
+            android:id="@+id/snackbar"
+            android:layout_width="@dimen/snackbar_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:visibility="gone" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

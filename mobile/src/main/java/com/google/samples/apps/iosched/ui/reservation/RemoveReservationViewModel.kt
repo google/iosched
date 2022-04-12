@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,60 +16,77 @@
 
 package com.google.samples.apps.iosched.ui.reservation
 
-import androidx.lifecycle.LiveData
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.model.userdata.UserSession
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
-import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction.CancelAction
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.result.Event
-import timber.log.Timber
-import javax.inject.Inject
+import com.google.samples.apps.iosched.shared.result.Result.Error
+import com.google.samples.apps.iosched.shared.result.data
+import com.google.samples.apps.iosched.shared.util.cancelIfActive
+import com.google.samples.apps.iosched.ui.SnackbarMessage
+import com.google.samples.apps.iosched.ui.signin.SignInViewModelDelegate
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
-/**
- * ViewModel for the dialog when the user is about to remove the reservation.
- */
-class RemoveReservationViewModel @Inject constructor(
+@ExperimentalCoroutinesApi
+class RemoveReservationViewModel @ViewModelInject constructor(
+    signInViewModelDelegate: SignInViewModelDelegate,
+    private val loadUserSessionUseCase: LoadUserSessionUseCase,
     private val reservationActionUseCase: ReservationActionUseCase
-) : ViewModel(), RemoveReservationListener {
+) : ViewModel(), SignInViewModelDelegate by signInViewModelDelegate {
 
-    var userId: String? = null
+    private var loadUserSessionJob: Job? = null
+    private val _sessionId = MutableLiveData<SessionId>()
 
-    var sessionId: String? = null
+    private val _userSession = MutableLiveData<UserSession>()
 
-    var sessionTitle: String? = null
+    private val _snackBarMessage = MutableLiveData<Event<SnackbarMessage>>()
+    val snackBarMessage = _snackBarMessage
 
-    /**
-     * Event to dismiss the opening dialog. We only want to consume the event, the
-     * Boolean value isn't used.
-     */
-    private val _dismissDialogAction = MutableLiveData<Event<Boolean>>()
-    val dismissDialogAction: LiveData<Event<Boolean>>
-        get() = _dismissDialogAction
-
-    override fun onRemoveClicked() {
-        _dismissDialogAction.value = Event(true)
-
-        val immutableUserId = userId
-        val immutableSessionId = sessionId
-        // The user should be logged in at this point.
-        if (immutableUserId == null || immutableSessionId == null) {
-            Timber.e("Tried to remove a reservation with a null user or session ID")
-            return
+    fun setSessionId(sessionId: SessionId) {
+        _sessionId.value = sessionId
+        loadUserSessionJob.cancelIfActive()
+        loadUserSessionJob = viewModelScope.launch {
+            loadUserSessionUseCase(getUserId() to sessionId).collect { loadResult ->
+                loadResult.data?.userSession?.let {
+                    _userSession.value = it
+                }
+            }
         }
-        reservationActionUseCase.execute(
-            ReservationRequestParameters(immutableUserId, immutableSessionId, CancelAction())
-        )
     }
 
-    override fun onCancelClicked() {
-        _dismissDialogAction.value = Event(true)
+    fun removeReservation() {
+        val userId = getUserId() ?: return
+        val sessionId = _sessionId.value ?: return
+        val userSession = _userSession.value
+        viewModelScope.launch {
+            val result = reservationActionUseCase(
+                ReservationRequestParameters(
+                    userId,
+                    sessionId,
+                    ReservationRequestAction.CancelAction(),
+                    userSession
+                )
+            )
+            if (result is Error) {
+                _snackBarMessage.value =
+                    Event(
+                        SnackbarMessage(
+                            messageId = R.string.reservation_error,
+                            longDuration = true
+                        )
+                    )
+            }
+        }
     }
-}
-
-interface RemoveReservationListener {
-
-    fun onRemoveClicked()
-
-    fun onCancelClicked()
 }

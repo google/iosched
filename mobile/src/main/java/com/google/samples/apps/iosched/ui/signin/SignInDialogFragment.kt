@@ -16,48 +16,42 @@
 
 package com.google.samples.apps.iosched.ui.signin
 
-import android.content.Context
+import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.databinding.DialogSignInBinding
 import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.signin.SignInEvent.RequestSignIn
+import com.google.samples.apps.iosched.util.executeAfter
 import com.google.samples.apps.iosched.util.signin.SignInHandler
-import com.google.samples.apps.iosched.widget.CustomDimDialogFragment
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.AndroidSupportInjection
-import dagger.android.support.HasSupportFragmentInjector
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /**
  * Dialog that tells the user to sign in to continue the operation.
  */
-class SignInDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInjector {
-
-    @Inject
-    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
+@AndroidEntryPoint
+class SignInDialogFragment : AppCompatDialogFragment() {
 
     @Inject
     lateinit var signInHandler: SignInHandler
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val signInViewModel: SignInViewModel by viewModels()
 
-    private lateinit var signInViewModel: SignInViewModel
+    private lateinit var binding: DialogSignInBinding
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
-        return fragmentInjector
-    }
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        AndroidSupportInjection.inject(this)
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        // We want to create a dialog, but we also want to use DataBinding for the content view.
+        // We can do that by making an empty dialog and adding the content later.
+        return MaterialAlertDialogBuilder(requireContext()).create()
     }
 
     override fun onCreateView(
@@ -65,27 +59,41 @@ class SignInDialogFragment : CustomDimDialogFragment(), HasSupportFragmentInject
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        signInViewModel = viewModelProvider(viewModelFactory)
-        val binding = DialogSignInBinding.inflate(inflater, container, false).apply {
-            viewModel = signInViewModel
-        }
-
-        signInViewModel.performSignInEvent.observe(this, EventObserver { signInRequest ->
-            if (signInRequest == RequestSignIn) {
-                signInHandler.makeSignInIntent()?.let {
-                    startActivityForResult(it, SIGN_IN_ACTIVITY_REQUEST_CODE)
-                }
-            }
-        })
-
-        signInViewModel.dismissDialogAction.observe(this, EventObserver {
-            dismiss()
-        })
+        // In case we are showing as a dialog, use getLayoutInflater() instead.
+        binding = DialogSignInBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        signInViewModel.performSignInEvent.observe(viewLifecycleOwner, EventObserver { request ->
+            if (request == RequestSignIn) {
+                activity?.let { activity ->
+                    val signInIntent = signInHandler.makeSignInIntent()
+                    val observer = object : Observer<Intent?> {
+                        override fun onChanged(it: Intent?) {
+                            activity.startActivityForResult(it, REQUEST_CODE_SIGN_IN)
+                            signInIntent.removeObserver(this)
+                        }
+                    }
+                    signInIntent.observeForever(observer)
+                }
+                dismiss()
+            }
+        })
+
+        binding.executeAfter {
+            viewModel = signInViewModel
+            lifecycleOwner = viewLifecycleOwner
+        }
+
+        if (showsDialog) {
+            (requireDialog() as AlertDialog).setView(binding.root)
+        }
+    }
+
     companion object {
-        const val DIALOG_NEED_TO_SIGN_IN = "dialog_need_to_sign_in"
-        const val SIGN_IN_ACTIVITY_REQUEST_CODE = 42
+        const val DIALOG_SIGN_IN = "dialog_sign_in"
+        const val REQUEST_CODE_SIGN_IN = 42
     }
 }

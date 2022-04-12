@@ -1,0 +1,53 @@
+<!--
+  ~ Copyright 2019 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="?colorControlNormal">
+    <path
+        android:fillColor="#000000"
+        android:fillType="evenOdd"
+        android:pathData="M7.1621,8l-2.042,-1.521l2.042,-1.479l3.838,0l0,-1l2,0l0,1l0,3l0,2l3.838,0l2.042,1.521l-2.042,1.479l-3.838,0l0,7l-2,0l0,-7l0,-3l0,-2z"
+        android:strokeColor="#00000000"
+        android:strokeWidth="1" />
+    <path
+        android:fillColor="#000000"
+        android:fillType="evenOdd"
+        android:pathData="M18.8506,1L14.9996,1L14.9996,3L18.8506,3C20.0356,3 20.9996,3.964 20.9996,5.149L20.9996,9L22.9996,9L22.9996,5.149C22.9996,2.861 21.1386,1 18.8506,1"
+        android:strokeColor="#00000000"
+        android:strokeWidth="1" />
+    <path
+        android:fillColor="#000000"
+        android:fillType="evenOdd"
+        android:pathData="M21,18.8506C21,20.0366 20.036,20.9996 18.851,20.9996L15,20.9996L15,22.9996L18.851,22.9996C21.139,22.9996 23,21.1386 23,18.8506L23,14.9996L21,14.9996L21,18.8506Z"
+        android:strokeColor="#00000000"
+        android:strokeWidth="1" />
+    <path
+        android:fillColor="#000000"
+        android:fillType="evenOdd"
+        android:pathData="M3,18.8506L3,14.9996L1,14.9996L1,18.8506C1,21.1386 2.861,22.9996 5.149,22.9996L9,22.9996L9,20.9996L5.149,20.9996C3.964,20.9996 3,20.0366 3,18.8506"
+        android:strokeColor="#00000000"
+        android:strokeWidth="1" />
+    <path
+        android:fillColor="#000000"
+        android:fillType="evenOdd"
+        android:pathData="M3,5.1494C3,3.9634 3.964,3.0004 5.149,3.0004L9,3.0004L9,1.0004L5.149,1.0004C2.861,1.0004 1,2.8614 1,5.1494L1,9.0004L3,9.0004L3,5.1494Z"
+        android:strokeColor="#00000000"
+        android:strokeWidth="1" />
+</vector>

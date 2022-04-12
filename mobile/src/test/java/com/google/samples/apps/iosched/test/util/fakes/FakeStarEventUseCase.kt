@@ -19,11 +19,16 @@ package com.google.samples.apps.iosched.test.util.fakes
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
-import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
+import com.google.samples.apps.iosched.shared.domain.users.StarEventAndNotifyUseCase
+import com.google.samples.apps.iosched.ui.schedule.TestUserEventDataSource
+import com.nhaarman.mockito_kotlin.mock
+import kotlinx.coroutines.CoroutineDispatcher
 
-class FakeStarEventUseCase : StarEventUseCase(
+class FakeStarEventUseCase(dispatcher: CoroutineDispatcher) : StarEventAndNotifyUseCase(
     DefaultSessionAndUserEventRepository(
-        TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)
-    )
+        TestUserEventDataSource(),
+        DefaultSessionRepository(TestDataRepository)
+    ),
+    mock {},
+    dispatcher
 )

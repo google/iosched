@@ -31,59 +31,61 @@
             type="com.google.samples.apps.iosched.model.Block" />
     </data>
 
-    <merge tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/keyline"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="@dimen/session_keyline" />
+    <merge tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+        tools:layout_width="match_parent"
+        tools:layout_height="wrap_content">
 
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/keyline"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:agendaColor="@{agenda.color}"
             app:agendaStrokeColor="@{agenda.strokeColor}"
-            app:agendaStrokeWidth="@{@dimen/agenda_item_stroke}" />
+            app:agendaStrokeWidth="@{@dimen/agenda_item_stroke_width}"
+            tools:background="#eee" />
 
         <ImageView
             android:id="@+id/icon"
             android:layout_width="@dimen/agenda_icon_width"
             android:layout_height="wrap_content"
+            android:contentDescription="@null"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/keyline"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:agendaIcon="@{agenda.type}" />
+            app:agendaIcon="@{agenda.type}"
+            tools:src="@drawable/ic_agenda_badge" />
 
         <TextView
             android:id="@+id/agenda_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/agenda_block_padding_vert"
+            android:layout_marginTop="@dimen/agenda_block_padding_vertical"
             android:text="@{agenda.title}"
-            android:textAppearance="@style/TextAppearance.IOSched.AgendaTitle"
+            android:textAlignment="viewStart"
+            android:textAppearance="?textAppearanceListItem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/icon"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Badge &amp; device pick-up" />
 
         <TextView
             android:id="@+id/duration"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/agenda_block_padding_vert"
-            android:textAppearance="@style/TextAppearance.IOSched.ListSecondary"
+            android:paddingBottom="@dimen/agenda_block_padding_vertical"
+            android:textAlignment="viewStart"
+            android:textAppearance="?textAppearanceBody2"
             app:layout_constraintEnd_toEndOf="@id/agenda_title"
             app:layout_constraintStart_toStartOf="@id/agenda_title"
             app:layout_constraintTop_toBottomOf="@id/agenda_title"
             app:endTime="@{agenda.endTime}"
             app:startTime="@{agenda.startTime}"
-            app:timeZoneId="@{timeZoneId}" />
+            app:timeZoneId="@{timeZoneId}"
+            tools:text="8:00 AM - 7:00 PM" />
 
     </merge>
 

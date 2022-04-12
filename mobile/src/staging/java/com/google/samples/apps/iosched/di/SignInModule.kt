@@ -21,34 +21,54 @@ import com.google.samples.apps.iosched.shared.data.login.StagingAuthenticatedUse
 import com.google.samples.apps.iosched.shared.data.login.StagingSignInHandler
 import com.google.samples.apps.iosched.shared.data.login.datasources.StagingAuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.login.datasources.StagingRegisteredUserDataSource
+import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthIdDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
+import com.google.samples.apps.iosched.shared.domain.sessions.NotificationAlarmUpdater
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Singleton
 
+@InstallIn(ApplicationComponent::class)
 @Module
 internal class SignInModule {
     @Provides
-    fun provideSignInHandler(context: Context): SignInHandler {
+    fun provideSignInHandler(@ApplicationContext context: Context): SignInHandler {
         return StagingSignInHandler(StagingAuthenticatedUser(context))
     }
 
     @Singleton
     @Provides
-    fun provideRegisteredUserDataSource(context: Context): RegisteredUserDataSource {
+    fun provideRegisteredUserDataSource(
+        @ApplicationContext context: Context
+    ): RegisteredUserDataSource {
         return StagingRegisteredUserDataSource(true)
     }
 
     @Singleton
     @Provides
-    fun provideAuthStateUserDataSource(context: Context): AuthStateUserDataSource {
+    fun provideAuthStateUserDataSource(
+        @ApplicationContext context: Context,
+        notificationAlarmUpdater: NotificationAlarmUpdater
+    ): AuthStateUserDataSource {
         return StagingAuthStateUserDataSource(
             isRegistered = true,
             isSignedIn = true,
             context = context,
-            userId = "StagingTest"
+            userId = "StagingTest",
+            notificationAlarmUpdater = notificationAlarmUpdater
         )
+    }
+
+    @Singleton
+    @Provides
+    fun providesAuthIdDataSource(): AuthIdDataSource {
+        return object : AuthIdDataSource {
+            override fun getUserId() = "StagingTest"
+        }
     }
 }

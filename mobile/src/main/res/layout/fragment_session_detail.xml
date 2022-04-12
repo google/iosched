@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2018 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +14,7 @@
   ~ limitations under the License.
   -->
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -31,43 +29,116 @@
         android:id="@+id/coordinator_layout_session_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         tools:ignore="MergeRootFrame">
 
+        <!-- CollapsingToolbarLayout consumes all system window insets, so we need to put the
+             RecyclerView first in order for it to inspect the insets first.
+             Use layout_height="wrap_content" so that the CollapsingToolbarLayout doesn't collapse
+             when there is not enough content to fill the screen.
+             Use a large padding bottom so the content scrolls up above the FAB.
+        -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/session_detail_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/spacing_normal"
+            android:layout_height="wrap_content"
             android:clipToPadding="false"
-            android:paddingBottom="?actionBarSize"
+            android:paddingBottom="80dp"
             android:scrollbars="vertical"
-            app:hasFixedSize="@{true}"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layoutManager="LinearLayoutManager" />
 
-        <ImageButton
-            android:id="@+id/up"
-            android:layout_width="?actionBarSize"
-            android:layout_height="?actionBarSize"
-            android:layout_gravity="start|top"
-            android:background="?selectableItemBackgroundBorderless"
-            android:contentDescription="@string/navigate_up"
-            app:srcCompat="@drawable/ic_arrow_back" />
-
-        <!-- Workaround for b/72034805 — BAB shadow can't extend beyond bounds nor concave shape -->
-        <View
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/bab_fake_shadow" />
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:fitsSystemWindows="true"
+            app:elevation="0dp">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll"
+                app:statusBarScrim="?colorSurface">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- Header photo, shown if there is a photo and/or video url. If there is a
+                         a video but no photo url, the placeholder image will stay shown.
+                    -->
+                    <ImageView
+                        android:id="@+id/detail_image"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:importantForAccessibility="no"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintDimensionRatio="@string/session_detail_header_aspect"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:eventPhoto="@{viewModel.session}"
+                        app:goneUnless="@{viewModel.session.hasPhotoOrVideo}"
+                        tools:src="@drawable/event_placeholder_keynote"
+                        tools:visibility="visible" />
+
+                    <!-- Play button, shown if there is a video url -->
+                    <ImageButton
+                        android:id="@+id/play_button"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@color/scrim"
+                        android:contentDescription="@string/a11y_play"
+                        android:foreground="?selectableItemBackground"
+                        android:onClick="@{() -> viewModel.onPlayVideo()}"
+                        android:scaleType="center"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@id/detail_image"
+                        app:layout_constraintEnd_toEndOf="@id/detail_image"
+                        app:layout_constraintStart_toStartOf="@id/detail_image"
+                        app:layout_constraintTop_toTopOf="@id/detail_image"
+                        app:goneUnless="@{viewModel.session.hasVideo}"
+                        app:srcCompat="@drawable/ic_play"
+                        tools:ignore="UnusedAttribute"
+                        tools:visibility="visible" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- Narrow header image for when there is no photo or video -->
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    android:fitsSystemWindows="true"
+                    app:eventNarrowHeader="@{viewModel.session}"
+                    app:goneUnless="@{!viewModel.session.hasVideo}" />
+
+                <!-- Toolbar needs to be on top for the back button to be tappable -->
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:navigationContentDescription="@string/navigate_up"
+                    app:navigationIcon="@drawable/ic_arrow_back" />
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/session_detail_bottom_app_bar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:layout_gravity="bottom"
-            android:elevation="6dp"
             app:contentInsetStart="@dimen/margin_normal"
+            app:elevation="6dp"
             app:fabAlignmentMode="end" />
 
         <com.google.samples.apps.iosched.ui.reservation.StarReserveFab
@@ -75,13 +146,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_anchor="@id/session_detail_bottom_app_bar"
-            app:backgroundTint="@color/white"
+            app:backgroundTint="?attr/colorSurface"
             app:eventListener="@{viewModel}"
             app:isRegistered="@{viewModel.observeRegisteredUser}"
-            app:isReservable="@{viewModel.session.isReservable}"
-            app:isReservationDisabled="@{viewModel.isReservationDisabled}"
+            app:isReservable="@{viewModel.isReservable}"
+            app:isReservationDeniedByCutoff="@{viewModel.isReservationDeniedByCutoff}"
             app:isSignedIn="@{viewModel.observeSignedInUser}"
+            app:tint="?attr/colorOnSurface"
             app:userEvent="@{viewModel.userEvent}" />
+
+        <View
+            android:id="@+id/nav_bar_scrim"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="bottom"
+            android:background="?attr/colorSurface"
+            android:fitsSystemWindows="true"
+            app:layout_behavior="com.google.samples.apps.iosched.util.NavigationBarScrimBehavior" />
 
         <!-- A custom snackbar implementation for more control over positioning i.e. above the FAB,
              and to control its entry/exit animation. -->

@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.shared.data.userevent
 
-import androidx.lifecycle.LiveData
 import com.google.samples.apps.iosched.model.Session
 import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.userdata.UserEvent
@@ -24,14 +23,17 @@ import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAct
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.domain.users.SwapRequestAction
 import com.google.samples.apps.iosched.shared.result.Result
+import kotlinx.coroutines.flow.Flow
 
 interface UserEventDataSource {
 
-    fun getObservableUserEvents(userId: String): LiveData<UserEventsResult>
+    fun getObservableUserEvents(userId: String): Flow<UserEventsResult>
 
-    fun getObservableUserEvent(userId: String, eventId: SessionId): LiveData<UserEventResult>
+    fun getObservableUserEvent(userId: String, eventId: SessionId): Flow<UserEventResult>
 
     fun getUserEvents(userId: String): List<UserEvent>
+
+    fun getUserEvent(userId: String, eventId: SessionId): UserEvent?
 
     /**
      * Toggle the isStarred status for an event.
@@ -40,19 +42,24 @@ interface UserEventDataSource {
      * @param userEvent the [UserEvent], which isStarred is going to be the updated status
      * @return the LiveData that represents the status of the star operation.
      */
-    fun starEvent(userId: String, userEvent: UserEvent): LiveData<Result<StarUpdatedStatus>>
+    suspend fun starEvent(userId: String, userEvent: UserEvent): Result<StarUpdatedStatus>
 
-    fun requestReservation(
+    suspend fun recordFeedbackSent(
+        userId: String,
+        userEvent: UserEvent
+    ): Result<Unit>
+
+    suspend fun requestReservation(
         userId: String,
         session: Session,
         action: ReservationRequestAction
-    ): LiveData<Result<ReservationRequestAction>>
+    ): Result<ReservationRequestAction>
 
-    fun swapReservation(
+    suspend fun swapReservation(
         userId: String,
         fromSession: Session,
         toSession: Session
-    ): LiveData<Result<SwapRequestAction>>
+    ): Result<SwapRequestAction>
 
     fun clearSingleEventSubscriptions()
 }

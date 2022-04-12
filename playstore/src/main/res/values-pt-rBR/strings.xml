@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
   ~ limitations under the License.
 -->
 <resources>
-    <string name="playstore_title">Google I/O 2018</string>
+
     <string name="playstore_tagline">Seu copiloto para navegar pelo I/O, seja pessoal ou remotamente.</string>
-    <string name="playstore_description">O aplicativo oficial do Google I/O 2018 é seu copiloto para navegar pela conferência, seja pessoal ou remotamente. Com ele, você pode:\n\n• explorar a programação da conferência, com detalhes sobre assuntos e apresentadores;\n• salvar eventos em \"Programação\", sua programação personalizada;\n• receber lembretes sobre o início de eventos que você salvou na \"Programação\";\n• sincronizar sua programação personalizada entre todos os seus dispositivos e o site do I/O;\n• guiar-se com o mapa baseado em vetores da conferência;\n• optar por receber informações importantes sobre o evento, a programação, a viagem, as sessões após o evento, as gravações de sessões e muito mais;\n\nExclusivo para quem participar pessoalmente:\n• aproveitar a configuração pré-evento da rede Wi-Fi;\n• reservar assentos antecipadamente.\n\nO código-fonte do aplicativo será disponibilizado logo após o I/O.</string>
+
     <string name="playstore_change">Atualizado para o Google I/O 2018\n• Reserve assentos em eventos antecipadamente\n• Leia informações importantes sobre o evento, detalhes da viagem e perguntas frequentes.</string>
     <string name="playstore_required_permissions">Permissões necessárias</string>
     <string name="playstore_optional_permissions">Permissões opcionais</string>

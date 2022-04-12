@@ -20,23 +20,28 @@ import com.google.samples.apps.iosched.model.SessionId
 import com.google.samples.apps.iosched.model.Speaker
 import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 
 /**
  * Loads a [Speaker] and the IDs of any [com.google.samples.apps.iosched.model.Session]s
  * they are speaking in.
  */
 open class LoadSpeakerUseCase @Inject constructor(
-    private val conferenceDataRepository: ConferenceDataRepository
-) : UseCase<SpeakerId, LoadSpeakerUseCaseResult>() {
+    private val conferenceDataRepository: ConferenceDataRepository,
+    @IoDispatcher dispatcher: CoroutineDispatcher
+) : UseCase<SpeakerId, LoadSpeakerUseCaseResult>(dispatcher) {
 
-    override fun execute(parameters: SpeakerId): LoadSpeakerUseCaseResult {
+    override suspend fun execute(parameters: SpeakerId): LoadSpeakerUseCaseResult {
         val speaker = conferenceDataRepository.getOfflineConferenceData().speakers
             .firstOrNull { it.id == parameters }
             ?: throw SpeakerNotFoundException("No speaker found with id $parameters")
         val sessionIds = conferenceDataRepository.getOfflineConferenceData().sessions
-            .filter { it.speakers.find { it.id == parameters } != null }
+            .filter {
+                it.speakers.find { speaker -> speaker.id == parameters } != null
+            }
             .map { it.id }
             .toSet()
         return LoadSpeakerUseCaseResult(speaker, sessionIds)

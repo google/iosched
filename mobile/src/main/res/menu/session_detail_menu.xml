@@ -29,7 +29,7 @@
 
     <item
         android:id="@+id/menu_item_map"
-        android:icon="@drawable/ic_map"
+        android:icon="@drawable/ic_nav_map"
         android:title="@string/menu_item_session_location"
         app:showAsAction="always" />
 
@@ -37,6 +37,18 @@
         android:id="@+id/menu_item_star"
         android:icon="@drawable/ic_star_border"
         android:title="@string/menu_item_session_star"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_item_ask_question"
+        android:icon="@drawable/ic_question_answer"
+        android:title="@string/ask_question"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_item_calendar"
+        android:icon="@drawable/ic_event"
+        android:title="@string/menu_item_calendar"
         app:showAsAction="always" />
 
 </menu>

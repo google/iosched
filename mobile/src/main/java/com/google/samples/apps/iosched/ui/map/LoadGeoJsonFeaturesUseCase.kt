@@ -21,7 +21,10 @@ import android.text.TextUtils
 import com.google.android.gms.maps.GoogleMap
 import com.google.maps.android.data.geojson.GeoJsonFeature
 import com.google.maps.android.data.geojson.GeoJsonLayer
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
 import com.google.samples.apps.iosched.shared.domain.UseCase
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 /** Parameters for this use case. */
@@ -35,20 +38,21 @@ data class GeoJsonData(
 
 /** Use case that loads a GeoJsonLayer and its features. */
 class LoadGeoJsonFeaturesUseCase @Inject constructor(
-    private val context: Context
-) : UseCase<LoadGeoJsonParams, GeoJsonData>() {
+    @ApplicationContext private val context: Context,
+    @IoDispatcher dispatcher: CoroutineDispatcher
+) : UseCase<LoadGeoJsonParams, GeoJsonData>(dispatcher) {
 
-    override fun execute(parameters: LoadGeoJsonParams): GeoJsonData {
-        val layer = GeoJsonLayer(parameters.first, parameters.second, context)
+    override suspend fun execute(parameters: LoadGeoJsonParams): GeoJsonData {
+        val (googleMap, markersRes) = parameters
+        val layer = GeoJsonLayer(googleMap, markersRes, context)
         processGeoJsonLayer(layer, context)
-        layer.isLayerOnMap
         return GeoJsonData(layer, buildFeatureMap(layer))
     }
 
     private fun buildFeatureMap(layer: GeoJsonLayer): Map<String, GeoJsonFeature> {
         val featureMap: MutableMap<String, GeoJsonFeature> = mutableMapOf()
         layer.features.forEach {
-            val id = it.getProperty("id")
+            val id = it.id
             if (!TextUtils.isEmpty(id)) {
                 // Marker can map to multiple room IDs
                 for (part in id.split(",")) {

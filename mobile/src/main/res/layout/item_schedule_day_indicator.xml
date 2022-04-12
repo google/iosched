@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="indicator"
+            type="com.google.samples.apps.iosched.ui.schedule.DayIndicator" />
+
+        <variable
+            name="viewModel"
+            type="com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel" />
+    </data>
+
+    <CheckedTextView
+        android:id="@android:id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/a11y_min_touch_target"
+        android:minWidth="@dimen/a11y_min_touch_target"
+        android:background="?selectableItemBackgroundBorderless"
+        android:checked="@{indicator.checked}"
+        android:enabled="@{indicator.enabled}"
+        android:gravity="center"
+        android:onClick="@{() -> viewModel.scrollToStartOfDay(indicator.day)}"
+        android:textAlignment="center"
+        android:textAppearance="?textAppearanceBody1"
+        android:textColor="@color/schedule_day_indicator_text"
+        android:paddingLeft="@dimen/spacing_normal"
+        android:paddingRight="@dimen/spacing_normal"
+        app:inConferenceTimeZone="@{viewModel.isConferenceTimeZone}"
+        app:indicatorText="@{indicator}"
+        tools:checked="@sample/day_indicator.json/indicators/checked"
+        tools:text="@sample/day_indicator.json/indicators/label" />
+</layout>

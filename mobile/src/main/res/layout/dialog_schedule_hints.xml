@@ -15,107 +15,37 @@
   ~ limitations under the License.
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/Widget.IOSched.Dialog"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/schedule_hint_guideline_start_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="@dimen/margin_large" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/schedule_hint_guideline_start_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="56dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/schedule_hint_guideline_end_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="@dimen/margin_large" />
-
-    <TextView
-        android:id="@+id/schedule_hint_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_large"
-        android:text="@string/schedule_hint_title"
-        android:textAppearance="@style/TextAppearance.IOSched.DialogTitle"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toTopOf="@id/schedule_hint_imageview_star_event"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/schedule_hint_imageview_star_event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:importantForAccessibility="no"
-        app:layout_constraintBottom_toBottomOf="@id/schedule_hint_textview_star_event"
-        app:layout_constraintEnd_toEndOf="@id/schedule_hint_guideline_start_text"
-        app:layout_constraintStart_toStartOf="@id/schedule_hint_guideline_start_icon"
-        app:layout_constraintTop_toTopOf="@id/schedule_hint_textview_star_event"
-        app:srcCompat="@drawable/ic_star_border" />
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingEnd="@dimen/margin_large"
+    android:paddingStart="@dimen/margin_large"
+    tools:targetApi="o">
 
     <TextView
         android:id="@+id/schedule_hint_textview_star_event"
-        android:layout_width="wrap_content"
+        style="?materialAlertDialogBodyTextStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_normal"
-        android:layout_marginTop="@dimen/margin_large"
+        android:drawablePadding="@dimen/margin_normal"
+        android:drawableStart="@drawable/ic_star_border"
         android:text="@string/schedule_hint_star_event"
-        android:textAppearance="@style/TextAppearance.IOSched.DialogContent"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toTopOf="@+id/schedule_hint_textview_reserve_seat"
-        app:layout_constraintEnd_toEndOf="@+id/schedule_hint_guideline_end_text"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toEndOf="@+id/schedule_hint_guideline_start_text"
-        app:layout_constraintTop_toBottomOf="@+id/schedule_hint_title" />
-
-    <ImageView
-        android:id="@+id/schedule_hint_imageview_reserve_seat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:importantForAccessibility="no"
-        app:layout_constraintBottom_toBottomOf="@+id/schedule_hint_textview_reserve_seat"
-        app:layout_constraintEnd_toEndOf="@id/schedule_hint_guideline_start_text"
-        app:layout_constraintStart_toStartOf="@id/schedule_hint_guideline_start_icon"
-        app:layout_constraintTop_toTopOf="@+id/schedule_hint_textview_reserve_seat"
-        app:srcCompat="@drawable/ic_reservable" />
+        tools:style="@style/AlertDialog.BodyText"
+        tools:ignore="PrivateResource" />
 
     <TextView
         android:id="@+id/schedule_hint_textview_reserve_seat"
-        android:layout_width="wrap_content"
+        style="?materialAlertDialogBodyTextStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_normal"
         android:layout_marginTop="@dimen/margin_normal"
+        android:drawablePadding="@dimen/margin_normal"
+        android:drawableStart="@drawable/ic_reservable"
         android:text="@string/schedule_hint_reserve_session_seat"
-        android:textAppearance="@style/TextAppearance.IOSched.DialogContent"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toEndOf="@+id/schedule_hint_guideline_end_text"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toEndOf="@+id/schedule_hint_guideline_start_text"
-        app:layout_constraintTop_toBottomOf="@+id/schedule_hint_textview_star_event" />
+        tools:style="@style/AlertDialog.BodyText"
+        tools:ignore="PrivateResource" />
 
-    <Button
-        android:id="@+id/schedule_hint_button_dismiss"
-        style="@style/Widget.IOSched.BorderlessButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_normal"
-        android:text="@string/got_it"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/schedule_hint_textview_reserve_seat" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
-
+</LinearLayout>

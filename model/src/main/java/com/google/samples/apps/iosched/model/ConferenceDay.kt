@@ -17,16 +17,10 @@
 package com.google.samples.apps.iosched.model
 
 import org.threeten.bp.ZonedDateTime
-import org.threeten.bp.format.DateTimeFormatter
-import java.util.Locale
 
-private const val formatPattern = "MMMM d"
-
-val FORMATTER_MONTH_DAY: DateTimeFormatter =
-    DateTimeFormatter.ofPattern(formatPattern, Locale.getDefault())
-
-data class ConferenceDay(val start: ZonedDateTime, val end: ZonedDateTime) {
-    fun contains(session: Session) = start <= session.startTime && end >= session.endTime
-
-    fun formatMonthDay(): String = FORMATTER_MONTH_DAY.format(start)
+data class ConferenceDay(
+    val start: ZonedDateTime,
+    val end: ZonedDateTime
+) {
+    operator fun contains(session: Session) = start <= session.startTime && end >= session.endTime
 }

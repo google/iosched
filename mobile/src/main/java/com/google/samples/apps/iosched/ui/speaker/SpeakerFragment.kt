@@ -17,38 +17,40 @@
 package com.google.samples.apps.iosched.ui.speaker
 
 import android.os.Bundle
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.NavUtils
-import androidx.core.os.bundleOf
-import androidx.core.view.doOnLayout
+import androidx.core.view.updatePadding
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
+import androidx.transition.TransitionInflater
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSpeakerBinding
-import com.google.samples.apps.iosched.model.SpeakerId
 import com.google.samples.apps.iosched.shared.analytics.AnalyticsHelper
 import com.google.samples.apps.iosched.shared.result.EventObserver
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.ui.MainNavigationFragment
 import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.prefs.SnackbarPreferenceViewModel
-import com.google.samples.apps.iosched.ui.sessiondetail.PushUpScrollListener
-import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.ui.setUpSnackbar
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
-import com.google.samples.apps.iosched.util.postponeEnterTransition
-import dagger.android.support.DaggerFragment
+import com.google.samples.apps.iosched.ui.speaker.SpeakerFragmentDirections.Companion.toSessionDetail
+import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
+import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
 
 /**
  * Fragment displaying speaker details and their events.
  */
-class SpeakerFragment : DaggerFragment() {
-
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+@AndroidEntryPoint
+class SpeakerFragment : MainNavigationFragment(), OnOffsetChangedListener {
 
     @Inject lateinit var snackbarMessageManager: SnackbarMessageManager
 
@@ -58,63 +60,78 @@ class SpeakerFragment : DaggerFragment() {
     @field:Named("tagViewPool")
     lateinit var tagRecycledViewPool: RecycledViewPool
 
-    private lateinit var speakerViewModel: SpeakerViewModel
+    private val speakerViewModel: SpeakerViewModel by viewModels()
+    private val snackbarPrefsViewModel: SnackbarPreferenceViewModel by activityViewModels()
+
+    private lateinit var binding: FragmentSpeakerBinding
+
+    private var toolbarCollapsed = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        speakerViewModel = viewModelProvider(viewModelFactory)
-        speakerViewModel.setSpeakerId(requireNotNull(arguments).getString(SPEAKER_ID))
+        speakerViewModel.setSpeakerId(SpeakerFragmentArgs.fromBundle(requireArguments()).speakerId)
 
-        // Delay the Activity enter transition until speaker image has loaded
-        activity?.postponeEnterTransition(500L)
+        sharedElementEnterTransition =
+            TransitionInflater.from(context).inflateTransition(R.transition.speaker_shared_enter)
+        // Delay the enter transition until speaker image has loaded.
+        postponeEnterTransition(500L, TimeUnit.MILLISECONDS)
 
-        val binding = FragmentSpeakerBinding.inflate(inflater, container, false).apply {
-            setLifecycleOwner(this@SpeakerFragment)
+        val imageLoadListener = object : ImageLoadListener {
+            override fun onImageLoaded() {
+                startPostponedEnterTransition()
+            }
+
+            override fun onImageLoadFailed() {
+                startPostponedEnterTransition()
+            }
+        }
+
+        val themedInflater =
+            inflater.cloneInContext(ContextThemeWrapper(requireActivity(), R.style.AppTheme_Detail))
+        binding = FragmentSpeakerBinding.inflate(themedInflater, container, false).apply {
+            lifecycleOwner = viewLifecycleOwner
+            headshotLoadListener = imageLoadListener
             viewModel = speakerViewModel
         }
-        // If speaker does not have a profile image to load, we need to resume
-        speakerViewModel.hasProfileImage.observe(this, Observer {
-            if (it != true) {
-                activity?.startPostponedEnterTransition()
+
+        // If speaker does not have a profile image to load, we need to resume.
+        speakerViewModel.hasNoProfileImage.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                startPostponedEnterTransition()
             }
         })
 
-        speakerViewModel.navigateToEventAction.observe(this, EventObserver { sessionId ->
-            startActivity(SessionDetailActivity.starterIntent(requireContext(), sessionId))
-        })
+        speakerViewModel.navigateToEventAction.observe(
+            viewLifecycleOwner,
+            EventObserver { sessionId ->
+                findNavController().navigate(toSessionDetail(sessionId))
+            }
+        )
 
-        speakerViewModel.navigateToSignInDialogAction.observe(this, EventObserver {
+        speakerViewModel.navigateToSignInDialogAction.observe(viewLifecycleOwner, EventObserver {
             val dialog = SignInDialogFragment()
             dialog.show(
                 requireActivity().supportFragmentManager,
-                SignInDialogFragment.DIALOG_NEED_TO_SIGN_IN
+                SignInDialogFragment.DIALOG_SIGN_IN
             )
         })
 
-        val snackbarPrefViewModel: SnackbarPreferenceViewModel = viewModelProvider(viewModelFactory)
         setUpSnackbar(
             speakerViewModel.snackBarMessage,
             binding.snackbar,
             snackbarMessageManager,
             actionClickListener = {
-                snackbarPrefViewModel.onStopClicked()
+                snackbarPrefsViewModel.onStopClicked()
             }
         )
-
-        val headshotLoadListener = object : ImageLoadListener {
-            override fun onImageLoaded() {
-                activity?.startPostponedEnterTransition()
-            }
-
-            override fun onImageLoadFailed() {
-                activity?.startPostponedEnterTransition()
-            }
-        }
-        val speakerAdapter =
-            SpeakerAdapter(this, speakerViewModel, headshotLoadListener, tagRecycledViewPool)
+        val speakerAdapter = SpeakerAdapter(
+            viewLifecycleOwner,
+            speakerViewModel,
+            tagRecycledViewPool
+        )
         binding.speakerDetailRecyclerView.run {
             adapter = speakerAdapter
             itemAnimator?.run {
@@ -123,20 +140,18 @@ class SpeakerFragment : DaggerFragment() {
                 changeDuration = 120L
                 removeDuration = 100L
             }
-            doOnLayout {
-                addOnScrollListener(
-                    PushUpScrollListener(binding.up, it, R.id.speaker_name, R.id.speaker_grid_image)
-                )
+            doOnApplyWindowInsets { view, insets, padding ->
+                view.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)
+                // CollapsingToolbarLayout's defualt scrim visible trigger height is a bit large.
+                // Choose something smaller so that the content stays visible longer.
+                binding.collapsingToolbar.scrimVisibleHeightTrigger =
+                    insets.systemWindowInsetTop * 2
             }
         }
 
-        speakerViewModel.speakerUserSessions.observe(this, Observer {
+        speakerViewModel.speakerUserSessions.observe(viewLifecycleOwner, Observer {
             speakerAdapter.speakerSessions = it ?: emptyList()
         })
-
-        binding.up.setOnClickListener {
-            NavUtils.navigateUpFromSameTask(requireActivity())
-        }
 
         return binding.root
     }
@@ -144,7 +159,7 @@ class SpeakerFragment : DaggerFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        speakerViewModel.speaker.observe(this, Observer {
+        speakerViewModel.speaker.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 val pageName = "Speaker Details: ${it.name}"
                 analyticsHelper.sendScreenView(pageName, requireActivity())
@@ -152,11 +167,15 @@ class SpeakerFragment : DaggerFragment() {
         })
     }
 
-    companion object {
-        fun newInstance(speakerId: SpeakerId): SpeakerFragment {
-            return SpeakerFragment().apply {
-                arguments = bundleOf(SPEAKER_ID to speakerId)
-            }
+    override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
+        val collapsed = (-verticalOffset >= appBarLayout.totalScrollRange)
+        if (collapsed != toolbarCollapsed) {
+            toolbarCollapsed = collapsed
+            // We have transparent status bar, so we don't use CollapsingToolbarLayout's
+            // statusBarScrim. Instead fade out the views when collapsed.
+            val alpha = if (collapsed) 0f else 1f
+            binding.toolbar.animate().alpha(alpha).start()
+            binding.speakerImage.animate().alpha(alpha).start()
         }
     }
 }

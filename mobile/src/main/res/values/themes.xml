@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="Base.AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorSecondary">?attr/colorPrimary</item>
+        <item name="colorOnSecondary">@color/color_on_secondary</item>
+        <item name="colorControlLight">@color/color_control_light</item>
+        <item name="colorSurfaceSecondary">@color/color_surface_secondary</item>
+
+        <!-- Window decor -->
+        <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/use_light_status</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">@bool/use_light_navigation</item>
+        <item name="android:navigationBarColor">@color/nav_bar_scrim</item>
+
+        <!-- Widget styles -->
+        <item name="toolbarStyle">@style/Widget.IOSched.Toolbar</item>
+        <item name="tabStyle">@style/Widget.IOSched.Tabs</item>
+        <item name="navigationViewStyle">@style/Widget.IOSched.NavigationView</item>
+
+        <!-- Text appearances -->
+        <item name="textAppearanceBody2">@style/TextAppearance.IOSched.Body2</item>
+        <item name="textAppearanceButton">@style/TextAppearance.IOSched.Button</item>
+        <item name="textAppearanceListItem">@style/TextAppearance.IOSched.ListPrimary</item>
+
+        <!-- Dialogs -->
+        <item name="materialAlertDialogTheme">@style/AlertDialog.Theme</item>
+
+        <!-- Custom theme attrs -->
+        <item name="ioschedNavigationBarDividerColor">?attr/colorControlLight</item>
+        <item name="sessionListKeyline">@dimen/session_keyline</item>
+        <item name="eventCardHeaderBackground">@color/event_card_header_background</item>
+    </style>
+
+    <style name="ThemeOverlay.IOSched.Light" parent="ThemeOverlay.MaterialComponents.Light">
+        <item name="colorPrimary">@color/deep_sky_blue</item>
+        <item name="colorPrimaryDark">@color/warm_blue</item>
+    </style>
+
+    <style name="ThemeOverlay.IOSched.Dark" parent="ThemeOverlay.MaterialComponents.Dark">
+        <item name="colorPrimary">@color/carolina_blue</item>
+        <item name="colorPrimaryDark">@color/cornflower_blue</item>
+    </style>
+
+    <style name="AppTheme" parent="Base.AppTheme" />
+
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/preview_window</item>
+    </style>
+
+    <style name="AppTheme.Onboarding">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
+    <!-- Non-top-level screens should inflate with this theme to replace the keyline. -->
+    <style name="AppTheme.Detail">
+        <item name="sessionListKeyline">@dimen/margin_normal</item>
+    </style>
+
+    <style name="AppTheme.PopupTheme" parent="ThemeOverlay.IOSched.Light" />
+
+    <style name="AlertDialog.Theme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="alertDialogStyle">@style/AlertDialog.Style</item>
+        <item name="buttonBarStyle">@style/AlertDialog.ButtonBar</item>
+        <item name="dialogPreferredPadding">@dimen/dialogPreferredPadding</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/AlertDialog.TitleText</item>
+        <item name="materialAlertDialogTitlePanelStyle">@style/AlertDialog.TitlePanel</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/AlertDialog.BodyText</item>
+    </style>
+
+    <style name="AlertDialog.Style" parent="MaterialAlertDialog.MaterialComponents">
+        <item name="shapeAppearance">@style/AlertDialog.ShapeAppearance</item>
+    </style>
+
+    <style name="AlertDialog.ShapeAppearance" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerSize">@dimen/dialog_corner_radius</item>
+    </style>
+
+
+</resources>

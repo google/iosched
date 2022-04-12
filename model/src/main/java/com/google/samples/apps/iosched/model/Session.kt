@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.model
 
-import com.google.samples.apps.iosched.model.SessionType.SESSION
+import com.google.samples.apps.iosched.model.SessionType.Companion.reservableTypes
 import org.threeten.bp.ZonedDateTime
 
 typealias SessionId = String
@@ -50,7 +50,7 @@ data class Session(
     /**
      * Body of text explaining this session in detail.
      */
-    val abstract: String,
+    val description: String,
 
     /**
      * The session room.
@@ -63,11 +63,6 @@ data class Session(
     val sessionUrl: String,
 
     /**
-     * Url for the session livestream.
-     */
-    val liveStreamUrl: String?,
-
-    /**
      * Indicates if the Session has a live stream.
      */
     val isLivestream: Boolean,
@@ -76,6 +71,11 @@ data class Session(
      * Full URL to YouTube.
      */
     val youTubeUrl: String,
+
+    /**
+     * URL to the Dory page.
+     */
+    val doryLink: String,
 
     /**
      * The [Tag]s associated with the session. Ordered, with the most important tags appearing
@@ -96,7 +96,7 @@ data class Session(
     /**
      * The session's photo URL.
      */
-    val photoUrl: String?,
+    val photoUrl: String,
 
     /**
      * IDs of the sessions related to this session.
@@ -114,11 +114,15 @@ data class Session(
         return startTime <= now && endTime >= now
     }
 
+    val hasPhoto inline get() = photoUrl.isNotEmpty()
+
     /**
      * Returns whether the session has a video or not. A session could be live streaming or have a
      * recorded session. Both live stream and recorded videos are stored in [Session.youTubeUrl].
      */
-    fun hasVideo() = youTubeUrl.isNotEmpty()
+    val hasVideo inline get() = youTubeUrl.isNotEmpty()
+
+    val hasPhotoOrVideo inline get() = hasPhoto || hasVideo
 
     /**
      * The year the session was held.
@@ -145,24 +149,45 @@ data class Session(
     /**
      * Whether this event is reservable, based upon [type].
      */
-    fun isReservable() = type == SESSION
+    val isReservable: Boolean by lazy(LazyThreadSafetyMode.PUBLICATION) {
+        type in reservableTypes
+    }
 
     fun isOverlapping(session: Session): Boolean {
         return this.startTime < session.endTime && this.endTime > session.startTime
+    }
+
+    /**
+     * Detailed description of this event. Includes description, speakers, and live-streaming URL.
+     */
+    fun getCalendarDescription(
+        paragraphDelimiter: String,
+        speakerDelimiter: String
+    ): String = buildString {
+        append(description)
+        append(paragraphDelimiter)
+        append(speakers.joinToString(speakerDelimiter) { speaker -> speaker.name })
+        if (!isLivestream && !youTubeUrl.isEmpty()) {
+            append(paragraphDelimiter)
+            append(youTubeUrl)
+        }
     }
 }
 
 /**
  * Represents the type of the event e.g. Session, Codelab etc.
  */
-enum class SessionType {
-    SESSION,
-    APP_REVIEW,
-    OFFICE_HOURS,
-    CODELAB,
-    SANDBOX,
-    AFTER_HOURS,
-    UNKNOWN;
+enum class SessionType(val displayName: String) {
+
+    KEYNOTE("Keynote"),
+    SESSION("Session"),
+    APP_REVIEW("App Reviews"),
+    GAME_REVIEW("Game Reviews"),
+    OFFICE_HOURS("Office Hours"),
+    CODELAB("Codelab"),
+    MEETUP("Meetup"),
+    AFTER_DARK("After Dark"),
+    UNKNOWN("Unknown");
 
     companion object {
 
@@ -173,15 +198,19 @@ enum class SessionType {
         fun fromTags(tags: List<Tag>): SessionType {
             val typeTag = tags.firstOrNull { it.category == Tag.CATEGORY_TYPE }
 
-            return when (typeTag?.tag) {
-                Tag.TYPE_APP_REVIEWS -> APP_REVIEW
-                Tag.TYPE_AFTERHOURS -> AFTER_HOURS
-                Tag.TYPE_CODELABS -> CODELAB
-                Tag.TYPE_OFFICEHOURS -> OFFICE_HOURS
-                Tag.TYPE_SANDBOXDEMO -> SANDBOX
+            return when (typeTag?.tagName) {
+                Tag.TYPE_KEYNOTE -> KEYNOTE
                 Tag.TYPE_SESSIONS -> SESSION
+                Tag.TYPE_APP_REVIEWS -> APP_REVIEW
+                Tag.TYPE_GAME_REVIEWS -> GAME_REVIEW
+                Tag.TYPE_OFFICEHOURS -> OFFICE_HOURS
+                Tag.TYPE_CODELABS -> CODELAB
+                Tag.TYPE_MEETUPS -> MEETUP
+                Tag.TYPE_AFTERDARK -> AFTER_DARK
                 else -> UNKNOWN
             }
         }
+
+        internal val reservableTypes = listOf(SESSION, OFFICE_HOURS, APP_REVIEW, GAME_REVIEW)
     }
 }

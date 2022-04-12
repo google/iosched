@@ -17,9 +17,11 @@
 package com.google.samples.apps.iosched.shared.model
 
 import com.google.samples.apps.iosched.model.ConferenceData
+import com.google.samples.apps.iosched.model.ConferenceDay
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.test.data.TestData
+import com.google.samples.apps.iosched.test.util.FakeAppDatabase
 
 object TestDataSource : ConferenceDataSource {
     override fun getRemoteConferenceData(): ConferenceData? {
@@ -32,4 +34,10 @@ object TestDataSource : ConferenceDataSource {
 }
 
 /** ConferenceDataRepository for tests */
-object TestDataRepository : ConferenceDataRepository(TestDataSource, TestDataSource)
+object TestDataRepository : ConferenceDataRepository(
+    TestDataSource,
+    TestDataSource,
+    FakeAppDatabase()
+) {
+    override fun getConferenceDays(): List<ConferenceDay> = TestData.TestConferenceDays
+}

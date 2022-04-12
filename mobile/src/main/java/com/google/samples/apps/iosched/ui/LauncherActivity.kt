@@ -18,27 +18,26 @@ package com.google.samples.apps.iosched.ui
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.google.samples.apps.iosched.shared.result.EventObserver
 import com.google.samples.apps.iosched.shared.util.checkAllMatched
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.ui.LaunchDestination.MAIN_ACTIVITY
 import com.google.samples.apps.iosched.ui.LaunchDestination.ONBOARDING
 import com.google.samples.apps.iosched.ui.onboarding.OnboardingActivity
-import dagger.android.support.DaggerAppCompatActivity
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * A 'Trampoline' activity for sending users to an appropriate screen on launch.
  */
-class LauncherActivity : DaggerAppCompatActivity() {
-
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+@AndroidEntryPoint
+class LauncherActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val viewModel: LaunchViewModel = viewModelProvider(viewModelFactory)
+        val viewModel: LaunchViewModel by viewModels()
+
         viewModel.launchDestination.observe(this, EventObserver { destination ->
             when (destination) {
                 MAIN_ACTIVITY -> startActivity(Intent(this, MainActivity::class.java))

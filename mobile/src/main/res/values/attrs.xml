@@ -30,33 +30,37 @@
     <!-- User is on the wait list for the event -->
     <attr name="state_wait_listed" format="boolean" />
 
-    <attr name="sessionListKeyline" format="dimension" />
+    <attr name="verticalBias" format="float" />
 
-    <attr name="eventFilterViewStyle" format="reference" />
+    <declare-styleable name="Theme">
+        <!-- Navigation bar divider color, used by NavigationBarContentFrameLayout -->
+        <attr name="ioschedNavigationBarDividerColor" format="color" />
+
+        <attr name="colorControlLight" format="color" />
+
+        <attr name="sessionListKeyline" format="dimension" />
+
+        <attr name="eventCardHeaderBackground" format="reference|color" />
+
+        <attr name="colorSurfaceSecondary" format="color" />
+    </declare-styleable>
 
     <declare-styleable name="TimeHeader">
         <attr name="android:width" />
-        <attr name="android:paddingTop" />
+        <attr name="android:padding" />
         <attr name="android:textColor" />
         <attr name="android:fontFamily" />
-        <attr name="hourTextSize" format="dimension" />
-        <attr name="hourMinTextSize" format="dimension" />
+        <attr name="timeTextSize" format="dimension" />
         <attr name="meridiemTextSize" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="DateHeader">
         <attr name="android:width" />
-        <attr name="android:paddingTop" />
+        <attr name="android:height" />
         <attr name="android:textColor" />
+        <attr name="android:textSize" />
         <attr name="android:fontFamily" />
-        <attr name="dateTextSize" format="dimension" />
-        <attr name="dayTextSize" format="dimension" />
-    </declare-styleable>
-
-    <declare-styleable name="HeaderGridDrawable">
-        <attr name="android:color" />
-        <attr name="gridSize" format="dimension" />
-        <attr name="gridStrokeWidth" format="dimension" />
+        <attr name="verticalBias"/>
     </declare-styleable>
 
     <declare-styleable name="ReserveButton">
@@ -68,13 +72,11 @@
         <attr name="state_reservation_pending" />
     </declare-styleable>
 
-    <declare-styleable name="EventView">
+    <declare-styleable name="EventCardView">
         <attr name="eventTitle" format="string" />
         <attr name="eventDescription" format="string" />
-        <attr name="filteredEventsLinkUri" format="string" />
-        <attr name="mapLinkUri" format="string" />
-        <attr name="codelabsUri" format="string" />
         <attr name="eventTypeLogo" format="reference" />
+        <attr name="eventTypeLogoBackground" format="reference|color" />
     </declare-styleable>
 
     <declare-styleable name="CollapsibleCard">
@@ -82,17 +84,28 @@
         <attr name="cardDescription" format="string" />
     </declare-styleable>
 
-    <declare-styleable name="EventFilterView">
-        <attr name="android:checked" />
-        <attr name="android:text" />
+    <declare-styleable name="DayIndicatorDecoration">
+        <attr name="android:color" />
+        <attr name="insetHorizontal" format="dimension" />
+        <attr name="insetVertical" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="DaySeparatorDecoration">
+        <attr name="android:width" />
+        <attr name="android:height" />
         <attr name="android:textColor" />
         <attr name="android:textSize" />
-        <attr name="android:color" />
-        <attr name="android:padding" />
-        <attr name="android:strokeColor" />
-        <attr name="outlineWidth" format="dimension" />
-        <attr name="clearIcon" format="reference" />
-        <attr name="foreground" format="reference" />
-        <attr name="showIcons" format="boolean" />
+        <attr name="android:fontFamily" />
+        <attr name="verticalBias" />
+    </declare-styleable>
+
+    <declare-styleable name="NavigationBarContentFrameLayout">
+        <attr name="navigationBarBorderColor" format="color" />
+        <attr name="navigationBarBorderSize" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="HashtagIoDecoration">
+        <attr name="android:drawable" />
+        <attr name="margin" format="dimension" />
     </declare-styleable>
 </resources>

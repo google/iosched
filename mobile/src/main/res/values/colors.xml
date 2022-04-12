@@ -16,20 +16,43 @@
   -->
 
 <resources>
-    <color name="status_bar">#202124</color>
-    <color name="text_color_tertiary">#dadce0</color>
-    <color name="light_grey">#e6e6e6</color>
+    <color name="color_primary">@color/deep_sky_blue</color>
+    <color name="color_primary_dark">@color/warm_blue</color>
+    <color name="color_on_secondary">@color/white</color>
+
+    <color name="color_control_light">#39000000</color> <!-- Same as textColorPrimary disabled -->
+    <color name="color_surface_secondary">#F8F9FA</color> <!-- Same as textColorPrimary disabled -->
+
+    <!-- Scrim colors -->
+    <color name="system_ui_scrim_light">#B3FFFFFF</color> <!-- 70% white -->
+    <color name="system_ui_scrim_black">#40000000</color> <!-- 25% black -->
+
+    <!-- We use a dark scrim by default since light status is API 23+ -->
+    <color name="status_bar_scrim">@color/system_ui_scrim_black</color>
+    <!-- We use a dark scrim by default since light nav bar is API 27+ -->
+    <color name="nav_bar_scrim">@color/system_ui_scrim_black</color>
+
+    <!-- Other colors with dark mode alternatives -->
+    <color name="wifi_card_background">#e8f0fe</color>
+    <color name="event_card_header_background">@color/event_card_header_background_light</color>
+    <color name="list_divider">#1f000000</color>>
+
+    <!-- Other colors -->
     <color name="default_tag_color">#999</color>
-    <color name="highlight_light">#33ffffff</color> <!-- 20% white -->
+    <color name="light_grey">#e6e6e6</color>
     <color name="scrim">#33000000</color> <!-- 20% black -->
-    <color name="indigo_transparent">#e54768fd</color> <!-- 90% indigo -->
-    <color name="dark_gray">#ff808080</color>
+
+    <color name="event_card_header_background_light">#f8f9fa</color>
+    <color name="event_card_header_background_dark">#252729</color>
+
+    <item name="chip_bg_alpha_checked" format="float" type="dimen">0.18</item>
 
     <integer-array name="swipe_refresh">
-        <item>@color/indigo</item>
+        <item>@color/deep_sky_blue</item>
         <item>@color/teal</item>
-        <item>@color/light_blue</item>
-        <item>@color/yellow</item>
-        <item>@color/orange</item>
+        <item>@color/bright_light_blue</item>
+        <item>@color/sun_yellow</item>
+        <item>@color/bright_orange</item>
     </integer-array>
+
 </resources>

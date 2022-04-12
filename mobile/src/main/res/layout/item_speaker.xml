@@ -35,18 +35,25 @@
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
         android:onClick="@{() -> eventListener.onSpeakerClicked(speaker.id)}"
-        android:paddingVertical="@dimen/spacing_normal">
+        android:paddingTop="@dimen/spacing_normal"
+        android:paddingBottom="@dimen/spacing_normal" >
 
+        <!--
+        Using the speaker's id as the transition name so when there are multiple speakers the id is
+        unique, thus preventing conflicts with the transition name. See item_speaker_info.xml for
+        the corresponding shared element.
+         -->
         <ImageView
             android:id="@+id/speaker_item_headshot"
             android:layout_width="@dimen/speaker_headshot_size"
             android:layout_height="@dimen/speaker_headshot_size"
             android:layout_marginStart="@dimen/margin_normal"
             android:importantForAccessibility="no"
-            android:transitionName="@string/speaker_headshot_transition"
+            android:transitionName="@{speaker.id}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:speakerImage="@{speaker}" />
+            app:speakerImage="@{speaker}"
+            tools:src="@drawable/ic_default_avatar_1" />
 
         <TextView
             android:id="@+id/speaker_item_name"
@@ -54,8 +61,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginStart="@dimen/margin_normal"
+            android:textAlignment="viewStart"
             android:text="@{speaker.name}"
-            android:textAppearance="@style/TextAppearance.IOSched.SpeakerTitle"
+            android:textAppearance="?textAppearanceListItem"
             app:layout_constraintBottom_toTopOf="@id/speaker_item_company"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/speaker_item_headshot"
@@ -69,7 +77,7 @@
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginTop="@dimen/spacing_micro"
             android:text="@{speaker.company}"
-            android:textColor="?android:textColorPrimary"
+            android:textAlignment="viewStart"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/speaker_item_name"

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="codelab"
+            type="com.google.samples.apps.iosched.model.Codelab" />
+
+        <variable
+            name="isExpanded"
+            type="Boolean" />
+
+        <variable
+            name="actionHandler"
+            type="com.google.samples.apps.iosched.ui.codelabs.CodelabsActionsHandler" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:minHeight="?listPreferredItemHeight"
+        android:paddingEnd="?listPreferredItemPaddingEnd"
+        android:paddingTop="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_small"
+        tools:ignore="RtlSymmetry">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="?sessionListKeyline" />
+
+        <ImageView
+            android:id="@+id/codelab_icon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="?listPreferredItemPaddingStart"
+            android:contentDescription="@null"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:imageUrl="@{codelab.iconUrl}"
+            app:placeholder="@{@drawable/ic_nav_codelabs}"
+            tools:src="@drawable/ic_nav_codelabs" />
+
+        <ImageView
+            android:id="@+id/expand_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:importantForAccessibility="no"
+            android:rotationX="@{isExpanded ? 180f : 0f}"
+            android:src="@drawable/ic_expand_more"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/codelab_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:text="@{codelab.title}"
+            android:textAlignment="viewStart"
+            android:textAppearance="?textAppearanceListItem"
+            app:layout_constraintEnd_toStartOf="@id/expand_icon"
+            app:layout_constraintStart_toEndOf="@id/guideline_start"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@sample/codelabs.json/codelabs/title" />
+
+        <TextView
+            android:id="@+id/codelab_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_micro"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/codelab_title"
+            app:codelabDuration="@{codelab.durationMinutes}"
+            tools:text="@sample/codelabs.json/codelabs/duration"
+            tools:visibility="visible" />
+
+        <com.google.samples.apps.iosched.widget.NoTouchRecyclerView
+            android:id="@+id/codelab_tags"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/codelab_duration"
+            app:topicTags="@{codelab.tags}"
+            tools:itemCount="3"
+            tools:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/item_inline_tag" />
+
+        <TextView
+            android:id="@+id/codelab_description"
+            style="@style/Widget.IOSched.MultilineBody"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:text="@{codelab.description}"
+            android:textAlignment="viewStart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/codelab_tags"
+            app:goneUnless="@{isExpanded}"
+            tools:text="@sample/codelabs.json/codelabs/description"
+            tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/start_codelab"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> actionHandler.startCodelab(codelab)}"
+            android:text="@string/start_codelab"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/codelab_description"
+            app:goneUnless="@{isExpanded &amp;&amp; codelab.hasUrl()}"
+            app:icon="@drawable/ic_launch"
+            app:iconPadding="8dp"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

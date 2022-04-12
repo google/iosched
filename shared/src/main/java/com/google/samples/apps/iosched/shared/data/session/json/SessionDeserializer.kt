@@ -19,14 +19,14 @@ package com.google.samples.apps.iosched.shared.data.session.json
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
-import com.google.gson.JsonObject
+import java.lang.reflect.Type
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneOffset
 import org.threeten.bp.ZonedDateTime
-import java.lang.reflect.Type
 
 /**
- * Deserializer for sessions. Returns a temporary session object, [SessionTemp].
+ * Deserializer for sessions. Returns temporary session objects, which are later normalized once
+ * other objects have also been parsed.
  */
 class SessionDeserializer : JsonDeserializer<SessionTemp> {
 
@@ -54,10 +54,11 @@ class SessionDeserializer : JsonDeserializer<SessionTemp> {
             endTime = ZonedDateTime.ofInstant(
                 Instant.ofEpochMilli(obj.get("endTimestamp").asLong), ZoneOffset.UTC
             ),
-            abstract = obj.get("description").asString,
-            photoUrl = obj.get("photoUrl")?.asString,
-            liveStreamUrl = "TODO: Set livestream URL", // TODO Set or remove this (b/77292964)
-            isLivestream = obj.get("livestream").asBoolean,
+            description = obj.get("description").asString,
+            photoUrl = obj.get("photoUrl")?.asString ?: "",
+            isLivestream = obj.get("youtubeVideoType")?.asString == "livestream" ||
+                obj.get("livestream")?.asBoolean == true,
+            doryLink = obj.get("doryLink")?.asString ?: "",
             speakers = speakers.toSet(),
             tagNames = tagNames.toList(),
             relatedSessions = relatedSessions.toSet(),
@@ -66,15 +67,8 @@ class SessionDeserializer : JsonDeserializer<SessionTemp> {
         )
     }
 
-    private fun getListFromJsonArray(obj: JsonObject, key: String): List<String> {
-        val array = obj.get(key).asJsonArray
-        val stringList = ArrayList<String>()
-        array.mapTo(stringList) { it.asString }
-        return stringList
-    }
-
     private fun getUrlFromId(id: String): String {
-        val prefix = "https://events.google.com/io/schedule/?section=day&sid="
+        val prefix = "https://events.google.com/io/schedule/events/"
         return if (id.isNotEmpty()) prefix + id else ""
     }
 }

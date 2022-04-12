@@ -16,301 +16,226 @@
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="viewModel"
             type="com.google.samples.apps.iosched.ui.info.EventInfoViewModel" />
+
+        <variable
+            name="showAssistantApp"
+            type="Boolean" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinator_layout"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/margin_normal"
+        android:paddingTop="@dimen/margin_normal"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbars="vertical">
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/scroll_view"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbarStyle="insideOverlay"
-            android:scrollbars="vertical">
+            android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/margin_normal" />
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_start"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_begin="@dimen/margin_normal" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/margin_normal" />
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_end"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_end="@dimen/margin_normal" />
+            <include
+                android:id="@+id/wifi_card"
+                layout="@layout/info_wifi_card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@id/guideline_end"
+                app:layout_constraintStart_toEndOf="@id/guideline_start"
+                app:layout_constraintTop_toTopOf="parent"
+                app:viewModel="@{viewModel}" />
 
-                <TextView
-                    android:id="@+id/wifi_header"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_normal"
-                    android:layout_marginTop="@dimen/margin_normal"
-                    android:text="@string/wifi_header"
-                    android:textAppearance="@style/TextAppearance.IOSched.Subhead"
-                    app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/related_apps_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                android:text="@string/related_apps_header"
+                android:textAppearance="@style/TextAppearance.IOSched.Overline"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/wifi_card"
+                app:goneUnless="@{showAssistantApp}" />
 
-                <TextView
-                    android:id="@+id/wifi_network_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_normal"
-                    android:text="@string/wifi_network_label"
-                    android:textColor="?android:textColorPrimary"
-                    app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/wifi_header" />
-
-                <TextView
-                    android:id="@+id/wifi_password_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:text="@string/wifi_password_label"
-                    android:textColor="?android:textColorPrimary"
-                    app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/wifi_network_label" />
-
-                <androidx.constraintlayout.widget.Barrier
-                    android:id="@+id/wifi_label_barrier"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:barrierDirection="end"
-                    app:constraint_referenced_ids="wifi_network_label,wifi_password_label" />
-
-                <TextView
-                    android:id="@+id/wifi_network_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_normal"
-                    android:text="@{viewModel.wifiSsid}"
-                    android:textColor="?android:textColorPrimary"
-                    app:layout_constraintBaseline_toBaselineOf="@id/wifi_network_label"
-                    app:layout_constraintEnd_toStartOf="@id/guideline_end"
-                    app:layout_constraintStart_toEndOf="@id/wifi_label_barrier"
-                    tools:text="IO2018" />
-
-                <TextView
-                    android:id="@+id/wifi_password_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_normal"
-                    android:background="@drawable/inset_borderless_btn"
-                    android:gravity="center_vertical"
-                    android:minHeight="@dimen/a11y_min_touch_target"
-                    android:onClick="@{() -> viewModel.onWifiConnect()}"
-                    android:text="@{viewModel.wifiPassword.concat(` ` + @string/tap_to_join_network)}"
-                    android:textColor="@color/indigo"
-                    app:layout_constraintBaseline_toBaselineOf="@id/wifi_password_label"
-                    app:layout_constraintEnd_toStartOf="@id/guideline_end"
-                    app:layout_constraintStart_toEndOf="@id/wifi_label_barrier"
-                    tools:text="whatislove" />
-
-                <TextView
-                    android:id="@+id/related_apps_header"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_normal"
-                    android:layout_marginTop="@dimen/margin_large"
-                    android:text="@string/related_apps_header"
-                    android:textAppearance="@style/TextAppearance.IOSched.Subhead"
-                    app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/wifi_password_value" />
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/assistant_app"
+                style="@style/Widget.IOSched.EventCardView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:onClick="@{() -> viewModel.onClickAssistantApp()}"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/related_apps_header"
+                app:cardCornerRadius="8dp"
+                app:contentPadding="@dimen/margin_small"
+                app:goneUnless="@{showAssistantApp}">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/scavenger_hunt"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:background="?selectableItemBackground"
-                    android:onClick="@{() -> viewModel.onClickScavengerHunt()}"
-                    android:paddingVertical="@dimen/spacing_normal"
-                    app:layout_constraintTop_toBottomOf="@+id/related_apps_header"
-                    app:goneUnless="@{viewModel.showScavengerHunt}">
-
-                    <ImageView
-                        android:id="@+id/scavenger_hunt_logo"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:importantForAccessibility="no"
-                        android:src="@drawable/ic_logo_scavenger_hunt"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <TextView
-                        android:id="@+id/scavenger_hunt_description"
-                        style="@style/TextAppearance.IOSched.InfoEventDescription.AppCallout"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_normal"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:text="@string/scavenger_hunt_description"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/scavenger_hunt_logo" />
-
-                    <TextView
-                        android:id="@+id/scavenger_hunt_description2"
-                        style="@style/TextAppearance.IOSched.InfoEventDescription"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_normal"
-                        android:layout_marginStart="@dimen/margin_normal"
-                        android:layout_marginTop="@dimen/spacing_micro"
-                        android:text="@string/scavenger_hunt_description2"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/scavenger_hunt_logo"
-                        app:layout_constraintTop_toBottomOf="@id/scavenger_hunt_description" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/assistant_app"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:background="?selectableItemBackground"
-                    android:onClick="@{() -> viewModel.onClickAssistantApp()}"
-                    android:paddingVertical="@dimen/spacing_normal"
-                    app:layout_constraintTop_toBottomOf="@+id/scavenger_hunt">
+                    android:layout_height="wrap_content">
 
                     <ImageView
                         android:id="@+id/assistant_app_logo"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:layout_marginStart="@dimen/margin_normal"
                         android:importantForAccessibility="no"
                         android:src="@drawable/ic_logo_assistant"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/assistant_app_description"
-                        style="@style/TextAppearance.IOSched.InfoEventDescription.AppCallout"
+                        style="@style/TextAppearance.IOSched.Info.AssistantApp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_normal"
-                        android:layout_marginStart="@dimen/margin_normal"
+                        android:layout_marginStart="@dimen/spacing_normal"
                         android:text="@string/assistant_app_description"
+                        android:textAlignment="viewStart"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/assistant_app_logo" />
+                        app:layout_constraintStart_toEndOf="@id/assistant_app_logo"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/assistant_app_description2"
-                        style="@style/TextAppearance.IOSched.InfoEventDescription"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_normal"
-                        android:layout_marginStart="@dimen/margin_normal"
                         android:layout_marginTop="@dimen/spacing_micro"
                         android:text="@string/assistant_app_description2"
+                        android:textAlignment="viewStart"
+                        android:textAppearance="?textAppearanceBody2"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/assistant_app_logo"
+                        app:layout_constraintStart_toStartOf="@id/assistant_app_description"
                         app:layout_constraintTop_toBottomOf="@id/assistant_app_description" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                <TextView
-                    android:id="@+id/event_types_header"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_large"
-                    android:text="@string/event_types_header"
-                    android:textAppearance="@style/TextAppearance.IOSched.Subhead"
-                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@+id/assistant_app" />
+            <TextView
+                android:id="@+id/event_types_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                android:text="@string/event_types_header"
+                android:textAppearance="@style/TextAppearance.IOSched.Overline"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/assistant_app" />
 
-                <com.google.samples.apps.iosched.widget.EventView
-                    android:id="@+id/event_sessions"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_normal"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/event_types_header"
-                    app:eventDescription="@string/event_sessions_description"
-                    app:eventTitle="@string/event_sessions_title"
-                    app:eventTypeLogo="@drawable/event_header_sessions" />
+            <com.google.samples.apps.iosched.widget.EventCardView
+                android:id="@+id/event_sessions"
+                style="@style/Widget.IOSched.EventCardView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/event_types_header"
+                app:eventDescription="@string/event_sessions_description"
+                app:eventTitle="@string/event_sessions_title"
+                app:eventTypeLogo="@drawable/event_header_sessions" />
 
-                <com.google.samples.apps.iosched.widget.EventView
-                    android:id="@+id/event_sandbox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/event_sessions"
-                    app:eventDescription="@string/event_sandbox_description"
-                    app:eventTitle="@string/event_sandbox_title"
-                    app:eventTypeLogo="@drawable/event_header_sandbox" />
+            <com.google.samples.apps.iosched.widget.EventCardView
+                android:id="@+id/event_sandbox"
+                style="@style/Widget.IOSched.EventCardView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/event_sessions"
+                app:eventDescription="@string/event_sandbox_description"
+                app:eventTitle="@string/event_sandbox_title"
+                app:eventTypeLogo="@drawable/event_header_sandbox" />
 
-                <com.google.samples.apps.iosched.widget.EventView
-                    android:id="@+id/event_codelabs"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/event_sandbox"
-                    app:eventDescription="@string/event_codelabs_description"
-                    app:eventTitle="@string/event_codelabs_title"
-                    app:eventTypeLogo="@drawable/event_header_codelabs" />
+            <com.google.samples.apps.iosched.widget.EventCardView
+                android:id="@+id/event_codelabs"
+                style="@style/Widget.IOSched.EventCardView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/event_sandbox"
+                app:eventDescription="@string/event_codelabs_description"
+                app:eventTitle="@string/event_codelabs_title"
+                app:eventTypeLogo="@drawable/event_header_codelabs" />
 
-                <com.google.samples.apps.iosched.widget.EventView
-                    android:id="@+id/event_officehours"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/event_codelabs"
-                    app:eventDescription="@string/event_officehours_description"
-                    app:eventTitle="@string/event_officehours_title"
-                    app:eventTypeLogo="@drawable/event_header_office_hours" />
+            <com.google.samples.apps.iosched.widget.EventCardView
+                android:id="@+id/event_officehours"
+                style="@style/Widget.IOSched.EventCardView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/event_codelabs"
+                app:eventDescription="@string/event_officehours_description"
+                app:eventTitle="@string/event_officehours_title"
+                app:eventTypeLogo="@drawable/event_header_office_hours" />
 
-                <com.google.samples.apps.iosched.widget.EventView
-                    android:id="@+id/event_afterhours"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/event_officehours"
-                    app:eventDescription="@string/event_afterhours_description"
-                    app:eventTitle="@string/event_afterhours_title"
-                    app:eventTypeLogo="@drawable/event_header_afterhours" />
+            <!-- After hours header is always on dark background -->
+            <com.google.samples.apps.iosched.widget.EventCardView
+                android:id="@+id/event_afterhours"
+                style="@style/Widget.IOSched.EventCardView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/event_officehours"
+                app:eventDescription="@string/event_afterhours_description"
+                app:eventTitle="@string/event_afterhours_title"
+                app:eventTypeLogo="@drawable/event_header_afterhours"
+                app:eventTypeLogoBackground="@color/event_card_header_background_dark"/>
 
-                <com.google.samples.apps.iosched.widget.EventView
-                    android:id="@+id/event_meals"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/event_afterhours"
-                    app:eventDescription="@string/event_meals_description"
-                    app:eventTitle="@string/event_meals_title"
-                    app:eventTypeLogo="@drawable/event_header_meals" />
+            <com.google.samples.apps.iosched.widget.EventCardView
+                android:id="@+id/event_meals"
+                style="@style/Widget.IOSched.EventCardView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/event_afterhours"
+                app:eventDescription="@string/event_meals_description"
+                app:eventTitle="@string/event_meals_title"
+                app:eventTypeLogo="@drawable/event_header_meals" />
 
-                <com.google.samples.apps.iosched.widget.CountdownView
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/countdown_height"
-                    android:layout_marginEnd="@dimen/onboarding_margins"
-                    android:layout_marginStart="@dimen/onboarding_margins"
-                    android:importantForAccessibility="no"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/event_meals"
-                    app:countdownVisibility="@{true}" />
+            <!-- TODO remove countdownVisibility method -->
+            <com.google.samples.apps.iosched.widget.CountdownView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/countdown_height"
+                android:layout_marginEnd="@dimen/onboarding_margins"
+                android:layout_marginStart="@dimen/onboarding_margins"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/event_meals"
+                app:countdownVisibility="@{true}" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.core.widget.NestedScrollView>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </layout>

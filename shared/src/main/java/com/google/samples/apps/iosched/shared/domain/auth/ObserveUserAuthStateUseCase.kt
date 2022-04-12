@@ -17,18 +17,31 @@
 package com.google.samples.apps.iosched.shared.domain.auth
 
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
+import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfoBasic
 import com.google.samples.apps.iosched.shared.data.signin.FirebaseRegisteredUserInfo
 import com.google.samples.apps.iosched.shared.data.signin.datasources.AuthStateUserDataSource
 import com.google.samples.apps.iosched.shared.data.signin.datasources.RegisteredUserDataSource
-import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
+import com.google.samples.apps.iosched.shared.di.ApplicationScope
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
+import com.google.samples.apps.iosched.shared.domain.FlowUseCase
 import com.google.samples.apps.iosched.shared.fcm.TopicSubscriber
 import com.google.samples.apps.iosched.shared.result.Result
-import timber.log.Timber
+import com.google.samples.apps.iosched.shared.result.Result.Success
+import com.google.samples.apps.iosched.shared.result.data
+import com.google.samples.apps.iosched.shared.util.cancelIfActive
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.ProducerScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 /**
- * A [MediatorUseCase] that observes two data sources to generate an [AuthenticatedUserInfo]
+ * A [FlowUseCase] that observes two data sources to generate an [AuthenticatedUserInfo]
  * that includes whether the user is registered (is an attendee).
  *
  * [AuthStateUserDataSource] provides general user information, like user IDs, while
@@ -37,72 +50,33 @@ import javax.inject.Singleton
  */
 @Singleton
 open class ObserveUserAuthStateUseCase @Inject constructor(
-    registeredUserDataSource: RegisteredUserDataSource,
+    private val registeredUserDataSource: RegisteredUserDataSource,
     private val authStateUserDataSource: AuthStateUserDataSource,
-    private val topicSubscriber: TopicSubscriber
-) : MediatorUseCase<Any, AuthenticatedUserInfo>() {
+    private val topicSubscriber: TopicSubscriber,
+    @ApplicationScope private val externalScope: CoroutineScope,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+) : FlowUseCase<Any, AuthenticatedUserInfo>(ioDispatcher) {
 
-    private val currentFirebaseUserObservable = authStateUserDataSource.getBasicUserInfo()
+    private var observeUserRegisteredChangesJob: Job? = null
 
-    private val isUserRegisteredObservable = registeredUserDataSource.observeResult()
+    override fun execute(parameters: Any): Flow<Result<AuthenticatedUserInfo>> {
+        // As a separate coroutine needs to listen for user registration changes, a channelFlow
+        // is used instead of any other operator on authStateUserDataSource.getBasicUserInfo
+        return channelFlow {
+            authStateUserDataSource.getBasicUserInfo().collect { userResult ->
+                // Cancel observing previous user registered changes
+                observeUserRegisteredChangesJob.cancelIfActive()
 
-    init {
-
-        // If the Firebase user changes, query firestore to figure out if they're registered.
-        result.addSource(currentFirebaseUserObservable) {
-            val userResult = currentFirebaseUserObservable.value
-
-            // Start observing the user in Firestore to fetch the `registered` flag
-            (userResult as? Result.Success)?.data?.getUid()?.let {
-                registeredUserDataSource.listenToUserChanges(it)
+                if (userResult is Success) {
+                    if (userResult.data != null) {
+                        processUserData(userResult.data)
+                    } else {
+                        channel.offer(Success(FirebaseRegisteredUserInfo(userResult.data, false)))
+                    }
+                } else {
+                    channel.offer(Result.Error(Exception("FirebaseAuth error")))
+                }
             }
-            // Sign out
-            if (userResult is Result.Success && userResult.data?.isSignedIn() == false) {
-                registeredUserDataSource.setAnonymousValue()
-                updateUserObservable()
-                unsubscribeFromRegisteredTopic() // Stop receiving notifications for attendees
-            }
-            // Error
-            if (userResult is Result.Error) {
-                result.postValue(Result.Error(Exception("FirebaseAuth error")))
-            }
-        }
-
-        // If the Firestore information about the user changes, update result.
-        result.addSource(isUserRegisteredObservable) {
-            // When the flag that indicates if an user is an attendee is fetched,
-            // update the user result with it:
-            updateUserObservable()
-        }
-    }
-
-    override fun execute(parameters: Any) {
-        // Start listening to the [AuthStateUserDataSource] for changes in auth state.
-        authStateUserDataSource.startListening()
-    }
-
-    private fun updateUserObservable() {
-        val currentFirebaseUser = currentFirebaseUserObservable.value
-        val isRegistered = isUserRegisteredObservable.value
-
-        if (currentFirebaseUser is Result.Success) {
-
-            // If the isRegistered value is an error, assign it false. Null means no info yet.
-            val isRegisteredValue: Boolean? = (isRegistered as? Result.Success)?.data
-
-            // Whenever there's new user data and the user is an attendee, subscribe to topic:
-            if (isRegisteredValue == true && currentFirebaseUser.data?.isSignedIn() == true) {
-                subscribeToRegisteredTopic()
-            }
-
-            result.postValue(
-                Result.Success(
-                    FirebaseRegisteredUserInfo(currentFirebaseUser.data, isRegisteredValue)
-                )
-            )
-        } else {
-            Timber.e("There was a registration error.")
-            result.postValue(Result.Error(Exception("Registration error")))
         }
     }
 
@@ -112,5 +86,47 @@ open class ObserveUserAuthStateUseCase @Inject constructor(
 
     private fun unsubscribeFromRegisteredTopic() {
         topicSubscriber.unsubscribeFromAttendeeUpdates()
+    }
+
+    private suspend fun ProducerScope<Result<AuthenticatedUserInfo>>.processUserData(
+        userData: AuthenticatedUserInfoBasic
+    ) {
+        if (!userData.isSignedIn()) {
+            userSignedOut(userData)
+        } else if (userData.getUid() != null) {
+            userSignedIn(userData.getUid()!!, userData)
+        } else {
+            channel.offer(Success(FirebaseRegisteredUserInfo(userData, false)))
+        }
+    }
+
+    private suspend fun ProducerScope<Result<AuthenticatedUserInfo>>.userSignedIn(
+        userId: String,
+        userData: AuthenticatedUserInfoBasic
+    ) {
+        // Observing the user registration changes from another scope as doing it using a
+        // supervisorScope was keeping the coroutine busy and updates to
+        // authStateUserDataSource.getBasicUserInfo() were ignored
+        observeUserRegisteredChangesJob = externalScope.launch(ioDispatcher) {
+            // Start observing the user in Firestore to fetch the `registered` flag
+            registeredUserDataSource.observeUserChanges(userId).collect { result ->
+                val isRegisteredValue: Boolean? = result.data
+                // When there's new user data and the user is an attendee, subscribe to topic:
+                if (isRegisteredValue == true && userData.isSignedIn()) {
+                    subscribeToRegisteredTopic()
+                }
+
+                channel.offer(
+                    Success(FirebaseRegisteredUserInfo(userData, isRegisteredValue))
+                )
+            }
+        }
+    }
+
+    private fun ProducerScope<Result<AuthenticatedUserInfo>>.userSignedOut(
+        userData: AuthenticatedUserInfoBasic?
+    ) {
+        channel.offer(Success(FirebaseRegisteredUserInfo(userData, false)))
+        unsubscribeFromRegisteredTopic() // Stop receiving notifications for attendees
     }
 }

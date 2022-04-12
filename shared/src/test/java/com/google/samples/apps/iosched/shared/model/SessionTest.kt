@@ -21,6 +21,7 @@ import com.google.samples.apps.iosched.model.SessionType.SESSION
 import com.google.samples.apps.iosched.model.SessionType.UNKNOWN
 import com.google.samples.apps.iosched.test.data.TestData
 import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is
 import org.junit.Test
@@ -103,6 +104,17 @@ class SessionTest {
     fun testType_unknown() {
         val session = TestData.session0.copy(tags = listOf())
         assertThat(session.type, `is`(UNKNOWN))
+    }
+
+    @Test
+    fun testDescription() {
+        assertThat(TestData.session0.getCalendarDescription("\n\n", ", "), `is`(equalTo(
+            """
+                This session is awesome
+
+                Troy McClure
+            """.trimIndent()
+        )))
     }
 
     private fun testIsOverlapping(

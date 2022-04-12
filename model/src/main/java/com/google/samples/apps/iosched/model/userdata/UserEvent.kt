@@ -59,7 +59,7 @@ data class UserEvent(
     /** Stores the user's latest reservation action  */
     private val reservationRequest: ReservationRequest? = null
 ) {
-    fun isPinned(): Boolean {
+    fun isStarredOrReserved(): Boolean {
         return isStarred || isReserved() || isWaitlisted()
     }
 
@@ -159,6 +159,10 @@ data class UserEvent(
         val r = reservationRequestResult?.requestResult ?: return false
         return r == SWAP_SUCCEEDED || r == SWAP_WAITLISTED || r == SWAP_DENIED_CLASH ||
             r == SWAP_DENIED_CUTOFF || r == SWAP_DENIED_UNKNOWN
+    }
+
+    fun isPreSessionNotificationRequired(): Boolean {
+        return isStarred || isReserved()
     }
 
     /**

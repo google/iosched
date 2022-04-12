@@ -22,7 +22,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/io_logo" />
+            android:src="@drawable/preview_window_logo" />
     </item>
 
 </layer-list>

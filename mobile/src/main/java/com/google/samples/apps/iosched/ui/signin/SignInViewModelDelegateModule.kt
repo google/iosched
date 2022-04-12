@@ -16,12 +16,19 @@
 
 package com.google.samples.apps.iosched.ui.signin
 
+import com.google.samples.apps.iosched.shared.di.IoDispatcher
+import com.google.samples.apps.iosched.shared.di.MainDispatcher
+import com.google.samples.apps.iosched.shared.di.ReservationEnabledFlag
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.prefs.NotificationsPrefIsShownUseCase
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 
+@InstallIn(ApplicationComponent::class)
 @Module
 class SignInViewModelDelegateModule {
 
@@ -29,8 +36,17 @@ class SignInViewModelDelegateModule {
     @Provides
     fun provideSignInViewModelDelegate(
         dataSource: ObserveUserAuthStateUseCase,
-        notificationsPrefIsShownUseCase: NotificationsPrefIsShownUseCase
+        notificationsPrefIsShownUseCase: NotificationsPrefIsShownUseCase,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher,
+        @MainDispatcher mainDispatcher: CoroutineDispatcher,
+        @ReservationEnabledFlag isReservationEnabledByRemoteConfig: Boolean
     ): SignInViewModelDelegate {
-        return FirebaseSignInViewModelDelegate(dataSource, notificationsPrefIsShownUseCase)
+        return FirebaseSignInViewModelDelegate(
+            observeUserAuthStateUseCase = dataSource,
+            notificationsPrefIsShownUseCase = notificationsPrefIsShownUseCase,
+            ioDispatcher = ioDispatcher,
+            mainDispatcher = mainDispatcher,
+            isReservationEnabledByRemoteConfig = isReservationEnabledByRemoteConfig
+        )
     }
 }

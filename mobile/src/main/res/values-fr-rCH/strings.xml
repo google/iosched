@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2018 Google LLC
+  ~ Copyright 2019 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,24 +16,30 @@
 -->
 <resources>
     <string name="title_schedule">Programmation</string>
+    <string name="title_home">Accueil</string>
     <string name="title_map">Plan</string>
+    <string name="title_explore_io">Explorer la conférence I/O</string>
+    <string name="title_info">Informations</string>
     <string name="filters">Filtres</string>
     <string name="category_heading_tracks">Thèmes</string>
     <string name="category_heading_types">Types</string>
-    <string name="clear_all">Tout effacer</string>
     <string name="reset">Réinitialiser</string>
     <plurals name="filter_event_count">
         <item quantity="one">%1$d événement</item>
         <item quantity="other">%1$d événements</item>
     </plurals>
+    <string name="starred_and_reserved">Vos événements favoris et réservés</string>
+    <string name="starred_and_reserved_short">Vos événements</string>
+    <string name="search_schedule_hint">Rechercher dans le programme</string>
+    <string name="search_schedule_no_results">Aucun résultat</string>
     <string name="agenda">Planning</string>
     <string name="event_starred">Événement ajouté à vos favoris</string>
     <string name="event_unstarred">Événement supprimé de vos favoris</string>
     <string name="event_star_error">Erreur lors de l\'ajout de l\'événement aux favoris</string>
     <string name="reservation_error">Erreur lors de la modification de la réservation. Attendez que les demandes précédentes se terminent ou réessayez plus tard.</string>
     <string name="reservation_request_succeeded">Réservation demandée.</string>
-    <string name="reservation_cancel_succeeded">Réservation annulée : \"&lt;b&gt;%s&lt;/b&gt;\".</string>
-    <string name="reservation_new">Votre place a été réservée pour \"&lt;b&gt;%s&lt;/b&gt;\".</string>
+    <string name="reservation_cancel_succeeded">Réservation annulée : "&lt;b&gt;%s&lt;/b&gt;".</string>
+    <string name="reservation_new">Votre place a été réservée pour "&lt;b&gt;%s&lt;/b&gt;".</string>
     <string name="reservation_replaced">Événement remplacé.</string>
     <string name="waitlist_new">Vous avez été mis sur liste d\'attente.</string>
     <string name="waitlist_cancel_succeeded">Retiré de la liste d\'attente.</string>
@@ -44,28 +50,43 @@
     <string name="reservation_denied_unknown">Réservation refusée : erreur inconnue.</string>
     <string name="cancellation_denied_cutoff">Annulation refusée : l\'heure de début est trop proche.</string>
     <string name="cancellation_denied_unknown">Annulation refusée : erreur inconnue.</string>
-    <string name="schedule_filters_empty">Vous n\'avez aucun événement favori ni réservé aujourd\'hui.</string>
+    <string name="schedule_filters_empty">Aucun événement trouvé.</string>
     <string name="reservation_reservable">Réserver la place</string>
     <string name="reservation_reserved">Réservé</string>
     <string name="reservation_waitlisted">Sur liste d\'attente</string>
     <string name="reservation_waitlist_available">Rejoindre la liste d\'attente</string>
     <string name="reservation_disabled">Réservations indisponibles</string>
+    <string name="reservation_pending">Réservation en attente</string>
     <string name="schedule_hint_title">Personnaliser votre programme</string>
-    <string name="schedule_hint_view_only_your_events">Afficher uniquement vos événements</string>
     <string name="schedule_hint_star_event">Ajouter à vos événements favoris</string>
     <string name="schedule_hint_reserve_session_seat">Réserver une place pour cette session</string>
-    <string name="schedule_hint_star_event_content_description">Image correspondant à l\'ajout d\'un événement aux favoris</string>
-    <string name="schedule_hint_reserve_session_seat_content_description">Image correspondant à la réservation d\'une place pour une session</string>
     <string name="rate_session">Noter la séance</string>
     <string name="menu_item_session_location">Lieu de la séance</string>
     <string name="menu_item_session_star">Ajouter la session aux favoris</string>
+    <string name="menu_item_calendar">Ajouter à l\'agenda</string>
+    <string name="speaker_delimiter">,</string>
     <string name="session_detail_speakers_header">Intervenants</string>
     <string name="session_detail_related_header">Événements associés</string>
+    <string name="feedback_submit">Envoyer</string>
+    <string name="feedback_thank_you">Merci de vos commentaires.</string>
+    <string name="feedback_q1_text">Qu\'avez-vous pensé de la qualité globale de la session ?</string>
+    <string name="feedback_q2_text">Comment décririez-vous les contenus de la session par rapport à vos attentes/la description de la session ?</string>
+    <string name="feedback_q3_text">La session était-elle pertinente par rapport à vos projets ?</string>
+    <string name="feedback_q4_text">La session était-elle pertinente par rapport à vos projets ?</string>
+    <string name="feedback_q1_label_start">Médiocre</string>
+    <string name="feedback_q2_label_start">Médiocres</string>
+    <string name="feedback_q3_label_start">Médiocres</string>
+    <string name="feedback_q4_label_start">Pas vraiment pertinente</string>
+    <string name="feedback_q1_label_end">Exceptionnels</string>
+    <string name="feedback_q2_label_end">Exceptionnels</string>
+    <string name="feedback_q3_label_end">Très pertinente</string>
+    <string name="feedback_q4_label_end">Très pertinente</string>
+    <string name="a11y_show_navigation">Afficher le menu de navigation</string>
     <string name="a11y_collapse_filters_sheet">Réduire le panneau des filtres</string>
     <string name="a11y_clear_tag_filters">Effacer les filtres</string>
-    <string name="a11y_revert_pinned">Afficher toutes les sessions</string>
+    <string name="a11y_filter_applied">Le filtre %1s a été appliqué</string>
+    <string name="a11y_filter_not_applied">Le filtre %1s n\'a pas été appliqué</string>
     <string name="a11y_reservation_available">Réserver l\'événement</string>
-    <string name="a11y_reservation_working">Réservation de l\'événement en cours</string>
     <string name="a11y_reservation_reserved">Événement réservé</string>
     <string name="a11y_reservation_disabled">Réservation indisponible</string>
     <string name="a11y_reservation_wait_list_available">Rejoindre la liste d\'attente de l\'événement</string>
@@ -75,24 +96,42 @@
     <string name="a11y_unstarred">Événement non ajouté aux favoris</string>
     <string name="a11y_star">Ajouter aux favoris</string>
     <string name="a11y_play">Voir la vidéo</string>
-    <string name="dialog_sign_in_title">Connectez-vous pour personnaliser votre programme</string>
+    <string name="a11y_select_map_mode">Sélectionner le mode Plan</string>
+    <string name="a11y_search_schedule">Rechercher dans le programme</string>
+    <string name="welcome">Bienvenue</string>
+    <string name="a11y_signed_in_content_description">Connecté en tant que %s.</string>
+    <string name="a11y_signed_out_content_description">Appuyez ici pour vous connecter.</string>
     <string name="dialog_sign_in_content">Connectez-vous pour enregistrer des événements, réserver des places et noter des sessions (auxquelles vous avez participé). Les actions seront synchronisées entre votre compte, l\'application et le site.</string>
-    <string name="not_now">Pas maintenant</string>
     <string name="sign_in">Se connecter</string>
-    <string name="dialog_sign_out_title">Se déconnecter ?</string>
+    <string name="firebase_auth_no_network_connection">Aucune connexion Internet</string>
+    <string name="firebase_auth_unknown_error">Erreur inconnue</string>
     <string name="dialog_sign_out_content">L\'ensemble des événements enregistrés, des places réservées et des notes des sessions (auxquelles vous avez participé) restent synchronisés avec votre compte.</string>
     <string name="sign_out">Déconnexion</string>
+    <string name="manage_google_account">Gérer votre compte Google</string>
     <string name="remove_reservation_title">Supprimer la réservation ?</string>
-    <string name="remove_reservation_content">Vous êtes sur le point de renoncer à votre place pour \"%1$s\". Si vous décidez de vous y rendre quand même sans réservation, toutes les sessions disposent de places disponibles selon la règle du \"premier arrivé, premier servi\".</string>
+    <string name="remove_reservation_content">Vous êtes sur le point de renoncer à votre place pour "%1$s". Si vous décidez de vous y rendre quand même sans réservation, toutes les sessions disposent de places disponibles selon la règle du "premier arrivé, premier servi".</string>
     <string name="cancel">Annuler</string>
     <string name="remove">Supprimer</string>
     <string name="swap_reservation_title">Échanger la réservation ?</string>
-    <string name="swap_reservation_content">Vous disposez déjà d\'une réservation/place sur liste d\'attente pour \"%1$s\". Une seule réservation par créneau horaire est autorisée. Voulez-vous l\'échanger contre \"%2$s\" ?</string>
+    <string name="swap_reservation_content">Vous disposez déjà d\'une réservation/place sur liste d\'attente pour "%1$s". Une seule réservation par créneau horaire est autorisée. Voulez-vous l\'échanger contre "%2$s" ?</string>
     <string name="swap">Échanger</string>
     <string name="notifications_preference_dialog_title">Notifications I/O</string>
-    <string name="notifications_preference_dialog_content">Souhaitez-vous recevoir des notifications sur I/O ? Nous vous enverrons des informations sur les heures de début des sessions, les animations après-événement, les enregistrements de session, etc. Vous pouvez modifier ce paramètre depuis \"Infos &gt; Paramètres\" à tout moment.</string>
+    <string name="notifications_preference_dialog_content">Souhaitez-vous recevoir des notifications sur I/O ? Nous vous enverrons des informations sur les heures de début des sessions, les animations après-événement, les enregistrements de session, etc. Vous pouvez modifier ce paramètre depuis "Infos &gt; Paramètres" à tout moment.</string>
     <string name="no">Non</string>
     <string name="yes">Oui</string>
+    <string name="feed_not_available">Aucune annonce trouvée.</string>
+    <string name="feed_loading_error">Impossible de charger le flux. Réessayez plus tard.</string>
+    <string name="feed_announcement_title">Annonces</string>
+    <string name="feed_upcoming_events">Événements à venir</string>
+    <string name="feed_saved_events">Événements enregistrés</string>
+    <string name="feed_no_saved_events">Aucun événement enregistré</string>
+    <string name="feed_view_all_events">Afficher tous les événements</string>
+    <string name="feed_view_your_schedule">Consulter votre planning</string>
+    <string name="feed_watch_live_stream">Regarder en direct</string>
+    <plurals name="duration_days">
+        <item quantity="one">%s jour</item>
+        <item quantity="other">%s jours</item>
+    </plurals>
     <plurals name="duration_hours">
         <item quantity="one">%s heure</item>
         <item quantity="other">%s heures</item>
@@ -101,73 +140,139 @@
         <item quantity="one">%s minute</item>
         <item quantity="other">%s minutes</item>
     </plurals>
+    <plurals name="duration_seconds">
+        <item quantity="one">%s seconde</item>
+        <item quantity="other">%s secondes</item>
+    </plurals>
     <string name="menu_item_share_session">Partager la séance</string>
-    <string name="share_text_session_detail">Voir « %1$s » à #io18 %2$s</string>
+    <string name="share_text_session_detail">Voir « %1$s » à #io19 %2$s</string>
     <string name="intent_chooser_session_detail">Partage</string>
+    <string name="map_variant_after_dark">After Dark</string>
+    <string name="map_variant_concert">Concert</string>
+    <string name="map_variant_daytime">Journée</string>
+    <string name="enable_my_location">Activer la localisation</string>
+    <string name="my_location_rationale">L\'application doit disposer de l\'autorisation d\'accéder à votre position pour afficher celle-ci sur la carte.</string>
     <string name="onboarding_get_started">Commencer</string>
     <string name="onboarding_welcome_to_google_i_o">Bienvenue dans Google I/O</string>
-    <string name="onboarding_date_location">Du 8 au 10 mai\n2018 Mountain View, CA</string>
-    <string name="onboarding_build_schedule">Établissez votre propre horaire</string>
-    <string name="onboarding_build_sched_benefits">Créez votre propre expérience I/O personnalisée et réservez vos places si vous y assistez</string>
-    <string name="onboarding_watch_live">Regarder I/O en direct</string>
-    <string name="onboarding_join_online">Joignez-vous à nous en ligne. Nous diffuserons les présentations et la plupart des séances en direct.</string>
+    <string name="onboarding_date_location">Du 7 au 9 mai 2019\nMountain View, Californie</string>
     <string name="onboarding_label_days">J</string>
     <string name="onboarding_label_hours">H</string>
     <string name="onboarding_label_mins">M</string>
     <string name="onboarding_label_seconds">S</string>
+    <string name="onboarding_welcome_google_io_pre">Google I/O approche à grands pas</string>
+    <string name="onboarding_welcome_google_io_during">Google I/O</string>
+    <string name="onboarding_welcome_google_io_post">Regardez un résumé de la conférence I/O 2019 et recherchez le hashtag #io19 sur les réseaux sociaux</string>
+    <string name="onboarding_signin">Connectez-vous pour recevoir les notifications relatives à la conférence I/O. En tant que participant, vous pourrez également réserver vos places aux sessions.</string>
     <plurals name="session_starting_in">
         <item quantity="one">Début de la session dans %1$s minute</item>
         <item quantity="other">Début de la session dans %1$s minutes</item>
     </plurals>
     <string name="expanded">Élément développé</string>
     <string name="collapsed">Élément réduit</string>
-    <string name="info_title">Informations</string>
     <string name="event_title">Événement</string>
     <string name="travel_title">Voyage</string>
+    <string name="faq_title">FAQ</string>
     <string name="settings_title">Paramètres</string>
-    <string name="travel_directions_title">Itinéraire routier</string>
-    <string name="travel_shuttle_title">Service de navette (recommandé)</string>
-    <string name="travel_carpool_parking_title">Stationnement et covoiturage</string>
-    <string name="travel_ride_sharing_title">Partage de trajet</string>
-    <string name="travel_public_transportation_title">Transports publics</string>
+    <string name="about_title">À propos</string>
+    <string name="travel_what_to_bring_title">Ce que vous devez emmener à l\'événement</string>
+    <string name="travel_hotels_title">Hôtels</string>
+    <string name="travel_getting_to_mountain_view_title">Se rendre à Mountain View</string>
+    <string name="travel_getting_to_shoreline_title">Se rendre à Mountain View</string>
+    <string name="travel_shuttle_service_title">Service de navette</string>
+    <string name="travel_off_site_parking_title">Parking hors site</string>
+    <string name="travel_for_public_transportation_title">Transports en commun</string>
     <string name="travel_biking_title">Vélo</string>
-    <string name="travel_directions_description">Utilisez <a href="https://www.google.com/maps/place/Shoreline+Amphitheatre/@37.4267374,-122.0827818,17z/data=!3m1!4b1!4m5!3m4!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!8m2!3d37.4267374!4d-122.0805931">Google Maps</a> ou <a href="https://mobile-web.waze.com/en/meetup/location?h=9q9hvvru0">Waze</a> pour rechercher l\'itinéraire permettant de se rendre à l\'adresse suivante : 1 Amphitheatre Pkwy, Mountain View, CA 94043</string>
-    <string name="travel_shuttle_description">Des navettes seront proposées gratuitement à tous les participants de Google I/O depuis tous les hôtels recommandés par Google. San Francisco et d\'autres lieux de départ dans la péninsule seront également desservis. Pour monter à bord des navettes de l\'événement Google I/O, vous devrez montrer votre e-mail de confirmation ou votre badge de conférence.\n\nDes véhicules adaptés aux personnes handicapées peuvent être mis à disposition. Veuillez indiquer sur le formulaire d\'enregistrement si vous avez des besoins d\'assistance spécifiques. L\'équipe de planification entrera alors directement en contact avec vous.</string>
-    <string name="travel_carpool_parking_description">Le stationnement est très limité et disponible uniquement dans les parkings réservés à Google I/O situés en face du Shoreline Amphitheatre sur Shoreline Boulevard. Il n\'y a pas de parking pour l\'événement sur Amphitheatre Parkway, ni sur Charleston Road. Si vous prévoyez de venir en voiture, nous vous recommandons de privilégier le covoiturage avec d\'autres participants, car des places de stationnement préférentielles seront disponibles pour les voitures contenant au moins deux personnes.</string>
-    <string name="travel_ride_sharing_description"><b>Waze Carpool</b>\nWaze Carpool est une communauté d\'utilisateurs de confiance qui rendra votre trajet jusqu\'à Google I/O agréable, rapide et économique. Vous conduisez ? Ouvrez <a href="http://Waze.com/get">Waze</a> lorsque vous arrivez dans la région de San Francisco. Vous cherchez une voiture ? Installez <a href="http://Waze.com/carpool">Waze Carpool</a> avant d\'arriver. Revenez sur cette page dans les semaines à venir pour profiter de codes de réduction exclusifs réservés aux participants de Google I/O.\n\n<b>Lyft Line</b>\nTéléchargez l\'application Lyft depuis Google Play et utilisez Lyft Line pour partager un trajet avec des personnes qui vont au même endroit que vous.\n<b>Code de réduction</b> : Googleio18\nCe code est valable du 8 au 10 mai 2018 et s\'applique aux trajets partagés avec Lyft Line. Il permet de bénéficier d\'une réduction pouvant aller jusqu\'à 10 $ par trajet et est limité à 250 utilisateurs par jour. Les trajets doivent commencer ou se terminer au Shoreline Amphitheatre.</string>
-    <string name="travel_public_transportation_description">Les transports en commun ne permettent pas de se rendre directement à Google I/O. Des informations supplémentaires seront bientôt disponibles sur les lieux desservis par les navettes de Google I/O.</string>
-    <string name="travel_biking_description">Un parking à vélos gratuit sera disponible au Shoreline Amphitheatre dans le parking A. L\'association Silicon Valley Bicycle Coalition proposera chaque jour un service de stationnement surveillé pour votre vélo de 7h00 jusqu\'à la fin de l\'événement. Deux pistes cyclables, le Stevens Creek Trail et le Permanente Creek Trail, permettent de se rendre facilement au Shoreline Amphitheatre. Utilisez Google Maps pour connaître les meilleurs itinéraires pour vélos et trouver votre route.\n\nUne journée \"Bike to Work Day\" est programmée le jeudi 10 mai dans la région de San Francisco. Des milliers de cyclistes y participeront dans les environs de Shoreline et des centaines de stands de soutien appelés \"energizer stations\" seront disponibles. Consultez le site de l\'événement pour en savoir plus.</string>
+    <string name="travel_ridesharing_title">Partage de taxi</string>
+    <string name="travel_airport_transfers_title">Transferts vers l\'aéroport</string>
+    <string name="travel_what_to_bring_description">Google I/O est un festival en plein air. Cette particularité, qui fait tout le charme d\'I/O, implique toutefois une légère organisation au préalable. Même si les sessions se tiendront dans des tentes climatisées, nous vous recommandons d\'apporter de l\'écran solaire, des lunettes de soleil, ainsi qu\'un vêtement chaud à porter en soirée lorsque les températures deviennent plus fraîches. I/O est un événement décontracté. Choisissez donc votre tenue en conséquence.</string>
+    <string name="travel_hotels_description">Nous avons réservé des groupes de chambres dans de nombreux hôtels locaux. La liste des hôtels et chambres disponibles sera mise à jour régulièrement. Utilisez le plan ci-dessous pour trouver l\'hôtel qui vous convient le mieux. &lt;a href="https://www.google.com/maps/d/u/1/viewer?mid=11u43dDY9LID1uf46p4y7ba2_TbE_Y8-W&amp;ll=37.383600316075075%2C-122.07007405000002&amp;z=12"&gt;Plan des hôtels&lt;/a&gt;</string>
+    <string name="travel_getting_to_mountain_view_description">Voici les trois principaux aéroports de la baie de San Francisco proposant des vols internationaux :&lt;br&gt; &lt;a href="https://www.google.com/maps/dir/San+Francisco+International+Airport,+San+Francisco,+CA+94128/Shoreline+Amphitheatre,+Amphitheatre+Parkway,+Mountain+View,+CA/@37.5206703,-122.3803144,11z/data=!3m1!4b1!4m18!4m17!1m5!1m1!1s0x808f778c55555555:0xa4f25c571acded3f!2m2!1d-122.3789554!2d37.6213129!1m5!1m1!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!2m2!1d-122.0807647!2d37.4267703!2m3!6e0!7e2!8j1463556000!3e0?hl=en"&gt;Aéroport international de San Francisco (SFO)&lt;/a&gt; ~39 kilomètres&lt;br&gt;&lt;br&gt; &lt;a href="https://www.google.com/maps/dir/Oakland+International+Airport,+Oakland,+CA/Shoreline+Amphitheatre,+Amphitheatre+Parkway,+Mountain+View,+CA/@37.5755915,-122.270249,11z/data=!3m1!4b1!4m18!4m17!1m5!1m1!1s0x808f845402c0a641:0xb0630c0f03017460!2m2!1d-122.2197428!2d37.7125689!1m5!1m1!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!2m2!1d-122.0807647!2d37.4267703!2m3!6e0!7e2!8j1463556000!3e0?hl=en"&gt;Aéroport international d\'Oakland (OAK)&lt;/a&gt; ~52 kilomètres&lt;br&gt;&lt;br&gt; &lt;a href="https://www.google.com/maps/dir/San+Jose+International+Airport-Sjc,+Airport+Boulevard,+San+Jose,+CA,+United+States/Shoreline+Amphitheatre,+Amphitheatre+Parkway,+Mountain+View,+CA/@37.3954744,-122.0741791,12z/data=!3m1!4b1!4m18!4m17!1m5!1m1!1s0x808fcbc3fab3c59b:0xbcfa443f6df67e3e!2m2!1d-121.9289375!2d37.3639472!1m5!1m1!1s0x808fb9f776f5e165:0x1ddf014a1b553f3d!2m2!1d-122.0807647!2d37.4267703!2m3!6e0!7e2!8j1463556000!3e0?hl=en"&gt;Aéroport international de San Jose (SJC)&lt;/a&gt; ~20 kilomètres</string>
+    <string name="travel_getting_to_shoreline_description">Afin de réduire à la fois le risque d\'embouteillages et notre empreinte carbone, nous avons fait de Google I/O 2019 un "événement sans parking*". Nous avons longuement réfléchi avant de prendre cette décision, et nous vous offrons en retour de nombreuses options gratuites pour vous rendre à l\'événement sans avoir besoin de véhicule.&lt;br&gt;&lt;br&gt;Nous vous communiquerons des informations complémentaires à ce sujet à l\'approche de l\'événement.&lt;br&gt;&lt;br&gt;*Des places de parking pour handicapés seront disponibles.</string>
+    <string name="travel_shuttle_service_description">Afin de réduire à la fois le risque d\'embouteillages et notre empreinte carbone, nous avons fait de Google I/O 2019 un "événement sans parking*". Nous avons longuement réfléchi avant de prendre cette décision, et nous vous offrons en retour de nombreuses options gratuites pour vous rendre à l\'événement sans avoir besoin de véhicule.&lt;br&gt;&lt;br&gt;Nous vous communiquerons des informations complémentaires à ce sujet à l\'approche de l\'événement.&lt;br&gt;&lt;br&gt;*Des places de parking pour handicapés seront disponibles.</string>
+    <string name="travel_off_site_parking_description">Parking hors site gratuit au &lt;a href="https://www.sjearthquakes.com/avayastadium/parking-directions"&gt;stade Avaya&lt;/a&gt;. Des navettes seront proposées entre le stade Avaya et Google I/O.&lt;br&gt;&lt;br&gt; Si vous avez des besoins d\'assistance spécifiques, veuillez l\'indiquer sur le formulaire d\'inscription. L\'équipe responsable de l\'organisation vous contactera directement.</string>
+    <string name="travel_for_public_transportation_description">Au moment de votre pré-inscription, vous pourrez collecter des cartes de transport en commun prépayées. Vous pouvez vous rendre à proximité du site avec les transports en commun suivants :&lt;br&gt;&lt;br&gt; &lt;a href="http://www.caltrain.com/"&gt;Caltrain&lt;/a&gt; : Réseau de trains régionaux &lt;br&gt;&lt;br&gt; &lt;a href="http://www.vta.org/getting-around/interactive-light-rail-map"&gt;VTA&lt;/a&gt; : Train léger desservant South Bay &lt;br&gt;&lt;br&gt; &lt;a href="https://www.bart.gov/"&gt;BART&lt;/a&gt; : Bay Area Rapid Transit &lt;br&gt;&lt;br&gt; &lt;a href="https://www.amtrak.com/home.html"&gt;AMTRAK&lt;/a&gt; : Réseau de trains régionaux&lt;br&gt;&lt;br&gt; Les transports en commun ne permettent pas de se rendre directement à la conférence Google I/O. Des informations supplémentaires seront bientôt disponibles concernant les lieux desservis par les navettes de Google I/O.</string>
+    <string name="travel_biking_description">Un parking à vélos gratuit sera disponible au Shoreline Amphitheatre dans le parking A. L\'association Silicon Valley Bicycle Coalition proposera chaque jour un service de stationnement surveillé pour votre vélo de 7h jusqu\'à la fin de l\'événement.&lt;br&gt;&lt;br&gt; Utilisez Google Maps pour connaître les meilleurs itinéraires pour vélos et trouver votre route. Deux pistes cyclables, le Stevens Creek Trail et le Permanente Creek Trail, permettent de se rendre facilement au Shoreline Amphitheatre.</string>
+    <string name="travel_ridesharing_description">Le dernier jour de la conférence, des transferts seront proposés entre Google I/O et les aéroports de San Francisco et San Jose. Aucun transfert ne sera disponible les autres jours.</string>
+    <string name="travel_airport_transfers_description">Le dernier jour de la conférence, des transferts seront proposés entre Google I/O et les aéroports de San Francisco et San Jose. Aucun transfert ne sera disponible les autres jours.</string>
+    <string name="faq_when_and_where_title">Où et quand aura lieu l\'édition 2019 de la conférence Google I/O ?</string>
+    <string name="faq_how_can_i_stay_informed_title">Comment puis-je me tenir informé des dernières actualités relatives à Google I/O ?</string>
+    <string name="faq_will_the_sessions_be_english_title">Toutes les sessions seront-elles en anglais ?</string>
+    <string name="faq_can_i_reserve_sessions_ahead_of_time_title">Puis-je réserver des sessions avant la conférence ?</string>
+    <string name="faq_best_way_to_get_to_shoreline_title">Quel est le meilleur moyen de se rendre au Shoreline Amphitheatre ?</string>
+    <string name="faq_where_and_when_can_i_pick_up_badge_title">Où et quand puis-je récupérer mon badge ?</string>
+    <string name="faq_want_a_front_row_seat_at_keynote_title">J\'aimerais vraiment être assis au premier rang lors de la présentation. Que me conseillez-vous ?</string>
+    <string name="faq_what_should_i_wear_title">Quel est le code vestimentaire ?</string>
+    <string name="faq_onsite_food_options_title">J\'aime grignoter. Que pourrai-je manger sur le site ?</string>
+    <string name="faq_if_i_lose_something_onsite_title">Si je perds un objet sur le site, où pourrai-je le retrouver ?</string>
+    <string name="faq_after_dark_program_title">Les programmes After Dark ont l\'air intéressants ! Devrais-je y participer ?</string>
+    <string name="faq_accessibility_needs_title">J\'ai des besoins spéciaux en termes d\'accessibilité. Pouvez-vous y répondre ?</string>
+    <string name="faq_support_for_expectant_mothers_parents_title">Quelles mesures prenez-vous pour aider les femmes enceintes et les parents qui assistent à I/O ?</string>
+    <string name="faq_community_guidelines_and_policy_title">Règlement de la communauté et politique anti-harcèlement de Google</string>
+    <string name="faq_sessions_be_live_streamed_question_title">Les sessions seront-elles retransmises en direct ? Que faire si je ne peux pas suivre l\'événement en temps réel ?</string>
+    <string name="faq_want_to_celebrate_i_o_title">J\'aimerais célébrer I/O avec ma communauté.  Auriez-vous une suggestion ?</string>
+    <string name="faq_when_and_where_description">Pour connaître les dernières informations relatives aux sessions, aux intervenants et aux activités, consultez le &lt;a href="https://events.google.com/io/"&gt;site Web de l\'édition 2019 de Google I/O&lt;/a&gt; et le &lt;a href="http://googledevelopers.blogspot.com/"&gt;blog Google Developers&lt;/a&gt;. Suivez-nous également sur &lt;a href="https://twitter.com/googledevs"&gt;Twitter&lt;/a&gt; et &lt;a href="https://www.facebook.com/Google-Developers-967415219957038/"&gt;Facebook&lt;/a&gt;. Vous pouvez aussi suivre et rejoindre les discussions relatives à l\'édition 2019 de Google I/O sur les réseaux sociaux à l\'aide du hashtag officiel &lt;a href="https://twitter.com/search?q=%23io19&amp;src=typd"&gt;#io19&lt;/a&gt;. De plus, nous envoyons par e-mail aux participants inscrits toutes les informations importantes ainsi que des instructions afin qu\'ils puissent préparer leur arrivée.</string>
+    <string name="faq_how_can_i_stay_informed_description">Pour connaître les dernières informations relatives aux sessions, aux intervenants et aux activités, consultez le &lt;a href="https://events.google.com/io/"&gt;site Web de l\'édition 2019 de Google I/O&lt;/a&gt; et le &lt;a href="http://googledevelopers.blogspot.com/"&gt;blog Google Developers&lt;/a&gt;. Suivez-nous également sur &lt;a href="https://twitter.com/googledevs"&gt;Twitter&lt;/a&gt; et &lt;a href="https://www.facebook.com/Google-Developers-967415219957038/"&gt;Facebook&lt;/a&gt;. Vous pouvez aussi suivre et rejoindre les discussions relatives à l\'édition 2019 de Google I/O sur les réseaux sociaux à l\'aide du hashtag officiel &lt;a href="https://twitter.com/search?q=%23io19&amp;src=typd"&gt;#io19&lt;/a&gt;. De plus, nous envoyons par e-mail aux participants inscrits toutes les informations importantes ainsi que des instructions afin qu\'ils puissent préparer leur arrivée.</string>
+    <string name="faq_will_the_sessions_be_english_description">Oui. Notre audience mondiale pourra ainsi suivre la conférence.</string>
+    <string name="faq_can_i_reserve_sessions_ahead_of_time_description">Dès le mois d\'avril, les personnes venant assister à la conférence en personne peuvent réserver à l\'avance leurs places aux différentes sessions sur le site Web de Google I/O ou via l\'application I/O (remarque : un certain nombre de places ne pourront pas être réservées et seront disponibles le jour même sur le principe du "premier arrivé, premier servi"). Les événements Codelabs, App Reviews et Office Hours ne seront accessibles que sur le principe du "premier arrivé, premier servi".</string>
+    <string name="faq_best_way_to_get_to_shoreline_description">Consultez la section Déplacements pour obtenir des conseils relatifs aux transports, y compris des informations sur les navettes, des itinéraires routiers et cyclables, des conseils de covoiturage, et bien plus encore !</string>
+    <string name="faq_where_and_when_can_i_pick_up_badge_description">Pour accélérer le processus d\'enregistrement, nous débuterons la distribution des badges le lundi 6 mai au Shoreline Amphitheatre. Avant de vous donner votre badge Google I/O, nous devrons procéder aux opérations suivantes :&lt;br&gt; - Vérifier votre pièce d\'identité avec photo : nous acceptons les permis officiels, les passeports et d\'autres pièces d\'identité. Si vous ne disposez pas d\'une pièce d\'identité conforme, vous ne recevrez pas votre badge et vous ne pourrez pas assister à l\'événement. Le nom indiqué sur votre pièce d\'identité doit être identique à celui de votre profil d\'enregistrement. Si vous êtes un universitaire, n\'oubliez pas d\'apporter la preuve que vous pouvez participer à cet événement.&lt;br&gt; - Scanner le code QR d\'enregistrement que vous avez reçu par e-mail : vous n\'avez pas besoin d\'imprimer l\'e-mail. Nous pouvons scanner votre code directement sur votre téléphone ! #savetheenvironment &lt;br&gt;&lt;br&gt;Veuillez noter que vous n\'avez pas le droit de donner ou fournir de quelque manière que ce soit votre badge à une tierce personne, ni de le partager avec elle. Les badges Google I/O ne sont pas remplaçables. Ne perdez pas le vôtre, sans quoi vous ne pourrez plus assister à la conférence. Vous devez porter votre badge pour accéder à Google I/O, y compris aux sessions, aux espaces Sandbox et aux événements After Hours. Si un agent de la sécurité vous le demande, nous vous prions de bien vouloir présenter ou fournir une autre pièce d\'identité. Les badges Google I/O peuvent comporter votre nom, le nom de votre entreprise ou organisation (si vous l\'avez fourni) et votre photo.</string>
+    <string name="faq_want_a_front_row_seat_at_keynote_description">Tous les participants pourront assister aux présentations. Toutefois, les places seront attribuées selon le principe du "premier arrivé, premier servi" lors de la distribution des badges qui commencera à 7h le 6 mai. Alors, veillez à ne pas arriver trop tard !</string>
+    <string name="faq_what_should_i_wear_description">La conférence pour les développeurs Google I/O a lieu en extérieur. Vous pouvez donc porter des vêtements confortables et décontractés. Nous n\'imposons pas de code vestimentaire. La région de la baie de San Francisco peut connaître des températures très élevées pendant la journée et plus fraîches le soir. Tenez compte de ces informations lors de la préparation de votre valise.</string>
+    <string name="faq_onsite_food_options_description">Bonne nouvelle, nous aussi nous aimons manger !  Le petit-déjeuner, le déjeuner et des en-cas seront servis gratuitement aux participants tous les jours de la conférence Google I/O. Le dîner sera également offert les premier et deuxième jours pendant les événements After Hours.</string>
+    <string name="faq_if_i_lose_something_onsite_description">Nous avons tout prévu ! Un service des objets trouvés sera disponible au bureau d\'information de la conférence pendant toute la durée de l\'événement. Tout objet trouvé dans la nuit sera remis au service de sécurité de la conférence. Remarque : les badges Google I/O ne sont pas remplaçables. Ne perdez pas le vôtre, sans quoi vous ne pourrez plus assister à la conférence.</string>
+    <string name="faq_after_dark_program_description">Ces deux soirées ne sont à manquer sous aucun prétexte ! Musique et jeux seront organisés le 8 mai pour tous les participants, et un concert exclusif aura lieu le 9 mai au Shoreline Amphitheatre. Nourriture et boissons seront également disponibles à chacune de ces soirées (les boissons alcoolisées sont réservées au personnes âgées de 21 ans et plus). Les deux événements After Hours se tiendront au Shoreline Amphitheatre. Vous devrez présenter votre badge à l\'entrée.</string>
+    <string name="faq_accessibility_needs_description">Des places de parking réservées aux femmes enceintes seront disponibles dans la zone pour les personnes à mobilité réduite.&lt;br&gt; Les mères qui allaitent sont les bienvenues à la conférence avec leur enfant. Quatre salons d\'allaitement seront ouverts les 7 et 8 mai de 8h à 20h, et le 9 mai de 8h à 16h. Des feuilles d\'inscription seront disponibles devant les salons d\'allaitement, qui pourront être utilisés selon le principe du "premier arrivé, premier servi". Veuillez vous renseigner auprès du bureau d\'information pour en savoir plus.&lt;br&gt;&lt;br&gt; Les parents qui expriment un besoin de garde d\'enfant dans leur formulaire d\'inscription à l\'événement pourront bénéficier d\'un remboursement de leurs frais à hauteur de 100 $ par jour (pour un maximum de 300 $), selon le principe du "premier arrivé, premier servi". Notre offre de remboursement des frais de garde d\'enfant est proposée par un fournisseur tiers. Si nous acceptons votre demande par e-mail avant le début de la conférence et que votre présence sur le site est confirmée, notre fournisseur vous contactera sous 7 jours ouvrés au terme de Google I/O pour vous faire part des démarches à suivre. Ce fournisseur tiers est chargé d\'administrer les remboursements de frais de garde d\'enfant pour nous.</string>
+    <string name="faq_support_for_expectant_mothers_parent_description">Des places de parking réservées aux femmes enceintes seront disponibles dans la zone pour les personnes à mobilité réduite.&lt;br&gt; Les mères qui allaitent sont les bienvenues à la conférence avec leur enfant. Quatre salons d\'allaitement seront ouverts les 7 et 8 mai de 8h à 20h, et le 9 mai de 8h à 16h. Des feuilles d\'inscription seront disponibles devant les salons d\'allaitement, qui pourront être utilisés selon le principe du "premier arrivé, premier servi". Veuillez vous renseigner auprès du bureau d\'information pour en savoir plus.&lt;br&gt;&lt;br&gt; Les parents qui expriment un besoin de garde d\'enfant dans leur formulaire d\'inscription à l\'événement pourront bénéficier d\'un remboursement de leurs frais à hauteur de 100 $ par jour (pour un maximum de 300 $), selon le principe du "premier arrivé, premier servi". Notre offre de remboursement des frais de garde d\'enfant est proposée par un fournisseur tiers. Si nous acceptons votre demande par e-mail avant le début de la conférence et que votre présence sur le site est confirmée, notre fournisseur vous contactera sous 7 jours ouvrés au terme de Google I/O pour vous faire part des démarches à suivre. Ce fournisseur tiers est chargé d\'administrer les remboursements de frais de garde d\'enfant pour nous.</string>
+    <string name="faq_community_guidelines_and_policy_description">Google s\'engage à offrir à tous les participants une expérience inclusive ne laissant aucune place au harcèlement, indépendamment de leur identité et expression de genre, orientation sexuelle, handicap, neurodiversité, apparence physique, corpulence, ethnicité, nationalité, race, âge, religion, ou de toute autre catégorie protégée. À des fins d\'inclusion supplémentaires, des toilettes neutres seront disponibles partout sur le site.&lt;br&gt;&lt;br&gt; Nous ne tolérons aucune forme de harcèlement à l\'encontre des participants à l\'événement.&lt;br&gt; Google considère toute violation à son règlement comme extrêmement sérieuse et y réagira en conséquence. Pour en savoir plus sur le règlement de la communauté et la politique anti-harcèlement de Google, veuillez consulter &lt;a href="https://www.google.com/events/policy/anti-harassmentpolicy.html"&gt;cette page&lt;/a&gt;.</string>
+    <string name="faq_sessions_be_live_streamed_question_description">Les deux présentations ainsi que l\'ensemble des sessions seront diffusées en direct sur la page d\'accueil du site Web de l\'événement pendant les trois jours. Si vous n\'êtes pas disponible ou si le décalage horaire est trop important, sachez que vous pourrez visionner ultérieurement les enregistrements de sessions sur la &lt;a href="https://www.youtube.com/user/GoogleDevelopers"&gt;chaîne YouTube Google Developers&lt;/a&gt;.</string>
+    <string name="faq_want_to_celebrate_i_o_description">Oui. Chaque année, les développeurs du monde entier organisent leurs propres &lt;a href="https://events.google.com/io/extended"&gt;événements Google I/O Extended&lt;/a&gt;. Durant ces événements, la conférence est diffusée en direct et des sessions spéciales sont organisées, telles que des hackathons, des ateliers de programmation, des démonstrations, et bien plus encore.&lt;br&gt; Si vous souhaitez être l\'hôte d\'un événement I/O Extended cette année, voici les démarches que vous devez suivre pour commencer :&lt;br&gt;&lt;br&gt; Consultez le &lt;a href="https://docs.google.com/presentation/d/e/2PACX–1vReWDtj-yASOho5q7XC6lYY8af9wRa13-81mPaoSRodiRoCw4MKJnQExQ8GxyNyCQiPZpBprznPG4ex/pub?slide=id.g62811f3b0_18"&gt;Guide de l\'organisateur&lt;/a&gt; pour obtenir des conseils et suggestions vous aidant à créer un événement réussi.&lt;br&gt;&lt;br&gt; &lt;a href="https://events.google.com/io/extended/form"&gt;Enregistrez&lt;/a&gt; votre événement public sur le site Web I/O pour une meilleure visibilité.&lt;br&gt;&lt;br&gt; Utilisez le hashtag officiel #io19extended dans toutes vos publications sur les réseaux sociaux en lien avec I/O Extended pour que votre événement soit plus facilement trouvable.&lt;br&gt;&lt;br&gt; Remarque : En tant qu\'hôte d\'un événement I/O Extended, vous pouvez demander à ce que vos données à caractère personnel et/ou les informations de votre événement soient effacées au terme de celui-ci en envoyant un e-mail à io19@google.com.&lt;br&gt; Si vous souhaitez simplement assister à un événement I/O Extended, consultez &lt;a href="https://events.google.com/io/extended"&gt;notre plan&lt;/a&gt; pour en trouver un près de chez vous et répondez à l\'invitation !&lt;br&gt; Pour toute question sur le programme I/O Extended, contactez-nous à l\'adresse io19extended\-external@google.com.</string>
     <string name="view_sessions_text">Afficher les sessions</string>
-    <string name="view_codelabs_text">Afficher les ateliers de programmation</string>
-    <string name="view_events_text">Afficher les événements</string>
-    <string name="view_map_text">Afficher la carte</string>
-    <string name="wifi_network_label">Réseau Wi-Fi :</string>
-    <string name="wifi_password_label">Mot de passe :</string>
     <string name="wifi_install_success">Réseau Wi-Fi enregistré</string>
-    <string name="wifi_install_error_message">Désolé, impossible d\'enregistrer le réseau Wi-Fi</string>
+    <string name="wifi_install_clipboard_message">Impossible d\'enregistrer le réseau Wi-Fi.\nMot de passe copié dans le presse-papiers.</string>
     <string name="event_sessions_title">Sessions</string>
     <string name="event_sandbox_title">Bac à sable</string>
     <string name="event_codelabs_title">Ateliers de programmation</string>
     <string name="event_officehours_title">Permanences et avis sur les applications</string>
     <string name="event_afterhours_title">Après-événement</string>
     <string name="event_meals_title">Repas</string>
+    <string name="event_sessions_description">Dès le mois d\'avril, les personnes venant assister à la conférence en personne peuvent réserver à l\'avance leurs places aux différentes sessions sur le site Web de Google I/O ou via l\'application I/O (remarque : un certain nombre de places ne pourront pas être réservées et seront disponibles le jour même sur le principe du "premier arrivé, premier servi"). Les événements Codelabs, App Reviews et Office Hours ne seront accessibles que sur le principe du "premier arrivé, premier servi".</string>
     <string name="event_sandbox_description">Espaces dédiés permettant de découvrir, de tester et d\'apprendre à utiliser nos derniers produits et plates-formes grâce à des démonstrations interactives, des installations physiques, etc.</string>
     <string name="event_codelabs_description">Nos kiosques de programmation vous permettent d\'acquérir une expérience pratique. Vous y trouverez tout le nécessaire pour découvrir les technologies les plus récentes et performantes de Google grâce à des didacticiels d\'autoformation. Vous pouvez également apporter votre propre ordinateur et terminer votre travail à la maison. Le personnel de Google sera à votre disposition pour vous donner des conseils utiles et vous guider si vous êtes bloqué.</string>
     <string name="event_officehours_description">Les permanences vous donnent l\'occasion de rencontrer individuellement des experts de Google pour poser toutes vos questions techniques. Quant aux avis sur les applications, ils vous permettent de recevoir des conseils et des astuces sur vos projets d\'applications spécifiques.</string>
     <string name="event_afterhours_description">Une fois les sessions terminées, restez dans les parages pour profiter de deux soirées avec repas, boissons et bons moments en perspective. Lors de la première, les participants se réuniront au niveau de l\'espace de bac à sable et, lors de la seconde, un concert sera donné en exclusivité dans l\'Amphitheatre.</string>
+    <string name="event_meals_description">Le petit-déjeuner, le déjeuner et des en-cas seront servis gratuitement aux participants tous les jours de la conférence Google I/O. Le dîner sera également offert les premier et deuxième jours pendant les événements After Hours.</string>
     <string name="wifi_header">Wi-Fi</string>
+    <string name="related_apps_header">Applications associées</string>
     <string name="event_types_header">Types d\'événement</string>
     <string name="settings_time_zone_label">Événements dans le fuseau horaire du Pacifique (UTC-8)</string>
+    <string name="settings_enable_notifications">Activer les notifications</string>
     <string name="settings_send_anonymous_usage_statistics">Envoyer des statistiques d\'utilisation anonymes</string>
     <string name="settings_tos">Conditions d\'utilisation</string>
     <string name="settings_privacy_policy">Règles de confidentialité</string>
     <string name="settings_oss_licenses">Licences Open Source</string>
-    <string name="settings_version_label">Version %1$s, build %2$s</string>
-    <string name="built_with_material_content_description">Créée avec Material Components.</string>
-    <string name="day1">Jour 1</string>
-    <string name="day2">Jour 2</string>
-    <string name="day3">Jour 3</string>
-    <string name="day1_date">8 mai</string>
-    <string name="day2_date">9 mai</string>
-    <string name="day3_date">10 mai</string>
+    <string name="settings_theme_title">Sélectionner un thème</string>
+    <string name="settings_theme_system">Paramètres par défaut</string>
+    <string name="settings_theme_light">Clair</string>
+    <string name="settings_theme_dark">Foncé</string>
+    <string name="settings_theme_battery">Défini par l\'économiseur de batterie</string>
+    <string name="built_with_material_components">Créée avec Material Components.</string>
+    <string name="wifi_network_and_password">Réseau : %1$s\nMot de passe : %2$s</string>
+    <string name="join_network">Rejoindre le réseau</string>
+    <string name="assistant_app_description">Dites "Ok Google, parle à Google I/O 19" !</string>
+    <string name="assistant_app_description2">Dites "Ok Google, parle à Google I/O 19" !</string>
+    <string name="speaker_link_website">Site Web</string>
+    <string name="speaker_link_twitter">Twitter</string>
+    <string name="speaker_link_github">GitHub</string>
+    <string name="speaker_link_linkedin">LinkedIn</string>
+    <string name="speaker_events_subhead">Événements</string>
+    <string name="no_network_connection">Aucune connexion Internet.</string>
+    <string name="navigate_up">Remonter</string>
+    <string name="no_network_description">Pour utiliser Explore I/O, procédez comme suit :\n\n - Désactivez le mode Avion.\n\n - Activez un réseau de données mobiles ou Wi-Fi.\n\n - Vérifiez le signal aux alentours.</string>
+    <string name="phone_does_not_support_arcore_title">Votre téléphone n\'est pas compatible avec ARCore</string>
+    <string name="phone_does_not_support_arcore_message">Essayez avec un autre appareil, ou empruntez celui d\'un ami</string>
+    <string name="codelabs_information">Découvrez les technologies les plus récentes et performantes de Google grâce à des tutoriels d\'autoformation accessibles dans nos kiosques de programmation. Vous pouvez également apporter votre propre ordinateur et terminer votre travail à la maison. Les kiosques sont ouverts tous les jours, sauf pendant la première présentation.</string>
+    <string name="codelabs_building">Bâtiment accueillant les ateliers de programmation</string>
+    <string name="codelabs_website">Site Web Codelabs</string>
+    <string name="codelab_duration">Durée : %1$d min</string>
+    <string name="start_codelab">Démarrer l\'atelier de programmation</string>
 </resources>
