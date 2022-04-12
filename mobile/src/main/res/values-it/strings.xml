@@ -65,7 +65,7 @@
     <string name="menu_item_session_star">Aggiungi sessione a speciali</string>
     <string name="menu_item_calendar">Aggiungi al calendario</string>
     <string name="speaker_delimiter">,</string>
-    <string name="session_detail_speakers_header">Altoparlanti</string>
+    <string name="session_detail_speakers_header">Speaker</string>
     <string name="session_detail_related_header">Eventi correlati</string>
     <string name="feedback_submit">Invia</string>
     <string name="feedback_thank_you">Grazie per il feedback.</string>
