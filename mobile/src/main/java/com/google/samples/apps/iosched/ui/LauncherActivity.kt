@@ -26,8 +26,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.samples.apps.iosched.ui.LaunchNavigatonAction.NavigateToMainActivityAction
 import com.google.samples.apps.iosched.ui.LaunchNavigatonAction.NavigateToOnboardingAction
 import com.google.samples.apps.iosched.ui.onboarding.OnboardingActivity
+import com.google.samples.apps.iosched.util.collectLifecycleFlow
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 /**
@@ -41,20 +41,16 @@ class LauncherActivity : AppCompatActivity() {
 
         val viewModel: LaunchViewModel by viewModels()
 
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.launchDestination.collect { action ->
-                    when (action) {
-                        is NavigateToMainActivityAction -> startActivity(
-                            Intent(this@LauncherActivity, MainActivity::class.java)
-                        )
-                        is NavigateToOnboardingAction -> startActivity(
-                            Intent(this@LauncherActivity, OnboardingActivity::class.java)
-                        )
-                    }
-                    finish()
-                }
+        collectLifecycleFlow(viewModel.launchDestination) { action ->
+            when (action) {
+                is NavigateToMainActivityAction -> startActivity(
+                    Intent(this@LauncherActivity, MainActivity::class.java)
+                )
+                is NavigateToOnboardingAction -> startActivity(
+                    Intent(this@LauncherActivity, OnboardingActivity::class.java)
+                )
             }
+            finish()
         }
     }
 }

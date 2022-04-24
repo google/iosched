@@ -23,16 +23,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
+import com.google.samples.apps.iosched.util.collectLifecycleFlow
 import com.google.samples.apps.iosched.util.doOnApplyWindowInsets
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class OnboardingActivity : AppCompatActivity() {
@@ -57,13 +53,9 @@ class OnboardingActivity : AppCompatActivity() {
             }
         }
 
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.navigationActions.collect { action ->
-                    if (action == OnboardingNavigationAction.NavigateToSignInDialog) {
-                        openSignInDialog()
-                    }
-                }
+        collectLifecycleFlow(viewModel.navigationActions) { action ->
+            if (action == OnboardingNavigationAction.NavigateToSignInDialog) {
+                openSignInDialog()
             }
         }
     }

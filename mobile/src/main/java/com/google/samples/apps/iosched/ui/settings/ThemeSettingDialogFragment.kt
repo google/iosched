@@ -22,15 +22,11 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.Theme
+import com.google.samples.apps.iosched.util.collectLifecycleFlow
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ThemeSettingDialogFragment : AppCompatDialogFragment() {
@@ -61,26 +57,17 @@ class ThemeSettingDialogFragment : AppCompatDialogFragment() {
         super.onCreate(savedInstanceState)
 
         // Note you don't need to use viewLifecycleOwner in DialogFragment.
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.availableThemes.collect { themes ->
-                    listAdapter.clear()
-                    listAdapter.addAll(
-                        themes.map { theme ->
-                            ThemeHolder(theme, getTitleForTheme(theme))
-                        }
-                    )
-
-                    updateSelectedItem(viewModel.theme.value)
+        collectLifecycleFlow(viewModel.availableThemes) { themes ->
+            listAdapter.clear()
+            listAdapter.addAll(
+                themes.map { theme ->
+                    ThemeHolder(theme, getTitleForTheme(theme))
                 }
-            }
+            )
+            updateSelectedItem(viewModel.theme.value)
         }
 
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.theme.collect { updateSelectedItem(it) }
-            }
-        }
+        collectLifecycleFlow(viewModel.theme) { updateSelectedItem(it) }
     }
 
     private fun updateSelectedItem(selected: Theme?) {

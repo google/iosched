@@ -34,6 +34,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.databinding.DialogSignOutBinding
 import com.google.samples.apps.iosched.shared.data.signin.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.ui.signin.SignInNavigationAction.RequestSignOut
+import com.google.samples.apps.iosched.util.collectLifecycleFlow
 import com.google.samples.apps.iosched.util.executeAfter
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,14 +74,10 @@ class SignOutDialogFragment : AppCompatDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                signInViewModel.signInNavigationActions.collect { action ->
-                    if (action == RequestSignOut) {
-                        signInHandler.signOut(requireContext())
-                        dismiss()
-                    }
-                }
+        collectLifecycleFlow(signInViewModel.signInNavigationActions) { action ->
+            if (action == RequestSignOut) {
+                signInHandler.signOut(requireContext())
+                dismiss()
             }
         }
 

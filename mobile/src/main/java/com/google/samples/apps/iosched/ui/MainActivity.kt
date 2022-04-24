@@ -30,9 +30,6 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -52,11 +49,10 @@ import com.google.samples.apps.iosched.ui.messages.SnackbarMessageManager
 import com.google.samples.apps.iosched.ui.signin.SignInDialogFragment
 import com.google.samples.apps.iosched.ui.signin.SignOutDialogFragment
 import com.google.samples.apps.iosched.util.HeightTopWindowInsetsListener
+import com.google.samples.apps.iosched.util.collectLifecycleFlow
 import com.google.samples.apps.iosched.util.signin.FirebaseAuthErrorCodeConverter
 import com.google.samples.apps.iosched.util.updateForTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.UUID
 import javax.inject.Inject
@@ -155,36 +151,20 @@ class MainActivity : AppCompatActivity(), NavigationHost {
             navigateTo(requestedNavId)
         }
 
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.navigationActions.collect { action ->
-                        when (action) {
-                            MainNavigationAction.OpenSignIn -> openSignInDialog()
-                            MainNavigationAction.OpenSignOut -> openSignOutDialog()
-                        }
-                    }
-                }
-                launch {
-                    viewModel.theme.collect { theme ->
-                        updateForTheme(theme)
-                    }
-                }
-                // AR-related Flows
-                launch {
-                    viewModel.arCoreAvailability.collect { result ->
-                        // Do nothing - activate flow
-                        Timber.d("ArCoreAvailability = $result")
-                    }
-                }
-                launch {
-                    viewModel.pinnedSessionsJson.collect { /* Do nothing - activate flow */ }
-                }
-                launch {
-                    viewModel.canSignedInUserDemoAr.collect { /* Do nothing - activate flow  */ }
-                }
+        collectLifecycleFlow(viewModel.navigationActions) { action ->
+            when (action) {
+                MainNavigationAction.OpenSignIn -> openSignInDialog()
+                MainNavigationAction.OpenSignOut -> openSignOutDialog()
             }
         }
+        collectLifecycleFlow(viewModel.navigationActions) { /* Do nothing - activate flow */}
+        collectLifecycleFlow(viewModel.theme) { /* Do nothing - activate flow */ }
+        collectLifecycleFlow(viewModel.arCoreAvailability) { result ->
+            // Do nothing - activate flow
+            Timber.d("ArCoreAvailability = $result")
+        }
+        collectLifecycleFlow(viewModel.pinnedSessionsJson) { /* Do nothing - activate flow */ }
+        collectLifecycleFlow(viewModel.canSignedInUserDemoAr) { /* Do nothing - activate flow */ }
 
         binding.navigationRail?.let {
             ViewCompat.setOnApplyWindowInsetsListener(it) { view, insets ->
