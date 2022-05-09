@@ -6,7 +6,7 @@ plugins {
 android {
     compileSdkVersion Versions.COMPILE_SDK
     defaultConfig {
-        minSdkVersion 24 // Macrobenchmark can't use all features on lower API
+        minSdkVersion 23 // Macrobenchmark doesn't work on lower API
         targetSdkVersion Versions.TARGET_SDK
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
