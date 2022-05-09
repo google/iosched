@@ -43,7 +43,7 @@ class OpenDetailBenchmarks {
         benchmarkRule.measureRepeated(
             packageName = TARGET_PACKAGE,
             metrics = listOf(FrameTimingMetric()),
-            startupMode = StartupMode.WARM, // start the activity every time
+            startupMode = StartupMode.COLD,
             iterations = 5,
             setupBlock = {
                 pressHome()

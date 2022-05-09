@@ -38,7 +38,7 @@ class ScheduleBenchmarks {
             metrics = listOf(FrameTimingMetric()),
             packageName = TARGET_PACKAGE,
             iterations = 5,
-            startupMode = StartupMode.WARM, // restart activity
+            startupMode = StartupMode.COLD,
             setupBlock = {
                 pressHome()
                 startMainAndConfirmDialogs()
