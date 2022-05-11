@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.macrobenchmark
 
-import android.util.Log
 import androidx.benchmark.macro.FrameTimingMetric
 import androidx.benchmark.macro.StartupMode
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
