@@ -23,7 +23,6 @@ val appcompat = "1.1.0"
 val activity = "1.2.0-rc01"
 val activityCompose = "1.3.0-alpha03"
 val appStartup = "1.1.0-beta01"
-val profileInstaller = Versions.PROFILE_INSTALLER
 val cardview = "1.0.0"
 val archTesting = "2.0.0"
 val arcore = "1.7.0"
@@ -65,6 +64,7 @@ val okhttp = "3.10.0"
 val okio = "1.14.0"
 val pageIndicator = "1.3.0"
 val playCore = "1.6.5"
+val profileInstaller = Versions.PROFILE_INSTALLER
 val room = "2.4.2"
 val rules = "1.1.1"
 val runner = "1.2.0"
@@ -81,7 +81,6 @@ dependencies {
         api("${Libs.ACTIVITY_KTX}:$activity")
         api("${Libs.APPCOMPAT}:$appcompat")
         api("${Libs.APP_STARTUP}:$appStartup")
-        api("${Libs.PROFILE_INSTALLER}:$profileInstaller")
         api("${Libs.CARDVIEW}:$cardview")
         api("${Libs.ARCH_TESTING}:$archTesting")
         api("${Libs.ARCORE}:$arcore")
@@ -137,6 +136,7 @@ dependencies {
         api("${Libs.MOCKITO_KOTLIN}:$mockitoKotlin")
         api("${Libs.NAVIGATION_FRAGMENT_KTX}:${Versions.NAVIGATION}")
         api("${Libs.NAVIGATION_UI_KTX}:${Versions.NAVIGATION}")
+        api("${Libs.PROFILE_INSTALLER}:$profileInstaller")
         api("${Libs.ROOM_KTX}:$room")
         api("${Libs.ROOM_RUNTIME}:$room")
         api("${Libs.ROOM_COMPILER}:$room")
@@ -150,9 +150,9 @@ dependencies {
         api("${Libs.THREETENABP}:$threetenabp")
         api("${Libs.THREETENBP}:${Versions.THREETENBP}")
         api("${Libs.TIMBER}:$timber")
+        api("${Libs.UI_AUTOMATOR}:$uiAutomator")
         api("${Libs.VIEWPAGER2}:$viewpager2")
         api("${Libs.VIEWMODEL_COMPOSE}:$viewModelCompose")
-        api("${Libs.UI_AUTOMATOR}:$uiAutomator")
     }
 }
 
