@@ -28,6 +28,7 @@ import androidx.test.uiautomator.Until
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import timber.log.Timber
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
@@ -69,7 +70,8 @@ class OpenDetailBenchmarks {
                 ?: error("Session on index $selectedIndex not found")
 
             val itemTitleView = item.findObject(By.res(TARGET_PACKAGE, "title"))
-            Log.d("Benchmark", "Opening detail(${itemTitleView?.text}) at index $selectedIndex")
+            Timber.tag("Benchmark")
+            Timber.d("Opening detail(${itemTitleView?.text}) at index $selectedIndex")
             item.click()
 
             // wait until detail title is shown

@@ -17,12 +17,12 @@
 package com.google.samples.apps.iosched.macrobenchmark
 
 import android.content.Intent
-import android.util.Log
 import androidx.benchmark.macro.MacrobenchmarkScope
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.BySelector
 import androidx.test.uiautomator.Direction
 import androidx.test.uiautomator.Until
+import timber.log.Timber
 
 const val TARGET_PACKAGE = "com.google.samples.apps.iosched"
 
@@ -32,7 +32,8 @@ val scheduleRecyclerSelector: BySelector
 fun MacrobenchmarkScope.startMainAndWait() {
     // Start activity defined by an action
     val intent = Intent("$TARGET_PACKAGE.STARTUP_ACTIVITY")
-    Log.d("Benchmark", "Starting activity $intent")
+    Timber.tag("Benchmark")
+    Timber.d("Starting activity $intent")
 
     // This can be usually without the intent, but in our case we have LauncherActivity with onboarding.
     startActivityAndWait(intent)

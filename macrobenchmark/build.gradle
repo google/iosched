@@ -46,5 +46,6 @@ dependencies {
     implementation Libs.ESPRESSO_CORE
     implementation Libs.EXT_JUNIT
     implementation Libs.KOTLIN_STDLIB
+    implementation Libs.TIMBER
     implementation Libs.UI_AUTOMATOR
 }
