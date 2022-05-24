@@ -78,6 +78,7 @@ object Libs {
     const val OKHTTP = "com.squareup.okhttp3:okhttp"
     const val OKHTTP_LOGGING_INTERCEPTOR = "com.squareup.okhttp3:logging-interceptor"
     const val OKIO = "com.squareup.okio:okio"
+    const val PROFILE_INSTALLER = "androidx.profileinstaller:profileinstaller"
     const val ROOM_COMPILER = "androidx.room:room-compiler"
     const val ROOM_KTX = "androidx.room:room-ktx"
     const val ROOM_RUNTIME = "androidx.room:room-runtime"
@@ -87,7 +88,7 @@ object Libs {
     const val THREETENABP = "com.jakewharton.threetenabp:threetenabp"
     const val THREETENBP = "org.threeten:threetenbp"
     const val TIMBER = "com.jakewharton.timber:timber"
+    const val UI_AUTOMATOR = "androidx.test.uiautomator:uiautomator"
     const val VIEWMODEL_COMPOSE = "androidx.lifecycle:lifecycle-viewmodel-compose"
     const val VIEWPAGER2 = "androidx.viewpager2:viewpager2"
-    const val UI_AUTOMATOR = "androidx.test.uiautomator:uiautomator"
 }

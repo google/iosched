@@ -24,11 +24,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion(Versions.COMPILE_SDK)
+    compileSdk = Versions.COMPILE_SDK
     defaultConfig {
         applicationId = "com.google.samples.apps.iosched"
-        minSdkVersion(Versions.MIN_SDK)
-        targetSdkVersion(Versions.TARGET_SDK)
+        minSdk = Versions.MIN_SDK
+        targetSdk = Versions.TARGET_SDK
         versionCode = Versions.versionCodeMobile
         versionName = Versions.versionName
         testInstrumentationRunner = "com.google.samples.apps.iosched.tests.CustomTestRunner"
@@ -101,6 +101,21 @@ android {
             // Used with :test-shared, which doesn't have a staging variant.
             matchingFallbacks += listOf("debug")
         }
+
+        maybeCreate("benchmark")
+        getByName("benchmark") {
+            initWith(getByName("staging"))
+            versionNameSuffix = "-benchmark"
+            isMinifyEnabled = true
+            isDebuggable = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro", "proguard-rules-benchmark.pro")
+
+            // Specifies a sorted list of fallback build types that the
+            // plugin should try to use when a dependency does not include a
+            // "benchmark" build type.
+            // Used with :test-shared, which doesn't have a benchmark variant.
+            matchingFallbacks += listOf("staging", "debug")
+        }
     }
 
     buildFeatures {
@@ -130,6 +145,10 @@ android {
         }
         getByName("release") {
             java.srcDir("src/debugRelease/java")
+        }
+        getByName("benchmark") {
+            java.srcDir("src/staging/java")
+            res.srcDir("src/staging/res")
         }
     }
 
@@ -185,6 +204,7 @@ dependencies {
 
     implementation(Libs.CORE_KTX)
     implementation(Libs.APP_STARTUP)
+    implementation(Libs.PROFILE_INSTALLER)
 
     // UI
     implementation(Libs.ACTIVITY_KTX)

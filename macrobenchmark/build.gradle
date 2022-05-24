@@ -4,10 +4,10 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion Versions.COMPILE_SDK
     defaultConfig {
-        minSdkVersion 29
-        targetSdkVersion 30
+        minSdkVersion 23 // Macrobenchmark doesn't work on lower API
+        targetSdkVersion Versions.TARGET_SDK
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -21,8 +21,8 @@ android {
     }
 
     buildTypes {
-        // declare a build type (release) to match the target app's build type
-        release {
+        // declare a build type to match the target app's build type
+        benchmark {
             debuggable = true
             signingConfig = debug.signingConfig
         }
@@ -36,7 +36,7 @@ androidComponents {
     beforeVariants(selector().all()) {
         // enable only the release buildType, since we only want to measure
         // release build performance
-        enabled = buildType == 'release'
+        enabled = buildType == 'benchmark'
     }
 }
 
@@ -46,5 +46,6 @@ dependencies {
     implementation Libs.ESPRESSO_CORE
     implementation Libs.EXT_JUNIT
     implementation Libs.KOTLIN_STDLIB
+    implementation Libs.TIMBER
     implementation Libs.UI_AUTOMATOR
 }

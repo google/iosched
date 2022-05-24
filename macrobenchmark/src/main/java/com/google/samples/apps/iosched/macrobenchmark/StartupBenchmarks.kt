@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,35 +16,41 @@
 
 package com.google.samples.apps.iosched.macrobenchmark
 
+import androidx.benchmark.macro.CompilationMode
 import androidx.benchmark.macro.StartupMode
+import androidx.benchmark.macro.StartupTimingMetric
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
 
 @LargeTest
-@RunWith(Parameterized::class)
-class StartupBenchmark(private val startupMode: StartupMode) {
+@RunWith(AndroidJUnit4::class)
+class StartupBenchmarks {
     @get:Rule
     val benchmarkRule = MacrobenchmarkRule()
 
     @Test
-    fun startup() = benchmarkRule.measureStartup(
-        profileCompiled = false,
-        startupMode = startupMode,
-        iterations = 3
-    ) {
-        action = "com.google.samples.apps.iosched.STARTUP_ACTIVITY"
-    }
+    fun startupCompilationNone() = startup(CompilationMode.None())
 
-    companion object {
-        @Parameterized.Parameters(name = "mode={0}")
-        @JvmStatic
-        fun parameters(): List<Array<Any>> {
-            return listOf(StartupMode.COLD, StartupMode.WARM, StartupMode.HOT)
-                .map { arrayOf(it) }
+    @Test
+    fun startupCompilationPartial() = startup(CompilationMode.Partial())
+
+    @Test
+    fun startupCompilationFull() = startup(CompilationMode.Full())
+
+    private fun startup(compilationMode: CompilationMode) = benchmarkRule.measureRepeated(
+        packageName = TARGET_PACKAGE,
+        compilationMode = compilationMode,
+        startupMode = StartupMode.COLD,
+        iterations = 5,
+        metrics = listOf(StartupTimingMetric()),
+        setupBlock = {
+            pressHome()
         }
+    ) {
+        startMainAndWait()
     }
 }

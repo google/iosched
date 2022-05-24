@@ -26,10 +26,10 @@ val appStartup = "1.1.0-beta01"
 val cardview = "1.0.0"
 val archTesting = "2.0.0"
 val arcore = "1.7.0"
-val benchmark = "1.0.0"
-val benchmarkMacro = "1.1.0-alpha02"
+val benchmark = Versions.BENCHMARK
 val browser = "1.0.0"
 val compose = Versions.COMPOSE
+val composeMaterial = "1.1.0"
 val constraintLayout = "1.1.3"
 val core = "1.3.2"
 val coroutines = "1.6.0"
@@ -53,9 +53,9 @@ val googlePlayServicesVision = "17.0.2"
 val gson = "2.8.6"
 val hamcrest = "1.3"
 val hilt = Versions.HILT_AGP
-val junit = "4.13"
+val junit = "4.13.2"
 val junitExt = "1.1.1"
-val lifecycle = "2.4.0-alpha01"
+val lifecycle = "2.4.1"
 val lottie = "3.0.0"
 val material = "1.4.0-beta01"
 val mockito = "3.3.1"
@@ -64,12 +64,13 @@ val okhttp = "3.10.0"
 val okio = "1.14.0"
 val pageIndicator = "1.3.0"
 val playCore = "1.6.5"
+val profileInstaller = Versions.PROFILE_INSTALLER
 val room = "2.4.2"
 val rules = "1.1.1"
 val runner = "1.2.0"
 val slidingpanelayout = "1.2.0-alpha01"
 val threetenabp = "1.0.5"
-val timber = "4.7.1"
+val timber = "5.0.1"
 val viewpager2 = "1.0.0"
 val viewModelCompose = "1.0.0-alpha02"
 val uiAutomator = "2.2.0"
@@ -84,13 +85,13 @@ dependencies {
         api("${Libs.ARCH_TESTING}:$archTesting")
         api("${Libs.ARCORE}:$arcore")
         api("${Libs.BENCHMARK}:$benchmark")
-        api("${Libs.BENCHMARK_MACRO}:$benchmarkMacro")
+        api("${Libs.BENCHMARK_MACRO}:$benchmark")
         api("${Libs.BROWSER}:$browser")
         api("${Libs.COMPOSE_ANIMATION}:$compose")
         api("${Libs.COMPOSE_MATERIAL}:$compose")
         api("${Libs.COMPOSE_RUNTIME}:$compose")
         api("${Libs.COMPOSE_TEST}:$compose")
-        api("${Libs.COMPOSE_THEME_ADAPTER}:$compose")
+        api("${Libs.COMPOSE_THEME_ADAPTER}:$composeMaterial")
         api("${Libs.COMPOSE_TOOLING}:$compose")
         api("${Libs.CONSTRAINT_LAYOUT}:$constraintLayout")
         api("${Libs.CORE_KTX}:$core")
@@ -135,6 +136,7 @@ dependencies {
         api("${Libs.MOCKITO_KOTLIN}:$mockitoKotlin")
         api("${Libs.NAVIGATION_FRAGMENT_KTX}:${Versions.NAVIGATION}")
         api("${Libs.NAVIGATION_UI_KTX}:${Versions.NAVIGATION}")
+        api("${Libs.PROFILE_INSTALLER}:$profileInstaller")
         api("${Libs.ROOM_KTX}:$room")
         api("${Libs.ROOM_RUNTIME}:$room")
         api("${Libs.ROOM_COMPILER}:$room")
@@ -148,9 +150,9 @@ dependencies {
         api("${Libs.THREETENABP}:$threetenabp")
         api("${Libs.THREETENBP}:${Versions.THREETENBP}")
         api("${Libs.TIMBER}:$timber")
+        api("${Libs.UI_AUTOMATOR}:$uiAutomator")
         api("${Libs.VIEWPAGER2}:$viewpager2")
         api("${Libs.VIEWMODEL_COMPOSE}:$viewModelCompose")
-        api("${Libs.UI_AUTOMATOR}:$uiAutomator")
     }
 }
 
