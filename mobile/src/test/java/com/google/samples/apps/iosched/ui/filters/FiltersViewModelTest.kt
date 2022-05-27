@@ -103,12 +103,12 @@ class FiltersViewModelTest {
     }
 
     @Test
-    fun `activate same filter does not emit a change`() = runTest(UnconfinedTestDispatcher()) {
+    fun `activate same filter does not emit a change`() = runTest {
         // Activate filter.
         viewModel.toggleFilter(androidFilter, true)
 
         var calls = 0
-        val collectionJob = launch {
+        val collectionJob = launch(UnconfinedTestDispatcher()) {
             viewModel.selectedFilters.collect {
                 calls++
             }
@@ -125,28 +125,27 @@ class FiltersViewModelTest {
     }
 
     @Test
-    fun `deactivate filter that isn't selected does not emit a change`() =
-        runTest(UnconfinedTestDispatcher()) {
-            // Activate filter.
-            viewModel.toggleFilter(androidFilter, true)
+    fun `deactivate filter that isn't selected does not emit a change`() = runTest {
+        // Activate filter.
+        viewModel.toggleFilter(androidFilter, true)
 
-            var calls = 0
-            val collectionJob = launch {
-                viewModel.selectedFilters.collect {
-                    calls++
-                }
+        var calls = 0
+        val collectionJob = launch(UnconfinedTestDispatcher()) {
+            viewModel.selectedFilters.collect {
+                calls++
             }
-            // Verify collector called for current value.
-            assertEquals(calls, 1)
-
-            // Deactivate some other filter.
-            viewModel.toggleFilter(sessionsFilter, false)
-
-            // Verify collector not called again.
-            assertEquals(calls, 1)
-
-            collectionJob.cancel()
         }
+        // Verify collector called for current value.
+        assertEquals(calls, 1)
+
+        // Deactivate some other filter.
+        viewModel.toggleFilter(sessionsFilter, false)
+
+        // Verify collector not called again.
+        assertEquals(calls, 1)
+
+        collectionJob.cancel()
+    }
 
     @Test
     fun `setSupportedFilters() removes orphaned selected filters`() =
