@@ -1,8 +1,13 @@
-Google I/O Android App
+Google I/O Android App (ARCHIVED)
 ======================
-[![Build Status](https://travis-ci.org/google/iosched.svg?branch=master)](https://travis-ci.org/google/iosched)
 
-# 2021 Update
+## 2023 Update
+
+**This repository has been archived.** The Google I/O app has guided online and in-person visitors through the Google I/O conference for 10 years since 2009. It has also helped thousands of developers as an open-source sample. 
+
+To follow Modern Android Development best practices, check out the [Now in Android](https://github.com/android/nowinandroid) repository, which replaces iosched as our real-world sample. 
+
+## 2021 Update
 
 **Due to global events, Google I/O 2020 was canceled and Google I/O 2021 is an online-only event, so
 the companion app hasn't been updated since 2019. However, the `iosched` team has continued
