@@ -31,6 +31,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.SessionId
+import com.google.samples.apps.iosched.util.collectLifecycleFlow
 import com.google.samples.apps.iosched.util.makeBold
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -92,17 +93,13 @@ class RemoveReservationDialogFragment : AppCompatDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.snackbarMessages.collect {
-                    // Using Toast instead of Snackbar as it's easier for DialogFragment
-                    Toast.makeText(
-                        requireContext(),
-                        it.messageId,
-                        if (it.longDuration) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
+        collectLifecycleFlow(viewModel.snackbarMessages) {
+            // Using Toast instead of Snackbar as it's easier for DialogFragment
+            Toast.makeText(
+                requireContext(),
+                it.messageId,
+                if (it.longDuration) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
+            ).show()
         }
     }
 

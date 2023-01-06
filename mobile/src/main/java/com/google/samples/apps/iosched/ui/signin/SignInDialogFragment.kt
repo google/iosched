@@ -30,6 +30,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.samples.apps.iosched.databinding.DialogSignInBinding
 import com.google.samples.apps.iosched.ui.signin.SignInNavigationAction.RequestSignIn
+import com.google.samples.apps.iosched.util.collectLifecycleFlow
 import com.google.samples.apps.iosched.util.executeAfter
 import com.google.samples.apps.iosched.util.signin.SignInHandler
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,17 +70,14 @@ class SignInDialogFragment : AppCompatDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                signInViewModel.signInNavigationActions.collect { action ->
-                    if (action == RequestSignIn) {
-                        activity?.startActivityForResult(
-                            signInHandler.makeSignInIntent(),
-                            REQUEST_CODE_SIGN_IN
-                        )
-                        dismiss()
-                    }
-                }
+        collectLifecycleFlow(signInViewModel.signInNavigationActions) {
+                action ->
+            if (action == RequestSignIn) {
+                activity?.startActivityForResult(
+                    signInHandler.makeSignInIntent(),
+                    REQUEST_CODE_SIGN_IN
+                )
+                dismiss()
             }
         }
 

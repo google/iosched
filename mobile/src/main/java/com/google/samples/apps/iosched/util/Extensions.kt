@@ -23,12 +23,8 @@ import android.content.res.TypedArray
 import android.graphics.Typeface
 import android.net.wifi.WifiConfiguration
 import android.os.Build
+import android.text.*
 import android.text.Layout.Alignment
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.StaticLayout
-import android.text.TextPaint
 import android.text.style.StyleSpan
 import android.util.TypedValue
 import android.view.View
@@ -37,6 +33,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DimenRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.BuildCompat
 import androidx.core.view.ViewCompat
@@ -44,9 +41,13 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ViewDataBinding
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.*
 import com.google.samples.apps.iosched.model.Theme
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 fun ObservableBoolean.hasSameValue(other: ObservableBoolean) = get() == other.get()
 
@@ -325,4 +326,20 @@ fun Context.getColorFromTheme(colorAttributeId: Int): Int {
     @ColorInt val color = typedArray.getColor(0, 0)
     typedArray.recycle()
     return color
+}
+/** to collect flow in a life cycle scope for [AppCompatActivity] * */
+fun <T> AppCompatActivity.collectLifecycleFlow(flow: Flow<T>, collect: FlowCollector<T>) {
+    lifecycleScope.launch {
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
+            flow.collect(collect)
+        }
+    }
+}
+/** to collect flow in a life cycle scope for [Fragment] * */
+fun <T> Fragment.collectLifecycleFlow(flow: Flow<T>, collect: FlowCollector<T>) {
+    lifecycleScope.launch {
+        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            flow.collect(collect)
+        }
+    }
 }

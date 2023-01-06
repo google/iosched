@@ -32,6 +32,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.util.collectLifecycleFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -61,12 +62,8 @@ class MapVariantSelectionDialogFragment : AppCompatDialogFragment() {
         adapter = MapVariantAdapter(::selectMapVariant)
         view.findViewById<RecyclerView>(R.id.map_variant_list).adapter = adapter
 
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mapViewModel.mapVariant.collect {
-                    adapter.currentSelection = it
-                }
-            }
+        collectLifecycleFlow(mapViewModel.mapVariant) {
+            adapter.currentSelection = it
         }
     }
 
