@@ -119,7 +119,7 @@ Tests ran to completion.
 Dependency Injection is implemented with
 [Hilt](https://developer.android.com/training/dependency-injection/hilt-android). For more details
 on migrating from *dagger-android* to Hilt, read the
-([migration article](https://medium.com/androiddevelopers/migrating-the-google-i-o-app-to-hilt-f3edf03affe5).
+[migration article](https://medium.com/androiddevelopers/migrating-the-google-i-o-app-to-hilt-f3edf03affe5).
 
 [ViewPager2](https://developer.android.com/training/animation/screen-slide-2) offers enhanced functionality over the
 original ViewPager library, such as right-to-left and vertical orientation support.
