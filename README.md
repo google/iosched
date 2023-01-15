@@ -12,7 +12,7 @@ To follow Modern Android Development best practices, check out the [Now in Andro
 **Due to global events, Google I/O 2020 was canceled and Google I/O 2021 is an online-only event, so
 the companion app hasn't been updated since 2019. However, the `iosched` team has continued
 adding several architecture improvements to its codebase.
-The general look and feel of the app is unchanged, and the app
+The general look and feel of the app are unchanged, and the app
 still uses the data from Google I/O 2019.**
 
 Major improvements implemented in 2021:
@@ -31,8 +31,8 @@ This project is the Android app for the conference.
 
 # Running the app
 
-The project contains a `staging` variant that replaces some modules at compile time so they
-don't depend on remote services such as Firebase. This allows you to try out and test the app
+The project contains a `staging` variant that replaces some modules at compile time, so they
+don't depend on remote services such as Firebase. It allows you to try out and test the app
 without the API keys.
 
 # Features
@@ -83,7 +83,7 @@ are responsible for handling all data operations and abstracting the data source
 from the rest of the app.
 
 A lightweight domain layer sits between the data layer
-and the presentation layer, and handles discrete pieces of business logic off
+and the presentation layer and handles discrete pieces of business logic off
 the UI thread. See the `.\*UseCase.kt` files under `shared/domain` for
 [examples](https://github.com/google/iosched/search?q=UseCase&unscoped_q=UseCase).
 
@@ -92,7 +92,7 @@ to implement navigation in the app, handling Fragment transactions and providing
 user experience.
 
 [Room](https://developer.android.com/jetpack/androidx/releases/room) is used
-for Full Text Search using [Fts4](https://developer.android.com/reference/androidx/room/Fts4)
+for Full-Text Search using [Fts4](https://developer.android.com/reference/androidx/room/Fts4)
 to search for a session, speaker, or codelab.
 
 UI tests are written with [Espresso](https://developer.android.com/training/testing/espresso/)
@@ -136,7 +136,7 @@ automatic sync  and also seamlessly managed offline functionality
 for us.
 - [Firebase Cloud Functions](https://firebase.google.com/docs/functions/)
 allowed us to run backend code. The reservations feature heavily depended on Cloud
-Functions working in conjuction with Firestore.
+Functions working in conjunction with Firestore.
 - [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging/concept-options)
 let us inform the app about changes to conference data on our server.
 - [Remote Config](https://firebase.google.com/docs/remote-config/) helped us
